@@ -140,7 +140,6 @@ function wcontrol_process(Process $process)
             'output' => "Missing, or empty, 'command' attribute in process."
         );
     }
-    
     if (!preg_match('|^\s*/|', $cmd)) {
         $ctx_root = getenv('WIFF_CONTEXT_ROOT');
         if ($ctx_root === false) {
@@ -149,7 +148,7 @@ function wcontrol_process(Process $process)
                 'output' => 'WIFF_CONTEXT_ROOT env variable is not defined.'
             );
         }
-        $cmd = sprintf("%s/%s", escapeshellarg($ctx_root) , $cmd);
+        $cmd = sprintf("%s/%s", $ctx_root, $cmd);
     }
     
     $cmd = $process->phase->module->getContext()->expandParamsValues($cmd);
@@ -187,9 +186,13 @@ function wcontrol_process(Process $process)
             'output' => 'Error creating temporary file.'
         );
     }
-    
-    $cmd = sprintf('( %s ) 1> %s 2>&1', escapeshellcmd($cmd) , escapeshellarg($tmpfile));
-    # error_log(sprintf("%s %s", __FUNCTION__ , $cmd));
+    $cmdArray = explode(" ", $cmd);
+    foreach ($cmdArray as $index => $cmdElem) {
+        $cmdArray[$index] = escapeshellarg($cmdElem);
+    }
+    $cmd = implode(" ", $cmdArray);
+    $cmd = sprintf('( %s ) 1> %s 2>&1', $cmd, escapeshellarg($tmpfile));
+    //error_log(sprintf("%s %s", __FUNCTION__ , $cmd));
     /*
      $curdir = getcwd();
      if( $curdir === false ) {
@@ -246,7 +249,7 @@ function wcontrol_download(Process & $process)
     }
     
     $actionProcess = new Process(sprintf("<process command=\"%s\" />", $action) , $process->phase);
-    $actionProcess->attributes['command'] = sprintf("%s %s", $action, escapeshellarg($localFile));
+    $actionProcess->attributes['command'] = sprintf("%s %s", $action, $localFile);
     $status = wcontrol_process($actionProcess);
     unlink($localFile);
     $status_ret = $status['ret'];
