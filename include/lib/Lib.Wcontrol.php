@@ -148,7 +148,7 @@ function wcontrol_process(Process $process)
                 'output' => 'WIFF_CONTEXT_ROOT env variable is not defined.'
             );
         }
-        $cmd = sprintf("%s/%s", $ctx_root, $cmd);
+        $cmd = sprintf("%s/%s", escapeshellarg($ctx_root) , $cmd);
     }
     
     $cmd = $process->phase->module->getContext()->expandParamsValues($cmd);
@@ -162,22 +162,6 @@ function wcontrol_process(Process $process)
         putenv(sprintf('MODULE_VERSION_FROM=%s', $current_version));
     }
     putenv(sprintf('MODULE_VERSION_TO=%s', $process->phase->module->version));
-    /*
-     $cmd = sprintf("( %s ) 2>&1 3>/dev/null; echo $? >&3", $cmd);
-     $proc = proc_open($cmd,
-     array(
-     0 => array('pipe', 'r'),
-     1 => array('pipe', 'w'),
-     2 => array('pipe', 'w'),
-     3 => array('pipe', 'w')
-     ),
-     $pipes,
-     null,
-     null
-     );
-     if( $proc === false ) {
-     $ret = proc_close($proc);
-    */
     
     $tmpfile = WiffLibSystem::tempnam(null, 'wcontrol_process');
     if ($tmpfile === false) {
@@ -186,42 +170,32 @@ function wcontrol_process(Process $process)
             'output' => 'Error creating temporary file.'
         );
     }
-    $cmdArray = explode(" ", $cmd);
-    foreach ($cmdArray as $index => $cmdElem) {
-        $cmdArray[$index] = escapeshellarg($cmdElem);
+    $tmpscript = WiffLibSystem::tempnam(null, 'wcontrol_process');
+    if ($tmpscript === false) {
+        return array(
+            'ret' => false,
+            'output' => 'Error creating temporary script.'
+        );
     }
-    $cmd = implode(" ", $cmdArray);
-    $cmd = sprintf('( %s ) 1> %s 2>&1', $cmd, escapeshellarg($tmpfile));
-    //error_log(sprintf("%s %s", __FUNCTION__ , $cmd));
-    /*
-     $curdir = getcwd();
-     if( $curdir === false ) {
-     return array(
-     'ret' => false,
-     'output' => sprintf("Could not get current working directory.")
-     );
-     }
-     $ctx_root = getenv('WIFF_CONTEXT_ROOT');
-     if( chdir($ctx_root) === false )  {
-     return array(
-     'ret' => false,
-     'output' => sprintf("Could not change directory to '%s'.", $ctx_root)
-     );
-     }
-    */
-    
-    system($cmd, $ret);
-    /*
-     if( chdir($curdir) === false ) {
-     return array(
-     'ret' => false,
-     'output' => sprintf("Could not change directory back to '%s'.", $curdir)
-     );
-     }
-    */
+    if (chmod($tmpscript, 0700) === false) {
+        return array(
+            'ret' => false,
+            'output' => sprintf("Error setting execution mode on temporary script.", $tmpscript)
+        );
+    }
+    /* Use `/bin/sh` as system() would do */
+    $cmd = "#!/bin/sh\n" . $cmd;
+    if (file_put_contents($tmpscript, $cmd) === false) {
+        return array(
+            'ret' => false,
+            'output' => sprintf("Error writing content to temporary script '%s'.", $tmpscript)
+        );
+    }
+    system(sprintf("%s 1> %s 2>&1 < /dev/null", escapeshellarg($tmpscript) , escapeshellarg($tmpfile)) , $ret);
     
     $output = file_get_contents($tmpfile);
     unlink($tmpfile);
+    unlink($tmpscript);
     
     return array(
         'ret' => ($ret === 0) ? true : false,
