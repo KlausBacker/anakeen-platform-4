@@ -1591,17 +1591,35 @@ class WIFF
         
         $xpath = new DOMXPath($xml);
         
-        $query = "/contexts/context[@root = '" . $root . "']";
+        $query = "/contexts/context[@root = " . self::xpathLiteral($root) . "]";
         /**
          * @var DOMElement $context
          */
-        $context = $xpath->query($query)->item(0);
+        $res = $xpath->query($query);
+        if ($res === false) {
+            $this->errorMessage = sprintf("Invalid or malformed XPath expression [%s].", $query);
+            return false;
+        }
+        $context = $res->item(0);
+        if ($context === null) {
+            $this->errorMessage = sprintf("Could not find context with root = '%s'.", $root);
+            return false;
+        }
         
         $context->setAttribute('name', $name);
         $context->setAttribute('url', $url);
         
-        $query = "/contexts/context[@root = '" . $root . "']/description";
-        $description = $xpath->query($query)->item(0);
+        $query = "/contexts/context[@root = " . self::xpathLiteral($root) . "]/description";
+        $res = $xpath->query($query);
+        if ($res === false) {
+            $this->errorMessage = sprintf("Invalid or malformed XPath expression [%s].", $query);
+            return false;
+        }
+        $description = $res->item(0);
+        if ($description == null) {
+            $this->errorMessage = sprintf("Could not find description for context with root = '%s'.", $root);
+            return false;
+        }
         
         $description->nodeValue = $desc;
         // Save XML to file
@@ -2497,5 +2515,27 @@ class WIFF
     static function strAnonymizeUrl($url, $str)
     {
         return str_replace($url, self::anonymizeUrl($url) , $str);
+    }
+    /**
+     * Convert a string to an XPath literal
+     *
+     * If the string contains an apostrophe, then a concat() is used
+     * to construct the string literal expression.
+     *
+     * If no apostrophe is found, then quote the string with apostrophes.
+     *
+     * @param $str
+     * @return string
+     */
+    static function xpathLiteral($str)
+    {
+        if (strpos($str, "'") === false) {
+            return "'" . $str . "'";
+        } else {
+            return "concat(" . str_replace(array(
+                "'',",
+                ",''"
+            ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
+        }
     }
 }
