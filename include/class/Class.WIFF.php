@@ -966,7 +966,10 @@ class WIFF
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
-        
+        if (!$this->checkValidContextDirChars($root)) {
+            $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
+            return false;
+        }
         $archived_root = $wiff_root . WIFF::archive_filepath;
         // --- Create status file for context --- //
         $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.ctx';
@@ -1494,6 +1497,11 @@ class WIFF
      */
     public function createContext($name, $root, $desc, $url)
     {
+        // Check for invalid chars in context root path
+        if (!$this->checkValidContextDirChars($root)) {
+            $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
+            return false;
+        }
         // If Context already exists, method fails.
         if ($this->getContext($name) !== false) {
             $this->errorMessage = sprintf("Context '%s' already exists.", $name);
@@ -2538,4 +2546,25 @@ class WIFF
             ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
+	/**
+	 * Check for invalid/unsupported chars in context directory
+	 *
+	 * @param string $path the context root dir
+	 * @return bool true if valid, false if invalid
+	 */
+	public function checkValidContextDirChars($path)
+	{
+		/* Preprend CWD to relative paths in order to also
+		 * check the validity of CWD
+		*/
+		if (substr($path, 0, strlen(DIRECTORY_SEPARATOR)) !== DIRECTORY_SEPARATOR) {
+			$path = getcwd() . DIRECTORY_SEPARATOR . $path;
+		}
+		$sep = preg_quote(DIRECTORY_SEPARATOR, '/');
+		if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep) , $path)) {
+			$this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
+			return false;
+		}
+		return true;
+	}
 }
