@@ -966,7 +966,10 @@ class WIFF
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
-        
+        if (!$this->checkValidContextDirChars($root)) {
+            $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
+            return false;
+        }
         $archived_root = $wiff_root . WIFF::archive_filepath;
         // --- Create status file for context --- //
         $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.ctx';
@@ -1494,6 +1497,11 @@ class WIFF
      */
     public function createContext($name, $root, $desc, $url)
     {
+        // Check for invalid chars in context root path
+        if (!$this->checkValidContextDirChars($root)) {
+            $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
+            return false;
+        }
         // If Context already exists, method fails.
         if ($this->getContext($name) !== false) {
             $this->errorMessage = sprintf("Context '%s' already exists.", $name);
@@ -1591,17 +1599,35 @@ class WIFF
         
         $xpath = new DOMXPath($xml);
         
-        $query = "/contexts/context[@root = '" . $root . "']";
+        $query = "/contexts/context[@root = " . self::xpathLiteral($root) . "]";
         /**
          * @var DOMElement $context
          */
-        $context = $xpath->query($query)->item(0);
+        $res = $xpath->query($query);
+        if ($res === false) {
+            $this->errorMessage = sprintf("Invalid or malformed XPath expression [%s].", $query);
+            return false;
+        }
+        $context = $res->item(0);
+        if ($context === null) {
+            $this->errorMessage = sprintf("Could not find context with root = '%s'.", $root);
+            return false;
+        }
         
         $context->setAttribute('name', $name);
         $context->setAttribute('url', $url);
         
-        $query = "/contexts/context[@root = '" . $root . "']/description";
-        $description = $xpath->query($query)->item(0);
+        $query = "/contexts/context[@root = " . self::xpathLiteral($root) . "]/description";
+        $res = $xpath->query($query);
+        if ($res === false) {
+            $this->errorMessage = sprintf("Invalid or malformed XPath expression [%s].", $query);
+            return false;
+        }
+        $description = $res->item(0);
+        if ($description == null) {
+            $this->errorMessage = sprintf("Could not find description for context with root = '%s'.", $root);
+            return false;
+        }
         
         $description->nodeValue = $desc;
         // Save XML to file
@@ -2498,4 +2524,47 @@ class WIFF
     {
         return str_replace($url, self::anonymizeUrl($url) , $str);
     }
+    /**
+     * Convert a string to an XPath literal
+     *
+     * If the string contains an apostrophe, then a concat() is used
+     * to construct the string literal expression.
+     *
+     * If no apostrophe is found, then quote the string with apostrophes.
+     *
+     * @param $str
+     * @return string
+     */
+    static function xpathLiteral($str)
+    {
+        if (strpos($str, "'") === false) {
+            return "'" . $str . "'";
+        } else {
+            return "concat(" . str_replace(array(
+                "'',",
+                ",''"
+            ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
+        }
+    }
+	/**
+	 * Check for invalid/unsupported chars in context directory
+	 *
+	 * @param string $path the context root dir
+	 * @return bool true if valid, false if invalid
+	 */
+	public function checkValidContextDirChars($path)
+	{
+		/* Preprend CWD to relative paths in order to also
+		 * check the validity of CWD
+		*/
+		if (substr($path, 0, strlen(DIRECTORY_SEPARATOR)) !== DIRECTORY_SEPARATOR) {
+			$path = getcwd() . DIRECTORY_SEPARATOR . $path;
+		}
+		$sep = preg_quote(DIRECTORY_SEPARATOR, '/');
+		if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep) , $path)) {
+			$this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
+			return false;
+		}
+		return true;
+	}
 }

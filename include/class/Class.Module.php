@@ -330,7 +330,7 @@ class Module
         // Get <modules> node
         $modulesNodeList = $contextsXPath->query("/contexts/context[@name = '" . $this->context->name . "']/modules");
         if ($modulesNodeList->length <= 0) {
-            $this->errorMessage = sprintf("Found no <modules> for context '%s' in '%s'.", $this->context->name);
+            $this->errorMessage = sprintf("Found no <modules> for context '%s' in '%s'.", $this->context->name, $wiff->contexts_filepath);
             return false;
         }
         $modulesNode = $modulesNodeList->item(0);
