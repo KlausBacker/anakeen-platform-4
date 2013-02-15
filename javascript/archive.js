@@ -213,7 +213,7 @@ function updateArchiveList_success(responseObject, select) {
 													hidden : true
 												}, {
 													xtype : 'checkbox',
-													fieldLabel : 'Clean tmp directory?',
+													fieldLabel : 'Remove extracted temporary files after restore?',
 													name : 'clean_tmp_directory',
 													checked : true
 												}],
