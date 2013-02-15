@@ -1760,12 +1760,12 @@ class WIFF
     
     public function downloadHttpUrl($url, $opts = array())
     {
-        return $this->downloadHttpUrlWget($url, $opts);
+        return $this->downloadHttpUrlCurl($url, $opts);
     }
     
     public function downloadFtpUrl($url, $opts = array())
     {
-        return $this->downloadHttpUrlWget($url, $opts);
+        return $this->downloadHttpUrlCurl($url, $opts);
     }
     
     public function downloadLocalFile($url, $opts = array())
@@ -1789,20 +1789,36 @@ class WIFF
         return $tmpfile;
     }
     
-    public function downloadHttpUrlWget($url, $opts = array())
+    public function downloadHttpUrlCurl($url, $opts = array())
     {
         include_once ('lib/Lib.System.php');
         
-        $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_downloadHttpUrlWget');
+        $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_downloadHttpUrlCurl');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
             error_log(sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error creating temporary file."));
             return false;
         }
         
-        $envs = array();
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 20);
+        /*
+         * Ouch! >_< I know, this is bad...
+         * But we keep it for compatibility with previously
+         * rolled out releases.
+        */
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        /* Setup output file */
+        $ftmp = fopen($tmpfile, 'w');
+        if ($ftmp === false) {
+            $this->errorMessage = sprintf("Error opening temporary file '%s' for writing.", $tmpfile);
+            error_log(sprintf(__METHOD__ . " " . $this->errorMessage));
+            return false;
+        }
+        curl_setopt($ch, CURLOPT_FILE, $ftmp);
+        /* Setup proxy */
         if ($this->getParam('use-proxy') === 'yes') {
-            $http_proxy = "";
             $proxy_host = $this->getParam('proxy-host');
             if ($proxy_host !== false && $proxy_host != '') {
                 $http_proxy = "http://" . $proxy_host;
@@ -1811,54 +1827,89 @@ class WIFF
                     $http_proxy.= ":" . $proxy_port;
                 }
             }
-            $envs['http_proxy'] = $http_proxy;
-            $envs['https_proxy'] = $http_proxy;
-            $envs['ftp_proxy'] = $http_proxy;
+            curl_setopt($ch, CURLOPT_PROXY, $http_proxy);
         }
-        
-        $wget_path = WiffLibSystem::getCommandPath('wget');
-        if ($wget_path === false) {
-            unlink($tmpfile);
-            error_log(sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Command '%s' not found in PATH.", 'wget'));
-            $this->errorMessage = sprintf("Command '%s' not found in PATH.", 'wget');
-            return false;
-        }
-        
-        $wget_opts = array();
-        $wget_opts[] = escapeshellarg($wget_path);
-        $wget_opts[] = '--no-check-certificate';
-        $wget_opts[] = "-q";
-        $wget_opts[] = "-O";
-        $wget_opts[] = escapeshellarg($tmpfile);
+        /* Setup proxy auth */
         $proxy_username = $this->getParam('proxy-username');
         if ($proxy_username !== false && $proxy_username != '') {
-            $wget_opts[] = '--proxy-user=' . escapeshellarg($proxy_username);
+            curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC);
+            
+            $proxy_password = $this->getParam('proxy-password');
+            if ($proxy_password !== false && $proxy_password != '') {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, sprintf('%s:%s', $proxy_username, $proxy_password));
+            } else {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_username);
+            }
         }
-        $proxy_password = $this->getParam('proxy-password');
-        if ($proxy_password !== false && $proxy_password != '') {
-            $wget_opts[] = '--proxy-password=' . escapeshellarg($proxy_password);
-        }
+        /* Setup timeout/retries with same/similar defaults as wget */
         if (isset($opts['timeout'])) {
-            $wget_opts[] = '--timeout=' . escapeshellarg($opts['timeout']);
+            /*
+             * With wget, each timeout (connect and read) can be set to a
+             * specific value, but curl only support a connect timeout and
+             * a "general" timeout that includes the time taken by the connect
+             * + the time of the read.
+            */
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($opts['timeout']));
+            curl_setopt($ch, CURLOPT_TIMEOUT, 2 * intval($opts['timeout']));
         }
-        if (isset($opts['tries'])) {
-            $wget_opts[] = '--tries=' . escapeshellarg($opts['tries']);
+        $retry = 20;
+        $waitretry = 10;
+        if (isset($opts['tries']) && $opts['tries'] > 0) {
+            $retry = $opts['tries'];
         }
-        $wget_opts[] = escapeshellarg($url);
+        if (isset($opts['waitretry']) && $opts['waitretry'] > 0) {
+            $waitretry = $opts['waitretry'];
+        }
+        /* Fetch the URL */
+        $wait = 0;
+        while ($retry >= 0) {
+            ftruncate($ftmp, 0);
+            rewind($ftmp);
+            curl_exec($ch);
+            $errno = curl_errno($ch);
+            if ($errno) {
+                $error = curl_error($ch);
+                if ($retry > 0) {
+                    $retry--;
+                    $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
+                    error_log(__METHOD__ . " " . sprintf("Notice: got error (%s) '%s' while fetching '%s'. Retrying %s in %s second(s)...", $errno, $error, WIFF::anonymizeUrl($url) , $retry, $wait));
+                    sleep($wait);
+                    continue;
+                }
+                curl_close($ch);
+                fclose($ftmp);
+                unlink($tmpfile);
+                $this->errorMessage = sprintf("Error fetching '%s': %s", WIFF::anonymizeUrl($url) , $error);
+                error_log(__METHOD__ . " " . $this->errorMessage);
+                return false;
+            }
+            
+            $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($code != 200) {
+                if ($code != 404 && $retry > 0) {
+                    $retry--;
+                    $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
+                    error_log(__METHOD__ . " " . sprintf("Notice: got HTTP status code '%s' fetching '%s'. Retrying %s in %s second(s)...", $code, WIFF::anonymizeUrl($url) , $retry, $wait));
+                    sleep($wait);
+                    continue;
+                }
+                curl_close($ch);
+                fclose($ftmp);
+                $content = file_get_contents($tmpfile);
+                if ($content === false) {
+                    $content = '<Could not get content>';
+                }
+                unlink($tmpfile);
+                $this->errorMessage = sprintf("HTTP Error fetching '%s': HTTP status = '%s' / Content = '%s'", WIFF::anonymizeUrl($url) , $code, $content);
+                
+                error_log(__METHOD__ . " " . $this->errorMessage);
+                return false;
+            }
+            break;
+        }
         
-        foreach ($envs as $var => $value) {
-            putenv(sprintf("%s=%s", $var, $value));
-        }
-        
-        $cmd = join(' ', $wget_opts);
-        $out = system("$cmd > /dev/null", $ret);
-        if (($out === false) || ($ret != 0)) {
-            unlink($tmpfile);
-            error_log(sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error fetching '%s' with '%s'.", WIFF::anonymizeUrl($url) , WIFF::strAnonymizeUrl($url, $cmd)));
-            $this->errorMessage = sprintf("Error fetching '%s' with '%s'.", WIFF::anonymizeUrl($url) , WIFF::strAnonymizeUrl($url, $cmd));
-            return false;
-        }
-        
+        curl_close($ch);
+        fclose($ftmp);
         return $tmpfile;
     }
     
