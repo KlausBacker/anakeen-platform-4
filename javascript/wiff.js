@@ -1662,6 +1662,7 @@ function updateContextList_success(responseObject, select) {
 			title : 'Warning',
 			msg : "Deleting context will empty database but not delete it. Do you really want to delete this context?",
 			buttons : Ext.Msg.YESNO,
+            minWidth: 200,
 			icon : Ext.Msg.WARNING,
 			fn : function(btn, text, opt) {
 				if (btn != 'yes') {
@@ -3038,6 +3039,7 @@ function show_and_download_dependencies(action, responseObject) {
     Ext.Msg.show({
         title : 'Dynacase Control',
         msg : htmlModuleList,
+        minWidth:600,
         buttons : {
             ok : true,
             cancel : true
@@ -3137,6 +3139,7 @@ function getGlobalwin(display) {
 	modulepanel = new Ext.Panel({
 				title : 'Module List',
 				columnWidth : 0.25,
+                autoScroll: true,
 				height : Ext.getCmp("context-list").getHeight(),
 				setModuleIcon : function(name, icon) {
 					var panel = this.getComponent('module-' + name);
@@ -3945,7 +3948,7 @@ function executeProcessList(module, phase, operation) {
 
 						title : 'Dynacase Control',
 						msg : 'Incorrect process execution will cause problems in your Dynacase context',
-
+                        minWidth: 200,
 						buttons : {
 							ok : 'Continue',
 							cancel : 'Cancel'
