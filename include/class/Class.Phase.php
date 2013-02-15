@@ -46,6 +46,7 @@ class Phase
             'pre-install',
             'pre-upgrade',
             'pre-remove',
+            'check-files',
             'unpack',
             'clean-unpack',
             'remove',
@@ -61,7 +62,7 @@ class Phase
             return $plist;
         }
         // Special internal hard coded phase
-        if ($this->name == 'unregister-module' || $this->name == 'purge-unreferenced-parameters-value' || $this->name == 'unpack' || $this->name == 'clean-unpack') {
+        if ($this->name == 'unregister-module' || $this->name == 'purge-unreferenced-parameters-value' || $this->name == 'unpack' || $this->name == 'clean-unpack' || $this->name == 'check-files') {
             return array(
                 new Process(sprintf("<%s><label>Do %s</label></%s>", $this->name, $this->name, $this->name) , $this)
             );
