@@ -1216,7 +1216,7 @@ class WIFF
                                     return false;
                                 }
                                 
-                                if ($clean_tmp_directory === 'on') {
+                                if ($clean_tmp_directory) {
                                     // --- Delete tmp tar file --- //
                                     unlink($vault_tar);
                                 }
@@ -1355,7 +1355,7 @@ class WIFF
         // Run reconfigure phase
         $this->reconfigure($name);
         
-        if ($clean_tmp_directory === 'on') {
+        if ($clean_tmp_directory) {
             // --- Delete Tmp tar file --- //
             unlink($context_tar);
             unlink($dump);
