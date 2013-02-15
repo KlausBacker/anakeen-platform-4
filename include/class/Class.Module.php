@@ -483,7 +483,7 @@ class Module
                     $installedManifest = $this->context->getManifestEntriesForModule($module->name);
                     foreach ($installedManifest as $manifest) {
                         if ($manifest["type"] != "d" && in_array($manifest["name"], $modulesManifestFiles)) {
-                            $this->errorMessage = sprintf("File '%s' is already given by module '%s'", $manifest["name"], $module->name);
+                            $this->errorMessage = sprintf("File '%s' is already given by module '%s'. If you skip this, this file will be replaced by the new one.", $manifest["name"], $module->name);
                             return false;
                         }
                     }
@@ -505,7 +505,6 @@ class Module
             $this->errorMessage = sprintf("Temporary file of downloaded module does not exists.");
             return false;
         }
-        if (!$this->checkManifestFiles()) return false;
         // Store BOM/manifest
         $ret = $this->context->storeManifestForModule($this);
         if ($ret === false) {
@@ -754,6 +753,7 @@ class Module
             case 'install':
                 return array(
                     'pre-install',
+                    'check-files',
                     'unpack',
                     'post-install',
                     'purge-unreferenced-parameters-value'
@@ -763,6 +763,7 @@ class Module
             case 'upgrade':
                 return array(
                     'pre-upgrade',
+                    'check-files',
                     'clean-unpack',
                     'post-upgrade',
                     'purge-unreferenced-parameters-value'
@@ -772,6 +773,7 @@ class Module
             case 'uninstall':
                 return array(
                     'pre-remove',
+                    'check-files',
                     'remove',
                     'post-remove'
                 );

@@ -48,11 +48,25 @@ function wcontrol_eval_process(Process $process)
         return wcontrol_purge_unreferenced_parameters_value($process);
     } else if ($process->getName() == "unregister-module") {
         return wcontrol_unregister_module($process);
+    } else if ($process->getName() == "check-files") {
+        return wcontrol_check_files($process);
     }
     
     return array(
         'ret' => false,
         'output' => sprintf("Unknown process with name '%s'", $process->getName())
+    );
+}
+
+function wcontrol_check_files(Process $process)
+{
+    $module = $process->phase->module;
+    
+    $ret = $module->checkManifestFiles();
+    
+    return array(
+        'ret' => $ret ? true : false,
+        'output' => $module->errorMessage ? $module->errorMessage : "Ok"
     );
 }
 
