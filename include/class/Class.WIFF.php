@@ -1089,6 +1089,11 @@ class WIFF
                 return false;
             }
         }
+        if (!$this->deleteDirContent($temporary_extract_root, true)) {
+            $this->errorMessage = sprintf("Error cleaning up extract-tmp dir: %s", $this->errorMessage);
+            unlink($status_file);
+            return false;
+        }
         $vaultfound = false;
         $context_tar = $temporary_extract_root . DIRECTORY_SEPARATOR . "context.tar.gz";
         $dump = $temporary_extract_root . DIRECTORY_SEPARATOR . "core_db.pg_dump.gz";
@@ -1216,7 +1221,7 @@ class WIFF
                                     return false;
                                 }
                                 
-                                if ($clean_tmp_directory === 'on') {
+                                if ($clean_tmp_directory) {
                                     // --- Delete tmp tar file --- //
                                     unlink($vault_tar);
                                 }
@@ -1355,7 +1360,7 @@ class WIFF
         // Run reconfigure phase
         $this->reconfigure($name);
         
-        if ($clean_tmp_directory === 'on') {
+        if ($clean_tmp_directory) {
             // --- Delete Tmp tar file --- //
             unlink($context_tar);
             unlink($dump);
@@ -2616,6 +2621,47 @@ class WIFF
             $this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
             return false;
         }
+        return true;
+    }
+    /**
+     * Delete directory content
+     *
+     * @param string $dir The directory to clean
+     * @param bool $recursive true to also delete files/dirs in sub-dirs,
+     *                        or false (default) to only clean files from
+     *                        the main directory.
+     * @return bool true on success, false on failure
+     */
+    private function deleteDirContent($dir, $recursive = false)
+    {
+        if (($dh = opendir($dir)) === false) {
+            $this->errorMessage = sprintf("Error opening directory '%s'.", $dir);
+            return false;
+        }
+        while (($entry = readdir($dh)) !== false) {
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+            $entry = $dir . DIRECTORY_SEPARATOR . $entry;
+            if (is_dir($entry) && $recursive) {
+                if ($this->deleteDirContent($entry, $recursive) === false) {
+                    closedir($dh);
+                    return false;
+                }
+                if (rmdir($entry) === false) {
+                    $this->errorMessage = sprintf("Error deleting directory '%s'.", $entry);
+                    closedir($dh);
+                    return false;
+                }
+            } else {
+                if (unlink($entry) === false) {
+                    $this->errorMessage = sprintf("Error deleting file '%s'.", $entry);
+                    closedir($dh);
+                    return false;
+                }
+            }
+        }
+        closedir($dh);
         return true;
     }
 }
