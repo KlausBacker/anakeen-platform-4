@@ -96,7 +96,7 @@ class Repository
                 $this->default = $repository->getAttribute('default');
             }
             
-            if ($this->authenticated) {
+            if ($this->authenticated == 'yes') {
                 $info = $wiff->getAuthInfo($this->name);
                 //echo 'INFO '.print_r($info,true);
                 if ($info) {
@@ -164,7 +164,7 @@ class Repository
         if ($this->baseurl) {
             $this->url = $this->baseurl;
             $this->displayUrl = $this->url;
-        } elseif ($this->authenticated && $this->login && $this->password) {
+        } elseif ($this->authenticated == 'yes' && $this->login && $this->password) {
             $this->url = $this->protocol . '://' . $this->login . ':' . $this->password . '@' . $this->host . '/' . $this->path;
         } else {
             $this->url = $this->protocol . '://' . $this->host . '/' . $this->path;
