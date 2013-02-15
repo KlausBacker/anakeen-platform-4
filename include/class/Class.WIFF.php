@@ -2546,25 +2546,25 @@ class WIFF
             ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
-	/**
-	 * Check for invalid/unsupported chars in context directory
-	 *
-	 * @param string $path the context root dir
-	 * @return bool true if valid, false if invalid
-	 */
-	public function checkValidContextDirChars($path)
-	{
-		/* Preprend CWD to relative paths in order to also
-		 * check the validity of CWD
-		*/
-		if (substr($path, 0, strlen(DIRECTORY_SEPARATOR)) !== DIRECTORY_SEPARATOR) {
-			$path = getcwd() . DIRECTORY_SEPARATOR . $path;
-		}
-		$sep = preg_quote(DIRECTORY_SEPARATOR, '/');
-		if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep) , $path)) {
-			$this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
-			return false;
-		}
-		return true;
-	}
+    /**
+     * Check for invalid/unsupported chars in context directory
+     *
+     * @param string $path the context root dir
+     * @return bool true if valid, false if invalid
+     */
+    public function checkValidContextDirChars($path)
+    {
+        /* Preprend CWD to relative paths in order to also
+         * check the validity of CWD
+        */
+        if (substr($path, 0, strlen(DIRECTORY_SEPARATOR)) !== DIRECTORY_SEPARATOR) {
+            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+        }
+        $sep = preg_quote(DIRECTORY_SEPARATOR, '/');
+        if (!preg_match(sprintf('/^[%sa-zA-Z0-9._-]*$/', $sep) , $path)) {
+            $this->errorMessage = sprintf("path name should contain only [%sa-zA-Z0-9._-] characters.", DIRECTORY_SEPARATOR);
+            return false;
+        }
+        return true;
+    }
 }
