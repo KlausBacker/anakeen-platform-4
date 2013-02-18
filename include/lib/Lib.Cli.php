@@ -459,6 +459,9 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
     if (count($depList) > 1) {
         echo sprintf("Will (i)nstall, (u)pgrade or (r)eplace the following modules:\n");
         foreach ($depList as $module) {
+            /**
+             * @var Module $module
+             */
             if ($module->needphase == '') {
                 $module->needphase = 'install';
             }
@@ -472,7 +475,11 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
             if ($module->errorMessage) {
                 $error = "(" . fg_red() . $module->errorMessage . color_reset() . ")";
             }
-            echo sprintf("- %s-%s-%s %s%s\n", $module->name, $module->version, $module->release, $op, $error);
+            $warning = "";
+            if ($module->warningMessage) {
+                $warning = "(" . fg_yellow() . $module->warningMessage . color_reset() . ")";
+            }
+            echo sprintf("- %s-%s-%s %s%s%s\n", $module->name, $module->version, $module->release, $op, $error, $warning);
         }
         $ret = param_ask($options, "Proceed with installation", "Y/n", "Y");
         if (!preg_match('/^(y|yes|)$/i', $ret)) {
@@ -520,7 +527,11 @@ function wiff_context_module_install_remote(Context & $context, &$options, &$mod
             if ($module->errorMessage) {
                 $error = "(" . fg_red() . $module->errorMessage . color_reset() . ")";
             }
-            echo sprintf("- %s-%s-%s %s%s\n", $module->name, $module->version, $module->release, $op, $error);
+            $warning = "";
+            if ($module->warningMessage) {
+                $warning = "(" . fg_yellow() . $module->warningMessage . color_reset() . ")";
+            }
+            echo sprintf("- %s-%s-%s %s%s%s\n", $module->name, $module->version, $module->release, $op, $error, $warning);
         }
         $ret = param_ask($options, "Proceed with installation", "Y/n", "Y");
         if (!preg_match('/^(y|yes|)$/i', $ret)) {
@@ -894,7 +905,11 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
             if ($module->errorMessage) {
                 $error = "(" . fg_red() . $module->errorMessage . color_reset() . ")";
             }
-            echo sprintf("- %s-%s-%s %s%s\n", $module->name, $module->version, $module->release, $op, $error);
+            $warning = "";
+            if ($module->warningMessage) {
+                $warning = "(" . fg_yellow() . $module->warningMessage . color_reset() . ")";
+            }
+            echo sprintf("- %s-%s-%s %s%s%s\n", $module->name, $module->version, $module->release, $op, $error, $warning);
         }
         $ret = param_ask($options, "Proceed with upgrade", "Y/n", "Y");
         if (!preg_match('/^(y|yes|)$/i', $ret)) {
@@ -952,7 +967,11 @@ function wiff_context_module_upgrade_remote(Context & $context, &$options, &$mod
             if ($module->errorMessage) {
                 $error = "(" . fg_red() . $module->errorMessage . color_reset() . ")";
             }
-            echo sprintf("- %s-%s-%s %s%s\n", $module->name, $module->version, $module->release, $op, $error);
+            $warning = "";
+            if ($module->warningMessage) {
+                $warning = "(" . fg_yellow() . $module->warningMessage . color_reset() . ")";
+            }
+            echo sprintf("- %s-%s-%s %s%s%s\n", $module->name, $module->version, $module->release, $op, $error, $warning);
         }
         $ret = param_ask($options, "Proceed with upgrade", "Y/n", "Y");
         if (!preg_match('/^(y|yes|)$/i', $ret)) {

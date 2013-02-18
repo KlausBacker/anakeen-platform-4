@@ -79,6 +79,10 @@ class Module
      * @var string last error message
      */
     public $errorMessage = '';
+    /**
+     * @var string last warning message
+     */
+    public $warningMessage = "";
     
     public function __construct($context, $repository = null, $xmlNode = null, $isInstalled = false)
     {
