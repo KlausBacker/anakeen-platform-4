@@ -3029,10 +3029,14 @@ function show_and_download_dependencies(action, responseObject) {
             op = '<span style="color: #990; font-family: monospace">u</span>';
         }
         var error = "";
+        var warning = "";
         if (toDownload[i].errorMessage) {
             error = '<span class="message error">&nbsp('+toDownload[i].errorMessage+')</span>';
         }
-        htmlModuleList += '<li><i>(' + op + ')</i>&nbsp;<span class="module">' + toDownload[i].name + '</span>&nbsp;<span class="message">' + comment + '</span>'+error+'</li>';
+        if (toDownload[i].warningMessage) {
+            warning =  '<br/><span class="message warning">&nbsp('+toDownload[i].warningMessage+')</span>';
+        }
+        htmlModuleList += '<li><i>(' + op + ')</i>&nbsp;<span class="module">' + toDownload[i].name + '</span>&nbsp;<span class="message">' + comment + '</span>'+error+warning+'</li>';
     }
     htmlModuleList += '</ul><br/><br/>';
 
