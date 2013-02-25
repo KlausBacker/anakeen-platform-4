@@ -29,6 +29,10 @@ if( $ret === false ) {
 
 $ret = 0;
 switch( $argv[0] ) {
+case 'param':
+  $cmd = array_shift($argv);
+  $ret = wiff_param($argv);
+  break;
 case 'context':
   $cmd = array_shift($argv);
   $ret = wiff_context($argv);

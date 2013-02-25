@@ -26,6 +26,8 @@ function wiff_help(&$argv)
     echo "\n";
     echo "  wiff help\n";
     echo "\n";
+    echo "  wiff param help\n";
+    echo "\n";
     echo "  wiff list context\n";
     echo "\n";
     echo "  wiff context <context-name> help\n";
@@ -66,6 +68,86 @@ function wiff_unlock()
         error_log(sprintf("Warning: could not unlock Dynacase-Control!"));
     }
     return $ret;
+}
+
+function wiff_param(&$argv)
+{
+    $op = array_shift($argv);
+    
+    switch ($op) {
+        case 'set':
+            $ret = wiff_param_set($argv);
+            return $ret;
+            break;
+
+        case 'get':
+            $ret = wiff_param_get($argv);
+            return $ret;
+            break;
+
+        case 'help':
+            return wiff_param_help();
+        default:
+            error_log(sprintf("Unknown operation '%s'!\n", $op));
+            return wiff_param_help();
+    }
+}
+
+function wiff_param_get(&$argv)
+{
+    $wiff = WIFF::getInstance();
+    
+    $paramKey = array_shift($argv);
+    if ($paramKey === null) {
+        error_log(sprintf("Error: missing param-name."));
+        return 1;
+    }
+    $ret = $wiff->getParam($paramKey, true, true);
+    if (!$ret) {
+        error_log($wiff->errorMessage);
+        return 1;
+    }
+    echo sprintf("%s = %s\n", $paramKey, $ret);
+    return 0;
+}
+function wiff_param_set(&$argv)
+{
+    $wiff = WIFF::getInstance();
+    
+    $paramKey = array_shift($argv);
+    if ($paramKey === null) {
+        error_log(sprintf("Error: missing param-name."));
+        return 1;
+    }
+    $paramValue = array_shift($argv);
+    if ($paramValue === null) {
+        error_log(sprintf("Error: missing param-value."));
+        return 1;
+    }
+    $paramMode = array_shift($argv);
+    if ($paramMode === null) {
+        $paramMode = "hidden";
+    }
+    
+    $ret = $wiff->setParam($paramKey, $paramValue, true, $paramMode);
+    if (!$ret) {
+        error_log($wiff->errorMessage);
+        return 1;
+    }
+    return 0;
+}
+
+function wiff_param_help()
+{
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff param set <param-name> <param-value> [<param-mode>=hidden]\n";
+    echo "\n";
+    echo "  wiff param get <param-name>\n";
+    echo "\n";
+    return 0;
 }
 /**
  * wiff list
@@ -611,10 +693,11 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
             error_log(sprintf("Error: could not get module '%s' from context: %s\n", $modName, $context->errorMessage));
             return 1;
         }
+        $wiff = WIFF::getInstance();
         /**
          * ask license
          */
-        if ($module->license != '') {
+        if ($module->license != '' && $wiff->getParam("check-license", false, true) != "no") {
             $license = $module->getLicenseText();
             if ($license === false) {
                 error_log(sprintf("Error: could not get license '%s' for module '%s': %s\n", $module->license, $module->name, $module->errorMessage));
