@@ -1646,9 +1646,10 @@ class WIFF
     }
     /**
      * Get parameters list
+     * @param bool $withHidden true to get hidden parameters too
      * @return array containing 'key' => 'value' pairs
      */
-    public function getParamList()
+    public function getParamList($withHidden = false)
     {
         $plist = array();
         
@@ -1669,6 +1670,9 @@ class WIFF
             /**
              * @var DOMElement $param
              */
+            if (!$withHidden && $param->getAttribute("mode") === "hidden") {
+                continue;
+            }
             $paramName = $param->getAttribute('name');
             $paramValue = $param->getAttribute('value');
             $plist[$paramName] = $paramValue;
@@ -1681,10 +1685,11 @@ class WIFF
      * @return string the value of the parameter or false in case of errors
      * @param string $paramName the parameter name
      * @param boolean $strict if not found, should method report an error
+     * @param bool $withHidden true to get hidden parameters
      */
-    public function getParam($paramName, $strict = false)
+    public function getParam($paramName, $strict = false, $withHidden = false)
     {
-        $plist = $this->getParamList();
+        $plist = $this->getParamList($withHidden);
         
         if (array_key_exists($paramName, $plist)) {
             return $plist[$paramName];
@@ -1701,8 +1706,9 @@ class WIFF
      * @param string $paramName the name of the parameter to set
      * @param string $paramValue the value of the parameter to set
      * @param bool $create
+     * @param string $mode Mode of param (hidden or visible)
      */
-    public function setParam($paramName, $paramValue, $create = true)
+    public function setParam($paramName, $paramValue, $create = true, $mode = "visible")
     {
         $xml = new DOMDocument();
         $ret = $xml->load($this->params_filepath);
@@ -1733,6 +1739,7 @@ class WIFF
             $param = $xml->getElementsByTagName('parameters')->item(0)->appendChild($param);
             $param->setAttribute('name', $paramName);
             $param->setAttribute('value', $paramValue);
+            $param->setAttribute('mode', $mode);
         }
         
         $ret = $xml->save($this->params_filepath);
