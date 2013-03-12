@@ -737,6 +737,13 @@ class WIFF
             }
         }
         
+        $collator = new Collator(Locale::getDefault());
+        usort($contextList, function ($context1, $context2) use ($collator)
+        {
+            /** @var Collator $collator */
+            return $collator->compare($context1->name, $context2->name);
+        });
+        
         $archived_root = $this->archive_filepath;
         
         if (is_dir($archived_root)) {
