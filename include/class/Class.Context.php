@@ -1295,13 +1295,21 @@ class Context
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error creating temporary file.");
             return false;
         }
-        
+        if (empty($_FILES)) {
+            $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("File size (" . $_SERVER['CONTENT_LENGTH'] . " bytes) is bigger than php post_max_size (" . ini_get('post_max_size') . ")"));
+            unlink($tmpfile);
+            return false;
+        }
         if (!array_key_exists('module', $_FILES)) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Missing 'module' in uploaded files."));
             unlink($tmpfile);
             return false;
         }
-        
+        if ($_FILES['module']['error'] !== UPLOAD_ERR_OK) {
+            $this->errorMessage = WIFF::getUploadErrorMsg($_FILES['module']['error']);
+            unlink($tmpfile);
+            return false;
+        }
         $ret = move_uploaded_file($_FILES['module']['tmp_name'], $tmpfile);
         if ($ret === false) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Could not move uploaded file to temporary file '%s'.", $tmpfile));
