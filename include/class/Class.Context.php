@@ -1305,7 +1305,11 @@ class Context
             unlink($tmpfile);
             return false;
         }
-        
+        if ($_FILES['module']['error'] !== UPLOAD_ERR_OK) {
+            $this->errorMessage = WIFF::getUploadErrorMsg($_FILES['module']['error']);
+            unlink($tmpfile);
+            return false;
+        }
         $ret = move_uploaded_file($_FILES['module']['tmp_name'], $tmpfile);
         if ($ret === false) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Could not move uploaded file to temporary file '%s'.", $tmpfile));
