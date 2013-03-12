@@ -60,7 +60,7 @@ function updateArchiveList_success(responseObject, select) {
 				iconCls : (!data[i].inProgress)
 						? (hasError ? 'x-icon-archive-error': 'x-icon-archive')
 						: 'x-icon-loading',
-                tabTip : '('+(data[i].datetime?data[i].datetime.substr(0, 16):'')+') '+(data[i].description?data[i].description:''),
+                tabTip : data[i].name+ ' ('+(data[i].datetime?data[i].datetime.substr(0, 16):'')+') '+(data[i].description?data[i].description:''),
 				style : 'padding:10px;',
 				layout : 'fit',
                 archive: data[i],
