@@ -57,8 +57,8 @@ case 'wstop':
   $ret = wiff_wstop($argv);
   break;
 case 'mkrepoidx':
-  $cmd = array_shift($argv);
-  $ret = wiff_mkrepoidx($argv);
+  $ret = 1;
+  echo 'This tools is not in Dynacase Control anymore. You can download it here: https://eec.anakeen.com/tools/dynacase-toolbox.tgz'.PHP_EOL;
   break;
 case 'delete':
   $cmd = array_shift($argv);
