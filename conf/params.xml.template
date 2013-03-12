@@ -2,12 +2,12 @@
 <wiff version="0.0.1" release="1" author="anakeen, www.anakeen.com" license="AGPL3" lang="fr|en">
 
   <repositories>
-    <access name="dynacase" description="Dynacase" protocol="http" host="eec.anakeen.com" path="public/platform/" authenticated="no" login="" password="" default="yes" />
+    <access name="dynacase" description="Dynacase" protocol="http" host="dynacase.anakeen.com" path="stable/" authenticated="no" login="" password="" default="yes" />
   </repositories>
 
   <parameters>
-    <param name="wiff-update-host" value="http://eec.anakeen.com" />
-    <param name="wiff-update-path" value="/public/control/" />
+    <param name="wiff-update-host" value="http://dynacase.anakeen.com" />
+    <param name="wiff-update-path" value="/control/" />
     <param name="wiff-update-file" value="dynacase-control-current.tar.gz" />
     <param name="wiff-update-login" value="" />
     <param name="wiff-update-password" value="" />
