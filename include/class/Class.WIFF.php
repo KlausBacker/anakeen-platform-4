@@ -941,7 +941,7 @@ class WIFF
         return (float)($stat['blocks'] * 512);
     }
     
-    public function verirfyArchiveIntegrity($pathToArchive)
+    public function verifyArchiveIntegrity($pathToArchive)
     {
         if ($handle = opendir($pathToArchive)) {
             while (false !== ($file = readdir($handle))) {
@@ -1121,7 +1121,7 @@ class WIFF
                         return false;
                     }
                     
-                    $ret = $this->verirfyArchiveIntegrity($temporary_extract_root);
+                    $ret = $this->verifyArchiveIntegrity($temporary_extract_root);
                     if ($ret === false) {
                         unlink($status_file);
                         $zip->close();
