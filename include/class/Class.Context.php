@@ -1295,7 +1295,11 @@ class Context
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error creating temporary file.");
             return false;
         }
-        
+        if (empty($_FILES)) {
+            $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("File size (" . $_SERVER['CONTENT_LENGTH'] . " bytes) is bigger than php post_max_size (" . ini_get('post_max_size') . ")"));
+            unlink($tmpfile);
+            return false;
+        }
         if (!array_key_exists('module', $_FILES)) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Missing 'module' in uploaded files."));
             unlink($tmpfile);
