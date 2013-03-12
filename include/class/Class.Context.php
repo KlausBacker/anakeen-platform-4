@@ -1827,7 +1827,7 @@ class Context
             $zip->close();
             
             $wiff = WIFF::getInstance();
-            $ret = $wiff->verirfyArchiveIntegrity($tmp);
+            $ret = $wiff->verifyArchiveIntegrity($tmp);
             if ($ret === false) {
                 $this->errorMessage = $wiff->errorMessage;
                 
