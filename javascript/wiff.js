@@ -2033,7 +2033,7 @@ function updateContextList_success(responseObject, select) {
 														url : 'wiff.php',
 														success : function(
 																form, action) {
-															updateContextList('select-last');
+															updateContextList('');
 															form.reset();
 															var panel = Ext
 																	.getCmp('create-context-form');
@@ -2045,7 +2045,7 @@ function updateContextList_success(responseObject, select) {
 														},
 														failure : function(
 																form, action) {
-															updateContextList('select-last');
+															updateContextList('');
 															if (action
 																	&& action.result) {
 																Ext.Msg
@@ -5083,7 +5083,9 @@ function displayInterface() {
 										.submit({
 											url : 'wiff.php',
 											success : function(form, action) {
-												updateContextList('select-last');
+                                                var formValues = form.getFieldValues();
+                                                window.currentContext = formValues["name"];
+												updateContextList();
 												form.reset();
 												var panel = Ext
 														.getCmp('create-context-form');
