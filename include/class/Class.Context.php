@@ -1889,15 +1889,20 @@ class Context
         $pgservice_core = $this->getParamByName('core_db');
         $dbconnect = pg_connect("service=$pgservice_core");
         if ($dbconnect === false) {
-            $this->errorMessage = "Error when trying to connect to database";
+            $this->errorMessage = sprintf("Error when trying to connect to database with service '%s'.", $pgservice_core);
             return false;
         }
-        $result = pg_query("SELECT id_fs, r_path FROM vaultdiskfsstorage ;");
+        $result = pg_query($dbconnect, "SELECT id_fs, r_path FROM vaultdiskfsstorage ;");
         if ($result === false) {
-            $this->errorMessage = "Error when trying to get databse info :: " . pg_last_error();
+            $this->errorMessage = sprintf("Error executing query: %s", pg_last_error($dbconnect));
             return false;
         }
         $vaultList = pg_fetch_all($result);
+        if ($vaultList === false) {
+            /* pg_fetch_all() returns false if the result is empty
+             but we want an empty array() in this case. */
+            $vaultList = array();
+        }
         pg_close($dbconnect);
         return $vaultList;
     }
