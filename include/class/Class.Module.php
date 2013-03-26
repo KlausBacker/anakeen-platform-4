@@ -796,6 +796,19 @@ class Module
                 );
                 break;
 
+            case 'archive':
+                return array(
+                    'pre-archive',
+                    'post-archive'
+                );
+                break;
+
+            case 'restore':
+                return array(
+                    'post-restore'
+                );
+                break;
+
             default:
         }
         return array();

@@ -19,37 +19,38 @@ require_once ('lib/Lib.System.php');
 function wcontrol_eval_process(Process $process)
 {
     $msg = "";
-    if ($process->getName() == "check") {
-        if (function_exists("wcontrol_check_" . $process->getAttribute('type'))) {
-            $ret = false;
-            # error_log(sprintf("%s Running wcontrol_check_%s()", __FUNCTION__ , $process->getAttribute('type')));
-            eval("\$ret = wcontrol_check_" . $process->getAttribute('type') . "(\$process);");
-            
-            if (function_exists("wcontrol_msg_" . $process->getAttribute('type'))) {
-                eval("\$msg = wcontrol_msg_" . $process->getAttribute('type') . "(\$process);");
-            } else {
-                $msg = generic_msg($process);
+    switch ($process->getName()) {
+        case "check":
+            if (function_exists("wcontrol_check_" . $process->getAttribute('type'))) {
+                $ret = false;
+                // error_log(sprintf("%s Running wcontrol_check_%s()", __FUNCTION__ , $process->getAttribute('type')));
+                eval("\$ret = wcontrol_check_" . $process->getAttribute('type') . "(\$process);");
+                
+                if (function_exists("wcontrol_msg_" . $process->getAttribute('type'))) {
+                    eval("\$msg = wcontrol_msg_" . $process->getAttribute('type') . "(\$process);");
+                } else {
+                    $msg = generic_msg($process);
+                }
+                
+                return array(
+                    'ret' => $ret,
+                    'output' => $msg
+                );
             }
-            
-            return array(
-                'ret' => $ret,
-                'output' => $msg
-            );
-        }
-    } else if ($process->getName() == "process") {
-        return wcontrol_process($process);
-    } else if ($process->getName() == "download") {
-        return wcontrol_download($process);
-    } else if ($process->getName() == "unpack") {
-        return wcontrol_unpack($process);
-    } else if ($process->getName() == "clean-unpack") {
-        return wcontrol_clean_unpack($process);
-    } else if ($process->getName() == "purge-unreferenced-parameters-value") {
-        return wcontrol_purge_unreferenced_parameters_value($process);
-    } else if ($process->getName() == "unregister-module") {
-        return wcontrol_unregister_module($process);
-    } else if ($process->getName() == "check-files") {
-        return wcontrol_check_files($process);
+        case "process":
+            return wcontrol_process($process);
+        case "download":
+            return wcontrol_download($process);
+        case "unpack":
+            return wcontrol_unpack($process);
+        case "clean-unpack":
+            return wcontrol_clean_unpack($process);
+        case "purge-unreferenced-parameters-value":
+            return wcontrol_purge_unreferenced_parameters_value($process);
+        case "unregister-module":
+            return wcontrol_unregister_module($process);
+        case "check-files":
+            return wcontrol_check_files($process);
     }
     
     return array(

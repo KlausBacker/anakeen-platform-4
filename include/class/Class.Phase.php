@@ -57,12 +57,22 @@ class Phase
             'post-param',
             'reconfigure',
             'unregister-module',
-            'purge-unreferenced-parameters-value'
+            'purge-unreferenced-parameters-value',
+            'pre-archive',
+            'post-archive',
+            'post-restore'
         ))) {
             return $plist;
         }
         // Special internal hard coded phase
-        if ($this->name == 'unregister-module' || $this->name == 'purge-unreferenced-parameters-value' || $this->name == 'unpack' || $this->name == 'clean-unpack' || $this->name == 'check-files') {
+        $specialPhase = array(
+            'unregister-module',
+            'purge-unreferenced-parameters-value',
+            'unpack',
+            'clean-unpack',
+            'check-files'
+        );
+        if (in_array($this->name, $specialPhase)) {
             return array(
                 new Process(sprintf("<%s><label>Do %s</label></%s>", $this->name, $this->name, $this->name) , $this)
             );
