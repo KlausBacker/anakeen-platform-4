@@ -811,28 +811,32 @@ class Context
      *         install order, or false in case of error
      * @param array $namelist the module name list
      * @param bool $local
+     * @param bool $installed
      */
-    public function getModuleDependencies(array $namelist, $local = false)
+    public function getModuleDependencies(array $namelist, $local = false, $installed = false)
     {
         $depsList = array();
-        
         foreach ($namelist as $name) {
-            if ($local == false) {
+            if ($installed) {
+                $module = $this->getModuleInstalled($name);
+                if ($module === false) {
+                    $this->errorMessage = sprintf("Local module '%s' not found in contexts.xml.", $name);
+                    return false;
+                }
+            } else if ($local == false) {
                 $module = $this->getModuleAvail($name);
                 if ($module === false) {
                     $this->errorMessage = sprintf("Module '%s' could not be found in repositories.", $name);
                     return false;
                 }
-                
-                array_push($depsList, $module);
             } else {
                 $module = $this->getModuleDownloaded($name);
                 if ($module === false) {
                     $this->errorMessage = sprintf("Local module '%s' not found in contexts.xml.", $name);
                     return false;
                 }
-                array_push($depsList, $module);
             }
+            array_push($depsList, $module);
         }
         
         $i = 0;

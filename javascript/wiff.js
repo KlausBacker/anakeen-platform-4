@@ -2204,83 +2204,11 @@ function updateContextList_success(responseObject, select) {
 										text : 'Create Archive',
 										context : data[i],
 										handler : function() {
-
-											mask = new Ext.LoadMask(Ext
-															.getBody(), {
-														msg : 'Making Archive...'
-													});
-											mask.show();
-											Ext.getCmp('create-archive-form')
-													.getForm().submit({
-														url : 'wiff.php',
-														timeout : 3600,
-														success : function(
-																form, action) {
-															// win.hide();
-															Ext.Msg
-																	.alert(
-																			'Dynacase Control',
-																			'Context successfully archived',
-																			function() {
-																				(function() {
-                                                                                    window.currentArchive = action.result.data;
-                                                                                    updateArchiveList();
-																				})
-																						.defer(100);
-																			});
-															mask.hide();
-															// archive_success(action.response);
-														},
-														failure : function(
-																form, action) {
-
-															// win.hide();
-															mask.hide();
-															if (action
-																	&& action.result) {
-																Ext.Msg
-																		.alert(
-																				'Failure',
-																				action.result.error,
-																				function() {
-																					(function() {
-																						updateArchiveList();
-																					})
-																							.defer(100);
-																				});
-															} else if (action
-																	&& action.failureType == Ext.form.Action.CONNECT_FAILURE) {
-																Ext.Msg
-																		.alert(
-																				'Warning',
-																				'Timeout reach if archive not created yet please reload page later',
-																				function() {
-																					(function() {
-																						updateArchiveList();
-																					})
-																							.defer(100);
-																				});
-															} else {
-																Ext.Msg
-																		.alert(
-																				'Warning',
-																				'Unknow error',
-																				function() {
-																					(function() {
-																						updateArchiveList();
-																					})
-																							.defer(100);
-																				});
-															}
-															// archive_failure(action.response);
-														},
-														params : {
-															archiveContext : true,
-															name : button.context.name
-														}// ,
-															// waitMsg : 'Making
-															// Archive...'
-													});
+                                            var modules = [];
+                                            installedStore[currentContext].each(function(record) {
+                                                modules.push(record.get('name'));
+                                            });
+											archive(modules);
 
 											win.hide();
 									(function() {
@@ -3064,6 +2992,33 @@ function show_and_download_dependencies(action, responseObject) {
         }
     });
 }
+/**
+ * archive a module
+ */
+function archive(modulelist) {
+    mask = new Ext.LoadMask(Ext.getBody(), {
+        msg : 'Resolving dependencies...'
+    });
+    mask.show();
+
+    Ext.Ajax.request({
+        url : 'wiff.php',
+        params : {
+            context : currentContext,
+            'modulelist[]' : modulelist,
+            getModuleDependencies : true,
+            onlyInstalled : true,
+            authInfo : Ext.encode(authInfo)
+        },
+        success : function(responseObject) {
+            archive_success(responseObject);
+        },
+        failure : function(responseObject) {
+            archive_failure(responseObject);
+        }
+    });
+
+}
 
 /**
  * install a module
@@ -3113,7 +3068,7 @@ function wstop(operation) {
 				},
 				callback : function(option, success, responseObject) {
 
-					getGlobalwin(true);
+					getGlobalwin(true, toInstall);
 
 					if (toInstall[0].needphase == 'replaced') {
 						/**
@@ -3128,7 +3083,7 @@ function wstop(operation) {
 			});
 }
 
-function getGlobalwin(display) {
+function getGlobalwin(display, moduleList) {
 
 	globalwin = new Ext.Window({
 				title : 'Dynacase Control',
@@ -3152,11 +3107,11 @@ function getGlobalwin(display) {
 
 			});
 
-	for (var i = 0; i < toInstall.length; i++) {
+	for (var i = 0; i < moduleList.length; i++) {
 		var panel = new Ext.Panel({
-					title : toInstall[i].name,
+					title : moduleList[i].name,
 					iconCls : 'x-icon-none',
-					id : 'module-' + toInstall[i].name,
+					id : 'module-' + moduleList[i].name,
 					border : false,
 					style : 'padding:0px;'
 				});
@@ -3305,7 +3260,7 @@ function download_failure(module, operation, responseObject) {
 function askParameter(module, operation) {
 
 	if (operation == 'parameter') {
-		getGlobalwin(false);
+		getGlobalwin(false, toInstall);
 	}
 
 	Ext.Ajax.request({
@@ -3749,110 +3704,23 @@ function executePhaseList(operation) {
 
 	var phase = currentPhaseList[currentPhaseIndex];
 
-	if (!phase) {
-		// Remove first module to install
-		toInstall.remove(toInstall[0]);
+    if (!phase) {
+        if (operation == "archive") {
+            toArchive.remove(toArchive[0]);
+            execute_next_archive_module_phase(module, currentPhaseList[0]);
+        } else if (operation == "restore") {
+            toRestore.remove(toRestore[0]);
+            execute_next_restore_module_phase(module, currentPhaseList[0]);
+        } else {
+            // Remove first module to install
+            toInstall.remove(toInstall[0]);
 
-		setModuleStatusInstalled(module, operation);
-
-		return;
-	}
+            setModuleStatusInstalled(module, operation);
+        }
+        return;
+    }
 
 	switch (phase) {
-
-		/*case 'unpack' :
-
-			Ext.Ajax.request({
-				url : 'wiff.php',
-				params : {
-					context : currentContext,
-					module : module.name,
-					unpack : true,
-					authInfo : Ext.encode(authInfo)
-				},
-				success : function(responseObject) {
-
-					var response = eval('(' + responseObject.responseText + ')');
-					if (response.error) {
-						Ext.Msg.alert('Server Error', response.error);
-                        return false;
-					}
-
-					var data = response.data;
-
-					// Ext.Msg.alert('Module Unpack', 'Module <b>' + module.name
-					// + '</b> unpacked successfully in context directory',
-					// function(btn){
-					currentPhaseIndex++;
-					executePhaseList(operation);
-					// });
-
-				}
-			});
-
-			break;
-
-		// HERE HERE HERE
-		case 'clean-unpack' :
-			Ext.Ajax.request({
-				url : 'wiff.php',
-				params : {
-					context : currentContext,
-					module : module.name,
-					cleanUnpack : true,
-					authInfo : Ext.encode(authInfo)
-				},
-				success : function(responseObject) {
-					var response = eval('(' + responseObject.responseText + ')');
-					if (response.error) {
-						Ext.Msg.alert('Server Error', response.error);
-					}
-					var data = response.data;
-					currentPhaseIndex++;
-					executePhaseList(operation);
-				}
-			});
-			break;*/
-
-		/*case 'unregister-module' :
-
-			Ext.Ajax.request({
-				url : 'wiff.php',
-				params : {
-					context : currentContext,
-					module : module.name,
-					unregisterModule : true
-				},
-				success : function(responseObject) {
-					var response = eval('(' + responseObject.responseText + ')');
-					if (response.error) {
-						Ext.Msg.alert('Server Error', response.error);
-					}
-					var data = response.data;
-					currentPhaseIndex++;
-					executePhaseList(operation);
-				}
-			});
-			break;
-
-		case 'purge-unreferenced-parameters-value' :
-			Ext.Ajax.request({
-				url : 'wiff.php',
-				params : {
-					context : currentContext,
-					purgeUnreferencedParametersValue : true
-				},
-				success : function(responseObject) {
-					var response = eval('(' + responseObject.responseText + ')');
-					if (response.error) {
-						Ext.Msg.alert('Server Error', response.error);
-					}
-					var data = response.data;
-					currentPhaseIndex++;
-					executePhaseList(operation);
-				}
-			});
-			break;*/
 		default :
 
 			Ext.Ajax.request({
