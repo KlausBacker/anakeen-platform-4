@@ -58,7 +58,7 @@ case 'wstop':
   break;
 case 'mkrepoidx':
   $ret = 1;
-  echo 'This tools is not in Dynacase Control anymore. You can download it here: https://eec.anakeen.com/tools/dynacase-toolbox.tgz'.PHP_EOL;
+  echo 'This tools is not in Dynacase Control anymore. You can download it here: https://eec.anakeen.com/tools/dynacase-toolbox.tar.gz'.PHP_EOL;
   break;
 case 'delete':
   $cmd = array_shift($argv);
