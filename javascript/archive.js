@@ -352,21 +352,32 @@ function updateArchiveList_success(responseObject, select) {
                                     iconCls: 'x-icon-delete-archive',
                                     archive: data[i],
                                     handler: function (button) {
+                                        Ext.Msg.show({
+                                            title: 'Warning',
+                                            msg: "Do you really want to delete archive '" + Ext.util.Format.htmlEncode(button.archive.name) + "'?",
+                                            buttons: Ext.Msg.YESNO,
+                                            minWidth: 200,
+                                            icon: Ext.Msg.WARNING,
+                                            fn: function (btn, text, opt) {
+                                                if (btn != 'yes') {
+                                                    return false;
+                                                }
 
-                                        Ext.Ajax.request({
-                                            url: 'wiff.php',
-                                            params: {
-                                                deleteArchive: true,
-                                                archiveId: button.archive.id
-                                            },
-                                            success: function (responseObject) {
-                                                deleteArchive_success(responseObject);
-                                            },
-                                            failure: function (responseObject) {
-                                                deleteArchive_failure(responseObject);
+                                                Ext.Ajax.request({
+                                                    url: 'wiff.php',
+                                                    params: {
+                                                        deleteArchive: true,
+                                                        archiveId: button.archive.id
+                                                    },
+                                                    success: function (responseObject) {
+                                                        deleteArchive_success(responseObject);
+                                                    },
+                                                    failure: function (responseObject) {
+                                                        deleteArchive_failure(responseObject);
+                                                    }
+                                                });
                                             }
                                         });
-
                                     }
                                 }
                             ],
