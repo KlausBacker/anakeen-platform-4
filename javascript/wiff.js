@@ -3656,6 +3656,8 @@ function getPhaseList(module, operation) {
 		localOperation = 'replaced';
 	}*/
 
+	modulepanel.setModuleIcon(module.name, 'x-icon-loading');
+
 	Ext.Ajax.request({
 				url : 'wiff.php',
 				params : {
