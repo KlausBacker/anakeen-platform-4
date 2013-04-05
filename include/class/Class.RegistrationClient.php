@@ -116,7 +116,7 @@ class RegistrationClient
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         if ($this->ua_string !== null) {
             curl_setopt($ch, CURLOPT_USERAGENT, $this->ua_string);

@@ -1872,12 +1872,7 @@ class WIFF
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 20);
-        /*
-         * Ouch! >_< I know, this is bad...
-         * But we keep it for compatibility with previously
-         * rolled out releases.
-        */
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         /* Setup output file */
         $ftmp = fopen($tmpfile, 'w');
         if ($ftmp === false) {
