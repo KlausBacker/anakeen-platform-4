@@ -57,6 +57,7 @@ function checkInitServer()
     // Check for required classes
     foreach (array(
         'DOMDocument',
+        'Collator'
     ) as $class) {
         if (!class_exists($class, false)) {
             array_push($errors, sprintf("PHP class '%s' not found.", $class));
