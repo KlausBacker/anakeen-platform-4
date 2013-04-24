@@ -2381,7 +2381,7 @@ function updateContextList_success(responseObject, select) {
 							var actions = new Ext.ux.grid.RowActions({
 										header : '',
 										autoWidth : false,
-										width : 90,
+										width : 67,
 										actions : [{
 													iconCls : 'x-icon-update',
 													tooltip : 'Update',
@@ -2394,10 +2394,6 @@ function updateContextList_success(responseObject, select) {
 													iconCls : 'x-icon-log',
 													tooltip : 'Changelog',
 													hideIndex : '!changelog.length'
-												}, {
-													iconCls : 'x-icon-help',
-													tooltip : 'Help',
-													hideIndex : '!infopath'
 												}]
 									});
 
@@ -2417,9 +2413,6 @@ function updateContextList_success(responseObject, select) {
 												case 'x-icon-param' :
 													var operation = 'parameter';
 													break;
-												case 'x-icon-help' :
-													var operation = 'help';
-													break;
 												// case 'x-icon-remove':
 												// var operation = 'uninstall';
 												// break;
@@ -2436,11 +2429,6 @@ function updateContextList_success(responseObject, select) {
 											}
 											if (operation == 'upgrade') {
 												upgrade([currentModule.name]);
-											}
-											if (operation == 'help') {
-												window.open(
-														record.get('infopath'),
-														'_newtab');
 											}
 											// if (operation == 'remove') {
 											// remove(currentModule);
@@ -2589,15 +2577,11 @@ function updateContextList_success(responseObject, select) {
 							var actions = new Ext.ux.grid.RowActions({
 										header : '',
 										autoWidth : false,
-										width : 44,
+										width : 25,
 										actions : [{
 													iconCls : 'x-icon-log',
 													tooltip : 'Changelog',
 													hideIndex : '!changelog.length'
-												}, {
-													iconCls : 'x-icon-help',
-													tooltip : 'Help',
-													hideIndex : '!infopath'
 												}]
 									});
 
@@ -2611,9 +2595,6 @@ function updateContextList_success(responseObject, select) {
 												// case 'x-icon-install':
 												// var operation = 'install';
 												// break;
-												case 'x-icon-help' :
-													var operation = 'help';
-													break;
 												case 'x-icon-log' :
 													displayChangelog(record);
 													break;
@@ -2622,12 +2603,6 @@ function updateContextList_success(responseObject, select) {
 											// if (operation == 'install') {
 											// install([module]);
 											// }
-
-											if (operation == 'help') {
-												window.open(
-														record.get('infopath'),
-														'_newtab');
-											}
 
 										}
 									});
