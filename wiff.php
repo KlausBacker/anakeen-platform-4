@@ -775,7 +775,9 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['wstop'])) {
         exit(1);
     }
     
-    $context->wstop();
+    $errors = array();
+    $ret = $context->wstop($errors);
+    if ($ret) answer(null, implode("<br/>", $errors));
     
     answer(true);
 }
@@ -788,7 +790,9 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['wstart'])) {
         exit(1);
     }
     
-    $context->wstart();
+    $errors = array();
+    $ret = $context->wstart($errors);
+    if ($ret) answer(null, implode("<br/>", $errors));
     
     answer(true);
 }
