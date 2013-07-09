@@ -3042,6 +3042,10 @@ function wstop(operation) {
 					authInfo : Ext.encode(authInfo)
 				},
 				callback : function(option, success, responseObject) {
+                    var response = eval('(' + responseObject.responseText + ')');
+                    if( !response.success ) {
+                        return installBeginWithError(response.error);
+                    }
 
 					getGlobalwin(true, toInstall);
 
@@ -3120,13 +3124,32 @@ function wstart(module, operation) {
 					if( context.register == 'registered' ) {
 						return sendContextConfiguration();
 					}
+                    var response = eval('(' + responseObject.responseText + ')');
+                    if( !response.success ) {
+                        return installEndWithError(response.error);
+                    }
 					return installHappyEnd();
 					// The end
 				}
 			});
 }
-
-function installHappyEnd() {
+function installBeginWithError(errorMsg) {
+    Ext.Msg.alert('Dynacase Control', '<span class="message error">Install cannot begin:<br/>'+errorMsg+'</span>',
+		function() {
+			installedStore[currentContext].load();
+			availableStore[currentContext].load();
+		});
+}
+function installEndWithError(errorMsg) {
+    Ext.Msg.alert('Dynacase Control', '<span class="message error">Install successful with error:<br/>'+errorMsg+'</span>',
+		function() {
+			installedStore[currentContext].load();
+			availableStore[currentContext].load();
+			globalwin.close();
+		});
+}
+function
+    installHappyEnd() {
 	Ext.Msg.alert('Dynacase Control', 'Install successful',
 		function() {
 			installedStore[currentContext].load();

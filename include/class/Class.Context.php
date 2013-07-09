@@ -1269,21 +1269,23 @@ class Context
         return '';
     }
     
-    public function wstop()
+    public function wstop(&$output = array())
     {
         $wstop = sprintf("%s/wstop", $this->root);
         # error_log( __CLASS__ ."::". __FUNCTION__ ." ".sprintf("%s", $wstop));
         $ret = 0;
-        system(sprintf("%s 1> /dev/null 2>&1", escapeshellarg($wstop) , $ret));
+        exec(sprintf("%s", escapeshellarg($wstop)) , $output, $ret);
+        
         return $ret;
     }
     
-    public function wstart()
+    public function wstart(&$output = array())
     {
         $wstart = sprintf("%s/wstart", $this->root);
         # error_log( __CLASS__ ."::". __FUNCTION__ ." ".sprintf("%s", $wstart));
         $ret = 0;
-        system(sprintf("%s 1> /dev/null 2>&1", escapeshellarg($wstart) , $ret));
+        exec(sprintf("%s", escapeshellarg($wstart)) , $output, $ret);
+        
         return $ret;
     }
     /**
