@@ -215,7 +215,7 @@
     padding-top: 60px;
 }
 
-.module {
+.module, .context {
     font-weight: bold;
 }
 

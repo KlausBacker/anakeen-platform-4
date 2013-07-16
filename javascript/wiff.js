@@ -1660,7 +1660,16 @@ function updateContextList_success(responseObject, select) {
 	var onDeleteContextButton = function(button) {
 		Ext.Msg.show({
 			title : 'Warning',
-			msg : "Deleting context will empty database but not delete it. Do you really want to delete this context?",
+			msg : '<span class="message error">' +
+                'Deleting context <span class="context">'+button.context.name+'</span> will: <br>' +
+                ' - Delete all crontab associated with the context<br>' +
+                ' - Delete all vault files<br>' +
+                ' - Empty context\'s database <br>' +
+                ' - Delete all context\'s applications<br>' +
+                ' - Delete all context\'s files<br>' +
+                '<br>' +
+                'This operation is not reversible.<br><br>' +
+                'Do you really want to delete context <span class="context">'+button.context.name+'</span>?<br/></span>',
 			buttons : Ext.Msg.YESNO,
             minWidth: 200,
 			icon : Ext.Msg.WARNING,
