@@ -1274,7 +1274,7 @@ class Context
         $wstop = sprintf("%s/wstop", $this->root);
         # error_log( __CLASS__ ."::". __FUNCTION__ ." ".sprintf("%s", $wstop));
         $ret = 0;
-        exec(sprintf("%s", escapeshellarg($wstop)) , $output, $ret);
+        if (is_executable($wstop)) exec(sprintf("%s", escapeshellarg($wstop)) , $output, $ret);
         
         return $ret;
     }
@@ -1284,7 +1284,7 @@ class Context
         $wstart = sprintf("%s/wstart", $this->root);
         # error_log( __CLASS__ ."::". __FUNCTION__ ." ".sprintf("%s", $wstart));
         $ret = 0;
-        exec(sprintf("%s", escapeshellarg($wstart)) , $output, $ret);
+        if (is_executable($wstart)) exec(sprintf("%s", escapeshellarg($wstart)) , $output, $ret);
         
         return $ret;
     }
