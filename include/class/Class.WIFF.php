@@ -1359,7 +1359,7 @@ class WIFF
             unlink($status_file);
             return false;
         }
-        
+        $paramNode = $paramList->item(0);
         $paramNode->setAttribute('value', $name);
         // Modify or add vault_root in xml
         $paramList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value/param[@name='vault_root']");
@@ -1375,6 +1375,7 @@ class WIFF
         if ($paramList->length != 1) {
             $paramVaultRoot = $paramValueList->item(0)->appendChild($paramVaultRoot);
         } else {
+            $paramNode = $paramList->item(0);
             $paramVaultRoot = $paramValueList->item(0)->replaceChild($paramVaultRoot, $paramNode);
         }
         
