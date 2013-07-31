@@ -4,6 +4,8 @@
  *          General Public License
  */
 
+set_onbeforeunload();
+
 Ext.override(Ext.layout.FormLayout, {
 			renderItem : function(c, position, target) {
 				if (c && !c.rendered && (c.isFormField || c.fieldLabel)
@@ -482,6 +484,7 @@ function updateWIFF() {
 						Ext.Msg.alert('Dynacase Control',
 								'Update successful. Click OK to restart.',
 								function(btn) {
+									unset_onbeforeunload();
 									window.location.reload(true);
 								});
 					}
@@ -5091,3 +5094,23 @@ function displayInterface() {
 	updateArchiveList();
 
 };
+
+function set_onbeforeunload() {
+    window.onbeforeunload = function (e) {
+        var msg = "Si des processus sont en cours d'exécution, ceux-ci seront terminés et le contexte pourra être dans un état indéterminé.";
+
+        var e = e || window.event;
+
+        // For IE and Firefox
+        if (e) {
+            e.returnValue = msg;
+        }
+
+        // For Safari
+        return msg;
+    };
+}
+
+function unset_onbeforeunload() {
+    window.onbeforeunload = null;
+}
