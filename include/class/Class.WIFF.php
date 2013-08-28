@@ -1948,9 +1948,8 @@ class WIFF
                 error_log(__METHOD__ . " " . $this->errorMessage);
                 return false;
             }
-            
-            $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if ($code != 200) {
+            $code = 0;
+            if (!$this->isCurlHttpCodeOk($ch, $code)) {
                 if ($code != 404 && $retry > 0) {
                     $retry--;
                     $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
@@ -2018,6 +2017,24 @@ class WIFF
         fclose($fin);
         
         return $tmpfile;
+    }
+    
+    private function isCurlHttpCodeOk($ch, &$code)
+    {
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        $scheme = strtolower($this->getUrlElement($url, 'scheme'));
+        /* Treat all FTP's 2xx codes as OK */
+        if ($scheme == 'ftp' && intval($code / 100) == 2) {
+            return true;
+        }
+        return ($code == 200);
+    }
+    
+    private function getUrlElement($url, $elmt)
+    {
+        $tokens = parse_url($url);
+        return ($tokens !== false && isset($tokens[$elmt])) ? $tokens[$elmt] : '';
     }
     
     public function expandParamValue($paramName)
