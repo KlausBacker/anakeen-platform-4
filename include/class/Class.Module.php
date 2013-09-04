@@ -316,7 +316,7 @@ class Module
             return false;
         }
         
-        $module = $infoXML->firstChild;
+        $module = $infoXML->documentElement;
         
         $contextsXML = new DOMDocument();
         $ret = $contextsXML->load($wiff->contexts_filepath);
@@ -432,9 +432,9 @@ class Module
             return false;
         }
         
-        $xmlNode = $xml->firstChild;
+        $xmlNode = $xml->documentElement;
         if ($xmlNode === null) {
-            $this->errorMessage = "firstChild is null.";
+            $this->errorMessage = "documentElement is null.";
             return false;
         }
         
