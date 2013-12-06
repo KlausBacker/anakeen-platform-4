@@ -56,11 +56,11 @@ function checkInitServer()
     $errors = array();
     // Check for required classes
     foreach (array(
-        'DOMDocument',
-        'Collator'
-    ) as $class) {
+        'DOMDocument' => 'dom',
+        'Collator' => 'intl'
+    ) as $class => $extension) {
         if (!class_exists($class, false)) {
-            array_push($errors, sprintf("PHP class '%s' not found.", $class));
+            array_push($errors, sprintf("PHP class '%s' not found: you might need to install the PHP '%s' extension.", $class, $extension));
         }
     }
     // Check for required functions
@@ -74,7 +74,7 @@ function checkInitServer()
         'curl_init' => 'curl'
     ) as $function => $extension) {
         if (!function_exists($function)) {
-            array_push($errors, sprintf("PHP function '%s' not found (extension '%s').", $function, $extension));
+            array_push($errors, sprintf("PHP function '%s' not found: you might need to install the PHP '%s' extension.", $function, $extension));
         }
     }
     // Check for required system commands
