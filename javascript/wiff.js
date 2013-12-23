@@ -674,51 +674,6 @@ function displayPasswordWindow(canCancel) {
 	win.show();
 }
 
-function displayChangelog(record) {
-
-	var changelog = record.get('changelog');
-
-	var html = '<ul>';
-	for (var i = 0; i < changelog.length; i++) {
-		html += '<li style="font-size:medium;margin-top:5px;margin-bottom:5px;border-bottom:1px solid #99BBE8;"><img src=images/icons/tick.png style="position:relative;top:3px;" /><b>  version '
-				+ changelog[i]['version']
-				+ ' </b><i>('
-				+ changelog[i]['date']
-				+ ')</i></li>';
-		for (var j = 0; j < changelog[i]['action'].length; j++) {
-			var url = changelog[i]['action'][j]['url'];
-			var urlLabel = '';
-			var index = url.indexOf('issues/');
-			if (index != -1) {
-				urlLabel = url.substr(index, 6) + ' ' + url.substr(index + 7);
-			} else {
-				urlLabel = 'more';
-			}
-			html += '<li style="padding-left:20px;"><b>'
-					+ changelog[i]['action'][j]['title']
-					+ '</b><i>'
-					+ (url ? ' <a href=' + url + ' target="_blank">' + urlLabel
-							+ '</a>' : '') + '</i><br/><i>'
-					+ changelog[i]['action'][j]['description'] + '</i></li>';
-		}
-	}
-	html += '</ul>';
-
-	var win = new Ext.Window({
-		title : record.get('name') + ' changelog',
-		modal : true,
-		layout : 'fit',
-		height : 300,
-		width : 600,
-		bodyStyle : 'padding:15px;text-align:justify;overflow:auto;list-style-type:none;',
-		html : html,
-		iconCls : 'x-icon-log'
-	});
-
-	win.show();
-
-}
-
 function displayAllParametersWindow(grid) {
 	if (!grid) {
 		Ext.Msg.alert('Warning', 'No parameters found');
@@ -2393,7 +2348,7 @@ function updateContextList_success(responseObject, select) {
 							var actions = new Ext.ux.grid.RowActions({
 										header : '',
 										autoWidth : false,
-										width : 67,
+										width : 67 - 16 - 5,
 										actions : [{
 													iconCls : 'x-icon-update',
 													tooltip : 'Update',
@@ -2402,10 +2357,6 @@ function updateContextList_success(responseObject, select) {
 													iconCls : 'x-icon-param',
 													tooltip : 'Parameters',
 													hideIndex : '!hasDisplayableParameter'
-												}, {
-													iconCls : 'x-icon-log',
-													tooltip : 'Changelog',
-													hideIndex : '!changelog.length'
 												}]
 									});
 
@@ -2428,9 +2379,6 @@ function updateContextList_success(responseObject, select) {
 												// case 'x-icon-remove':
 												// var operation = 'uninstall';
 												// break;
-												case 'x-icon-log' :
-													displayChangelog(record);
-													break;
 											}
 
 											if (operation == 'parameter') {
@@ -2468,7 +2416,7 @@ function updateContextList_success(responseObject, select) {
 												'updateName', {
 													name : 'hasDisplayableParameter',
 													type : 'boolean'
-												}, 'changelog'],
+												}, 'changelog', 'availablechangelog'],
 										// autoLoad: true,
 										sortInfo : {
 											field : 'name',
@@ -2545,14 +2493,27 @@ function updateContextList_success(responseObject, select) {
 											id : 'installed-version',
 											header : 'Installed<br/>Version',
 											dataIndex : 'versionrelease',
-											width : 60
+											width : 60 + 16 + 5,
+											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
+												var changelog = record.get('changelog');
+												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + (changelog == '' ? 'visibility: hidden' : '') + '" title="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
+												if (changelog != '') {
+													icon = '<a href="' + Ext.util.Format.htmlEncode(changelog) + '" target="_blank">' + icon + '</a>';
+												}
+												return icon + Ext.util.Format.htmlEncode(value);
+											}
 										}, {
 											id : 'available-version',
 											header : 'Available<br/>Version',
 											dataIndex : 'availableversionrelease',
-											width : 60,
+											width : 60 + 16 + 5,
 											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
-												return (value != record.get('versionrelease')) ? value : '';
+												var changelog = record.get('availablechangelog');
+												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + ((value != record.get('versionrelease')) && (changelog != '') ? '' : 'visibility: hidden') + '" title="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
+												if (changelog != '') {
+													icon = '<a href="' + Ext.util.Format.htmlEncode(changelog) + '" target="_blank">' + icon + '</a>';
+												}
+												return icon + ((value != null && value != record.get('versionrelease')) ? Ext.util.Format.htmlEncode(value) : '');
 											}
 										}, status, {
 											id : 'description',
@@ -2585,39 +2546,6 @@ function updateContextList_success(responseObject, select) {
 					style : 'padding:10px;padding-top:0px;',
 					listeners : {
 						render : function(panel) {
-
-							var actions = new Ext.ux.grid.RowActions({
-										header : '',
-										autoWidth : false,
-										width : 25,
-										actions : [{
-													iconCls : 'x-icon-log',
-													tooltip : 'Changelog',
-													hideIndex : '!changelog.length'
-												}]
-									});
-
-							actions.on({
-										action : function(grid, record, action,
-												row, col) {
-
-											var module = record.get('name');
-
-											switch (action) {
-												// case 'x-icon-install':
-												// var operation = 'install';
-												// break;
-												case 'x-icon-log' :
-													displayChangelog(record);
-													break;
-											}
-
-											// if (operation == 'install') {
-											// install([module]);
-											// }
-
-										}
-									});
 
 							availableStore[currentContext] = new Ext.data.JsonStore(
 									{
@@ -2692,7 +2620,7 @@ function updateContextList_success(responseObject, select) {
 										}
 									}
 								}],
-								columns : [selModel, actions, {
+								columns : [selModel, {
 											id : 'name',
 											header : 'Module',
 											dataIndex : 'name',
@@ -2701,7 +2629,15 @@ function updateContextList_success(responseObject, select) {
 											id : 'available-version',
 											header : 'Available<br/>Version',
 											dataIndex : 'versionrelease',
-											width : 60
+											width : 60 + 16 + 5,
+											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
+												var changelog = record.get('changelog');
+												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + (changelog == '' ? 'visibility: hidden' : '') + '" title="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
+												if (changelog != '') {
+													icon = '<a href="' + Ext.util.Format.htmlEncode(changelog) + '" target="_blank">' + icon + '</a>';
+												}
+												return icon + Ext.util.Format.htmlEncode(value);
+											}
 										}, {
 											id : 'description',
 											header : 'Description',
@@ -2712,8 +2648,7 @@ function updateContextList_success(responseObject, select) {
 											dataIndex : 'repository'
 										}],
 								autoExpandColumn : 'description',
-								autoHeight : true,
-								plugins : [actions]
+								autoHeight : true
 							});
 
 							grid.getStore().on('load',

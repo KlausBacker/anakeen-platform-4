@@ -26,7 +26,8 @@ class Module
     public $basecomponent;
     public $src;
     
-    public $changelog = array();
+    public $changelog = "";
+    public $availablechangelog = "";
     
     public $availableversion;
     public $availableversionrelease;
@@ -137,7 +138,8 @@ class Module
             'src',
             'tmpfile',
             'status',
-            'errorstatus'
+            'errorstatus',
+            'changelog'
         ) as $attrName) {
             $this->$attrName = $xmlNode->getAttribute($attrName);
         }
@@ -147,8 +149,6 @@ class Module
         if ($descriptionNodeList->length > 0) {
             $this->description = $descriptionNodeList->item(0)->nodeValue;
         }
-        // Load xmlNode <changelogs> elements
-        $this->parseXmlChangelogNode($xmlNode);
         // Load xmlNode <requires> elements
         $this->requires = array();
         $requiresNodeList = $xmlNode->getElementsByTagName('requires');
@@ -210,42 +210,6 @@ class Module
         $nodeAsString = $document->saveXML($node);
         preg_match('!\<.*?\>(.*)\</.*?\>!s', $nodeAsString, $match);
         return isset($match[1]) ? $match[1] : '';
-    }
-    /**
-     * @param DOMElement $xmlNode
-     */
-    public function parseXmlChangelogNode($xmlNode)
-    {
-        
-        $changelogNodeList = $xmlNode->getElementsByTagName('version');
-        if ($changelogNodeList->length > 0) {
-            $this->changelog = array();
-            
-            foreach ($changelogNodeList as $changelogNode) {
-                /**
-                 * @var DOMElement $changelogNode
-                 */
-                $action = array();
-                
-                $changelogSubNodeList = $changelogNode->getElementsByTagName('change');
-                foreach ($changelogSubNodeList as $actionNode) {
-                    /**
-                     * @var DOMElement $actionNode
-                     */
-                    $action[] = array(
-                        'title' => $actionNode->getAttribute('title') ,
-                        'url' => $actionNode->getAttribute('url') ,
-                        'description' => $this->xt_innerXML($actionNode)
-                    );
-                }
-                
-                $this->changelog[] = array(
-                    'version' => $changelogNode->getAttribute('number') ,
-                    'date' => $changelogNode->getAttribute('date') ,
-                    'action' => $action
-                );
-            }
-        }
     }
     /**
      * Check dependency with other Modules in repositories

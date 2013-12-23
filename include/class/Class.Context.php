@@ -402,10 +402,10 @@ class Context
                     if ($availableModule->name == $module->name) {
                         $module->availableversion = $availableModule->version;
                         $module->availableversionrelease = $availableModule->version . '-' . $availableModule->release;
+                        $module->availablechangelog = $availableModule->changelog;
                         $cmp = $this->cmpModuleByVersionReleaseAsc($module, $availableModule);
                         if ($cmp < 0) {
                             $module->canUpdate = true;
-                            $module->parseXmlChangelogNode($availableModule->xmlNode);
                         }
                     }
                 }
@@ -448,11 +448,11 @@ class Context
                     if ($availableModule->name == $module->name) {
                         $module->availableversion = $availableModule->version;
                         $module->availableversionrelease = $availableModule->version . '-' . $availableModule->release;
+                        $module->availablechangelog = $availableModule->changelog;
                         $cmp = $this->cmpModuleByVersionReleaseAsc($module, $availableModule);
                         if ($cmp < 0) {
                             $module->canUpdate = true;
                             $module->updateName = $availableModule->name;
-                            $module->parseXmlChangelogNode($availableModule->xmlNode);
                         }
                     } else {
                         /* Search for available modules that replaces the installed module */
@@ -468,6 +468,7 @@ class Context
                             $module->updateName = $availableModule->name;
                             $module->availableversion = $availableModule->version;
                             $module->availableversionrelease = $availableModule->version . '-' . $availableModule->release;
+                            $module->availablechangelog = $availableModule->changelog;
                         }
                     }
                 }
