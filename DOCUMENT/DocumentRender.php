@@ -27,7 +27,7 @@ class DocumentRender
     {
     }
     /**
-     * Load a json render configuration file
+     * Load a  render configuration file
      * @param string $file load render configuration
      * @throws \Dcp\Ui\Exception
      */
@@ -65,6 +65,15 @@ class DocumentRender
         }
         return $s;
     }
+
+    protected function getRequireReferences()
+    {
+        $ref = $this->renderConfig->getRequireReference();
+        if (!is_array($ref)) {
+            throw new Exception("UI0011", gettype($ref));
+        }
+        return $ref;
+    }
     
     protected function getMainTemplate()
     {
@@ -86,15 +95,18 @@ class DocumentRender
         
         $docController->offsetSet("renderOptions", function ()
         {
-            return json_encode($this->renderConfig->getOptions());
+            return JsonHandler::encodeForHTML($this->renderConfig->getOptions());
         });
         $docController->offsetSet("renderMenu", function ()
         {
-            return json_encode($this->renderConfig->getMenu($this->document));
+            return JsonHandler::encodeForHTML($this->renderConfig->getMenu($this->document));
         });
         $docController->offsetSet("jsReference", function ()
         {
             return $this->getJsReferences();
+        });
+        $docController->offsetSet("requireReference", function () {
+            return $this->getRequireReferences();
         });
         
         return $me->render($delimiter . $this->getMainTemplate() , $docController);

@@ -154,7 +154,7 @@ class DocumentTemplateContext implements \ArrayAccess
                 "structure" => $this->_getDocumentStructure()
             )
         );
-        return json_encode($conf);
+        return JsonHandler::encodeForHTML($conf);
     }
     
     protected function _getDocumentStructure()

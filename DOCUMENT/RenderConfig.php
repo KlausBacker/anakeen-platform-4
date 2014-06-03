@@ -25,6 +25,10 @@ interface RenderConfig {
      */
     public function getJsReferences();
     /**
+     * @return ["src" => "", "main" => "", "prod" => ""]
+     */
+    public function getRequireReference();
+    /**
      * @return array set of indexed template
      */
     public function getTemplates();

@@ -5,11 +5,16 @@
 
     <requires>
         <module comp='ge' version='3.3.0' name='dynacase-core'/>
+        <module name='dynacase-RequireJS-installer'/>
+        <module name='dynacase-KendoUI-installer'/>
+        <module name='dynacase-backbone-installer'/>
+        <module name='dynacase-bootstrap-installer'/>
+        <module name='dynacase-mustache.js-installer'/>
+        <module name='dynacase-less-installer'/>
     </requires>
 
     <post-install>
         <process command="programs/record_application DOCUMENT" />
-
         <process command="programs/update_catalog" />
     </post-install>
 
