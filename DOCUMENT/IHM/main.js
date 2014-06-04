@@ -45,8 +45,9 @@ require.config({
         "mustache" :      "../../../lib/mustache.js/mustache",
         "bootstrap" :     "../../../lib/bootstrap/js/bootstrap",
         "kendo" :         "../../../lib/KendoUI/js/kendo.ui.core"
-    }/*,
-     urlArgs : "invalidateCache=" + (new Date()).getTime()*/
+    },
+     urlArgs : "invalidateCache=" + (new Date()).getTime()
+
 });
 
 require([
@@ -56,8 +57,8 @@ require([
     'views/document/document',
     'widget',
     'backbone',
-    'bootstrap',
-    'kendo'
+    'bootstrap'/*,
+    'kendo'*/
 ], function ($, _, ModelDocument, ViewDocument) {
     /*jshint nonew:false*/
     var document = window.dcp.documentData.document;

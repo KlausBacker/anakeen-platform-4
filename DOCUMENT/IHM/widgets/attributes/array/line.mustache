@@ -1,0 +1,12 @@
+<tr data-nbLine="{{nbLine}}">
+    {{#tools}}
+    <td class="dcpArray__content__toolCell">
+        <button type="button" class="btn btn-default btn-xs dcpArray__content__toolCell__remove">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </td>
+    {{/tools}}
+{{#content}}
+    <td class="dcpArray__content__cell dcpArray__content__cell--{{type}}" data-attrid="{{id}}"></td>
+{{/content}}
+</tr>

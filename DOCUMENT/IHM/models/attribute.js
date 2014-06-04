@@ -40,10 +40,8 @@ define([
                 return;
             }
             if (documentMode === "view") {
-                if (visibility === "W" || visibility === "O" || visibility === "R" || visibility === "S") {
-                    this.set("mode", "read");
-                    return;
-                }
+                this.set("mode", "read");
+                return;
             }
             if (documentMode === "edit") {
                 if (visibility === "W" || visibility === "O") {
@@ -52,6 +50,10 @@ define([
                 }
                 if (visibility === "R" || visibility === "S") {
                     this.set("mode", "read");
+                    return;
+                }
+                if (visibility === "U") {
+                    this.set("mode", "write");
                     return;
                 }
             }
@@ -63,6 +65,18 @@ define([
             if (type === "frame" || type === "array" || type === "tab") {
                 this.set("valueAttribute", false);
             }
+        },
+
+        toData : function(nbLine) {
+            var content = this.toJSON();
+            if (nbLine && this.get("multiple") === false){
+                throw "You need to be multiple";
+            }
+            if (_.isNumber(nbLine)) {
+                content.value = content.value[nbLine];
+            }
+            content.content = this.get("content").toData();
+            return content;
         }
 
     });

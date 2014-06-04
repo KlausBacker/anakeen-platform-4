@@ -5,8 +5,8 @@
 
     <requires>
         <module comp='ge' version='3.3.0' name='dynacase-core'/>
-        <module name='dynacase-RequireJS-installer'/>
-        <module name='dynacase-KendoUI-installer'/>
+        <module name='dynacase-requirejs-installer'/>
+        <module name='dynacase-kendoui-installer'/>
         <module name='dynacase-backbone-installer'/>
         <module name='dynacase-bootstrap-installer'/>
         <module name='dynacase-mustache.js-installer'/>

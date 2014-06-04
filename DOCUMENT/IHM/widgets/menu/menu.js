@@ -9,6 +9,7 @@ define([
 
         destroy : function() {
             this.element.empty();
+            this._super();
         },
 
         _create : function() {
@@ -16,6 +17,7 @@ define([
         },
 
         _initStructure : function() {
+            console.time("widget menu");
             var $content, getTemplate = this._getTemplate, doc = this.options.document;
             this.element.addClass("navbar navbar-default navbar-fixed-top");
             this.element.attr("role", "navigation");

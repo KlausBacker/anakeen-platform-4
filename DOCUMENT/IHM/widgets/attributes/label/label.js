@@ -16,7 +16,7 @@ define([
         },
 
         setLabel : function(label) {
-            this.element.find(".dcpAttribute__label").text(label);
+            this.element.text(label);
         },
 
         _getTemplate : function () {

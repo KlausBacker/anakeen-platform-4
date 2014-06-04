@@ -12,6 +12,9 @@ define([
         if (!_.isArray(attributes)) {
             attributes = _.values(attributes);
         }
+        attributes = _.filter(attributes, function(currentAttr) {
+            return currentAttr.id;
+        });
         if (parent) {
             _.each(attributes, function(value) {
                 value.parent = parent;
@@ -38,7 +41,7 @@ define([
             attributes = flattenAttributes(attributes, options.family.structure);
             _.each(attributes, function(value) {
                 if (value.id && options.attributes[value.id]) {
-                    _.extend(value, options.attributes[value.id]);
+                    value.value = options.attributes[value.id];
                 }
             });
             this.set("attributes", new CollectionAttributes(attributes));

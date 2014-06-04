@@ -1,9 +1,14 @@
-<div class="panel-body dcpArray__wrapper">
+<div class="panel-body dcpArray__wrapper" data-attrid="{{id}}">
     <div class="table-responsive">
         <table class="table table-condensed table-bordered dcpArray__wrapper">
             <thead>
             <tr class="dcpArray__head">
-
+                {{#tools}}
+                <td class="dcpArray__head__toolCell"></td>
+                {{/tools}}
+                {{#content}}
+                    <td class="dcpArray__head__cell dcpArray__head__cell--{{type}}" data-attrid="{{id}}">{{label}}</td>
+                {{/content}}
             </tr>
             </thead>
             <tbody class="dcpArray__body">

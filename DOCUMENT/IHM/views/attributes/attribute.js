@@ -24,17 +24,19 @@ define([
         },
 
         render : function () {
+            console.time("render attribute " + this.model.id);
             var data = this.model.toJSON();
             this.$el.addClass("dcpAttribute--type--"+this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
-            this.$el.find(".dcpAttribute__labelWrapper").dcpLabel(data);
+            this.$el.find(".dcpAttribute__label").dcpLabel(data);
             this.$el.find(".dcpAttribute__contentWrapper").dcpText(data);
+            console.timeEnd("render attribute " + this.model.id);
             return this;
         },
 
         refreshLabel : function () {
-            this.$el.find(".dcpAttribute__labelWrapper").dcpLabel("setLabel", this.model.get("label"));
+            this.$el.find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
         },
 
         refreshValue : function (value) {

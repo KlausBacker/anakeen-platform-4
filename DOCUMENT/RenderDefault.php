@@ -97,6 +97,22 @@ class RenderDefault implements RenderConfig
                     "content" => array(
                         "file" => "DOCUMENT/IHM/views/attributes/frame/content.mustache"
                     )
+                ),
+                "array" => array(
+                    "label" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/array/label.mustache"
+                    ),
+                    "content" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/array/content.mustache"
+                    ),
+                    "line" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/array/line.mustache"
+                    )
+                ),
+                "tab" => array(
+                    "label" => array(
+                        "file" => "DOCUMENT/IHM/views/attributes/tab/label.mustache"
+                    )
                 )
             )
         );

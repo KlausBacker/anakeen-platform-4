@@ -3,37 +3,50 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/attribute'
-], function (_, Backbone, Mustache, ViewAttribute, ViewAttributeArray) {
+    'widgets/attributes/array/array'
+], function (_, Backbone, Mustache) {
     'use strict';
 
     return Backbone.View.extend({
 
-        className : "panel panel-default css-frame frame",
+        events : {
+             "dcparraylineadded" : "initWidget"
+        },
 
         initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.templateLabel = window.dcp.templates.attribute.frame.label;
-            this.templateContent = window.dcp.templates.attribute.frame.content;
         },
 
         render : function () {
-            var $content;
-            this.$el.empty();
-            this.$el.append($(Mustache.render(this.templateLabel, this.model.toJSON())));
-            this.$el.append($(Mustache.render(this.templateContent, this.model.toJSON())));
-            $content = this.$el.find(".dcpFrame__content");
-            this.model.get("content").each(function(attributeModel) {
-                if (attributeModel.get("visibility") !== "H" && attributeModel.get("valueAttribute")) {
-                    $content.append((new ViewAttribute({model : attributeModel})).render().$el);
+            console.time("render array " + this.model.id);
+            var data = this.model.toData();
+            data.nbLines = this.getNbLines();
+            this.$el.dcpArray(data);
+            console.timeEnd("render attribute " + this.model.id);
+            return this;
+        },
+
+        getNbLines : function() {
+            var nbLigne = 0;
+            this.model.get("content").each(function (currentAttr) {
+                if (nbLigne < currentAttr.get("value").length) {
+                    nbLigne = currentAttr.get("value").length;
                 }
             });
-            return this;
+            return nbLigne;
         },
 
         updateLabel : function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
+        },
+
+        initWidget : function(event, options) {
+            var model = this.model;
+            options.element.find(".dcpArray__content__cell").each(function(index, element) {
+                var $element = $(element), objectData = model.get("content").get($element.data("attrid"));
+                $(element).dcpText(objectData.toData(options.line));
+            })
         }
     });
 
