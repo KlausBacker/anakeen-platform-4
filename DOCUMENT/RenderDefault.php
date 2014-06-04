@@ -51,20 +51,20 @@ class RenderDefault implements RenderConfig
     {
         return array(
             "body" => array(
-                "file" => "DOCUMENT/Render/defaultView.mustache"
+                "file" => "DOCUMENT/IHM/views/document/document.mustache"
             ),
             "sections" => array(
                 "header" => array(
-                    "file" => "DOCUMENT/Render/defaultHeader.mustache"
+                    "file" => "DOCUMENT/IHM/views/document/document__header.mustache"
                 ),
                 "menu" => array(
-                    "file" => "DOCUMENT/Render/defaultMenu.mustache"
+                    "file" => "DOCUMENT/IHM/views/document/document__menu.mustache"
                 ),
                 "content" => array(
-                    "file" => "DOCUMENT/Render/defaultContent.mustache"
+                    "file" => "DOCUMENT/IHM/views/document/document__content.mustache"
                 ),
                 "footer" => array(
-                    "file" => "DOCUMENT/Render/defaultFooter.mustache"
+                    "file" => "DOCUMENT/IHM/views/document/document__footer.mustache"
                 )
             ),
             "menu" => array(
