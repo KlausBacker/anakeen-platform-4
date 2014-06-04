@@ -1,4 +1,3 @@
-SUBDIR =View Edit
 include $(utildir)/PubRule
 
 pages_4 = $(patsubst %,$(pubdir)/$(appname)/Render/%,$(wildcard *.*))

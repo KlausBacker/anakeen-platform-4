@@ -11,7 +11,7 @@ define([
 
         tagName : "div",
 
-        className : "tab-pane fade",
+        className : "tab-pane",
 
         initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
