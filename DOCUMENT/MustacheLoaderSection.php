@@ -74,10 +74,10 @@ class MustacheLoaderSection implements \Mustache_Loader
         $delimiter = sprintf('{{=%s %s=}}', $this->delimiterStartTag, $this->delimiterEndTag);
         if (preg_match('/^templates:(.*)$/', $name, $reg)) {
             $index = $reg[1];
-            return $delimiter . json_encode($this->getTemplates($index));
+            return $delimiter . JsonHandler::encodeForHTML($this->getTemplates($index));
         }
         if ($name === "templates") {
-            return $delimiter . json_encode($this->getTemplates(null));
+            return $delimiter . JsonHandler::encodeForHTML($this->getTemplates(null));
         } else {
             throw new Mustache_Exception_UnknownTemplateException($name);
         }

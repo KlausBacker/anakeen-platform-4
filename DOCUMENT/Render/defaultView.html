@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <title>[[document.property.title]]</title>
+    [[#cssReference]]
+    <link rel="stylesheet" type="text/css" href="[[cssFile]]"/>
+    [[/cssReference]]
+</head>
+<body>
+
+<div class="dcpDocument">
+
+</div>
+
+<script>
+     window.dcp= window.dcp || {};
+     window.dcp.documentData= [[&documentData]];
+     window.dcp.templates = [[> templates]];
+     window.dcp.renderOptions = [[&renderOptions]];
+     window.dcp.menu = [[&renderMenu]];
+</script>
+[[#jsReference]]
+<script type="text/javascript" language="JavaScript" src="[[jsFile]]"></script>
+[[/jsReference]]
+[[#requireReference]]
+<script data-main="[[main]]" src="[[src]]"></script>
+[[/requireReference]]
+</body>
+</html>

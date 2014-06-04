@@ -1,4 +1,4 @@
-SUBDIR= Render Layout Images
+SUBDIR= Render Layout Images IHM
 
 include $(utildir)/PubRule
 

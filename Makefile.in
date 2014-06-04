@@ -19,8 +19,6 @@ include $(localBuildRule)/localBuildRule
 # For all families traduction
 # TRANSCSV += $(shell find ./Families -name "STRUCT_*.csv")
 
-
-
 clean:
 	/bin/rm -f *.*~ config.* Makefile configure $(appname)_init.php info.xml $(PACKAGE)-*webinst
 	/bin/rm -fr autom4te.cache

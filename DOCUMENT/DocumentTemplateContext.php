@@ -120,7 +120,6 @@ class DocumentTemplateContext implements \ArrayAccess
         $la = $this->_document->getNormalAttributes();
         foreach ($la as $aid => $attr) {
             if ($attr->type != "array") {
-                
                 $fmtCollection->addAttribute($aid);
             }
         }
@@ -154,7 +153,7 @@ class DocumentTemplateContext implements \ArrayAccess
                 "structure" => $this->_getDocumentStructure()
             )
         );
-        return json_encode($conf);
+        return JsonHandler::encodeForHTML($conf);
     }
     
     protected function _getDocumentStructure()
@@ -201,7 +200,8 @@ class DocumentTemplateContext implements \ArrayAccess
             "visibility" => $oa->mvisibility,
             "label" => $oa->getLabel() ,
             "type" => $oa->type,
-            "multiple" => $oa->isMultiple()
+            "multiple" => $oa->isMultiple(),
+            "index" => $oa->ordered
         );
     }
     /**
