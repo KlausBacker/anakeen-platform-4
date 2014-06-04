@@ -38,13 +38,13 @@ require.config({
         }
     },
     paths : {
-        "jquery" :        "../../../lib/jquery/jquery",
+        "jquery" :        "../../lib/jquery/jquery",
         "widget" :        "./widgets/widget",
-        "underscore" :    "../../../lib/underscore/underscore",
-        "backbone" :      "../../../lib/backbone/backbone",
-        "mustache" :      "../../../lib/mustache.js/mustache",
-        "bootstrap" :     "../../../lib/bootstrap/js/bootstrap",
-        "kendo" :         "../../../lib/KendoUI/js/kendo.ui.core"
+        "underscore" :    "../../lib/underscore/underscore",
+        "backbone" :      "../../lib/backbone/backbone",
+        "mustache" :      "../../lib/mustache.js/mustache",
+        "bootstrap" :     "../../lib/bootstrap/js/bootstrap",
+        "kendo" :         "../../lib/KendoUI/js/kendo.ui.core"
     },
      urlArgs : "invalidateCache=" + (new Date()).getTime()
 

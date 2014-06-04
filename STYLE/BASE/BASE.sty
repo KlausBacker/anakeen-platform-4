@@ -1,19 +1,12 @@
 <?php
-//global $sty_desc, $sty_const;
+
+
 $sty_desc = array(
     "name" => "BASE", //Name
     "description" => "BASE LESS STYLE", //long description
 );
 
 $sty_inherit = "STYLE/MODERN/MODERN.sty";
-
-if (!is_array($sty_const)) {
-    $sty_const = array();
-}
-
-$sty_const["less_var"] = array(
-    "dcp-icon-font-path" => "'../../../lib/bootstrap/fonts/'"
-);
 
 // global parameters which can be use for other css
 $sty_rules = array(
@@ -26,7 +19,8 @@ $sty_rules = array(
                 "document" => "DOCUMENT/IHM/views/document/document.less"
             ),
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpLessParser',
+  
+              "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array("sourceMap" => true)
             )
         )

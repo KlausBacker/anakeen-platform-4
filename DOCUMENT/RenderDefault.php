@@ -155,10 +155,10 @@ class RenderDefault implements RenderConfig
                 "format" => "%s"
             ),
             "time" => array(
-                "format" => "%H=>%M"
+                "format" => "%H:%M"
             ),
             "timestamp" => array(
-                "format" => _("Y-m-d") . " %H=>%M"
+                "format" => _("Y-m-d") . " %H:%M"
             ),
             "mode" => $this->getType()
         );
