@@ -24,11 +24,18 @@ class DocumentTemplateContext implements \ArrayAccess
      * @var array
      */
     protected $keys = array();
+    protected $docProperties = null;
+    protected $docAttributes = null;
+    /**
+     * @var \Dcp\Httpapi\DocumentCrud
+     */
+    protected $_documentCrud = null;
+    protected $_documentData = null;
     
     public function __construct(\Doc $doc)
     {
         $this->_document = $doc;
-        //$la=$doc->getNormalAttributes();
+        \Dcp\DocManager::cache()->addDocument($doc);
         $this->i18n = function ($s)
         {
             return self::_i18n($s);
@@ -41,90 +48,50 @@ class DocumentTemplateContext implements \ArrayAccess
         return _($s);
     }
     
+    protected function _getDocumentData($field)
+    {
+        if ($this->_document->id == 0) {
+            return array();
+        }
+        
+        if ($this->_documentCrud === null) {
+            $this->_documentCrud = new \Dcp\HttpApi\DocumentCrud();
+            $this->_documentCrud->setDefaultFields($field);
+            $this->_documentData = $this->_documentCrud->get($this->_document->id);
+        }
+        $fields = explode('.', $field);
+        $data = $this->_documentData;
+        foreach ($fields as $key) {
+            $data = $data[trim($key) ];
+        }
+        
+        if ($data === null) {
+            
+            $this->_documentCrud->setDefaultFields($field);
+            $moreData = $this->_documentCrud->get($this->_document->id);
+            unset($moreData["document"]["uri"]);
+            $this->_documentData = array_merge_recursive($this->_documentData, $moreData);
+            
+            $data = $this->_documentData;
+            foreach ($fields as $key) {
+                $data = $data[trim($key) ];
+            }
+        }
+        
+        return $data;
+    }
     protected function _getProperties()
     {
-        static $props = array();
         
-        if ($props) {
-            return $props;
-        }
+        return $this->_getDocumentData("document.properties");
         
-        if ($this->_document) {
-            
-            $propIds = array(
-                "state",
-                "fromname",
-                "id",
-                "postitid",
-                "initid",
-                "locked",
-                "revision",
-                "wid",
-                "cvid",
-                "profid",
-                "fromid",
-                "owner",
-                "domainid"
-            );
-            foreach ($propIds as $propId) {
-                $props[$propId] = $this->_document->$propId;
-            }
-            
-            $props["icon"] = $this->_document->getIcon();
-            $props["title"] = $this->_document->getTitle();
-            $props["labelstate"] = $this->_document->state ? _($this->_document->state) : '';
-            
-            if ($props['id'] > 0) {
-                $props["revdate"] = strftime("%Y-%m-%d %H:%M:%S", $this->_document->revdate);
-                $props["readonly"] = ($this->_document->canEdit() != "");
-                
-                $props["lockdomainid"] = intval($this->_document->lockdomainid);
-                // numeric values
-                if ($props["postitid"]) $props["postitid"] = $this->_document->rawValueToArray($props["postitid"]);
-                else $props["postitid"] = array();
-                $props["id"] = intval($props["id"]);
-                $props["initid"] = intval($props["initid"]);
-                $props["locked"] = intval($props["locked"]);
-                $props["revision"] = intval($props["revision"]);
-                $props["wid"] = intval($props["wid"]);
-                $props["cvid"] = intval($props["cvid"]);
-                // $props["prelid"] = intval($props["prelid"]);
-                $props["profid"] = intval($props["profid"]);
-                //   $props["dprofid"] = intval($props["dprofid"]);
-                $props["fromid"] = intval($props["fromid"]);
-                // $props["allocated"] = intval($props["allocated"]);
-                $props["owner"] = intval($props["owner"]);
-                if ($props["domainid"]) $props["domainid"] = $this->_document->rawValueToArray($props["domainid"]);
-                else $props["domainid"] = array();
-            }
-        }
-        return $props;
+
     }
     
     protected function _getAttributes()
     {
-        static $render = array();
-        
-        if ($this->_document->id == 0) {
-            return array();
-        }
-        if ($render) {
-            return $render[0]["attributes"];
-        }
-        $dl = new \DocumentList();
-        $dl->addDocumentIdentifiers(array(
-            $this->_document->id
-        ) , false);
-        
-        $fmtCollection = new \FormatCollection($this->_document);
-        $la = $this->_document->getNormalAttributes();
-        foreach ($la as $aid => $attr) {
-            if ($attr->type != "array") {
-                $fmtCollection->addAttribute($aid);
-            }
-        }
-        $render = $fmtCollection->render();
-        return ($render[0]["attributes"]);
+        return $this->_getDocumentData("document.attributes");
+
     }
     /**
      * Keys for mustache
@@ -134,7 +101,6 @@ class DocumentTemplateContext implements \ArrayAccess
     {
         return array(
             "property" => $this->_getProperties() ,
-            
             "attribute" => $this->_getAttributes()
         );
     }
@@ -158,39 +124,8 @@ class DocumentTemplateContext implements \ArrayAccess
     
     protected function _getDocumentStructure()
     {
-        $la = $this->_document->getNormalAttributes();
-        $t = array();
-        foreach ($la as $oattr) {
-            $parentAttr = $oattr->fieldSet;
-            $parentIds = array();
-            while ($parentAttr && $parentAttr->id != 'FIELD_HIDDENS') {
-                $parentId = $parentAttr->id;
-                $parentIds[] = $parentId;
-                $parentAttr = $parentAttr->fieldSet;
-            }
-            $parentIds = array_reverse($parentIds);
-            $previousId = null;
-            foreach ($parentIds as $aid) {
-                if ($previousId === null) {
-                    if (!isset($t[$aid])) {
-                        $t[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid));
-                        $t[$aid]["content"] = array();
-                    }
-                    $target = & $t[$aid]["content"];
-                } else {
-                    if (!isset($t[$previousId]["content"][$aid])) {
-                        
-                        $t[$previousId]["content"][$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid));
-                        
-                        $t[$previousId]["content"][$aid]["content"] = array();
-                    }
-                    $target = & $t[$previousId]["content"][$aid]["content"];
-                }
-                $previousId = $aid;
-            }
-            $target[$oattr->id] = $this->getAttributeInfo($oattr);
-        }
-        return $t;
+        
+        return $this->_getDocumentData("family.structure");
     }
     
     protected function getAttributeInfo(\BasicAttribute $oa)
@@ -200,7 +135,7 @@ class DocumentTemplateContext implements \ArrayAccess
             "visibility" => $oa->mvisibility,
             "label" => $oa->getLabel() ,
             "type" => $oa->type,
-            "multiple" => $oa->isMultiple(),
+            "multiple" => $oa->isMultiple() ,
             "index" => $oa->ordered
         );
     }

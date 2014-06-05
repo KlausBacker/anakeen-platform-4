@@ -30,7 +30,7 @@ define([
         getNbLines : function() {
             var nbLigne = 0;
             this.model.get("content").each(function (currentAttr) {
-                if (nbLigne < currentAttr.get("value").length) {
+                if (currentAttr.get("value") && nbLigne < currentAttr.get("value").length) {
                     nbLigne = currentAttr.get("value").length;
                 }
             });
