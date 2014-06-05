@@ -8,6 +8,7 @@ define([
     $.widget("dcp.dcpText", $.dcp.dcpAttribute, {
 
         options : {
+            id : "",
             type : "text"
         },
 
@@ -19,7 +20,8 @@ define([
             var currentWidget = this;
             if (this.getMode() === "write") {
                 this.element.find(".dcpAttribute__content").on("change", function() {
-                    currentWidget.setValue($(this).val());
+                    currentWidget.options.value.value = $(this).val();
+                    currentWidget.setValue(currentWidget.options.value);
                 });
             }
         },
@@ -27,14 +29,14 @@ define([
         setValue : function(value) {
             this._super(value);
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").val(value);
+                this.element.find(".dcpAttribute__content").val(value.value);
                 return;
             }
             if (this.getMode() === "read") {
-                this.element.find(".dcpAttribute__content").text(value);
+                this.element.find(".dcpAttribute__content").text(value.value);
                 return;
             }
-            throw "Unkown mode";
+        throw new Error("Attribute "+this.options.id+" unkown mode "+this.getMode());
         },
 
         _getTemplate : function (name) {
@@ -43,7 +45,7 @@ define([
                 && window.dcp.templates.attribute[this.getType()][name]) {
                 return window.dcp.templates.attribute[this.getType()][name];
             }
-            throw "Unknown template text "+name;
+            throw new Error("Unknown template text "+name);
         },
 
         getType : function() {

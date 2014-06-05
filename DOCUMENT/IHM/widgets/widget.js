@@ -1,7 +1,4 @@
-/*! jQuery UI - v1.10.4 - 2014-05-30
- * http://jqueryui.com
- * Includes: jquery.ui.widget.js
- * Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
+/*! HEavily inspirated by jQueryUI widget */
 
 (function ($, undefined) {
 
@@ -99,10 +96,6 @@
             })();
         });
         constructor.prototype = $.widget.extend(basePrototype, {
-            // TODO: remove support for widgetEventPrefix
-            // always use the name + a colon as the prefix, e.g., draggable:start
-            // don't prefix for widgets that aren't DOM-based
-            widgetEventPrefix : existingConstructor ? (basePrototype.widgetEventPrefix || name) : name
         }, proxiedPrototype, {
             constructor :    constructor,
             namespace :      namespace,
@@ -210,11 +203,10 @@
 
     $.Widget.prototype = {
         widgetName :          "widget",
-        widgetEventPrefix :   "",
         defaultElement :      "<div>",
         options :             {
             disabled : false,
-
+            eventPrefix : null,
             // callbacks
             create :   null
         },
@@ -229,8 +221,9 @@
                 options);
 
             this.bindings = $();
-            this.hoverable = $();
-            this.focusable = $();
+            if (this.options.eventPrefix === null) {
+                this.options.eventPrefix = this.widgetName;
+            }
 
             if (element !== this) {
                 $.data(element, this.widgetFullName, this);
@@ -273,15 +266,10 @@
                 .removeData($.camelCase(this.widgetFullName));
             this.widget()
                 .unbind(this.eventNamespace)
-                .removeAttr("aria-disabled")
-                .removeClass(
-                    this.widgetFullName + "-disabled " +
-                        "ui-state-disabled");
+                .removeAttr("aria-disabled");
 
             // clean up events and states
             this.bindings.unbind(this.eventNamespace);
-            this.hoverable.removeClass("ui-state-hover");
-            this.focusable.removeClass("ui-state-focus");
         },
         _destroy : $.noop,
 
@@ -340,22 +328,7 @@
         _setOption :  function (key, value) {
             this.options[ key ] = value;
 
-            if (key === "disabled") {
-                this.widget()
-                    .toggleClass(this.widgetFullName + "-disabled ui-state-disabled", !!value)
-                    .attr("aria-disabled", value);
-                this.hoverable.removeClass("ui-state-hover");
-                this.focusable.removeClass("ui-state-focus");
-            }
-
             return this;
-        },
-
-        enable :  function () {
-            return this._setOption("disabled", false);
-        },
-        disable : function () {
-            return this._setOption("disabled", true);
         },
 
         _on : function (suppressDisabledCheck, element, handlers) {
@@ -385,11 +358,6 @@
                     // allow widgets to customize the disabled handling
                     // - disabled as an array instead of boolean
                     // - disabled class as method for disabling individual parts
-                    if (!suppressDisabledCheck &&
-                        ( instance.options.disabled === true ||
-                            $(this).hasClass("ui-state-disabled") )) {
-                        return;
-                    }
                     return ( typeof handler === "string" ? instance[ handler ] : handler )
                         .apply(instance, arguments);
                 }
@@ -432,9 +400,8 @@
 
             data = data || {};
             event = $.Event(event);
-            event.type = ( type === this.widgetEventPrefix ?
-                type :
-                this.widgetEventPrefix + type ).toLowerCase();
+            event.type = this.options.eventPrefix ? this.options.eventPrefix + type : type;
+            event.type = event.type.toLocaleLowerCase();
             // the original event may come from any element
             // so we need to reset the target on the new event
             event.target = this.element[ 0 ];

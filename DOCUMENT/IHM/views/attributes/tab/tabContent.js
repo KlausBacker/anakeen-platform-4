@@ -28,11 +28,18 @@ define([
             this.$el.attr("id", this.model.id);
             this.model.get("content").each(function (currentAttr) {
                 var view;
-                if (currentAttr.get("type") === "frame") {
-                    view = new ViewAttributeFrame({model : currentAttr});
-                    $content.prepend(view.render().$el);
-                } else {
-                    throw "unkown type "+currentAttr.get("type")+" for id "+currentAttr.id+" for tab "+model.id;
+                try {
+                    if (!currentAttr.isDisplayable()) {
+                        return;
+                    }
+                    if (currentAttr.get("type") === "frame") {
+                        view = new ViewAttributeFrame({model : currentAttr});
+                        $content.append(view.render().$el);
+                    } else {
+                        throw new Error("unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id);
+                    }
+                } catch(e) {
+                    console.error(e);
                 }
             });
             console.timeEnd("render tab " + this.model.id);

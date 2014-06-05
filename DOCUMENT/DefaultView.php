@@ -54,8 +54,8 @@ class DefaultView extends RenderDefault
         
         $menu->appendElement(new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}"));
         
-        $menu->appendElement(new ItemMenu("delete", ___("Delete", "UiMenu") , "?app=...&id={{document.properties.id}}"));
-        $menu->appendElement(new ItemMenu("restore", ___("Restore", "UiMenu") , "?app=...&id={{document.properties.id}}"));
+        $menu->appendElement(new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}"));
+        $menu->appendElement(new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}"));
         
         if ($document->wid > 0) {
             $workflowMenu = new DynamicMenu("workflow", ___("Transition", "UiMenu"));
@@ -63,7 +63,7 @@ class DefaultView extends RenderDefault
             $menu->appendElement($workflowMenu);
         }
         
-        $menu->appendElement(new ItemMenu("histo", ___("Historic", "UiMenu") , "?app=...&id={{document.properties.id}}"));
+        $menu->appendElement(new ItemMenu("histo", ___("Historic", "UiMenu") , "#historic/{{document.properties.id}}"));
         $menu->getElement("histo")->setTarget('_blank')->setHtmlAttribute("date-test", "testing");
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));

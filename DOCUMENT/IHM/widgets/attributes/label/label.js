@@ -23,7 +23,7 @@ define([
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute.label) {
                 return window.dcp.templates.attribute.label;
             }
-            throw "Unknown label template ";
+            throw new Error("Unknown label template ");
         }
     });
 });

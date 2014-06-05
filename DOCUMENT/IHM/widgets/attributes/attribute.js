@@ -8,11 +8,17 @@ define([
     $.widget("dcp.dcpAttribute", {
 
         options : {
+            eventPrefix : "dcpAttribute",
+            id : null,
             type : "abstract",
-            mode : "read"
+            mode : "read",
+            index : -1
         },
 
         _create : function() {
+            if (!this.options.value) {
+                this.options.value = {};
+            }
             this._initDom();
             this._initEvent();
         },
@@ -38,8 +44,8 @@ define([
         },
 
         getMode : function() {
-            if (this.options.mode !== "read" && this.options.mode !== "write") {
-                throw "Attribute "+this.options.id+" have unknown mode "+this.options.mode;
+            if (this.options.mode !== "read" && this.options.mode !== "write" && this.options.mode !== "hidden") {
+                throw new Error("Attribute "+this.options.id+" have unknown mode "+this.options.mode);
             }
             return this.options.mode;
         },
@@ -51,7 +57,9 @@ define([
         setValue : function(value, event) {
             this.options.value = value;
             this._trigger("change", event, {
-                value : value
+                id : this.options.id,
+                value : value,
+                index : this.options.index
             })
         }
 

@@ -1,8 +1,24 @@
 @import "menu/menu.less";
 @import "../attributes/attribute.less";
+@import "../../widgets/attributes/label/label";
 @import "../../widgets/attributes/text/text";
 @import "../../widgets/attributes/array/array";
 
-.dcpDocument__menu {
-  top : 10;
+@dcpHeaderHeight : 30px;
+
+.dcpDocument__menu.navbar-fixed-top {
+  top : @dcpHeaderHeight;
+}
+
+.dcpDocument__header {
+  position: fixed;
+  top: 0;
+  line-height: @dcpHeaderHeight;
+  background-color: @body-bg;
+  width: 100%;
+  z-index: 100;
+}
+
+.dcpDocument__header__icon {
+  height: @dcpHeaderHeight;
 }
