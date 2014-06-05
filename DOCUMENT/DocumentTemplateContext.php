@@ -27,7 +27,7 @@ class DocumentTemplateContext implements \ArrayAccess
     protected $docProperties = null;
     protected $docAttributes = null;
     /**
-     * @var \Dcp\Httpapi\DocumentCrud
+     * @var \Dcp\Httpapi\V1\DocumentCrud
      */
     protected $_documentCrud = null;
     protected $_documentData = null;
@@ -55,7 +55,7 @@ class DocumentTemplateContext implements \ArrayAccess
         }
         
         if ($this->_documentCrud === null) {
-            $this->_documentCrud = new \Dcp\HttpApi\DocumentCrud();
+            $this->_documentCrud = new \Dcp\HttpApi\V1\DocumentCrud();
             $this->_documentCrud->setDefaultFields($field);
             $this->_documentData = $this->_documentCrud->get($this->_document->id);
         }
