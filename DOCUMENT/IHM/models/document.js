@@ -49,6 +49,7 @@ define([
             attributes.each(function(currentAttributeModel) {
                currentAttributeModel.setContentCollection(attributes);
             });
+            this.listenTo(this.get("attributes"), "change:value", this.notifyChange);
         },
 
         toData : function() {
@@ -58,6 +59,11 @@ define([
             returnObject.document.properties = this.get("properties").toJSON();
             returnObject.menus = this.get("menus").toJSON();
             return returnObject;
+        },
+
+        notifyChange : function(attribute, newValue) {
+            console.log(arguments);
+            debugger;
         }
     });
 

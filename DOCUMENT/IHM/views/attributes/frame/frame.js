@@ -29,13 +29,22 @@ define([
             this.$el.append($(Mustache.render(this.templateLabel, this.model.toJSON())));
             this.$el.append($(Mustache.render(this.templateContent, this.model.toJSON())));
             $content = this.$el.find(".dcpFrame__content");
-            this.model.get("content").each(function(attributeModel) {
-                if (attributeModel.get("visibility") !== "H" && attributeModel.get("valueAttribute")) {
-                    $content.append((new ViewAttribute({model : attributeModel})).render().$el);
+            this.model.get("content").each(function(currentAttr) {
+                if (!currentAttr.isDisplayable()) {
+                    return;
                 }
-                if (attributeModel.get("visibility") !== "H" && attributeModel.get("type") === "array") {
-                    $content.append((new ViewAttributeArray({model : attributeModel})).render().$el);
+                try {
+                    if (currentAttr.get("valueAttribute")) {
+                        $content.append((new ViewAttribute({model : currentAttr})).render().$el);
+                        return;
+                    }
+                    if (currentAttr.get("type") === "array") {
+                        $content.append((new ViewAttributeArray({model : currentAttr})).render().$el);
+                    }
+                } catch(e) {
+                    console.error(e);
                 }
+
             });
             console.timeEnd("render frame " + this.model.id);
             return this;

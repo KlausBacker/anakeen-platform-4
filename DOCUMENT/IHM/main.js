@@ -45,9 +45,8 @@ require.config({
         "mustache" :      "../../lib/mustache.js/mustache",
         "bootstrap" :     "../../lib/bootstrap/js/bootstrap",
         "kendo" :         "../../lib/KendoUI/js/kendo.ui.core"
-    },
-     urlArgs : "invalidateCache=" + (new Date()).getTime()
-
+    }/*,
+     urlArgs : "invalidateCache=" + (new Date()).getTime()*/
 });
 
 require([
@@ -71,4 +70,5 @@ require([
             family : window.dcp.documentData.family, attributes : document.attributes}
     );
     window.dcp.views.document = new ViewDocument({model : window.dcp.models.document, el : $(".dcpDocument")[0]}).render();
+
 });

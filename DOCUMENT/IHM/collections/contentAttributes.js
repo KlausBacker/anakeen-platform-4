@@ -6,6 +6,8 @@ define([
 
     return Backbone.Collection.extend({
 
+        comparator : "logicalOrder",
+
         toData : function() {
             var elements = [];
             this.each(function(currentAttribute) {

@@ -1,3 +1,18 @@
-.dcpArray__head__toolCell,.dcpArray__content__toolCell {
-  width : 10px;
+td.dcpArray__head__toolCell, .dcpArray__content__toolCell {
+  width : 5em;
+  font-size: 90%;
+}
+
+.dcpArray__content__toolCell__check, .dcpArray__content__toolCell__delete {
+  cursor: pointer;
+  float : left;
+}
+
+.dcpArray__content__toolCell__delete {
+  float: right;
+  visibility: hidden;
+}
+
+.dcpArray__content__line--selected .dcpArray__content__toolCell__delete {
+  visibility: visible;
 }

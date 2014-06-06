@@ -27,11 +27,11 @@ class DefaultEdit extends RenderDefault
     {
         $menu = new BarMenu();
         if ($document->id > 0) {
-            $menu->appendElement(new ItemMenu("save", ___("Save", "UiMenu") , "..js.."));
+            $menu->appendElement(new ItemMenu("save", ___("Save", "UiMenu") , "#save/{{document.properties.id}}"));
         } else {
-            $menu->appendElement(new ItemMenu("save", ___("Create", "UiMenu") , "..js.."));
+            $menu->appendElement(new ItemMenu("save", ___("Create", "UiMenu") , "#create/{{document.properties.id}}"));
         }
-        $menu->appendElement(new ItemMenu("cancel", ___("Cancel", "UiMenu") , "?app=DOCUMENT&action=&id={{document.properties.id}}"));
+        $menu->appendElement(new ItemMenu("cancel", ___("Cancel", "UiMenu") , "#cancel/{{document.properties.id}}"));
         
         return $menu;
     }

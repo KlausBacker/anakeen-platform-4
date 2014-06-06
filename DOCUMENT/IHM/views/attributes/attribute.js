@@ -13,7 +13,7 @@ define([
         className : "row dcpAttribute form-group",
 
         events : {
-             "change .dcpAttribute__contentWrapper" : "updateValue"
+             "dcpattributechange .dcpAttribute__contentWrapper" : "updateValue"
         },
 
         initialize : function () {
@@ -44,7 +44,7 @@ define([
         },
 
         updateValue : function() {
-            this.model.set("value", this.$el.find(".dcpAttribute__contentWrapper").dcpText("getValue"));
+            this.model.setValue(this.$el.find(".dcpAttribute__contentWrapper").dcpText("getValue"));
         }
     });
 

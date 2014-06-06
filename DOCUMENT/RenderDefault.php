@@ -71,8 +71,14 @@ class RenderDefault implements RenderConfig
                 "menu" => array(
                     "file" => "DOCUMENT/IHM/widgets/menu/menu.mustache",
                 ),
-                "menu__element" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/menu__element.mustache"
+                "element" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/element.mustache"
+                ),
+                "dropdownmenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/dropdownmenu.mustache"
+                ),
+                "dropdownsubmenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/dropdownsubmenu.mustache"
                 )
             ),
             "attribute" => array(

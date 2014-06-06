@@ -18,20 +18,36 @@ define([
 
         _initStructure : function() {
             console.time("widget menu");
-            var $content, getTemplate = this._getTemplate, doc = this.options.document;
+            var $content, $mainElement;
             this.element.addClass("navbar navbar-default navbar-fixed-top");
             this.element.attr("role", "navigation");
-            $content = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid : this.uuid}, this.options)));
-            _.each(this.options.menus, function(currentMenu) {
+            $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid : this.uuid}, this.options)));
+            $content = $mainElement.find(".menu__content");
+            this._insertMenuContent(this.options.menus, $content);
+            this.element.append($mainElement);
+        },
+
+        _insertMenuContent : function(menus, $content, currentWidget, secondLevel) {
+            var subMenu;
+            currentWidget = currentWidget || this;
+            _.each(menus, function (currentMenu) {
                 var $currentMenu;
-                currentMenu.document = doc;
-                if (currentMenu.url) {
-                    currentMenu.url = Mustache.render(currentMenu.url, currentMenu);
+                if (currentMenu.type === "listMenu") {
+                    subMenu = "dropdownmenu";
+                    if (secondLevel) {
+                        subMenu = "dropdownsubmenu";
+                    }
+                    $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu), currentMenu));
+                    currentWidget._insertMenuContent(currentMenu.content, $currentMenu.find(".dropdown-menu"), currentWidget, true);
+                } else {
+                    currentMenu.document = currentWidget.options.document;
+                    if (currentMenu.url) {
+                        currentMenu.url = Mustache.render(currentMenu.url, currentMenu);
+                    }
+                    $currentMenu = Mustache.render(currentWidget._getTemplate("element"), currentMenu);
                 }
-                $currentMenu = Mustache.render(getTemplate("menu__element"), currentMenu);
-                $content.find(".menu__content").append($currentMenu);
+                $content.append($currentMenu);
             });
-            this.element.append($content);
         },
 
         _getTemplate : function(name) {
@@ -39,7 +55,7 @@ define([
                 && window.dcp.templates.menu[name]) {
                 return window.dcp.templates.menu[name];
             }
-            throw "Menu unknown template "+name;
+            throw new Error("Menu unknown template "+name);
         }
 
     });
