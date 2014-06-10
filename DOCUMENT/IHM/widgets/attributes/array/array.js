@@ -9,7 +9,7 @@ define([
 
         options : {
             tools : true,
-            nbLine : 0
+            nbLines : 0
         },
 
         _create : function () {
@@ -27,16 +27,16 @@ define([
 
         _bindEvents : function() {
             var currentWidget = this;
-            this.element.on("click", ".dcpArray__content__toolCell__check", function() {
+            this.element.on("click."+this.eventNamespace, ".dcpArray__content__toolCell__check", function() {
                 var $this = $(this);
                 currentWidget._unSelectLines();
                 $this.find('.fa-check').show();
                 $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
             });
-            this.element.on("click", ".dcpArray__add", function() {
-                currentWidget.addLine(currentWidget.options.nbLine++);
+            this.element.on("click." + this.eventNamespace, ".dcpArray__add", function() {
+                currentWidget.addLine(currentWidget.options.nbLines++);
             });
-            this.element.on("click", ".dcpArray__content__toolCell__delete", function () {
+            this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
         },
@@ -47,13 +47,12 @@ define([
             for (i = 0; i < this.options.nbLines; i++) {
                 this.addLine(i);
             }
-            this.options.nbLine = i;
             this._trigger("linesGenerated");
         },
 
         addLine : function(lineNumber) {
             if (!_.isNumber(lineNumber)) {
-                throw new Error("You need to indicate the nbLine");
+                throw new Error("You need to indicate the line number");
             }
             var $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber : lineNumber}, this.options)));
             this.element.find(".dcpArray__body").append($content);
@@ -66,6 +65,11 @@ define([
             this._trigger("lineRemoved", {}, {line : line});
         },
 
+        _destroy : function () {
+            this.element.empty();
+            this._super();
+        },
+
         _indexLine : function() {
             var i = 0;
             this.element.find(".dcpArray__content__line").each(
@@ -74,7 +78,7 @@ define([
                     i++;
                 }
             );
-            this.options.nbLine = i;
+            this.options.nbLines = i;
         },
 
         _unSelectLines : function() {

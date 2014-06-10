@@ -52,23 +52,24 @@ require.config({
 require([
     'jquery',
     'underscore',
+    'collections/documents',
     'models/document',
     'views/document/document',
     'widget',
     'backbone',
     'bootstrap'/*,
     'kendo'*/
-], function ($, _, ModelDocument, ViewDocument) {
+], function ($, _, CollectionDocument, ModelDocument, ViewDocument) {
     /*jshint nonew:false*/
-    var document = window.dcp.documentData.document;
+    var document = window.dcp.documentData.document, model;
     window.dcp = window.dcp || {};
-    window.dcp.models = window.dcp.models || {};
+    window.dcp.models = new CollectionDocument();
     window.dcp.views = window.dcp.views || {};
-    window.dcp.models.document = new ModelDocument(
+    model = new ModelDocument(
         {},
         {properties : document.properties, menus : window.dcp.menu,
-            family : window.dcp.documentData.family, attributes : document.attributes}
+            family :  window.dcp.documentData.family, attributes : document.attributes}
     );
-    window.dcp.views.document = new ViewDocument({model : window.dcp.models.document, el : $(".dcpDocument")[0]}).render();
-
+    window.dcp.models.push(model);
+    (new ViewDocument({model : model, el : $(".dcpDocument")[0]}).render());
 });

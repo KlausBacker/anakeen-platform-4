@@ -62,8 +62,8 @@ define([
         },
 
         notifyChange : function(attribute, newValue) {
-            console.log(arguments);
-            debugger;
+            //console.log(arguments);
+            //debugger;
         }
     });
 

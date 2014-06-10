@@ -50,6 +50,26 @@ define([
             this.set("value", value);
         },
 
+        removeLine : function(index) {
+            var currentValue, oldValue;
+            if (!this.get("multiple") || !_.isNumber(index)) {
+                throw new Error("You need to add an index to set value for a multiple id " + this.id);
+            }
+            oldValue = this.get("value");
+            currentValue = _.clone(this.get("value"));
+            _.each(currentValue, function(value, currentIndex) {
+                currentIndex = parseInt(currentIndex, 10);
+                if (currentIndex === index) {
+                    delete currentValue[index];
+                }
+                if (currentIndex > index && oldValue[currentIndex]) {
+                    delete currentValue[currentIndex];
+                    currentValue[currentIndex - 1] = oldValue[currentIndex];
+                }
+            });
+            this.set("value", currentValue);
+        },
+
         toData : function(index) {
             var content = this.toJSON();
             if (index && this.get("multiple") === false){

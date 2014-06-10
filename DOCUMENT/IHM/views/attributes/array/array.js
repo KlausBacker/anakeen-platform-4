@@ -11,7 +11,7 @@ define([
 
         events : {
              "dcparraylineadded" : "initWidget",
-             "dcparraylineremoved" : "initWidget",
+             "dcparraylineremoved" : "removeLine",
              "dcpattributechange .dcpArray__content__cell" : "updateValue"
         },
 
@@ -33,7 +33,7 @@ define([
         },
 
         getNbLines : function() {
-            var nbLigne = 0;
+            var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function (currentAttr) {
                 if (currentAttr.get("value") && nbLigne < _.size(currentAttr.get("value"))) {
                     nbLigne = _.size(currentAttr.get("value"));
@@ -64,6 +64,19 @@ define([
                    throw new Error("Try to display a non displayable attribute "+currentAttribute.id);
                 }
             })
+        },
+
+        refresh : function() {
+            this.nbLines = this.$el.dcpArray("option", "nbLines");
+            this.$el.dcpArray("destroy");
+            this.render();
+        },
+
+        removeLine : function(event, options) {
+            this.model.get("content").each(function(currentContent) {
+               currentContent.removeLine(options.line);
+            });
+            this.refresh();
         }
     });
 

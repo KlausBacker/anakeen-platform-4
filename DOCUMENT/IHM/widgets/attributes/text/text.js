@@ -19,7 +19,7 @@ define([
         _initEvent : function() {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").on("change", function() {
+                this.element.find(".dcpAttribute__content").on("change."+this.eventNamespace, function() {
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
                 });
