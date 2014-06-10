@@ -24,8 +24,8 @@ define([
             if (_.isArray(this.get("value"))) {
                 this.set("value", _.extend({}, this.get("value")));
             }
-            this._computeMode();
             this._computeValueMode();
+            this._computeMode();
         },
 
         setContentCollection : function(attributes) {
@@ -70,13 +70,26 @@ define([
             this.set("value", currentValue);
         },
 
+        getNbLines : function() {
+            var nbLines = 0;
+            if (!this.get("multiple")) {
+                return -1;
+            }
+            _.each(this.get("value"), function(value, index) {
+                if (index > nbLines) {
+                    nbLines = index;
+                }
+            });
+            return nbLines;
+        },
+
         toData : function(index) {
             var content = this.toJSON();
             if (index && this.get("multiple") === false){
                 throw new Error("You need to be multiple");
             }
             if (_.isNumber(index)) {
-                content.value = content.value[index];
+                content.value = content.value ? content.value[index] : null;
                 content.index = index;
             }
             content.isDisplayable = this.isDisplayable();
@@ -106,12 +119,20 @@ define([
                 return;
             }
             if (documentMode === "view") {
+                if (visibility === "O" || (this.get("valueAttribute") && !this.get("value"))) {
+                    this.set("mode", "hidden");
+                    return;
+                }
                 this.set("mode", "read");
                 return;
             }
             if (documentMode === "edit") {
                 if (visibility === "W" || visibility === "O") {
                     this.set("mode", "write");
+                    return;
+                }
+                if (visibility === "R" ) {
+                    this.set("mode", "hidden");
                     return;
                 }
                 if (visibility === "R" || visibility === "S") {

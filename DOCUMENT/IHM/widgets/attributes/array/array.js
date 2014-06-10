@@ -13,7 +13,7 @@ define([
         },
 
         _create : function () {
-            this.options.tools = this.options.mode === "write";
+            this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
             this._initDom();
             this._bindEvents();
         },
