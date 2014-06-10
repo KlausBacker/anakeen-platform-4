@@ -12,9 +12,6 @@ define([
         if (!_.isArray(attributes)) {
             attributes = _.values(attributes);
         }
-        attributes = _.filter(attributes, function(currentAttr) {
-            return currentAttr.id;
-        });
         if (parent) {
             _.each(attributes, function(value) {
                 value.parent = parent;
@@ -36,6 +33,7 @@ define([
 
         initialize : function(values, options) {
             var attributes = [];
+            this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
             attributes = flattenAttributes(attributes, options.family.structure);
@@ -62,8 +60,41 @@ define([
         },
 
         notifyChange : function(attribute, newValue) {
-            console.log(arguments);
-            debugger;
+            //console.log(arguments);
+            //debugger;
+        },
+
+        getValues : function() {
+            var values = {};
+            this.get("attributes").each(function(currentAttribute) {
+                var currentValue = currentAttribute.get("value"), nbLines, i, arrayValues = [];
+                if (!currentAttribute.hasChanged()) {
+                    return;
+                }
+                if (!currentValue) {
+                    return;
+                }
+                if (currentAttribute.get("multiple")) {
+                    return;
+                    nbLines = currentAttribute.getNbLines();
+                    if (nbLines === 0) {
+                        return;
+                    }
+                    for (i = 0; i <= nbLines; i++) {
+                        arrayValues.push(currentValue[i] || { value : null});
+                    }
+                    values[currentAttribute.id] = arrayValues;
+                    return;
+                }
+                values[currentAttribute.id] = currentValue;
+            });
+            return values;
+        },
+
+        hasAttributesChanged : function() {
+            return this.get("attributes").some(function(currentAttr) {
+                return currentAttr.hasChanged("value");
+            })
         }
     });
 

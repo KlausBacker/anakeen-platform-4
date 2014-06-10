@@ -52,23 +52,33 @@ require.config({
 require([
     'jquery',
     'underscore',
+    'backbone',
+    'routers/router',
+    'collections/documents',
     'models/document',
     'views/document/document',
     'widget',
-    'backbone',
     'bootstrap'/*,
     'kendo'*/
-], function ($, _, ModelDocument, ViewDocument) {
+], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
     /*jshint nonew:false*/
-    var document = window.dcp.documentData.document;
+    var document = window.dcp.documentData.document, model;
     window.dcp = window.dcp || {};
-    window.dcp.models = window.dcp.models || {};
+    window.dcp.documents = new CollectionDocument();
     window.dcp.views = window.dcp.views || {};
-    window.dcp.models.document = new ModelDocument(
+
+    model = new ModelDocument(
         {},
         {properties : document.properties, menus : window.dcp.menu,
-            family : window.dcp.documentData.family, attributes : document.attributes}
+            family :  window.dcp.documentData.family, attributes : document.attributes}
     );
-    window.dcp.views.document = new ViewDocument({model : window.dcp.models.document, el : $(".dcpDocument")[0]}).render();
+    window.dcp.documents.push(model);
+    (new ViewDocument({model : model, el : $(".dcpDocument")[0]}).render());
+    $(".dcpLoading").hide();
+    $(".dcpDocument").show();
+    window.dcp.router = {
+        router : new Router()
+    };
 
+    Backbone.history.start();
 });
