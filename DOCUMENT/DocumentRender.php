@@ -81,7 +81,14 @@ class DocumentRender
     }
     protected function internalRender()
     {
-        $me = new \Mustache_Engine();
+
+        $option=array(
+            'cache' => DEFAULT_PUBDIR.'/var/cache/mustache',
+            'cache_file_mode' => 0600,
+            'cache_lambda_templates' => true
+        );
+        $me = new \Mustache_Engine($option);
+
         $fl = new MustacheLoaderSection($this->renderConfig->getTemplates() , $this->delimiterStartTag, $this->delimiterEndTag);
         $fl->setDocument($this->document);
         $me->setPartialsLoader($fl);
