@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-16 17:37+0200\n"
+"POT-Creation-Date: 2014-06-11 10:17+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -11,6 +11,34 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "Abstract view"
+msgstr ""
+
+msgid "Account access deny"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create"
+msgstr ""
+
+msgid "Default Edit"
+msgstr ""
+
+msgid "Default View"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Delete"
+msgstr ""
 
 #, php-format
 msgctxt "ddui"
@@ -20,11 +48,68 @@ msgstr ""
 msgid "Document render"
 msgstr ""
 
+msgid "Get dynamic sub menu"
+msgstr ""
+
+msgid "Get some template"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Historic"
+msgstr ""
+
+msgid "Information access deny"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Lock"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Menu id \"%s\" not found "
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Modify"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Profil access"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Properties"
+msgstr ""
+
 msgid "Render a document"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Restore"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Save"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Security"
 msgstr ""
 
 msgid "Test"
 msgstr ""
 
+msgctxt "UiMenu"
+msgid "Transition"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Unlock"
+msgstr ""
+
 msgid "View documents"
+msgstr ""
+
+msgid "Y-m-d"
 msgstr ""

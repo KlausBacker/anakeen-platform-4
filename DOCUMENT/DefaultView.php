@@ -59,7 +59,11 @@ class DefaultView extends RenderDefault
         
         if ($document->wid > 0) {
             $workflowMenu = new DynamicMenu("workflow", ___("Transition", "UiMenu"));
-            $workflowMenu->setUrl("?app=...&id={{document.property.id}}&menu=workflow");
+            $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
+            {
+                $this->getWorkflowMenu($document, $menu);
+            });
+            
             $menu->appendElement($workflowMenu);
         }
         
@@ -67,7 +71,7 @@ class DefaultView extends RenderDefault
         $menu->getElement("histo")->setTarget('_blank')->setHtmlAttribute("date-test", "testing");
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
-        $menu->getElement("advanced")->appendElement(new ItemMenu("properties", ___("properties", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}"));
+        $menu->getElement("advanced")->appendElement(new ItemMenu("properties", ___("Properties", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}"));
         
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
         $securitySubMenu->appendElement(new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=...={{document.properties.id}}"));
@@ -77,5 +81,77 @@ class DefaultView extends RenderDefault
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         
         return $this->setMemuVisibility($menu, $document);
+    }
+
+    /**
+     * Get workflow submenu contents
+     * @param \Doc $doc
+     * @param ListMenu $menu
+     */
+    public function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
+    {
+        
+        if ($doc->wid > 0) {
+            /**
+             * @var \WDoc $wdoc
+             */
+            $wdoc = \Dcp\DocManager::getDocument($doc->wid, false);
+            if (!$doc) {
+                return;
+            }
+            $wdoc->Set($doc, true);
+            $fstate = $wdoc->GetFollowingStates();
+            
+            foreach ($fstate as $v) {
+                
+                $tr = $wdoc->getTransition($doc->state, $v);
+                
+                $label = $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v)));
+                $itemMenu = new ItemMenu($v, $label);
+                
+                if ((empty($tr["nr"])) || ((!empty($tr["ask"])) && is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
+                    
+                    $itemMenu->setHtmlAttribute("data-popup", 1);
+                    $itemMenu->setHtmlAttribute("data-popup-url", sprintf("?app=FDL&action=EDITCHANGESTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
+
+                    $itemMenu->setTarget("_dialog"); // alternative to data-popup
+
+                } else {
+                    $itemMenu->setUrl(sprintf("?app=FREEDOM&action=MODSTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
+                }
+                $visibility = $itemMenu::VisibilityVisible;
+                $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
+                //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
+                $icon = (!$tr) ? "Images/noaccess.png" : "";
+                if ($tr && (!empty($tr["m0"]))) {
+                    // verify m0
+                    $err = call_user_func(array(
+                        $wdoc,
+                        $tr["m0"],
+                    ) , $v, $wdoc->doc->state);
+                    if ($err) {
+                        $visibility = $itemMenu::VisibilityDisabled;
+                        $tooltip = $err;
+                        $icon = ""; // no image "Images/nowaccess.png";
+                        
+                    }
+                }
+                
+                if ($icon) {
+                    $itemMenu->setIcon($icon);
+                }
+                if ($tooltip) {
+                    $itemMenu->setTooltipLabel($tooltip);
+                }
+                
+                $color = $wdoc->getColor($v);
+                if ($color) {
+                    $itemMenu->setHtmlAttribute("style", "background-color:$color");
+                }
+                $itemMenu->setVisibility($visibility);
+                
+                $menu->appendElement($itemMenu);
+            }
+        }
     }
 }

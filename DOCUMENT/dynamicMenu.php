@@ -9,20 +9,40 @@ namespace Dcp\Ui;
 
 class DynamicMenu extends ElementMenu
 {
-    
-    public $url = '';
-    
-    public function __construct($identifier, $label, $url = '')
-    {
-        parent::__construct($identifier, $label);
-        $this->url = $url;
-    }
     /**
-     * @param string $url
+     * @var \Closure
      */
+    protected $contentDefinition = null;
+    
+    protected $url = '';
+    
     public function setUrl($url)
     {
         $this->url = $url;
+    }
+    /**
+     * Record definition function
+     * @param \Closure $definition
+     */
+    public function setContent(\Closure $definition)
+    {
+        $this->contentDefinition = $definition;
+        $this->url = sprintf("?app=DOCUMENT&action=SUBMENU&id={{document.properties.id}}&menu=%s", urlencode($this->id));
+    }
+    /**
+     * Return instanciated dynamic menu
+     * Invoke definition function
+     * @return ListMenu|null
+     */
+    public function getContent()
+    {
+        if ($this->contentDefinition) {
+            $menuList = new ListMenu($this->id, $this->label);
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->contentDefinition->__invoke($menuList);
+            return $menuList;
+        }
+        return null;
     }
     /**
      * Specify data which should be serialized to JSON

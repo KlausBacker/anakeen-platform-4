@@ -28,7 +28,13 @@ $action_desc = array(
         "short_name" => N_("Get some template"),
         "script" => "action-template.php",
         "function" => "template",
-        "acl" => "VIEW_RENDER")
+        "acl" => "VIEW_RENDER"),
+    array(
+        "name" => "SUBMENU",
+        "short_name" => N_("Get dynamic sub menu"),
+        "script" => "action-submenu.php",
+        "function" => "submenu",
+        "acl" => "VIEW_RENDER"),
 );
 
 

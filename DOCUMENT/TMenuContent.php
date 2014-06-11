@@ -29,6 +29,13 @@ trait TMenuContent
     }
 
     /**
+     * Return elements contents in list
+     * @return ElementMenu[]
+     */
+    public function getElements() {
+        return $this->content;
+    }
+    /**
      * Insert Element before another Element
      * @param string $index menu identifier to insert before; if empty insert at first place
      * @param ElementMenu $elMenu new Element Menu to insert
