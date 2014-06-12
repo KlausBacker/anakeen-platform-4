@@ -119,7 +119,7 @@ define([
                 return;
             }
             if (documentMode === "view") {
-                if (visibility === "O" || (this.get("valueAttribute") && !this.get("value"))) {
+                if (visibility === "O" || (this.get("valueAttribute") && this.get("value").value === null)) {
                     this.set("mode", "hidden");
                     return;
                 }
