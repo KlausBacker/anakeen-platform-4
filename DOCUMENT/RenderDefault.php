@@ -28,7 +28,7 @@ class RenderDefault implements RenderConfig
     public function getCssReferences()
     {
         return array(
-            "css/dcp/document2/document2.css"
+            "css/dcp/document/document.css"
         );
     }
 

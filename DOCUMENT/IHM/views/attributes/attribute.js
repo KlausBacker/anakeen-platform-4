@@ -26,6 +26,7 @@ define([
         render : function () {
             console.time("render attribute " + this.model.id);
             var data = this.model.toJSON();
+            data.viewCid = this.cid;
             this.$el.addClass("dcpAttribute--type--"+this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
