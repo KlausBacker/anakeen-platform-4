@@ -1,1 +1,3 @@
-<input type="text" name="{{id}}" id="{{viewCid}}" class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--text" value="{{value.value}}"/>
+<input type="text" name="{{id}}" id="{{viewCid}}" 
+       {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
+class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--text" value="{{value.value}}"/>

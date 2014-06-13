@@ -13,7 +13,7 @@ function view(Action & $action)
     
     $documentId = $usage->addRequiredParameter("id", "document identifier");
     $renderId = $usage->addOptionalParameter("render", "render identifier", array() , "defaultView");
-    $usage->setStrictMode(false);
+    $usage->setStrictMode(true);
     $usage->verify();
     
     $doc = Dcp\DocManager::getDocument($documentId);

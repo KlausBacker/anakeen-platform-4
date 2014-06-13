@@ -63,6 +63,14 @@ namespace {
          */
         const UI0101 = 'Menu insertAfter : Element index \"%s\" not exists';
         /**
+         * @errorCode the menu item not exist
+         */
+        const UI0200 = 'Value "%s" for Enum option "display" is invalid : allowed are : %s';
+        /**
+         * @errorCode the menu item not exist
+         */
+        const UI0201 = 'Value "%s" for attribute option "labelPosition" is invalid : allowed are : %s';
+        /**
          * for beautifier
          */
         private function _bo()

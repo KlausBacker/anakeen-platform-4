@@ -10,9 +10,9 @@ define([
 
     return Backbone.View.extend({
 
-        className : "panel panel-default css-frame frame",
+        className: "panel panel-default css-frame frame",
 
-        initialize : function () {
+        initialize: function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -22,35 +22,44 @@ define([
             this.templateContent = window.dcp.templates.attribute.frame.content;
         },
 
-        render : function () {
+        render: function () {
             var $content;
-            console.time("render frame "+this.model.id);
+            console.time("render frame " + this.model.id);
             this.$el.empty();
             this.$el.append($(Mustache.render(this.templateLabel, this.model.toJSON())));
             this.$el.append($(Mustache.render(this.templateContent, this.model.toJSON())));
             $content = this.$el.find(".dcpFrame__content");
-            this.model.get("content").each(function(currentAttr) {
-                if (!currentAttr.isDisplayable()) {
-                    return;
-                }
-                try {
-                    if (currentAttr.get("valueAttribute")) {
-                        $content.append((new ViewAttribute({model : currentAttr})).render().$el);
+
+            var hasOneContent=this.model.get("content").some(function (value) {
+                    return value.isDisplayable();
+                });
+
+            if (!hasOneContent) {
+                $content.append(this.model.getOption('showEmptyContent'));
+            } else {
+                this.model.get("content").each(function (currentAttr) {
+                    if (!currentAttr.isDisplayable()) {
                         return;
                     }
-                    if (currentAttr.get("type") === "array") {
-                        $content.append((new ViewAttributeArray({model : currentAttr})).render().$el);
+                    try {
+                        if (currentAttr.get("valueAttribute")) {
+                            $content.append((new ViewAttribute({model: currentAttr})).render().$el);
+                            return;
+                        }
+                        if (currentAttr.get("type") === "array") {
+                            $content.append((new ViewAttributeArray({model: currentAttr})).render().$el);
+                        }
+                    } catch (e) {
+                        console.error(e);
                     }
-                } catch(e) {
-                    console.error(e);
-                }
 
-            });
+                });
+            }
             console.timeEnd("render frame " + this.model.id);
             return this;
         },
 
-        updateLabel : function () {
+        updateLabel: function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         }
     });

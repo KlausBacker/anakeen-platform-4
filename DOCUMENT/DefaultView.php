@@ -82,7 +82,6 @@ class DefaultView extends RenderDefault
         
         return $this->setMemuVisibility($menu, $document);
     }
-
     /**
      * Get workflow submenu contents
      * @param \Doc $doc
@@ -113,9 +112,9 @@ class DefaultView extends RenderDefault
                     
                     $itemMenu->setHtmlAttribute("data-popup", 1);
                     $itemMenu->setHtmlAttribute("data-popup-url", sprintf("?app=FDL&action=EDITCHANGESTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
-
+                    
                     $itemMenu->setTarget("_dialog"); // alternative to data-popup
-
+                    
                 } else {
                     $itemMenu->setUrl(sprintf("?app=FREEDOM&action=MODSTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
                 }
