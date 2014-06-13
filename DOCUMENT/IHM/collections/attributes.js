@@ -6,6 +6,7 @@ define([
     'use strict';
 
     return Backbone.Collection.extend({
+        comparator : "logicalOrder",
         model : ModelAttribute
     });
 });

@@ -61,8 +61,10 @@ class DocumentTemplateContext implements \ArrayAccess
         }
         $fields = explode('.', $field);
         $data = $this->_documentData;
+        // verify information access path exists
         foreach ($fields as $key) {
-            $data = $data[trim($key) ];
+            $key = trim($key);
+            $data = isset($data[$key]) ? $data[$key] : null;
         }
         
         if ($data === null) {
@@ -84,14 +86,11 @@ class DocumentTemplateContext implements \ArrayAccess
     {
         
         return $this->_getDocumentData("document.properties");
-        
-
     }
     
     protected function _getAttributes()
     {
         return $this->_getDocumentData("document.attributes");
-
     }
     /**
      * Keys for mustache
