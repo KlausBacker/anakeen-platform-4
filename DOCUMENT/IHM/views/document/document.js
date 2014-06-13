@@ -39,7 +39,7 @@ define([
             console.timeEnd("render menu");
             //add first level attributes
             console.time("render attributes");
-            $content = this.$el.find(".dcpDocument__form");
+            $content = this.$el.find(".dcpDocument__frames");
             this.model.get("attributes").each(function (currentAttr) {
                 var view, viewTabLabel, viewTabContent;
                 if (!currentAttr.isDisplayable()) {

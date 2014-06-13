@@ -68,18 +68,11 @@ define([
             var values = {};
             this.get("attributes").each(function(currentAttribute) {
                 var currentValue = currentAttribute.get("value"), nbLines, i, arrayValues = [];
-                if (!currentAttribute.hasChanged()) {
-                    return;
-                }
-                if (!currentValue) {
+                if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
                 if (currentAttribute.get("multiple")) {
-                    return;
                     nbLines = currentAttribute.getNbLines();
-                    if (nbLines === 0) {
-                        return;
-                    }
                     for (i = 0; i <= nbLines; i++) {
                         arrayValues.push(currentValue[i] || { value : null});
                     }
