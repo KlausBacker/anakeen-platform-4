@@ -13,10 +13,9 @@ class CommonRenderOptions
      * @var RenderOptions
      */
     protected $optionObject = null;
-
+    
     protected $localOptionName = null;
-
-
+    
     protected $localOptionValue = null;
     protected $scope = null;
     const type = "common";
@@ -27,25 +26,31 @@ class CommonRenderOptions
     const upPosition = "up";
     const nonePosition = "none";
     
-    public function __construct(RenderOptions &$options=null)
+    public function __construct(RenderOptions & $options = null)
     {
         $this->optionObject = $options;
     }
     /**
+     * @protected internal usage
      * @return null
      */
     public function getLocalOptionName()
     {
         return $this->localOptionName;
     }
-
     /**
+     * @protected internal usage
      * @return null
      */
     public function getLocalOptionValue()
     {
         return $this->localOptionValue;
     }
+    /**
+     * Use option for a specific attribute
+     * @param string $scope attribute identifier
+     * @return $this
+     */
     public function setScope($scope)
     {
         $this->scope = $scope;
@@ -55,24 +60,35 @@ class CommonRenderOptions
     {
         return $this->scope;
     }
+    /**
+     * add custom option to be propagated to client
+     * @param string $optName option name
+     * @param string $optValue option value
+     * @return $this
+     */
     public function setOption($optName, $optValue)
     {
         if ($this->optionObject) {
-        if ($this->scope) {
-            $this->optionObject->setAttributeScopeOption($this->scope, $optName, $optValue);
+            if ($this->scope) {
+                $this->optionObject->setAttributeScopeOption($this->scope, $optName, $optValue);
+            } else {
+                $this->optionObject->setAttributeTypeOption(static::type, $optName, $optValue);
+            }
         } else {
-            $this->optionObject->setAttributeTypeOption(static::type, $optName, $optValue);
-        }
-        } else {
-            $this->localOptionName=$optName;
-            $this->localOptionValue=$optValue;
+            $this->localOptionName = $optName;
+            $this->localOptionValue = $optValue;
         }
         return $this;
     }
-    
+    /**
+     * When value is empty, display text instead
+     * The text is in HTML (it is not encoded)
+     * @note use only in consultation mode
+     * @param string $content formated text
+     * @return $this
+     */
     public function showEmptyContent($content)
     {
-        
         return $this->setOption(self::showEmptyContentOption, $content);
     }
     public function labelPosition($position)

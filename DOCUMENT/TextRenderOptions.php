@@ -13,11 +13,22 @@ class TextRenderOptions extends CommonRenderOptions
     const type = "text";
     const sizeOption = "size";
     const formatOption = "format";
-    
+    /**
+     * Number of characters for the input
+     * @note use only in edition mode
+     * @param int $number
+     * @return $this
+     */
     public function size($number)
     {
-        return $this->setOption(self::sizeOption, $number);
+        return $this->setOption(self::sizeOption, (int)$number);
     }
+    /**
+     * Forrmat use to decorate string
+     * @note use only in consultation mode
+     * @param string $format
+     * @return $this
+     */
     public function format($format)
     {
         return $this->setOption(self::formatOption, $format);

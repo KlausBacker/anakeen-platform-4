@@ -37,7 +37,7 @@ class RenderOptions implements \JsonSerializable
             ) ,
             EnumRenderOptions::type => array(
                 "boolColor" => "",
-                EnumRenderOptions::useFirstChoiceOption=>true
+                EnumRenderOptions::useFirstChoiceOption => true
             ) ,
             "file" => array(
                 "downloadInline" => false
@@ -106,27 +106,41 @@ class RenderOptions implements \JsonSerializable
         $this->enumOptions->setScope($attrid);
         return $this->enumOptions;
     }
-    
+    /**
+     * Add an option for an attribute type
+     * @param string $attrType attribute type
+     * @param string $optName option name
+     * @param string $optValue option value
+     */
     public function setAttributeTypeOption($attrType, $optName, $optValue)
     {
-        if ($attrType==="common") {
-
-        $this->options[$attrType][$optName] = $optValue;
+        if ($attrType === "common") {
+            
+            $this->options[$attrType][$optName] = $optValue;
         } else {
-        $this->options["types"][$attrType][$optName] = $optValue;
+            $this->options["types"][$attrType][$optName] = $optValue;
         }
     }
+    /**
+     * Apply option to a specific attribute
+     * @param string $attrId attribute identifier
+     * @param string $optName option name
+     * @param string $optValue option value
+     */
     public function setAttributeScopeOption($attrId, $optName, $optValue)
     {
         $this->options["attributes"][$attrId][$optName] = $optValue;;
     }
-
-    public function setOption(CommonRenderOptions $opt) {
+    /**
+     * Add new option
+     * @param CommonRenderOptions $opt
+     */
+    public function setOption(CommonRenderOptions $opt)
+    {
         if ($opt->getScope()) {
-            $this->setAttributeScopeOption($opt->getScope(), $opt->getLocalOptionName(), $opt->getLocalOptionValue());
+            $this->setAttributeScopeOption($opt->getScope() , $opt->getLocalOptionName() , $opt->getLocalOptionValue());
         } else {
-                        $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName(), $opt->getLocalOptionValue());
-
+            $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName() , $opt->getLocalOptionValue());
         }
     }
     /**

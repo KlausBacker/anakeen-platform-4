@@ -19,7 +19,13 @@ class EnumRenderOptions extends CommonRenderOptions
     const selectDisplay = "select";
     const autocompletionDisplay = "autoCompletion";
     const boolDisplay = "bool";
-    
+    /**
+     * Display formet
+     * @note use only in edition mode
+     * @param string $display one of vertical, horizontal, select, autoCompletion, bool
+     * @return $this
+     * @throws Exception
+     */
     public function display($display)
     {
         $allow = array(
@@ -34,10 +40,10 @@ class EnumRenderOptions extends CommonRenderOptions
         }
         return $this->setOption(self::displayOption, $display);
     }
-
     /**
-     * In edition mode : No use first choice unless if a default value is configured
-     * @param $useIt
+     * No use first choice unless if a default value is configured
+     * @note use only in edition mode
+     * @param bool $useIt
      * @return $this
      * @throws Exception
      */
