@@ -55,21 +55,26 @@ class ElementMenu implements \JsonSerializable
     }
     /**
      * @param string $label
+     * @return $this
      */
     public function setLabel($label)
     {
         $this->label = $label;
+        return $this;
     }
     /**
      * @param string $tooltipLabel
+     * @return $this
      */
     public function setTooltipLabel($tooltipLabel)
     {
         $this->tooltipLabel = $tooltipLabel;
+        return $this;
     }
     /**
      * Set a custom css class to element menu
-     * @param string $cssClass css class to add
+     * @param string $attrid Html attribute name
+     * @param string $value attribute value
      * @return $this
      */
     public function setHtmlAttribute($attrid, $value)

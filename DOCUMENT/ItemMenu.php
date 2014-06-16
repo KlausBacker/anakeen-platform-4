@@ -20,10 +20,12 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
     }
     /**
      * @param string $url
+     * @return $this
      */
     public function setUrl($url)
     {
         $this->url = $url;
+        return $this;
     }
     /**
      * Set url target : default is _self

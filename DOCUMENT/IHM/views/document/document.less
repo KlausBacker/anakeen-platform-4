@@ -17,8 +17,22 @@
   background-color: @body-bg;
   width: 100%;
   z-index: 100;
+  font-size : @dcpHeaderHeight/1.5;
 }
 
 .dcpDocument__header__icon {
   height: @dcpHeaderHeight;
+}
+.dcpDocument__header__family {
+  display:inline;
+  font-size : @dcpHeaderHeight/2;
+  float:right;
+  font-style: italic;
+  margin-right:10px;
+}
+
+.dcpDocument__footer {
+  background-color:darken(@body-bg, 5%);
+  text-align: center;
+  padding: 3px;
 }
