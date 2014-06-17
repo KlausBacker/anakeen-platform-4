@@ -24,7 +24,7 @@ class DefaultView extends RenderDefault
      * @param \Doc $document
      * @return BarMenu
      */
-    protected function setMemuVisibility(BarMenu & $menu, \Doc $document)
+    protected function setMenuVisibility(BarMenu & $menu, \Doc $document)
     {
         
         if ($editErr = $document->CanEdit()) {
@@ -80,7 +80,7 @@ class DefaultView extends RenderDefault
         
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         
-        return $this->setMemuVisibility($menu, $document);
+        return $this->setMenuVisibility($menu, $document);
     }
     /**
      * Get workflow submenu contents

@@ -65,7 +65,7 @@ class DocumentRender
         }
         return $s;
     }
-
+    
     protected function getRequireReferences()
     {
         $ref = $this->renderConfig->getRequireReference();
@@ -79,22 +79,33 @@ class DocumentRender
     {
         return $this->renderConfig->getdocumentTemplate();
     }
+
+    /**
+     * Affect attribute visibilities configured by render config class
+     */
+    protected function applyVisibilities()
+    {
+        $visibilities = $this->renderConfig->getVisibilities($this->document);
+        
+        $visibilities->applyToDocumentMask();
+    }
     protected function internalRender()
     {
-
-        $option=array(
-            'cache' => DEFAULT_PUBDIR.'/var/cache/mustache',
+        
+        $option = array(
+            'cache' => DEFAULT_PUBDIR . '/var/cache/mustache',
             'cache_file_mode' => 0600,
             'cache_lambda_templates' => true
         );
         $me = new \Mustache_Engine($option);
-
+        
+        $this->applyVisibilities();
+        
         $fl = new MustacheLoaderSection($this->renderConfig->getTemplates() , $this->delimiterStartTag, $this->delimiterEndTag);
         $fl->setDocument($this->document);
         $me->setPartialsLoader($fl);
         $delimiter = sprintf('{{=%s %s=}}', $this->delimiterStartTag, $this->delimiterEndTag);
-        $docController = new DocumentTemplateContext($this->document);
-        
+        $docController = $this->renderConfig->getContextController($this->document);
         $docController->offsetSet("cssReference", function ()
         {
             return $this->getCssReferences();
@@ -102,7 +113,7 @@ class DocumentRender
         
         $docController->offsetSet("renderOptions", function ()
         {
-            return JsonHandler::encodeForHTML($this->renderConfig->getOptions());
+            return JsonHandler::encodeForHTML($this->renderConfig->getOptions($this->document));
         });
         $docController->offsetSet("renderMenu", function ()
         {
@@ -112,7 +123,8 @@ class DocumentRender
         {
             return $this->getJsReferences();
         });
-        $docController->offsetSet("requireReference", function () {
+        $docController->offsetSet("requireReference", function ()
+        {
             return $this->getRequireReferences();
         });
         
@@ -122,6 +134,7 @@ class DocumentRender
     public function render(\Doc $doc)
     {
         $this->document = $doc;
+        \Dcp\DocManager::cache()->addDocument($doc);
         return $this->internalRender();
     }
 }

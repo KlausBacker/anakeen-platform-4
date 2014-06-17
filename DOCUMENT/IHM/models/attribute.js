@@ -182,7 +182,6 @@ define([
             var optionCommon = window.dcp.renderOptions["common"] || {};
             var optionValue = {};
             var optionAttribute = {};
-            var index;
 
             if (window.dcp.renderOptions["types"]) {
                 optionValue = window.dcp.renderOptions["types"][this.get("type")] || {};
@@ -191,22 +190,7 @@ define([
                 optionAttribute = window.dcp.renderOptions["attributes"][this.id] || {};
             }
 
-
-            for (index in optionCommon) {
-                if (optionCommon.hasOwnProperty(index)) {
-                    options[index] = optionCommon[index];
-                }
-            }
-            for (index in optionValue) {
-                if (optionValue.hasOwnProperty(index)) {
-                    options[index] = optionValue[index];
-                }
-            }
-            for (index in optionAttribute) {
-                if (optionAttribute.hasOwnProperty(index)) {
-                    options[index] = optionAttribute[index];
-                }
-            }
+            _.extend(options, optionCommon, optionValue, optionAttribute);
 
             return options;
         },
@@ -220,8 +204,7 @@ define([
         getOption: function (key) {
 
             var options = this.getOptions();
-
-            if (options[key]) {
+            if (typeof options[key] !== "undefined"  ) {
                 return options[key];
             }
             return null;

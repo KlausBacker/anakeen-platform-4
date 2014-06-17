@@ -129,9 +129,10 @@ class RenderDefault implements RenderConfig
         );
     }
     /**
+     * @param \Doc $document Document instance
      * @return RenderOptions
      */
-    public function getOptions()
+    public function getOptions(\Doc $document)
     {
         $opt = new RenderOptions();
         
@@ -139,7 +140,14 @@ class RenderDefault implements RenderConfig
         
         return $opt;
     }
-    
+    /**
+     * @param \Doc $document
+     * @return RenderAttributeVisibilities new attribute visibilities
+     */
+    public function getVisibilities(\Doc $document)
+    {
+        return new RenderAttributeVisibilities($document);
+    }
     public function getType()
     {
         return "abstract";
@@ -153,5 +161,13 @@ class RenderDefault implements RenderConfig
         $menu = new BarMenu();
         
         return $menu;
+    }
+    /**
+     * @param \Doc $document Document instance
+     * @return DocumentTemplateContext get template controller
+     */
+    public function getContextController(\Doc $document)
+    {
+        return new DocumentTemplateContext($document);
     }
 }
