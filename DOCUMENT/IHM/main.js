@@ -6,11 +6,6 @@ require.config({
     // The shim config allows us to configure dependencies for
     // scripts that do not call define() to register a module
     shim :  {
-        "widget" : {
-            deps : [
-                'jquery'
-            ]
-        },
         underscore :      {
             exports : '_'
         },
@@ -39,7 +34,6 @@ require.config({
     },
     paths : {
         "jquery" :        "../../lib/jquery/jquery",
-        "widget" :        "./widgets/widget",
         "underscore" :    "../../lib/underscore/underscore",
         "backbone" :      "../../lib/backbone/backbone",
         "mustache" :      "../../lib/mustache.js/mustache",
@@ -57,7 +51,6 @@ require([
     'collections/documents',
     'models/document',
     'views/document/document',
-    'widget',
     'bootstrap'/*,
     'kendo'*/
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
