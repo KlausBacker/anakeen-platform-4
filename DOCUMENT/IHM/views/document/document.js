@@ -1,4 +1,13 @@
 /*global define*/
+
+if (! window.console) {
+    window.console={};
+}
+if (window.console && ! (window.console.time)) {
+    window.console.timeEnd = function (x) {};
+    window.console.time = function (x) {};
+}
+
 define([
     'underscore',
     'backbone',
