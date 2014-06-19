@@ -33,7 +33,7 @@ require.config({
         }
     },
     paths : {
-        "jquery" :        "../../lib/jquery/jquery",
+        "jquery" :        "../../lib/KendoUI/js/jquery",
         "underscore" :    "../../lib/underscore/underscore",
         "backbone" :      "../../lib/backbone/backbone",
         "mustache" :      "../../lib/mustache.js/mustache",

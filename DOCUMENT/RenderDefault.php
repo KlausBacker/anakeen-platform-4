@@ -32,7 +32,8 @@ class RenderDefault implements RenderConfig
     public function getCssReferences()
     {
         return array(
-            "css/dcp/document/document.css"
+            "css/dcp/document/document.css",
+            "css/dcp/document/kendo.css"
         );
     }
     
@@ -76,14 +77,17 @@ class RenderDefault implements RenderConfig
                 "menu" => array(
                     "file" => "DOCUMENT/IHM/widgets/menu/menu.mustache",
                 ) ,
-                "element" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/element.mustache"
+                "itemMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/itemMenu.mustache"
                 ) ,
-                "dropdownmenu" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/dropdownmenu.mustache"
+                "listMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/listMenu.mustache"
                 ) ,
-                "dropdownsubmenu" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/dropdownsubmenu.mustache"
+                "dynamicMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
+                ) ,
+                "separatorMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
                 )
             ) ,
             "attribute" => array(

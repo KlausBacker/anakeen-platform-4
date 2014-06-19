@@ -1,28 +1,45 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 
 
 $sty_desc = array(
     "name" => "BASE", //Name
     "description" => "BASE LESS STYLE", //long description
+    
 );
 
 $sty_inherit = "STYLE/MODERN/MODERN.sty";
-
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
-         'dcp/document/document.css' => array(
+        'dcp/document/document.css' => array(
             "src" => array(
-                "bootstrap"=>"STYLE/BASE/Layout/bootstrap.less",
+                "bootstrap" => "STYLE/BASE/Layout/bootstrap.less",
                 "fontAwesome" => "STYLE/BASE/Layout/fontawesome.less",
-                /*"kendo-bootstrap-common" => "STYLE/BASE/Layout/kendo.common.less",
-                "kendo-bootstrap" => "STYLE/BASE/Layout/kendo.bootstrap.less",*/
                 "document" => "DOCUMENT/IHM/views/document/document.less"
-            ),
+            ) ,
             "deploy_parser" => array(
-  
-              "className" => '\Dcp\Style\dcpLessParser',
-                "options" => array("sourceMap" => true)
+                
+                "className" => '\Dcp\Style\dcpLessParser',
+                "options" => array(
+                    "sourceMap" => true
+                )
+            )
+        ) ,
+        'dcp/document/kendo.css' => array(
+            "src" => array(
+                "kendo-bootstrap-common" => "STYLE/BASE/Layout/kendo.common.less",
+                "kendo-bootstrap" => "STYLE/BASE/Layout/kendo.bootstrap.less",
+            ) ,
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpLessParser',
+                "options" => array(
+                    "sourceMap" => true
+                )
             )
         )
     )
