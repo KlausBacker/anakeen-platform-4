@@ -55,12 +55,13 @@ class DefaultView extends RenderDefault
         $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}");
         $item->setTooltipLabel(___("Display document form", "UiMenu"));
         $menu->appendElement($item);
-
-        $item=new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
+        
+        $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
         $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
+        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getTitle()));
         $menu->appendElement($item);
-
-        $item=new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
+        
+        $item = new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
         $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
         $menu->appendElement($item);
         
@@ -117,7 +118,7 @@ class DefaultView extends RenderDefault
                 $itemMenu = new ItemMenu($v, $label);
                 
                 if ((empty($tr["nr"])) || ((!empty($tr["ask"])) && is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
-                    $itemMenu->setUrl(sprintf("?app=FDL&action=EDITCHANGESTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
+                    $itemMenu->setUrl(sprintf("?app=FDL&action=EDITCHANGESTATE&nstate=%s&id={{document.properties.id}}", urlencode($v)));
                     $itemMenu->setTarget("_dialog"); // alternative to data-popup
                     
                 } else {
@@ -161,6 +162,7 @@ class DefaultView extends RenderDefault
             $menu->appendElement($sep);
             
             $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph"));
+            $itemMenu->setTarget("_dialog");
             $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
         }

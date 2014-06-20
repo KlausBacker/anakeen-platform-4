@@ -124,6 +124,11 @@ class RenderDefault implements RenderConfig
                         "file" => "DOCUMENT/IHM/views/attributes/tab/label.mustache"
                     )
                 )
+            ) ,
+            "window" => array(
+                "confirm" => array(
+                    "file" => "DOCUMENT/IHM/views/window/confirm.mustache"
+                )
             )
         );
     }

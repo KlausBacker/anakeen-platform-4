@@ -1,5 +1,8 @@
 <li data-menu-id="{{id}}" {{# htmlAttr}}{{attrId}}="{{attrValue}}"{{/ htmlAttr}}
+    class="menu__item"
     {{# disabled}}disabled="disabled"{{/ disabled}}
     {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
     >
-    <a href="{{url}}" >{{label}}</a></li>
+    <a {{# confirmationText}}class="menu--confirm" data-confirm="{{confirmationText}}"{{/confirmationText}}
+       {{# target}}target="{{target}}"{{/target}}
+       data-url="{{url}}" >{{label}}</a></li>

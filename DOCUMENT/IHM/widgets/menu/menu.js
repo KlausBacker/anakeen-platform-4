@@ -28,6 +28,9 @@ define([
             this.element.append($mainElement);
             $content.kendoMenu({openOnClick: false});
 
+            /**
+             * Fix menu when no see header
+             */
             $(window).scroll(function () {
                 if ($(window).scrollTop() > $mainElement.position().top) {
                     if (!$mainElement.data("isFixed")) {
@@ -41,6 +44,62 @@ define([
                     }
                 }
             });
+
+
+            $mainElement.on("click", ".menu__item a", function (event) {
+                event.stopPropagation();
+                var href=$(this).data('url');
+                //noinspection JSHint
+                if (href != '') {
+                    var target=$(this).attr("target") || '_self';
+                    console.log("target",target, $(this) );
+
+                    if (target === "_self") {
+                        window.location.href=href;
+                    } else if (target === "_dialog") {
+                        console.log("open in dailog",target, $(this) );
+                        var dw=$("<div/>");
+                        $('body').append(dw);
+                        dw.dcpWindow({
+                            content:href,
+                            iframe: true
+                        });
+                        _.delay(function() {
+                            console.log('DELAY', dw.find('iframe'));
+                        },1000);
+                        _.defer(function() {
+                            console.log('DEFER', dw.find('iframe'));
+                            dw.find('iframe').on("load", function () {
+                            console.log("IFRAME2 LOADED");
+                                dw.data("kendoWindow").setOptions({
+                                   title:$(this).contents().find( "title").html()
+                                });
+                           });
+                        });
+                        console.log('DIRECT',dw.find('iframe'));
+                        dw.on("load", "iframe", function () {
+                            console.log("IFRAME LOADED");
+                        });
+                        dw.data("kendoWindow").center();
+                    } else  {
+                        window.open(href, target);
+                    }
+                }
+            });
+            $mainElement.on("click", ".menu--confirm", function (event) {
+                event.stopPropagation();
+                var confirmText=$(this).data('confirm');
+                var $scope=$(this);
+                $('body').dcpConfirm({
+                    messages : {
+                      textMessage:confirmText
+                    },
+                    confirm : function () {
+                        //$scope.removeClass('menu--confirm');
+                        $scope.trigger("click");
+                    }
+                });
+            });
         },
 
         _insertMenuContent: function (menus, $content, currentWidget) {
@@ -49,7 +108,7 @@ define([
             _.each(menus, function (currentMenu) {
 
                 var $currentMenu;
-                if (currentMenu.visibility == "hidden") {
+                if (currentMenu.visibility === "hidden") {
                     return;
                 }
                 currentMenu.htmlAttr = [];
@@ -57,10 +116,8 @@ define([
                     currentMenu.htmlAttr.push({"attrId": attrId, "attrValue": attrValue});
                 });
 
-                if (currentMenu.tooltipLabel) {
 
-                }
-                currentMenu.disabled = (currentMenu.visibility == 'disabled');
+                currentMenu.disabled = (currentMenu.visibility === 'disabled');
                 if (currentMenu.type === "listMenu") {
                     subMenu = "listMenu";
 
@@ -110,8 +167,7 @@ define([
         },
 
         _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.menu
-                && window.dcp.templates.menu[name]) {
+            if (window.dcp && window.dcp.templates && window.dcp.templates.menu && window.dcp.templates.menu[name]) {
                 return window.dcp.templates.menu[name];
             }
             throw new Error("Menu unknown template " + name);
