@@ -4,12 +4,6 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Created by PhpStorm.
- * User: charles
- * Date: 03/06/14
- * Time: 12:16
- */
 
 namespace Dcp\Ui;
 
@@ -32,8 +26,9 @@ class RenderDefault implements RenderConfig
     public function getCssReferences()
     {
         return array(
-            "css/dcp/document/document.css",
-            "css/dcp/document/kendo.css"
+            "css/dcp/document/bootstrap.css",
+            "css/dcp/document/kendo.css",
+            "css/dcp/document/document.css"
         );
     }
     
