@@ -30,6 +30,9 @@ define([
 			data.options=this.model.getOptions();
             this.$el.addClass("dcpAttribute--type--"+this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
+            if (this.model.get("needed")) {
+                this.$el.addClass("dcpAttribute--needed");
+            }
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
             this.$el.find(".dcpAttribute__contentWrapper").dcpText(data);

@@ -53,7 +53,6 @@ class DocumentTemplateContext implements \ArrayAccess
         if ($this->_document->id == 0) {
             return array();
         }
-        
         if ($this->_documentCrud === null) {
             $this->_documentCrud = new \Dcp\HttpApi\V1\DocumentCrud();
             $this->_documentCrud->setDefaultFields($field);
@@ -99,8 +98,8 @@ class DocumentTemplateContext implements \ArrayAccess
     public function document()
     {
         return array(
-            "property" => $this->_getProperties() ,
-            "attribute" => $this->_getAttributes()
+            "properties" => $this->_getProperties() ,
+            "attributes" => $this->_getAttributes()
         );
     }
     /**

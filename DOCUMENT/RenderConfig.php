@@ -33,9 +33,20 @@ interface RenderConfig {
      */
     public function getTemplates();
     /**
-     * @return array deafault render configuration options
+     * @param \Doc $document
+     * @return RenderOptions deafault render configuration options
      */
-    public function getOptions();
+    public function getOptions(\Doc $document);
+    /**
+     * @param \Doc $document
+     * @return RenderAttributeVisibilities new attribute visibilities
+     */
+    public function getVisibilities(\Doc $document);
+    /**
+     * @param \Doc $document Document instance
+     * @return DocumentTemplateContext get template controller
+     */
+    public function getContextController(\Doc $document);
     /**
      * return "view" or "edit"
      * @return string

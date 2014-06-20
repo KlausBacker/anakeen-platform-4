@@ -19,27 +19,27 @@ class ElementMenu implements \JsonSerializable
     /**
      * @var string
      */
-    public $label = '';
+    protected $label = '';
     /**
      * @var string
      */
-    public $tooltipLabel = '';
+    protected $tooltipLabel = '';
     /**
      * @var string
      */
-    public $htmlAttributes = '';
+    protected $htmlAttributes = '';
     /**
      * @var string
      */
-    public $visibility = self::VisibilityVisible;
+    protected $visibility = self::VisibilityVisible;
     /**
      * @var string
      */
-    public $iconPath = '';
+    protected $iconPath = '';
     /**
      * @var int
      */
-    public $iconSize = 12;
+    protected $iconSize = 12;
     
     public function __construct($identifier, $label = '')
     {

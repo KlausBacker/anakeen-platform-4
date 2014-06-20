@@ -63,6 +63,16 @@ namespace {
          */
         const UI0101 = 'Menu insertAfter : Element index \"%s\" not exists';
         /**
+         * @errorCode the attribte not exists
+         * @see \Dcp\Ui\RenderAttributeVisibilities::setVisibility
+         */
+        const UI0102 = 'setVisibility : Attribute \"%s\" not exists for "%s" document';
+        /**
+         * @errorCode Visibility must be one of R,W,O,I,S,H
+         * @see \Dcp\Ui\RenderAttributeVisibilities::setVisibility
+         */
+        const UI0103 = 'setVisibility : Visibility "%s" not correct. Allowed are "%s';
+        /**
          * @errorCode the menu item not exist
          */
         const UI0200 = 'Value "%s" for Enum option "display" is invalid : allowed are : %s';

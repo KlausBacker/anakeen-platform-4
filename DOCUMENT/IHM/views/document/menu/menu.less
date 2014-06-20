@@ -1,3 +1,33 @@
 body {
-  padding-top: @navbar-height+@dcpHeaderHeight+5;
+  /*padding-top: @navbar-height+@dcpHeaderHeight+5;*/
+}
+
+
+.menu__content .k-menu .k-item > .k-link{
+  /*background-color: darken(@widget-background-color, 10%);*/
+  padding-top:0.5em;
+  padding-bottom:0.5em;
+}
+
+.menu__separator.k-state-hover, .menu__separator.k-state-hover:hover {
+  background-color:@dropdown-divider-bg;
+}
+.menu__separator.k-state-default {
+  background-color:@dropdown-divider-bg;
+  cursor : default;
+}
+.menu__separator.k-state-default .k-link {
+  cursor : default;
+}
+.menu__separator .menu__empty_separator {
+  border: 1px solid @dropdown-divider-bg;
+}
+
+.menu--fixed {
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:10;
+  background-color:@dropdown-bg;
+
 }

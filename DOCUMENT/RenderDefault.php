@@ -32,7 +32,8 @@ class RenderDefault implements RenderConfig
     public function getCssReferences()
     {
         return array(
-            "css/dcp/document/document.css"
+            "css/dcp/document/document.css",
+            "css/dcp/document/kendo.css"
         );
     }
     
@@ -76,14 +77,17 @@ class RenderDefault implements RenderConfig
                 "menu" => array(
                     "file" => "DOCUMENT/IHM/widgets/menu/menu.mustache",
                 ) ,
-                "element" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/element.mustache"
+                "itemMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/itemMenu.mustache"
                 ) ,
-                "dropdownmenu" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/dropdownmenu.mustache"
+                "listMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/listMenu.mustache"
                 ) ,
-                "dropdownsubmenu" => array(
-                    "file" => "DOCUMENT/IHM/widgets/menu/dropdownsubmenu.mustache"
+                "dynamicMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
+                ) ,
+                "separatorMenu" => array(
+                    "file" => "DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
                 )
             ) ,
             "attribute" => array(
@@ -129,9 +133,10 @@ class RenderDefault implements RenderConfig
         );
     }
     /**
+     * @param \Doc $document Document instance
      * @return RenderOptions
      */
-    public function getOptions()
+    public function getOptions(\Doc $document)
     {
         $opt = new RenderOptions();
         
@@ -139,7 +144,14 @@ class RenderDefault implements RenderConfig
         
         return $opt;
     }
-    
+    /**
+     * @param \Doc $document
+     * @return RenderAttributeVisibilities new attribute visibilities
+     */
+    public function getVisibilities(\Doc $document)
+    {
+        return new RenderAttributeVisibilities($document);
+    }
     public function getType()
     {
         return "abstract";
@@ -153,5 +165,13 @@ class RenderDefault implements RenderConfig
         $menu = new BarMenu();
         
         return $menu;
+    }
+    /**
+     * @param \Doc $document Document instance
+     * @return DocumentTemplateContext get template controller
+     */
+    public function getContextController(\Doc $document)
+    {
+        return new DocumentTemplateContext($document);
     }
 }

@@ -1,0 +1,8 @@
+<li data-menu-id="{{id}}" {{# htmlAttr}}{{attrId}}="{{attrValue}}"{{/ htmlAttr}}
+    class="menu__separator"
+    {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
+        >
+{{label}}
+{{^label}}  <div class="menu__empty_separator"></div> {{/label}}
+
+</li>

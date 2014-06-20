@@ -24,7 +24,7 @@ class DefaultView extends RenderDefault
      * @param \Doc $document
      * @return BarMenu
      */
-    protected function setMemuVisibility(BarMenu & $menu, \Doc $document)
+    protected function setMenuVisibility(BarMenu & $menu, \Doc $document)
     {
         
         if ($editErr = $document->CanEdit()) {
@@ -52,18 +52,26 @@ class DefaultView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $menu->appendElement(new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}"));
-        
-        $menu->appendElement(new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}"));
-        $menu->appendElement(new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}"));
+        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}");
+        $item->setTooltipLabel(___("Display document form", "UiMenu"));
+        $menu->appendElement($item);
+
+        $item=new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
+        $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
+        $menu->appendElement($item);
+
+        $item=new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
+        $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
+        $menu->appendElement($item);
         
         if ($document->wid > 0) {
-            $workflowMenu = new DynamicMenu("workflow", ___("Transition", "UiMenu"));
+            $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));
             $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
             {
                 $this->getWorkflowMenu($document, $menu);
             });
-            
+            $color = $document->getStateColor("transparent");
+            $workflowMenu->setHtmlAttribute("style", "float:right; background-color:$color");
             $menu->appendElement($workflowMenu);
         }
         
@@ -80,7 +88,7 @@ class DefaultView extends RenderDefault
         
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         
-        return $this->setMemuVisibility($menu, $document);
+        return $this->setMenuVisibility($menu, $document);
     }
     /**
      * Get workflow submenu contents
@@ -109,10 +117,7 @@ class DefaultView extends RenderDefault
                 $itemMenu = new ItemMenu($v, $label);
                 
                 if ((empty($tr["nr"])) || ((!empty($tr["ask"])) && is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
-                    
-                    $itemMenu->setHtmlAttribute("data-popup", 1);
-                    $itemMenu->setHtmlAttribute("data-popup-url", sprintf("?app=FDL&action=EDITCHANGESTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
-                    
+                    $itemMenu->setUrl(sprintf("?app=FDL&action=EDITCHANGESTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
                     $itemMenu->setTarget("_dialog"); // alternative to data-popup
                     
                 } else {
@@ -151,6 +156,13 @@ class DefaultView extends RenderDefault
                 
                 $menu->appendElement($itemMenu);
             }
+            
+            $sep = new SeparatorMenu('workflowSep');
+            $menu->appendElement($sep);
+            
+            $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph"));
+            $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
+            $menu->appendElement($itemMenu);
         }
     }
 }
