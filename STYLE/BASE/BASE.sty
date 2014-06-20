@@ -16,11 +16,10 @@ $sty_inherit = "STYLE/MODERN/MODERN.sty";
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
-        'dcp/document/document.css' => array(
+        'dcp/document/bootstrap.css' => array(
             "src" => array(
                 "bootstrap" => "STYLE/BASE/Layout/bootstrap.less",
-                "fontAwesome" => "STYLE/BASE/Layout/fontawesome.less",
-                "document" => "DOCUMENT/IHM/views/document/document.less"
+                "fontAwesome" => "STYLE/BASE/Layout/fontawesome.less"
             ) ,
             "deploy_parser" => array(
                 
@@ -36,6 +35,18 @@ $sty_rules = array(
                 "kendo-bootstrap" => "STYLE/BASE/Layout/kendo.bootstrap.less",
             ) ,
             "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpLessParser',
+                "options" => array(
+                    "sourceMap" => true
+                )
+            ),
+        ),
+        'dcp/document/document.css' => array(
+            "src" => array(
+                "document" => "DOCUMENT/IHM/views/document/document.less"
+            ),
+            "deploy_parser" => array(
+
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true
