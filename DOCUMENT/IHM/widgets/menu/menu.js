@@ -27,6 +27,20 @@ define([
             this._insertMenuContent(this.options.menus, $content);
             this.element.append($mainElement);
             $content.kendoMenu({openOnClick: false});
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > $mainElement.position().top) {
+                    if (!$mainElement.data("isFixed")) {
+                        $mainElement.data("isFixed", "1");
+                        $mainElement.parent().addClass("menu--fixed");
+                    }
+                } else {
+                    if ($mainElement.data("isFixed")) {
+                        $mainElement.data("isFixed", null);
+                        $mainElement.parent().removeClass("menu--fixed");
+                    }
+                }
+            });
         },
 
         _insertMenuContent: function (menus, $content, currentWidget) {
@@ -74,7 +88,7 @@ define([
                             throw new Error("SubMenu");
                         });
                     });
-                } else  {
+                } else {
                     currentMenu.document = currentWidget.options.document;
                     if (currentMenu.url) {
                         currentMenu.url = Mustache.render(currentMenu.url, currentMenu);

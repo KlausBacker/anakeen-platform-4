@@ -52,12 +52,17 @@ class DefaultView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $itemModify = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}");
-        $itemModify->setTooltipLabel(___("Display document form", "UiMenu"));
-        $menu->appendElement($itemModify);
-        
-        $menu->appendElement(new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}"));
-        $menu->appendElement(new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}"));
+        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}");
+        $item->setTooltipLabel(___("Display document form", "UiMenu"));
+        $menu->appendElement($item);
+
+        $item=new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
+        $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
+        $menu->appendElement($item);
+
+        $item=new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
+        $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
+        $menu->appendElement($item);
         
         if ($document->wid > 0) {
             $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));

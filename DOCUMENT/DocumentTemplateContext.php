@@ -98,8 +98,8 @@ class DocumentTemplateContext implements \ArrayAccess
     public function document()
     {
         return array(
-            "property" => $this->_getProperties() ,
-            "attribute" => $this->_getAttributes()
+            "properties" => $this->_getProperties() ,
+            "attributes" => $this->_getAttributes()
         );
     }
     /**

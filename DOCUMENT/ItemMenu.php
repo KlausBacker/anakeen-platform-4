@@ -9,9 +9,9 @@ namespace Dcp\Ui;
 
 class ItemMenu extends ElementMenu implements \JsonSerializable
 {
-    public $url = '';
-    
-    public $target = '_self';
+    protected $url = '';
+    protected  $target = '_self';
+    protected $confirmationText=null;
     
     public function __construct($identifier, $label, $url = '')
     {
@@ -37,6 +37,17 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
         $this->target = $target;
         return $this;
     }
+
+
+    /**
+     * If text is not null, ask a confirmation before send request
+     * @param string|null $text confirmation text
+     * @return $this
+     */
+    public function useConfirm($text) {
+        $this->confirmationText=$text;
+        return $this;
+    }
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -49,6 +60,7 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
         $json["type"] = "itemMenu";
         $json["url"] = $this->url;
         $json["target"] = $this->target;
+        $json["confirmationText"] = $this->confirmationText;
         return $json;
     }
 }
