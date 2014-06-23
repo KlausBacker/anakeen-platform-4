@@ -26,7 +26,10 @@ define([
             $content = $mainElement.find(".menu__content");
             this._insertMenuContent(this.options.menus, $content);
             this.element.append($mainElement);
-            $content.kendoMenu({openOnClick: false});
+            $content.kendoMenu({
+                openOnClick: true,
+                closeOnClick : false
+            });
 
             /**
              * Fix menu when no see header
@@ -46,40 +49,34 @@ define([
             });
 
 
-            $mainElement.on("click", ".menu__item a", function (event) {
+            $mainElement.on("click", ".menu__element--item a", function (event) {
                 event.stopPropagation();
                 var href=$(this).data('url');
                 //noinspection JSHint
                 if (href != '') {
+                    if ($(this).hasClass("menu--confirm")) {
+                        return;
+                    }
                     var target=$(this).attr("target") || '_self';
-                    console.log("target",target, $(this) );
 
                     if (target === "_self") {
                         window.location.href=href;
                     } else if (target === "_dialog") {
-                        console.log("open in dailog",target, $(this) );
                         var dw=$("<div/>");
                         $('body').append(dw);
                         dw.dcpWindow({
                             content:href,
                             iframe: true
                         });
-                        _.delay(function() {
-                            console.log('DELAY', dw.find('iframe'));
-                        },1000);
+
                         _.defer(function() {
-                            console.log('DEFER', dw.find('iframe'));
                             dw.find('iframe').on("load", function () {
-                            console.log("IFRAME2 LOADED");
                                 dw.data("kendoWindow").setOptions({
                                    title:$(this).contents().find( "title").html()
                                 });
                            });
                         });
-                        console.log('DIRECT',dw.find('iframe'));
-                        dw.on("load", "iframe", function () {
-                            console.log("IFRAME LOADED");
-                        });
+
                         dw.data("kendoWindow").center();
                     } else  {
                         window.open(href, target);
@@ -95,8 +92,9 @@ define([
                       textMessage:confirmText
                     },
                     confirm : function () {
-                        //$scope.removeClass('menu--confirm');
+                        $scope.removeClass('menu--confirm');
                         $scope.trigger("click");
+                        $scope.addClass('menu--confirm');
                     }
                 });
             });
@@ -113,7 +111,11 @@ define([
                 }
                 currentMenu.htmlAttr = [];
                 _.each(currentMenu.htmlAttributes, function (attrValue, attrId) {
-                    currentMenu.htmlAttr.push({"attrId": attrId, "attrValue": attrValue});
+                    if (attrId === "class") {
+                        currentMenu.cssClass=attrValue;
+                    } else {
+                       currentMenu.htmlAttr.push({"attrId": attrId, "attrValue": attrValue});
+                    }
                 });
 
 
@@ -140,7 +142,12 @@ define([
                                 data.content,
                                 $currentMenu.find(".listmenu__content"),
                                 currentWidget);
-                            $currentMenu.kendoMenu();
+                            $currentMenu.kendoMenu({
+                                openOnClick: true,
+                                closeOnClick : false
+                            });
+
+
                         }).fail(function (data) {
                             throw new Error("SubMenu");
                         });

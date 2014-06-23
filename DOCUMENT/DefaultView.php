@@ -54,11 +54,14 @@ class DefaultView extends RenderDefault
         
         $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}");
         $item->setTooltipLabel(___("Display document form", "UiMenu"));
+        $item->setBeforeContent('<div class="fa fa-pencil" />');
+        
         $menu->appendElement($item);
         
         $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
         $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
         $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getTitle()));
+        $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);
         
         $item = new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
@@ -71,8 +74,8 @@ class DefaultView extends RenderDefault
             {
                 $this->getWorkflowMenu($document, $menu);
             });
-            $color = $document->getStateColor("transparent");
-            $workflowMenu->setHtmlAttribute("style", "float:right; background-color:$color");
+            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+            $workflowMenu->setHtmlAttribute("class", "menu--workflow");
             $menu->appendElement($workflowMenu);
         }
         
@@ -127,7 +130,16 @@ class DefaultView extends RenderDefault
                 $visibility = $itemMenu::VisibilityVisible;
                 $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
                 //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
-                $icon = (!$tr) ? "Images/noaccess.png" : "";
+                $icon = '';
+                if (!$tr) {
+                    // $itemMenu->setHtmlLabel(sprintf('%s <div class="fa fa-warning menu--transition-unknow" /> ', htmlspecialchars($label)));
+                    $itemMenu->setTextLabel('');
+                    $itemMenu->setHtmlLabel(sprintf('<div class="menu--transition-unknow" >%s <div class="fa fa-warning" /> </div>', htmlspecialchars($label)));
+                    
+                    $itemMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square menu--transition" />', $wdoc->getColor($v)));
+                } else {
+                    $itemMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square menu--transition" />', $wdoc->getColor($v)));
+                }
                 if ($tr && (!empty($tr["m0"]))) {
                     // verify m0
                     $err = call_user_func(array(
@@ -151,7 +163,8 @@ class DefaultView extends RenderDefault
                 
                 $color = $wdoc->getColor($v);
                 if ($color) {
-                    $itemMenu->setHtmlAttribute("style", "background-color:$color");
+                    //$itemMenu->setHtmlAttribute("style", "border-right:solid 10px $color");
+                    
                 }
                 $itemMenu->setVisibility($visibility);
                 

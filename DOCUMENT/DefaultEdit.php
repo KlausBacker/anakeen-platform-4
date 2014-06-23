@@ -26,12 +26,43 @@ class DefaultEdit extends RenderDefault
     public function getMenu(\Doc $document)
     {
         $menu = new BarMenu();
+        $user = getCurrentUser();
         if ($document->id > 0) {
-            $menu->appendElement(new ItemMenu("save", ___("Save", "UiMenu") , "#save/{{document.properties.id}}"));
+            $item = new ItemMenu("save", ___("Save", "UiMenu") , "#save/{{document.properties.id}}");
+            $item->setBeforeContent('<div class="fa fa-save" />');
+            $item->setTooltipLabel(___("Record document to server", "UiMenu"));
+            $menu->appendElement($item);
+            if ($user->id === "1") {
+                $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#save!/{{document.properties.id}}");
+                $item->setVisibility($item::VisibilityHidden);
+                $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
+                $menu->appendElement($item);
+            }
         } else {
-            $menu->appendElement(new ItemMenu("save", ___("Create", "UiMenu") , "#create/{{document.properties.id}}"));
+            $item = new ItemMenu("save", ___("Create", "UiMenu") , "#create/{{document.properties.id}}");
+            $item->setBeforeContent('<div class="fa fa-save" />');
+            $item->setTooltipLabel(___("Record document to server", "UiMenu"));
+            $menu->appendElement($item);
+            if ($user->id === "1") {
+                $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#save!/{{document.properties.id}}");
+                $item->setVisibility($item::VisibilityHidden);
+                $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
+                $menu->appendElement($item);
+            }
         }
-        $menu->appendElement(new ItemMenu("cancel", ___("Cancel", "UiMenu") , "#cancel/{{document.properties.id}}"));
+        $item = new ItemMenu("cancel", ___("Cancel", "UiMenu") , "#cancel/{{document.properties.id}}");
+        $item->setBeforeContent('<div class="fa fa-undo" />');
+        $item->setTooltipLabel(___("Abord modifications", "UiMenu"));
+        $menu->appendElement($item);
+        
+        if ($document->wid > 0) {
+            $workflowMenu = new SeparatorMenu("workflow", _($document->getStateActivity($document->getState())));
+            //$workflowMenu->setHtmlAttribute("style", "float:right;background-color:inherit");
+            $workflowMenu->setHtmlAttribute("class", "menu--workflow");
+            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+            
+            $menu->appendElement($workflowMenu);
+        }
         
         return $menu;
     }
