@@ -10,9 +10,10 @@ namespace Dcp\Ui;
 class ItemMenu extends ElementMenu implements \JsonSerializable
 {
     protected $url = '';
-    protected  $target = '_self';
-    protected $confirmationText=null;
-    
+    protected $target = '_self';
+    protected $confirmationText = null;
+    protected $confirmationOptions = null;
+    protected $targetOptions = null;
     public function __construct($identifier, $label, $url = '')
     {
         parent::__construct($identifier, $label);
@@ -32,20 +33,28 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
      * @param string $target
      * @return $this
      */
-    public function setTarget($target)
+    public function setTarget($target, MenuTargetOptions $options = null)
     {
         $this->target = $target;
+        if ($options === null) {
+            $options = new MenuTargetOptions();
+        }
+        $this->targetOptions = $options;
         return $this;
     }
-
-
     /**
      * If text is not null, ask a confirmation before send request
      * @param string|null $text confirmation text
+     * @param \Dcp\Ui\MenuConfirmOptions $options additionnal options (confirmTitle, confirmOkMessage, confirmCancelMEssage, windowWidth, windowHeight)
      * @return $this
      */
-    public function useConfirm($text) {
-        $this->confirmationText=$text;
+    public function useConfirm($text, MenuConfirmOptions $options = null)
+    {
+        $this->confirmationText = $text;
+        if ($options === null) {
+            $options = new MenuConfirmOptions();
+        }
+        $this->confirmationOptions = $options;
         return $this;
     }
     /**
@@ -60,7 +69,30 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
         $json["type"] = "itemMenu";
         $json["url"] = $this->url;
         $json["target"] = $this->target;
+        $json["targetOptions"] = $this->targetOptions;
         $json["confirmationText"] = $this->confirmationText;
+        $json["confirmationOptions"] = $this->confirmationOptions;
         return $json;
     }
+}
+
+class MenuConfirmOptions extends MenuTargetOptions
+{
+    public $confirmButton = null;
+    public $cancelButton = null;
+    
+    public function __construct()
+    {
+        $this->cancelButton = ___("Cancel", "UiMenu");
+        $this->confirmButton = ___("Confirm", "UiMenu");
+    }
+}
+class MenuTargetOptions
+{
+    /**
+     * @var string title of window
+     */
+    public $title = null;
+    public $windowWidth = "300px";
+    public $windowHeight = "200px";
 }

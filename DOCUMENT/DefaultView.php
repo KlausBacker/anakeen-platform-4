@@ -41,7 +41,21 @@ class DefaultView extends RenderDefault
             $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
         }
         
-        $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityDisabled);
+        if ($document->isLocked()) {
+            $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
+            $cuf = ($document->CanUnLockFile() == "");
+            if (!$cuf) {
+                if ($document->locked == - 1) {
+                    
+                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+                } else {
+                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled);
+                }
+            }
+        } else {
+            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+        }
+        
         return $menu;
     }
     /**
@@ -60,7 +74,12 @@ class DefaultView extends RenderDefault
         
         $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
         $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
-        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getTitle()));
+        $confirmOption = new MenuConfirmOptions();
+        $confirmOption->title = ___("Confirm deletion of {{document.properties.title}}");
+        $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
+        $confirmOption->windowWidth = "350px";
+        $confirmOption->windowHeight = "150px";
+        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getTitle()) , $confirmOption);
         $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);
         
@@ -83,7 +102,12 @@ class DefaultView extends RenderDefault
         $menu->getElement("histo")->setTarget('_blank')->setHtmlAttribute("date-test", "testing");
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
-        $menu->getElement("advanced")->appendElement(new ItemMenu("properties", ___("Properties", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}"));
+        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
+        $targetOption = new MenuTargetOptions();
+        $targetOption->windowHeight = "400px";
+        $targetOption->windowWidth = "400px";
+        $item->setTarget("_dialog", $targetOption);
+        $menu->getElement("advanced")->appendElement($item);
         
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
         $securitySubMenu->appendElement(new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=...={{document.properties.id}}"));
@@ -174,7 +198,7 @@ class DefaultView extends RenderDefault
             $sep = new SeparatorMenu('workflowSep');
             $menu->appendElement($sep);
             
-            $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph"));
+            $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph", "UiMenu"));
             $itemMenu->setTarget("_dialog");
             $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);

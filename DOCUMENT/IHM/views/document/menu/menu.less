@@ -11,20 +11,23 @@ body {
 }
 
 .menu--separator.k-state-hover, .menu--separator.k-state-hover:hover {
-  background-color: @dropdown-divider-bg;
 }
 
 .menu--separator.k-state-default {
-  background-color: @dropdown-divider-bg;
+  background-color: inherit;
+  border-color: @dropdown-divider-bg;
+  border-style: solid;
   cursor: default;
 }
-
+.k-menu .k-group .k-item.menu--separator.k-state-default {
+  border-width: 1px 0 1px 0;
+}
 .menu--separator.k-state-default .k-link {
   cursor: default;
 }
 
 .menu--separator .menu__empty_separator {
-  border: 1px solid @dropdown-divider-bg;
+
 }
 
 .menu--fixed {
@@ -74,4 +77,7 @@ body {
 .menu--separator.menu--workflow.k-state-hover,
 .menu--separator.menu--workflow.k-state-hover:hover {
   background-color: inherit;
+}
+div[data-role=draggable] .k-window-title {
+  cursor:move;
 }

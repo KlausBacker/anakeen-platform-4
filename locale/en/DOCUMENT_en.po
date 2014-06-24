@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-23 13:18+0200\n"
+"POT-Creation-Date: 2014-06-24 12:22+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -37,6 +37,17 @@ msgstr ""
 
 msgctxt "my"
 msgid "Confims"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Confirm"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Confirm deletion"
+msgstr ""
+
+msgid "Confirm deletion of {{document.properties.title}}"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -171,13 +182,13 @@ msgctxt "UiMenu"
 msgid "Security"
 msgstr ""
 
-msgctxt "my"
-msgid "Sep1"
-msgstr ""
-
 #, php-format
 msgctxt "UiMenu"
 msgid "Sure delete %s ?"
+msgstr ""
+
+msgctxt "my"
+msgid "Séparateur"
 msgstr ""
 
 msgid "Test"
@@ -190,6 +201,7 @@ msgstr ""
 msgid "View documents"
 msgstr ""
 
+msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr ""
 

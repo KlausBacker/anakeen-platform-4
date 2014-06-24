@@ -26,10 +26,8 @@ define([
 
         },
 
-        currentWidget : null,
 
         _create : function () {
-            console.log("confirm create");
             this.options.templateData.messages=this.options.messages;
             this.currentWidget=$(Mustache.render(this._getWindowTemplate('confirm'), this.options.templateData));
             this.element.append(this.currentWidget);
@@ -51,18 +49,10 @@ define([
                 }
             });
 
+            this.element.data("dcpWindow", this);
            // this.currentWidget.find('button').kendoButton();
-        },
-
-        destroy : function () {
-            this.currentWidget.data("kendoWindow").destroy();
-            this._super();
-        },
-        open : function () {
-            this.currentWidget.data("kendoWindow").open();
-        },
-        close : function () {
-            this.currentWidget.data("kendoWindow").close();
         }
+
+
     });
 });

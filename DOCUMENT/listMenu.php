@@ -21,22 +21,6 @@ class ListMenu extends ElementMenu
         $json = parent::jsonSerialize();
         $json["type"] = "listMenu";
         $json["content"] = array();
-        $hasIcon = false;
-        foreach ($this->content as $element) {
-            if ($element->getIconUrl()) {
-                $hasIcon = true;
-                break;
-            }
-        }
-        if ($hasIcon) {
-            // add transparent icon on all element
-            foreach ($this->content as $element) {
-                if (!$element->getIconUrl() && !$element->getBeforeContent()) {
-                    $element->setIcon("Images/1x1.gif", 0);
-                }
-            }
-        }
-        
         foreach ($this->content as $element) {
             $json["content"][] = $element;
         }
