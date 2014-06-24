@@ -16,7 +16,7 @@ define([
         },
 
         _create : function() {
-            if (!this.options.value) {
+            if (this.options.value === null ) {
                 this.options.value = {};
             }
             this._initDom();

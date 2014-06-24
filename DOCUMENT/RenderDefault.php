@@ -100,6 +100,14 @@ class RenderDefault implements RenderConfig
                         "file" => "DOCUMENT/IHM/widgets/attributes/text/read.mustache"
                     )
                 ) ,
+                "docid" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/read.mustache"
+                    )
+                ) ,
                 "frame" => array(
                     "label" => array(
                         "file" => "DOCUMENT/IHM/views/attributes/frame/label.mustache"

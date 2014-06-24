@@ -3,6 +3,7 @@
 @import "../attributes/attribute.less";
 @import "../../widgets/attributes/label/label";
 @import "../../widgets/attributes/text/text";
+@import "../../widgets/attributes/docid/docid";
 @import "../../widgets/attributes/array/array";
 
 @dcpHeaderHeight : 30px;
@@ -61,4 +62,7 @@ body {
 .confirm--buttons button {
   min-width:6em;
 }
-
+a:hover {
+  text-decoration: none;
+  background-color:lighten(@link-hover-color, 50%);
+}

@@ -125,18 +125,6 @@ class DocumentTemplateContext implements \ArrayAccess
         
         return $this->_getDocumentData("family.structure");
     }
-    
-    protected function getAttributeInfo(\BasicAttribute $oa)
-    {
-        return array(
-            "id" => $oa->id,
-            "visibility" => $oa->mvisibility,
-            "label" => $oa->getLabel() ,
-            "type" => $oa->type,
-            "multiple" => $oa->isMultiple() ,
-            "index" => $oa->ordered
-        );
-    }
     /**
      *
      * Whether a offset exists

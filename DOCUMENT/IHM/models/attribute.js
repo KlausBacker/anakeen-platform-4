@@ -136,7 +136,7 @@ define([
                     } else {
                         // Modify displayValue with showEmptyContent option
                         var gv = this.get("value");
-                        gv.displayValue = this.getOption('showEmptyContent');
+                        gv.emptyValue = this.getOption('showEmptyContent');
                         this.set("value", gv);
                     }
                 }
@@ -179,15 +179,15 @@ define([
          */
         getOptions: function () {
             var options = {};
-            var optionCommon = window.dcp.renderOptions["common"] || {};
+            var optionCommon = window.dcp.renderOptions.common || {};
             var optionValue = {};
             var optionAttribute = {};
 
-            if (window.dcp.renderOptions["types"]) {
-                optionValue = window.dcp.renderOptions["types"][this.get("type")] || {};
+            if (window.dcp.renderOptions.types) {
+                optionValue = window.dcp.renderOptions.types[this.get("type")] || {};
             }
-            if (window.dcp.renderOptions["attributes"]) {
-                optionAttribute = window.dcp.renderOptions["attributes"][this.id] || {};
+            if (window.dcp.renderOptions.attributes) {
+                optionAttribute = window.dcp.renderOptions.attributes[this.id] || {};
             }
 
             _.extend(options, optionCommon, optionValue, optionAttribute);

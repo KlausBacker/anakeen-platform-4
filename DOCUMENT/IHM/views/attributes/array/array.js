@@ -56,14 +56,17 @@ define([
 
         initWidget : function(event, options) {
             var model = this.model;
+            var scope=this;
             options.element.find(".dcpArray__content__cell").each(function(index, element) {
                 var $element = $(element), currentAttribute = model.get("content").get($element.data("attrid"));
                 if (currentAttribute.isDisplayable()) {
-                    $(element).dcpText(currentAttribute.toData(options.line));
+                    scope.dcpArraySwitch(currentAttribute.attributes.type,
+                        $(element),
+                        currentAttribute.toData(options.line));
                 } else {
                    throw new Error("Try to display a non displayable attribute "+currentAttribute.id);
                 }
-            })
+            });
         },
 
         refresh : function() {
@@ -77,6 +80,18 @@ define([
                currentContent.removeLine(options.line);
             });
             this.refresh();
+        },
+
+        dcpArraySwitch: function (attrType, $element, method) {
+            switch (attrType) {
+                case "text" :
+                    return $element.dcpText(method);
+                case "account" :
+                case "docid" :
+                    return $element.dcpDocid(method);
+                default:
+                    return $element.dcpText(method);
+            }
         }
     });
 
