@@ -31,6 +31,8 @@ define([
                 return value.isDisplayable();
             });
 
+            $(".dcpLoading").dcpLoading("addItem");
+
             if (!hasOneContent) {
                 $content.append(this.model.getOption('showEmptyContent'));
             } else {
@@ -38,6 +40,7 @@ define([
                     var view;
                     try {
                         if (!currentAttr.isDisplayable()) {
+                            $(".dcpLoading").dcpLoading("addItem", currentAttr.attributes.content.length );
                             return;
                         }
                         if (currentAttr.get("type") === "frame") {

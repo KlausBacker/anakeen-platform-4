@@ -11,7 +11,6 @@ define([
             id : "",
             type : "text"
         },
-
         _initDom : function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
         },

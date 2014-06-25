@@ -31,6 +31,7 @@ define([
 
         render : function () {
             var $content, model = this.model, $el = this.$el;
+            var $loading=$(".dcpLoading");
             console.time("render doc");
             //add document base
             try {
@@ -38,6 +39,7 @@ define([
             } catch (e) {
                 console.log(e);
             }
+            $loading.dcpLoading("percent",10);
             //add menu
             console.time("render menu");
             try {
@@ -46,14 +48,18 @@ define([
                 console.log(e);
             }
             console.timeEnd("render menu");
+            $loading.dcpLoading("percent",20);
             //add first level attributes
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
+            $loading.dcpLoading("setRest",this.model.get("attributes").length );
+            console.log("Atrtribut",this.model.get("attributes") );
             this.model.get("attributes").each(function (currentAttr) {
                 var view, viewTabLabel, viewTabContent;
                 if (!currentAttr.isDisplayable()) {
                     return;
                 }
+
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
                         view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
@@ -72,6 +78,7 @@ define([
                         console.error(e);
                     }
                 }
+
             });
             $el.find('.dcpDocument__tabs__list a:first').tab('show');
             console.timeEnd("render attributes");

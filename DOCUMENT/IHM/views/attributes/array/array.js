@@ -23,12 +23,14 @@ define([
         render : function () {
             console.time("render array " + this.model.id);
             var data = this.model.toData();
+
+            $(".dcpLoading").dcpLoading("addItem",data.content.length +1 );
             data.content = _.filter(data.content, function(currentContent) {
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
             this.$el.dcpArray(data);
-            console.timeEnd("render attribute " + this.model.id);
+            console.timeEnd("render array " + this.model.id);
             return this;
         },
 
