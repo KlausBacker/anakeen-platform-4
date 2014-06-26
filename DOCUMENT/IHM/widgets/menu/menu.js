@@ -20,6 +20,7 @@ define([
         _initStructure: function () {
             console.time("widget menu");
             var $content, $mainElement;
+            var scopeWidget = this;
             // this.element.addClass("navbar navbar-default navbar-fixed-top");
             // this.element.attr("role", "navigation");
             $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid: this.uuid}, this.options)));
@@ -28,7 +29,101 @@ define([
             this.element.append($mainElement);
             $content.kendoMenu({
                 openOnClick: true,
-                closeOnClick: false
+                closeOnClick: false,
+                select: function (event) {
+                    var menuElement = $(event.item);
+
+
+                    if (!menuElement.hasClass("menu__element--item")) {
+                        var menuUrl = menuElement.data("menu-url");
+                        $.getJSON(menuUrl,function (data) {
+                            menuElement.find(".listmenu__content").html('');
+                            scopeWidget._insertMenuContent(
+                                data.content,
+                                menuElement.find(".listmenu__content"),
+                                scopeWidget, menuElement);
+                            menuElement.kendoMenu({
+                                openOnClick: true,
+                                closeOnClick: false
+                            });
+
+
+                        }).fail(function (data) {
+                            console.log(data);
+                            throw new Error("SubMenu");
+                        });
+                        return;
+                    }
+
+                    if (!menuElement.hasClass("menu__element--item")) {
+                        return;
+                    }
+                    var thea = $(event.item).find('a');
+                    var href = thea.data('url');
+                    var configMenu;
+                    //noinspection JSHint
+                    if (href != '') {
+                        if (thea.hasClass("menu--confirm")) {
+                            var confirmText = thea.data('confirm-message');
+
+                            configMenu = menuElement.data("menuConfiguration");
+                            var confirmOptions = configMenu.confirmationOptions || {};
+
+                            var dwConfirm = $('body').dcpConfirm({
+                                title: Mustache.render(confirmOptions.title, window.dcp.documentData),
+                                width: confirmOptions.windowWidth,
+                                height: confirmOptions.windowHeight,
+                                messages: {
+                                    okMessage: Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
+                                    cancelMessage: Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
+                                    textMessage: confirmText
+                                },
+                                confirm: function () {
+                                    thea.removeClass('menu--confirm');
+                                    thea.trigger("click");
+                                    thea.addClass('menu--confirm');
+                                }
+                            });
+                            dwConfirm.data('dcpWindow').open();
+                        } else {
+                            var target = thea.attr("target") || '_self';
+
+                            if (target === "_self") {
+                                window.location.href = href;
+                            } else if (target === "_dialog") {
+                                configMenu = menuElement.data("menuConfiguration");
+                                var targetOptions = configMenu.targetOptions || {};
+
+                                var bdw = $('<div/>');
+                                $('body').append(bdw);
+
+                                var dw = bdw.dcpWindow({
+                                    title: Mustache.render(targetOptions.title, window.dcp.documentData),
+                                    width: targetOptions.windowWidth,
+                                    height: targetOptions.windowHeight,
+                                    content: href,
+                                    iframe: true
+                                });
+
+
+                                dw.data('dcpWindow').kendoWindow().center();
+                                dw.data('dcpWindow').open();
+
+
+                                _.defer(function () {
+                                    dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
+                                        dw.data('dcpWindow').kendoWindow().setOptions({
+                                            title: $(this).contents().find("title").html()
+                                        });
+                                    });
+                                });
+
+                            } else {
+                                window.open(href, target);
+                            }
+                        }
+                    }
+                }
             });
 
             /**
@@ -49,77 +144,6 @@ define([
             });
 
 
-            $mainElement.on("click", ".menu__element--item a", function (event) {
-                event.stopPropagation();
-                var href = $(this).data('url');
-                //noinspection JSHint
-                if (href != '') {
-                    if ($(this).hasClass("menu--confirm")) {
-                        return;
-                    }
-                    var target = $(this).attr("target") || '_self';
-
-                    if (target === "_self") {
-                        window.location.href = href;
-                    } else if (target === "_dialog") {
-                        var configMenu = $(this).parent().data("menuConfiguration");
-                        var targetOptions = configMenu.targetOptions || {};
-
-                        var bdw=$('<div/>');
-                        $('body').append(bdw);
-
-                        var dw=bdw.dcpWindow({
-                            title: Mustache.render(targetOptions.title, window.dcp.documentData),
-                            width: targetOptions.windowWidth,
-                            height: targetOptions.windowHeight,
-                            content: href,
-                            iframe: true
-                        });
-
-
-
-
-                        dw.data('dcpWindow').kendoWindow().center();
-                        dw.data('dcpWindow').open();
-
-
-                        _.defer(function () {
-                            dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
-                                dw.data('dcpWindow').kendoWindow().setOptions({
-                                    title: $(this).contents().find("title").html()
-                                });
-                            });
-                        });
-
-                    } else {
-                        window.open(href, target);
-                    }
-                }
-            });
-            $mainElement.on("click", ".menu--confirm", function (event) {
-                event.stopPropagation();
-                var confirmText = $(this).data('confirm-message');
-                var $scope = $(this);
-                var configMenu = $(this).parent().data("menuConfiguration");
-                var confirmOptions = configMenu.confirmationOptions || {};
-
-                var dwConfirm=$('body').dcpConfirm({
-                    title: Mustache.render(confirmOptions.title, window.dcp.documentData),
-                    width: confirmOptions.windowWidth,
-                    height: confirmOptions.windowHeight,
-                    messages: {
-                        okMessage: Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
-                        cancelMessage: Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
-                        textMessage: confirmText
-                    },
-                    confirm: function () {
-                        $scope.removeClass('menu--confirm');
-                        $scope.trigger("click");
-                        $scope.addClass('menu--confirm');
-                    }
-                });
-                dwConfirm.data('dcpWindow').open();
-            });
         },
 
         _insertMenuContent: function (menus, $content, currentWidget, scopeMenu) {
@@ -177,25 +201,7 @@ define([
                     }
                     $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu), currentMenu));
 
-                    $currentMenu.on("click", function () {
 
-                        var menuUrl = $(this).data("menu-url");
-                        $.getJSON(menuUrl,function (data) {
-                            $currentMenu.find(".listmenu__content").html('');
-                            currentWidget._insertMenuContent(
-                                data.content,
-                                $currentMenu.find(".listmenu__content"),
-                                currentWidget, currentMenu);
-                            $currentMenu.kendoMenu({
-                                openOnClick: true,
-                                closeOnClick: false
-                            });
-
-
-                        }).fail(function (data) {
-                            throw new Error("SubMenu");
-                        });
-                    });
                 } else {
                     currentMenu.document = currentWidget.options.document;
                     if (currentMenu.url) {

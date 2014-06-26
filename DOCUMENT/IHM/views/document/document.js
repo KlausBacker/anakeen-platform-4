@@ -1,11 +1,13 @@
 /*global define*/
 
-if (! window.console) {
-    window.console={};
+if (!window.console) {
+    window.console = {};
 }
-if (window.console && ! (window.console.time)) {
-    window.console.timeEnd = function (x) {};
-    window.console.time = function (x) {};
+if (window.console && !(window.console.time)) {
+    window.console.timeEnd = function (x) {
+    };
+    window.console.time = function (x) {
+    };
 }
 
 define([
@@ -21,17 +23,17 @@ define([
 
     return Backbone.View.extend({
 
-        className : "dcpDocument container-fluid",
+        className: "dcpDocument container-fluid",
 
-        initialize : function () {
+        initialize: function () {
             this.listenTo(this.model, 'destroy', this.remove);
             this.template = window.dcp.templates.body;
             this.partials = window.dcp.templates.sections;
         },
 
-        render : function () {
+        render: function () {
             var $content, model = this.model, $el = this.$el;
-            var $loading=$(".dcpLoading");
+            var $loading = $(".dcpLoading");
             console.time("render doc");
             //add document base
             try {
@@ -39,21 +41,20 @@ define([
             } catch (e) {
                 console.log(e);
             }
-            $loading.dcpLoading("percent",10);
+            $loading.dcpLoading("percent", 10);
             //add menu
             console.time("render menu");
             try {
-                new ViewDocumentMenu({model : this.model, el : this.$el.find(".dcpDocument__menu")[0]}).render();
-            } catch(e) {
+                new ViewDocumentMenu({model: this.model, el: this.$el.find(".dcpDocument__menu")[0]}).render();
+            } catch (e) {
                 console.log(e);
             }
             console.timeEnd("render menu");
-            $loading.dcpLoading("percent",20);
+            $loading.dcpLoading("percent", 20);
             //add first level attributes
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
-            $loading.dcpLoading("setRest",this.model.get("attributes").length );
-            console.log("Atrtribut",this.model.get("attributes") );
+            $loading.dcpLoading("setRest", this.model.get("attributes").length);
             this.model.get("attributes").each(function (currentAttr) {
                 var view, viewTabLabel, viewTabContent;
                 if (!currentAttr.isDisplayable()) {
@@ -62,19 +63,19 @@ define([
 
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
-                        view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
+                        view = new ViewAttributeFrame({model: model.get("attributes").get(currentAttr.id)});
                         $content.prepend(view.render().$el);
-                    } catch(e) {
+                    } catch (e) {
                         console.error(e);
                     }
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
-                        viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);
-                    } catch(e) {
+                    } catch (e) {
                         console.error(e);
                     }
                 }

@@ -1,5 +1,5 @@
 /*global require*/
-'use strict';
+
 
 // Require.js allows us to configure shortcut alias
 require.config({
@@ -56,6 +56,7 @@ require([
     'bootstrap'/*,
      'kendo'*/
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
+    'use strict';
     /*jshint nonew:false*/
     var document = window.dcp.documentData.document, model;
     window.dcp = window.dcp || {};
