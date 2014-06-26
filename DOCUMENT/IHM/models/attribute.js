@@ -41,6 +41,7 @@ define([
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
+            console.log("before set", this.get("value"));
             currentValue = _.clone(this.get("value"));
             if (this.get("multiple")) {
                 currentValue[index] = value;

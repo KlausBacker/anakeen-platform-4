@@ -1,4 +1,10 @@
-DOCID <input type="text" name="{{id}}" id="{{viewCid}}"
-       {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
-class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--docid"
-value="{{value.value}}"/>
+<input type="hidden" name="{{id}}" id="{{viewCid}}"
+       class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--docid"
+       value="{{value.value}}"/>
+<div class="input-group margin-bottom-sm">
+<span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+
+<input type="text"
+       class="form-control dcpAttribute__content--docid--title"
+       value="{{value.displayValue}}"/>
+</div>

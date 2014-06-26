@@ -98,8 +98,12 @@ class DefaultView extends RenderDefault
             $menu->appendElement($workflowMenu);
         }
         
-        $menu->appendElement(new ItemMenu("histo", ___("Historic", "UiMenu") , "#historic/{{document.properties.id}}"));
-        $menu->getElement("histo")->setTarget('_blank')->setHtmlAttribute("date-test", "testing");
+        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "?app=FREEDOM&action=HISTO&id={{document.properties.id}}");
+        $targetOption = new MenuTargetOptions();
+        $targetOption->windowHeight = "400px";
+        $targetOption->windowWidth = "600px";
+        $item->setTarget("_dialog", $targetOption);
+        $menu->appendElement($item);
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
         $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
@@ -110,7 +114,12 @@ class DefaultView extends RenderDefault
         $menu->getElement("advanced")->appendElement($item);
         
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
-        $securitySubMenu->appendElement(new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=...={{document.properties.id}}"));
+        $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
+        $targetOption = new MenuTargetOptions();
+        $targetOption->windowHeight = "400px";
+        $targetOption->windowWidth = "600px";
+        $item->setTarget("_dialog", $targetOption);
+        $securitySubMenu->appendElement($item);
         $securitySubMenu->appendElement(new ItemMenu("lock", ___("Lock", "UiMenu") , "?app=...={{document.properties.id}}"));
         $securitySubMenu->appendElement(new ItemMenu("unlock", ___("Unlock", "UiMenu") , "?app=...={{document.properties.id}}"));
         

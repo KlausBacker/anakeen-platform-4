@@ -35,6 +35,12 @@ $action_desc = array(
         "script" => "action-submenu.php",
         "function" => "submenu",
         "acl" => "VIEW_RENDER"),
+    array(
+        "name" => "AUTOCOMPLETE",
+        "short_name" => N_("Autocomplete attributes"),
+        "script" => "action-autocomplete.php",
+        "function" => "autocomplete",
+        "acl" => "VIEW_RENDER"),
 );
 
 

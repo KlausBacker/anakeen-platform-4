@@ -35,7 +35,7 @@ define([
                 this.element.find(".dcpAttribute__content").text(value.displayValue);
                 return;
             }
-        throw new Error("Attribute "+this.options.id+" unkown mode "+this.getMode());
+            throw new Error("Attribute "+this.options.id+" unkown mode "+this.getMode());
         },
 
         _getTemplate : function (name) {
