@@ -49,6 +49,7 @@ define([
         },
 
         updateValue : function(event, options) {
+            console.log("IN ARRAY update value");
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);

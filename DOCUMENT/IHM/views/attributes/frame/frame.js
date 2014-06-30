@@ -57,8 +57,6 @@ define([
                     } catch (e) {
                         console.error(e);
                     }
-
-
                 });
             }
             console.timeEnd("render frame " + this.model.id);

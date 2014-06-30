@@ -38,6 +38,9 @@ define([
             return "";
         },
 
+        _isMultiple : function () {
+            return (this.options.options && this.options.options.multiple === "yes");
+        },
         getType: function () {
             return this.options.type;
         },

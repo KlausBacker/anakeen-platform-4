@@ -40,10 +40,8 @@ function autocomplete(Action & $action)
     }
     $aname = $oattr->id;
     $famid = $oattr->format;
-    $multi = $oattr->getOption("multiple");
-    $cible = ($multi == "yes") ? "mdocid_work" : "";
+    
     if (!$oattr->phpfile) {
-        $linkprefix = "ilink_";
         // in coherence with editutil.php
         $filter = array(); //no filter by default
         $sfilter = '';
@@ -64,13 +62,13 @@ function autocomplete(Action & $action)
         $oattr->phpfunc = "lfamily(D,'$famid',CT,0,$sfilter,'$idid):${aname},CT";
         $oattr->phpfile = "fdl.php";
     }
-    compatOriginalFormPost($action->getArgument("filter") , $action->getArgument("attributes") , $oattr->id);
-    
+    compatOriginalFormPost($action->getArgument("filter") , $action->getArgument("attributes"));
+    //print_r($oattr->phpfunc);
     $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, true, $index);
     
     if (!is_array($res)) {
         if ($res == "") {
-            $res = sprintf(_("error in calling function %s\n%s") , $oattr->phpfunc, $res);
+            $res = sprintf(___("wrong return type when calling function %s\n%s", "ddui") , $oattr->phpfunc, $res);
         }
         $err = $res;
     }
@@ -105,10 +103,13 @@ function autocomplete(Action & $action)
     header('Content-Type: application/json');
 }
 
-function compatOriginalFormPost($filters, $attributes, $currentAid)
+function compatOriginalFormPost($filters, $attributes)
 {
+    setHttpVar("_ct", " ");
     if (is_array($filters)) {
-        setHttpVar("_ct", $filters["filters"][0]["value"]);
+        if (!empty($filters["filters"][0]["value"])) {
+            setHttpVar("_ct", $filters["filters"][0]["value"]);
+        }
     }
     if (is_array($attributes)) {
         

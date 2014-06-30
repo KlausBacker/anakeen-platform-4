@@ -38,17 +38,35 @@ define([
 
         setValue: function (value, index) {
             var currentValue;
+            if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
+                throw new Error("You need to add an index to set value for a multiple id " + this.id);
+            }
+            if (this.get("multiple") && index >= 0) {
+                currentValue = _.clone(this.get("value"));
+                currentValue[index] = value;
+
+                this.set("value", currentValue);
+
+            } else {
+                this.set("value", value);
+            }
+        },
+
+        addValue : function (value, index) {
+            var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            console.log("before set", this.get("value"));
-            currentValue = _.clone(this.get("value"));
-            if (this.get("multiple")) {
-                currentValue[index] = value;
+            currentValue = _.toArray(_.clone(this.get("value")));
+            if (this.get("multiple") && index >= 0) {
+
+                currentValue[index].push(value);
                 this.set("value", currentValue);
-                return;
+
+            } else {
+                currentValue.push(value);
+                this.set("value", currentValue);
             }
-            this.set("value", value);
         },
 
         removeLine: function (index) {
@@ -116,6 +134,10 @@ define([
 
             return true;
 
+        },
+
+        hasMultipleOption : function () {
+            return (this.getOption("multiple") === "yes");
         },
 
         _computeMode: function () {
@@ -205,7 +227,7 @@ define([
         getOption: function (key) {
 
             var options = this.getOptions();
-            if (typeof options[key] !== "undefined"  ) {
+            if (typeof options[key] !== "undefined") {
                 return options[key];
             }
             return null;
