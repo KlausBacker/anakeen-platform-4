@@ -62,6 +62,7 @@ require([
     window.dcp = window.dcp || {};
     window.dcp.documents = new CollectionDocument();
     window.dcp.views = window.dcp.views || {};
+
     $(".dcpLoading").dcpLoading();
 
     _.defer(function () {
@@ -72,6 +73,7 @@ require([
         );
         window.dcp.documents.push(model);
         (new ViewDocument({model: model, el: $(".dcpDocument")[0]}).render());
+
 
         $(".dcpLoading").dcpLoading("complete", function () {
             $(".dcpDocument").show().addClass("dcpDocument--show");
@@ -85,6 +87,7 @@ require([
             }, 3000);
 
         }, 100);
+
     });
     window.dcp.router = {
         router: new Router()

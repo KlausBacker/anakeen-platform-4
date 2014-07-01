@@ -45,14 +45,17 @@ define([
                 attrToClear = _.toArray(attrToClear);
             }
             // Compose delete button title
-            var titleDelete = '';
-            _.each(attrToClear, function (aid) {
+            var $deleteButton = this.element.find(".dcpAttribute__content--delete--button");
+            var titleDelete = $deleteButton.find("button").attr('title');
+            var attrLabels = _.map(attrToClear, function (aid) {
                 var attr = docModel.get('attributes').get(aid);
                 if (attr) {
-                    titleDelete += attr.attributes.label + " ";
+                    return attr.attributes.label;
                 }
+                return '';
             });
-            this.element.find(".dcpAttribute__content--delete--button").on("click." + this.eventNamespace,function (event) {
+            titleDelete += attrLabels.join(", ");
+            $deleteButton.on("click." + this.eventNamespace,function (event) {
 
                 event.preventDefault();
                 _.each(attrToClear, function (aid) {
@@ -68,7 +71,9 @@ define([
 
 
                 currentWidget.element.find("input").focus();
-            }).attr('title', titleDelete).kendoTooltip();
+            }).attr('title', titleDelete).kendoTooltip({
+                position: "left"
+            });
         },
 
         _model: function () {

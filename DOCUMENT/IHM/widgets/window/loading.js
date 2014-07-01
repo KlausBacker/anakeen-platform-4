@@ -15,8 +15,8 @@ define([
         barElement: null,
 
         _create: function () {
-            this.barElement = $('<div class="dcpLoading--progressbar/">');
-            this.element.append($('<br/>'));
+            this.barElement = $('<div class="dcpLoading--progressbar" />');
+            this.element.find('.dcpLoading--progressbar').remove();
             this.element.append(this.barElement);
             this.barElement.kendoProgressBar({
                     type: "percent",

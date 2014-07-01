@@ -19,6 +19,9 @@ msgstr "Abandonner les modifications"
 msgid "ddui::Loading"
 msgstr "Téléchargement"
 
+msgid "ddui::Delete : "
+msgstr "Suppression de : "
+
 msgid "Abstract view"
 msgstr ""
 

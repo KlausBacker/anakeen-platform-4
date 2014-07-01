@@ -21,7 +21,7 @@ define([
                 this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
-                })
+                });
             }
             this._super();
         },

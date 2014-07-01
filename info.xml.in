@@ -9,7 +9,7 @@
         <module name='dynacase-kendoui-installer'/>
         <module name='dynacase-underscore-installer'/>
         <module name='dynacase-backbone-installer'/>
-        <module name='dynacase-bootstrap-installer'/>
+        <module name='dynacase-bootstrap-installer' comp='ge' version='3.2.0'/>
         <module name='dynacase-mustache.js-installer'/>
         <module name='dynacase-mustache.php-installer'/>
         <module name='dynacase-less-installer'/>
