@@ -52,7 +52,7 @@ define([
             }
         },
 
-        addValue : function (value, index) {
+        addValue: function (value, index) {
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -136,7 +136,7 @@ define([
 
         },
 
-        hasMultipleOption : function () {
+        hasMultipleOption: function () {
 
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },

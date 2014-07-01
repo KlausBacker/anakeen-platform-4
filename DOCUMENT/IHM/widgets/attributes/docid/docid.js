@@ -32,13 +32,13 @@ define([
 
 
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-                this.kendoWidget = this.element.find(".dcpAttribute__content--docid--title");
+                this.kendoWidget = this.element.find(".dcpAttribute__content--docid");
                 if (this._isMultiple()) {
                     this._decorateMultipleValue(this.kendoWidget);
                 } else {
                     this._decorateSingleValue(this.kendoWidget);
                 }
-                if (this.options.value.value !== null) {
+                if (this.options.value && this.options.value.value !== null) {
                     if (!this._model().hasMultipleOption()) {
                         this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
                     }
@@ -48,22 +48,15 @@ define([
 
         _initEvent: function () {
             var currentWidget = this;
+            this._super();
             if (this.getMode() === "write") {
                 this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
 
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
                 });
-                this.element.find(".dcpAttribute__content--delete--button").on("click." + this.eventNamespace, function (event) {
-                    event.preventDefault();
-                    if (currentWidget._model().hasMultipleOption()) {
-                        currentWidget._model().setValue([], currentWidget.options.index);
-                    } else {
-                        currentWidget._model().setValue({value: null, displayValue: ''}, currentWidget.options.index);
-                    }
-                    currentWidget.element.find("input").focus();
-                    return false;
-                });
+
+
             }
         },
 
@@ -218,7 +211,7 @@ define([
                 options = _.extend(options, extraOptions);
             }
             inputValue.kendoMultiSelect(options);
-            this.element.find('.dcpAttribute__content--docid--button').on("click", function () {
+            this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
@@ -257,13 +250,13 @@ define([
                 this.kendoWidget.data("kendoMultiSelect").value(newValues);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);
 
-                return;
-            }
-            if (this.getMode() === "read") {
+                this.flashElement();
+
+            } else if (this.getMode() === "read") {
                 this.element.find(".dcpAttribute__content").text(value.displayValue);
-                return;
+            } else {
+                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
-            throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
         },
 
         _getTemplate: function (name) {

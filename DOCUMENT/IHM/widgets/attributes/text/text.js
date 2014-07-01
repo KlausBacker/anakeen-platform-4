@@ -7,52 +7,46 @@ define([
 
     $.widget("dcp.dcpText", $.dcp.dcpAttribute, {
 
-        options : {
-            id : "",
-            type : "text"
+        options: {
+            id: "",
+            type: "text"
         },
-        _initDom : function () {
+        _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
         },
 
-        _initEvent : function() {
+        _initEvent: function () {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").on("change."+this.eventNamespace, function() {
+                this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
-                });
-                this.element.find(".dcpAttribute__content--delete--button").on("click."+this.eventNamespace, function(event) {
-
-                    event.preventDefault();
-                    console.log("DELETE",currentWidget , currentWidget.options.index);
-                    currentWidget._model().setValue({value:null,displayValue:''}, currentWidget.options.index);
-                });
-
+                })
             }
+            this._super();
         },
 
-        setValue : function(value) {
+        setValue: function (value) {
             this._super(value);
             if (this.getMode() === "write") {
                 this.element.find(".dcpAttribute__content").val(value.value);
-                return;
-            }
-            if (this.getMode() === "read") {
+                this.flashElement();
+
+            } else if (this.getMode() === "read") {
                 this.element.find(".dcpAttribute__content").text(value.displayValue);
-                return;
+            } else {
+                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
-            throw new Error("Attribute "+this.options.id+" unkown mode "+this.getMode());
         },
 
-        _getTemplate : function (name) {
+        _getTemplate: function (name) {
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()] && window.dcp.templates.attribute[this.getType()][name]) {
                 return window.dcp.templates.attribute[this.getType()][name];
             }
-            throw new Error("Unknown template text "+name);
+            throw new Error("Unknown template text " + name);
         },
 
-        getType : function() {
+        getType: function () {
             return "text";
         }
 
