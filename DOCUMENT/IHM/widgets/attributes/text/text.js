@@ -22,6 +22,13 @@ define([
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
                 });
+                this.element.find(".dcpAttribute__content--delete--button").on("click."+this.eventNamespace, function(event) {
+
+                    event.preventDefault();
+                    console.log("DELETE",currentWidget , currentWidget.options.index);
+                    currentWidget._model().setValue({value:null,displayValue:''}, currentWidget.options.index);
+                });
+
             }
         },
 

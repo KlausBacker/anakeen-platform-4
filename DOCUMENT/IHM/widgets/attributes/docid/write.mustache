@@ -1,25 +1,17 @@
-
-<div class="input-group margin-bottom-sm">
-<span class="dcpAttribute__content--docid--button input-group-addon">
+<div class="input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__content--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__content--single{{/isMultiple}}">
+<span class="input-group-addon">
+    <button class="dcpAttribute__content--docid--button btn btn-default btn-xs">
 {{^isMultiple}}
-    <input type="hidden" name="{{id}}" id="{{viewCid}}"
-           class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--docid"
-           value="{{value.value}}"/>
-    <i class="fa fa-chevron-down fa-fw"></i></span>
-    <input type="text"
-           class="form-control dcpAttribute__content--docid--title"
-           value="{{value.displayValue}}"/>
+<i class="fa fa-chevron-down fa-fw"></i>
 {{/isMultiple}}
 {{#isMultiple}}
-    <i class="fa fa-plus fa-fw"></i></span>
-    <select name="{{id}}" id="{{viewCid}}"
-           class="form-control dcpAttribute__content--docid dcpAttribute__content--docid--title"
-           >
-        {{#values}}
-            <option value="2">{{displayValue}}</option>
-        {{/values}}
-    </select>
-
+    <i class="fa fa-plus fa-fw"></i>
 {{/isMultiple}}
-
+    </button></span>
+    <select name="{{id}}" id="{{viewCid}}"
+            class="form-control dcpAttribute__content--docid dcpAttribute__content--docid--title"
+            />
+<span class="dcpAttribute__content--delete--button input-group-addon">
+    <button class="btn btn-default btn-xs"><i class="fa fa-times fa-fw"></i></button>
+    </span>
 </div>

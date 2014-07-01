@@ -1,3 +1,11 @@
-<input type="text" name="{{id}}" id="{{viewCid}}" 
+<div class="input-group margin-bottom-sm">
+
+
+<input type="text" name="{{id}}" id="{{viewCid}}"
        {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
-class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--text" value="{{value.value}}"/>
+      class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--text"
+      value="{{value.value}}"/>
+<span class="dcpAttribute__content--delete--button input-group-addon">
+    <button class="btn btn-default btn-xs"><i class="fa fa-times fa-fw"></i></button>
+    </span>
+</div>

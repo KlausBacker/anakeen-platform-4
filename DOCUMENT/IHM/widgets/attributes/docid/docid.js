@@ -38,7 +38,11 @@ define([
                 } else {
                     this._decorateSingleValue(this.kendoWidget);
                 }
-
+                if (this.options.value.value !== null) {
+                    if (!this._model().hasMultipleOption()) {
+                        this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
+                    }
+                }
             }
         },
 
@@ -50,10 +54,39 @@ define([
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
                 });
+                this.element.find(".dcpAttribute__content--delete--button").on("click." + this.eventNamespace, function (event) {
+                    event.preventDefault();
+                    if (currentWidget._model().hasMultipleOption()) {
+                        currentWidget._model().setValue([], currentWidget.options.index);
+                    } else {
+                        currentWidget._model().setValue({value: null, displayValue: ''}, currentWidget.options.index);
+                    }
+                    currentWidget.element.find("input").focus();
+                    return false;
+                });
             }
         },
 
+
         _decorateSingleValue: function (inputValue) {
+
+            this.options.values = [];
+            if (this.options.value) {
+                this.options.values.push(this.options.value);
+            }
+
+            this._decorateMultipleValue(inputValue, {
+                    maxSelectedItems: 1
+
+                }
+            );
+        },
+        /**
+         * Just to be apply in normal input help
+         * @param inputValue
+         * @private
+         */
+        _notUseForTheMoment_decorateSingleValueAutocomplete: function (inputValue) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
             var attributeModel = documentModel.get('attributes').get(this.options.id);
@@ -97,17 +130,19 @@ define([
                     });
                 }
             });
-            this.element.find('.dcpAttribute__content--docid--button').on("click", function () {
+            this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
+                event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
         },
-        _decorateMultipleValue: function (inputValue) {
+        _decorateMultipleValue: function (inputValue, extraOptions) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var attributeModel = documentModel.get('attributes').get(this.options.id);
+            var attributeModel = this._model();
             var valueIndex = this.options.index;
 
-            inputValue.kendoMultiSelect({
+
+            var options = {
                 filter: "contains",
                 minLength: 1,
                 itemTemplate: '<span><span class="k-state-default">#= data.title#</span>' +
@@ -149,7 +184,7 @@ define([
                             var attrModel = documentModel.get('attributes').get(aid);
                             if (attrModel) {
                                 _.defer(function () {
-                                    if (attrModel.hasMultipleOption) {
+                                    if (attrModel.hasMultipleOption()) {
                                         attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
                                     } else {
                                         attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
@@ -174,12 +209,17 @@ define([
                         }
                         newValues.push({value: val, displayValue: displayValue});
                     });
-
                     attrModel.setValue(newValues, valueIndex);
 
                 }
-            });
+            };
+
+            if (extraOptions) {
+                options = _.extend(options, extraOptions);
+            }
+            inputValue.kendoMultiSelect(options);
             this.element.find('.dcpAttribute__content--docid--button').on("click", function () {
+                event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
         },
@@ -187,24 +227,36 @@ define([
             var kendoWidget = this.kendoWidget;
             this._super(value);
             if (this.getMode() === "write") {
-                if (this._isMultiple()) {
-                    var newValues = _.map(value, function (val, index) {
-                        return  val.value;
-                    });
-                    var newData = _.map(value, function (val, index) {
-                        var info = {};
-                        info.docTitle = val.displayValue;
-                        info.docId = val.value;
-                        return info;
-                    });
-                    // update values in kendo widget
-                    this.kendoWidget.data("kendoMultiSelect").dataSource.data(newData);
-                    this.kendoWidget.data("kendoMultiSelect").value(newValues);
-                    this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);
-                } else {
-                    this.element.find(".dcpAttribute__content").val(value.value);
-                    this.element.find(".dcpAttribute__content--docid--title").val(value.displayValue);
+                if (!this._model().hasMultipleOption()) {
+                    if (!_.isArray(value)) {
+                        if (value.value !== null) {
+                            value = [value];
+                        } else {
+                            value = [];
+                        }
+                    } else if (value.length === 1 && value.value === null) {
+                        value = [];
+                    }
+                    if (value.length === 0) {
+                        this.element.find('.dcpAttribute__content--docid--button').removeAttr("disabled");
+                    } else {
+                        this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
+                    }
                 }
+                var newValues = _.map(value, function (val, index) {
+                    return  val.value;
+                });
+                var newData = _.map(value, function (val, index) {
+                    var info = {};
+                    info.docTitle = val.displayValue;
+                    info.docId = val.value;
+                    return info;
+                });
+                // update values in kendo widget
+                this.kendoWidget.data("kendoMultiSelect").dataSource.data(newData);
+                this.kendoWidget.data("kendoMultiSelect").value(newValues);
+                this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);
+
                 return;
             }
             if (this.getMode() === "read") {

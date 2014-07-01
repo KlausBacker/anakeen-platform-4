@@ -137,7 +137,8 @@ define([
         },
 
         hasMultipleOption : function () {
-            return (this.getOption("multiple") === "yes");
+
+            return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
 
         _computeMode: function () {

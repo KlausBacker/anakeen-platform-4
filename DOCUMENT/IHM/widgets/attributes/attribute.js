@@ -30,7 +30,10 @@ define([
         _initEvent: function () {
 
         },
-
+        _model: function () {
+            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
+            return documentModel.get('attributes').get(this.options.id);
+        },
         _getTemplate: function () {
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()]) {
                 return window.dcp.templates.attribute[this.getType()];
