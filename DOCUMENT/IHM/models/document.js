@@ -13,12 +13,12 @@ define([
             attributes = _.values(attributes);
         }
         if (parent) {
-            _.each(attributes, function(value) {
+            _.each(attributes, function (value) {
                 value.parent = parent;
             });
         }
         _.each(attributes, function (value) {
-            value.documentMode = dcp.renderOptions.mode || "read";
+            value.documentMode = window.dcp.renderOptions.mode || "read";
         });
         currentAttributes = _.union(currentAttributes, attributes);
         _.each(attributes, function (currentAttr) {
@@ -31,42 +31,42 @@ define([
 
     return Backbone.Model.extend({
 
-        initialize : function(values, options) {
+        initialize: function (values, options) {
             var attributes = [];
             this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
             attributes = flattenAttributes(attributes, options.family.structure);
-            _.each(attributes, function(value) {
+            _.each(attributes, function (value) {
                 if (value.id && options.attributes[value.id]) {
                     value.value = options.attributes[value.id];
                 }
             });
             this.set("attributes", new CollectionAttributes(attributes));
             attributes = this.get("attributes");
-            attributes.each(function(currentAttributeModel) {
-               currentAttributeModel.setContentCollection(attributes);
+            attributes.each(function (currentAttributeModel) {
+                currentAttributeModel.setContentCollection(attributes);
             });
             this.listenTo(this.get("attributes"), "change:value", this.notifyChange);
         },
 
-        toData : function() {
+        toData: function () {
             var returnObject = {
-                document : {}
+                document: {}
             };
             returnObject.document.properties = this.get("properties").toJSON();
             returnObject.menus = this.get("menus").toJSON();
             return returnObject;
         },
 
-        notifyChange : function(attribute, newValue) {
+        notifyChange: function (attribute, newValue) {
             //console.log(arguments);
             //debugger;
         },
 
-        getValues : function() {
+        getValues: function () {
             var values = {};
-            this.get("attributes").each(function(currentAttribute) {
+            this.get("attributes").each(function (currentAttribute) {
                 var currentValue = currentAttribute.get("value"), nbLines, i, arrayValues = [];
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
@@ -74,7 +74,7 @@ define([
                 if (currentAttribute.get("multiple")) {
                     nbLines = currentAttribute.getNbLines();
                     for (i = 0; i <= nbLines; i++) {
-                        arrayValues.push(currentValue[i] || { value : null});
+                        arrayValues.push(currentValue[i] || { value: null});
                     }
                     values[currentAttribute.id] = arrayValues;
                     return;
@@ -84,10 +84,54 @@ define([
             return values;
         },
 
-        hasAttributesChanged : function() {
-            return this.get("attributes").some(function(currentAttr) {
+        hasAttributesChanged: function () {
+            return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
-            })
+            });
+        },
+
+        // add new attribute error
+        addErrorMessage: function (message) {
+            var attrModel;
+            var scope=this;
+            switch (message.code) {
+                case "API0211":// Syntax Error
+                    console.log("211", message.data);
+                    if (message.data && message.data.id) {
+                        attrModel = this.get('attributes').get(message.data.id);
+                        console.log("model", attrModel);
+                        if (attrModel) {
+                            attrModel.setErrorMessage(message.data.err, message.data.index);
+                        }
+                    }
+                    break;
+                case "API0212": // Constraint Error
+                    console.log("211", message.data);
+                    if (message.data && message.data.constraint) {
+                        _.each(message.data.constraint, function (constraint, aid) {
+                            attrModel = scope.get('attributes').get(aid);
+                            console.log("model", attrModel);
+                            if (attrModel) {
+                                attrModel.setErrorMessage(constraint.err, constraint.index);
+                            }
+                        });
+
+                    }
+                    break;
+
+                default:
+                    window.alert(message.code);
+            }
+        },
+
+
+        clearErrorMessages: function () {
+            var attrModels = this.get('attributes');
+            console.log("attributes", attrModels);
+            _.each(attrModels.models, function (attrModel, aid) {
+                attrModel.setErrorMessage(null);
+            });
+
         }
     });
 

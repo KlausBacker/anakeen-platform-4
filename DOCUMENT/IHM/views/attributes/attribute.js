@@ -20,6 +20,7 @@ define([
         initialize: function () {
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:value', this.refreshValue);
+            this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = window.dcp.templates.attribute.simpleWrapper;
         },
@@ -36,7 +37,7 @@ define([
             }
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            this.dcpAttributeSwitch(this.$el.find(".dcpAttribute__contentWrapper"), data);
+            this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), data);
 
             console.timeEnd("render attribute " + this.model.id);
             return this;
@@ -47,24 +48,35 @@ define([
         },
 
         refreshValue: function () {
-            this.dcpAttributeSwitch(this.$el.find(".dcpAttribute__contentWrapper"), "setValue", this.model.get("value"));
+            this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "setValue", this.model.get("value"));
+
+        },
+        refreshError: function () {
+            console.log("WEH",this.model.get("errorMessage") );
+            this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
+            this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
+
 
         },
 
         updateValue: function () {
 
-            this.model.setValue(this.dcpAttributeSwitch(this.$el.find(".dcpAttribute__contentWrapper"), "getValue"));
+            this.model.setValue(this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "getValue"));
         },
 
-        dcpAttributeSwitch: function ($element, method, argument) {
+        widgetApply: function ($element, method, argument) {
+            return this.getWidgetClass().apply($element, [method, argument]);
+        },
+
+        getWidgetClass: function () {
             switch (this.model.get("type")) {
                 case "text" :
-                    return $element.dcpText(method, argument);
+                    return $.fn.dcpText;
                 case "account" :
                 case "docid" :
-                    return $element.dcpDocid(method, argument);
+                    return $.fn.dcpDocid;
                 default:
-                    return $element.dcpText(method, argument);
+                    return $.fn.dcpText;
             }
         }
 

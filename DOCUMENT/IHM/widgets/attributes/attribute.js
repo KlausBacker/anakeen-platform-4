@@ -110,6 +110,43 @@ define([
             }, 10);
         },
 
+        setError: function (message, index) {
+            var parentId=this._model().get('parent');
+            if (message) {
+                var greatParentId;
+                this.element.addClass("has-error");
+                this.element.kendoTooltip({
+                    position:"bottom",
+                    content:message,
+                    autoHide:false,
+                    show : function onShow(e) {
+                         this.popup.element.addClass("has-error");
+                     }
+                });
+                this.element.find('input').focus();
+                if (parentId) {
+                    $('.dcpFrame__label[data-id="'+parentId+'"]').addClass("has-warning");
+                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');;
+
+                    if (greatParentId) {
+                    $('.dcpTab__label[data-id="'+greatParentId+'"]').addClass("has-warning");
+                    }
+
+                }
+            } else {
+                this.element.removeClass("has-error");
+                this.element.data("kendoTooltip").destroy();
+                if (parentId) {
+                    $('.dcpFrame__label[data-id="'+parentId+'"]').removeClass("has-warning");
+                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');;
+
+                    if (greatParentId) {
+                        $('.dcpTab__label[data-id="'+greatParentId+'"]').removeClass("has-warning");
+                    }
+
+                }
+            }
+        },
         getType: function () {
             return this.options.type;
         },

@@ -9,23 +9,23 @@ define([
 
     return Backbone.View.extend({
 
-        events : {
-             "dcparraylineadded" : "initWidget",
-             "dcparraylineremoved" : "removeLine",
-             "dcpattributechange .dcpArray__content__cell" : "updateValue"
+        events: {
+            "dcparraylineadded": "initWidget",
+            "dcparraylineremoved": "removeLine",
+            "dcpattributechange .dcpArray__content__cell": "updateValue"
         },
 
-        initialize : function () {
+        initialize: function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
         },
 
-        render : function () {
+        render: function () {
             console.time("render array " + this.model.id);
             var data = this.model.toData();
 
-            $(".dcpLoading").dcpLoading("addItem",data.content.length +1 );
-            data.content = _.filter(data.content, function(currentContent) {
+            $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
+            data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
@@ -34,7 +34,7 @@ define([
             return this;
         },
 
-        getNbLines : function() {
+        getNbLines: function () {
             var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function (currentAttr) {
                 if (currentAttr.get("value") && nbLigne < _.size(currentAttr.get("value"))) {
@@ -44,11 +44,11 @@ define([
             return nbLigne;
         },
 
-        updateLabel : function () {
+        updateLabel: function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        updateValue : function(event, options) {
+        updateValue: function (event, options) {
             console.log("IN ARRAY update value");
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
@@ -57,43 +57,43 @@ define([
             attributeModel.setValue(options.value, options.index);
         },
 
-        initWidget : function(event, options) {
+        initWidget: function (event, options) {
             var model = this.model;
-            var scope=this;
-            options.element.find(".dcpArray__content__cell").each(function(index, element) {
+            var scope = this;
+            options.element.find(".dcpArray__content__cell").each(function (index, element) {
                 var $element = $(element), currentAttribute = model.get("content").get($element.data("attrid"));
                 if (currentAttribute.isDisplayable()) {
-                    scope.dcpArraySwitch(currentAttribute.attributes.type,
+                    scope.getWidgetClass(currentAttribute.attributes.type).apply(
                         $(element),
-                        currentAttribute.toData(options.line));
+                        [currentAttribute.toData(options.line)]);
                 } else {
-                   throw new Error("Try to display a non displayable attribute "+currentAttribute.id);
+                    throw new Error("Try to display a non displayable attribute " + currentAttribute.id);
                 }
             });
         },
 
-        refresh : function() {
+        refresh: function () {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
             this.render();
         },
 
-        removeLine : function(event, options) {
-            this.model.get("content").each(function(currentContent) {
-               currentContent.removeLine(options.line);
+        removeLine: function (event, options) {
+            this.model.get("content").each(function (currentContent) {
+                currentContent.removeLine(options.line);
             });
             this.refresh();
         },
 
-        dcpArraySwitch: function (attrType, $element, method) {
-            switch (attrType) {
+        getWidgetClass: function (type) {
+            switch (type) {
                 case "text" :
-                    return $element.dcpText(method);
+                    return $.fn.dcpText;
                 case "account" :
                 case "docid" :
-                    return $element.dcpDocid(method);
+                    return $.fn.dcpDocid;
                 default:
-                    return $element.dcpText(method);
+                    return $.fn.dcpText;
             }
         }
     });

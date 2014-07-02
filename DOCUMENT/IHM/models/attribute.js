@@ -14,7 +14,8 @@ define([
             valueAttribute: true,
             multiple: false,
             mode: "read",
-            documentMode: "read"
+            documentMode: "read",
+            errorMessage:null
         },
 
         initialize: function () {
@@ -232,6 +233,20 @@ define([
                 return options[key];
             }
             return null;
+        },
+
+        setErrorMessage: function (message, index) {
+            if (this.get("multiple") && typeof index !== "undefined") {
+                var errorMessage = this.get('errorMessage') || [];
+                // delete duplicate
+                _.reject(errorMessage, function (mindex) {
+                    return mindex===index;
+                });
+                errorMessage.push({message:message, index:index});
+                this.set('errorMessage', _.clone(errorMessage));
+            } else {
+                this.set('errorMessage',message);
+            }
         }
 
     });

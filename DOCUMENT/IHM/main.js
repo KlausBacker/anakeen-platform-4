@@ -83,8 +83,9 @@ require([
             //  $(".dcpLoading").dcpLoading("percent",100).fadeOut({duration:500});
             $(".dcpLoading").dcpLoading("percent", 100).addClass("dcpLoading--hide");
             _.delay(function () {
-                $(".dcpLoading").hide();
-            }, 3000);
+                $(".dcpLoading").dcpLoading("hide");
+
+            }, 2000);
 
         }, 100);
 

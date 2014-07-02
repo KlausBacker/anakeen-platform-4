@@ -13,7 +13,6 @@ define([
         },
         _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-console.log("text", this.options, this._model());
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this._activateAutocomplete(this.kendoWidget);
