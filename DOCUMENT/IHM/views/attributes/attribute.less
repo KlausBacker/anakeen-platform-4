@@ -1,3 +1,5 @@
+@dcpInputHeight : 30px;
+
 .dcpAttribute__label {
   &:after {
     content: " :";
@@ -13,21 +15,23 @@
   top: (@padding-base-vertical - 2);
 }
 
-.dcpAttribute__contentWrapper .k-autocomplete {
-  /*width:1000%;*/
+.dcpAttribute__contentWrapper .input-group .k-autocomplete input {
+  height:(@dcpInputHeight - 2);
 }
 
-.dcpAttribute__contentWrapper .input-group input {
-  height:30px;
+.dcpAttribute__contentWrapper .input-group input,
+.dcpArray__content__cell .input-group input,
+.dcpAttribute__contentWrapper .input-group .k-autocomplete
+{
+  height:@dcpInputHeight;
 }
 .dcpAttribute__contentWrapper .input-group-addon,
-.dcpAttribute__content--multiple .input-group-addon,
-.dcpAttribute__content--single .input-group-addon  {
+.dcpArray__content__cell .input-group-addon {
   padding:0;
+  height:@dcpInputHeight;
 }
 .dcpAttribute__contentWrapper .input-group-addon button,
-.dcpAttribute__content--multiple .input-group-addon button,
-.dcpAttribute__content--single .input-group-addon button {
+.dcpArray__content__cell .input-group-addon button, {
   background-color:transparent;
   border:none;
 }
@@ -45,4 +49,17 @@
 {
   background-color:inherit;
   transition: background-color 500ms linear;
+}
+
+.dcpAttribute__contentWrapper .k-autocomplete .k-loading {
+  position: relative;
+  right: 20px;
+  z-index: 3;
+  top: 5px;
+}
+
+.k-list .k-state-error {
+  border: none;
+  width: calc(100% - 0px);
+  display: inline-block;
 }

@@ -41,6 +41,7 @@ define([
                 if (this.options.value && this.options.value.value !== null) {
                     if (!this._model().hasMultipleOption()) {
                         this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
+                        this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
             }
@@ -74,60 +75,7 @@ define([
                 }
             );
         },
-        /**
-         * Just to be apply in normal input help
-         * @param inputValue
-         * @private
-         */
-        _notUseForTheMoment_decorateSingleValueAutocomplete: function (inputValue) {
-            var scope = this;
-            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var attributeModel = documentModel.get('attributes').get(this.options.id);
-            var valueIndex = this.options.index;
-            inputValue.kendoAutoComplete({
-                dataTextField: "title",
-                filter: "contains",
-                minLength: 1,
-                template: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>',
 
-
-                dataSource: {
-                    type: "json",
-                    serverFiltering: true,
-                    transport: {
-                        read: {
-                            type: "POST",
-                            url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
-                                "&id=" + window.dcp.documentData.document.properties.id +
-                                "&fromid=" + window.dcp.documentData.document.properties.fromid,
-                            data: {
-                                "attributes": documentModel.getValues()
-                            }
-                        }
-                    }
-                },
-                select: function (event) {
-                    var dataItem = this.dataItem(event.item.index());
-                    _.each(dataItem.values, function (val, aid) {
-                        if (typeof val === "object") {
-                            var attrModel = documentModel.get('attributes').get(aid);
-                            if (attrModel) {
-                                _.defer(function () {
-                                    attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                                });
-                            }
-                        }
-                    });
-                }
-            });
-            this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
-                event.preventDefault();
-                inputValue.data("kendoAutoComplete").search(' ');
-            });
-        },
         _decorateMultipleValue: function (inputValue, extraOptions) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
@@ -232,8 +180,10 @@ define([
                     }
                     if (value.length === 0) {
                         this.element.find('.dcpAttribute__content--docid--button').removeAttr("disabled");
+                        this.element.find('input.k-input').removeAttr("disabled");
                     } else {
                         this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
+                        this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
                 var newValues = _.map(value, function (val, index) {

@@ -62,10 +62,9 @@ function autocomplete(Action & $action)
         $oattr->phpfunc = "lfamily(D,'$famid',CT,0,$sfilter,'$idid):${aname},CT";
         $oattr->phpfile = "fdl.php";
     }
-    compatOriginalFormPost($action->getArgument("filter") , $action->getArgument("attributes"));
+    compatOriginalFormPost($action->getArgument("filter") , $action->getArgument("attributes") , $oattr->id);
     //print_r($oattr->phpfunc);
     $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, true, $index);
-    
     if (!is_array($res)) {
         if ($res == "") {
             $res = sprintf(___("wrong return type when calling function %s\n%s", "ddui") , $oattr->phpfunc, $res);
@@ -95,7 +94,7 @@ function autocomplete(Action & $action)
     if (count($info) === 0) {
         $info[] = array(
             "title" => "",
-            "error" => ___("No result found", "ddui")
+            "error" => $err ? $err : ___("No result found", "ddui")
         );
     }
     $action->lay->template = json_encode($info);
@@ -103,14 +102,9 @@ function autocomplete(Action & $action)
     header('Content-Type: application/json');
 }
 
-function compatOriginalFormPost($filters, $attributes)
+function compatOriginalFormPost($filters, $attributes, $currentAid)
 {
     setHttpVar("_ct", " ");
-    if (is_array($filters)) {
-        if (!empty($filters["filters"][0]["value"])) {
-            setHttpVar("_ct", $filters["filters"][0]["value"]);
-        }
-    }
     if (is_array($attributes)) {
         
         foreach ($attributes as $aid => $formatValue) {
@@ -118,6 +112,14 @@ function compatOriginalFormPost($filters, $attributes)
             } else {
                 setHttpVar("_$aid", $formatValue["value"]);
             }
+        }
+    }
+    
+    if (is_array($filters)) {
+        if (!empty($filters["filters"][0]["value"])) {
+            
+            setHttpVar("_ct", $filters["filters"][0]["value"]);
+            setHttpVar("_$currentAid", $filters["filters"][0]["value"]);
         }
     }
 }

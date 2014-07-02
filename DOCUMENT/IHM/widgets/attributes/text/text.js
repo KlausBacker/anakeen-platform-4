@@ -13,6 +13,11 @@ define([
         },
         _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
+console.log("text", this.options, this._model());
+            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            if (this.kendoWidget && this.options.hasAutocomplete) {
+                this._activateAutocomplete(this.kendoWidget);
+            }
         },
 
         _initEvent: function () {
@@ -25,7 +30,60 @@ define([
             }
             this._super();
         },
+        /**
+         * Just to be apply in normal input help
+         * @param inputValue
+         * @private
+         */
+        _activateAutocomplete: function (inputValue) {
+            var scope = this;
+            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
+            var attributeModel = documentModel.get('attributes').get(this.options.id);
+            var valueIndex = this.options.index;
+            inputValue.kendoAutoComplete({
+                dataTextField: "title",
+                filter: "contains",
+                minLength: 1,
+                template: '<span><span class="k-state-default">#= data.title#</span>' +
+                    '#if (data.error) {#' +
+                    '<span class="k-state-error">#: data.error#</span>' +
+                    '#}# </span>',
 
+
+                dataSource: {
+                    type: "json",
+                    serverFiltering: true,
+                    transport: {
+                        read: {
+                            type: "POST",
+                            url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
+                                "&id=" + window.dcp.documentData.document.properties.id +
+                                "&fromid=" + window.dcp.documentData.document.properties.fromid,
+                            data: {
+                                "attributes": documentModel.getValues()
+                            }
+                        }
+                    }
+                },
+                select: function (event) {
+                    var dataItem = this.dataItem(event.item.index());
+                    _.each(dataItem.values, function (val, aid) {
+                        if (typeof val === "object") {
+                            var attrModel = documentModel.get('attributes').get(aid);
+                            if (attrModel) {
+                                _.defer(function () {
+                                    attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            this.element.find('.dcpAttribute__content--autocomplete--button').on("click", function (event) {
+                event.preventDefault();
+                inputValue.data("kendoAutoComplete").search(' ');
+            });
+        },
         setValue: function (value) {
             this._super(value);
             if (this.getMode() === "write") {

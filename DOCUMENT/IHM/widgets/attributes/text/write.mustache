@@ -1,6 +1,12 @@
 <div class="input-group margin-bottom-sm">
 
-
+    {{# hasAutocomplete}}
+<span class="input-group-addon">
+    <button class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
+        <i class="fa fa-chevron-down fa-fw"></i>
+    </button>
+</span>
+    {{/hasAutocomplete}}
 <input type="text" name="{{id}}" id="{{viewCid}}"
        {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
       class="form-control dcpAttribute__content dcpAttribute__content--edit dcpAttribute__content--text"

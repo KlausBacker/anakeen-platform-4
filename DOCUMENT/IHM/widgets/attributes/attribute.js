@@ -19,6 +19,9 @@ define([
             if (this.options.value === null) {
                 this.options.value = {};
             }
+            if (this.options.helpOutputs) {
+                this.options.hasAutocomplete=true;
+            }
             this._initDom();
             this._initEvent();
         },
