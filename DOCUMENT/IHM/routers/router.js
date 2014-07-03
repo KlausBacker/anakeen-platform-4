@@ -1,7 +1,8 @@
 /*global define*/
 define([
     'underscore',
-    'backbone'
+    'backbone',
+    'widgets/window/notification'
 ], function (_, Backbone, ViewMakeRequest, ViewRequestAssigned) {
     'use strict';
 
@@ -15,10 +16,10 @@ define([
 
         cancel: function (id) {
             var currentDoc = window.dcp.documents.get(id);
-            if (currentDoc && currentDoc.hasAttributesChanged() && !confirm("It has been changed !! Are you sure ??")) {
+            if (currentDoc && currentDoc.hasAttributesChanged() && !window.confirm("It has been changed !! Are you sure ??")) {
                 Backbone.history.navigate("", {replace: true});
             } else {
-                window.location = "?app=DOCUMENT&action=VIEW&id=" + id
+                window.location = "?app=DOCUMENT&action=VIEW&id=" + id;
             }
         },
 
@@ -26,6 +27,9 @@ define([
             var currentDoc = window.dcp.documents.get(id), values;
             values = {document: { attributes: currentDoc.getValues()}};
             $(".dcpLoading").dcpLoading("reset").dcpLoading("title", "Saving").dcpLoading("modalMode");
+
+            var $notification = $('body').dcpNotification();
+            $notification.dcpNotification("clear");
 
             //$(".dcpDocument").hide();
             _.defer(function () {
@@ -38,16 +42,28 @@ define([
                 }).done(function (result) {
                     $(".dcpLoading").dcpLoading("hide");
                     if (result.success) {
-                        window.location = "?app=DOCUMENT&action=VIEW&id=" + id
+                        $notification.dcpNotification("showSuccess", {title: "Document Recorded"});
+                        // window.location = "?app=DOCUMENT&action=VIEW&id=" + id
+                        console.log("RESULT", result);
+                        _.each(result.messages, function (aMessage) {
+                            if (aMessage.type === "message") {
+                                aMessage.type = "info";
+                            }
+                                $notification.dcpNotification("show", aMessage.type, {
+                                 title: aMessage.contentText,
+                                     htmlMessage:aMessage.contentHtml
+                                });
+
+                        });
                     }
                 }).fail(function (data) {
 
                     currentDoc.clearErrorMessages();
 
                     $(".dcpLoading").dcpLoading("hide");
-                    var result=JSON.parse(data.responseText);
+                    var result = JSON.parse(data.responseText);
                     _.each(result.messages, function (errorMessage) {
-                        if (errorMessage.type==="error") {
+                        if (errorMessage.type === "error") {
                             currentDoc.addErrorMessage(errorMessage);
                         }
                     });
