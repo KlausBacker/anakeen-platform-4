@@ -1,47 +1,66 @@
 @import "../../../../lib/bootstrap/less/variables.less";
 
+@dcpNotifierWidth:300px;
+@dcpNotifierHeight:100px;
+@dcpNotifierSymbolWidth:50px;
+
 /* Error template */
-.k-notification-error.k-group {
-  background: rgba(100%, 0%, 0%, .7);
+.k-notification-error.k-widget {
+ /* background: rgba(100%, 0%, 0%, .7);*/
+  background: fade(@brand-danger,90%);
   color: #ffffff;
 }
-.k-notification-warning.k-group {
-  background: rgba(255, 128, 0, 0.70);
+.k-notification-warning.k-widget {
+ /* background: rgba(255, 128, 0, 0.70);*/
+  background: fade(@brand-warning,90%);
   color: #ffffff;
 }
-.k-notification-info.k-group {
-  background: rgba(0, 91, 255, 0.70);
+.k-notification-info.k-widget {
+ /* background: rgba(0, 91, 255, 0.70);*/
+  background: fade(@brand-info,90%);
   color: #ffffff;
 }
-.k-notification-success.k-group {
-  background: rgba(0, 161, 23, 0.70);
+.k-notification-success.k-widget {
+ /* background: rgba(0, 161, 23, 0.70);*/
+  background: fade(@brand-success,90%);
   color: #ffffff;
 }
 .dcpNotification--content {
-  width: 300px;
-  height: 100px;
+  width: @dcpNotifierWidth;
+  height: @dcpNotifierHeight;
+  line-height: @dcpNotifierHeight;
+  cursor:pointer;
 }
-
+.dcpNotifications {
+  position:fixed;
+  top:30px;
+  right:40px;
+  width:(@dcpNotifierWidth + 30);
+  max-height: 80%;
+  overflow: auto;
+  z-index: 2;
+}
 
 .dcpNotification--symbol {
   font-size: 30px;
-  height: 100%;
-  float: left;
-  padding-top: 30px;
-  padding-left: 30px;
-  padding-right: 20px;
-}
-
-.dcpNotification--title {
-  font-weight: bold;
-  padding: 10px;
+  width:@dcpNotifierSymbolWidth;
+  text-align: center;
+  display:inline-block;
+  padding-top: 0;
   padding-left: 0;
-  display: inline-block;
-  padding-top: 35px;
-  width:170px;
-
+  padding-right: 0;
 }
+
 
 .dcpNotification--message {
-  padding-right:10px;
+  display: inline-block;
+  width:(@dcpNotifierWidth - @dcpNotifierSymbolWidth - 10px);
+  line-height: normal;
+  vertical-align: middle;
+}
+.dcpNotification--message h1 {
+   margin-top:0;
+  line-height: normal;
+   font-weight: bold;
+   font-size:1em;
 }

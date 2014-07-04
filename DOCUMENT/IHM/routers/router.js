@@ -37,23 +37,23 @@ define([
                     type: "PUT",
                     dataType: "json",
                     contentType: 'application/json',
-                    url: "api/documents/" + id + "/",
+                    url: "api/v1/documents/" + id + "/",
                     data: JSON.stringify(values)
                 }).done(function (result) {
+
+                    currentDoc.clearErrorMessages();
                     $(".dcpLoading").dcpLoading("hide");
                     if (result.success) {
                         $notification.dcpNotification("showSuccess", {title: "Document Recorded"});
                         // window.location = "?app=DOCUMENT&action=VIEW&id=" + id
-                        console.log("RESULT", result);
                         _.each(result.messages, function (aMessage) {
                             if (aMessage.type === "message") {
                                 aMessage.type = "info";
                             }
                                 $notification.dcpNotification("show", aMessage.type, {
-                                 title: aMessage.contentText,
+                                     title: aMessage.contentText,
                                      htmlMessage:aMessage.contentHtml
                                 });
-
                         });
                     }
                 }).fail(function (data) {
@@ -67,7 +67,6 @@ define([
                             currentDoc.addErrorMessage(errorMessage);
                         }
                     });
-                    console.log(result);
                 });
                 Backbone.history.navigate("", {replace: true});
             });

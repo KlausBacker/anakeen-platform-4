@@ -98,13 +98,10 @@ define([
             var $notification = $('body').dcpNotification();
             switch (message.code) {
                 case "API0211":// Syntax Error
-                    console.log("211", message.data);
                     if (message.data && message.data.id) {
                         attrModel = this.get('attributes').get(message.data.id);
-                        console.log("model", attrModel);
                         if (attrModel) {
                             attrModel.setErrorMessage(message.data.err, message.data.index);
-                            console.log(attrModel);
                             $notification.dcpNotification("showError", {
                                 title: message.contentText,
                                 htmlMessage: message.contentHtml,
@@ -121,7 +118,6 @@ define([
                     if (message.data && message.data.constraint) {
                         _.each(message.data.constraint, function (constraint, aid) {
                             attrModel = scope.get('attributes').get(aid);
-                            console.log("model", attrModel);
                             if (attrModel) {
                                 attrModel.setErrorMessage(constraint.err, constraint.index);
                                 $notification.dcpNotification("showError", {
@@ -152,8 +148,7 @@ define([
 
         clearErrorMessages: function () {
             var attrModels = this.get('attributes');
-            console.log("attributes", attrModels);
-            _.each(attrModels.models, function (attrModel, aid) {
+            _.each(attrModels.models, function (attrModel) {
                 attrModel.setErrorMessage(null);
             });
 
