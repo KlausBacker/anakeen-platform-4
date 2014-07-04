@@ -17,9 +17,15 @@ class ElementMenu implements \JsonSerializable
      */
     protected $id = null;
     /**
+     * Label text of element
      * @var string
      */
-    protected $label = '';
+    protected $textLabel = '';
+    /**
+     * Formated label of elemet
+     * @var string
+     */
+    protected $htmlLabel = '';
     /**
      * @var string
      */
@@ -37,6 +43,11 @@ class ElementMenu implements \JsonSerializable
      */
     protected $iconPath = '';
     /**
+     * Text displayed before label
+     * @var string
+     */
+    protected $beforeLabelHtmlText = '';
+    /**
      * @var int
      */
     protected $iconSize = 12;
@@ -44,7 +55,7 @@ class ElementMenu implements \JsonSerializable
     public function __construct($identifier, $label = '')
     {
         $this->id = $identifier;
-        $this->label = $label;
+        $this->textLabel = $label;
     }
     /**
      * @return null
@@ -57,9 +68,18 @@ class ElementMenu implements \JsonSerializable
      * @param string $label
      * @return $this
      */
-    public function setLabel($label)
+    public function setTextLabel($label)
     {
-        $this->label = $label;
+        $this->textLabel = $label;
+        return $this;
+    }
+    /**
+     * @param string $label
+     * @return $this
+     */
+    public function setHtmlLabel($label)
+    {
+        $this->htmlLabel = $label;
         return $this;
     }
     /**
@@ -103,18 +123,33 @@ class ElementMenu implements \JsonSerializable
         $this->iconSize = $imageWidth;
         return $this;
     }
-    
+    /**
+     * Add a html tag before label
+     * Only use if no icon is set
+     * @param $htmtText
+     * @return $this
+     */
+    public function setBeforeContent($htmtText)
+    {
+        $this->beforeLabelHtmlText = $htmtText;
+        return $this;
+    }
+    /**
+     * Get before content label
+     * @return string
+     */
+    public function getBeforeContent()
+    {
+        return $this->beforeLabelHtmlText;
+    }
     protected function getIconUrl()
     {
         if ($this->iconPath) {
             if ($this->iconSize > 0) {
                 return sprintf('resizeimg.php?img=%s&size=%d', urlencode($this->iconPath) , $this->iconSize);
-            } else {
-                return $this->iconSize;
             }
-        } else {
-            return $this->iconPath;
         }
+        return $this->iconPath;
     }
     /**
      * Specify data which should be serialized to JSON
@@ -127,10 +162,12 @@ class ElementMenu implements \JsonSerializable
         return array(
             "id" => $this->id,
             "type" => "listMenu",
-            "label" => $this->label,
+            "label" => $this->textLabel,
+            "htmlLabel" => $this->htmlLabel,
             "tooltipLabel" => $this->tooltipLabel,
             "htmlAttributes" => $this->htmlAttributes,
             "visibility" => $this->visibility,
+            "beforeContent" => $this->beforeLabelHtmlText,
             "iconUrl" => $this->getIconUrl()
         );
     }

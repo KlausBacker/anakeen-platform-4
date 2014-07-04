@@ -94,10 +94,34 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "text" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/text/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/text/read.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "int" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "double" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "docid" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/read.mustache"
                     )
                 ) ,
                 "frame" => array(
@@ -123,6 +147,11 @@ class RenderDefault implements RenderConfig
                     "label" => array(
                         "file" => "DOCUMENT/IHM/views/attributes/tab/label.mustache"
                     )
+                )
+            ) ,
+            "window" => array(
+                "confirm" => array(
+                    "file" => "DOCUMENT/IHM/views/window/confirm.mustache"
                 )
             )
         );

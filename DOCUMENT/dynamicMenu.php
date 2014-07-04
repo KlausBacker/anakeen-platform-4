@@ -37,7 +37,7 @@ class DynamicMenu extends ElementMenu
     public function getContent()
     {
         if ($this->contentDefinition) {
-            $menuList = new ListMenu($this->id, $this->label);
+            $menuList = new ListMenu($this->id, $this->textLabel);
             /** @noinspection PhpUndefinedMethodInspection */
             $this->contentDefinition->__invoke($menuList);
             return $menuList;

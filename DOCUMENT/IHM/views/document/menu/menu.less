@@ -2,32 +2,97 @@ body {
   /*padding-top: @navbar-height+@dcpHeaderHeight+5;*/
 }
 
+@menu-before-width : 12px;
 
-.menu__content .k-menu .k-item > .k-link{
+.menu__content {
+  padding: 0;
+  margin: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+
+.menu__content li.menu--workflow:last-child {
+  border-right:none;
+}
+
+.menu__content .k-menu .k-item > .k-link {
   /*background-color: darken(@widget-background-color, 10%);*/
-  padding-top:0.5em;
-  padding-bottom:0.5em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
-.menu__separator.k-state-hover, .menu__separator.k-state-hover:hover {
-  background-color:@dropdown-divider-bg;
+.menu--separator.k-state-hover, .menu--separator.k-state-hover:hover {
 }
-.menu__separator.k-state-default {
-  background-color:@dropdown-divider-bg;
-  cursor : default;
+
+.menu--separator.k-state-default {
+  background-color: inherit;
+  border-color: @dropdown-divider-bg;
+  border-style: solid;
+  cursor: default;
 }
-.menu__separator.k-state-default .k-link {
-  cursor : default;
+
+.k-menu .k-group .k-item.menu--separator.k-state-default {
+  border-width: 1px 0 1px 0;
 }
-.menu__separator .menu__empty_separator {
-  border: 1px solid @dropdown-divider-bg;
+
+.menu--separator.k-state-default .k-link {
+  cursor: default;
+}
+
+.menu--separator .menu__empty_separator {
+
 }
 
 .menu--fixed {
-  position:fixed;
-  top:0;
-  width:100%;
-  z-index:10;
-  background-color:@dropdown-bg;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: @dropdown-bg;
 
+}
+
+.menu__element .k-image {
+  width: @menu-before-width;
+}
+
+.menu__before-content {
+  display: inline-block;
+  width: @menu-before-width;
+}
+
+.menu__before-content .fa {
+  font-size: 1.2em;
+}
+
+.menu--transition-unknow .fa {
+  color: red;
+  position: absolute;
+  right: 0;
+}
+
+.menu--transition-unknow {
+  position: relative;
+  width: calc(100% - 10px);
+  display: inline-block;
+  padding-right: 15px;
+}
+
+.k-tooltip.k-state-border-up {
+  margin-top: 6px;
+}
+
+.k-menu .k-item.menu--right {
+  float: right;
+}
+
+.menu--separator.menu--workflow,
+.menu--separator.menu--workflow.k-state-hover,
+.menu--separator.menu--workflow.k-state-hover:hover {
+  background-color: inherit;
+}
+
+div[data-role=draggable] .k-window-title {
+  cursor: move;
 }

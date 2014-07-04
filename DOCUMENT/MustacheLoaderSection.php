@@ -60,13 +60,13 @@ class MustacheLoaderSection implements \Mustache_Loader
             }
         }
     }
+
     /**
      * Load a Template by name.
      *
-     *
      * @param string $name
      *
-     * @throws Exception
+     * @throws \Mustache_Exception_UnknownTemplateException
      * @return string Mustache Template source
      */
     public function load($name)
@@ -77,7 +77,8 @@ class MustacheLoaderSection implements \Mustache_Loader
             return $delimiter . JsonHandler::encodeForHTML($this->getTemplates($index));
         }
         if ($name === "templates") {
-            return $delimiter . JsonHandler::encodeForHTML($this->getTemplates(null));
+            // need to revert json encode for mustache
+            return $delimiter . preg_replace('/\[\[\\\\\/([a-z0-9]+)\]\]/','[[/\1]]',JsonHandler::encodeForHTML($this->getTemplates(null)));
         } else {
             throw new Mustache_Exception_UnknownTemplateException($name);
         }

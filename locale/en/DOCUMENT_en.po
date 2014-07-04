@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-11 10:17+0200\n"
+"POT-Creation-Date: 2014-06-24 12:22+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -12,9 +12,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgctxt "UiMenu"
+msgid "Abord modifications"
+msgstr ""
+
 msgid "Abstract view"
 msgstr ""
 
+msgctxt "ddui"
 msgid "Account access deny"
 msgstr ""
 
@@ -22,12 +27,35 @@ msgctxt "UiMenu"
 msgid "Advanced"
 msgstr ""
 
+msgctxt "my"
+msgid "Anakeen"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Cancel"
 msgstr ""
 
+msgctxt "my"
+msgid "Confims"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Confirm"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Confirm deletion"
+msgstr ""
+
+msgid "Confirm deletion of {{document.properties.title}}"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Create"
+msgstr ""
+
+msgctxt "my"
+msgid "Custom Menu"
 msgstr ""
 
 msgid "Default Edit"
@@ -38,6 +66,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Delete"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Display document form"
 msgstr ""
 
 #, php-format
@@ -58,6 +90,7 @@ msgctxt "UiMenu"
 msgid "Historic"
 msgstr ""
 
+msgctxt "ddui"
 msgid "Information access deny"
 msgstr ""
 
@@ -74,12 +107,56 @@ msgctxt "UiMenu"
 msgid "Modify"
 msgstr ""
 
+msgctxt "my"
+msgid "My Conf 1"
+msgstr ""
+
+msgctxt "my"
+msgid "My Conf 2 In Blanck"
+msgstr ""
+
+msgctxt "my"
+msgid "My Conf 2 in dialog"
+msgstr ""
+
+msgctxt "my"
+msgid "My Disable"
+msgstr ""
+
+msgctxt "my"
+msgid "My Hidden"
+msgstr ""
+
+msgctxt "my"
+msgid "My label"
+msgstr ""
+
+msgctxt "my"
+msgid "My label 2"
+msgstr ""
+
+msgctxt "my"
+msgid "My label 3"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Profil access"
 msgstr ""
 
 msgctxt "UiMenu"
 msgid "Properties"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Put document to the trash"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Record document to server"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Record document without constraint check"
 msgstr ""
 
 msgid "Render a document"
@@ -90,18 +167,31 @@ msgid "Restore"
 msgstr ""
 
 msgctxt "UiMenu"
+msgid "Restore document from the trash"
+msgstr ""
+
+msgctxt "UiMenu"
 msgid "Save"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Save !"
 msgstr ""
 
 msgctxt "UiMenu"
 msgid "Security"
 msgstr ""
 
-msgid "Test"
+#, php-format
+msgctxt "UiMenu"
+msgid "Sure delete %s ?"
 msgstr ""
 
-msgctxt "UiMenu"
-msgid "Transition"
+msgctxt "my"
+msgid "Séparateur"
+msgstr ""
+
+msgid "Test"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -111,5 +201,15 @@ msgstr ""
 msgid "View documents"
 msgstr ""
 
+msgctxt "UiMenu"
+msgid "View workflow graph"
+msgstr ""
+
 msgid "Y-m-d"
+msgstr ""
+
+msgid "de_tab_info"
+msgstr ""
+
+msgid "es_caracteristique"
 msgstr ""

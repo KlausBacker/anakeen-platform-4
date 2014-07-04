@@ -9,30 +9,32 @@ define([
 
     return Backbone.View.extend({
 
-        events : {
-             "dcparraylineadded" : "initWidget",
-             "dcparraylineremoved" : "removeLine",
-             "dcpattributechange .dcpArray__content__cell" : "updateValue"
+        events: {
+            "dcparraylineadded": "initWidget",
+            "dcparraylineremoved": "removeLine",
+            "dcpattributechange .dcpArray__content__cell": "updateValue"
         },
 
-        initialize : function () {
+        initialize: function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
         },
 
-        render : function () {
+        render: function () {
             console.time("render array " + this.model.id);
             var data = this.model.toData();
-            data.content = _.filter(data.content, function(currentContent) {
+
+            $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
+            data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
             this.$el.dcpArray(data);
-            console.timeEnd("render attribute " + this.model.id);
+            console.timeEnd("render array " + this.model.id);
             return this;
         },
 
-        getNbLines : function() {
+        getNbLines: function () {
             var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function (currentAttr) {
                 if (currentAttr.get("value") && nbLigne < _.size(currentAttr.get("value"))) {
@@ -42,11 +44,12 @@ define([
             return nbLigne;
         },
 
-        updateLabel : function () {
+        updateLabel: function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        updateValue : function(event, options) {
+        updateValue: function (event, options) {
+            console.log("IN ARRAY update value");
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
@@ -54,29 +57,48 @@ define([
             attributeModel.setValue(options.value, options.index);
         },
 
-        initWidget : function(event, options) {
+        initWidget: function (event, options) {
             var model = this.model;
-            options.element.find(".dcpArray__content__cell").each(function(index, element) {
+            var scope = this;
+            options.element.find(".dcpArray__content__cell").each(function (index, element) {
                 var $element = $(element), currentAttribute = model.get("content").get($element.data("attrid"));
                 if (currentAttribute.isDisplayable()) {
-                    $(element).dcpText(currentAttribute.toData(options.line));
+                    scope.getWidgetClass(currentAttribute.attributes.type).apply(
+                        $(element),
+                        [currentAttribute.toData(options.line)]);
                 } else {
-                   throw new Error("Try to display a non displayable attribute "+currentAttribute.id);
+                    throw new Error("Try to display a non displayable attribute " + currentAttribute.id);
                 }
-            })
+            });
         },
 
-        refresh : function() {
+        refresh: function () {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
             this.render();
         },
 
-        removeLine : function(event, options) {
-            this.model.get("content").each(function(currentContent) {
-               currentContent.removeLine(options.line);
+        removeLine: function (event, options) {
+            this.model.get("content").each(function (currentContent) {
+                currentContent.removeLine(options.line);
             });
             this.refresh();
+        },
+
+        getWidgetClass: function (type) {
+            switch (type) {
+                case "text" :
+                    return $.fn.dcpText;
+                case "int" :
+                    return $.fn.dcpInt;
+                case "double" :
+                    return $.fn.dcpDouble;
+                case "account" :
+                case "docid" :
+                    return $.fn.dcpDocid;
+                default:
+                    return $.fn.dcpText;
+            }
         }
     });
 

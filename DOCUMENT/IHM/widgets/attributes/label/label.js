@@ -7,19 +7,27 @@ define([
 
     $.widget("dcp.dcpLabel", {
 
-        _create : function () {
+        _create: function () {
             this._initDom();
         },
 
-        _initDom : function() {
+        _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(), this.options));
         },
 
-        setLabel : function(label) {
+        setLabel: function (label) {
             this.element.text(label);
         },
 
-        _getTemplate : function () {
+        setError: function (message) {
+            if (message) {
+                this.element.addClass("has-error");
+            } else {
+                this.element.removeClass("has-error");
+            }
+        },
+
+        _getTemplate: function () {
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute.label) {
                 return window.dcp.templates.attribute.label;
             }

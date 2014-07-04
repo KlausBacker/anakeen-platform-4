@@ -1,5 +1,12 @@
-<li data-menu-id="{{id}}" {{# htmlAttr}}{{attrId}}="{{attrValue}}"{{/ htmlAttr}}
+<li data-menu-id="{{id}}"{{# htmlAttr}}{{attrId}}="{{attrValue}}"{{/ htmlAttr}}
+    class="menu__element menu__element--item {{cssClass}}"
     {{# disabled}}disabled="disabled"{{/ disabled}}
     {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
     >
-    <a href="{{url}}" >{{label}}</a></li>
+    <a {{# confirmationText}}class="menu--confirm" data-confirm-message="{{confirmationText}}"{{/ confirmationText}}
+       {{# target}}target="{{target}}"{{/ target}}
+       data-url="{{url}}" >
+        {{#iconUrl}}<img src="{{iconUrl}}" class="k-image" />{{/iconUrl}}
+        {{#beforeContent}}<span class="menu__before-content k-image">{{{beforeContent}}}</span>{{/beforeContent}}
+        {{{htmlLabel}}}{{label}}
+    </a></li>
