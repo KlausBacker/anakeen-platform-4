@@ -4,6 +4,18 @@ body {
 
 @menu-before-width : 12px;
 
+.menu__content {
+  padding: 0;
+  margin: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+
+.menu__content li.menu--workflow:last-child {
+  border-right:none;
+}
+
 .menu__content .k-menu .k-item > .k-link {
   /*background-color: darken(@widget-background-color, 10%);*/
   padding-top: 0.5em;
@@ -19,9 +31,11 @@ body {
   border-style: solid;
   cursor: default;
 }
+
 .k-menu .k-group .k-item.menu--separator.k-state-default {
   border-width: 1px 0 1px 0;
 }
+
 .menu--separator.k-state-default .k-link {
   cursor: default;
 }
@@ -69,7 +83,7 @@ body {
   margin-top: 6px;
 }
 
-.k-menu .k-item.menu--workflow {
+.k-menu .k-item.menu--right {
   float: right;
 }
 
@@ -78,6 +92,7 @@ body {
 .menu--separator.menu--workflow.k-state-hover:hover {
   background-color: inherit;
 }
+
 div[data-role=draggable] .k-window-title {
-  cursor:move;
+  cursor: move;
 }

@@ -13,6 +13,9 @@
   top: @dcpHeaderHeight;
 }
 
+.dcpDocument__body {
+  padding:10px;
+}
 .dcpDocument__header {
   /* position: fixed;
    top: 0;*/
@@ -42,11 +45,29 @@
   position: fixed;
   bottom: 0;
   width: 100%;
+  z-index:2;
 }
 
 body {
   margin-bottom: 20px;
 }
+
+.dcpDocument__tabs .nav-tabs > li.active > a {
+  margin-bottom:-2px;
+  background-color:@panel-bg;
+}
+.dcpDocument__tabs .nav-tabs {
+   border-bottom: none;
+}
+
+.dcpDocument__tabs__content {
+  padding:5px;
+  border: solid 1px @panel-default-border;
+}
+.dcpDocument__tabs__content .tab-pane .panel:last-child {
+  margin-bottom:0;
+}
+
 
 .confirm--content {
   padding: 10px;

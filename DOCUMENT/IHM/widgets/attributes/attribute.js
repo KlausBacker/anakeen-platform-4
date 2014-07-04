@@ -72,7 +72,6 @@ define([
                     }
                 });
 
-
                 currentWidget.element.find("input").focus();
             }).attr('title', titleDelete).kendoTooltip({
                 position: "left"
@@ -123,7 +122,7 @@ define([
                          this.popup.element.addClass("has-error");
                      }
                 });
-                this.element.find('input').focus();
+               // this.element.find('input').focus();
                 if (parentId) {
                     $('.dcpFrame__label[data-id="'+parentId+'"]').addClass("has-warning");
                     greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');;

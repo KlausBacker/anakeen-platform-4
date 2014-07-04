@@ -4,50 +4,59 @@
   &:after {
     content: " :";
   }
-}.dcpAttribute--needed .dcpAttribute__label {
-   font-weight: bold;
- }
+}
+
+.dcpAttribute--needed .dcpAttribute__label {
+  font-weight: bold;
+}
+
 .dcpAttribute--needed .dcpAttribute__label:after {
   content: "* :";
 }
+
+.dcpFrame__label {
+  cursor:pointer;
+}
+
 .dcpAttribute__content--read {
   position: inherit;
   top: (@padding-base-vertical - 2);
 }
 
 .dcpAttribute__contentWrapper .input-group .k-autocomplete input {
-  height:(@dcpInputHeight - 2);
+  height: (@dcpInputHeight - 2);
 }
 
 .dcpAttribute__contentWrapper .input-group input,
 .dcpArray__content__cell .input-group input,
-.dcpAttribute__contentWrapper .input-group .k-autocomplete
-{
-  height:@dcpInputHeight;
+.dcpAttribute__contentWrapper .input-group .k-autocomplete {
+  height: @dcpInputHeight;
 }
+
 .dcpAttribute__contentWrapper .input-group-addon,
 .dcpArray__content__cell .input-group-addon {
-  padding:0;
-  height:@dcpInputHeight;
+  padding: 0;
+  height: @dcpInputHeight;
 }
+
 .dcpAttribute__contentWrapper .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button, {
-  background-color:transparent;
-  border:none;
+  background-color: transparent;
+  border: none;
 }
 
 .dcpAttribute__content--flash input,
 .dcpAttribute__content--flash .k-input,
 .dcpAttribute__content--flash .k-multiselect-wrap,
 {
-  background-color:@brand-info;
+  background-color: @brand-info;
 }
 
 .dcpAttribute__content--endflash input,
 .dcpAttribute__content--endflash .k-input,
 .dcpAttribute__content--endflash .k-multiselect-wrap,
 {
-  background-color:inherit;
+  background-color: inherit;
   transition: background-color 500ms linear;
 }
 
@@ -65,7 +74,7 @@
 }
 
 .dcpAttribute__label.has-error {
-  color:@brand-danger;
+  color: @brand-danger;
 }
 
 .k-widget.k-tooltip.has-error {
@@ -79,7 +88,7 @@
 }
 
 .dcpFrame__label.has-warning,
-.nav-tabs .dcpTab__label.has-warning  {
+.nav-tabs .dcpTab__label.has-warning {
   background-color: @brand-warning;
 
 }

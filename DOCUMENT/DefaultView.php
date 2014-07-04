@@ -87,17 +87,6 @@ class DefaultView extends RenderDefault
         $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
         $menu->appendElement($item);
         
-        if ($document->wid > 0) {
-            $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));
-            $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
-            {
-                $this->getWorkflowMenu($document, $menu);
-            });
-            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
-            $workflowMenu->setHtmlAttribute("class", "menu--workflow");
-            $menu->appendElement($workflowMenu);
-        }
-        
         $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "?app=FREEDOM&action=HISTO&id={{document.properties.id}}");
         $targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
@@ -124,7 +113,16 @@ class DefaultView extends RenderDefault
         $securitySubMenu->appendElement(new ItemMenu("unlock", ___("Unlock", "UiMenu") , "?app=...={{document.properties.id}}"));
         
         $menu->getElement("advanced")->appendElement($securitySubMenu);
-        
+        if ($document->wid > 0) {
+            $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));
+            $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
+            {
+                $this->getWorkflowMenu($document, $menu);
+            });
+            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
+            $menu->appendElement($workflowMenu);
+        }
         return $this->setMenuVisibility($menu, $document);
     }
     /**

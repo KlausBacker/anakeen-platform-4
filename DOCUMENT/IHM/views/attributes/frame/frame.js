@@ -25,10 +25,22 @@ define([
         render: function () {
             var $content;
             var $loading = $(".dcpLoading");
+            var labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
+            var contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
             console.time("render frame " + this.model.id);
             this.$el.empty();
-            this.$el.append($(Mustache.render(this.templateLabel, this.model.toJSON())));
-            this.$el.append($(Mustache.render(this.templateContent, this.model.toJSON())));
+            this.$el.append(labelElement);
+            this.$el.append(contentElement);
+
+            contentElement.collapse('show');
+            labelElement.on("click", function () {
+                if (contentElement.hasClass("in")) {
+                    $(this).find("i").addClass("fa-caret-down").removeClass("fa-caret-up");
+                } else {
+                    $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+                }
+                contentElement.collapse('toggle');
+            });
             $content = this.$el.find(".dcpFrame__content");
 
             $loading.dcpLoading("addItem");

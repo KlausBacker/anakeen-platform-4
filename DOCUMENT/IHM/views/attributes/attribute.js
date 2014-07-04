@@ -52,7 +52,6 @@ define([
 
         },
         refreshError: function () {
-            console.log("WEH",this.model.get("errorMessage") );
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
             this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
 
