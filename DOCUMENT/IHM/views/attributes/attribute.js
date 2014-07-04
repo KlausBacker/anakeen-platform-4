@@ -5,6 +5,8 @@ define([
     'mustache',
     'widgets/attributes/label/label',
     'widgets/attributes/text/text',
+    'widgets/attributes/int/int',
+    'widgets/attributes/double/double',
     'widgets/attributes/docid/docid'
 ], function (_, Backbone, Mustache) {
     'use strict';
@@ -71,6 +73,10 @@ define([
             switch (this.model.get("type")) {
                 case "text" :
                     return $.fn.dcpText;
+                case "int" :
+                    return $.fn.dcpInt;
+                case "double" :
+                    return $.fn.dcpDouble;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;

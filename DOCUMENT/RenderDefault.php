@@ -94,10 +94,26 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "text" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/text/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/text/read.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "int" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "double" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ) ,
                 "docid" => array(

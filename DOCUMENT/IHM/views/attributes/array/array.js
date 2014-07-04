@@ -89,6 +89,10 @@ define([
             switch (type) {
                 case "text" :
                     return $.fn.dcpText;
+                case "int" :
+                    return $.fn.dcpInt;
+                case "double" :
+                    return $.fn.dcpDouble;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;
