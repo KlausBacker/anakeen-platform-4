@@ -28,7 +28,7 @@ require.config({
         },
         "kendo-culture": {
             deps: [
-                'jquery'
+                'kendo'
             ]
         }
     },
@@ -38,7 +38,8 @@ require.config({
         "backbone": "../../lib/backbone/backbone",
         "mustache": "../../lib/mustache.js/mustache",
         "bootstrap": "../../lib/bootstrap/js/bootstrap",
-        "kendo": "../../lib/KendoUI/js/kendo.ui.core"
+        "kendo": "../../lib/KendoUI/js/kendo.ui.core",
+        "kendo-culture-fr": "../../lib/KendoUI/js/cultures/kendo.culture.fr-FR"
     }/*,
      urlArgs : "invalidateCache=" + (new Date()).getTime()*/
 });

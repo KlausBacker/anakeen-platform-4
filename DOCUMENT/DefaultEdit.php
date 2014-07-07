@@ -50,15 +50,21 @@ class DefaultEdit extends RenderDefault
                 $menu->appendElement($item);
             }
         }
+        /*
         $item = new ItemMenu("cancel", ___("Cancel", "UiMenu") , "#cancel/{{document.properties.id}}");
         $item->setBeforeContent('<div class="fa fa-undo" />');
         $item->setTooltipLabel(___("Abord modifications", "UiMenu"));
+        $menu->appendElement($item);
+        */
+        $item = new ItemMenu("close", ___("Close", "UiMenu") , "#close/{{document.properties.id}}");
+        $item->setBeforeContent('<div class="fa fa-times" />');
+        $item->setTooltipLabel(___("See document in read mode", "UiMenu"));
         $menu->appendElement($item);
         
         if ($document->wid > 0) {
             $workflowMenu = new SeparatorMenu("workflow", _($document->getStateActivity($document->getState())));
             //$workflowMenu->setHtmlAttribute("style", "float:right;background-color:inherit");
-            $workflowMenu->setHtmlAttribute("class", "menu--workflow");
+            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
             $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
             
             $menu->appendElement($workflowMenu);

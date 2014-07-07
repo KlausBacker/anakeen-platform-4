@@ -28,7 +28,7 @@ define([
 
         _activateNumber: function (inputValue) {
             inputValue.kendoNumericTextBox({
-                culture: "fr_FR",
+                culture: "fr-FR",
                 decimals: 0,
                 format:"n0"
             });

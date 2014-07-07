@@ -1,6 +1,7 @@
 define([
     'underscore',
     'mustache',
+    "kendo-culture-fr",
     '../attribute'
 ], function (_, Mustache) {
     'use strict';

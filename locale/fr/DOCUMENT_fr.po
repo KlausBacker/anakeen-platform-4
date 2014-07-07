@@ -3,24 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-24 12:22+0200\n"
-"PO-Revision-Date: 2014-07-04 11:34+0200\n"
+"POT-Creation-Date: 2014-07-07 12:58+0200\n"
+"PO-Revision-Date: 2014-07-07 12:58+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgctxt "UiMenu"
-msgid "Abord modifications"
-msgstr "Abandonner les modifications"
-
-msgid "ddui::Loading"
-msgstr "Chargement"
-
-msgid "ddui::Delete : "
-msgstr "Suppression de : "
 
 msgid "Abstract view"
 msgstr ""
@@ -37,9 +27,21 @@ msgctxt "my"
 msgid "Anakeen"
 msgstr ""
 
+#, php-format
+msgctxt "ddui"
+msgid "Attribute \"%s\" not found "
+msgstr ""
+
+msgid "Autocomplete attributes"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Cancel"
 msgstr "Annuler"
+
+msgctxt "UiMenu"
+msgid "Close"
+msgstr "Fermer"
 
 msgctxt "my"
 msgid "Confims"
@@ -145,6 +147,10 @@ msgctxt "my"
 msgid "My label 3"
 msgstr ""
 
+msgctxt "ddui"
+msgid "No result found"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Profil access"
 msgstr "Accès au profil"
@@ -178,15 +184,19 @@ msgstr "Retirer le document de la poubelle"
 
 msgctxt "UiMenu"
 msgid "Save"
-msgstr "Sauver"
+msgstr "Enregistrer"
 
 msgctxt "UiMenu"
 msgid "Save !"
-msgstr "Sauver !"
+msgstr "Enregistrer !"
 
 msgctxt "UiMenu"
 msgid "Security"
 msgstr "Sécurité"
+
+msgctxt "UiMenu"
+msgid "See document in read mode"
+msgstr "Afficher le document en lecture"
 
 #, php-format
 msgctxt "UiMenu"
@@ -220,6 +230,23 @@ msgstr ""
 msgid "es_caracteristique"
 msgstr ""
 
+#, php-format
+msgctxt "ddui"
+msgid ""
+"wrong return type when calling function %s\n"
+"%s"
+msgstr ""
+
+#~ msgctxt "UiMenu"
+#~ msgid "Abord modifications"
+#~ msgstr "Abandonner les modifications"
+
 #~ msgctxt "UiMenu"
 #~ msgid "Transition"
 #~ msgstr "Étapes"
+
+msgid "ddui::Delete : "
+msgstr "Suppression de : "
+
+msgid "ddui::Loading"
+msgstr "Chargement"
