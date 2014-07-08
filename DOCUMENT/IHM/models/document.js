@@ -5,7 +5,7 @@ define([
     'models/documentProperties',
     'collections/attributes',
     'collections/menus',
-    'widgets/window/notification'
+    'widgets/window/wNotification'
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 

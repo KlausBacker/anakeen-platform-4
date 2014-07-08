@@ -1,7 +1,7 @@
 define([
     'underscore',
     'mustache',
-    '../attribute'
+    '../wAttribute'
 ], function (_, Mustache) {
     'use strict';
 

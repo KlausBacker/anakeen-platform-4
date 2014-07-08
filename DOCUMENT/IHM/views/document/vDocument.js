@@ -14,10 +14,10 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/document/menu/menu',
-    'views/attributes/frame/frame',
-    'views/attributes/tab/tabLabel',
-    'views/attributes/tab/tabContent'
+    'views/document/menu/vMenu',
+    'views/attributes/frame/vFrame',
+    'views/attributes/tab/vTabLabel',
+    'views/attributes/tab/vTabContent'
 ], function (_, Backbone, Mustache, ViewDocumentMenu, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent) {
     'use strict';
 

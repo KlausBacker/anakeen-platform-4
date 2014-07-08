@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/frame/frame'
+    'views/attributes/frame/vFrame'
 ], function (_, Backbone, Mustache, ViewAttributeFrame) {
     'use strict';
 

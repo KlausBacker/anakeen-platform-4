@@ -3,8 +3,8 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/attribute',
-    'views/attributes/array/array'
+    'views/attributes/vAttribute',
+    'views/attributes/array/vArray'
 ], function (_, Backbone, Mustache, ViewAttribute, ViewAttributeArray) {
     'use strict';
 

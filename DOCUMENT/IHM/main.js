@@ -51,9 +51,9 @@ require([
     'routers/router',
     'collections/documents',
     'models/document',
-    'views/document/document',
-    'widgets/window/confirm',
-    'widgets/window/loading',
+    'views/document/vDocument',
+    'widgets/window/wConfirm',
+    'widgets/window/wLoading',
     'bootstrap'/*,
      'kendo'*/
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {

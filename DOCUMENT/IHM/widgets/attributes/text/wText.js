@@ -2,7 +2,7 @@ define([
     'underscore',
     'mustache',
     "kendo-culture-fr",
-    '../attribute'
+    '../wAttribute'
 ], function (_, Mustache) {
     'use strict';
 
@@ -38,7 +38,6 @@ define([
         _activateAutocomplete: function (inputValue) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var attributeModel = documentModel.get('attributes').get(this.options.id);
             var valueIndex = this.options.index;
             inputValue.kendoAutoComplete({
                 dataTextField: "title",

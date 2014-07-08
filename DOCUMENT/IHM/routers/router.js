@@ -2,7 +2,7 @@
 define([
     'underscore',
     'backbone',
-    'widgets/window/notification'
+    'widgets/window/wNotification'
 ], function (_, Backbone, ViewMakeRequest, ViewRequestAssigned) {
     'use strict';
 

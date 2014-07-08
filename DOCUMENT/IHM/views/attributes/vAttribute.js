@@ -3,11 +3,11 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'widgets/attributes/label/label',
-    'widgets/attributes/text/text',
-    'widgets/attributes/int/int',
-    'widgets/attributes/double/double',
-    'widgets/attributes/docid/docid'
+    'widgets/attributes/label/wLabel',
+    'widgets/attributes/text/wText',
+    'widgets/attributes/int/wInt',
+    'widgets/attributes/double/wDouble',
+    'widgets/attributes/docid/wDocid'
 ], function (_, Backbone, Mustache) {
     'use strict';
 
