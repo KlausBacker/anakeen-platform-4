@@ -9,7 +9,12 @@ define([
 
     return ViewAttribute.extend({
 
+        events : function () {
+            var columnEvent={};
 
+          //  columnEvent["dcpattributechange .dcpArray__content__cell"]="updateColumn";
+            return columnEvent;
+        },
 
 
         render: function () {
@@ -43,6 +48,10 @@ define([
 
             console.timeEnd("render column " + this.model.id);
             return this;
+        },
+
+        updateColumn :function updateColumn(event, options) {
+            console.log("IN COLUMN update value", options);
         }
     });
 

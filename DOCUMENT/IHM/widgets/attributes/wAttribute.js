@@ -101,8 +101,7 @@ define([
             this.element.addClass('dcpAttribute__content--flash');
             var currentElement = this.element;
             _.delay(function () {
-                currentElement.removeClass('dcpAttribute__content--flash');
-                currentElement.addClass('dcpAttribute__content--endflash');
+                currentElement.removeClass('dcpAttribute__content--flash').addClass('dcpAttribute__content--endflash');
                 _.delay(function () {
                     currentElement.removeClass('dcpAttribute__content--endflash');
                 }, 600);
@@ -111,8 +110,8 @@ define([
 
         setError: function (message, index) {
             var parentId=this._model().get('parent');
+            var greatParentId;
             if (message) {
-                var greatParentId;
                 this.element.addClass("has-error");
                 this.element.kendoTooltip({
                     position:"bottom",
@@ -125,7 +124,7 @@ define([
                // this.element.find('input').focus();
                 if (parentId) {
                     $('.dcpFrame__label[data-id="'+parentId+'"]').addClass("has-warning");
-                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');;
+                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');
 
                     if (greatParentId) {
                     $('.dcpTab__label[data-id="'+greatParentId+'"]').addClass("has-warning");
@@ -137,7 +136,7 @@ define([
                 this.element.data("kendoTooltip").destroy();
                 if (parentId) {
                     $('.dcpFrame__label[data-id="'+parentId+'"]').removeClass("has-warning");
-                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');;
+                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');
 
                     if (greatParentId) {
                         $('.dcpTab__label[data-id="'+greatParentId+'"]').removeClass("has-warning");
@@ -163,6 +162,7 @@ define([
 
         setValue: function (value, event) {
             this.options.value = value;
+            console.log("send change", this.options.id, this.options.index);
             this._trigger("change", event, {
                 id: this.options.id,
                 value: value,

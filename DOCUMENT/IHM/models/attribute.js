@@ -15,7 +15,7 @@ define([
             multiple: false,
             mode: "read",
             documentMode: "read",
-            errorMessage:null
+            errorMessage: null
         },
 
         initialize: function () {
@@ -54,16 +54,18 @@ define([
         },
 
         addValue: function (value, index) {
+            console.log("add value", index);
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            currentValue = _.toArray(_.clone(this.get("value")));
+            // clone array references
+            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+
             if (this.get("multiple") && index >= 0) {
-
                 currentValue[index].push(value);
+                currentValue=_.extend({},currentValue);
                 this.set("value", currentValue);
-
             } else {
                 currentValue.push(value);
                 this.set("value", currentValue);
@@ -142,18 +144,18 @@ define([
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
         inArray: function () {
-            var aparent=this.getParent();
-            console.log("in array", this.id, this,aparent);
-            return (aparent && aparent.attributes && aparent.attributes.type==="array");
+            var aparent = this.getParent();
+            console.log("in array", this.id, this, aparent);
+            return (aparent && aparent.attributes && aparent.attributes.type === "array");
         },
 
         documentModel: function () {
             return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
         },
         getParent: function () {
-          if (this.attributes.parent)  {
-              return this.documentModel().get('attributes').get(this.attributes.parent);
-          }
+            if (this.attributes.parent) {
+                return this.documentModel().get('attributes').get(this.attributes.parent);
+            }
             return null;
         },
 
@@ -255,12 +257,12 @@ define([
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate
                 _.reject(errorMessage, function (mindex) {
-                    return mindex===index;
+                    return mindex === index;
                 });
-                errorMessage.push({message:message, index:index});
+                errorMessage.push({message: message, index: index});
                 this.set('errorMessage', _.clone(errorMessage));
             } else {
-                this.set('errorMessage',message);
+                this.set('errorMessage', message);
             }
         }
 

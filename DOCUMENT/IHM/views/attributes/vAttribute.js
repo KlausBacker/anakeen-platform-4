@@ -52,25 +52,18 @@ define([
         },
 
         refreshValue: function () {
-            console.log("CATCH ELS", this.getDOMElements());
-            var allWrapper=this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
-            var values= this.model.get("value");
-            var scope=this;
-           if (this.model.inArray()) {
-                values= _.toArray(values);
-            console.log("CATCH REFRESH IN", allWrapper);
-            console.log("CATCH REFRESH VALUE", values);
-               allWrapper.each(function (index, element) {
-            console.log("APPLY REFRESH VALUE", index, values[index]);
-                   scope.widgetApply($(element), "setValue", values[index]);
-               });
+            var allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
+            var values = this.model.get("value");
+            var scope = this;
+            if (this.model.inArray()) {
+                values = _.toArray(values);
+                allWrapper.each(function (index, element) {
+                    scope.widgetApply($(element), "setValue", values[index]);
+                });
 
-           } else {
-
-
-//findIn=$(findIn.get(0));
-            this.widgetApply(allWrapper, "setValue", values);
-           }
+            } else {
+                this.widgetApply(allWrapper, "setValue", values);
+            }
 
         },
         refreshError: function () {
@@ -79,8 +72,7 @@ define([
         },
 
 
-
-        getDOMElements : function () {
+        getDOMElements: function () {
             if (this.options.$els) {
                 return this.options.$els;
             } else {
@@ -88,7 +80,6 @@ define([
             }
         },
         updateValue: function () {
-
             this.model.setValue(this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "getValue"));
         },
 
@@ -99,7 +90,6 @@ define([
         getWidgetClass: function () {
             return this.getTypedWidgetClass(this.model.get("type"));
         },
-
 
 
         getTypedWidgetClass: function (type) {

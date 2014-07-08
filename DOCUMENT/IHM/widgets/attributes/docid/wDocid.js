@@ -24,7 +24,6 @@ define([
 
                 this.options.isMultiple = true;
             }
-            console.log("mode", this.getMode(), this.options);
 
             if (this.getMode() === "read") {
 
@@ -127,6 +126,7 @@ define([
                             var attrModel = documentModel.get('attributes').get(aid);
                             if (attrModel) {
                                 _.defer(function () {
+                                    var extValue= _.extend({},val.value);
                                     if (attrModel.hasMultipleOption()) {
                                         attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
                                     } else {
@@ -146,7 +146,6 @@ define([
                     if (attrModel.inArray()) {
                         oldValues=oldValues[valueIndex];
                     }
-                    console.log("delete from", oldValues);
                     _.each(this.value(), function (val) {
                         displayValue = _.where(oldValues, {value: val});
                         if (displayValue.length > 0) {
@@ -156,7 +155,6 @@ define([
                         }
                         newValues.push({value: val, displayValue: displayValue});
                     });
-                    console.log("delete to", newValues, valueIndex);
                     attrModel.setValue(newValues, valueIndex);
 
                 }
@@ -172,7 +170,6 @@ define([
             });
         },
         setValue: function (value) {
-            console.log("CATCH DOCID", value);
 
             var kendoWidget = this.kendoWidget;
             this._super(value);
@@ -205,7 +202,6 @@ define([
                     return info;
                 });
                 // update values in kendo widget
-                console.log("newData",newData);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data(newData);
                 this.kendoWidget.data("kendoMultiSelect").value(newValues);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);

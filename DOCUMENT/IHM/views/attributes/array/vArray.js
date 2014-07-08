@@ -25,7 +25,7 @@ define([
         render: function () {
             console.time("render array " + this.model.id);
             var data = this.model.toData();
-            var scope=this;
+            var scope = this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
             data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
@@ -35,28 +35,26 @@ define([
 
             this.model.get("content").each(function (currentAttr) {
 
-                    if (!currentAttr.isDisplayable()) {
-                        return;
+                if (!currentAttr.isDisplayable()) {
+                    return;
+                }
+
+                try {
+                    if (currentAttr.get("valueAttribute")) {
+
+                        var viewA = new ViewColumn({
+                            el: scope.el,
+                            $els: scope.$el.find('[data-attrid="' + currentAttr.id + '"]'),
+                            model: currentAttr,
+                            parentElement: scope.$el});
+                        viewA.render();
+
                     }
 
-                    try {
-                        if (currentAttr.get("valueAttribute")) {
-                            console.log("add view for ", currentAttr.id);
-                            console.log("add view in ", scope.$el.find('[data-attrid="'+currentAttr.id+'"]'));
-
-                            var viewA=new ViewColumn({
-                                    el: null,
-                                    $els : scope.$el.find('[data-attrid="'+currentAttr.id+'"]'),
-                                    model: currentAttr,
-                                    parentElement:scope.$el});
-                            viewA.render();
-
-                        }
-
-                    } catch (e) {
-                        console.error(e);
-                    }
-                });
+                } catch (e) {
+                    console.error(e);
+                }
+            });
             console.timeEnd("render array " + this.model.id);
             return this;
         },
@@ -76,8 +74,8 @@ define([
         },
 
         updateValue: function (event, options) {
-            console.log("IN ARRAY update value");
-            return;
+            console.log("IN ARRAY update value", options);
+
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
@@ -85,22 +83,7 @@ define([
             attributeModel.setValue(options.value, options.index);
         },
 
-        initWidget: function (event, options) {
-            var model = this.model;
-            var scope = this;
-            console.log("option", options.line);
-            return;
-            options.element.find(".dcpArray__content__cell").each(function (index, element) {
-                var $element = $(element), currentAttribute = model.get("content").get($element.data("attrid"));
-                if (currentAttribute.isDisplayable()) {
-                    scope.getWidgetClass(currentAttribute.attributes.type).apply(
-                        $(element),
-                        [currentAttribute.toData(options.line)]);
-                } else {
-                    throw new Error("Try to display a non displayable attribute " + currentAttribute.id);
-                }
-            });
-        },
+
 
         refresh: function () {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
