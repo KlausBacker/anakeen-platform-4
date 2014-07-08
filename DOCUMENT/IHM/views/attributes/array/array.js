@@ -3,8 +3,10 @@ define([
     'underscore',
     'backbone',
     'mustache',
+    'views/attributes/attribute',
+    'views/attributes/array/column',
     'widgets/attributes/array/array'
-], function (_, Backbone, Mustache) {
+], function (_, Backbone, Mustache, ViewAttribute, ViewColumn) {
     'use strict';
 
     return Backbone.View.extend({
@@ -23,13 +25,38 @@ define([
         render: function () {
             console.time("render array " + this.model.id);
             var data = this.model.toData();
-
+            var scope=this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
             data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
             this.$el.dcpArray(data);
+
+            this.model.get("content").each(function (currentAttr) {
+
+                    if (!currentAttr.isDisplayable()) {
+                        return;
+                    }
+
+                    try {
+                        if (currentAttr.get("valueAttribute")) {
+                            console.log("add view for ", currentAttr.id);
+                            console.log("add view in ", scope.$el.find('[data-attrid="'+currentAttr.id+'"]'));
+
+                            var viewA=new ViewColumn({
+                                    el: null,
+                                    $els : scope.$el.find('[data-attrid="'+currentAttr.id+'"]'),
+                                    model: currentAttr,
+                                    parentElement:scope.$el});
+                            viewA.render();
+
+                        }
+
+                    } catch (e) {
+                        console.error(e);
+                    }
+                });
             console.timeEnd("render array " + this.model.id);
             return this;
         },
@@ -50,6 +77,7 @@ define([
 
         updateValue: function (event, options) {
             console.log("IN ARRAY update value");
+            return;
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
@@ -60,6 +88,8 @@ define([
         initWidget: function (event, options) {
             var model = this.model;
             var scope = this;
+            console.log("option", options.line);
+            return;
             options.element.find(".dcpArray__content__cell").each(function (index, element) {
                 var $element = $(element), currentAttribute = model.get("content").get($element.data("attrid"));
                 if (currentAttribute.isDisplayable()) {

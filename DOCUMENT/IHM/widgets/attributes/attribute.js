@@ -168,6 +168,12 @@ define([
                 value: value,
                 index: this.options.index
             });
+        },
+
+
+
+        getTypedWidgetClass: function (type) {
+            return this._model().getTypedWidgetClass(type);
         }
 
     });

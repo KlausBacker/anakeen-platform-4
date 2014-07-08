@@ -24,6 +24,8 @@ define([
 
                 this.options.isMultiple = true;
             }
+            console.log("mode", this.getMode(), this.options);
+
             if (this.getMode() === "read") {
 
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
@@ -141,6 +143,10 @@ define([
                     var oldValues = attrModel.get("value");
                     var displayValue;
                     var newValues = [];
+                    if (attrModel.inArray()) {
+                        oldValues=oldValues[valueIndex];
+                    }
+                    console.log("delete from", oldValues);
                     _.each(this.value(), function (val) {
                         displayValue = _.where(oldValues, {value: val});
                         if (displayValue.length > 0) {
@@ -150,6 +156,7 @@ define([
                         }
                         newValues.push({value: val, displayValue: displayValue});
                     });
+                    console.log("delete to", newValues, valueIndex);
                     attrModel.setValue(newValues, valueIndex);
 
                 }
@@ -165,6 +172,8 @@ define([
             });
         },
         setValue: function (value) {
+            console.log("CATCH DOCID", value);
+
             var kendoWidget = this.kendoWidget;
             this._super(value);
             if (this.getMode() === "write") {
@@ -196,6 +205,7 @@ define([
                     return info;
                 });
                 // update values in kendo widget
+                console.log("newData",newData);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data(newData);
                 this.kendoWidget.data("kendoMultiSelect").value(newValues);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);

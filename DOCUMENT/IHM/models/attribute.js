@@ -141,6 +141,21 @@ define([
 
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
+        inArray: function () {
+            var aparent=this.getParent();
+            console.log("in array", this.id, this,aparent);
+            return (aparent && aparent.attributes && aparent.attributes.type==="array");
+        },
+
+        documentModel: function () {
+            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
+        },
+        getParent: function () {
+          if (this.attributes.parent)  {
+              return this.documentModel().get('attributes').get(this.attributes.parent);
+          }
+            return null;
+        },
 
         _computeMode: function () {
             var visibility = this.get("visibility"), documentMode = this.get("documentMode");

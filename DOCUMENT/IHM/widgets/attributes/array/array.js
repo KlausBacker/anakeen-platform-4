@@ -87,8 +87,7 @@ define([
         },
 
         _getTemplate : function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute
-                && window.dcp.templates.attribute.array && window.dcp.templates.attribute.array[name]) {
+            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute.array && window.dcp.templates.attribute.array[name]) {
                 return window.dcp.templates.attribute.array[name];
             }
             throw new Error("Unknown array template "+name);
