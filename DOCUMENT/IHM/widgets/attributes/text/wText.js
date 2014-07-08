@@ -85,12 +85,19 @@ define([
         },
         setValue: function (value) {
             this._super(value);
+            var contentElement=this.element.find(".dcpAttribute__content");
+            var originalValue=contentElement.val();
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").val(value.value);
+
+                console.log("before", originalValue);
+                console.log("after", value.value);
+                contentElement.val(value.value);
+                if (originalValue !== value.value) {
                 this.flashElement();
+                }
 
             } else if (this.getMode() === "read") {
-                this.element.find(".dcpAttribute__content").text(value.displayValue);
+                contentElement.text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

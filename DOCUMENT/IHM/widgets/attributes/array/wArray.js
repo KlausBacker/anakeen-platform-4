@@ -34,7 +34,7 @@ define([
                 $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__add", function() {
-                currentWidget.addLine(currentWidget.options.nbLines++);
+                currentWidget.addLine(currentWidget.options.nbLines++, true);
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
@@ -50,16 +50,17 @@ define([
             this._trigger("linesGenerated");
         },
 
-        addLine : function(lineNumber) {
+        addLine : function(lineNumber, needAddValue) {
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
             var $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber : lineNumber}, this.options)));
             this.element.find(".dcpArray__body").append($content);
-            this._trigger("lineAdded", {}, {line : lineNumber, element : $content});
+            this._trigger("lineAdded", {}, {line : lineNumber, element : $content, needAddValue:needAddValue});
         },
 
         removeLine : function(line) {
+            console.log("widget array removeLine", line);
             this.element.find("[data-line="+line+"]").remove();
             this._indexLine();
             this._trigger("lineRemoved", {}, {line : line});

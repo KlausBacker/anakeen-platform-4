@@ -72,11 +72,12 @@ define([
             }
         },
 
-        removeLine: function (index) {
+        removeIndexValue: function (index) {
             var currentValue, oldValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
+            console.log("remove line", index, this.id);
             oldValue = this.get("value");
             currentValue = _.clone(this.get("value"));
             _.each(currentValue, function (value, currentIndex) {
@@ -89,7 +90,24 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue);
+            this.set("value", currentValue, {silent:true});
+        },
+        addIndexValue: function (index) {
+            var currentValue, oldValue;
+            if (!this.get("multiple") || !_.isNumber(index)) {
+                throw new Error("You need to add an index to set value for a multiple id " + this.id);
+            }
+            console.log("add line", index, this.id);
+            oldValue = this.get("value");
+            console.log("add line", oldValue);
+           // currentValue = _.clone(this.get("value"));
+            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+            var firstValue= _.clone(currentValue[0]);
+            console.log("add new item", firstValue);
+            currentValue.push(firstValue);
+            console.log("add new line", currentValue);
+
+            this.set("value", currentValue, {silent:true});
         },
 
         getNbLines: function () {
@@ -145,7 +163,6 @@ define([
         },
         inArray: function () {
             var aparent = this.getParent();
-            console.log("in array", this.id, this, aparent);
             return (aparent && aparent.attributes && aparent.attributes.type === "array");
         },
 

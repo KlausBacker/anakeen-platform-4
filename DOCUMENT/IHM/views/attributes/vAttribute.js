@@ -52,11 +52,13 @@ define([
         },
 
         refreshValue: function () {
+            console.log("propagate setvalue to view", this.model.id);
             var allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
             var values = this.model.get("value");
             var scope = this;
             if (this.model.inArray()) {
                 values = _.toArray(values);
+                 console.log("propagate from array to view",allWrapper, values);
                 allWrapper.each(function (index, element) {
                     scope.widgetApply($(element), "setValue", values[index]);
                 });
@@ -73,8 +75,8 @@ define([
 
 
         getDOMElements: function () {
-            if (this.options.$els) {
-                return this.options.$els;
+            if (this.options.els) {
+                return this.options.els();
             } else {
                 return this.$el;
             }

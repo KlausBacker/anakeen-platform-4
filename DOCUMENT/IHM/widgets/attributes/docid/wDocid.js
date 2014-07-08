@@ -126,7 +126,7 @@ define([
                             var attrModel = documentModel.get('attributes').get(aid);
                             if (attrModel) {
                                 _.defer(function () {
-                                    var extValue= _.extend({},val.value);
+                                    var extValue = _.extend({}, val.value);
                                     if (attrModel.hasMultipleOption()) {
                                         attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
                                     } else {
@@ -144,7 +144,7 @@ define([
                     var displayValue;
                     var newValues = [];
                     if (attrModel.inArray()) {
-                        oldValues=oldValues[valueIndex];
+                        oldValues = oldValues[valueIndex];
                     }
                     _.each(this.value(), function (val) {
                         displayValue = _.where(oldValues, {value: val});
@@ -201,12 +201,15 @@ define([
                     info.docId = val.value;
                     return info;
                 });
+                var originalValues = _.clone(this.kendoWidget.data("kendoMultiSelect").value());
                 // update values in kendo widget
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data(newData);
                 this.kendoWidget.data("kendoMultiSelect").value(newValues);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);
 
-                this.flashElement();
+                if (! _.isEqual(newValues , originalValues)) {
+                    this.flashElement();
+                }
 
             } else if (this.getMode() === "read") {
                 this.element.find(".dcpAttribute__content").text(value.displayValue);

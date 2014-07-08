@@ -9,49 +9,41 @@ define([
 
     return ViewAttribute.extend({
 
-        events : function () {
-            var columnEvent={};
 
-          //  columnEvent["dcpattributechange .dcpArray__content__cell"]="updateColumn";
-            return columnEvent;
+        events: {
+            "dcparraylineadded": "addNewWidget",
+            "dcparraylineremoved": "nothing"
         },
 
 
         render: function () {
-            console.log("render column " + this.model.id);
             console.time("render column " + this.model.id);
-            var aModel=this.model;
-            var data = this.model.toData();
-            var values = this.model.get('value');
-            var widgetClass = this.getTypedWidgetClass(data.type);
-            $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
 
-         //   console.log("DATA", data);
-            var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
-
-          //  console.log("CELLS", this.getTypedWidgetClass(), cells);
-          //  console.log("widgetClass",widgetClass);
-
-            _.each(cells, function (cellElement, cIndex) {
-              //  console.log("INIT CELL",cellElement, cIndex );
-              //  console.log("w", cIndex, aModel.toData(cIndex));
-
-
-                widgetClass.apply(
-                    $(cellElement),
-                    [aModel.toData(cIndex)]);
-
-            });
-
-
-          //  console.log("render column " + this.model.id, values, data);
 
             console.timeEnd("render column " + this.model.id);
             return this;
         },
 
-        updateColumn :function updateColumn(event, options) {
+        nothing :function updateColumn(event, options) {
             console.log("IN COLUMN update value", options);
+        },
+        /**
+         * called by vArray::addLine()
+         * @param index
+         */
+        addNewWidget:function updateColumn(index) {
+            console.log("IN COLUMN add new widget", index);
+            var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
+            var aModel=this.model;
+            var data = this.model.toData();
+            var widgetClass = this.getTypedWidgetClass(data.type);
+
+            if (cells[index]) {
+                    widgetClass.apply(
+                    $(cells[index]),
+                    [aModel.toData(index)]);
+            }
+
         }
     });
 

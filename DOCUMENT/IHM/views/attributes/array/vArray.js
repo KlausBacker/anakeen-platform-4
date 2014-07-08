@@ -12,10 +12,12 @@ define([
     return Backbone.View.extend({
 
         events: {
-            "dcparraylineadded": "initWidget",
+            "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
             "dcpattributechange .dcpArray__content__cell": "updateValue"
         },
+
+        columnViews:{},
 
         initialize: function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
@@ -31,30 +33,29 @@ define([
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
-            this.$el.dcpArray(data);
 
             this.model.get("content").each(function (currentAttr) {
-
                 if (!currentAttr.isDisplayable()) {
                     return;
                 }
-
                 try {
                     if (currentAttr.get("valueAttribute")) {
 
-                        var viewA = new ViewColumn({
+                        scope.columnViews[currentAttr.id] = new ViewColumn({
                             el: scope.el,
-                            $els: scope.$el.find('[data-attrid="' + currentAttr.id + '"]'),
+                            els : function () {
+                                return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
+                            },
                             model: currentAttr,
                             parentElement: scope.$el});
-                        viewA.render();
-
+                        scope.columnViews[currentAttr.id].render();
                     }
-
                 } catch (e) {
                     console.error(e);
                 }
             });
+
+            this.$el.dcpArray(data);
             console.timeEnd("render array " + this.model.id);
             return this;
         },
@@ -93,9 +94,25 @@ define([
 
         removeLine: function (event, options) {
             this.model.get("content").each(function (currentContent) {
-                currentContent.removeLine(options.line);
+                currentContent.removeIndexValue(options.line);
             });
-            this.refresh();
+          //  this.refresh();
+        },
+        addLine: function (event, options) {
+            console.log("view array addLine", options,this.model.get("content") );
+            var scope=this;
+            this.model.get("content").each(function (currentContent) {
+                if (options.needAddValue ) {
+                    currentContent.addIndexValue(options.line);
+                }
+
+                var vColumn=scope.columnViews[currentContent.id];
+                console.log("add line", vColumn);
+                if (vColumn) {
+                    vColumn.addNewWidget(options.line);
+                }
+            });
+
         },
 
         getWidgetClass: function (type) {
