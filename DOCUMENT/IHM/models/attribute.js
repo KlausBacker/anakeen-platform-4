@@ -103,12 +103,14 @@ define([
             // currentValue = _.clone(this.get("value"));
             currentValue = _.toArray(_.map(this.get("value"), _.clone));
             var firstValue = _.clone(currentValue[0]);
-            console.log("add new item", firstValue);
-            if (this.hasMultipleOption()) {
+            console.log("add new item", this);
+            var defaultValue = this.attributes.defaultValue;
+            if (defaultValue) {
+                currentValue.push(defaultValue);
+            } else if (this.hasMultipleOption()) {
                 currentValue.push([]);
             } else {
                 currentValue.push({value: null, displayValue: ''});
-
             }
 
 
