@@ -58,7 +58,6 @@ define([
             var scope = this;
             if (this.model.inArray()) {
                 values = _.toArray(values);
-                 console.log("propagate from array to view",allWrapper, values);
                 allWrapper.each(function (index, element) {
                     scope.widgetApply($(element), "setValue", values[index]);
                 });
@@ -82,6 +81,7 @@ define([
             }
         },
         updateValue: function () {
+            console.log("view has receive change", this.model.id);
             this.model.setValue(this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "getValue"));
         },
 

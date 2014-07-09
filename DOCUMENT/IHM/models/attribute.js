@@ -64,7 +64,7 @@ define([
 
             if (this.get("multiple") && index >= 0) {
                 currentValue[index].push(value);
-                currentValue=_.extend({},currentValue);
+                currentValue = _.extend({}, currentValue);
                 this.set("value", currentValue);
             } else {
                 currentValue.push(value);
@@ -90,7 +90,7 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue, {silent:true});
+            this.set("value", currentValue, {silent: true});
         },
         addIndexValue: function (index) {
             var currentValue, oldValue;
@@ -100,14 +100,21 @@ define([
             console.log("add line", index, this.id);
             oldValue = this.get("value");
             console.log("add line", oldValue);
-           // currentValue = _.clone(this.get("value"));
+            // currentValue = _.clone(this.get("value"));
             currentValue = _.toArray(_.map(this.get("value"), _.clone));
-            var firstValue= _.clone(currentValue[0]);
+            var firstValue = _.clone(currentValue[0]);
             console.log("add new item", firstValue);
-            currentValue.push(firstValue);
+            if (this.hasMultipleOption()) {
+                currentValue.push([]);
+            } else {
+                currentValue.push({value: null, displayValue: ''});
+
+            }
+
+
             console.log("add new line", currentValue);
 
-            this.set("value", currentValue, {silent:true});
+            this.set("value", currentValue, {silent: true});
         },
 
         getNbLines: function () {

@@ -12,20 +12,27 @@ define([
             id: "",
             type: "text"
         },
+        kendoWidget:null,
+        contentElements:function () {
+            return this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
+        },
         _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this._activateAutocomplete(this.kendoWidget);
             }
+
         },
 
         _initEvent: function () {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
-                    currentWidget.options.value.value = $(this).val();
-                    currentWidget.setValue(currentWidget.options.value);
+                this.contentElements().on("change." + this.eventNamespace, function () {
+                    var newValue = _.clone(currentWidget.options.value);
+                    newValue.value = $(this).val();
+                    //newValue.displayValue = newValue.value;
+                    currentWidget.setValue(newValue);
                 });
             }
             this._super();
@@ -85,19 +92,21 @@ define([
         },
         setValue: function (value) {
             this._super(value);
-            var contentElement=this.element.find(".dcpAttribute__content");
-            var originalValue=contentElement.val();
-            if (this.getMode() === "write") {
+           // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
+            var contentElement = this.element.find('.dcpAttribute__content');
+            var originalValue = contentElement.val();
 
-                console.log("before", originalValue);
-                console.log("after", value.value);
-                contentElement.val(value.value);
-                if (originalValue !== value.value) {
-                this.flashElement();
+            if (this.getMode() === "write") {
+                // : explicit lazy equal
+                //noinspection JSHint
+                if (originalValue != value.value) {
+                    // Modify value only if different
+                    this.contentElements().val(value.value);
+                    this.flashElement();
                 }
 
             } else if (this.getMode() === "read") {
-                contentElement.text(value.displayValue);
+                this.contentElements().text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

@@ -20,7 +20,7 @@ define([
                 this.options.value = {};
             }
             if (this.options.helpOutputs) {
-                this.options.hasAutocomplete=true;
+                this.options.hasAutocomplete = true;
             }
             this._initDom();
             this._initEvent();
@@ -109,25 +109,25 @@ define([
         },
 
         setError: function (message, index) {
-            var parentId=this._model().get('parent');
+            var parentId = this._model().get('parent');
             var greatParentId;
             if (message) {
                 this.element.addClass("has-error");
                 this.element.kendoTooltip({
-                    position:"bottom",
-                    content:message,
-                    autoHide:false,
-                    show : function onShow(e) {
-                         this.popup.element.addClass("has-error");
-                     }
+                    position: "bottom",
+                    content: message,
+                    autoHide: false,
+                    show: function onShow(e) {
+                        this.popup.element.addClass("has-error");
+                    }
                 });
-               // this.element.find('input').focus();
+                // this.element.find('input').focus();
                 if (parentId) {
-                    $('.dcpFrame__label[data-id="'+parentId+'"]').addClass("has-warning");
-                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');
+                    $('.dcpFrame__label[data-id="' + parentId + '"]').addClass("has-warning");
+                    greatParentId = this._documentModel().get('attributes').get(parentId).get('parent');
 
                     if (greatParentId) {
-                    $('.dcpTab__label[data-id="'+greatParentId+'"]').addClass("has-warning");
+                        $('.dcpTab__label[data-id="' + greatParentId + '"]').addClass("has-warning");
                     }
 
                 }
@@ -135,11 +135,11 @@ define([
                 this.element.removeClass("has-error");
                 this.element.data("kendoTooltip").destroy();
                 if (parentId) {
-                    $('.dcpFrame__label[data-id="'+parentId+'"]').removeClass("has-warning");
-                    greatParentId=this._documentModel().get('attributes').get(parentId).get('parent');
+                    $('.dcpFrame__label[data-id="' + parentId + '"]').removeClass("has-warning");
+                    greatParentId = this._documentModel().get('attributes').get(parentId).get('parent');
 
                     if (greatParentId) {
-                        $('.dcpTab__label[data-id="'+greatParentId+'"]').removeClass("has-warning");
+                        $('.dcpTab__label[data-id="' + greatParentId + '"]').removeClass("has-warning");
                     }
 
                 }
@@ -161,15 +161,17 @@ define([
         },
 
         setValue: function (value, event) {
-            this.options.value = value;
-            console.log("send change", this.options.id, this.options.index);
-            this._trigger("change", event, {
-                id: this.options.id,
-                value: value,
-                index: this.options.index
-            });
+            console.log("dcpAttribute::setValue trigger", this.options.value, value);
+            if (!_.isEqual(this.options.value, value)) {
+                this.options.value = value;
+                console.log("send change trigger from widget", this.options.id, this.options.index);
+                this._trigger("change", event, {
+                    id: this.options.id,
+                    value: value,
+                    index: this.options.index
+                });
+            }
         },
-
 
 
         getTypedWidgetClass: function (type) {

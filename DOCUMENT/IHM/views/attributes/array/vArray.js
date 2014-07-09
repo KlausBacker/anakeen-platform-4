@@ -17,7 +17,7 @@ define([
             "dcpattributechange .dcpArray__content__cell": "updateValue"
         },
 
-        columnViews:{},
+        columnViews: {},
 
         initialize: function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
@@ -43,7 +43,7 @@ define([
 
                         scope.columnViews[currentAttr.id] = new ViewColumn({
                             el: scope.el,
-                            els : function () {
+                            els: function () {
                                 return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
                             },
                             model: currentAttr,
@@ -85,7 +85,6 @@ define([
         },
 
 
-
         refresh: function () {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
@@ -96,18 +95,16 @@ define([
             this.model.get("content").each(function (currentContent) {
                 currentContent.removeIndexValue(options.line);
             });
-          //  this.refresh();
+            //  this.refresh();
         },
         addLine: function (event, options) {
-            console.log("view array addLine", options,this.model.get("content") );
-            var scope=this;
+            var scope = this;
             this.model.get("content").each(function (currentContent) {
-                if (options.needAddValue ) {
+                if (options.needAddValue) {
                     currentContent.addIndexValue(options.line);
                 }
 
-                var vColumn=scope.columnViews[currentContent.id];
-                console.log("add line", vColumn);
+                var vColumn = scope.columnViews[currentContent.id];
                 if (vColumn) {
                     vColumn.addNewWidget(options.line);
                 }

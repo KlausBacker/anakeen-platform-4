@@ -25,6 +25,27 @@ define([
         },
 
 
+       setValue: function (value) {
+           // this._super.(value);
+           // Don't call dcpText::setValue()
+           $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
+
+            var originalValue = this.kendoWidget.data("kendoNumericTextBox").value();
+
+            if (this.getMode() === "write") {
+                // : explicit lazy equal
+                //noinspection JSHint
+                if (originalValue != value.value) {
+                    this.kendoWidget.data("kendoNumericTextBox").value(value.value);
+                    // Modify value only if different
+                    this.flashElement();
+                }
+            } else if (this.getMode() === "read") {
+                this.contentElements().text(value.displayValue);
+            } else {
+                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
+            }
+        },
 
         _activateNumber: function (inputValue) {
             inputValue.kendoNumericTextBox({
