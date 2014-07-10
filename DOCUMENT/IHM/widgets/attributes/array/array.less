@@ -1,11 +1,16 @@
 td.dcpArray__head__toolCell, .dcpArray__content__toolCell {
-  width : 5em;
+  width : 7em;
   font-size: 80%;
 }
 
 .dcpArray__content__toolCell__check, .dcpArray__content__toolCell__delete {
   cursor: pointer;
   float : left;
+}
+.dcpArray__content__toolCell__dragDrop {
+  cursor: move;
+  float : left;
+  width: 1em;
 }
 
 .dcpArray__content__toolCell__delete {
@@ -15,4 +20,22 @@ td.dcpArray__head__toolCell, .dcpArray__content__toolCell {
 
 .dcpArray__content__line--selected .dcpArray__content__toolCell__delete {
   visibility: visible;
+}
+
+.dcpArray__dragLine {
+  background-color:fade(@brand-primary,90%);
+  cursor: move;
+  margin:0;
+}
+.dcpArray__dragLine input,
+.dcpArray__dragLine button,
+.dcpArray__dragLine .k-input ,
+.dcpArray__dragLine .k-button {
+  cursor: move;
+}
+
+.dcpArray__dragLine .dcpArray__content__toolCell,
+.dcpArray__dragLine.dcpArray__content__line--selected .dcpArray__content__toolCel
+{
+  visibility: hidden;
 }

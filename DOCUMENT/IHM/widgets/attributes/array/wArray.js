@@ -35,6 +35,7 @@ define([
         },
 
         _initDom: function () {
+            var scope=this;
             if (this.options.mode === "read" && this.options.nbLines === 0) {
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
@@ -47,10 +48,69 @@ define([
                 this.element.append(Mustache.render(this._getTemplate("label"), this.options));
                 this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
+                if (this.options.mode === "write") {
                 this.element.find('.dcpArray__tools button').kendoTooltip({
                     position: "top"
                 });
+                this.element.kendoTooltip({
+                    filter: ".dcpArray__content__toolCell span",
+                    position: "top"
+                });
+
+
+                }
                 this.addAllLines();
+                this.element.find('tbody').kendoDraggable({
+                    axis:"y",
+                    container : scope.element.find('tbody'),
+                    filter : '.dcpArray__content__toolCell__dragDrop',
+                    hint: function(element) {
+                        var dragLine=element.closest('tr');
+                        var lineWidth=dragLine.width();
+                        var classTable=element.closest('table').attr("class");
+                        return $('<table/>').addClass("dcpArray__dragLine "+classTable).css("width",lineWidth).append(dragLine.clone());
+                    },
+                    dragstart: function (event) {
+                        if (event.currentTarget) {
+                            $(event.currentTarget).closest('tr').css("opacity","0");
+                        }
+                    },
+                    dragend: function (event) {
+                        if (event.currentTarget) {
+                            $(event.currentTarget).closest('tr').css("opacity","");
+                        }
+                    }
+                });
+                this.element.find('tbody').kendoDropTargetArea({
+                    filter : '.dcpArray__content__line',
+                    dragenter: function (event) {
+                        if (event.currentTarget) {
+                            var drap=event.draggable.currentTarget.closest('tr');
+                            var drop=event.dropTarget;
+                            var drapLine=drap.data("line");
+                            var dropLine=drop.data("line");
+                            if (drapLine > dropLine ) {
+                                drop.insertAfter(drap);
+                            } else {
+                                drop.insertBefore(drap);
+                            }
+                            scope._indexLine();
+                           //
+
+                        }
+                    },
+
+                    drop: function (event) {
+
+                        var drap=event.draggable.currentTarget.closest('tr');
+                        var drop=event.dropTarget;
+
+
+                        console.log("DROP", drap, drop);
+
+                    }
+                });
+
             }
         },
 
