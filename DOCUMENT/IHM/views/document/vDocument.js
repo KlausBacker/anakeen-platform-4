@@ -1,14 +1,6 @@
 /*global define*/
 
-if (!window.console) {
-    window.console = {};
-}
-if (window.console && !(window.console.time)) {
-    window.console.timeEnd = function (x) {
-    };
-    window.console.time = function (x) {
-    };
-}
+
 
 define([
     'underscore',
@@ -56,7 +48,7 @@ define([
             $content = this.$el.find(".dcpDocument__frames");
             $loading.dcpLoading("setRest", this.model.get("attributes").length);
             this.model.get("attributes").each(function (currentAttr) {
-                var view, viewTabLabel, viewTabContent;
+                var view, viewTabLabel, viewTabContent, tabItems;
                 if (!currentAttr.isDisplayable()) {
                     return;
                 }
@@ -75,6 +67,17 @@ define([
                         viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
                         viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
+                        tabItems=$el.find(".dcpDocument__tabs__list").find('li');
+                        if (tabItems.length > 1) {
+                          tabItems.css("width",Math.floor(100/tabItems.length)+'%').kendoTooltip({
+                              position:"top",
+                              content: function(e) {
+                                  var target = e.target; // the element for which the tooltip is shown
+                                  return $(target).text(); // set the element text as content of the tooltip
+                              }
+                          });
+                        }
+
                         $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);
                         $el.find(".dcpDocument__tabs").show();
                     } catch (e) {

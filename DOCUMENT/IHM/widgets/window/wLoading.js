@@ -1,6 +1,7 @@
 define([
     'underscore',
-    'widgets/widget'
+    'widgets/widget',
+    'kendo'
 ], function (_) {
     'use strict';
 
@@ -25,7 +26,6 @@ define([
                     animation: {
                         duration: 1
                     }
-
                 }
             );
         },
@@ -83,7 +83,7 @@ define([
 
         addItem: function (number) {
             number = parseInt(number);
-            if (!(number > 0)) {
+            if (number <= 0) {
                 number = 1;
             }
             this.doneItems += number;

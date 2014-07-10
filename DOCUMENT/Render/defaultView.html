@@ -22,6 +22,15 @@
 </div>
 
 <script>
+    if (!window.console) {
+        window.console = {};
+    }
+    if (window.console && !(window.console.time)) {
+        window.console.timeEnd = function (x) {
+        };
+        window.console.time = function (x) {
+        };
+    }
      window.dcp= window.dcp || {};
      console.time("main");
      console.time("js loading");
