@@ -15,10 +15,15 @@
 
             </tbody>
         </table>
+        <div class="dcpArray__tools">
         {{#tools}}
-            <button type="button" class="btn btn-default btn-xs dcpArray__add">
+            <button type="button" title="[[#i18n]]ddui:Add new row[[/i18n]]" class="btn btn-default dcpArray__add">
                 <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
+            <button disabled="disabled" type="button" title="[[#i18n]]ddui:Duplicate selected row[[/i18n]]"  class="btn btn-default dcpArray__copy">
+                <span class="glyphicon glyphicon-sound-dolby"></span>
+            </button>
         {{/tools}}
+        </div>
     </div>
 </div>

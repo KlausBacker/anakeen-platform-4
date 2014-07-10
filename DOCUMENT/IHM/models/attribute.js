@@ -92,8 +92,9 @@ define([
             });
             this.set("value", currentValue, {silent: true});
         },
-        addIndexValue: function (index) {
+        addIndexValue: function (index, copy) {
             var currentValue, oldValue;
+            var newValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
@@ -102,17 +103,26 @@ define([
             console.log("add line", oldValue);
             // currentValue = _.clone(this.get("value"));
             currentValue = _.toArray(_.map(this.get("value"), _.clone));
-            var firstValue = _.clone(currentValue[0]);
+
+
             console.log("add new item", this);
             var defaultValue = this.attributes.defaultValue;
-            if (defaultValue) {
-                currentValue.push(defaultValue);
+            if (copy) {
+                console.log("copy new item", currentValue[index]);
+                newValue= _.clone(currentValue[index]);
+            } else if (defaultValue) {
+                newValue = defaultValue;
             } else if (this.hasMultipleOption()) {
-                currentValue.push([]);
+                newValue = [];
             } else {
-                currentValue.push({value: null, displayValue: ''});
+                newValue = {value: null, displayValue: ''};
             }
 
+            if (index > currentValue.length) {
+                currentValue.push(newValue);
+            } else {
+                currentValue.splice(index, 0, newValue);
+            }
 
             console.log("add new line", currentValue);
 

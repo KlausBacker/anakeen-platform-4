@@ -65,9 +65,9 @@ define([
                     var attr = docModel.get('attributes').get(aid);
                     if (attr) {
                         if (attr.hasMultipleOption()) {
-                            attr.setValue([], currentWidget.options.index);
+                            attr.setValue([], currentWidget._getIndex());
                         } else {
-                            attr.setValue({value: null, displayValue: ''}, currentWidget.options.index);
+                            attr.setValue({value: null, displayValue: ''}, currentWidget._getIndex());
                         }
                     }
                 });
@@ -76,6 +76,15 @@ define([
             }).attr('title', titleDelete).kendoTooltip({
                 position: "left"
             });
+        },
+
+        _getIndex: function () {
+            if (this.options.index !== -1) {
+
+                this.options.index= this.element.closest('.dcpArray__content__line').data('line');
+                console.log("index is",this.options.index );
+            }
+            return this.options.index;
         },
 
         _model: function () {
@@ -164,11 +173,11 @@ define([
             console.log("dcpAttribute::setValue trigger", this.options.value, value);
             if (!_.isEqual(this.options.value, value)) {
                 this.options.value = value;
-                console.log("send change trigger from widget", this.options.id, this.options.index);
+                console.log("send change trigger from widget", this.options.id, this._getIndex());
                 this._trigger("change", event, {
                     id: this.options.id,
                     value: value,
-                    index: this.options.index
+                    index: this._getIndex()
                 });
             }
         },

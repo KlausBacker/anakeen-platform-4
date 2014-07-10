@@ -68,19 +68,23 @@ define([
         getValues: function () {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
-                var currentValue = currentAttribute.get("value"), nbLines, i, arrayValues = [];
+                var currentValue = currentAttribute.get("value"), i, arrayValues = [];
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
                 if (currentAttribute.get("multiple")) {
-                    nbLines = currentAttribute.getNbLines();
-                    for (i = 0; i <= nbLines; i++) {
-                        arrayValues.push(currentValue[i] || { value: null});
+                    currentValue = _.toArray(currentValue);
+                    if (currentValue.length > 0) {
+                        for (i = 0; i < currentValue.length; i++) {
+                            arrayValues.push(currentValue[i] || { value: null});
+                        }
+                    } else {
+                        arrayValues = { value: null};
                     }
                     values[currentAttribute.id] = arrayValues;
-                    return;
+                } else {
+                    values[currentAttribute.id] = currentValue;
                 }
-                values[currentAttribute.id] = currentValue;
             });
             return values;
         },
@@ -158,20 +162,20 @@ define([
                     console.log("verify", currentAttribute.id, currentAttribute);
                     var currentValue = currentAttribute.get("value");
                     var parentAttribute = scope.get("attributes").get(currentAttribute.get("parent"));
-                    var oneSuccess=true;
+                    var oneSuccess = true;
                     if (currentAttribute.get("multiple")) {
                         if (!currentValue || currentValue.length === 0) {
-                            oneSuccess=false;
+                            oneSuccess = false;
                         }
                     } else {
                         if (!currentValue || !currentValue.value) {
                             currentAttribute.setErrorMessage("Empty value not allowed");
-                            oneSuccess=false;
+                            oneSuccess = false;
                         }
                     }
-                    if (! oneSuccess) {
-                         attrLabel.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label"));
-                            success = false;
+                    if (!oneSuccess) {
+                        attrLabel.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label"));
+                        success = false;
                     }
 
                 }

@@ -81,7 +81,6 @@ define([
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
             var attributeModel = this._model();
-            var valueIndex = this.options.index;
 
 
             var options = {
@@ -119,6 +118,7 @@ define([
                     }
                 },
                 select: function (event) {
+                    var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
                     _.each(dataItem.values, function (val, aid) {
@@ -138,6 +138,7 @@ define([
                     });
                 },
                 change: function (event) {
+                    var valueIndex = scope._getIndex();
                     // set in case of delete item
                     var attrModel = documentModel.get('attributes').get(scope.options.id);
                     var oldValues = attrModel.get("value");

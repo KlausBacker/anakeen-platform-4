@@ -98,10 +98,11 @@ define([
             //  this.refresh();
         },
         addLine: function (event, options) {
+            console.log("vArray add widget in ", options.line);
             var scope = this;
             this.model.get("content").each(function (currentContent) {
-                if (options.needAddValue) {
-                    currentContent.addIndexValue(options.line);
+                if (options.needAddValue || options.copyValue) {
+                    currentContent.addIndexValue(options.line, options.copyValue);
                 }
 
                 var vColumn = scope.columnViews[currentContent.id];
@@ -110,22 +111,6 @@ define([
                 }
             });
 
-        },
-
-        getWidgetClass: function (type) {
-            switch (type) {
-                case "text" :
-                    return $.fn.dcpText;
-                case "int" :
-                    return $.fn.dcpInt;
-                case "double" :
-                    return $.fn.dcpDouble;
-                case "account" :
-                case "docid" :
-                    return $.fn.dcpDocid;
-                default:
-                    return $.fn.dcpText;
-            }
         }
     });
 
