@@ -26,12 +26,9 @@ define([
             }
 
             if (this.getMode() === "read") {
-
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
                 this.element.find('a').kendoButton();
             } else if (this.getMode() === "write") {
-
-
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
                 this.kendoWidget = this.element.find(".dcpAttribute__content--docid");
                 if (this._isMultiple()) {
@@ -208,7 +205,7 @@ define([
                 this.kendoWidget.data("kendoMultiSelect").value(newValues);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);
 
-                if (! _.isEqual(newValues , originalValues)) {
+                if (!_.isEqual(newValues, originalValues)) {
                     this.flashElement();
                 }
 

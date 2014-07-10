@@ -78,7 +78,6 @@ define([
         },
 
         updateValue: function (event, options) {
-            console.log("IN ARRAY update value", options);
 
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
@@ -101,7 +100,6 @@ define([
             //  this.refresh();
         },
         addLine: function (event, options) {
-            console.log("vArray add widget in ", options.line);
             var scope = this;
             this.model.get("content").each(function (currentContent) {
                 if (options.needAddValue || options.copyValue) {

@@ -108,7 +108,6 @@ define([
             }
             var $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: lineNumber}, this.options)));
             var selectedLine = this.getSelectedLineElement();
-            console.log("selected", selectedLine);
             if (selectedLine.length === 1) {
                 $content.insertBefore(selectedLine);
             } else {
@@ -130,7 +129,6 @@ define([
         },
 
         removeLine: function (line) {
-            console.log("widget array removeLine", line);
             this.element.find("[data-line=" + line + "]").remove();
             this._indexLine();
             this._trigger("lineRemoved", {}, {line: line});

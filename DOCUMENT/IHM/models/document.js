@@ -159,7 +159,6 @@ define([
             var attrLabel = [];
             this.get("attributes").each(function (currentAttribute) {
                 if (currentAttribute.get("needed") === true) {
-                    console.log("verify", currentAttribute.id, currentAttribute);
                     var currentValue = currentAttribute.get("value");
                     var parentAttribute = scope.get("attributes").get(currentAttribute.get("parent"));
                     var oneSuccess = true;

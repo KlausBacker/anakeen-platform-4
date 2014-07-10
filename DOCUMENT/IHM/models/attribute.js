@@ -206,16 +206,10 @@ define([
                     this.set("mode", "hidden");
                     return;
                 }
-
-                if (this.get("valueAttribute") && this.get("value").value === null) {
+                if (this.get("valueAttribute") && (this.get("value").value === null || _.isEmpty(this.get("value")))) {
                     if (this.getOption('showEmptyContent') === null) {
                         this.set("mode", "hidden");
                         return;
-                    } else {
-                        // Modify displayValue with showEmptyContent option
-                        var gv = this.get("value");
-                        gv.emptyValue = this.getOption('showEmptyContent');
-                        this.set("value", gv);
                     }
                 }
                 this.set("mode", "read");

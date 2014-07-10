@@ -13,6 +13,7 @@ define([
             type: "abstract",
             mode: "read",
             index: -1
+
         },
 
         _create: function () {
@@ -22,10 +23,20 @@ define([
             if (this.options.helpOutputs) {
                 this.options.hasAutocomplete = true;
             }
+            this.options.emptyValue= _.bind(this._emptyValue, this);
             this._initDom();
             this._initEvent();
         },
-
+        _emptyValue : function () {
+            if ( _.isEmpty(this.options.value) || this.options.value.value === null ) {
+                 var model=this._model();
+                 if (model) {
+                     return model.getOption('showEmptyContent');
+                 }
+                return "";
+            }
+            return "";
+        },
         _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(), this.options));
         },

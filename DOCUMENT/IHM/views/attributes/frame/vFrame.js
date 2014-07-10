@@ -48,6 +48,7 @@ define([
                 return value.isDisplayable();
             });
 
+
             if (!hasOneContent) {
                 $content.append(this.model.getOption('showEmptyContent'));
                 $loading.dcpLoading("addItem", this.model.get("content").length);

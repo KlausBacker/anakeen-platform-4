@@ -63,7 +63,6 @@ define([
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
-                        console.log("TAB,", $el);
                         viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
                         viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);

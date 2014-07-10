@@ -13,7 +13,9 @@ class RenderOptions implements \JsonSerializable
     protected $options = array();
     protected $textOptions = null;
     protected $arrayOptions = null;
+    protected $docidOptions = null;
     protected $enumOptions = null;
+protected $accountOptions = null;
     protected $commonOptions = null;
     
     public function __construct()
@@ -97,7 +99,7 @@ class RenderOptions implements \JsonSerializable
     }
     /**
      * @param string $attrid
-     * @return TextRenderOptions
+     * @return ArrayRenderOptions
      */
     public function typeArray($attrid = '')
     {
@@ -106,6 +108,30 @@ class RenderOptions implements \JsonSerializable
         }
         $this->arrayOptions->setScope($attrid);
         return $this->arrayOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return DocidRenderOptions
+     */
+    public function docid($attrid = '')
+    {
+        if ($this->docidOptions === null) {
+            $this->docidOptions = new DocidRenderOptions($this);
+        }
+        $this->docidOptions->setScope($attrid);
+        return $this->docidOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return AccountRenderOptions
+     */
+    public function account($attrid = '')
+    {
+        if ($this->accountOptions === null) {
+            $this->accountOptions = new AccountRenderOptions($this);
+        }
+        $this->accountOptions->setScope($attrid);
+        return $this->accountOptions;
     }
     /**
      * @param string $attrid
