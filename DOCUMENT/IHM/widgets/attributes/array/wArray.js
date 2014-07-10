@@ -35,14 +35,23 @@ define([
         },
 
         _initDom: function () {
-            this.element.addClass("panel panel-default");
-            this.element.append(Mustache.render(this._getTemplate("label"), this.options));
-            this.element.append(Mustache.render(this._getTemplate("content"), this.options));
+            if (this.options.mode === "read" && this.options.nbLines === 0) {
+                if (this.options.showEmpty) {
+                    this.element.addClass("panel panel-default");
+                    // showEmptyCOntent option
+                    this.element.append(Mustache.render(this._getTemplate("label"), this.options));
+                    this.element.append(this.options.showEmpty);
+                }
+            } else {
+                this.element.addClass("panel panel-default");
+                this.element.append(Mustache.render(this._getTemplate("label"), this.options));
+                this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
-            this.element.find('.dcpArray__tools button').kendoTooltip({
-                position: "top"
-            });
-            this.addAllLines();
+                this.element.find('.dcpArray__tools button').kendoTooltip({
+                    position: "top"
+                });
+                this.addAllLines();
+            }
         },
 
         _bindEvents: function () {
@@ -74,9 +83,9 @@ define([
             this.element.on("click." + this.eventNamespace, ".dcpArray__copy", function () {
                 var sLine = currentWidget.selectedLineIndex();
 
-                    currentWidget.options.nbLines++;
-                    currentWidget.copyLine(sLine, true);
-                    currentWidget._indexLine();
+                currentWidget.options.nbLines++;
+                currentWidget.copyLine(sLine, true);
+                currentWidget._indexLine();
 
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
@@ -93,7 +102,7 @@ define([
             this._trigger("linesGenerated");
         },
 
-        _addNewLine : function (lineNumber) {
+        _addNewLine: function (lineNumber) {
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
@@ -109,14 +118,14 @@ define([
         },
 
         addLine: function (lineNumber, needAddValue) {
-            var $content=this._addNewLine(lineNumber);
+            var $content = this._addNewLine(lineNumber);
 
             this._trigger("lineAdded", {}, {line: lineNumber, element: $content, needAddValue: needAddValue});
         },
 
         copyLine: function (lineNumber) {
 
-            var $content=this._addNewLine(lineNumber);
+            var $content = this._addNewLine(lineNumber);
             this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
         },
 

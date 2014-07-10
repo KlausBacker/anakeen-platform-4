@@ -12,6 +12,7 @@ class RenderOptions implements \JsonSerializable
     
     protected $options = array();
     protected $textOptions = null;
+    protected $arrayOptions = null;
     protected $enumOptions = null;
     protected $commonOptions = null;
     
@@ -93,6 +94,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->textOptions->setScope($attrid);
         return $this->textOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return TextRenderOptions
+     */
+    public function typeArray($attrid = '')
+    {
+        if ($this->arrayOptions === null) {
+            $this->arrayOptions = new ArrayRenderOptions($this);
+        }
+        $this->arrayOptions->setScope($attrid);
+        return $this->arrayOptions;
     }
     /**
      * @param string $attrid

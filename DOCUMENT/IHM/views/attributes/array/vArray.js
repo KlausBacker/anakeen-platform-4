@@ -33,29 +33,32 @@ define([
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
-
-            this.model.get("content").each(function (currentAttr) {
-                if (!currentAttr.isDisplayable()) {
-                    return;
-                }
-                try {
-                    if (currentAttr.get("valueAttribute")) {
-
-                        scope.columnViews[currentAttr.id] = new ViewColumn({
-                            el: scope.el,
-                            els: function () {
-                                return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
-                            },
-                            model: currentAttr,
-                            parentElement: scope.$el});
-                        scope.columnViews[currentAttr.id].render();
+            if (data.nbLines === 0 && data.mode === "read") {
+                data.showEmpty = this.model.getOption('showEmptyContent');
+            } else {
+                this.model.get("content").each(function (currentAttr) {
+                    if (!currentAttr.isDisplayable()) {
+                        return;
                     }
-                } catch (e) {
-                    console.error(e);
-                }
-            });
+                    try {
+                        if (currentAttr.get("valueAttribute")) {
 
+                            scope.columnViews[currentAttr.id] = new ViewColumn({
+                                el: scope.el,
+                                els: function () {
+                                    return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
+                                },
+                                model: currentAttr,
+                                parentElement: scope.$el});
+                            scope.columnViews[currentAttr.id].render();
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                });
+            }
             this.$el.dcpArray(data);
+
             console.timeEnd("render array " + this.model.id);
             return this;
         },
