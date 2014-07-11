@@ -28,6 +28,14 @@ define([
         _initEvent: function () {
             var currentWidget = this;
             if (this.getMode() === "write") {
+                this._initChangeEvent();
+            }
+            this._super();
+        },
+
+        _initChangeEvent: function _initChangeEvent() {
+            var currentWidget = this;
+            if (this.getMode() === "write") {
                 this.contentElements().on("change." + this.eventNamespace, function () {
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
@@ -35,8 +43,8 @@ define([
                     currentWidget.setValue(newValue);
                 });
             }
-            this._super();
         },
+
         /**
          * Just to be apply in normal input help
          * @param inputValue

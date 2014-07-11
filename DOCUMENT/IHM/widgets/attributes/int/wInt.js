@@ -1,18 +1,24 @@
 define([
     'underscore',
     'mustache',
+    'kendo',
     '../wAttribute',
     'widgets/attributes/text/wText'
-], function (_, Mustache) {
+], function (_, Mustache,kendo) {
     'use strict';
 
     $.widget("dcp.dcpInt", $.dcp.dcpText, {
 
         options: {
             id: "",
-            type: "int"
+            type: "int",
+            numberFormat : 'n0'
         },
         _initDom: function () {
+            if (parseFloat(this.options.value.displayValue) == parseFloat(this.options.value.value)) {
+                this.options.value.displayValue=kendo.toString(this.options.value.value,this.options.numberFormat);
+            }
+
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget) {
@@ -48,9 +54,10 @@ define([
         },
 
         _activateNumber: function (inputValue) {
+            var scope=this;
             inputValue.kendoNumericTextBox({
                 decimals: 0,
-                format:"n0"
+                format:scope.options.numberFormat
             });
         },
 

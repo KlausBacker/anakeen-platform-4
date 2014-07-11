@@ -44,7 +44,7 @@ define([
                 }
             }
         },
-
+/*
         _initEvent: function () {
             var currentWidget = this;
             this._super();
@@ -54,11 +54,9 @@ define([
                     currentWidget.options.value.value = $(this).val();
                     currentWidget.setValue(currentWidget.options.value);
                 });
-
-
             }
         },
-
+*/
 
         _decorateSingleValue: function (inputValue) {
 
