@@ -74,6 +74,7 @@ require([
                 properties: document.properties,
                 menus: window.dcp.menu,
                 family: window.dcp.documentData.family,
+                locale : window.dcp.user.locale,
                 renderMode : window.dcp.renderOptions.mode || "read",
                 attributes: document.attributes
             }

@@ -120,6 +120,11 @@ class DocumentTemplateContext implements \ArrayAccess
         return JsonHandler::encodeForHTML($conf);
     }
     
+    public function userLocale()
+    {
+        return \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+    }
+    
     protected function _getDocumentStructure()
     {
         

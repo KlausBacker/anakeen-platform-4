@@ -8,8 +8,9 @@ define([
     'views/document/menu/vMenu',
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
-    'views/attributes/tab/vTabContent'
-], function (_, Backbone, Mustache, ViewDocumentMenu, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent) {
+    'views/attributes/tab/vTabContent',
+    'kendo'
+], function (_, Backbone, Mustache, ViewDocumentMenu, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -26,7 +27,20 @@ define([
             console.log("VDOC", this);
             var $content, model = this.model, $el = this.$el;
             var $loading = $(".dcpLoading");
+            var locale=this.model.get('locale');
             console.time("render doc");
+
+            switch (locale) {
+                case "fr_FR":
+                    kendo.culture("fr-FR");
+                    break;
+                case "en_US":
+                    kendo.culture("en-US");
+                    break;
+                default:
+                    kendo.culture("en-US");
+                    break;
+            }
             //add document base
             try {
                 this.$el.empty().append($(Mustache.render(this.template, this.model.toData(), this.partials)));

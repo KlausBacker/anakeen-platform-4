@@ -15,7 +15,6 @@ define([
 
         _activateNumber: function (inputValue) {
             inputValue.kendoNumericTextBox({
-                culture: "fr-FR",
                 decimals: 2,
                 format:"n2"
             });
