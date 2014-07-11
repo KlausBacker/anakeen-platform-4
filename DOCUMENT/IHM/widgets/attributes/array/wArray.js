@@ -35,7 +35,7 @@ define([
         },
 
         _initDom: function () {
-            var scope=this;
+            var scope = this;
             if (this.options.mode === "read" && this.options.nbLines === 0) {
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
@@ -49,65 +49,61 @@ define([
                 this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
                 if (this.options.mode === "write") {
-                this.element.find('.dcpArray__tools button').kendoTooltip({
-                    position: "top"
-                });
-                this.element.kendoTooltip({
-                    filter: ".dcpArray__content__toolCell span",
-                    position: "top"
-                });
+                    this.element.find('.dcpArray__tools button').kendoTooltip({
+                        position: "top"
+                    });
+                    this.element.kendoTooltip({
+                        filter: ".dcpArray__content__toolCell span",
+                        position: "top"
+                    });
 
 
                 }
                 this.addAllLines();
                 this.element.find('tbody').kendoDraggable({
-                    axis:"y",
-                    container : scope.element.find('tbody'),
-                    filter : '.dcpArray__content__toolCell__dragDrop',
-                    hint: function(element) {
-                        var dragLine=element.closest('tr');
-                        var lineWidth=dragLine.width();
-                        var classTable=element.closest('table').attr("class");
-                        return $('<table/>').addClass("dcpArray__dragLine "+classTable).css("width",lineWidth).append(dragLine.clone());
+                    axis: "y",
+                    container: scope.element.find('tbody'),
+                    filter: '.dcpArray__content__toolCell__dragDrop',
+                    hint: function (element) {
+                        var dragLine = element.closest('tr');
+                        var lineWidth = dragLine.width();
+                        var classTable = element.closest('table').attr("class");
+                        return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).append(dragLine.clone());
                     },
                     dragstart: function (event) {
                         if (event.currentTarget) {
-                            $(event.currentTarget).closest('tr').css("opacity","0");
+                            var dragLine = $(event.currentTarget).closest('tr');
+                            dragLine.css("opacity", "0");
+                            dragLine.data("fromLine", dragLine.data("line"));
+
                         }
                     },
                     dragend: function (event) {
                         if (event.currentTarget) {
-                            $(event.currentTarget).closest('tr').css("opacity","");
+                            var dragLine = $(event.currentTarget).closest('tr');
+                            dragLine.css("opacity", "");
+
+                            scope._trigger("lineMoved", {}, {fromLine: dragLine.data("fromLine"), toLine: dragLine.data("line")});
                         }
                     }
                 });
                 this.element.find('tbody').kendoDropTargetArea({
-                    filter : '.dcpArray__content__line',
+                    filter: '.dcpArray__content__line',
                     dragenter: function (event) {
                         if (event.currentTarget) {
-                            var drap=event.draggable.currentTarget.closest('tr');
-                            var drop=event.dropTarget;
-                            var drapLine=drap.data("line");
-                            var dropLine=drop.data("line");
-                            if (drapLine > dropLine ) {
-                                drop.insertAfter(drap);
+                            var drap = event.draggable.currentTarget.closest('tr');
+                            var drop = event.dropTarget;
+                            var drapLine = drap.data("line");
+                            var dropLine = drop.data("line");
+                            if (drapLine > dropLine) {
+                                drap.insertBefore(drop);
                             } else {
-                                drop.insertBefore(drap);
+                                drap.insertAfter(drop);
                             }
                             scope._indexLine();
-                           //
+
 
                         }
-                    },
-
-                    drop: function (event) {
-
-                        var drap=event.draggable.currentTarget.closest('tr');
-                        var drop=event.dropTarget;
-
-
-                        console.log("DROP", drap, drop);
-
                     }
                 });
 
@@ -153,6 +149,13 @@ define([
             });
         },
 
+        _model: function () {
+            return this._documentModel().get('attributes').get(this.options.id);
+        },
+
+        _documentModel: function () {
+            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
+        },
         addAllLines: function () {
             var i;
             this.element.find(".dcpArray__body").empty();

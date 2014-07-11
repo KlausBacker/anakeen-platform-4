@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-07 12:58+0200\n"
+"POT-Creation-Date: 2014-07-11 09:39+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -23,10 +23,6 @@ msgctxt "UiMenu"
 msgid "Advanced"
 msgstr ""
 
-msgctxt "my"
-msgid "Anakeen"
-msgstr ""
-
 #, php-format
 msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
@@ -43,10 +39,6 @@ msgctxt "UiMenu"
 msgid "Close"
 msgstr ""
 
-msgctxt "my"
-msgid "Confims"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Confirm"
 msgstr ""
@@ -60,10 +52,6 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Create"
-msgstr ""
-
-msgctxt "my"
-msgid "Custom Menu"
 msgstr ""
 
 msgid "Default Edit"
@@ -113,38 +101,6 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Modify"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 1"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 2 In Blanck"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 2 in dialog"
-msgstr ""
-
-msgctxt "my"
-msgid "My Disable"
-msgstr ""
-
-msgctxt "my"
-msgid "My Hidden"
-msgstr ""
-
-msgctxt "my"
-msgid "My label"
-msgstr ""
-
-msgctxt "my"
-msgid "My label 2"
-msgstr ""
-
-msgctxt "my"
-msgid "My label 3"
 msgstr ""
 
 msgctxt "ddui"
@@ -203,10 +159,6 @@ msgctxt "UiMenu"
 msgid "Sure delete %s ?"
 msgstr ""
 
-msgctxt "my"
-msgid "Séparateur"
-msgstr ""
-
 msgid "Test"
 msgstr ""
 
@@ -224,10 +176,25 @@ msgstr ""
 msgid "Y-m-d"
 msgstr ""
 
-msgid "de_tab_info"
+msgid "ddui::Delete : "
 msgstr ""
 
-msgid "es_caracteristique"
+msgid "ddui::Loading"
+msgstr ""
+
+msgid "ddui:Add new line"
+msgstr ""
+
+msgid "ddui:Delete line"
+msgstr ""
+
+msgid "ddui:Drag to move line"
+msgstr ""
+
+msgid "ddui:Duplicate selected row"
+msgstr ""
+
+msgid "ddui:Select line"
 msgstr ""
 
 #, php-format

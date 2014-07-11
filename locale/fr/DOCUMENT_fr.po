@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-07 12:58+0200\n"
-"PO-Revision-Date: 2014-07-07 12:58+0200\n"
+"POT-Creation-Date: 2014-07-11 09:39+0200\n"
+"PO-Revision-Date: 2014-07-11 09:41+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -23,10 +23,6 @@ msgctxt "UiMenu"
 msgid "Advanced"
 msgstr "Autres"
 
-msgctxt "my"
-msgid "Anakeen"
-msgstr ""
-
 #, php-format
 msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
@@ -43,10 +39,6 @@ msgctxt "UiMenu"
 msgid "Close"
 msgstr "Fermer"
 
-msgctxt "my"
-msgid "Confims"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Confirm"
 msgstr ""
@@ -61,10 +53,6 @@ msgstr "Confirmation de la suppression de {{document.properties.title}}"
 msgctxt "UiMenu"
 msgid "Create"
 msgstr "Créer"
-
-msgctxt "my"
-msgid "Custom Menu"
-msgstr ""
 
 msgid "Default Edit"
 msgstr ""
@@ -114,38 +102,6 @@ msgstr ""
 msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
-
-msgctxt "my"
-msgid "My Conf 1"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 2 In Blanck"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 2 in dialog"
-msgstr ""
-
-msgctxt "my"
-msgid "My Disable"
-msgstr ""
-
-msgctxt "my"
-msgid "My Hidden"
-msgstr ""
-
-msgctxt "my"
-msgid "My label"
-msgstr ""
-
-msgctxt "my"
-msgid "My label 2"
-msgstr ""
-
-msgctxt "my"
-msgid "My label 3"
-msgstr ""
 
 msgctxt "ddui"
 msgid "No result found"
@@ -203,10 +159,6 @@ msgctxt "UiMenu"
 msgid "Sure delete %s ?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" ?"
 
-msgctxt "my"
-msgid "Séparateur"
-msgstr ""
-
 msgid "Test"
 msgstr ""
 
@@ -224,11 +176,26 @@ msgstr "Voir le graphe du cycle"
 msgid "Y-m-d"
 msgstr ""
 
-msgid "de_tab_info"
-msgstr ""
+msgid "ddui::Delete : "
+msgstr "Suppression de : "
 
-msgid "es_caracteristique"
-msgstr ""
+msgid "ddui::Loading"
+msgstr "Chargement"
+
+msgid "ddui:Add new line"
+msgstr "Ajouter une nouvelle ligne"
+
+msgid "ddui:Delete line"
+msgstr "Supprimer la ligne"
+
+msgid "ddui:Drag to move line"
+msgstr "Cliquer pour déplacer la ligne"
+
+msgid "ddui:Duplicate selected row"
+msgstr "Dupliquer la ligne sélectionnée"
+
+msgid "ddui:Select line"
+msgstr "Sélectionner la ligne"
 
 #, php-format
 msgctxt "ddui"
@@ -244,9 +211,3 @@ msgstr ""
 #~ msgctxt "UiMenu"
 #~ msgid "Transition"
 #~ msgstr "Étapes"
-
-msgid "ddui::Delete : "
-msgstr "Suppression de : "
-
-msgid "ddui::Loading"
-msgstr "Chargement"

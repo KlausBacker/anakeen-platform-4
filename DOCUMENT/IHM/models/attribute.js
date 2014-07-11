@@ -92,7 +92,7 @@ define([
             });
             this.set("value", currentValue, {silent: true});
         },
-        addIndexValue: function (index, copy) {
+        addIndexValue: function addIndexValue(index, copy) {
             var currentValue, oldValue;
             var newValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
@@ -109,7 +109,7 @@ define([
             var defaultValue = this.attributes.defaultValue;
             if (copy) {
                 console.log("copy new item", currentValue[index]);
-                newValue= _.clone(currentValue[index]);
+                newValue = _.clone(currentValue[index]);
             } else if (defaultValue) {
                 newValue = defaultValue;
             } else if (this.hasMultipleOption()) {
@@ -129,6 +129,26 @@ define([
             this.set("value", currentValue, {silent: true});
         },
 
+        /**
+         * move a value in multiple value attribute
+         * @param fromIndex
+         * @param toIndex
+         */
+        moveIndexValue: function moveIndexValue(fromIndex, toIndex) {
+            var currentValue, oldValue, fromValue;
+            var newValue;
+            if (!this.get("multiple")) {
+                throw new Error("Move only multiple attribute : " + this.id);
+            }
+            // currentValue = _.clone(this.get("value"));
+            currentValue = _.toArray(this.get("value"));
+            fromValue = _.clone(currentValue[fromIndex]);
+
+            currentValue.splice(fromIndex, 1);
+            currentValue.splice(toIndex, 0, fromValue);
+
+            this.set("value", currentValue, {silent: true});
+        },
         getNbLines: function () {
             var nbLines = 0;
             if (!this.get("multiple")) {

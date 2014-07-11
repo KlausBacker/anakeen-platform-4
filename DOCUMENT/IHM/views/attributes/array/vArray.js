@@ -14,6 +14,7 @@ define([
         events: {
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
+            "dcparraylinemoved": "moveLine",
             "dcpattributechange .dcpArray__content__cell": "updateValue"
         },
 
@@ -111,7 +112,13 @@ define([
                     vColumn.addNewWidget(options.line);
                 }
             });
+        },
+        moveLine: function moveLine(event, options) {
+            var scope = this;
+            this.model.get("content").each(function (currentContent) {
+                currentContent.moveIndexValue(options.fromLine, options.toLine);
 
+            });
         }
     });
 

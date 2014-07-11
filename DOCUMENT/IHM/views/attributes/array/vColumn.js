@@ -24,14 +24,13 @@ define([
             return this;
         },
 
-        nothing: function updateColumn(event, options) {
-            console.log("IN COLUMN update value", options);
+        nothing: function nothing(event, options) {
         },
         /**
          * called by vArray::addLine()
          * @param index
          */
-        addNewWidget: function updateColumn(index) {
+        addNewWidget: function addNewWidget(index) {
             var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
             var aModel = this.model;
             var data = this.model.toData();
