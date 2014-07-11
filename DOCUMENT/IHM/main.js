@@ -58,7 +58,7 @@ require([
      'kendo'*/
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
     'use strict';
-     console.timeEnd("js loading");
+    console.timeEnd("js loading");
     /*jshint nonew:false*/
     var document = window.dcp.documentData.document, model;
     window.dcp = window.dcp || {};
@@ -66,18 +66,23 @@ require([
     window.dcp.views = window.dcp.views || {};
 
     $(".dcpLoading").dcpLoading();
-        console.timeEnd('js loading');
+    console.timeEnd('js loading');
     _.defer(function () {
         model = new ModelDocument(
             {},
-            {properties: document.properties, menus: window.dcp.menu,
-                family: window.dcp.documentData.family, attributes: document.attributes}
+            {
+                properties: document.properties,
+                menus: window.dcp.menu,
+                family: window.dcp.documentData.family,
+                renderMode : window.dcp.renderOptions.mode || "read",
+                attributes: document.attributes
+            }
         );
         window.dcp.documents.push(model);
         (new ViewDocument({model: model, el: $(".dcpDocument")[0]}).render());
 
         $(".dcpDocument").show().addClass("dcpDocument--show");
-        console.timeEnd('main' );
+        console.timeEnd('main');
 
         $(".dcpLoading").dcpLoading("complete", function () {
             $(".dcpDocument").show().addClass("dcpDocument--show");

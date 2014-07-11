@@ -37,6 +37,7 @@ define([
             this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
+            this.set("renderMode", options.renderMode);
             attributes = flattenAttributes(attributes, options.family.structure);
             _.each(attributes, function (value) {
                 if (value.id && options.attributes[value.id]) {

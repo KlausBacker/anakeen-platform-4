@@ -1,7 +1,6 @@
 /*global define*/
 
 
-
 define([
     'underscore',
     'backbone',
@@ -24,6 +23,7 @@ define([
         },
 
         render: function () {
+            console.log("VDOC", this);
             var $content, model = this.model, $el = this.$el;
             var $loading = $(".dcpLoading");
             console.time("render doc");
@@ -33,6 +33,7 @@ define([
             } catch (e) {
                 console.log(e);
             }
+            this.$el.addClass("dcpDocument--" + this.model.get("renderMode"));
             $loading.dcpLoading("percent", 10);
             //add menu
             console.time("render menu");
@@ -66,15 +67,15 @@ define([
                         viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
                         viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
-                        tabItems=$el.find(".dcpDocument__tabs__list").find('li');
+                        tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
-                          tabItems.css("width",Math.floor(100/tabItems.length)+'%').kendoTooltip({
-                              position:"top",
-                              content: function(e) {
-                                  var target = e.target; // the element for which the tooltip is shown
-                                  return $(target).text(); // set the element text as content of the tooltip
-                              }
-                          });
+                            tabItems.css("width", Math.floor(100 / tabItems.length) + '%').kendoTooltip({
+                                position: "top",
+                                content: function (e) {
+                                    var target = e.target; // the element for which the tooltip is shown
+                                    return $(target).text(); // set the element text as content of the tooltip
+                                }
+                            });
                         }
 
                         $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);
