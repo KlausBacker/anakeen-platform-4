@@ -12,15 +12,15 @@ define([
             id: "",
             type: "text"
         },
-        kendoWidget:null,
-        contentElements:function () {
-            return this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
+        kendoWidget: null,
+        contentElements: function () {
+            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
         },
         _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
-                this._activateAutocomplete(this.kendoWidget);
+                this.activateAutocomplete(this.kendoWidget);
             }
 
         },
@@ -50,7 +50,7 @@ define([
          * @param inputValue
          * @private
          */
-        _activateAutocomplete: function (inputValue) {
+        activateAutocomplete: function (inputValue) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
             var valueIndex = this.options.index;
@@ -100,7 +100,7 @@ define([
         },
         setValue: function (value) {
             this._super(value);
-           // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
+            // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
             var contentElement = this.element.find('.dcpAttribute__content');
             var originalValue = contentElement.val();
 

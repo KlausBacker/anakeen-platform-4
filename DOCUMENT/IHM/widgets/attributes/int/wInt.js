@@ -15,7 +15,7 @@ define([
             numberFormat : 'n0'
         },
         _initDom: function () {
-            if (parseFloat(this.options.value.displayValue) == parseFloat(this.options.value.value)) {
+            if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
                 this.options.value.displayValue=kendo.toString(this.options.value.value,this.options.numberFormat);
             }
 
@@ -23,13 +23,19 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget) {
                 if (this.options.hasAutocomplete) {
-                    this._activateAutocomplete(this.kendoWidget);
+                    this.activateAutocomplete(this.kendoWidget);
                 } else {
                     this._activateNumber(this.kendoWidget);
                 }
             }
         },
 
+        _initChangeEvent: function _initChangeEvent() {
+            // set by widget if no autocomplete
+            if (this.options.hasAutocomplete) {
+                this._super();
+            }
+        },
 
        setValue: function (value) {
            // this._super.(value);
@@ -57,7 +63,14 @@ define([
             var scope=this;
             inputValue.kendoNumericTextBox({
                 decimals: 0,
-                format:scope.options.numberFormat
+                format:scope.options.numberFormat,
+                max : scope.options.renderOptions.max,
+                min : scope.options.renderOptions.min,
+                change : function () {
+                    // Need to set by widget to honor decimals option
+                    console.log("change", this);
+                    scope._model().setValue({value:this.value()});
+                }
             });
         },
 

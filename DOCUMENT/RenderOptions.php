@@ -15,7 +15,9 @@ class RenderOptions implements \JsonSerializable
     protected $arrayOptions = null;
     protected $docidOptions = null;
     protected $enumOptions = null;
-protected $accountOptions = null;
+    protected $accountOptions = null;
+    protected $intOptions = null;
+    protected $doubleOptions = null;
     protected $commonOptions = null;
     
     public function __construct()
@@ -51,6 +53,15 @@ protected $accountOptions = null;
             ) ,
             "money" => array(
                 "format" => "%!.2n"
+            ) ,
+            IntRenderOptions::type => array(
+                IntRenderOptions::maxOption => 2147483647,
+                IntRenderOptions::minOption => - 2147483647,
+            ) ,
+            DoubleRenderOptions::type => array(
+                DoubleRenderOptions::maxOption => null,
+                DoubleRenderOptions::minOption => null,
+                DoubleRenderOptions::decimalPrecisionOption => 2
             ) ,
             TextRenderOptions::type => array(
                 TextRenderOptions::sizeOption => null,
@@ -96,6 +107,30 @@ protected $accountOptions = null;
         }
         $this->textOptions->setScope($attrid);
         return $this->textOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return IntRenderOptions
+     */
+    public function int($attrid = '')
+    {
+        if ($this->intOptions === null) {
+            $this->intOptions = new IntRenderOptions($this);
+        }
+        $this->intOptions->setScope($attrid);
+        return $this->intOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return DoubleRenderOptions
+     */
+    public function double($attrid = '')
+    {
+        if ($this->doubleOptions === null) {
+            $this->doubleOptions = new DoubleRenderOptions($this);
+        }
+        $this->doubleOptions->setScope($attrid);
+        return $this->doubleOptions;
     }
     /**
      * @param string $attrid

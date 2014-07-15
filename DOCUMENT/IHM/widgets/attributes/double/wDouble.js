@@ -11,21 +11,31 @@ define([
         options: {
             id: "",
             type: "double",
-            numberFormat : 'n'
+            numberFormat: 'n'
         },
 
-        _initChangeEvent: function _initChangeEvent() {
-            // set by widget
+        _initDom: function () {
+            if (this.options.renderOptions.decimalPrecision > 0) {
+                // view decimal precision
+                this.options.numberFormat = 'n' + this.options.renderOptions.decimalPrecision;
+            }
+
+            this._super();
         },
 
         _activateNumber: function (inputValue) {
-            var scope=this;
+            var scope = this;
+
+
             inputValue.kendoNumericTextBox({
-                decimals: 2,
-                format:scope.options.numberFormat,
-                change : function () {
+                decimals: scope.options.renderOptions.decimalPrecision,
+                max: scope.options.renderOptions.max,
+                min: scope.options.renderOptions.min,
+                format: scope.options.numberFormat,
+                change: function () {
                     // Need to set by widget to honor decimals option
-                    scope._model().setValue({value:this.value()});
+                    console.log("change", this);
+                    scope._model().setValue({value: this.value()});
                 }
             });
         },

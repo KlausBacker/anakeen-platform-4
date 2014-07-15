@@ -24,7 +24,6 @@ define([
         },
 
         render: function () {
-            console.log("VDOC", this);
             var $content, model = this.model, $el = this.$el;
             var $loading = $(".dcpLoading");
             var locale=this.model.get('locale');
