@@ -23,16 +23,16 @@ define([
             if (this.options.helpOutputs) {
                 this.options.hasAutocomplete = true;
             }
-            this.options.emptyValue= _.bind(this._emptyValue, this);
+            this.options.emptyValue = _.bind(this._emptyValue, this);
             this._initDom();
             this._initEvent();
         },
-        _emptyValue : function () {
-            if ( _.isEmpty(this.options.value) || this.options.value.value === null ) {
-                 var model=this._model();
-                 if (model) {
-                     return model.getOption('showEmptyContent');
-                 }
+        _emptyValue: function () {
+            if (_.isEmpty(this.options.value) || this.options.value.value === null) {
+                var model = this._model();
+                if (model) {
+                    return model.getOption('showEmptyContent');
+                }
                 return "";
             }
             return "";
@@ -88,12 +88,69 @@ define([
                 position: "left"
             });
         },
+        _initLinkEvent: function _initLinkEvent() {
+            var htmlLink = this.getLink();
+            if (htmlLink) {
 
+                this.element.find('.dcpAttribute__content__link').on("click", function (event) {
+
+                    if (htmlLink.target === "_dialog") {
+                        event.preventDefault();
+
+
+                        var bdw = $('<div/>');
+                        $('body').append(bdw);
+
+                        var dw = bdw.dcpWindow({
+                            title: Mustache.render(htmlLink.windowTitle, window.dcp.documentData),
+                            width: htmlLink.windowWidth,
+                            height: htmlLink.windowHeight,
+                            content: htmlLink.url,
+                            iframe: true
+                        });
+
+
+                        dw.data('dcpWindow').kendoWindow().center();
+                        dw.data('dcpWindow').open();
+                        if (!htmlLink.windowTitle) {
+                            _.defer(function () {
+                                dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
+                                    dw.data('dcpWindow').kendoWindow().setOptions({
+                                        title: $(this).contents().find("title").html()
+                                    });
+                                });
+                            });
+                        }
+                    }
+                });
+
+                this.element.find('.dcpAttribute__content__link[title]').kendoTooltip({
+                    position: "top"
+                });
+
+            }
+        },
+        /**
+         * Verify if a common link option is set
+         * @returns {Array|renderOptions|*|dcp.dcpDocid.options.renderOptions.htmlLink|.options.renderOptions.htmlLink|url}
+         */
+        hasLink: function hasLink() {
+            return (this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url);
+        },
+        /**
+         * Return the url of common link
+         * @returns {*}
+         */
+        getLink: function getLink() {
+            if (this.options.renderOptions && this.options.renderOptions.htmlLink) {
+                return this.options.renderOptions.htmlLink;
+            }
+            return null;
+        },
         _getIndex: function () {
             if (this.options.index !== -1) {
 
-                this.options.index= this.element.closest('.dcpArray__content__line').data('line');
-                console.log("index is",this.options.index );
+                this.options.index = this.element.closest('.dcpArray__content__line').data('line');
             }
             return this.options.index;
         },

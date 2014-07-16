@@ -36,48 +36,9 @@ define([
             this._super();
         },
 
-        _initLinkEvent: function _initLinkEvent() {
-            var htmlLink;
-            if (this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url) {
-                htmlLink = this.options.renderOptions.htmlLink;
-                this.element.find('.dcpAttribute__content__link').on("click", function (event) {
-                    if (htmlLink.target === "_dialog") {
-                        event.preventDefault();
 
 
-                        var bdw = $('<div/>');
-                        $('body').append(bdw);
 
-                        var dw = bdw.dcpWindow({
-                            title: Mustache.render(htmlLink.windowTitle, window.dcp.documentData),
-                            width: htmlLink.windowWidth,
-                            height: htmlLink.windowHeight,
-                            content: htmlLink.url,
-                            iframe: true
-                        });
-
-
-                        dw.data('dcpWindow').kendoWindow().center();
-                        dw.data('dcpWindow').open();
-                        if (!htmlLink.windowTitle) {
-                            _.defer(function () {
-                                dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
-                                    dw.data('dcpWindow').kendoWindow().setOptions({
-                                        title: $(this).contents().find("title").html()
-                                    });
-                                });
-                            });
-                        }
-                    }
-                });
-
-                this.element.find('.dcpAttribute__content__link[title]').kendoTooltip({
-                    position:"top"
-                });
-
-            }
-
-        },
 
         _initChangeEvent: function _initChangeEvent() {
             var currentWidget = this;

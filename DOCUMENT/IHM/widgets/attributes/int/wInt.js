@@ -61,6 +61,9 @@ define([
 
         _activateNumber: function (inputValue) {
             var scope=this;
+            if (!scope.options.renderOptions) {
+                scope.options.renderOptions={};
+            }
             inputValue.kendoNumericTextBox({
                 decimals: 0,
                 format:scope.options.numberFormat,

@@ -26,8 +26,21 @@ define([
             }
 
             if (this.getMode() === "read") {
+
+                if (!this.hasLink()) {
+                    var htmlLink = this.getLink();
+                    if (htmlLink === null) {
+                        htmlLink = {};
+                    }
+                    htmlLink.url = "?app=DOCUMENT&action=VIEW&id=" + this.options.value.value;
+
+                    this.options.renderOptions = this.options.renderOptions || {};
+                    this.options.renderOptions.htmlLink = htmlLink;
+                }
+
+
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-                this.element.find('a').kendoButton();
+
             } else if (this.getMode() === "write") {
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
                 this.kendoWidget = this.element.find(".dcpAttribute__content--docid");
@@ -44,19 +57,14 @@ define([
                 }
             }
         },
-/*
-        _initEvent: function () {
-            var currentWidget = this;
-            this._super();
-            if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
 
-                    currentWidget.options.value.value = $(this).val();
-                    currentWidget.setValue(currentWidget.options.value);
-                });
+        _initEvent: function _initEvent() {
+
+            if (this.getMode() === "read") {
+                this._initLinkEvent();
             }
+            this._super();
         },
-*/
 
         _decorateSingleValue: function (inputValue) {
 

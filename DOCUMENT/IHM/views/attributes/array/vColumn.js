@@ -33,13 +33,15 @@ define([
         addNewWidget: function addNewWidget(index) {
             var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
             var aModel = this.model;
-            var data = this.model.toData();
+            var data=aModel.toData(index);
             var widgetClass = this.getTypedWidgetClass(data.type);
 
             if (cells[index]) {
+
+                data.renderOptions = aModel.getOptions();
                 widgetClass.apply(
                     $(cells[index]),
-                    [aModel.toData(index)]);
+                    [data]);
             }
 
         }
