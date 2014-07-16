@@ -17,6 +17,7 @@ define([
             return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
         },
         _initDom: function () {
+
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
@@ -25,12 +26,57 @@ define([
 
         },
 
-        _initEvent: function () {
-            var currentWidget = this;
+        _initEvent: function _initEvent() {
             if (this.getMode() === "write") {
                 this._initChangeEvent();
             }
+            if (this.getMode() === "read") {
+                this._initLinkEvent();
+            }
             this._super();
+        },
+
+        _initLinkEvent: function _initLinkEvent() {
+            var htmlLink;
+            if (this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url) {
+                htmlLink = this.options.renderOptions.htmlLink;
+                this.element.find('.dcpAttribute__content__link').on("click", function (event) {
+                    if (htmlLink.target === "_dialog") {
+                        event.preventDefault();
+
+
+                        var bdw = $('<div/>');
+                        $('body').append(bdw);
+
+                        var dw = bdw.dcpWindow({
+                            title: Mustache.render(htmlLink.windowTitle, window.dcp.documentData),
+                            width: htmlLink.windowWidth,
+                            height: htmlLink.windowHeight,
+                            content: htmlLink.url,
+                            iframe: true
+                        });
+
+
+                        dw.data('dcpWindow').kendoWindow().center();
+                        dw.data('dcpWindow').open();
+                        if (!htmlLink.windowTitle) {
+                            _.defer(function () {
+                                dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
+                                    dw.data('dcpWindow').kendoWindow().setOptions({
+                                        title: $(this).contents().find("title").html()
+                                    });
+                                });
+                            });
+                        }
+                    }
+                });
+
+                this.element.find('.dcpAttribute__content__link[title]').kendoTooltip({
+                    position:"top"
+                });
+
+            }
+
         },
 
         _initChangeEvent: function _initChangeEvent() {

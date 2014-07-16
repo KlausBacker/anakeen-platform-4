@@ -165,9 +165,21 @@ class RenderDefault implements RenderConfig
         $opt = new RenderOptions();
         
         $opt->setCustomOption("mode", $this->getType());
-        
+        $this->setLinkOption($document, $opt);
         return $opt;
     }
+
+    protected function setLinkOption(\Doc $document, RenderOptions &$opt) {
+        $oas=$document->getNormalAttributes();
+
+        foreach ($oas as $oa) {
+            if ($oa->link) {
+                $opt->text($oa->id)->setLink($document->urlWhatEncode($oa->link));
+
+            }
+        }
+    }
+
     /**
      * @param \Doc $document
      * @return RenderAttributeVisibilities new attribute visibilities

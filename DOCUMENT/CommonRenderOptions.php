@@ -18,9 +18,11 @@ class CommonRenderOptions
     
     protected $localOptionValue = null;
     protected $scope = null;
+    protected $htmlLink = "";
     const type = "common";
     const showEmptyContentOption = "showEmptyContent";
     const labelPositionOption = "labelPosition";
+    const htmlLinkOption = "htmlLink";
     
     const leftPosition = "left";
     const upPosition = "up";
@@ -103,4 +105,33 @@ class CommonRenderOptions
         }
         return $this->setOption(self::labelPositionOption, $position);
     }
+
+    /**
+     * Add a html link on value (view mode only)
+     * @param string $url link for value
+     * @param htmlLinkOptions $options
+     */
+    public function setLink($url, htmlLinkOptions $options=null) {
+        if (! $options) {
+            $options=new htmlLinkOptions();
+        }
+        $this->setOption(self::htmlLinkOption, array("url"=>$url,
+        "target"=>$options->target,
+        "title"=>$options->title,
+        "windowTitle"=>$options->windowTitle,
+        "windowWidth"=>$options->windowWidth,
+        "windowHeight"=>$options->windowHeight));
+    }
+}
+
+class htmlLinkOptions
+{
+    /**
+     * @var string title of window
+     */
+    public $target = "_self";
+    public $windowWidth = "300px";
+    public $windowHeight = "200px";
+    public $windowTitle = "";
+    public $title="";
 }

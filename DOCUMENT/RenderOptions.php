@@ -189,7 +189,6 @@ class RenderOptions implements \JsonSerializable
     public function setAttributeTypeOption($attrType, $optName, $optValue)
     {
         if ($attrType === "common") {
-            
             $this->options[$attrType][$optName] = $optValue;
         } else {
             $this->options["types"][$attrType][$optName] = $optValue;
@@ -217,6 +216,18 @@ class RenderOptions implements \JsonSerializable
             $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName() , $opt->getLocalOptionValue());
         }
     }
+
+    /**
+     * @param $attrId
+     * @return array|null
+     */
+    public function getAttributeOption($attrId) {
+        if (isset($this->options["attributes"][$attrId]))    {
+            return $this->options["attributes"][$attrId];
+        }
+        return null;
+    }
+
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
