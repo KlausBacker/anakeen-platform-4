@@ -36,22 +36,22 @@ define([
 
                     if (!menuElement.hasClass("menu__element--item")) {
                         var menuUrl = menuElement.data("menu-url");
-                        $.getJSON(menuUrl,function (data) {
-                            menuElement.find(".listmenu__content").html('');
-                            scopeWidget._insertMenuContent(
-                                data.content,
-                                menuElement.find(".listmenu__content"),
-                                scopeWidget, menuElement);
-                            menuElement.kendoMenu({
-                                openOnClick: true,
-                                closeOnClick: false
+                        if (menuUrl) {
+                            $.getJSON(menuUrl,function (data) {
+                                menuElement.find(".listmenu__content").html('');
+                                scopeWidget._insertMenuContent(
+                                    data.content,
+                                    menuElement.find(".listmenu__content"),
+                                    scopeWidget, menuElement);
+                                menuElement.kendoMenu({
+                                    openOnClick: true,
+                                    closeOnClick: false
+                                });
+                            }).fail(function (data) {
+                                console.log(data);
+                                throw new Error("SubMenu");
                             });
-
-
-                        }).fail(function (data) {
-                            console.log(data);
-                            throw new Error("SubMenu");
-                        });
+                        }
                         return;
                     }
 
@@ -69,6 +69,7 @@ define([
                             configMenu = menuElement.data("menuConfiguration");
                             var confirmOptions = configMenu.confirmationOptions || {};
 
+                            console.log("confirm",confirmOptions );
                             var dwConfirm = $('body').dcpConfirm({
                                 title: Mustache.render(confirmOptions.title, window.dcp.documentData),
                                 width: confirmOptions.windowWidth,

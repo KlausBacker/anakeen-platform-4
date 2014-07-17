@@ -82,6 +82,18 @@ class CommonRenderOptions
         }
         return $this;
     }
+    
+    public function getOption($optName)
+    {
+        if ($this->optionObject) {
+            if ($this->scope) {
+                return $this->optionObject->getAttributeScopeOption($this->scope, $optName);
+            } else {
+                return $this->optionObject->getAttributeTypeOption(static::type, $optName);
+            }
+        }
+        return null;
+    }
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -105,27 +117,26 @@ class CommonRenderOptions
         }
         return $this->setOption(self::labelPositionOption, $position);
     }
-
     /**
      * Add a html link on value (view mode only)
-     * @param string $url link for value
      * @param htmlLinkOptions $options
+     * @return $this
      */
-    public function setLink($url, htmlLinkOptions $options=null) {
-        if (! $options) {
-            $options=new htmlLinkOptions();
-        }
-        $this->setOption(self::htmlLinkOption, array("url"=>$url,
-        "target"=>$options->target,
-        "title"=>$options->title,
-        "windowTitle"=>$options->windowTitle,
-        "windowWidth"=>$options->windowWidth,
-        "windowHeight"=>$options->windowHeight));
+    public function setLink(htmlLinkOptions $options)
+    {
+        $this->setOption(self::htmlLinkOption, $options);
+        return $this;
     }
 }
 
 class htmlLinkOptions
 {
+    public function __construct($url = null)
+    {
+        if ($url !== null) {
+            $this->url = $url;
+        }
+    }
     /**
      * @var string title of window
      */
@@ -133,5 +144,6 @@ class htmlLinkOptions
     public $windowWidth = "300px";
     public $windowHeight = "200px";
     public $windowTitle = "";
-    public $title="";
+    public $title = "";
+    public $url = "";
 }

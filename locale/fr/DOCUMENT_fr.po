@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-11 09:39+0200\n"
-"PO-Revision-Date: 2014-07-11 09:41+0200\n"
+"POT-Creation-Date: 2014-07-17 11:58+0200\n"
+"PO-Revision-Date: 2014-07-17 12:04+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -23,6 +23,10 @@ msgctxt "UiMenu"
 msgid "Advanced"
 msgstr "Autres"
 
+msgctxt "my"
+msgid "Anakeen"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
@@ -39,6 +43,10 @@ msgctxt "UiMenu"
 msgid "Close"
 msgstr "Fermer"
 
+msgctxt "my"
+msgid "Confims"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Confirm"
 msgstr ""
@@ -47,12 +55,16 @@ msgctxt "UiMenu"
 msgid "Confirm deletion"
 msgstr "Confirmer la suppression"
 
-msgid "Confirm deletion of {{document.properties.title}}"
-msgstr "Confirmation de la suppression de {{document.properties.title}}"
+msgid "Confirm deletion of {{{document.properties.title}}}"
+msgstr "Confirmer la suppression de \"{{{document.properties.title}}}\""
 
 msgctxt "UiMenu"
 msgid "Create"
 msgstr "Créer"
+
+msgctxt "my"
+msgid "Custom Menu"
+msgstr ""
 
 msgid "Default Edit"
 msgstr ""
@@ -102,6 +114,38 @@ msgstr ""
 msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
+
+msgctxt "my"
+msgid "My Conf 1"
+msgstr ""
+
+msgctxt "my"
+msgid "My Conf 2 In Blanck"
+msgstr ""
+
+msgctxt "my"
+msgid "My Conf 2 in dialog"
+msgstr ""
+
+msgctxt "my"
+msgid "My Disable"
+msgstr ""
+
+msgctxt "my"
+msgid "My Hidden"
+msgstr ""
+
+msgctxt "my"
+msgid "My label"
+msgstr ""
+
+msgctxt "my"
+msgid "My label 2"
+msgstr ""
+
+msgctxt "my"
+msgid "My label 3"
+msgstr ""
 
 msgctxt "ddui"
 msgid "No result found"
@@ -159,6 +203,10 @@ msgctxt "UiMenu"
 msgid "Sure delete %s ?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" ?"
 
+msgctxt "my"
+msgid "Séparateur"
+msgstr ""
+
 msgid "Test"
 msgstr ""
 
@@ -173,7 +221,14 @@ msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr "Voir le graphe du cycle"
 
+msgctxt "ddui"
+msgid "View {{displayValue}}"
+msgstr ""
+
 msgid "Y-m-d"
+msgstr ""
+
+msgid "cl_nomscientifique"
 msgstr ""
 
 msgid "ddui::Delete : "
@@ -197,6 +252,12 @@ msgstr "Dupliquer la ligne sélectionnée"
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"
 
+msgid "de_tab_info"
+msgstr ""
+
+msgid "es_caracteristique"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid ""
@@ -207,6 +268,9 @@ msgstr ""
 #~ msgctxt "UiMenu"
 #~ msgid "Abord modifications"
 #~ msgstr "Abandonner les modifications"
+
+#~ msgid "Confirm deletion of {{document.properties.title}}"
+#~ msgstr "Confirmation de la suppression de {{document.properties.title}}"
 
 #~ msgctxt "UiMenu"
 #~ msgid "Transition"

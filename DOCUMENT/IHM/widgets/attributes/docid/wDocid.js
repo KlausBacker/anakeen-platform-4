@@ -15,32 +15,38 @@ define([
         kendoWidget: null,
 
         _initDom: function () {
-
+            var scope = this;
             if (this._isMultiple()) {
-                this.options.values = _.map(_.toArray(this.options.value), function (val, index) {
-                    val.rawValue = val.value;
-                    return val;
-                });
+                this.options.values = _.toArray(this.options.value);
 
                 this.options.isMultiple = true;
             }
 
             if (this.getMode() === "read") {
 
-                if (!this.hasLink()) {
-                    var htmlLink = this.getLink();
-                    if (htmlLink === null) {
-                        htmlLink = {};
-                    }
-                    htmlLink.url = "?app=DOCUMENT&action=VIEW&id=" + this.options.value.value;
 
+                var htmlLink = this.getLink();
+                if (htmlLink === null) {
+                    htmlLink = {};
                     this.options.renderOptions = this.options.renderOptions || {};
                     this.options.renderOptions.htmlLink = htmlLink;
                 }
+                this.options.renderOptions.htmlLink.renderUrl = Mustache.render(this.options.renderOptions.htmlLink.url, this.options.value);
+ this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.value);
 
+                if (this._isMultiple()) {
+                    this.options.values = _.map(this.options.value, function (val, index) {
+                        val.rawValue = val.value;
+                        val.renderUrl = Mustache.render(htmlLink.url, val);
+                        val.renderTitle = Mustache.render(htmlLink.title, val);
+                        val.index=index;
+                        return val;
+                    });
+
+                    this.options.isMultiple = true;
+                }
 
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-
             } else if (this.getMode() === "write") {
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
                 this.kendoWidget = this.element.find(".dcpAttribute__content--docid");
@@ -83,7 +89,6 @@ define([
         _decorateMultipleValue: function (inputValue, extraOptions) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var attributeModel = this._model();
 
 
             var options = {
@@ -129,7 +134,7 @@ define([
                             var attrModel = documentModel.get('attributes').get(aid);
                             if (attrModel) {
                                 _.defer(function () {
-                                    var extValue = _.extend({}, val.value);
+
                                     if (attrModel.hasMultipleOption()) {
                                         attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
                                     } else {
@@ -175,7 +180,6 @@ define([
         },
         setValue: function (value) {
 
-            var kendoWidget = this.kendoWidget;
             this._super(value);
             if (this.getMode() === "write") {
                 if (!this._model().hasMultipleOption()) {

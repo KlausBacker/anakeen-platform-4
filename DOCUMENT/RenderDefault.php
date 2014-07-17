@@ -168,18 +168,27 @@ class RenderDefault implements RenderConfig
         $this->setLinkOption($document, $opt);
         return $opt;
     }
-
-    protected function setLinkOption(\Doc $document, RenderOptions &$opt) {
-        $oas=$document->getNormalAttributes();
-
+    
+    protected function setLinkOption(\Doc $document, RenderOptions & $opt)
+    {
+        
+        $linkOption = new htmlLinkOptions();
+        $linkOption->title = ___("View {{displayValue}}", "ddui");
+        $linkOption->url = "?app=DOCUMENT&action=VIEW&id={{value}}";
+        $opt->docid()->setLink($linkOption);
+        $opt->account()->setLink(clone $linkOption);
+        $opt->thesaurus()->setLink(clone $linkOption);
+        
+        $oas = $document->getNormalAttributes();
+        
         foreach ($oas as $oa) {
             if ($oa->link) {
-                $opt->text($oa->id)->setLink($document->urlWhatEncode($oa->link));
-
+                $linkOption = new htmlLinkOptions($document->urlWhatEncode($oa->link));
+                
+                $opt->text($oa->id)->setLink($linkOption);
             }
         }
     }
-
     /**
      * @param \Doc $document
      * @return RenderAttributeVisibilities new attribute visibilities

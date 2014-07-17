@@ -16,6 +16,7 @@ class RenderOptions implements \JsonSerializable
     protected $docidOptions = null;
     protected $enumOptions = null;
     protected $accountOptions = null;
+    protected $thesaurusOptions = null;
     protected $intOptions = null;
     protected $doubleOptions = null;
     protected $commonOptions = null;
@@ -170,6 +171,18 @@ class RenderOptions implements \JsonSerializable
     }
     /**
      * @param string $attrid
+     * @return ThesaurusRenderOptions
+     */
+    public function thesaurus($attrid = '')
+    {
+        if ($this->thesaurusOptions === null) {
+            $this->thesaurusOptions = new ThesaurusRenderOptions($this);
+        }
+        $this->thesaurusOptions->setScope($attrid);
+        return $this->thesaurusOptions;
+    }
+    /**
+     * @param string $attrid
      * @return EnumRenderOptions
      */
     public function enum($attrid = '')
@@ -195,6 +208,25 @@ class RenderOptions implements \JsonSerializable
         }
     }
     /**
+     * Add an option for an attribute type
+     * @param string $attrType attribute type
+     * @param string $optName option name
+     * @return mixed
+     */
+    public function getAttributeTypeOption($attrType, $optName)
+    {
+        if ($attrType === "common") {
+            if ($this->options[$attrType][$optName]) {
+                return $this->options[$attrType][$optName];
+            }
+        } else {
+            if (isset($this->options["types"][$attrType][$optName])) {
+                return $this->options["types"][$attrType][$optName];
+            }
+        }
+        return null;
+    }
+    /**
      * Apply option to a specific attribute
      * @param string $attrId attribute identifier
      * @param string $optName option name
@@ -203,6 +235,19 @@ class RenderOptions implements \JsonSerializable
     public function setAttributeScopeOption($attrId, $optName, $optValue)
     {
         $this->options["attributes"][$attrId][$optName] = $optValue;;
+    }
+    /**
+     * Get option to a specific attribute
+     * @param string $attrId attribute identifier
+     * @param string $optName option name
+     * @return mixed
+     */
+    public function getAttributeScopeOption($attrId, $optName)
+    {
+        if (isset($this->options["attributes"][$attrId][$optName])) {
+            return $this->options["attributes"][$attrId][$optName];
+        }
+        return null;
     }
     /**
      * Add new option
@@ -216,18 +261,17 @@ class RenderOptions implements \JsonSerializable
             $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName() , $opt->getLocalOptionValue());
         }
     }
-
     /**
      * @param $attrId
      * @return array|null
      */
-    public function getAttributeOption($attrId) {
-        if (isset($this->options["attributes"][$attrId]))    {
+    public function getAttributeOptions($attrId)
+    {
+        if (isset($this->options["attributes"][$attrId])) {
             return $this->options["attributes"][$attrId];
         }
         return null;
     }
-
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php

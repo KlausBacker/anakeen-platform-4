@@ -90,6 +90,7 @@ define([
         },
         _initLinkEvent: function _initLinkEvent() {
             var htmlLink = this.getLink();
+            var scope=this;
             if (htmlLink) {
 
                 this.element.find('.dcpAttribute__content__link').on("click", function (event) {
@@ -97,15 +98,22 @@ define([
                     if (htmlLink.target === "_dialog") {
                         event.preventDefault();
 
+                        var renderTitle;
+                        var index=$(this).data("index");
+                        if (typeof index !== "undefined" && index !== null) {
+                            renderTitle=Mustache.render(htmlLink.windowTitle,scope.options.value[index]);
+                        } else {
+                            renderTitle=Mustache.render(htmlLink.windowTitle,scope.options.value);
+                        }
 
                         var bdw = $('<div/>');
                         $('body').append(bdw);
 
                         var dw = bdw.dcpWindow({
-                            title: Mustache.render(htmlLink.windowTitle, window.dcp.documentData),
+                            title: renderTitle,
                             width: htmlLink.windowWidth,
                             height: htmlLink.windowHeight,
-                            content: htmlLink.url,
+                            content: $(this).attr("href"),
                             iframe: true
                         });
 
