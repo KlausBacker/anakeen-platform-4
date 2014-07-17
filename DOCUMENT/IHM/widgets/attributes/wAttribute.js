@@ -23,6 +23,17 @@ define([
             if (this.options.helpOutputs) {
                 this.options.hasAutocomplete = true;
             }
+
+            if (this.getMode() === "write") {
+            if (this.options.renderOptions && this.options.renderOptions.buttons) {
+
+                // Add index for template to identify buttons
+                this.options.renderOptions.buttons=_.map(this.options.renderOptions.buttons, function(val ,index) {
+                    val.index=index;
+                    return val;
+                });
+            }
+            }
             this.options.emptyValue = _.bind(this._emptyValue, this);
             this._initDom();
             this._initEvent();
@@ -37,17 +48,53 @@ define([
             }
             return "";
         },
-        _initDom: function () {
+        _initDom: function _initDom() {
             this.element.append(Mustache.render(this._getTemplate(), this.options));
         },
 
-        _initEvent: function () {
+        _initEvent: function _initEvent() {
             if (this.getMode() === "write") {
                 this._initDeleteEvent();
+                this._initButtonsEvent();
             }
         },
 
-        _initDeleteEvent: function () {
+        _initButtonsEvent: function _initButtonsEvent() {
+            var scope=this;
+            var $extraButtons = this.element.find(".dcpAttribute__content__button--extra");
+            $extraButtons.on("click." + this.eventNamespace,function (event) {
+                var buttonsConfig=scope.options.renderOptions.buttons;
+                var buttonIndex=$(this).data("index");
+                var buttonConfig=buttonsConfig[buttonIndex];
+                if (buttonConfig && buttonConfig.url) {
+                    var url=Mustache.render(buttonConfig.url, scope.options.value);
+                    if (buttonConfig.target !== "_dialog") {
+                        window.open(url,buttonConfig.target );
+                    } else {
+                        var bdw = $('<div/>');
+                        $('body').append(bdw);
+                        var renderTitle=Mustache.render(buttonConfig.windowTitle, scope.options.value);
+                          var dw = bdw.dcpWindow({
+                            title: renderTitle,
+                            width: buttonConfig.windowWidth,
+                            height: buttonConfig.windowHeight,
+                            content: url,
+                            iframe: true
+                        });
+                        dw.data('dcpWindow').kendoWindow().center();
+                        dw.data('dcpWindow').open();
+                    }
+                }
+
+                scope._trigger("click", event, {
+                    id:scope.option.id,
+                    value : scope.options.value,
+                    index: scope._getIndex()
+                });
+            });
+          },
+
+        _initDeleteEvent: function _initDeleteEvent() {
             var currentWidget = this;
             var attrModel = currentWidget._model();
             var docModel = currentWidget._documentModel();
@@ -59,8 +106,8 @@ define([
                 attrToClear = _.toArray(attrToClear);
             }
             // Compose delete button title
-            var $deleteButton = this.element.find(".dcpAttribute__content--delete--button");
-            var titleDelete = $deleteButton.find("button").attr('title');
+            var $deleteButton = this.element.find(".dcpAttribute__content__button--delete");
+            var titleDelete = $deleteButton.attr('title');
             var attrLabels = _.map(attrToClear, function (aid) {
                 var attr = docModel.get('attributes').get(aid);
                 if (attr) {
@@ -70,8 +117,6 @@ define([
             });
             titleDelete += attrLabels.join(", ");
             $deleteButton.on("click." + this.eventNamespace,function (event) {
-
-                event.preventDefault();
                 _.each(attrToClear, function (aid) {
                     var attr = docModel.get('attributes').get(aid);
                     if (attr) {
@@ -84,8 +129,11 @@ define([
                 });
 
                 currentWidget.element.find("input").focus();
-            }).attr('title', titleDelete).kendoTooltip({
-                position: "left"
+            }).attr('title', titleDelete);
+
+            this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
+                position: "left",
+                autoHide:true
             });
         },
         _initLinkEvent: function _initLinkEvent() {
@@ -120,15 +168,7 @@ define([
 
                         dw.data('dcpWindow').kendoWindow().center();
                         dw.data('dcpWindow').open();
-                        if (!htmlLink.windowTitle) {
-                            _.defer(function () {
-                                dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
-                                    dw.data('dcpWindow').kendoWindow().setOptions({
-                                        title: $(this).contents().find("title").html()
-                                    });
-                                });
-                            });
-                        }
+
                     }
                 });
 

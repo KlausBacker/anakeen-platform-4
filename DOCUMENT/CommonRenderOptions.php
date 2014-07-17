@@ -23,6 +23,7 @@ class CommonRenderOptions
     const showEmptyContentOption = "showEmptyContent";
     const labelPositionOption = "labelPosition";
     const htmlLinkOption = "htmlLink";
+    const buttonsOption = "buttons";
     
     const leftPosition = "left";
     const upPosition = "up";
@@ -119,17 +120,32 @@ class CommonRenderOptions
     }
     /**
      * Add a html link on value (view mode only)
-     * @param htmlLinkOptions $options
+     * @param HtmlLinkOptions $options
      * @return $this
      */
-    public function setLink(htmlLinkOptions $options)
+    public function setLink(HtmlLinkOptions $options)
     {
         $this->setOption(self::htmlLinkOption, $options);
         return $this;
     }
+    /**
+     * Add a html link on value (view mode only)
+     * @param HtmlLinkOptions $options
+     * @return $this
+     */
+    public function addButton(ButtonOptions $options)
+    {
+        $buttons = $this->getOption(self::buttonsOption);
+        if (empty($buttons)) {
+            $buttons = array();
+        }
+        $buttons[] = $options;
+        $this->setOption(self::buttonsOption, $buttons);
+        return $this;
+    }
 }
 
-class htmlLinkOptions
+class HtmlLinkOptions
 {
     public function __construct($url = null)
     {
@@ -145,5 +161,42 @@ class htmlLinkOptions
     public $windowHeight = "200px";
     public $windowTitle = "";
     public $title = "";
+    public $url = "";
+}
+class ButtonOptions
+{
+    public function __construct($url = null)
+    {
+        if ($url !== null) {
+            $this->url = $url;
+        }
+    }
+    /**
+     * @var string target of url
+     */
+    public $target = "_self";
+    public $windowWidth = "300px";
+    public $windowHeight = "200px";
+    /**
+     * @var string title of window
+     * only for _dialog target
+     */
+    public $windowTitle = "";
+    /**
+     * @var string addtionnal css class
+     */
+    public $class = "";
+    /**
+     * @var string tootip of button
+     */
+    public $title = "";
+    /**
+     * @var string button content
+     * The content must be a valid Html fragment
+     */
+    public $htmlContent = "";
+    /**
+     * @var string url to launch
+     */
     public $url = "";
 }

@@ -71,8 +71,7 @@ define([
                 min : scope.options.renderOptions.min,
                 change : function () {
                     // Need to set by widget to honor decimals option
-                    console.log("change", this);
-                    scope._model().setValue({value:this.value()});
+                    scope._model().setValue({value:this.value()}, scope._getIndex());
                 }
             });
         },

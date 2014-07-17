@@ -11,7 +11,11 @@
        {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
       class="form-control dcpAttribute__content dcpAttribute__content--edit"
       value="{{value.value}}"/>
-<span class="dcpAttribute__content--delete--button input-group-addon">
-    <button title="[[#i18n]]ddui::Delete : [[/i18n]]" class="btn btn-default btn-xs"><i class="fa fa-times fa-fw"></i></button>
+<span class="dcpAttribute__content__buttons input-group-addon">
+    {{#renderOptions.buttons}}
+        <button type="button" title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+    {{/renderOptions.buttons}}
+    <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+            class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i></button>
     </span>
 </div>

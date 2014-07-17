@@ -69,7 +69,6 @@ define([
                             configMenu = menuElement.data("menuConfiguration");
                             var confirmOptions = configMenu.confirmationOptions || {};
 
-                            console.log("confirm",confirmOptions );
                             var dwConfirm = $('body').dcpConfirm({
                                 title: Mustache.render(confirmOptions.title, window.dcp.documentData),
                                 width: confirmOptions.windowWidth,
