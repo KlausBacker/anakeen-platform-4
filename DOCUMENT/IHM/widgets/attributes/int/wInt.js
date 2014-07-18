@@ -4,7 +4,7 @@ define([
     'kendo',
     '../wAttribute',
     'widgets/attributes/text/wText'
-], function (_, Mustache,kendo) {
+], function (_, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpInt", $.dcp.dcpText, {
@@ -12,11 +12,11 @@ define([
         options: {
             id: "",
             type: "int",
-            numberFormat : 'n0'
+            numberFormat: 'n0'
         },
         _initDom: function () {
             if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
-                this.options.value.displayValue=kendo.toString(this.options.value.value,this.options.numberFormat);
+                this.options.value.displayValue = kendo.toString(this.options.value.value, this.options.numberFormat);
             }
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
@@ -37,10 +37,10 @@ define([
             }
         },
 
-       setValue: function (value) {
-           // this._super.(value);
-           // Don't call dcpText::setValue()
-           $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
+        setValue: function (value) {
+            // this._super.(value);
+            // Don't call dcpText::setValue()
+            $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
 
             var originalValue = this.kendoWidget.data("kendoNumericTextBox").value();
 
@@ -60,18 +60,18 @@ define([
         },
 
         _activateNumber: function (inputValue) {
-            var scope=this;
+            var scope = this;
             if (!scope.options.renderOptions) {
-                scope.options.renderOptions={};
+                scope.options.renderOptions = {};
             }
             inputValue.kendoNumericTextBox({
                 decimals: 0,
-                format:scope.options.numberFormat,
-                max : scope.options.renderOptions.max,
-                min : scope.options.renderOptions.min,
-                change : function () {
+                format: scope.options.numberFormat,
+                max: scope.options.renderOptions.max,
+                min: scope.options.renderOptions.min,
+                change: function () {
                     // Need to set by widget to honor decimals option
-                    scope._model().setValue({value:this.value()}, scope._getIndex());
+                    scope._model().setValue({value: this.value()}, scope._getIndex());
                 }
             });
         },

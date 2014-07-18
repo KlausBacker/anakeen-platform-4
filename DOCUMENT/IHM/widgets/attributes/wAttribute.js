@@ -25,14 +25,14 @@ define([
             }
 
             if (this.getMode() === "write") {
-            if (this.options.renderOptions && this.options.renderOptions.buttons) {
+                if (this.options.renderOptions && this.options.renderOptions.buttons) {
 
-                // Add index for template to identify buttons
-                this.options.renderOptions.buttons=_.map(this.options.renderOptions.buttons, function(val ,index) {
-                    val.index=index;
-                    return val;
-                });
-            }
+                    // Add index for template to identify buttons
+                    this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index) {
+                        val.index = index;
+                        return val;
+                    });
+                }
             }
             this.options.emptyValue = _.bind(this._emptyValue, this);
             this._initDom();
@@ -56,25 +56,66 @@ define([
             if (this.getMode() === "write") {
                 this._initDeleteEvent();
                 this._initButtonsEvent();
+                this._initFocusEvent();
+            }
+        },
+
+        /**
+         * Define inputs for focus
+         * @protected
+         */
+        _focusInput: function () {
+            return this.element.find('input[name="' + this.options.id + '"]');
+        },
+
+        _initFocusEvent: function _initFocusEvent() {
+            if (this.options.renderOptions.inputHtmlTooltip) {
+                var scope = this;
+
+                this._focusInput().on("focus", function (event) {
+                    var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
+                    var kt = ktTarget.data("kendoTooltip");
+
+                    if (!kt) {
+                        kt = ktTarget.kendoTooltip({
+                            autoHide: false,
+                            content: scope.options.renderOptions.inputHtmlTooltip,
+                            showOn: "zou",
+                            show: function () {
+                                this.popup.element.addClass("dcpAttribute__editlabel");
+                            }
+                        }).data("kendoTooltip");
+                    }
+
+                    // $(event.delegateTarget).data("kendoTooltip").popup.element.addClass("dcpAttribute__editlabel");
+                    kt.show();
+                });
+                this._focusInput().on("blur", function (event) {
+                    var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
+                    var kTooltip = ktTarget.data("kendoTooltip");
+                    if (kTooltip) {
+                        kTooltip.hide();
+                    }
+                });
             }
         },
 
         _initButtonsEvent: function _initButtonsEvent() {
-            var scope=this;
+            var scope = this;
             var $extraButtons = this.element.find(".dcpAttribute__content__button--extra");
-            $extraButtons.on("click." + this.eventNamespace,function (event) {
-                var buttonsConfig=scope.options.renderOptions.buttons;
-                var buttonIndex=$(this).data("index");
-                var buttonConfig=buttonsConfig[buttonIndex];
+            $extraButtons.on("click." + this.eventNamespace, function (event) {
+                var buttonsConfig = scope.options.renderOptions.buttons;
+                var buttonIndex = $(this).data("index");
+                var buttonConfig = buttonsConfig[buttonIndex];
                 if (buttonConfig && buttonConfig.url) {
-                    var url=Mustache.render(buttonConfig.url, scope.options.value);
+                    var url = Mustache.render(buttonConfig.url, scope.options.value);
                     if (buttonConfig.target !== "_dialog") {
-                        window.open(url,buttonConfig.target );
+                        window.open(url, buttonConfig.target);
                     } else {
                         var bdw = $('<div/>');
                         $('body').append(bdw);
-                        var renderTitle=Mustache.render(buttonConfig.windowTitle, scope.options.value);
-                          var dw = bdw.dcpWindow({
+                        var renderTitle = Mustache.render(buttonConfig.windowTitle, scope.options.value);
+                        var dw = bdw.dcpWindow({
                             title: renderTitle,
                             width: buttonConfig.windowWidth,
                             height: buttonConfig.windowHeight,
@@ -87,12 +128,12 @@ define([
                 }
 
                 scope._trigger("click", event, {
-                    id:scope.option.id,
-                    value : scope.options.value,
+                    id: scope.option.id,
+                    value: scope.options.value,
                     index: scope._getIndex()
                 });
             });
-          },
+        },
 
         _initDeleteEvent: function _initDeleteEvent() {
             var currentWidget = this;
@@ -133,12 +174,12 @@ define([
 
             this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
                 position: "left",
-                autoHide:true
+                autoHide: true
             });
         },
         _initLinkEvent: function _initLinkEvent() {
             var htmlLink = this.getLink();
-            var scope=this;
+            var scope = this;
             if (htmlLink) {
 
                 this.element.find('.dcpAttribute__content__link').on("click", function (event) {
@@ -147,11 +188,11 @@ define([
                         event.preventDefault();
 
                         var renderTitle;
-                        var index=$(this).data("index");
+                        var index = $(this).data("index");
                         if (typeof index !== "undefined" && index !== null) {
-                            renderTitle=Mustache.render(htmlLink.windowTitle,scope.options.value[index]);
+                            renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value[index]);
                         } else {
-                            renderTitle=Mustache.render(htmlLink.windowTitle,scope.options.value);
+                            renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value);
                         }
 
                         var bdw = $('<div/>');

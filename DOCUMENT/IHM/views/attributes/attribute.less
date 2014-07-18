@@ -90,14 +90,44 @@
 .has-error .k-callout-n {
   border-bottom-color: @brand-danger;
 }
+.has-error .k-callout-s {
+  border-top-color: @brand-danger;
+}
 
+/**
+* Tooltip for option setInputTooltip
+*/
+.dcpAttribute__editlabel {
+
+}
+
+.k-widget.k-tooltip.dcpAttribute__editlabel {
+  border-color: @brand-info;
+  background-color: @brand-info;
+  color: #ffffff;
+}
+
+.dcpAttribute__editlabel .k-callout-n
+{
+  border-bottom-color: @brand-info;
+}
+.dcpAttribute__editlabel .k-callout-s
+{
+  border-top-color: @brand-info;
+}
+
+/**
+ * When save error
+ */
 .dcpFrame__label.has-warning,
 .nav-tabs .dcpTab__label.has-warning {
   background-color: @brand-warning;
 
 }
 
-
+/**
+ * To fix all width column to be proportionnal to thead
+ */
 .dcpArray__wrapper {
   table-layout: fixed;
 }

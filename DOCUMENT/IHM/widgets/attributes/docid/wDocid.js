@@ -32,14 +32,14 @@ define([
                     this.options.renderOptions.htmlLink = htmlLink;
                 }
                 this.options.renderOptions.htmlLink.renderUrl = Mustache.render(this.options.renderOptions.htmlLink.url, this.options.value);
- this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.value);
+                this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.value);
 
                 if (this._isMultiple()) {
                     this.options.values = _.map(this.options.value, function (val, index) {
                         val.rawValue = val.value;
                         val.renderUrl = Mustache.render(htmlLink.url, val);
                         val.renderTitle = Mustache.render(htmlLink.title, val);
-                        val.index=index;
+                        val.index = index;
                         return val;
                     });
 
@@ -71,7 +71,14 @@ define([
             }
             this._super();
         },
-
+        /**
+         * Define inputs for focus
+         * @protected
+         */
+        _focusInput: function () {
+            console.log("docid focus", this.element.find('input'));
+            return this.element.find('input');
+        },
         _decorateSingleValue: function (inputValue) {
 
             this.options.values = [];

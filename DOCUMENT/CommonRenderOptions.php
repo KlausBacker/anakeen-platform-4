@@ -24,6 +24,7 @@ class CommonRenderOptions
     const labelPositionOption = "labelPosition";
     const htmlLinkOption = "htmlLink";
     const buttonsOption = "buttons";
+    const inputHtmlTooltip = "inputHtmlTooltip";
     
     const leftPosition = "left";
     const upPosition = "up";
@@ -120,6 +121,7 @@ class CommonRenderOptions
     }
     /**
      * Add a html link on value (view mode only)
+     * @note use only in view mode
      * @param HtmlLinkOptions $options
      * @return $this
      */
@@ -129,8 +131,20 @@ class CommonRenderOptions
         return $this;
     }
     /**
+     * Add an html tooltip when input has focus
+     * @note use only in edit mode
+     * @param string  $htmlText Html fragment
+     * @return $this
+     */
+    public function setInputTooltip($htmlText)
+    {
+        $this->setOption(self::inputHtmlTooltip, $htmlText);
+        return $this;
+    }
+    /**
      * Add a html link on value (view mode only)
-     * @param HtmlLinkOptions $options
+     * @note use only in edit mode
+     * @param \Dcp\Ui\ButtonOptions $options
      * @return $this
      */
     public function addButton(ButtonOptions $options)
