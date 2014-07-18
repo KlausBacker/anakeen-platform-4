@@ -19,6 +19,7 @@ class RenderOptions implements \JsonSerializable
     protected $thesaurusOptions = null;
     protected $intOptions = null;
     protected $doubleOptions = null;
+    protected $longtextOptions = null;
     protected $commonOptions = null;
     
     public function __construct()
@@ -54,6 +55,9 @@ class RenderOptions implements \JsonSerializable
             ) ,
             "money" => array(
                 "format" => "%!.2n"
+            ) ,
+            LongtextRenderOptions::type => array(
+                LongtextRenderOptions::displayedLineNumberOption => 0
             ) ,
             IntRenderOptions::type => array(
                 IntRenderOptions::maxOption => 2147483647,
@@ -156,6 +160,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->docidOptions->setScope($attrid);
         return $this->docidOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return LongtextRenderOptions
+     */
+    public function longtext($attrid = '')
+    {
+        if ($this->longtextOptions === null) {
+            $this->longtextOptions = new LongtextRenderOptions($this);
+        }
+        $this->longtextOptions->setScope($attrid);
+        return $this->longtextOptions;
     }
     /**
      * @param string $attrid

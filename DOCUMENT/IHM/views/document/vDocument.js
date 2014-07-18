@@ -70,7 +70,7 @@ define([
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
                         view = new ViewAttributeFrame({model: model.get("attributes").get(currentAttr.id)});
-                        $content.prepend(view.render().$el);
+                        $content.append(view.render().$el);
                     } catch (e) {
                         console.error(e);
                     }

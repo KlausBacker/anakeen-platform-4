@@ -15,7 +15,7 @@
 }
 
 .dcpFrame__label {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .dcpAttribute__content--read {
@@ -38,28 +38,28 @@
   padding: 0;
   height: @dcpInputHeight;
 }
+
 .dcpAttribute__contentWrapper .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button, {
   background-color: transparent;
   border: none;
-  min-width:2em;
+  min-width: 2em;
   height: 100%;
-  padding:0;
+  padding: 0;
 }
 
 .dcpAttribute__contentWrapper .input-group-addon button:hover,
 .dcpArray__content__cell .input-group-addon button:hover, {
-  background-color:  @btn-default-bg;
+  background-color: @btn-default-bg;
 }
+
 .dcpAttribute__content--flash input,
-.dcpAttribute__content--flash .k-input
-{
+.dcpAttribute__content--flash .k-input {
   background-color: @brand-info;
 }
 
 .dcpAttribute__content--endflash input,
-.dcpAttribute__content--endflash .k-input
-{
+.dcpAttribute__content--endflash .k-input {
   background-color: inherit;
   transition: background-color 500ms linear;
 }
@@ -90,6 +90,7 @@
 .has-error .k-callout-n {
   border-bottom-color: @brand-danger;
 }
+
 .has-error .k-callout-s {
   border-top-color: @brand-danger;
 }
@@ -107,12 +108,11 @@
   color: #ffffff;
 }
 
-.dcpAttribute__editlabel .k-callout-n
-{
+.dcpAttribute__editlabel .k-callout-n {
   border-bottom-color: @brand-info;
 }
-.dcpAttribute__editlabel .k-callout-s
-{
+
+.dcpAttribute__editlabel .k-callout-s {
   border-top-color: @brand-info;
 }
 
@@ -131,3 +131,12 @@
 .dcpArray__wrapper {
   table-layout: fixed;
 }
+
+/**
+* no delete button on IE10
+*/
+//noinspection CssInvalidPseudoSelector
+.dcpAttribute__contentWrapper input[type=text]::-ms-clear {
+  display: none;
+}
+

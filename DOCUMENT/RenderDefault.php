@@ -108,6 +108,22 @@ class RenderDefault implements RenderConfig
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ) ,
+                "longtext" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "htmltext" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                    )
+                ) ,
                 "double" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
@@ -118,10 +134,10 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "docid" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/read.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ) ,
                 "frame" => array(

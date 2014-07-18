@@ -76,7 +76,6 @@ define([
          * @protected
          */
         _focusInput: function () {
-            console.log("docid focus", this.element.find('input'));
             return this.element.find('input');
         },
         _decorateSingleValue: function (inputValue) {
