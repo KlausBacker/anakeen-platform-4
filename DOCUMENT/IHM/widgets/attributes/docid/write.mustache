@@ -1,6 +1,8 @@
 <div class="input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__content--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__content--single{{/isMultiple}}">
 <span class="input-group-addon">
-    <button class="dcpAttribute__content--docid--button btn btn-default btn-xs">
+    <button
+            {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
+            class="dcpAttribute__content--docid--button btn btn-default btn-xs">
 {{^isMultiple}}
 <i class="fa fa-chevron-down fa-fw"></i>
 {{/isMultiple}}

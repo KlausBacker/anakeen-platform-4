@@ -317,7 +317,7 @@ define([
 
         getMode: function () {
             if (this.options.mode !== "read" && this.options.mode !== "write" && this.options.mode !== "hidden") {
-                throw new Error("Attribute " + this.options.id + " have unknown mode " + this.options.mode);
+                throw new Error("Attribute " + this.optiwons.id + " have unknown mode " + this.options.mode);
             }
             return this.options.mode;
         },

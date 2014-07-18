@@ -1,7 +1,9 @@
 <div class="input-group margin-bottom-sm">
     {{# hasAutocomplete}}
 <span class="input-group-addon">
-    <button class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
+    <button
+          {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
+            class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
         <i class="fa fa-chevron-down fa-fw"></i>
     </button>
 </span>

@@ -184,6 +184,8 @@ define([
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
+
+            this.element.find('.dcpAttribute__content--docid--button[title]').kendoTooltip();
         },
         setValue: function (value) {
 

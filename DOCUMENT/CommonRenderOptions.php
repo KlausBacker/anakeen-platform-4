@@ -25,7 +25,7 @@ class CommonRenderOptions
     const htmlLinkOption = "htmlLink";
     const buttonsOption = "buttons";
     const inputHtmlTooltip = "inputHtmlTooltip";
-    
+    const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
@@ -139,6 +139,17 @@ class CommonRenderOptions
     public function setInputTooltip($htmlText)
     {
         $this->setOption(self::inputHtmlTooltip, $htmlText);
+        return $this;
+    }
+    /**
+     * Add an html tooltip on auto complete button
+     * @note use only in edit mode
+     * @param string  $htmlText Html fragment
+     * @return $this
+     */
+    public function setAutoCompleteHtmlLabel($htmlText)
+    {
+        $this->setOption(self::autoCompleteHtmlLabelOption, $htmlText);
         return $this;
     }
     /**
