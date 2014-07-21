@@ -30,6 +30,12 @@ require.config({
             deps: [
                 'kendo'
             ]
+        },
+        "ckeditor-jquery": {
+            deps: [
+                'jquery',
+                'ckeditor'
+            ]
         }
     },
     paths: {
@@ -39,7 +45,9 @@ require.config({
         "mustache": "../../lib/mustache.js/mustache",
         "bootstrap": "../../lib/bootstrap/js/bootstrap",
         "kendo": "../../lib/KendoUI/js/kendo.ui.core",
-        "kendo-culture-fr": "../../lib/KendoUI/js/cultures/kendo.culture.fr-FR"
+        "kendo-culture-fr": "../../lib/KendoUI/js/cultures/kendo.culture.fr-FR",
+        "ckeditor": "../../lib/ckeditor/ckeditor",
+        "ckeditor-jquery": "../../lib/ckeditor/adapters/jquery"
     }/*,
      urlArgs : "invalidateCache=" + (new Date()).getTime()*/
 });

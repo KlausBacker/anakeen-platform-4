@@ -215,7 +215,15 @@ define([
                             autoHide: true,
                             showOnClick: false,
                             callout: true,
-                            position: "bottom"
+                            position: "bottom",
+                            show: function (event) {
+                                // need to shift to bottom bacasuse callout is in target
+                                var contain = this.popup.element.parent();
+                                var ktop = parseFloat(contain.css("top"));
+                                if (ktop > 0) {
+                                    contain.css("top", ktop + 6);
+                                }
+                            }
                         });
                 }
                 $currentMenu.data("menuConfiguration", currentMenu);

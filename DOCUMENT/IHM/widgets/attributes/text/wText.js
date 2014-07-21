@@ -110,7 +110,7 @@ define([
         setValue: function (value) {
             this._super(value);
             // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
-            var contentElement = this.element.find('.dcpAttribute__content');
+            var contentElement = this.contentElements();
             var originalValue = contentElement.val();
 
             if (this.getMode() === "write") {
@@ -118,12 +118,12 @@ define([
                 //noinspection JSHint
                 if (originalValue != value.value) {
                     // Modify value only if different
-                    this.contentElements().val(value.value);
+                    contentElement.val(value.value);
                     this.flashElement();
                 }
 
             } else if (this.getMode() === "read") {
-                this.contentElements().text(value.displayValue);
+                contentElement.text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

@@ -118,7 +118,7 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "htmltext" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
                     ) ,
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
@@ -213,6 +213,7 @@ class RenderDefault implements RenderConfig
     {
         return new RenderAttributeVisibilities($document);
     }
+    
     public function getType()
     {
         return "abstract";

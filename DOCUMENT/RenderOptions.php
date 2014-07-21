@@ -20,6 +20,7 @@ class RenderOptions implements \JsonSerializable
     protected $intOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
+    protected $htmltextOptions = null;
     protected $commonOptions = null;
     
     public function __construct()
@@ -27,10 +28,9 @@ class RenderOptions implements \JsonSerializable
         $this->setCustomOption(CommonRenderOptions::type, array(
             CommonRenderOptions::showEmptyContentOption => null,
             CommonRenderOptions::labelPositionOption => CommonRenderOptions::leftPosition,
-            "linkTitle" => "",
-            "linkTarget" => "_self",
-            "linkConfirm" => false,
-            "linkTextConfirm" => ""
+            CommonRenderOptions::autoCompleteHtmlLabelOption => "",
+            CommonRenderOptions::inputHtmlTooltip => "",
+            CommonRenderOptions::htmlLinkOption => new HtmlLinkOptions()
         ));
         $this->setCustomOption("types", array(
             "account" => array(
@@ -55,6 +55,11 @@ class RenderOptions implements \JsonSerializable
             ) ,
             "money" => array(
                 "format" => "%!.2n"
+            ) ,
+            HtmltextRenderOptions::type => array(
+                HtmltextRenderOptions::toolbarOption => "Simple",
+                HtmltextRenderOptions::toolbarStartupExpandedOption => true,
+                HtmltextRenderOptions::heightOption => "100px"
             ) ,
             LongtextRenderOptions::type => array(
                 LongtextRenderOptions::displayedLineNumberOption => 0
@@ -112,6 +117,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->textOptions->setScope($attrid);
         return $this->textOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return HtmltextRenderOptions
+     */
+    public function htmltext($attrid = '')
+    {
+        if ($this->htmltextOptions === null) {
+            $this->htmltextOptions = new HtmltextRenderOptions($this);
+        }
+        $this->htmltextOptions->setScope($attrid);
+        return $this->htmltextOptions;
     }
     /**
      * @param string $attrid

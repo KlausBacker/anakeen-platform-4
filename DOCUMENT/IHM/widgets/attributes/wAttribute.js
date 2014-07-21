@@ -65,6 +65,7 @@ define([
          * @protected
          */
         _focusInput: function () {
+            console.log("FOCUS default");
             return this.element.find('input[name="' + this.options.id + '"]');
         },
 
@@ -74,30 +75,43 @@ define([
 
                 this._focusInput().on("focus", function (event) {
                     var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
-                    var kt = ktTarget.data("kendoTooltip");
-
-                    if (!kt) {
-                        kt = ktTarget.kendoTooltip({
-                            autoHide: false,
-                            content: scope.options.renderOptions.inputHtmlTooltip,
-                            showOn: "zou",
-                            show: function () {
-                                this.popup.element.addClass("dcpAttribute__editlabel");
-                            }
-                        }).data("kendoTooltip");
-                    }
-
-                    // $(event.delegateTarget).data("kendoTooltip").popup.element.addClass("dcpAttribute__editlabel");
-                    kt.show();
+                    scope.showInputTooltip(ktTarget);
                 });
                 this._focusInput().on("blur", function (event) {
                     var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
-                    var kTooltip = ktTarget.data("kendoTooltip");
-                    if (kTooltip) {
-                        kTooltip.hide();
-                    }
+                    scope.hideInputTooltip(ktTarget);
                 });
             }
+        },
+
+        hideInputTooltip: function (ktTarget) {
+            var kTooltip = ktTarget.data("kendoTooltip");
+            if (kTooltip) {
+                kTooltip.hide();
+            }
+        },
+        showInputTooltip: function (ktTarget) {
+            var scope = this;
+            var kt = ktTarget.data("kendoTooltip");
+
+            if (!kt) {
+                kt = ktTarget.kendoTooltip({
+                    autoHide: false,
+                    content: scope.options.renderOptions.inputHtmlTooltip,
+                    showOn: "zou",
+                    show: function () {
+                        var contain = this.popup.element.parent();
+                        var ktop = parseFloat(contain.css("top"));
+                        if (ktop > 0) {
+                            contain.css("top", ktop + 6);
+                        }
+                        this.popup.element.addClass("dcpAttribute__editlabel");
+                    }
+                }).data("kendoTooltip");
+            }
+            console.log("focus kt", ktTarget);
+            // $(event.delegateTarget).data("kendoTooltip").popup.element.addClass("dcpAttribute__editlabel");
+            kt.show();
         },
 
         _initButtonsEvent: function _initButtonsEvent() {
@@ -157,7 +171,9 @@ define([
                 return '';
             });
             titleDelete += attrLabels.join(", ");
-            $deleteButton.on("click." + this.eventNamespace,function (event) {
+            $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
+                console.log("Click to delete");
+
                 _.each(attrToClear, function (aid) {
                     var attr = docModel.get('attributes').get(aid);
                     if (attr) {
@@ -174,7 +190,14 @@ define([
 
             this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
                 position: "left",
-                autoHide: true
+                autoHide: true,
+                show: function (event) {
+                    var contain = this.popup.element.parent();
+                    var kleft = parseFloat(contain.css("left"));
+                    if (kleft > 0) {
+                        contain.css("left", kleft - 6);
+                    }
+                }
             });
         },
         _initLinkEvent: function _initLinkEvent() {
@@ -214,7 +237,16 @@ define([
                 });
 
                 this.element.find('.dcpAttribute__content__link[title]').kendoTooltip({
-                    position: "top"
+                    position: "top",
+                    show: function () {
+                        var contain = this.popup.element.parent();
+                        var ktop = parseFloat(contain.css("top"));
+                        if (ktop > 0) {
+                            contain.css("top", ktop - 6);
+                        }
+                        this.popup.element.addClass("dcpAttribute__editlabel");
+                    }
+
                 });
 
             }
@@ -263,9 +295,12 @@ define([
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
-        flashElement: function () {
-            this.element.addClass('dcpAttribute__content--flash');
-            var currentElement = this.element;
+        flashElement: function (currentElement) {
+            if (!currentElement) {
+                currentElement = this.element;
+            }
+            currentElement.addClass('dcpAttribute__content--flash');
+
             _.delay(function () {
                 currentElement.removeClass('dcpAttribute__content--flash').addClass('dcpAttribute__content--endflash');
                 _.delay(function () {
@@ -284,6 +319,11 @@ define([
                     content: message,
                     autoHide: false,
                     show: function onShow(e) {
+                        var contain = this.popup.element.parent();
+                        var ktop = parseFloat(contain.css("top"));
+                        if (ktop > 0) {
+                            contain.css("top", ktop + 6);
+                        }
                         this.popup.element.addClass("has-error");
                     }
                 });
