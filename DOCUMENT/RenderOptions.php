@@ -21,6 +21,9 @@ class RenderOptions implements \JsonSerializable
     protected $doubleOptions = null;
     protected $longtextOptions = null;
     protected $htmltextOptions = null;
+    protected $timeOptions = null;
+    protected $dateOptions = null;
+    protected $timestampOptions = null;
     protected $commonOptions = null;
     
     public function __construct()
@@ -117,6 +120,42 @@ class RenderOptions implements \JsonSerializable
         }
         $this->textOptions->setScope($attrid);
         return $this->textOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return dateRenderOptions
+     */
+    public function date($attrid = '')
+    {
+        if ($this->dateOptions === null) {
+            $this->dateOptions = new DateRenderOptions($this);
+        }
+        $this->dateOptions->setScope($attrid);
+        return $this->dateOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return TimestampRenderOptions
+     */
+    public function time($attrid = '')
+    {
+        if ($this->timeOptions === null) {
+            $this->timeOptions = new TimeRenderOptions($this);
+        }
+        $this->timeOptions->setScope($attrid);
+        return $this->timeOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return TimestampRenderOptions
+     */
+    public function timestamp($attrid = '')
+    {
+        if ($this->timestampOptions === null) {
+            $this->timestampOptions = new TimestampRenderOptions($this);
+        }
+        $this->timestampOptions->setScope($attrid);
+        return $this->timestampOptions;
     }
     /**
      * @param string $attrid

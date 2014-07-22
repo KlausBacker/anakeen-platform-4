@@ -116,6 +116,22 @@ class RenderDefault implements RenderConfig
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ) ,
+                "date" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "timestamp" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
                 "htmltext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"

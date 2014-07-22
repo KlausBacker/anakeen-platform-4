@@ -17,6 +17,10 @@ define([
         },
 
         _create: function () {
+            if (typeof this.options.value === "undefined") {
+                this.options.value=null;
+                this.options.displayValue=null;
+            }
             if (this.options.value === null) {
                 this.options.value = {};
             }
@@ -91,27 +95,31 @@ define([
             }
         },
         showInputTooltip: function (ktTarget) {
-            var scope = this;
-            var kt = ktTarget.data("kendoTooltip");
 
-            if (!kt) {
-                kt = ktTarget.kendoTooltip({
-                    autoHide: false,
-                    content: scope.options.renderOptions.inputHtmlTooltip,
-                    showOn: "zou",
-                    show: function () {
-                        var contain = this.popup.element.parent();
-                        var ktop = parseFloat(contain.css("top"));
-                        if (ktop > 0) {
-                            contain.css("top", ktop + 6);
+            var scope = this;
+
+            if (scope.options.renderOptions.inputHtmlTooltip) {
+                var kt = ktTarget.data("kendoTooltip");
+
+                if (!kt) {
+                    kt = ktTarget.kendoTooltip({
+                        autoHide: false,
+                        content: scope.options.renderOptions.inputHtmlTooltip,
+                        showOn: "zou",
+                        show: function () {
+                            var contain = this.popup.element.parent();
+                            var ktop = parseFloat(contain.css("top"));
+                            if (ktop > 0) {
+                                contain.css("top", ktop + 6);
+                            }
+                            this.popup.element.addClass("dcpAttribute__editlabel");
                         }
-                        this.popup.element.addClass("dcpAttribute__editlabel");
-                    }
-                }).data("kendoTooltip");
+                    }).data("kendoTooltip");
+                }
+                console.log("focus kt", ktTarget);
+                // $(event.delegateTarget).data("kendoTooltip").popup.element.addClass("dcpAttribute__editlabel");
+                kt.show();
             }
-            console.log("focus kt", ktTarget);
-            // $(event.delegateTarget).data("kendoTooltip").popup.element.addClass("dcpAttribute__editlabel");
-            kt.show();
         },
 
         _initButtonsEvent: function _initButtonsEvent() {
@@ -357,7 +365,7 @@ define([
 
         getMode: function () {
             if (this.options.mode !== "read" && this.options.mode !== "write" && this.options.mode !== "hidden") {
-                throw new Error("Attribute " + this.optiwons.id + " have unknown mode " + this.options.mode);
+                throw new Error("Attribute " + this.option.id + " have unknown mode " + this.options.mode);
             }
             return this.options.mode;
         },

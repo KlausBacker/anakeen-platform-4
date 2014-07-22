@@ -38,6 +38,8 @@ define([
                 contentsCss: ['lib/ckeditor/contents.css', 'css/dcp/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
                 toolbarCanCollapse: true,
+                filebrowserImageBrowseUrl:'?sole=Y&app=FDL&action=CKIMAGE',
+                filebrowserImageUploadUrl:'?sole=Y&app=FDL&action=CKUPLOAD',
                 toolbar_Full: [
                     { name: 'document', items: [ 'Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
                     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },

@@ -8,6 +8,7 @@ define([
     'widgets/attributes/int/wInt',
     'widgets/attributes/longtext/wLongtext',
     'widgets/attributes/htmltext/wHtmltext',
+    'widgets/attributes/timestamp/wTimestamp',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
 ], function (_, Backbone, Mustache) {
@@ -108,6 +109,10 @@ define([
                     return $.fn.dcpLongtext;
                 case "htmltext" :
                     return $.fn.dcpHtmltext;
+                case "date" :
+                    return $.fn.dcpDate;
+                case "timestamp" :
+                    return $.fn.dcpTimestamp;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;
