@@ -18,10 +18,14 @@ class CommonRenderOptions
     
     protected $localOptionValue = null;
     protected $scope = null;
+    protected $htmlLink = "";
     const type = "common";
     const showEmptyContentOption = "showEmptyContent";
     const labelPositionOption = "labelPosition";
-    
+    const htmlLinkOption = "htmlLink";
+    const buttonsOption = "buttons";
+    const inputHtmlTooltip = "inputHtmlTooltip";
+    const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
@@ -80,6 +84,18 @@ class CommonRenderOptions
         }
         return $this;
     }
+    
+    public function getOption($optName)
+    {
+        if ($this->optionObject) {
+            if ($this->scope) {
+                return $this->optionObject->getAttributeScopeOption($this->scope, $optName);
+            } else {
+                return $this->optionObject->getAttributeTypeOption(static::type, $optName);
+            }
+        }
+        return null;
+    }
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -103,4 +119,109 @@ class CommonRenderOptions
         }
         return $this->setOption(self::labelPositionOption, $position);
     }
+    /**
+     * Add a html link on value (view mode only)
+     * @note use only in view mode
+     * @param HtmlLinkOptions $options
+     * @return $this
+     */
+    public function setLink(HtmlLinkOptions $options)
+    {
+        $this->setOption(self::htmlLinkOption, $options);
+        return $this;
+    }
+    /**
+     * Add an html tooltip when input has focus
+     * @note use only in edit mode
+     * @param string  $htmlText Html fragment
+     * @return $this
+     */
+    public function setInputTooltip($htmlText)
+    {
+        $this->setOption(self::inputHtmlTooltip, $htmlText);
+        return $this;
+    }
+    /**
+     * Add an html tooltip on auto complete button
+     * @note use only in edit mode
+     * @param string  $htmlText Html fragment
+     * @return $this
+     */
+    public function setAutoCompleteHtmlLabel($htmlText)
+    {
+        $this->setOption(self::autoCompleteHtmlLabelOption, $htmlText);
+        return $this;
+    }
+    /**
+     * Add a html link on value (view mode only)
+     * @note use only in edit mode
+     * @param \Dcp\Ui\ButtonOptions $options
+     * @return $this
+     */
+    public function addButton(ButtonOptions $options)
+    {
+        $buttons = $this->getOption(self::buttonsOption);
+        if (empty($buttons)) {
+            $buttons = array();
+        }
+        $buttons[] = $options;
+        $this->setOption(self::buttonsOption, $buttons);
+        return $this;
+    }
+}
+
+class HtmlLinkOptions
+{
+    public function __construct($url = null)
+    {
+        if ($url !== null) {
+            $this->url = $url;
+        }
+    }
+    /**
+     * @var string title of window
+     */
+    public $target = "_self";
+    public $windowWidth = "300px";
+    public $windowHeight = "200px";
+    public $windowTitle = "";
+    public $title = "";
+    public $url = "";
+}
+class ButtonOptions
+{
+    public function __construct($url = null)
+    {
+        if ($url !== null) {
+            $this->url = $url;
+        }
+    }
+    /**
+     * @var string target of url
+     */
+    public $target = "_self";
+    public $windowWidth = "300px";
+    public $windowHeight = "200px";
+    /**
+     * @var string title of window
+     * only for _dialog target
+     */
+    public $windowTitle = "";
+    /**
+     * @var string addtionnal css class
+     */
+    public $class = "";
+    /**
+     * @var string tootip of button
+     */
+    public $title = "";
+    /**
+     * @var string button content
+     * The content must be a valid Html fragment
+     */
+    public $htmlContent = "";
+    /**
+     * @var string url to launch
+     */
+    public $url = "";
 }

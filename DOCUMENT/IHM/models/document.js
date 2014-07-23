@@ -5,7 +5,7 @@ define([
     'models/documentProperties',
     'collections/attributes',
     'collections/menus',
-    'widgets/window/notification'
+    'widgets/window/wNotification'
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 
@@ -37,6 +37,8 @@ define([
             this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
+            this.set("renderMode", options.renderMode);
+            this.set("locale", options.locale);
             attributes = flattenAttributes(attributes, options.family.structure);
             _.each(attributes, function (value) {
                 if (value.id && options.attributes[value.id]) {
@@ -68,19 +70,23 @@ define([
         getValues: function () {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
-                var currentValue = currentAttribute.get("value"), nbLines, i, arrayValues = [];
+                var currentValue = currentAttribute.get("value"), i, arrayValues = [];
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
                 if (currentAttribute.get("multiple")) {
-                    nbLines = currentAttribute.getNbLines();
-                    for (i = 0; i <= nbLines; i++) {
-                        arrayValues.push(currentValue[i] || { value: null});
+                    currentValue = _.toArray(currentValue);
+                    if (currentValue.length > 0) {
+                        for (i = 0; i < currentValue.length; i++) {
+                            arrayValues.push(currentValue[i] || { value: null});
+                        }
+                    } else {
+                        arrayValues = { value: null};
                     }
                     values[currentAttribute.id] = arrayValues;
-                    return;
+                } else {
+                    values[currentAttribute.id] = currentValue;
                 }
-                values[currentAttribute.id] = currentValue;
             });
             return values;
         },
@@ -105,7 +111,7 @@ define([
                             $notification.dcpNotification("showError", {
                                 title: message.contentText,
                                 htmlMessage: message.contentHtml,
-                                message: attrModel.attributes.label + ' : '+message.data.err});
+                                message: attrModel.attributes.label + ' : ' + message.data.err});
                         } else {
                             $notification.dcpNotification("showError", {
                                 title: message.contentText,
@@ -121,15 +127,15 @@ define([
                             if (attrModel) {
                                 attrModel.setErrorMessage(constraint.err, constraint.index);
                                 $notification.dcpNotification("showError", {
-                                title: message.contentText,
-                                htmlMessage: message.contentHtml,
-                                message: attrModel.attributes.label + ' : '+constraint.err});
-                            }else {
-                            $notification.dcpNotification("showError", {
-                                title: message.contentText,
-                                htmlMessage: message.contentHtml,
-                                message: message.constraint.err});
-                        }
+                                    title: message.contentText,
+                                    htmlMessage: message.contentHtml,
+                                    message: attrModel.attributes.label + ' : ' + constraint.err});
+                            } else {
+                                $notification.dcpNotification("showError", {
+                                    title: message.contentText,
+                                    htmlMessage: message.contentHtml,
+                                    message: message.constraint.err});
+                            }
                         });
                     }
                     if (message.data && message.data.preStore) {
@@ -143,6 +149,45 @@ define([
                 default:
                     window.alert(message.code);
             }
+        },
+        /**
+         * Verify
+         * @returns {boolean}
+         */
+        verifyAndNotifyNeededAttributes: function () {
+            var $notification = $('body').dcpNotification();
+            var success = true;
+            var scope = this;
+            var attrLabel = [];
+            this.get("attributes").each(function (currentAttribute) {
+                if (currentAttribute.get("needed") === true) {
+                    var currentValue = currentAttribute.get("value");
+                    var parentAttribute = scope.get("attributes").get(currentAttribute.get("parent"));
+                    var oneSuccess = true;
+                    if (currentAttribute.get("multiple")) {
+                        if (!currentValue || currentValue.length === 0) {
+                            oneSuccess = false;
+                        }
+                    } else {
+                        if (!currentValue || !currentValue.value) {
+                            currentAttribute.setErrorMessage("Empty value not allowed");
+                            oneSuccess = false;
+                        }
+                    }
+                    if (!oneSuccess) {
+                        attrLabel.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label"));
+                        success = false;
+                    }
+
+                }
+            });
+            if (!success) {
+                $notification.dcpNotification("showError", {
+                    title: "Needed Attribute",
+                    message: attrLabel.join(', ')});
+                success = false;
+            }
+            return success;
         },
 
 

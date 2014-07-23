@@ -1,7 +1,8 @@
 define([
     'underscore',
     'mustache',
-    '../attribute'
+    "kendo-culture-fr",
+    '../wAttribute'
 ], function (_, Mustache) {
     'use strict';
 
@@ -11,33 +12,54 @@ define([
             id: "",
             type: "text"
         },
+        kendoWidget: null,
+        contentElements: function () {
+            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
+        },
         _initDom: function () {
+
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
-                this._activateAutocomplete(this.kendoWidget);
+                this.activateAutocomplete(this.kendoWidget);
             }
+
         },
 
-        _initEvent: function () {
-            var currentWidget = this;
+        _initEvent: function _initEvent() {
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
-                    currentWidget.options.value.value = $(this).val();
-                    currentWidget.setValue(currentWidget.options.value);
-                });
+                this._initChangeEvent();
+            }
+            if (this.getMode() === "read") {
+                this._initLinkEvent();
             }
             this._super();
         },
+
+
+
+
+
+        _initChangeEvent: function _initChangeEvent() {
+            var currentWidget = this;
+            if (this.getMode() === "write") {
+                this.contentElements().on("change." + this.eventNamespace, function () {
+                    var newValue = _.clone(currentWidget.options.value);
+                    newValue.value = $(this).val();
+                    //newValue.displayValue = newValue.value;
+                    currentWidget.setValue(newValue);
+                });
+            }
+        },
+
         /**
          * Just to be apply in normal input help
          * @param inputValue
-         * @private
+         * @protected
          */
-        _activateAutocomplete: function (inputValue) {
+        activateAutocomplete: function (inputValue) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var attributeModel = documentModel.get('attributes').get(this.options.id);
             var valueIndex = this.options.index;
             inputValue.kendoAutoComplete({
                 dataTextField: "title",
@@ -82,15 +104,26 @@ define([
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
+            this.element.find('.dcpAttribute__content--autocomplete--button[title]').kendoTooltip();
+
         },
         setValue: function (value) {
             this._super(value);
+            // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
+            var contentElement = this.contentElements();
+            var originalValue = contentElement.val();
+
             if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").val(value.value);
-                this.flashElement();
+                // : explicit lazy equal
+                //noinspection JSHint
+                if (originalValue != value.value) {
+                    // Modify value only if different
+                    contentElement.val(value.value);
+                    this.flashElement();
+                }
 
             } else if (this.getMode() === "read") {
-                this.element.find(".dcpAttribute__content").text(value.displayValue);
+                contentElement.text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

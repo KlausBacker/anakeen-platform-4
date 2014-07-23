@@ -1,18 +1,21 @@
 <tr class="dcpArray__content__line" data-attrid="{{id}}" data-line="{{lineNumber}}">
     {{#tools}}
     <td class="dcpArray__content__toolCell">
-        <span class="dcpArray__content__toolCell__check">
+        <span title="[[#i18n]]ddui:Drag to move line[[/i18n]]" class="dcpArray__content__toolCell__dragDrop">
+            <i class="fa fa-ellipsis-v fa-2x"></i>
+        </span>
+        <span title="[[#i18n]]ddui:Select line[[/i18n]]" class="dcpArray__content__toolCell__check">
             <span class="fa-stack">
                 <i class="fa fa-circle-thin fa-stack-2x"></i>
                 <i class="fa fa-check fa-stack-1x" style="display : none;"></i>
             </span>
         </span>
-        <span class="dcpArray__content__toolCell__delete">
+        <span title="[[#i18n]]ddui:Delete line[[/i18n]]" class="dcpArray__content__toolCell__delete">
             <i class="fa fa-trash-o fa-2x"></i>
         </span>
     </td>
     {{/tools}}
 {{#content}}
-    <td class="dcpArray__content__cell dcpArray__content__cell--{{type}}" data-attrid="{{id}}"></td>
+    <td class="dcpAttribute__contentWrapper dcpArray__content__cell dcpArray__content__cell--{{type}}" data-attrid="{{id}}"></td>
 {{/content}}
 </tr>

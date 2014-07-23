@@ -22,11 +22,24 @@
 </div>
 
 <script>
+    if (!window.console) {
+        window.console = {};
+    }
+    if (window.console && !(window.console.time)) {
+        window.console.timeEnd = function (x) {
+        };
+        window.console.time = function (x) {
+        };
+    }
      window.dcp= window.dcp || {};
+     console.time("main");
+     console.time("js loading");
      window.dcp.documentData= [[&documentData]];
      window.dcp.templates = [[> templates]];
      window.dcp.renderOptions = [[&renderOptions]];
      window.dcp.menu = [[&renderMenu]];
+     window.dcp.user= {};
+     window.dcp.user.locale = "[[userLocale]]";
 </script>
 [[#jsReference]]
 <script type="text/javascript" language="JavaScript" src="[[jsFile]]"></script>

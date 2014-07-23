@@ -23,6 +23,8 @@ class Utils
                 return new \Dcp\Ui\DefaultEdit();
             case "myCustom":
                 return new \Dcp\Test\RenderConfigCustom();
+            case "myCustomEdit":
+                return new \Dcp\Test\RenderConfigCustomEdit();
         }
     }
 }

@@ -3,11 +3,15 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'widgets/attributes/label/label',
-    'widgets/attributes/text/text',
-    'widgets/attributes/int/int',
-    'widgets/attributes/double/double',
-    'widgets/attributes/docid/docid'
+    'widgets/attributes/label/wLabel',
+    'widgets/attributes/text/wText',
+    'widgets/attributes/int/wInt',
+    'widgets/attributes/longtext/wLongtext',
+    'widgets/attributes/htmltext/wHtmltext',
+    'widgets/attributes/timestamp/wTimestamp',
+    'widgets/attributes/time/wTime',
+    'widgets/attributes/double/wDouble',
+    'widgets/attributes/docid/wDocid'
 ], function (_, Backbone, Mustache) {
     'use strict';
 
@@ -39,6 +43,8 @@ define([
             }
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
+
+
             this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), data);
 
             console.timeEnd("render attribute " + this.model.id);
@@ -46,22 +52,40 @@ define([
         },
 
         refreshLabel: function () {
-            this.$el.find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
+            this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
         },
 
         refreshValue: function () {
-            this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "setValue", this.model.get("value"));
+            console.log("propagate setvalue to view", this.model.id);
+            var allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
+            var values = this.model.get("value");
+            var scope = this;
+            if (this.model.inArray()) {
+                values = _.toArray(values);
+                allWrapper.each(function (index, element) {
+                    scope.widgetApply($(element), "setValue", values[index]);
+                });
+
+            } else {
+                this.widgetApply(allWrapper, "setValue", values);
+            }
 
         },
         refreshError: function () {
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-            this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
-
-
+            this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
         },
 
-        updateValue: function () {
 
+        getDOMElements: function () {
+            if (this.options.els) {
+                return this.options.els();
+            } else {
+                return this.$el;
+            }
+        },
+        updateValue: function () {
+            console.log("view has receive change", this.model.id);
             this.model.setValue(this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "getValue"));
         },
 
@@ -70,13 +94,28 @@ define([
         },
 
         getWidgetClass: function () {
-            switch (this.model.get("type")) {
+            return this.getTypedWidgetClass(this.model.get("type"));
+        },
+
+
+        getTypedWidgetClass: function (type) {
+            switch (type) {
                 case "text" :
                     return $.fn.dcpText;
                 case "int" :
                     return $.fn.dcpInt;
                 case "double" :
                     return $.fn.dcpDouble;
+                case "longtext" :
+                    return $.fn.dcpLongtext;
+                case "htmltext" :
+                    return $.fn.dcpHtmltext;
+                case "date" :
+                    return $.fn.dcpDate;
+                case "timestamp" :
+                    return $.fn.dcpTimestamp;
+                case "time" :
+                    return $.fn.dcpTime;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;
@@ -84,7 +123,6 @@ define([
                     return $.fn.dcpText;
             }
         }
-
     });
 
 

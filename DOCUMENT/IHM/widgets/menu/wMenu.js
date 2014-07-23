@@ -36,22 +36,22 @@ define([
 
                     if (!menuElement.hasClass("menu__element--item")) {
                         var menuUrl = menuElement.data("menu-url");
-                        $.getJSON(menuUrl,function (data) {
-                            menuElement.find(".listmenu__content").html('');
-                            scopeWidget._insertMenuContent(
-                                data.content,
-                                menuElement.find(".listmenu__content"),
-                                scopeWidget, menuElement);
-                            menuElement.kendoMenu({
-                                openOnClick: true,
-                                closeOnClick: false
+                        if (menuUrl) {
+                            $.getJSON(menuUrl,function (data) {
+                                menuElement.find(".listmenu__content").html('');
+                                scopeWidget._insertMenuContent(
+                                    data.content,
+                                    menuElement.find(".listmenu__content"),
+                                    scopeWidget, menuElement);
+                                menuElement.kendoMenu({
+                                    openOnClick: true,
+                                    closeOnClick: false
+                                });
+                            }).fail(function (data) {
+                                console.log(data);
+                                throw new Error("SubMenu");
                             });
-
-
-                        }).fail(function (data) {
-                            console.log(data);
-                            throw new Error("SubMenu");
-                        });
+                        }
                         return;
                     }
 
@@ -215,7 +215,15 @@ define([
                             autoHide: true,
                             showOnClick: false,
                             callout: true,
-                            position: "bottom"
+                            position: "bottom",
+                            show: function (event) {
+                                // need to shift to bottom because callout is in target
+                                var contain = this.popup.element.parent();
+                                var ktop = parseFloat(contain.css("top"));
+                                if (ktop > 0) {
+                                    contain.css("top", ktop + 6);
+                                }
+                            }
                         });
                 }
                 $currentMenu.data("menuConfiguration", currentMenu);

@@ -3,8 +3,8 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/attribute',
-    'views/attributes/array/array'
+    'views/attributes/vAttribute',
+    'views/attributes/array/vArray'
 ], function (_, Backbone, Mustache, ViewAttribute, ViewAttributeArray) {
     'use strict';
 
@@ -35,9 +35,9 @@ define([
             contentElement.collapse('show');
             labelElement.on("click", function () {
                 if (contentElement.hasClass("in")) {
-                    $(this).find("i").addClass("fa-caret-down").removeClass("fa-caret-up");
+                    $(this).find("i").addClass("fa-caret-right").removeClass("fa-caret-down");
                 } else {
-                    $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+                    $(this).find("i").removeClass("fa-caret-right").addClass("fa-caret-down");
                 }
                 contentElement.collapse('toggle');
             });
@@ -47,6 +47,7 @@ define([
             var hasOneContent = this.model.get("content").some(function (value) {
                 return value.isDisplayable();
             });
+
 
             if (!hasOneContent) {
                 $content.append(this.model.getOption('showEmptyContent'));

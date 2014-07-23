@@ -15,7 +15,7 @@
 }
 
 .dcpFrame__label {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .dcpAttribute__content--read {
@@ -29,7 +29,6 @@
 
 .dcpAttribute__contentWrapper .input-group input,
 .dcpArray__content__cell .input-group input,
-.dcpAttribute__contentWrapper .k-numeric-wrap,
 .dcpAttribute__contentWrapper .input-group .k-autocomplete {
   height: @dcpInputHeight;
 }
@@ -39,26 +38,30 @@
   padding: 0;
   height: @dcpInputHeight;
 }
-.dcpAttribute__contentWrapper .k-numerictextbox {
-  padding:0;
-}
+
 .dcpAttribute__contentWrapper .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button, {
   background-color: transparent;
   border: none;
+  min-width: 2em;
+  height: 100%;
+  padding: 0;
+}
+
+.dcpAttribute__contentWrapper .input-group-addon button:hover,
+.dcpArray__content__cell .input-group-addon button:hover, {
+  background-color: @btn-default-bg;
 }
 
 .dcpAttribute__content--flash input,
-.dcpAttribute__content--flash .k-input,
-.dcpAttribute__content--flash .k-multiselect-wrap,
-{
+.dcpAttribute__content--flash .k-input ,
+iframe.dcpAttribute__content--flash {
   background-color: @brand-info;
 }
 
 .dcpAttribute__content--endflash input,
 .dcpAttribute__content--endflash .k-input,
-.dcpAttribute__content--endflash .k-multiselect-wrap,
-{
+iframe.dcpAttribute__content--endflash  {
   background-color: inherit;
   transition: background-color 500ms linear;
 }
@@ -90,8 +93,52 @@
   border-bottom-color: @brand-danger;
 }
 
+.has-error .k-callout-s {
+  border-top-color: @brand-danger;
+}
+
+/**
+* Tooltip for option setInputTooltip
+*/
+.dcpAttribute__editlabel {
+
+}
+
+.k-widget.k-tooltip.dcpAttribute__editlabel {
+  border-color: @brand-info;
+  background-color: @brand-info;
+  color: #ffffff;
+}
+
+.dcpAttribute__editlabel .k-callout-n {
+  border-bottom-color: @brand-info;
+}
+
+.dcpAttribute__editlabel .k-callout-s {
+  border-top-color: @brand-info;
+}
+
+/**
+ * When save error
+ */
 .dcpFrame__label.has-warning,
 .nav-tabs .dcpTab__label.has-warning {
   background-color: @brand-warning;
 
 }
+
+/**
+ * To fix all width column to be proportionnal to thead
+ */
+.dcpArray__wrapper {
+  table-layout: fixed;
+}
+
+/**
+* no delete button on IE10
+*/
+//noinspection CssInvalidPseudoSelector
+.dcpAttribute__contentWrapper input[type=text]::-ms-clear {
+  display: none;
+}
+

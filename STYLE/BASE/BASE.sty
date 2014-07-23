@@ -3,8 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
-
+*/
 
 $sty_desc = array(
     "name" => "BASE", //Name
@@ -39,14 +38,26 @@ $sty_rules = array(
                 "options" => array(
                     "sourceMap" => true
                 )
-            ),
-        ),
+            ) ,
+        ) ,
         'dcp/document/document.css' => array(
             "src" => array(
                 "document" => "DOCUMENT/IHM/views/document/document.less"
-            ),
+            ) ,
             "deploy_parser" => array(
-
+                
+                "className" => '\Dcp\Style\dcpLessParser',
+                "options" => array(
+                    "sourceMap" => true
+                )
+            )
+        ) ,
+        'dcp/document/ckeditor.css' => array(
+            "src" => array(
+                "document" => "DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.less"
+            ) ,
+            "deploy_parser" => array(
+                
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true

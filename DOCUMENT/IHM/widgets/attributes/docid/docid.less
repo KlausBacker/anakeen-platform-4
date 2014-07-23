@@ -1,7 +1,7 @@
 .dcpAttribute__content--read.dcpAttribute__content--docid {
  /* position: inherit;
-  top: (@padding-base-vertical - 2);*/
-  top : @padding-base-vertical - 10
+  top: (@padding-base-vertical - 2);
+  top : @padding-base-vertical - 10*/
 }
 .dcpAttribute__content--read.dcpAttribute__content--docid.k-button a:hover {
   background-color:inherit;
@@ -21,7 +21,7 @@
 
 .dcpAttribute__contentWrapper--docid .k-multiselect, .dcpArray__content__cell--docid .k-multiselect ,
 .dcpAttribute__contentWrapper--account .k-multiselect, .dcpArray__content__cell--account .k-multiselect {
-  height:30px;
+  height:auto;
 }
 .dcpAttribute__content--single .k-multiselect-wrap .k-delete {
   visibility: hidden;
@@ -29,4 +29,25 @@
 
 .input-group-addon i {
   cursor:pointer;
+}
+
+
+.dcpAttribute__contentWrapper .k-multiselect-wrap > .k-input,
+{
+  height: auto;
+}
+
+
+.dcpAttribute__content--flash .k-multiselect-wrap
+{
+  background-color: @brand-info;
+}
+.dcpAttribute__content--flash .k-multiselect-wrap > .k-input,
+{
+  background-color: transparent;
+}
+.dcpAttribute__content--endflash .k-multiselect-wrap
+{
+  background-color: inherit;
+  transition: background-color 500ms linear;
 }

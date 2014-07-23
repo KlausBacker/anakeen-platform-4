@@ -28,7 +28,13 @@ require.config({
         },
         "kendo-culture": {
             deps: [
-                'jquery'
+                'kendo'
+            ]
+        },
+        "ckeditor-jquery": {
+            deps: [
+                'jquery',
+                'ckeditor'
             ]
         }
     },
@@ -38,7 +44,10 @@ require.config({
         "backbone": "../../lib/backbone/backbone",
         "mustache": "../../lib/mustache.js/mustache",
         "bootstrap": "../../lib/bootstrap/js/bootstrap",
-        "kendo": "../../lib/KendoUI/js/kendo.ui.core"
+        "kendo": "../../lib/KendoUI/js/kendo.ui.core",
+        "kendo-culture-fr": "../../lib/KendoUI/js/cultures/kendo.culture.fr-FR",
+        "ckeditor": "../../lib/ckeditor/ckeditor",
+        "ckeditor-jquery": "../../lib/ckeditor/adapters/jquery"
     }/*,
      urlArgs : "invalidateCache=" + (new Date()).getTime()*/
 });
@@ -50,13 +59,14 @@ require([
     'routers/router',
     'collections/documents',
     'models/document',
-    'views/document/document',
-    'widgets/window/confirm',
-    'widgets/window/loading',
+    'views/document/vDocument',
+    'widgets/window/wConfirm',
+    'widgets/window/wLoading',
     'bootstrap'/*,
      'kendo'*/
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
     'use strict';
+    console.timeEnd("js loading");
     /*jshint nonew:false*/
     var document = window.dcp.documentData.document, model;
     window.dcp = window.dcp || {};
@@ -64,16 +74,24 @@ require([
     window.dcp.views = window.dcp.views || {};
 
     $(".dcpLoading").dcpLoading();
-
+    console.timeEnd('js loading');
     _.defer(function () {
         model = new ModelDocument(
             {},
-            {properties: document.properties, menus: window.dcp.menu,
-                family: window.dcp.documentData.family, attributes: document.attributes}
+            {
+                properties: document.properties,
+                menus: window.dcp.menu,
+                family: window.dcp.documentData.family,
+                locale : window.dcp.user.locale,
+                renderMode : window.dcp.renderOptions.mode || "read",
+                attributes: document.attributes
+            }
         );
         window.dcp.documents.push(model);
         (new ViewDocument({model: model, el: $(".dcpDocument")[0]}).render());
 
+        $(".dcpDocument").show().addClass("dcpDocument--show");
+        console.timeEnd('main');
 
         $(".dcpLoading").dcpLoading("complete", function () {
             $(".dcpDocument").show().addClass("dcpDocument--show");
@@ -88,6 +106,7 @@ require([
             }, 2000);
 
         }, 100);
+
 
     });
     window.dcp.router = {

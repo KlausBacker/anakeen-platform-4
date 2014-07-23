@@ -108,6 +108,46 @@ class RenderDefault implements RenderConfig
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ) ,
+                "longtext" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "date" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "timestamp" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "time" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
+                "htmltext" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                    )
+                ) ,
                 "double" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
@@ -118,10 +158,10 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "docid" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/read.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ) ,
                 "frame" => array(
@@ -165,8 +205,29 @@ class RenderDefault implements RenderConfig
         $opt = new RenderOptions();
         
         $opt->setCustomOption("mode", $this->getType());
-        
+        $this->setLinkOption($document, $opt);
         return $opt;
+    }
+    
+    protected function setLinkOption(\Doc $document, RenderOptions & $opt)
+    {
+        
+        $linkOption = new htmlLinkOptions();
+        $linkOption->title = ___("View {{displayValue}}", "ddui");
+        $linkOption->url = "?app=DOCUMENT&action=VIEW&id={{value}}";
+        $opt->docid()->setLink($linkOption);
+        $opt->account()->setLink(clone $linkOption);
+        $opt->thesaurus()->setLink(clone $linkOption);
+        
+        $oas = $document->getNormalAttributes();
+        
+        foreach ($oas as $oa) {
+            if ($oa->link) {
+                $linkOption = new htmlLinkOptions($document->urlWhatEncode($oa->link));
+                
+                $opt->text($oa->id)->setLink($linkOption);
+            }
+        }
     }
     /**
      * @param \Doc $document
@@ -176,6 +237,7 @@ class RenderDefault implements RenderConfig
     {
         return new RenderAttributeVisibilities($document);
     }
+    
     public function getType()
     {
         return "abstract";

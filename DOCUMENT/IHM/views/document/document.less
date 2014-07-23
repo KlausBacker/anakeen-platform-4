@@ -4,7 +4,14 @@
 @import "../../widgets/attributes/label/label";
 @import "../../widgets/attributes/text/text";
 @import "../../widgets/attributes/docid/docid";
+@import "../../widgets/attributes/int/int";
+@import "../../widgets/attributes/longtext/longtext";
+@import "../../widgets/attributes/htmltext/htmltext";
+@import "../../widgets/attributes/date/date";
+@import "../../widgets/attributes/timestamp/timestamp";
+@import "../../widgets/attributes/time/time";
 @import "../../widgets/attributes/array/array";
+@import "../../widgets/attributes/tab/tab";
 @import "../../widgets/window/notification";
 
 @dcpHeaderHeight : 30px;
@@ -16,6 +23,15 @@
 .dcpDocument__body {
   padding:10px;
 }
+
+
+.dcpDocument--edit {
+  user-select:none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+}
+
 .dcpDocument__header {
   /* position: fixed;
    top: 0;*/
@@ -54,6 +70,7 @@ body {
 
 .dcpDocument__tabs .nav-tabs > li.active > a {
   margin-bottom:-2px;
+  border-bottom: solid 3px transparent;
   background-color:@panel-bg;
 }
 .dcpDocument__tabs .nav-tabs {

@@ -1,7 +1,7 @@
 define([
     'underscore',
     'mustache',
-    '../attribute'
+    '../wAttribute'
 ], function (_, Mustache) {
     'use strict';
 
@@ -15,22 +15,39 @@ define([
         kendoWidget: null,
 
         _initDom: function () {
-
+            var scope = this;
             if (this._isMultiple()) {
-                this.options.values = _.map(_.toArray(this.options.value), function (val, index) {
-                    val.rawValue = val.value;
-                    return val;
-                });
+                this.options.values = _.toArray(this.options.value);
 
                 this.options.isMultiple = true;
             }
+
             if (this.getMode() === "read") {
 
+
+                var htmlLink = this.getLink();
+                if (htmlLink === null) {
+                    htmlLink = {};
+                    this.options.renderOptions = this.options.renderOptions || {};
+                    this.options.renderOptions.htmlLink = htmlLink;
+                }
+                this.options.renderOptions.htmlLink.renderUrl = Mustache.render(this.options.renderOptions.htmlLink.url, this.options.value);
+                this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.value);
+
+                if (this._isMultiple()) {
+                    this.options.values = _.map(this.options.value, function (val, index) {
+                        val.rawValue = val.value;
+                        val.renderUrl = Mustache.render(htmlLink.url, val);
+                        val.renderTitle = Mustache.render(htmlLink.title, val);
+                        val.index = index;
+                        return val;
+                    });
+
+                    this.options.isMultiple = true;
+                }
+
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-                this.element.find('a').kendoButton();
             } else if (this.getMode() === "write") {
-
-
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
                 this.kendoWidget = this.element.find(".dcpAttribute__content--docid");
                 if (this._isMultiple()) {
@@ -47,21 +64,20 @@ define([
             }
         },
 
-        _initEvent: function () {
-            var currentWidget = this;
-            this._super();
-            if (this.getMode() === "write") {
-                this.element.find(".dcpAttribute__content").on("change." + this.eventNamespace, function () {
+        _initEvent: function _initEvent() {
 
-                    currentWidget.options.value.value = $(this).val();
-                    currentWidget.setValue(currentWidget.options.value);
-                });
-
-
+            if (this.getMode() === "read") {
+                this._initLinkEvent();
             }
+            this._super();
         },
-
-
+        /**
+         * Define inputs for focus
+         * @protected
+         */
+        _focusInput: function () {
+            return this.element.find('input');
+        },
         _decorateSingleValue: function (inputValue) {
 
             this.options.values = [];
@@ -79,8 +95,6 @@ define([
         _decorateMultipleValue: function (inputValue, extraOptions) {
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var attributeModel = this._model();
-            var valueIndex = this.options.index;
 
 
             var options = {
@@ -118,6 +132,7 @@ define([
                     }
                 },
                 select: function (event) {
+                    var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
                     _.each(dataItem.values, function (val, aid) {
@@ -125,6 +140,7 @@ define([
                             var attrModel = documentModel.get('attributes').get(aid);
                             if (attrModel) {
                                 _.defer(function () {
+
                                     if (attrModel.hasMultipleOption()) {
                                         attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
                                     } else {
@@ -136,11 +152,15 @@ define([
                     });
                 },
                 change: function (event) {
+                    var valueIndex = scope._getIndex();
                     // set in case of delete item
                     var attrModel = documentModel.get('attributes').get(scope.options.id);
                     var oldValues = attrModel.get("value");
                     var displayValue;
                     var newValues = [];
+                    if (attrModel.inArray()) {
+                        oldValues = oldValues[valueIndex];
+                    }
                     _.each(this.value(), function (val) {
                         displayValue = _.where(oldValues, {value: val});
                         if (displayValue.length > 0) {
@@ -163,9 +183,11 @@ define([
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
+
+            this.element.find('.dcpAttribute__content--docid--button[title]').kendoTooltip();
         },
         setValue: function (value) {
-            var kendoWidget = this.kendoWidget;
+
             this._super(value);
             if (this.getMode() === "write") {
                 if (!this._model().hasMultipleOption()) {
@@ -195,12 +217,15 @@ define([
                     info.docId = val.value;
                     return info;
                 });
+                var originalValues = _.clone(this.kendoWidget.data("kendoMultiSelect").value());
                 // update values in kendo widget
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data(newData);
                 this.kendoWidget.data("kendoMultiSelect").value(newValues);
                 this.kendoWidget.data("kendoMultiSelect").dataSource.data([]);
 
-                this.flashElement();
+                if (!_.isEqual(newValues, originalValues)) {
+                    this.flashElement();
+                }
 
             } else if (this.getMode() === "read") {
                 this.element.find(".dcpAttribute__content").text(value.displayValue);

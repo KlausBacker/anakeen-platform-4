@@ -15,7 +15,7 @@ define([
             multiple: false,
             mode: "read",
             documentMode: "read",
-            errorMessage:null
+            errorMessage: null
         },
 
         initialize: function () {
@@ -54,27 +54,30 @@ define([
         },
 
         addValue: function (value, index) {
+            console.log("add value", index);
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            currentValue = _.toArray(_.clone(this.get("value")));
+            // clone array references
+            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+
             if (this.get("multiple") && index >= 0) {
-
                 currentValue[index].push(value);
+                currentValue = _.extend({}, currentValue);
                 this.set("value", currentValue);
-
             } else {
                 currentValue.push(value);
                 this.set("value", currentValue);
             }
         },
 
-        removeLine: function (index) {
+        removeIndexValue: function (index) {
             var currentValue, oldValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
+            console.log("remove line", index, this.id);
             oldValue = this.get("value");
             currentValue = _.clone(this.get("value"));
             _.each(currentValue, function (value, currentIndex) {
@@ -87,9 +90,65 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue);
+            this.set("value", currentValue, {silent: true});
+        },
+        addIndexValue: function addIndexValue(index, copy) {
+            var currentValue, oldValue;
+            var newValue;
+            if (!this.get("multiple") || !_.isNumber(index)) {
+                throw new Error("You need to add an index to set value for a multiple id " + this.id);
+            }
+            console.log("add line", index, this.id);
+            oldValue = this.get("value");
+            console.log("add line", oldValue);
+            // currentValue = _.clone(this.get("value"));
+            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+
+
+            console.log("add new item", this);
+            var defaultValue = this.attributes.defaultValue;
+            if (copy) {
+                console.log("copy new item", currentValue[index]);
+                newValue = _.clone(currentValue[index]);
+            } else if (defaultValue) {
+                newValue = defaultValue;
+            } else if (this.hasMultipleOption()) {
+                newValue = [];
+            } else {
+                newValue = {value: null, displayValue: ''};
+            }
+
+            if (index > currentValue.length) {
+                currentValue.push(newValue);
+            } else {
+                currentValue.splice(index, 0, newValue);
+            }
+
+            console.log("add new line", currentValue);
+
+            this.set("value", currentValue, {silent: true});
         },
 
+        /**
+         * move a value in multiple value attribute
+         * @param fromIndex
+         * @param toIndex
+         */
+        moveIndexValue: function moveIndexValue(fromIndex, toIndex) {
+            var currentValue, oldValue, fromValue;
+            var newValue;
+            if (!this.get("multiple")) {
+                throw new Error("Move only multiple attribute : " + this.id);
+            }
+            // currentValue = _.clone(this.get("value"));
+            currentValue = _.toArray(this.get("value"));
+            fromValue = _.clone(currentValue[fromIndex]);
+
+            currentValue.splice(fromIndex, 1);
+            currentValue.splice(toIndex, 0, fromValue);
+
+            this.set("value", currentValue, {silent: true});
+        },
         getNbLines: function () {
             var nbLines = 0;
             if (!this.get("multiple")) {
@@ -141,6 +200,20 @@ define([
 
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
+        inArray: function () {
+            var aparent = this.getParent();
+            return (aparent && aparent.attributes && aparent.attributes.type === "array");
+        },
+
+        documentModel: function () {
+            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
+        },
+        getParent: function () {
+            if (this.attributes.parent) {
+                return this.documentModel().get('attributes').get(this.attributes.parent);
+            }
+            return null;
+        },
 
         _computeMode: function () {
             var visibility = this.get("visibility"), documentMode = this.get("documentMode");
@@ -153,16 +226,10 @@ define([
                     this.set("mode", "hidden");
                     return;
                 }
-
-                if (this.get("valueAttribute") && this.get("value").value === null) {
+                if (this.get("valueAttribute") && (this.get("value").value === null || _.isEmpty(this.get("value")))) {
                     if (this.getOption('showEmptyContent') === null) {
                         this.set("mode", "hidden");
                         return;
-                    } else {
-                        // Modify displayValue with showEmptyContent option
-                        var gv = this.get("value");
-                        gv.emptyValue = this.getOption('showEmptyContent');
-                        this.set("value", gv);
                     }
                 }
                 this.set("mode", "read");
@@ -240,12 +307,12 @@ define([
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate
                 _.reject(errorMessage, function (mindex) {
-                    return mindex===index;
+                    return mindex === index;
                 });
-                errorMessage.push({message:message, index:index});
+                errorMessage.push({message: message, index: index});
                 this.set('errorMessage', _.clone(errorMessage));
             } else {
-                this.set('errorMessage',message);
+                this.set('errorMessage', message);
             }
         }
 
