@@ -46,6 +46,7 @@ define([
                 this.contentElements().on("change." + this.eventNamespace, function () {
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
+                    newValue.displayValue=newValue.value;
                     //newValue.displayValue = newValue.value;
                     currentWidget.setValue(newValue);
                 });
@@ -121,7 +122,6 @@ define([
                     contentElement.val(value.value);
                     this.flashElement();
                 }
-
             } else if (this.getMode() === "read") {
                 contentElement.text(value.displayValue);
             } else {

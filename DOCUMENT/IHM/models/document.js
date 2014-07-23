@@ -34,6 +34,7 @@ define([
 
         initialize: function (values, options) {
             var attributes = [];
+            var currentModel=this;
             this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
@@ -48,7 +49,8 @@ define([
             this.set("attributes", new CollectionAttributes(attributes));
             attributes = this.get("attributes");
             attributes.each(function (currentAttributeModel) {
-                currentAttributeModel.setContentCollection(attributes);
+                console.log("init view", currentAttributeModel.id);
+                currentAttributeModel.setContentCollection(attributes, currentModel);
             });
             this.listenTo(this.get("attributes"), "change:value", this.notifyChange);
         },

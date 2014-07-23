@@ -20,7 +20,9 @@ define([
         className: "row dcpAttribute form-group",
 
         events: {
-            "dcpattributechange .dcpAttribute__contentWrapper": "updateValue"
+            "dcpattributechange .dcpAttribute__contentWrapper": "updateValue",
+            "dcpattributechangeattrmenuvisibility .dcpAttribute__contentWrapper": "changeMenuVisibility",
+            "dcpattributechangeattrsvalue .dcpAttribute__contentWrapper": "changeAttributesValue"
         },
 
         initialize: function () {
@@ -30,6 +32,46 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = window.dcp.templates.attribute.simpleWrapper;
         },
+
+        /**
+         * Modify several attribute
+         * @param event event object
+         * @param data values {id: menuId, visibility: "disabled", "visible", "hidden"}
+         * @param index the index which comes from modifcation action
+         */
+        changeAttributesValue: function (event, dataItem, valueIndex) {
+            var scope = this;
+            _.each(dataItem.values, function (val, aid) {
+                if (typeof val === "object") {
+                    console.log("changeAttributesValue", aid, scope.model, aid);
+                    console.log("changeAttributesValue IDX", valueIndex);
+                    var attrModel = scope.model.get("documentModel").get('attributes').get(aid);
+                    if (attrModel) {
+
+                        console.log("YEAH", attrModel.id, val, valueIndex);
+                        if (attrModel.hasMultipleOption()) {
+                            attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
+                        } else {
+                            console.log("SETTO", {value: val.value, displayValue: val.displayValue}, valueIndex);
+                            attrModel.setValue( {value: val.value, displayValue: val.displayValue}, valueIndex);
+                        }
+
+                    }
+                }
+            });
+        },
+
+
+        /**
+         * Modify visibility access of an item menu
+         * @param event event object
+         * @param data menu config {id: menuId, visibility: "disabled", "visible", "hidden"}
+         */
+        changeMenuVisibility: function changeMenuVisibility(event, data) {
+            console.log("attr menu vis", arguments);
+            this.model.trigger("changeMenuVisibility", event, data);
+        },
+
 
         render: function () {
             console.time("render attribute " + this.model.id);
@@ -56,7 +98,7 @@ define([
         },
 
         refreshValue: function () {
-            console.log("propagate setvalue to view", this.model.id);
+            console.log("propagate setvalue to view", this.model.id, this.model.get("value"));
             var allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
             var values = this.model.get("value");
             var scope = this;
@@ -84,9 +126,9 @@ define([
                 return this.$el;
             }
         },
-        updateValue: function () {
-            console.log("view has receive change", this.model.id);
-            this.model.setValue(this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), "getValue"));
+        updateValue: function (event, data) {
+            console.log("view has receive change", data.id, data);
+            this.model.setValue(data.value, data.index);
         },
 
         widgetApply: function ($element, method, argument) {

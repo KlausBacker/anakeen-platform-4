@@ -165,13 +165,7 @@ define([
             });
         },
 
-        _model: function () {
-            return this._documentModel().get('attributes').get(this.options.id);
-        },
 
-        _documentModel: function () {
-            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-        },
         addAllLines: function () {
             var i;
             this.element.find(".dcpArray__body").empty();

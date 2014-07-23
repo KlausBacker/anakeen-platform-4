@@ -80,7 +80,7 @@ define([
                         var isoDate = scope.date2string(this.value());
                         console.log("date", isoDate);
                         // Need to set by widget to use raw date
-                        scope._model().setValue({value: isoDate, displayValue: inputValue.val()}, scope._getIndex());
+                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
                     }
                 }
             });
@@ -95,14 +95,24 @@ define([
                 console.log(this, $(this).val());
                 var dateValue = $(this).val().trim();
                 inputValue.closest(".dcpAttribute__contentWrapper").removeClass("has-error");
-                scope._documentModel().get("menus").get("save").set("visibility","visible");
+
+                 scope._trigger("changeattrmenuvisibility", event, {
+                     id: "save",
+                     visibility : "visible"
+                 });
+
+
                 if (dateValue) {
                     console.log("verify", dateValue, kendo.culture().name);
                     if (!kendo.parseDate(dateValue)) {
                         console.log("BOUDATE");
-                        scope._model().setValue({value: inputValue.val()}, scope._getIndex());
+                        scope.setValue({value: inputValue.val()});
                         inputValue.closest(".dcpAttribute__contentWrapper").addClass("has-error");
-                        scope._documentModel().get("menus").get("save").set("visibility","disabled");
+                        scope._trigger("changeattrmenuvisibility", event, {
+                            id: "save",
+                            visibility : "disabled"
+                        });
+
                     }
                 }
             });

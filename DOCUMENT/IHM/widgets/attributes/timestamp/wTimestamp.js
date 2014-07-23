@@ -33,7 +33,7 @@ define([
                         var isoDate = scope.date2string(this.value());
                         console.log("date", isoDate);
                         // Need to set by widget to use raw date
-                        scope._model().setValue({value: isoDate, displayValue: inputValue.val()}, scope._getIndex());
+                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
                     }
                 }
             });

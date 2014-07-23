@@ -18,8 +18,8 @@ define([
 
         _create: function () {
             if (typeof this.options.value === "undefined") {
-                this.options.value=null;
-                this.options.displayValue=null;
+                this.options.value = null;
+                this.options.displayValue = null;
             }
             if (this.options.value === null) {
                 this.options.value = {};
@@ -378,7 +378,7 @@ define([
             console.log("dcpAttribute::setValue trigger", this.options.value, value);
             if (!_.isEqual(this.options.value, value)) {
                 this.options.value = value;
-                console.log("send change trigger from widget", this.options.id, this._getIndex());
+                console.log("send change trigger from widget", this.options.id,value, this._getIndex());
                 this._trigger("change", event, {
                     id: this.options.id,
                     value: value,
@@ -386,6 +386,8 @@ define([
                 });
             }
         },
+
+
 
 
         getTypedWidgetClass: function (type) {

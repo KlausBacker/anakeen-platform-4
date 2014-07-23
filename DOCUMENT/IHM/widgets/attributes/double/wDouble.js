@@ -34,7 +34,7 @@ define([
                 format: scope.options.numberFormat,
                 change: function () {
                     // Need to set by widget to honor decimals option
-                    scope._model().setValue({value: this.value()}, scope._getIndex());
+                    scope.setValue({value: this.value()});
                 }
             });
         },

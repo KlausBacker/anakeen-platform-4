@@ -56,7 +56,7 @@ define([
                     this._decorateSingleValue(this.kendoWidget);
                 }
                 if (this.options.value && this.options.value.value !== null) {
-                    if (!this._model().hasMultipleOption()) {
+                    if (!this.hasMultipleOption()) {
                         this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
@@ -120,14 +120,36 @@ define([
                     type: "json",
                     serverFiltering: true,
                     transport: {
-                        read: {
+                        read2: {
+
                             type: "POST",
                             url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
                                 "&id=" + window.dcp.documentData.document.properties.id +
                                 "&fromid=" + window.dcp.documentData.document.properties.fromid,
                             data: {
-                                "attributes": documentModel.getValues()
+                                attributes: documentModel.getValues()
                             }
+                        },
+                        read: function (options) {
+                            options.data.attributes = documentModel.getValues();
+                            $.ajax({
+                                type: "POST",
+                                url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
+                                    "&id=" + window.dcp.documentData.document.properties.id +
+                                    "&fromid=" + window.dcp.documentData.document.properties.fromid,
+                                data: options.data,
+
+                                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                success: function (result) {
+                                    // notify the data source that the request succeeded
+                                    options.success(result);
+                                },
+                                error: function (result) {
+                                    // notify the data source that the request failed
+                                    options.error(result);
+                                }
+                            });
+
                         }
                     }
                 },
@@ -135,6 +157,10 @@ define([
                     var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
+                    console.log("SEND CHANGE",dataItem, valueIndex );
+                    console.log("SEND CHANGE IDX", valueIndex );
+                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
+                    return;
                     _.each(dataItem.values, function (val, aid) {
                         if (typeof val === "object") {
                             var attrModel = documentModel.get('attributes').get(aid);
@@ -144,7 +170,7 @@ define([
                                     if (attrModel.hasMultipleOption()) {
                                         attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
                                     } else {
-                                        attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
+                                        scope.changeAttributeValue(aid, {value: val.value, displayValue: val.displayValue}, valueIndex);
                                     }
                                 });
                             }
@@ -154,13 +180,12 @@ define([
                 change: function (event) {
                     var valueIndex = scope._getIndex();
                     // set in case of delete item
-                    var attrModel = documentModel.get('attributes').get(scope.options.id);
-                    var oldValues = attrModel.get("value");
+                    var oldValues = scope.options.value;
                     var displayValue;
                     var newValues = [];
-                    if (attrModel.inArray()) {
-                        oldValues = oldValues[valueIndex];
-                    }
+
+                    console.log("Old", oldValues, scope.options.value);
+
                     _.each(this.value(), function (val) {
                         displayValue = _.where(oldValues, {value: val});
                         if (displayValue.length > 0) {
@@ -170,7 +195,7 @@ define([
                         }
                         newValues.push({value: val, displayValue: displayValue});
                     });
-                    attrModel.setValue(newValues, valueIndex);
+                    scope.setValue(newValues);
 
                 }
             };
@@ -186,11 +211,16 @@ define([
 
             this.element.find('.dcpAttribute__content--docid--button[title]').kendoTooltip();
         },
+        hasMultipleOption: function () {
+            return (this.options.options && this.options.options.multiple === "yes");
+        },
+
         setValue: function (value) {
 
             this._super(value);
             if (this.getMode() === "write") {
-                if (!this._model().hasMultipleOption()) {
+                console.log("Docid W", this);
+                if (!this.hasMultipleOption()) {
                     if (!_.isArray(value)) {
                         if (value.value !== null) {
                             value = [value];
