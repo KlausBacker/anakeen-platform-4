@@ -11,8 +11,7 @@ define([
 
         options: {
             id: "",
-            type: "date",
-            numberFormat: 'n0'
+            type: "date"
         },
 
         kendoWidgetClass : "kendoDatePicker",
@@ -94,7 +93,7 @@ define([
             var scope=this;
              inputValue.on('blur', function validateDate(event) {
                 console.log(this, $(this).val());
-                var dateValue = $(this).val();
+                var dateValue = $(this).val().trim();
                 inputValue.closest(".dcpAttribute__contentWrapper").removeClass("has-error");
                 scope._documentModel().get("menus").get("save").set("visibility","visible");
                 if (dateValue) {

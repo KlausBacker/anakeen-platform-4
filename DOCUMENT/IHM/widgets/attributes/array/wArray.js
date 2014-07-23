@@ -50,11 +50,27 @@ define([
 
                 if (this.options.mode === "write") {
                     this.element.find('.dcpArray__tools button').kendoTooltip({
-                        position: "top"
+                        position: "top",
+                        show: function (event) {
+                            // need to shift to bottom because callout is in target
+                            var contain = this.popup.element.parent();
+                            var ktop = parseFloat(contain.css("top"));
+                            if (ktop > 0) {
+                                contain.css("top", ktop - 6);
+                            }
+                        }
                     });
                     this.element.kendoTooltip({
                         filter: ".dcpArray__content__toolCell span",
-                        position: "top"
+                        position: "top",
+                        show: function (event) {
+                            // need to shift to bottom because callout is in target
+                            var contain = this.popup.element.parent();
+                            var ktop = parseFloat(contain.css("top"));
+                            if (ktop > 0) {
+                                contain.css("top", ktop - 10);
+                            }
+                        }
                     });
 
 

@@ -35,9 +35,9 @@ define([
             contentElement.collapse('show');
             labelElement.on("click", function () {
                 if (contentElement.hasClass("in")) {
-                    $(this).find("i").addClass("fa-caret-down").removeClass("fa-caret-up");
+                    $(this).find("i").addClass("fa-caret-right").removeClass("fa-caret-down");
                 } else {
-                    $(this).find("i").removeClass("fa-caret-down").addClass("fa-caret-up");
+                    $(this).find("i").removeClass("fa-caret-right").addClass("fa-caret-down");
                 }
                 contentElement.collapse('toggle');
             });

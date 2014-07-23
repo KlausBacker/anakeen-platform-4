@@ -217,7 +217,7 @@ define([
                             callout: true,
                             position: "bottom",
                             show: function (event) {
-                                // need to shift to bottom bacasuse callout is in target
+                                // need to shift to bottom because callout is in target
                                 var contain = this.popup.element.parent();
                                 var ktop = parseFloat(contain.css("top"));
                                 if (ktop > 0) {
