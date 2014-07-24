@@ -120,6 +120,10 @@ define([
 
      },
 
+        getWidgetValue: function () {
+            return this.contentElements().val();
+        },
+
         /**
          *
          * @param value
@@ -129,21 +133,29 @@ define([
                 // ckEditor restore original value if set to null
                 value.value = '';
             }
+            //value.value=value.value.trim();
             if (this.getMode() === "write") {
                 // Flash element only
                 var originalValue = this.ckEditorInstance.getData();
                 // : explicit lazy equal
 
                 //noinspection JSHint
-                if (originalValue != value.value) {
+                if (originalValue.trim() != value.value.trim()) {
+                    console.log("Flash", {original:originalValue, newV : value.value});
+
                     // Modify value only if different
+                    this.contentElements().val(value.value);
                     // this.ckEditorInstance.setData(value.value);
                     this.flashElement(this.element.find('iframe'));
                 }
+            } else if (this.getMode() === "read") {
+                contentElement.text(value.displayValue);
+            } else {
+                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
 
-            // call wText::setValue()
-            this._super(value);
+            // call wAttribute::setValue()
+            $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
         },
         getType: function () {
             return "htmltext";

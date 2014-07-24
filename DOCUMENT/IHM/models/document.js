@@ -49,7 +49,6 @@ define([
             this.set("attributes", new CollectionAttributes(attributes));
             attributes = this.get("attributes");
             attributes.each(function (currentAttributeModel) {
-                console.log("init view", currentAttributeModel.id);
                 currentAttributeModel.setContentCollection(attributes, currentModel);
             });
             this.listenTo(this.get("attributes"), "change:value", this.notifyChange);

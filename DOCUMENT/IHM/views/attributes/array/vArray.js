@@ -41,6 +41,10 @@ define([
             });
             data.nbLines = this.getNbLines();
             data.renderOptions = this.model.getOptions();
+            data.templates={};
+            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.model.get("type")]) {
+                data.templates = window.dcp.templates.attribute[this.model.get("type")];
+            }
             if (data.nbLines === 0 && data.mode === "read") {
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {

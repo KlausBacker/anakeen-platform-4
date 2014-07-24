@@ -13,9 +13,6 @@ define([
             type: "text"
         },
         kendoWidget: null,
-        contentElements: function () {
-            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
-        },
         _initDom: function () {
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
@@ -59,8 +56,6 @@ define([
          */
         activateAutocomplete: function (inputValue) {
             var scope = this;
-            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var valueIndex = this.options.index;
             inputValue.kendoAutoComplete({
                 dataTextField: "title",
                 filter: "contains",
@@ -81,17 +76,11 @@ define([
                     }
                 },
                 select: function (event) {
+                    var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
-                    _.each(dataItem.values, function (val, aid) {
-                        if (typeof val === "object") {
-                            var attrModel = documentModel.get('attributes').get(aid);
-                            if (attrModel) {
-                                _.defer(function () {
-                                    attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                                });
-                            }
-                        }
-                    });
+                    event.preventDefault(); // no fire change event
+                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
+
                 }
             });
             this.element.find('.dcpAttribute__content--autocomplete--button').on("click", function (event) {
@@ -107,18 +96,24 @@ define([
          * @param value
          */
         setValue: function wTextSetValue(value) {
+
             // call wAttribute:::setValue() :send notification
             this._super(value);
             // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
             var contentElement = this.contentElements();
-            var originalValue = contentElement.val();
+            var originalValue = this.getWidgetValue();
 
             if (this.getMode() === "write") {
                 // : explicit lazy equal
                 //noinspection JSHint
-                if (originalValue != value.value) {
+                console.log("Try text here", {newv:value.value,ori:originalValue} );
+               if (value.value === null && originalValue === '') {
+                    originalValue=null;
+                }
+                if (originalValue !== value.value) {
                     // Modify value only if different
-                    contentElement.val(value.value);
+                    console.log("Modify text here", {newv:value.value,ori:this.getWidgetValue()} );
+                    this.contentElements().val(value.value);
                     this.flashElement();
                 }
             } else if (this.getMode() === "read") {
@@ -128,12 +123,7 @@ define([
             }
         },
 
-        _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()] && window.dcp.templates.attribute[this.getType()][name]) {
-                return window.dcp.templates.attribute[this.getType()][name];
-            }
-            throw new Error("Unknown template text " + name);
-        },
+
 
         getType: function () {
             return "text";

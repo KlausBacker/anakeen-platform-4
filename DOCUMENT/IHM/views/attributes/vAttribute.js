@@ -47,8 +47,11 @@ define([
             data.renderOptions = this.model.getOptions();
             data.deleteLabels = this.getDeleteLabels();
             data.locale = this.model.get("documentModel").get("locale");
-
-
+            data.templates={};
+            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.model.get("type")]) {
+                data.templates = window.dcp.templates.attribute[this.model.get("type")];
+            }
+            data.templates.label = window.dcp.templates.attribute["label"];
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
             return data;
@@ -100,7 +103,7 @@ define([
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
             this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
             if (parentId) {
-                var parentModel=this.getAttributeModel(parentId);
+                var parentModel = this.getAttributeModel(parentId);
                 if (parentModel) {
                     parentModel.trigger("errorMessage", event, this.model.get("errorMessage"));
                 }
@@ -167,7 +170,7 @@ define([
                     }
                 });
             } else {
-                 console.log("NO delete", this.model.id, data, this.model);
+                console.log("NO delete", this.model.id, data, this.model);
             }
         },
 
@@ -179,7 +182,7 @@ define([
         getDeleteLabels: function () {
 
             var attrToClear = this.model.get('helpOutputs');
-            var scope=this;
+            var scope = this;
             var attrLabels = '';
             if ((!attrToClear) || typeof attrToClear === "undefined") {
                 attrToClear = [this.model.id];

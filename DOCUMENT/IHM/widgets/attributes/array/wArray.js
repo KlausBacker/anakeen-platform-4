@@ -229,11 +229,13 @@ define([
             this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
         },
 
-        _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute.array && window.dcp.templates.attribute.array[name]) {
-                return window.dcp.templates.attribute.array[name];
+        _getTemplate: function (key) {
+            if (this.options.templates[key]) {
+                return this.options.templates[key];
             }
-            throw new Error("Unknown array template " + name);
+
+            throw new Error("Unknown template  " + key + "/" + this.getType());
+
         }
     });
 });

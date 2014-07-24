@@ -15,7 +15,6 @@ define([
         kendoWidget: null,
 
         _initDom: function () {
-            var scope = this;
             if (this._isMultiple()) {
                 this.options.values = _.toArray(this.options.value);
 
@@ -94,9 +93,7 @@ define([
 
         _decorateMultipleValue: function (inputValue, extraOptions) {
             var scope = this;
-            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
 
-            console.log("read ft",scope.options.autocompleteRequest );
 
             var options = {
                 filter: "contains",
@@ -111,7 +108,7 @@ define([
                 dataTextField: "docTitle",
                 dataValueField: "docId",
 
-                value: _.map(this.options.values, function (val, index) {
+                value: _.map(this.options.values, function (val) {
                     var info = {};
                     info.docTitle = val.displayValue;
                     info.docId = val.value;
@@ -121,50 +118,18 @@ define([
                     type: "json",
                     serverFiltering: true,
                     transport: {
-                        read : scope.options.autocompleteRequest,
-                        read2: {
+                        read : scope.options.autocompleteRequest
 
-                            type: "POST",
-                            url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
-                                "&id=" + window.dcp.documentData.document.properties.id +
-                                "&fromid=" + window.dcp.documentData.document.properties.fromid,
-                            data: {
-                                attributes: documentModel.getValues()
-                            }
-                        },
-                        read_: function (options) {
-                            options.data.attributes = documentModel.getValues();
-                            $.ajax({
-                                type: "POST",
-                                url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
-                                    "&id=" + window.dcp.documentData.document.properties.id +
-                                    "&fromid=" + window.dcp.documentData.document.properties.fromid,
-                                data: options.data,
-
-                                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                success: function (result) {
-                                    // notify the data source that the request succeeded
-                                    options.success(result);
-                                },
-                                error: function (result) {
-                                    // notify the data source that the request failed
-                                    options.error(result);
-                                }
-                            });
-                        }
                     }
                 },
                 select: function (event) {
                     var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
-                    console.log("SEND CHANGE",dataItem, valueIndex );
-                    console.log("SEND CHANGE IDX", valueIndex );
                     scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
 
                 },
                 change: function (event) {
-                    var valueIndex = scope._getIndex();
                     // set in case of delete item
                     var oldValues = scope.options.value;
                     var displayValue;
@@ -181,7 +146,7 @@ define([
                         }
                         newValues.push({value: val, displayValue: displayValue});
                     });
-                    scope.setValue(newValues);
+                    scope.setValue(newValues, event);
 
                 }
             };
@@ -201,9 +166,9 @@ define([
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
-        setValue: function (value) {
+        setValue: function (value, event) {
 
-            this._super(value);
+            this._super(value, event);
             if (this.getMode() === "write") {
                 console.log("Docid W", this);
                 if (!this.hasMultipleOption()) {
@@ -224,10 +189,10 @@ define([
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
-                var newValues = _.map(value, function (val, index) {
+                var newValues = _.map(value, function (val) {
                     return  val.value;
                 });
-                var newData = _.map(value, function (val, index) {
+                var newData = _.map(value, function (val) {
                     var info = {};
                     info.docTitle = val.displayValue;
                     info.docId = val.value;
@@ -250,12 +215,7 @@ define([
             }
         },
 
-        _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()] && window.dcp.templates.attribute[this.getType()][name]) {
-                return window.dcp.templates.attribute[this.getType()][name];
-            }
-            throw new Error("Unknown template docid " + name);
-        },
+
 
 
         getType: function () {

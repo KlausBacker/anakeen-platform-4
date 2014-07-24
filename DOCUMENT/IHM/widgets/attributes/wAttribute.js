@@ -13,7 +13,7 @@ define([
             type: "abstract",
             mode: "read",
             index: -1,
-            deleteLabels : ""
+            deleteLabels: ""
 
         },
 
@@ -46,7 +46,7 @@ define([
         _emptyValue: function () {
             if (_.isEmpty(this.options.value) || this.options.value.value === null) {
 
-                if (this.options.renderOptions  && this.options.renderOptions.showEmptyContent) {
+                if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
                     return this.options.renderOptions.showEmptyContent;
                 }
                 return "";
@@ -167,10 +167,10 @@ define([
 
 
             titleDelete += this.options.deleteLabels;
-            console.log("delete button", this.options.id,$deleteButton );
+
             $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
-                console.log("Click to delete",{index:currentWidget._getIndex()} );
-                currentWidget._trigger("delete", event,  {index:currentWidget._getIndex(), id:currentWidget.options.id});
+                console.log("Click to delete", {index: currentWidget._getIndex()});
+                currentWidget._trigger("delete", event, {index: currentWidget._getIndex(), id: currentWidget.options.id});
                 currentWidget.element.find("input").focus();
             }).attr('title', titleDelete);
 
@@ -264,13 +264,13 @@ define([
         },
 
 
-
-
-        _getTemplate: function () {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()]) {
-                return window.dcp.templates.attribute[this.getType()];
+        _getTemplate: function (key) {
+            if (this.options.templates[key]) {
+                return this.options.templates[key];
             }
-            return "";
+
+            throw new Error("Unknown template  " + key + "/" + this.getType());
+
         },
 
         _isMultiple: function () {
@@ -329,15 +329,27 @@ define([
         },
 
         /**
+         * Identify the input where is the raw value
+         * @returns {*}
+         */
+        contentElements: function () {
+            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
+        },
+
+        getWidgetValue: function () {
+            return this.contentElements().val();
+
+        },
+        /**
          * Send notification to the view
          * @param value
          * @param event
          */
         setValue: function wAttributeSetValue(value, event) {
-            console.log("dcpAttribute::setValue trigger", this.options.value, value);
-            if (!_.isEqual(this.options.value, value)) {
+            console.log("dcpAttribute::setValue trigger", this.options.id, this.options.value, value);
+            if (!_.isEqual(this.options.value.value, value.value)) {
                 this.options.value = value;
-                console.log("send change trigger from widget", this.options.id,value, this._getIndex());
+                console.log("send change trigger from widget", this.options.id, value, this._getIndex());
                 this._trigger("change", event, {
                     id: this.options.id,
                     value: value,
