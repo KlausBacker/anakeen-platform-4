@@ -19,17 +19,13 @@ define([
         _initDom: function () {
             this._super();
             if (this.getMode() === "write") {
-
-
                 var options = _.extend(this._ckOptions(), this.options.renderOptions);
-
 
                 this.ckEditorInstance = this.contentElements().ckeditor(
                     options
                 ).editor;
             }
         },
-
 
         _ckOptions: function () {
             var locale = this._documentModel().get('locale');
@@ -129,20 +125,14 @@ define([
          * @param value
          */
         setValue: function wHtmltextSetValue(value) {
-
-
             if (value.value === null) {
                 // ckEditor restore original value if set to null
                 value.value = '';
             }
             if (this.getMode() === "write") {
                 // Flash element only
-                var contentElement = this.contentElements();
                 var originalValue = this.ckEditorInstance.getData();
                 // : explicit lazy equal
-
-                if (originalValue !== value.value)
-                console.log("html diff",{orig:originalValue, newv:value.value} );
 
                 //noinspection JSHint
                 if (originalValue != value.value) {

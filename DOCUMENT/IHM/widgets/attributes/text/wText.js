@@ -75,15 +75,9 @@ define([
                     type: "json",
                     serverFiltering: true,
                     transport: {
-                        read: {
-                            type: "POST",
-                            url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
-                                "&id=" + window.dcp.documentData.document.properties.id +
-                                "&fromid=" + window.dcp.documentData.document.properties.fromid,
-                            data: {
-                                "attributes": documentModel.getValues()
-                            }
-                        }
+
+                        read : scope.options.autocompleteRequest
+
                     }
                 },
                 select: function (event) {
@@ -113,7 +107,7 @@ define([
          * @param value
          */
         setValue: function wTextSetValue(value) {
-            // call wAttribute:::setValue :send notification
+            // call wAttribute:::setValue() :send notification
             this._super(value);
             // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
             var contentElement = this.contentElements();

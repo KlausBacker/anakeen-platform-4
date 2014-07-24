@@ -96,6 +96,7 @@ define([
             var scope = this;
             var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
 
+            console.log("read ft",scope.options.autocompleteRequest );
 
             var options = {
                 filter: "contains",
@@ -120,6 +121,7 @@ define([
                     type: "json",
                     serverFiltering: true,
                     transport: {
+                        read : scope.options.autocompleteRequest,
                         read2: {
 
                             type: "POST",
@@ -130,7 +132,7 @@ define([
                                 attributes: documentModel.getValues()
                             }
                         },
-                        read: function (options) {
+                        read_: function (options) {
                             options.data.attributes = documentModel.getValues();
                             $.ajax({
                                 type: "POST",
@@ -149,7 +151,6 @@ define([
                                     options.error(result);
                                 }
                             });
-
                         }
                     }
                 },
@@ -160,22 +161,7 @@ define([
                     console.log("SEND CHANGE",dataItem, valueIndex );
                     console.log("SEND CHANGE IDX", valueIndex );
                     scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
-                    return;
-                    _.each(dataItem.values, function (val, aid) {
-                        if (typeof val === "object") {
-                            var attrModel = documentModel.get('attributes').get(aid);
-                            if (attrModel) {
-                                _.defer(function () {
 
-                                    if (attrModel.hasMultipleOption()) {
-                                        attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                                    } else {
-                                        scope.changeAttributeValue(aid, {value: val.value, displayValue: val.displayValue}, valueIndex);
-                                    }
-                                });
-                            }
-                        }
-                    });
                 },
                 change: function (event) {
                     var valueIndex = scope._getIndex();

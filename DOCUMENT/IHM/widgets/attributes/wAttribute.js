@@ -12,7 +12,8 @@ define([
             id: null,
             type: "abstract",
             mode: "read",
-            index: -1
+            index: -1,
+            deleteLabels : ""
 
         },
 
@@ -44,9 +45,9 @@ define([
         },
         _emptyValue: function () {
             if (_.isEmpty(this.options.value) || this.options.value.value === null) {
-                var model = this._model();
-                if (model) {
-                    return model.getOption('showEmptyContent');
+
+                if (this.options.renderOptions  && this.options.renderOptions.showEmptyContent) {
+                    return this.options.renderOptions.showEmptyContent;
                 }
                 return "";
             }
@@ -159,46 +160,24 @@ define([
 
         _initDeleteEvent: function _initDeleteEvent() {
             var currentWidget = this;
-            var attrModel = currentWidget._model();
-            var docModel = currentWidget._documentModel();
-            var attrToClear = attrModel.attributes.helpOutputs;
 
-            if (!attrToClear) {
-                attrToClear = [attrModel.id];
-            } else {
-                attrToClear = _.toArray(attrToClear);
-            }
             // Compose delete button title
             var $deleteButton = this.element.find(".dcpAttribute__content__button--delete");
             var titleDelete = $deleteButton.attr('title');
-            var attrLabels = _.map(attrToClear, function (aid) {
-                var attr = docModel.get('attributes').get(aid);
-                if (attr) {
-                    return attr.attributes.label;
-                }
-                return '';
-            });
-            titleDelete += attrLabels.join(", ");
+
+
+            titleDelete += this.options.deleteLabels;
+            console.log("delete button", this.options.id,$deleteButton );
             $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
-                console.log("Click to delete");
-
-                _.each(attrToClear, function (aid) {
-                    var attr = docModel.get('attributes').get(aid);
-                    if (attr) {
-                        if (attr.hasMultipleOption()) {
-                            attr.setValue([], currentWidget._getIndex());
-                        } else {
-                            attr.setValue({value: null, displayValue: ''}, currentWidget._getIndex());
-                        }
-                    }
-                });
-
+                console.log("Click to delete",{index:currentWidget._getIndex()} );
+                currentWidget._trigger("delete", event,  {index:currentWidget._getIndex(), id:currentWidget.options.id});
                 currentWidget.element.find("input").focus();
             }).attr('title', titleDelete);
 
             this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
                 position: "left",
                 autoHide: true,
+                callout: true,
                 show: function (event) {
                     var contain = this.popup.element.parent();
                     var kleft = parseFloat(contain.css("left"));
@@ -308,7 +287,6 @@ define([
                 currentElement = this.element;
             }
             currentElement.addClass('dcpAttribute__content--flash');
-
             _.delay(function () {
                 currentElement.removeClass('dcpAttribute__content--flash').addClass('dcpAttribute__content--endflash');
                 _.delay(function () {

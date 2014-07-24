@@ -15,8 +15,13 @@ define([
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
             "dcparraylinemoved": "moveLine",
-            "dcpattributechange .dcpArray__content__cell": "updateValue",
-            "dcpattributechangeattrsvalue .dcpAttribute__contentWrapper": "changeAttributesValue"
+            "dcpattributedelete .dcpAttribute__contentWrapper": "deleteArrayValue",
+            "dcpattributechange .dcpArray__content__cell": "updateValue"
+        },
+
+        deleteArrayValue: function (event) {
+            console.log("get event deleteArrayValue", event);
+
         },
 
         columnViews: {},
@@ -35,6 +40,7 @@ define([
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
+            data.renderOptions = this.model.getOptions();
             if (data.nbLines === 0 && data.mode === "read") {
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
@@ -46,6 +52,7 @@ define([
                         if (currentAttr.get("valueAttribute")) {
 
                             scope.columnViews[currentAttr.id] = new ViewColumn({
+
                                 el: scope.el,
                                 els: function () {
                                     return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
@@ -64,33 +71,7 @@ define([
             console.timeEnd("render array " + this.model.id);
             return this;
         },
-        /**
-         * Modify several attribute
-         * @param event event object
-         * @param data values {id: menuId, visibility: "disabled", "visible", "hidden"}
-         * @param index the index which comes from modifcation action
-         */
-        changeAttributesValue: function (event, dataItem, valueIndex) {
-            var scope = this;
-            _.each(dataItem.values, function (val, aid) {
-                if (typeof val === "object") {
-                    console.log("changeAttributesValue", aid, scope.model, aid);
-                    console.log("changeAttributesValue IDX", valueIndex);
-                    var attrModel = scope.model.get("documentModel").get('attributes').get(aid);
-                    if (attrModel) {
-
-                        console.log("YEAH", attrModel.id, val, valueIndex);
-                        if (attrModel.hasMultipleOption()) {
-                            attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                        } else {
-                            console.log("SETTO", {value: val.value, displayValue: val.displayValue}, valueIndex);
-                            attrModel.setValue( {value: val.value, displayValue: val.displayValue}, valueIndex);
-                        }
-
-                    }
-                }
-            });
-        },
+      
         getNbLines: function () {
             var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function (currentAttr) {
