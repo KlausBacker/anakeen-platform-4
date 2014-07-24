@@ -22,6 +22,7 @@
 .dcpAttribute__contentWrapper--docid .k-multiselect, .dcpArray__content__cell--docid .k-multiselect ,
 .dcpAttribute__contentWrapper--account .k-multiselect, .dcpArray__content__cell--account .k-multiselect {
   height:auto;
+  min-height: @dcpInputHeight;
 }
 .dcpAttribute__content--single .k-multiselect-wrap .k-delete {
   visibility: hidden;
@@ -31,6 +32,9 @@
   cursor:pointer;
 }
 
+.dcpAttribute__contentWrapper.has-error .k-widget {
+  border-color : @brand-danger transparent @brand-danger @brand-danger;
+}
 
 .dcpAttribute__contentWrapper .k-multiselect-wrap > .k-input,
 {

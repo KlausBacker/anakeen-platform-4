@@ -28,7 +28,7 @@ define([
         },
 
         _ckOptions: function () {
-            var locale = this._documentModel().get('locale');
+            var locale = this.options.locale;
             return   {
                 language: locale.substring(0, 2),
                 contentsCss: ['lib/ckeditor/contents.css', 'css/dcp/document/ckeditor.css'],

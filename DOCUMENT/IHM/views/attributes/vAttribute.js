@@ -46,6 +46,7 @@ define([
             data.viewCid = this.cid;
             data.renderOptions = this.model.getOptions();
             data.deleteLabels = this.getDeleteLabels();
+            data.locale = this.model.get("documentModel").get("locale");
 
 
             // autoComplete detected
@@ -94,9 +95,17 @@ define([
             }
 
         },
-        refreshError: function () {
+        refreshError: function (event) {
+            var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
             this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
+            if (parentId) {
+                var parentModel=this.getAttributeModel(parentId);
+                if (parentModel) {
+                    parentModel.trigger("errorMessage", event, this.model.get("errorMessage"));
+                }
+
+            }
         },
 
 
@@ -162,10 +171,15 @@ define([
             }
         },
 
+        getAttributeModel: function (attributeId) {
+            var docModel = this.model.get("documentModel");
+            return docModel.get('attributes').get(attributeId);
+        },
+
         getDeleteLabels: function () {
 
             var attrToClear = this.model.get('helpOutputs');
-            var docModel = this.model.get("documentModel");
+            var scope=this;
             var attrLabels = '';
             if ((!attrToClear) || typeof attrToClear === "undefined") {
                 attrToClear = [this.model.id];
@@ -173,7 +187,7 @@ define([
                 attrToClear = _.toArray(attrToClear);
             }
             attrLabels = _.map(attrToClear, function (aid) {
-                var attr = docModel.get('attributes').get(aid);
+                var attr = scope.getAttributeModel(aid);
                 if (attr) {
                     return attr.attributes.label;
                 }

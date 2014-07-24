@@ -263,14 +263,9 @@ define([
             return this.options.index;
         },
 
-        _model: function () {
 
-            return this._documentModel().get('attributes').get(this.options.id);
-        },
 
-        _documentModel: function () {
-            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-        },
+
         _getTemplate: function () {
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()]) {
                 return window.dcp.templates.attribute[this.getType()];
@@ -296,8 +291,6 @@ define([
         },
 
         setError: function (message, index) {
-            var parentId = this._model().get('parent');
-            var greatParentId;
             if (message) {
                 this.element.addClass("has-error");
                 this.element.kendoTooltip({
@@ -313,28 +306,11 @@ define([
                         this.popup.element.addClass("has-error");
                     }
                 });
-                // this.element.find('input').focus();
-                if (parentId) {
-                    $('.dcpFrame__label[data-id="' + parentId + '"]').addClass("has-warning");
-                    greatParentId = this._documentModel().get('attributes').get(parentId).get('parent');
 
-                    if (greatParentId) {
-                        $('.dcpTab__label[data-id="' + greatParentId + '"]').addClass("has-warning");
-                    }
-
-                }
             } else {
                 this.element.removeClass("has-error");
                 this.element.data("kendoTooltip").destroy();
-                if (parentId) {
-                    $('.dcpFrame__label[data-id="' + parentId + '"]').removeClass("has-warning");
-                    greatParentId = this._documentModel().get('attributes').get(parentId).get('parent');
 
-                    if (greatParentId) {
-                        $('.dcpTab__label[data-id="' + greatParentId + '"]').removeClass("has-warning");
-                    }
-
-                }
             }
         },
         getType: function () {

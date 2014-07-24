@@ -71,7 +71,7 @@ define([
             console.timeEnd("render array " + this.model.id);
             return this;
         },
-      
+
         getNbLines: function () {
             var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function (currentAttr) {

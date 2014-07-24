@@ -17,6 +17,7 @@ define([
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
             this.listenTo(this.model.get("content"), 'reset', this.render);
+            this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateLabel = window.dcp.templates.attribute.frame.label;
             this.templateContent = window.dcp.templates.attribute.frame.content;
@@ -74,6 +75,27 @@ define([
             }
             console.timeEnd("render frame " + this.model.id);
             return this;
+        },
+
+        getAttributeModel: function (attributeId) {
+            var docModel = this.model.get("documentModel");
+            return docModel.get('attributes').get(attributeId);
+        },
+
+        setError: function (event, data) {
+            var parentId = this.model.get('parent');
+            console.log("frame error", data, this.model.get('parent'));
+            if (data) {
+                this.$el.find(".dcpFrame__label").addClass("has-warning");
+            } else {
+                this.$el.find(".dcpFrame__label").removeClass("has-warning");
+            }
+            if (parentId) {
+                var parentModel = this.getAttributeModel(parentId);
+                if (parentModel) {
+                    parentModel.trigger("errorMessage", event, data);
+                }
+            }
         },
 
         updateLabel: function () {
