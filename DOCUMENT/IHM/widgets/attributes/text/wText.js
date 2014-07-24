@@ -47,7 +47,6 @@ define([
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
                     newValue.displayValue=newValue.value;
-                    //newValue.displayValue = newValue.value;
                     currentWidget.setValue(newValue);
                 });
             }
@@ -108,7 +107,13 @@ define([
             this.element.find('.dcpAttribute__content--autocomplete--button[title]').kendoTooltip();
 
         },
-        setValue: function (value) {
+
+        /**
+         * Modify value to widget and send notification to the view
+         * @param value
+         */
+        setValue: function wTextSetValue(value) {
+            // call wAttribute:::setValue :send notification
             this._super(value);
             // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
             var contentElement = this.contentElements();

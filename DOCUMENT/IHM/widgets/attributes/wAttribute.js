@@ -374,7 +374,12 @@ define([
             return this.options.value;
         },
 
-        setValue: function (value, event) {
+        /**
+         * Send notification to the view
+         * @param value
+         * @param event
+         */
+        setValue: function wAttributeSetValue(value, event) {
             console.log("dcpAttribute::setValue trigger", this.options.value, value);
             if (!_.isEqual(this.options.value, value)) {
                 this.options.value = value;
@@ -385,14 +390,10 @@ define([
                     index: this._getIndex()
                 });
             }
-        },
-
-
-
-
-        getTypedWidgetClass: function (type) {
-            return this._model().getTypedWidgetClass(type);
         }
+
+
+
 
     });
 });

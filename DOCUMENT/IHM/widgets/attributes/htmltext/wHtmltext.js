@@ -93,7 +93,7 @@ define([
             this._super();
             if (this.ckEditorInstance) {
                 this.ckEditorInstance.on("change", function () {
-                    scope._model().setValue({value: this.getData()}, scope._getIndex());
+                    scope.setValue({value: this.getData()});
                 });
 
                 this.ckEditorInstance.on("focus", function () {
@@ -116,9 +116,21 @@ define([
         _focusInput: function () {
             return this.element;
         },
+        /**
+         * No use parent change
+         * @private
+         */
+     _initChangeEvent: function _initChangeEvent() {
+
+     },
+
+        /**
+         *
+         * @param value
+         */
+        setValue: function wHtmltextSetValue(value) {
 
 
-        setValue: function (value) {
             if (value.value === null) {
                 // ckEditor restore original value if set to null
                 value.value = '';
@@ -128,14 +140,19 @@ define([
                 var contentElement = this.contentElements();
                 var originalValue = this.ckEditorInstance.getData();
                 // : explicit lazy equal
+
+                if (originalValue !== value.value)
+                console.log("html diff",{orig:originalValue, newv:value.value} );
+
                 //noinspection JSHint
                 if (originalValue != value.value) {
                     // Modify value only if different
                     // this.ckEditorInstance.setData(value.value);
-                    this.flashElement($('iframe'));
+                    this.flashElement(this.element.find('iframe'));
                 }
             }
 
+            // call wText::setValue()
             this._super(value);
         },
         getType: function () {

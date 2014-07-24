@@ -37,7 +37,7 @@ define([
             }
         },
 
-        setValue: function (value) {
+        setValue: function wIntSetValue (value) {
             // this._super.(value);
             // Don't call dcpText::setValue()
             $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
