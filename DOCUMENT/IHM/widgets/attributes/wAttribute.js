@@ -169,8 +169,15 @@ define([
             titleDelete += this.options.deleteLabels;
 
             $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
-                console.log("Click to delete", {index: currentWidget._getIndex()});
+                console.log("Click to delete", {index: currentWidget._getIndex() });
+
+                // Hide tooltip because it mask the input focus
+                var kt=$(this).data("kendoTooltip");
+                if (kt) {
+                    kt.hide();
+                }
                 currentWidget._trigger("delete", event, {index: currentWidget._getIndex(), id: currentWidget.options.id});
+                // main input is focuses after deletion
                 _.defer(function () {
                     currentWidget.element.find("input").focus();
                 });

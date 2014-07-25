@@ -31,10 +31,10 @@ define([
 
 
         render: function () {
-            console.time("render column " + this.model.id);
+           // console.time("render column " + this.model.id);
 
 
-            console.timeEnd("render column " + this.model.id);
+          //  console.timeEnd("render column " + this.model.id);
             return this;
         },
 

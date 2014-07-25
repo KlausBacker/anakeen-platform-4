@@ -28,7 +28,7 @@ define([
             var $loading = $(".dcpLoading");
             var labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
             var contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
-            console.time("render frame " + this.model.id);
+            //console.time("render frame " + this.model.id);
             this.$el.empty();
             this.$el.append(labelElement);
             this.$el.append(contentElement);
@@ -73,7 +73,7 @@ define([
                     }
                 });
             }
-            console.timeEnd("render frame " + this.model.id);
+            //console.timeEnd("render frame " + this.model.id);
             return this;
         },
 

@@ -64,7 +64,7 @@ define([
 
 
         render: function () {
-            console.time("render attribute " + this.model.id);
+            //console.time("render attribute " + this.model.id);
             var data = this.getData();
 
 
@@ -79,7 +79,7 @@ define([
 
             this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), data);
 
-            console.timeEnd("render attribute " + this.model.id);
+           // console.timeEnd("render attribute " + this.model.id);
             return this;
         },
 

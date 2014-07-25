@@ -32,7 +32,7 @@ define([
         },
 
         render: function () {
-            console.time("render array " + this.model.id);
+           // console.time("render array " + this.model.id);
             var data = this.model.toData();
             var scope = this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
@@ -72,7 +72,7 @@ define([
             }
             this.$el.dcpArray(data);
 
-            console.timeEnd("render array " + this.model.id);
+           // console.timeEnd("render array " + this.model.id);
             return this;
         },
 

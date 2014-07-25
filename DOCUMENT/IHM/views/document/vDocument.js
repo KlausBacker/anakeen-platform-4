@@ -27,7 +27,7 @@ define([
             var $content, model = this.model, $el = this.$el;
             var $loading = $(".dcpLoading");
             var locale=this.model.get('locale');
-            console.time("render doc");
+           // console.time("render doc");
 
             switch (locale) {
                 case "fr_FR":
@@ -49,16 +49,16 @@ define([
             this.$el.addClass("dcpDocument--" + this.model.get("renderMode"));
             $loading.dcpLoading("percent", 10);
             //add menu
-            console.time("render menu");
+            //console.time("render menu");
             try {
                 new ViewDocumentMenu({model: this.model, el: this.$el.find(".dcpDocument__menu")[0]}).render();
             } catch (e) {
                 console.log(e);
             }
-            console.timeEnd("render menu");
+           // console.timeEnd("render menu");
             $loading.dcpLoading("percent", 20);
             //add first level attributes
-            console.time("render attributes");
+          //  console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
             $loading.dcpLoading("setRest", this.model.get("attributes").length);
             this.model.get("attributes").each(function (currentAttr) {
@@ -100,8 +100,8 @@ define([
 
             });
             $el.find('.dcpDocument__tabs__list a:first').tab('show');
-            console.timeEnd("render attributes");
-            console.timeEnd("render doc");
+          //  console.timeEnd("render attributes");
+           // console.timeEnd("render doc");
             return this;
         }
     });
