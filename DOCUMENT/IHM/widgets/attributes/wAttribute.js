@@ -70,7 +70,6 @@ define([
          * @protected
          */
         _focusInput: function () {
-            console.log("FOCUS default");
             return this.element.find('input[name="' + this.options.id + '"]');
         },
 
@@ -78,12 +77,13 @@ define([
             if (this.options.renderOptions.inputHtmlTooltip) {
                 var scope = this;
 
+                var inputTargetFilter = ".dcpAttribute__content";
                 this._focusInput().on("focus", function (event) {
-                    var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
+                    var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.showInputTooltip(ktTarget);
                 });
                 this._focusInput().on("blur", function (event) {
-                    var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
+                    var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.hideInputTooltip(ktTarget);
                 });
             }
@@ -171,7 +171,10 @@ define([
             $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
                 console.log("Click to delete", {index: currentWidget._getIndex()});
                 currentWidget._trigger("delete", event, {index: currentWidget._getIndex(), id: currentWidget.options.id});
-                currentWidget.element.find("input").focus();
+                _.defer(function () {
+                    currentWidget.element.find("input").focus();
+                });
+
             }).attr('title', titleDelete);
 
             this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
@@ -268,8 +271,7 @@ define([
             if (this.options.templates[key]) {
                 return this.options.templates[key];
             }
-
-            throw new Error("Unknown template  " + key + "/" + this.getType());
+            throw new Error("Unknown template  " + key + "/" + this.options.type);
 
         },
 

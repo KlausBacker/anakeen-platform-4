@@ -40,7 +40,7 @@ define([
                         val.renderTitle = Mustache.render(htmlLink.title, val);
                         val.index = index;
                         return val;
-                    });
+                    });v
 
                     this.options.isMultiple = true;
                 }

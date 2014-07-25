@@ -24,6 +24,8 @@ define([
                 this.ckEditorInstance = this.contentElements().ckeditor(
                     options
                 ).editor;
+
+                this.options.value.value=this.ckEditorInstance.getData();
             }
         },
 
@@ -34,6 +36,7 @@ define([
                 contentsCss: ['lib/ckeditor/contents.css', 'css/dcp/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
                 toolbarCanCollapse: true,
+                entities: false, // no use HTML entities
                 filebrowserImageBrowseUrl:'?sole=Y&app=FDL&action=CKIMAGE',
                 filebrowserImageUploadUrl:'?sole=Y&app=FDL&action=CKUPLOAD',
                 toolbar_Full: [
@@ -93,13 +96,13 @@ define([
                 });
 
                 this.ckEditorInstance.on("focus", function () {
-                    var ktTarget = scope.element;
+                    var ktTarget = scope.element.find(".input-group");
                     scope.showInputTooltip(ktTarget);
                     scope.element.find(".cke").addClass("k-state-focused");
                 });
 
                 this.ckEditorInstance.on("blur", function () {
-                    var ktTarget = scope.element;
+                    var ktTarget = scope.element.find(".input-group");;
                     scope.hideInputTooltip(ktTarget);
                     scope.element.find(".cke").removeClass("k-state-focused");
                 });

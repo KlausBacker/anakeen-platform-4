@@ -48,8 +48,13 @@ define([
             data.deleteLabels = this.getDeleteLabels();
             data.locale = this.model.get("documentModel").get("locale");
             data.templates={};
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.model.get("type")]) {
+            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute) {
+                if (window.dcp.templates.attribute[this.model.get("type")]) {
                 data.templates = window.dcp.templates.attribute[this.model.get("type")];
+                } else {
+                    // fallback in case of no specific templates
+                    data.templates = window.dcp.templates.attribute.default;
+                }
             }
             data.templates.label = window.dcp.templates.attribute["label"];
             // autoComplete detected
