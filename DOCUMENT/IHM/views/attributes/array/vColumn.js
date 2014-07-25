@@ -57,7 +57,7 @@ define([
                     $(cells[index]),
                     [data]);
             }
-        },
+        }
 
 
     });

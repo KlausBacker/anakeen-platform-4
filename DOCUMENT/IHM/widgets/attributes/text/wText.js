@@ -117,6 +117,7 @@ define([
                     this.flashElement();
                 }
             } else if (this.getMode() === "read") {
+                console.log("READ UPDATE TO", this.options.id,value);
                 contentElement.text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());

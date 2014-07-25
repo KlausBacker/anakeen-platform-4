@@ -68,7 +68,7 @@ define([
             //debugger;
         },
 
-        getValues: function () {
+        getValues: function documentGetValues() {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
                 var currentValue = currentAttribute.get("value"), i, arrayValues = [];
@@ -90,6 +90,23 @@ define([
                 }
             });
             return values;
+        },
+
+
+        /**
+         * reset all values with a new set of values
+         */
+        setValues: function documentSetValues(values) {
+            console.log("setvalues", values);
+            this.get("attributes").each(function (currentAttribute) {
+                var newValue = values[currentAttribute.id];
+                if (!currentAttribute.get("valueAttribute")) {
+                    return;
+                }
+                console.log(currentAttribute.get("type"));
+
+               currentAttribute.set("value",newValue );
+            });
         },
 
         hasAttributesChanged: function () {
@@ -148,7 +165,16 @@ define([
                     break;
 
                 default:
-                    window.alert(message.code);
+                    if (message.contentText) {
+                         $notification.dcpNotification("showError", {
+                                    title: message.contentText,
+                                    htmlMessage: message.contentHtml
+
+                         });
+                    } else {
+                        console.log("Error", message);
+                      window.alert("UNEXPECTED ERROR");
+                    }
             }
         },
         /**

@@ -88,12 +88,25 @@ define([
         },
 
         refreshValue: function () {
-            console.log("propagate setvalue to view", this.model.id, this.model.get("value"));
-            var allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
             var values = this.model.get("value");
             var scope = this;
+            console.log("propagate setvalue to view", this.model.id, this.model.get("value"));
+             if (this.model.inArray()) {
+                 // adjust line number to column length
+                 var arrayWrapper=this.$el;
+
+                 console.log("find array", arrayWrapper,this.$el);
+                 arrayWrapper.dcpArray("setLines", values.length);
+             }
+
+
+            var allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper").add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
+
             if (this.model.inArray()) {
+
+
                 values = _.toArray(values);
+
                 allWrapper.each(function (index, element) {
                     scope.widgetApply($(element), "setValue", values[index]);
                 });

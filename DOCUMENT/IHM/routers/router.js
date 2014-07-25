@@ -67,6 +67,10 @@ define([
                                     htmlMessage: aMessage.contentHtml
                                 });
                             });
+                            console.log("New data", result.data.document.attributes);
+                            currentDoc.setValues(result.data.document.attributes);
+
+
                         }
                     }).fail(function (data) {
 

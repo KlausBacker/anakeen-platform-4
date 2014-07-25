@@ -21,7 +21,6 @@ define([
         },
 
         initialize: function () {
-            var currentModel = this;
             this.listenTo(this, "change:documentMode", this._computeMode);
             this.listenTo(this, "change:visibility", this._computeMode);
             this.listenTo(this, "change:type", this._computeValueMode);
@@ -143,8 +142,7 @@ define([
          * @param toIndex
          */
         moveIndexValue: function moveIndexValue(fromIndex, toIndex) {
-            var currentValue, oldValue, fromValue;
-            var newValue;
+            var currentValue, fromValue;
             if (!this.get("multiple")) {
                 throw new Error("Move only multiple attribute : " + this.id);
             }

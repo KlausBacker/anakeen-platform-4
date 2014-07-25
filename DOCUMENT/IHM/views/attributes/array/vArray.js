@@ -32,7 +32,7 @@ define([
         },
 
         render: function () {
-           // console.time("render array " + this.model.id);
+            // console.time("render array " + this.model.id);
             var data = this.model.toData();
             var scope = this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
@@ -41,7 +41,7 @@ define([
             });
             data.nbLines = this.getNbLines();
             data.renderOptions = this.model.getOptions();
-            data.templates={};
+            data.templates = {};
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.model.get("type")]) {
                 data.templates = window.dcp.templates.attribute[this.model.get("type")];
             }
@@ -70,9 +70,10 @@ define([
                     }
                 });
             }
+            console.log("array el", this.$el);
             this.$el.dcpArray(data);
 
-           // console.timeEnd("render array " + this.model.id);
+            // console.timeEnd("render array " + this.model.id);
             return this;
         },
 
@@ -118,7 +119,7 @@ define([
             });
             //  this.refresh();
         },
-        addLine: function (event, options) {
+        addLine: function vArrayAddLine(event, options) {
             var scope = this;
             this.model.get("content").each(function (currentContent) {
                 if (options.needAddValue || options.copyValue) {

@@ -102,12 +102,8 @@ require([
             $(".dcpLoading").dcpLoading("percent", 100).addClass("dcpLoading--hide");
             _.delay(function () {
                 $(".dcpLoading").dcpLoading("hide");
-
             }, 2000);
-
         }, 100);
-
-
     });
     window.dcp.router = {
         router: new Router()

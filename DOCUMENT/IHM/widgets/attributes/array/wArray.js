@@ -75,7 +75,7 @@ define([
 
 
                 }
-                this.addAllLines();
+                this.addAllLines(this.options.nbLines);
                 this.element.find('tbody').kendoDraggable({
                     axis: "y",
                     container: scope.element.find('tbody'),
@@ -149,7 +149,6 @@ define([
                 } else {
                     currentWidget.options.nbLines++;
                     currentWidget.addLine(sLine, true);
-                    currentWidget._indexLine();
                 }
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__copy", function () {
@@ -157,7 +156,6 @@ define([
 
                 currentWidget.options.nbLines++;
                 currentWidget.copyLine(sLine, true);
-                currentWidget._indexLine();
 
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
@@ -166,10 +164,25 @@ define([
         },
 
 
-        addAllLines: function () {
+        setLines: function wArraySetLines(lineNumber) {
+            console.log("Need array lines", lineNumber);
+            var currentLineNumber=this.options.nbLines;
+            if (lineNumber > currentLineNumber) {
+                console.log("add linee", lineNumber - currentLineNumber);
+                for (var i = 0; i < (lineNumber - currentLineNumber); i++) {
+                    this.addLine(currentLineNumber + i);
+                console.log("add line number", currentLineNumber + 1 + i);
+                }
+            } else if (lineNumber < currentLineNumber) {
+                console.log("TODO REMOVE ARRAY LINES", lineNumber - currentLineNumber);
+            }
+
+        },
+        addAllLines: function (lineNumber) {
             var i;
             this.element.find(".dcpArray__body").empty();
-            for (i = 0; i < this.options.nbLines; i++) {
+
+            for (i = 0; i < lineNumber; i++) {
                 this.addLine(i);
             }
             this._trigger("linesGenerated");
@@ -186,6 +199,7 @@ define([
             } else {
                 this.element.find(".dcpArray__body").append($content);
             }
+            this._indexLine();
             return $content;
         },
 
@@ -221,6 +235,7 @@ define([
                     i++;
                 }
             );
+            console.log("index line", i)
             this.options.nbLines = i;
         },
 
