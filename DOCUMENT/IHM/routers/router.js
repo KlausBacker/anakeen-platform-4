@@ -38,7 +38,7 @@ define([
 
             var $notification = $('body').dcpNotification();
             $notification.dcpNotification("clear");
-
+            currentDoc.clearErrorMessages();
             if (currentDoc.verifyAndNotifyNeededAttributes()) {
 
                 $(".dcpLoading").dcpLoading("reset").dcpLoading("title", "Saving").dcpLoading("modalMode");
@@ -53,7 +53,7 @@ define([
                         data: JSON.stringify(values)
                     }).done(function (result) {
 
-                        currentDoc.clearErrorMessages();
+
                         $(".dcpLoading").dcpLoading("hide");
                         if (result.success) {
                             $notification.dcpNotification("showSuccess", {title: "Document Recorded"});

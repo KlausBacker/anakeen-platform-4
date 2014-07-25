@@ -300,6 +300,7 @@ define([
         },
 
         setError: function (message, index) {
+            var kt;
             if (message) {
                 this.element.addClass("has-error");
                 this.element.kendoTooltip({
@@ -318,7 +319,11 @@ define([
 
             } else {
                 this.element.removeClass("has-error");
-                this.element.data("kendoTooltip").destroy();
+                kt=this.element.data("kendoTooltip");
+                if (kt) {
+                    kt.destroy();
+                }
+
 
             }
         },
