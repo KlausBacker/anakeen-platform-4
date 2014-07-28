@@ -103,7 +103,7 @@ define([
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
-                console.log(currentAttribute.get("type"));
+
 
                currentAttribute.set("value",newValue );
             });

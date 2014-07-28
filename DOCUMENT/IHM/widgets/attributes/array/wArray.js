@@ -166,15 +166,21 @@ define([
 
         setLines: function wArraySetLines(lineNumber) {
             console.log("Need array lines", lineNumber);
-            var currentLineNumber=this.options.nbLines;
+            var currentLineNumber = this.options.nbLines;
+            var i;
             if (lineNumber > currentLineNumber) {
                 console.log("add linee", lineNumber - currentLineNumber);
-                for (var i = 0; i < (lineNumber - currentLineNumber); i++) {
+                for (i = 0; i < (lineNumber - currentLineNumber); i++) {
                     this.addLine(currentLineNumber + i);
-                console.log("add line number", currentLineNumber + 1 + i);
+                    console.log("add line number", currentLineNumber + 1 + i);
                 }
             } else if (lineNumber < currentLineNumber) {
-                console.log("TODO REMOVE ARRAY LINES", lineNumber - currentLineNumber);
+                console.log("TODO REMOVE ARRAY LINES", currentLineNumber - lineNumber);
+                for (i = 0; i < (currentLineNumber - lineNumber ); i++) {
+                    this.removeLine(this.options.nbLines - 1);
+                    console.log("REMOVE line number", this.options.nbLines - 1);
+                }
+
             }
 
         },

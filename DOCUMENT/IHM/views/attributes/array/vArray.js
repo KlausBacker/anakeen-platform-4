@@ -96,7 +96,7 @@ define([
          * @param event
          * @param options
          */
-        updateValue: function (event, options) {
+        updateValue: function vArrayUpdateValue(event, options) {
 
             console.log("array :: view has receive change", options);
             var attributeModel = this.model.get("content").get(options.id);
@@ -107,7 +107,7 @@ define([
         },
 
 
-        refresh: function () {
+        refresh: function vArrayRefresh() {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
             this.render();
