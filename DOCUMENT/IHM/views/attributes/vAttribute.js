@@ -10,6 +10,7 @@ define([
     'widgets/attributes/htmltext/wHtmltext',
     'widgets/attributes/timestamp/wTimestamp',
     'widgets/attributes/time/wTime',
+    'widgets/attributes/image/wImage',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
 ], function (_, Backbone, Mustache) {
@@ -108,6 +109,7 @@ define([
                 values = _.toArray(values);
 
                 allWrapper.each(function (index, element) {
+                    console.log("set widget setvalue", index, scope.model.id,values[index] );
                     scope.widgetApply($(element), "setValue", values[index]);
                 });
 
@@ -291,6 +293,8 @@ define([
                     return $.fn.dcpTimestamp;
                 case "time" :
                     return $.fn.dcpTime;
+                case "image" :
+                    return $.fn.dcpImage;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;

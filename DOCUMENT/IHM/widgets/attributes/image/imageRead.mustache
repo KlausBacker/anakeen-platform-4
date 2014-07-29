@@ -1,0 +1,11 @@
+<span class="dcpAttribute__content dcpAttribute__content--read" name="{{id}}">
+{{#renderOptions.htmlLink.url}}<a class="dcpAttribute__content__link"
+                                  target="{{renderOptions.htmlLink.target}}"
+                                  {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
+                                  href="{{renderOptions.htmlLink.url}}">{{/renderOptions.htmlLink.url}}
+
+    {{^value.thumbnail}}<span class="dcpAttribute__content__value">{{value.displayValue}}</span>{{/value.thumbnail}}
+    {{#value.thumbnail}}<img src="{{value.thumbnail}}"/>{{/value.thumbnail}}
+{{#renderOptions.htmlLink.url}}</a>{{/renderOptions.htmlLink.url}}
+    {{{emptyValue}}}
+</span>

@@ -63,17 +63,29 @@ define([
                 this._initButtonsEvent();
                 this._initFocusEvent();
             }
+            if (this.getMode() === "read") {
+                this._initLinkEvent();
+            }
+        },
+
+        /**
+         * Redraw element with updated values
+         */
+        redraw: function wAttributeRedraw() {
+            this.element.html('');
+            this._initDom();
+            this._initEvent();
         },
 
         /**
          * Define inputs for focus
          * @protected
          */
-        _focusInput: function () {
+        _focusInput: function wAttributeFocusInput() {
             return this.element.find('input[name="' + this.options.id + '"]');
         },
 
-        _initFocusEvent: function _initFocusEvent() {
+        _initFocusEvent: function wAttributeInitFocusEvent() {
             if (this.options.renderOptions.inputHtmlTooltip) {
                 var scope = this;
 
@@ -89,7 +101,7 @@ define([
             }
         },
 
-        hideInputTooltip: function (ktTarget) {
+        hideInputTooltip: function wAttributeHideInputTooltip(ktTarget) {
             var kTooltip = ktTarget.data("kendoTooltip");
             if (kTooltip) {
                 kTooltip.hide();
@@ -172,7 +184,7 @@ define([
                 console.log("Click to delete", {index: currentWidget._getIndex() });
 
                 // Hide tooltip because it mask the input focus
-                var kt=$(this).data("kendoTooltip");
+                var kt = $(this).data("kendoTooltip");
                 if (kt) {
                     kt.hide();
                 }
@@ -243,8 +255,8 @@ define([
                         }
                         this.popup.element.addClass("dcpAttribute__editlabel");
                     }
-
                 });
+
 
             }
         },
@@ -259,7 +271,7 @@ define([
          * Return the url of common link
          * @returns {*}
          */
-        getLink: function getLink() {
+        getLink: function wAttributeGetLink() {
             if (this.options.renderOptions && this.options.renderOptions.htmlLink) {
                 return this.options.renderOptions.htmlLink;
             }
@@ -319,7 +331,7 @@ define([
 
             } else {
                 this.element.removeClass("has-error");
-                kt=this.element.data("kendoTooltip");
+                kt = this.element.data("kendoTooltip");
                 if (kt) {
                     kt.destroy();
                 }

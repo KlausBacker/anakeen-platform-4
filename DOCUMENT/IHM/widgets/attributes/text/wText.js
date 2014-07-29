@@ -20,16 +20,13 @@ define([
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this.activateAutocomplete(this.kendoWidget);
             }
-
         },
 
         _initEvent: function _initEvent() {
             if (this.getMode() === "write") {
                 this._initChangeEvent();
             }
-            if (this.getMode() === "read") {
-                this._initLinkEvent();
-            }
+
             this._super();
         },
 
@@ -118,7 +115,9 @@ define([
                 }
             } else if (this.getMode() === "read") {
                 console.log("READ UPDATE TO", this.options.id,value);
-                contentElement.text(value.displayValue);
+               // contentElement.text(value.displayValue);
+                console.log("redraw with", this.options.id, this.options.value, value);
+                this.redraw();
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

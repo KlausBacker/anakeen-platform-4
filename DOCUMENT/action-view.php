@@ -26,6 +26,8 @@ function view(Action & $action)
         $action->exitError($err);
     }
     
+    $doc->refresh();
+    
     $dr = new Dcp\Ui\DocumentRender();
     
     $config = Dcp\Ui\Utils::getRenderConfigObject($renderId);
