@@ -9,12 +9,15 @@ define([
 
         options: {
             id: "",
-            type: "docid"
+            type: "docid",
+            renderOptions: {
+                kendoMultiSelectConfiguration: {}
+            }
         },
 
         kendoWidget: null,
 
-        _initDom: function () {
+        _initDom: function wDocidInitDom() {
             if (this._isMultiple()) {
                 this.options.values = _.toArray(this.options.value);
 
@@ -63,7 +66,7 @@ define([
             }
         },
 
-        _initEvent: function _initEvent() {
+        _initEvent: function wDocidInitEvent() {
 
             if (this.getMode() === "read") {
                 this._initLinkEvent();
@@ -74,11 +77,15 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _focusInput: function () {
+        _focusInput: function wDocidFocusInput() {
             return this.element.find('input');
         },
-        _decorateSingleValue: function (inputValue) {
 
+        /**
+         * When docid is not multiple, it is a multiselect limited to one element
+         * @param inputValue select  element
+         */
+        _decorateSingleValue: function wDocidDecorateSingleValue(inputValue) {
             this.options.values = [];
             if (this.options.value) {
                 this.options.values.push(this.options.value);
@@ -86,12 +93,11 @@ define([
 
             this._decorateMultipleValue(inputValue, {
                     maxSelectedItems: 1
-
                 }
             );
         },
 
-        _decorateMultipleValue: function (inputValue, extraOptions) {
+        _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions) {
             var scope = this;
 
 
@@ -102,8 +108,6 @@ define([
                     '#if (data.error) {#' +
                     '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>',
-
-
                 autoBind: false,
                 dataTextField: "docTitle",
                 dataValueField: "docId",
@@ -154,6 +158,10 @@ define([
             if (extraOptions) {
                 options = _.extend(options, extraOptions);
             }
+
+            if (this.options.renderOptions.kendoMultiSelectConfiguration) {
+                options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
+            }
             inputValue.kendoMultiSelect(options);
             this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
                 event.preventDefault();
@@ -162,7 +170,11 @@ define([
 
             this.element.find('.dcpAttribute__content--docid--button[title]').kendoTooltip();
         },
-        hasMultipleOption: function () {
+        /**
+         * Return true if attribut has multiple option
+         * @returns bool
+         */
+        hasMultipleOption: function wDocidHasMultipleOption() {
             return (this.options.options && this.options.options.multiple === "yes");
         },
 

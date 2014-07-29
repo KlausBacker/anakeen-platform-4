@@ -14,7 +14,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
     const toolbarOption = "toolbar";
     const heightOption = "height";
     const toolbarStartupExpandedOption = "toolbarStartupExpanded";
-    const languageOption = "language";
+    const ckEditorConfigurationOption = "ckEditorConfiguration";
     /**
      * Collapse or expand toolbar on startup
      * @note use only in edition mode
@@ -51,5 +51,17 @@ class HtmltextRenderOptions extends CommonRenderOptions
     public function setHeight($height)
     {
         return $this->setOption(self::heightOption, $height);
+    }
+    /**
+     * Set extra configuration for ckEditor widget
+     *
+     * @note use only in edition mode
+     * @param array $config indexed array
+     *
+     * @return $this
+     */
+    public function setCkEditorConfiguration($config)
+    {
+        return $this->setOption(self::ckEditorConfigurationOption, $config);
     }
 }

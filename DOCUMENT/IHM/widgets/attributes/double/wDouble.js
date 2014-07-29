@@ -14,7 +14,7 @@ define([
             numberFormat: 'n'
         },
 
-        _initDom: function () {
+        _initDom: function wDoubleInitDom() {
             if (this.options.renderOptions.decimalPrecision > 0) {
                 // view decimal precision
                 this.options.numberFormat = 'n' + this.options.renderOptions.decimalPrecision;
@@ -23,24 +23,22 @@ define([
             this._super();
         },
 
-        _activateNumber: function (inputValue) {
-            var scope = this;
 
 
-            inputValue.kendoNumericTextBox({
-                decimals: scope.options.renderOptions.decimalPrecision,
-                max: scope.options.renderOptions.max,
-                min: scope.options.renderOptions.min,
-                format: scope.options.numberFormat,
-                change: function () {
-                    // Need to set by widget to honor decimals option
-                    scope.setValue({value: this.value()});
-                }
-            });
+
+        /**
+         * Get kendo option from normal options and from renderOptions.kendoNumeric
+         * @returns {*}
+         */
+        getKendoNumericOptions: function wDoubleGetKendoNumericOptions () {
+            var options=this._super(); // get from wInt
+
+                console.log("double options",options, this.options );
+            options.decimals=this.options.renderOptions.decimalPrecision;
+            return options;
         },
 
-
-        getType: function () {
+        getType: function wDoubleGetType () {
             return "double";
         }
 

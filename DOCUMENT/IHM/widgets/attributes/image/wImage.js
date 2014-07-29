@@ -26,17 +26,15 @@ define([
                     this.options.renderOptions.htmlLink.url=this.options.value.url;
                     if (this.options.renderOptions.thumbnailWidth > 0) {
                         urlSep= (this.options.value.thumbnail.indexOf('?')>=0) ? "&" : "?";
-                        this.options.value.thumbnail += urlSep
-                            + "size=" + parseInt(this.options.renderOptions.thumbnailWidth)
-                            + "&width=" + parseInt(this.options.renderOptions.thumbnailWidth)
-                        ;
+                        this.options.value.thumbnail += urlSep +
+                            "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
+                            "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
                     } else if (this.options.renderOptions.thumbnailWidth === 0) {
                         this.options.value.thumbnail = this.options.value.url;
                     }
                     if (! this.options.renderOptions.htmlLink.title) {
                         this.options.renderOptions.htmlLink.title=this.options.value.displayValue;
                     }
-                    console.log("image option", this.options);
                 }
             }
             this._super();
@@ -48,7 +46,6 @@ define([
         getLink: function getLink() {
             var link = this._super();
             if (!link || !link.url) {
-                console.log("Image options", this.options);
                 link.url = this.options.value.url;
             }
 

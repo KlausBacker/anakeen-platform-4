@@ -170,7 +170,10 @@ define([
             });
         },
 
-        _initDeleteEvent: function _initDeleteEvent() {
+        /**
+         * Init events for delete button
+         */
+        _initDeleteEvent: function wAttributeInitDeleteEvent() {
             var currentWidget = this;
 
             // Compose delete button title
@@ -209,7 +212,11 @@ define([
                 }
             });
         },
-        _initLinkEvent: function _initLinkEvent() {
+        /**
+         * Init event when a hyperlink is associated to the attribute
+         *
+         */
+        _initLinkEvent: function wAttributeInitLinkEvent() {
             var htmlLink = this.getLink();
             var scope = this;
             if (htmlLink) {
@@ -298,7 +305,7 @@ define([
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
-        flashElement: function (currentElement) {
+        flashElement: function wAttributeFlashElement(currentElement) {
             if (!currentElement) {
                 currentElement = this.element;
             }
@@ -311,7 +318,7 @@ define([
             }, 10);
         },
 
-        setError: function (message, index) {
+        setError: function wAttributeSetError(message, index) {
             var kt;
             if (message) {
                 this.element.addClass("has-error");

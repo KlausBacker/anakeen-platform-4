@@ -71,7 +71,7 @@ class RenderOptions implements \JsonSerializable
             HtmltextRenderOptions::type => array(
                 HtmltextRenderOptions::toolbarOption => "Simple",
                 HtmltextRenderOptions::toolbarStartupExpandedOption => false,
-                HtmltextRenderOptions::heightOption => "100px"
+                HtmltextRenderOptions::heightOption => "120px"
             ) ,
             LongtextRenderOptions::type => array(
                 LongtextRenderOptions::displayedLineNumberOption => 0

@@ -11,34 +11,53 @@ define([
 
         options: {
             id: "",
-            type: "htmltext"
+            type: "htmltext",
+            renderOptions: {
+                toolbar: 'Basic',
+                height: '100px',
+                toolbarStartupExpanded: true,
+                ckEditorConfiguration: {}
+            },
+            locale: "en"
         },
 
         ckEditorInstance: null,
 
-        _initDom: function () {
+        _initDom: function wHtmlTextInitDom() {
             this._super();
             if (this.getMode() === "write") {
-                var options = _.extend(this._ckOptions(), this.options.renderOptions);
-
+                var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
                 this.ckEditorInstance = this.contentElements().ckeditor(
                     options
                 ).editor;
 
-                this.options.value.value=this.ckEditorInstance.getData();
+                this.options.value.value = this.ckEditorInstance.getData();
             }
         },
 
-        _ckOptions: function () {
+        /**
+         * Define option set for ckEditor widget
+         * @returns {{language: string, contentsCss: string[], removePlugins: string, toolbarCanCollapse: boolean, entities: boolean, filebrowserImageBrowseUrl: string, filebrowserImageUploadUrl: string, toolbar_Full: *[], toolbar_Default: *[], toolbar_Simple: *[], toolbar_Basic: *[], removeButtons: string}}
+         */
+        ckOptions: function wHtmlTextCkOptions() {
             var locale = this.options.locale;
+            if (this.options.renderOptions.toolbar) {
+                this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
+            }
+            if (this.options.renderOptions.height) {
+                this.options.renderOptions.ckEditorConfiguration.height = this.options.renderOptions.height;
+            }
+            if (typeof this.options.renderOptions.toolbarStartupExpanded !== "undefined") {
+                this.options.renderOptions.ckEditorConfiguration.toolbarStartupExpanded = this.options.renderOptions.toolbarStartupExpanded;
+            }
             return   {
                 language: locale.substring(0, 2),
                 contentsCss: ['lib/ckeditor/contents.css', 'css/dcp/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
                 toolbarCanCollapse: true,
                 entities: false, // no use HTML entities
-                filebrowserImageBrowseUrl:'?sole=Y&app=FDL&action=CKIMAGE',
-                filebrowserImageUploadUrl:'?sole=Y&app=FDL&action=CKUPLOAD',
+                filebrowserImageBrowseUrl: '?sole=Y&app=FDL&action=CKIMAGE',
+                filebrowserImageUploadUrl: '?sole=Y&app=FDL&action=CKUPLOAD',
                 toolbar_Full: [
                     { name: 'document', items: [ 'Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
                     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -102,7 +121,8 @@ define([
                 });
 
                 this.ckEditorInstance.on("blur", function () {
-                    var ktTarget = scope.element.find(".input-group");;
+                    var ktTarget = scope.element.find(".input-group");
+                    ;
                     scope.hideInputTooltip(ktTarget);
                     scope.element.find(".cke").removeClass("k-state-focused");
                 });
@@ -117,11 +137,10 @@ define([
         },
         /**
          * No use parent change
-         * @private
          */
-     _initChangeEvent: function _initChangeEvent() {
+        _initChangeEvent: function _initChangeEvent() {
 
-     },
+        },
 
         getWidgetValue: function () {
             return this.contentElements().val();
@@ -144,7 +163,7 @@ define([
 
                 //noinspection JSHint
                 if (originalValue.trim() != value.value.trim()) {
-                    console.log("Flash", {original:originalValue, newV : value.value});
+                    console.log("Flash", {original: originalValue, newV: value.value});
 
                     // Modify value only if different
                     this.contentElements().val(value.value);
