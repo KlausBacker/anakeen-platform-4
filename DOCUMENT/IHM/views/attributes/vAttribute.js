@@ -11,6 +11,7 @@ define([
     'widgets/attributes/timestamp/wTimestamp',
     'widgets/attributes/time/wTime',
     'widgets/attributes/image/wImage',
+    'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
 ], function (_, Backbone, Mustache) {
@@ -295,6 +296,8 @@ define([
                     return $.fn.dcpTime;
                 case "image" :
                     return $.fn.dcpImage;
+                case "file" :
+                    return $.fn.dcpFile;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;

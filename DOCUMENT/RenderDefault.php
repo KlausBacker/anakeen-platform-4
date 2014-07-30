@@ -103,23 +103,7 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "label" => array(
                     "file" => "DOCUMENT/IHM/widgets/attributes/label/label.mustache"
-                ) , /*
-                "text" => array(
-                    "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
-                    ) ,
-                    "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
-                    )
                 ) ,
-                "int" => array(
-                    "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
-                    ) ,
-                    "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
-                    )
-                ) ,*/
                 "longtext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -127,31 +111,15 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) , /*
-                "date" => array(
+                ),
+                "file" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/file/fileWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/file/fileRead.mustache"
                     )
                 ) ,
-                "timestamp" => array(
-                    "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
-                    ) ,
-                    "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
-                    )
-                ) ,
-                "time" => array(
-                    "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
-                    ) ,
-                    "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
-                    )
-                ) ,*/
                 "htmltext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -159,15 +127,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
-                ) , /*
-                "double" => array(
-                    "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
-                    ) ,
-                    "read" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
-                    )
-                ) ,*/
+                ) ,
                 "docid" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
