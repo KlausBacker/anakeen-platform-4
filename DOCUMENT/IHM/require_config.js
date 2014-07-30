@@ -30,7 +30,7 @@
         }
     };
     if (window.dcp.ws) {
-        config.urlArgs = "?ws="+window.dcp.ws;
+        config.urlArgs = "ws="+window.dcp.ws;
     }
     require.config(config);
 })();
