@@ -15,29 +15,35 @@ define([
             multiple: false,
             mode: "read",
             documentMode: "read",
-            errorMessage: null
+            errorMessage: null,
+            title:null,
+            documentModel : null
         },
 
         initialize: function () {
             this.listenTo(this, "change:documentMode", this._computeMode);
             this.listenTo(this, "change:visibility", this._computeMode);
             this.listenTo(this, "change:type", this._computeValueMode);
+
             if (_.isArray(this.get("value"))) {
                 this.set("value", _.extend({}, this.get("value")));
             }
             this._computeValueMode();
             this._computeMode();
+            this.set("title",this.id + '('+this.get("label")+')');
         },
 
-        setContentCollection: function (attributes) {
+        setContentCollection: function (attributes, documentModel) {
             var content = this.get("content"), collection = new CollectionContentAttributes();
             _.each(content, function (currentChild) {
                 collection.push(attributes.get(currentChild.id));
             });
             this.set("content", collection);
+            this.set("documentModel", documentModel);
         },
 
         setValue: function (value, index) {
+            console.log("model setValue", this.id, value, index);
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -49,6 +55,7 @@ define([
                 this.set("value", currentValue);
 
             } else {
+                console.log("MODEL SET TO", this.id, value);
                 this.set("value", value);
             }
         },
@@ -135,8 +142,7 @@ define([
          * @param toIndex
          */
         moveIndexValue: function moveIndexValue(fromIndex, toIndex) {
-            var currentValue, oldValue, fromValue;
-            var newValue;
+            var currentValue, fromValue;
             if (!this.get("multiple")) {
                 throw new Error("Move only multiple attribute : " + this.id);
             }

@@ -9,13 +9,15 @@ define([
 
         options: {
             id: "",
-            type: "docid"
+            type: "docid",
+            renderOptions: {
+                kendoMultiSelectConfiguration: {}
+            }
         },
 
         kendoWidget: null,
 
-        _initDom: function () {
-            var scope = this;
+        _initDom: function wDocidInitDom() {
             if (this._isMultiple()) {
                 this.options.values = _.toArray(this.options.value);
 
@@ -56,7 +58,7 @@ define([
                     this._decorateSingleValue(this.kendoWidget);
                 }
                 if (this.options.value && this.options.value.value !== null) {
-                    if (!this._model().hasMultipleOption()) {
+                    if (!this.hasMultipleOption()) {
                         this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
@@ -64,7 +66,7 @@ define([
             }
         },
 
-        _initEvent: function _initEvent() {
+        _initEvent: function wDocidInitEvent() {
 
             if (this.getMode() === "read") {
                 this._initLinkEvent();
@@ -75,11 +77,15 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _focusInput: function () {
+        _focusInput: function wDocidFocusInput() {
             return this.element.find('input');
         },
-        _decorateSingleValue: function (inputValue) {
 
+        /**
+         * When docid is not multiple, it is a multiselect limited to one element
+         * @param inputValue select  element
+         */
+        _decorateSingleValue: function wDocidDecorateSingleValue(inputValue) {
             this.options.values = [];
             if (this.options.value) {
                 this.options.values.push(this.options.value);
@@ -87,14 +93,12 @@ define([
 
             this._decorateMultipleValue(inputValue, {
                     maxSelectedItems: 1
-
                 }
             );
         },
 
-        _decorateMultipleValue: function (inputValue, extraOptions) {
+        _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions) {
             var scope = this;
-            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
 
 
             var options = {
@@ -104,13 +108,11 @@ define([
                     '#if (data.error) {#' +
                     '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>',
-
-
                 autoBind: false,
                 dataTextField: "docTitle",
                 dataValueField: "docId",
 
-                value: _.map(this.options.values, function (val, index) {
+                value: _.map(this.options.values, function (val) {
                     var info = {};
                     info.docTitle = val.displayValue;
                     info.docId = val.value;
@@ -120,47 +122,25 @@ define([
                     type: "json",
                     serverFiltering: true,
                     transport: {
-                        read: {
-                            type: "POST",
-                            url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
-                                "&id=" + window.dcp.documentData.document.properties.id +
-                                "&fromid=" + window.dcp.documentData.document.properties.fromid,
-                            data: {
-                                "attributes": documentModel.getValues()
-                            }
-                        }
+                        read : scope.options.autocompleteRequest
+
                     }
                 },
                 select: function (event) {
                     var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
-                    _.each(dataItem.values, function (val, aid) {
-                        if (typeof val === "object") {
-                            var attrModel = documentModel.get('attributes').get(aid);
-                            if (attrModel) {
-                                _.defer(function () {
+                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
 
-                                    if (attrModel.hasMultipleOption()) {
-                                        attrModel.addValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                                    } else {
-                                        attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                                    }
-                                });
-                            }
-                        }
-                    });
                 },
                 change: function (event) {
-                    var valueIndex = scope._getIndex();
                     // set in case of delete item
-                    var attrModel = documentModel.get('attributes').get(scope.options.id);
-                    var oldValues = attrModel.get("value");
+                    var oldValues = scope.options.value;
                     var displayValue;
                     var newValues = [];
-                    if (attrModel.inArray()) {
-                        oldValues = oldValues[valueIndex];
-                    }
+
+                    console.log("Old", oldValues, scope.options.value);
+
                     _.each(this.value(), function (val) {
                         displayValue = _.where(oldValues, {value: val});
                         if (displayValue.length > 0) {
@@ -170,13 +150,17 @@ define([
                         }
                         newValues.push({value: val, displayValue: displayValue});
                     });
-                    attrModel.setValue(newValues, valueIndex);
+                    scope.setValue(newValues, event);
 
                 }
             };
 
             if (extraOptions) {
                 options = _.extend(options, extraOptions);
+            }
+
+            if (this.options.renderOptions.kendoMultiSelectConfiguration) {
+                options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
             }
             inputValue.kendoMultiSelect(options);
             this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
@@ -186,11 +170,20 @@ define([
 
             this.element.find('.dcpAttribute__content--docid--button[title]').kendoTooltip();
         },
-        setValue: function (value) {
+        /**
+         * Return true if attribut has multiple option
+         * @returns bool
+         */
+        hasMultipleOption: function wDocidHasMultipleOption() {
+            return (this.options.options && this.options.options.multiple === "yes");
+        },
 
-            this._super(value);
+        setValue: function (value, event) {
+
+            this._super(value, event);
             if (this.getMode() === "write") {
-                if (!this._model().hasMultipleOption()) {
+                console.log("Docid W", this);
+                if (!this.hasMultipleOption()) {
                     if (!_.isArray(value)) {
                         if (value.value !== null) {
                             value = [value];
@@ -208,10 +201,10 @@ define([
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
-                var newValues = _.map(value, function (val, index) {
+                var newValues = _.map(value, function (val) {
                     return  val.value;
                 });
-                var newData = _.map(value, function (val, index) {
+                var newData = _.map(value, function (val) {
                     var info = {};
                     info.docTitle = val.displayValue;
                     info.docId = val.value;
@@ -234,12 +227,7 @@ define([
             }
         },
 
-        _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()] && window.dcp.templates.attribute[this.getType()][name]) {
-                return window.dcp.templates.attribute[this.getType()][name];
-            }
-            throw new Error("Unknown template docid " + name);
-        },
+
 
 
         getType: function () {

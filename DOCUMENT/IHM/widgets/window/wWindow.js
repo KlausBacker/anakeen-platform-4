@@ -17,6 +17,10 @@ define([
                     duration: 1000
                 }
             },
+            actions: [
+                "Maximize",
+                "Close"
+            ],
             visible: false,
             height: "300px",
             width: "400px",

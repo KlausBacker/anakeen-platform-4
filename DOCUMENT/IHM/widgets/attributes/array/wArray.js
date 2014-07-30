@@ -75,7 +75,7 @@ define([
 
 
                 }
-                this.addAllLines();
+                this.addAllLines(this.options.nbLines);
                 this.element.find('tbody').kendoDraggable({
                     axis: "y",
                     container: scope.element.find('tbody'),
@@ -149,7 +149,6 @@ define([
                 } else {
                     currentWidget.options.nbLines++;
                     currentWidget.addLine(sLine, true);
-                    currentWidget._indexLine();
                 }
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__copy", function () {
@@ -157,7 +156,6 @@ define([
 
                 currentWidget.options.nbLines++;
                 currentWidget.copyLine(sLine, true);
-                currentWidget._indexLine();
 
             });
             this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
@@ -165,17 +163,32 @@ define([
             });
         },
 
-        _model: function () {
-            return this._documentModel().get('attributes').get(this.options.id);
-        },
 
-        _documentModel: function () {
-            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
+        setLines: function wArraySetLines(lineNumber) {
+            console.log("Need array lines", lineNumber);
+            var currentLineNumber = this.options.nbLines;
+            var i;
+            if (lineNumber > currentLineNumber) {
+                console.log("add linee", lineNumber - currentLineNumber);
+                for (i = 0; i < (lineNumber - currentLineNumber); i++) {
+                    this.addLine(currentLineNumber + i);
+                    console.log("add line number", currentLineNumber + 1 + i);
+                }
+            } else if (lineNumber < currentLineNumber) {
+                console.log("TODO REMOVE ARRAY LINES", currentLineNumber - lineNumber);
+                for (i = 0; i < (currentLineNumber - lineNumber ); i++) {
+                    this.removeLine(this.options.nbLines - 1);
+                    console.log("REMOVE line number", this.options.nbLines - 1);
+                }
+
+            }
+
         },
-        addAllLines: function () {
+        addAllLines: function (lineNumber) {
             var i;
             this.element.find(".dcpArray__body").empty();
-            for (i = 0; i < this.options.nbLines; i++) {
+
+            for (i = 0; i < lineNumber; i++) {
                 this.addLine(i);
             }
             this._trigger("linesGenerated");
@@ -192,6 +205,7 @@ define([
             } else {
                 this.element.find(".dcpArray__body").append($content);
             }
+            this._indexLine();
             return $content;
         },
 
@@ -227,6 +241,7 @@ define([
                     i++;
                 }
             );
+            console.log("index line", i)
             this.options.nbLines = i;
         },
 
@@ -235,11 +250,13 @@ define([
             this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
         },
 
-        _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute.array && window.dcp.templates.attribute.array[name]) {
-                return window.dcp.templates.attribute.array[name];
+        _getTemplate: function (key) {
+            if (this.options.templates[key]) {
+                return this.options.templates[key];
             }
-            throw new Error("Unknown array template " + name);
+
+            throw new Error("Unknown template  " + key + "/" + this.getType());
+
         }
     });
 });

@@ -28,8 +28,8 @@ define([
         },
 
         _getTemplate: function () {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute.label) {
-                return window.dcp.templates.attribute.label;
+            if (this.options.templates.label) {
+                return this.options.templates.label;
             }
             throw new Error("Unknown label template ");
         }

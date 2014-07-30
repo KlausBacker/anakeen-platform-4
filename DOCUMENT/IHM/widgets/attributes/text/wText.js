@@ -13,9 +13,6 @@ define([
             type: "text"
         },
         kendoWidget: null,
-        contentElements: function () {
-            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
-        },
         _initDom: function () {
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
@@ -23,16 +20,13 @@ define([
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this.activateAutocomplete(this.kendoWidget);
             }
-
         },
 
         _initEvent: function _initEvent() {
             if (this.getMode() === "write") {
                 this._initChangeEvent();
             }
-            if (this.getMode() === "read") {
-                this._initLinkEvent();
-            }
+
             this._super();
         },
 
@@ -46,7 +40,7 @@ define([
                 this.contentElements().on("change." + this.eventNamespace, function () {
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
-                    //newValue.displayValue = newValue.value;
+                    newValue.displayValue=newValue.value;
                     currentWidget.setValue(newValue);
                 });
             }
@@ -59,8 +53,6 @@ define([
          */
         activateAutocomplete: function (inputValue) {
             var scope = this;
-            var documentModel = window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-            var valueIndex = this.options.index;
             inputValue.kendoAutoComplete({
                 dataTextField: "title",
                 filter: "contains",
@@ -75,29 +67,17 @@ define([
                     type: "json",
                     serverFiltering: true,
                     transport: {
-                        read: {
-                            type: "POST",
-                            url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + scope.options.id +
-                                "&id=" + window.dcp.documentData.document.properties.id +
-                                "&fromid=" + window.dcp.documentData.document.properties.fromid,
-                            data: {
-                                "attributes": documentModel.getValues()
-                            }
-                        }
+
+                        read : scope.options.autocompleteRequest
+
                     }
                 },
                 select: function (event) {
+                    var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
-                    _.each(dataItem.values, function (val, aid) {
-                        if (typeof val === "object") {
-                            var attrModel = documentModel.get('attributes').get(aid);
-                            if (attrModel) {
-                                _.defer(function () {
-                                    attrModel.setValue({value: val.value, displayValue: val.displayValue}, valueIndex);
-                                });
-                            }
-                        }
-                    });
+                    event.preventDefault(); // no fire change event
+                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
+
                 }
             });
             this.element.find('.dcpAttribute__content--autocomplete--button').on("click", function (event) {
@@ -107,34 +87,43 @@ define([
             this.element.find('.dcpAttribute__content--autocomplete--button[title]').kendoTooltip();
 
         },
-        setValue: function (value) {
+
+        /**
+         * Modify value to widget and send notification to the view
+         * @param value
+         */
+        setValue: function wTextSetValue(value) {
+
+            // call wAttribute:::setValue() :send notification
             this._super(value);
             // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
             var contentElement = this.contentElements();
-            var originalValue = contentElement.val();
+            var originalValue = this.getWidgetValue();
 
             if (this.getMode() === "write") {
                 // : explicit lazy equal
                 //noinspection JSHint
-                if (originalValue != value.value) {
+                console.log("Try text here", {newv:value.value,ori:originalValue} );
+               if (value.value === null && originalValue === '') {
+                    originalValue=null;
+                }
+                if (originalValue !== value.value) {
                     // Modify value only if different
-                    contentElement.val(value.value);
+                    console.log("Modify text here", {newv:value.value,ori:this.getWidgetValue()} );
+                    this.contentElements().val(value.value);
                     this.flashElement();
                 }
-
             } else if (this.getMode() === "read") {
-                contentElement.text(value.displayValue);
+                console.log("READ UPDATE TO", this.options.id,value);
+               // contentElement.text(value.displayValue);
+                console.log("redraw with", this.options.id, this.options.value, value);
+                this.redraw();
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
         },
 
-        _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()] && window.dcp.templates.attribute[this.getType()][name]) {
-                return window.dcp.templates.attribute[this.getType()][name];
-            }
-            throw new Error("Unknown template text " + name);
-        },
+
 
         getType: function () {
             return "text";

@@ -12,14 +12,15 @@ define([
             id: null,
             type: "abstract",
             mode: "read",
-            index: -1
+            index: -1,
+            deleteLabels: ""
 
         },
 
         _create: function () {
             if (typeof this.options.value === "undefined") {
-                this.options.value=null;
-                this.options.displayValue=null;
+                this.options.value = null;
+                this.options.displayValue = null;
             }
             if (this.options.value === null) {
                 this.options.value = {};
@@ -44,9 +45,9 @@ define([
         },
         _emptyValue: function () {
             if (_.isEmpty(this.options.value) || this.options.value.value === null) {
-                var model = this._model();
-                if (model) {
-                    return model.getOption('showEmptyContent');
+
+                if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
+                    return this.options.renderOptions.showEmptyContent;
                 }
                 return "";
             }
@@ -62,33 +63,45 @@ define([
                 this._initButtonsEvent();
                 this._initFocusEvent();
             }
+            if (this.getMode() === "read") {
+                this._initLinkEvent();
+            }
+        },
+
+        /**
+         * Redraw element with updated values
+         */
+        redraw: function wAttributeRedraw() {
+            this.element.html('');
+            this._initDom();
+            this._initEvent();
         },
 
         /**
          * Define inputs for focus
          * @protected
          */
-        _focusInput: function () {
-            console.log("FOCUS default");
+        _focusInput: function wAttributeFocusInput() {
             return this.element.find('input[name="' + this.options.id + '"]');
         },
 
-        _initFocusEvent: function _initFocusEvent() {
+        _initFocusEvent: function wAttributeInitFocusEvent() {
             if (this.options.renderOptions.inputHtmlTooltip) {
                 var scope = this;
 
+                var inputTargetFilter = ".dcpAttribute__content";
                 this._focusInput().on("focus", function (event) {
-                    var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
+                    var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.showInputTooltip(ktTarget);
                 });
                 this._focusInput().on("blur", function (event) {
-                    var ktTarget = $(event.currentTarget).closest(".dcpAttribute__contentWrapper");
+                    var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.hideInputTooltip(ktTarget);
                 });
             }
         },
 
-        hideInputTooltip: function (ktTarget) {
+        hideInputTooltip: function wAttributeHideInputTooltip(ktTarget) {
             var kTooltip = ktTarget.data("kendoTooltip");
             if (kTooltip) {
                 kTooltip.hide();
@@ -157,48 +170,39 @@ define([
             });
         },
 
-        _initDeleteEvent: function _initDeleteEvent() {
+        /**
+         * Init events for delete button
+         */
+        _initDeleteEvent: function wAttributeInitDeleteEvent() {
             var currentWidget = this;
-            var attrModel = currentWidget._model();
-            var docModel = currentWidget._documentModel();
-            var attrToClear = attrModel.attributes.helpOutputs;
 
-            if (!attrToClear) {
-                attrToClear = [attrModel.id];
-            } else {
-                attrToClear = _.toArray(attrToClear);
-            }
             // Compose delete button title
             var $deleteButton = this.element.find(".dcpAttribute__content__button--delete");
             var titleDelete = $deleteButton.attr('title');
-            var attrLabels = _.map(attrToClear, function (aid) {
-                var attr = docModel.get('attributes').get(aid);
-                if (attr) {
-                    return attr.attributes.label;
-                }
-                return '';
-            });
-            titleDelete += attrLabels.join(", ");
-            $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
-                console.log("Click to delete");
 
-                _.each(attrToClear, function (aid) {
-                    var attr = docModel.get('attributes').get(aid);
-                    if (attr) {
-                        if (attr.hasMultipleOption()) {
-                            attr.setValue([], currentWidget._getIndex());
-                        } else {
-                            attr.setValue({value: null, displayValue: ''}, currentWidget._getIndex());
-                        }
-                    }
+
+            titleDelete += this.options.deleteLabels;
+
+            $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
+                console.log("Click to delete", {index: currentWidget._getIndex() });
+
+                // Hide tooltip because it mask the input focus
+                var kt = $(this).data("kendoTooltip");
+                if (kt) {
+                    kt.hide();
+                }
+                currentWidget._trigger("delete", event, {index: currentWidget._getIndex(), id: currentWidget.options.id});
+                // main input is focuses after deletion
+                _.defer(function () {
+                    currentWidget.element.find("input").focus();
                 });
 
-                currentWidget.element.find("input").focus();
             }).attr('title', titleDelete);
 
             this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
                 position: "left",
                 autoHide: true,
+                callout: true,
                 show: function (event) {
                     var contain = this.popup.element.parent();
                     var kleft = parseFloat(contain.css("left"));
@@ -208,7 +212,11 @@ define([
                 }
             });
         },
-        _initLinkEvent: function _initLinkEvent() {
+        /**
+         * Init event when a hyperlink is associated to the attribute
+         *
+         */
+        _initLinkEvent: function wAttributeInitLinkEvent() {
             var htmlLink = this.getLink();
             var scope = this;
             if (htmlLink) {
@@ -254,8 +262,8 @@ define([
                         }
                         this.popup.element.addClass("dcpAttribute__editlabel");
                     }
-
                 });
+
 
             }
         },
@@ -270,7 +278,7 @@ define([
          * Return the url of common link
          * @returns {*}
          */
-        getLink: function getLink() {
+        getLink: function wAttributeGetLink() {
             if (this.options.renderOptions && this.options.renderOptions.htmlLink) {
                 return this.options.renderOptions.htmlLink;
             }
@@ -284,31 +292,24 @@ define([
             return this.options.index;
         },
 
-        _model: function () {
 
-            return this._documentModel().get('attributes').get(this.options.id);
-        },
-
-        _documentModel: function () {
-            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-        },
-        _getTemplate: function () {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.getType()]) {
-                return window.dcp.templates.attribute[this.getType()];
+        _getTemplate: function (key) {
+            if (this.options.templates[key]) {
+                return this.options.templates[key];
             }
-            return "";
+            throw new Error("Unknown template  " + key + "/" + this.options.type);
+
         },
 
         _isMultiple: function () {
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
-        flashElement: function (currentElement) {
+        flashElement: function wAttributeFlashElement(currentElement) {
             if (!currentElement) {
                 currentElement = this.element;
             }
             currentElement.addClass('dcpAttribute__content--flash');
-
             _.delay(function () {
                 currentElement.removeClass('dcpAttribute__content--flash').addClass('dcpAttribute__content--endflash');
                 _.delay(function () {
@@ -317,9 +318,8 @@ define([
             }, 10);
         },
 
-        setError: function (message, index) {
-            var parentId = this._model().get('parent');
-            var greatParentId;
+        setError: function wAttributeSetError(message, index) {
+            var kt;
             if (message) {
                 this.element.addClass("has-error");
                 this.element.kendoTooltip({
@@ -335,28 +335,15 @@ define([
                         this.popup.element.addClass("has-error");
                     }
                 });
-                // this.element.find('input').focus();
-                if (parentId) {
-                    $('.dcpFrame__label[data-id="' + parentId + '"]').addClass("has-warning");
-                    greatParentId = this._documentModel().get('attributes').get(parentId).get('parent');
 
-                    if (greatParentId) {
-                        $('.dcpTab__label[data-id="' + greatParentId + '"]').addClass("has-warning");
-                    }
-
-                }
             } else {
                 this.element.removeClass("has-error");
-                this.element.data("kendoTooltip").destroy();
-                if (parentId) {
-                    $('.dcpFrame__label[data-id="' + parentId + '"]').removeClass("has-warning");
-                    greatParentId = this._documentModel().get('attributes').get(parentId).get('parent');
-
-                    if (greatParentId) {
-                        $('.dcpTab__label[data-id="' + greatParentId + '"]').removeClass("has-warning");
-                    }
-
+                kt = this.element.data("kendoTooltip");
+                if (kt) {
+                    kt.destroy();
                 }
+
+
             }
         },
         getType: function () {
@@ -374,23 +361,38 @@ define([
             return this.options.value;
         },
 
-        setValue: function (value, event) {
-            console.log("dcpAttribute::setValue trigger", this.options.value, value);
-            if (!_.isEqual(this.options.value, value)) {
+        /**
+         * Identify the input where is the raw value
+         * @returns {*}
+         */
+        contentElements: function () {
+            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
+        },
+
+        getWidgetValue: function () {
+            return this.contentElements().val();
+
+        },
+        /**
+         * Send notification to the view
+         * @param value
+         * @param event
+         */
+        setValue: function wAttributeSetValue(value, event) {
+            console.log("dcpAttribute::setValue trigger", this.options.id, this.options.value, value);
+            if (!_.isEqual(this.options.value.value, value.value)) {
                 this.options.value = value;
-                console.log("send change trigger from widget", this.options.id, this._getIndex());
+                console.log("send change trigger from widget", this.options.id, value, this._getIndex());
                 this._trigger("change", event, {
                     id: this.options.id,
                     value: value,
                     index: this._getIndex()
                 });
             }
-        },
-
-
-        getTypedWidgetClass: function (type) {
-            return this._model().getTypedWidgetClass(type);
         }
+
+
+
 
     });
 });

@@ -11,4 +11,17 @@ class DocidRenderOptions extends CommonRenderOptions
 {
     
     const type = "docid";
+    const kendoMultiSelectConfigurationOption = "kendoMultiSelectConfiguration";
+    /**
+     * Set extra configuration for kendoMultiSelect widget
+     *
+     * @note use only in edition mode
+     * @param array $config indexed array
+     *
+     * @return $this
+     */
+    public function setKendoMultiSelectConfiguration($config)
+    {
+        return $this->setOption(self::kendoMultiSelectConfigurationOption, $config);
+    }
 }

@@ -18,6 +18,7 @@ class RenderOptions implements \JsonSerializable
     protected $accountOptions = null;
     protected $thesaurusOptions = null;
     protected $intOptions = null;
+    protected $imageOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
     protected $htmltextOptions = null;
@@ -28,6 +29,10 @@ class RenderOptions implements \JsonSerializable
     
     public function __construct()
     {
+        $imageLinkOption = new HtmlLinkOptions();
+        $imageLinkOption->target = "_dialog";
+        $imageLinkOption->windowHeight = "300px";
+        $imageLinkOption->windowWidth = "400px";
         $this->setCustomOption(CommonRenderOptions::type, array(
             CommonRenderOptions::showEmptyContentOption => null,
             CommonRenderOptions::labelPositionOption => CommonRenderOptions::leftPosition,
@@ -59,10 +64,14 @@ class RenderOptions implements \JsonSerializable
             "money" => array(
                 "format" => "%!.2n"
             ) ,
+            ImageRenderOptions::type => array(
+                ImageRenderOptions::htmlLinkOption => $imageLinkOption,
+                ImageRenderOptions::downloadInlineOption => true
+            ) ,
             HtmltextRenderOptions::type => array(
                 HtmltextRenderOptions::toolbarOption => "Simple",
-                HtmltextRenderOptions::toolbarStartupExpandedOption => true,
-                HtmltextRenderOptions::heightOption => "100px"
+                HtmltextRenderOptions::toolbarStartupExpandedOption => false,
+                HtmltextRenderOptions::heightOption => "120px"
             ) ,
             LongtextRenderOptions::type => array(
                 LongtextRenderOptions::displayedLineNumberOption => 0
@@ -120,6 +129,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->textOptions->setScope($attrid);
         return $this->textOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return ImageRenderOptions
+     */
+    public function image($attrid = '')
+    {
+        if ($this->imageOptions === null) {
+            $this->imageOptions = new ImageRenderOptions($this);
+        }
+        $this->imageOptions->setScope($attrid);
+        return $this->imageOptions;
     }
     /**
      * @param string $attrid

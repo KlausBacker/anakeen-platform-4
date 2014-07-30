@@ -11,35 +11,53 @@ define([
 
         options: {
             id: "",
-            type: "htmltext"
+            type: "htmltext",
+            renderOptions: {
+                toolbar: 'Basic',
+                height: '100px',
+                toolbarStartupExpanded: true,
+                ckEditorConfiguration: {}
+            },
+            locale: "en"
         },
 
         ckEditorInstance: null,
 
-        _initDom: function () {
+        _initDom: function wHtmlTextInitDom() {
             this._super();
             if (this.getMode() === "write") {
-
-
-                var options = _.extend(this._ckOptions(), this.options.renderOptions);
-
-
+                var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
                 this.ckEditorInstance = this.contentElements().ckeditor(
                     options
                 ).editor;
+
+                this.options.value.value = this.ckEditorInstance.getData();
             }
         },
 
-
-        _ckOptions: function () {
-            var locale = this._documentModel().get('locale');
+        /**
+         * Define option set for ckEditor widget
+         * @returns {{language: string, contentsCss: string[], removePlugins: string, toolbarCanCollapse: boolean, entities: boolean, filebrowserImageBrowseUrl: string, filebrowserImageUploadUrl: string, toolbar_Full: *[], toolbar_Default: *[], toolbar_Simple: *[], toolbar_Basic: *[], removeButtons: string}}
+         */
+        ckOptions: function wHtmlTextCkOptions() {
+            var locale = this.options.locale;
+            if (this.options.renderOptions.toolbar) {
+                this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
+            }
+            if (this.options.renderOptions.height) {
+                this.options.renderOptions.ckEditorConfiguration.height = this.options.renderOptions.height;
+            }
+            if (typeof this.options.renderOptions.toolbarStartupExpanded !== "undefined") {
+                this.options.renderOptions.ckEditorConfiguration.toolbarStartupExpanded = this.options.renderOptions.toolbarStartupExpanded;
+            }
             return   {
                 language: locale.substring(0, 2),
                 contentsCss: ['lib/ckeditor/contents.css', 'css/dcp/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
                 toolbarCanCollapse: true,
-                filebrowserImageBrowseUrl:'?sole=Y&app=FDL&action=CKIMAGE',
-                filebrowserImageUploadUrl:'?sole=Y&app=FDL&action=CKUPLOAD',
+                entities: false, // no use HTML entities
+                filebrowserImageBrowseUrl: '?sole=Y&app=FDL&action=CKIMAGE',
+                filebrowserImageUploadUrl: '?sole=Y&app=FDL&action=CKUPLOAD',
                 toolbar_Full: [
                     { name: 'document', items: [ 'Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
                     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -93,17 +111,18 @@ define([
             this._super();
             if (this.ckEditorInstance) {
                 this.ckEditorInstance.on("change", function () {
-                    scope._model().setValue({value: this.getData()}, scope._getIndex());
+                    scope.setValue({value: this.getData()});
                 });
 
                 this.ckEditorInstance.on("focus", function () {
-                    var ktTarget = scope.element;
+                    var ktTarget = scope.element.find(".input-group");
                     scope.showInputTooltip(ktTarget);
                     scope.element.find(".cke").addClass("k-state-focused");
                 });
 
                 this.ckEditorInstance.on("blur", function () {
-                    var ktTarget = scope.element;
+                    var ktTarget = scope.element.find(".input-group");
+                    ;
                     scope.hideInputTooltip(ktTarget);
                     scope.element.find(".cke").removeClass("k-state-focused");
                 });
@@ -116,27 +135,49 @@ define([
         _focusInput: function () {
             return this.element;
         },
+        /**
+         * No use parent change
+         */
+        _initChangeEvent: function _initChangeEvent() {
 
+        },
 
-        setValue: function (value) {
+        getWidgetValue: function () {
+            return this.contentElements().val();
+        },
+
+        /**
+         *
+         * @param value
+         */
+        setValue: function wHtmltextSetValue(value) {
             if (value.value === null) {
                 // ckEditor restore original value if set to null
                 value.value = '';
             }
+            //value.value=value.value.trim();
             if (this.getMode() === "write") {
                 // Flash element only
-                var contentElement = this.contentElements();
                 var originalValue = this.ckEditorInstance.getData();
                 // : explicit lazy equal
+
                 //noinspection JSHint
-                if (originalValue != value.value) {
+                if (originalValue.trim() != value.value.trim()) {
+                    console.log("Flash", {original: originalValue, newV: value.value});
+
                     // Modify value only if different
+                    this.contentElements().val(value.value);
                     // this.ckEditorInstance.setData(value.value);
-                    this.flashElement($('iframe'));
+                    this.flashElement(this.element.find('iframe'));
                 }
+            } else if (this.getMode() === "read") {
+                contentElement.text(value.displayValue);
+            } else {
+                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
 
-            this._super(value);
+            // call wAttribute::setValue()
+            $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
         },
         getType: function () {
             return "htmltext";

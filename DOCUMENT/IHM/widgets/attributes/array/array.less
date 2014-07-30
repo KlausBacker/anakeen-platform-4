@@ -27,6 +27,7 @@ td.dcpArray__head__toolCell, .dcpArray__content__toolCell {
   background-color:fade(@brand-primary,90%);
   cursor: move;
   margin:0;
+  opacity:90%;
 }
 .dcpArray__dragLine input,
 .dcpArray__dragLine button,
@@ -39,4 +40,13 @@ td.dcpArray__head__toolCell, .dcpArray__content__toolCell {
 .dcpArray__dragLine .dcpArray__content__line--selected .dcpArray__content__toolCell__delete
 {
   visibility: hidden;
+}
+
+
+
+/**
+ * To fix all width column to be proportionnal to thead
+ */
+.dcpArray__wrapper table{
+  table-layout: fixed;
 }

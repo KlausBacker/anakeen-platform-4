@@ -89,9 +89,18 @@ class RenderDefault implements RenderConfig
                 "simpleWrapper" => array(
                     "file" => "DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
                 ) ,
+                
+                "default" => array( // use it when no type is defined
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                    )
+                ) ,
                 "label" => array(
                     "file" => "DOCUMENT/IHM/widgets/attributes/label/label.mustache"
-                ) ,
+                ) , /*
                 "text" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
@@ -107,7 +116,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) ,
+                ) ,*/
                 "longtext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -115,7 +124,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) ,
+                ) , /*
                 "date" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
@@ -139,7 +148,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) ,
+                ) ,*/
                 "htmltext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -147,7 +156,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
-                ) ,
+                ) , /*
                 "double" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
@@ -155,13 +164,29 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) ,
+                ) ,*/
                 "docid" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ) ,
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                    )
+                ) ,
+                "account" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                    )
+                ) ,
+                "image" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/image/imageRead.mustache"
                     )
                 ) ,
                 "frame" => array(

@@ -18,6 +18,7 @@ define([
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
             this.listenTo(this.model.get("content"), 'reset', this.render);
+            this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateLabel = window.dcp.templates.attribute.tab.label;
         },
@@ -30,8 +31,18 @@ define([
             return this;
         },
 
+   setError: function (event, data) {
+
+            console.log("tab error",data ,this.model.get('parent') );
+       if (data) {
+            this.$el.find(".dcpTab__label").addClass("has-warning");
+       } else {
+            this.$el.find(".dcpTab__label").removeClass("has-warning");
+       }
+
+        },
         updateLabel : function () {
-            this.$el.find(".dcpFrame__label").text(this.model.get("label"));
+            this.$el.find(".dcpTab__label").text(this.model.get("label"));
         }
     });
 

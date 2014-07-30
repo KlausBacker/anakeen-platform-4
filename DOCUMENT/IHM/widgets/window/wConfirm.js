@@ -22,6 +22,9 @@ define([
             confirm : function () {
 
             },
+            actions: [
+                "Close"
+            ],
             height : "150px"
 
         },

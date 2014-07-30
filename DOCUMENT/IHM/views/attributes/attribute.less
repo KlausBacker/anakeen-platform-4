@@ -54,12 +54,14 @@
 }
 
 .dcpAttribute__content--flash input,
+.dcpAttribute__content--flash textarea,
 .dcpAttribute__content--flash .k-input ,
 iframe.dcpAttribute__content--flash {
   background-color: @brand-info;
 }
 
 .dcpAttribute__content--endflash input,
+.dcpAttribute__content--endflash textarea,
 .dcpAttribute__content--endflash .k-input,
 iframe.dcpAttribute__content--endflash  {
   background-color: inherit;
@@ -82,6 +84,8 @@ iframe.dcpAttribute__content--endflash  {
 .dcpAttribute__label.has-error {
   color: @brand-danger;
 }
+
+
 
 .k-widget.k-tooltip.has-error {
   border-color: @brand-danger;
@@ -122,17 +126,12 @@ iframe.dcpAttribute__content--endflash  {
  * When save error
  */
 .dcpFrame__label.has-warning,
+.dcpDocument__tabs .nav-tabs > li.active > a.has-warning,
 .nav-tabs .dcpTab__label.has-warning {
   background-color: @brand-warning;
 
 }
 
-/**
- * To fix all width column to be proportionnal to thead
- */
-.dcpArray__wrapper {
-  table-layout: fixed;
-}
 
 /**
 * no delete button on IE10

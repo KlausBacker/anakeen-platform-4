@@ -34,6 +34,7 @@ define([
 
         initialize: function (values, options) {
             var attributes = [];
+            var currentModel=this;
             this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
@@ -48,7 +49,7 @@ define([
             this.set("attributes", new CollectionAttributes(attributes));
             attributes = this.get("attributes");
             attributes.each(function (currentAttributeModel) {
-                currentAttributeModel.setContentCollection(attributes);
+                currentAttributeModel.setContentCollection(attributes, currentModel);
             });
             this.listenTo(this.get("attributes"), "change:value", this.notifyChange);
         },
@@ -67,7 +68,7 @@ define([
             //debugger;
         },
 
-        getValues: function () {
+        getValues: function documentGetValues() {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
                 var currentValue = currentAttribute.get("value"), i, arrayValues = [];
@@ -89,6 +90,23 @@ define([
                 }
             });
             return values;
+        },
+
+
+        /**
+         * reset all values with a new set of values
+         */
+        setValues: function documentSetValues(values) {
+            console.log("setvalues", values);
+            this.get("attributes").each(function (currentAttribute) {
+                var newValue = values[currentAttribute.id];
+                if (!currentAttribute.get("valueAttribute")) {
+                    return;
+                }
+
+
+               currentAttribute.set("value",newValue );
+            });
         },
 
         hasAttributesChanged: function () {
@@ -147,7 +165,16 @@ define([
                     break;
 
                 default:
-                    window.alert(message.code);
+                    if (message.contentText) {
+                         $notification.dcpNotification("showError", {
+                                    title: message.contentText,
+                                    htmlMessage: message.contentHtml
+
+                         });
+                    } else {
+                        console.log("Error", message);
+                      window.alert("UNEXPECTED ERROR");
+                    }
             }
         },
         /**

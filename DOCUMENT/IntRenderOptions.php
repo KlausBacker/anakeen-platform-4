@@ -13,6 +13,7 @@ class IntRenderOptions extends CommonRenderOptions
     const type = "int";
     const maxOption = "max";
     const minOption = "min";
+    const kendoNumericConfigurationOption = "kendoNumericConfiguration";
     /**
      * Maximum limit that number can reach
      * @note use only in edition mode
@@ -38,5 +39,17 @@ class IntRenderOptions extends CommonRenderOptions
             $number = (int)$number;
         }
         return $this->setOption(self::minOption, $number);
+    }
+    /**
+     * Set extra configuration for kendoNumericTextBox widget
+     *
+     * @note use only in edition mode
+     * @param array $config indexed array
+     *
+     * @return $this
+     */
+    public function setKendoNumericConfiguration($config)
+    {
+        return $this->setOption(self::kendoNumericConfigurationOption, $config);
     }
 }

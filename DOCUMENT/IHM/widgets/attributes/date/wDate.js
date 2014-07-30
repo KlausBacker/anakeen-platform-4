@@ -14,7 +14,7 @@ define([
             type: "date"
         },
 
-        kendoWidgetClass : "kendoDatePicker",
+        kendoWidgetClass: "kendoDatePicker",
         _initDom: function () {
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
@@ -47,7 +47,7 @@ define([
                 if (originalValue != value.value) {
                     if (value.value) {
                         var oDate = new Date(value.value);
-                        if ( ! isNaN( oDate.getTime() )) {
+                        if (!isNaN(oDate.getTime())) {
                             console.log("set date to", oDate);
                             this.kendoWidget.data(this.kendoWidgetClass).value(oDate);
                         }
@@ -80,29 +80,43 @@ define([
                         var isoDate = scope.date2string(this.value());
                         console.log("date", isoDate);
                         // Need to set by widget to use raw date
-                        scope._model().setValue({value: isoDate, displayValue: inputValue.val()}, scope._getIndex());
+                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
                     }
                 }
             });
 
-           this._controlDate(inputValue);
+            this._controlDate(inputValue);
         },
 
 
         _controlDate: function (inputValue) {
-            var scope=this;
-             inputValue.on('blur', function validateDate(event) {
+            var scope = this;
+            inputValue.on('blur', function validateDate(event) {
                 console.log(this, $(this).val());
                 var dateValue = $(this).val().trim();
-                inputValue.closest(".dcpAttribute__contentWrapper").removeClass("has-error");
-                scope._documentModel().get("menus").get("save").set("visibility","visible");
+
+                scope.setError(null); // clear Error before
+                scope._trigger("changeattrmenuvisibility", event, {
+                    id: "save",
+                    visibility: "visible"
+                });
+
+
                 if (dateValue) {
                     console.log("verify", dateValue, kendo.culture().name);
                     if (!kendo.parseDate(dateValue)) {
                         console.log("BOUDATE");
-                        scope._model().setValue({value: inputValue.val()}, scope._getIndex());
-                        inputValue.closest(".dcpAttribute__contentWrapper").addClass("has-error");
-                        scope._documentModel().get("menus").get("save").set("visibility","disabled");
+                        scope.setValue({value: inputValue.val()});
+                        scope._trigger("changeattrmenuvisibility", event, {
+                            id: "save",
+                            visibility: "disabled"
+                        });
+                        _.defer(function () {
+                            scope._focusInput().focus();
+                        });
+
+                        scope.setError("Invalid date");
+
                     }
                 }
             });

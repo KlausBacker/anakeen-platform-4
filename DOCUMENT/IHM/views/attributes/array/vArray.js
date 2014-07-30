@@ -15,7 +15,13 @@ define([
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
             "dcparraylinemoved": "moveLine",
+            "dcpattributedelete .dcpAttribute__contentWrapper": "deleteArrayValue",
             "dcpattributechange .dcpArray__content__cell": "updateValue"
+        },
+
+        deleteArrayValue: function (event) {
+            console.log("get event deleteArrayValue", event);
+
         },
 
         columnViews: {},
@@ -26,7 +32,7 @@ define([
         },
 
         render: function () {
-            console.time("render array " + this.model.id);
+            // console.time("render array " + this.model.id);
             var data = this.model.toData();
             var scope = this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
@@ -34,6 +40,11 @@ define([
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
+            data.renderOptions = this.model.getOptions();
+            data.templates = {};
+            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.model.get("type")]) {
+                data.templates = window.dcp.templates.attribute[this.model.get("type")];
+            }
             if (data.nbLines === 0 && data.mode === "read") {
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
@@ -45,6 +56,7 @@ define([
                         if (currentAttr.get("valueAttribute")) {
 
                             scope.columnViews[currentAttr.id] = new ViewColumn({
+
                                 el: scope.el,
                                 els: function () {
                                     return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
@@ -58,9 +70,10 @@ define([
                     }
                 });
             }
+            console.log("array el", this.$el);
             this.$el.dcpArray(data);
 
-            console.timeEnd("render array " + this.model.id);
+            // console.timeEnd("render array " + this.model.id);
             return this;
         },
 
@@ -78,8 +91,14 @@ define([
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        updateValue: function (event, options) {
+        /**
+         *
+         * @param event
+         * @param options
+         */
+        updateValue: function vArrayUpdateValue(event, options) {
 
+            console.log("array :: view has receive change", options);
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
@@ -88,7 +107,7 @@ define([
         },
 
 
-        refresh: function () {
+        refresh: function vArrayRefresh() {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
             this.render();
@@ -100,7 +119,7 @@ define([
             });
             //  this.refresh();
         },
-        addLine: function (event, options) {
+        addLine: function vArrayAddLine(event, options) {
             var scope = this;
             this.model.get("content").each(function (currentContent) {
                 if (options.needAddValue || options.copyValue) {
