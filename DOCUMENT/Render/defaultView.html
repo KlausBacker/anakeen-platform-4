@@ -35,7 +35,7 @@
      console.time("main");
      console.time("js loading");
      window.dcp.documentData= [[&documentData]];
-     window.dcp.templates = [[> templates]];
+     window.dcp.templates = [[>templates]];
      window.dcp.renderOptions = [[&renderOptions]];
      window.dcp.menu = [[&renderMenu]];
      window.dcp.user= {};
@@ -45,7 +45,12 @@
 <script type="text/javascript" language="JavaScript" src="[[jsFile]]"></script>
 [[/jsReference]]
 [[#requireReference]]
-<script data-main="[[main]]" src="[[src]]"></script>
+<script type="text/javascript">
+    window.dcp.ws = "[[ws]]";
+</script>
+<script type="text/javascript" src="[[src]]"></script>
+<script type="text/javascript" src="[[config]]"></script>
+<script type="text/javascript" src="[[main]]"></script>
 [[/requireReference]]
 </body>
 </html>
