@@ -8,11 +8,13 @@
     </button>
 </span>
     {{/hasAutocomplete}}
-<input type="text" name="{{id}}" id="{{viewCid}}"
-       {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
+<input type="file" name="{{id}}" id="{{viewCid}}" style="display:none"
       class="form-control dcpAttribute__content dcpAttribute__content--edit"
       value="{{value.value}}"/>
+<input type="text" class="form-control dcpAttribute__content dcpAttribute__content--edit" value="{{value.displayValue}}"/>
 <span class="dcpAttribute__content__buttons input-group-addon">
+            <button type="button" title="Choose file" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs"><i class="fa fa-folder fa-fw"/></button>
+
     {{#renderOptions.buttons}}
         <button type="button" title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
     {{/renderOptions.buttons}}

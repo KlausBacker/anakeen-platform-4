@@ -4,8 +4,8 @@
                                   {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
                                   href="{{renderOptions.htmlLink.url}}">{{/renderOptions.htmlLink.url}}
 
-    {{^value.thumbnail}}<span class="dcpAttribute__content__value">{{value.displayValue}}</span>{{/value.thumbnail}}
-    {{#value.thumbnail}}<img src="{{value.thumbnail}}"/>{{/value.thumbnail}}
+    {{#value.icon}}<img src="{{value.icon}}"/>{{/value.icon}}
+    <span class="dcpAttribute__content__value">{{value.displayValue}}</span>
 {{#renderOptions.htmlLink.url}}</a>{{/renderOptions.htmlLink.url}}
     {{{emptyValue}}}
 </span>

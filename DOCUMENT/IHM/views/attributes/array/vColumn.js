@@ -46,6 +46,8 @@ define([
          * @param index
          */
         addNewWidget: function addNewWidget(index) {
+            console.log("options", this);
+            if (this.options) {
             var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
             var aModel = this.model;
             var data = this.getData(index);
@@ -56,6 +58,7 @@ define([
                 widgetClass.apply(
                     $(cells[index]),
                     [data]);
+            }
             }
         }
 
