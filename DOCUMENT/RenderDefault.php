@@ -41,10 +41,13 @@ class RenderDefault implements RenderConfig
     
     public function getRequireReference()
     {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
-            "src" => "lib/RequireJS/require.js",
-            "main" => "DOCUMENT/IHM/main.js",
-            "prod" => "DOCUMENT/IHM/main-prod.js"
+            "ws" => $version,
+            "src" => "lib/RequireJS/require.js?ws=". $version,
+            "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
+            "main" => "DOCUMENT/IHM/main.js?ws=" . $version,
+            "prod" => "DOCUMENT/IHM/main-prod.js?ws=" . $version
         );
     }
     

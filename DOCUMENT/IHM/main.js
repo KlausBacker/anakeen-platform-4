@@ -1,57 +1,7 @@
+/**
+ * Main bootstraper
+ */
 /*global require*/
-
-
-// Require.js allows us to configure shortcut alias
-require.config({
-    // The shim config allows us to configure dependencies for
-    // scripts that do not call define() to register a module
-    shim: {
-        underscore: {
-            exports: '_'
-        },
-        backbone: {
-            deps: [
-                'underscore',
-                'jquery'
-            ],
-            exports: 'Backbone'
-        },
-        bootstrap: {
-            deps: [
-                'jquery'
-            ]
-        },
-        "kendo": {
-            deps: [
-                'jquery'
-            ]
-        },
-        "kendo-culture": {
-            deps: [
-                'kendo'
-            ]
-        },
-        "ckeditor-jquery": {
-            deps: [
-                'jquery',
-                'ckeditor'
-            ]
-        }
-    },
-    paths: {
-        "jquery": "../../lib/KendoUI/js/jquery",
-        "underscore": "../../lib/underscore/underscore",
-        "backbone": "../../lib/backbone/backbone",
-        "mustache": "../../lib/mustache.js/mustache",
-        "bootstrap": "../../lib/bootstrap/js/bootstrap",
-        "kendo": "../../lib/KendoUI/js/kendo.ui.core",
-        "kendo-culture-fr": "../../lib/KendoUI/js/cultures/kendo.culture.fr-FR",
-        "ckeditor": "../../lib/ckeditor/ckeditor",
-        "ckeditor-jquery": "../../lib/ckeditor/adapters/jquery"
-    }/*,
-     urlArgs : "invalidateCache=" + (new Date()).getTime()*/
-});
-
 require([
     'jquery',
     'underscore',
@@ -62,16 +12,17 @@ require([
     'views/document/vDocument',
     'widgets/window/wConfirm',
     'widgets/window/wLoading',
-    'bootstrap'/*,
-     'kendo'*/
+    'bootstrap'
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
     'use strict';
     console.timeEnd("js loading");
     /*jshint nonew:false*/
-    var document = window.dcp.documentData.document, model;
+    var document = window.dcp.documentData.document, model, $document;
     window.dcp = window.dcp || {};
     window.dcp.documents = new CollectionDocument();
     window.dcp.views = window.dcp.views || {};
+
+    $document = $(".dcpDocument");
 
     $(".dcpLoading").dcpLoading();
     console.timeEnd('js loading');
@@ -79,18 +30,18 @@ require([
         model = new ModelDocument(
             {},
             {
-                properties: document.properties,
-                menus: window.dcp.menu,
-                family: window.dcp.documentData.family,
-                locale : window.dcp.user.locale,
+                properties : document.properties,
+                menus :      window.dcp.menu,
+                family :     window.dcp.documentData.family,
+                locale :     window.dcp.user.locale,
                 renderMode : window.dcp.renderOptions.mode || "read",
-                attributes: document.attributes
+                attributes : document.attributes
             }
         );
         window.dcp.documents.push(model);
-        (new ViewDocument({model: model, el: $(".dcpDocument")[0]}).render());
+        (new ViewDocument({model : model, el : $document[0]}).render());
 
-        $(".dcpDocument").show().addClass("dcpDocument--show");
+        $document.show().addClass("dcpDocument--show");
         console.timeEnd('main');
 
         $(".dcpLoading").dcpLoading("complete", function () {
@@ -106,7 +57,7 @@ require([
         }, 100);
     });
     window.dcp.router = {
-        router: new Router()
+        router : new Router()
     };
 
     Backbone.history.start();

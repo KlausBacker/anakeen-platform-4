@@ -255,7 +255,7 @@ define([
             this.model.trigger("changeMenuVisibility", event, data);
         },
         getDOMElements: function () {
-            if (this.options.els) {
+            if (this.options && this.options.els) {
                 return this.options.els();
             } else {
                 return this.$el;
