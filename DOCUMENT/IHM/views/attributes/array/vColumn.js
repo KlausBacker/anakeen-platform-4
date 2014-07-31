@@ -31,10 +31,10 @@ define([
 
 
         render: function () {
-           // console.time("render column " + this.model.id);
+            // console.time("render column " + this.model.id);
 
 
-          //  console.timeEnd("render column " + this.model.id);
+            //  console.timeEnd("render column " + this.model.id);
             return this;
         },
 
@@ -46,19 +46,18 @@ define([
          * @param index
          */
         addNewWidget: function addNewWidget(index) {
-            console.log("options", this);
             if (this.options) {
-            var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
-            var aModel = this.model;
-            var data = this.getData(index);
-            var widgetClass = this.getTypedWidgetClass(data.type);
+                var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
+                var aModel = this.model;
+                var data = this.getData(index);
+                var widgetClass = this.getTypedWidgetClass(data.type);
 
-            if (cells[index]) {
+                if (cells[index]) {
 
-                widgetClass.apply(
-                    $(cells[index]),
-                    [data]);
-            }
+                    widgetClass.apply(
+                        $(cells[index]),
+                        [data]);
+                }
             }
         }
 

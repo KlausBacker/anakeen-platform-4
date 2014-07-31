@@ -28,12 +28,13 @@ define([
             "dcpattributechangeattrsvalue .dcpAttribute__contentWrapper": "changeAttributesValue"
         },
 
-        initialize: function () {
+        initialize: function (options) {
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:value', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = window.dcp.templates.attribute.simpleWrapper;
+            this.options = options;
         },
 
 
@@ -58,7 +59,7 @@ define([
                     data.templates = window.dcp.templates.attribute.default;
                 }
             }
-            data.templates.label = window.dcp.templates.attribute["label"];
+            data.templates.label = window.dcp.templates.attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
             return data;
