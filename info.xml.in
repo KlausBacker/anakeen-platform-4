@@ -8,25 +8,25 @@
         <module name='dynacase-requirejs-installer'/>
         <module name='dynacase-kendoui-installer'/>
         <module name='dynacase-underscore-installer'/>
-        <module name='dynacase-backbone-installer'/>
+        <module name='dynacase-backbone-installer' comp='ge' version='1.1.2'/>
         <module name='dynacase-bootstrap-installer' comp='ge' version='3.2.0'/>
         <module name='dynacase-mustache.js-installer'/>
         <module name='dynacase-mustache.php-installer'/>
         <module name='dynacase-less-installer'/>
-         <module name="dynacase-fontawesome-installer"/>
+        <module name="dynacase-fontawesome-installer"/>
         <module name='dynacase-httpapi-v1'/>
     </requires>
 
     <post-install>
-        <process command="programs/record_application DOCUMENT" />
-         <process command="./wsh.php --api=setStyle --style=STYLE/BASE/BASE.sty"/>
-        <process command="programs/update_catalog" />
+        <process command="programs/record_application DOCUMENT"/>
+        <process command="./wsh.php --api=setStyle --style=STYLE/BASE/BASE.sty"/>
+        <process command="programs/update_catalog"/>
     </post-install>
 
     <post-upgrade>
-        <process command="programs/record_application DOCUMENT" />
+        <process command="programs/record_application DOCUMENT"/>
         <process command="./wsh.php --api=setStyle --style=STYLE/BASE/BASE.sty"/>
-        <process command="programs/update_catalog" />
+        <process command="programs/update_catalog"/>
     </post-upgrade>
 
 </module>
