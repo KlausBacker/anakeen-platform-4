@@ -78,9 +78,9 @@ function autocomplete(Action & $action)
             $values = array();
             foreach ($rargids as $k => $argName) {
                 if ($argName === "CT") {
-                    $values[$oattr->id]["displayValue"] = $aResult[$k];
+                    $values[$oattr->id]["displayValue"] = isset($aResult[$k])?$aResult[$k]:null;
                 } else {
-                    $values[strtolower($argName) ]["value"] = $aResult[$k];
+                    $values[strtolower($argName)]["value"] = isset($aResult[$k])?$aResult[$k]:null;
                 }
             }
             

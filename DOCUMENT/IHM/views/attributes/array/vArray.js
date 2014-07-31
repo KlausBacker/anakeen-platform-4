@@ -26,9 +26,10 @@ define([
 
         columnViews: {},
 
-        initialize: function () {
+        initialize: function (options) {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
+
         },
 
         render: function () {
