@@ -3,11 +3,11 @@ define([
     'mustache',
     'kendo',
     '../wAttribute',
-    'widgets/attributes/text/wText'
+    'widgets/attributes/file/wFile'
 ], function (_, Mustache, kendo) {
     'use strict';
 
-    $.widget("dcp.dcpImage", $.dcp.dcpText, {
+    $.widget("dcp.dcpImage", $.dcp.dcpFile, {
 
         options: {
             id: "",
@@ -39,18 +39,7 @@ define([
             }
             this._super();
         },
-        /**
-         * Return the url of common link
-         * @returns {*}
-         */
-        getLink: function getLink() {
-            var link = this._super();
-            if (!link || !link.url) {
-                link.url = this.options.value.url;
-            }
 
-            return link;
-        },
 
 
         getType: function () {

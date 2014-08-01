@@ -74,6 +74,7 @@ define([
         redraw: function wAttributeRedraw() {
             this.element.html('');
             this._initDom();
+            this.element.off();
             this._initEvent();
         },
 

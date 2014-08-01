@@ -49,12 +49,19 @@ define([
         notificationElement: null,
 
         _create: function () {
+            var scope=this;
             this.notificationElement = $('<div class="dcpNotification--widget" />');
 
 
             this.element.append($('<div id="dcpNotificationContainer" class="dcpNotifications"/>'));
             this.element.append(this.notificationElement);
             this.notificationElement.kendoNotification(this.options);
+
+            console.log("notif listen to ", this.element);
+            this.element.on("notification", function (event, data) {
+               console.log("see notification", event, data);
+                scope.show(data.type, data);
+            });
         },
 
         show: function (type, options) {

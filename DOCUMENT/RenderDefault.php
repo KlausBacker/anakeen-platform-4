@@ -44,7 +44,7 @@ class RenderDefault implements RenderConfig
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
             "ws" => $version,
-            "src" => "lib/RequireJS/require.js?ws=". $version,
+            "src" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
             "main" => "DOCUMENT/IHM/main.js?ws=" . $version,
             "prod" => "DOCUMENT/IHM/main-prod.js?ws=" . $version
@@ -111,7 +111,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ),
+                ) ,
                 "file" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/file/fileWrite.mustache"
@@ -146,7 +146,7 @@ class RenderDefault implements RenderConfig
                 ) ,
                 "image" => array(
                     "write" => array(
-                        "file" => "DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                        "file" => "DOCUMENT/IHM/widgets/attributes/image/imageWrite.mustache"
                     ) ,
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/image/imageRead.mustache"
