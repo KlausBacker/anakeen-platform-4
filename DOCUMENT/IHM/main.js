@@ -27,6 +27,7 @@ require([
     $(".dcpLoading").dcpLoading();
     console.timeEnd('js loading');
     _.defer(function () {
+        $('body').dcpNotification(); // active notification
         model = new ModelDocument(
             {},
             {

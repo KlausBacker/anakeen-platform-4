@@ -1,8 +1,28 @@
 
+.dcpAttribute__content--dropzone .dcpAttribute__content--edit {
+  background-color: @brand-primary;
+  font-weight: bold;
+  color:@btn-primary-color;
+  text-align: center;
+}
+
+.dcpAttribute__content--transferring {
+  background-color: @brand-info;
+}
 
 
+/**
+* force repead to inhib --fileicon when recording
+*/
+.active.dcpAttribute__content--recording {
+  background-repeat: repeat;
+}
 
-
-.dcpAttribute__content--dropzone {
-  background-color: yellow;
+.dcpAttribute__content--fileicon {
+  background-repeat: no-repeat;
+  background-position: 4px center;
+  padding-left: 30px;
+}
+.dcpAttribute__contentWrapper--file .dcpAttribute__content--edit {
+  cursor:pointer;
 }

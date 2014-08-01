@@ -3,11 +3,11 @@ define([
     'mustache',
     'kendo',
     '../wAttribute',
-    'widgets/attributes/text/wText'
+    'widgets/attributes/file/wFile'
 ], function (_, Mustache, kendo) {
     'use strict';
 
-    $.widget("dcp.dcpImage", $.dcp.dcpText, {
+    $.widget("dcp.dcpImage", $.dcp.dcpFile, {
 
         options: {
             id: "",
@@ -16,14 +16,11 @@ define([
 
 
         _initDom: function () {
+            if (this.getMode() === "read") {
             var urlSep='?';
             if (this.options.value.url) {
                 if (!this.options.renderOptions.htmlLink.url) {
-                    if (this.options.value.url && this.options.renderOptions.downloadInline) {
-                        urlSep= (this.options.value.url.indexOf('?')>=0) ? "&" : "?";
-                        this.options.value.url += urlSep + 'inline=yes';
-                    }
-                    this.options.renderOptions.htmlLink.url=this.options.value.url;
+
                     if (this.options.renderOptions.thumbnailWidth > 0) {
                         urlSep= (this.options.value.thumbnail.indexOf('?')>=0) ? "&" : "?";
                         this.options.value.thumbnail += urlSep +
@@ -32,26 +29,25 @@ define([
                     } else if (this.options.renderOptions.thumbnailWidth === 0) {
                         this.options.value.thumbnail = this.options.value.url;
                     }
-                    if (! this.options.renderOptions.htmlLink.title) {
-                        this.options.renderOptions.htmlLink.title=this.options.value.displayValue;
-                    }
+
                 }
+            }
             }
             this._super();
         },
+
         /**
-         * Return the url of common link
-         * @returns {*}
+         * Condition before upload file
+         * @returns {boolean}
          */
-        getLink: function getLink() {
-            var link = this._super();
-            if (!link || !link.url) {
-                link.url = this.options.value.url;
+        uploadCondition: function wImageUploadCondition (file) {
+            if (file.type.substr(0,5) !== "image") {
+                this.setError("Invalid image file");
+                return false;
             }
-
-            return link;
+            this.setError(null);
+            return true;
         },
-
 
         getType: function () {
             return "image";
