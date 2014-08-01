@@ -106,6 +106,15 @@ define([
 
         },
 
+        /**
+         * Condition before upload file
+         * @returns {boolean}
+         */
+        uploadCondition: function wFileUploadCondition () {
+            console.log("file cond");
+            return true;
+        },
+
 
         uploadFile: function wFileUploadFile(firstFile) {
             var inputText = this.element.find(".dcpAttribute__content");
@@ -114,11 +123,16 @@ define([
             var originalText = inputText.val();
             var originalBgColor = inputText.css("background-color");
             var scope = this;
+
+            if (! this.uploadCondition(firstFile)) {
+                return;
+            }
+
             fd.append('dcpFile', firstFile);
 
             inputText.addClass("dcpAttribute__content--transferring");
             var infoBgColor = inputText.css("background-color");
-            console.log("color", originalBgColor, infoBgColor);
+            console.log("file info", firstFile);
             $.ajax({
                 type: 'POST',
                 url: "api/v1/files/",
@@ -150,9 +164,8 @@ define([
                                 inputText.css("background", "linear-gradient(to right," +
                                     infoBgColor + " 0%," +
                                     infoBgColor + " " + percent + "%," +
-                                    originalBgColor + (percent + 5) + "%," +
+                                    originalBgColor + (percent + 1) + "%," +
                                     originalBgColor + " 100%) ");
-                                console.log('progress(3)', percent);
                             }
                         }, false);
                     }
@@ -163,7 +176,7 @@ define([
 
             }).done(function (data) {
                 var dataFile = data.data.file;
-                console.log("upload", data);
+                console.log("uploaded", data);
                 inputText.val(originalText);
                 inputText.css("background", "");
                 inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__content--transferring dcpAttribute__content--recording");

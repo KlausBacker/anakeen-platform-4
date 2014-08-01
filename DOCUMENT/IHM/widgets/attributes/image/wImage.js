@@ -36,7 +36,18 @@ define([
             this._super();
         },
 
-
+        /**
+         * Condition before upload file
+         * @returns {boolean}
+         */
+        uploadCondition: function wImageUploadCondition (file) {
+            if (file.type.substr(0,5) !== "image") {
+                this.setError("Invalid image file");
+                return false;
+            }
+            this.setError(null);
+            return true;
+        },
 
         getType: function () {
             return "image";
