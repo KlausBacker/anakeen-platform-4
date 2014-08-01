@@ -15,6 +15,7 @@ define([
         },
 
         _initDom: function () {
+             if (this.getMode() === "read") {
             var urlSep = '?';
             if (this.options.value.url) {
                 if (!this.options.renderOptions.htmlLink.url) {
@@ -29,6 +30,7 @@ define([
                     }
                 }
             }
+             }
             this._super();
         },
 
@@ -50,9 +52,15 @@ define([
             var scope = this;
             var inputFile = this.element.find("input[type=file]");
             var inputText = this.element.find(".dcpAttribute__content");
+            var fileUrl=this.options.value.url;
+
+            if (fileUrl) {
             this.element.find(".dcpAttribute__content__button--file").on("click", function (event) {
-                inputFile.trigger("click");
+                window.location.href=fileUrl+"&inline=no";
             });
+            } else {
+                this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
+            }
 
             this.element.on("dragenter", function (event) {
                 inputText.val(scope.options.value.displayValue);
@@ -165,6 +173,8 @@ define([
                     fileName: dataFile.fileName,
                     displayValue: dataFile.fileName,
                     creationDate: dataFile.cdate,
+                    thumbnail: dataFile.thumbnailUrl,
+                    url:dataFile.downloadUrl,
                     icon: dataFile.iconUrl
                 });
 

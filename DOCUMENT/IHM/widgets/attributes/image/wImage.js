@@ -16,14 +16,11 @@ define([
 
 
         _initDom: function () {
+            if (this.getMode() === "read") {
             var urlSep='?';
             if (this.options.value.url) {
                 if (!this.options.renderOptions.htmlLink.url) {
-                    if (this.options.value.url && this.options.renderOptions.downloadInline) {
-                        urlSep= (this.options.value.url.indexOf('?')>=0) ? "&" : "?";
-                        this.options.value.url += urlSep + 'inline=yes';
-                    }
-                    this.options.renderOptions.htmlLink.url=this.options.value.url;
+
                     if (this.options.renderOptions.thumbnailWidth > 0) {
                         urlSep= (this.options.value.thumbnail.indexOf('?')>=0) ? "&" : "?";
                         this.options.value.thumbnail += urlSep +
@@ -32,10 +29,9 @@ define([
                     } else if (this.options.renderOptions.thumbnailWidth === 0) {
                         this.options.value.thumbnail = this.options.value.url;
                     }
-                    if (! this.options.renderOptions.htmlLink.title) {
-                        this.options.renderOptions.htmlLink.title=this.options.value.displayValue;
-                    }
+
                 }
+            }
             }
             this._super();
         },
