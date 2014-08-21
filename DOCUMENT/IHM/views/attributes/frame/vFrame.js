@@ -43,13 +43,10 @@ define([
                 contentElement.collapse('toggle');
             });
             $content = this.$el.find(".dcpFrame__content");
-
             $loading.dcpLoading("addItem");
             var hasOneContent = this.model.get("content").some(function (value) {
                 return value.isDisplayable();
             });
-
-
             if (!hasOneContent) {
                 $content.append(this.model.getOption('showEmptyContent'));
                 $loading.dcpLoading("addItem", this.model.get("content").length);
@@ -59,7 +56,6 @@ define([
                     if (!currentAttr.isDisplayable()) {
                         return;
                     }
-
                     try {
                         if (currentAttr.get("valueAttribute")) {
                             $content.append((new ViewAttribute({model: currentAttr})).render().$el);
@@ -84,7 +80,6 @@ define([
 
         setError: function (event, data) {
             var parentId = this.model.get('parent');
-            console.log("frame error", data, this.model.get('parent'));
             if (data) {
                 this.$el.find(".dcpFrame__label").addClass("has-warning");
             } else {

@@ -25,8 +25,6 @@ define([
          */
         selectedLineIndex: function () {
             return this.getSelectedLineElement().data("line");
-
-
         },
         _create: function () {
             this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
@@ -72,8 +70,6 @@ define([
                             }
                         }
                     });
-
-
                 }
                 this.addAllLines(this.options.nbLines);
                 this.element.find('tbody').kendoDraggable({
@@ -165,20 +161,15 @@ define([
 
 
         setLines: function wArraySetLines(lineNumber) {
-            console.log("Need array lines", lineNumber);
             var currentLineNumber = this.options.nbLines;
             var i;
             if (lineNumber > currentLineNumber) {
-                console.log("add linee", lineNumber - currentLineNumber);
                 for (i = 0; i < (lineNumber - currentLineNumber); i++) {
                     this.addLine(currentLineNumber + i);
-                    console.log("add line number", currentLineNumber + 1 + i);
                 }
             } else if (lineNumber < currentLineNumber) {
-                console.log("TODO REMOVE ARRAY LINES", currentLineNumber - lineNumber);
                 for (i = 0; i < (currentLineNumber - lineNumber ); i++) {
                     this.removeLine(this.options.nbLines - 1);
-                    console.log("REMOVE line number", this.options.nbLines - 1);
                 }
 
             }
@@ -241,7 +232,6 @@ define([
                     i++;
                 }
             );
-            console.log("index line", i)
             this.options.nbLines = i;
         },
 
@@ -250,13 +240,29 @@ define([
             this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
         },
 
-        _getTemplate: function (key) {
-            if (this.options.templates[key]) {
+        /**
+         * Get the template of the current attribute
+         *
+         * The template can be in the options or in a global var of dcp namespace (initiated by require for widget)
+         *
+         * @param key
+         * @returns string
+         * @private
+         */
+        _getTemplate : function (key) {
+            if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }
-
-            throw new Error("Unknown template  " + key + "/" + this.getType());
+            if (window.dcp && window.dcp.templates && window.dcp.templates.array && window.dcp.templates.array[key]) {
+                return window.dcp.templates.array[key];
+            }
+            if (window.dcp && window.dcp.templates && window.dcp.templates["default"] && window.dcp.templates["default"][key]) {
+                return window.dcp.templates["default"][key];
+            }
+            throw new Error("Unknown template  " + key + "/" + this.options.type);
 
         }
     });
+
+    return $.fn.dcpArray;
 });

@@ -43,7 +43,6 @@ define([
         },
 
         setValue: function (value, index) {
-            console.log("model setValue", this.id, value, index);
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -55,13 +54,11 @@ define([
                 this.set("value", currentValue);
 
             } else {
-                console.log("MODEL SET TO", this.id, value);
                 this.set("value", value);
             }
         },
 
         addValue: function (value, index) {
-            console.log("add value", index);
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -84,7 +81,6 @@ define([
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            console.log("remove line", index, this.id);
             oldValue = this.get("value");
             currentValue = _.clone(this.get("value"));
             _.each(currentValue, function (value, currentIndex) {
@@ -99,23 +95,16 @@ define([
             });
             this.set("value", currentValue, {silent: true});
         },
+
         addIndexValue: function addIndexValue(index, copy) {
-            var currentValue, oldValue;
+            var currentValue, defaultValue;
             var newValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            console.log("add line", index, this.id);
-            oldValue = this.get("value");
-            console.log("add line", oldValue);
-            // currentValue = _.clone(this.get("value"));
             currentValue = _.toArray(_.map(this.get("value"), _.clone));
-
-
-            console.log("add new item", this);
-            var defaultValue = this.attributes.defaultValue;
+            defaultValue = this.attributes.defaultValue;
             if (copy) {
-                console.log("copy new item", currentValue[index]);
                 newValue = _.clone(currentValue[index]);
             } else if (defaultValue) {
                 newValue = defaultValue;
@@ -130,9 +119,6 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-
-            console.log("add new line", currentValue);
-
             this.set("value", currentValue, {silent: true});
         },
 
@@ -146,7 +132,6 @@ define([
             if (!this.get("multiple")) {
                 throw new Error("Move only multiple attribute : " + this.id);
             }
-            // currentValue = _.clone(this.get("value"));
             currentValue = _.toArray(this.get("value"));
             fromValue = _.clone(currentValue[fromIndex]);
 
@@ -155,6 +140,7 @@ define([
 
             this.set("value", currentValue, {silent: true});
         },
+
         getNbLines: function () {
             var nbLines = 0;
             if (!this.get("multiple")) {
@@ -203,9 +189,9 @@ define([
         },
 
         hasMultipleOption: function () {
-
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
+
         inArray: function () {
             var aparent = this.getParent();
             return (aparent && aparent.attributes && aparent.attributes.type === "array");
@@ -214,6 +200,7 @@ define([
         documentModel: function () {
             return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
         },
+
         getParent: function () {
             if (this.attributes.parent) {
                 return this.documentModel().get('attributes').get(this.attributes.parent);

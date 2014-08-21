@@ -1,27 +1,31 @@
 <div class="input-group margin-bottom-sm">
     {{# hasAutocomplete}}
-<span class="input-group-addon">
-    <button
-          {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
-            class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
-        <i class="fa fa-chevron-down fa-fw"></i>
-    </button>
-</span>
+    <span class="input-group-addon">
+        <button
+              {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
+                class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
+            <i class="fa fa-chevron-down fa-fw"></i>
+        </button>
+    </span>
     {{/hasAutocomplete}}
-<input type="file" name="{{id}}" id="{{viewCid}}" style="display:none"
-      class="dcpAttribute__content--file"
-      value="{{value.value}}"/>
-
-<input {{#value.thumbnail}}style="background-image:url({{value.thumbnail}}){{/value.thumbnail}}" accept="image/*" title="Choose image" type="text"
-       class="form-control dcpAttribute__content dcpAttribute__content--edit {{#value.thumbnail}}dcpAttribute__content--filethumb{{/value.thumbnail}}"
-       placeholder="Click to upload image" value="{{value.displayValue}}"/>
-<span class="dcpAttribute__content__buttons input-group-addon">
-            <button type="button" title="Download image" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs"><i class="fa fa-download fa-fw"/></button>
-
-    {{#renderOptions.buttons}}
+    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none"
+          class="dcpAttribute__content--file"
+          value="{{value.value}}"/>
+    <input {{#value.thumbnail}}style="background-image:url({{value.thumbnail}}){{/value.thumbnail}}" accept="image/*" title="Choose image" type="text"
+           class="form-control dcpAttribute__content dcpAttribute__content--edit {{#value.thumbnail}}dcpAttribute__content--filethumb{{/value.thumbnail}}"
+           placeholder="Click to upload image" value="{{value.displayValue}}"/>
+    <span class="dcpAttribute__content__buttons input-group-addon">
+        <button type="button" title="Download image" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs">
+            <i class="fa fa-download fa-fw"></i>
+        </button>
+        {{#renderOptions.buttons}}
         <button type="button" title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
-    {{/renderOptions.buttons}}
-    <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
-            class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i></button>
+        {{/renderOptions.buttons}}
+        {{#deleteButton}}
+        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+                class="btn btn-default btn-xs dcpAttribute__content__button--delete">
+            <i class="fa fa-times fa-fw"></i>
+        </button>
+        {{/deleteButton}}
     </span>
 </div>

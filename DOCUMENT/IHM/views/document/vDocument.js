@@ -9,7 +9,7 @@ define([
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
-    'kendo'
+    'kendo/kendo.core'
 ], function (_, Backbone, Mustache, ViewDocumentMenu, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 

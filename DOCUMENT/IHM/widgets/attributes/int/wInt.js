@@ -1,29 +1,33 @@
+/*global define, _super, kendoNumericTextBox*/
 define([
     'underscore',
     'mustache',
-    'kendo',
-    '../wAttribute',
-    'widgets/attributes/text/wText'
+    'kendo/kendo.numerictextbox',
+    'widgets/attributes/text/wText',
+    "kendo-culture-fr"
 ], function (_, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpInt", $.dcp.dcpText, {
 
-        options: {
-            id: "",
-            type: "int",
-            numberFormat: 'n0',
-            renderOptions: {
-                kendoNumericConfiguration: {}
+        options :     {
+            type :          "int",
+            numberFormat :  'n0',
+            renderOptions : {
+                kendoNumericConfiguration : {}
             }
         },
         /**
          * The kendoNumericTextBox widget instance
          */
-        kendoWidget:null,
-        _initDom: function wIntInitDom() {
+        kendoWidget : null,
+
+        _initDom : function wIntInitDom() {
+            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.attr("data-type", this.getType());
+            this.element.attr("data-id", this.options.id);
             if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
-                this.options.value.displayValue = kendo.toString(this.options.value.value, this.options.numberFormat);
+                this.options.value.displayValue = this.formatNumber(this.options.value.value);
             }
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
@@ -37,21 +41,27 @@ define([
             }
         },
 
-        _initChangeEvent: function wIntInitChangeEvent() {
+        _initChangeEvent : function wIntInitChangeEvent() {
             // set by widget if no autocomplete
             if (this.options.hasAutocomplete) {
                 this._super();
             }
         },
 
-        setValue: function wIntSetValue(value) {
+        setValue : function wIntSetValue(value) {
             // this._super.(value);
             // Don't call dcpText::setValue()
+
+            value = _.clone(value);
+
+            if (_.has(value, "value") && !_.has(value, "displayValue")) {
+                value.displayValue = this.formatNumber(value.value);
+            }
+
             $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
 
-            var originalValue = this.kendoWidget.data("kendoNumericTextBox").value();
-
             if (this.getMode() === "write") {
+                var originalValue = this.kendoWidget.data("kendoNumericTextBox").value();
                 // : explicit lazy equal
                 //noinspection JSHint
                 if (originalValue != value.value) {
@@ -60,43 +70,56 @@ define([
                     this.flashElement();
                 }
             } else if (this.getMode() === "read") {
-                this.contentElements().text(value.displayValue);
+                this.getContentElements().text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
         },
 
-        _activateNumber: function wIntActivateNumber(inputValue) {
-            inputValue.kendoNumericTextBox(this.getKendoNumericOptions());
+        _activateNumber : function wIntActivateNumber(inputValue) {
+            return inputValue.kendoNumericTextBox(this.getKendoNumericOptions());
+        },
+
+        formatNumber : function wIntFormatNumber(value) {
+            return kendo.toString(value, this.options.numberFormat);
         },
 
         /**
          * Get kendo option from normal options and from renderOptions.kendoNumeric
          * @returns {*}
          */
-        getKendoNumericOptions: function wIntGetKendoNumericOptions() {
-            var scope = this;
-            var knOption = {};
-            var defaultOptions = {
-                decimals: 0,
-                format: scope.options.numberFormat,
-                max: scope.options.renderOptions.max,
-                min: scope.options.renderOptions.min,
-                change: function () {
-                    // Need to set by widget to honor decimals option
-                    scope.setValue({value: this.value()});
-                }
-            };
+        getKendoNumericOptions : function wIntGetKendoNumericOptions() {
+            var scope = this,
+                kendoOptions = {},
+                defaultOptions = {
+                    decimals : 0,
+                    format :   scope.options.numberFormat,
+                    max :      scope.options.renderOptions.max,
+                    min :      scope.options.renderOptions.min,
+                    change :   function () {
+                        // Need to set by widget to honor decimals option
+                        scope.setValue({value : this.value()});
+                    }
+                };
 
-            if (typeof scope.options.renderOptions.kendoNumericConfiguration === 'object') {
-                knOption = scope.options.renderOptions.kendoNumericConfiguration;
+            if (_.isObject(scope.options.renderOptions.kendoNumericConfiguration)) {
+                kendoOptions = scope.options.renderOptions.kendoNumericConfiguration;
             }
-            return _.extend(defaultOptions, knOption);
+            return _.extend(defaultOptions, kendoOptions);
         },
 
-        getType: function wIntGetType() {
+        getType : function wIntGetType() {
             return "int";
+        },
+
+        testValue : function wIntTestValue(value) {
+            this._super(value);
+            if (!_.isNumber(value.value)) {
+                throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
+            }
         }
 
     });
+
+    return $.fn.dcpInt;
 });

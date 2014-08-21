@@ -2,9 +2,8 @@
 define([
     'underscore',
     'backbone',
-    'mustache',
-    'views/attributes/frame/vFrame'
-], function (_, Backbone, Mustache, ViewAttributeFrame) {
+    'mustache'
+], function (_, Backbone, Mustache) {
     'use strict';
 
     return Backbone.View.extend({
@@ -31,16 +30,14 @@ define([
             return this;
         },
 
-   setError: function (event, data) {
-
-            console.log("tab error",data ,this.model.get('parent') );
-       if (data) {
-            this.$el.find(".dcpTab__label").addClass("has-warning");
-       } else {
-            this.$el.find(".dcpTab__label").removeClass("has-warning");
-       }
-
+        setError :    function (event, data) {
+            if (data) {
+                this.$el.find(".dcpTab__label").addClass("has-warning");
+            } else {
+                this.$el.find(".dcpTab__label").removeClass("has-warning");
+            }
         },
+
         updateLabel : function () {
             this.$el.find(".dcpTab__label").text(this.model.get("label"));
         }

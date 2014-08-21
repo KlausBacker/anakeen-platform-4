@@ -1,3 +1,21 @@
 .dcpAttribute__label {
   font-weight: normal;
 }
+
+.dcpAttribute__label {
+  &:after {
+    content: " :";
+  }
+}
+
+.dcpAttribute--needed .dcpAttribute__label {
+  font-weight: bold;
+}
+
+.dcpAttribute--needed .dcpAttribute__label:after {
+  content: "* :";
+}
+
+.dcpAttribute__label.has-error {
+  color: @brand-danger;
+}

@@ -1,40 +1,37 @@
+/*global define, _super*/
 define([
     'underscore',
-    'mustache',
-    'kendo',
-    '../wAttribute',
     'widgets/attributes/text/wText'
-], function (_, Mustache, kendo) {
+], function (_) {
     'use strict';
 
     $.widget("dcp.dcpFile", $.dcp.dcpText, {
 
-        options: {
-            id: "",
-            type: "file"
+        options : {
+            type : "file"
         },
 
-        _initDom: function () {
-             if (this.getMode() === "read") {
-            var urlSep = '?';
-            if (this.options.value.url) {
-                if (!this.options.renderOptions.htmlLink.url) {
-                    if (this.options.value.url && this.options.renderOptions.downloadInline) {
-                        urlSep = (this.options.value.url.indexOf('?') >= 0) ? "&" : "?";
-                        this.options.value.url += urlSep + 'inline=yes';
-                    }
-                    this.options.renderOptions.htmlLink.url = this.options.value.url;
+        _initDom : function () {
+            if (this.getMode() === "read") {
+                var urlSep = '?';
+                if (this.options.value.url) {
+                    if (!this.options.renderOptions.htmlLink.url) {
+                        if (this.options.value.url && this.options.renderOptions.downloadInline) {
+                            urlSep = (this.options.value.url.indexOf('?') >= 0) ? "&" : "?";
+                            this.options.value.url += urlSep + 'inline=yes';
+                        }
+                        this.options.renderOptions.htmlLink.url = this.options.value.url;
 
-                    if (!this.options.renderOptions.htmlLink.title) {
-                        this.options.renderOptions.htmlLink.title = this.options.value.displayValue;
+                        if (!this.options.renderOptions.htmlLink.title) {
+                            this.options.renderOptions.htmlLink.title = this.options.value.displayValue;
+                        }
                     }
                 }
             }
-             }
             this._super();
         },
 
-        _initEvent: function wFileInitEvent() {
+        _initEvent : function wFileInitEvent() {
             if (this.getMode() === "write") {
                 this._initUploadEvent();
             }
@@ -42,22 +39,22 @@ define([
             this._super();
         },
 
-        _initChangeEvent: function wFileInitChangeEvent() {
+        _initChangeEvent : function wFileInitChangeEvent() {
             // set by widget if no autocomplete
             if (this.options.hasAutocomplete) {
                 this._super();
             }
         },
-        _initUploadEvent: function wFileInitUploadEvent() {
+        _initUploadEvent : function wFileInitUploadEvent() {
             var scope = this;
             var inputFile = this.element.find("input[type=file]");
             var inputText = this.element.find(".dcpAttribute__content");
-            var fileUrl=this.options.value.url;
+            var fileUrl = this.options.value.url;
 
             if (fileUrl) {
-            this.element.find(".dcpAttribute__content__button--file").on("click", function (event) {
-                window.location.href=fileUrl+"&inline=no";
-            });
+                this.element.find(".dcpAttribute__content__button--file").on("click", function (event) {
+                    window.location.href = fileUrl + "&inline=no";
+                });
             } else {
                 this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
             }
@@ -85,7 +82,6 @@ define([
                 scope.element.removeClass("dcpAttribute__content--dropzone");
                 event.stopPropagation();
                 event.preventDefault();
-                console.log("DROP", event);
 
                 var dt = event.originalEvent.dataTransfer;
                 var files = dt.files;
@@ -97,8 +93,6 @@ define([
                 inputFile.trigger("click");
             });
             inputFile.on("change", function (event) {
-                console.log("change", event);
-                console.log("change file", this.files);
                 if (this.files.length > 0) {
                     scope.uploadFile(this.files[0]);
                 }
@@ -110,13 +104,11 @@ define([
          * Condition before upload file
          * @returns {boolean}
          */
-        uploadCondition: function wFileUploadCondition () {
-            console.log("file cond");
+        uploadCondition : function wFileUploadCondition() {
             return true;
         },
 
-
-        uploadFile: function wFileUploadFile(firstFile) {
+        uploadFile : function wFileUploadFile(firstFile) {
             var inputText = this.element.find(".dcpAttribute__content");
             var fd = new FormData();
             var newFileName = firstFile.name;
@@ -124,7 +116,7 @@ define([
             var originalBgColor = inputText.css("background-color");
             var scope = this;
 
-            if (! this.uploadCondition(firstFile)) {
+            if (!this.uploadCondition(firstFile)) {
                 return;
             }
 
@@ -132,16 +124,15 @@ define([
 
             inputText.addClass("dcpAttribute__content--transferring");
             var infoBgColor = inputText.css("background-color");
-            console.log("file info", firstFile);
             $.ajax({
-                type: 'POST',
-                url: "api/v1/files/",
-                processData: false,
-                contentType: false,
-                cache: false,
-                data: fd,
+                type :        'POST',
+                url :         "api/v1/files/",
+                processData : false,
+                contentType : false,
+                cache :       false,
+                data :        fd,
 
-                xhr: function wFileXhrAddProgress() {
+                xhr : function wFileXhrAddProgress() {
                     var xhrobj = $.ajaxSettings.xhr();
                     if (xhrobj.upload) {
                         xhrobj.upload.addEventListener('progress', function (event) {
@@ -176,19 +167,18 @@ define([
 
             }).done(function (data) {
                 var dataFile = data.data.file;
-                console.log("uploaded", data);
                 inputText.val(originalText);
                 inputText.css("background", "");
                 inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__content--transferring dcpAttribute__content--recording");
                 scope.setValue({
-                    value: dataFile.reference,
-                    size: dataFile.size,
-                    fileName: dataFile.fileName,
-                    displayValue: dataFile.fileName,
-                    creationDate: dataFile.cdate,
-                    thumbnail: dataFile.thumbnailUrl,
-                    url:dataFile.downloadUrl,
-                    icon: dataFile.iconUrl
+                    value :        dataFile.reference,
+                    size :         dataFile.size,
+                    fileName :     dataFile.fileName,
+                    displayValue : dataFile.fileName,
+                    creationDate : dataFile.cdate,
+                    thumbnail :    dataFile.thumbnailUrl,
+                    url :          dataFile.downloadUrl,
+                    icon :         dataFile.iconUrl
                 });
 
             }).fail(function (data) {
@@ -202,62 +192,56 @@ define([
                     _.each(result.messages, function (errorMessage) {
 
                         $('body').trigger("notification", {
-                            htmlMessage: errorMessage.contentHtml,
-                            message: errorMessage.contentText,
+                            htmlMessage : errorMessage.contentHtml,
+                            message :     errorMessage.contentText,
 
-                            type: errorMessage.type
+                            type : errorMessage.type
                         });
 
                     });
                 } else {
                     inputText.css("background", "");
                     $('body').trigger("notification", {
-                        htmlMessage: 'File <b>' + firstFile.name + '</b> cannot be uploaded',
-                        message: event.statusText,
-                        type: "error"
+                        htmlMessage : 'File <b>' + firstFile.name + '</b> cannot be uploaded',
+                        message :     event.statusText,
+                        type :        "error"
                     });
                 }
             });
 
         },
 
-
         /**
          * Modify value to widget and send notification to the view
          * @param value
          */
-        setValue: function wFileSetValue(value) {
-
-            console.log("set file value", value);
+        setValue : function wFileSetValue(value) {
             // call wAttribute:::setValue() :send notification
             this._super(value);
 
-
             if (this.getMode() === "write") {
-
                 this.redraw();
-
             }
         },
-
 
         /**
          * Return the url of common link
          * @returns {*}
          */
-        getLink: function getLink() {
+        getLink : function getLink() {
             var link = this._super();
-            if (!link || !link.url) {
+            if (this.options.value.url && (!link || !link.url)) {
                 link.url = this.options.value.url;
             }
 
             return link;
         },
 
-
-        getType: function () {
+        getType : function () {
             return "file";
         }
 
     });
+
+    return $.fn.dcpFile;
 });

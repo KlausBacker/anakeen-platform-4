@@ -1,24 +1,30 @@
+/*global define, _super*/
 define([
     'underscore',
     'mustache',
-    'kendo',
-    '../wAttribute',
-    'widgets/attributes/text/wText'
+    'kendo/kendo.datepicker',
+    'widgets/attributes/text/wText',
+    "kendo-culture-fr"
 ], function (_, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpDate", $.dcp.dcpText, {
 
-        options: {
-            id: "",
-            type: "date"
+        options : {
+            type : "date",
+            minDate : new Date(1700, 0, 1),
+            dateDataFormat : ["yyyy-MM-dd"]
         },
 
-        kendoWidgetClass: "kendoDatePicker",
-        _initDom: function () {
+        kendoWidgetClass : "kendoDatePicker",
+
+        _initDom : function () {
+            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.attr("data-type", this.getType());
+            this.element.attr("data-id", this.options.id);
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
-            if (this.kendoWidget) {
+            if (this.kendoWidget.length) {
                 if (this.options.hasAutocomplete) {
                     this.activateAutocomplete(this.kendoWidget);
                 } else {
@@ -27,60 +33,64 @@ define([
             }
         },
 
-        _initChangeEvent: function _initChangeEvent() {
+        _initChangeEvent : function _initChangeEvent() {
             // set by widget if no autocomplete
             if (this.options.hasAutocomplete) {
                 this._super();
             }
         },
 
-        setValue: function (value) {
+        setValue : function (value) {
             // this._super.(value);
             // Don't call dcpText::setValue()
-            $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
 
-            var originalValue = this.date2string(this.kendoWidget.data(this.kendoWidgetClass).value());
+            var originalValue, originalDate;
+
+            value = _.clone(value);
+            if (_.has(value, "value") && !_.has(value, "displayValue")) {
+                value.displayValue = this.formatDate(this.parseDate(value.value));
+            }
+
+            $.dcp.dcpAttribute.prototype.setValue.call(this, value);
 
             if (this.getMode() === "write") {
+                originalValue = this.convertDateToPseudoIsoString(this.kendoWidget.data(this.kendoWidgetClass).value());
                 // : explicit lazy equal
                 //noinspection JSHint
                 if (originalValue != value.value) {
                     if (value.value) {
-                        var oDate = new Date(value.value);
-                        if (!isNaN(oDate.getTime())) {
-                            console.log("set date to", oDate);
-                            this.kendoWidget.data(this.kendoWidgetClass).value(oDate);
+                        originalDate = new Date(value.value);
+                        if (!isNaN(originalDate.getTime())) {
+                            this.kendoWidget.data(this.kendoWidgetClass).value(originalDate);
                         }
                     } else {
-                        this.contentElements().val('');
+                        this.getContentElements().val('');
                     }
                     // Modify value only if different
                     this.flashElement();
                 }
             } else if (this.getMode() === "read") {
-                this.contentElements().text(value.displayValue);
+                this.getContentElements().text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
         },
 
-        _activateDate: function (inputValue) {
+        _activateDate : function (inputValue) {
             var scope = this;
             if (!scope.options.renderOptions) {
                 scope.options.renderOptions = {};
             }
             inputValue.kendoDatePicker({
-                parseFormats: ["yyyy-MM-dd"],
-                min: new Date(1700, 0, 1),
-                change: function () {
+                parseFormats : this.options.dateDataFormat,
+                min :          this.options.minDate,
+                change :       function () {
                     if (this.value() !== null) {
                         // only valid date are setted
                         // wrong date are set by blur event
-                        console.log("date raw", this.value());
-                        var isoDate = scope.date2string(this.value());
-                        console.log("date", isoDate);
+                        var isoDate = scope.convertDateToPseudoIsoString(this.value());
                         // Need to set by widget to use raw date
-                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
+                        scope.setValue({value : isoDate, displayValue : inputValue.val()});
                     }
                 }
             });
@@ -88,57 +98,56 @@ define([
             this._controlDate(inputValue);
         },
 
-
-        _controlDate: function (inputValue) {
+        _controlDate : function (inputValue) {
             var scope = this;
-            inputValue.on('blur', function validateDate(event) {
-                console.log(this, $(this).val());
+            inputValue.on('blur.' + this.eventNamespace, function validateDate(event) {
                 var dateValue = $(this).val().trim();
 
                 scope.setError(null); // clear Error before
                 scope._trigger("changeattrmenuvisibility", event, {
-                    id: "save",
-                    visibility: "visible"
+                    id :         "save",
+                    visibility : "visible"
                 });
 
-
                 if (dateValue) {
-                    console.log("verify", dateValue, kendo.culture().name);
-                    if (!kendo.parseDate(dateValue)) {
-                        console.log("BOUDATE");
-                        scope.setValue({value: inputValue.val()});
+                    if (!scope.parseDate(dateValue)) {
+                        scope.setValue({value : inputValue.val()});
                         scope._trigger("changeattrmenuvisibility", event, {
-                            id: "save",
-                            visibility: "disabled"
+                            id :         "save",
+                            visibility : "disabled"
                         });
                         _.defer(function () {
-                            scope._focusInput().focus();
+                            scope._getFocusInput().focus();
                         });
-
                         scope.setError("Invalid date");
-
                     }
                 }
             });
         },
 
-        date2string: function (oDate) {
-            if (oDate && typeof oDate === "object") {
+        formatDate : function formatDate(value) {
+            return kendo.toString(value, "d");
+        },
+
+        parseDate : function(value) {
+            return kendo.parseDate(value, this.options.dateDataFormat);
+        },
+
+        convertDateToPseudoIsoString : function (oDate) {
+            if (oDate && _.isDate(oDate)) {
                 return oDate.getFullYear() + '-' + this.padNumber(oDate.getMonth() + 1) + '-' + this.padNumber(oDate.getDate());
             }
             return '';
         },
 
-        padNumber: function pad(number) {
+        padNumber : function pad(number) {
             if (number < 10) {
                 return '0' + number;
             }
             return number;
-        },
-
-        getType: function () {
-            return "date";
         }
 
     });
+
+    return $.fn.dcpDate;
 });

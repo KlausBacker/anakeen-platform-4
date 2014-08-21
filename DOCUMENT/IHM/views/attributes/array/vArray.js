@@ -15,13 +15,7 @@ define([
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
             "dcparraylinemoved": "moveLine",
-            "dcpattributedelete .dcpAttribute__contentWrapper": "deleteArrayValue",
             "dcpattributechange .dcpArray__content__cell": "updateValue"
-        },
-
-        deleteArrayValue: function (event) {
-            console.log("get event deleteArrayValue", event);
-
         },
 
         columnViews: {},
@@ -71,7 +65,6 @@ define([
                     }
                 });
             }
-            console.log("array el", this.$el);
             this.$el.dcpArray(data);
 
             // console.timeEnd("render array " + this.model.id);
@@ -98,8 +91,6 @@ define([
          * @param options
          */
         updateValue: function vArrayUpdateValue(event, options) {
-
-            console.log("array :: view has receive change", options);
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);

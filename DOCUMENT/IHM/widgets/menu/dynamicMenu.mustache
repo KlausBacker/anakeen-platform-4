@@ -3,8 +3,14 @@
     {{# disabled}}disabled="disabled"{{/ disabled}}
     {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
     class="menu__element menu__element--dynamic {{cssClass}}">
-    {{#iconUrl}}<img src="{{iconUrl}}" class="k-image" />{{/iconUrl}}
-    {{#beforeContent}}<span class="menu__before-content k-image">{{{beforeContent}}}</span>{{/beforeContent}}
+    {{#iconUrl}}
+    <img src="{{iconUrl}}" class="k-image" />
+    {{/iconUrl}}
+    {{#beforeContent}}
+    <span class="menu__before-content k-image">
+        {{{beforeContent}}}
+    </span>
+    {{/beforeContent}}
     {{{htmlLabel}}}{{label}}
     <ul class="listmenu__content">
     </ul>

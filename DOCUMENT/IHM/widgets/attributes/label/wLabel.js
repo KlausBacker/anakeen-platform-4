@@ -12,6 +12,7 @@ define([
         },
 
         _initDom: function () {
+            this.element.addClass("dcpAttribute__label control-label ");
             this.element.append(Mustache.render(this._getTemplate(), this.options));
         },
 
@@ -28,10 +29,15 @@ define([
         },
 
         _getTemplate: function () {
-            if (this.options.templates.label) {
+            if (this.options.templates && this.options.templates.label) {
                 return this.options.templates.label;
+            }
+            if (window.dcp && window.dcp.templates && window.dcp.templates.label) {
+                return window.dcp.templates.label;
             }
             throw new Error("Unknown label template ");
         }
     });
+
+    return $.fn.dcpLabel;
 });

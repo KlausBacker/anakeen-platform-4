@@ -12,6 +12,10 @@ $app_acl = array(
     array(
         "name" => "VIEW_RENDER",
         "description" => N_("View documents")
+    ),
+    array(
+        "name" => "DOWNLOAD_TEMPLATE",
+        "description" => N_("Download template")
     )
 );
 
@@ -28,7 +32,7 @@ $action_desc = array(
         "short_name" => N_("Get some template"),
         "script" => "action-template.php",
         "function" => "template",
-        "acl" => "VIEW_RENDER"),
+        "acl" => "DOWNLOAD_TEMPLATE"),
     array(
         "name" => "SUBMENU",
         "short_name" => N_("Get dynamic sub menu"),
