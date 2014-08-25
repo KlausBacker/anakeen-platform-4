@@ -1,7 +1,8 @@
 define([
     'underscore',
     'mustache',
-    "kendo",
+    "kendo/kendo.menu",
+    "kendo/kendo.window",
     'widgets/widget'
 ], function (_, Mustache) {
     'use strict';

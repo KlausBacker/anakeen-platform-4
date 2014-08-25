@@ -1,5 +1,5 @@
 <span class="dcpAttribute__content dcpAttribute__content dcpAttribute__content--read dcpAttribute__content--docid" name="{{id}}">
-    {{# value.value}}
+    {{#value.value}}
         {{#renderOptions.htmlLink.renderUrl}}
         <a class="dcpAttribute__content__link"
         {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.title}}
@@ -8,12 +8,12 @@
         {{/renderOptions.htmlLink.renderUrl}}
         <img class="dcpAttribute__content--icon" src="{{value.icon}}" />
         <span class="dcpAttribute__content__value">{{value.displayValue}}</span>
-
-    {{#renderOptions.htmlLink.renderUrl}}</a>{{/renderOptions.htmlLink.renderUrl}}
-
-    {{/ value.value}}{{{emptyValue}}}
-
-    {{# values}}
+        {{#renderOptions.htmlLink.renderUrl}}
+        </a>
+        {{/renderOptions.htmlLink.renderUrl}}
+    {{/value.value}}
+    {{{emptyValue}}}
+    {{#values}}
         {{#renderUrl}}
         <a class="dcpAttribute__content__link dcpAttribute__content--multiple" data-index="{{index}}"
         {{#renderOptions.htmlLink.title}}title="{{renderTitle}}" {{/renderOptions.htmlLink.title}}
@@ -21,7 +21,9 @@
                    href="{{renderUrl}}">
             {{/renderUrl}}
             <img class="dcpAttribute__content--icon" src="{{icon}}" />
-        <span class="dcpAttribute__content__value">{{displayValue}}</span>
-        {{#renderUrl}}</a>{{/renderUrl}}
-    {{/ values}}
+            <span class="dcpAttribute__content__value">{{displayValue}}</span>
+        {{#renderUrl}}
+        </a>
+        {{/renderUrl}}
+    {{/values}}
 </span>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Jasmine JS</title>
+    <link rel="shortcut icon" href="[[icon]]">
+    [[#css]]
+    <link rel="stylesheet" type="text/css" href="[[.]]"/>
+    [[/css]]
+</head>
+<body>
+
+    <div id="render">
+
+    </div>
+    <script type="text/javascript">
+        window.dcp = window.dcp || {};
+        window.dcp.ws = [[ws]];
+        window.dcp.executeTests = (function() {
+            var nbTest = [[nbTest]];
+            return function() {
+                if (--nbTest < 1) {
+                    return window.executeTests();
+                }
+            };
+        })();
+    </script>
+    [[#js]]
+    <script type="text/javascript" src="[[.]]"></script>
+    [[/js]]
+</body>
+</html>

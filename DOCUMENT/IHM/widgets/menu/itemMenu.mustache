@@ -6,7 +6,14 @@
     <a {{# confirmationText}}class="menu--confirm" data-confirm-message="{{confirmationText}}"{{/ confirmationText}}
        {{# target}}target="{{target}}"{{/ target}}
        data-url="{{url}}" >
-        {{#iconUrl}}<img src="{{iconUrl}}" class="k-image" />{{/iconUrl}}
-        {{#beforeContent}}<span class="menu__before-content k-image">{{{beforeContent}}}</span>{{/beforeContent}}
+        {{#iconUrl}}
+            <img src="{{iconUrl}}" class="k-image" />
+        {{/iconUrl}}
+        {{#beforeContent}}
+            <span class="menu__before-content k-image">
+                {{{beforeContent}}}
+            </span>
+        {{/beforeContent}}
         {{{htmlLabel}}}{{label}}
-    </a></li>
+    </a>
+</li>

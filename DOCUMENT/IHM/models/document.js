@@ -32,9 +32,9 @@ define([
 
     return Backbone.Model.extend({
 
-        initialize: function (values, options) {
-            var attributes = [];
-            var currentModel=this;
+        initialize : function (values, options) {
+            var attributes = [],
+                currentModel = this;
             this.id = options.properties.id;
             this.set("properties", new DocumentProperties(options.properties));
             this.set("menus", new CollectionMenus(options.menus));
@@ -51,24 +51,18 @@ define([
             attributes.each(function (currentAttributeModel) {
                 currentAttributeModel.setContentCollection(attributes, currentModel);
             });
-            this.listenTo(this.get("attributes"), "change:value", this.notifyChange);
         },
 
-        toData: function () {
+        toData : function () {
             var returnObject = {
-                document: {}
+                document : {}
             };
             returnObject.document.properties = this.get("properties").toJSON();
             returnObject.menus = this.get("menus").toJSON();
             return returnObject;
         },
 
-        notifyChange: function (attribute, newValue) {
-            //console.log(arguments);
-            //debugger;
-        },
-
-        getValues: function documentGetValues() {
+        getValues : function documentGetValues() {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
                 var currentValue = currentAttribute.get("value"), i, arrayValues = [];
@@ -79,10 +73,10 @@ define([
                     currentValue = _.toArray(currentValue);
                     if (currentValue.length > 0) {
                         for (i = 0; i < currentValue.length; i++) {
-                            arrayValues.push(currentValue[i] || { value: null});
+                            arrayValues.push(currentValue[i] || { value : null});
                         }
                     } else {
-                        arrayValues = { value: null};
+                        arrayValues = { value : null};
                     }
                     values[currentAttribute.id] = arrayValues;
                 } else {
@@ -92,31 +86,27 @@ define([
             return values;
         },
 
-
         /**
          * reset all values with a new set of values
          */
-        setValues: function documentSetValues(values) {
-            console.log("setvalues", values);
+        setValues : function documentSetValues(values) {
             this.get("attributes").each(function (currentAttribute) {
                 var newValue = values[currentAttribute.id];
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
-
-
-               currentAttribute.set("value",newValue );
+                currentAttribute.set("value", newValue);
             });
         },
 
-        hasAttributesChanged: function () {
+        hasAttributesChanged :            function () {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
             });
         },
 
         // add new attribute error
-        addErrorMessage: function (message) {
+        addErrorMessage :                 function (message) {
             var attrModel;
             var scope = this;
             var $notification = $('body').dcpNotification();
@@ -127,14 +117,14 @@ define([
                         if (attrModel) {
                             attrModel.setErrorMessage(message.data.err, message.data.index);
                             $notification.dcpNotification("showError", {
-                                title: message.contentText,
-                                htmlMessage: message.contentHtml,
-                                message: attrModel.attributes.label + ' : ' + message.data.err});
+                                title :       message.contentText,
+                                htmlMessage : message.contentHtml,
+                                message :     attrModel.attributes.label + ' : ' + message.data.err});
                         } else {
                             $notification.dcpNotification("showError", {
-                                title: message.contentText,
-                                htmlMessage: message.contentHtml,
-                                message: message.data.err});
+                                title :       message.contentText,
+                                htmlMessage : message.contentHtml,
+                                message :     message.data.err});
                         }
                     }
                     break;
@@ -145,35 +135,35 @@ define([
                             if (attrModel) {
                                 attrModel.setErrorMessage(constraint.err, constraint.index);
                                 $notification.dcpNotification("showError", {
-                                    title: message.contentText,
-                                    htmlMessage: message.contentHtml,
-                                    message: attrModel.attributes.label + ' : ' + constraint.err});
+                                    title :       message.contentText,
+                                    htmlMessage : message.contentHtml,
+                                    message :     attrModel.attributes.label + ' : ' + constraint.err});
                             } else {
                                 $notification.dcpNotification("showError", {
-                                    title: message.contentText,
-                                    htmlMessage: message.contentHtml,
-                                    message: message.constraint.err});
+                                    title :       message.contentText,
+                                    htmlMessage : message.contentHtml,
+                                    message :     message.constraint.err});
                             }
                         });
                     }
                     if (message.data && message.data.preStore) {
                         $notification.dcpNotification("showError", {
-                            title: message.contentText,
-                            htmlMessage: message.contentHtml,
-                            message: message.data.preStore});
+                            title :       message.contentText,
+                            htmlMessage : message.contentHtml,
+                            message :     message.data.preStore});
                     }
                     break;
 
                 default:
                     if (message.contentText) {
-                         $notification.dcpNotification("showError", {
-                                    title: message.contentText,
-                                    htmlMessage: message.contentHtml
+                        $notification.dcpNotification("showError", {
+                            title :       message.contentText,
+                            htmlMessage : message.contentHtml
 
-                         });
+                        });
                     } else {
-                        console.log("Error", message);
-                      window.alert("UNEXPECTED ERROR");
+                        console.error("Error", message);
+                        window.alert("UNEXPECTED ERROR");
                     }
             }
         },
@@ -181,16 +171,16 @@ define([
          * Verify
          * @returns {boolean}
          */
-        verifyAndNotifyNeededAttributes: function () {
-            var $notification = $('body').dcpNotification();
-            var success = true;
-            var scope = this;
-            var attrLabel = [];
+        verifyAndNotifyNeededAttributes : function () {
+            var $notification = $('body').dcpNotification(),
+                success = true,
+                scope = this,
+                attrLabel = [];
             this.get("attributes").each(function (currentAttribute) {
                 if (currentAttribute.get("needed") === true) {
-                    var currentValue = currentAttribute.get("value");
-                    var parentAttribute = scope.get("attributes").get(currentAttribute.get("parent"));
-                    var oneSuccess = true;
+                    var currentValue = currentAttribute.get("value"),
+                        parentAttribute = scope.get("attributes").get(currentAttribute.get("parent")),
+                        oneSuccess = true;
                     if (currentAttribute.get("multiple")) {
                         if (!currentValue || currentValue.length === 0) {
                             oneSuccess = false;
@@ -210,15 +200,14 @@ define([
             });
             if (!success) {
                 $notification.dcpNotification("showError", {
-                    title: "Needed Attribute",
-                    message: attrLabel.join(', ')});
+                    title :   "Needed Attribute",
+                    message : attrLabel.join(', ')});
                 success = false;
             }
             return success;
         },
 
-
-        clearErrorMessages: function () {
+        clearErrorMessages : function () {
             var attrModels = this.get('attributes');
             _.each(attrModels.models, function (attrModel) {
                 attrModel.setErrorMessage(null);

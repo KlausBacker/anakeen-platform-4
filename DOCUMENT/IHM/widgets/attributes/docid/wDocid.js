@@ -1,31 +1,33 @@
+/*global define, _super*/
 define([
     'underscore',
     'mustache',
-    '../wAttribute'
+    'widgets/attributes/wAttribute',
+    'kendo/kendo.multiselect'
 ], function (_, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
 
-        options: {
-            id: "",
-            type: "docid",
-            renderOptions: {
-                kendoMultiSelectConfiguration: {}
+        options : {
+            type :          "docid",
+            renderOptions : {
+                kendoMultiSelectConfiguration : {}
             }
         },
 
-        kendoWidget: null,
+        kendoWidget : null,
 
-        _initDom: function wDocidInitDom() {
+        _initDom : function wDocidInitDom() {
+            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.attr("data-type", this.getType());
+            this.element.attr("data-id", this.options.id);
             if (this._isMultiple()) {
                 this.options.values = _.toArray(this.options.value);
-
                 this.options.isMultiple = true;
             }
 
             if (this.getMode() === "read") {
-
 
                 var htmlLink = this.getLink();
                 if (htmlLink === null) {
@@ -66,7 +68,7 @@ define([
             }
         },
 
-        _initEvent: function wDocidInitEvent() {
+        _initEvent :     function wDocidInitEvent() {
 
             if (this.getMode() === "read") {
                 this._initLinkEvent();
@@ -77,7 +79,7 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _focusInput: function wDocidFocusInput() {
+        _getFocusInput : function wDocidFocusInput() {
             return this.element.find('input');
         },
 
@@ -85,75 +87,70 @@ define([
          * When docid is not multiple, it is a multiselect limited to one element
          * @param inputValue select  element
          */
-        _decorateSingleValue: function wDocidDecorateSingleValue(inputValue) {
+        _decorateSingleValue : function wDocidDecorateSingleValue(inputValue) {
             this.options.values = [];
             if (this.options.value) {
                 this.options.values.push(this.options.value);
             }
 
             this._decorateMultipleValue(inputValue, {
-                    maxSelectedItems: 1
+                    maxSelectedItems : 1
                 }
             );
         },
 
-        _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions) {
-            var scope = this;
+        _decorateMultipleValue : function wDocidDecorateMultipleValue(inputValue, extraOptions) {
+            var scope = this,
+                options = {
+                    filter :         "contains",
+                    minLength :      1,
+                    itemTemplate :   '<span><span class="k-state-default">#= data.title#</span>' +
+                                         '#if (data.error) {#' +
+                                         '<span class="k-state-error">#: data.error#</span>' +
+                        '#}# </span>',
+                    autoBind :       false,
+                    dataTextField :  "docTitle",
+                    dataValueField : "docId",
 
+                    value :      _.map(this.options.values, function (val) {
+                        var info = {};
+                        info.docTitle = val.displayValue;
+                        info.docId = val.value;
+                        return info;
+                    }),
+                    dataSource : {
+                        type :            "json",
+                        serverFiltering : true,
+                        transport :       {
+                            read : scope.options.autocompleteRequest
+                        }
+                    },
+                    select :     function (event) {
+                        var valueIndex = scope._getIndex();
+                        var dataItem = this.dataItem(event.item.index());
+                        event.preventDefault(); // no fire change event
+                        scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]);
 
-            var options = {
-                filter: "contains",
-                minLength: 1,
-                itemTemplate: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>',
-                autoBind: false,
-                dataTextField: "docTitle",
-                dataValueField: "docId",
+                    },
+                    change :     function (event) {
+                        // set in case of delete item
+                        var oldValues = scope.options.value;
+                        var displayValue;
+                        var newValues = [];
 
-                value: _.map(this.options.values, function (val) {
-                    var info = {};
-                    info.docTitle = val.displayValue;
-                    info.docId = val.value;
-                    return info;
-                }),
-                dataSource: {
-                    type: "json",
-                    serverFiltering: true,
-                    transport: {
-                        read : scope.options.autocompleteRequest
+                        _.each(this.value(), function (val) {
+                            displayValue = _.where(oldValues, {value : val});
+                            if (displayValue.length > 0) {
+                                displayValue = displayValue[0].displayValue;
+                            } else {
+                                displayValue = "-";
+                            }
+                            newValues.push({value : val, displayValue : displayValue});
+                        });
+                        scope.setValue(newValues, event);
 
                     }
-                },
-                select: function (event) {
-                    var valueIndex = scope._getIndex();
-                    var dataItem = this.dataItem(event.item.index());
-                    event.preventDefault(); // no fire change event
-                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
-
-                },
-                change: function (event) {
-                    // set in case of delete item
-                    var oldValues = scope.options.value;
-                    var displayValue;
-                    var newValues = [];
-
-                    console.log("Old", oldValues, scope.options.value);
-
-                    _.each(this.value(), function (val) {
-                        displayValue = _.where(oldValues, {value: val});
-                        if (displayValue.length > 0) {
-                            displayValue = displayValue[0].displayValue;
-                        } else {
-                            displayValue = "-";
-                        }
-                        newValues.push({value: val, displayValue: displayValue});
-                    });
-                    scope.setValue(newValues, event);
-
-                }
-            };
+                };
 
             if (extraOptions) {
                 options = _.extend(options, extraOptions);
@@ -174,15 +171,14 @@ define([
          * Return true if attribut has multiple option
          * @returns bool
          */
-        hasMultipleOption: function wDocidHasMultipleOption() {
+        hasMultipleOption :      function wDocidHasMultipleOption() {
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
-        setValue: function (value, event) {
+        setValue : function (value, event) {
 
             this._super(value, event);
             if (this.getMode() === "write") {
-                console.log("Docid W", this);
                 if (!this.hasMultipleOption()) {
                     if (!_.isArray(value)) {
                         if (value.value !== null) {
@@ -227,12 +223,11 @@ define([
             }
         },
 
-
-
-
-        getType: function () {
+        getType : function () {
             return "docid";
         }
 
     });
+
+    return $.fn.dcpDocid;
 });

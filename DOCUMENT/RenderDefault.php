@@ -25,10 +25,11 @@ class RenderDefault implements RenderConfig
     
     public function getCssReferences()
     {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
-            "css/dcp/document/bootstrap.css",
-            "css/dcp/document/kendo.css",
-            "css/dcp/document/document.css"
+            "css/dcp/document/bootstrap.css?ws=" . $version,
+            "css/dcp/document/kendo.css?ws=" . $version,
+            "css/dcp/document/document.css?ws=" . $version
         );
     }
     
@@ -47,7 +48,7 @@ class RenderDefault implements RenderConfig
             "src" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
             "main" => "DOCUMENT/IHM/main.js?ws=" . $version,
-            "prod" => "DOCUMENT/IHM/main-prod.js?ws=" . $version
+            "prod" => "DOCUMENT/IHM/main-built.js?ws=" . $version
         );
     }
     

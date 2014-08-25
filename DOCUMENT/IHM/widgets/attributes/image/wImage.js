@@ -1,37 +1,31 @@
 define([
-    'underscore',
-    'mustache',
-    'kendo',
-    '../wAttribute',
     'widgets/attributes/file/wFile'
-], function (_, Mustache, kendo) {
+], function () {
     'use strict';
 
     $.widget("dcp.dcpImage", $.dcp.dcpFile, {
 
-        options: {
-            id: "",
-            type: "image"
+        options : {
+            type : "image"
         },
 
-
-        _initDom: function () {
+        _initDom : function () {
             if (this.getMode() === "read") {
-            var urlSep='?';
-            if (this.options.value.url) {
-                if (!this.options.renderOptions.htmlLink.url) {
+                var urlSep = '?';
+                if (this.options.value.url) {
+                    if (!this.options.renderOptions.htmlLink.url) {
 
-                    if (this.options.renderOptions.thumbnailWidth > 0) {
-                        urlSep= (this.options.value.thumbnail.indexOf('?')>=0) ? "&" : "?";
-                        this.options.value.thumbnail += urlSep +
-                            "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
-                            "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
-                    } else if (this.options.renderOptions.thumbnailWidth === 0) {
-                        this.options.value.thumbnail = this.options.value.url;
+                        if (this.options.renderOptions.thumbnailWidth > 0) {
+                            urlSep = (this.options.value.thumbnail.indexOf('?') >= 0) ? "&" : "?";
+                            this.options.value.thumbnail += urlSep +
+                                "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
+                                "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
+                        } else if (this.options.renderOptions.thumbnailWidth === 0) {
+                            this.options.value.thumbnail = this.options.value.url;
+                        }
+
                     }
-
                 }
-            }
             }
             this._super();
         },
@@ -40,8 +34,8 @@ define([
          * Condition before upload file
          * @returns {boolean}
          */
-        uploadCondition: function wImageUploadCondition (file) {
-            if (file.type.substr(0,5) !== "image") {
+        uploadCondition : function wImageUploadCondition(file) {
+            if (file.type.substr(0, 5) !== "image") {
                 this.setError("Invalid image file");
                 return false;
             }
@@ -49,9 +43,11 @@ define([
             return true;
         },
 
-        getType: function () {
+        getType : function () {
             return "image";
         }
 
     });
+
+    return $.fn.dcpImage;
 });

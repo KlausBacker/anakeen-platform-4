@@ -1,6 +1,7 @@
-@import "../../../../lib/bootstrap/less/variables.less";
-@import "menu/menu.less";
-@import "../attributes/attribute.less";
+@import "../../../../lib/bootstrap/less/variables";
+@import "menu/menu";
+@import "../attributes/attribute";
+@import "../../widgets/attributes/attribute";
 @import "../../widgets/attributes/label/label";
 @import "../../widgets/attributes/text/text";
 @import "../../widgets/attributes/docid/docid";
@@ -16,41 +17,38 @@
 @import "../../widgets/attributes/tab/tab";
 @import "../../widgets/window/notification";
 
-@dcpHeaderHeight : 30px;
+@documentHeaderHeight : 30px;
 
 .dcpDocument__menu.navbar-fixed-top {
-  top: @dcpHeaderHeight;
+  top: @documentHeaderHeight;
 }
 
 .dcpDocument__body {
-  padding:10px;
+  padding: 10px;
 }
 
-
 .dcpDocument--edit {
-  user-select:none;
+  user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  -ms-user-select:none;
+  -ms-user-select: none;
 }
 
 .dcpDocument__header {
-  /* position: fixed;
-   top: 0;*/
-  line-height: @dcpHeaderHeight;
+  line-height: @documentHeaderHeight;
   background-color: @body-bg;
   width: 100%;
   z-index: 100;
-  font-size: @dcpHeaderHeight/1.5;
+  font-size: @documentHeaderHeight/1.5;
 }
 
 .dcpDocument__header__icon {
-  height: @dcpHeaderHeight;
+  height: @documentHeaderHeight;
 }
 
 .dcpDocument__header__family {
   display: inline;
-  font-size: @dcpHeaderHeight/2;
+  font-size: @documentHeaderHeight/2;
   float: right;
   font-style: italic;
   margin-right: 10px;
@@ -63,7 +61,7 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index:2;
+  z-index: 2;
 }
 
 body {
@@ -71,22 +69,23 @@ body {
 }
 
 .dcpDocument__tabs .nav-tabs > li.active > a {
-  margin-bottom:-2px;
+  margin-bottom: -2px;
   border-bottom: solid 3px transparent;
-  background-color:@panel-bg;
+  background-color: @panel-bg;
 }
+
 .dcpDocument__tabs .nav-tabs {
-   border-bottom: none;
+  border-bottom: none;
 }
 
 .dcpDocument__tabs__content {
-  padding:5px;
+  padding: 5px;
   border: solid 1px @panel-default-border;
 }
-.dcpDocument__tabs__content .tab-pane .panel:last-child {
-  margin-bottom:0;
-}
 
+.dcpDocument__tabs__content .tab-pane .panel:last-child {
+  margin-bottom: 0;
+}
 
 .confirm--content {
   padding: 10px;
@@ -106,14 +105,6 @@ body {
 
 .confirm--buttons button {
   min-width: 6em;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-.dcpLoading--progressbar {
-
 }
 
 .dcpLoading--hide {
@@ -146,8 +137,8 @@ a:hover {
 
 .k-window .dcpLoading {
   top: auto;
-  position:inherit;
-  width:auto;
+  position: inherit;
+  width: auto;
 
 }
 

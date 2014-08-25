@@ -1,61 +1,106 @@
 define([
     'underscore',
-    'mustache',
-    'kendo',
-    '../wAttribute',
+    'kendo/kendo.timepicker',
     'widgets/attributes/date/wDate'
-], function (_, Mustache, kendo) {
+], function (_, kendo) {
     'use strict';
 
     $.widget("dcp.dcpTime", $.dcp.dcpDate, {
 
-        options: {
-            id: "",
-            type: "time"
+        options : {
+            type : "time",
+            timeDataFormat : ["HH:mm", "HH:mm:ss"]
         },
 
         kendoWidgetClass : "kendoTimePicker",
 
-
-        _activateDate: function (inputValue) {
+        _activateDate : function (inputValue) {
             var scope = this;
             if (!scope.options.renderOptions) {
                 scope.options.renderOptions = {};
             }
             inputValue.kendoTimePicker({
-                timeFormat: "HH:mm", //24 hours format
-                change: function () {
+                parseFormat : this.options.timeDataFormat,
+                change :     function () {
                     if (this.value() !== null) {
                         // only valid date are setted
                         // wrong date are set by blur event
-                        console.log("date raw", this.value());
-                        var isoDate = scope.date2string(this.value());
-                        console.log("date", isoDate);
+                        var isoDate = scope.convertDateToPseudoIsoString(this.value());
                         // Need to set by widget to use raw date
-                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
+                        scope.setValue({value : isoDate, displayValue : inputValue.val()});
                     }
                 }
             });
-
-           this._controlDate(inputValue);
+            this._controlDate(inputValue);
+            if (this.options.value && this.options.value.value) {
+                this.setValue(this.options.value);
+            }
         },
 
+        setValue : function (value) {
+            var originalValue;
 
+            value = _.clone(value);
 
-        date2string: function (oDate) {
-            if (oDate && typeof oDate === "object") {
-                return this.padNumber(oDate.getHours())+ ':' +
-                    this.padNumber(oDate.getMinutes())+ ':' +
-                    this.padNumber(oDate.getSeconds());
+            if (!_.isDate(value.value)) {
+                value.value = this.parseDate(value.value);
+            }
+
+            if (_.has(value, "value") && !_.has(value, "displayValue")) {
+                value.displayValue = this.formatDate(value.value);
+            }
+
+            $.dcp.dcpAttribute.prototype.setValue.call(this, value);
+
+            if (this.getMode() === "write") {
+                originalValue = this.convertDateToPseudoIsoString(this.kendoWidget.data(this.kendoWidgetClass).value());
+                // : explicit lazy equal
+                //noinspection JSHint
+                if (originalValue != value.value) {
+                    if (value.value) {
+                        this.kendoWidget.data(this.kendoWidgetClass).value(value.value);
+                    } else {
+                        this.getContentElements().val('');
+                    }
+                    // Modify value only if different
+                    this.flashElement();
+                }
+            } else if (this.getMode() === "read") {
+                this.getContentElements().text(value.displayValue);
+            } else {
+                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
+            }
+        },
+
+        getValue : function() {
+            var value = this._super();
+            if (value.value && _.isDate(value.value)) {
+                value.value = this.convertDateToPseudoIsoString(value.value);
+            }
+            return value;
+        },
+
+        convertDateToPseudoIsoString : function (date) {
+            if (_.isDate(date)) {
+                return this.padNumber(date.getHours()) + ':' +
+                    this.padNumber(date.getMinutes());
             }
             return '';
         },
 
+        formatDate : function formatDate(value) {
+            return kendo.toString(value, "T");
+        },
 
+        parseDate : function (value) {
+            return kendo.parseDate(value, this.options.timeDataFormat);
+        },
 
-        getType: function () {
+        getType : function () {
             return "time";
         }
 
     });
+
+    return $.fn.dcpTime;
 });

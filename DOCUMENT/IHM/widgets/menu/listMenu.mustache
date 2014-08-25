@@ -2,10 +2,15 @@
     class="menu__element menu__element--list {{cssClass}}"
     {{# htmlAttr}}{{attrId}}="{{attrValue}}"{{/ htmlAttr}}
     {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
-    {{# disabled}}disabled="disabled"{{/ disabled}}
->
-    {{#iconUrl}}<img src="{{iconUrl}}" class="k-image" />{{/iconUrl}}
-    {{#beforeContent}}<span class="menu__before-content k-image">{{{beforeContent}}}</span>{{/beforeContent}}
+    {{# disabled}}disabled="disabled"{{/ disabled}} >
+    {{#iconUrl}}
+    <img src="{{iconUrl}}" class="k-image" />
+    {{/iconUrl}}
+    {{#beforeContent}}
+    <span class="menu__before-content k-image">
+        {{{beforeContent}}}
+    </span>
+    {{/beforeContent}}
     {{{htmlLabel}}}{{label}}
     <ul class="listmenu__content">
     </ul>

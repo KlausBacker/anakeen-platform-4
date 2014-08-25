@@ -1,46 +1,43 @@
 define([
     'underscore',
-    'mustache',
-    "kendo-culture-fr",
-    '../wAttribute'
-], function (_, Mustache) {
+    'widgets/attributes/wAttribute',
+    'kendo/kendo.autocomplete'
+], function (_) {
     'use strict';
 
     $.widget("dcp.dcpText", $.dcp.dcpAttribute, {
 
-        options: {
-            id: "",
-            type: "text"
+        options : {
+            type : "text"
         },
-        kendoWidget: null,
-        _initDom: function () {
 
-            this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
+        kendoWidget : null,
+
+        _initDom : function () {
+            this._super();
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            if (this.getType() === "text") {
+                this.kendoWidget.addClass("k-textbox");
+            }
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this.activateAutocomplete(this.kendoWidget);
             }
         },
 
-        _initEvent: function _initEvent() {
+        _initEvent : function _initEvent() {
             if (this.getMode() === "write") {
                 this._initChangeEvent();
             }
-
             this._super();
         },
 
-
-
-
-
-        _initChangeEvent: function _initChangeEvent() {
+        _initChangeEvent : function _initChangeEvent() {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.contentElements().on("change." + this.eventNamespace, function () {
+                this.getContentElements().on("change." + this.eventNamespace, function () {
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
-                    newValue.displayValue=newValue.value;
+                    newValue.displayValue = newValue.value;
                     currentWidget.setValue(newValue);
                 });
             }
@@ -51,32 +48,31 @@ define([
          * @param inputValue
          * @protected
          */
-        activateAutocomplete: function (inputValue) {
+        activateAutocomplete : function (inputValue) {
             var scope = this;
             inputValue.kendoAutoComplete({
-                dataTextField: "title",
-                filter: "contains",
-                minLength: 1,
-                template: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
+                dataTextField : "title",
+                filter :        "contains",
+                minLength :     1,
+                template :      '<span><span class="k-state-default">#= data.title#</span>' +
+                                    '#if (data.error) {#' +
+                                    '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>',
 
-
-                dataSource: {
-                    type: "json",
-                    serverFiltering: true,
-                    transport: {
+                dataSource : {
+                    type :            "json",
+                    serverFiltering : true,
+                    transport :       {
 
                         read : scope.options.autocompleteRequest
 
                     }
                 },
-                select: function (event) {
+                select :     function (event) {
                     var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
-                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]  );
+                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]);
 
                 }
             });
@@ -92,42 +88,42 @@ define([
          * Modify value to widget and send notification to the view
          * @param value
          */
-        setValue: function wTextSetValue(value) {
+        setValue : function wTextSetValue(value) {
 
-            // call wAttribute:::setValue() :send notification
+            var originalValue;
+
+            value = _.clone(value);
+
+            if (_.has(value, "value") && !_.has(value, "displayValue")) {
+                value.displayValue = value.value;
+            }
+
             this._super(value);
-            // var contentElement = this.element.find('.dcpAttribute__content[name="'+this.options.id+'"]');
-            var contentElement = this.contentElements();
-            var originalValue = this.getWidgetValue();
+
+            originalValue = this.getWidgetValue();
 
             if (this.getMode() === "write") {
                 // : explicit lazy equal
-                //noinspection JSHint
-                console.log("Try text here", {newv:value.value,ori:originalValue} );
-               if (value.value === null && originalValue === '') {
-                    originalValue=null;
+                if (value.value === null && originalValue === '') {
+                    originalValue = null;
                 }
                 if (originalValue !== value.value) {
                     // Modify value only if different
-                    console.log("Modify text here", {newv:value.value,ori:this.getWidgetValue()} );
-                    this.contentElements().val(value.value);
+                    this.getContentElements().val(value.value);
                     this.flashElement();
                 }
             } else if (this.getMode() === "read") {
-                console.log("READ UPDATE TO", this.options.id,value);
-               // contentElement.text(value.displayValue);
-                console.log("redraw with", this.options.id, this.options.value, value);
                 this.redraw();
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }
         },
 
-
-
-        getType: function () {
+        getType : function () {
             return "text";
         }
 
     });
+
+    return $.fn.dcpText;
 });
