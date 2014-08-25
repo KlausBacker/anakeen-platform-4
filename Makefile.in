@@ -19,6 +19,18 @@ include $(localBuildRule)/localBuildRule
 # For all families traduction
 # TRANSCSV += $(shell find ./Families -name "STRUCT_*.csv")
 
-clean:
-	/bin/rm -f *.*~ config.* Makefile configure $(appname)_init.php info.xml $(PACKAGE)-*webinst
+publish-test:
+	make -C Test publish RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
+
+webinst-test:
+	make -C Test webinst RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
+	mv Test/*.webinst .
+
+webinst: webinst-test
+
+clean-test:
+	make -C Test clean
+
+clean: clean-test
+	/bin/rm -f *.*~ config.* Makefile configure $(appname)_init.php info.xml *.webinst
 	/bin/rm -fr autom4te.cache

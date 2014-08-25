@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<module name="dynacase-document-test-document" disabled="no" version="@VERSION@"
+        release="@RELEASE@" license="@LICENSE@">
+
+    <description>Document UIS auto-test</description>
+
+    <requires>
+        <module name="dynacase-core"/>
+        <module name='dynacase-document-uis'/>
+        <module name='dynacase-jasmine'/>
+    </requires>
+
+    <post-install>
+        <process command="programs/record_application TEST_DOCUMENT"/>
+        <process command="programs/update_catalog"/>
+    </post-install>
+
+    <post-upgrade>
+        <process command="programs/pre_migration TEST_DOCUMENT"/>
+        <process command="programs/record_application TEST_DOCUMENT"/>
+        <process command="programs/post_migration TEST_DOCUMENT"/>
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+
+</module>
