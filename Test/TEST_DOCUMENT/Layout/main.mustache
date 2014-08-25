@@ -20,7 +20,7 @@
             var nbTest = [[nbTest]];
             return function() {
                 if (--nbTest < 1) {
-                    return window.executeTests();
+                    return window.dcp.executeTests();
                 }
             };
         })();
