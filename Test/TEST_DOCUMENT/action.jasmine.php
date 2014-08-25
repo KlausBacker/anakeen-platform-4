@@ -58,7 +58,7 @@ function jasmine(Action &$action) {
 function rsearch($path)
 {
     $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::FOLLOW_SYMLINKS);
-    $filter = new MyRecursiveFilterIterator($directory);
+    $filter = new JasmineRecursiveFilterIterator($directory);
     $iterator = new \RecursiveIteratorIterator($filter);
     $files = array();
     foreach ($iterator as $info) {
@@ -67,7 +67,7 @@ function rsearch($path)
     return $files;
 }
 
-class MyRecursiveFilterIterator extends \RecursiveFilterIterator
+class JasmineRecursiveFilterIterator extends \RecursiveFilterIterator
 {
 
     public function accept()
