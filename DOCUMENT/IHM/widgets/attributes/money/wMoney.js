@@ -9,7 +9,7 @@ define([
             type: "money",
             renderOptions: {
                 currency: '€',
-                numberFormat: '#.00'
+                numberFormat: '#,#.00'
             }
         },
 
