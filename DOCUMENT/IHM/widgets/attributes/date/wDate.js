@@ -130,7 +130,7 @@ define([
         },
 
         parseDate : function(value) {
-            return kendo.parseDate(value, this.options.dateDataFormat);
+            return kendo.parseDate(value);
         },
 
         convertDateToPseudoIsoString : function (oDate) {

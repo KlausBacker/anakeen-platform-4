@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-17 11:58+0200\n"
+"POT-Creation-Date: 2014-08-26 12:15+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -39,6 +39,22 @@ msgctxt "UiMenu"
 msgid "Cancel"
 msgstr ""
 
+msgctxt "ddui-file"
+msgid "Choose file"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Choose image"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Click to upload file"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Click to upload image"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Close"
 msgstr ""
@@ -66,6 +82,18 @@ msgctxt "my"
 msgid "Custom Menu"
 msgstr ""
 
+msgid "DUIT:Document render : unit test"
+msgstr ""
+
+msgid "DUIT:Jasmine"
+msgstr ""
+
+msgid "DUIT:Render a document"
+msgstr ""
+
+msgid "DUIT:Right to autotest"
+msgstr ""
+
 msgid "Default Edit"
 msgstr ""
 
@@ -86,6 +114,25 @@ msgid "Document \"%s\" not found "
 msgstr ""
 
 msgid "Document render"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Download file"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Download image"
+msgstr ""
+
+msgid "Download template"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Drop file here"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Drop image here"
 msgstr ""
 
 msgid "Get dynamic sub menu"
@@ -171,6 +218,10 @@ msgctxt "UiMenu"
 msgid "Record document without constraint check"
 msgstr ""
 
+msgctxt "ddui-file"
+msgid "Recording"
+msgstr ""
+
 msgid "Render a document"
 msgstr ""
 
@@ -208,6 +259,10 @@ msgid "Séparateur"
 msgstr ""
 
 msgid "Test"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Transferring"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -263,4 +318,7 @@ msgctxt "ddui"
 msgid ""
 "wrong return type when calling function %s\n"
 "%s"
+msgstr ""
+
+msgid "zct_workpostalcode"
 msgstr ""

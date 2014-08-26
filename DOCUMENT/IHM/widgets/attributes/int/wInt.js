@@ -15,6 +15,10 @@ define([
             numberFormat :  'n0',
             renderOptions : {
                 kendoNumericConfiguration : {}
+            },
+            labels : {
+                decreaseLabel : "Decrease value",
+                increaseLabel : "Increase value"
             }
         },
         /**
@@ -93,6 +97,8 @@ define([
                 kendoOptions = {},
                 defaultOptions = {
                     decimals : 0,
+                    downArrowText : scope.options.labels.decreaseLabel,
+                    upArrowText :  scope.options.labels.increaseLabel,
                     format :   scope.options.numberFormat,
                     max :      scope.options.renderOptions.max,
                     min :      scope.options.renderOptions.min,

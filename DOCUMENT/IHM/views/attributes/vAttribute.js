@@ -47,7 +47,8 @@ define([
             }
             data.viewCid = this.cid;
             data.renderOptions = this.model.getOptions();
-            data.deleteLabels = this.getDeleteLabels();
+            data.labels = data.labels || {};
+            data.labels.deleteAttributeNames = this.getDeleteLabels();
             data.locale = this.model.get("documentModel").get("locale");
             data.templates = {};
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute) {

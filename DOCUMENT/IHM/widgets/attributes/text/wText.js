@@ -13,7 +13,7 @@ define([
 
         kendoWidget : null,
 
-        _initDom : function () {
+        _initDom : function wTextInitDom() {
             this._super();
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             if (this.getType() === "text") {
@@ -24,14 +24,14 @@ define([
             }
         },
 
-        _initEvent : function _initEvent() {
+        _initEvent : function wTextInitEvent() {
             if (this.getMode() === "write") {
                 this._initChangeEvent();
             }
             this._super();
         },
 
-        _initChangeEvent : function _initChangeEvent() {
+        _initChangeEvent : function wTextInitChangeEvent() {
             var currentWidget = this;
             if (this.getMode() === "write") {
                 this.getContentElements().on("change." + this.eventNamespace, function () {

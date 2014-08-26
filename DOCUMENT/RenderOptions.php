@@ -19,6 +19,7 @@ class RenderOptions implements \JsonSerializable
     protected $thesaurusOptions = null;
     protected $intOptions = null;
     protected $imageOptions = null;
+    protected $fileOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
     protected $htmltextOptions = null;
@@ -141,6 +142,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->imageOptions->setScope($attrid);
         return $this->imageOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return FileRenderOptions
+     */
+    public function file($attrid = '')
+    {
+        if ($this->fileOptions === null) {
+            $this->fileOptions = new FileRenderOptions($this);
+        }
+        $this->fileOptions->setScope($attrid);
+        return $this->fileOptions;
     }
     /**
      * @param string $attrid

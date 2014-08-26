@@ -195,6 +195,23 @@ class RenderDefault implements RenderConfig
         
         $opt->setCustomOption("mode", $this->getType());
         $this->setLinkOption($document, $opt);
+
+        $opt->image()->setLabels(array(
+            "dropFileHere"=>___("Drop image here", "ddui-image"),
+            "placeHolder"=>___("Click to upload image", "ddui-image"),
+            "tooltipLabel"=>___("Choose image", "ddui-image"),
+            "downloadLabel"=>___("Download image", "ddui-image"),
+            "recording"=>___("Recording", "ddui-file"),
+            "transferring"=>___("Transferring", "ddui-file"),
+        ));
+        $opt->file()->setLabels(array(
+            "dropFileHere"=>___("Drop file here", "ddui-file"),
+            "placeHolder"=>___("Click to upload file", "ddui-file"),
+            "tooltipLabel"=>___("Choose file", "ddui-file"),
+            "downloadLabel"=>___("Download file", "ddui-file"),
+            "recording"=>___("Recording", "ddui-file"),
+            "transferring"=>___("Transferring", "ddui-file"),
+        ));
         return $opt;
     }
     

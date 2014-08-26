@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-17 11:58+0200\n"
-"PO-Revision-Date: 2014-07-17 12:04+0200\n"
+"POT-Creation-Date: 2014-08-26 12:15+0200\n"
+"PO-Revision-Date: 2014-08-26 12:24+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -39,6 +39,22 @@ msgctxt "UiMenu"
 msgid "Cancel"
 msgstr "Annuler"
 
+msgctxt "ddui-file"
+msgid "Choose file"
+msgstr "Choisissez un fichier"
+
+msgctxt "ddui-image"
+msgid "Choose image"
+msgstr "Choisissez une image"
+
+msgctxt "ddui-file"
+msgid "Click to upload file"
+msgstr "Cliquez pour télécharger le fichier"
+
+msgctxt "ddui-image"
+msgid "Click to upload image"
+msgstr "Cliquez pour télécharger l'image"
+
 msgctxt "UiMenu"
 msgid "Close"
 msgstr "Fermer"
@@ -66,6 +82,18 @@ msgctxt "my"
 msgid "Custom Menu"
 msgstr ""
 
+msgid "DUIT:Document render : unit test"
+msgstr ""
+
+msgid "DUIT:Jasmine"
+msgstr ""
+
+msgid "DUIT:Render a document"
+msgstr ""
+
+msgid "DUIT:Right to autotest"
+msgstr ""
+
 msgid "Default Edit"
 msgstr ""
 
@@ -87,6 +115,25 @@ msgstr ""
 
 msgid "Document render"
 msgstr "Rendu de documen"
+
+msgctxt "ddui-file"
+msgid "Download file"
+msgstr "Télécharger le fichier"
+
+msgctxt "ddui-image"
+msgid "Download image"
+msgstr "Télécharger l'image"
+
+msgid "Download template"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Drop file here"
+msgstr "Déposer le fichier ici"
+
+msgctxt "ddui-image"
+msgid "Drop image here"
+msgstr "Déposer l'image ici"
 
 msgid "Get dynamic sub menu"
 msgstr ""
@@ -171,6 +218,10 @@ msgctxt "UiMenu"
 msgid "Record document without constraint check"
 msgstr "Enregistrer le document sans tenir compte des contraintes"
 
+msgctxt "ddui-file"
+msgid "Recording"
+msgstr "Enregistrement"
+
 msgid "Render a document"
 msgstr "Visualiser un document"
 
@@ -209,6 +260,10 @@ msgstr ""
 
 msgid "Test"
 msgstr ""
+
+msgctxt "ddui-file"
+msgid "Transferring"
+msgstr "Téléversement de"
 
 msgctxt "UiMenu"
 msgid "Unlock"
@@ -263,6 +318,9 @@ msgctxt "ddui"
 msgid ""
 "wrong return type when calling function %s\n"
 "%s"
+msgstr ""
+
+msgid "zct_workpostalcode"
 msgstr ""
 
 #~ msgctxt "UiMenu"

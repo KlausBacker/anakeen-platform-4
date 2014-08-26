@@ -6,7 +6,13 @@ define([
     $.widget("dcp.dcpImage", $.dcp.dcpFile, {
 
         options : {
-            type : "image"
+            type : "image",
+            labels : {
+                dropFileHere : "Drop image here",
+                placeHolder : "Click to upload an image",
+                tooltipLabel : "Choose image",
+                downloadLabel: "Download the image"
+            }
         },
 
         _initDom : function () {
@@ -28,6 +34,7 @@ define([
                 }
             }
             this._super();
+            console.log("img option", this.options);
         },
 
         /**
