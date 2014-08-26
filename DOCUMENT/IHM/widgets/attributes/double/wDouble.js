@@ -1,5 +1,5 @@
 define([
-    'widgets/attributes/int/wInt',
+    'widgets/attributes/int/wInt'
 ], function () {
     'use strict';
 
@@ -7,13 +7,19 @@ define([
 
         options: {
             type: "double",
-            numberFormat: 'n'
+            renderOptions : {
+                decimalPrecision : null, // unlimited precision
+                numberFormat :  'n'
+            }
         },
 
         _initDom: function wDoubleInitDom() {
-            if (this.options.renderOptions.decimalPrecision > 0) {
+            if (this.options.renderOptions.decimalPrecision !== null && this.options.renderOptions.decimalPrecision >= 0) {
                 // view decimal precision
-                this.options.numberFormat = 'n' + this.options.renderOptions.decimalPrecision;
+                this.options.renderOptions.numberFormat = '#.' ;
+                for (var idx=0;idx<this.options.renderOptions.decimalPrecision; idx++) {
+                    this.options.renderOptions.numberFormat += '0';
+                }
             }
             this._super();
         },

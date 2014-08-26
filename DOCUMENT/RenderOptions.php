@@ -19,6 +19,7 @@ class RenderOptions implements \JsonSerializable
     protected $thesaurusOptions = null;
     protected $intOptions = null;
     protected $imageOptions = null;
+        protected $moneyOptions = null;
     protected $fileOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
@@ -85,6 +86,12 @@ class RenderOptions implements \JsonSerializable
                 DoubleRenderOptions::maxOption => null,
                 DoubleRenderOptions::minOption => null,
                 DoubleRenderOptions::decimalPrecisionOption => 2
+            ) ,
+            MoneyRenderOptions::type => array(
+                MoneyRenderOptions::maxOption => null,
+                MoneyRenderOptions::minOption => null,
+                MoneyRenderOptions::decimalPrecisionOption => 2,
+                MoneyRenderOptions::currencyOption => '€'
             ) ,
             TextRenderOptions::type => array(
                 TextRenderOptions::sizeOption => null,
@@ -226,6 +233,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->doubleOptions->setScope($attrid);
         return $this->doubleOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return MoneyRenderOptions
+     */
+    public function money($attrid = '')
+    {
+        if ($this->moneyOptions === null) {
+            $this->moneyOptions = new MoneyRenderOptions($this);
+        }
+        $this->moneyOptions->setScope($attrid);
+        return $this->moneyOptions;
     }
     /**
      * @param string $attrid

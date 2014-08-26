@@ -11,6 +11,7 @@ define([
     'widgets/attributes/timestamp/wTimestamp',
     'widgets/attributes/time/wTime',
     'widgets/attributes/image/wImage',
+    'widgets/attributes/money/wMoney',
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
@@ -258,6 +259,8 @@ define([
                     return $.fn.dcpInt;
                 case "double" :
                     return $.fn.dcpDouble;
+                case "money" :
+                    return $.fn.dcpMoney;
                 case "longtext" :
                     return $.fn.dcpLongtext;
                 case "htmltext" :
