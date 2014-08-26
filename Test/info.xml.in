@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<module name="dynacase-document-test-document" disabled="no" version="@VERSION@"
-        release="@RELEASE@" license="@LICENSE@">
+<module name="dynacase-document-uis-test" disabled="no" version="@VERSION@"
+        release="@RELEASE@" >
 
     <description>Document UIS auto-test</description>
 
     <requires>
         <module name="dynacase-core"/>
         <module name='dynacase-document-uis'/>
-        <module name='dynacase-jasmine'/>
+        <module name='dynacase-jasmine-installer'/>
     </requires>
 
     <post-install>

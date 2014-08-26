@@ -11,6 +11,7 @@ define([
     'widgets/attributes/timestamp/wTimestamp',
     'widgets/attributes/time/wTime',
     'widgets/attributes/image/wImage',
+    'widgets/attributes/money/wMoney',
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
@@ -47,7 +48,8 @@ define([
             }
             data.viewCid = this.cid;
             data.renderOptions = this.model.getOptions();
-            data.deleteLabels = this.getDeleteLabels();
+            data.labels = data.labels || {};
+            data.labels.deleteAttributeNames = this.getDeleteLabels();
             data.locale = this.model.get("documentModel").get("locale");
             data.templates = {};
             if (window.dcp && window.dcp.templates && window.dcp.templates.attribute) {
@@ -257,6 +259,8 @@ define([
                     return $.fn.dcpInt;
                 case "double" :
                     return $.fn.dcpDouble;
+                case "money" :
+                    return $.fn.dcpMoney;
                 case "longtext" :
                     return $.fn.dcpLongtext;
                 case "htmltext" :

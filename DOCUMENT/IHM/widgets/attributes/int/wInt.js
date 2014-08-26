@@ -12,9 +12,16 @@ define([
 
         options :     {
             type :          "int",
-            numberFormat :  'n0',
+
             renderOptions : {
-                kendoNumericConfiguration : {}
+                kendoNumericConfiguration : {},
+                max:null,
+                min:null,
+                numberFormat :  'n0'
+            },
+            labels : {
+                decreaseLabel : "Decrease value",
+                increaseLabel : "Increase value"
             }
         },
         /**
@@ -81,7 +88,7 @@ define([
         },
 
         formatNumber : function wIntFormatNumber(value) {
-            return kendo.toString(value, this.options.numberFormat);
+            return kendo.toString(value, this.getKendoNumericOptions().format);
         },
 
         /**
@@ -93,7 +100,9 @@ define([
                 kendoOptions = {},
                 defaultOptions = {
                     decimals : 0,
-                    format :   scope.options.numberFormat,
+                    downArrowText : scope.options.labels.decreaseLabel,
+                    upArrowText :  scope.options.labels.increaseLabel,
+                    format :   scope.options.renderOptions.numberFormat,
                     max :      scope.options.renderOptions.max,
                     min :      scope.options.renderOptions.min,
                     change :   function () {

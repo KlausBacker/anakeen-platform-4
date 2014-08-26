@@ -8,14 +8,14 @@
         </button>
     </span>
     {{/hasAutocomplete}}
-    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none"
-          class="dcpAttribute__content--file"
+    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none" accept="image/*"
+           class="dcpAttribute__content--file"
           value="{{value.value}}"/>
-    <input {{#value.thumbnail}}style="background-image:url({{value.thumbnail}}){{/value.thumbnail}}" accept="image/*" title="Choose image" type="text"
+    <input {{#value.thumbnail}}style="background-image:url({{value.thumbnail}}){{/value.thumbnail}}"  type="text"
            class="form-control dcpAttribute__content dcpAttribute__content--edit {{#value.thumbnail}}dcpAttribute__content--filethumb{{/value.thumbnail}}"
-           placeholder="Click to upload image" value="{{value.displayValue}}"/>
+           value="{{value.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
-        <button type="button" title="Download image" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs">
+        <button type="button"  data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs">
             <i class="fa fa-download fa-fw"></i>
         </button>
         {{#renderOptions.buttons}}

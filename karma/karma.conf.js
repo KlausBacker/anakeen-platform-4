@@ -32,7 +32,7 @@ module.exports = function (config) {
         reporters :     ['progress'],
 
         proxies : {
-            '/dynacase/' : 'http://dynacase.dev:8081/'
+            '/dynacase/' : 'http://localhost/tmp33/'
         },
 
         // web server port

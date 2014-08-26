@@ -26,6 +26,7 @@ $action_desc = array(
         "layout" => "view.html",
         "script" => "action-view.php",
         "function" => "view",
+        "root" => "Y",
         "acl" => "VIEW_RENDER"),
     array(
         "name" => "TEMPLATE",

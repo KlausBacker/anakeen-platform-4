@@ -19,6 +19,8 @@ class RenderOptions implements \JsonSerializable
     protected $thesaurusOptions = null;
     protected $intOptions = null;
     protected $imageOptions = null;
+        protected $moneyOptions = null;
+    protected $fileOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
     protected $htmltextOptions = null;
@@ -85,6 +87,12 @@ class RenderOptions implements \JsonSerializable
                 DoubleRenderOptions::minOption => null,
                 DoubleRenderOptions::decimalPrecisionOption => 2
             ) ,
+            MoneyRenderOptions::type => array(
+                MoneyRenderOptions::maxOption => null,
+                MoneyRenderOptions::minOption => null,
+                MoneyRenderOptions::decimalPrecisionOption => 2,
+                MoneyRenderOptions::currencyOption => '€'
+            ) ,
             TextRenderOptions::type => array(
                 TextRenderOptions::sizeOption => null,
                 TextRenderOptions::formatOption => "%s"
@@ -141,6 +149,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->imageOptions->setScope($attrid);
         return $this->imageOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return FileRenderOptions
+     */
+    public function file($attrid = '')
+    {
+        if ($this->fileOptions === null) {
+            $this->fileOptions = new FileRenderOptions($this);
+        }
+        $this->fileOptions->setScope($attrid);
+        return $this->fileOptions;
     }
     /**
      * @param string $attrid
@@ -213,6 +233,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->doubleOptions->setScope($attrid);
         return $this->doubleOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return MoneyRenderOptions
+     */
+    public function money($attrid = '')
+    {
+        if ($this->moneyOptions === null) {
+            $this->moneyOptions = new MoneyRenderOptions($this);
+        }
+        $this->moneyOptions->setScope($attrid);
+        return $this->moneyOptions;
     }
     /**
      * @param string $attrid

@@ -26,6 +26,7 @@ class CommonRenderOptions
     const buttonsOption = "buttons";
     const inputHtmlTooltip = "inputHtmlTooltip";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
+    const labelsOption = "labels";
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
@@ -166,6 +167,21 @@ class CommonRenderOptions
         }
         $buttons[] = $options;
         $this->setOption(self::buttonsOption, $buttons);
+        return $this;
+    }
+
+    /**
+     * Add or modify specific labels for widget
+     * @param array $labels
+     * @return $this
+     */
+    public function setLabels(array $labels)
+    {
+        $cLabels=$this->getOption(self::labelsOption);
+        if (empty($cLabels)) {
+            $cLabels=array();
+        }
+        $this->setOption(self::labelsOption, array_merge($cLabels,$labels));
         return $this;
     }
 }

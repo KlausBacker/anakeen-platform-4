@@ -12,12 +12,12 @@
            class="dcpAttribute__content--file"
            value="{{value.value}}"/>
 
-    <input {{#value.icon}}style="background-image:url({{value.icon}}){{/value.icon}}" placeholder="Click to upload file"
-           title="Choose file" type="text"
+    <input {{#value.icon}}style="background-image:url({{value.icon}}){{/value.icon}}"
+           type="text"
            class="form-control dcpAttribute__content dcpAttribute__content--edit {{#value.icon}}dcpAttribute__content--fileicon{{/value.icon}}"
            value="{{value.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
-        <button type="button" title="Download file" data-index="{{index}}"
+        <button type="button"  data-index="{{index}}"
                 class="dcpAttribute__content__button--file btn btn-default btn-xs">
             <i class="fa fa-download fa-fw"/>
         </button>
