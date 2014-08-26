@@ -15,7 +15,8 @@ define([
                 tooltipLabel: "Choose file",
                 downloadLabel: "Download file",
                 recording: "Recording",
-                transferring : "Transferring"
+                transferring : "Transferring",
+                kiloByte : "kB"
             }
         },
 
@@ -33,6 +34,8 @@ define([
 
                         if (!this.options.renderOptions.htmlLink.title) {
                             this.options.renderOptions.htmlLink.title = this.options.value.displayValue;
+                            this.options.renderOptions.htmlLink.title += ' ('+ (Math.round(this.options.value.size/1024)) + ' '+
+                                this.options.labels.kiloByte+')';
                         }
                     }
                 }

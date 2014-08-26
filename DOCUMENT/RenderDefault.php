@@ -201,6 +201,7 @@ class RenderDefault implements RenderConfig
             "placeHolder"=>___("Click to upload image", "ddui-image"),
             "tooltipLabel"=>___("Choose image", "ddui-image"),
             "downloadLabel"=>___("Download image", "ddui-image"),
+            "kiloByte"=>___("kB", "ddui-file"),
             "recording"=>___("Recording", "ddui-file"),
             "transferring"=>___("Transferring", "ddui-file"),
         ));
@@ -209,6 +210,7 @@ class RenderDefault implements RenderConfig
             "placeHolder"=>___("Click to upload file", "ddui-file"),
             "tooltipLabel"=>___("Choose file", "ddui-file"),
             "downloadLabel"=>___("Download file", "ddui-file"),
+            "kiloByte"=>___("kB", "ddui-file"),
             "recording"=>___("Recording", "ddui-file"),
             "transferring"=>___("Transferring", "ddui-file"),
         ));
