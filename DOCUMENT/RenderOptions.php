@@ -19,7 +19,7 @@ class RenderOptions implements \JsonSerializable
     protected $thesaurusOptions = null;
     protected $intOptions = null;
     protected $imageOptions = null;
-        protected $moneyOptions = null;
+    protected $moneyOptions = null;
     protected $fileOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
@@ -176,7 +176,7 @@ class RenderOptions implements \JsonSerializable
     }
     /**
      * @param string $attrid
-     * @return TimestampRenderOptions
+     * @return TimeRenderOptions
      */
     public function time($attrid = '')
     {

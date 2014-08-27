@@ -9,29 +9,28 @@ define([
 
         options: {
             type: "time",
-            timeDataFormat: ["HH:mm", "HH:mm:ss"]
+            renderOptions: {
+                kendoTimeConfiguration: {
+                    timeDataFormat: ["HH:mm", "HH:mm:ss"]
+                }
+            }
         },
 
         kendoWidgetClass: "kendoTimePicker",
 
         _activateDate: function (inputValue) {
             var scope = this;
-            if (!scope.options.renderOptions) {
-                scope.options.renderOptions = {};
-            }
-            inputValue.kendoTimePicker({
-                parseFormat: this.options.timeDataFormat,
-                change: function () {
-                    if (this.value() !== null) {
-                        // only valid date are setted
-                        // wrong date are set by blur event
-                        var isoDate = scope.convertDateToPseudoIsoString(this.value());
-                        // Need to set by widget to use raw date
+            var kOptions = this.getKendoOptions();
 
-                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
-                    }
-                }
-            });
+            kOptions.change = function () {
+                // only valid date are setted
+                // wrong date are set by blur event
+                var isoDate = scope.convertDateToPseudoIsoString(this.value());
+                // Need to set by widget to use raw date
+
+                scope.setValue({value: isoDate, displayValue: inputValue.val()});
+            };
+            inputValue.kendoTimePicker(kOptions);
             this._controlDate(inputValue);
             if (this.options.value && this.options.value.value) {
                 this.setValue(this.options.value);
@@ -79,7 +78,6 @@ define([
         },
 
         convertDateToPseudoIsoString: function (date) {
-            console.log("time date", date);
             if (_.isDate(date)) {
                 return this.padNumber(date.getHours()) + ':' +
                     this.padNumber(date.getMinutes());
@@ -92,7 +90,26 @@ define([
         },
 
         parseDate: function (value) {
-            return kendo.parseDate(value, this.options.timeDataFormat);
+            return kendo.parseDate(value, this.options.renderOptions.kendoTimeConfiguration.timeDataFormat);
+        },
+
+
+        /**
+         * Get kendo option from normal options and from renderOptions.kendoNumeric
+         * @returns {*}
+         */
+        getKendoOptions: function wTimegetKendoOptions() {
+            var scope = this,
+                kendoOptions = {},
+                defaultOptions = {
+                    min: this.options.minDate
+                };
+
+            if (_.isObject(scope.options.renderOptions.kendoTimeConfiguration)) {
+                kendoOptions = scope.options.renderOptions.kendoTimeConfiguration;
+            }
+
+            return _.extend(defaultOptions, kendoOptions);
         },
 
         getType: function () {
