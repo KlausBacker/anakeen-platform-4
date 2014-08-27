@@ -4,15 +4,15 @@ if (window.__karma__) {
 }
 
 define([
-    'text!template/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=longtext',
-    'widgets/attributes/longtext/wLongtext'
+    'text!template/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=default',
+    'widgets/attributes/money/wMoney'
 ], function (data, widget) {
     'use strict';
     window.dcp = window.dcp || {};
     window.dcp.templates = window.dcp.templates || {};
     window.dcp.widgets = window.dcp.widgets || {};
     data = JSON.parse(data);
-    window.dcp.templates.longtext = data.content;
-    window.dcp.widgets.longtext = widget;
+    window.dcp.templates.default = data.content;
+    window.dcp.widgets.money = widget;
     return widget;
 });

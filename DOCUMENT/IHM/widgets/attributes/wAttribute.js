@@ -21,7 +21,8 @@ define([
             },
             template: null,
             deleteButton: false,
-            renderOptions: null
+            renderOptions: null,
+            locale: "fr_FR"
         },
 
         /**
