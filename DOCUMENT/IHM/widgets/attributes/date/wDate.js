@@ -13,7 +13,10 @@ define([
         options : {
             type : "date",
             minDate : new Date(1700, 0, 1),
-            dateDataFormat : ["yyyy-MM-dd"]
+            dateDataFormat : ["yyyy-MM-dd"],
+            renderOptions : {
+                kendoDateConfiguration : {}
+            }
         },
 
         kendoWidgetClass : "kendoDatePicker",
@@ -78,22 +81,22 @@ define([
 
         _activateDate : function (inputValue) {
             var scope = this;
+            var kOptions=this.getKendoDateOptions();
+
             if (!scope.options.renderOptions) {
                 scope.options.renderOptions = {};
             }
-            inputValue.kendoDatePicker({
-                parseFormats : this.options.dateDataFormat,
-                min :          this.options.minDate,
-                change :       function () {
-                    if (this.value() !== null) {
-                        // only valid date are setted
-                        // wrong date are set by blur event
-                        var isoDate = scope.convertDateToPseudoIsoString(this.value());
-                        // Need to set by widget to use raw date
-                        scope.setValue({value : isoDate, displayValue : inputValue.val()});
-                    }
+            kOptions.change =      function () {
+                if (this.value() !== null) {
+                    // only valid date are setted
+                    // wrong date are set by blur event
+                    var isoDate = scope.convertDateToPseudoIsoString(this.value());
+                    // Need to set by widget to use raw date
+                    scope.setValue({value : isoDate, displayValue : inputValue.val()});
                 }
-            });
+            };
+
+            inputValue.kendoDatePicker(this.getKendoDateOptions());
 
             this._controlDate(inputValue);
         },
@@ -145,8 +148,27 @@ define([
                 return '0' + number;
             }
             return number;
-        }
+        },
 
+
+        /**
+         * Get kendo option from normal options and from renderOptions.kendoNumeric
+         * @returns {*}
+         */
+        getKendoDateOptions : function wDateGetKendoDateOptions() {
+            var scope = this,
+                kendoOptions = {},
+                defaultOptions = {
+                    parseFormats : this.options.dateDataFormat,
+                    min :          this.options.minDate
+
+                };
+
+            if (_.isObject(scope.options.renderOptions.kendoDateConfiguration)) {
+                kendoOptions = scope.options.renderOptions.kendoDateConfiguration;
+            }
+            return _.extend(defaultOptions, kendoOptions);
+        }
     });
 
     return $.fn.dcpDate;

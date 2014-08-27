@@ -34,7 +34,6 @@ define([
                 }
             }
             this._super();
-            console.log("img option", this.options);
         },
 
         /**

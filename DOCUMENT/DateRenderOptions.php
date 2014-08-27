@@ -11,4 +11,18 @@ class DateRenderOptions extends CommonRenderOptions
 {
     
     const type = "date";
+    const kendoDateConfigurationOption = "kendoDateConfiguration";
+
+       /**
+     * Set extra configuration for kendoDate widget
+     *
+     * @note use only in edition mode
+     * @param array $config indexed array
+     *
+     * @return $this
+     */
+    public function setKendoDateConfiguration($config)
+    {
+        return $this->setOption(self::kendoDateConfigurationOption, $config);
+    }
 }

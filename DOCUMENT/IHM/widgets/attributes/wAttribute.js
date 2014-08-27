@@ -250,7 +250,9 @@ define([
             }
             this.options.emptyValue = _.bind(this._getEmptyValue, this);
             this.options.hadButtons = this._hasButtons();
-            this.options.labels = _.extend(this.options.labels , this.options.renderOptions.labels);
+            if (this.options.renderOptions && this.options.renderOptions.labels) {
+                this.options.labels = _.extend(this.options.labels, this.options.renderOptions.labels);
+            }
             this._initDom();
             this._initEvent();
         },

@@ -7,27 +7,28 @@ define([
 
     $.widget("dcp.dcpTime", $.dcp.dcpDate, {
 
-        options : {
-            type : "time",
-            timeDataFormat : ["HH:mm", "HH:mm:ss"]
+        options: {
+            type: "time",
+            timeDataFormat: ["HH:mm", "HH:mm:ss"]
         },
 
-        kendoWidgetClass : "kendoTimePicker",
+        kendoWidgetClass: "kendoTimePicker",
 
-        _activateDate : function (inputValue) {
+        _activateDate: function (inputValue) {
             var scope = this;
             if (!scope.options.renderOptions) {
                 scope.options.renderOptions = {};
             }
             inputValue.kendoTimePicker({
-                parseFormat : this.options.timeDataFormat,
-                change :     function () {
+                parseFormat: this.options.timeDataFormat,
+                change: function () {
                     if (this.value() !== null) {
                         // only valid date are setted
                         // wrong date are set by blur event
                         var isoDate = scope.convertDateToPseudoIsoString(this.value());
                         // Need to set by widget to use raw date
-                        scope.setValue({value : isoDate, displayValue : inputValue.val()});
+
+                        scope.setValue({value: isoDate, displayValue: inputValue.val()});
                     }
                 }
             });
@@ -37,17 +38,14 @@ define([
             }
         },
 
-        setValue : function (value) {
+        setValue: function (value) {
             var originalValue;
 
             value = _.clone(value);
 
-            if (!_.isDate(value.value)) {
-                value.value = this.parseDate(value.value);
-            }
 
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
-                value.displayValue = this.formatDate(value.value);
+                value.displayValue = this.formatDate(this.parseDate(value.value));
             }
 
             $.dcp.dcpAttribute.prototype.setValue.call(this, value);
@@ -72,7 +70,7 @@ define([
             }
         },
 
-        getValue : function() {
+        getValue: function () {
             var value = this._super();
             if (value.value && _.isDate(value.value)) {
                 value.value = this.convertDateToPseudoIsoString(value.value);
@@ -80,7 +78,8 @@ define([
             return value;
         },
 
-        convertDateToPseudoIsoString : function (date) {
+        convertDateToPseudoIsoString: function (date) {
+            console.log("time date", date);
             if (_.isDate(date)) {
                 return this.padNumber(date.getHours()) + ':' +
                     this.padNumber(date.getMinutes());
@@ -88,15 +87,15 @@ define([
             return '';
         },
 
-        formatDate : function formatDate(value) {
+        formatDate: function formatDate(value) {
             return kendo.toString(value, "T");
         },
 
-        parseDate : function (value) {
+        parseDate: function (value) {
             return kendo.parseDate(value, this.options.timeDataFormat);
         },
 
-        getType : function () {
+        getType: function () {
             return "time";
         }
 
