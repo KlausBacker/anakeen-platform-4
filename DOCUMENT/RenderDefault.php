@@ -121,6 +121,14 @@ class RenderDefault implements RenderConfig
                         "file" => "DOCUMENT/IHM/widgets/attributes/file/fileRead.mustache"
                     )
                 ) ,
+                "enum" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumWrite.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
+                    )
+                ) ,
                 "htmltext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -195,24 +203,24 @@ class RenderDefault implements RenderConfig
         
         $opt->setCustomOption("mode", $this->getType());
         $this->setLinkOption($document, $opt);
-
+        
         $opt->image()->setLabels(array(
-            "dropFileHere"=>___("Drop image here", "ddui-image"),
-            "placeHolder"=>___("Click to upload image", "ddui-image"),
-            "tooltipLabel"=>___("Choose image", "ddui-image"),
-            "downloadLabel"=>___("Download image", "ddui-image"),
-            "kiloByte"=>___("kB", "ddui-file"),
-            "recording"=>___("Recording", "ddui-file"),
-            "transferring"=>___("Transferring", "ddui-file"),
+            "dropFileHere" => ___("Drop image here", "ddui-image") ,
+            "placeHolder" => ___("Click to upload image", "ddui-image") ,
+            "tooltipLabel" => ___("Choose image", "ddui-image") ,
+            "downloadLabel" => ___("Download image", "ddui-image") ,
+            "kiloByte" => ___("kB", "ddui-file") ,
+            "recording" => ___("Recording", "ddui-file") ,
+            "transferring" => ___("Transferring", "ddui-file") ,
         ));
         $opt->file()->setLabels(array(
-            "dropFileHere"=>___("Drop file here", "ddui-file"),
-            "placeHolder"=>___("Click to upload file", "ddui-file"),
-            "tooltipLabel"=>___("Choose file", "ddui-file"),
-            "downloadLabel"=>___("Download file", "ddui-file"),
-            "kiloByte"=>___("kB", "ddui-file"),
-            "recording"=>___("Recording", "ddui-file"),
-            "transferring"=>___("Transferring", "ddui-file"),
+            "dropFileHere" => ___("Drop file here", "ddui-file") ,
+            "placeHolder" => ___("Click to upload file", "ddui-file") ,
+            "tooltipLabel" => ___("Choose file", "ddui-file") ,
+            "downloadLabel" => ___("Download file", "ddui-file") ,
+            "kiloByte" => ___("kB", "ddui-file") ,
+            "recording" => ___("Recording", "ddui-file") ,
+            "transferring" => ___("Transferring", "ddui-file") ,
         ));
         return $opt;
     }

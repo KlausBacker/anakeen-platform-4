@@ -534,7 +534,6 @@ define([
                 return window.dcp.templates["default"][key];
             }
             throw new Error("Unknown template  " + key + "/" + this.options.type);
-
         },
 
         /**
@@ -553,7 +552,7 @@ define([
          * Check if the attribute is multiple
          *
          * @returns boolean
-         * @private
+         * @protected
          */
         _isMultiple: function () {
             return (this.options.options && this.options.options.multiple === "yes");

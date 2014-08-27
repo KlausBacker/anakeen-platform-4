@@ -1,0 +1,29 @@
+<div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
+    {{#hasAutocomplete}}
+        <span class="input-group-addon">
+        <button
+                {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
+                class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
+            <i class="fa fa-chevron-down fa-fw"></i>
+        </button>
+    </span>
+    {{/hasAutocomplete}}
+    <select name="{{id}}" id="{{viewCid}}"
+           class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
+           >
+        {{#sourceValues}}<option {{#selected}}selected="selected" {{/selected}}value="{{value}}">{{displayValue}}{{/sourceValues}}
+           </select>
+    {{#hadButtons}}
+        <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#renderOptions.buttons}}
+            <button type="button" title="{{title}}" data-index="{{index}}"
+                    class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+        {{/renderOptions.buttons}}
+            {{#deleteButton}}
+                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i>
+                </button>
+            {{/deleteButton}}
+    </span>
+    {{/hadButtons}}
+</div>
