@@ -242,10 +242,14 @@ define([
             }
 
             if (_.isUndefined(this.options.value) || this.options.value === null) {
+                if (this._isMultiple()) {
+                    this.options.value = [];
+                } else {
                 this.options.value = {
                     "value": null,
                     displayValue: ""
                 };
+                }
             }
             if (this.options.helpOutputs) {
                 this.options.hasAutocomplete = true;
@@ -289,13 +293,22 @@ define([
          *
          * @private
          */
-        _initDom: function _initDom() {
-            this.element.addClass("dcpAttribute__contentWrapper");
-            this.element.attr("data-type", this.getType());
-            this.element.attr("data-id", this.options.id);
+        _initDom: function wAttributeInitDom() {
+
+            this._initMainElemeentClass();
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
 
+        /**
+         * Init the DOM of the template
+         *
+         * @protected
+         */
+        _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
+            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.attr("data-type", this.getType());
+            this.element.attr("data-id", this.options.id);
+        },
         /**
          * Init the events
          *

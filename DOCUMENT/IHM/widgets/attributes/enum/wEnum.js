@@ -34,11 +34,12 @@ define([
                     this.options.values = [this.options.value];
                     this.options.isMultiple = false;
                 }
-
-                this._super();
+this._super();
             }
 
             if (this.getMode() === "write") {
+
+                this._initMainElemeentClass();
                 if (this._isMultiple()) {
 
                     this.multipleSelect();
@@ -53,23 +54,28 @@ define([
             var selectedIndex = -1;
             var item;
             _.each(this.options.sourceValues, function (displayValue, rawValue) {
-                item = {};
-                item.value = rawValue;
-                item.displayValue = displayValue;
+                if (rawValue !== '' && rawValue !== ' ') {
+                    item = {};
 
-                // : no === because json encode use numeric cast when index is numeric
-                //noinspection JSHint
-                if (rawValue == scope.options.value.value) {
-                    selectedIndex = source.length;
-                    item.selected = true;
-                } else {
-                    item.selected = false;
+
+                    item.value = rawValue;
+                    item.displayValue = displayValue;
+
+
+                    // : no === because json encode use numeric cast when index is numeric
+                    //noinspection JSHint
+                    if (rawValue == scope.options.value.value) {
+                        selectedIndex = source.length;
+                        item.selected = true;
+                    } else {
+                        item.selected = false;
+                    }
+
+                    source.push(item);
                 }
-
-                source.push(item);
             });
 
-            if (selectedIndex === -1) {
+            if (selectedIndex === -1 && this.options.value.value !== null) {
                 selectedIndex = source.length;
                 source.push({value: this.options.value.value, displayValue: this.options.value.displayValue, selected: true});
             }
@@ -83,7 +89,6 @@ define([
             var isIn = false;
             var item;
             var values = _.toArray(scope.options.value);
-            console.log("cmpM", _.toArray(scope.options.value));
             _.each(this.options.sourceValues, function (displayValue, rawValue) {
                 item = {};
                 item.value = rawValue;
@@ -120,14 +125,12 @@ define([
 
             if (this.options.canUseEmpty) {
                 kddl.ul.find("li:first-child").addClass("placeholder");
-                console.log(kddl.ul.find("li:first-child"));
             }
         },
         multipleSelect: function wEnumMultipleSelect() {
             var kendoOptions = this.getKendoOptions();
             var source = this.getMultipleEnumData();
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
-            console.log("source", source);
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
         },
@@ -141,20 +144,20 @@ define([
                     });
                     kddl = this.kendoWidget.data("kendoMultiSelect");
                     if (!_.isEqual(kddl.value(), newValues)) {
-                        console.log("reset widget to", newValues, this.kendoWidget.data("kendoMultiSelect").value());
                         this.flashElement();
                         kddl.value(newValues);
                     }
                 } else {
                     kddl = this.kendoWidget.data("kendoDropDownList");
                     if (value.value === '' || value.value === null) {
-                        console.log("span", this.span);
                         kddl.span.addClass("placeholder");
                     } else {
                         kddl.span.removeClass("placeholder");
                     }
-
-                    kddl.value(value.value);
+                    if (!_.isEqual(kddl.value(), value.value)) {
+                        this.flashElement();
+                        kddl.value(value.value);
+                    }
                 }
             }
         },
@@ -185,9 +188,7 @@ define([
                         // set in case of delete item
                         var oldValues = scope.getMultipleEnumData().data;
                         var displayValue;
-                        console.log("look for", oldValues);
                         var newValues = [];
-                        console.log("change for", this.value());
                         _.each(this.value(), function (val) {
                             displayValue = _.where(oldValues, {value: val});
                             if (displayValue.length > 0) {
@@ -197,7 +198,6 @@ define([
                             }
                             newValues.push({value: val, displayValue: displayValue});
                         });
-                        console.log("change for", newValues);
                         scope.setValue(newValues, event);
                     }
                 };

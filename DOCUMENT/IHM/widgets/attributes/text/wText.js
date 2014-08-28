@@ -16,11 +16,13 @@ define([
         _initDom : function wTextInitDom() {
             this._super();
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
-            if (this.getType() === "text") {
-                this.kendoWidget.addClass("k-textbox");
-            }
+
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this.activateAutocomplete(this.kendoWidget);
+            } else {
+                if (this.getType() === "text") {
+                    this.kendoWidget.addClass("k-textbox");
+                }
             }
         },
 
