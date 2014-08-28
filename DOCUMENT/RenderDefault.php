@@ -222,6 +222,10 @@ class RenderDefault implements RenderConfig
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
+
+        $opt->enum()->setLabels(array(
+            "chooseMessage" => ___("Choose", "ddui-enum")
+        ));
         return $opt;
     }
     

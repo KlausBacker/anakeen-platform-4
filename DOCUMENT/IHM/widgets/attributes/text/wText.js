@@ -97,7 +97,6 @@ define([
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
                 value.displayValue = value.value;
             }
-
             this._super(value);
 
             originalValue = this.getWidgetValue();

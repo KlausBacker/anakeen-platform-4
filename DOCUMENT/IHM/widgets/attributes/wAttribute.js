@@ -164,7 +164,18 @@ define([
          */
         setValue: function wAttributeSetValue(value, event) {
             this._checkValue(value);
-            if (!_.isEqual(this.options.value.value, value.value)) {
+
+            var isEqual=false;
+
+            if (this._isMultiple()) {
+                isEqual = _.toArray(this.options.value).length ===  value.length;
+                if (isEqual) {
+                    // TODO VErify if intersection
+                }
+            } else {
+                isEqual=_.isEqual(this.options.value.value, value.value);
+            }
+            if (! isEqual) {
                 this.options.value = value;
                 this._trigger("change", event, {
                     id: this.options.id,
@@ -543,16 +554,22 @@ define([
          * @returns {boolean}
          */
         _checkValue: function wAttributeTestValue(value) {
-            if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {
-                throw new Error("The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")");
+            if ( this._isMultiple()) {
+                // TODO : Verify each array entry
+            } else {
+                if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {
+                    throw new Error("The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")");
+                }
             }
+
+
             return true;
         },
         /**
          * Check if the attribute is multiple
          *
          * @returns boolean
-         * @protected
+         * @public
          */
         _isMultiple: function () {
             return (this.options.options && this.options.options.multiple === "yes");

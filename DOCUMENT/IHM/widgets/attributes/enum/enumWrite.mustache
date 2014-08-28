@@ -8,11 +8,10 @@
         </button>
     </span>
     {{/hasAutocomplete}}
-    <select name="{{id}}" id="{{viewCid}}"
+    <input type="text" name="{{id}}" id="{{viewCid}}"
+           {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
            class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
-           >
-        {{#sourceValues}}<option {{#selected}}selected="selected" {{/selected}}value="{{value}}">{{displayValue}}{{/sourceValues}}
-           </select>
+           value="{{value.value}}"/>
     {{#hadButtons}}
         <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
