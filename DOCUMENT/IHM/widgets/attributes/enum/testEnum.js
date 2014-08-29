@@ -8,27 +8,27 @@ require([
     defaultTestSuite("enum : read", widget, {}, {value : "g", displayValue : "Sol"});
     defaultTestSuite("enum : write", widget, {
             mode : "write",
-            sourceValues:{a:"La",b:"Si","bb":"Sib"}
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
-        {value : "b", displayValue : "Si"});
+        {value : "blue", displayValue : ""});
 
     defaultTestSuite("enum multiple : write", widget, {
             mode : "write",
             options : {
                 multiple:"yes"
             },
-            sourceValues:{a:"La",b:"Si","bb":"Sib","c":"Do"}
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
-        [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
+        [{value : "blue", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
 
     defaultTestSuite("enum horizontal : write", widget, {
             mode : "write",
             renderOptions : {
                 editDisplay:"horizontal"
             },
-            sourceValues:{a:"La",b:"Si","bb":"Sib"}
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
-        {value : "b", displayValue : "Si"});
+        {value : "navyblue", displayValue : "Si"});
 
 
 
@@ -40,18 +40,18 @@ require([
             options : {
                 multiple:"yes"
             },
-            sourceValues:{a:"La",b:"Si","bb":"Sib","c":"Do"}
+            ssourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
-        [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
+        [{value : "navyblue", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
 
     defaultTestSuite("enum vertical : write", widget, {
             mode : "write",
             renderOptions : {
                 editDisplay:"vertical"
             },
-            sourceValues:{a:"La",b:"Si","bb":"Sib"}
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
-        {value : "b", displayValue : "Si"});
+        {value : "blue", displayValue : "Si"});
 
 
 
@@ -63,9 +63,9 @@ require([
             options : {
                 multiple:"yes"
             },
-            sourceValues:{a:"La",b:"Si","bb":"Sib","c":"Do"}
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
-        [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
+        [{value : "blue", displayValue : "Si"},{value : "red", displayValue : "Do"}]);
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

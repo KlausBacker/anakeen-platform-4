@@ -14,7 +14,7 @@ define([
             type: "enum",
             canChooseOther: false,
             canAddNewItem: false,
-            sourceValues: [], // {key:value, ...}
+            sourceValues: [], // [{key:"the key", label:"the label"}, ...}]
             labels: {
                 chooseMessage: 'Select' // Message to display when no useFirstChoice is true and no value selected
             },
@@ -50,10 +50,8 @@ define([
                             this.multipleSelect();
                             break;
                         case "horizontal" :
-                            this.checkboxButtons(true);
-                            break;
                         case "vertical" :
-                            this.checkboxButtons(false);
+                            this.checkboxButtons(true);
                             break;
                         default:
                             this.multipleSelect();
@@ -64,10 +62,8 @@ define([
                             this.singleDropdown();
                             break;
                         case "horizontal" :
-                            this.radioButtons(true);
-                            break;
                         case "vertical" :
-                            this.radioButtons(false);
+                            this.radioButtons();
                             break;
                         default:
                             this.singleDropdown();
@@ -80,18 +76,18 @@ define([
             var scope = this;
             var selectedIndex = -1;
             var item;
-            _.each(this.options.sourceValues, function (enumLabel, enumKey) {
-                if (enumKey !== '' && enumKey !== ' ') {
+            _.each(this.options.sourceValues, function (enumItem) {
+                if (enumItem.key !== '' && enumItem.key !== ' ') {
                     item = {};
 
 
-                    item.value = enumKey;
-                    item.displayValue = enumLabel;
+                    item.value = enumItem.key;
+                    item.displayValue = enumItem.label;
 
 
                     // : no === because json encode use numeric cast when index is numeric
                     //noinspection JSHint
-                    if (enumKey == scope.options.value.value) {
+                    if (enumItem.key == scope.options.value.value) {
                         selectedIndex = source.length;
                         item.selected = true;
                     } else {
@@ -115,14 +111,14 @@ define([
             var isIn = false;
             var item;
             var values = _.toArray(scope.options.value);
-            _.each(this.options.sourceValues, function (displayValue, rawValue) {
+            _.each(this.options.sourceValues, function (enumItem) {
                 item = {};
-                item.value = rawValue;
-                item.displayValue = displayValue;
+                item.value = enumItem.key;
+                item.displayValue = enumItem.label;
                 item.selected = false;
                 isIn = _.some(values, function (aValue) {
                     //noinspection JSHint
-                    return (aValue.value == rawValue);
+                    return (aValue.value == enumItem.key);
                 });
 
 
@@ -130,7 +126,7 @@ define([
                 //noinspection JSHint
                 if (isIn) {
                     item.selected = true;
-                    selectedValues.push(rawValue);
+                    selectedValues.push(enumItem.key);
                 }
 
                 source.push(item);
@@ -140,7 +136,7 @@ define([
         },
 
 
-        radioButtons: function wEnumRadioButtons(isHorizontal) {
+        radioButtons: function wEnumRadioButtons() {
             var enumData = this.getSingleEnumData();
             var tplOption = this.options;
             var labels;
@@ -164,7 +160,7 @@ define([
             });
 
         },
-        checkboxButtons: function wEnumRadioButtons(isHorizontal) {
+        checkboxButtons: function wEnumRadioButtons() {
             var enumData = this.getMultipleEnumData();
             var tplOption = this.options;
             var labels;
@@ -222,7 +218,7 @@ define([
 
         /**
          *Set new value to widget
-         * @param value {value:...., displayValue} or array of {value:...., displayValue}
+         * @param value value {value:...., displayValue} or array of {value:...., displayValue}
          * @param event
          */
         setValue: function wEnumSetValue(value, event) {
@@ -308,7 +304,6 @@ define([
             if (this._isMultiple()) {
 
                 source = this.getMultipleEnumData();
-
                 defaultOptions = {
                     dataTextField: "displayValue",
                     dataValueField: "value",
@@ -339,6 +334,7 @@ define([
                 }
             } else {
                 source = this.getSingleEnumData();
+
                 defaultOptions = {
                     valuePrimitive: true,
                     optionLabel: (!this.options.renderOptions.useFirstChoice) ? (this.options.labels.chooseMessage + ' ') : '',

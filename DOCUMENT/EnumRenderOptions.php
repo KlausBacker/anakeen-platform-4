@@ -16,7 +16,7 @@ class EnumRenderOptions extends CommonRenderOptions
     
     const verticalDisplay = "vertical";
     const horizontalDisplay = "horizontal";
-    const selectDisplay = "select";
+    const selectDisplay = "list";
     const autocompletionDisplay = "autoCompletion";
     const boolDisplay = "bool";
     /**
