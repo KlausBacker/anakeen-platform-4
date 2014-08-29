@@ -125,10 +125,13 @@ class RenderDefault implements RenderConfig
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumWrite.mustache"
                     ) ,
+                    "writeRadio" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
+                    ) ,
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
                     )
-                ) ,
+                ),
                 "htmltext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -136,7 +139,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
-                ) ,
+                ),
                 "docid" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"

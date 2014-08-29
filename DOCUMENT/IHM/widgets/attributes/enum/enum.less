@@ -35,3 +35,44 @@ background-color: @gray-light;
 .dcpAttribute--type--enum  .k-multiselect .k-button:active {
  box-shadow: inset 0 0 10px 3px darken(@gray-light, 8%);
 }
+
+.dcpAttribute__contentWrapper .dcpAttribute__content--enumlabel input {
+  height:auto;
+  display:none; /* no see native radio */
+}
+.dcpAttribute__content--enumlabel.k-button {
+  border-radius:0;
+  border-style: none solid none none;
+}
+/*
+.dcpAttribute--type--enum .dcpAttribute__content--enumlabel.k-button:first-child {
+  border-radius:4px 0 0 4px;
+}
+.dcpAttribute--type--enum .dcpAttribute__content--enumlabel.k-button:last-child {
+  border-radius:0 4px 4px 0;
+  border-right-style: solid;
+}
+*/
+
+.dcpAttribute__content--enumlabel {
+  font-weight: normal;
+}
+.dcpAttribute__content--enumlabel.selected {
+  background-color: @btn-primary-bg;
+  color: @btn-primary-color;
+}
+
+.dcpAttribute__content--enumbuttons {
+  width:100%;
+  padding:0;
+  display:table;
+}
+.dcpAttribute__content--enumbuttons.input-group {
+  display:table;
+  table-layout: fixed; /* same width for each item */
+}
+.dcpAttribute__content--enumbuttons.input-group label{
+  display:table-cell;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

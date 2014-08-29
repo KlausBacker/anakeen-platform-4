@@ -1,8 +1,15 @@
 <div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
-    <input type="text" name="{{id}}" id="{{viewCid}}"
-           {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
-           class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
-           value="{{value.value}}"/>
+    <div class="input-group k-textbox dcpAttribute__content--enumbuttons">
+    {{#enumValues}}
+        <label class="dcpAttribute__content--enumlabel{{#selected}} selected{{/selected}}">
+            <input name="{{id}}"
+                   type="radio"
+                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
+                   value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
+            {{displayValue}}
+        </label>
+    {{/enumValues}}
+    </div>
     {{#hadButtons}}
         <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}

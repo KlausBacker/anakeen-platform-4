@@ -12,7 +12,7 @@ define([
 
         options: {
             type: "enum",
-            editFormat: "list", // possible values are ["list', 'vertical', 'horizontal', 'bool']'
+            editFormat: "vertical", // possible values are ["list', 'vertical', 'horizontal', 'bool']'
             canUseEmpty: true,
             canChooseOther: false,
             canAddNewItem: false,
@@ -34,7 +34,7 @@ define([
                     this.options.values = [this.options.value];
                     this.options.isMultiple = false;
                 }
-this._super();
+                this._super();
             }
 
             if (this.getMode() === "write") {
@@ -44,7 +44,19 @@ this._super();
 
                     this.multipleSelect();
                 } else {
-                    this.singleDropdown();
+                    switch (this.options.editFormat) {
+                        case "list" :
+                            this.singleDropdown();
+                            break;
+                        case "horizontal" :
+                            this.radioButtons(true);
+                            break;
+                        case "vertical" :
+                            this.radioButtons(false);
+                            break;
+                        default:
+                            this.singleDropdown();
+                    }
                 }
             }
         },
@@ -113,6 +125,33 @@ this._super();
             return {data: source, selectedValues: selectedValues};
         },
 
+
+        radioButtons: function wEnumRadioButtons(isHorizontal) {
+            var enumData = this.getSingleEnumData();
+            var tplOption = this.options;
+            var labels;
+            var scope = this;
+
+            tplOption.enumValues = enumData.data;
+
+            this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
+            labels = this.element.find("label");
+
+            labels.on("change." + this.eventNamespace, "input", function (event) {
+                var newValue = {};
+                newValue.value = $(this).val();
+                newValue.displayValue = $(this).closest('label').text().trim();
+                scope.setValue(newValue, event);
+            });
+
+            this.getContentElements().each(function () {
+                                    $(this).closest("label").addClass("k-button");
+
+                            });
+
+        },
+
+
         singleDropdown: function wEnumSingleDropdown() {
             var kendoOptions = this.getKendoOptions();
             var kddl;
@@ -148,15 +187,33 @@ this._super();
                         kddl.value(newValues);
                     }
                 } else {
-                    kddl = this.kendoWidget.data("kendoDropDownList");
-                    if (value.value === '' || value.value === null) {
-                        kddl.span.addClass("placeholder");
-                    } else {
-                        kddl.span.removeClass("placeholder");
-                    }
-                    if (!_.isEqual(kddl.value(), value.value)) {
-                        this.flashElement();
-                        kddl.value(value.value);
+                    switch (this.options.editFormat) {
+                        case "list":
+                        kddl = this.kendoWidget.data("kendoDropDownList");
+                        if (value.value === '' || value.value === null) {
+                            kddl.span.addClass("placeholder");
+                        } else {
+                            kddl.span.removeClass("placeholder");
+                        }
+                        if (!_.isEqual(kddl.value(), value.value)) {
+                            this.flashElement();
+                            kddl.value(value.value);
+                        }
+                            break;
+                        case "vertical":
+
+                            this.getContentElements().each(function () {
+                                //noinspection JSHint
+                                if ($(this).val()  == value.value) {
+                                    $(this).attr("checked", "checked");
+                                    $(this).closest("label").addClass("selected");
+                                } else {
+                                    $(this).removeAttr("checked");
+                                    $(this).closest("label").removeClass("selected");
+                                }
+                            });
+
+                            break;
                     }
                 }
             }
