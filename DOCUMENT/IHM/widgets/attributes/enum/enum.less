@@ -65,17 +65,35 @@ background-color: @gray-light;
   color: @btn-primary-color;
 }
 
-.dcpAttribute__content--enumbuttons {
+.dcpAttribute__content--enumbuttons.orientation-horizontal {
   width:100%;
   padding:0;
   display:table;
 }
-.dcpAttribute__content--enumbuttons.input-group {
+.dcpAttribute__content--enumbuttons.orientation-horizontal.input-group {
   display:table;
   table-layout: fixed; /* same width for each item */
 }
-.dcpAttribute__content--enumbuttons.input-group label{
+.dcpAttribute__content--enumbuttons.orientation-horizontal.input-group label{
   display:table-cell;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+.dcpAttribute__content--enumbuttons.orientation-vertical {
+  width:100%;
+  padding:0;
+}
+.dcpAttribute__content--enumbuttons.orientation-vertical.input-group {
+
+}
+.dcpAttribute__content--enumbuttons.orientation-vertical.input-group label{
+  display:block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+.dcpAttribute__content--enumbuttons.orientation-vertical.input-group label span{
+  margin-left: 1em;
 }

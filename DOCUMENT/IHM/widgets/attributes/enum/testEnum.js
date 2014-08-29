@@ -21,7 +21,7 @@ require([
         },
         [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
 
-    defaultTestSuite("enum : write", widget, {
+    defaultTestSuite("enum horizontal : write", widget, {
             mode : "write",
             renderOptions : {
                 editDisplay:"horizontal"
@@ -32,10 +32,33 @@ require([
 
 
 
-    defaultTestSuite("enum multiple : write", widget, {
+    defaultTestSuite("enum horizontal multiple : write", widget, {
             mode : "write",
             renderOptions : {
                 editDisplay:"horizontal"
+            },
+            options : {
+                multiple:"yes"
+            },
+            sourceValues:{a:"La",b:"Si","bb":"Sib","c":"Do"}
+        },
+        [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
+
+    defaultTestSuite("enum vertical : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"vertical"
+            },
+            sourceValues:{a:"La",b:"Si","bb":"Sib"}
+        },
+        {value : "b", displayValue : "Si"});
+
+
+
+    defaultTestSuite("enum vertical multiple : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"vertical"
             },
             options : {
                 multiple:"yes"
