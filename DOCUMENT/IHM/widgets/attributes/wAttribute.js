@@ -302,7 +302,7 @@ define([
         /**
          * Init the DOM of the template
          *
-         * @protected
+         * @public
          */
         _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
             this.element.addClass("dcpAttribute__contentWrapper");

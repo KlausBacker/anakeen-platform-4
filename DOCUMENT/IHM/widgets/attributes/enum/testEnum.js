@@ -21,6 +21,29 @@ require([
         },
         [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
 
+    defaultTestSuite("enum : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"horizontal"
+            },
+            sourceValues:{a:"La",b:"Si","bb":"Sib"}
+        },
+        {value : "b", displayValue : "Si"});
+
+
+
+    defaultTestSuite("enum multiple : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"horizontal"
+            },
+            options : {
+                multiple:"yes"
+            },
+            sourceValues:{a:"La",b:"Si","bb":"Sib","c":"Do"}
+        },
+        [{value : "b", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
+
     if (window.dcp.executeTests) {
         window.dcp.executeTests();
     }

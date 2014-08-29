@@ -3,10 +3,10 @@
     {{#enumValues}}
         <label class="dcpAttribute__content--enumlabel{{#selected}} selected{{/selected}}">
             <input name="{{id}}"
-                   type="radio"
+                   {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
                    class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
                    value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
-            {{displayValue}}
+            <span>{{displayValue}}</span>
         </label>
     {{/enumValues}}
     </div>

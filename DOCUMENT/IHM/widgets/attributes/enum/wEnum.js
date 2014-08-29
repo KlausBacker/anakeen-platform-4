@@ -12,20 +12,24 @@ define([
 
         options: {
             type: "enum",
-            editFormat: "vertical", // possible values are ["list', 'vertical', 'horizontal', 'bool']'
-            canUseEmpty: true,
             canChooseOther: false,
             canAddNewItem: false,
             sourceValues: [], // {key:value, ...}
             labels: {
-                chooseMessage: 'Select' // Message to display when canUseEmpty is true and no value selected
+                chooseMessage: 'Select' // Message to display when no useFirstChoice is true and no value selected
             },
             renderOptions: {
                 kendoDropDownConfiguration: {},
-                kendoMultiSelectConfiguration: {}
+                kendoMultiSelectConfiguration: {},
+                editDisplay: "list", // possible values are ["list', 'vertical', 'horizontal', 'bool']'
+                useFirstChoice: false
+
             }
         },
         _initDom: function wEnumInitDom() {
+            if (this._isMultiple()) {
+                this.options.isMultiple = true;
+            }
             if (this.getMode() === "read") {
                 if (this._isMultiple()) {
                     this.options.values = _.toArray(this.options.value);
@@ -41,10 +45,21 @@ define([
 
                 this._initMainElemeentClass();
                 if (this._isMultiple()) {
-
-                    this.multipleSelect();
+                    switch (this.options.renderOptions.editDisplay) {
+                        case "list" :
+                            this.multipleSelect();
+                            break;
+                        case "horizontal" :
+                            this.checkboxButtons(true);
+                            break;
+                        case "vertical" :
+                            this.checkboxButtons(false);
+                            break;
+                        default:
+                            this.multipleSelect();
+                    }
                 } else {
-                    switch (this.options.editFormat) {
+                    switch (this.options.renderOptions.editDisplay) {
                         case "list" :
                             this.singleDropdown();
                             break;
@@ -65,18 +80,18 @@ define([
             var scope = this;
             var selectedIndex = -1;
             var item;
-            _.each(this.options.sourceValues, function (displayValue, rawValue) {
-                if (rawValue !== '' && rawValue !== ' ') {
+            _.each(this.options.sourceValues, function (enumLabel, enumKey) {
+                if (enumKey !== '' && enumKey !== ' ') {
                     item = {};
 
 
-                    item.value = rawValue;
-                    item.displayValue = displayValue;
+                    item.value = enumKey;
+                    item.displayValue = enumLabel;
 
 
                     // : no === because json encode use numeric cast when index is numeric
                     //noinspection JSHint
-                    if (rawValue == scope.options.value.value) {
+                    if (enumKey == scope.options.value.value) {
                         selectedIndex = source.length;
                         item.selected = true;
                     } else {
@@ -86,8 +101,7 @@ define([
                     source.push(item);
                 }
             });
-
-            if (selectedIndex === -1 && this.options.value.value !== null) {
+            if (selectedIndex === -1 && this.options.value && !_.isUndefined(this.options.value.value) && this.options.value.value !== null) {
                 selectedIndex = source.length;
                 source.push({value: this.options.value.value, displayValue: this.options.value.displayValue, selected: true});
             }
@@ -105,7 +119,7 @@ define([
                 item = {};
                 item.value = rawValue;
                 item.displayValue = displayValue;
-
+                item.selected = false;
                 isIn = _.some(values, function (aValue) {
                     //noinspection JSHint
                     return (aValue.value == rawValue);
@@ -115,7 +129,7 @@ define([
                 // : no === because json encode use numeric cast when index is numeric
                 //noinspection JSHint
                 if (isIn) {
-
+                    item.selected = true;
                     selectedValues.push(rawValue);
                 }
 
@@ -145,12 +159,45 @@ define([
             });
 
             this.getContentElements().each(function () {
-                                    $(this).closest("label").addClass("k-button");
+                $(this).closest("label").addClass("k-button");
 
-                            });
+            });
 
         },
+        checkboxButtons: function wEnumRadioButtons(isHorizontal) {
+            var enumData = this.getMultipleEnumData();
+            var tplOption = this.options;
+            var labels;
+            var scope = this;
 
+            tplOption.enumValues = enumData.data;
+
+            this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
+            labels = this.element.find("label");
+
+            labels.on("change." + this.eventNamespace, "input", function (event) {
+
+                var newValue = [];
+
+                scope.getContentElements().each(function () {
+                    if ($(this).prop("checked")) {
+                        var itemValue = {};
+                        itemValue.value = $(this).val();
+                        itemValue.displayValue = $(this).closest('label').text().trim();
+                        newValue.push(itemValue);
+                    }
+
+                });
+
+                scope.setValue(newValue, event);
+            });
+
+            this.getContentElements().each(function () {
+                $(this).closest("label").addClass("k-button");
+
+            });
+
+        },
 
         singleDropdown: function wEnumSingleDropdown() {
             var kendoOptions = this.getKendoOptions();
@@ -162,49 +209,78 @@ define([
 
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
 
-            if (this.options.canUseEmpty) {
+            if (!this.options.renderOptions.useFirstChoice) {
                 kddl.ul.find("li:first-child").addClass("placeholder");
             }
         },
         multipleSelect: function wEnumMultipleSelect() {
             var kendoOptions = this.getKendoOptions();
-            var source = this.getMultipleEnumData();
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
         },
-        setValue: function (value, event) {
+
+        /**
+         *Set new value to widget
+         * @param value {value:...., displayValue} or array of {value:...., displayValue}
+         * @param event
+         */
+        setValue: function wEnumSetValue(value, event) {
             var kddl;
             this._super(value, event);
             if (this.getMode() === "write") {
                 if (this._isMultiple()) {
-                    var newValues = _.map(value, function (val) {
-                        return  val.value;
-                    });
-                    kddl = this.kendoWidget.data("kendoMultiSelect");
-                    if (!_.isEqual(kddl.value(), newValues)) {
-                        this.flashElement();
-                        kddl.value(newValues);
+                    switch (this.options.renderOptions.editDisplay) {
+                        case "list":
+                            var newValues = _.map(value, function (val) {
+                                return  val.value;
+                            });
+                            kddl = this.kendoWidget.data("kendoMultiSelect");
+                            if (!_.isEqual(kddl.value(), newValues)) {
+                                this.flashElement();
+                                kddl.value(newValues);
+                            }
+                            break;
+                        case "horizontal":
+                        case "vertical":
+                            this.getContentElements().each(function () {
+                                var inputValue=$(this).val();
+
+                                var isIn = _.some(value, function (x) {
+                                    //noinspection JSHint
+                                    return (x.value == inputValue);
+                                });
+                                if (isIn) {
+                                    $(this).attr("checked", "checked");
+                                    $(this).closest("label").addClass("selected");
+                                } else {
+                                    $(this).removeAttr("checked");
+                                    $(this).closest("label").removeClass("selected");
+                                }
+                            });
+
+                            break;
                     }
                 } else {
-                    switch (this.options.editFormat) {
+                    switch (this.options.renderOptions.editDisplay) {
                         case "list":
-                        kddl = this.kendoWidget.data("kendoDropDownList");
-                        if (value.value === '' || value.value === null) {
-                            kddl.span.addClass("placeholder");
-                        } else {
-                            kddl.span.removeClass("placeholder");
-                        }
-                        if (!_.isEqual(kddl.value(), value.value)) {
-                            this.flashElement();
-                            kddl.value(value.value);
-                        }
+                            kddl = this.kendoWidget.data("kendoDropDownList");
+                            if (value.value === '' || value.value === null) {
+                                kddl.span.addClass("placeholder");
+                            } else {
+                                kddl.span.removeClass("placeholder");
+                            }
+                            if (!_.isEqual(kddl.value(), value.value)) {
+                                this.flashElement();
+                                kddl.value(value.value);
+                            }
                             break;
+                        case "horizontal":
                         case "vertical":
 
                             this.getContentElements().each(function () {
                                 //noinspection JSHint
-                                if ($(this).val()  == value.value) {
+                                if ($(this).val() == value.value) {
                                     $(this).attr("checked", "checked");
                                     $(this).closest("label").addClass("selected");
                                 } else {
@@ -265,7 +341,7 @@ define([
                 source = this.getSingleEnumData();
                 defaultOptions = {
                     valuePrimitive: true,
-                    optionLabel: (this.options.canUseEmpty) ? (this.options.labels.chooseMessage + ' ') : '',
+                    optionLabel: (!this.options.renderOptions.useFirstChoice) ? (this.options.labels.chooseMessage + ' ') : '',
                     dataTextField: "displayValue",
                     dataValueField: "value",
                     dataSource: source.data,
