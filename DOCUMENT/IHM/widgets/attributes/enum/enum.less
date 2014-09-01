@@ -4,14 +4,21 @@
   clear:both;
 }
 
-.dcpAttribute__contentWrapper .k-dropdown-wrap ,
+
+.dcpAttribute__contentWrapper .k-dropdown-wrap  {
+  height: (@attrInputHeight - 2 );
+}
+
 .dcpAttribute__contentWrapper .k-dropdown-wrap .k-input {
   height: (@attrInputHeight - 2 - 4);
   padding-top:4px;
-}
 
-.dcpAttribute__contentWrapper .k-dropdown {
+}
+.dcpAttribute__contentWrapper .k-dropdown, .dcpAttribute__contentWrapper .k-combobox {
   padding:0;
+}
+.dcpAttribute__contentWrapper .k-dropdown-wrap .k-select {
+  padding-top:4px;
 }
 
 .dcpAttribute__contentWrapper.has-error .k-dropdown-wrap {
@@ -26,14 +33,14 @@
   color:@gray-light;
 }
 
-.dcpAttribute--type--enum .k-multiselect .k-button {
-color: @btn-default-bg;
-border-color: darken(@gray-light, 5%);
-background-color: @gray-light;
+.dcpAttribute__contentWrapper--enum .k-multiselect .k-button {
+color: @text-color;
+border-color: darken(@gray-lighter, 5%);
+background-color: @gray-lighter;
 }
 
-.dcpAttribute--type--enum  .k-multiselect .k-button:active {
- box-shadow: inset 0 0 10px 3px darken(@gray-light, 8%);
+.dcpAttribute__contentWrapper--enum  .k-multiselect .k-button:active {
+ box-shadow: inset 0 0 10px 3px darken(@gray-lighter, 8%);
 }
 
 .dcpAttribute__contentWrapper .dcpAttribute__content--enumlabel input {

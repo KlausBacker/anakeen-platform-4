@@ -170,13 +170,17 @@ define([
             if (this._isMultiple()) {
                 isEqual = _.toArray(this.options.value).length ===  value.length;
                 if (isEqual) {
-                    // TODO VErify if intersection
+
+                    isEqual=_.isEqual(this.options.value, value);
                 }
             } else {
                 isEqual=_.isEqual(this.options.value.value, value.value);
             }
+                console.log("try trigger value", value);
             if (! isEqual) {
                 this.options.value = value;
+                console.log("trigger value", value);
+
                 this._trigger("change", event, {
                     id: this.options.id,
                     value: value,

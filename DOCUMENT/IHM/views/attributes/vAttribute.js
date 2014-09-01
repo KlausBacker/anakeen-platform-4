@@ -64,6 +64,7 @@ define([
             data.deleteButton = true;
 
             data.sourceValues=this.model.get("enumItems");
+            data.sourceUri=this.model.get("enumUri");
             data.templates.label = window.dcp.templates.attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
