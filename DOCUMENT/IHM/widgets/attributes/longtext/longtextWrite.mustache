@@ -10,7 +10,7 @@
     {{/hasAutocomplete}}
     <textarea type="text" name="{{id}}" id="{{viewCid}}"
            {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
-          class="form-control dcpAttribute__content dcpAttribute__content--edit">{{value.value}}</textarea>
+          class="form-control dcpAttribute__content dcpAttribute__content--edit k-textbox">{{value.value}}</textarea>
     <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
         <button type="button" title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>

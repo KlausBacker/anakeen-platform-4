@@ -12,6 +12,7 @@ define([
     'widgets/attributes/time/wTime',
     'widgets/attributes/image/wImage',
     'widgets/attributes/money/wMoney',
+    'widgets/attributes/enum/wEnum',
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
@@ -61,6 +62,9 @@ define([
                 }
             }
             data.deleteButton = true;
+
+            data.sourceValues=this.model.get("enumItems");
+            data.sourceUri=this.model.get("enumUri");
             data.templates.label = window.dcp.templates.attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
@@ -275,6 +279,8 @@ define([
                     return $.fn.dcpImage;
                 case "file" :
                     return $.fn.dcpFile;
+                case "enum" :
+                    return $.fn.dcpEnum;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;

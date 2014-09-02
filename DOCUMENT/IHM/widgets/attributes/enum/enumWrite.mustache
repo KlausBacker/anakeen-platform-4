@@ -1,0 +1,19 @@
+<div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
+    <input type="text" name="{{id}}" id="{{viewCid}}"
+           {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
+           class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
+           value="{{value.value}}"/>
+    {{#hadButtons}}
+        <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#renderOptions.buttons}}
+            <button type="button" title="{{title}}" data-index="{{index}}"
+                    class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+        {{/renderOptions.buttons}}
+            {{#deleteButton}}
+                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i>
+                </button>
+            {{/deleteButton}}
+    </span>
+    {{/hadButtons}}
+</div>

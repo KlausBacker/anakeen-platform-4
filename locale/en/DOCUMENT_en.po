@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-26 14:12+0200\n"
+"POT-Creation-Date: 2014-09-02 16:43+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -37,6 +37,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Cancel"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Choose"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -147,6 +151,14 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Information access deny"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Invalid date"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Invalid entry"
 msgstr ""
 
 msgctxt "UiMenu"

@@ -111,17 +111,17 @@ define([
             var scope = this;
             this._super();
             if (this.ckEditorInstance) {
-                this.ckEditorInstance.on("change." + this.eventNamespace, function () {
+                this.ckEditorInstance.on("change" , function () {
                     scope.setValue({value : this.getData()});
                 });
 
-                this.ckEditorInstance.on("focus." + this.eventNamespace, function () {
+                this.ckEditorInstance.on("focus" , function () {
                     var ktTarget = scope.element.find(".input-group");
                     scope.showInputTooltip(ktTarget);
                     scope.element.find(".cke").addClass("k-state-focused");
                 });
 
-                this.ckEditorInstance.on("blur." + this.eventNamespace, function () {
+                this.ckEditorInstance.on("blur" , function () {
                     var ktTarget = scope.element.find(".input-group");
                     scope.hideInputTooltip(ktTarget);
                     scope.element.find(".cke").removeClass("k-state-focused");

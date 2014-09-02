@@ -21,7 +21,8 @@ define([
             },
             template: null,
             deleteButton: false,
-            renderOptions: null
+            renderOptions: null,
+            locale: "fr_FR"
         },
 
         /**
@@ -163,8 +164,21 @@ define([
          */
         setValue: function wAttributeSetValue(value, event) {
             this._checkValue(value);
-            if (!_.isEqual(this.options.value.value, value.value)) {
+
+            var isEqual=false;
+
+            if (this._isMultiple()) {
+                isEqual = _.toArray(this.options.value).length ===  value.length;
+                if (isEqual) {
+
+                    isEqual=_.isEqual(this.options.value, value);
+                }
+            } else {
+                isEqual=_.isEqual(this.options.value.value, value.value);
+            }
+            if (! isEqual) {
                 this.options.value = value;
+
                 this._trigger("change", event, {
                     id: this.options.id,
                     value: value,
@@ -230,10 +244,14 @@ define([
             }
 
             if (_.isUndefined(this.options.value) || this.options.value === null) {
+                if (this._isMultiple()) {
+                    this.options.value = [];
+                } else {
                 this.options.value = {
                     "value": null,
                     displayValue: ""
                 };
+                }
             }
             if (this.options.helpOutputs) {
                 this.options.hasAutocomplete = true;
@@ -250,7 +268,9 @@ define([
             }
             this.options.emptyValue = _.bind(this._getEmptyValue, this);
             this.options.hadButtons = this._hasButtons();
-            this.options.labels = _.extend(this.options.labels , this.options.renderOptions.labels);
+            if (this.options.renderOptions && this.options.renderOptions.labels) {
+                this.options.labels = _.extend(this.options.labels, this.options.renderOptions.labels);
+            }
             this._initDom();
             this._initEvent();
         },
@@ -275,13 +295,22 @@ define([
          *
          * @private
          */
-        _initDom: function _initDom() {
-            this.element.addClass("dcpAttribute__contentWrapper");
-            this.element.attr("data-type", this.getType());
-            this.element.attr("data-id", this.options.id);
+        _initDom: function wAttributeInitDom() {
+
+            this._initMainElemeentClass();
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
 
+        /**
+         * Init the DOM of the template
+         *
+         * @public
+         */
+        _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
+            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.attr("data-type", this.getType());
+            this.element.attr("data-id", this.options.id);
+        },
         /**
          * Init the events
          *
@@ -531,7 +560,6 @@ define([
                 return window.dcp.templates["default"][key];
             }
             throw new Error("Unknown template  " + key + "/" + this.options.type);
-
         },
 
         /**
@@ -541,16 +569,22 @@ define([
          * @returns {boolean}
          */
         _checkValue: function wAttributeTestValue(value) {
-            if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {
-                throw new Error("The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")");
+            if ( this._isMultiple()) {
+                // TODO : Verify each array entry
+            } else {
+                if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {
+                    throw new Error("The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")");
+                }
             }
+
+
             return true;
         },
         /**
          * Check if the attribute is multiple
          *
          * @returns boolean
-         * @private
+         * @public
          */
         _isMultiple: function () {
             return (this.options.options && this.options.options.multiple === "yes");

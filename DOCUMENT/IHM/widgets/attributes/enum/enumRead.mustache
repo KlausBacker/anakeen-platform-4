@@ -1,0 +1,16 @@
+<span class="dcpAttribute__content dcpAttribute__content--read {{#isMultiple}}dcpAttribute__content--multiple{{/isMultiple}}"
+      name="{{id}}">
+    {{#values}}
+        {{#renderOptions.htmlLink.url}}
+        <a  class="dcpAttribute__content__link"
+            target="{{renderOptions.htmlLink.target}}"
+        {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
+            href="{{renderOptions.htmlLink.url}}">
+        {{/renderOptions.htmlLink.url}}
+        <span class="dcpAttribute__content__value">{{displayValue}}</span>
+        {{#renderOptions.htmlLink.url}}
+        </a>
+        {{/renderOptions.htmlLink.url}}
+    {{/values}}
+    {{{emptyValue}}}
+</span>

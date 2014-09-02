@@ -1,0 +1,26 @@
+<div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
+    <div class="input-group k-textbox dcpAttribute__content--enumbuttons orientation-{{renderOptions.editDisplay}}">
+    {{#enumValues}}
+        <label class="dcpAttribute__content--enumlabel{{#selected}} selected{{/selected}}">
+            <input name="{{id}}"
+                   {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
+                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
+                   value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
+            <span>{{displayValue}}</span>
+        </label>
+    {{/enumValues}}
+    </div>
+    {{#hadButtons}}
+        <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#renderOptions.buttons}}
+            <button type="button" title="{{title}}" data-index="{{index}}"
+                    class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+        {{/renderOptions.buttons}}
+            {{#deleteButton}}
+                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i>
+                </button>
+            {{/deleteButton}}
+    </span>
+    {{/hadButtons}}
+</div>

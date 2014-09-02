@@ -28,7 +28,7 @@ define([
         },
 
         _maxLinesNumber: function _maxLinesNumber(lineNumber) {
-            lineNumber = parseInt(lineNumber);
+            lineNumber = parseInt(lineNumber,10);
             if (lineNumber > 0) {
                 var scope = this;
                 _.defer(function () {
