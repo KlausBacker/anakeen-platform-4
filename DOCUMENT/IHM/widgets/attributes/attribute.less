@@ -12,6 +12,9 @@
 .dcpAttribute__contentWrapper .input-group .k-autocomplete input {
   height: (@attrInputHeight - 2);
 }
+.dcpAttribute__contentWrapper .k-widget > .k-state-default {
+  border-radius : 4px 0 0 4px;
+}
 
 .dcpAttribute__contentWrapper .input-group input,
 .dcpArray__content__cell .input-group input,
@@ -27,7 +30,7 @@
 
 .dcpAttribute__contentWrapper .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button, {
-  background-color: transparent;
+ /* background-color: transparent;*/
   border: none;
   min-width: 2em;
   height: 100%;
@@ -36,7 +39,7 @@
 
 .dcpAttribute__contentWrapper .input-group-addon button:hover,
 .dcpArray__content__cell .input-group-addon button:hover, {
-  background-color: @btn-default-bg;
+  /*background-color: @btn-default-bg;*/
 }
 
 .dcpAttribute__content--flash input,
@@ -100,7 +103,12 @@ iframe.dcpAttribute__content--endflash  {
   height: @attrInputHeight;
 }
 
-.k-textbox:hover, .k-autocomplete.k-state-hover, .k-picker-wrap.k-state-hover, .k-numeric-wrap.k-state-hover, .k-dropdown-wrap.k-state-hover {
+.k-textbox:hover,
+.k-autocomplete.k-state-hover,
+.k-picker-wrap.k-state-hover,
+.k-numeric-wrap.k-state-hover,
+.k-multiselect.k-header.k-state-hover,
+.k-dropdown-wrap.k-state-hover {
 
    border-color: @input-border-focus;
 }

@@ -131,31 +131,34 @@ define([
             var isIn = false;
             var item;
             var values = _.toArray(this.options.value);
-            _.each(this.options.sourceValues, function (enumItem) {
-                item = {};
-                item.value = enumItem.key;
-                item.displayValue = enumItem.label;
-                item.selected = false;
-                isIn = _.some(values, function (aValue) {
-                    //noinspection JSHint
-                    return (aValue.value == enumItem.key);
-                });
 
 
-                // : no === because json encode use numeric cast when index is numeric
-                //noinspection JSHint
-                if (isIn) {
-                    item.selected = true;
-                    selectedValues.push(enumItem.key);
-                }
-
-                source.push(item);
-            });
-
-            if (this.options.sourceUri) {
+            if (this.options.sourceValues.length === 0) {
                 source = values;
                 selectedValues = values;
+            } else {
+                _.each(this.options.sourceValues, function (enumItem) {
+                    item = {};
+                    item.value = enumItem.key;
+                    item.displayValue = enumItem.label;
+                    item.selected = false;
+                    isIn = _.some(values, function (aValue) {
+                        //noinspection JSHint
+                        return (aValue.value == enumItem.key);
+                    });
+
+
+                    // : no === because json encode use numeric cast when index is numeric
+                    //noinspection JSHint
+                    if (isIn) {
+                        item.selected = true;
+                        selectedValues.push(enumItem.key);
+                    }
+
+                    source.push(item);
+                });
             }
+
 
             return {data: source, selectedValues: selectedValues};
         },
@@ -251,10 +254,12 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
 
 
-            kddl=this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
+            kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
 
-                                kddl.dataSource.data([this.options.value]);
-                                kddl.value(this.options.value.value);
+            if (this.options.sourceValues.length === 0) {
+            kddl.dataSource.data([this.options.value]);
+            kddl.value(this.options.value.value);
+            }
 
         },
 
@@ -272,6 +277,7 @@ define([
                 if (this._isMultiple()) {
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
+                        case "list":
                             newValues = _.map(value, function (val) {
                                 return  val.value;
                             });
@@ -280,21 +286,16 @@ define([
                             if (!_.isEqual(kddl.value(), newValues)) {
                                 this.flashElement();
                                 console.log("set data source to", value);
-                                kddl.dataSource.data(value);
-                                kddl.value(newValues);
-                                kddl.dataSource.data([]); // Need to reset tu use server data
+                                if (this.options.sourceValues.length === 0) {
+                                    kddl.dataSource.data(value);
+                                    kddl.value(newValues);
+                                    kddl.dataSource.data([]); // Need to reset tu use server data
+                                } else {
+                                    kddl.value(newValues);
+                                }
                             }
                             break;
-                        case "list":
-                            newValues = _.map(value, function (val) {
-                                return  val.value;
-                            });
-                            kddl = this.kendoWidget.data("kendoMultiSelect");
-                            if (!_.isEqual(kddl.value(), newValues)) {
-                                this.flashElement();
-                                kddl.value(newValues);
-                            }
-                            break;
+
                         case "horizontal":
                         case "vertical":
                             this.getContentElements().each(function () {
@@ -319,17 +320,23 @@ define([
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
                             kddl = this.kendoWidget.data("kendoComboBox");
+                            console.log("internal source", kddl.dataSource);
                             if (!_.isEqual(kddl.value(), value.value)) {
                                 this.flashElement();
 
                                 console.log("kddl", kddl, value);
                                 if (value.value !== null) {
-                                kddl.dataSource.data([value]);
-                                kddl.value(value.value);
+                                    if (this.options.sourceValues.length === 0) {
+                                        kddl.dataSource.data([value]);
+                                    }
+                                    kddl.value(value.value);
                                 } else {
-                                    kddl.dataSource.data([]);
+                                    if (this.options.sourceValues.length === 0) {
+                                        kddl.dataSource.data([]);
+                                    }
                                     kddl.value('');
                                 }
+
                             }
                             break;
                         case "list":
@@ -346,7 +353,6 @@ define([
                             break;
                         case "horizontal":
                         case "vertical":
-
                             this.getContentElements().each(function () {
                                 //noinspection JSHint
                                 if ($(this).val() == value.value) {
@@ -429,7 +435,6 @@ define([
 
                         var kdData = _.toArray(scope.kendoWidget.data("kendoMultiSelect").dataItems());
                         console.log("kdData", kdData);
-                        var displayValue;
                         var newValues = [];
                         _.each(kdData, function (val) {
                             newValues.push({value: val.value, displayValue: val.displayValue});
@@ -439,32 +444,16 @@ define([
                     }
                 };
 
-                if (this.options.renderOptions.editDisplay === "autoCompletion") {
 
-
-                    defaultOptions.autoBind = false;
-                    defaultOptions.dataSource = {
-
-                        type: "json",
-                        serverFiltering: true,
-                        minLength: 0,
-                        transport: {
-                            //read : _.bind(scope.autocompleteRequestRead, scope)
-                            read: _.bind(scope.autocompleteRequestEnum, scope)
-                            //read : scope.options.autocompleteRequest
-                        }
-                    };
-                }
                 if (_.isObject(scope.options.renderOptions.kendoMultiSelectConfiguration)) {
                     kendoOptions = scope.options.renderOptions.kendoMultiSelectConfiguration;
                 }
             } else {
                 source = this.getSingleEnumData();
 
-console.log("single source", source);
 
                 defaultOptions = {
-                    valuePrimitive: true,
+                    /*valuePrimitive: true,*/
                     optionLabel: (!this.options.renderOptions.useFirstChoice) ? (this.options.labels.chooseMessage + ' ') : '',
                     dataTextField: "displayValue",
                     dataValueField: "value",
@@ -478,20 +467,10 @@ console.log("single source", source);
 
                 if (this.options.renderOptions.editDisplay === "autoCompletion") {
 
-
+                    defaultOptions.index=-1;
+                    defaultOptions.value=this.options.value.value;
                     defaultOptions.placeholder = this.options.labels.chooseMessage;
-                    defaultOptions.autoBind = false;
-                    defaultOptions.dataSource = {
-data: source.data,
-                        type: "json",
-                        serverFiltering: true,
-                        minLength: 0,
-                        transport: {
-                            //read : _.bind(scope.autocompleteRequestRead, scope)
-                            read: _.bind(scope.autocompleteRequestEnum, scope)
-                            //read : scope.options.autocompleteRequest
-                        }
-                    };
+
                     if (_.isObject(scope.options.renderOptions.kendoComboBoxConfiguration)) {
                         kendoOptions = scope.options.renderOptions.kendoComboBoxConfiguration;
                     }
@@ -500,11 +479,23 @@ data: source.data,
                         kendoOptions = scope.options.renderOptions.kendoDropDownConfiguration;
                     }
                 }
-
-
             }
 
-
+            if (this.options.sourceValues.length === 0) {
+                defaultOptions.autoBind = false;
+                defaultOptions.dataSource = {
+                    data: source.data,
+                    type: "json",
+                    serverFiltering: true,
+                    minLength: 0,
+                    transport: {
+                        //read : _.bind(scope.autocompleteRequestRead, scope)
+                        read: _.bind(scope.autocompleteRequestEnum, scope)
+                        //read : scope.options.autocompleteRequest
+                    }
+                };
+            }
+            console.log("kendo option source", this.options.id, _.extend(defaultOptions, kendoOptions));
             return _.extend(defaultOptions, kendoOptions);
         },
 
