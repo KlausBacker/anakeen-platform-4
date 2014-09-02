@@ -13,7 +13,7 @@ class EnumRenderOptions extends CommonRenderOptions
     const type = "enum";
     const displayOption = "editDisplay";
     const useFirstChoiceOption = "useFirstChoice";
-    
+    const useSourceUriOption = "useSourceUri";
     const verticalDisplay = "vertical";
     const horizontalDisplay = "horizontal";
     const selectDisplay = "list";
@@ -39,6 +39,17 @@ class EnumRenderOptions extends CommonRenderOptions
             throw new Exception("UI0200", $display, implode(', ', $allow));
         }
         return $this->setOption(self::displayOption, $display);
+    }
+    /**
+     * No use first choice if no value unless if a default value is configured
+     * @note use only in edition mode
+     * @param bool $useIt
+     * @return $this
+     * @throws Exception
+     */
+    public function useSourceUri($useIt)
+    {
+        return $this->setOption(self::useSourceUriOption, (bool)$useIt);
     }
     /**
      * No use first choice if no value unless if a default value is configured

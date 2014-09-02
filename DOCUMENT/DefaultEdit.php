@@ -19,6 +19,13 @@ class DefaultEdit extends RenderDefault
     {
         return RenderConfig::editType;
     }
+    
+    public function getCssReferences()
+    {
+        $css = parent::getCssReferences();
+        $css[] = "STYLE/BASE/Layout/custom.css";
+        return $css;
+    }
     /**
      * @param \Doc $document Document object instance
      * @return BarMenu Menu configuration

@@ -18,11 +18,13 @@ define([
             sourceValues: [], // [{key:"the key", label:"the label"}, ...}]
             sourceUri: null, // when enum definition is dynamically get by server request
             labels: {
-                chooseMessage: 'Select' // Message to display when no useFirstChoice is true and no value selected
+                chooseMessage: 'Select', // Message to display when no useFirstChoice is true and no value selected
+                invalidEntry: "Invalid Entry"
             },
             renderOptions: {
                 kendoDropDownConfiguration: {
-                    filter: "none"
+                    filter: "none",
+                    autoBind:true
                 },
                 kendoComboBoxConfiguration: {
                     filter: "startswith"
@@ -31,7 +33,8 @@ define([
                     filter: "startswith"
                 },
                 editDisplay: "list", // possible values are ["list', 'vertical', 'horizontal', 'autoCompletion']'
-                useFirstChoice: false
+                useFirstChoice: false,
+                useSourceUri: false
             }
         },
         _initDom: function wEnumInitDom() {
@@ -89,7 +92,7 @@ define([
             var selectedIndex = -1;
             var item;
 
-            if (this.options.sourceValues.length === 0) {
+            if (this.options.renderOptions.useSourceUri) {
                 source = [this.options.value];
                 selectedIndex = this.options.value.value;
             } else {
@@ -133,7 +136,7 @@ define([
             var values = _.toArray(this.options.value);
 
 
-            if (this.options.sourceValues.length === 0) {
+            if (this.options.renderOptions.useSourceUri) {
                 source = values;
                 selectedValues = values;
             } else {
@@ -230,11 +233,16 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
 
 
+
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
+
+
+
 
             if (!this.options.renderOptions.useFirstChoice) {
                 kddl.ul.find("li:first-child").addClass("placeholder");
             }
+
 
 
         },
@@ -256,9 +264,9 @@ define([
 
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
 
-            if (this.options.sourceValues.length === 0) {
-            kddl.dataSource.data([this.options.value]);
-            kddl.value(this.options.value.value);
+            if (this.options.renderOptions.useSourceUri) {
+                kddl.dataSource.data([this.options.value]);
+                kddl.value(this.options.value.value);
             }
 
         },
@@ -286,7 +294,7 @@ define([
                             if (!_.isEqual(kddl.value(), newValues)) {
                                 this.flashElement();
                                 console.log("set data source to", value);
-                                if (this.options.sourceValues.length === 0) {
+                                if (this.options.renderOptions.useSourceUri) {
                                     kddl.dataSource.data(value);
                                     kddl.value(newValues);
                                     kddl.dataSource.data([]); // Need to reset tu use server data
@@ -326,12 +334,12 @@ define([
 
                                 console.log("kddl", kddl, value);
                                 if (value.value !== null) {
-                                    if (this.options.sourceValues.length === 0) {
+                                    if (this.options.renderOptions.useSourceUri) {
                                         kddl.dataSource.data([value]);
                                     }
                                     kddl.value(value.value);
                                 } else {
-                                    if (this.options.sourceValues.length === 0) {
+                                    if (this.options.renderOptions.useSourceUri) {
                                         kddl.dataSource.data([]);
                                     }
                                     kddl.value('');
@@ -373,7 +381,7 @@ define([
          * method use for transport multiselect widget
          * @param options
          */
-        autocompleteRequestEnum: function (options) {
+        autocompleteRequestEnum: function wEnumAutocompleteRequestEnum(options) {
             var filter = {
             };
 
@@ -382,6 +390,10 @@ define([
                     keyword: options.data.filter.filters[0].value,
                     operator: options.data.filter.filters[0].operator
                 };
+            }
+
+            if (!this.options.sourceUri) {
+                throw new Error("Enum : sourceUri must be defined if renderOption useSourceUri is set to true");
             }
             //options.data.keyword=
             $.ajax({
@@ -459,16 +471,27 @@ define([
                     dataValueField: "value",
                     dataSource: source.data,
                     index: source.index,
+                    autoBind : false,
                     change: function (event) {
-                        var newValue = {value: this.value(), displayValue: this.text()};
-                        scope.setValue(newValue, event);
+
+                        if (this.value() && this.selectedIndex === -1) {
+                            scope.setError(scope.options.labels.invalidEntry);
+                            scope._getFocusInput().each(function () {
+                                this.focus();
+                            });
+                        } else {
+                            scope.setError(null);
+
+                            var newValue = {value: this.value(), displayValue: this.text()};
+                            scope.setValue(newValue, event);
+                        }
                     }
                 };
 
                 if (this.options.renderOptions.editDisplay === "autoCompletion") {
 
-                    defaultOptions.index=-1;
-                    defaultOptions.value=this.options.value.value;
+                    defaultOptions.index = -1;
+                    defaultOptions.value = this.options.value.value;
                     defaultOptions.placeholder = this.options.labels.chooseMessage;
 
                     if (_.isObject(scope.options.renderOptions.kendoComboBoxConfiguration)) {
@@ -481,10 +504,11 @@ define([
                 }
             }
 
-            if (this.options.sourceValues.length === 0) {
-                defaultOptions.autoBind = false;
+            if (this.options.renderOptions.useSourceUri) {
+                console.log("use server for", this.options.id);
                 defaultOptions.dataSource = {
                     data: source.data,
+                    index: source.index,
                     type: "json",
                     serverFiltering: true,
                     minLength: 0,

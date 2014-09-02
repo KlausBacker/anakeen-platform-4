@@ -17,6 +17,9 @@ define([
                 kendoDateConfiguration: {
                     parseFormats: ["yyyy-MM-dd"]
                 }
+            },
+            labels : {
+                invalidDate:"Invalid Date"
             }
         },
 
@@ -120,7 +123,7 @@ define([
                         _.defer(function () {
                             scope._getFocusInput().focus();
                         });
-                        scope.setError("Invalid date");
+                        scope.setError(scope.options.labels.invalidDate);
                     }
                 }
             });

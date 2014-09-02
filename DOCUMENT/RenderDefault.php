@@ -131,7 +131,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
                     )
-                ),
+                ) ,
                 "htmltext" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
@@ -139,7 +139,7 @@ class RenderDefault implements RenderConfig
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
-                ),
+                ) ,
                 "docid" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
@@ -225,9 +225,13 @@ class RenderDefault implements RenderConfig
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
-
+        
         $opt->enum()->setLabels(array(
-            "chooseMessage" => ___("Choose", "ddui-enum")
+            "chooseMessage" => ___("Choose", "ddui-enum") ,
+            "invalidEntry" => ___("Invalid entry", "ddui-enum")
+        ));
+        $opt->date()->setLabels(array(
+            "invalidDate" => ___("Invalid date", "ddui-enum")
         ));
         return $opt;
     }

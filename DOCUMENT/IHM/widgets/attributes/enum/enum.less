@@ -1,3 +1,5 @@
+@import "../../../../../STYLE/BASE/Layout/variables";
+
 .dcpAttribute--type--enum .dcpAttribute__content--multiple .dcpAttribute__content__value{
   display:block;
   float:left;
@@ -34,11 +36,17 @@
   height: (@attrInputHeight  - 4);
 }
 
-.dcpAttribute__contentWrapper .k-dropdown, .dcpAttribute__contentWrapper .k-combobox {
+.dcpAttribute__contentWrapper .k-dropdown,
+.dcpAttribute__contentWrapper .k-multiselect,
+.dcpAttribute__contentWrapper .k-combobox {
   padding:0;
 }
 
 
+.dcpAttribute__contentWrapper .k-multiselect-wrap{
+  border-radius: 0;
+  padding: 2px;
+}
 .dcpAttribute__contentWrapper.has-error .k-dropdown-wrap {
   border-color : @brand-danger transparent @brand-danger @brand-danger;
 }
@@ -86,8 +94,8 @@ background-color: @gray-lighter;
   font-weight: normal;
 }
 .dcpAttribute__content--enumlabel.selected {
-  background-color: @btn-primary-bg;
-  color: @btn-primary-color;
+  background-color: @enum-selected-button-bg;
+  color: @enum-selected-button-color;
 }
 
 .dcpAttribute__content--enumbuttons.orientation-horizontal {
@@ -103,6 +111,7 @@ background-color: @gray-lighter;
   display:table-cell;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -118,6 +127,7 @@ background-color: @gray-lighter;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
+  white-space: nowrap;
 }
 .dcpAttribute__content--enumbuttons.orientation-vertical.input-group label span{
   margin-left: 1em;
