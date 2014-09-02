@@ -176,10 +176,8 @@ define([
             } else {
                 isEqual=_.isEqual(this.options.value.value, value.value);
             }
-                console.log("try trigger value", value);
             if (! isEqual) {
                 this.options.value = value;
-                console.log("trigger value", value);
 
                 this._trigger("change", event, {
                     id: this.options.id,

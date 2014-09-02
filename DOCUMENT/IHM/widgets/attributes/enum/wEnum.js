@@ -123,7 +123,6 @@ define([
                     source.push({value: this.options.value.value, displayValue: this.options.value.displayValue, selected: true});
                 }
             }
-            console.log("single info", this.options.sourceValues, {data: source, index: selectedIndex});
 
             return {data: source, index: selectedIndex};
         },
@@ -281,7 +280,6 @@ define([
             var kddl, newValues;
             this._super(value, event);
             if (this.getMode() === "write") {
-                console.log("widgetSetValue");
                 if (this._isMultiple()) {
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
@@ -289,11 +287,9 @@ define([
                             newValues = _.map(value, function (val) {
                                 return  val.value;
                             });
-                            console.log("set widget to ", newValues);
                             kddl = this.kendoWidget.data("kendoMultiSelect");
                             if (!_.isEqual(kddl.value(), newValues)) {
                                 this.flashElement();
-                                console.log("set data source to", value);
                                 if (this.options.renderOptions.useSourceUri) {
                                     kddl.dataSource.data(value);
                                     kddl.value(newValues);
@@ -328,11 +324,9 @@ define([
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
                             kddl = this.kendoWidget.data("kendoComboBox");
-                            console.log("internal source", kddl.dataSource);
                             if (!_.isEqual(kddl.value(), value.value)) {
                                 this.flashElement();
 
-                                console.log("kddl", kddl, value);
                                 if (value.value !== null) {
                                     if (this.options.renderOptions.useSourceUri) {
                                         kddl.dataSource.data([value]);
@@ -402,8 +396,6 @@ define([
                 data: filter,
                 dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                 success: function (result) {
-                    console.log("results", result);
-                    console.log(result);
                     var info = [];
                     _.each(result.data.enumItems, function (enumItem) {
                         info.push({
@@ -411,7 +403,6 @@ define([
                             displayValue: enumItem.label
                         });
                     });
-                    console.log(info);
                     // notify the data source that the request succeeded
                     options.success(info);
                 },
@@ -446,12 +437,10 @@ define([
                         // set in case of delete item
 
                         var kdData = _.toArray(scope.kendoWidget.data("kendoMultiSelect").dataItems());
-                        console.log("kdData", kdData);
                         var newValues = [];
                         _.each(kdData, function (val) {
                             newValues.push({value: val.value, displayValue: val.displayValue});
                         });
-                        console.log("change to ", newValues);
                         scope.setValue(newValues, event);
                     }
                 };
@@ -505,7 +494,6 @@ define([
             }
 
             if (this.options.renderOptions.useSourceUri) {
-                console.log("use server for", this.options.id);
                 defaultOptions.dataSource = {
                     data: source.data,
                     index: source.index,
@@ -519,7 +507,6 @@ define([
                     }
                 };
             }
-            console.log("kendo option source", this.options.id, _.extend(defaultOptions, kendoOptions));
             return _.extend(defaultOptions, kendoOptions);
         },
 
