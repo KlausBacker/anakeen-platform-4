@@ -31,8 +31,6 @@ define([
                 return value.isDisplayable();
             });
 
-            $(".dcpLoading").dcpLoading("addItem");
-
             if (!hasOneContent) {
                 $content.append(this.model.getOption('showEmptyContent'));
             } else {
@@ -55,6 +53,7 @@ define([
                 });
             }
             console.timeEnd("render tab " + this.model.id);
+            this.trigger("renderDone");
             return this;
         },
 

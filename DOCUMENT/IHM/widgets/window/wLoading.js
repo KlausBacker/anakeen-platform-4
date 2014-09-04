@@ -34,7 +34,7 @@ define([
             this.element.find('.dcpLoading--progressbar-complete').hide();
         },
 
-        title : function (val) {
+        setTitle : function (val) {
             this.element.find('.dcpLoading--title').html(val);
         },
 
@@ -70,24 +70,22 @@ define([
             this.barElement.data("kendoProgressBar").bind("complete", onComplete);
         },
 
-        percent : function (pc) {
+        setPercent : function (pc) {
             this.pc = pc;
             this.barElement.data("kendoProgressBar").value(Math.round(this.pc));
         },
 
-        setRest : function (restItem) {
+        setNbItem : function (restItem) {
             this.rest = 100 - this.pc;
             this.restItem = restItem;
         },
 
         addItem : function (number) {
-            number = parseInt(number);
-            if (number <= 0) {
-                number = 1;
-            }
+            number = number || 1;
+            number = parseInt(number, 10);
             this.doneItems += number;
             var pv = (this.rest / this.restItem) * number;
-            this.percent(this.pc + pv);
+            this.setPercent(this.pc + pv);
         }
 
     });
