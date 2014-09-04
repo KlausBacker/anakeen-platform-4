@@ -1,6 +1,6 @@
 /*global require*/
 
-(function() {
+(function () {
     "use strict";
     var config = {
         baseUrl : "DOCUMENT/",
@@ -13,12 +13,13 @@
             "ckeditor-jquery" : [ 'jquery', 'ckeditor' ]
         },
         paths :   {
-            "template":          "../",
+            "template" :         "../",
             "widgets" :          "IHM/widgets",
             "collections" :      "IHM/collections",
             "models" :           "IHM/models",
             "views" :            "IHM/views",
             "routers" :          "IHM/routers",
+            "dcpDocumentTest" :  "IHM/test",
             "text" :             '../lib/RequireJS/text',
             "jquery" :           "../lib/KendoUI/js/jquery",
             "underscore" :       "../lib/underscore/underscore",
@@ -26,13 +27,14 @@
             "mustache" :         "../lib/mustache.js/mustache",
             "bootstrap" :        "../lib/bootstrap/js/bootstrap",
             "kendo" :            "../lib/KendoUI/js/",
+            "kendo/kendo.core" : "../index.php?jsFile=kendo.core&app=DOCUMENT&action=WRAP_KENDO",
             "kendo-culture-fr" : "../lib/KendoUI/js/cultures/kendo.culture.fr-FR",
             "ckeditor" :         "../lib/ckeditor/ckeditor",
             "ckeditor-jquery" :  "../lib/ckeditor/adapters/jquery"
         }
     };
     if (window.dcp.ws) {
-        config.urlArgs = "ws="+window.dcp.ws;
+        config.urlArgs = "ws=" + window.dcp.ws;
     }
     require.config(config);
 })();

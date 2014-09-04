@@ -14,7 +14,8 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files :         [
             'test-main.js',
-            { pattern : '../DOCUMENT/IHM/widgets/attributes/**/test*.js', included : false}
+            { pattern : '../DOCUMENT/IHM/widgets/attributes/**/test*.js', included : false},
+            { pattern : '../DOCUMENT/IHM/test/test*.js', included : false}
         ],
 
         // list of files to exclude
@@ -32,7 +33,7 @@ module.exports = function (config) {
         reporters :     ['progress'],
 
         proxies : {
-            '/dynacase/' : 'http://localhost/tmp33/'
+            '/dynacase/' : 'http://dynacase.dev:8081/'
         },
 
         // web server port

@@ -19,15 +19,32 @@ function jasmine(Action & $action)
     $css[] = "lib/jasmine/jasmine.css?ws=" . $version;
     
     $require = $render->getRequireReference();
-    
+
+
+    $testWidgetLoader = array();
+
     if (!$restrict) {
-        $testLoader = rsearch("DOCUMENT/IHM/widgets/");
+        $testWidgetLoader = rsearch("DOCUMENT/IHM/widgets/");
     } else {
         $restrict = strtolower($restrict);
         $ucfRestrict = ucfirst($restrict);
-        $testLoader = array(
-            "DOCUMENT/IHM/widgets/attributes/$restrict/test$ucfRestrict.js"
-        );
+        $file = "DOCUMENT/IHM/widgets/attributes/$restrict/test$ucfRestrict.js";
+        if (is_file($file)) {
+            $testWidgetLoader = array($file);
+        }
+    }
+
+    $testDocumentLoader = array();
+
+    if (!$restrict) {
+        $testDocumentLoader = rsearch("DOCUMENT/IHM/test/");
+    } else {
+        $restrict = strtolower($restrict);
+        $ucfRestrict = ucfirst($restrict);
+        $file = "DOCUMENT/IHM/test/test$ucfRestrict.js";
+        if (is_file($file)) {
+            $testDocumentLoader = array($file);
+        }
     }
     
     $js = array(
@@ -39,8 +56,10 @@ function jasmine(Action & $action)
         'lib/jasmine/boot.js?ws=' . $version,
         'lib/jasmine/jasmine-jquery.js?ws=' . $version
     );
+
+    $widgetList = array_merge($testWidgetLoader, $testDocumentLoader);
     
-    $js = array_merge($js, $testLoader);
+    $js = array_merge($js, $widgetList);
     
     $options = array(
         'cache' => DEFAULT_PUBDIR . '/var/cache/mustache',
@@ -52,7 +71,7 @@ function jasmine(Action & $action)
         "css" => $css,
         "js" => $js,
         "ws" => $version,
-        "nbTest" => count($testLoader) ,
+        "nbTest" => count($widgetList) ,
         "icon" => "../../lib/jasmine/jasmine_favicon.png",
     );
     

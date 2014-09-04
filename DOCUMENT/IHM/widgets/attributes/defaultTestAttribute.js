@@ -14,8 +14,12 @@ define(["underscore"], function (_) {
         describe(type+" defaultTest", function () {
 
             beforeEach(function () {
+                var $renderZone = $("#render");
+                if ($renderZone.length === 0) {
+                    $renderZone = $("body");
+                }
                 currentSandbox = $("<div></div>");
-                $("body").prepend(currentSandbox);
+                $renderZone.prepend(currentSandbox);
                 //currentSandbox = setFixtures(sandbox());
             });
 
