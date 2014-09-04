@@ -9,7 +9,7 @@ define([
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 
-    var flattenAttributes = function (currentAttributes, attributes, parent) {
+    var flattenAttributes = function (mode, currentAttributes, attributes, parent) {
         if (!_.isArray(attributes)) {
             attributes = _.values(attributes);
         }
@@ -19,12 +19,12 @@ define([
             });
         }
         _.each(attributes, function (value) {
-            value.documentMode = window.dcp.renderOptions.mode || "read";
+            value.documentMode = mode || "read";
         });
         currentAttributes = _.union(currentAttributes, attributes);
         _.each(attributes, function (currentAttr) {
             if (currentAttr.content) {
-                currentAttributes = _.union(currentAttributes, flattenAttributes(currentAttributes, currentAttr.content, currentAttr.id));
+                currentAttributes = _.union(currentAttributes, flattenAttributes(mode, currentAttributes, currentAttr.content, currentAttr.id));
             }
         });
         return currentAttributes;
@@ -40,7 +40,7 @@ define([
             this.set("menus", new CollectionMenus(options.menus));
             this.set("renderMode", options.renderMode);
             this.set("locale", options.locale);
-            attributes = flattenAttributes(attributes, options.family.structure);
+            attributes = flattenAttributes(options.renderMode, attributes, options.family.structure);
             _.each(attributes, function (value) {
                 if (value.id && options.attributes[value.id]) {
                     value.value = options.attributes[value.id];
@@ -163,7 +163,6 @@ define([
                         });
                     } else {
                         console.error("Error", message);
-                        window.alert("UNEXPECTED ERROR");
                     }
             }
         },

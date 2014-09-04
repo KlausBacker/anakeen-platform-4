@@ -50,9 +50,7 @@ define([
             if (this.get("multiple") && index >= 0) {
                 currentValue = _.clone(this.get("value"));
                 currentValue[index] = value;
-
                 this.set("value", currentValue);
-
             } else {
                 this.set("value", value);
             }
@@ -197,13 +195,9 @@ define([
             return (aparent && aparent.attributes && aparent.attributes.type === "array");
         },
 
-        documentModel: function () {
-            return  window.dcp.documents.get(window.dcp.documentData.document.properties.id);
-        },
-
         getParent: function () {
             if (this.attributes.parent) {
-                return this.documentModel().get('attributes').get(this.attributes.parent);
+                return this.get("documentModel").get('attributes').get(this.attributes.parent);
             }
             return null;
         },
@@ -247,7 +241,7 @@ define([
                     return;
                 }
             }
-            throw new Error("unkown mode " + documentMode + " or visibility " + visibility);
+            throw new Error("unkown mode " + documentMode + " or visibility " + visibility+ " "+this.get("id"));
         },
 
         _computeValueMode: function () {
@@ -259,30 +253,35 @@ define([
 
         /**
          * Return all options for an attribute
-         * @TODO add local cache
+         *
          * @returns {{}}
          */
         getOptions: function () {
-            var options = {};
-            var optionCommon = window.dcp.renderOptions.common || {};
-            var optionValue = {};
-            var optionAttribute = {};
+            var options, optionsCommon, optionsValue, optionsAttribute;
+            this._options = this._options || false;
 
-            if (window.dcp.renderOptions.types) {
-                optionValue = window.dcp.renderOptions.types[this.get("type")] || {};
+            if (this._options === false) {
+                if (window.dcp && window.dcp.renderOptions && window.dcp.renderOptions.common) {
+                    optionsCommon = window.dcp.renderOptions.common || {};
+                }
+
+                if (window.dcp && window.dcp.renderOptions && window.dcp.renderOptions.types) {
+                    optionsValue = window.dcp.renderOptions.types[this.get("type")] || {};
+                }
+                if (window.dcp && window.dcp.renderOptions && window.dcp.renderOptions.attributes) {
+                    optionsAttribute = window.dcp.renderOptions.attributes[this.id] || {};
+                }
+                this._options = {};
             }
-            if (window.dcp.renderOptions.attributes) {
-                optionAttribute = window.dcp.renderOptions.attributes[this.id] || {};
-            }
 
-            _.extend(options, optionCommon, optionValue, optionAttribute);
+            _.extend(this._options, optionsCommon, optionsValue, optionsAttribute);
 
-            return options;
+            return this._options;
         },
 
         /**
          * Get value for an option
-         * @TODO set local cache
+         *
          * @param key option identifier
          * @returns {*}
          */
