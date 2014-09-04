@@ -1,6 +1,5 @@
 /*global define*/
 
-
 define([
     'underscore',
     'backbone',
@@ -15,17 +14,16 @@ define([
 
     return Backbone.View.extend({
 
-        className: "dcpDocument container-fluid",
+        className : "dcpDocument container-fluid",
 
-        initialize: function () {
+        initialize : function () {
             this.listenTo(this.model, 'destroy', this.remove);
             this.template = window.dcp.templates.body;
             this.partials = window.dcp.templates.sections;
         },
 
-        render: function () {
-            var $content, model = this.model, $el = this.$el;
-            var $loading = $(".dcpLoading");
+        render : function () {
+            var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
             // console.time("render doc");
 
@@ -46,30 +44,30 @@ define([
             } catch (e) {
                 console.log(e);
             }
-            this.$el.addClass("dcpDocument--" + this.model.get("renderMode"));
-            $loading.dcpLoading("percent", 10);
+            this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
+            this.trigger("loading", 10);
             //add menu
             //console.time("render menu");
             try {
-                new ViewDocumentMenu({model: this.model, el: this.$el.find(".dcpDocument__menu")[0]}).render();
+                new ViewDocumentMenu({model : this.model, el : this.$el.find(".dcpDocument__menu")[0]}).render();
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
             // console.timeEnd("render menu");
-            $loading.dcpLoading("percent", 20);
+            this.trigger("loading", 20);
             //add first level attributes
             //  console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
-            $loading.dcpLoading("setRest", this.model.get("attributes").length);
             this.model.get("attributes").each(function (currentAttr) {
                 var view, viewTabLabel, viewTabContent, tabItems;
                 if (!currentAttr.isDisplayable()) {
+                    currentView.trigger("partRender");
                     return;
                 }
 
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
-                        view = new ViewAttributeFrame({model: model.get("attributes").get(currentAttr.id)});
+                        view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
                         console.error(e);
@@ -77,14 +75,14 @@ define([
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
-                        viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
+                        viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
                             tabItems.css("width", Math.floor(100 / tabItems.length) + '%').kendoTooltip({
-                                position: "top",
-                                content: function (e) {
+                                position : "top",
+                                content :  function (e) {
                                     var target = e.target; // the element for which the tooltip is shown
                                     return $(target).text(); // set the element text as content of the tooltip
                                 }
@@ -97,17 +95,18 @@ define([
                         console.error(e);
                     }
                 }
-
+                currentView.trigger("partRender");
             });
-            $el.find('.dcpDocument__tabs__list a:first').tab('show');
-            //  console.timeEnd("render attributes");
-            // console.timeEnd("render doc");
+            if ($el.find('.dcpDocument__tabs__list a:first').tab) {
+                $el.find('.dcpDocument__tabs__list a:first').tab('show');
+            }
 
-            // np drop zone hence in file input
             $(document).on('drop dragover', function (e) {
                 e.preventDefault();
             });
 
+            this.$el.addClass("dcpDocument--show");
+            this.trigger("renderDone");
 
             return this;
         }

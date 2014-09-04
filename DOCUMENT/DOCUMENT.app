@@ -12,10 +12,6 @@ $app_acl = array(
     array(
         "name" => "VIEW_RENDER",
         "description" => N_("View documents")
-    ),
-    array(
-        "name" => "DOWNLOAD_TEMPLATE",
-        "description" => N_("Download template")
     )
 );
 
@@ -29,12 +25,6 @@ $action_desc = array(
         "root" => "Y",
         "acl" => "VIEW_RENDER"),
     array(
-        "name" => "TEMPLATE",
-        "short_name" => N_("Get some template"),
-        "script" => "action-template.php",
-        "function" => "template",
-        "acl" => "DOWNLOAD_TEMPLATE"),
-    array(
         "name" => "SUBMENU",
         "short_name" => N_("Get dynamic sub menu"),
         "script" => "action-submenu.php",
@@ -46,6 +36,19 @@ $action_desc = array(
         "script" => "action-autocomplete.php",
         "function" => "autocomplete",
         "acl" => "VIEW_RENDER"),
+    array(
+        "name" => "TEMPLATE",
+        "short_name" => N_("Get some template"),
+        "script" => "action-template.php",
+        "function" => "template"),
+    array(
+        "name" => "WRAP_KENDO",
+        "short_name" => N_("Wrap kendo"),
+        "script" => "action.wrap_kendo.php",
+        "function" => "wrap_kendo",
+        "layout" => "loaderKendo.js"
+    )
+
 );
 
 

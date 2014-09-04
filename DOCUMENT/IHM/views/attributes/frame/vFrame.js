@@ -25,7 +25,6 @@ define([
 
         render: function () {
             var $content;
-            var $loading = $(".dcpLoading");
             var labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
             var contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
             //console.time("render frame " + this.model.id);
@@ -33,26 +32,15 @@ define([
             this.$el.append(labelElement);
             this.$el.append(contentElement);
 
-            contentElement.collapse('show');
-            labelElement.on("click", function () {
-                if (contentElement.hasClass("in")) {
-                    $(this).find("i").addClass("fa-caret-right").removeClass("fa-caret-down");
-                } else {
-                    $(this).find("i").removeClass("fa-caret-right").addClass("fa-caret-down");
-                }
-                contentElement.collapse('toggle');
-            });
+            labelElement.on("click", _.bind(this.toggle, this));
             $content = this.$el.find(".dcpFrame__content");
-            $loading.dcpLoading("addItem");
             var hasOneContent = this.model.get("content").some(function (value) {
                 return value.isDisplayable();
             });
             if (!hasOneContent) {
                 $content.append(this.model.getOption('showEmptyContent'));
-                $loading.dcpLoading("addItem", this.model.get("content").length);
             } else {
                 this.model.get("content").each(function (currentAttr) {
-                    $loading.dcpLoading("addItem");
                     if (!currentAttr.isDisplayable()) {
                         return;
                     }
@@ -69,6 +57,7 @@ define([
                     }
                 });
             }
+            this.trigger("renderDone");
             //console.timeEnd("render frame " + this.model.id);
             return this;
         },
@@ -95,6 +84,20 @@ define([
 
         updateLabel: function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
+        },
+
+        toggle : function() {
+            var $contentElement = this.$(".dcpFrame__content");
+            if ($contentElement.hasClass("dcpFrame__content--open")) {
+                this.$(".dcp__frame__caret").addClass("fa-caret-right").removeClass("fa-caret-down");
+                $contentElement.removeClass("dcpFrame__content--open").addClass("dcpFrame__content--close");
+                $contentElement.fadeOut();
+            } else {
+                this.$(".dcp__frame__caret").removeClass("fa-caret-right").addClass("fa-caret-down");
+                $contentElement.addClass("dcpFrame__content--open").removeClass("dcpFrame__content--close");
+                $contentElement.fadeIn();
+            }
+
         }
     });
 

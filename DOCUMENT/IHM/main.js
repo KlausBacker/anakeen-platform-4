@@ -17,16 +17,17 @@ require([
     'use strict';
     console.timeEnd("js loading");
     /*jshint nonew:false*/
-    var document = window.dcp.documentData.document, model, $document;
+    var document = window.dcp.documentData.document, model, $document, $loading;
     window.dcp = window.dcp || {};
     window.dcp.documents = new CollectionDocument();
     window.dcp.views = window.dcp.views || {};
 
     $document = $(".dcpDocument");
 
-    $(".dcpLoading").dcpLoading();
+    $loading = $(".dcpLoading").dcpLoading();
     console.timeEnd('js loading');
     _.defer(function () {
+        var documentView;
         $('body').dcpNotification(); // active notification
         model = new ModelDocument(
             {},
@@ -40,22 +41,32 @@ require([
             }
         );
         window.dcp.documents.push(model);
-        (new ViewDocument({model : model, el : $document[0]}).render());
+        $loading.dcpLoading('setNbItem', model.get("attributes").length);
+        documentView = new ViewDocument({model : model, el : $document[0]});
 
-        $document.show().addClass("dcpDocument--show");
-        console.timeEnd('main');
-
-        $(".dcpLoading").dcpLoading("complete", function () {
-            $(".dcpDocument").show().addClass("dcpDocument--show");
+        documentView.on('loading', function(data) {
+            $loading.dcpLoading('setPercent', data);
         });
 
-        _.delay(function () {
-            //  $(".dcpLoading").dcpLoading("percent",100).fadeOut({duration:500});
-            $(".dcpLoading").dcpLoading("percent", 100).addClass("dcpLoading--hide");
+        documentView.on('partRender', function () {
+            $loading.dcpLoading('addItem');
+        });
+
+        documentView.on('renderDone', function () {
+            $loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
             _.delay(function () {
-                $(".dcpLoading").dcpLoading("hide");
-            }, 2000);
-        }, 100);
+                $loading.dcpLoading("hide");
+            }, 500);
+        });
+
+        documentView.render();
+
+        console.timeEnd('main');
+
+        $loading.dcpLoading("complete", function () {
+            $(".dcpDocument").show();
+        });
+
     });
     window.dcp.router = {
         router : new Router()

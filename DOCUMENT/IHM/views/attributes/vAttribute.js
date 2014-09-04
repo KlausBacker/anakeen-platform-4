@@ -76,6 +76,7 @@ define([
             var data = this.getData();
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
+            this.$el.attr("data-attrid", this.model.get("id"));
             if (this.model.get("needed")) {
                 this.$el.addClass("dcpAttribute--needed");
             }

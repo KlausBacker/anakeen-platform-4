@@ -10,23 +10,42 @@
 </head>
 <body>
 
-    <div id="render">
-
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" id="displayMode"><span class="glyphicon glyphicon-plus"></span> Contenu des tests</h3>
     </div>
-    <script type="text/javascript">
-        window.dcp = window.dcp || {};
-        window.dcp.ws = [[ws]];
-        window.dcp.executeTests = (function() {
-            var nbTest = [[nbTest]];
-            return function() {
-                if (--nbTest < 1) {
-                    return window.executeTests();
+    <div class="panel-body" id="render" style="display : none;">
+        Panel content
+    </div>
+</div>
+<script type="text/javascript">
+    window.dcp = window.dcp || {};
+    window.dcp.ws = [[ws]];
+    window.dcp.executeTests = (function() {
+        var nbTest = [[nbTest]];
+        return function() {
+            if (--nbTest < 1) {
+                return window.executeTests();
+            }
+        };
+    })();
+    try {
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById("displayMode").addEventListener("click", function () {
+                if (document.getElementById("render").style.display === "none") {
+                    document.getElementById("render").style.display = "block";
+                } else {
+                    document.getElementById("render").style.display = "none";
                 }
-            };
-        })();
-    </script>
-    [[#js]]
-    <script type="text/javascript" src="[[.]]"></script>
-    [[/js]]
+            });
+        });
+    } catch (error) {
+
+    }
+
+</script>
+[[#js]]
+<script type="text/javascript" src="[[.]]"></script>
+[[/js]]
 </body>
 </html>
