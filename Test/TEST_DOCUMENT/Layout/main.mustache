@@ -7,6 +7,16 @@
     [[#css]]
     <link rel="stylesheet" type="text/css" href="[[.]]"/>
     [[/css]]
+    <style>
+        .panel-heading {
+            cursor:pointer;
+        }
+        .panel--hide {
+            visibility:hidden;
+            max-height:0;
+            overflow:hidden;
+        }
+    </style>
 </head>
 <body>
 
@@ -14,7 +24,7 @@
     <div class="panel-heading">
         <h3 class="panel-title" id="displayMode"><span class="glyphicon glyphicon-plus"></span> Contenu des tests</h3>
     </div>
-    <div class="panel-body" id="render" style="display : none;">
+    <div class="panel-body panel--hide" id="render" >
         Panel content
     </div>
 </div>
@@ -32,10 +42,12 @@
     try {
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("displayMode").addEventListener("click", function () {
-                if (document.getElementById("render").style.display === "none") {
-                    document.getElementById("render").style.display = "block";
+                var $render=$("#render");
+console.log("render", $render);
+                if ($render.hasClass("panel--hide")) {
+                    $render.removeClass("panel--hide");
                 } else {
-                    document.getElementById("render").style.display = "none";
+                    $render.addClass("panel--hide");
                 }
             });
         });
