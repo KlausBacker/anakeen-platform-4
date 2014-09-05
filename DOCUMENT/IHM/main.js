@@ -64,6 +64,7 @@ require([
         console.timeEnd('main');
 
         $loading.dcpLoading("complete", function () {
+
             $(".dcpDocument").show();
         });
 

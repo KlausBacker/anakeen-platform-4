@@ -50,8 +50,8 @@ require.config({
         "kendo" :            "../../lib/KendoUI/js/",
         "kendo/kendo.core" : "../../guest.php?jsFile=kendo.core&app=DOCUMENT&action=WRAP_KENDO",
         "kendo-culture-fr" : "../../lib/KendoUI/js/cultures/kendo.culture.fr-FR",
-        "ckeditor" :         "../../lib/ckeditor/ckeditor",
-        "ckeditor-jquery" :  "../../lib/ckeditor/adapters/jquery",
+        "ckeditor" :         "../../lib/ckeditor/4/ckeditor",
+        "ckeditor-jquery" :  "../../lib/ckeditor/4/adapters/jquery",
         "jasmine-jquery" :   '../../lib/jasmine/jasmine-jquery'
     },
     // dynamically load all test files

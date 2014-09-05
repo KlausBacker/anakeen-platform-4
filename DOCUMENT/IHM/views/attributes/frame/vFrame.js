@@ -86,16 +86,18 @@ define([
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        toggle : function() {
+        toggle: function () {
             var $contentElement = this.$(".dcpFrame__content");
             if ($contentElement.hasClass("dcpFrame__content--open")) {
+                // Hide frame panel
                 this.$(".dcp__frame__caret").addClass("fa-caret-right").removeClass("fa-caret-down");
                 $contentElement.removeClass("dcpFrame__content--open").addClass("dcpFrame__content--close");
-                $contentElement.fadeOut();
+                $contentElement.slideUp();
             } else {
+                // Show frame panel
                 this.$(".dcp__frame__caret").removeClass("fa-caret-right").addClass("fa-caret-down");
                 $contentElement.addClass("dcpFrame__content--open").removeClass("dcpFrame__content--close");
-                $contentElement.fadeIn();
+                $contentElement.slideDown();
             }
 
         }
