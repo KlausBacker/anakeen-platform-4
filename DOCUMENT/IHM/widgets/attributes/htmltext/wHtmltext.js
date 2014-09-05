@@ -53,7 +53,7 @@ define([
             }
             return   {
                 language :                  locale.substring(0, 2),
-                contentsCss :               ['lib/ckeditor/contents.css', 'css/dcp/document/ckeditor.css'],
+                contentsCss :               ['lib/ckeditor/4/contents.css', 'css/dcp/document/ckeditor.css'],
                 removePlugins :             'elementspath', // no see HTML path elements
                 toolbarCanCollapse :        true,
                 entities :                  false, // no use HTML entities
