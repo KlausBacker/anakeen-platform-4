@@ -81,6 +81,7 @@ define([
         var initialValue = config.initialValue;
         var options = config.options || {};
         var otherValue = config.otherValue;
+        var renderOptions = config.renderOptions || {};
 
         var modelDocument, currentSandbox, localAttrId, getSandbox = function () {
             return currentSandbox;
@@ -102,6 +103,11 @@ define([
             $renderZone.append(currentSandbox);
             //currentSandbox = setFixtures(sandbox());
             familyStructure = options.familyContent || generateFamilyStructure(localAttrId, attributeDefinition);
+
+            if (! window.dcp.renderOptions) {
+                window.dcp.renderOptions= {attributes : {}};
+            }
+            window.dcp.renderOptions.attributes[localAttrId]=renderOptions;
 
             modelDocument = new ModelDocument(
                 {},

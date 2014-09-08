@@ -149,6 +149,78 @@ require([
         initialValue: {value: "G", displayValue: "Sol"},
         otherValue: {value: "D", displayValue: "Ré"}
     });
+
+
+    defaultTestSuite({
+        title: "enum vertical: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "vertical"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+    defaultTestSuite({
+        title: "enum horizontal: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "horizontal"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+    defaultTestSuite({
+        title: "enum autoCompletion: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "autoCompletion"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+
     defaultTestSuite({
         title: "enum : write",
         attribute: {
@@ -227,6 +299,102 @@ require([
             {value: "A", displayValue: "La"}
         ]
     });
+
+    defaultTestSuite({
+        title: "enum multiple vertical: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "vertical"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+    defaultTestSuite({
+        title: "enum multiple horizontal: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "horizontal"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+    defaultTestSuite({
+        title: "enum multiple autoCompletion: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "autoCompletion"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+
+
     defaultTestSuite({
         title: "file : read",
         attribute: {type: "file"},
