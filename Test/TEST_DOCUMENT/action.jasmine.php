@@ -72,7 +72,7 @@ function jasmine(Action & $action)
         "js" => $js,
         "ws" => $version,
         "nbTest" => count($widgetList) ,
-        "icon" => "../../lib/jasmine/jasmine_favicon.png",
+        "icon" => "lib/jasmine/jasmine_favicon.png",
     );
     
     $mustacheRender = new \Mustache_Engine($options);

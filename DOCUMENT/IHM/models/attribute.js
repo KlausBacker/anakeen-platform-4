@@ -26,7 +26,7 @@ define([
             this.listenTo(this, "change:type", this._computeValueMode);
 
             if (_.isArray(this.get("value"))) {
-                this.set("value", _.extend({}, this.get("value")));
+                //this.set("value", _.extend({}, this.get("value")));
             }
             this._computeValueMode();
             this._computeMode();

@@ -4,44 +4,501 @@ require([
 ], function (defaultTestSuite) {
     "use strict";
 
-    defaultTestSuite("date : read", "date", {value : "2012-12-14"}, {}, {value : "1985-05-12"});
-    defaultTestSuite("date : write", "date", {value : "2012-12-14"}, {renderMode : "edit"}, {value : "1985-05-12"});
 
-    defaultTestSuite("docid : read", "docid", {value : "212", displayValue : "toto"}, {}, {value : "325", displayValue : "titi"});
-    defaultTestSuite("docid : write", "docid", {value : "212", displayValue : "toto"}, {renderMode : "edit"}, {value : "325", displayValue : "titi"});
+    defaultTestSuite({
+        title: "text : read",
+        attribute: {type: "text"},
+        initialValue: {
+            value: "John Doe",
+            displayValue: "John Doe l'inconnu"},
+        otherValue: {
+            value: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine",
+            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine"}
+    });
 
-    defaultTestSuite("double : read", "double", {value : 3.14}, {}, {value : 1.2222});
-    defaultTestSuite("double : write", "double", {value : 3.14}, {renderMode : "edit"}, {value : 1.2222});
+    defaultTestSuite({
+        title: "text : write",
+        attribute: {type: "text"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {
+            value: "John Doe",
+            displayValue: "John Doe l'inconnu"},
+        otherValue: {
+            value: "Les parties supérieures sont gris-bleu",
+            displayValue: "Les parties supérieures sont gris-bleu"}
+    });
 
-    defaultTestSuite("enum : read", "enum", {value : "g", displayValue : "Sol"}, {}, {value : "U", displayValue : "Sel"});
-    defaultTestSuite("enum : write", "enum", {value : "g", displayValue : "Sol"}, {renderMode : "edit"}, {value : "U", displayValue : "Sel"});
+    defaultTestSuite({
+        title: "date : read",
+        attribute: {type: "date"},
+        initialValue: {value: "2012-12-14", displayValue: "14/12/2012"},
+        otherValue: {value: "1985-05-12", displayValue: "12/05/1985"}
+    });
+    defaultTestSuite({
+        title: "date : write",
+        attribute: {type: "date"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "2012-12-14", displayValue: "14/12/2012"},
+        otherValue: {value: "1985-05-12", displayValue: "12/05/1985"}
+    });
 
-    defaultTestSuite("file : read", "file", {value : "g", displayValue : "Sol"}, {}, {value : "U", displayValue : "Sel"});
-    defaultTestSuite("file : write", "file", {value : "g", displayValue : "Sol"}, {renderMode : "edit"}, {value : "U", displayValue : "Sel"});
+    defaultTestSuite({
+        title: "timestamp : read",
+        attribute: {type: "timestamp"},
+        initialValue: {value: "2012-12-14T12:56", displayValue: "14/12/2012 12:56"},
+        otherValue: {value: "1985-05-12T10:00", displayValue: "12/05/1985 10:00"}
+    });
+    defaultTestSuite({
+        title: "timestamp : write",
+        attribute: {type: "timestamp"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "2012-12-14T12:56", displayValue: "14/12/2012 12:56"},
+        otherValue: {value: "1985-05-12T10:00", displayValue: "12/05/1985 10:00"}
+    });
 
-    defaultTestSuite("htmltext : read", "htmltext", {value : "Éric <strong>Brison</strong>"}, {}, {value : "SecondeValue"});
-    defaultTestSuite("htmltext : write", "htmltext", {value : "Charles Bonnissent"}, {renderMode : "edit"}, {value : "SecondeValue"});
+    defaultTestSuite({
+        title: "time : read",
+        attribute: {type: "time"},
+        initialValue: {value: "12:56", displayValue: "12:56"},
+        otherValue: {value: "23:59", displayValue: "23:59"}
+    });
+    defaultTestSuite({
+        title: "time : write",
+        attribute: {type: "time"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "12:56", displayValue: "12:56"},
+        otherValue: {value: "23:59", displayValue: "23:59"}
+    });
+    defaultTestSuite({
+        title: "docid : read",
+        attribute: {type: "docid"},
+        initialValue: {value: "1253", displayValue: "John Doe"},
+        otherValue: {value: "7865", displayValue: "Éléonord Hùço"}
+    });
+    defaultTestSuite({
+        title: "docid : write",
+        attribute: {type: "docid"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "1253", displayValue: "John Doe"},
+        otherValue: {value: "7865", displayValue: "Éléonord Hùço"}
+    });
 
-    defaultTestSuite("image : read", "image", {value : "g", displayValue : "Sol"}, {}, {value : "U", displayValue : "Sel"});
-    defaultTestSuite("image : write", "image", {value : "g", displayValue : "Sol"}, {renderMode : "edit"}, {value : "U", displayValue : "Sel"});
 
-    defaultTestSuite("int : read", "int", {value : 42}, {}, {value : 256});
-    defaultTestSuite("int : write", "int", {value : 512}, {renderMode : "edit"}, {value : 1024});
+    defaultTestSuite({
+        title: "int : read",
+        attribute: {type: "int"},
+        initialValue: {value: "1253", displayValue: "1 253"},
+        otherValue: {value: "7865", displayValue: "7 865"}
+    });
+    defaultTestSuite({
+        title: "int : write",
+        attribute: {type: "int"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "1253", displayValue: "1 253"},
+        otherValue: {value: "7098865", displayValue: "7 098 865"}
+    });
 
-    defaultTestSuite("longtext : read", "longtext", {value : "Éric <strong>Brison</strong>"}, {}, {value : "SecondeValue"});
-    defaultTestSuite("longtext : write", "longtext", {value : "Charles Bonnissent"}, {renderMode : "edit"}, {value : "SecondeValue"});
+    defaultTestSuite({
+        title: "double : read",
+        attribute: {type: "double"},
+        initialValue: {value: "1253", displayValue: "1 253"},
+        otherValue: {value: "7865.678", displayValue: "7 865,678"}
+    });
+    defaultTestSuite({
+        title: "double : write",
+        attribute: {type: "double"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "1253", displayValue: "1 253"},
+        otherValue: {value: "7865.678", displayValue: "7 865,678"}
+    });
 
-    defaultTestSuite("money : read", "money", {value : 42}, {}, {value : 256});
-    defaultTestSuite("money : write", "money", {value : 512}, {renderMode : "edit"}, {value : 1024});
 
-    defaultTestSuite("text : read", "text", {value : "Éric <strong>Brison</strong>"}, {}, {value : "SecondeValue"});
-    defaultTestSuite("text : write", "text", {value : "Charles Bonnissent"}, {renderMode : "edit"}, {value : "SecondeValue"});
+    defaultTestSuite({
+        title: "money : read",
+        attribute: {type: "money"},
+        initialValue: {value: "1253", displayValue: "1 253 €"},
+        otherValue: {value: "7865.68", displayValue: "7 865,68 €"}
+    });
+    defaultTestSuite({
+        title: "money : write",
+        attribute: {type: "money"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "1253", displayValue: "1 253 €"},
+        otherValue: {value: "7865.68", displayValue: "7 865,68 €"}
+    });
 
-    defaultTestSuite("time : read", "time", {value : "03:00"}, {}, {value : "12:00"});
-    defaultTestSuite("time : write", "time", {value : "03:00"}, {renderMode : "edit"}, {value : "12:00"});
+    defaultTestSuite({
+        title: "enum : read",
+        attribute: {type: "enum"},
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
 
-    defaultTestSuite("timestamp : read", "timestamp", {value : "2025-05-12 18:00:05"}, {}, {value : "1985-05-12 18:00:05"});
-    defaultTestSuite("timestamp : write", "timestamp", {value : "2025-05-12 18:00:05"}, {renderMode : "edit"}, {value : "1985-05-12 18:00:05"});
+
+    defaultTestSuite({
+        title: "enum vertical: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "vertical"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+    defaultTestSuite({
+        title: "enum horizontal: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "horizontal"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+    defaultTestSuite({
+        title: "enum autoCompletion: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "autoCompletion"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+
+    defaultTestSuite({
+        title: "enum : write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ]},
+
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {value: "G", displayValue: "Sol"},
+        otherValue: {value: "D", displayValue: "Ré"}
+    });
+
+
+    defaultTestSuite({
+        title: "enum multiple : read",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+        options: {
+            renderMode: "view"
+
+
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+    defaultTestSuite({
+        title: "enum multiple : write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+
+    defaultTestSuite({
+        title: "enum multiple vertical: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "vertical"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+    defaultTestSuite({
+        title: "enum multiple horizontal: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "horizontal"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+    defaultTestSuite({
+        title: "enum multiple autoCompletion: write",
+        attribute: {
+            type: "enum",
+            enumItems: [
+                {key: "A", label: "La"},
+                {key: "B", label: "Si"},
+                {key: "C", label: "Do"},
+                {key: "D", label: "Ré"},
+                {key: "E", label: "Mi"},
+                {key: "F", label: "Fa"},
+                {key: "G", label: "Sol"}
+            ],
+            options: {
+                multiple: "yes"
+            }},
+
+        options: {
+            renderMode: "edit"
+        },
+        renderOptions: {
+            editDisplay: "autoCompletion"
+        },
+        initialValue: [
+            {value: "G", displayValue: "Sol"}
+        ],
+        otherValue: [
+            {value: "D", displayValue: "Ré"},
+            {value: "A", displayValue: "La"}
+        ]
+    });
+
+
+    defaultTestSuite({
+        title: "file : read",
+        attribute: {type: "file"},
+        initialValue: {
+            value: "image/png|J123|ping.png",
+            displayValue: "ping.png"},
+        otherValue: {
+            value: "image/png|678|pong.png",
+            displayValue: "pong.png"}
+    });
+
+    defaultTestSuite({
+        title: "file : write",
+        attribute: {type: "file"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {
+            value: "image/png|J123|ping.png",
+            displayValue: "ping.png"},
+        otherValue: {
+            value: "image/png|678|pong.png",
+            displayValue: "pong.png"}
+    });
+
+
+    defaultTestSuite({
+        title: "image : read",
+        attribute: {type: "image"},
+        initialValue: {
+            value: "image/png|J123|ping.png",
+            displayValue: "ping.png"},
+        otherValue: {
+            value: "image/png|678|pong.png",
+            displayValue: "pong.png"}
+    });
+
+    defaultTestSuite({
+        title: "image : write",
+        attribute: {type: "image"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {
+            value: "image/png|J123|ping.png",
+            displayValue: "ping.png"},
+        otherValue: {
+            value: "image/png|678|pong.png",
+            displayValue: "pong.png"}
+    });
+
+
+    defaultTestSuite({
+        title: "htmltext : read",
+        attribute: {type: "htmltext"},
+        initialValue: {
+            value: "<p>John Doe</p>",
+            displayValue: "<p>John Doe l'inconnu</p>"},
+        otherValue: {
+            value: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>",
+            displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"}
+    });
+
+    defaultTestSuite({
+        title: "htmltext : write",
+        attribute: {type: "htmltext"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {
+            value: "<p>John Doe</p>",
+            displayValue: "<p>John Doe l'inconnu</p>"},
+        otherValue: {
+            value: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>",
+            displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"}
+    });
+
+
+    defaultTestSuite({
+        title: "longtext : read",
+        attribute: {type: "longtext"},
+        initialValue: {
+            value: "John Doe",
+            displayValue: "John Doe\nl'inconnu"},
+        otherValue: {
+            value: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie",
+            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"}
+    });
+
+    defaultTestSuite({
+        title: "longtext : write",
+        attribute: {type: "longtext"},
+        options: {
+            renderMode: "edit"
+        },
+        initialValue: {
+            value: "John Doe",
+            displayValue: "John Doe\nl'inconnu"},
+        otherValue: {
+            value: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie",
+            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"}
+
+    });
+
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();
