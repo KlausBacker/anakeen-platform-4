@@ -123,6 +123,8 @@ class DefaultView extends RenderDefault
             $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
             $menu->appendElement($workflowMenu);
         }
+        
+        $this->addFamilyMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);
     }
     /**
@@ -209,6 +211,58 @@ class DefaultView extends RenderDefault
             $itemMenu->setTarget("_dialog");
             $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
+        }
+    }
+
+    /**
+     * Add Menu item defined by attribute family
+     * @param \Doc $doc
+     * @param BarMenu $menu
+     */
+    public function addFamilyMenu(\Doc $doc, BarMenu & $menu)
+    {
+        include_once ("FDL/popupdocdetail.php");
+        $links = array();
+        addFamilyPopup($links, $doc);
+        $advMenu = $menu->getElement("advanced");
+        foreach ($links as $idLink => $link) {
+            $menuItem = new ItemMenu($idLink, $link["descr"]);
+            if (!empty($link["target"])) {
+                if (preg_match("/[0-9]+$/", $link["target"])) {
+                    
+                    $menuItem->setTarget("_dialog");
+                } else {
+                    $menuItem->setTarget($link["target"]);
+                }
+            } else {
+                $menuItem->setTarget("_dialog");
+            }
+            if (!empty($link["url"])) {
+                $menuItem->setUrl($link["url"]);
+            }
+            if (!empty($link["title"])) {
+                $menuItem->setTooltipLabel($link["title"]);
+            }
+            if (!empty($link["confirm"]) && $link["confirm"] === "true") {
+                
+                $menuItem->useConfirm($link["tconfirm"]);
+            }
+            
+            if (!empty($link["submenu"])) {
+                if ($link["visibility"] === POPUP_ACTIVE || $link["visibility"] === POPUP_CTRLACTIVE) {
+                    $lmenu = $menu->getElement($link["submenu"]);
+                    if (!$lmenu) {
+                        // Create new list menu
+                        $lmenu = new listMenu($link["submenu"], $link["submenu"]);
+                        $menu->insertBefore("advanced", $lmenu);
+                    }
+                    $lmenu->appendElement($menuItem);
+                }
+            } elseif ($link["visibility"] === POPUP_ACTIVE) {
+                $menu->insertBefore("advanced", $menuItem);
+            } elseif ($link["visibility"] === POPUP_CTRLACTIVE) {
+                $advMenu->appendElement($menuItem);
+            }
         }
     }
 }
