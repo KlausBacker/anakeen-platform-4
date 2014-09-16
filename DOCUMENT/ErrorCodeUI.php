@@ -81,6 +81,38 @@ namespace {
          */
         const UI0201 = 'Value "%s" for attribute option "labelPosition" is invalid : allowed are : %s';
         /**
+         * @errorCode the cv menu cannot be extracted
+         */
+        const UI0202 = 'View control document  "%s" is not found : menu cannot be completed';
+        /**
+         * @errorCode Only view,edit, create are allowed
+         */
+        const UI0300 = 'Mode "%s" is not a valid render mode';
+        /**
+         * @errorCode Only document with view control can ask a special render
+         */
+        const UI0301 = 'view "%s" cannot be use in document "%s". It has no view control';
+        /**
+         * @errorCode The view control associated to document is not found
+         */
+        const UI0302 = 'view control document "%s" not exists. ';
+        /**
+         * @errorCode The view control associated to document is not a view control
+         */
+        const UI0303 = 'document "%s" is not a view control document. ';
+        /**
+         * @errorCode The view identifier require privilege
+         */
+        const UI0304 = 'view "%s" is not allowed for document "%s" . ';
+        /**
+         * @errorCode The view identifier not exists
+         */
+        const UI0305 = 'view "%s" is not defined in view control document "%s" . ';
+        /**
+         * @errorCode The render config reference set in view control is not a Render Config class
+         */
+        const UI0306 = 'class "%s" not implement "%s" . ';
+        /**
          * for beautifier
          */
         private function _bo()

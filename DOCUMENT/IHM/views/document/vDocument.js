@@ -87,6 +87,8 @@ define([
                                     return $(target).text(); // set the element text as content of the tooltip
                                 }
                             });
+                        } else {
+                            tabItems.css("width","80%");
                         }
 
                         $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);

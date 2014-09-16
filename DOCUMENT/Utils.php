@@ -11,7 +11,7 @@ class Utils
 {
     /**
      * @param $renderId
-     * @return \Dcp\Ui\RenderConfig
+     * @return \Dcp\Ui\IRenderConfig
      */
     public static function getRenderConfigObject($renderId)
     {

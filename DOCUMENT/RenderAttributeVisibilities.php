@@ -62,6 +62,7 @@ class RenderAttributeVisibilities
             throw new Exception("UI0102", $attributeId, $this->document->getTitle());
         }
         $this->visibilities[$oa->id] = $visibility;
+        $this->document->mid = - 1; // set mask id to -1 to signal that specific visibility is applied
         return $this;
     }
     /**

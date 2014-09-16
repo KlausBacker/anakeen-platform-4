@@ -17,10 +17,8 @@ class DefaultEdit extends RenderDefault
     
     public function getType()
     {
-        return RenderConfig::editType;
+        return IRenderConfig::editType;
     }
-    
-
     /**
      * @param \Doc $document Document object instance
      * @return BarMenu Menu configuration

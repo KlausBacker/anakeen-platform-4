@@ -20,7 +20,7 @@ define([
             if (currentDoc && currentDoc.hasAttributesChanged() && !window.confirm("It has been changed !! Are you sure ??")) {
                 Backbone.history.navigate("", {replace : true});
             } else {
-                window.location = "?app=DOCUMENT&action=VIEW&id=" + id;
+                window.location = "?app=DOCUMENT&id=" + id;
             }
         },
 
@@ -29,7 +29,7 @@ define([
             if (currentDoc && currentDoc.hasAttributesChanged() && !window.confirm("It has been changed !! Are you sure ??")) {
                 Backbone.history.navigate("", {replace : true});
             } else {
-                window.location = "?app=DOCUMENT&action=VIEW&id=" + id;
+                window.location = "?app=DOCUMENT&id=" + id;
             }
         },
 

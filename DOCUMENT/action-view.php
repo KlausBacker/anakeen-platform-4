@@ -12,7 +12,13 @@ function view(Action & $action)
     $usage->setText("Display document");
     
     $documentId = $usage->addRequiredParameter("id", "document identifier");
-    $renderId = $usage->addOptionalParameter("render", "render identifier", array() , "defaultView");
+    $vId = $usage->addOptionalParameter("vid", "view identifier");
+    $renderMode = $usage->addOptionalParameter("mode", "render mode", array(
+        "view",
+        "edit",
+        "create"
+    ) , "view");
+    //$renderId = $usage->addOptionalParameter("render", "render identifier", array() , "defaultView");
     $usage->setStrictMode(true);
     $usage->verify();
     
@@ -21,22 +27,24 @@ function view(Action & $action)
     if (!$doc) {
         $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
     }
-    $err = $doc->control("view");
-    if ($err) {
-        $action->exitError($err);
-    }
     
     $doc->refresh();
     
     $dr = new Dcp\Ui\DocumentRender();
     
-    $config = Dcp\Ui\Utils::getRenderConfigObject($renderId);
+    $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
     
     $dr->loadConfiguration($config);
     if ($config->getType() === "edit") {
-        $doc->applyMask(\Doc::USEMASKCVEDIT);
+        $err = $doc->canEdit();
+        if ($err) {
+            $action->exitError($err);
+        }
     } else {
-        $doc->applyMask(\Doc::USEMASKCVVIEW);
+        $err = $doc->control("view");
+        if ($err) {
+            $action->exitError($err);
+        }
     }
     $action->lay->template = $dr->render($doc);
     $action->lay->noparse = true;
