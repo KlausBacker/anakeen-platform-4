@@ -99,6 +99,12 @@ define([
             });
         },
 
+        /**
+         * reset all properties with a new set of properties
+         */
+        setProperties : function documentSetProperties(values) {
+            this.set("properties", new DocumentProperties(values));
+        },
         hasAttributesChanged :            function () {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");

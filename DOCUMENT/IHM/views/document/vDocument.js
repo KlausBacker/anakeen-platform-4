@@ -89,6 +89,7 @@ define([
                             });
                         } else {
                             tabItems.css("width","80%");
+                            tabItems.css("width","80%");
                         }
 
                         $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);

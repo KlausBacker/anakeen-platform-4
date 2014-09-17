@@ -133,7 +133,10 @@ class DocumentRender
     public function render(\Doc $doc)
     {
         $this->document = $doc;
-        \Dcp\DocManager::cache()->addDocument($doc);
+        
+        if ($doc->id > 0) {
+            \Dcp\DocManager::cache()->addDocument($doc);
+        }
         return $this->internalRender();
     }
 }

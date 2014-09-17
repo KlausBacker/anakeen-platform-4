@@ -113,6 +113,10 @@ namespace {
          */
         const UI0306 = 'class "%s" not implement "%s" . ';
         /**
+         * @errorCode Document identifier must be a familiy identifier to  create
+         */
+        const UI0307 = 'Identifier "%s" must be a family identifier . ';
+        /**
          * for beautifier
          */
         private function _bo()
