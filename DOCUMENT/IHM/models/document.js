@@ -103,7 +103,10 @@ define([
          * reset all properties with a new set of properties
          */
         setProperties : function documentSetProperties(values) {
-            this.set("properties", new DocumentProperties(values));
+            var model=this;
+            _.each(values , function (value, key) {
+                model.get("properties").set(key, value);
+            });
         },
         hasAttributesChanged :            function () {
             return this.get("attributes").some(function (currentAttr) {

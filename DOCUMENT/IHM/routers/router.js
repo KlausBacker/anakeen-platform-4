@@ -90,17 +90,17 @@ define([
                                 });
                                 currentDoc.setValues(result.data.document.attributes);
                                 currentDoc.setProperties(result.data.document.properties);
-                                currentDoc.get('attributes').trigger("changeMenuVisibility", null,{
+                                currentDoc.get('attributes').trigger("changeMenuVisibility", null, {
                                         id: "save",
                                         visibility: "visible"
                                     }
                                 );
-                                currentDoc.get('attributes').trigger("changeMenuVisibility", null,{
+                                currentDoc.get('attributes').trigger("changeMenuVisibility", null, {
                                         id: "create",
                                         visibility: "hidden"
                                     }
                                 );
-                                currentDoc.get('attributes').trigger("changeMenuVisibility", null,{
+                                currentDoc.get('attributes').trigger("changeMenuVisibility", null, {
                                         id: "create!",
                                         visibility: "hidden"
                                     }
@@ -134,7 +134,7 @@ define([
             var currentDoc = window.dcp.documents.get(id), values;
             var $notification = $('body').dcpNotification();
 
-            if (! currentDoc) {
+            if (!currentDoc) {
                 // when it is a new document - index is 0
                 currentDoc = window.dcp.documents.get(0);
             }
@@ -180,6 +180,7 @@ define([
                                     });
                                 });
                                 currentDoc.setValues(result.data.document.attributes);
+                                currentDoc.setProperties(result.data.document.properties);
                             }
                         }).fail(function (data) {
                             currentDoc.clearErrorMessages();

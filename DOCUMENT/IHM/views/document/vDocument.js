@@ -5,11 +5,12 @@ define([
     'backbone',
     'mustache',
     'views/document/menu/vMenu',
+    'views/document/header/vHeader',
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'kendo/kendo.core'
-], function (_, Backbone, Mustache, ViewDocumentMenu, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
+], function (_, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader,  ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -49,7 +50,16 @@ define([
             //add menu
             //console.time("render menu");
             try {
-                new ViewDocumentMenu({model : this.model, el : this.$el.find(".dcpDocument__menu")[0]}).render();
+                new ViewDocumentMenu({
+                    model : this.model,
+                    el : this.$el.find(".dcpDocument__menu")[0]}).render();
+            } catch (e) {
+                console.error(e);
+            }
+            try {
+                new ViewDocumentHeader({
+                    model : this.model,
+                    el : this.$el.find(".dcpDocument__header")[0]}).render();
             } catch (e) {
                 console.error(e);
             }
