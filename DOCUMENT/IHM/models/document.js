@@ -96,6 +96,8 @@ define([
                     return;
                 }
                 currentAttribute.set("value", newValue);
+                // reset change also
+                currentAttribute.changed={};
             });
         },
 
