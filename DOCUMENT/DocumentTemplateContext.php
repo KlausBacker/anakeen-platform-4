@@ -9,7 +9,6 @@ namespace Dcp\Ui;
 
 class DocumentTemplateContext implements \ArrayAccess
 {
-    public $coucou = "HELLO";
     public $i18n;
     /**
      * @var \Doc

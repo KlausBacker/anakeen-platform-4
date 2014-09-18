@@ -23,19 +23,29 @@ define([
         },
 
         /**
-         * apply mustache template
+         * apply mustache template to inner content
          * @returns {*}
          */
         render: function vheaderRender() {
-            this.$el.empty().append($(Mustache.render(this.headerTemplate, this.model.toData())));
+            var headerRender=$(Mustache.render(this.headerTemplate, this.model.toData()));
+            var $header=this.$el;
+            $header.empty();
+            _.each(headerRender.children(), (function (elt) {
+                $header.append(elt);
+            }));
             return this;
         },
 
         /**
          * reset mustache template
+         * update window title also
          * @returns {*}
          */
         updateHeader: function vheaderUpdateHeader() {
+            var doctitle=this.model.get("properties").get('title');
+            if (doctitle) {
+                window.document.title=doctitle;
+            }
             return this.render();
         }
     });

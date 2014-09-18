@@ -14,7 +14,7 @@ class DefaultView extends RenderDefault
     
     public function getLabel()
     {
-        return _("Default View");
+        return ___("Default View","ddui");
     }
     
     public function getType()
@@ -135,7 +135,7 @@ class DefaultView extends RenderDefault
      * @param \Doc $doc
      * @param ListMenu $menu
      */
-    public function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
+    protected  function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
     {
         
         if ($doc->wid > 0) {
@@ -234,7 +234,7 @@ class DefaultView extends RenderDefault
      * @param BarMenu $menu target menu
      * @throws \Dcp\Ui\Exception
      */
-    public function addCvMenu(\Doc $doc, BarMenu & $menu)
+    protected  function addCvMenu(\Doc $doc, BarMenu & $menu)
     {
         if ($doc->cvid > 0) {
             $cv = DocManager::getDocument($doc->cvid);
