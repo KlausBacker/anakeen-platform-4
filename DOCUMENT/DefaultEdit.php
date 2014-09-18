@@ -17,10 +17,8 @@ class DefaultEdit extends RenderDefault
     
     public function getType()
     {
-        return RenderConfig::editType;
+        return IRenderConfig::editType;
     }
-    
-
     /**
      * @param \Doc $document Document object instance
      * @return BarMenu Menu configuration
@@ -29,24 +27,31 @@ class DefaultEdit extends RenderDefault
     {
         $menu = new BarMenu();
         $user = getCurrentUser();
-        if ($document->id > 0) {
-            $item = new ItemMenu("save", ___("Save", "UiMenu") , "#save/{{document.properties.id}}");
-            $item->setBeforeContent('<div class="fa fa-save" />');
-            $item->setTooltipLabel(___("Record document to server", "UiMenu"));
-            $menu->appendElement($item);
-            if ($user->id === "1") {
-                $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#save!/{{document.properties.id}}");
+        
+        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#save/{{document.properties.id}}");
+        $item->setBeforeContent('<div class="fa fa-save" />');
+        $item->setTooltipLabel(___("Record document to server", "UiMenu"));
+        if (empty($document->id)) {
+            $item->setVisibility($item::VisibilityHidden);
+        }
+        $menu->appendElement($item);
+        if ($user->id === "1") {
+            $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#save!/{{document.properties.id}}");
+            $item->setVisibility($item::VisibilityHidden);
+            $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
+            if (empty($document->id)) {
                 $item->setVisibility($item::VisibilityHidden);
-                $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
-                $menu->appendElement($item);
             }
-        } else {
-            $item = new ItemMenu("save", ___("Create", "UiMenu") , "#create/{{document.properties.id}}");
+            $menu->appendElement($item);
+        }
+        
+        if (empty($document->id)) {
+            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#create/{{document.properties.id}}");
             $item->setBeforeContent('<div class="fa fa-save" />');
             $item->setTooltipLabel(___("Record document to server", "UiMenu"));
             $menu->appendElement($item);
             if ($user->id === "1") {
-                $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#save!/{{document.properties.id}}");
+                $item = new ItemMenu("create!", ___("Create !", "UiMenu") , "#create!/{{document.properties.id}}");
                 $item->setVisibility($item::VisibilityHidden);
                 $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
                 $menu->appendElement($item);

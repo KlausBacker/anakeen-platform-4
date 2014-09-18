@@ -14,18 +14,23 @@ function autocomplete(Action & $action)
     
     $documentId = $usage->addRequiredParameter("id", "document identifier");
     $attrId = $usage->addRequiredParameter("attrid", "attribute identifier");
+    $fromid = $usage->addRequiredParameter("fromid", "family identifier");
     $index = $usage->addOptionalParameter("index", -1);
     $usage->setStrictMode(false);
     $usage->verify();
-    
-    $doc = Dcp\DocManager::getDocument($documentId);
+    $err = '';
+    if ($documentId) {
+        $doc = Dcp\DocManager::getDocument($documentId);
+        $err = $doc->control("view");
+        if ($err) {
+            $action->exitError($err);
+        }
+    } else {
+        $doc = Dcp\DocManager::getFamily($fromid);
+    }
     
     if (!$doc) {
         $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
-    }
-    $err = $doc->control("view");
-    if ($err) {
-        $action->exitError($err);
     }
     
     $oattr = $doc->getAttribute($attrId);
@@ -78,9 +83,9 @@ function autocomplete(Action & $action)
             $values = array();
             foreach ($rargids as $k => $argName) {
                 if ($argName === "CT") {
-                    $values[$oattr->id]["displayValue"] = isset($aResult[$k])?$aResult[$k]:null;
+                    $values[$oattr->id]["displayValue"] = isset($aResult[$k]) ? $aResult[$k] : null;
                 } else {
-                    $values[strtolower($argName)]["value"] = isset($aResult[$k])?$aResult[$k]:null;
+                    $values[strtolower($argName) ]["value"] = isset($aResult[$k]) ? $aResult[$k] : null;
                 }
             }
             

@@ -7,7 +7,7 @@
 
 namespace Dcp\Ui;
 
-interface RenderConfig {
+interface IRenderConfig {
     
     const editType = "edit";
     const viewType = "view";

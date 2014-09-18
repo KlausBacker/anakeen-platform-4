@@ -7,7 +7,7 @@
 
 namespace Dcp\Ui;
 
-class RenderDefault implements RenderConfig
+class RenderDefault implements IRenderConfig
 {
     public function getLabel()
     {
@@ -241,7 +241,7 @@ class RenderDefault implements RenderConfig
         
         $linkOption = new htmlLinkOptions();
         $linkOption->title = ___("View {{displayValue}}", "ddui");
-        $linkOption->url = "?app=DOCUMENT&action=VIEW&id={{value}}";
+        $linkOption->url = "?app=DOCUMENT&id={{value}}";
         $opt->docid()->setLink($linkOption);
         $opt->account()->setLink(clone $linkOption);
         $opt->thesaurus()->setLink(clone $linkOption);

@@ -96,9 +96,20 @@ define([
                     return;
                 }
                 currentAttribute.set("value", newValue);
+                // reset change also
+                currentAttribute.changed={};
             });
         },
 
+        /**
+         * reset all properties with a new set of properties
+         */
+        setProperties : function documentSetProperties(values) {
+            var model=this;
+            _.each(values , function (value, key) {
+                model.get("properties").set(key, value);
+            });
+        },
         hasAttributesChanged :            function () {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");

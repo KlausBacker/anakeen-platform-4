@@ -9,7 +9,6 @@ namespace Dcp\Ui;
 
 class DocumentTemplateContext implements \ArrayAccess
 {
-    public $coucou = "HELLO";
     public $i18n;
     /**
      * @var \Doc
@@ -35,7 +34,9 @@ class DocumentTemplateContext implements \ArrayAccess
     public function __construct(\Doc $doc)
     {
         $this->_document = $doc;
-        \Dcp\DocManager::cache()->addDocument($doc);
+        if ($doc->id > 0) {
+            \Dcp\DocManager::cache()->addDocument($doc);
+        }
         $this->i18n = function ($s)
         {
             return self::_i18n($s);
@@ -47,16 +48,18 @@ class DocumentTemplateContext implements \ArrayAccess
         if (!$s) return '';
         return _($s);
     }
-    
+    /**
+     * Retrieve document data from CRUD API
+     * @param string $field
+     * @return array|mixed|null
+     */
     protected function _getDocumentData($field)
     {
-        if ($this->_document->id == 0) {
-            return array();
-        }
+        
         if ($this->_documentCrud === null) {
             $this->_documentCrud = new \Dcp\HttpApi\V1\DocumentCrud();
             $this->_documentCrud->setDefaultFields($field);
-            $this->_documentData = $this->_documentCrud->get($this->_document->id);
+            $this->_documentData = $this->_documentCrud->getInternal($this->_document);
         }
         $fields = explode('.', $field);
         $data = $this->_documentData;
@@ -69,7 +72,7 @@ class DocumentTemplateContext implements \ArrayAccess
         if ($data === null) {
             
             $this->_documentCrud->setDefaultFields($field);
-            $moreData = $this->_documentCrud->get($this->_document->id);
+            $moreData = $this->_documentCrud->getInternal($this->_document);
             unset($moreData["document"]["uri"]);
             $this->_documentData = array_merge_recursive($this->_documentData, $moreData);
             
@@ -78,7 +81,6 @@ class DocumentTemplateContext implements \ArrayAccess
                 $data = $data[trim($key) ];
             }
         }
-        
         return $data;
     }
     protected function _getProperties()

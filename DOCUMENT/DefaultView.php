@@ -7,17 +7,19 @@
 
 namespace Dcp\Ui;
 
+use Dcp\DocManager;
+
 class DefaultView extends RenderDefault
 {
     
     public function getLabel()
     {
-        return _("Default View");
+        return ___("Default View","ddui");
     }
     
     public function getType()
     {
-        return RenderConfig::viewType;
+        return IRenderConfig::viewType;
     }
     /**
      * @param BarMenu $menu
@@ -66,7 +68,7 @@ class DefaultView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&action=VIEW&render=defaultEdit&id={{document.properties.id}}");
+        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&mode=edit&id={{document.properties.id}}");
         $item->setTooltipLabel(___("Display document form", "UiMenu"));
         $item->setBeforeContent('<div class="fa fa-pencil" />');
         
@@ -123,6 +125,9 @@ class DefaultView extends RenderDefault
             $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
             $menu->appendElement($workflowMenu);
         }
+        
+        $this->addCvMenu($document, $menu);
+        $this->addFamilyMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);
     }
     /**
@@ -130,7 +135,7 @@ class DefaultView extends RenderDefault
      * @param \Doc $doc
      * @param ListMenu $menu
      */
-    public function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
+    protected  function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
     {
         
         if ($doc->wid > 0) {
@@ -209,6 +214,108 @@ class DefaultView extends RenderDefault
             $itemMenu->setTarget("_dialog");
             $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
+        }
+    }
+    /**
+     * Add Menu item defined by attribute family
+     * @param \Doc $doc
+     * @param BarMenu $menu target menu
+     */
+    public function addFamilyMenu(\Doc $doc, BarMenu & $menu)
+    {
+        include_once ("FDL/popupdocdetail.php");
+        $links = array();
+        addFamilyPopup($links, $doc);
+        $this->addOldMenu($links, $menu);
+    }
+    /**
+     * Add Menu item defined by attribute family
+     * @param \Doc $doc
+     * @param BarMenu $menu target menu
+     * @throws \Dcp\Ui\Exception
+     */
+    protected  function addCvMenu(\Doc $doc, BarMenu & $menu)
+    {
+        if ($doc->cvid > 0) {
+            $cv = DocManager::getDocument($doc->cvid);
+            if (!$cv) {
+                throw new Exception("UI0202", $doc->cvid);
+            }
+            /**
+             * @var \CVDoc $cv
+             */
+            $cv->set($doc);
+            $views = $cv->getDisplayableViews();
+            foreach ($views as $view) {
+                $vid = $view["cv_idview"];
+                $label = $cv->getLocaleViewLabel($vid);
+                $idMenu = "vid-" . $vid;
+                $cvMenu = $view["cv_menu"];
+                $menuItem = new ItemMenu($idMenu, $label);
+                $menuItem->setUrl(sprintf("?app=DOCUMENT&vid=%s&id=%s", $vid, $doc->id));
+                if ($cvMenu) {
+                    $idListMenu = $cvMenu;
+                    $lmenu = $menu->getElement($idListMenu);
+                    if (!$lmenu) {
+                        // Create new list menu
+                        $lmenu = new listMenu($idListMenu, $cv->getLocaleViewMenu($vid));
+                        $menu->insertBefore("advanced", $lmenu);
+                    }
+                    $lmenu->appendElement($menuItem);
+                } else {
+                    $menu->insertBefore("advanced", $menuItem);
+                }
+            }
+        }
+    }
+    /**
+     * Add Menu item defined by attribute family
+     * @param array $links old configuration format for links
+     * @param BarMenu $menu target menu
+     */
+    protected function addOldMenu(array $links, BarMenu & $menu)
+    {
+        $advMenu = $menu->getElement("advanced");
+        foreach ($links as $idLink => $link) {
+            if (isset($link["visibility"])) {
+                $menuItem = new ItemMenu($idLink, $link["descr"]);
+                if (!empty($link["target"])) {
+                    if (preg_match("/[0-9]+$/", $link["target"])) {
+                        
+                        $menuItem->setTarget("_dialog");
+                    } else {
+                        $menuItem->setTarget($link["target"]);
+                    }
+                } else {
+                    $menuItem->setTarget("_dialog");
+                }
+                if (!empty($link["url"])) {
+                    $menuItem->setUrl($link["url"]);
+                }
+                if (!empty($link["title"])) {
+                    $menuItem->setTooltipLabel($link["title"]);
+                }
+                if (!empty($link["confirm"]) && $link["confirm"] === "true") {
+                    
+                    $menuItem->useConfirm($link["tconfirm"]);
+                }
+                
+                if (!empty($link["submenu"])) {
+                    if ($link["visibility"] === POPUP_ACTIVE || $link["visibility"] === POPUP_CTRLACTIVE) {
+                        $lmenu = $menu->getElement($link["submenu"]);
+                        if (!$lmenu) {
+                            // Create new list menu
+                            $lmenu = new listMenu($link["submenu"], $link["submenu"]);
+                            $menu->insertBefore("advanced", $lmenu);
+                        }
+                        $lmenu->appendElement($menuItem);
+                    }
+                } elseif ($link["visibility"] === POPUP_ACTIVE) {
+                    $menu->insertBefore("advanced", $menuItem);
+                } elseif ($link["visibility"] === POPUP_CTRLACTIVE) {
+                    $advMenu->appendElement($menuItem);
+                }
+            }
         }
     }
 }

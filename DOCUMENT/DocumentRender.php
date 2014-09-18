@@ -12,7 +12,7 @@ use Dcp\ApiUsage\Exception;
 class DocumentRender
 {
     /**
-     * @var RenderConfig
+     * @var IRenderConfig
      */
     public $renderConfig = null;
     protected $renderFile = '';
@@ -31,7 +31,7 @@ class DocumentRender
      * @param string $file load render configuration
      * @throws \Dcp\Ui\Exception
      */
-    public function loadConfiguration(RenderConfig $renderConfig)
+    public function loadConfiguration(IRenderConfig $renderConfig)
     {
         $this->renderConfig = $renderConfig;
     }
@@ -79,7 +79,6 @@ class DocumentRender
     {
         return $this->renderConfig->getdocumentTemplate();
     }
-
     /**
      * Affect attribute visibilities configured by render config class
      */
@@ -134,7 +133,10 @@ class DocumentRender
     public function render(\Doc $doc)
     {
         $this->document = $doc;
-        \Dcp\DocManager::cache()->addDocument($doc);
+        
+        if ($doc->id > 0) {
+            \Dcp\DocManager::cache()->addDocument($doc);
+        }
         return $this->internalRender();
     }
 }
