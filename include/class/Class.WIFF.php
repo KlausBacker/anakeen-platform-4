@@ -26,6 +26,7 @@ class WIFF
     const contexts_filepath = 'conf/contexts.xml';
     const params_filepath = 'conf/params.xml';
     const archive_filepath = 'archived-contexts/';
+    const xsd_catalog_xml = 'xsd/catalog.xml';
     
     public $update_host;
     public $update_url;
@@ -36,6 +37,7 @@ class WIFF
     public $contexts_filepath = '';
     public $params_filepath = '';
     public $archive_filepath = '';
+    public $xsd_catalog_xml = '';
     
     public $errorMessage = null;
     
@@ -59,6 +61,7 @@ class WIFF
         $this->contexts_filepath = $wiff_root . WIFF::contexts_filepath;
         $this->params_filepath = $wiff_root . WIFF::params_filepath;
         $this->archive_filepath = $wiff_root . WIFF::archive_filepath;
+        $this->xsd_catalog_xml = $wiff_root . WIFF::xsd_catalog_xml;
         
         $this->updateParam();
         
@@ -742,7 +745,7 @@ class WIFF
     }
     /**
      * Get Context list
-     * @return array of object Context
+     * @return Context[] array of object Context
      */
     public function getContextList()
     {
@@ -2739,6 +2742,41 @@ class WIFF
             }
         }
         closedir($dh);
+        return true;
+    }
+
+    public function validateDOMDocument(DOMDocument $dom, $urn) {
+        require_once('class/Class.XMLSchemaCatalogValidator.php');
+        try {
+            $validator = new \XMLSchemaCatalogValidator\Validator($this->xsd_catalog_xml);
+            $validator->loadDOMDocument($dom);
+            $validator->validate($urn);
+        } catch (\XMLSchemaCatalogValidator\Exception $e) {
+            return $e->getMessage();
+        }
+        return '';
+    }
+
+    /**
+     * Cleanup all contexts or a specific context by it's name
+     */
+    public function cleanup($contextName = '') {
+        $contextList = array();
+        if ($contextName == '') {
+            $contextList = $this->getContextList();
+        } else {
+            $context = $this->getContext($contextName);
+            if ($context === false) {
+                return false;
+            }
+            $contextList = array($context);
+        }
+        foreach ($contextList as $context) {
+            if ($context->cleanup() === false) {
+                $this->errorMessage = $context->errorMessage;
+                return false;
+            }
+        }
         return true;
     }
 }

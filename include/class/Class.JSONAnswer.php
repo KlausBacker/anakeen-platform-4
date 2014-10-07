@@ -16,15 +16,21 @@ class JSONAnswer
     public $data;
     public $success;
     
-    public function __construct($data = null, $error = null, $success = true)
+    public function __construct($data = null, $error = null, $success = true, $warnings = array())
     {
+        if (is_scalar($warnings) && $warnings == '') {
+            $warnings = array();
+        } else if (!is_array($warnings)) {
+            $warnings = array($warnings);
+        }
         $this->data = $data;
         $this->error = $error;
         $this->success = $success;
+        $this->warnings = $warnings;
     }
     
     public function encode()
     {
-        return json_encode($this);
+        return json_encode($this, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP);
     }
 }

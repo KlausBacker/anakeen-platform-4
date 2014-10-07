@@ -531,7 +531,16 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
         error_log(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
-    
+    if (!empty($context->warningMessage)) {
+        echo sprintf("\nWarning: %s%s%s\n", fg_yellow(), $context->warningMessage, color_reset());
+        $ret = param_ask($options, "Proceed with installation", "Y/n", "Y");
+        if (!preg_match('/^(y|yes|)$/i', $ret)) {
+            $wiff = WIFF::getInstance();
+            $wiff->cleanup($context->name);
+            return 0;
+        }
+    }
+
     $depList = $context->getLocalModuleDependencies($tmpfile);
     if ($depList === false) {
         error_log(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
@@ -681,7 +690,16 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                 error_log(sprintf("Error: could not download module '%s': %s\n", $module->name, $module->errorMessage));
                 return 1;
             }
-            
+            if (!empty($module->warningMessage)) {
+                echo sprintf("\nWarning: %s%s%s\n", fg_yellow(), $module->warningMessage, color_reset());
+                $ret = param_ask($options, "Proceed with installation", "Y/n", "Y");
+                if (!preg_match('/^(y|yes|)$/i', $ret)) {
+                    $wiff = WIFF::getInstance();
+                    $wiff->cleanup($context->name);
+                    return 0;
+                }
+            }
+
             echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
         }
         /**
@@ -965,7 +983,16 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
         error_log(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
-    
+    if (!empty($context->warningMessage)) {
+        echo sprintf("\nWarning: %s%s%s\n", fg_yellow(), $context->warningMessage, color_reset());
+        $ret = param_ask($options, "Proceed with installation", "Y/n", "Y");
+        if (!preg_match('/^(y|yes|)$/i', $ret)) {
+            $wiff = WIFF::getInstance();
+            $wiff->cleanup($context->name);
+            return 0;
+        }
+    }
+
     $depList = $context->getLocalModuleDependencies($tmpfile);
     if ($depList === false) {
         error_log(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
