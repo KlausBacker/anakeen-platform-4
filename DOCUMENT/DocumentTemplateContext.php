@@ -124,7 +124,9 @@ class DocumentTemplateContext implements \ArrayAccess
     
     public function userLocale()
     {
-        return \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $localeId= \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $config=getLocaleConfig($localeId);
+        return $config["culture"];
     }
     
     protected function _getDocumentStructure()

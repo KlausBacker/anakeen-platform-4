@@ -4,7 +4,8 @@
 
 .dcpAttribute__label {
   &:after {
-    content: " :";
+    content: ":";
+    padding-left:0.6em;
   }
 }
 
@@ -13,7 +14,8 @@
 }
 
 .dcpAttribute--needed .dcpAttribute__label:after {
-  content: "* :";
+  content: "*\0000a0:";
+    padding-left:0.1em;
 }
 
 .dcpAttribute__label.has-error {

@@ -11,7 +11,7 @@ class RenderDefault implements IRenderConfig
 {
     public function getLabel()
     {
-        return _("Abstract view");
+        return ___("Abstract view","ddui");
     }
     
     public function getDocumentTemplate()
