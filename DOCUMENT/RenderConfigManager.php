@@ -12,7 +12,7 @@
  */
 
 namespace Dcp\Ui;
-
+use Dcp\HttpApi\V1\DocManager;
 class RenderConfigManager
 {
     
@@ -35,7 +35,7 @@ class RenderConfigManager
         if (empty($document->cvid)) {
             throw new Exception("UI0301", $vId, $document->getTitle());
         }
-        $cvDoc = \Dcp\DocManager::getDocument($document->cvid);
+        $cvDoc = DocManager::getDocument($document->cvid);
         
         if ($cvDoc == null) {
             throw new Exception("UI0302", $document->cvid);
@@ -69,7 +69,7 @@ class RenderConfigManager
     
     protected static function getRenderFromVidinfo(array $vidInfo, \Doc $document)
     {
-        $mskId = $vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_mskid];
+        $mskId = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_mskid];
         if ($mskId) {
             $err = $document->setMask($mskId);
             if ($err) {
@@ -77,7 +77,7 @@ class RenderConfigManager
             }
         }
         
-        $renderClass = $vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_renderclass];
+        $renderClass = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderclass];
         if ($renderClass) {
             $rc = new $renderClass();
             if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {
@@ -96,7 +96,7 @@ class RenderConfigManager
     public static function getDocumentRenderConfig($mode, \Doc $document)
     {
         if ($document->cvid > 0) {
-            return self::getRenderConfigCv($mode, \Dcp\DocManager::getDocument($document->cvid) , $document);
+            return self::getRenderConfigCv($mode, DocManager::getDocument($document->cvid) , $document);
         }
         
         return self::getFamilyRenderConfig($mode, $document);

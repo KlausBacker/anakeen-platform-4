@@ -7,7 +7,7 @@
 
 namespace Dcp\Ui;
 
-use Dcp\DocManager;
+use Dcp\HttpApi\V1\DocManager;
 
 class DefaultView extends RenderDefault
 {
@@ -142,7 +142,7 @@ class DefaultView extends RenderDefault
             /**
              * @var \WDoc $wdoc
              */
-            $wdoc = \Dcp\DocManager::getDocument($doc->wid, false);
+            $wdoc = DocManager::getDocument($doc->wid, false);
             if (!$doc) {
                 return;
             }

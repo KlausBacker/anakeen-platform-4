@@ -7,6 +7,7 @@
 
 namespace Dcp\Ui;
 
+use Dcp\HttpApi\V1\DocManager;
 class DocumentTemplateContext implements \ArrayAccess
 {
     public $i18n;
@@ -35,7 +36,7 @@ class DocumentTemplateContext implements \ArrayAccess
     {
         $this->_document = $doc;
         if ($doc->id > 0) {
-            \Dcp\DocManager::cache()->addDocument($doc);
+            DocManager::cache()->addDocument($doc);
         }
         $this->i18n = function ($s)
         {

@@ -5,6 +5,7 @@
  * @package FDL
 */
 
+use Dcp\HttpApi\V1\DocManager;
 function view(Action & $action)
 {
     
@@ -20,7 +21,7 @@ function view(Action & $action)
     
     $documentId = $usage->addRequiredParameter("id", "document identifier", function ($id) use ($renderMode)
     {
-        $doc = Dcp\DocManager::getDocument($id);
+        $doc = DocManager::getDocument($id);
         
         if (!$doc) {
             return sprintf(___("Document identifier \"%s\"not found", "ddui") , $id);
@@ -30,7 +31,7 @@ function view(Action & $action)
                 return sprintf(___("Document identifier \"%s\" must be a family in create mode", "ddui") , $id);
             }
         }
-        Dcp\DocManager::cache()->addDocument($doc);
+        DocManager::cache()->addDocument($doc);
         return '';
     });
     //$renderId = $usage->addOptionalParameter("render", "render identifier", array() , "defaultView");
@@ -38,10 +39,10 @@ function view(Action & $action)
     $usage->verify();
     
     if ($renderMode === "create") {
-        $doc = Dcp\DocManager::createDocument($documentId);
+        $doc = DocManager::createDocument($documentId);
         $doc->title = sprintf(___("%s Creation", "ddui") , $doc->getFamilyDocument()->getTitle());
     } else {
-        $doc = Dcp\DocManager::getDocument($documentId);
+        $doc = DocManager::getDocument($documentId);
     }
     if (!$doc) {
         $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
