@@ -10,35 +10,30 @@ define([
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'kendo/kendo.core'
-], function (_, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader,  ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
+], function (_, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 
     return Backbone.View.extend({
 
-        className : "dcpDocument container-fluid",
+        className: "dcpDocument container-fluid",
 
-        initialize : function () {
+        initialize: function () {
             this.listenTo(this.model, 'destroy', this.remove);
             this.template = window.dcp.templates.body;
             this.partials = window.dcp.templates.sections;
         },
 
-        render : function () {
+        render: function () {
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
             // console.time("render doc");
 
-            switch (locale) {
-                case "fr_FR":
-                    kendo.culture("fr-FR");
-                    break;
-                case "en_US":
-                    kendo.culture("en-US");
-                    break;
-                default:
-                    kendo.culture("en-US");
-                    break;
+            if (!locale) {
+                locale = "fr-FR";
             }
+
+            kendo.culture(locale);
+
             //add document base
             try {
                 this.$el.empty().append($(Mustache.render(this.template, this.model.toData(), this.partials)));
@@ -51,15 +46,15 @@ define([
             //console.time("render menu");
             try {
                 new ViewDocumentMenu({
-                    model : this.model,
-                    el : this.$el.find(".dcpDocument__menu")[0]}).render();
+                    model: this.model,
+                    el: this.$el.find(".dcpDocument__menu")[0]}).render();
             } catch (e) {
                 console.error(e);
             }
             try {
                 new ViewDocumentHeader({
-                    model : this.model,
-                    el : this.$el.find(".dcpDocument__header")[0]}).render();
+                    model: this.model,
+                    el: this.$el.find(".dcpDocument__header")[0]}).render();
             } catch (e) {
                 console.error(e);
             }
@@ -77,7 +72,7 @@ define([
 
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
-                        view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
+                        view = new ViewAttributeFrame({model: model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
                         console.error(e);
@@ -85,21 +80,21 @@ define([
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
-                        viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
                             tabItems.css("width", Math.floor(100 / tabItems.length) + '%').kendoTooltip({
-                                position : "top",
-                                content :  function (e) {
+                                position: "top",
+                                content: function (e) {
                                     var target = e.target; // the element for which the tooltip is shown
                                     return $(target).text(); // set the element text as content of the tooltip
                                 }
                             });
                         } else {
-                            tabItems.css("width","80%");
-                            tabItems.css("width","80%");
+                            tabItems.css("width", "80%");
+                            tabItems.css("width", "80%");
                         }
 
                         $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);

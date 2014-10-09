@@ -6,6 +6,7 @@
 */
 
 include_once ("FDL/enum_choice.php");
+use Dcp\HttpApi\V1\DocManager;
 function autocomplete(Action & $action)
 {
     
@@ -20,13 +21,13 @@ function autocomplete(Action & $action)
     $usage->verify();
     $err = '';
     if ($documentId) {
-        $doc = Dcp\DocManager::getDocument($documentId);
+        $doc = DocManager::getDocument($documentId);
         $err = $doc->control("view");
         if ($err) {
             $action->exitError($err);
         }
     } else {
-        $doc = Dcp\DocManager::getFamily($fromid);
+        $doc = DocManager::getFamily($fromid);
     }
     
     if (!$doc) {

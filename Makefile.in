@@ -12,13 +12,15 @@ GZIP_ENV = --best
 export pubdir utildir appname applib PACKAGE localBuildRule
 
 SUBDIR= locale DOCUMENT STYLE
+pages_not_php = documentStub.php
 
 include $(utildir)/PubRule
 include $(localBuildRule)/localBuildRule
 
 # For all families traduction
 # TRANSCSV += $(shell find ./Families -name "STRUCT_*.csv")
-
+stub:
+	$(utildir)/genStubFamilyClass.php DOCUMENT/*STRUCT*csv > documentStub.php
 publish-test:
 	make -C Test publish RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
 

@@ -5,6 +5,7 @@
  * @package FDL
 */
 
+use Dcp\HttpApi\V1\DocManager;
 function submenu(Action & $action)
 {
     
@@ -17,7 +18,7 @@ function submenu(Action & $action)
     $usage->setStrictMode(false);
     $usage->verify();
     
-    $doc = Dcp\DocManager::getDocument($documentId);
+    $doc = DocManager::getDocument($documentId);
     
     if (!$doc) {
         $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));

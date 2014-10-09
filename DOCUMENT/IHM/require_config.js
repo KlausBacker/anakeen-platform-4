@@ -25,7 +25,7 @@
             "underscore" :       "../lib/underscore/underscore",
             "backbone" :         "../lib/backbone/backbone",
             "mustache" :         "../lib/mustache.js/mustache",
-            "bootstrap" :        "../lib/bootstrap/js/bootstrap",
+            "bootstrap" :        "../lib/bootstrap/3/js/bootstrap",
             "kendo" :            "../lib/KendoUI/js/",
             "kendo/kendo.core" : "../index.php?jsFile=kendo.core&app=DOCUMENT&action=WRAP_KENDO",
             "kendo-culture-fr" : "../lib/KendoUI/js/cultures/kendo.culture.fr-FR",

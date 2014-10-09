@@ -9,6 +9,8 @@ namespace Dcp\Ui;
 
 use Dcp\ApiUsage\Exception;
 
+use Dcp\HttpApi\V1\DocManager;
+
 class DocumentRender
 {
     /**
@@ -27,8 +29,8 @@ class DocumentRender
     {
     }
     /**
-     * Load a  render configuration file
-     * @param string $file load render configuration
+     * Load a  render configuration object
+     * @param IRenderConfig $renderConfig load render configuration
      * @throws \Dcp\Ui\Exception
      */
     public function loadConfiguration(IRenderConfig $renderConfig)
@@ -135,7 +137,7 @@ class DocumentRender
         $this->document = $doc;
         
         if ($doc->id > 0) {
-            \Dcp\DocManager::cache()->addDocument($doc);
+            DocManager::cache()->addDocument($doc);
         }
         return $this->internalRender();
     }
