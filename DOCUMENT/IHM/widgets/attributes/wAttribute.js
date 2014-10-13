@@ -76,27 +76,40 @@ define([
         /**
          * Display an error message
          *
-         * @param message
-         * @param index
+         * @param message string or array of [{message:, index:}, ...]
          */
-        setError: function wAttributeSetError(message, index) {
+        setError: function wAttributeSetError(message) {
             var kt;
+            var scope = this;
             if (message) {
-                this.element.addClass("has-error");
-                this.element.kendoTooltip({
-                    position: "bottom",
-                    content: message,
-                    autoHide: false,
-                    show: function onShow(e) {
-                        var contain = this.popup.element.parent();
-                        var ktop = parseFloat(contain.css("top"));
-                        if (ktop > 0) {
-                            contain.css("top", ktop + 6);
-                        }
-                        this.popup.element.addClass("has-error");
+                var messages;
+                if (!_.isArray(message)) {
+                    messages = [
+                        {message: message, index: -1}
+                    ];
+                } else {
+                    messages = _.toArray(message);
+                }
+                _.each(messages, function (indexMessage) {
+
+                    if ((indexMessage.index === -1) ||
+                        (scope.element.closest('tr').data("line") === indexMessage.index)) {
+                        scope.element.addClass("has-error");
+                        scope.element.kendoTooltip({
+                            position: "bottom",
+                            content: indexMessage.message,
+                            autoHide: false,
+                            show: function onShow(e) {
+                                var contain = this.popup.element.parent();
+                                var ktop = parseFloat(contain.css("top"));
+                                if (ktop > 0) {
+                                    contain.css("top", ktop + 6);
+                                }
+                                this.popup.element.addClass("has-error");
+                            }
+                        });
                     }
                 });
-
             } else {
                 this.element.removeClass("has-error");
                 kt = this.element.data("kendoTooltip");
@@ -165,18 +178,18 @@ define([
         setValue: function wAttributeSetValue(value, event) {
             this._checkValue(value);
 
-            var isEqual=false;
+            var isEqual = false;
 
             if (this._isMultiple()) {
-                isEqual = _.toArray(this.options.value).length ===  value.length;
+                isEqual = _.toArray(this.options.value).length === value.length;
                 if (isEqual) {
 
-                    isEqual=_.isEqual(this.options.value, value);
+                    isEqual = _.isEqual(this.options.value, value);
                 }
             } else {
-                isEqual=_.isEqual(this.options.value.value, value.value);
+                isEqual = _.isEqual(this.options.value.value, value.value);
             }
-            if (! isEqual) {
+            if (!isEqual) {
                 this.options.value = value;
 
                 this._trigger("change", event, {
@@ -247,10 +260,10 @@ define([
                 if (this._isMultiple()) {
                     this.options.value = [];
                 } else {
-                this.options.value = {
-                    "value": null,
-                    displayValue: ""
-                };
+                    this.options.value = {
+                        "value": null,
+                        displayValue: ""
+                    };
                 }
             }
             if (this.options.helpOutputs) {
@@ -569,7 +582,8 @@ define([
          * @returns {boolean}
          */
         _checkValue: function wAttributeTestValue(value) {
-            if ( this._isMultiple()) {
+            //noinspection JSHint
+            if (this._isMultiple()) {
                 // TODO : Verify each array entry
             } else {
                 if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {

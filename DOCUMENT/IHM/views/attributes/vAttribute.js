@@ -113,9 +113,12 @@ define([
         },
 
         refreshError : function (event) {
+            console.log("DISPLAY ERROR for label", this.$el);
+            console.log("DISPLAY ERROR for value", this.getDOMElements());
             var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-            this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper"), "setError", this.model.get("errorMessage"));
+            this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper").andSelf().filter(".dcpAttribute__contentWrapper"),
+                "setError", this.model.get("errorMessage"));
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);
                 if (parentModel) {
