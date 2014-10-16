@@ -142,7 +142,7 @@ define([
                 case "API0212": // Constraint Error
                     if (message.data && message.data.constraint) {
                         _.each(message.data.constraint, function (constraint, aid) {
-                            attrModel = scope.get('attributes').get(aid);
+                            attrModel = scope.get('attributes').get(constraint.id);
                             if (attrModel) {
                                 attrModel.setErrorMessage(constraint.err, constraint.index);
                                 $notification.dcpNotification("showError", {
@@ -153,7 +153,7 @@ define([
                                 $notification.dcpNotification("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message :     message.constraint.err});
+                                    message :     constraint.err});
                             }
                         });
                     }

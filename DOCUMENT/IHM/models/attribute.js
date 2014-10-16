@@ -298,11 +298,12 @@ define([
             if (this.get("multiple") && typeof index !== "undefined") {
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate
-                _.reject(errorMessage, function (mindex) {
-                    return mindex === index;
+                _.reject(errorMessage, function (indexMessage) {
+                    return indexMessage.index === index;
                 });
-                errorMessage.push({message: message, index: index});
-                this.set('errorMessage', _.clone(errorMessage));
+
+                this.set('errorMessage', [{message: message, index: index}].concat(errorMessage));
+
             } else {
                 this.set('errorMessage', message);
             }

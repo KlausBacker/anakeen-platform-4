@@ -149,7 +149,7 @@ define([
                         type: "PUT",
                         dataType: "json",
                         contentType: 'application/json',
-                        url: "api/v1/documents/" + id + "/",
+                        url: "api/v1/documents/" + id ,
                         data: JSON.stringify(values)
                     }).pipe(
                         function (response) {
@@ -160,9 +160,17 @@ define([
                             }
                         },
                         function (response) {
+                            var messages = [];
+                            try {
+                                var result = JSON.parse(response.responseText);
+                                messages = result.messages;
+                            } catch (e) {
+                            }
+
                             return({
                                 success: false,
                                 result: null,
+                                messages: messages,
                                 responseText: "Unexpected error: " + response.status + " " + response.statusText
                             });
                         })
@@ -185,7 +193,7 @@ define([
                         }).fail(function (data) {
                             currentDoc.clearErrorMessages();
                             $(".dcpLoading").dcpLoading("hide");
-                            var result = JSON.parse(data.responseText);
+                            var result = data;
                             _.each(result.messages, function (errorMessage) {
                                 if (errorMessage.type === "error") {
                                     currentDoc.addErrorMessage(errorMessage);

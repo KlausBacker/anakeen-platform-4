@@ -1,5 +1,5 @@
-BEGIN;CVDOC;Contrôle de vues;;;CVRENDER;;;;;;;;;;
-ICON;cview.gif;;;;;;;;;;;;;;
+BEGIN;CVDOC;Contrôle de rendu;;;CVRENDER;;;;;;;;;;
+ICON;cvrender.png;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 CLASS;Dcp\Ui\Cvrender;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
