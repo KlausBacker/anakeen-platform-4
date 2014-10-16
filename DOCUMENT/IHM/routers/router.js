@@ -149,7 +149,7 @@ define([
                         type: "PUT",
                         dataType: "json",
                         contentType: 'application/json',
-                        url: "api/v1/documents/" + id + "/",
+                        url: "api/v1/documents/" + id ,
                         data: JSON.stringify(values)
                     }).pipe(
                         function (response) {
