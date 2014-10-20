@@ -1082,10 +1082,13 @@ if (isset($argv)) {
     if (stripos($argv[1], '--getValue=') === 0) {
         $paramName = substr($argv[1], 11);
     }
-    
-    $xml = new DOMDocument();
-    $xml->load($wiff->contexts_filepath);
-    
+
+    $xml = $wiff->loadContextsDOMDocument();
+    if ($xml === false) {
+        error_log(sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage));
+        return false;
+    }
+
     $xpath = new DOMXPath($xml);
     /**
      * @var DOMElement $parameterNode

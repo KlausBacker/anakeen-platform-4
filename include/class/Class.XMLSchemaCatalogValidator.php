@@ -92,8 +92,11 @@ class Validator
         $this->document = $dom;
         return $this;
     }
-    private function formatLibXMLError(\LibXMLError $err)
+    private function formatLibXMLError($err)
     {
+        if ($err === false) {
+            return '';
+        }
         return sprintf("(line %d, column %d, level %d, code %d) %s", $err->line, $err->column, $err->level, $err->code, $err->message);
     }
 }

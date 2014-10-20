@@ -230,10 +230,9 @@ class Module
         
         $wiff = WIFF::getInstance();
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($wiff->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $wiff->contexts_filepath);
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return false;
         }
         $xpath = new DOMXPath($xml);
@@ -244,7 +243,11 @@ class Module
          */
         $moduleNode = $modules->item(0);
         $moduleNode->setAttribute('errorstatus', $newErrorStatus);
-        $xml->save($wiff->contexts_filepath);
+        $ret = $wiff->commitDOMDocument($xml);
+        if ($ret === false) {
+            $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
         
         return true;
     }
@@ -278,10 +281,9 @@ class Module
         
         $module = $infoXML->documentElement;
 
-        $contextsXML = new DOMDocument();
-        $ret = $contextsXML->load($wiff->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $wiff->contexts_filepath);
+        $contextsXML = $wiff->loadContextsDOMDocument();
+        if ($contextsXML === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return false;
         }
         $contextsXPath = new DOMXPath($contextsXML);
@@ -320,7 +322,11 @@ class Module
             $modulesNode->replaceChild($module, $existingModuleNode);
         }
         
-        $contextsXML->save($wiff->contexts_filepath);
+        $ret = $wiff->commitDOMDocument($contextsXML);
+        if ($ret === false) {
+            $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
         
         return $module;
     }
@@ -591,10 +597,9 @@ class Module
         
         $wiff = WIFF::getInstance();
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($wiff->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $wiff->contexts_filepath);
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return false;
         }
         
@@ -727,12 +732,9 @@ class Module
         
         $wiff = WIFF::getInstance();
         
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $xml->formatOutput = true;
-        $ret = $xml->load($wiff->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $wiff->contexts_filepath);
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return false;
         }
         
@@ -775,9 +777,9 @@ class Module
             $param->setAttribute('volatile', $parameter->volatile);
         }
         
-        $ret = $xml->save($wiff->contexts_filepath);
+        $ret = $wiff->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error saving XML to '%s'.", $wiff->contexts_filepath);
+            $this->errorMessage = sprintf("Error saving XML to '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
             return false;
         }
         
@@ -915,12 +917,9 @@ public function setStatus($status, $errorstatus = null)
     
     $wiff = WIFF::getInstance();
     
-    $xml = new DOMDocument();
-    $xml->preserveWhiteSpace = false;
-    $xml->formatOutput = true;
-    $ret = $xml->load($wiff->contexts_filepath);
-    if ($ret === false) {
-        $this->errorMessage = sprintf("Error loading XML file '%s'.", $wiff->contexts_filepath);
+    $xml = $wiff->loadContextsDOMDocument();
+    if ($xml === false) {
+        $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
         return false;
     }
     
@@ -942,9 +941,9 @@ public function setStatus($status, $errorstatus = null)
         $moduleNode->setAttribute('errorstatus', $errorstatus);
     }
     
-    $ret = $xml->save($wiff->contexts_filepath);
+    $ret = $wiff->commitDOMDocument($xml);
     if ($ret === false) {
-        $this->errorMessage = sprintf("Error saving XML to '%s'.", $wiff->contexts_filepath);
+        $this->errorMessage = sprintf("Error saving XML to '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
         return false;
     }
     
@@ -960,12 +959,9 @@ public function deleteTmpFile()
     
     $wiff = WIFF::getInstance();
     
-    $xml = new DOMDocument();
-    $xml->preserveWhiteSpace = false;
-    $xml->formatOutput = true;
-    $ret = $xml->load($wiff->contexts_filepath);
-    if ($ret === false) {
-        $this->errorMessage = sprintf("Error loading XML file '%s'.", $wiff->contexts_filepath);
+    $xml = $wiff->loadContextsDOMDocument();
+    if ($xml === false) {
+        $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
         return false;
     }
     
@@ -985,9 +981,9 @@ public function deleteTmpFile()
     $moduleNode->removeAttribute('tmpfile');
     $this->tmpfile = false;
     
-    $ret = $xml->save($wiff->contexts_filepath);
+    $ret = $wiff->commitDOMDocument($xml);
     if ($ret === false) {
-        $this->errorMessage = sprintf("Error saving XML to '%s'.", $wiff->contexts_filepath);
+        $this->errorMessage = sprintf("Error saving XML to '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
         return false;
     }
     

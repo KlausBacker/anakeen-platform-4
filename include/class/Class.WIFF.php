@@ -413,9 +413,8 @@ class WIFF
         
         $repoList = array();
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -445,9 +444,8 @@ class WIFF
             return false;
         }
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -491,9 +489,8 @@ class WIFF
             return false;
         }
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -529,9 +526,9 @@ class WIFF
         
         $repository->setAttribute('label', $repositoryObject->label);
         
-        $ret = $xml->save($this->params_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->params_filepath);
+            $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
         return $isValid;
@@ -587,9 +584,8 @@ class WIFF
             return false;
         }
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -615,9 +611,9 @@ class WIFF
                 }
             }
         }
-        $ret = $xml->save($this->params_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->params_filepath);
+            $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
         return true;
@@ -644,9 +640,8 @@ class WIFF
             return false;
         }
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -679,9 +674,9 @@ class WIFF
         $repository->setAttribute('password', $password);
         
         $repositoryObject = new Repository($repository);
-        $ret = $xml->save($this->params_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->params_filepath);
+            $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
         return $repositoryObject->isValid();
@@ -695,9 +690,8 @@ class WIFF
     {
         require_once ('class/Class.Repository.php');
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -713,9 +707,9 @@ class WIFF
         // Delete repository from this context
         $xml->getElementsByTagName('repositories')->item(0)->removeChild($wiffRepoList->item(0));
         
-        $ret = $xml->save($this->params_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->params_filepath);
+            $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
         
@@ -753,11 +747,10 @@ class WIFF
         require_once ('class/Class.Context.php');
         
         $contextList = array();
-        
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
+
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         
@@ -1294,11 +1287,9 @@ class WIFF
             }
         }
         // Write contexts XML
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1411,9 +1402,9 @@ class WIFF
             }
         }
         // Save XML to file
-        $ret = $xml->save($this->contexts_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->contexts_filepath);
+            $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $this->errorMessage);
             // --- Delete status file --- //
             unlink($status_file);
             return false;
@@ -1505,11 +1496,10 @@ class WIFF
     {
         require_once ('class/Class.Repository.php');
         require_once ('class/Class.Context.php');
-        
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
+
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         
@@ -1607,11 +1597,9 @@ class WIFF
             $root = $abs_root;
         }
         // Write contexts XML
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1635,9 +1623,9 @@ class WIFF
         $moduleNode = $xml->createElement('modules');
         $context->appendChild($moduleNode);
         // Save XML to file
-        $ret = $xml->save($this->contexts_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->contexts_filepath);
+            $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         
@@ -1654,11 +1642,9 @@ class WIFF
     public function saveContext($name, $root, $desc, $url)
     {
         // Write contexts XML
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1697,9 +1683,9 @@ class WIFF
         
         $description->nodeValue = $desc;
         // Save XML to file
-        $ret = $xml->save($this->contexts_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->contexts_filepath);
+            $this->errorMessage = sprintf("Error saving 'contexts.xml': %s", $this->errorMessage);
             return false;
         }
         
@@ -1714,9 +1700,8 @@ class WIFF
     {
         $plist = array();
         
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -1771,9 +1756,8 @@ class WIFF
      */
     public function setParam($paramName, $paramValue, $create = true, $mode = "visible")
     {
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -1803,10 +1787,10 @@ class WIFF
             $param->setAttribute('mode', $mode);
         }
         
-        $ret = $xml->save($this->params_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
             $this->errorStatus = false;
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->params_filepath);
+            $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
         
@@ -2046,17 +2030,17 @@ class WIFF
         
         $contextName = getenv("WIFF_CONTEXT_NAME");
         if ($contextName === false) {
-            $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "WIFF_CONTEXT_NAME env var not defined!");
+            $this->errorMessage = sprintf(__METHOD__ . " " . "WIFF_CONTEXT_NAME env var not defined!");
             return false;
         }
         $context = $this->getContext($contextName);
         if ($context === false) {
-            $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not get context with name '%s'.", $contextName);
+            $this->errorMessage = sprintf(__METHOD__ . " " . "Could not get context with name '%s'.", $contextName);
             return false;
         }
         $paramValue = $context->getParamByName($paramName);
         if ($paramValue === false) {
-            $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not get value for param with name '%s'.", $paramName);
+            $this->errorMessage = sprintf(__METHOD__ . " " . "Could not get value for param with name '%s'.", $paramName);
             return false;
         }
         
@@ -2140,7 +2124,7 @@ class WIFF
                 continue;
             }
             
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Executing migr script '%s'.", $migr));
+            error_log(__METHOD__ . " " . sprintf("Executing migr script '%s'.", $migr));
             $temp = tempnam(null, sprintf("wiff_migr_%s", $migr));
             if ($temp === false) {
                 $this->errorMessage = "Could not create temp file.";
@@ -2153,11 +2137,11 @@ class WIFF
             $output = file_get_contents($temp);
             if ($ret !== 0) {
                 $err = sprintf("Migr script '%s' returned with error status %s (output=[[[%s]]])", $migr, $ret, $output);
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("%s", $err));
+                error_log(__METHOD__ . " " . sprintf("%s", $err));
                 $this->errorMessage = $err;
                 return false;
             }
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Migr script '%s': Ok.", $migr));
+            error_log(__METHOD__ . " " . sprintf("Migr script '%s': Ok.", $migr));
             @unlink($temp);
         }
         
@@ -2174,18 +2158,15 @@ class WIFF
     {
         $lock = $this->lock();
         if ($lock === false) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not get lock on context XML file.");
+            $err = sprintf(__METHOD__ . " " . "Could not get lock on context XML file.");
             error_log($err);
             $this->errorMessage = $err;
             return false;
         }
-        
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $xml->formatOutput = true;
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not load XML file '%s'.", $this->contexts_filepath);
+
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $err = sprintf(__METHOD__ . " " . "Could not load 'contexts.xml': %s", $this->errorMessage);
             error_log($err);
             $this->errorMessage = $err;
             $this->unlock($lock);
@@ -2197,14 +2178,14 @@ class WIFF
         $licensesList = $xpath->query($query);
         
         if ($licensesList->length <= 0) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not find a license for module '%s' in context '%s'.", $moduleName, $ctxName);
+            $err = sprintf(__METHOD__ . " " . "Could not find a license for module '%s' in context '%s'.", $moduleName, $ctxName);
             $this->errorMessage = $err;
             $this->unlock($lock);
             return 'no';
         }
         
         if ($licensesList->length > 1) {
-            $warn = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Warning: found more than one license for module '%s' in context '%s'", $moduleName, $ctxName);
+            $warn = sprintf(__METHOD__ . " " . "Warning: found more than one license for module '%s' in context '%s'", $moduleName, $ctxName);
             error_log($warn);
         }
         /**
@@ -2222,18 +2203,15 @@ class WIFF
     {
         $lock = $this->lock();
         if ($lock === false) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not get lock on context XML file.");
+            $err = sprintf(__METHOD__ . " " . "Could not get lock on context XML file.");
             error_log($err);
             $this->errorMessage = $err;
             return false;
         }
-        
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $xml->formatOutput = true;
-        $ret = $xml->load($this->contexts_filepath);
-        if ($ret === false) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not load XML file '%s'.", $this->contexts_filepath);
+
+        $xml = $this->loadContextsDOMDocument();
+        if ($xml === false) {
+            $err = sprintf(__METHOD__ . " " . "Could not load 'contexts.xml': %s", $this->errorMessage);
             error_log($err);
             $this->errorMessage = $err;
             $this->unlock($lock);
@@ -2245,7 +2223,7 @@ class WIFF
         $query = sprintf("/contexts/context[@name='%s']", $ctxName);
         $contextNodeList = $xpath->query($query);
         if ($contextNodeList->length <= 0) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not find context '%s' in '%s'.", $ctxName, $this->contexts_filepath);
+            $err = sprintf(__METHOD__ . " " . "Could not find context '%s' in '%s'.", $ctxName, $this->contexts_filepath);
             $this->errorMessage = $err;
             $this->unlock($lock);
             return false;
@@ -2268,7 +2246,7 @@ class WIFF
         if ($licenseNodeList->length > 1) {
             // That should not happen...
             // Cannot store/update license if multiple licenses exists.
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Warning: found more than one license for module '%s' in context '%s'", $moduleName, $ctxName);
+            $err = sprintf(__METHOD__ . " " . "Warning: found more than one license for module '%s' in context '%s'", $moduleName, $ctxName);
             error_log($err);
             $this->errorMessage = $err;
             $this->unlock($lock);
@@ -2284,7 +2262,7 @@ class WIFF
             
             $ret = $licensesNode->appendChild($licenseNode);
             if (!is_object($ret)) {
-                $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not append license '%s' for module '%s' in context '%s'.", $moduleName, $licenseName, $ctxName);
+                $err = sprintf(__METHOD__ . " " . "Could not append license '%s' for module '%s' in context '%s'.", $moduleName, $licenseName, $ctxName);
                 error_log($err);
                 $this->errorMessage = $err;
                 $this->unlock($lock);
@@ -2299,10 +2277,10 @@ class WIFF
             $licenseNode = $licenseNodeList->item(0);
             $licenseNode->setAttribute('agree', $agree);
         }
-        
-        $ret = $xml->save($this->contexts_filepath);
+
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error writing file '%s'.", $this->contexts_filepath);
+            $err = sprintf(__METHOD__ . " " . "Error saving 'contexts.xml': %s", $this->errorMessage);
             error_log($err);
             $this->errorMessage = $err;
             $this->unlock($lock);
@@ -2375,7 +2353,7 @@ class WIFF
             return $this->errorMessage;
         }
         if (!empty($err)) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("The following errors occured : '%s'", $context->errorMessage));
+            error_log(__METHOD__ . " " . sprintf("The following errors occured : '%s'", $context->errorMessage));
             $this->errorMessage = sprintf("The following errors occured : '%s'", $context->errorMessage);
             return $err;
         }
@@ -2471,9 +2449,8 @@ class WIFF
      */
     function getRegistrationInfo()
     {
-        $xml = new DOMDocument();
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -2516,12 +2493,8 @@ class WIFF
      */
     function setRegistrationInfo($info)
     {
-        $xml = new DOMDocument();
-        $xml->preserveWhiteSpace = false;
-        $xml->formatOutput = true;
-        
-        $ret = $xml->load($this->params_filepath);
-        if ($ret === false) {
+        $xml = $this->loadParamsDOMDocument();
+        if ($xml === false) {
             $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->params_filepath);
             return false;
         }
@@ -2541,9 +2514,9 @@ class WIFF
             $registrationNode->setAttribute($key, $value);
         }
         
-        $ret = $xml->save($this->params_filepath);
+        $ret = $this->commitDOMDocument($xml);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Error writing file '%s'.", $this->params_filepath);
+            $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
         
@@ -2778,5 +2751,37 @@ class WIFF
             }
         }
         return true;
+    }
+
+    public function loadContextsDOMDocument($options = 0) {
+        require_once 'class/Class.DOMDocumentCacheFactory.php';
+        try {
+            $dom = DOMDocumentCacheFactory::load($this->contexts_filepath, $options);
+        } catch (Exception $e) {
+            $this->errorMessage = $e->getMessage();
+            return false;
+        }
+        return $dom;
+    }
+
+    public function loadParamsDOMDocument($options = 0) {
+        require_once 'class/Class.DOMDocumentCacheFactory.php';
+        try {
+            $dom = DOMDocumentCacheFactory::load($this->params_filepath, $options);
+        } catch (Exception $e) {
+            $this->errorMessage = $e->getMessage();
+            return false;
+        }
+        return $dom;
+    }
+
+    public function commitDOMDocument(DOMDocumentCache & $dom) {
+        try {
+            $ret = $dom->commit();
+        } catch (Exception $e) {
+            $this->errorMessage = $e->getMessage();
+            return false;
+        }
+        return $ret;
     }
 }
