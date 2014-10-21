@@ -44,26 +44,25 @@ function wiff_help(&$argv)
     echo "\n";
     return 0;
 }
+
 /**
  * wiff (un)lock
  * @return mixed $lock
  */
 function wiff_lock()
 {
-    global $wiff_lock;
     $wiff = WIFF::getInstance();
-    $wiff_lock = $wiff->lock();
-    if ($wiff_lock === false) {
-        error_log(sprintf("Warning: could not lock Dynacase-Control!"));
+    if ($wiff->lock(false, $lockerPid) === false) {
+        $err = sprintf("Error locking Dynacase-Control: %s", $wiff->errorMessage);
+        error_log($err);
+        exit(100);
     }
-    return $wiff_lock;
 }
 
 function wiff_unlock()
 {
-    global $wiff_lock;
     $wiff = WIFF::getInstance();
-    $ret = $wiff->unlock($wiff_lock);
+    $ret = $wiff->unlock();
     if ($ret === false) {
         error_log(sprintf("Warning: could not unlock Dynacase-Control!"));
     }
@@ -76,7 +75,9 @@ function wiff_param(&$argv)
     
     switch ($op) {
         case 'set':
+            wiff_lock();
             $ret = wiff_param_set($argv);
+            wiff_unlock();
             return $ret;
             break;
 
@@ -160,9 +161,7 @@ function wiff_list(&$argv)
     
     switch ($op) {
         case 'context':
-            wiff_lock();
             $ret = wiff_list_context($argv);
-            wiff_unlock();
             return $ret;
             break;
 
@@ -1252,7 +1251,10 @@ function wiff_context_param(&$context, &$argv)
             break;
 
         case 'set':
-            return wiff_context_param_set($context, $argv);
+            wiff_lock();
+            $ret = wiff_context_param_set($context, $argv);
+            wiff_unlock();
+            return $ret;
             break;
 
         case 'help':
@@ -1767,7 +1769,7 @@ function wiff_crontab_help()
 
 function wiff_crontab(&$argv)
 {
-    include_once "include/class/Class.Crontab.php";
+    include_once "class/Class.Crontab.php";
     
     $cmd = "";
     $file = "";

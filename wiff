@@ -76,5 +76,3 @@ default:
 }
 
 exit( $ret );
-
-?>

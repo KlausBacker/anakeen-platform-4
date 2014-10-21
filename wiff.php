@@ -148,6 +148,7 @@ function answer($data, $error = null, $warnings = array())
 }
 
 $wiff = WIFF::getInstance();
+
 // If authentification informations are provided, set them in WIFF
 if (isset($_REQUEST['authInfo'])) {
     $wiff->setAuthInfo(json_decode($_REQUEST['authInfo']));

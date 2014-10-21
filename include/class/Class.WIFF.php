@@ -47,8 +47,8 @@ class WIFF
     
     private static $instance;
     
-    public $lock = null;
-    public $lock_level = 0;
+    private static $lock = null;
+
     public $errorStatus = "";
     
     private function __construct()
@@ -71,7 +71,11 @@ class WIFF
         $this->update_login = $this->getParam('wiff-update-login');
         $this->update_password = $this->getParam('wiff-update-password');
     }
-    
+
+    public function __destruct() {
+        $this->unlock();
+    }
+
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -1838,51 +1842,61 @@ class WIFF
         
         return $paramValue;
     }
-    
-    public function lock()
+
+    public function lock($blocking = true, & $lockerPid = null)
     {
-        if ($this->lock != null) {
-            $this->lock_level++;
-            return $this->lock;
+        $this->errorMessage = '';
+        if (self::$lock !== null) {
+            $this->errorMessage = sprintf("Already locked.");
+            return false;
         }
-        
-        $fh = fopen(sprintf("%s.lock", $this->contexts_filepath) , "a");
+        $fh = fopen(sprintf("%s.lock", $this->contexts_filepath) , "a+");
         if ($fh === false) {
             $this->errorMessage = sprintf("Could not open '%s' for lock.", sprintf("%s.lock", $this->contexts_filepath));
             return false;
         }
-        
-        $ret = flock($fh, LOCK_EX);
+        $op = LOCK_EX;
+        if (!$blocking) {
+            $op |= LOCK_NB;
+        }
+        $ret = flock($fh, $op);
         if ($ret === false) {
-            $this->errorMessage = sprintf("Could not get lock on '%s'.", sprintf("%s.lock", $this->contexts_filepath));
+            rewind($fh);
+            $pid = trim(fgets($fh));
+            if ($pid != '') {
+                $lockerPid = $pid;
+                $this->errorMessage = sprintf("Already locked by process with pid '%s'.", $lockerPid);
+            } else {
+                $this->errorMessage = sprintf("Could not get lock on '%s'.", sprintf("%s.lock", $this->contexts_filepath));
+            }
+            fclose($fh);
             return false;
         }
-        
-        $this->lock = $fh;
-        $this->lock_level++;
-        
-        return $fh;
+        ftruncate($fh, 0);
+        rewind($fh);
+        fputs($fh, getmypid());
+        fflush($fh);
+        self::$lock = $fh;
+        return true;
     }
     
-    public function unlock($fh)
+    public function unlock()
     {
-        if ($this->lock != null) {
-            $this->lock_level--;
-            if ($this->lock_level > 0) {
-                return $this->lock;
-            }
+        $this->errorMessage = '';
+        if (!is_resource(self::$lock)) {
+            $this->errorMessage = sprintf("Already unlocked?");
+            return false;
         }
-        
-        $ret = flock($fh, LOCK_UN);
+        rewind(self::$lock);
+        ftruncate(self::$lock, 0);
+        fflush(self::$lock);
+        $ret = flock(self::$lock, LOCK_UN);
         if ($ret == false) {
             $this->errorMessage = sprintf("Could not release lock on '%s'.", sprintf("%s.lock", $this->contexts_filepath));
             return false;
         }
-        
-        $this->lock = null;
-        $this->lock_level = 0;
-        fclose($fh);
-        
+        fclose(self::$lock);
+        self::$lock = null;
         return true;
     }
     
@@ -1948,20 +1962,11 @@ class WIFF
     
     function getLicenseAgreement($ctxName, $moduleName, $licenseName)
     {
-        $lock = $this->lock();
-        if ($lock === false) {
-            $err = sprintf(__METHOD__ . " " . "Could not get lock on context XML file.");
-            error_log($err);
-            $this->errorMessage = $err;
-            return false;
-        }
-
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
             $err = sprintf(__METHOD__ . " " . "Could not load 'contexts.xml': %s", $this->errorMessage);
             error_log($err);
             $this->errorMessage = $err;
-            $this->unlock($lock);
             return false;
         }
         
@@ -1972,7 +1977,6 @@ class WIFF
         if ($licensesList->length <= 0) {
             $err = sprintf(__METHOD__ . " " . "Could not find a license for module '%s' in context '%s'.", $moduleName, $ctxName);
             $this->errorMessage = $err;
-            $this->unlock($lock);
             return 'no';
         }
         
@@ -1987,26 +1991,16 @@ class WIFF
         
         $agree = ($licenseNode->getAttribute('agree') != 'yes') ? 'no' : 'yes';
         
-        $this->unlock($lock);
         return $agree;
     }
     
     function storeLicenseAgreement($ctxName, $moduleName, $licenseName, $agree)
     {
-        $lock = $this->lock();
-        if ($lock === false) {
-            $err = sprintf(__METHOD__ . " " . "Could not get lock on context XML file.");
-            error_log($err);
-            $this->errorMessage = $err;
-            return false;
-        }
-
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
             $err = sprintf(__METHOD__ . " " . "Could not load 'contexts.xml': %s", $this->errorMessage);
             error_log($err);
             $this->errorMessage = $err;
-            $this->unlock($lock);
             return false;
         }
         
@@ -2017,7 +2011,6 @@ class WIFF
         if ($contextNodeList->length <= 0) {
             $err = sprintf(__METHOD__ . " " . "Could not find context '%s' in '%s'.", $ctxName, $this->contexts_filepath);
             $this->errorMessage = $err;
-            $this->unlock($lock);
             return false;
         }
         
@@ -2041,7 +2034,6 @@ class WIFF
             $err = sprintf(__METHOD__ . " " . "Warning: found more than one license for module '%s' in context '%s'", $moduleName, $ctxName);
             error_log($err);
             $this->errorMessage = $err;
-            $this->unlock($lock);
             return false;
         }
         
@@ -2057,7 +2049,6 @@ class WIFF
                 $err = sprintf(__METHOD__ . " " . "Could not append license '%s' for module '%s' in context '%s'.", $moduleName, $licenseName, $ctxName);
                 error_log($err);
                 $this->errorMessage = $err;
-                $this->unlock($lock);
                 return false;
             }
         } else {
@@ -2075,7 +2066,6 @@ class WIFF
             $err = sprintf(__METHOD__ . " " . "Error saving 'contexts.xml': %s", $this->errorMessage);
             error_log($err);
             $this->errorMessage = $err;
-            $this->unlock($lock);
             return false;
         }
         
