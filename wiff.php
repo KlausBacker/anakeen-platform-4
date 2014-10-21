@@ -133,15 +133,15 @@ function checkInitServer()
  * @param string $data
  * @param string $error[optional]
  */
-function answer($data, $error = null)
+function answer($data, $error = null, $warnings = array())
 {
     if ($data === null) {
         // echo "{error:'".addslashes($error)."',data:'',success:'false'}";
-        $answer = new JSONAnswer($data, $error, false);
+        $answer = new JSONAnswer($data, $error, false, $warnings);
         echo $answer->encode();
     } else {
         // echo "{error:'".addslashes($error)."',data:'".addslashes($data)."',success:'true'}";
-        $answer = new JSONAnswer($data, $error, true);
+        $answer = new JSONAnswer($data, $error, true, $warnings);
         echo $answer->encode();
     }
     exit();
@@ -301,9 +301,10 @@ if (isset($_REQUEST['importArchive']) && isset($context)) {
     //answer(null,basename( $_FILES['module']['tmp_name']));
     $moduleFile = $context->uploadModule();
     if (!$context->errorMessage) {
-        answer($moduleFile);
+        answer($moduleFile, null, $context->warningMessage);
+
     } else {
-        answer(null, $context->errorMessage);
+        answer(null, $context->errorMessage, $context->warningMessage);
     }
 }
 // Request to get global repository list
@@ -544,9 +545,9 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
     $module = $context->getModuleAvail($_REQUEST['module']);
     
     if ($module->download('downloaded')) {
-        answer(true);
+        answer(true, null, $module->warningMessage);
     } else {
-        answer(null, $module->errorMessage);
+        answer(null, $module->errorMessage, $module->warningMessage);
     }
 }
 // Request to unpack module in context
@@ -906,6 +907,11 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
 // Check repo validity
 if (isset($_REQUEST['checkRepoValidity']) && isset($_REQUEST['name'])) {
     $ret = $wiff->checkRepoValidity($_REQUEST['name']);
+    answer($ret, $wiff->errorMessage);
+}
+// Cleanup
+if (isset($_REQUEST['cleanup']) && !empty($_REQUEST['context'])) {
+    $ret = $wiff->cleanup($_REQUEST['context']);
     answer($ret, $wiff->errorMessage);
 }
 // Unregister module

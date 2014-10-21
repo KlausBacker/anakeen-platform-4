@@ -59,6 +59,10 @@ class Context
      * @var string Context's error message
      */
     public $errorMessage = null;
+    /**
+     * @var string Context's warning message
+     */
+    public $warningMessage = null;
     
     public function __construct($name, $desc, $root, array $repo, $url, $register)
     {
@@ -105,7 +109,6 @@ class Context
      * @return bool|string boolean false on error or the archive pathname
      * @param string $archive the archive pathname
      * @param string $status the status to which the imported archive will be set to (default = 'downloaded')
-     * @internal param object $name
      */
     public function importArchive($archive, $status = 'downloaded')
     {
@@ -195,7 +198,10 @@ class Context
             $this->errorMessage = sprintf("Error saving contexts.xml '%s'.", $wiff->contexts_filepath);
             return false;
         }
-        
+
+        if (!empty($module->warningMessage)) {
+            $this->warningMessage = $module->warningMessage;
+        }
         return $module->tmpfile;
     }
     /**
@@ -2153,7 +2159,7 @@ class Context
              * @var DOMElement $pv
              */
             $pv = $parametersValueNodeList->item($i);
-            if ($pv->getAttribute('volatile') == 'yes') {
+            if ($pv->getAttribute('volatile') == 'yes' || $pv->getAttribute('volatile') == 'Y') {
                 /* Purge volatile parameters */
                 array_push($purgeNodeList, $pv);
             } else {
@@ -2759,5 +2765,33 @@ class Context
         }
         
         return join('', $stack);
+    }
+
+    /**
+     * Cleanup:
+     * - lingering modules in status="downloaded"
+     */
+    public function cleanup() {
+        $wiff = WIFF::getInstance();
+        $xml = new DOMDocument();
+        $xml->load($wiff->contexts_filepath);
+        $xpath = new DOMXPath($xml);
+        $query = sprintf("/contexts/context[@name='%s']/modules/module[@status='downloaded']", $this->name);
+        $moduleDom = $xpath->query($query);
+        if ($moduleDom->length <= 0) {
+            return true;
+        }
+        for ($i = 0; $i < $moduleDom->length; $i++) {
+            $elmt = $moduleDom->item($i);
+            $module = new Module($this, null, $elmt);
+            $module->cleanupDownload();
+            $elmt->parentNode->removeChild($elmt);
+        }
+        $ret = $xml->save($wiff->contexts_filepath);
+        if ($ret === false) {
+            $this->errorMessage = sprintf("Error saving contexts.xml '%s'.", $wiff->contexts_filepath);
+            return false;
+        }
+        return true;
     }
 }

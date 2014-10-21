@@ -1602,7 +1602,7 @@ function updateContextList_success(responseObject, select) {
 					onImportSuccess : function(form, action) {
 						var inputFileEl = form.getEl().child('input');
 						inputFileEl.remove();
-						installLocal(action.result.data);
+						installLocal_show_warnings(action);
 					},
 					onImportFailure : function(form, action) {
 						var response = eval('(' + action.response.responseText
@@ -2656,7 +2656,7 @@ function updateContextList_success(responseObject, select) {
 
 										var recs = [];
 										grid.getStore().each(function(rec) {
-											if (rec.get('basecomponent') == 'yes') {
+											if (rec.get('basecomponent') == 'yes' || rec.get('basecomponent') == 'Y') {
 												recs.push(rec);
 											}
 										});
@@ -2667,8 +2667,7 @@ function updateContextList_success(responseObject, select) {
 												'rowdeselect',
 												function(selModel, rowIndex,
 														record) {
-													if ((record
-															.get('basecomponent') == 'yes')) {
+													if (record.get('basecomponent') == 'yes' || record.get('basecomponent') == 'Y') {
 														grid
 																.getSelectionModel()
 																.selectRecords(
@@ -2799,6 +2798,34 @@ function remove_failure(module, operation, responseObject) {
 /**
  * import a local module
  */
+function installLocal_show_warnings(action) {
+	if (action.result.warnings && action.result.warnings.length > 0) {
+		var msg = '<div>' + action.result.warnings.join('</div><div>') + '</div>';
+		return Ext.Msg.show({
+			title : 'Server Warnings',
+			msg : msg,
+			minWidth: 200,
+			buttons : {
+				ok : 'Continue',
+				cancel : 'Cancel'
+			},
+			icon : Ext.MessageBox.WARNING,
+			fn : function(buttonId) {
+				switch (buttonId) {
+					case 'ok' :
+						return installLocal(action.result.data);
+						break;
+					case 'cancel' :
+					default:
+						return final_cleanup();
+						break;
+				}
+			}
+		});
+	}
+	return installLocal(action.result.data);
+}
+
 function installLocal(file) {
 	mask = new Ext.LoadMask(Ext.getBody(), {
 				msg : 'Resolving dependencies...'
@@ -3102,6 +3129,7 @@ function
 			installedStore[currentContext].load();
 			availableStore[currentContext].load();
 			globalwin.close();
+			return final_cleanup();
 		});
 }
 
@@ -3174,19 +3202,61 @@ function download(module, operation) {
 						authInfo : Ext.encode(authInfo)
 					},
 					success : function(responseObject) {
-						download_success(module, operation, responseObject);
+						download_success_show_warnings(module, operation, responseObject);
 					},
 					failure : function(responseObject) {
 						download_failure(module, operation, responseObject);
 					}
 				});
 	} else {
-		download_success(module, operation);
+		download_success_show_warnings(module, operation);
 	}
 
 }
 
+function download_success_show_warnings(module, operation, responseObject) {
+	if (responseObject) {
+		var response = eval('(' + responseObject.responseText + ')');
+		if (response.warnings && response.warnings.length > 0) {
+			var msg = '<div>' + response.warnings.join('</div><div>') + '</div>';
+			mask.hide();
+			return Ext.Msg.show({
+				title : 'Server Warnings',
+				msg : msg,
+				minWidth: 200,
+				buttons : {
+					ok : 'Continue',
+					cancel : 'Cancel'
+				},
+				icon : Ext.MessageBox.WARNING,
+				fn : function(buttonId) {
+					switch (buttonId) {
+						case 'ok' :
+							mask.show();
+							return download_success(module, operation, responseObject);
+							break;
+						case 'cancel' :
+						default:
+							return final_cleanup();
+							break;
+					}
+				}
+			});
+		}
+	}
+	return download_success(module, operation, responseObject)
+}
+
 function download_success(module, operation, responseObject) {
+	if (responseObject) {
+		var response = eval('(' + responseObject.responseText + ')');
+		if (response.error) {
+			Ext.Msg.alert('Server Error', response.error);
+			mask.hide();
+			return;
+		}
+	}
+
 	toDownload.remove(module);
 	if (toDownload.length > 0) {
 		download(toDownload[0], operation);
@@ -3963,7 +4033,7 @@ function executeProcessList(module, phase, operation) {
 
 				}
 
-				var optional = processList[process].attributes.optional == 'yes'
+				var optional = (processList[process].attributes.optional == 'yes' || processList[process].attributes.optional == 'Y')
 						? true
 						: false;
 
@@ -4166,6 +4236,19 @@ function setRepoValidityIconLabel(repoName, repoIconId, repoLabelId) {
 	});
 }
 
+function final_cleanup() {
+	Ext.Ajax.request({
+		url : 'wiff.php',
+		params : {
+			cleanup : true,
+			context : currentContext
+		},
+		success : function (responseObject) {
+		},
+		failure : function (responseObject) {
+		}
+	});
+}
 spinlock = (function() {
 
 	function _class(opts) {

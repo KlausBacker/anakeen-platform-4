@@ -12,6 +12,7 @@
 
 class Module
 {
+    const SCHEMA_NAMESPACE = 'urn:dynacase:webinst:module/1.0';
     /**
      * xml attributes
      */
@@ -21,7 +22,6 @@ class Module
     public $version;
     public $release;
     public $versionrelease;
-    public $author;
     public $license;
     public $basecomponent;
     public $src;
@@ -271,17 +271,13 @@ class Module
             return false;
         }
         // Register downloaded module in context xml
-        $info = $this->getInfoXml();
-        
-        $infoXML = new DOMDocument();
-        $ret = $infoXML->loadXML($info);
-        if ($ret === false) {
-            $this->errorMessage = sprintf("Error loading info.xml from module at '%s'.", $modUrl);
+        $infoXML = $this->getValidDOMDocumentInfoXml();
+        if ($infoXML === false) {
             return false;
         }
         
         $module = $infoXML->documentElement;
-        
+
         $contextsXML = new DOMDocument();
         $ret = $contextsXML->load($wiff->contexts_filepath);
         if ($ret === false) {
@@ -360,8 +356,92 @@ class Module
         $cmd = 'tar zxOf ' . escapeshellarg($this->tmpfile) . ' info.xml';
         
         $infoxml = shell_exec($cmd);
-        
+        if ($infoxml === null) {
+            $this->errorMessage = sprintf("Empty or missing info.xml.");
+            return false;
+        }
+
         return $infoxml;
+    }
+
+    public function getValidDOMDocumentInfoXml()
+    {
+        require_once('class/Class.WIFF.php');
+        require_once('class/Class.String.php');
+        require_once('class/Class.XMLUtils.php');
+
+        $infoxml = $this->getInfoXml();
+        if ($infoxml === false) {
+            return false;
+        }
+
+        $dom = new DOMDocument();
+        if ($dom->loadXML($infoxml, LIBXML_NSCLEAN) === false) {
+            $this->errorMessage = sprintf("Error loading info.xml: %s", XMLUtils::getLastXMLError());
+            return false;
+        }
+
+        $wiff = WIFF::getInstance();
+        if (!XMLUtils::DOMDocumentHaveNamespace($dom, self::SCHEMA_NAMESPACE)) {
+            if (!XMLUtils::isBasicModuleDOMDocument($dom)) {
+                /**
+                 * Return a hard error if the XML lacks a basic <module name="xxx"/> root node
+                 */
+                return false;
+            }
+            /*
+             * This looks like an old info.xml (without webinst module XMLNS),
+             * so we validate it but return a soft error on validation failure.
+             */
+            $this->warningMessage = (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0\">Module '%s' uses a legacy 'info.xml' without namespace declaration.</p><p style=\"margin: 0.5em 0 0.5em 0\">Support for legacy 'info.xml' format is deprecated and will be removed in future version of dynacase-control.</p><p style=\"margin: 0.5em 0 0.5em 0\">You should update this 'info.xml' definition with the correct XML Schema Definition as soon as possible.</p></div>", new \String\HTML($this->name), new \String\HTML(self::SCHEMA_NAMESPACE)));
+            try {
+                $dom = XMLUtils::upgradeDOMDocumentWithNamespace($dom, self::SCHEMA_NAMESPACE);
+            } catch (\Exception $e) {
+                $this->errorMessage = $e->getMessage();
+                $dom = false;
+            }
+            if ($dom === false) {
+                $this->errorMessage = sprintf("Error upgrading info.xml with namespace: %s", $this->errorMessage);
+                return false;
+            }
+            $validationError = $wiff->validateDOMDocument($dom, self::SCHEMA_NAMESPACE);
+            if ($validationError != '') {
+                $this->warningMessage .= (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0; padding: 1em; text-align: center; background-color: #FF8; color: black\">Module '<b>%s</b>' did not passed XML validation!</p>", new \String\Text($this->name)));
+            }
+        } else {
+            /*
+             * This looks like a new info.xml with the webinst module XMLNS,
+             * so we can validate it and return a hard error on validation failure.
+             */
+            $validationError = $wiff->validateDOMDocument($dom, self::SCHEMA_NAMESPACE);
+            if ($validationError != '') {
+                $this->errorMessage = (string) (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0; padding: 1em; text-align: center; background-color: #F88; color: black\">Module '<b>%s</b>' did not passed XML validation!</p>", new \String\Text($this->name)));
+                return false;
+            }
+        }
+        /*
+         * As the contexts.xml is not fully namespaced, we must remove the namespace from the info.xml
+         * otherwise the XPath queries won't find it (as they are namespaceless).
+         *
+         * This is actually a workaround to not break the current contexts.xml
+         * which happens to be namespaceless.
+         *
+         * If we ever expand the schema validation and namespace use to every XML files, we'll have to :
+         * - Migrate contexts.xml's content with xmlns="xxx"
+         * - Adapt all the XPaths' queries to use the namespace
+         * - etc.
+         */
+        try {
+            $dom = XMLUtils::removeNamespaceFromDOMDocument($dom, self::SCHEMA_NAMESPACE);
+        } catch (Exception $e) {
+            $this->errorMessage = $e->getMessage();
+            $dom = false;
+        }
+        if ($dom === false) {
+            $this->errorMessage = sprintf("Error removing namespace from info.xml: %s", $this->errorMessage);
+            return false;
+        }
+        return $dom;
     }
     /**
      * Get the content of the `LICENSE' file from temporary downloaded
@@ -384,15 +464,8 @@ class Module
     
     public function loadInfoXml()
     {
-        $infoxml = $this->getInfoXml();
-        if ($infoxml === false) {
-            return false;
-        }
-        
-        $xml = new DOMDocument();
-        $ret = $xml->loadXML($infoxml);
-        if ($ret === false) {
-            $this->errorMessage = "Error loading XML string.";
+        $xml = $this->getValidDOMDocumentInfoXml();
+        if ($xml === false) {
             return false;
         }
         
@@ -401,7 +474,7 @@ class Module
             $this->errorMessage = "documentElement is null.";
             return false;
         }
-        
+
         return $this->parseXmlNode($xmlNode);
     }
     /**
@@ -560,7 +633,7 @@ class Module
                 // @CONTEXT_NAME
                 $p->$attr = $this->context->expandParamsValues($p->$attr);
             }
-            
+
             $storedParamValue = $contextsXpath->query("/contexts/context[@name='" . $this->context->name . "']/parameters-value/param[@name='" . $p->name . "' and @modulename='" . $this->name . "']");
             if ($storedParamValue->length <= 0) {
                 $p->value = $this->getParameterValueFromReplacedModules($contextsXpath, $p->name);
@@ -569,7 +642,7 @@ class Module
                  * @var DOMElement $storedParamValueNode
                  */
                 $storedParamValueNode = $storedParamValue->item(0);
-                if ($p->volatile == 'yes' && $storedParamValueNode->getAttribute('volatile') != 'yes') {
+                if (($p->volatile == 'yes' || $p->volatile == 'Y') && ($storedParamValueNode->getAttribute('volatile') != 'yes' && $storedParamValueNode->getAttribute('volatile') != 'Y')) {
                     /*
                      * Handle the case where a parameter is defined as volatile in the module and the stored value
                      * is not declared as volatile: the definition from the module supersede the stored one.
@@ -698,7 +771,7 @@ class Module
         $param->setAttribute('name', $parameter->name);
         $param->setAttribute('modulename', $this->name);
         $param->setAttribute('value', $parameter->value);
-        if ($parameter->volatile == 'yes') {
+        if ($parameter->volatile == 'yes' || $parameter->volatile == 'Y') {
             $param->setAttribute('volatile', $parameter->volatile);
         }
         

@@ -1,0 +1,3 @@
+[submodule "xsd"]
+	path = xsd
+	url = git@github.com:Anakeen/dynacase-xml-schemas.git

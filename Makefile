@@ -27,6 +27,7 @@ tarball:
 		--exclude $(TAR_DIST_NAME)-*-*.autoinstall.php \
 		--exclude "*~" \
 		--exclude .git \
+		--exclude .gitmodules \
 		. | tar -C tmp/$(TAR_DIST_DIR) -xf -
 	tar -C tmp -zcf $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz $(TAR_DIST_OPTS) $(TAR_DIST_DIR)
 	rm -Rf tmp
