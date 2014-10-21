@@ -483,40 +483,39 @@ function wcontrol_check_pgversion(Process & $process)
         return false;
     }
     
-    $verstr_server = join("", array_map(create_function('$v', 'return sprintf("%03d", $v);') , preg_split("/\./", $row[0])));
-    $verstr_target = join("", array_map(create_function('$v', 'return sprintf("%03d", $v);') , preg_split("/\./", $version)));
+    $cmp = version_compare($row[0], $version);
     
     $return = true;
     $op = "";
     switch ($predicate) {
         case 'eq':
             $op = "equal to";
-            $return = ($verstr_server == $verstr_target) ? true : false;
+            $return = ($cmp == 0);
             break;
 
         case 'ne':
             $op = "not equal to";
-            $return = ($verstr_server != $verstr_target) ? true : false;
+            $return = ($cmp != 0);
             break;
 
         case 'lt':
             $op = "less than";
-            $return = ($verstr_server < $verstr_target) ? true : false;
+            $return = ($cmp < 0);
             break;
 
         case 'le':
             $op = "less than or equal to";
-            $return = ($verstr_server <= $verstr_target) ? true : false;
+            $return = ($cmp <= 0);
             break;
 
         case 'gt':
             $op = "greater than";
-            $return = ($verstr_server > $verstr_target) ? true : false;
+            $return = ($cmp > 0);
             break;
 
         case 'ge':
             $op = "greater or equal to";
-            $return = ($verstr_server >= $verstr_target) ? true : false;
+            $return = ($cmp >= 0);
             break;
     }
     
