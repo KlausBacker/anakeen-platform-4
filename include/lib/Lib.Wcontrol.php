@@ -23,7 +23,6 @@ function wcontrol_eval_process(Process $process)
         case "check":
             if (function_exists("wcontrol_check_" . $process->getAttribute('type'))) {
                 $ret = false;
-                // error_log(sprintf("%s Running wcontrol_check_%s()", __FUNCTION__ , $process->getAttribute('type')));
                 eval("\$ret = wcontrol_check_" . $process->getAttribute('type') . "(\$process);");
                 
                 if (function_exists("wcontrol_msg_" . $process->getAttribute('type'))) {
@@ -290,7 +289,7 @@ function wcontrol_check_exec($process)
 {
     $cmd = $process->getAttribute('cmd');
     $cmd = $process->phase->module->getContext()->expandParamsValues($cmd);
-    system($cmd, $ret);
+    exec($cmd, $output, $ret);
     return ($ret === 0) ? true : false;
 }
 
@@ -736,13 +735,13 @@ function wcontrol_check_phpbug40926(Process & $process)
     
     $php = WiffLibSystem::getCommandPath('php');
     if ($php === false) {
-        error_log(__FUNCTION__ . " " . sprintf("PHP CLI not found."));
+        $wiff->log(LOG_ERR, __FUNCTION__ . " " . sprintf("PHP CLI not found."));
         return false;
     }
     
     $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_phpbug40926');
     if ($tmpfile === false) {
-        error_log(__FUNCTION__ . " " . sprintf("Error creating temporary file."));
+        $wiff->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
         return false;
     }
     
@@ -755,7 +754,7 @@ EOF;
     
     $ret = file_put_contents($tmpfile, $testcode);
     if ($ret === false) {
-        error_log(__FUNCTION__ . " " . sprintf("Error writing to temporary file '%s'.", $tmpfile));
+        $wiff->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error writing to temporary file '%s'.", $tmpfile));
         unlink($tmpfile);
         return false;
     }

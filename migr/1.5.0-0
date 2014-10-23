@@ -1,0 +1,90 @@
+#!/usr/bin/env php
+<?php
+
+$WIFF_ROOT = dirname(__FILE__).DIRECTORY_SEPARATOR.'..';
+set_include_path(get_include_path().PATH_SEPARATOR.$WIFF_ROOT.DIRECTORY_SEPARATOR.'include');
+putenv('WIFF_ROOT='.$WIFF_ROOT);
+
+require_once ('class/Class.WIFF.php');
+
+function __autoload($class_name) {
+  require_once 'class/Class.'.$class_name.'.php';
+}
+
+$wiff = WIFF::getInstance();
+if( $wiff === false ) {
+  error_log(sprintf("Error getting WIFF instance."));
+  exit(1);
+}
+
+$xml = $wiff->loadParamsDOMDocument();
+if ($xml === false) {
+  error_log($wiff->errorMessage);
+  exit(1);
+}
+$x = new DOMXPath($xml);
+/*
+ * Rename 'debug' to 'local-log' and set mode='hidden'
+ * or add the new 'local-log' parameter.
+ */
+$params = $x->query("/wiff/parameters/param[@name='debug']");
+if ($params->length > 0) {
+  /**
+   * @var DOMElement $param
+   */
+  $param = $params->item(0);
+  $param->setAttribute('name', 'local-log');
+  $param->setAttribute('mode', 'hidden');
+} else {
+  $parameters = $x->query("/wiff/parameters");
+  if ($parameters->length > 0) {
+    $param = $xml->createElement('param');
+    $param->setAttribute('name', 'local-log');
+    $param->setAttribute('mode', 'hidden');
+    $param->setAttribute('value', 'no');
+    $parameters->item(0)->appendChild($param);
+  }
+}
+/*
+ * Add new syslog-facility hidden param if not exists
+ */
+$exists = $x->query("/wiff/parameters/param[@name='syslog-facility']");
+if ($exists->length <= 0) {
+  $parameters = $x->query("/wiff/parameters");
+  if ($parameters->length > 0) {
+    $param = $xml->createElement('param');
+    $param->setAttribute('name', 'syslog-facility');
+    $param->setAttribute('value', 'LOG_USER');
+    $param->setAttribute('mode', 'hidden');
+    $parameters->item(0)->appendChild($param);
+  }
+}
+$xml->commit();
+
+/*
+ * Create new 'log' subdir
+ */
+$newLogDir = $WIFF_ROOT.DIRECTORY_SEPARATOR.'log';
+if (!is_dir($newLogDir)) {
+  if (mkdir($newLogDir) === false) {
+    error_log(sprintf("Error creating directory '%s'.", $newLogDir));
+    exit(1);
+  }
+}
+
+/*
+ * Move old logfile 'conf/wiff.log' to new location 'log/wiff.log'
+ */
+$oldLog = $WIFF_ROOT.DIRECTORY_SEPARATOR.'conf'.DIRECTORY_SEPARATOR.'wiff.log';
+$newLog = $WIFF_ROOT.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR.'wiff.log';
+if (file_exists($oldLog)) {
+  if (!file_exists($newLog)) {
+    if (copy($oldLog, $newLog) === false) {
+      error_log(sprintf("Error copying old log '%s' to new log '%s''.", $oldLog, $newLog));
+      exit(1);
+    }
+  }
+  unlink($oldLog);
+}
+
+exit(0);

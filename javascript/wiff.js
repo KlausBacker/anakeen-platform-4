@@ -736,7 +736,7 @@ function displayAllParametersWindow(grid) {
 												url : 'wiff.php',
 												params : {
 													getParam : true,
-													paramName : 'debug'
+													paramName : 'local-log'
 												},
 												success : function(
 														responseObject) {
@@ -751,21 +751,21 @@ function displayAllParametersWindow(grid) {
 													} else {
 														if (response.data == 'yes') {
 															Ext
-																	.getCmp('button-debug-mode')
-																	.setText('Debug Mode ON');
+																	.getCmp('button-local-log')
+																	.setText('Local log ON');
 															Ext
-																	.getCmp('button-debug-mode')
+																	.getCmp('button-local-log')
 																	.toggle(true);
 														} else {
 															Ext
-																	.getCmp('button-debug-mode')
-																	.setText('Debug Mode OFF');
+																	.getCmp('button-local-log')
+																	.setText('Local log OFF');
 															Ext
-																	.getCmp('button-debug-mode')
+																	.getCmp('button-local-log')
 																	.toggle(false);
 														}
 														Ext
-																.getCmp('button-debug-mode')
+																.getCmp('button-local-log')
 																.enable();
 													}
 
@@ -789,7 +789,7 @@ function displayAllParametersWindow(grid) {
 														url : 'wiff.php',
 														params : {
 															getParam : true,
-															paramName : 'debug'
+															paramName : 'local-log'
 														},
 														success : function(
 																responseObject) {
@@ -805,21 +805,21 @@ function displayAllParametersWindow(grid) {
 															} else {
 																if (response.data == 'yes') {
 																	Ext
-																			.getCmp('button-debug-mode')
-																			.setText('Debug Mode ON');
+																			.getCmp('button-local-log')
+																			.setText('Local log ON');
 																	Ext
-																			.getCmp('button-debug-mode')
+																			.getCmp('button-local-log')
 																			.toggle(true);
 																} else {
 																	Ext
-																			.getCmp('button-debug-mode')
-																			.setText('Debug Mode OFF');
+																			.getCmp('button-local-log')
+																			.setText('Local log OFF');
 																	Ext
-																			.getCmp('button-debug-mode')
+																			.getCmp('button-local-log')
 																			.toggle(false);
 																}
 																Ext
-																		.getCmp('button-debug-mode')
+																		.getCmp('button-local-log')
 																		.enable();
 															}
 
@@ -943,7 +943,7 @@ function displayParametersWindow(grid, record) {
 														url : 'wiff.php',
 														params : {
 															getParam : true,
-															paramName : 'debug'
+															paramName : 'local-log'
 														},
 														success : function(
 																responseObject) {
@@ -959,21 +959,21 @@ function displayParametersWindow(grid, record) {
 															} else {
 																if (response.data == 'yes') {
 																	Ext
-																			.getCmp('button-debug-mode')
-																			.setText('Debug Mode ON');
+																			.getCmp('button-local-log')
+																			.setText('Local log ON');
 																	Ext
-																			.getCmp('button-debug-mode')
+																			.getCmp('button-local-log')
 																			.toggle(true);
 																} else {
 																	Ext
-																			.getCmp('button-debug-mode')
-																			.setText('Debug Mode OFF');
+																			.getCmp('button-local-log')
+																			.setText('Local log OFF');
 																	Ext
-																			.getCmp('button-debug-mode')
+																			.getCmp('button-local-log')
 																			.toggle(false);
 																}
 																Ext
-																		.getCmp('button-debug-mode')
+																		.getCmp('button-local-log')
 																		.enable();
 															}
 
@@ -998,7 +998,7 @@ function displayParametersWindow(grid, record) {
 																url : 'wiff.php',
 																params : {
 																	getParam : true,
-																	paramName : 'debug'
+																	paramName : 'local-log'
 																},
 																success : function(
 																		responseObject) {
@@ -1014,21 +1014,21 @@ function displayParametersWindow(grid, record) {
 																	} else {
 																		if (response.data == 'yes') {
 																			Ext
-																					.getCmp('button-debug-mode')
-																					.setText('Debug Mode ON');
+																					.getCmp('button-local-log')
+																					.setText('Local log ON');
 																			Ext
-																					.getCmp('button-debug-mode')
+																					.getCmp('button-local-log')
 																					.toggle(true);
 																		} else {
 																			Ext
-																					.getCmp('button-debug-mode')
-																					.setText('Debug Mode OFF');
+																					.getCmp('button-local-log')
+																					.setText('Local log OFF');
 																			Ext
-																					.getCmp('button-debug-mode')
+																					.getCmp('button-local-log')
 																					.toggle(false);
 																		}
 																		Ext
-																				.getCmp('button-debug-mode')
+																				.getCmp('button-local-log')
 																				.enable();
 																	}
 
@@ -4524,7 +4524,7 @@ function displayInterface() {
 										}
 									}]
 						}, {
-							title : 'Debug',
+							title : 'Local log',
 							style : 'padding:10px;padding-top:0px;font-size:small;',
 							listeners : {
 								render : function(panel) {
@@ -4532,10 +4532,11 @@ function displayInterface() {
 								}
 							},
 							tbar : [{
-								text : 'Debug Mode OFF',
-								id : 'button-debug-mode',
+								text : 'Local log OFF',
+								tooltip : 'Toggle local log ON/OFF',
+								id : 'button-local-log',
 								enableToggle : true,
-								iconCls : 'x-icon-debug',
+								iconCls : 'x-icon-local-log',
 								disabled : true,
 								listeners : {
 									render : function(button) {
@@ -4544,7 +4545,7 @@ function displayInterface() {
 											url : 'wiff.php',
 											params : {
 												getParam : true,
-												paramName : 'debug'
+												paramName : 'local-log'
 											},
 											success : function(responseObject) {
 
@@ -4558,11 +4559,11 @@ function displayInterface() {
 												} else {
 													if (response.data == 'yes') {
 														button
-																.setText('Debug Mode ON');
+																.setText('Local log ON');
 														button.toggle();
 													} else {
 														button
-																.setText('Debug Mode OFF');
+																.setText('Local log OFF');
 													}
 													button.enable();
 												}
@@ -4579,13 +4580,13 @@ function displayInterface() {
 								toggleHandler : function(button, state) {
 									if (state) {
 
-										button.setText('Debug Mode ON');
+										button.setText('Local log ON');
 
 										Ext.Ajax.request({
 											url : 'wiff.php',
 											params : {
 												setParam : true,
-												paramName : 'debug',
+												paramName : 'local-log',
 												paramValue : 'yes'
 											},
 											success : function(responseObject) {
@@ -4614,13 +4615,13 @@ function displayInterface() {
 										});
 									} else {
 
-										button.setText('Debug Mode OFF');
+										button.setText('Local log OFF');
 
 										Ext.Ajax.request({
 											url : 'wiff.php',
 											params : {
 												setParam : true,
-												paramName : 'debug',
+												paramName : 'local-log',
 												paramValue : 'no'
 											},
 											success : function(responseObject) {
@@ -4649,7 +4650,38 @@ function displayInterface() {
 										});
 									}
 								}
-							}]
+							},
+								{
+									text : 'View',
+									tooltip : 'View log',
+									id : 'button-local-log-view',
+									iconCls : 'x-icon-local-log-view',
+									handler : function() {
+										var logview = window.open('wiff.php?locallog=view', '_blank', 'scrollbars=yes');
+										logview.onload = function () {
+											logview.scrollTo(0, logview.document.body.scrollHeight);
+										};
+									}
+								},
+								{
+									text : 'Clear',
+									tooltip : 'Clear log',
+									id : 'button-local-log-clear',
+									iconCls : 'x-icon-local-log"-clear',
+									handler : function() {
+										Ext.Ajax.request({
+											url : 'wiff.php',
+											params : {
+												locallog : 'clear'
+											},
+											success : function(responseObject) {
+											},
+											failure : function(responseObject) {
+											}
+										});
+									}
+								}
+							]
 						}, {
 							title : 'Repositories',
 							style : 'padding:10px;padding-top:0px;font-size:small;',

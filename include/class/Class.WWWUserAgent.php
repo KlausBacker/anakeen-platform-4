@@ -8,7 +8,6 @@
 namespace WWW;
 
 require_once 'class/Class.WIFF.php';
-require_once 'class/Class.Debug.php';
 require_once 'lib/Lib.System.php';
 
 class UserAgent
@@ -73,7 +72,6 @@ class UserAgent
         $tmpfile = \WiffLibSystem::tempnam(null, 'WIFF_downloadLocalFile');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
-            error_log(sprintf(__METHOD__ . " " . "Error creating temporary file."));
             return false;
         }
         
@@ -91,7 +89,6 @@ class UserAgent
     {
         $file = self::$cache->get($url);
         if ($file !== false) {
-            \Debug::log(__METHOD__ . " " . sprintf("Cache hit '%s': %s", $url, $file));
             return $file;
         }
         
@@ -100,7 +97,6 @@ class UserAgent
         $tmpfile = \WiffLibSystem::tempnam(null, 'WIFF_downloadHttpUrlCurl');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
-            error_log(sprintf(__METHOD__ . " " . "Error creating temporary file."));
             return false;
         }
         
@@ -116,7 +112,6 @@ class UserAgent
         $ftmp = fopen($tmpfile, 'w');
         if ($ftmp === false) {
             $this->errorMessage = sprintf("Error opening temporary file '%s' for writing.", $tmpfile);
-            error_log(sprintf(__METHOD__ . " " . $this->errorMessage));
             return false;
         }
         curl_setopt($ch, CURLOPT_FILE, $ftmp);
@@ -176,7 +171,7 @@ class UserAgent
                 if ($retry > 0) {
                     $retry--;
                     $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
-                    error_log(__METHOD__ . " " . sprintf("Notice: got error (%s) '%s' while fetching '%s'. Retrying %s in %s second(s)...", $errno, $error, $this->anonymizeUrl($url) , $retry, $wait));
+                    $this->log(LOG_INFO, __METHOD__ . " " . sprintf("Notice: got error (%s) '%s' while fetching '%s'. Retrying %s in %s second(s)...", $errno, $error, $this->anonymizeUrl($url) , $retry, $wait));
                     sleep($wait);
                     continue;
                 }
@@ -184,7 +179,6 @@ class UserAgent
                 fclose($ftmp);
                 unlink($tmpfile);
                 $this->errorMessage = sprintf("Error fetching '%s': %s", \WIFF::anonymizeUrl($url) , $error);
-                error_log(__METHOD__ . " " . $this->errorMessage);
                 return false;
             }
             $code = 0;
@@ -192,7 +186,7 @@ class UserAgent
                 if ($code != 404 && $retry > 0) {
                     $retry--;
                     $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
-                    error_log(__METHOD__ . " " . sprintf("Notice: got HTTP status code '%s' fetching '%s'. Retrying %s in %s second(s)...", $code, $this->anonymizeUrl($url) , $retry, $wait));
+                    $this->log(LOG_INFO, __METHOD__ . " " . sprintf("Notice: got HTTP status code '%s' fetching '%s'. Retrying %s in %s second(s)...", $code, $this->anonymizeUrl($url) , $retry, $wait));
                     sleep($wait);
                     continue;
                 }
@@ -205,7 +199,6 @@ class UserAgent
                 unlink($tmpfile);
                 $this->errorMessage = sprintf("HTTP Error fetching '%s': HTTP status = '%s' / Content = '%s'", \WIFF::anonymizeUrl($url) , $code, $content);
                 
-                error_log(__METHOD__ . " " . $this->errorMessage);
                 return false;
             }
             break;
@@ -267,6 +260,12 @@ class UserAgent
         }
         return $url;
     }
+
+    private function log($pri, $msg) {
+        require_once 'class/Class.WIFF.php';
+        $wiff = \WIFF::getInstance();
+        $wiff->log($pri, $msg);
+    }
 }
 
 class CacheException extends \Exception
@@ -294,7 +293,7 @@ class DefaultCache implements Cache
             $this->cache[$url] = $cachedItem;
         }
         catch(CacheException $e) {
-            \Debug::log(__METHOD__ . " " . $e->getMessage());
+            $this->log(LOG_ERR, __METHOD__ . " " . $e->getMessage());
             return false;
         }
         return true;
@@ -320,12 +319,12 @@ class DefaultCache implements Cache
         }
         $tmpfile = \WiffLibSystem::tempnam(null, 'www_get.XXXXXX');
         if ($tmpfile === false) {
-            \Debug::log(__METHOD__ . " " . sprintf("Error creating temporary file."));
+            $this->log(LOG_ERR, __METHOD__ . " " . sprintf("Error creating temporary file."));
             return false;
         }
         if (copy($item->file, $tmpfile) === false) {
             unlink($tmpfile);
-            \Debug::log(__METHOD__ . " " . sprintf("Error copying cached file '%s' to '%s'.", $item->file, $tmpfile));
+            $this->log(LOG_ERR, __METHOD__ . " " . sprintf("Error copying cached file '%s' to '%s'.", $item->file, $tmpfile));
             return false;
         }
         return $tmpfile;
@@ -346,6 +345,12 @@ class DefaultCache implements Cache
                 unlink($item->file);
             }
         }
+    }
+
+    private function log($pri, $msg) {
+        require_once 'class/Class.WIFF.php';
+        $wiff = \WIFF::getInstance();
+        $wiff->log($pri, $msg);
     }
 }
 

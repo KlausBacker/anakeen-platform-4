@@ -99,8 +99,7 @@ class Process
     {
         require_once ('class/Class.WIFF.php');
         require_once ('lib/Lib.Wcontrol.php');
-        require_once ('class/Class.Debug.php');
-        
+
         putenv("WIFF_CONTEXT_NAME=" . $this->phase->module->getContext()->name);
         putenv("WIFF_CONTEXT_ROOT=" . $this->phase->module->getContext()->root);
         
@@ -119,7 +118,7 @@ class Process
         chdir($cwd);
         
         if (!$result['ret']) {
-            Debug::log($this->errorMessage);
+            $this->log(LOG_ERR, $result['output']);
         }
         
         return $result;
@@ -136,5 +135,11 @@ class Process
             return $this->attributes[$attrName];
         }
         return "";
+    }
+
+    private function log($pri, $msg) {
+        require_once 'class/Class.WIFF.php';
+        $wiff = WIFF::getInstance();
+        $wiff->log($pri, $msg);
     }
 }

@@ -109,8 +109,16 @@
     background-image: url('../images/icons/cross.png') !important;
 }
 
-.x-icon-debug {
+.x-icon-local-log {
     background-image: url('../images/icons/application_form_magnify.png') !important;
+}
+
+.x-icon-local-log-view {
+    background-image: url('../images/icons/magnifier.png') !important;
+}
+
+.x-icon-local-log-clear {
+    background-image: url('../images/icons/bin.png') !important;
 }
 
 .x-module-import {

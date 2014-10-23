@@ -106,7 +106,6 @@ class RegistrationClient
     {
         if (!function_exists('curl_init')) {
             $err = sprintf("php-curl extension is not loaded!");
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . $err);
             $this->last_error = $err;
             return false;
         }
@@ -135,7 +134,6 @@ class RegistrationClient
         $data = curl_exec($ch);
         if (curl_errno($ch)) {
             $err = sprintf("curl_exec() returned with error: %s", curl_error($ch));
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . $err);
             $this->last_error = $err;
             curl_close($ch);
             return false;
@@ -164,7 +162,6 @@ class RegistrationClient
         $content_type = $response['content-type'];
         if ($content_type != 'text/xml') {
             $err = sprintf("Bad content-type '%s' in response with HTTP code '%s'.", $content_type, $response['code']);
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . $err);
             $this->last_error = $err;
             return false;
         }
@@ -177,14 +174,12 @@ class RegistrationClient
         $ret = $dom->loadXML($xml);
         if ($ret === false) {
             $err = sprintf("Error loading XML from response with code '%s'.", $response['code']);
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . $err);
             $this->last_error = $err;
             return false;
         }
         
         if ($dom->documentElement->tagName != 'response') {
             $err = sprintf("Malformed XML (response tag not found) in response with code '%s'.", $response['code']);
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . $err);
             $this->last_error = $err;
             return false;
         }

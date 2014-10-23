@@ -135,7 +135,7 @@ class ZipArchiveCmd
             return false;
         }
         
-        $cmd = sprintf("%s %s %s %s", escapeshellarg($this->zipcmd) , $flags, escapeshellarg($this->zipfile) , escapeshellarg($file));
+        $cmd = sprintf("%s %s %s %s 2>&1", escapeshellarg($this->zipcmd) , $flags, escapeshellarg($this->zipfile) , escapeshellarg($file));
         
         $out = array();
         $ret = 0;
@@ -270,7 +270,7 @@ class ZipArchiveCmd
     {
         $out = array();
         $ret = 0;
-        $cmd = sprintf("%s -qql %s", escapeshellarg($this->unzipcmd) , escapeshellarg($this->zipfile));
+        $cmd = sprintf("%s -qql %s 2>&1", escapeshellarg($this->unzipcmd) , escapeshellarg($this->zipfile));
         if ($this->verbose) {
             error_log(sprintf("Executing [%s][%s]", getcwd() , $cmd));
         }
@@ -310,7 +310,7 @@ class ZipArchiveCmd
         
         $out = array();
         $ret = 0;
-        $cmd = sprintf("%s -d %s %s", escapeshellarg($this->unzipcmd) , escapeshellarg($exdir) , escapeshellarg($this->zipfile));
+        $cmd = sprintf("%s -d %s %s 2>&1", escapeshellarg($this->unzipcmd) , escapeshellarg($exdir) , escapeshellarg($this->zipfile));
         if ($this->verbose) {
             error_log(sprintf("%s Executing [%s][%s]", __CLASS__, getcwd() , $cmd));
         }

@@ -17,6 +17,8 @@
     <param name="proxy-username" value="" />
     <param name="proxy-password" value="" />
     <param name="auto-configuration-sender-interval" value="30" />
+    <param name="syslog-facility" value="LOG_USER" mode="hidden" />
+    <param name="local-log" value="no" mode="hidden" />
   </parameters>
   
 </wiff>
