@@ -51,8 +51,7 @@ class Repository
         if ($this->use != '') {
             
             $wiff = WIFF::getInstance();
-            $xml = new DOMDocument();
-            $xml->load($wiff->params_filepath);
+            $xml = $wiff->loadParamsDOMDocument();
             if ($xml === false) {
                 $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
                 return false;
