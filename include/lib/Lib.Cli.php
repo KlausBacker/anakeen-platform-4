@@ -601,7 +601,7 @@ function wiff_context_module_install_remote(Context & $context, &$options, &$mod
         $modName
     ));
     if ($depList === false) {
-        printerr(sprintf("Error: could not find a module named '%s'!\n", $modName));
+        printerr(sprintf("Error: %s\n", $context->errorMessage));
         return 1;
     }
     
@@ -1060,7 +1060,7 @@ function wiff_context_module_upgrade_remote(Context & $context, &$options, &$mod
         $modName
     ));
     if ($depList === false) {
-        printerr(sprintf("Error: could not find a module named '%s'!\n", $modName));
+        printerr(sprintf("Error: %s\n", $context->errorMessage));
         return 1;
     }
     

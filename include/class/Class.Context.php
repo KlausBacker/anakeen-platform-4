@@ -772,7 +772,7 @@ class Context
             'eq' => '==',
             'ne' => '!='
         );
-        return (isset($symbol[$comp])) ? $symbol[$comp] : "??";
+        return (isset($symbol[$comp])) ? $symbol[$comp] : "?";
     }
     /**
      * Get available module statisfying $comp $version with $name
@@ -902,7 +902,7 @@ class Context
                             if ($this->cmpModuleByVersionReleaseAsc($satisfyingMod, $currentInstalledMod) > 0) {
                                 $satisfyingMod->needphase = 'upgrade';
                             } else {
-                                $this->errorMessage = sprintf("Module %s (%s %s) required by %s is not compatible with current set of installed and available modules.", $reqModName, $this->compSymbol($reqModComp) , $reqModVersion, $mod->name);
+                                $this->errorMessage = sprintf("Module %s (%s %s) required by %s is not compatible with current set of installed and available modules.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=="")?$reqModVersion:'?'), $mod->name);
                                 return false;
                             }
                             // Keep the satisfying module as the required module for install/upgrade
@@ -941,10 +941,10 @@ class Context
                          * Do not warn/err if an installed module has a broken
                          * dependency when archiving or restoring a context.
                         */
-                        error_log(sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , $reqModVersion, $mod->name));
+                        $this->log(LOG_INFO, sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=='')?$reqModVersion:'?'), $mod->name));
                         continue;
                     }
-                    $this->errorMessage = sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , $reqModVersion, $mod->name);
+                    $this->errorMessage = sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=='')?$reqModVersion:'?'), $mod->name);
                     return false;
                 }
                 
