@@ -1038,7 +1038,7 @@ if (isset($_REQUEST['sendContextConfiguration']) && isset($_REQUEST['context']))
     }
     
     if ($info['status'] != 'registered') {
-        $answer = new JSONAnswer(null, sprintf("Dynacase-control is not registeted!"));
+        $answer = new JSONAnswer(null, sprintf("Dynacase-control is not registered!"));
         echo $answer->encode();
         exit(1);
     }

@@ -421,9 +421,9 @@ class WIFF
     }
     /**
      * Get global repository list
-     * @return array of object Repository
+     * @return Repository[] array of object Repository
      */
-    public function getRepoList()
+    public function getRepoList($checkValidity = true)
     {
         require_once ('class/Class.Repository.php');
         
@@ -441,7 +441,7 @@ class WIFF
             
             foreach ($repositories as $repository) {
                 $repoList[] = new Repository($repository, null, array(
-                    'checkValidity' => true
+                    'checkValidity' => ($checkValidity === true)
                 ));
             }
         }
@@ -494,9 +494,10 @@ class WIFF
      * @param $authenticated
      * @param $login
      * @param $password
+     * @param $returnRepoValidation
      * @return boolean
      */
-    public function createRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password)
+    public function createRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password, $returnRepoValidation = true)
     {
         require_once ('class/Class.Repository.php');
         
@@ -537,7 +538,7 @@ class WIFF
         $repository->setAttribute('password', $password);
         
         $repositoryObject = new Repository($repository);
-        
+
         $isValid = $repositoryObject->isValid();
         
         $repository->setAttribute('label', $repositoryObject->label);
@@ -547,7 +548,57 @@ class WIFF
             $this->errorMessage = sprintf("Error writing file '%s': %s", $this->params_filepath, $this->errorMessage);
             return false;
         }
-        return $isValid;
+        return ($returnRepoValidation?$isValid:true);
+    }
+    public function createRepoUrl($name, $url, $authUser = null, $authPassword = null) {
+        $pURL = parse_url($url);
+
+        $useUrlEmbeddedUserPass = false;
+        $authenticated = 'no';
+        if ($authUser !== null) {
+            $authenticated = 'yes';
+            if ($authPassword === null) {
+                $authPassword = ($useUrlEmbeddedUserPass && isset($pUrl['pass']) ? urldecode($pURL['pass']) : '');
+            }
+        } else {
+            if ($useUrlEmbeddedUserPass && (isset($pURL['user']) || isset($pURL['pass']))) {
+                $authenticated = 'yes';
+                $authUser = (isset($pURL['user']) ? urldecode($pURL['user']) : '');
+                $authPassword = (isset($pURL['pass']) ? urldecode($pURL['pass']) : '');
+            } else {
+                $authUser = '';
+                $authPassword = '';
+            }
+        }
+
+        $protocol = '';
+        if (isset($pURL['scheme'])) {
+            $protocol = $pURL['scheme'];
+        }
+        $host = '';
+        if (isset($pURL['host'])) {
+            $host = $pURL['host'];
+            if (isset($pURL['port'])) {
+                $host .= ':' . $pURL['port'];
+            }
+        }
+        $path = '';
+        if (isset($pURL['path'])) {
+            $path = $pURL['path'];
+            if (isset($pURL['query'])) {
+                $path .= '?' . $pURL['query'];
+            }
+            if (isset($pURL['fragment'])) {
+                $path .= '#' . $pURL['fragment'];
+            }
+        }
+        $description = sprintf("%s://%s/%s", $protocol, $host, $path);
+
+        $ret = $this->createRepo($name, $description, $protocol, $host, $path, /* default */ 'no', $authenticated, $authUser, $authPassword, false);
+        if ($ret === false) {
+            return false;
+        }
+        return true;
     }
     /**
      * Change all parameters in one go
