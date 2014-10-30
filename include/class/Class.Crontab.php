@@ -60,14 +60,12 @@ class Crontab
         
         $ph = popen($cmd, 'r');
         if ($ph === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error popen");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error popen";
             return FALSE;
         }
         
         $crontab = stream_get_contents($ph);
         if ($crontab === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error stream_get_contents");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error stream_get_contents";
             return FALSE;
         }
@@ -79,18 +77,16 @@ class Crontab
     
     private function save()
     {
-        include_once "include/lib/Lib.System.php";
+        include_once "lib/Lib.System.php";
         
         $tmp = WiffLibSystem::tempnam(null, 'crontab');
         if ($tmp === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file";
             return FALSE;
         }
         
         $ret = file_put_contents($tmp, $this->crontab);
         if ($ret === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error writing content to file '" . $tmp . "'");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error writing content to file '" . $tmp . "'";
             return FALSE;
         }
@@ -100,12 +96,11 @@ class Crontab
             $cmd.= ' -u ' . escapeshellarg($this->user);
         }
         $cmd.= ' ' . escapeshellarg($tmp);
-        $cmd.= ' > /dev/null 2>&1';
+        $cmd.= ' 2>&1';
         
-        system($cmd, $ret);
+        exec($cmd, $output, $ret);
         if ($ret != 0) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab '" . $tmp . "'");
-            $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error saving crontab '" . $tmp . "'";
+            $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error saving crontab '" . $tmp . "': %s" . join("\n", $output);
             return FALSE;
         }
         
@@ -116,7 +111,6 @@ class Crontab
     {
         $crontab = file_get_contents($file);
         if ($crontab === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading content from file '" . $file . "'");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error reading content from file '" . $file . "'";
             return FALSE;
         }
@@ -125,7 +119,6 @@ class Crontab
         
         $activeCrontab = $this->load();
         if ($activeCrontab === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab";
             return FALSE;
         }
@@ -134,7 +127,6 @@ class Crontab
             //print "Removing existing crontab\n";
             $tmpCrontab = preg_replace('/^#\s+BEGIN:CONTROL_CRONTAB:' . preg_quote($this->wiff_root, '/') . ':' . preg_quote($file, '/') . '.*?#\s+END:CONTROL_CRONTAB:' . preg_quote($this->wiff_root, '/') . ':' . preg_quote($file, '/') . '$/ms', '', $activeCrontab);
             if ($tmpCrontab === NULL) {
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " Error removing existing registered crontab");
                 $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error removing existing registered crontab";
                 return FALSE;
             }
@@ -146,7 +138,6 @@ class Crontab
         
         $ret = $this->save();
         if ($ret === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error saving crontab";
             return FALSE;
         }
@@ -158,14 +149,12 @@ class Crontab
     {
         $activeCrontab = $this->load();
         if ($activeCrontab === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab";
             return FALSE;
         }
         
         $tmpCrontab = preg_replace('/^#\s+BEGIN:CONTROL_CRONTAB:' . preg_quote($this->wiff_root, '/') . ':' . preg_quote($file, '/') . '.*?#\s+END:CONTROL_CRONTAB:' . preg_quote($this->wiff_root, '/') . ':' . preg_quote($file, '/') . '$/ms', '', $activeCrontab);
         if ($tmpCrontab === NULL) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error unregistering crontab '" . $this->wiff_root . ":" . $file . "' from active crontab");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error unregistering crontab '" . $this->wiff_root . ":" . $file . "' from active crontab";
             return FALSE;
         }
@@ -174,7 +163,6 @@ class Crontab
         
         $ret = $this->save();
         if ($ret === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error saving crontab";
             return FALSE;
         }
@@ -186,7 +174,6 @@ class Crontab
     {
         $crontabs = $this->getActiveCrontab();
         if ($crontabs === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error retrieving active crontabs");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error retrieving active crontabs";
             return FALSE;
         }
@@ -207,14 +194,12 @@ class Crontab
     {
         $activeCrontab = $this->load();
         if ($activeCrontab === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab";
             return FALSE;
         }
         
         $ret = preg_match_all('/^#\s+BEGIN:CONTROL_CRONTAB:' . preg_quote($this->wiff_root, '/') . ':(.*?)\n(.*?)\n#\s+END:CONTROL_CRONTAB:' . preg_quote($this->wiff_root, '/') . ':\1/ms', $activeCrontab, $matches, PREG_SET_ORDER);
         if ($ret === FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " Error in preg_match_all");
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error in preg_match_all";
             return FALSE;
         }

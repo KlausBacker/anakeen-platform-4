@@ -13,6 +13,11 @@
 require_once ('class/Class.WIFF.php');
 
 global $wiff_lock;
+function printerr($msg) {
+    file_put_contents('php://stderr', $msg);
+    $wiff = WIFF::getInstance();
+    $wiff->log(LOG_ERR, $msg);
+}
 /**
  * wiff help
  * @param $argv
@@ -53,8 +58,7 @@ function wiff_lock()
 {
     $wiff = WIFF::getInstance();
     if ($wiff->lock(false, $lockerPid) === false) {
-        $err = sprintf("Error locking Dynacase-Control: %s", $wiff->errorMessage);
-        error_log($err);
+        printerr(sprintf("Error locking Dynacase-Control: %s\n", $wiff->errorMessage));
         exit(100);
     }
 }
@@ -64,7 +68,7 @@ function wiff_unlock()
     $wiff = WIFF::getInstance();
     $ret = $wiff->unlock();
     if ($ret === false) {
-        error_log(sprintf("Warning: could not unlock Dynacase-Control!"));
+        printerr(sprintf("Warning: could not unlock Dynacase-Control!\n"));
     }
     return $ret;
 }
@@ -89,7 +93,7 @@ function wiff_param(&$argv)
         case 'help':
             return wiff_param_help();
         default:
-            error_log(sprintf("Unknown operation '%s'!\n", $op));
+            printerr(sprintf("Unknown operation '%s'!\n", $op));
             return wiff_param_help();
     }
 }
@@ -100,12 +104,12 @@ function wiff_param_get(&$argv)
     
     $paramKey = array_shift($argv);
     if ($paramKey === null) {
-        error_log(sprintf("Error: missing param-name."));
+        printerr(sprintf("Error: missing param-name.\n"));
         return 1;
     }
     $ret = $wiff->getParam($paramKey, true, true);
     if (!$ret) {
-        error_log($wiff->errorMessage);
+        printerr(sprintf("%s\n", $wiff->errorMessage));
         return 1;
     }
     echo sprintf("%s = %s\n", $paramKey, $ret);
@@ -117,12 +121,12 @@ function wiff_param_set(&$argv)
     
     $paramKey = array_shift($argv);
     if ($paramKey === null) {
-        error_log(sprintf("Error: missing param-name."));
+        printerr(sprintf("Error: missing param-name.\n"));
         return 1;
     }
     $paramValue = array_shift($argv);
     if ($paramValue === null) {
-        error_log(sprintf("Error: missing param-value."));
+        printerr(sprintf("Error: missing param-value.\n"));
         return 1;
     }
     $paramMode = array_shift($argv);
@@ -132,7 +136,7 @@ function wiff_param_set(&$argv)
     
     $ret = $wiff->setParam($paramKey, $paramValue, true, $paramMode);
     if (!$ret) {
-        error_log($wiff->errorMessage);
+        printerr(sprintf("%s\n", $wiff->errorMessage));
         return 1;
     }
     return 0;
@@ -166,7 +170,7 @@ function wiff_list(&$argv)
             break;
 
         default:
-            error_log(sprintf("Unknown operation '%s'!\n", $op));
+            printerr(sprintf("Unknown operation '%s'!\n", $op));
             return wiff_list_help($argv);
     }
 }
@@ -183,7 +187,7 @@ function wiff_list_context(&$argv)
     
     $ctxList = $wiff->getContextList();
     if ($ctxList === false) {
-        error_log(sprintf("Error: cound not get contexts list: %s\n", $wiff->errorMessage));
+        printerr(sprintf("Error: could not get contexts list: %s\n", $wiff->errorMessage));
         return 1;
     }
     
@@ -229,7 +233,7 @@ function wiff_context(&$argv)
     $wiff = WIFF::getInstance();
     $context = $wiff->getContext($ctx_name);
     if ($context === false) {
-        error_log(sprintf("Error: could not get context '%s': %s\n", $ctx_name, $wiff->errorMessage));
+        printerr(sprintf("Error: could not get context '%s': %s\n", $ctx_name, $wiff->errorMessage));
         return 1;
     }
     
@@ -264,7 +268,7 @@ function wiff_context(&$argv)
             break;
 
         default:
-            error_log(sprintf("Unknown operation '%s'!\n", $op));
+            printerr(sprintf("Unknown operation '%s'!\n", $op));
             return wiff_context_help($context, $argv);
     }
 }
@@ -322,11 +326,11 @@ function wiff_context_exportenv(&$context, &$argv)
 function wiff_context_shell(&$context, &$argv)
 {
     if (!function_exists("posix_setuid")) {
-        error_log(sprintf("Error: required POSIX PHP functions not available!\n"));
+        printerr(sprintf("Error: required POSIX PHP functions not available!\n"));
         return 1;
     }
     if (!function_exists("pcntl_exec")) {
-        error_log(sprintf("Error: required PCNTL PHP functions not available!\n"));
+        printerr(sprintf("Error: required PCNTL PHP functions not available!\n"));
         return 1;
     }
     
@@ -334,7 +338,7 @@ function wiff_context_shell(&$context, &$argv)
     
     $httpuser = $context->getParamByName("apacheuser");
     if ($httpuser === false) {
-        error_log(sprintf("%s\n", $context->errorMessage));
+        printerr(sprintf("%s\n", $context->errorMessage));
         return 1;
     }
     if ($httpuser == '') {
@@ -356,7 +360,7 @@ function wiff_context_shell(&$context, &$argv)
     }
     
     if ($envs['pgservice_core'] === false || $envs['pgservice_core'] == '') {
-        error_log(sprintf("Error: empty core_db parameter!\n"));
+        printerr(sprintf("Error: empty core_db parameter!\n"));
         return 1;
     }
     
@@ -366,7 +370,7 @@ function wiff_context_shell(&$context, &$argv)
         $http_pw = posix_getpwnam($httpuser);
     }
     if ($http_pw === false) {
-        error_log(sprintf("Error: could not get information for httpuser '%s'\n", $httpuser));
+        printerr(sprintf("Error: could not get information for httpuser '%s'\n", $httpuser));
         return 1;
     }
     
@@ -382,26 +386,26 @@ function wiff_context_shell(&$context, &$argv)
     
     $ret = chdir($context->root);
     if ($ret === false) {
-        error_log(sprintf("Error: could not chdir to '%s'\n", $context->root));
+        printerr(sprintf("Error: could not chdir to '%s'\n", $context->root));
         return 1;
     }
     
     if ($uid != $http_uid) {
         $ret = posix_setgid($http_gid);
         if ($ret === false) {
-            error_log(sprintf("Error: could not setgid to gid '%s'\n", $http_gid));
+            printerr(sprintf("Error: could not setgid to gid '%s'\n", $http_gid));
             return 1;
         }
         $ret = posix_setuid($http_uid);
         if ($ret === false) {
-            error_log(sprintf("Error: could not setuid to uid '%s'\n", $http_uid));
+            printerr(sprintf("Error: could not setuid to uid '%s'\n", $http_uid));
             return 1;
         }
     }
     /** @noinspection PhpVoidFunctionResultUsedInspection Because it return false on error and void on success */
     $ret = pcntl_exec($shell, $argv, $envs);
     if ($ret === false) {
-        error_log(sprintf("Error: exec error for '%s'\n", join(" ", array(
+        printerr(sprintf("Error: exec error for '%s'\n", join(" ", array(
             $shell,
             join(" ", $argv)
         ))));
@@ -500,19 +504,19 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
     
     $tmpfile = WiffLibSystem::tempnam(null, basename($pkgName));
     if ($tmpfile === false) {
-        error_log(sprintf("Error: could not create temp file!\n"));
+        printerr(sprintf("Error: could not create temp file!\n"));
         return 1;
     }
     
     $ret = copy($pkgName, $tmpfile);
     if ($ret === false) {
-        error_log(sprintf("Error: could not copy '%s' to '%s'!\n", $pkgName, $tmpfile));
+        printerr(sprintf("Error: could not copy '%s' to '%s'!\n", $pkgName, $tmpfile));
         return 1;
     }
     
     $tmpMod = $context->loadModuleFromPackage($tmpfile);
     if ($tmpMod === false) {
-        error_log(sprintf("Error: could not load module '%s': %s\n", $tmpfile, $context->errorMessage));
+        printerr(sprintf("Error: could not load module '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
     
@@ -527,7 +531,7 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
     
     $tmpMod = $context->importArchive($tmpfile, 'downloaded');
     if ($tmpMod === false) {
-        error_log(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
+        printerr(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
     if (!empty($context->warningMessage)) {
@@ -542,7 +546,7 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
 
     $depList = $context->getLocalModuleDependencies($tmpfile);
     if ($depList === false) {
-        error_log(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
+        printerr(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
     
@@ -597,7 +601,7 @@ function wiff_context_module_install_remote(Context & $context, &$options, &$mod
         $modName
     ));
     if ($depList === false) {
-        error_log(sprintf("Error: could not find a module named '%s'!", $modName));
+        printerr(sprintf("Error: %s\n", $context->errorMessage));
         return 1;
     }
     
@@ -660,17 +664,17 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
             echo sprintf("Unregistering module '%s'.\n", $module->name);
             $ret = $context->removeModule($module->name);
             if ($ret === false) {
-                error_log(sprintf("Error: could not unregister module '%s' from context: %s\n", $module->name, $context->errorMessage));
+                printerr(sprintf("Error: could not unregister module '%s' from context: %s\n", $module->name, $context->errorMessage));
                 return 1;
             }
             $ret = $context->deleteFilesFromModule($module->name);
             if ($ret === false) {
-                error_log(sprintf("Error: could not delete files for module '%s': %s\n", $module->name, $context->errorMessage));
+                printerr(sprintf("Error: could not delete files for module '%s': %s\n", $module->name, $context->errorMessage));
                 return 1;
             }
             $ret = $context->deleteManifestForModule($module->name);
             if ($ret === false) {
-                error_log(sprintf("Error: could not delete manifest file for module '%s': %s\n", $module->name, $context->errorMessage));
+                printerr(sprintf("Error: could not delete manifest file for module '%s': %s\n", $module->name, $context->errorMessage));
                 return 1;
             }
             
@@ -686,7 +690,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
              */
             $ret = $module->download('downloaded');
             if ($ret === false) {
-                error_log(sprintf("Error: could not download module '%s': %s\n", $module->name, $module->errorMessage));
+                printerr(sprintf("Error: could not download module '%s': %s\n", $module->name, $module->errorMessage));
                 return 1;
             }
             if (!empty($module->warningMessage)) {
@@ -707,7 +711,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
         $modName = $module->name;
         $module = $context->getModuleDownloaded($modName);
         if ($module === false) {
-            error_log(sprintf("Error: could not get module '%s' from context: %s\n", $modName, $context->errorMessage));
+            printerr(sprintf("Error: could not get module '%s' from context: %s\n", $modName, $context->errorMessage));
             return 1;
         }
         $wiff = WIFF::getInstance();
@@ -717,7 +721,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
         if ($module->license != '' && $wiff->getParam("check-license", false, true) != "no") {
             $license = $module->getLicenseText();
             if ($license === false) {
-                error_log(sprintf("Error: could not get license '%s' for module '%s': %s\n", $module->license, $module->name, $module->errorMessage));
+                printerr(sprintf("Error: could not get license '%s' for module '%s': %s\n", $module->license, $module->name, $module->errorMessage));
                 return 1;
             }
             
@@ -727,8 +731,8 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                 if ($agree == 'yes') {
                     $module->storeLicenseAgreement($agree);
                 } else {
-                    error_log(sprintf("Notice: you did not agreed to '%s' for module '%s'.", $module->license, $module->name));
-                    exit(1);
+                    printerr(sprintf("Notice: you did not agreed to '%s' for module '%s'.\n", $module->license, $module->name));
+                    return 1;
                 }
             }
         }
@@ -764,14 +768,14 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     $value = param_ask($options, $param->name, $pvalue, $pvalue);
                 }
                 if ($value === false) {
-                    error_log(sprintf("Error: could not read answer!"));
+                    printerr(sprintf("Error: could not read answer!\n"));
                     return 1;
                 }
                 $param->value = $value;
                 
                 $ret = $module->storeParameter($param);
                 if ($ret === false) {
-                    error_log(sprintf("Error: could not store parameter '%s'!\n", $param->name));
+                    printerr(sprintf("Error: could not store parameter '%s'!\n", $param->name));
                     return 1;
                 }
                 
@@ -802,7 +806,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     echo sprintf("Removing old files from module '%s'.\n", $module->name);
                     $ret = $context->deleteFilesFromModule($module->name);
                     if ($ret === false) {
-                        error_log(sprintf("Error: could not delete old files for module '%s' in '%s': %s", $module->name, $context->root, $context->errorMessage));
+                        printerr(sprintf("Error: could not delete old files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
                         return 1;
                     }
                     echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
@@ -812,7 +816,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     echo sprintf("Unpacking module '%s'... ", $module->name);
                     $ret = $module->unpack($context->root);
                     if ($ret === false) {
-                        error_log(sprintf("Error: could not unpack module '%s' in '%s': %s", $module->name, $context->root, $module->errorMessage));
+                        printerr(sprintf("Error: could not unpack module '%s' in '%s': %s\n", $module->name, $context->root, $module->errorMessage));
                         return 1;
                     }
                     echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
@@ -822,17 +826,17 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     echo sprintf("Unregistering module '%s'... ", $module->name);
                     $ret = $context->removeModule($module->name);
                     if ($ret === false) {
-                        error_log(sprintf("Error: could not remove module '%s' in '%s': %s", $module->name, $context->root, $context->errorMessage));
+                        printerr(sprintf("Error: could not remove module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
                         return 1;
                     }
                     $ret = $context->deleteFilesFromModule($module->name);
                     if ($ret === false) {
-                        error_log(sprintf("Error: could not delete files for module '%s' in '%s': %s", $module->name, $context->root, $context->errorMessage));
+                        printerr(sprintf("Error: could not delete files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
                         return 1;
                     }
                     $ret = $context->deleteManifestForModule($module->name);
                     if ($ret === false) {
-                        error_log(sprintf("Error: could not delete manifest for module '%s' in '%s': %s", $module->name, $context->root, $context->errorMessage));
+                        printerr(sprintf("Error: could not delete manifest for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
                         return 1;
                     }
                     echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
@@ -842,7 +846,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     echo sprintf("Purging unreferenced parameters value...");
                     $ret = $context->purgeUnreferencedParametersValue();
                     if ($ret === false) {
-                        error_log(sprintf("Error: could not purge unreferenced parameters value in '%s': %s", $context->root, $context->errorMessage));
+                        printerr(sprintf("Error: could not purge unreferenced parameters value in '%s': %s\n", $context->root, $context->errorMessage));
                         return 1;
                     }
                     echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
@@ -887,13 +891,13 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
         if ($type == 'upgrade') {
             $ret = $context->removeModuleInstalled($module->name);
             if ($ret === false) {
-                error_log(sprintf("Error: Could not remove old installed module '%s': %s", $module->name, $context->errorMessage));
+                printerr(sprintf("Error: Could not remove old installed module '%s': %s\n", $module->name, $context->errorMessage));
                 return 1;
             }
         }
         $ret = $module->setStatus('installed');
         if ($ret === false) {
-            error_log(sprintf("Error: Could not set installed status on module '%s': %s", $module->name, $module->errorMessage));
+            printerr(sprintf("Error: Could not set installed status on module '%s': %s\n", $module->name, $module->errorMessage));
             return 1;
         }
         $module->cleanupDownload();
@@ -949,19 +953,19 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
     
     $tmpfile = WiffLibSystem::tempnam(null, basename($pkgName));
     if ($tmpfile === false) {
-        error_log(sprintf("Error: could not create temp file!\n"));
+        printerr(sprintf("Error: could not create temp file!\n"));
         return 1;
     }
     
     $ret = copy($pkgName, $tmpfile);
     if ($ret === false) {
-        error_log(sprintf("Error: could not copy '%s' to '%s'!\n", $pkgName, $tmpfile));
+        printerr(sprintf("Error: could not copy '%s' to '%s'!\n", $pkgName, $tmpfile));
         return 1;
     }
     
     $tmpMod = $context->loadModuleFromPackage($tmpfile);
     if ($tmpMod === false) {
-        error_log(sprintf("Error: could not load module '%s': %s\n", $tmpfile, $context->errorMessage));
+        printerr(sprintf("Error: could not load module '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
     
@@ -979,7 +983,7 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
     
     $tmpMod = $context->importArchive($tmpfile, 'downloaded');
     if ($tmpMod === false) {
-        error_log(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
+        printerr(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
     if (!empty($context->warningMessage)) {
@@ -994,7 +998,7 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
 
     $depList = $context->getLocalModuleDependencies($tmpfile);
     if ($depList === false) {
-        error_log(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
+        printerr(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
         return 1;
     }
     
@@ -1035,7 +1039,7 @@ function wiff_context_module_upgrade_remote(Context & $context, &$options, &$mod
     
     $tmpMod = $context->getModuleAvail($modName);
     if ($tmpMod === false) {
-        error_log(sprintf("Error: could not find a module named '%s'!", $modName));
+        printerr(sprintf("Error: could not find a module named '%s'!\n", $modName));
         return 1;
     }
     
@@ -1056,7 +1060,7 @@ function wiff_context_module_upgrade_remote(Context & $context, &$options, &$mod
         $modName
     ));
     if ($depList === false) {
-        error_log(sprintf("Error: could not find a module named '%s'!", $modName));
+        printerr(sprintf("Error: %s\n", $context->errorMessage));
         return 1;
     }
     
@@ -1144,7 +1148,7 @@ function wiff_context_module_list_upgrade(Context & $context, &$argv)
     
     $installedList = $context->getInstalledModuleListWithUpgrade(true);
     if ($installedList === false) {
-        error_log(sprintf("Error: could not get list of installed modules: %s", $context->errorMessage));
+        printerr(sprintf("Error: could not get list of installed modules: %s\n", $context->errorMessage));
         return 1;
     }
     
@@ -1178,7 +1182,7 @@ function wiff_context_module_list_installed(Context & $context, &$argv)
     
     $installedList = $context->getInstalledModuleList();
     if ($installedList === false) {
-        error_log(sprintf("Error: could not get list of installed modules: %s", $context->errorMessage));
+        printerr(sprintf("Error: could not get list of installed modules: %s\n", $context->errorMessage));
         return 1;
     }
     
@@ -1208,7 +1212,7 @@ function wiff_context_module_list_available(Context & $context, &$argv)
     
     $availList = $context->getAvailableModuleList();
     if ($availList === false) {
-        error_log(sprintf("Error: could not get list of available modules: %s", $context->errorMessage));
+        printerr(sprintf("Error: could not get list of available modules: %s\n", $context->errorMessage));
         return 1;
     }
     
@@ -1316,13 +1320,13 @@ function wiff_context_param_get(Context & $context, &$argv)
 {
     $modParam = array_shift($argv);
     if ($modParam === null) {
-        error_log(sprintf("Error: missing module-name:param-name."));
+        printerr(sprintf("Error: missing module-name:param-name.\n"));
         return 1;
     }
     
     $m = array();
     if (!preg_match('/^([a-zA-Z0-9_-]+):([a-zA-Z0-9_-]+)$/', $modParam, $m)) {
-        error_log(sprintf("Error: malformed module-name:param-name specifier '%s'.", $modParam));
+        printerr(sprintf("Error: malformed module-name:param-name specifier '%s'.\n", $modParam));
         return 1;
     }
     
@@ -1331,13 +1335,13 @@ function wiff_context_param_get(Context & $context, &$argv)
     
     $module = $context->getModuleInstalled($modName);
     if ($module === false) {
-        error_log(sprintf("Error: could not get module '%s': %s", $modName, $context->errorMessage));
+        printerr(sprintf("Error: could not get module '%s': %s\n", $modName, $context->errorMessage));
         return 1;
     }
     
     $parameter = $module->getParameter($paramName);
     if ($parameter === false) {
-        error_log(sprintf("Error: could not get parameter '%s' for module '%s': %s", $paramName, $modName, $module->errorMessage));
+        printerr(sprintf("Error: could not get parameter '%s' for module '%s': %s\n", $paramName, $modName, $module->errorMessage));
         return 1;
     }
     
@@ -1350,19 +1354,19 @@ function wiff_context_param_set(Context & $context, &$argv)
 {
     $modParam = array_shift($argv);
     if ($modParam === null) {
-        error_log(sprintf("Error: missing module-name:param-name."));
+        printerr(sprintf("Error: missing module-name:param-name.\n"));
         return 1;
     }
     
     $paramValue = array_shift($argv);
     if ($paramValue === null) {
-        error_log(sprintf("Error: missing param-value."));
+        printerr(sprintf("Error: missing param-value.\n"));
         return 1;
     }
     
     $m = array();
     if (!preg_match('/^([a-zA-Z0-9_-]+):([a-zA-Z0-9_-]+)$/', $modParam, $m)) {
-        error_log(sprintf("Error: malformed module-name:param-name specifier '%s'.", $modParam));
+        printerr(sprintf("Error: malformed module-name:param-name specifier '%s'.\n", $modParam));
         return 1;
     }
     
@@ -1371,26 +1375,26 @@ function wiff_context_param_set(Context & $context, &$argv)
     
     $module = $context->getModuleInstalled($modName);
     if ($module === false) {
-        error_log(sprintf("Error: could not get module '%s'.", $modName));
+        printerr(sprintf("Error: could not get module '%s'.\n", $modName));
         return 1;
     }
     
     $parameter = $module->getParameter($paramName);
     if ($parameter === false) {
-        error_log(sprintf("Error: could not get parameter '%s' for module '%s': %s", $paramName, $modName, $module->errorMessage));
+        printerr(sprintf("Error: could not get parameter '%s' for module '%s': %s\n", $paramName, $modName, $module->errorMessage));
         return 1;
     }
     
     $parameter->value = $paramValue;
     $ret = $module->storeParameter($parameter);
     if ($ret === false) {
-        error_log(sprintf("Error: could not set paremter '%s' for module '%s': %s", $paramName, $modName, $module->errorMessage));
+        printerr(sprintf("Error: could not set paremter '%s' for module '%s': %s\n", $paramName, $modName, $module->errorMessage));
         return 1;
     }
     
     $parameter = $module->getParameter($paramName);
     if ($parameter === false) {
-        error_log(sprintf("Error: could not get back parameter '%s' for module '%s': %s", $paramName, $modName, $module->errorMessage));
+        printerr(sprintf("Error: could not get back parameter '%s' for module '%s': %s\n", $paramName, $modName, $module->errorMessage));
         return 1;
     }
     
@@ -1407,13 +1411,13 @@ function wiff_whattext(&$argv)
     
     $context = $wiff->getContext($ctx_name);
     if ($context === false) {
-        error_log(sprintf("Error: could not get context '%s'!\n", $ctx_name));
+        printerr(sprintf("Error: could not get context '%s'!\n", $ctx_name));
         return 1;
     }
     
     $whattext = sprintf("%s/whattext", $context->root);
     if (!is_executable($whattext)) {
-        error_log(sprintf("Error: whattext '%s' not found or not executable.\n", $whattext));
+        printerr(sprintf("Error: whattext '%s' not found or not executable.\n", $whattext));
         return 1;
     }
     
@@ -1431,13 +1435,13 @@ function wiff_wstop(&$argv)
     
     $context = $wiff->getContext($ctx_name);
     if ($context === false) {
-        error_log(sprintf("Error: could not get context '%s'!\n", $ctx_name));
+        printerr(sprintf("Error: could not get context '%s'!\n", $ctx_name));
         return 1;
     }
     
     $wstart = sprintf("%s/wstop", $context->root);
     if (!is_executable($wstart)) {
-        error_log(sprintf("Error: wstop '%s' not found or not executable.\n", $wstart));
+        printerr(sprintf("Error: wstop '%s' not found or not executable.\n", $wstart));
         return 1;
     }
     
@@ -1455,13 +1459,13 @@ function wiff_wstart(&$argv)
     
     $context = $wiff->getContext($ctx_name);
     if ($context === false) {
-        error_log(sprintf("Error: could not get context '%s'!\n", $ctx_name));
+        printerr(sprintf("Error: could not get context '%s'!\n", $ctx_name));
         return 1;
     }
     
     $wstart = sprintf("%s/wstart", $context->root);
     if (!is_executable($wstart)) {
-        error_log(sprintf("Error: wstart '%s' not found or not executable.\n", $wstart));
+        printerr(sprintf("Error: wstart '%s' not found or not executable.\n", $wstart));
         return 1;
     }
     
@@ -1495,14 +1499,14 @@ function wiff_getParamValue($paramName)
 {
     $wiffContextName = getenv('WIFF_CONTEXT_NAME');
     if ($wiffContextName === false || preg_match('/^\s*$/', $wiffContextName)) {
-        error_log(sprintf("Error: WIFF_CONTEXT_NAME is not defined or empty.\n"));
+        printerr(sprintf("Error: WIFF_CONTEXT_NAME is not defined or empty.\n"));
         return false;
     }
     
     $wiff = WIFF::getInstance();
     $context = $wiff->getContext($wiffContextName);
     if ($context === false) {
-        error_log(sprintf("Error: could not get context '%s': %s\n", $wiffContextName, $wiff->errorMessage));
+        printerr(sprintf("Error: could not get context '%s': %s\n", $wiffContextName, $wiff->errorMessage));
         return false;
     }
     
@@ -1679,7 +1683,7 @@ function setuid_wiff($path)
 {
     $stat = stat($path);
     if ($stat === false) {
-        error_log(sprintf("Error: could not stat '%s'!", $path));
+        printerr(sprintf("Error: could not stat '%s'!\n", $path));
         return false;
     }
     
@@ -1691,12 +1695,12 @@ function setuid_wiff($path)
     if ($uid != $wiff_uid) {
         $ret = posix_setgid($wiff_gid);
         if ($ret === false) {
-            error_log(sprintf("Error: could not setgid to gid '%s'.\n", $wiff_gid));
+            printerr(sprintf("Error: could not setgid to gid '%s'.\n", $wiff_gid));
             return false;
         }
         $ret = posix_setuid($wiff_uid);
         if ($ret === false) {
-            error_log(sprintf("Error: could not setuid to uid '%s'.\n", $wiff_uid));
+            printerr(sprintf("Error: could not setuid to uid '%s'.\n", $wiff_uid));
             return false;
         }
     }
@@ -1721,7 +1725,7 @@ function wiff_delete(&$argv)
             break;
 
         default:
-            error_log(sprintf("Unknown operation '%s'!\n", $op));
+            printerr(sprintf("Unknown operation '%s'!\n", $op));
             return wiff_delete_help($argv);
     }
 }
@@ -1748,7 +1752,7 @@ function wiff_delete_context(&$argv)
     $res = 0;
     $ret = $wiff->deleteContext($ctx_name, $res);
     if ($res === false) {
-        error_log(sprintf("Error: cound not delete context '%s': %s\n", $ctx_name, $wiff->errorMessage));
+        printerr(sprintf("Error: cound not delete context '%s': %s\n", $ctx_name, $wiff->errorMessage));
         return 1;
     }
     
@@ -1793,7 +1797,7 @@ function wiff_crontab(&$argv)
                 break;
 
             default:
-                error_log(sprintf("Unknown operation '%s'!\n", $op));
+                printerr(sprintf("Unknown operation '%s'!\n", $op));
                 return wiff_crontab_help();
         }
     }
@@ -1806,7 +1810,7 @@ function wiff_crontab(&$argv)
 
         case 'register':
             if (!$file) {
-                error_log("Error: missing file argument");
+                printerr("Error: missing file argument\n");
                 wiff_crontab_help();
                 return 1;
             }
@@ -1817,7 +1821,7 @@ function wiff_crontab(&$argv)
 
         case 'unregister':
             if ($file === NULL) {
-                error_log("Error: missing file argument");
+                printerr("Error: missing file argument\n");
                 wiff_crontab_help();
                 return 1;
             }

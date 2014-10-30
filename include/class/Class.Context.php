@@ -772,7 +772,7 @@ class Context
             'eq' => '==',
             'ne' => '!='
         );
-        return (isset($symbol[$comp])) ? $symbol[$comp] : "??";
+        return (isset($symbol[$comp])) ? $symbol[$comp] : "?";
     }
     /**
      * Get available module statisfying $comp $version with $name
@@ -902,7 +902,7 @@ class Context
                             if ($this->cmpModuleByVersionReleaseAsc($satisfyingMod, $currentInstalledMod) > 0) {
                                 $satisfyingMod->needphase = 'upgrade';
                             } else {
-                                $this->errorMessage = sprintf("Module %s (%s %s) required by %s is not compatible with current set of installed and available modules.", $reqModName, $this->compSymbol($reqModComp) , $reqModVersion, $mod->name);
+                                $this->errorMessage = sprintf("Module %s (%s %s) required by %s is not compatible with current set of installed and available modules.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=="")?$reqModVersion:'?'), $mod->name);
                                 return false;
                             }
                             // Keep the satisfying module as the required module for install/upgrade
@@ -941,10 +941,10 @@ class Context
                          * Do not warn/err if an installed module has a broken
                          * dependency when archiving or restoring a context.
                         */
-                        error_log(sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , $reqModVersion, $mod->name));
+                        $this->log(LOG_INFO, sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=='')?$reqModVersion:'?'), $mod->name));
                         continue;
                     }
-                    $this->errorMessage = sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , $reqModVersion, $mod->name);
+                    $this->errorMessage = sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=='')?$reqModVersion:'?'), $mod->name);
                     return false;
                 }
                 
@@ -1198,7 +1198,7 @@ class Context
                     return true;
                 }
             default:
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Comparison operator '%s' not yet supported.", $module->requires['installer']['comp']));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Comparison operator '%s' not yet supported.", $module->requires['installer']['comp']));
         }
         
         return true;
@@ -1662,10 +1662,10 @@ class Context
             }
             //error_log(__METHOD__ . " " . sprintf("tarExcludeOpts = [%s]", $tarExcludeOpts));
             // --- Generate context tar.gz --- //
-            $script = sprintf("tar -C %s -czf %s/context.tar.gz %s .", escapeshellarg($this->root) , escapeshellarg($tmp) , $tarExcludeOpts);
-            $result = system($script, $retval);
+            $script = sprintf("tar -C %s -czf %s/context.tar.gz %s . 2>&1", escapeshellarg($this->root) , escapeshellarg($tmp) , $tarExcludeOpts);
+            exec($script, $output, $retval);
             if ($retval != 0) {
-                $this->errorMessage = "Error when making context tar :: " . $result;
+                $this->errorMessage = "Error when making context tar :: " . join("\n", $output);
                 if (file_exists("$tmp/context.tar.gz")) {
                     unlink("$tmp/context.tar.gz");
                 }
@@ -1685,7 +1685,7 @@ class Context
                 unlink($status_file);
                 return false;
             }
-            error_log('Generated context.tar.gz');
+            $this->log(LOG_INFO, 'Generated context.tar.gz');
             // --- Generate database dump --- //
             $pgservice_core = $this->getParamByName('core_db');
             
@@ -1693,7 +1693,7 @@ class Context
             
             $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
             if ($errorFile === false) {
-                error_log(__FUNCTION__ . " " . sprintf("Error creating temporary file."));
+                $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
                 $this->errorMessage = "Error creating temporary file for error.";
                 if (file_exists("$tmp/context.tar.gz")) {
                     unlink("$tmp/context.tar.gz");
@@ -1708,7 +1708,7 @@ class Context
             }
             
             $script = sprintf("PGSERVICE=%s pg_dump --compress=9 --no-owner 1>%s 2>%s", escapeshellarg($pgservice_core) , escapeshellarg($dump) , escapeshellarg($errorFile));
-            $result = system($script, $retval);
+            exec($script, $output, $retval);
             
             if ($retval != 0) {
                 $this->errorMessage = "Error when making database dump :: " . file_get_contents($errorFile);
@@ -1741,7 +1741,7 @@ class Context
                 unlink($status_file);
                 return false;
             }
-            error_log('Generated core_db.pg_dump.gz');
+            $this->log(LOG_INFO, 'Generated core_db.pg_dump.gz');
             
             if ($vaultExclude != 'on') {
                 // --- Generate vaults tar.gz files --- //
@@ -1768,10 +1768,10 @@ class Context
                             "r_path" => $r_path
                         );
                         $vaultExclude = 'Vaultexists';
-                        $script = sprintf("tar -C %s -czf  %s/vault_$id_fs.tar.gz .", escapeshellarg($r_path) , escapeshellarg($tmp));
-                        $res = system($script, $retval);
+                        $script = sprintf("tar -C %s -czf  %s/vault_$id_fs.tar.gz . 2>&1", escapeshellarg($r_path) , escapeshellarg($tmp));
+                        exec($script, $output, $retval);
                         if ($retval != 0) {
-                            $this->errorMessage = "Error when making vault tar :: " . $res;
+                            $this->errorMessage = "Error when making vault tar :: " . join("\n", $output);
                             if (file_exists("$tmp/context.tar.gz")) {
                                 unlink("$tmp/context.tar.gz");
                             }
@@ -1815,11 +1815,11 @@ class Context
                         }
                     } elseif ($vaultExclude != 'Vaultexists') {
                         $vaultExclude = 'on';
-                        error_log("No vault directory found");
+                        $this->log(LOG_INFO, "No vault directory found");
                     }
                 }
                 if ($vaultExclude != 'on') {
-                    error_log('Generated vault tar gz');
+                    $this->log(LOG_INFO, 'Generated vault tar gz');
                 }
             }
             // --- Write archive information --- //
@@ -2094,13 +2094,13 @@ class Context
             
             $stat = lstat($fpath);
             if ($stat === false) {
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("stat('%s') from module '%s' returned with error.", $fpath, $moduleName));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("stat('%s') from module '%s' returned with error.", $fpath, $moduleName));
                 continue;
             }
             
             if (!is_link($fpath) && is_dir($fpath)) {
                 if ($mentry['type'] != 'd') {
-                    error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Type mismatch for file '%s' from module '%s': type is 'd' while manifest says '%s'.", $fpath, $moduleName, $mentry['type']));
+                    $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Type mismatch for file '%s' from module '%s': type is 'd' while manifest says '%s'.", $fpath, $moduleName, $mentry['type']));
                     continue;
                 }
                 if ($stat['nlink'] > 2 || count(scandir($fpath)) > 2) {
@@ -2112,7 +2112,7 @@ class Context
             }
             
             if ($ret === false) {
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Error removing '%s' (%s) from module '%s'.", $fpath, $mentry['type'], $moduleName));
+                $this->log(LOG_ERR, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Error removing '%s' (%s) from module '%s'.", $fpath, $mentry['type'], $moduleName));
             }
         }
         
@@ -2225,8 +2225,9 @@ class Context
             $cmd.= sprintf(' --%s=%s', $name, escapeshellarg($value));
         }
         
-        system(sprintf("%s", $cmd) , $ret);
+        exec(sprintf("%s 2>&1", $cmd) , $output, $ret);
         if ($ret != 0) {
+            $this->errorMessage = sprintf("Wsh command '%s' returned with error: %s", $cmd, join("\n", $output));
             return 'Error Trying to delete crontab';
         }
         return "";
@@ -2249,53 +2250,53 @@ class Context
             $ret = $this->wsh("crontab", $args);
             if ($ret) {
                 $err_msg.= $ret;
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextCrontab returned with error: %s", $this->errorMessage));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextCrontab returned with error: %s", $this->errorMessage));
             }
-            error_log("crontab deleted");
+            $this->log(LOG_INFO, "crontab deleted");
         }
         if ($opt === 'vault' || $opt === false) {
             $ret = $this->deleteContextVault();
             if ($ret) {
                 $err_msg.= $ret;
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextVault returned with error: %s", $this->errorMessage));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextVault returned with error: %s", $this->errorMessage));
             }
-            error_log("vault deleted");
+            $this->log(LOG_INFO, "vault deleted");
         }
         if ($opt === 'database' || $opt === false) {
             $err = '';
             $ret = $this->deleteContextDatabaseContent($err);
             if ($ret === false) {
                 $err_msg.= $this->errorMessage;
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextDatabaseContent returned with error: %s", $this->errorMessage));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextDatabaseContent returned with error: %s", $this->errorMessage));
             } elseif ($err != '') {
                 $err_msg.= $err;
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextDatabaseContent returned with warning: %s", $err));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextDatabaseContent returned with warning: %s", $err));
             }
-            error_log("database deleted");
+            $this->log(LOG_INFO, "database deleted");
         }
         if ($opt === 'root' || $opt === false) {
             $ret = $this->deleteContextRoot();
             if ($ret) {
                 $err_msg.= $ret;
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextRoot returned with error: %s", $this->errorMessage));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextRoot returned with error: %s", $this->errorMessage));
             }
-            error_log("root deleted");
+            $this->log(LOG_INFO, "root deleted");
         }
         if ($opt === 'unregister' || $opt === false) {
             if ($this->register == 'registered') {
                 $ret = $this->deleteRegistrationConfiguration();
                 if ($ret === false) {
                     $err_msg.= $this->errorMessage;
-                    error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteRegistrationConfiguration returned with error: %s", $this->errorMessage));
+                    $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteRegistrationConfiguration returned with error: %s", $this->errorMessage));
                 }
             }
             $ret = $this->unregisterContextFromConfig();
             if ($ret) {
                 $res = false;
                 $err_msg.= $ret;
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("unregisterContextFromConfig returned with error: %s", $this->errorMessage));
+                $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("unregisterContextFromConfig returned with error: %s", $this->errorMessage));
             }
-            error_log("context unregister");
+            $this->log(LOG_INFO, "context unregister");
         }
         return $err_msg;
     }
@@ -2383,7 +2384,7 @@ class Context
         if (!is_array($err_list)) {
             $err = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "err_list is not an array.");
             $this->errorMessage.= $err;
-            error_log($err);
+            $this->log(LOG_ERR, $err);
             return false;
         }
         
@@ -2392,7 +2393,7 @@ class Context
             $this->errorMessage.= sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not get type for file '%s'.\n", $path);
             $err = sprintf("Could not get type for file '%s'.", $path);
             array_push($err_list, $err);
-            error_log($this->errorMessage);
+            $this->log(LOG_ERR, $this->errorMessage);
             return false;
         }
         
@@ -2410,7 +2411,7 @@ class Context
                 $this->errorMessage.= sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Could not stat dir '%s'.\n", $path);
                 $err = sprintf("Could not stat dir '%s'.", $path);
                 array_push($err_list, $err);
-                error_log($this->errorMessage);
+                $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
             
@@ -2418,7 +2419,7 @@ class Context
                 $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Won't remove dir '%s' as it contains %s files.\n", $path, $s['nlink'] - 2);
                 $err = sprintf("Won't remove dir '%s' as it contains %s files.", $path, $s['nlink'] - 2);
                 array_push($err_list, $err);
-                error_log($this->errorMessage);
+                $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
             
@@ -2427,7 +2428,7 @@ class Context
                 $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error removing dir '%s'.\n", $path);
                 $err = sprintf("Error removing dir '%s'.", $path);
                 array_push($err_list, $err);
-                error_log($this->errorMessage);
+                $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
             
@@ -2439,7 +2440,7 @@ class Context
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error removing file '%s' (filetype=%s).\n", $path, $filetype);
             $err = sprintf("Error removing file '%s' (filetype=%s).", $path, $filetype);
             array_push($err_list, $err);
-            error_log($this->errorMessage);
+            $this->log(LOG_ERR, $this->errorMessage);
             return false;
         }
         
@@ -2594,7 +2595,7 @@ class Context
         
         if ($this->register != 'registered') {
             $this->errorMessage = sprintf("Context '%s' is not registered.", $this->name);
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . $this->errorMessage);
+            $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . $this->errorMessage);
             return true;
         }
         
@@ -2808,5 +2809,11 @@ class Context
             return false;
         }
         return true;
+    }
+
+    private function log($pri, $msg) {
+        require_once 'class/Class.WIFF.php';
+        $wiff = WIFF::getInstance();
+        $wiff->log($pri, $msg);
     }
 }

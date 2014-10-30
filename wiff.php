@@ -137,6 +137,8 @@ function answer($data, $error = null, $warnings = array())
 {
     if ($data === null) {
         // echo "{error:'".addslashes($error)."',data:'',success:'false'}";
+        $wiff = WIFF::getInstance();
+        $wiff->log(LOG_ERR, $error);
         $answer = new JSONAnswer($data, $error, false, $warnings);
         echo $answer->encode();
     } else {
@@ -247,7 +249,7 @@ if (isset($_REQUEST['registerCrontab'])) {
 }
 // Request to get a wiff parameter value
 if (isset($_REQUEST['getParam'])) {
-    $value = $wiff->getParam($_REQUEST['paramName']);
+    $value = $wiff->getParam($_REQUEST['paramName'], false, true);
     if (!$wiff->errorMessage) {
         answer($value);
     } else {
@@ -669,7 +671,6 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
     }
     
     if ($module === false) {
-        error_log(__FUNCTION__ . " " . $context->errorMessage);
         answer(null, $context->errorMessage);
     }
     
@@ -1077,6 +1078,21 @@ if (isset($_REQUEST['getConfiguration']) && isset($_REQUEST['context'])) {
     echo $answer->encode();
     exit(0);
 }
+
+if (isset($_REQUEST['locallog'])) {
+    switch ($_REQUEST['locallog']) {
+        case 'clear':
+            $wiff->clearLog();
+            break;
+        case 'view':
+            header('Content-Type: text/plain');
+            $wiff->streamLog();
+            exit();
+            break;
+    }
+    answer("", "");
+}
+
 // Call to get a param value
 if (isset($argv)) {
     $paramName = "";
@@ -1086,7 +1102,7 @@ if (isset($argv)) {
 
     $xml = $wiff->loadContextsDOMDocument();
     if ($xml === false) {
-        error_log(sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage));
+        $wiff->log(LOG_ERR, sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage));
         return false;
     }
 

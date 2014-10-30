@@ -559,12 +559,12 @@ class Module
             return false;
         }
         // Unpack archive
-        $cmd = 'tar -zxOf ' . escapeshellarg($this->tmpfile) . ' content.tar.gz | tar ' . (($destDir != '') ? '-C ' . escapeshellarg($destDir) : '') . ' -zxf -';
+        $cmd = '(tar -zxOf ' . escapeshellarg($this->tmpfile) . ' content.tar.gz | tar ' . (($destDir != '') ? '-C ' . escapeshellarg($destDir) : '') . ' -zxf -) 2>&1';
         
         $ret = null;
-        system($cmd, $ret);
+        exec($cmd, $output, $ret);
         if ($ret != 0) {
-            $this->errorMessage = sprintf("Error executing command [%s]", $cmd);
+            $this->errorMessage = sprintf("Error executing command [%s]: %s", $cmd, join("\n", $output));
             return false;
         }
         

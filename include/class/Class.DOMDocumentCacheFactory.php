@@ -17,8 +17,6 @@ class DOMDocumentCacheFactory
      */
     public static function load($filename, $options = 0)
     {
-        require_once 'class/Class.Debug.php';
-        
         $realFilename = realpath($filename);
         $dom = self::cacheGet($realFilename);
         if ($dom !== false) {
