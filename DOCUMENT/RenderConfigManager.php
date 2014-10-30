@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * Created by PhpStorm.
  * User: eric
@@ -69,6 +69,7 @@ class RenderConfigManager
     
     protected static function getRenderFromVidinfo(array $vidInfo, \Doc $document)
     {
+        
         $mskId = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_mskid];
         if ($mskId) {
             $err = $document->setMask($mskId);
@@ -77,7 +78,7 @@ class RenderConfigManager
             }
         }
         
-        $renderClass = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderclass];
+        $renderClass = isset($vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderclass]) ? $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
             if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {

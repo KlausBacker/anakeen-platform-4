@@ -86,7 +86,6 @@ class DocumentTemplateContext implements \ArrayAccess
     }
     protected function _getProperties()
     {
-        
         return $this->_getDocumentData("document.properties");
     }
     
@@ -125,8 +124,8 @@ class DocumentTemplateContext implements \ArrayAccess
     
     public function userLocale()
     {
-        $localeId= \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $config=getLocaleConfig($localeId);
+        $localeId = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $config = getLocaleConfig($localeId);
         return $config["culture"];
     }
     
