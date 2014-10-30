@@ -67,6 +67,7 @@ case 'delete':
 case 'crontab':
   $cmd = array_shift($argv);
   $ret = wiff_crontab($argv);
+  break;
 case 'send_configuration':
   $ret = wiff_send_configuration();
   break;
