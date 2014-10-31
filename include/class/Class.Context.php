@@ -29,7 +29,9 @@ function deleteChildren($node)
     }
 }
 
-class Context
+require_once 'class/Class.Context.php';
+
+class Context extends WiffCommon
 {
     /**
      * @var string Context's name
@@ -2816,12 +2818,6 @@ class Context
             return false;
         }
         return true;
-    }
-
-    private function log($pri, $msg) {
-        require_once 'class/Class.WIFF.php';
-        $wiff = WIFF::getInstance();
-        $wiff->log($pri, $msg);
     }
 
     public function getAllProperties() {

@@ -32,7 +32,7 @@ require_once ('class/Class.JSONAnswer.php');
 // Autoload required classes
 function __autoload($class_name)
 {
-    require_once 'class/Class.' . $class_name . '.php';
+    require_once sprintf('class/Class.%s.php', $class_name);
 }
 // Disabling magic quotes at runtime
 // http://fr3.php.net/manual/en/security.magicquotes.disabling.php
@@ -126,19 +126,19 @@ function checkInitServer()
         exit(1);
     }
 }
+
 /**
  * Format answer for javascript
  * Success attribute is used for recognition by ExtJS
  * @return string formatted
  * @param string $data
- * @param string $error[optional]
+ * @param string $error [optional]
+ * @param array $warnings
  */
 function answer($data, $error = null, $warnings = array())
 {
     if ($data === null) {
         // echo "{error:'".addslashes($error)."',data:'',success:'false'}";
-        $wiff = WIFF::getInstance();
-        $wiff->log(LOG_ERR, $error);
         $answer = new JSONAnswer($data, $error, false, $warnings);
         echo $answer->encode();
     } else {
@@ -200,6 +200,8 @@ if (isset($_REQUEST['needUpdate'])) {
 }
 // Request to update installer
 if (isset($_REQUEST['update'])) {
+    $wiff->activity(sprintf("* Request update"));
+
     $wiff->update();
     if (!$wiff->errorMessage) {
         answer(true);
@@ -227,6 +229,8 @@ if (isset($_REQUEST['hasPasswordFile'])) {
 }
 
 if (isset($_REQUEST['createPasswordFile']) && isset($_REQUEST['login']) && isset($_REQUEST['password'])) {
+    $wiff->activity(sprintf("* Request createPasswordFile (login = '%s')", $_REQUEST['login']));
+
     $wiff->createPasswordFile($_REQUEST['login'], $_REQUEST['password']);
     if (!$wiff->errorMessage) {
         answer(true);
@@ -236,6 +240,8 @@ if (isset($_REQUEST['createPasswordFile']) && isset($_REQUEST['login']) && isset
 }
 
 if (isset($_REQUEST['registerCrontab'])) {
+    $wiff->activity(sprintf("* Request registerCrontab"));
+
     $crontab = new Crontab();
     $ret = true;
     if (!$crontab->isAlreadyRegister("control.cron")) {
@@ -258,6 +264,8 @@ if (isset($_REQUEST['getParam'])) {
 }
 // Request to change all Dynacase-control params' value
 if (isset($_REQUEST['changeAllParams'])) {
+    $wiff->activity(sprintf("* Request changeAllParams"));
+
     $result = $wiff->changeAllParams($_REQUEST);
     if (!$wiff->errorMessage) {
         answer($result);
@@ -267,6 +275,8 @@ if (isset($_REQUEST['changeAllParams'])) {
 }
 // Request to change Dynacase-Control params' value
 if (isset($_REQUEST['changeParams'])) {
+    $wiff->activity(sprintf("* Request changeParams ('%s', '%s')", $_REQUEST['name'], $_REQUEST['value']));
+
     $result = $wiff->changeParams($_REQUEST['name'], $_REQUEST['value']);
     if (!$wiff->errorMessage) {
         answer($result);
@@ -292,6 +302,8 @@ if (isset($_REQUEST['getParamList'])) {
 }
 // Request to set a wiff parameter value or to create a new one with given value
 if (isset($_REQUEST['setParam'])) {
+    $wiff->activity(sprintf("* Request setPararm ('%s', '%s')", $_REQUEST['paramName'], $_REQUEST['paramValue']));
+
     $wiff->setParam($_REQUEST['paramName'], $_REQUEST['paramValue']);
     if (!$wiff->errorMessage) {
         answer(true);
@@ -301,6 +313,8 @@ if (isset($_REQUEST['setParam'])) {
 }
 // Request to import a web installer archive to a given context
 if (isset($_REQUEST['importArchive']) && isset($context)) {
+    $wiff->activity(sprintf("* Request importArchive (name = '%s', type = '%s', size = '%s', error = %d)", $_FILES['module']['name'], $_FILES['module']['type'], $_FILES['module']['size'], $_FILES['module']['error']));
+
     //answer(null,basename( $_FILES['module']['tmp_name']));
     $moduleFile = $context->uploadModule();
     if (!$context->errorMessage) {
@@ -320,6 +334,8 @@ if (isset($_REQUEST['getRepoList'])) {
 }
 // Request to add a repo
 if (isset($_REQUEST['createRepo']) && $_REQUEST['createRepo'] == true) {
+    $wiff->activity(sprintf("* Request createRepo (name = '%s', description = '%s', protocol = '%s', host = '%s', path = '%s', default = '%s', authenticated = '%s', login = '%s', password = '***')", $_REQUEST['name'], $_REQUEST['description'], $_REQUEST['protocol'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['default'], $_REQUEST['authenticated'], $_REQUEST['login']));
+
     $return = $wiff->createRepo($_REQUEST['name'], $_REQUEST['description'], $_REQUEST['protocol'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['default'], $_REQUEST['authenticated'], $_REQUEST['login'], $_REQUEST['password']);
     if (!$wiff->errorMessage) {
         answer($return);
@@ -329,6 +345,8 @@ if (isset($_REQUEST['createRepo']) && $_REQUEST['createRepo'] == true) {
 }
 // request to modify a repo
 if (isset($_REQUEST['modifyRepo']) && $_REQUEST['modifyRepo'] == true) {
+    $wiff->activity(sprintf("* Request modifyRepo (name = '%s', description = '%s', protocol = '%s', host = '%s', path = '%s', default = '%s', authenticated = '%s', login = '%s', password = '***')", $_REQUEST['name'], $_REQUEST['description'], $_REQUEST['protocol'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['default'], $_REQUEST['authenticated'], $_REQUEST['login']));
+
     $return = $wiff->modifyRepo($_REQUEST['name'], $_REQUEST['description'], $_REQUEST['protocol'], $_REQUEST['host'], $_REQUEST['path'], $_REQUEST['default'], $_REQUEST['authenticated'], $_REQUEST['login'], $_REQUEST['password']);
     if (!$wiff->errorMessage) {
         answer($return);
@@ -338,6 +356,8 @@ if (isset($_REQUEST['modifyRepo']) && $_REQUEST['modifyRepo'] == true) {
 }
 // Request to delete a repo
 if (isset($_REQUEST['deleteRepo'])) {
+    $wiff->activity(sprintf("* Request deleteRepo (name = '%s')", $_REQUEST['name']));
+
     $wiff->deleteRepo($_REQUEST['name']);
     if (!$wiff->errorMessage) {
         answer(true);
@@ -365,7 +385,8 @@ if (isset($_REQUEST['getContextList'])) {
 }
 // Request to delete a context
 if (isset($_REQUEST['deleteContext'])) {
-    
+    $wiff->activity(sprintf("* Request deleteContext (name = '%s')", $_REQUEST['contextToDelete']));
+
     $res = true;
     $err = $wiff->deleteContext($_REQUEST['contextToDelete'], $res, $_REQUEST['deleteContext']);
     if ($res === false) {
@@ -384,6 +405,8 @@ if (isset($_REQUEST['getArchivedContextList'])) {
 }
 // Request to create new context
 if (isset($_REQUEST['createContext'])) {
+    $wiff->activity(sprintf("* Request createContext (name = '%s', root = '%s', description = '%s', url = '%s')", $_REQUEST['name'], $_REQUEST['root'], $_REQUEST['desc'], $_REQUEST['url']));
+
     $ret = $context = $wiff->createContext($_REQUEST['name'], $_REQUEST['root'], $_REQUEST['desc'], $_REQUEST['url']);
     if ($ret === false) {
         answer(null, $wiff->errorMessage);
@@ -417,12 +440,14 @@ if (isset($_REQUEST['createContext'])) {
 }
 // Request to modify an existing context
 if (isset($_REQUEST['saveContext'])) {
+    $wiff->activity(sprintf("* Request saveContext (name = '%s', root = '%s', description = '%s', url = '%s')", $_REQUEST['name'], $_REQUEST['root'], $_REQUEST['desc'], $_REQUEST['url']));
+
     $ret = $context = $wiff->saveContext($_REQUEST['name'], $_REQUEST['root'], $_REQUEST['desc'], $_REQUEST['url']);
     if ($ret === false) {
         answer(null, $wiff->errorMessage);
         exit(1);
     }
-    
+
     $ret = $context->setRegister((isset($_REQUEST['register'])) ? true : false);
     if ($ret === false) {
         answer(null, $context->errorMessage);
@@ -450,6 +475,8 @@ if (isset($_REQUEST['saveContext'])) {
 }
 // Request to archive an existing context
 if (isset($_REQUEST['archiveContext'])) {
+    $wiff->activity(sprintf("* Request archiveContext (name = '%s')", $_REQUEST['name']));
+
     /**
      * @var Context $context
      */
@@ -470,7 +497,8 @@ if (isset($_REQUEST['archiveContext'])) {
 }
 // Request to create a context from an archived context
 if (isset($_REQUEST['createContextFromArchive'])) {
-    
+    $wiff->activity(sprintf("* Request createContextFromArchive (name = '%s', archiveId = '%s', name = '%s', root = '%s', vault_root = '%s', core_pgservice = '%s')", $_REQUEST['name'], $_REQUEST['archiveId'], $_REQUEST['name'], $_REQUEST['root'], $_REQUEST['vault_root'], $_REQUEST['core_pgservice']));
+
     if (!$_REQUEST['name']) {
         answer(null, 'A name must be provided.');
     } elseif (!$_REQUEST['root']) {
@@ -503,7 +531,8 @@ if (isset($_REQUEST['createContextFromArchive'])) {
 }
 
 if (isset($_REQUEST['deleteArchive'])) {
-    
+    $wiff->activity(sprintf("* Request deleteArchive (archiveId = '%s')", $_REQUEST['archiveId']));
+
     $archiveId = $_REQUEST['archiveId'];
     
     $result = $wiff->deleteArchive($archiveId);
@@ -515,7 +544,8 @@ if (isset($_REQUEST['deleteArchive'])) {
 }
 
 if (isset($_REQUEST['downloadArchive'])) {
-    
+    $wiff->activity(sprintf("* Request downloadArchive (archiveId = '%s')", $_REQUEST['archiveId']));
+
     if ($url = $wiff->downloadArchive($_REQUEST['archiveId'])) {
         answer($url);
     } else {
@@ -524,6 +554,8 @@ if (isset($_REQUEST['downloadArchive'])) {
 }
 // Request to get dependency module list for a module
 if (isset($_REQUEST['context']) && isset($_REQUEST['modulelist']) && isset($_REQUEST['getModuleDependencies'])) {
+    $wiff->activity(sprintf("* Request getModuleDependencies (context = '%s', modules = '%s')", $_REQUEST['name'], join(', ', $_REQUEST['modulelist'])));
+
     $onlyInstalled = isset($_REQUEST["onlyInstalled"]) ? true : false;
     $dependencyList = $context->getModuleDependencies($_REQUEST['modulelist'], false, $onlyInstalled);
     
@@ -535,6 +567,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['modulelist']) && isset($_REQ
 }
 // Request to get dependency module list for an imported module
 if (isset($_REQUEST['context']) && isset($_REQUEST['file']) && isset($_REQUEST['getLocalModuleDependencies'])) {
+    $wiff->activity(sprintf("* Request getLocalModuleDependencies (context = '%s', file = '%s')", $_REQUEST['context'], $_REQUEST['file']));
+
     $dependencyList = $context->getLocalModuleDependencies($_REQUEST['file']);
     
     if ($dependencyList === false) {
@@ -545,6 +579,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['file']) && isset($_REQUEST['
 }
 // Request to download module to temporary dir
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['download'])) {
+    $wiff->activity(sprintf("* Request download (context = '%s', module = '%s')", $_REQUEST['context'], $_REQUEST['module']));
+
     $module = $context->getModuleAvail($_REQUEST['module']);
     
     if ($module->download('downloaded')) {
@@ -586,6 +622,8 @@ if (isset($_REQUEST['cleanUnpack']) && isset($_REQUEST['context']) && isset($_RE
 // Request to activate a repo list in context
 // TODO Unused
 if (isset($_REQUEST['context']) && isset($_REQUEST['activateRepo']) && isset($_REQUEST['repo'])) {
+    $wiff->activity(sprintf("* Request activateRepo (context = '%s', repo = '%s')", $_REQUEST['context'], $_REQUEST['repo']));
+
     if (!$wiff->errorMessage) {
         foreach ($_REQUEST['repo'] as $repo) {
             $context->activateRepo($repo);
@@ -602,6 +640,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['activateRepo']) && isset($_R
 // Request to deactivate a repo list in context
 // TODO Unused
 if (isset($_REQUEST['context']) && isset($_REQUEST['deactivateRepo']) && isset($_REQUEST['repo'])) {
+    $wiff->activity(sprintf("* Request deactivateRepo (context = '%s', repo = '%s')", $_REQUEST['context'], $_REQUEST['repo']));
+
     if (!$wiff->errorMessage) {
         foreach ($_REQUEST['repo'] as $repo) {
             $context->deactivateRepo($repo);
@@ -644,6 +684,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['getAvailableModuleList'])) {
 }
 // Request to get phase list for a given operation
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['getPhaseList']) && isset($_REQUEST['operation'])) {
+    $wiff->activity(sprintf("* Request getPhaseList (context = '%s', module = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['operation']));
+
     $module = false;
     if (($_REQUEST['operation'] == 'parameter') || ($_REQUEST['operation'] == 'replaced')) {
         $module = $context->getModuleInstalled($_REQUEST['module']);
@@ -663,6 +705,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
 }
 // Request to get process list for a given phase
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['phase']) && isset($_REQUEST['getProcessList']) && isset($_REQUEST['operation'])) {
+    $wiff->activity(sprintf("* Request getProcessList (context = '%s', module = '%s', phase = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['phase'], $_REQUEST['operation']));
+
     $module = false;
     if ($_REQUEST['operation'] == 'parameter' || $_REQUEST['phase'] == 'unregister-module' || $_REQUEST['operation'] == 'archive' || $_REQUEST['operation'] == 'restore') {
         $module = $context->getModuleInstalled($_REQUEST['module']);
@@ -681,6 +725,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
 }
 // Request to execute process
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['phase']) && isset($_REQUEST['process']) && isset($_REQUEST['execute']) && isset($_REQUEST['operation'])) {
+    $wiff->activity(sprintf("* Request execute (context = '%s', module = '%s', phase = '%s', process = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['phase'], $_REQUEST['process'], $_REQUEST['operation']));
+
     $context = $wiff->getContext($_REQUEST['context']);
     if ($context === false) {
         $answer = new JSONAnswer(null, sprintf("Could not get context '%s'.", $_REQUEST['context']) , false);
@@ -747,6 +793,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
 }
 // Request to save module parameters
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['storeParameter']) && isset($_REQUEST['operation'])) {
+    $wiff->activity(sprintf("* Request storeParameter (context = '%s', module = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['operation']));
+
     $module = false;
     if ($_REQUEST['operation'] == 'parameter') {
         $module = $context->getModuleInstalled($_REQUEST['module']);
@@ -771,6 +819,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
 }
 // Request to run wstop in context
 if (isset($_REQUEST['context']) && isset($_REQUEST['wstop'])) {
+    $wiff->activity(sprintf("* Request wstop (context = '%s')", $_REQUEST['context']));
+
     $context = $wiff->getContext($_REQUEST['context']);
     if ($context === false) {
         $answer = new JSONAnswer(null, sprintf("Error getting context '%s'!", $_REQUEST['context']) , true);
@@ -786,6 +836,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['wstop'])) {
 }
 // Request to run wstart in context
 if (isset($_REQUEST['context']) && isset($_REQUEST['wstart'])) {
+    $wiff->activity(sprintf("* Request wstart (context = '%s')", $_REQUEST['context']));
+
     $context = $wiff->getContext($_REQUEST['context']);
     if ($context === false) {
         $answer = new JSONAnswer(null, sprintf("Error getting context '%s'!", $_REQUEST['context']) , true);
@@ -801,6 +853,8 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['wstart'])) {
 }
 // Get license agreement
 if (isset($_REQUEST['getLicenseAgreement']) && isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['license']) && isset($_REQUEST['operation'])) {
+    $wiff->activity(sprintf("* Request getLicenseAgreement (context = '%s', module = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['operation']));
+
     if ($wiff->getParam("check-license", false, true) == "no") {
         answer(array(
             'agree' => 'yes',
@@ -842,6 +896,8 @@ if (isset($_REQUEST['getLicenseAgreement']) && isset($_REQUEST['context']) && is
 }
 // Store license agreement
 if (isset($_REQUEST['storeLicenseAgreement']) && isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['license']) && isset($_REQUEST['agree'])) {
+    $wiff->activity(sprintf("* Request storeLicenseAgreement (context = '%s', module = '%s', agree = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['agree']));
+
     $context = $wiff->getContext($_REQUEST['context']);
     if ($context === false) {
         $answer = new JSONAnswer(null, sprintf("Error getting context '%s'!", $_REQUEST['context']) , true);
@@ -862,6 +918,8 @@ if (isset($_REQUEST['storeLicenseAgreement']) && isset($_REQUEST['context']) && 
 }
 // Set module status
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['setStatus']) && isset($_REQUEST['status']) && isset($_REQUEST['operation'])) {
+    $wiff->activity(sprintf("* Request setStatus (context = '%s', module = '%s', status = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['status'], $_REQUEST['operation']));
+
     $contextName = $_REQUEST['context'];
     $moduleName = $_REQUEST['module'];
     $status = $_REQUEST['status'];
@@ -908,11 +966,15 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
 }
 // Check repo validity
 if (isset($_REQUEST['checkRepoValidity']) && isset($_REQUEST['name'])) {
+    $wiff->activity(sprintf("* Request checkRepoValidity (name = '%s')", $_REQUEST['name']));
+
     $ret = $wiff->checkRepoValidity($_REQUEST['name']);
     answer($ret, $wiff->errorMessage);
 }
 // Cleanup
 if (isset($_REQUEST['cleanup']) && !empty($_REQUEST['context'])) {
+    $wiff->activity(sprintf("* Request cleanup (context = '%s')", $_REQUEST['context']));
+
     $ret = $wiff->cleanup($_REQUEST['context']);
     answer($ret, $wiff->errorMessage);
 }
@@ -965,6 +1027,8 @@ if (isset($_REQUEST['purgeUnreferencedParametersValue']) && isset($_REQUEST['con
 }*/
 
 if (isset($_REQUEST['checkInitRegistration'])) {
+    $wiff->activity(sprintf("* Request checkInitRegistration (force = '%s')", $_REQUEST['force']));
+
     $force = (isset($_REQUEST['force']) && $_REQUEST['force'] == 'true') ? true : false;
     $info = $wiff->checkInitRegistration($force);
     if ($info === false) {
@@ -979,6 +1043,8 @@ if (isset($_REQUEST['checkInitRegistration'])) {
 }
 
 if (isset($_REQUEST['tryRegister']) && isset($_REQUEST['mid']) && isset($_REQUEST['ctrlid']) && isset($_REQUEST['login']) && isset($_REQUEST['password'])) {
+    $wiff->activity(sprintf("* Request tryRegister (login = '%s')", $_REQUEST['login']));
+
     $mid = $_REQUEST['mid'];
     $ctrlid = $_REQUEST['ctrlid'];
     $login = $_REQUEST['login'];
@@ -997,6 +1063,8 @@ if (isset($_REQUEST['tryRegister']) && isset($_REQUEST['mid']) && isset($_REQUES
 }
 
 if (isset($_REQUEST['continueUnregistered'])) {
+    $wiff->activity(sprintf("* Request continueUnregistered"));
+
     $info = $wiff->getRegistrationInfo();
     if ($info === false) {
         $answer = new JSONAnswer(null, sprintf("Error reading registration information: %s", $wiff->errorMessage));
@@ -1030,6 +1098,8 @@ if (isset($_REQUEST['getRegistrationInfo'])) {
 }
 
 if (isset($_REQUEST['sendContextConfiguration']) && isset($_REQUEST['context'])) {
+    $wiff->activity(sprintf("* Request sendContextConfiguration (context = '%s')", $_REQUEST['context']));
+
     $info = $wiff->getRegistrationInfo();
     if ($info === false) {
         $answer = new JSONAnswer(null, sprintf("Could not get registration info: %s", $wiff->errorMessage));
@@ -1115,6 +1185,7 @@ if (isset($argv)) {
         $parameterValue = $parameterNode->getAttribute('value');
         return $parameterValue;
     } else {
+        $wiff->log(LOG_ERR, sprintf("Parameter '%s' not found in context '%s'.", $paramName, getenv('WIFF_CONTEXT_NAME')));
         return false;
     }
 }

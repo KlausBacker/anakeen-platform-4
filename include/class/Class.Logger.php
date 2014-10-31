@@ -91,11 +91,12 @@ class Logger
     }
     public function log($pri, $msg)
     {
+        $msg = sprintf("%s %s %s", PHP_SAPI, $this->priName($pri), $msg);
         /*
          * Send to local logfile
         */
         if (isset($this->logfile)) {
-            $newLine = sprintf("%s (pid %s) %s %s", date("c") , getmypid() , $this->priName($pri) , $msg);
+            $newLine = sprintf("%s dynacase-control[%s]: %s", date("c") , getmypid() , $msg);
             if (substr($newLine, -1, 1) != "\n") {
                 $newLine.= "\n";
             }

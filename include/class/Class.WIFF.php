@@ -20,7 +20,9 @@ function curPageURL()
     return $pageURL;
 }
 
-class WIFF
+require_once 'class/Class.WiffCommon.php';
+
+class WIFF extends WiffCommon
 {
     const logIdent = 'dynacase-control';
 

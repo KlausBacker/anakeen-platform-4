@@ -10,7 +10,9 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-class Process
+require_once 'class/Class.WiffCommon.php';
+
+class Process extends WiffCommon
 {
     /**
      * @var string process description xml
@@ -137,9 +139,4 @@ class Process
         return "";
     }
 
-    private function log($pri, $msg) {
-        require_once 'class/Class.WIFF.php';
-        $wiff = WIFF::getInstance();
-        $wiff->log($pri, $msg);
-    }
 }
