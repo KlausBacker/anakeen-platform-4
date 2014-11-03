@@ -67,8 +67,23 @@ case 'delete':
 case 'crontab':
   $cmd = array_shift($argv);
   $ret = wiff_crontab($argv);
+  break;
 case 'send_configuration':
   $ret = wiff_send_configuration();
+  break;
+case 'create':
+  $cmd = array_shift($argv);
+  $ret = wiff_create($argv);
+  break;
+case 'repository':
+  $cmd = array_shift($argv);
+  $ret = wiff_repository($argv);
+  break;
+case 'register':
+  $cmd = array_shift($argv);
+  wiff_lock();
+  $ret = wiff_register($argv);
+  wiff_unlock();
   break;
 default:
   $ret = wiff_default($argv);

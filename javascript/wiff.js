@@ -2804,7 +2804,7 @@ function installLocal_show_warnings(action) {
 		return Ext.Msg.show({
 			title : 'Server Warnings',
 			msg : msg,
-			minWidth: 200,
+			minWidth: 600,
 			buttons : {
 				ok : 'Continue',
 				cancel : 'Cancel'
@@ -3223,7 +3223,7 @@ function download_success_show_warnings(module, operation, responseObject) {
 			return Ext.Msg.show({
 				title : 'Server Warnings',
 				msg : msg,
-				minWidth: 200,
+				minWidth: 600,
 				buttons : {
 					ok : 'Continue',
 					cancel : 'Cancel'

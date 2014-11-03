@@ -8,9 +8,10 @@
 namespace WWW;
 
 require_once 'class/Class.WIFF.php';
+require_once 'class/Class.WiffCommon.php';
 require_once 'lib/Lib.System.php';
 
-class UserAgent
+class UserAgent extends \WiffCommon
 {
     const UA_NAME = 'dynacase-control';
     protected $ua_string = null;
@@ -261,11 +262,6 @@ class UserAgent
         return $url;
     }
 
-    private function log($pri, $msg) {
-        require_once 'class/Class.WIFF.php';
-        $wiff = \WIFF::getInstance();
-        $wiff->log($pri, $msg);
-    }
 }
 
 class CacheException extends \Exception
@@ -279,7 +275,7 @@ interface Cache
     public function remove($url);
 }
 
-class DefaultCache implements Cache
+class DefaultCache  extends \WiffCommon implements Cache
 {
     /**
      * @var CacheItem[]
@@ -347,11 +343,6 @@ class DefaultCache implements Cache
         }
     }
 
-    private function log($pri, $msg) {
-        require_once 'class/Class.WIFF.php';
-        $wiff = \WIFF::getInstance();
-        $wiff->log($pri, $msg);
-    }
 }
 
 class NoCache implements Cache

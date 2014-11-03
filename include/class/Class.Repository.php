@@ -164,7 +164,7 @@ class Repository
             $this->url = $this->baseurl;
             $this->displayUrl = $this->url;
         } elseif ($this->authenticated == 'yes' && $this->login && $this->password) {
-            $this->url = $this->protocol . '://' . $this->login . ':' . $this->password . '@' . $this->host . '/' . $this->path;
+            $this->url = $this->protocol . '://' . urlencode($this->login) . ':' . urlencode($this->password) . '@' . $this->host . '/' . $this->path;
         } else {
             $this->url = $this->protocol . '://' . $this->host . '/' . $this->path;
         }

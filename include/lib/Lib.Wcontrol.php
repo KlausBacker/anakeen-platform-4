@@ -11,6 +11,7 @@
  */
 
 require_once ('lib/Lib.System.php');
+require_once 'class/Class.WIFF.php';
 /**
  * evaluate a Process object
  * @param Process $process
@@ -30,12 +31,13 @@ function wcontrol_eval_process(Process $process)
                 } else {
                     $msg = generic_msg($process);
                 }
-                
+
                 return array(
                     'ret' => $ret,
                     'output' => $msg
                 );
             }
+            break;
         case "process":
             return wcontrol_process($process);
         case "download":
@@ -61,7 +63,10 @@ function wcontrol_eval_process(Process $process)
 function wcontrol_check_files(Process $process)
 {
     $module = $process->phase->module;
-    
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_files' (module = '%s')", $module->name));
+
     $ret = $module->checkManifestFiles();
     
     return array(
@@ -72,8 +77,13 @@ function wcontrol_check_files(Process $process)
 
 function wcontrol_unregister_module(Process $process)
 {
+    $wiff = WIFF::getInstance();
+
     $moduleName = $process->phase->module->name;
     $context = $process->phase->module->getContext();
+
+    $wiff->activity(sprintf("* Execute 'unregister_module' (context = '%s', module = '%s')", $context->name, $moduleName));
+
     $ret = $context->removeModule($moduleName);
     if ($ret === false) {
         return array(
@@ -100,7 +110,10 @@ function wcontrol_unregister_module(Process $process)
 function wcontrol_purge_unreferenced_parameters_value(Process $process)
 {
     $context = $process->phase->module->getContext();
-    
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'purge_unreferenced_parameters_value' (context = '%s')", $context->name));
+
     $ret = $context->purgeUnreferencedParametersValue();
     
     return array(
@@ -113,7 +126,10 @@ function wcontrol_unpack(Process $process)
 {
     $module = $process->phase->module;
     $context = $module->getContext();
-    
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'unpack' (context = '%s', module = '%s')", $context->name, $module->name));
+
     $ret = $module->unpack($context->root);
     
     return array(
@@ -126,7 +142,10 @@ function wcontrol_clean_unpack(Process $process)
 {
     $module = $process->phase->module;
     $context = $module->getContext();
-    
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity("* Execute 'clean_unpack' (context = '%s', module = '%s')", $context->name, $module->name);
+
     $ret = $context->deleteFilesFromModule($module->name);
     if ($ret === false) {
         return array(
@@ -144,7 +163,6 @@ function wcontrol_clean_unpack(Process $process)
  */
 function wcontrol_process(Process $process)
 {
-    
     require_once ('lib/Lib.System.php');
     
     $cmd = $process->getAttribute('command');
@@ -166,7 +184,10 @@ function wcontrol_process(Process $process)
     }
     
     $cmd = $process->phase->module->getContext()->expandParamsValues($cmd);
-    
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'process' (command = '%s')", $cmd));
+
     $current_version = false;
     $installedModule = $process->phase->module->getContext()->getModuleInstalled($process->phase->module->name);
     if ($installedModule !== false) {
@@ -222,12 +243,14 @@ function wcontrol_download(Process & $process)
     require_once ('class/Class.WIFF.php');
     require_once ('class/Class.Process.php');
     
-    $wiff = WIFF::getInstance();
-    
     $href = $process->getAttribute('href');
     $href = $process->phase->module->getContext()->expandParamsValues($href);
+
     $action = $process->getAttribute('action');
-    
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'download' (href = '%s' -> '%s', action = '%s')", $process->getAttribute('href'), $href, $action));
+
     $localFile = $wiff->downloadUrl($href);
     if ($localFile === false) {
         return array(
@@ -272,6 +295,9 @@ function generic_msg($process)
 
 function wcontrol_check_phpfunction($process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_phpfunction' (function = '%s')", $process->getAttribute('function')));
+
     return function_exists($process->getAttribute('function'));
 }
 
@@ -287,8 +313,13 @@ function wcontrol_msg_phpfunction(Process $process)
 
 function wcontrol_check_exec($process)
 {
+
     $cmd = $process->getAttribute('cmd');
     $cmd = $process->phase->module->getContext()->expandParamsValues($cmd);
+
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_exec' (cmd = '%s' -> '%s')", $process->getAttribute('cmd'), $cmd));
+
     exec($cmd, $output, $ret);
     return ($ret === 0) ? true : false;
 }
@@ -305,6 +336,9 @@ function wcontrol_msg_exec(Process $process)
 
 function wcontrol_check_file($process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_file' (file = '%s', predicate = '%s')", $process->getAttribute('file'), $process->getAttribute('predicate')));
+
     switch ($process->getAttribute('predicate')) {
         case 'file_exists':
         case 'e':
@@ -367,6 +401,9 @@ function wcontrol_msg_file(Process $process)
 
 function wcontrol_check_syscommand(Process $process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_syscommand' (command = '%s')", $process->getAttribute('command')));
+
     $ret = WiffLibSystem::getCommandPath($process->getAttribute('command'));
     if ($ret === false) {
         return false;
@@ -391,6 +428,9 @@ function wcontrol_check_pearmodule(Process $process)
 
 function wcontrol_check_phpclass(Process $process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_phpclass' (include = '%s', class = '%s')", $process->getAttribute('include'), $process->getAttribute('class')));
+
     $include = $process->getAttribute('include');
     if ($include != "") {
         $ret = @include_once ($include);
@@ -421,6 +461,9 @@ function wcontrol_msg_phpclass(Process $process)
 
 function wcontrol_check_apachemodule(Process $process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_apachemodule' (module = '%s')", $process->getAttribute('module')));
+
     if (!function_exists('apache_get_modules')) {
         return true;
     }
@@ -443,7 +486,9 @@ function wcontrol_msg_apachemodule(Process $process)
 
 function wcontrol_check_pgversion(Process & $process)
 {
-    
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_pgversion' (service = '%s', predicated='%s', version='%s')", $process->getAttribute('service'), $process->getAttribute('predicate'), $process->getAttribute('version')));
+
     if (!function_exists('pg_connect')) {
         $process->errorMessage = 'PHP function pg_connect() not available. You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>';
         return false;
@@ -552,7 +597,9 @@ function wcontrol_msg_pgversion(Process $process)
 
 function wcontrol_check_phpversion(Process & $process)
 {
-    
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_pgversion' (predicate = '%s', version='%s')", $process->getAttribute('predicate'), $process->getAttribute('version')));
+
     $predicate = $process->getAttribute('predicate');
     $version = $process->getAttribute('version');
     
@@ -614,7 +661,9 @@ function wcontrol_msg_phpversion(Process $process)
 
 function wcontrol_check_pgempty(Process & $process)
 {
-    
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_pgempty' (service = '%s')", $process->getAttribute('service')));
+
     if (!function_exists('pg_connect')) {
         $process->errorMessage = 'PHP function pg_connect() not available. You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>';
         return false;
@@ -668,7 +717,9 @@ function wcontrol_msg_pgempty(Process $process)
 
 function wcontrol_check_ncurses(Process & $process)
 {
-    
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_ncurses'"));
+
     ob_start();
     
     system('php -r "print function_exists("ncurses_init");"');
@@ -695,6 +746,9 @@ function wcontrol_msg_ncurses(Process $process)
  */
 function wcontrol_check_phpbug45996(Process & $process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("Execute 'check_phpbug45996'"));
+
     $expected = "a'b";
     $vals = array();
     $index = array();
@@ -726,6 +780,9 @@ function wcontrol_msg_phpbug45996(Process & $process)
  */
 function wcontrol_check_phpbug40926(Process & $process)
 {
+    $wiff = WIFF::getInstance();
+    $wiff->activity(sprintf("* Execute 'check_phpbug40926'"));
+
     require_once ('lib/Lib.System.php');
     require_once ('class/Class.WIFF.php');
     

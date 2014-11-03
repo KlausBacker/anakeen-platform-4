@@ -29,7 +29,9 @@ function deleteChildren($node)
     }
 }
 
-class Context
+require_once 'class/Class.Context.php';
+
+class Context extends WiffCommon
 {
     /**
      * @var string Context's name
@@ -48,7 +50,7 @@ class Context
      */
     public $url;
     /**
-     * @var array Context's repository
+     * @var Context[] array Context's repository
      */
     public $repo;
     /**
@@ -63,7 +65,14 @@ class Context
      * @var string Context's warning message
      */
     public $warningMessage = null;
-    
+    /**
+     * @var array
+     */
+    private $props = array(
+        'url',
+        'description'
+    );
+
     public function __construct($name, $desc, $root, array $repo, $url, $register)
     {
         $this->name = $name;
@@ -2811,9 +2820,55 @@ class Context
         return true;
     }
 
-    private function log($pri, $msg) {
-        require_once 'class/Class.WIFF.php';
+    public function getAllProperties() {
+        $res = array();
+        foreach ($this->props as $pName) {
+            $res[$pName] = isset($this->$pName) ? $this->$pName : null;
+        }
+        return $res;
+    }
+
+    public function getProperty($propName) {
+        $res = array();
+        foreach ($this->props as $pName) {
+            if ($pName == $propName) {
+                return isset($this->$propName) ? $this->$propName : null;
+            }
+        }
+        return null;
+    }
+
+    public function setProperty($propName, $propValue) {
+        if (!in_array($propName, $this->props)) {
+            return false;
+        }
+        $this->$propName = $propValue;
+        return $this->saveProperties();
+    }
+
+    private function saveProperties() {
         $wiff = WIFF::getInstance();
-        $wiff->log($pri, $msg);
+        $xml = $wiff->loadContextsDOMDocument();
+        $x = new DOMXPath($xml);
+        $result = $x->query("/contexts/context[@name='" . $this->name . "']");
+        if ($result->length != 1) {
+            $this->errorMessage = "Multiple contexts with same name";
+            return false;
+        }
+        /**
+         * @var DOMElement $contextNode
+         */
+        $contextNode = $result->item(0);
+        $contextNode->setAttribute('url', $this->url);
+
+        $result = $x->query("/contexts/context[@name='" . $this->name . "']/description");
+        if ($result->length > 0) {
+            /**
+             * @var DOMElement $description
+             */
+            $description = $result->item(0);
+            $description->nodeValue = $this->description;
+        }
+        return $wiff->commitDOMDocument($xml);
     }
 }

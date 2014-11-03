@@ -47,6 +47,11 @@ function wiff_help(&$argv)
     echo "\n";
     echo "  wiff send_configuration\n";
     echo "\n";
+    echo "  wiff repository help\n";
+    echo "\n";
+    echo "  wiff register\n";
+    echo "  wiff register <eec-username> <eec-password>\n";
+    echo "\n";
     return 0;
 }
 
@@ -78,6 +83,11 @@ function wiff_param(&$argv)
     $op = array_shift($argv);
     
     switch ($op) {
+        case 'show':
+            $ret = wiff_param_show($argv);
+            return $ret;
+            break;
+
         case 'set':
             wiff_lock();
             $ret = wiff_param_set($argv);
@@ -96,6 +106,26 @@ function wiff_param(&$argv)
             printerr(sprintf("Unknown operation '%s'!\n", $op));
             return wiff_param_help();
     }
+}
+
+function wiff_param_show(&$argv) {
+    $wiff = WIFF::getInstance();
+    $paramList = $wiff->getParamList(true);
+    if ($paramList === false) {
+        printerr(sprintf("Error: could not get list of params: %s\n", $wiff->errorMessage));
+        return 1;
+    }
+    $visibleParamList = $wiff->getParamList();
+    if ($visibleParamList === false) {
+        printerr(sprintf("Error: could not get list of visible params: %s\n", $wiff->errorMessage));
+        return 1;
+    }
+    $visibleParamNameList = array_keys($visibleParamList);
+    foreach ($paramList as $paramName => $paramValue) {
+        $visible = in_array($paramName, $visibleParamNameList);
+        printf("%s = %s (%s)\n", $paramName, $paramValue, ($visible?'visible':'hidden'));
+    }
+    return 0;
 }
 
 function wiff_param_get(&$argv)
@@ -148,7 +178,9 @@ function wiff_param_help()
     echo "Usage\n";
     echo "-----\n";
     echo "\n";
-    echo "  wiff param set <param-name> <param-value> [<param-mode>=hidden]\n";
+    echo "  wiff param show\n";
+    echo "\n";
+    echo "  wiff param set <param-name> <param-value> ['hidden']\n";
     echo "\n";
     echo "  wiff param get <param-name>\n";
     echo "\n";
@@ -236,7 +268,7 @@ function wiff_context(&$argv)
         printerr(sprintf("Error: could not get context '%s': %s\n", $ctx_name, $wiff->errorMessage));
         return 1;
     }
-    
+
     if (count($argv) <= 0) {
         return wiff_context_exportenv($context, $argv);
     }
@@ -260,6 +292,22 @@ function wiff_context(&$argv)
 
         case 'param':
             $ret = wiff_context_param($context, $argv);
+            return $ret;
+            break;
+
+        case 'property':
+            $ret = wiff_context_property($context, $argv);
+            return $ret;
+            break;
+
+        case 'repository':
+            $ret = wiff_context_repository($context, $argv);
+            return $ret;
+
+        case 'register':
+            wiff_lock();
+            $ret = wiff_context_register($context, $argv);
+            wiff_unlock();
             return $ret;
             break;
 
@@ -289,16 +337,15 @@ function wiff_context_help(&$context, &$argv)
     echo "  wiff context <context-name> exportenv\n";
     echo "  wiff context <context-name> shell\n";
     echo "  wiff context <context-name> exec /bin/bash --login\n";
+    echo "  wiff context <context-name> register\n";
+    echo "\n";
+    echo "Sub-commands help\n";
+    echo "-----------------\n";
     echo "\n";
     echo "  wiff context <context-name> param help\n";
-    # echo "  wiff context <context-name> param show [<module-name>]\n";
-    # echo "  wiff context <context-name> param get <module-name>:<param-name>\n";
-    # echo "  wiff context <context-name> param set <module-name>:<param-name> <param-value>\n";
-    echo "\n";
     echo "  wiff context <context-name> module help\n";
-    # echo "  wiff context <context-name> module install [--force] [--nopre] [--nopost] [--nothing] <localPkgName|remotePkgName>\n";
-    # echo "  wiff context <context-name> module upgrade [--force] [--nopre] [--nopost] [--nothing] <localPkgName|remotePkgName>\n";
-    # echo "  wiff context <context-name> module list\n";
+    echo "  wiff context <context-name> property help\n";
+    echo "  wiff context <context-name> repository help\n";
     echo "\n";
     return 0;
 }
@@ -1523,6 +1570,7 @@ function parse_argv_options(&$argv)
         } elseif (preg_match('/--([a-zA-Z0-9_-]+)$/', $argv[0], $m)) {
             $options[$m[1]] = true;
         } elseif (preg_match('/^--$/', $argv[0])) {
+            array_shift($argv);
             return $options;
         }
         array_shift($argv);
@@ -1850,6 +1898,466 @@ function wiff_send_configuration()
          * @var Context $context
          */
         $context->sendConfiguration();
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_create(&$argv) {
+    $subject = array_shift($argv);
+    switch ($subject) {
+        case 'context':
+            wiff_lock();
+            $ret = wiff_create_context($argv);
+            wiff_unlock();
+            return $ret;
+            break;
+        default:
+            wiff_create_help($argv);
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_create_help(&$argv) {
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff create context <context-name> <context-root>\n";
+    echo "\n";
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_create_context(&$argv) {
+    $contextName = array_shift($argv);
+    if ($contextName === null) {
+        printerr(sprintf("Error: missing context-name.\n"));
+        return 1;
+    }
+    $contextRoot = array_shift($argv);
+    if ($contextRoot === null) {
+        printerr(sprintf("Error: missing context-root.\n"));
+        return 1;
+    }
+
+    $wiff = WIFF::getInstance();
+
+    $ret = $wiff->createContext($contextName, $contextRoot, '', '');
+    if ($ret === false) {
+        printerr(sprintf("Error: could not create context '%s' in '%s': %s\n", $contextName, $contextRoot));
+        return 1;
+    }
+
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_property(&$context, &$argv) {
+    $op = array_shift($argv);
+    switch ($op) {
+        case 'help':
+            return wiff_context_property_help($argv);
+        case 'show':
+            $ret = wiff_context_property_show($context, $argv);
+            return $ret;
+        case 'get':
+            $ret = wiff_context_property_get($context, $argv);
+            return $ret;
+            break;
+        case 'set':
+            wiff_lock();
+            $ret = wiff_context_property_set($context, $argv);
+            wiff_unlock();
+            return $ret;
+            break;
+        default:
+            wiff_context_property_help($argv);
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_context_property_help(&$argv) {
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff create context <context-name> property show\n";
+    echo "  wiff create context <context-name> property get <property-name>\n";
+    echo "  wiff create context <context-name> property set <property-name> <property-value>\n";
+    echo "\n";
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_property_show(&$context, &$argv) {
+    $pList = $context->getAllProperties();
+    foreach ($pList as $pName => $pValue) {
+        if ($pValue === null) {
+            $pValue = '';
+        }
+        printf("%s = %s\n", $pName, $pValue);
+    }
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_property_get(&$context, &$argv) {
+    $propName = array_shift($argv);
+    if ($propName === null) {
+        printerr(sprintf("Error: missing prop-name.\n"));
+        return 1;
+    }
+    $pValue = $context->getProperty($propName);
+    if ($pValue === null) {
+        $pValue = '';
+    }
+    printf("%s = %s\n", $propName, $pValue);
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_property_set(&$context, &$argv) {
+    $propName = array_shift($argv);
+    if ($propName === null) {
+        printerr(sprintf("Error: missing prop-name.\n"));
+        return 1;
+    }
+    $propValue = array_shift($argv);
+    if ($propValue === null) {
+        printerr(sprintf("Error: missing prop-value.\n"));
+        return 1;
+    }
+    $ret = $context->setProperty($propName, $propValue);
+    if ($ret === false) {
+        printerr(sprintf("Error: could not set property value"));
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_repository(&$argv) {
+    $cmd = array_shift($argv);
+    switch ($cmd) {
+        case 'list':
+            return wiff_repository_list($argv);
+            break;
+        case 'add':
+            wiff_lock();
+            $ret = wiff_repository_add($argv);
+            wiff_unlock();
+            return $ret;
+            break;
+        case 'delete':
+            wiff_lock();
+            $ret = wiff_repository_delete($argv);
+            wiff_unlock();
+            return $ret;
+            break;
+        default:
+            wiff_repository_help($argv);
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_repository_help(&$argv) {
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff repository list [--show-password]\n";
+    echo "  wiff repository add <repo-name> <repo-url> <repo-auth-user> <repo-auth-password>\n";
+    echo "  wiff repository delete <repo-name>\n";
+    echo "  wiff repository delete --all\n";
+    echo "\n";
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_repository_list(&$argv) {
+    $options = parse_argv_options($argv);
+    $wiff = WIFF::getInstance();
+    $repoList = $wiff->getRepoList(false);
+    if ($repoList === false) {
+        printerr(sprintf("Error: %s", $wiff->errorMessage));
+        return 1;
+    }
+    foreach ($repoList as & $repo) {
+        $name = $repo->name;
+        $url = $repo->getUrl();
+        if (!isset($options['show-password']) || $options['show-password'] !== true) {
+            $url = $repo->displayUrl;
+        }
+        printf("%s\t%s\n", $name, $url);
+    }
+    unset($repo);
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_repository_add(&$argv) {
+    $repoName = array_shift($argv);
+    if ($repoName === null) {
+        printerr(sprintf("Error: missing repo-name.\n"));
+        return 1;
+    }
+    if (!preg_match(/* ExtJS's vtype:alphanum */ '/^[a-zA-Z0-9_]+$/', $repoName)) {
+        printerr(sprintf("Error: invalid repo-name '%s': repo-name must contain only [a-zA-Z0-9_] chars.\n", $repoName));
+        return 1;
+    }
+    $repoUrl = array_shift($argv);
+    if ($repoUrl === null) {
+        printerr(sprintf("Error: missing repo-url.\n"));
+        return 1;
+    }
+    $repoAuthUser = array_shift($argv);
+    $repoAuthPassword = array_shift($argv);
+
+    $wiff = WIFF::getInstance();
+    $ret = $wiff->createRepoUrl($repoName, $repoUrl, $repoAuthUser, $repoAuthPassword);
+    if ($ret === false) {
+        printerr(sprintf("Error: could not create repository '%s': %s\n", $repoName, $wiff->errorMessage));
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_repository_delete(&$argv) {
+    $options = parse_argv_options($argv);
+    $wiff = WIFF::getInstance();
+    if (isset($options['all']) && $options['all'] === true) {
+        if (count($argv) > 0) {
+            printerr(sprintf("Error: use either '--all' or a repo-name but not both.\n"));
+            return 1;
+        }
+        $repoList = $wiff->getRepoList(false);
+        foreach ($repoList as & $repo) {
+            $wiff->deleteRepo($repo->name);
+        }
+        unset($repo);
+    } else {
+        $repoName = array_shift($argv);
+        if ($repoName === null) {
+            printerr(sprintf("Error: missing repo-name.\n"));
+            return 1;
+        }
+        $ret = $wiff->deleteRepo($repoName);
+        if ($ret === false) {
+            printerr(sprintf("Error: could not delete repository '%s': %s\n", $repoName, $wiff->errorMessage));
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ */
+function wiff_context_repository(&$context, &$argv) {
+    $cmd = array_shift($argv);
+    switch ($cmd) {
+        case 'list':
+            $ret = wiff_context_repository_list($context, $argv);
+            return $ret;
+            break;
+        case 'enable':
+            wiff_lock();
+            $ret = wiff_context_repository_enable($context, $argv);
+            wiff_unlock();
+            return $ret;
+            break;
+        case 'disable':
+            wiff_lock();
+            $ret = wiff_context_repository_disable($context, $argv);
+            wiff_unlock();
+            return $ret;
+        default:
+            wiff_context_repository_help($argv);
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_context_repository_help(&$argv) {
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff context <context-name> repository list\n";
+    echo "  wiff context <context-name> repository enable <repo-name>\n";
+    echo "  wiff context <context-name> repository disable <repo-name>\n";
+    echo "  wiff context <context-name> repository disable --all\n";
+    echo "\n";
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_repository_list(&$context, &$argv) {
+    foreach ($context->repo as $repo) {
+        printf("%s\n", $repo->name);
+    }
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_repository_enable(&$context, &$argv) {
+    $repoName = array_shift($argv);
+    if ($repoName === null) {
+        printerr(sprintf("Error: missing repo-name.\n"));;
+        return 1;
+    }
+    $ret = $context->activateRepo($repoName);
+    if ($ret === false) {
+        printerr(sprintf("Error: could not activate repository '%s' on context '%s': %s\n", $repoName, $context->name, $context->errorMessage));
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ * @return int
+ */
+function wiff_context_repository_disable(&$context, &$argv) {
+    $options = parse_argv_options($argv);
+    if (isset($options['all']) && $options['all'] === true) {
+        if (count($argv) > 0) {
+            printerr(sprintf("Error: use either '--all' or a repo-name but not both.\n"));
+            return 1;
+        }
+        $ret = $context->deactivateAllRepo();
+        if ($ret === false) {
+            printerr(sprintf("Error: could not disable all repository on context '%s': %s\n", $context->name, $context->errorMessage));
+        }
+    } else {
+        $repoName = array_shift($argv);
+        if ($repoName === null) {
+            printerr(sprintf("Error: missing repo-name.\n"));
+            return 1;
+        }
+        $ret = $context->deactivateRepo($repoName);
+        if ($ret === false) {
+            printerr(sprintf("Error: could not disable repository '%s' on context '%s': %s\n", $repoName, $context->name, $context->errorMessage));
+        }
+    }
+    return ($ret?0:1);
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ */
+function wiff_context_register(&$context, &$argv) {
+    $wiff = WIFF::getInstance();
+    $regInfo = $wiff->getRegistrationInfo();
+    if (!isset($regInfo['status']) || $regInfo['status'] != 'registered') {
+        printerr(sprintf("Error: cannot register context because dynacase-control is not registered itself.\n"));
+        printerr(sprintf("Register dynacase-control itself with `wiff register <eec-username> <eec-password>`,\n"));
+        printerr(sprintf("then rerun context registration.\n"));
+        return 1;
+    }
+    $ret = $context->setRegister(true);
+    if ($ret === false) {
+        printerr(sprintf("Error: could not register context: %s\n", $context->errorMessage));
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ */
+function wiff_register(&$argv) {
+    $wiff = WIFF::getInstance();
+    $regInfo = $wiff->checkInitRegistration();
+    if ($regInfo === false) {
+        printerr(sprintf("Error: could not get registration informations: %s\n", $wiff->errorMessage));
+        return 1;
+    }
+    if (count($argv) <= 0) {
+        if (isset($regInfo['status']) && $regInfo['status'] == 'registered') {
+            printf("Registered with EEC username '%s'.\n", $regInfo['login']);
+        } else {
+            printf("Not registered.\n");
+        }
+    } else {
+        $eecUser = array_shift($argv);
+        if ($eecUser === null) {
+            printerr(sprintf("Error: missing eec-username.\n"));
+            return 1;
+        }
+        $eecPass = array_shift($argv);
+        if ($eecPass === null) {
+            printerr(sprintf("Error: missing eec-password.\n"));
+            return 1;
+        }
+        $response = $wiff->tryRegister($regInfo['mid'], $regInfo['ctrlid'], $eecUser, $eecPass);
+        if ($response === false) {
+            printerr(sprintf("Error: could not register dynacase-control: %s\n", $wiff->errorMessage));
+            return 1;
+        }
+        printf("Successfully registered dynacase-control.\n");
     }
     return 0;
 }
