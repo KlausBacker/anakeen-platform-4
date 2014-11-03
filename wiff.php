@@ -554,7 +554,7 @@ if (isset($_REQUEST['downloadArchive'])) {
 }
 // Request to get dependency module list for a module
 if (isset($_REQUEST['context']) && isset($_REQUEST['modulelist']) && isset($_REQUEST['getModuleDependencies'])) {
-    $wiff->activity(sprintf("* Request getModuleDependencies (context = '%s', modules = '%s')", $_REQUEST['name'], join(', ', $_REQUEST['modulelist'])));
+    $wiff->activity(sprintf("* Request getModuleDependencies (context = '%s', modules = '%s')", $_REQUEST['context'], join(', ', $_REQUEST['modulelist'])));
 
     $onlyInstalled = isset($_REQUEST["onlyInstalled"]) ? true : false;
     $dependencyList = $context->getModuleDependencies($_REQUEST['modulelist'], false, $onlyInstalled);
@@ -687,7 +687,7 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
     $wiff->activity(sprintf("* Request getPhaseList (context = '%s', module = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['operation']));
 
     $module = false;
-    if (($_REQUEST['operation'] == 'parameter') || ($_REQUEST['operation'] == 'replaced')) {
+    if (($_REQUEST['operation'] == 'parameter') || ($_REQUEST['operation'] == 'replaced') || ($_REQUEST['operation'] == 'delete')) {
         $module = $context->getModuleInstalled($_REQUEST['module']);
     } else {
         $module = $context->getModuleDownloaded($_REQUEST['module']);
@@ -708,7 +708,7 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
     $wiff->activity(sprintf("* Request getProcessList (context = '%s', module = '%s', phase = '%s', operation = '%s')", $_REQUEST['context'], $_REQUEST['module'], $_REQUEST['phase'], $_REQUEST['operation']));
 
     $module = false;
-    if ($_REQUEST['operation'] == 'parameter' || $_REQUEST['phase'] == 'unregister-module' || $_REQUEST['operation'] == 'archive' || $_REQUEST['operation'] == 'restore') {
+    if ($_REQUEST['operation'] == 'parameter' || $_REQUEST['phase'] == 'unregister-module' || $_REQUEST['operation'] == 'archive' || $_REQUEST['operation'] == 'restore' || $_REQUEST['operation'] == 'delete') {
         $module = $context->getModuleInstalled($_REQUEST['module']);
     } else {
         $module = $context->getModuleDownloaded($_REQUEST['module']);
@@ -735,7 +735,7 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
     }
     
     $module = false;
-    if ($_REQUEST['operation'] == 'parameter' || $_REQUEST['phase'] == 'unregister-module' || $_REQUEST['operation'] == 'archive' || $_REQUEST['operation'] == 'restore') {
+    if ($_REQUEST['operation'] == 'parameter' || $_REQUEST['phase'] == 'unregister-module' || $_REQUEST['operation'] == 'archive' || $_REQUEST['operation'] == 'restore' || $_REQUEST['operation'] == 'delete') {
         $module = $context->getModuleInstalled($_REQUEST['module']);
     } else {
         $module = $context->getModuleDownloaded($_REQUEST['module']);
