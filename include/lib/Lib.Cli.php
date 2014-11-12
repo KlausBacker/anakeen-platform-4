@@ -1784,26 +1784,113 @@ function wiff_delete_help(&$argv)
     echo "Usage\n";
     echo "-----\n";
     echo "\n";
-    echo "  wiff delete context <context-name>\n";
+    echo "  wiff delete context [delete-options] <context-name>\n";
+    echo "\n";
+    echo "delete-options\n";
+    echo "---------------\n";
+    echo "\n";
+    echo "  --nopre    Do not execute pre-install processes.\n";
+    echo "  --force    Force deletion of context (do not stop/ask on pre-delete processes errors).\n";
     echo "\n";
     return 0;
 }
 
 function wiff_delete_context(&$argv)
 {
+    $options = parse_argv_options($argv);
+
     $ctx_name = array_shift($argv);
     if ($ctx_name == "") {
         return wiff_delete_help($argv);
     }
     
     $wiff = WIFF::getInstance();
-    $res = 0;
-    $ret = $wiff->deleteContext($ctx_name, $res);
-    if ($res === false) {
-        printerr(sprintf("Error: cound not delete context '%s': %s\n", $ctx_name, $wiff->errorMessage));
+
+    /*
+     * Execute modules' pre-delete processes
+     */
+
+    $context = $wiff->getContext($ctx_name);
+    if ($context === false) {
+        printerr(sprintf("Error: could not get context '%s': %s\n", $ctx_name, $wiff->errorMessage));
         return 1;
     }
-    
+    $moduleList = $context->getInstalledModuleList();
+    if (count($moduleList) > 0) {
+        $moduleNameList = array();
+        foreach ($moduleList as & $module) {
+            $moduleNameList[] = $module->name;
+        }
+        unset($module);
+        $moduleList = $context->getModuleDependencies($moduleNameList, false, true);
+        if ($moduleList === false) {
+            printerr(sprintf("Error: could not get dependencies order: %s\n", $context->errorMessage));
+            return 1;
+        }
+        $moduleList = array_reverse($moduleList);
+        /**
+         * @var Module $module
+         */
+        foreach ($moduleList as & $module) {
+            printf("\nProcessing module '%s' (%s-%s) for %s.\n", $module->name, $module->version, $module->release, 'delete');
+            $phaseList = $module->getPhaseList('delete');
+            if (boolopt('nopre', $options)) {
+                $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^pre-/",$v);'));
+            }
+            foreach ($phaseList as & $phaseName) {
+                printf("Doing '%s' of module '%s'.\n", $phaseName, $module->name);
+                $phase = $module->getPhase($phaseName);
+                $processList = $phase->getProcessList();
+                /**
+                 * @var Process $process
+                 */
+                foreach ($processList as & $process) {
+                    while (true) {
+                        printf("Running '%s'... ", $process->label);
+                        echo fg_yellow();
+                        $exec = $process->execute();
+                        echo color_reset();
+                        if ($exec['ret'] === false) {
+                            echo sprintf("\nError: process '%s' returned with error: %s%s%s\n", $process->label, fg_red(), $exec['output'], color_reset());
+                            if (boolopt('force', $options)) {
+                                echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue(), color_reset(), $exec['output']);
+                                break;
+                            }
+                            $ret = param_ask($options, "(R)etry, (c)continue or (a)bort", "R/c/a", "R", "a");
+                            if (preg_match('/^a.*$/i', $ret)) {
+                                echo sprintf("[%sABORTED%s] (%s)\n", fg_red(), color_reset(), $exec['output']);
+                                return 1;
+                            }
+                            if (preg_match('/^(c.*)$/i', $ret)) {
+                                echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue(), color_reset(), $exec['output']);
+                                break;
+                            }
+                        } else {
+                            echo sprintf("[%sOK%s]\n", fg_green(), color_reset());
+                            break;
+                        }
+                    }
+                }
+                unset($process);
+            }
+            unset($phaseName);
+        }
+        unset($module);
+    }
+
+    /*
+     * Delete context
+     */
+
+    printf("Deleting context '%s'... ", $context->name);
+    $res = 0;
+    $wiff->deleteContext($ctx_name, $res);
+    if ($res === false) {
+        printerr(sprintf("Error: could not delete context '%s': %s\n", $ctx_name, $wiff->errorMessage));
+        return 1;
+    }
+    echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
+
     return 0;
 }
 

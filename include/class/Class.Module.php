@@ -848,6 +848,12 @@ class Module
                 );
                 break;
 
+            case 'delete':
+                return array(
+                    'pre-delete'
+                );
+                break;
+
             default:
         }
         return array();

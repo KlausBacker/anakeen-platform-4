@@ -60,7 +60,8 @@ class Phase
             'purge-unreferenced-parameters-value',
             'pre-archive',
             'post-archive',
-            'post-restore'
+            'post-restore',
+            'pre-delete'
         ))) {
             return $plist;
         }

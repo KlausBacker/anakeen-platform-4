@@ -1635,278 +1635,7 @@ function updateContextList_success(responseObject, select) {
 				if (btn != 'yes') {
 					return false;
 				}
-				var errMsg = '';
-				var contextName = button.context.name;
-				mask = new Ext.LoadMask(Ext.getBody(), {
-							msg : 'Deleting Crontab...'
-						});
-				mask.show();
-				Ext.Ajax.request({
-					url : 'wiff.php',
-					timeout : 3600000,
-					params : {
-						contextToDelete : contextName,
-						deleteContext : 'crontab'
-					},
-					success : function(response, options) {
-						var responseDecode = Ext.util.JSON
-								.decode(response.responseText);
-						if (responseDecode.success == false) {
-							Ext.Msg.alert('Warning', responseDecode.error
-											.toString());
-							mask.hide();
-				(function	() {
-								updateContextList();
-							}).defer(1000);
-						} else {
-							mask.hide();
-							mask = new Ext.LoadMask(Ext.getBody(), {
-										msg : 'Deleting vault...'
-									});
-							mask.show();
-							if (responseDecode.error) {
-								errMsg = errMsg + responseDecode.error;
-							}
-							Ext.Ajax.request({
-								url : 'wiff.php',
-								timeout : 3600000,
-								params : {
-									contextToDelete : contextName,
-									deleteContext : 'vault'
-								},
-								success : function(response, options) {
-									var responseDecode = Ext.util.JSON
-											.decode(response.responseText);
-									if (responseDecode.success == false) {
-										Ext.Msg
-												.alert('Warning',
-														responseDecode.error
-																.toString());
-										mask.hide();
-							(function	() {
-											updateContextList();
-										}).defer(1000);
-									} else {
-										mask.hide();
-										mask = new Ext.LoadMask(Ext.getBody(),
-												{
-													msg : 'Deleting database...'
-												});
-										mask.show();
-										if (responseDecode.error) {
-											errMsg = errMsg
-													+ responseDecode.error;
-										}
-										Ext.Ajax.request({
-											url : 'wiff.php',
-											timeout : 3600000,
-											params : {
-												contextToDelete : contextName,
-												deleteContext : 'database'
-											},
-											success : function(response,
-													options) {
-												var responseDecode = Ext.util.JSON
-														.decode(response.responseText);
-												if (responseDecode.success == false) {
-													Ext.Msg
-															.alert(
-																	'Warning',
-																	responseDecode.error
-																			.toString());
-													mask.hide();
-										(function	() {
-														updateContextList();
-													}).defer(1000);
-												} else {
-													mask.hide();
-													mask = new Ext.LoadMask(Ext
-																	.getBody(),
-															{
-																msg : "Deleting Context's root..."
-															});
-													mask.show();
-													if (responseDecode.error) {
-														errMsg = errMsg
-																+ responseDecode.error;
-													}
-													Ext.Ajax.request({
-														url : 'wiff.php',
-														timeout : 3600000,
-														params : {
-															contextToDelete : contextName,
-															deleteContext : 'root'
-														},
-														success : function(
-																response,
-																options) {
-															var responseDecode = Ext.util.JSON
-																	.decode(response.responseText);
-															if (responseDecode.success == false) {
-																Ext.Msg
-																		.alert(
-																				'Warning',
-																				responseDecode.error
-																						.toString());
-																mask.hide();
-													(function	() {
-																	updateContextList();
-																}).defer(1000);
-															} else {
-																mask.hide();
-																mask = new Ext.LoadMask(
-																		Ext
-																				.getBody(),
-																		{
-																			msg : 'Unregistering context...'
-																		});
-																mask.show();
-																if (responseDecode.error) {
-																	errMsg = errMsg
-																			+ responseDecode.error;
-																}
-																Ext.Ajax
-																		.request(
-																				{
-																					url : 'wiff.php',
-																					timeout : 3600000,
-																					params : {
-																						contextToDelete : contextName,
-																						deleteContext : 'unregister'
-																					},
-																					success : function(
-																							response,
-																							options) {
-																						var responseDecode = Ext.util.JSON
-																								.decode(response.responseText);
-																						if (responseDecode.success == false) {
-																							Ext.Msg
-																									.alert(
-																											'Warning',
-																											responseDecode.error
-																													.toString());
-																							mask
-																									.hide();
-																							(function() {
-																								updateContextList();
-																							})
-																									.defer(1000);
-																						} else {
-																							mask
-																									.hide();
-																							if (responseDecode.error) {
-																								errMsg = errMsg
-																										+ responseDecode.error;
-																							}
-																							if (errMsg) {
-																								Ext.Msg
-																										.alert(
-																												'Warning',
-																												errMsg,
-																												function() {
-																													(function() {
-																														updateContextList();
-																													})
-																															.defer(100);
-																												});
-																							} else {
-																								Ext.Msg
-																										.alert(
-																												'Dynacase Control',
-																												'Context successfully delete',
-																												function() {
-																													(function() {
-																														updateContextList();
-																													})
-																															.defer(100);
-																												});
-																							}
-																						}
-																					},
-																					failure : function(
-																							response,
-																							options) {
-																						mask
-																								.hide();
-																						if (options.failureType) {
-																							Ext.Msg
-																									.alert(
-																											'Warning',
-																											options.failureType);
-																						} else if (response.responseText) {
-
-																							Ext.Msg
-																									.alert(
-																											'Warning',
-																											response.responseText);
-																						} else {
-																							Ext.Msg
-																									.alert(
-																											'Warning',
-																											'Unknow Error');
-																						}
-																					}
-																				});
-															}
-														},
-														failure : function(
-																response,
-																options) {
-															mask.hide();
-															if (options.failureType) {
-																Ext.Msg
-																		.alert(
-																				'Warning',
-																				options.failureType);
-															} else {
-																Ext.Msg
-																		.alert(
-																				'Warning',
-																				'Unknow Error');
-															}
-														}
-													});
-												}
-											},
-											failure : function(response,
-													options) {
-												mask.hide();
-												if (options.failureType) {
-													Ext.Msg
-															.alert(
-																	'Warning',
-																	options.failureType);
-												} else {
-													Ext.Msg.alert('Warning',
-															'Unknow Error');
-												}
-											}
-										});
-									}
-								},
-								failure : function(response, options) {
-									mask.hide();
-									if (options.failureType) {
-										Ext.Msg.alert('Warning',
-												options.failureType);
-									} else {
-										Ext.Msg
-												.alert('Warning',
-														'Unknow Error');
-									}
-								}
-							});
-						}
-					},
-					failure : function(response, options) {
-						mask.hide();
-						if (options.failureType) {
-							Ext.Msg.alert('Warning', options.failureType);
-						} else {
-							Ext.Msg.alert('Warning', 'Unknow Error');
-						}
-					}
-				});
+				deleteContext(button.context.name);
 			}
 		});
 	};
@@ -3726,8 +3455,22 @@ function executePhaseList(operation) {
             toArchive.remove(toArchive[0]);
             execute_next_archive_module_phase(module, currentPhaseList[0]);
         } else if (operation == "restore") {
-            toRestore.remove(toRestore[0]);
-            execute_next_restore_module_phase(module, currentPhaseList[0]);
+			toRestore.remove(toRestore[0]);
+			execute_next_restore_module_phase(module, currentPhaseList[0]);
+		} else if (operation == "delete") {
+			if (processpanel[module.name]) {
+				processpanel[module.name].hide();
+			}
+			modulepanel.setModuleIcon(module.name, 'x-icon-ok');
+			toDelete.remove(toDelete[0]);
+			if (toDelete[0]) {
+				getPhaseList(toDelete[0], operation);
+			} else {
+				globalwin.close();
+				if (typeof WIFF.executePhaseList_end_callback === 'object') {
+					return WIFF.runCallback(WIFF.executePhaseList_end_callback);
+				}
+			}
         } else {
             // Remove first module to install
             toInstall.remove(toInstall[0]);
@@ -5142,8 +4885,36 @@ function displayInterface() {
 	updateContextList();
 
 	updateArchiveList();
+}
 
-};
+function deleteContext(contextName) {
+	var deleter = new WIFF.ContextDeleter(contextName, {
+		success: function () {
+			if (this.mask !== undefined) {
+				this.mask.hide();
+			}
+			if (this.errMsg) {
+				Ext.Msg.alert('Warning', this.errMsg, function () {
+					(function () {
+						updateContextList();
+					}).defer(100);
+				});
+			} else {
+				Ext.Msg.alert('Dynacase Control', 'Context successfully delete', function () {
+					(function () {
+						updateContextList();
+					}).defer(100);
+				});
+			}
+		},
+		failure: function() {
+			(function () {
+				updateContextList();
+			}).defer(1000);
+		}
+	});
+	deleter.run();
+}
 
 function set_onbeforeunload() {
     window.onbeforeunload = function (e) {
