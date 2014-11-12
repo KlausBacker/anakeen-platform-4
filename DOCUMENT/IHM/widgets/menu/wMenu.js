@@ -87,40 +87,44 @@ define([
                             });
                             dwConfirm.data('dcpWindow').open();
                         } else {
-                            var target = thea.attr("target") || '_self';
+                            if (href.substring(0,7) === "#event/") {
+                                menuElement.trigger("menuSelected", href.substring(7));
+                            } else {
+                                var target = thea.attr("target") || '_self';
 
-                            if (target === "_self") {
-                                window.location.href = href;
-                            } else if (target === "_dialog") {
-                                configMenu = menuElement.data("menuConfiguration");
-                                var targetOptions = configMenu.targetOptions || {};
+                                if (target === "_self") {
+                                    window.location.href = href;
+                                } else if (target === "_dialog") {
+                                    configMenu = menuElement.data("menuConfiguration");
+                                    var targetOptions = configMenu.targetOptions || {};
 
-                                var bdw = $('<div/>');
-                                $('body').append(bdw);
+                                    var bdw = $('<div/>');
+                                    $('body').append(bdw);
 
-                                var dw = bdw.dcpWindow({
-                                    title: Mustache.render(targetOptions.title, window.dcp.documentData),
-                                    width: targetOptions.windowWidth,
-                                    height: targetOptions.windowHeight,
-                                    content: href,
-                                    iframe: true
-                                });
-
-
-                                dw.data('dcpWindow').kendoWindow().center();
-                                dw.data('dcpWindow').open();
+                                    var dw = bdw.dcpWindow({
+                                        title: Mustache.render(targetOptions.title, window.dcp.documentData),
+                                        width: targetOptions.windowWidth,
+                                        height: targetOptions.windowHeight,
+                                        content: href,
+                                        iframe: true
+                                    });
 
 
-                                _.defer(function () {
-                                    dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
-                                        dw.data('dcpWindow').kendoWindow().setOptions({
-                                            title: $(this).contents().find("title").html()
+                                    dw.data('dcpWindow').kendoWindow().center();
+                                    dw.data('dcpWindow').open();
+
+
+                                    _.defer(function () {
+                                        dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
+                                            dw.data('dcpWindow').kendoWindow().setOptions({
+                                                title: $(this).contents().find("title").html()
+                                            });
                                         });
                                     });
-                                });
 
-                            } else {
-                                window.open(href, target);
+                                } else {
+                                    window.open(href, target);
+                                }
                             }
                         }
                     }

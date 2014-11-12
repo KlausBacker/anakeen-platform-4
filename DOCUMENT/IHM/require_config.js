@@ -30,7 +30,9 @@
             "kendo/kendo.core" : "../index.php?jsFile=kendo.core&app=DOCUMENT&action=WRAP_KENDO",
             "kendo-culture-fr" : "../lib/KendoUI/js/cultures/kendo.culture.fr-FR",
             "ckeditor" :         "../lib/ckeditor/4/ckeditor",
-            "ckeditor-jquery" :  "../lib/ckeditor/4/adapters/jquery"
+            "ckeditor-jquery" :  "../lib/ckeditor/4/adapters/jquery",
+            "datatables":         "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
+            "datatables-bootstrap":  "../lib/jquery-dataTables/1.10/bootstrap/3"
         }
     };
     if (window.dcp.ws) {

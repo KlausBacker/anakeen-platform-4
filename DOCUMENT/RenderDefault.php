@@ -11,7 +11,7 @@ class RenderDefault implements IRenderConfig
 {
     public function getLabel()
     {
-        return ___("Abstract view","ddui");
+        return ___("Abstract view", "ddui");
     }
     
     public function getDocumentTemplate()
@@ -29,7 +29,8 @@ class RenderDefault implements IRenderConfig
         return array(
             "css/dcp/document/bootstrap.css?ws=" . $version,
             "css/dcp/document/kendo.css?ws=" . $version,
-            "css/dcp/document/document.css?ws=" . $version
+            "css/dcp/document/document.css?ws=" . $version,
+            "lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap.css?ws=" . $version
         );
     }
     

@@ -14,6 +14,7 @@
         <module name='dynacase-mustache.php-installer'/>
         <module name='dynacase-less-installer'/>
         <module name="dynacase-fontawesome-installer"/>
+        <module name="dynacase-jquery-dataTables-1.10-installer"/>
         <module name='dynacase-httpapi-v1'/>
     </requires>
 

@@ -6,7 +6,7 @@
 */
 
 include_once ("FDL/enum_choice.php");
-use Dcp\HttpApi\V1\DocManager;
+use Dcp\HttpApi\V1\DocManager\DocManager;
 function autocomplete(Action & $action)
 {
     

@@ -22,11 +22,16 @@ define([
             this.listenTo(this.model.get("menus"), 'change', this.updateWidget);
             this.listenTo(this.model.get("attributes"), 'changeMenuVisibility', this.changeVisibility);
             this.listenTo(this.model, 'destroy', this.remove);
+
             this.menuModel=this.model.get("menus");
         },
 
         render : function () {
+            var scope=this;
             this.$el.dcpMenu(this.model.toData());
+            this.$el.on("menuSelected", function (event, eventId) {
+                scope.trigger(eventId, event.target);
+            });
             return this;
         },
 
@@ -41,7 +46,9 @@ define([
         updateWidget : function() {
             this.$el.dcpMenu("destroy");
             return this.render();
-        }
+        },
+
+
     });
 
 });

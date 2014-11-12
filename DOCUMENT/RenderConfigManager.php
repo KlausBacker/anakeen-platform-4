@@ -12,7 +12,7 @@
  */
 
 namespace Dcp\Ui;
-use Dcp\HttpApi\V1\DocManager;
+use Dcp\HttpApi\V1\DocManager\DocManager;
 class RenderConfigManager
 {
     

@@ -9,7 +9,8 @@ define([
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
-    'kendo/kendo.core'
+    'kendo/kendo.core',
+    'widgets/history/wHistory'
 ], function (_, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 
@@ -45,16 +46,20 @@ define([
             //add menu
             //console.time("render menu");
             try {
-                new ViewDocumentMenu({
+                var viewMenu = new ViewDocumentMenu({
                     model: this.model,
-                    el: this.$el.find(".dcpDocument__menu")[0]}).render();
+                    el: this.$el.find(".dcpDocument__menu")[0]
+                }).render();
+
+                this.listenTo(viewMenu, 'document:history', this.showHistory);
             } catch (e) {
                 console.error(e);
             }
             try {
                 new ViewDocumentHeader({
                     model: this.model,
-                    el: this.$el.find(".dcpDocument__header")[0]}).render();
+                    el: this.$el.find(".dcpDocument__header")[0]
+                }).render();
             } catch (e) {
                 console.error(e);
             }
@@ -117,6 +122,17 @@ define([
             this.trigger("renderDone");
 
             return this;
+        },
+
+        showHistory: function documentShowHistory(data) {
+
+            console.log("histo", data);
+            var historyWidget = $('body').dcpDocumentHistory({
+                documentId: this.model.id,
+                width: "600px"
+            }).data("dcpDocumentHistory");
+            console.log(historyWidget);
+            historyWidget.open();
         }
     });
 

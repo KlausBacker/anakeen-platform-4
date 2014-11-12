@@ -7,7 +7,7 @@
 
 namespace Dcp\Ui;
 
-use Dcp\HttpApi\V1\DocManager;
+use Dcp\HttpApi\V1\DocManager\DocManager;
 class DocumentTemplateContext implements \ArrayAccess
 {
     public $i18n;
@@ -27,7 +27,7 @@ class DocumentTemplateContext implements \ArrayAccess
     protected $docProperties = null;
     protected $docAttributes = null;
     /**
-     * @var \Dcp\Httpapi\V1\DocumentCrud
+     * @var \Dcp\HttpApi\V1\Crud\Document
      */
     protected $_documentCrud = null;
     protected $_documentData = null;
@@ -58,7 +58,7 @@ class DocumentTemplateContext implements \ArrayAccess
     {
         
         if ($this->_documentCrud === null) {
-            $this->_documentCrud = new \Dcp\HttpApi\V1\DocumentCrud();
+            $this->_documentCrud = new \Dcp\HttpApi\V1\Crud\Document();
             $this->_documentCrud->setDefaultFields($field);
             $this->_documentData = $this->_documentCrud->getInternal($this->_document);
         }
