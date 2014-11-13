@@ -1,0 +1,237 @@
+define([
+    'underscore',
+    'mustache',
+    'kendo/kendo.core',
+    'widgets/widget',
+    'kendo/kendo.window',
+    'datatables',
+    "datatables-bootstrap/dataTables.bootstrap"
+], function (_, Mustache) {
+    'use strict';
+
+    $.widget("dcp.dcpRevisionDiff", {
+        options: {
+            documentId: 0,
+            firstRevision: 0,
+            secondRevision: 0,
+            window: {
+                modal: true,
+                animation: {
+                    open: {
+                        effects: "fade:in",
+                        duration: 1000
+                    }, close: {
+                        effects: "fade:out",
+                        duration: 1000
+                    }
+                },
+                actions: [
+                    "Maximize",
+                    "Close"
+                ],
+                visible: false,
+                height: "300px",
+                width: "500px",
+                title: "Document difference"
+            },
+            labels: {
+                "first": "First document",
+                "second": "Second document",
+                "attributeId": "Attribute id",
+                "attributeLabel": "Attribute label",
+                "documentHeader" : '"{{title}}"  (Revision : {{revision}}) of <em>{{revdate}}</em>',
+                "filterMessages" : "Filter data",
+                "showOnlyDiff" : "Show only differences",
+                "showAll" : "Show all"
+            }
+        },
+        firstDocument: null,
+        secondDocument: null,
+        _create: function () {
+            var scope = this;
+            this.currentWidget = $('<div class="revision-diff"/>').html(this.htmlCaneva());
+
+
+            this.element.append(this.currentWidget);
+            this._initDatatable();
+            this.element.data("dcpRevisionDiff", this);
+            this.options.window.close = function () {
+                scope.destroy();
+            };
+            this.currentWidget.kendoWindow(this.options.window);
+
+            this.currentWidget.on("click", ".revision-diff-button-showonlydiff", function () {
+                if ($(this).data("showOnlyDiff")) {
+                    $(this).data("showOnlyDiff", false);
+                    $(this).text(scope.options.labels.showOnlyDiff).removeClass("btn-primary");
+                    scope.currentWidget.find(".revision-diff-equal").show();
+                } else {
+                    $(this).data("showOnlyDiff", true);
+                    scope.currentWidget.find(".revision-diff-equal").hide();
+
+                    $(this).text(scope.options.labels.showAll).addClass("btn-primary");
+                }
+            });
+
+        },
+        open: function open() {
+            this.currentWidget.data("kendoWindow").open();
+            this.currentWidget.data("kendoWindow").center();
+        },
+        destroy: function wRevisionDiffDestroy() {
+            this.currentWidget.data("kendoWindow").destroy();
+            this._super();
+        },
+
+        htmlCaneva: function () {
+            return '<table class="revision-diff-main"><thead>' +
+            '<tr class="revision-diff-header">' +
+            '<th class="revision-diff-header--attribute-id"/>' +
+            '<th class="revision-diff-header--attribute-label"/>' +
+            '<th class="revision-diff-header--first"/>' +
+            '<th class="revision-diff-header--second"/>' +
+            '</tr>' +
+            '</thead></table>';
+        },
+        _initDatatable: function () {
+
+            var revisionDiffWidget = this;
+            $('.revision-diff-main').dataTable({
+                "autoWidth": false,
+                "ordering": false,
+                "paging": false,
+                // "scrollY": "200px",
+                "scrollCollapse": false,
+                "info": false,
+                "language": {
+                    "search": " "
+                },
+                "columns": [
+                    {
+                        data: "attributeId",
+                        name: "attributeId",
+                        title: revisionDiffWidget.options.labels.attributeId,
+                        className: "revision-diff-attributeid",
+                        visible : false
+                    },
+                    {
+                        data: "attributeLabel",
+                        name: "attributeLabel",
+                        title: revisionDiffWidget.options.labels.attributeLabel,
+                        className: "revision-diff-attributelabel"
+
+                    },
+                    {
+                        data: "first",
+                        name: "first",
+                        title: revisionDiffWidget.options.labels.first,
+                        className: "revision-diff-first",
+                        render: function (data) {
+                            if (_.isArray(data)) {
+                                return _.pluck(data, 'displayValue').join(', ');
+                            } else {
+                                return data.displayValue;
+                            }
+                        }
+                    },
+                    {
+                        data: "second",
+                        name: "second",
+                        title: revisionDiffWidget.options.labels.second,
+                        className: "revision-diff-second",
+                        render: function (data) {
+                            if (_.isArray(data)) {
+                                return _.pluck(data, 'displayValue').join(', ');
+                            } else {
+                                return data.displayValue;
+                            }
+                        }
+                    }
+                ],
+
+                "drawCallback": function () {
+
+
+                },
+                "initComplete": function () {
+                    var api = this.api();
+                    // var data = api.rows({page: 'current'}).data();
+                    // Output the data for the visible rows to the browser's console
+                    $(api.columns('first:name').header()).html(revisionDiffWidget._getDocHeader(revisionDiffWidget.firstDocument));
+                    $(api.columns('second:name').header()).html(revisionDiffWidget._getDocHeader(revisionDiffWidget.secondDocument));
+                    revisionDiffWidget.currentWidget.find(".dataTables_filter input").attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
+
+                    var firstHeadCell = revisionDiffWidget.currentWidget.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
+                       firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
+
+
+                },
+
+                "ajax": function (data, callback) {
+                    var myData = [];
+
+                    $.getJSON("api/v1/documents/" + revisionDiffWidget.options.documentId +
+                    "/revisions/" + revisionDiffWidget.options.firstRevision +
+                    ".json?fields=family.structure,document.properties.revdate,document.properties.revision,document.attributes").
+                        done(function (data1) {
+                            revisionDiffWidget.firstDocument = data1.data.revision;
+                            $.getJSON("api/v1/documents/" + revisionDiffWidget.options.documentId +
+                            "/revisions/" + revisionDiffWidget.options.secondRevision +
+                            ".json?fields=document.properties.revdate,document.properties.revision,document.attributes").
+                                done(function (data2) {
+                                    revisionDiffWidget.secondDocument = data2.data.revision;
+                                    _.each(data1.data.revision.attributes, function (firstValue, index) {
+                                        var secondValue = data2.data.revision.attributes[index];
+                                        myData.push({
+                                            attributeId: index,
+                                            attributeLabel: revisionDiffWidget._findAttributeLabel(data1.data.family.structure, index),
+                                            first: firstValue,
+                                            second: secondValue,
+                                            "DT_RowClass": (_.isEqual(firstValue , secondValue)) ? "revision-diff-equal" : "revision-diff-not-equal"
+                                        });
+                                    });
+                                    callback(
+                                        {data: myData}
+                                    );
+                                }).fail(function (xhr) {
+                                    var result = JSON.parse(xhr.responseText);
+                                    window.alert(result.exceptionMessage);
+                                });
+                        }).fail(function (xhr) {
+                            var result = JSON.parse(xhr.responseText);
+                            window.alert(result.exceptionMessage);
+                        });
+                }
+            }).addClass('table table-condensed table-bordered');
+
+        },
+
+
+        _findAttributeLabel: function wRevisionDiffFindAttributeLabel(structure, aid) {
+            var scope = this;
+            var label = null;
+            _.some(structure, function (attributInfo, attributId) {
+                if (attributId === aid) {
+                    label = attributInfo.label;
+                    return true;
+                }
+                if (_.isObject(attributInfo.content)) {
+                    var contentLabel = scope._findAttributeLabel(attributInfo.content, aid);
+
+                    if (contentLabel !== null) {
+                        label = contentLabel;
+                        return true;
+                    }
+                }
+                return false;
+
+            });
+            return label;
+        },
+
+        _getDocHeader: function wRevisionDiffGetDocHeader(documentStructure) {
+            var documentHeader=this.options.labels.documentHeader;
+            return Mustache.render(documentHeader, documentStructure.properties);
+        }
+    });
+});

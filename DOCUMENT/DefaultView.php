@@ -7,14 +7,14 @@
 
 namespace Dcp\Ui;
 
-use Dcp\HttpApi\V1\DocManager;
+use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class DefaultView extends RenderDefault
 {
     
     public function getLabel()
     {
-        return ___("Default View","ddui");
+        return ___("Default View", "ddui");
     }
     
     public function getType()
@@ -89,11 +89,11 @@ class DefaultView extends RenderDefault
         $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
         $menu->appendElement($item);
         
-        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "?app=FREEDOM&action=HISTO&id={{document.properties.id}}");
-        $targetOption = new MenuTargetOptions();
+        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document:history");
+        /*$targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
         $targetOption->windowWidth = "600px";
-        $item->setTarget("_dialog", $targetOption);
+        $item->setTarget("_dialog", $targetOption);*/
         $menu->appendElement($item);
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
@@ -135,7 +135,7 @@ class DefaultView extends RenderDefault
      * @param \Doc $doc
      * @param ListMenu $menu
      */
-    protected  function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
+    protected function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
     {
         
         if ($doc->wid > 0) {
@@ -234,7 +234,7 @@ class DefaultView extends RenderDefault
      * @param BarMenu $menu target menu
      * @throws \Dcp\Ui\Exception
      */
-    protected  function addCvMenu(\Doc $doc, BarMenu & $menu)
+    protected function addCvMenu(\Doc $doc, BarMenu & $menu)
     {
         if ($doc->cvid > 0) {
             $cv = DocManager::getDocument($doc->cvid);
@@ -265,6 +265,11 @@ class DefaultView extends RenderDefault
                 } else {
                     $menu->insertBefore("advanced", $menuItem);
                 }
+            }
+            $defaultview = $doc->getDefaultView(true);
+            if ($defaultview !== 0) {
+                $modifyItem = $menu->getElement("modify");
+                $modifyItem->setTextLabel($cv->getLocaleViewLabel($defaultview['cv_idview']));
             }
         }
     }

@@ -157,7 +157,7 @@ define([
             var infoBgColor = inputText.css("background-color");
             $.ajax({
                 type: 'POST',
-                url: "api/v1/files/",
+                url: "api/v1/temporaryFiles/",
                 processData: false,
                 contentType: false,
                 cache: false,

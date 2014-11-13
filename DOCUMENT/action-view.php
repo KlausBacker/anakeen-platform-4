@@ -5,7 +5,7 @@
  * @package FDL
 */
 
-use Dcp\HttpApi\V1\DocManager;
+use Dcp\HttpApi\V1\DocManager\DocManager;
 function view(Action & $action)
 {
     

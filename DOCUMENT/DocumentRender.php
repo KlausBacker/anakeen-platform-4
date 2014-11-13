@@ -9,7 +9,7 @@ namespace Dcp\Ui;
 
 use Dcp\ApiUsage\Exception;
 
-use Dcp\HttpApi\V1\DocManager;
+use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class DocumentRender
 {
