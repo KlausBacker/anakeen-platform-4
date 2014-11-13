@@ -126,12 +126,14 @@ define([
 
         showHistory: function documentShowHistory(data) {
 
-            console.log("histo", data);
             var historyWidget = $('body').dcpDocumentHistory({
-                documentId: this.model.id,
-                width: "600px"
+                documentId: this.model.get("properties").get("initid"),
+                window: {
+                    width: "80%",
+                    height: "80%"
+                }
             }).data("dcpDocumentHistory");
-            console.log(historyWidget);
+
             historyWidget.open();
         }
     });

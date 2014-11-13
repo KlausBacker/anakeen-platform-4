@@ -18,13 +18,13 @@
   white-space: nowrap;
 }
 
-.history-header, .history-separator {
+.history-header {
   background-color: @gray-lighter;
   font-weight: bold;
 }
 
 .history-separator .history-separator-cell {
-  border-top: solid 3px @gray;
+  /*border-top: solid 3px @gray;*/
 }
 
 .history-header .history-owner {
@@ -48,15 +48,18 @@
 }
 
 .document-history .dataTables_filter {
-  display: inline-block;
+
 }
 
 .history-button-shownotice {
-  float: right;
 }
 
+.document-history tbody > tr > th {
+  padding-left: 18px;
+  padding-right: 18px;
+}
 .history-button-showdetail {
-  float: right;
+  margin-right:10px;
 }
 
 .document-history * {
