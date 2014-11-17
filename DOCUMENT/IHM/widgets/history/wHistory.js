@@ -162,7 +162,7 @@ define([
                         className: "history-date",
                         "render": function (data) {
 
-                            return kendo.toString(new Date(data), "G");
+                            return kendo.toString(new Date(data.replace(' ','T')), "G");
 
                         }
                     },

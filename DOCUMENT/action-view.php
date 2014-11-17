@@ -19,6 +19,14 @@ function view(Action & $action)
         "create"
     ) , "view");
     
+    $revision = $usage->addOptionalParameter("revision", "revision number", function ($revision)
+    {
+        if (!is_numeric($revision)) {
+            return sprintf(___("Revision \"%s\" must be a number ", "ddui") , $revision);
+        }
+    }
+    , -1);
+    
     $documentId = $usage->addRequiredParameter("id", "document identifier", function ($id) use ($renderMode)
     {
         $doc = DocManager::getDocument($id);
@@ -42,7 +50,12 @@ function view(Action & $action)
         $doc = DocManager::createDocument($documentId);
         $doc->title = sprintf(___("%s Creation", "ddui") , $doc->getFamilyDocument()->getTitle());
     } else {
-        $doc = DocManager::getDocument($documentId);
+        if ($revision >= 0) {
+            $documentId = DocManager::getRevisedDocumentId($documentId, $revision);
+            $doc = DocManager::getDocument($documentId, false);
+        } else {
+            $doc = DocManager::getDocument($documentId);
+        }
     }
     if (!$doc) {
         $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));

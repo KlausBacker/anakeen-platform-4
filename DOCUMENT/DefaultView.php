@@ -28,36 +28,61 @@ class DefaultView extends RenderDefault
      */
     protected function setMenuVisibility(BarMenu & $menu, \Doc $document)
     {
-        
-        if ($editErr = $document->CanEdit()) {
-            $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($editErr);
-        }
-        $deleteErr = $document->control("delete");
-        if ($document->locked == - 1) {
-            $menu->getElement("delete'")->setVisibility(ElementMenu::VisibilityHidden);
-            if ($deleteErr) {
-                $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($deleteErr);
+        // Trash document
+        if ($document->doctype === "Z") {
+            $deleteErr = $document->control("delete");
+            if (!$deleteErr) {
+                $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityVisible);
+            } else {
+                $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityDisabled);
             }
-        } else {
-            
-            $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
-        }
-        
-        if ($document->isLocked()) {
+            $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityHidden);
+            $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
             $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
-            $cuf = ($document->CanUnLockFile() == "");
-            if (!$cuf) {
-                if ($document->locked == - 1) {
-                    
-                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityVisible);
+        } else {
+            if ($document->locked == - 1) {
+                // Fixed document
+                $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityHidden);
+                $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
+                $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+                
+                $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
+                $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
+                $menu->getElement("security")->setVisibility(ElementMenu::VisibilityHidden);
+                
+                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "?app=DOCUMENT&id={{document.properties.id}}");
+                $item->setTooltipLabel(___("Display latest document revision", "UiMenu"));
+                $item->setBeforeContent('<div class="fa fa-share" />');
+                
+                $menu->insertBefore("modify", $item);
+            } else {
+                
+                if ($editErr = $document->CanEdit()) {
+                    $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($editErr);
+                }
+                $deleteErr = $document->control("delete");
+                if ($deleteErr) {
+                    $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($deleteErr);
+                }
+                $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
+                // Alive document
+                if ($document->isLocked()) {
+                    $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
+                    $cuf = ($document->CanUnLockFile() == "");
+                    if (!$cuf) {
+                        if ($document->locked == - 1) {
+                            
+                            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+                        } else {
+                            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled);
+                        }
+                    }
                 } else {
-                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled);
+                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
                 }
             }
-        } else {
-            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
         }
-        
         return $menu;
     }
     /**
@@ -90,6 +115,7 @@ class DefaultView extends RenderDefault
         $menu->appendElement($item);
         
         $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document:history");
+        $item->setBeforeContent('<div class="fa fa-history" />');
         /*$targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
         $targetOption->windowWidth = "600px";
@@ -116,19 +142,36 @@ class DefaultView extends RenderDefault
         
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         if ($document->wid > 0) {
-            $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));
-            $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
-            {
-                $this->getWorkflowMenu($document, $menu);
-            });
-            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
-            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
-            $menu->appendElement($workflowMenu);
+            if ($document->locked != - 1) {
+                $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));
+                $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
+                {
+                    $this->getWorkflowMenu($document, $menu);
+                });
+                $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+                $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
+                $menu->appendElement($workflowMenu);
+            } else {
+                $workflowMenu = new SeparatorMenu("workflow", _($document->getState()));
+                
+                $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+                $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
+                $menu->appendElement($workflowMenu);
+            }
         }
         
         $this->addCvMenu($document, $menu);
         $this->addFamilyMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);
+    }
+    
+    public function getTemplates(\Doc $document = null)
+    {
+        $templates = parent::getTemplates($document);
+        if ($document->locked == - 1) {
+            $templates["sections"]["header"]["file"] = "DOCUMENT/IHM/views/document/document__header-fixed.mustache";
+        }
+        return $templates;
     }
     /**
      * Get workflow submenu contents
@@ -138,7 +181,7 @@ class DefaultView extends RenderDefault
     protected function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
     {
         
-        if ($doc->wid > 0) {
+        if ($doc->wid > 0 && $doc->locked != - 1) {
             /**
              * @var \WDoc $wdoc
              */

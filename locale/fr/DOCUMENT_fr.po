@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-02 16:43+0200\n"
-"PO-Revision-Date: 2014-09-02 17:27+0200\n"
+"POT-Creation-Date: 2014-11-14 09:28+0100\n"
+"PO-Revision-Date: 2014-11-17 13:56+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: Frecnh <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -15,6 +15,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#, php-format
+msgctxt "ddui"
+msgid "%s Creation"
+msgstr ""
+
+msgctxt "ddui"
 msgid "Abstract view"
 msgstr ""
 
@@ -44,7 +50,7 @@ msgstr "Annuler"
 
 msgctxt "ddui-enum"
 msgid "Choose"
-msgstr ""
+msgstr "Choisissez"
 
 msgctxt "ddui-file"
 msgid "Choose file"
@@ -85,6 +91,10 @@ msgctxt "UiMenu"
 msgid "Create"
 msgstr "Créer"
 
+msgctxt "UiMenu"
+msgid "Create !"
+msgstr ""
+
 msgctxt "my"
 msgid "Custom Menu"
 msgstr ""
@@ -104,6 +114,7 @@ msgstr ""
 msgid "Default Edit"
 msgstr ""
 
+msgctxt "ddui"
 msgid "Default View"
 msgstr ""
 
@@ -115,9 +126,23 @@ msgctxt "UiMenu"
 msgid "Display document form"
 msgstr "Afficher le formulaire de modification"
 
+msgctxt "UiMenu"
+msgid "Display latest document revision"
+msgstr "Voir la dernière révision du document"
+
 #, php-format
 msgctxt "ddui"
 msgid "Document \"%s\" not found "
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Document identifier \"%s\" must be a family in create mode"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Document identifier \"%s\"not found"
 msgstr ""
 
 msgid "Document render"
@@ -130,9 +155,6 @@ msgstr "Télécharger le fichier"
 msgctxt "ddui-image"
 msgid "Download image"
 msgstr "Télécharger l'image"
-
-msgid "Download template"
-msgstr ""
 
 msgctxt "ddui-file"
 msgid "Drop file here"
@@ -248,6 +270,11 @@ msgctxt "UiMenu"
 msgid "Restore document from the trash"
 msgstr "Retirer le document de la poubelle"
 
+#, php-format
+msgctxt "ddui"
+msgid "Revision \"%s\" must be a number "
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Save"
 msgstr "Enregistrer"
@@ -284,6 +311,10 @@ msgctxt "UiMenu"
 msgid "Unlock"
 msgstr "Déverouiller"
 
+msgctxt "UiMenu"
+msgid "View current revision"
+msgstr "Voir la révision courante"
+
 msgid "View documents"
 msgstr ""
 
@@ -293,6 +324,9 @@ msgstr "Voir le graphe du cycle"
 
 msgctxt "ddui"
 msgid "View {{displayValue}}"
+msgstr ""
+
+msgid "Wrap kendo"
 msgstr ""
 
 msgid "Y-m-d"
@@ -306,6 +340,9 @@ msgstr "Suppression de : "
 
 msgid "ddui::Loading"
 msgstr "Chargement"
+
+msgid "ddui::Revision :"
+msgstr "Révision n°"
 
 msgid "ddui:Add new line"
 msgstr "Ajouter une nouvelle ligne"

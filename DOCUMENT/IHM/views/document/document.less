@@ -47,6 +47,8 @@
 
 .dcpDocument__header__icon {
   height: @documentHeaderHeight;
+  padding-right: 1em;
+  padding-left: 0.5em;
 }
 
 .dcpDocument__header__family {
@@ -149,3 +151,15 @@ body {
   width: 2em;
 }
 
+.dcpDocument__header--fixed {
+  background-color: @gray-lighter;
+}
+.dcpDocument__header--fixed .dcpDocument__header__revision{
+  padding-right: 2em;
+  padding-left: 2em;
+  font-size: @documentHeaderHeight/2;
+}
+.dcpDocument__header--fixed .dcpDocument__header__revdate {
+  padding-right: 2em;
+  font-size: @documentHeaderHeight/2;
+}

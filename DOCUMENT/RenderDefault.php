@@ -53,7 +53,7 @@ class RenderDefault implements IRenderConfig
         );
     }
     
-    public function getTemplates()
+    public function getTemplates(\Doc $document = null)
     {
         return array(
             "body" => array(

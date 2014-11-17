@@ -31,7 +31,7 @@ interface IRenderConfig {
     /**
      * @return array set of indexed template
      */
-    public function getTemplates();
+    public function getTemplates(\Doc $document = null);
     /**
      * @param \Doc $document
      * @return RenderOptions deafault render configuration options

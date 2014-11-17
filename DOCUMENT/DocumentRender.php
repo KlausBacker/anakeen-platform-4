@@ -102,7 +102,7 @@ class DocumentRender
         
         $this->applyVisibilities();
         
-        $fl = new MustacheLoaderSection($this->renderConfig->getTemplates() , $this->delimiterStartTag, $this->delimiterEndTag);
+        $fl = new MustacheLoaderSection($this->renderConfig->getTemplates($this->document) , $this->delimiterStartTag, $this->delimiterEndTag);
         $fl->setDocument($this->document);
         $me->setPartialsLoader($fl);
         $delimiter = sprintf('{{=%s %s=}}', $this->delimiterStartTag, $this->delimiterEndTag);
