@@ -39,7 +39,7 @@ define([
                 "second": "Second document",
                 "attributeId": "Attribute id",
                 "attributeLabel": "Attribute label",
-                "documentHeader" : '"{{title}}"  (Revision : {{revision}}) of <em>{{revdate}}</em>',
+                "documentHeader" : '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>',
                 "filterMessages" : "Filter data",
                 "showOnlyDiff" : "Show only differences",
                 "showAll" : "Show all"
@@ -202,7 +202,7 @@ define([
                             window.alert(result.exceptionMessage);
                         });
                 }
-            }).addClass('table table-condensed table-bordered');
+            }).addClass('table table-condensed table-bordered table-hover');
 
         },
 

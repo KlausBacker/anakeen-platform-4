@@ -10,7 +10,8 @@ define([
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'kendo/kendo.core',
-    'widgets/history/wHistory'
+    'widgets/history/wHistory',
+    'widgets/properties/wProperties'
 ], function (_, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 
@@ -52,6 +53,7 @@ define([
                 }).render();
 
                 this.listenTo(viewMenu, 'document:history', this.showHistory);
+                this.listenTo(viewMenu, 'document:properties', this.showProperties);
             } catch (e) {
                 console.error(e);
             }
@@ -135,6 +137,18 @@ define([
             }).data("dcpDocumentHistory");
 
             historyWidget.open();
+        },
+        showProperties: function documentShowProperties(data) {
+
+            var propertiesWidget = $('body').dcpDocumentProperties({
+                documentId: this.model.get("properties").get("initid"),
+                window: {
+                    width: "400px",
+                    height: "auto"
+                }
+            }).data("dcpDocumentProperties");
+
+           propertiesWidget.open();
         }
     });
 

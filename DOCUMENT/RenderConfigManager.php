@@ -29,7 +29,12 @@ class RenderConfigManager
     public static function getRenderConfig($mode, \Doc $document, $vId = '')
     {
         if (empty($vId)) {
-            return self::getDocumentRenderConfig($mode, $document);
+            if ($document->doctype === "C") {
+                
+                return self::getFamilyRenderConfig($mode, $document);
+            } else {
+                return self::getDocumentRenderConfig($mode, $document);
+            }
         }
         // try to get special vId
         if (empty($document->cvid)) {
@@ -100,15 +105,16 @@ class RenderConfigManager
             return self::getRenderConfigCv($mode, DocManager::getDocument($document->cvid) , $document);
         }
         
-        return self::getFamilyRenderConfig($mode, $document);
+        return self::getDefaultFamilyRenderConfig($mode, $document);
     }
     /**
+     * Get render designed by document class
      * @param $mode
      * @param \Doc $document
      * @throws Exception
      * @return IRenderConfig
      */
-    public static function getFamilyRenderConfig($mode, \Doc $document)
+    public static function getDefaultFamilyRenderConfig($mode, \Doc $document)
     {
         if (is_a($document, "Dcp\\Ui\\IRenderConfigAccess")) {
             /**
@@ -120,6 +126,12 @@ class RenderConfigManager
             }
         }
         return self::getRenderDefaultConfig($mode);
+    }
+    
+    protected static function getFamilyRenderConfig($mode, \DocFam $family)
+    {
+        
+        return new \Dcp\Ui\FamilyView();
     }
     /**
      * @param $mode

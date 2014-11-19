@@ -89,7 +89,8 @@ class DocumentTemplateContext implements \ArrayAccess
             
             $data = $this->_documentData;
             foreach ($fields as $key) {
-                $data = $data[trim($key) ];
+                $key = trim($key);
+                $data = isset($data[$key]) ? $data[$key] : null;
             }
         }
         return $data;
@@ -106,6 +107,9 @@ class DocumentTemplateContext implements \ArrayAccess
     
     protected function _getAttributes()
     {
+        if ($this->_document->doctype === "C") {
+            return array();
+        }
         return $this->_getDocumentData("document.attributes");
     }
     /**
@@ -146,7 +150,9 @@ class DocumentTemplateContext implements \ArrayAccess
     
     protected function _getDocumentStructure()
     {
-        
+        if ($this->_document->doctype === "C") {
+            return null;
+        }
         return $this->_getDocumentData("family.structure");
     }
     /**

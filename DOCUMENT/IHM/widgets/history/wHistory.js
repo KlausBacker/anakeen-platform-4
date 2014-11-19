@@ -357,7 +357,7 @@ define([
                         return data;
                     }
                 }
-            }).addClass('table table-condensed table-bordered');
+            }).addClass('table table-condensed table-bordered table-hover');
 
         }
 

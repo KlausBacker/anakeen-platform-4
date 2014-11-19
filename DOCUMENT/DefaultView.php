@@ -123,7 +123,11 @@ class DefaultView extends RenderDefault
         $menu->appendElement($item);
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
-        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
+        
+        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
+        $menu->getElement("advanced")->appendElement($item);
+        
+        $item = new ItemMenu("propertiesOld", ___("Old Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
         $targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
         $targetOption->windowWidth = "400px";
