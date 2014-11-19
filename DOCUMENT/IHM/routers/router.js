@@ -50,7 +50,7 @@ define([
                         type: "POST",
                         dataType: "json",
                         contentType: 'application/json',
-                        url: "api/v1/families/" + fromId + "/",
+                        url: "api/v1/families/" + fromId +"/documents/",
                         data: JSON.stringify(values)
                     }).pipe(
                         function (response) {
