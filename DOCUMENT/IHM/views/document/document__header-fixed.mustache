@@ -1,7 +1,12 @@
-<header class="dcpDocument__header dcpDocument__header--fixed">
+<header class="dcpDocument__header dcpDocument__header--{{document.properties.status}}">
     <img class="dcpDocument__header__icon" src="{{document.properties.icon}}" alt="Document icon"/>
-    <span class="dcpDocument__header__title">{{document.properties.title}}</span>
+    <a class="dcpDocument__header__title" href="?app=DOCUMENT&id={{document.properties.id}}">{{document.properties.title}}</a>
     <span class="dcpDocument__header__revision">[[#i18n]]ddui::Revision :[[/i18n]] {{document.properties.revision}}</span>
-    <span class="dcpDocument__header__revdate">{{document.properties.revdate}}</span>
+    <span class="dcpDocument__header__revdate">
+        [[#isdocumentdeleted]][[#i18n]]ddui::DocumentDeleted[[/i18n]][[/isdocumentdeleted]]
+        [[^isdocumentdeleted]][[#i18n]]ddui::RevisionCreated[[/i18n]][[/isdocumentdeleted]]
+
+        [[formattedRevdate]]
+    </span>
     <div class="dcpDocument__header__family">{{document.properties.family.title}}</div>
 </header>

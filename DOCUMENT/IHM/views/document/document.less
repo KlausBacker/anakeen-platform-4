@@ -153,14 +153,23 @@ body {
 }
 
 .dcpDocument__header--fixed {
-  background-color: @gray-lighter;
+  background-color: lighten(@brand-warning, 20%);
 }
-.dcpDocument__header--fixed .dcpDocument__header__revision{
+.dcpDocument__header--deleted {
+  background-color: lighten(@brand-danger, 20%);
+}
+.dcpDocument__header--fixed .dcpDocument__header__revision,
+.dcpDocument__header--deleted .dcpDocument__header__revision,
+
+{
   padding-right: 2em;
   padding-left: 2em;
   font-size: @documentHeaderHeight/2;
 }
-.dcpDocument__header--fixed .dcpDocument__header__revdate {
+.dcpDocument__header--fixed .dcpDocument__header__revdate,
+.dcpDocument__header--deleted .dcpDocument__header__revdate,
+
+{
   padding-right: 2em;
   font-size: @documentHeaderHeight/2;
 }

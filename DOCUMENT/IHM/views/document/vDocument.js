@@ -54,6 +54,7 @@ define([
 
                 this.listenTo(viewMenu, 'document:history', this.showHistory);
                 this.listenTo(viewMenu, 'document:properties', this.showProperties);
+                this.listenTo(viewMenu, 'document:delete', this.deleteDocument);
             } catch (e) {
                 console.error(e);
             }
@@ -149,6 +150,21 @@ define([
             }).data("dcpDocumentProperties");
 
            propertiesWidget.open();
+        },
+        deleteDocument: function documentDelete(data) {
+
+            $.ajax({
+                type: "DELETE",
+                dataType: "json",
+                contentType: 'application/json',
+                url: "api/v1/documents/" + this.model.get("properties").get("initid")
+            }).done(function (response) {
+                console.log("delete", response);
+                window.location.href=window.location.href;
+            }).fail (function (xhr) {
+                console.log("fail delete", xhr);
+
+            });
         }
     });
 

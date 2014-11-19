@@ -70,6 +70,7 @@ class DocumentTemplateContext implements \ArrayAccess
             } else {
                 $this->_documentCrud->setDefaultFields($field);
             }
+            
             $this->_documentData = $this->_documentCrud->getInternal($this->_document);
         }
         $fields = explode('.', $field);
@@ -101,7 +102,8 @@ class DocumentTemplateContext implements \ArrayAccess
             "revdate",
             "icon",
             "revision",
-            "family"
+            "family",
+            "status"
         ));
     }
     

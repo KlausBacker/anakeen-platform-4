@@ -99,7 +99,7 @@ class DefaultView extends RenderDefault
         
         $menu->appendElement($item);
         
-        $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#delete/{{document.properties.id}}");
+        $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#event/document:delete");
         $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
         $confirmOption = new MenuConfirmOptions();
         $confirmOption->title = ___("Confirm deletion of {{{document.properties.title}}}");
@@ -369,5 +369,18 @@ class DefaultView extends RenderDefault
                 }
             }
         }
+    }
+    /**
+     * @param \Doc $document Document instance
+     * @return DocumentTemplateContext get template controller
+     */
+    public function getContextController(\Doc $document)
+    {
+        $controller = parent::getContextController($document);
+        if ($document->locked == - 1) {
+            $controller->offsetSet("isdocumentdeleted", ($document->doctype == "Z"));
+            $controller->offsetSet("formattedRevdate", strftime("%d %B %Y %H:%M", $document->revdate));
+        }
+        return $controller;
     }
 }

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-14 09:28+0100\n"
+"POT-Creation-Date: 2014-11-19 13:39+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -161,6 +161,10 @@ msgctxt "ddui-image"
 msgid "Drop image here"
 msgstr ""
 
+msgctxt "ddui"
+msgid "Family View"
+msgstr ""
+
 msgid "Get dynamic sub menu"
 msgstr ""
 
@@ -230,6 +234,10 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "No result found"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Old Properties"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -339,6 +347,9 @@ msgid "ddui::Loading"
 msgstr ""
 
 msgid "ddui::Revision :"
+msgstr ""
+
+msgid "ddui::RevisionCreated :"
 msgstr ""
 
 msgid "ddui:Add new line"

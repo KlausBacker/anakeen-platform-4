@@ -106,7 +106,7 @@ define([
             '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{security.profil.id}}">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
             '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{security.profil.reference.id}}">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
 
-            '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{viewControllerl.id}}">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{viewController.id}}">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
 
             '</tbody></table>';
         },
