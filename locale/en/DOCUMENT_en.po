@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-02 16:43+0200\n"
+"POT-Creation-Date: 2014-11-19 13:39+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -12,6 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#, php-format
+msgctxt "ddui"
+msgid "%s Creation"
+msgstr ""
+
+msgctxt "ddui"
 msgid "Abstract view"
 msgstr ""
 
@@ -82,6 +88,10 @@ msgctxt "UiMenu"
 msgid "Create"
 msgstr ""
 
+msgctxt "UiMenu"
+msgid "Create !"
+msgstr ""
+
 msgctxt "my"
 msgid "Custom Menu"
 msgstr ""
@@ -101,6 +111,7 @@ msgstr ""
 msgid "Default Edit"
 msgstr ""
 
+msgctxt "ddui"
 msgid "Default View"
 msgstr ""
 
@@ -112,9 +123,23 @@ msgctxt "UiMenu"
 msgid "Display document form"
 msgstr ""
 
+msgctxt "UiMenu"
+msgid "Display latest document revision"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid "Document \"%s\" not found "
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Document identifier \"%s\" must be a family in create mode"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Document identifier \"%s\"not found"
 msgstr ""
 
 msgid "Document render"
@@ -128,15 +153,16 @@ msgctxt "ddui-image"
 msgid "Download image"
 msgstr ""
 
-msgid "Download template"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "Drop file here"
 msgstr ""
 
 msgctxt "ddui-image"
 msgid "Drop image here"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Family View"
 msgstr ""
 
 msgid "Get dynamic sub menu"
@@ -211,6 +237,10 @@ msgid "No result found"
 msgstr ""
 
 msgctxt "UiMenu"
+msgid "Old Properties"
+msgstr ""
+
+msgctxt "UiMenu"
 msgid "Profil access"
 msgstr ""
 
@@ -243,6 +273,11 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Restore document from the trash"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Revision \"%s\" must be a number "
 msgstr ""
 
 msgctxt "UiMenu"
@@ -281,6 +316,10 @@ msgctxt "UiMenu"
 msgid "Unlock"
 msgstr ""
 
+msgctxt "UiMenu"
+msgid "View current revision"
+msgstr ""
+
 msgid "View documents"
 msgstr ""
 
@@ -290,6 +329,9 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "View {{displayValue}}"
+msgstr ""
+
+msgid "Wrap kendo"
 msgstr ""
 
 msgid "Y-m-d"
@@ -302,6 +344,12 @@ msgid "ddui::Delete : "
 msgstr ""
 
 msgid "ddui::Loading"
+msgstr ""
+
+msgid "ddui::Revision :"
+msgstr ""
+
+msgid "ddui::RevisionCreated :"
 msgstr ""
 
 msgid "ddui:Add new line"

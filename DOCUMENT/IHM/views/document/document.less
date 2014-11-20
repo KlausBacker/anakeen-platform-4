@@ -19,6 +19,7 @@
 @import "../../widgets/window/notification";
 @import "../../widgets/history/history";
 @import "../../widgets/history/revisiondiff";
+@import "../../widgets/properties/properties";
 
 @documentHeaderHeight : 30px;
 
@@ -47,6 +48,8 @@
 
 .dcpDocument__header__icon {
   height: @documentHeaderHeight;
+  padding-right: 1em;
+  padding-left: 0.5em;
 }
 
 .dcpDocument__header__family {
@@ -149,3 +152,24 @@ body {
   width: 2em;
 }
 
+.dcpDocument__header--fixed {
+  background-color: lighten(@brand-warning, 20%);
+}
+.dcpDocument__header--deleted {
+  background-color: lighten(@brand-danger, 20%);
+}
+.dcpDocument__header--fixed .dcpDocument__header__revision,
+.dcpDocument__header--deleted .dcpDocument__header__revision,
+
+{
+  padding-right: 2em;
+  padding-left: 2em;
+  font-size: @documentHeaderHeight/2;
+}
+.dcpDocument__header--fixed .dcpDocument__header__revdate,
+.dcpDocument__header--deleted .dcpDocument__header__revdate,
+
+{
+  padding-right: 2em;
+  font-size: @documentHeaderHeight/2;
+}

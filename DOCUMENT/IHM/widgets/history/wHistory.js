@@ -141,6 +141,39 @@ define([
             this.currentWidget.data("kendoWindow").center();
         },
 
+        _fillDataTable: function (data) {
+            var myData = [];
+            _.each(data.data.history, function (revisionInfo) {
+                myData.push({
+                    "version": revisionInfo.version,
+                    "revision": revisionInfo.revision,
+                    "code": '',
+                    "level": 'revision',
+                    "message": revisionInfo,
+                    "owner": revisionInfo.owner.title,
+                    "date": revisionInfo.revisionDate,
+                    "diff": 1,
+                    "color": revisionInfo.state.color,
+                    "DT_RowClass": "history-level--revision"
+                });
+                _.each(revisionInfo.messages, function (message) {
+                    myData.push({
+                        "version": '',
+                        "revision": '',
+                        "code": message.code,
+                        "level": message.level,
+                        "message": message.comment,
+                        "owner": message.uname,
+                        "date": message.date,
+                        "diff": 0,
+                        "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.fixed ? " history-comment--fixed" : "")
+                    });
+                });
+
+            });
+            return myData;
+        },
+
         _initDatatable: function () {
 
             var historyWidget = this;
@@ -162,7 +195,7 @@ define([
                         className: "history-date",
                         "render": function (data) {
 
-                            return kendo.toString(new Date(data), "G");
+                            return kendo.toString(new Date(data.replace(' ', 'T')), "G");
 
                         }
                     },
@@ -205,7 +238,7 @@ define([
                         className: "history-revision",
                         render: function (data) {
                             if (data !== '') {
-                                return '<a class="history-revision-link" href="?app=DOCUMENT&id=' +
+                                return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&id=' +
                                 historyWidget.options.documentId +
                                 '&revision=' + data + '">' +
                                 historyWidget.options.labels.linkRevision.replace('#', data) + '</a>';
@@ -322,42 +355,49 @@ define([
                     }
 
                 },
-                "ajax": {
-                    "url": "api/v1/documents/" + this.options.documentId + '/history/',
-                    "dataSrc": function (json) {
-                        var data = [];
-                        _.each(json.data.history, function (revisionInfo) {
-                            data.push({
-                                "version": revisionInfo.version,
-                                "revision": revisionInfo.revision,
-                                "code": '',
-                                "level": 'revision',
-                                "message": revisionInfo,
-                                "owner": revisionInfo.owner.title,
-                                "date": revisionInfo.revisionDate,
-                                "diff": 1,
-                                "color": revisionInfo.state.color,
-                                "DT_RowClass": "history-level--revision"
-                            });
-                            _.each(revisionInfo.messages, function (message) {
-                                data.push({
-                                    "version": '',
-                                    "revision": '',
-                                    "code": message.code,
-                                    "level": message.level,
-                                    "message": message.comment,
-                                    "owner": message.uname,
-                                    "date": message.date,
-                                    "diff": 0,
-                                    "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.fixed ? " history-comment--fixed" : "")
-                                });
-                            });
 
+
+                "ajax": function (data, callback) {
+                    var myData = [];
+                    $.getJSON("api/v1/documents/" + historyWidget.options.documentId + '/history/').
+                        done(function (response) {
+                            var tableData = historyWidget._fillDataTable(response);
+                            callback(
+                                {data: tableData}
+                            );
+                        }).fail(function (response) {
+                            var result = JSON.parse(response.responseText);
+                            _.each(result.messages, function (error) {
+                                if (error.code === "CRUD0219" && error.uri) {
+                                    console.log("need retry with", error.uri);
+                                    // redirect with the good trash uri
+                                    $.getJSON(error.uri.replace('.json','') + '/history/').
+                                        done(function (response) {
+                                            var tableData = historyWidget._fillDataTable(response);
+                                            callback(
+                                                {data: tableData}
+                                            );
+                                        }).fail(function (response) {
+                                            var result = JSON.parse(response.responseText);
+                                            _.each(result.messages, function (error) {
+                                                if (error.type === "error") {
+                                                    $('body').trigger("notification", {
+                                                        type: error.type,
+                                                        message: error.contentText
+                                                    });
+                                                }
+                                            });
+                                            console.log("fail", response);
+                                        });
+                                } else if (error.type === "error") {
+                                    $('body').trigger("notification", {type: error.type, message: error.contentText});
+                                }
+                            });
+                            console.log("fail", response);
                         });
-                        return data;
-                    }
+
                 }
-            }).addClass('table table-condensed table-bordered');
+            }).addClass('table table-condensed table-bordered table-hover');
 
         }
 

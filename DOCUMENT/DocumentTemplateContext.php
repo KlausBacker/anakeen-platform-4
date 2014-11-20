@@ -54,12 +54,23 @@ class DocumentTemplateContext implements \ArrayAccess
      * @param string $field
      * @return array|mixed|null
      */
-    protected function _getDocumentData($field)
+    protected function _getDocumentData($field, $subFields = array())
     {
         
         if ($this->_documentCrud === null) {
             $this->_documentCrud = new \Dcp\HttpApi\V1\Crud\Document();
-            $this->_documentCrud->setDefaultFields($field);
+            if (count($subFields) > 0) {
+                
+                $completeFields = array_map(function ($item) use ($field)
+                {
+                    return $field . '.' . $item;
+                }
+                , $subFields);
+                $this->_documentCrud->setDefaultFields(implode(',', $completeFields));
+            } else {
+                $this->_documentCrud->setDefaultFields($field);
+            }
+            
             $this->_documentData = $this->_documentCrud->getInternal($this->_document);
         }
         $fields = explode('.', $field);
@@ -79,18 +90,28 @@ class DocumentTemplateContext implements \ArrayAccess
             
             $data = $this->_documentData;
             foreach ($fields as $key) {
-                $data = $data[trim($key) ];
+                $key = trim($key);
+                $data = isset($data[$key]) ? $data[$key] : null;
             }
         }
         return $data;
     }
     protected function _getProperties()
     {
-        return $this->_getDocumentData("document.properties");
+        return $this->_getDocumentData("document.properties", array(
+            "revdate",
+            "icon",
+            "revision",
+            "family",
+            "status"
+        ));
     }
     
     protected function _getAttributes()
     {
+        if ($this->_document->doctype === "C") {
+            return array();
+        }
         return $this->_getDocumentData("document.attributes");
     }
     /**
@@ -131,7 +152,9 @@ class DocumentTemplateContext implements \ArrayAccess
     
     protected function _getDocumentStructure()
     {
-        
+        if ($this->_document->doctype === "C") {
+            return null;
+        }
         return $this->_getDocumentData("family.structure");
     }
     /**
