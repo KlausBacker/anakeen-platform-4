@@ -25,9 +25,9 @@ define([
             this.listenTo(this, "change:visibility", this._computeMode);
             this.listenTo(this, "change:type", this._computeValueMode);
 
-            if (_.isArray(this.get("value"))) {
-                //this.set("value", _.extend({}, this.get("value")));
-            }
+           /* if (_.isArray(this.get("value"))) {
+                this.set("value", _.extend({}, this.get("value")));
+            }*/
             this._computeValueMode();
             this._computeMode();
             this.set("title",this.id + '('+this.get("label")+')');
@@ -203,8 +203,8 @@ define([
         },
 
         _computeMode: function () {
-            var visibility = this.get("visibility"), documentMode = this.get("documentMode");
-            if (visibility === "H") {
+            var visibility = this.getVisibility(), documentMode = this.get("documentMode");
+            if (visibility === "H" || visibility === "I") {
                 this.set("mode", "hidden");
                 return;
             }
@@ -250,14 +250,33 @@ define([
                 this.set("valueAttribute", false);
             }
         },
+        /**
+         * Return all options for an attribute
+         *
+         * @returns {{}}
+         */
+        getVisibility: function () {
+            var optionsCommon, optionsValue, optionsAttribute;
+            this._visibilities = this._visibilities || false;
 
+            if (this._visibilities === false) {
+                this._visibilities = window.dcp.renderOptions.visibilities;
+            }
+            if (typeof this._visibilities[this.id] !== "undefined") {
+                return this._visibilities[this.id];
+            }
+
+            throw "Unknow visibility for "+this.id;
+
+
+        },
         /**
          * Return all options for an attribute
          *
          * @returns {{}}
          */
         getOptions: function () {
-            var options, optionsCommon, optionsValue, optionsAttribute;
+            var optionsCommon, optionsValue, optionsAttribute;
             this._options = this._options || false;
 
             if (this._options === false) {

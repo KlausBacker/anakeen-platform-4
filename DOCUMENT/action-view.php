@@ -24,6 +24,7 @@ function view(Action & $action)
         if (!is_numeric($revision)) {
             return sprintf(___("Revision \"%s\" must be a number ", "ddui") , $revision);
         }
+        return '';
     }
     , -1);
     

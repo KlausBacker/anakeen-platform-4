@@ -1,0 +1,338 @@
+<?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
+namespace Dcp\Ui\Crud;
+
+use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
+
+class View extends \Dcp\HttpApi\V1\Crud\Crud
+{
+    
+    const defaultViewConsultationId = "!defaultConsultation";
+    const defaultViewEditionId = "!defaultEdition";
+    const coreViewConsultationId = "!coreConsultation";
+    const coreViewEditionId = "!coreEdition";
+    /**
+     * @var string view Identifier must match one of view control associated document
+     */
+    protected $viewIdentifier = '';
+    
+    protected $resourceIdentifier = '';
+    /**
+     * @var int revision number - -1 means latest
+     */
+    protected $revision = - 1;
+    
+    protected $fields = array(
+        "menu",
+        "templates",
+        "renderOptions"
+    );
+    /**
+     * Create new ressource
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @return mixed
+     */
+    public function create()
+    {
+        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus("405", "You cannot create a view with the API");
+        throw $exception;
+    }
+    /**
+     * Read a resource
+     * @param string|int $resourceId Resource identifier
+     * @return mixed
+     */
+    public function read($resourceId)
+    {
+        
+        $document = $this->getDocument($resourceId);
+        if (!$document->cvid) {
+            $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0001", $this->viewIdentifier, $resourceId);
+            $exception->setHttpStatus("404", "View not found");
+            throw $exception;
+        }
+        
+        $info = array(
+            "uri" => $this->getUri($document, $this->viewIdentifier)
+        );
+        /**
+         * @var \Cvdoc $cv
+         */
+        $cv = DocManager::getDocument($document->cvid);
+        
+        $vid = $this->viewIdentifier;
+        $info["view"] = $this->getViewInformation($document, $vid);
+        if ($vid === "") {
+            $coreViews = $this->getCoreViews($document);
+            if ($this->viewIdentifier === self::defaultViewConsultationId) {
+                $info["properties"] = $coreViews[self::coreViewConsultationId];
+            } elseif ($this->viewIdentifier === self::defaultViewEditionId) {
+                $info["properties"] = $coreViews[self::coreViewEditionId];
+            } elseif ($this->viewIdentifier === self::coreViewConsultationId) {
+                $info["properties"] = $coreViews[self::coreViewEditionId];
+            } elseif ($this->viewIdentifier === self::coreViewEditionId) {
+                $info["properties"] = $coreViews[self::coreViewEditionId];
+            }
+        } else {
+            
+            $viewInfo = $cv->getView($vid);
+            $info["properties"] = $this->getViewProperties($cv, $viewInfo);
+        }
+        return $info;
+    }
+    
+    protected function getCoreViews(\Doc $document)
+    {
+        $defaultConsultation = array(
+            "uri" => $this->getUri($document, self::coreViewConsultationId) ,
+            "identifier" => self::coreViewConsultationId,
+            "mode" => "consultation",
+            "label" => ___("Core View Consultation", "ddui") ,
+            "isDisplayable" => false,
+            "order" => 0,
+            "menu" => "",
+            "mask" => array(
+                "id" => 0,
+                "title" => ""
+            )
+        );
+        $defaultEdition = array(
+            "uri" => $this->getUri($document, self::coreViewEditionId) ,
+            "identifier" => self::coreViewEditionId,
+            "mode" => "edition",
+            "label" => ___("Core View Edition", "ddui") ,
+            "isDisplayable" => false,
+            "order" => 0,
+            "menu" => "",
+            "mask" => array(
+                "id" => 0,
+                "title" => ""
+            )
+        );
+        return array(
+            self::coreViewConsultationId => $defaultConsultation,
+            self::coreViewEditionId => $defaultEdition
+        );
+    }
+    
+    protected function getViewProperties(\CVDoc $cv, array $viewInfo)
+    {
+        $vid = $viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_idview];
+        return array(
+            "identifier" => $vid,
+            "mode" => ($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_kview] === "VCONS") ? "consultation" : "edition",
+            "label" => $cv->getLocaleViewLabel($vid) ,
+            "isDisplayable" => ($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_displayed] === "yes") ,
+            "order" => intval($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_order]) ,
+            "menu" => $cv->getLocaleViewMenu($vid) ,
+            "mask" => array(
+                "id" => intval($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_mskid]) ,
+                "title" => $viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_msk]
+            )
+        );
+    }
+    
+    protected function getViewInformation($document, &$vid)
+    {
+        $config = $this->getRenderConfig($document, $vid);
+        $fields = $this->getFields();
+        
+        $viewInfo = array();
+        foreach ($fields as $field) {
+            switch ($field) {
+                case "renderOptions":
+                    $viewInfo["renderOptions"] = $config->getOptions($document)->jsonSerialize();
+                    $viewInfo["renderOptions"]["visibilities"] = $config->getVisibilities($document);
+                    break;
+
+                case "menu":
+                    $viewInfo["menu"] = $config->getMenu($document);
+                    break;
+
+                case "templates":
+                    $viewInfo["templates"] = $this->renderTemplates($config, $document);
+                    break;
+            }
+        }
+        return $viewInfo;
+    }
+    
+    protected function getDocument($resourceId)
+    {
+        if ($this->revision === - 1) {
+            $document = DocManager::getDocument($resourceId);
+        } else {
+            $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
+            $document = DocManager::getDocument($revId, false);
+        }
+        if ($document === null) {
+            $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0200", $resourceId);
+            $exception->setHttpStatus("404", "Document not found");
+            throw $exception;
+        }
+        
+        return $document;
+    }
+    /**
+     * @param \Dcp\Ui\IRenderConfig $config
+     * @param \Doc $document
+     * @return string
+     */
+    protected function renderTemplates(\Dcp\Ui\IRenderConfig $config, \Doc $document)
+    {
+        $templates = $config->getTemplates($document);
+        $delimiterStartTag = '[[';
+        $delimiterEndTag = ']]';
+        $option = array(
+            'cache' => DEFAULT_PUBDIR . '/var/cache/mustache',
+            'cache_file_mode' => 0600,
+            'cache_lambda_templates' => true
+        );
+        $me = new \Mustache_Engine($option);
+        
+        $fl = new \Dcp\Ui\MustacheLoaderSection($templates, $delimiterStartTag, $delimiterEndTag);
+        $fl->setDocument($document);
+        $me->setPartialsLoader($fl);
+        $delimiter = sprintf('{{=%s %s=}}', $delimiterStartTag, $delimiterEndTag);
+        $docController = $config->getContextController($document);
+        
+        $mainTemplate = "[[>templates]]";
+        return json_decode($me->render($delimiter . $mainTemplate, $docController));
+    }
+    
+    protected function getUri(\Doc $document, $vid)
+    {
+        if ($this->revision === - 1) {
+            return $this->generateURL(sprintf("documents/%s/views/%s", $document->initid, $vid));
+        } else {
+            return $this->generateURL(sprintf("documents/%s/revisions/%d/views/%s", $document->initid, $this->revision, $vid));
+        }
+    }
+    /**
+     * Get the restrict fields value
+     *
+     * The restrict fields is used for restrict the return of the get request
+     *
+     * @return array
+     */
+    protected function getFields()
+    {
+        if (!empty($this->contentParameters["fields"])) {
+            $parameterfields = $this->contentParameters["fields"];
+            $fields = array_map("trim", explode(",", $parameterfields));
+            foreach ($fields as $field) {
+                if (!in_array($field, $this->fields)) {
+                    throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0004", $field, implode(", ", $this->fields));
+                }
+            }
+        } else {
+            $fields = $this->fields;
+        }
+        
+        return $fields;
+    }
+    
+    protected function getRenderConfig(\Doc $document, &$vid)
+    {
+        $renderMode = "view";
+        if ($vid == self::defaultViewConsultationId) {
+            $renderMode = "view";
+            $vid = '';
+        } elseif ($vid == self::defaultViewEditionId) {
+            $renderMode = "view";
+            $vid = '';
+        } elseif ($vid == self::coreViewConsultationId) {
+            $renderMode = "view";
+            $vid = '!none';
+        } elseif ($vid == self::coreViewEditionId) {
+            $renderMode = "edit";
+            $vid = '!none';
+        }
+        if ($vid === "!none") {
+            $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $document);
+            $vid = '';
+        } else {
+            $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $document, $vid);
+        }
+        switch ($config->getType()) {
+            case "view":
+                $err = $document->control("view");
+                if ($err) {
+                    $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0201", $this->resourceIdentifier, $err);
+                    $exception->setHttpStatus("403", "Forbidden");
+                    throw $exception;
+                }
+                break;
+
+            case "edit":
+                if ($document->locked == - 1) {
+                    throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0005", $vid);
+                }
+                if ($renderMode === "create") {
+                    
+                    $err = $document->control("icreate");
+                    $err.= $document->control("create");
+                    if ($err) {
+                        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0201", $this->resourceIdentifier, $err);
+                        $exception->setHttpStatus("403", "Forbidden");
+                        throw $exception;
+                    }
+                } else {
+                    $err = $document->canEdit();
+                    if ($err) {
+                        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0201", $this->resourceIdentifier, $err);
+                        $exception->setHttpStatus("403", "Forbidden");
+                        throw $exception;
+                    }
+                }
+        }
+        return $config;
+    }
+    /**
+     * Update the ressource
+     * @param string|int $resourceId Resource identifier
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @return mixed
+     */
+    public function update($resourceId)
+    {
+        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus("405", "You cannot update a view with the API");
+        throw $exception;
+    }
+    /**
+     * Delete ressource
+     * @param string|int $resourceId Resource identifier
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @return mixed
+     */
+    public function delete($resourceId)
+    {
+        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus("405", "You cannot delete a view with the API");
+        throw $exception;
+    }
+    /**
+     * Set the url parameters
+     *
+     * @param array $parameters
+     */
+    public function setUrlParameters(array $parameters)
+    {
+        parent::setUrlParameters($parameters);
+        if (isset($this->urlParameters["identifier"])) {
+            $this->resourceIdentifier = $this->urlParameters["identifier"];
+        }
+        if (isset($this->urlParameters["viewIdentifier"])) {
+            $this->viewIdentifier = $this->urlParameters["viewIdentifier"];
+        }
+        if (isset($this->urlParameters["revision"])) {
+            $this->revision = $this->urlParameters["revision"];
+        }
+    }
+}

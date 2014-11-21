@@ -81,15 +81,7 @@ class DocumentRender
     {
         return $this->renderConfig->getdocumentTemplate();
     }
-    /**
-     * Affect attribute visibilities configured by render config class
-     */
-    protected function applyVisibilities()
-    {
-        $visibilities = $this->renderConfig->getVisibilities($this->document);
-        
-        $visibilities->applyToDocumentMask();
-    }
+    
     protected function internalRender()
     {
         
@@ -99,8 +91,6 @@ class DocumentRender
             'cache_lambda_templates' => true
         );
         $me = new \Mustache_Engine($option);
-        
-        $this->applyVisibilities();
         
         $fl = new MustacheLoaderSection($this->renderConfig->getTemplates($this->document) , $this->delimiterStartTag, $this->delimiterEndTag);
         $fl->setDocument($this->document);
@@ -116,6 +106,11 @@ class DocumentRender
         {
             return JsonHandler::encodeForHTML($this->renderConfig->getOptions($this->document));
         });
+        $docController->offsetSet("renderVisibilities2", function ()
+        {
+            return JsonHandler::encodeForHTML($this->renderConfig->getVisibilities($this->document));
+        });
+        $docController->offsetSet("renderVisibilities", JsonHandler::encodeForHTML($this->renderConfig->getVisibilities($this->document)));
         $docController->offsetSet("renderMenu", function ()
         {
             return JsonHandler::encodeForHTML($this->renderConfig->getMenu($this->document));
