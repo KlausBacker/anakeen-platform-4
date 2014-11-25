@@ -16,6 +16,13 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     const coreViewConsultationId = "!coreConsultation";
     const coreViewEditionId = "!coreEdition";
     const coreViewCreationId = "!coreCreation";
+    const fieldTemplate = "templates";
+    const fieldRenderOptions = "renderOptions";
+    const fieldDocumentData = "documentData";
+    const fieldLocale = "locale";
+    const fieldStyle = "style";
+    const fieldMenu = "menu";
+    const fieldScript = "script";
     /**
      * @var string view Identifier must match one of view control associated document
      */
@@ -28,11 +35,13 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     protected $revision = - 1;
     
     protected $fields = array(
-        "menu",
-        "templates",
-        "renderOptions",
-        "documentData",
-        "locale"
+        self::fieldMenu,
+        self::fieldTemplate,
+        self::fieldRenderOptions,
+        self::fieldDocumentData,
+        self::fieldLocale,
+        self::fieldStyle,
+        self::fieldScript
     );
     /**
      * Create new ressource
@@ -110,7 +119,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "label" => ___("Core View Consultation", "ddui") ,
             "isDisplayable" => false,
             "order" => 0,
-            "menu" => "",
+            self::fieldMenu => "",
             "mask" => array(
                 "id" => 0,
                 "title" => ""
@@ -123,7 +132,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "label" => ___("Core View Edition", "ddui") ,
             "isDisplayable" => false,
             "order" => 0,
-            "menu" => "",
+            self::fieldMenu => "",
             "mask" => array(
                 "id" => 0,
                 "title" => ""
@@ -137,7 +146,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "label" => ___("Core View Create", "ddui") ,
             "isDisplayable" => false,
             "order" => 0,
-            "menu" => "",
+            self::fieldMenu => "",
             "mask" => array(
                 "id" => 0,
                 "title" => ""
@@ -160,7 +169,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "label" => $cv->getLocaleViewLabel($vid) ,
             "isDisplayable" => ($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_displayed] === "yes") ,
             "order" => intval($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_order]) ,
-            "menu" => $cv->getLocaleViewMenu($vid) ,
+            self::fieldMenu => $cv->getLocaleViewMenu($vid) ,
             "mask" => array(
                 "id" => intval($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_mskid]) ,
                 "title" => $viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_msk]
@@ -176,29 +185,80 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
         $viewInfo = array();
         foreach ($fields as $field) {
             switch ($field) {
-                case "renderOptions":
-                    $viewInfo["renderOptions"] = $config->getOptions($document)->jsonSerialize();
-                    $viewInfo["renderOptions"]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
+                case self::fieldRenderOptions:
+                    $viewInfo[self::fieldRenderOptions] = $config->getOptions($document)->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
                     break;
 
-                case "menu":
-                    $viewInfo["menu"] = $config->getMenu($document);
+                case self::fieldMenu:
+                    $viewInfo[self::fieldMenu] = $config->getMenu($document);
                     break;
 
-                case "templates":
-                    $viewInfo["templates"] = $this->renderTemplates($config, $document);
+                case self::fieldTemplate:
+                    $viewInfo[self::fieldTemplate] = $this->renderTemplates($config, $document);
                     break;
 
-                case "documentData":
-                    $viewInfo["documentData"] = $this->renderDocument($document);
+                case self::fieldDocumentData:
+                    $viewInfo[self::fieldDocumentData] = $this->renderDocument($document);
                     break;
 
-                case "locale":
-                    $viewInfo["locale"] = $this->getLocaleData();
+                case self::fieldLocale:
+                    $viewInfo[self::fieldLocale] = $this->getLocaleData();
+                    break;
+
+                case self::fieldStyle:
+                    $viewInfo[self::fieldStyle] = $this->getStyleData($config, $document);
+                    break;
+
+                case self::fieldScript:
+                    $viewInfo[self::fieldScript] = $this->getScriptData($config, $document);
                     break;
             }
         }
         return $viewInfo;
+    }
+    /**
+     * @param \Dcp\Ui\IRenderConfig $config
+     * @param \Doc $document
+     * @return array|bool
+     */
+    protected function getStyleData($config, $document)
+    {
+        $cssList = $config->getCssReferences($document);
+        $cssArray = array();
+        foreach ($cssList as $cssId => $cssPath) {
+            $cssArray[] = array(
+                "path" => $cssPath,
+                "key" => $cssId
+            );
+        }
+        
+        return array(
+            "css" => $cssArray
+        );
+    }
+    /**
+     * @param \Dcp\Ui\IRenderConfig $config
+     * @param \Doc $document
+     * @return array|bool
+     */
+    protected function getScriptData($config, $document)
+    {
+        $jsList = $config->getJsReferences($document);
+        if (!is_array($jsList)) {
+            throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0007");
+        }
+        $jsArray = array();
+        foreach ($jsList as $cssId => $cssPath) {
+            $jsArray[] = array(
+                "path" => $cssPath,
+                "key" => $cssId
+            );
+        }
+        
+        return array(
+            "js" => $jsArray
+        );
     }
     
     protected function getLocaleData()
@@ -211,7 +271,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     protected function renderDocument($document)
     {
         $documentData = new \Dcp\HttpApi\V1\Crud\Document();
-        $fields = "document.attributes, document.properties.family, document.properties.icon";
+        $fields = "document.attributes, document.properties.family, document.properties.icon, document.properties.status, document.properties.revision";
         if ($document->doctype !== "C") {
             $fields.= ",family.structure";
         }
@@ -289,6 +349,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
      *
      * The restrict fields is used for restrict the return of the get request
      *
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
      * @return array
      */
     protected function getFields()
@@ -307,7 +368,13 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
         
         return $fields;
     }
-    
+    /**
+     * @param \Doc $document
+     * @param string $vid
+     * @return \Dcp\Ui\IRenderConfig
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws \Dcp\Ui\Exception
+     */
     protected function getRenderConfig(\Doc $document, &$vid)
     {
         $renderMode = "view";

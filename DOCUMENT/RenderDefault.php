@@ -27,10 +27,10 @@ class RenderDefault implements IRenderConfig
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
-            "css/dcp/document/bootstrap.css?ws=" . $version,
-            "css/dcp/document/kendo.css?ws=" . $version,
-            "css/dcp/document/document.css?ws=" . $version,
-            "lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap.css?ws=" . $version
+            "bootstrap" => "css/dcp/document/bootstrap.css?ws=" . $version,
+            "kendo" => "css/dcp/document/kendo.css?ws=" . $version,
+            "document" => "css/dcp/document/document.css?ws=" . $version,
+            "datatable" => "lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap.css?ws=" . $version
         );
     }
     
@@ -45,11 +45,11 @@ class RenderDefault implements IRenderConfig
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
-            "ws" => $version,
             "src" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
             "main" => "DOCUMENT/IHM/main.js?ws=" . $version,
-            "prod" => "DOCUMENT/IHM/main-built.js?ws=" . $version
+            //  "prod" => "DOCUMENT/IHM/main-built.js?ws=" . $version
+            
         );
     }
     
