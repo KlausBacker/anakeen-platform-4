@@ -24,6 +24,7 @@ function view(Action & $action)
         if (!is_numeric($revision)) {
             return sprintf(___("Revision \"%s\" must be a number ", "ddui") , $revision);
         }
+        return '';
     }
     , -1);
     
@@ -61,14 +62,7 @@ function view(Action & $action)
         $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
     }
     
-    $doc->refresh();
-    
-    $dr = new Dcp\Ui\DocumentRender();
-    
-    $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
-    
-    $dr->loadConfiguration($config);
-    switch ($config->getType()) {
+    switch ($renderMode) {
         case "view":
             $err = $doc->control("view");
             if ($err) {
@@ -77,22 +71,67 @@ function view(Action & $action)
             break;
 
         case "edit":
-            if ($renderMode === "create") {
-                
-                $err = $doc->control("icreate");
-                $err.= $doc->control("create");
-                if ($err) {
-                    $action->exitForbidden($err);
-                }
-            } else {
-                $err = $doc->canEdit();
-                if ($err) {
-                    $action->exitForbidden($err);
-                }
+            $err = $doc->canEdit();
+            if ($err) {
+                $action->exitForbidden($err);
             }
+            break;
+
+        case "create":
+            $err = $doc->control("icreate");
+            $err.= $doc->control("create");
+            if ($err) {
+                $action->exitForbidden($err);
+            }
+            break;
     }
     
-    $action->lay->template = $dr->render($doc);
-    $action->lay->noparse = true;
+    $docId = $doc->initid;
+    if (!$vId) {
+        switch ($renderMode) {
+            case "view":
+                $vId = Dcp\Ui\Crud\View::defaultViewConsultationId;
+                break;
+
+            case "edit":
+                $vId = Dcp\Ui\Crud\View::defaultViewEditionId;
+                break;
+
+            case "create":
+                $vId = Dcp\Ui\Crud\View::coreViewCreationId;
+                $docId = $doc->fromid;
+                break;
+        }
+    }
+    
+    $action->lay->set("viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(array(
+        "documentIdentifier" => intval($docId) ,
+        "revision" => intval($revision) ,
+        "vid" => $vId
+    )));
+    
+    $render = new \Dcp\Ui\RenderDefault();
+    
+    $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+    
+    $action->lay->set("ws", $version);
+    $cssRefs = $render->getCssReferences();
+    $css = array();
+    foreach ($cssRefs as $key => $path) {
+        $css[] = array(
+            "key" => $key,
+            "path" => $path
+        );
+    }
+    $action->lay->eSetBlockData("CSS", $css);
+    $require = $render->getRequireReference();
+    $js = array();
+    foreach ($require as $key => $path) {
+        $js[] = array(
+            "key" => $key,
+            "path" => $path
+        );
+    }
+    $action->lay->eSetBlockData("JS", $js);
 }
 

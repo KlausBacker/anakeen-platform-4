@@ -143,6 +143,11 @@ class DocumentTemplateContext implements \ArrayAccess
         return JsonHandler::encodeForHTML($conf);
     }
     
+    public function documentId()
+    {
+        
+        return intval($this->_document->initid);
+    }
     public function userLocale()
     {
         $localeId = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");

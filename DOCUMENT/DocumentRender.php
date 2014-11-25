@@ -20,6 +20,8 @@ class DocumentRender
     protected $renderFile = '';
     protected $delimiterStartTag = '[[';
     protected $delimiterEndTag = ']]';
+    
+    protected $extraKeys = array();
     /**
      * @var \Doc document to use
      */
@@ -81,15 +83,7 @@ class DocumentRender
     {
         return $this->renderConfig->getdocumentTemplate();
     }
-    /**
-     * Affect attribute visibilities configured by render config class
-     */
-    protected function applyVisibilities()
-    {
-        $visibilities = $this->renderConfig->getVisibilities($this->document);
-        
-        $visibilities->applyToDocumentMask();
-    }
+    
     protected function internalRender()
     {
         
@@ -99,12 +93,9 @@ class DocumentRender
             'cache_lambda_templates' => true
         );
         $me = new \Mustache_Engine($option);
-        
-        $this->applyVisibilities();
-        
-        $fl = new MustacheLoaderSection($this->renderConfig->getTemplates($this->document) , $this->delimiterStartTag, $this->delimiterEndTag);
+        /*$fl = new MustacheLoaderSection($this->renderConfig->getTemplates($this->document) , $this->delimiterStartTag, $this->delimiterEndTag);
         $fl->setDocument($this->document);
-        $me->setPartialsLoader($fl);
+        $me->setPartialsLoader($fl);*/
         $delimiter = sprintf('{{=%s %s=}}', $this->delimiterStartTag, $this->delimiterEndTag);
         $docController = $this->renderConfig->getContextController($this->document);
         $docController->offsetSet("cssReference", function ()
@@ -115,6 +106,10 @@ class DocumentRender
         $docController->offsetSet("renderOptions", function ()
         {
             return JsonHandler::encodeForHTML($this->renderConfig->getOptions($this->document));
+        });
+        $docController->offsetSet("renderVisibilities", function ()
+        {
+            return JsonHandler::encodeForHTML($this->renderConfig->getVisibilities($this->document));
         });
         $docController->offsetSet("renderMenu", function ()
         {
@@ -129,7 +124,16 @@ class DocumentRender
             return $this->getRequireReferences();
         });
         
+        foreach ($this->extraKeys as $key => $data) {
+            $docController->offsetSet($key, $data);
+        }
+        
         return $me->render($delimiter . $this->getMainTemplate() , $docController);
+    }
+    
+    public function set($key, $data)
+    {
+        $this->extraKeys[$key] = $data;
     }
     
     public function render(\Doc $doc)

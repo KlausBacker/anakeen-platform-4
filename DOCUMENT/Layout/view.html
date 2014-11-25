@@ -1,2 +1,44 @@
-<!DOCTYPE html>
-[TEXT:Test]
+<!doctype html>
+<html>
+<head>
+    <title>[TEXT:ddui:Documement Render]</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+[BLOCK CSS]
+    <link rel="stylesheet" type="text/css" data-id="[key]" href="[path]"/>[ENDBLOCK CSS]
+    <link rel="shortcut icon" href="[IMG:doc.png|22]">
+</head>
+<body>
+
+<div class="dcpDocument" >
+
+</div>
+
+<div class="dcpLoading">
+    <div class="dcpLoading--header"><img src="[IMG:doc.png|22]"/> <span class="dcpLoading--title">[TEXT:ddui::Loading] </span></div>
+    <div class="progress active dcpLoading--progressbar k-widget k-progressbar k-progressbar-horizontal">
+        <div class="progress-bar progress-bar-striped " style="width: 100%"/>
+    </div>
+</div>
+
+<script>
+    if (!window.console) {
+        window.console = {};
+        window.console.log = function (x) {};
+    }
+    if (!(window.console.time)) {
+        window.console.timeEnd = function (x) {};
+        window.console.time = function (x) { };
+    }
+     window.dcp= window.dcp || {};
+     console.time("main");
+     console.time("js loading");
+     window.dcp.viewData= [viewInformation];
+     window.dcp.ws = "[ws]";
+</script>
+
+[BLOCK JS]
+<script type="text/javascript" data-id="[key]" src="[path]"></script>[ENDBLOCK JS]
+
+</body>
+</html>

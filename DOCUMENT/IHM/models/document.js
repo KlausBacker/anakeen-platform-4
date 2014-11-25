@@ -122,7 +122,7 @@ define([
             var scope = this;
             var $notification = $('body').dcpNotification();
             switch (message.code) {
-                case "API0211":// Syntax Error
+                case "CRUD0211":// Syntax Error
                     if (message.data && message.data.id) {
                         attrModel = this.get('attributes').get(message.data.id);
                         if (attrModel) {
@@ -139,7 +139,7 @@ define([
                         }
                     }
                     break;
-                case "API0212": // Constraint Error
+                case "CRUD0212": // Constraint Error
                     if (message.data && message.data.constraint) {
                         _.each(message.data.constraint, function (constraint, aid) {
                             attrModel = scope.get('attributes').get(constraint.id);

@@ -496,12 +496,15 @@ define([
 
                 this.element.find('.dcpAttribute__content__link[title]').kendoTooltip({
                     position: "top",
+                    autoHide:true,
                     show: function () {
                         var contain = this.popup.element.parent();
-                        var ktop = parseFloat(contain.css("top"));
-                        if (ktop > 0) {
-                            contain.css("top", ktop - 6);
-                        }
+
+                            var ktop = parseFloat(contain.css("top"));
+                            if (ktop > 0) {
+                                contain.css("top", ktop - 6);
+                            }
+
                         this.popup.element.addClass("dcpAttribute__editlabel");
                     }
                 });

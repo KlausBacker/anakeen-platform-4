@@ -215,7 +215,7 @@ define([
                 type : "POST",
                 url :  "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id +
                            "&id=" + documentModel.id +
-                           "&fromid=" + documentModel.get("properties").get("fromid"),
+                           "&fromid=" + documentModel.get("properties").get("family").id,
                 data : options.data,
 
                 dataType : "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
