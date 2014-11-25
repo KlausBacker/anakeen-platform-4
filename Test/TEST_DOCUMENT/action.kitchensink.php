@@ -17,7 +17,6 @@ function kitchensink(\Action &$action)
         'TEST_DOCUMENT/Layout/kitchensink.js?wv='.$version
     );
 
-
     $loaders = rsearch("DOCUMENT/IHM/widgets/");
 
     $options = array(
@@ -27,7 +26,7 @@ function kitchensink(\Action &$action)
     );
 
     $keys = array(
-        "css" => $css,
+        "css" => array_values($css),
         "js" => $js,
         "loaders" => json_encode($loaders),
         "ws" => $version
