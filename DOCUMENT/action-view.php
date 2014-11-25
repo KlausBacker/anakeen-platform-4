@@ -67,7 +67,6 @@ function view(Action & $action)
     $dr = new Dcp\Ui\DocumentRender();
     
     $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
-    
     $dr->loadConfiguration($config);
     switch ($config->getType()) {
         case "view":
@@ -92,6 +91,33 @@ function view(Action & $action)
                 }
             }
     }
+    
+    $dr->set("viewInformation", function () use ($doc, $renderMode, $vId)
+    {
+        $docId = $doc->initid;
+        if (!$vId) {
+            switch ($renderMode) {
+                case "view":
+                    $vId = Dcp\Ui\Crud\View::defaultViewConsultationId;
+                    break;
+
+                case "edit":
+                    $vId = Dcp\Ui\Crud\View::defaultViewEditionId;
+                    break;
+
+                case "create":
+                    $vId = Dcp\Ui\Crud\View::coreViewCreationId;
+                    $docId = $doc->fromid;
+                    break;
+            }
+        }
+        
+        return Dcp\Ui\JsonHandler::encodeForHTML(array(
+            "documentIdentifier" => intval($docId) ,
+            
+            "vid" => $vId
+        ));
+    });
     
     $action->lay->template = $dr->render($doc);
     $action->lay->noparse = true;

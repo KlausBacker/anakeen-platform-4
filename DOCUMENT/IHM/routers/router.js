@@ -38,7 +38,7 @@ define([
             values = {document: { attributes: currentDoc.getValues()}};
 
             var $notification = $('body').dcpNotification();
-            var fromId = currentDoc.get("properties").get("fromid");
+            var fromId = currentDoc.get("properties").get("family").id;
             $notification.dcpNotification("clear");
             currentDoc.clearErrorMessages();
             console.log("doc", fromId, currentDoc);
@@ -50,7 +50,7 @@ define([
                         type: "POST",
                         dataType: "json",
                         contentType: 'application/json',
-                        url: "api/v1/families/" + fromId +"/documents/",
+                        url: "api/v1/families/" + fromId + "/documents/",
                         data: JSON.stringify(values)
                     }).pipe(
                         function (response) {

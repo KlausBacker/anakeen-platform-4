@@ -15,6 +15,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     const defaultViewEditionId = "!defaultEdition";
     const coreViewConsultationId = "!coreConsultation";
     const coreViewEditionId = "!coreEdition";
+    const coreViewCreationId = "!coreCreation";
     /**
      * @var string view Identifier must match one of view control associated document
      */
@@ -29,7 +30,9 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     protected $fields = array(
         "menu",
         "templates",
-        "renderOptions"
+        "renderOptions",
+        "documentData",
+        "locale"
     );
     /**
      * Create new ressource
@@ -50,8 +53,18 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     public function read($resourceId)
     {
         
-        $document = $this->getDocument($resourceId);
-        if (!$document->cvid) {
+        if ($this->viewIdentifier === self::coreViewCreationId) {
+            $document = $this->createDocument($resourceId);
+        } else {
+            $document = $this->getDocument($resourceId);
+        }
+        if (!in_array($this->viewIdentifier, array(
+            self::coreViewCreationId,
+            self::defaultViewConsultationId,
+            self::defaultViewEditionId,
+            self::coreViewConsultationId,
+            self::coreViewEditionId
+        )) && !$document->cvid) {
             $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0001", $this->viewIdentifier, $resourceId);
             $exception->setHttpStatus("404", "View not found");
             throw $exception;
@@ -77,6 +90,8 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
                 $info["properties"] = $coreViews[self::coreViewEditionId];
             } elseif ($this->viewIdentifier === self::coreViewEditionId) {
                 $info["properties"] = $coreViews[self::coreViewEditionId];
+            } elseif ($this->viewIdentifier === self::coreViewCreationId) {
+                $info["properties"] = $coreViews[self::coreViewCreationId];
             }
         } else {
             
@@ -114,9 +129,25 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
                 "title" => ""
             )
         );
+        
+        $defaultCreate = array(
+            "uri" => $this->getUri($document, self::coreViewCreationId) ,
+            "identifier" => self::coreViewCreationId,
+            "mode" => "edition",
+            "label" => ___("Core View Create", "ddui") ,
+            "isDisplayable" => false,
+            "order" => 0,
+            "menu" => "",
+            "mask" => array(
+                "id" => 0,
+                "title" => ""
+            )
+        );
+        
         return array(
             self::coreViewConsultationId => $defaultConsultation,
-            self::coreViewEditionId => $defaultEdition
+            self::coreViewEditionId => $defaultEdition,
+            self::coreViewCreationId => $defaultCreate
         );
     }
     
@@ -147,7 +178,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             switch ($field) {
                 case "renderOptions":
                     $viewInfo["renderOptions"] = $config->getOptions($document)->jsonSerialize();
-                    $viewInfo["renderOptions"]["visibilities"] = $config->getVisibilities($document);
+                    $viewInfo["renderOptions"]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
                     break;
 
                 case "menu":
@@ -157,9 +188,35 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
                 case "templates":
                     $viewInfo["templates"] = $this->renderTemplates($config, $document);
                     break;
+
+                case "documentData":
+                    $viewInfo["documentData"] = $this->renderDocument($document);
+                    break;
+
+                case "locale":
+                    $viewInfo["locale"] = $this->getLocaleData();
+                    break;
             }
         }
         return $viewInfo;
+    }
+    
+    protected function getLocaleData()
+    {
+        $localeId = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $config = getLocaleConfig($localeId);
+        return $config;
+    }
+    
+    protected function renderDocument($document)
+    {
+        $documentData = new \Dcp\HttpApi\V1\Crud\Document();
+        $fields = "document.attributes, document.properties.family, document.properties.icon";
+        if ($document->doctype !== "C") {
+            $fields.= ",family.structure";
+        }
+        $documentData->setDefaultFields($fields);
+        return $documentData->getInternal($document);
     }
     
     protected function getDocument($resourceId)
@@ -170,6 +227,20 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
             $document = DocManager::getDocument($revId, false);
         }
+        if ($document === null) {
+            $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0200", $resourceId);
+            $exception->setHttpStatus("404", "Document not found");
+            throw $exception;
+        }
+        
+        return $document;
+    }
+    
+    protected function createDocument($resourceId)
+    {
+        
+        $document = DocManager::createDocument($resourceId);
+        
         if ($document === null) {
             $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -241,16 +312,19 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     {
         $renderMode = "view";
         if ($vid == self::defaultViewConsultationId) {
-            $renderMode = "view";
+            $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
             $vid = '';
         } elseif ($vid == self::defaultViewEditionId) {
-            $renderMode = "view";
+            $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
             $vid = '';
         } elseif ($vid == self::coreViewConsultationId) {
-            $renderMode = "view";
+            $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
             $vid = '!none';
         } elseif ($vid == self::coreViewEditionId) {
-            $renderMode = "edit";
+            $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
+            $vid = '!none';
+        } elseif ($vid == self::coreViewCreationId) {
+            $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
             $vid = '!none';
         }
         if ($vid === "!none") {

@@ -24,23 +24,16 @@
 <script>
     if (!window.console) {
         window.console = {};
+        window.console.log = function (x) {};
     }
-    if (window.console && !(window.console.time)) {
-        window.console.timeEnd = function (x) {
-        };
-        window.console.time = function (x) {
-        };
+    if (!(window.console.time)) {
+        window.console.timeEnd = function (x) {};
+        window.console.time = function (x) { };
     }
      window.dcp= window.dcp || {};
      console.time("main");
      console.time("js loading");
-     window.dcp.documentData= [[&documentData]];
-     window.dcp.templates = [[>templates]];
-     window.dcp.renderOptions = [[&renderOptions]];
-     window.dcp.renderOptions.visibilities = [[&renderVisibilities]];
-     window.dcp.menu = [[&renderMenu]];
-     window.dcp.user= {};
-     window.dcp.user.locale = "[[userLocale]]";
+     window.dcp.viewData= [[&viewInformation]];
 </script>
 [[#jsReference]]
 <script type="text/javascript" language="JavaScript" src="[[jsFile]]"></script>
@@ -54,5 +47,7 @@
 <script type="text/javascript" src="[[main]]"></script>
 <!--<script type="text/javascript" src="[[prod]]"></script>!-->
 [[/requireReference]]
+
+
 </body>
 </html>
