@@ -256,13 +256,12 @@ define([
          * @returns {{}}
          */
         getVisibility: function () {
-            var optionsCommon, optionsValue, optionsAttribute;
             this._visibilities = this._visibilities || false;
 
             if (this._visibilities === false) {
                 this._visibilities = window.dcp.renderOptions.visibilities;
             }
-            if (typeof this._visibilities[this.id] !== "undefined") {
+            if (!_.isUndefined(this._visibilities[this.id])) {
                 return this._visibilities[this.id];
             }
 

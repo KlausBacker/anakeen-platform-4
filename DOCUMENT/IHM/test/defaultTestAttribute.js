@@ -1,10 +1,17 @@
-/*global require, describe, beforeEach, setFixtures, expect, it, sandbox, spyOnEvent, jasmine, afterEach*/
+/*global require, ,describe, define, beforeEach, setFixtures, expect, it, sandbox, spyOnEvent, jasmine, afterEach*/
 
+// Get the template from guest if you are in karma mode (non authentified)
 var asset = "index.php";
 if (window.__karma__) {
     asset = "guest.php";
 }
 
+/**
+ * Default test for attributes
+ *
+ * Mock a simplified document (one frame and the tested attributes) and launch standard test on it
+ * This test is an abstract (see the specialized one to use it)
+ */
 define([
     'underscore',
     'jquery',
@@ -15,46 +22,42 @@ define([
     "use strict";
 
     var testAttribute,
+        generateVisibility,
         generateFamilyStructure,
         generateDocumentContent;
 
+    // Get the template in JSON form and set it in the global variable
     template = JSON.parse(template);
 
     if (template.success !== true) {
         throw new Error("Unable to parse template " + template.error || "");
     }
-
     template = template.content;
-
     window.dcp = window.dcp || {};
-
     window.dcp.templates = window.dcp.templates || template;
 
+    // Mock family definition
     generateFamilyStructure = function (localeAttrId, attrDef) {
         var attrStruct, struct = {
-            structure: {
-                'test_f_frame': {
-                    id: 'test_f_frame',
-                    label: 'frame',
-                    multiple: false,
-                    options: [],
-                    type: 'frame',
-                    visibility: 'W',
-                    content: {
-
-                    }
+            structure : {
+                'test_f_frame' : {
+                    id :       'test_f_frame',
+                    label :    'frame',
+                    multiple : false,
+                    options :  [],
+                    type :     'frame',
+                    content :  {}
                 }
             }
         };
         if (localeAttrId) {
             attrStruct = {
-                id: localeAttrId,
-                label: attrDef.label || ("label of " + localeAttrId),
-                label_old: localeAttrId,
-                multiple: false,
-                options: attrDef.options || [],
-                type: attrDef.type,
-                visibility: attrDef.visibility || 'W'
+                id :        localeAttrId,
+                label : attrDef.label || ("label of " + localeAttrId),
+                label_old : localeAttrId,
+                multiple :  false,
+                options : attrDef.options || [],
+                type :      attrDef.type
             };
 
             struct.structure.test_f_frame.content[localeAttrId] = _.extend(attrStruct, attrDef);
@@ -62,6 +65,16 @@ define([
         return struct;
     };
 
+    //Mock current visibility conf
+    generateVisibility = function (localAttrId, attrDef) {
+        var values = {
+            'test_f_frame' : 'W'
+        };
+        values[localAttrId] = attrDef.visibility || 'W';
+        return values;
+    };
+
+    // Clone the value to avoid cross modification between test
     generateDocumentContent = function (localeAttrId, value) {
         var data = {};
 
@@ -82,7 +95,7 @@ define([
         var options = config.options || {};
         var otherValue = config.otherValue;
         var renderOptions = config.renderOptions || {};
-
+        var familyStructure = null;
         var modelDocument, currentSandbox, localAttrId, getSandbox = function () {
             return currentSandbox;
         }, findWidgetName = function ($element) {
@@ -91,33 +104,38 @@ define([
             });
         };
 
-        var familyStructure = null;
         beforeEach(function () {
-            var localId = _.uniqueId("Document");
+            var localId = _.uniqueId("Document"), $renderZone = $("#render");;
             localAttrId = _.uniqueId(attributeDefinition.type);
             currentSandbox = $("<div></div>");
-            var $renderZone = $("#render");
             if ($renderZone.length === 0) {
                 $renderZone = $("body");
             }
             $renderZone.append(currentSandbox);
-            //currentSandbox = setFixtures(sandbox());
             familyStructure = options.familyContent || generateFamilyStructure(localAttrId, attributeDefinition);
 
-            if (! window.dcp.renderOptions) {
-                window.dcp.renderOptions= {attributes : {}};
+            if (!window.dcp.renderOptions) {
+                window.dcp.renderOptions = {attributes : {}};
             }
-            window.dcp.renderOptions.attributes[localAttrId]=renderOptions;
+            window.dcp.renderOptions.attributes[localAttrId] = renderOptions;
 
+            window.dcp.renderOptions.visibilities = generateVisibility(localAttrId, attributeDefinition);
+
+            //Generate mock model to test interaction between model, view and widget
             modelDocument = new ModelDocument(
                 {},
                 {
-                    properties: {id: localId, title: title + "_" + localAttrId, fromname: localId, fromtitle: localId},
-                    menus: [],
-                    family: familyStructure,
-                    locale: options.locale || "fr_FR",
-                    renderMode: options.renderMode || "view",
-                    attributes: options.attributes || generateDocumentContent(localAttrId, initialValue)
+                    properties : {
+                        id :        localId,
+                        title : title + "_" + localAttrId,
+                        fromname :  localId,
+                        fromtitle : localId
+                    },
+                    menus :      [],
+                    family :     familyStructure,
+                    locale : options.locale || "fr_FR",
+                    renderMode : options.renderMode || "view",
+                    attributes : options.attributes || generateDocumentContent(localAttrId, initialValue)
                 }
             );
         });
@@ -126,7 +144,7 @@ define([
 
             it("dom", function () {
                 var $sandBox = getSandbox(), view;
-                view = new ViewDocument({model: modelDocument, el: $sandBox});
+                view = new ViewDocument({model : modelDocument, el : $sandBox});
                 view.render();
                 expect(".dcpAttribute[data-attrid=" + localAttrId + "]").toExist();
                 expect(".dcpAttribute__label[data-attrid=" + localAttrId + "]").toExist();
@@ -138,7 +156,7 @@ define([
                 var $sandBox = getSandbox(), view, newLabel = _.uniqueId(title);
                 var iniLabel = familyStructure.structure.test_f_frame.content[localAttrId].label;
 
-                view = new ViewDocument({model: modelDocument, el: $sandBox});
+                view = new ViewDocument({model : modelDocument, el : $sandBox});
                 view.render();
                 expect(".dcpAttribute__label[data-attrid=" + localAttrId + "]").toHaveText(iniLabel);
                 modelDocument.get("attributes").get(localAttrId).set("label", newLabel);
@@ -149,7 +167,7 @@ define([
                 /* Check the initialValue on the widget and the attribute model*/
                 it("InitialValue", function () {
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     modelValue = modelDocument.get("attributes").get(localAttrId).get("value");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -170,7 +188,7 @@ define([
                 /* Check the setValue method of the attribute model*/
                 it("ModelSetValue", function () {
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     modelDocument.get("attributes").get(localAttrId).set("value", otherValue);
                     modelValue = modelDocument.get("attributes").get(localAttrId).get("value");
@@ -192,7 +210,7 @@ define([
                 /* Check the setValue method of the widget*/
                 it("WidgetSetValue", function () {
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
                     widget = $content.data(findWidgetName($content));
@@ -216,7 +234,7 @@ define([
                 /* Check the dcpattributechange event of the widget */
                 it("WidgetEventFromSetInitialValue", function () {
                     var $sandBox = getSandbox(), view, $content, widget, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -228,8 +246,8 @@ define([
                     expect(change.calls.count()).toEqual(0);
                 });
                 it("WidgetEventFromModelSetInitial", function () {
-                    var $sandBox = getSandbox(), view, $content,  change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    var $sandBox = getSandbox(), view, $content, change;
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -241,7 +259,7 @@ define([
                 /* Check the event of the modelAttribute */
                 it("ModelEventFromWidgetSetInitialValue", function () {
                     var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -255,7 +273,7 @@ define([
                 /* Check the event of the modelAttribute */
                 it("ModelEventFromModelSetInitial", function () {
                     var $sandBox = getSandbox(), view, modelAttribute, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     modelAttribute = modelDocument.get("attributes").get(localAttrId);
@@ -268,7 +286,7 @@ define([
                 /* Check the dcpattributechange event of the widget */
                 it("WidgetEventFromSetValue", function () {
                     var $sandBox = getSandbox(), view, $content, widget, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -280,7 +298,7 @@ define([
                 });
                 it("WidgetEventFromModelSet", function () {
                     var $sandBox = getSandbox(), view, $content, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -292,7 +310,7 @@ define([
                 /* Check the event of the modelAttribute */
                 it("ModelEventFromWidgetSetValue", function () {
                     var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     $content = $(".dcpAttribute__contentWrapper[data-attrid=" + localAttrId + "]");
@@ -306,7 +324,7 @@ define([
                 /* Check the event of the modelAttribute */
                 it("ModelEventFromModelSet", function () {
                     var $sandBox = getSandbox(), view, modelAttribute, change;
-                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
                     change = jasmine.createSpy("change");
                     modelAttribute = modelDocument.get("attributes").get(localAttrId);
