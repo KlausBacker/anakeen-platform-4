@@ -306,7 +306,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
-        
+        $document->title=sprintf(___("%s Creation","ddui"),$document->getFamilyDocument()->getTitle());
         return $document;
     }
     /**
