@@ -13,6 +13,7 @@ define([
     'widgets/attributes/image/wImage',
     'widgets/attributes/money/wMoney',
     'widgets/attributes/enum/wEnum',
+    'widgets/attributes/password/wPassword',
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
@@ -285,6 +286,8 @@ define([
                     return $.fn.dcpFile;
                 case "enum" :
                     return $.fn.dcpEnum;
+                case "password" :
+                    return $.fn.dcpPassword;
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;

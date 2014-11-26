@@ -39,10 +39,10 @@ define([
                 "second": "Second document",
                 "attributeId": "Attribute id",
                 "attributeLabel": "Attribute label",
-                "documentHeader" : '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>',
-                "filterMessages" : "Filter data",
-                "showOnlyDiff" : "Show only differences",
-                "showAll" : "Show all"
+                "documentHeader": '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>',
+                "filterMessages": "Filter data",
+                "showOnlyDiff": "Show only differences",
+                "showAll": "Show all"
             }
         },
         firstDocument: null,
@@ -112,7 +112,7 @@ define([
                         name: "attributeId",
                         title: revisionDiffWidget.options.labels.attributeId,
                         className: "revision-diff-attributeid",
-                        visible : false
+                        visible: false
                     },
                     {
                         data: "attributeLabel",
@@ -162,7 +162,7 @@ define([
                     revisionDiffWidget.currentWidget.find(".dataTables_filter input").attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
 
                     var firstHeadCell = revisionDiffWidget.currentWidget.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
-                       firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
+                    firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
 
 
                 },
@@ -187,8 +187,9 @@ define([
                                             attributeLabel: revisionDiffWidget._findAttributeLabel(data1.data.family.structure, index),
                                             first: firstValue,
                                             second: secondValue,
-                                            "DT_RowClass": (_.isEqual(firstValue , secondValue)) ? "revision-diff-equal" : "revision-diff-not-equal"
+                                            "DT_RowClass": (revisionDiffWidget.isEqualAttributeValue(firstValue, secondValue)) ? "revision-diff-equal" : "revision-diff-not-equal"
                                         });
+
                                     });
                                     callback(
                                         {data: myData}
@@ -202,10 +203,23 @@ define([
                             window.alert(result.exceptionMessage);
                         });
                 }
+
+
             }).addClass('table table-condensed table-bordered table-hover');
 
         },
+        isEqualAttributeValue: function (v1, v2) {
+            if (_.isEqual(v1, v2)) {
+                return true;
+            }
 
+            if (_.isArray(v1) && _.isArray(v2)) {
+                var values1 = _.pluck(v1, "value");
+                var values2 = _.pluck(v2, "value");
+                return _.isEqual(values1, values2);
+            }
+            return false;
+        },
 
         _findAttributeLabel: function wRevisionDiffFindAttributeLabel(structure, aid) {
             var scope = this;
@@ -230,7 +244,7 @@ define([
         },
 
         _getDocHeader: function wRevisionDiffGetDocHeader(documentStructure) {
-            var documentHeader=this.options.labels.documentHeader;
+            var documentHeader = this.options.labels.documentHeader;
             return Mustache.render(documentHeader, documentStructure.properties);
         }
     });
