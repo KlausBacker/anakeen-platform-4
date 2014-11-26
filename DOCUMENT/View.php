@@ -306,7 +306,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
-        $document->title=sprintf(___("%s Creation","ddui"),$document->getFamilyDocument()->getTitle());
+        $document->title = sprintf(___("%s Creation", "ddui") , $document->getFamilyDocument()->getTitle());
         return $document;
     }
     /**
@@ -475,5 +475,45 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
         if (isset($this->urlParameters["revision"])) {
             $this->revision = $this->urlParameters["revision"];
         }
+    }
+    /**
+     * Return etag info
+     *
+     * @return null|string
+     */
+    public function getEtagInfo()
+    {
+        if (isset($this->urlParameters["identifier"])) {
+            $id = $this->urlParameters["identifier"];
+            $id = DocManager::getIdentifier($id, true);
+            return $this->extractEtagDocument($id);
+        }
+        return null;
+    }
+    /**
+     * Compute etag from an id
+     *
+     * @param $id
+     *
+     * @return string
+     * @throws \Dcp\Db\Exception
+     */
+    protected function extractEtagDocument($id)
+    {
+        $result = array();
+        $sql = sprintf("select id, revdate, cvid, views from docread where id = %d", $id);
+        simpleQuery(getDbAccess() , $sql, $result, false, true);
+        $user = getCurrentUser();
+        $result[] = $user->id;
+        $result[] = $user->memberof;
+        
+        if ($result["cvid"]) {
+            $sql = sprintf("select revdate from docread where id = %d", $result["cvid"]);
+            simpleQuery(getDbAccess() , $sql, $cvDate, true, true);
+            $result[] = $cvDate;
+        }
+        // Necessary only when use family.structure
+        $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        return join(" ", $result);
     }
 }
