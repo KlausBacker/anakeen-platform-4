@@ -23,6 +23,7 @@ class RenderOptions implements \JsonSerializable
     protected $fileOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
+    protected $passwordOptions = null;
     protected $htmltextOptions = null;
     protected $timeOptions = null;
     protected $dateOptions = null;
@@ -283,6 +284,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->longtextOptions->setScope($attrid);
         return $this->longtextOptions;
+    }
+    /**
+     * @param string $attrid
+     * @return PasswordRenderOptions
+     */
+    public function password($attrid = '')
+    {
+        if ($this->passwordOptions === null) {
+            $this->passwordOptions = new PasswordRenderOptions($this);
+        }
+        $this->passwordOptions->setScope($attrid);
+        return $this->passwordOptions;
     }
     /**
      * @param string $attrid

@@ -41,6 +41,7 @@ function jasmine(Action & $action)
         $restrict = strtolower($restrict);
         $ucfRestrict = ucfirst($restrict);
         $file = "DOCUMENT/IHM/test/test$ucfRestrict.js";
+
         if (is_file($file)) {
             $testDocumentLoader = array($file);
         }
