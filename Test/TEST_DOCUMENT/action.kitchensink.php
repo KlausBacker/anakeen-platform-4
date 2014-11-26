@@ -7,34 +7,30 @@ function kitchensink(\Action &$action)
 
     $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
 
-    $css = $render->getCssReferences();
-
     $require = $render->getRequireReference();
-
     $js = array(
         $require["src"],
         $require["config"],
         'TEST_DOCUMENT/Layout/kitchensink.js?wv='.$version
     );
 
-
     $loaders = rsearch("DOCUMENT/IHM/widgets/");
+
+    $css = $render->getCssReferences();
+
+    $keys = array(
+        "css" => array_values($css),
+        "js" => $js,
+        "loaders" => json_encode($loaders),
+        "ws" => $version
+    );
 
     $options = array(
         'cache' => DEFAULT_PUBDIR . '/var/cache/mustache',
         'cache_file_mode' => 0600,
         'cache_lambda_templates' => true
     );
-
-    $keys = array(
-        "css" => $css,
-        "js" => $js,
-        "loaders" => json_encode($loaders),
-        "ws" => $version
-    );
-
     $mustacheRender = new \Mustache_Engine($options);
-
     $action->lay->template = $mustacheRender->render('{{=[[ ]]=}}' . file_get_contents("TEST_DOCUMENT/Layout/kitchensink.mustache"), $keys);
     $action->lay->noparse = true;
 
