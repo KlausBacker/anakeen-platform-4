@@ -16,6 +16,7 @@ require([
 
     var testDocument,
         generateFamilyStructure,
+        generateVisibility,
         generateDocumentContent;
 
     template = JSON.parse(template);
@@ -30,43 +31,54 @@ require([
 
     window.dcp.templates = _.defaults(window.dcp.templates, template) || template;
 
-    generateFamilyStructure = function (localeAttrId, type) {
-        var struct = {
+    // Mock family definition
+    generateFamilyStructure = function (localeAttrId, attrDef) {
+        var attrStruct, struct = {
             structure : {
                 'test_f_frame' : {
-                    id :         'test_f_frame',
-                    label :      'frame',
-                    multiple :   false,
-                    options :    [],
-                    type :       'frame',
-                    visibility : 'W',
-                    content :    {
-
-                    }
+                    id :       'test_f_frame',
+                    label :    'frame',
+                    multiple : false,
+                    options :  [],
+                    type :     'frame',
+                    content :  {}
                 }
             }
         };
         if (localeAttrId) {
-            struct.structure.content[localeAttrId] = {
-                id :         localeAttrId,
-                label :      localeAttrId,
-                multiple :   false,
-                options :    [],
-                type :       type,
-                visibility : 'W'
+            attrStruct = {
+                id :        localeAttrId,
+                label : attrDef.label || ("label of " + localeAttrId),
+                label_old : localeAttrId,
+                multiple :  false,
+                options : attrDef.options || [],
+                type :      attrDef.type
             };
+
+            struct.structure.test_f_frame.content[localeAttrId] = _.extend(attrStruct, attrDef);
         }
         return struct;
     };
 
+    //Mock current visibility conf
+    generateVisibility = function (localAttrId, attrDef) {
+        var values = {
+            'test_f_frame' : 'W'
+        };
+        if (localAttrId) {
+            values[localAttrId] = attrDef.visibility || 'W';
+        }
+        return values;
+    };
+
+    // Clone the value to avoid cross modification between test
     generateDocumentContent = function (localeAttrId, value) {
         var data = {};
 
+        value = _.clone(value);
+
         if (localeAttrId) {
-            data[localeAttrId] = {
-                displayValue : value.displayValue || value,
-                value :        value.value || value
-            };
+            data[localeAttrId] = value;
         }
 
         return data;
@@ -87,10 +99,20 @@ require([
                 currentSandbox = $("<div></div>");
                 $renderZone.append(currentSandbox);
                 //currentSandbox = setFixtures(sandbox());
+                window.dcp = window.dcp || {};
+                window.dcp.renderOptions = window.dcp.renderOptions || {};
+                window.dcp.renderOptions.visibilities = generateVisibility();
                 modelDocument = new ModelDocument(
                     {},
                     {
-                        properties : {id : localId, title : title+"_"+localId, fromname : localId, fromtitle : localId},
+                        properties : {
+                            id : localId,
+                            title : title+"_"+localId,
+                            fromname : localId,
+                            family : {
+                                title : localId
+                            }
+                        },
                         menus :      [],
                         family :     options.familyContent || generateFamilyStructure(),
                         locale :     options.locale || "fr_FR",
@@ -118,7 +140,7 @@ require([
                     expect($sandBox.find(".dcpDocument__header__title")).toExist();
                     expect($sandBox.find(".dcpDocument__header__title")).toHaveText(modelDocument.get("properties").get("title"));
                     expect($sandBox.find(".dcpDocument__header__family")).toExist();
-                    expect($sandBox.find(".dcpDocument__header__family")).toHaveText(modelDocument.get("properties").get("fromtitle") || "");
+                    expect($sandBox.find(".dcpDocument__header__family")).toHaveText(modelDocument.get("properties").get("family").title || "");
                 });
 
                 it("menu", function () {
