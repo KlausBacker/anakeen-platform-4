@@ -13,6 +13,7 @@ define([
     'widgets/attributes/image/wImage',
     'widgets/attributes/money/wMoney',
     'widgets/attributes/enum/wEnum',
+    'widgets/attributes/color/wColor',
     'widgets/attributes/password/wPassword',
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
@@ -282,6 +283,8 @@ define([
                     return $.fn.dcpTime;
                 case "image" :
                     return $.fn.dcpImage;
+                case "color" :
+                    return $.fn.dcpColor;
                 case "file" :
                     return $.fn.dcpFile;
                 case "enum" :
