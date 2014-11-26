@@ -105,7 +105,7 @@ define([
         };
 
         beforeEach(function () {
-            var localId = _.uniqueId("Document"), $renderZone = $("#render");;
+            var localId = _.uniqueId("Document"), $renderZone = $("#render");
             localAttrId = _.uniqueId(attributeDefinition.type);
             currentSandbox = $("<div></div>");
             if ($renderZone.length === 0) {
