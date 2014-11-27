@@ -10,7 +10,7 @@ define([
 
         tagName : "li",
 
-        className : "",
+        className : "dcpTab__label",
 
         initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
@@ -24,10 +24,11 @@ define([
         },
 
         render : function () {
-            console.time("render tab " + this.model.id);
+            //console.time("render tab " + this.model.id);
             this.$el.empty();
-            this.$el.append($(Mustache.render(this.templateLabel, this.model.toJSON())));
-            console.timeEnd("render tab " + this.model.id);
+            this.$el.text(this.model.get("label"));
+            this.$el.attr("data-id", this.model.id);
+            //console.timeEnd("render tab " + this.model.id);
             return this;
         },
 

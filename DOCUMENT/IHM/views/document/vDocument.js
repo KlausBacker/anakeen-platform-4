@@ -11,6 +11,7 @@ define([
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'kendo/kendo.core',
+    'kendo/kendo.tabstrip',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
@@ -112,7 +113,7 @@ define([
                             tabItems.css("width", "80%");
                         }
 
-                        $el.find(".dcpDocument__tabs__content").append(viewTabContent.render().$el);
+                        $el.find(".dcpDocument__tabs").append(viewTabContent.render().$el);
                         $el.find(".dcpDocument__tabs").show();
                     } catch (e) {
                         console.error(e);
@@ -120,10 +121,11 @@ define([
                 }
                 currentView.trigger("partRender");
             });
-            console.timeEnd("render attributes");
-            if ($el.find('.dcpDocument__tabs__list a:first').tab) {
-                $el.find('.dcpDocument__tabs__list a:first').tab('show');
-            }
+
+             $(".dcpDocument__tabs").kendoTabStrip().data("kendoTabStrip").select(0);
+
+
+
             $(document).on('drop dragover', function (e) {
                 e.preventDefault();
             });

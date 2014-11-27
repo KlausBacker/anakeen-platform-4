@@ -183,11 +183,6 @@ class RenderDefault implements IRenderConfig
                     "line" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/array/line.mustache"
                     )
-                ) ,
-                "tab" => array(
-                    "label" => array(
-                        "file" => "DOCUMENT/IHM/views/attributes/tab/label.mustache"
-                    )
                 )
             ) ,
             "window" => array(

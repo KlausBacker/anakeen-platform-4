@@ -8,16 +8,18 @@ define([
     $.widget("dcp.dcpLongtext", $.dcp.dcpText, {
 
         options: {
-            type: "longtext"
+            type: "longtext",
+            renderOptions: {
+                displayedLineNumber: 5
+            }
         },
 
         _initDom: function () {
-            var maxDisplayedLine = 5;
-            if (this.options.renderOptions && this.options.renderOptions.displayedLineNumber) {
-                maxDisplayedLine = this.options.renderOptions.displayedLineNumber;
-            }
+            var maxDisplayedLine = this.options.renderOptions.displayedLineNumber;
+
             this._super();
             this._maxLinesNumber(maxDisplayedLine);
+
         },
 
         _initEvent: function _initEvent() {
@@ -28,7 +30,7 @@ define([
         },
 
         _maxLinesNumber: function _maxLinesNumber(lineNumber) {
-            lineNumber = parseInt(lineNumber,10);
+            lineNumber = parseInt(lineNumber, 10);
             if (lineNumber > 0) {
                 var scope = this;
                 _.defer(function () {
@@ -37,7 +39,7 @@ define([
                     var lineH = $element.css("line-height");
                     // In IE9 , the result is just a number without unit
                     if (lineH && lineH.indexOf("px") > 0) {
-                       $element.css("max-height", (lineNumber * parseFloat(lineH) + delta) + "px");
+                        $element.css("max-height", (lineNumber * parseFloat(lineH) + delta) + "px");
                     }
                 });
             }
@@ -51,10 +53,12 @@ define([
         },
 
         _fitToContent: function _fitToContent($element) {
+
             var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom")),
                 element = $element.get(0),
-                maxHeight=parseFloat($element.css("max-height"));
-            if (element) {
+                maxHeight = parseFloat($element.css("max-height"));
+            if (element && element.scrollHeight > 0) {
+
                 $element.height(element.scrollHeight - delta);
                 if (maxHeight > 0) {
                     if (element.scrollHeight > maxHeight) {
@@ -71,9 +75,13 @@ define([
             _.defer(function () {
                 scope._fitToContent(scope.getContentElements());
             });
-            this.getContentElements().on("keyup", function (event) {
-                scope._fitToContent($(this));
-            });
+            this.getContentElements()
+                .on("keyup", function (event) {
+                    scope._fitToContent($(this));
+                })
+                .on("focus", function (event) {
+                    scope._fitToContent($(this));
+                });
         },
 
         getType: function () {
