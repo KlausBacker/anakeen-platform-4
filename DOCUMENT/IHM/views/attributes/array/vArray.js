@@ -37,8 +37,8 @@ define([
             data.nbLines = this.getNbLines();
             data.renderOptions = this.model.getOptions();
             data.templates = {};
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute && window.dcp.templates.attribute[this.model.get("type")]) {
-                data.templates = window.dcp.templates.attribute[this.model.get("type")];
+            if (this.model.getTemplates().attribute[this.model.get("type")]) {
+                data.templates = this.model.getTemplates().attribute[this.model.get("type")];
             }
             if (data.nbLines === 0 && data.mode === "read") {
                 data.showEmpty = this.model.getOption('showEmptyContent');
@@ -49,9 +49,7 @@ define([
                     }
                     try {
                         if (currentAttr.get("valueAttribute")) {
-
                             scope.columnViews[currentAttr.id] = new ViewColumn({
-
                                 el: scope.el,
                                 els: function () {
                                     return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
@@ -65,7 +63,12 @@ define([
                     }
                 });
             }
-            this.$el.dcpArray(data);
+            try {
+                this.$el.dcpArray(data);
+            } catch(e) {
+                console.error(e);
+            }
+
 
             // console.timeEnd("render array " + this.model.id);
             return this;
@@ -98,7 +101,6 @@ define([
             attributeModel.setValue(options.value, options.index);
         },
 
-
         refresh: function vArrayRefresh() {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
@@ -109,8 +111,8 @@ define([
             this.model.get("content").each(function (currentContent) {
                 currentContent.removeIndexValue(options.line);
             });
-            //  this.refresh();
         },
+
         addLine: function vArrayAddLine(event, options) {
             var scope = this;
             this.model.get("content").each(function (currentContent) {
@@ -124,8 +126,8 @@ define([
                 }
             });
         },
+
         moveLine: function moveLine(event, options) {
-            var scope = this;
             this.model.get("content").each(function (currentContent) {
                 currentContent.moveIndexValue(options.fromLine, options.toLine);
 

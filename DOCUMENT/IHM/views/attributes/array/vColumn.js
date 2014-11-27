@@ -41,14 +41,14 @@ define([
                 var widgetClass = this.getTypedWidgetClass(data.type);
 
                 if (cells[index]) {
-
-                    widgetClass.apply(
-                        $(cells[index]),
-                        [data]);
+                    try {
+                        widgetClass.apply($(cells[index]), [data]);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
             }
         }
-
 
     });
 

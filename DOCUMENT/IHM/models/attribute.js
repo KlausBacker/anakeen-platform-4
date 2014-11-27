@@ -8,41 +8,37 @@ define([
 
     return Backbone.Model.extend({
 
-        defaults: {
-            parent: undefined,
-            content: [],
-            valueAttribute: true,
-            multiple: false,
-            mode: "read",
-            documentMode: "read",
-            errorMessage: null,
-            title:null,
-            documentModel : null
+        defaults : {
+            parent :         undefined,
+            content :        [],
+            valueAttribute : true,
+            multiple :       false,
+            mode :           "read",
+            documentMode :   "read",
+            errorMessage :   null,
+            title :          null,
+            documentModel :  null
         },
 
-        initialize: function () {
+        initialize : function () {
             this.listenTo(this, "change:documentMode", this._computeMode);
             this.listenTo(this, "change:visibility", this._computeMode);
             this.listenTo(this, "change:type", this._computeValueMode);
 
-           /* if (_.isArray(this.get("value"))) {
-                this.set("value", _.extend({}, this.get("value")));
-            }*/
             this._computeValueMode();
             this._computeMode();
-            this.set("title",this.id + '('+this.get("label")+')');
+            this.set("title", this.id + '(' + this.get("label") + ')');
         },
 
-        setContentCollection: function (attributes, documentModel) {
+        setContentCollection : function (attributes) {
             var content = this.get("content"), collection = new CollectionContentAttributes();
             _.each(content, function (currentChild) {
                 collection.push(attributes.get(currentChild.id));
             });
             this.set("content", collection);
-            this.set("documentModel", documentModel);
         },
 
-        setValue: function (value, index) {
+        setValue : function (value, index) {
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -56,7 +52,7 @@ define([
             }
         },
 
-        addValue: function (value, index) {
+        addValue : function (value, index) {
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -74,7 +70,7 @@ define([
             }
         },
 
-        removeIndexValue: function (index) {
+        removeIndexValue : function (index) {
             var currentValue, oldValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -91,10 +87,10 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue, {silent: true});
+            this.set("value", currentValue, {silent : true});
         },
 
-        addIndexValue: function addIndexValue(index, copy) {
+        addIndexValue : function addIndexValue(index, copy) {
             var currentValue, defaultValue;
             var newValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
@@ -109,7 +105,7 @@ define([
             } else if (this.hasMultipleOption()) {
                 newValue = [];
             } else {
-                newValue = {value: null, displayValue: ''};
+                newValue = {value : null, displayValue : ''};
             }
 
             if (index > currentValue.length) {
@@ -117,7 +113,7 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("value", currentValue, {silent: true});
+            this.set("value", currentValue, {silent : true});
         },
 
         /**
@@ -125,7 +121,7 @@ define([
          * @param fromIndex
          * @param toIndex
          */
-        moveIndexValue: function moveIndexValue(fromIndex, toIndex) {
+        moveIndexValue : function moveIndexValue(fromIndex, toIndex) {
             var currentValue, fromValue;
             if (!this.get("multiple")) {
                 throw new Error("Move only multiple attribute : " + this.id);
@@ -136,10 +132,10 @@ define([
             currentValue.splice(fromIndex, 1);
             currentValue.splice(toIndex, 0, fromValue);
 
-            this.set("value", currentValue, {silent: true});
+            this.set("value", currentValue, {silent : true});
         },
 
-        getNbLines: function () {
+        getNbLines : function () {
             var nbLines = 0;
             if (!this.get("multiple")) {
                 return -1;
@@ -152,7 +148,7 @@ define([
             return nbLines;
         },
 
-        toData: function (index) {
+        toData : function (index) {
             var content = this.toJSON();
             if (index && this.get("multiple") === false) {
                 throw new Error("You need to be multiple");
@@ -166,7 +162,7 @@ define([
             return content;
         },
 
-        isDisplayable: function () {
+        isDisplayable : function () {
             if (this.get("mode") === "hidden") {
                 return false;
             }
@@ -181,29 +177,27 @@ define([
                     return value.isDisplayable();
                 });
             }
-
             return true;
-
         },
 
-        hasMultipleOption: function () {
+        hasMultipleOption : function () {
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
 
-        inArray: function () {
+        inArray : function () {
             var aparent = this.getParent();
             return (aparent && aparent.attributes && aparent.attributes.type === "array");
         },
 
-        getParent: function () {
+        getParent : function () {
             if (this.attributes.parent) {
-                return this.get("documentModel").get('attributes').get(this.attributes.parent);
+                return this.getDocumentModel().get('attributes').get(this.attributes.parent);
             }
             return null;
         },
 
-        _computeMode: function () {
-            var visibility = this.getVisibility(), documentMode = this.get("documentMode");
+        _computeMode : function () {
+            var visibility = this.get("visibility"), documentMode = this.collection.renderMode;
             if (visibility === "H" || visibility === "I") {
                 this.set("mode", "hidden");
                 return;
@@ -241,10 +235,10 @@ define([
                     return;
                 }
             }
-            throw new Error("unkown mode " + documentMode + " or visibility " + visibility+ " "+this.get("id"));
+            throw new Error("unkown mode " + documentMode + " or visibility " + visibility + " " + this.get("id"));
         },
 
-        _computeValueMode: function () {
+        _computeValueMode : function () {
             var type = this.get("type");
             if (type === "frame" || type === "array" || type === "tab") {
                 this.set("valueAttribute", false);
@@ -255,39 +249,21 @@ define([
          *
          * @returns {{}}
          */
-        getVisibility: function () {
-            this._visibilities = this._visibilities || false;
-
-            if (this._visibilities === false) {
-                this._visibilities = window.dcp.renderOptions.visibilities;
-            }
-            if (!_.isUndefined(this._visibilities[this.id])) {
-                return this._visibilities[this.id];
-            }
-
-            throw "Unknow visibility for "+this.id;
-
-
-        },
-        /**
-         * Return all options for an attribute
-         *
-         * @returns {{}}
-         */
-        getOptions: function () {
-            var optionsCommon, optionsValue, optionsAttribute;
+        getOptions :        function () {
+            var optionsCommon, optionsValue, optionsAttribute, renderOptions;
             this._options = this._options || false;
 
             if (this._options === false) {
-                if (window.dcp && window.dcp.renderOptions && window.dcp.renderOptions.common) {
-                    optionsCommon = window.dcp.renderOptions.common || {};
+                renderOptions = this.collection.renderOptions;
+                if (renderOptions.common) {
+                    optionsCommon = renderOptions.common || {};
                 }
 
-                if (window.dcp && window.dcp.renderOptions && window.dcp.renderOptions.types) {
-                    optionsValue = window.dcp.renderOptions.types[this.get("type")] || {};
+                if (renderOptions.types) {
+                    optionsValue = renderOptions.types[this.get("type")] || {};
                 }
-                if (window.dcp && window.dcp.renderOptions && window.dcp.renderOptions.attributes) {
-                    optionsAttribute = window.dcp.renderOptions.attributes[this.id] || {};
+                if (renderOptions.attributes) {
+                    optionsAttribute = renderOptions.attributes[this.id] || {};
                 }
                 this._options = {};
             }
@@ -303,8 +279,7 @@ define([
          * @param key option identifier
          * @returns {*}
          */
-        getOption: function (key) {
-
+        getOption : function (key) {
             var options = this.getOptions();
             if (typeof options[key] !== "undefined") {
                 return options[key];
@@ -312,7 +287,19 @@ define([
             return null;
         },
 
-        setErrorMessage: function (message, index) {
+        getDocumentModel : function getDocumentModel() {
+            return this.collection.documentModel;
+        },
+
+        getTemplates : function getTemplates() {
+            var templates = this.getDocumentModel().get("templates");
+            if (!templates) {
+                templates = window.dcp.templates;
+            }
+            return templates;
+        },
+
+        setErrorMessage : function (message, index) {
             if (this.get("multiple") && typeof index !== "undefined") {
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate
@@ -320,7 +307,7 @@ define([
                     return indexMessage.index === index;
                 });
 
-                this.set('errorMessage', [{message: message, index: index}].concat(errorMessage));
+                this.set('errorMessage', [{message : message, index : index}].concat(errorMessage));
 
             } else {
                 this.set('errorMessage', message);

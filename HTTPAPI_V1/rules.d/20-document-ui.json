@@ -4,20 +4,20 @@
         "class": "\\Dcp\\Ui\\Crud\\ViewCollection",
         "regExp": "%^/documents/(?P<identifier>[^/]+)/views/$%",
         "description": "Document View List",
-        "canonicalURL": "/documents/<documentId>/views/"
+        "canonicalURL": "documents/<documentId>/views/"
     },
     {
         "order": 300,
         "class": "\\Dcp\\Ui\\Crud\\View",
         "regExp": "%^/documents/(?P<identifier>[^\\/]+)/views/(?P<viewIdentifier>[^/]+)$%",
         "description": "Document View",
-        "canonicalURL": "/documents/<documentId>/views/<viewId>"
+        "canonicalURL": "documents/<documentId>/views/<viewId>"
     },
     {
         "order": 300,
         "class": "\\Dcp\\Ui\\Crud\\View",
         "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)/views/(?P<viewIdentifier>[^/]+)$%",
         "description": "Document View",
-        "canonicalURL": "/documents/<documentId>/revision/<revision>/views/<viewId>"
+        "canonicalURL": "documents/<documentId>/revision/<revision>/views/<viewId>"
     }
 ]

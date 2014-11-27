@@ -19,7 +19,7 @@ define([
         initialize: function vHeaderInitialize() {
             this.listenTo(this.model.get("properties"), 'change', this.updateHeader);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.headerTemplate = window.dcp.templates.sections.header;
+            this.headerTemplate = this.getTemplates("sections").header;
         },
 
         /**
@@ -47,6 +47,20 @@ define([
                 window.document.title=doctitle;
             }
             return this.render();
+        },
+
+        getTemplates : function getTemplates(key) {
+            var templates = {};
+            if (this.model && this.model.get("templates")) {
+                templates = this.model.get("templates");
+            }
+            if (templates[key]) {
+                return templates[key];
+            }
+            if (window.dcp && window.dcp.templates && window.dcp.templates[key]) {
+                return window.dcp.templates[key];
+            }
+            throw new Error("Unknown template  " + key);
         }
     });
 

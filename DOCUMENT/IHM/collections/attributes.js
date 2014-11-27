@@ -1,3 +1,4 @@
+/*global define*/
 define([
     'underscore',
     'backbone',
@@ -7,6 +8,12 @@ define([
 
     return Backbone.Collection.extend({
         comparator : "logicalOrder",
-        model : ModelAttribute
+        model : ModelAttribute,
+
+        initialize : function initialize(values, options) {
+            this.documentModel = options.documentModel;
+            this.renderOptions = options.renderOptions;
+            this.renderMode = options.renderMode;
+        }
     });
 });

@@ -2,9 +2,8 @@
 define([
     'underscore',
     'backbone',
-    'mustache',
     'views/attributes/frame/vFrame'
-], function (_, Backbone, Mustache, ViewAttributeFrame) {
+], function (_, Backbone, ViewAttributeFrame) {
     'use strict';
 
     return Backbone.View.extend({

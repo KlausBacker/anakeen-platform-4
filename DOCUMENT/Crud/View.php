@@ -96,7 +96,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             } elseif ($this->viewIdentifier === self::defaultViewEditionId) {
                 $info["properties"] = $coreViews[self::coreViewEditionId];
             } elseif ($this->viewIdentifier === self::coreViewConsultationId) {
-                $info["properties"] = $coreViews[self::coreViewEditionId];
+                $info["properties"] = $coreViews[self::coreViewConsultationId];
             } elseif ($this->viewIdentifier === self::coreViewEditionId) {
                 $info["properties"] = $coreViews[self::coreViewEditionId];
             } elseif ($this->viewIdentifier === self::coreViewCreationId) {

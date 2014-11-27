@@ -42,11 +42,10 @@ define([
             }
         },
 
-
         updateWidget : function() {
             this.$el.dcpMenu("destroy");
             return this.render();
-        },
+        }
 
 
     });

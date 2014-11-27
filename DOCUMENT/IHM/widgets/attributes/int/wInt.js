@@ -88,7 +88,12 @@ define([
         },
 
         formatNumber : function wIntFormatNumber(value) {
-            return kendo.toString(value, this.getKendoNumericOptions().format);
+            try {
+                value = kendo.toString(value, this.getKendoNumericOptions().format);
+            } catch(e) {
+                console.error("Unable to format the number "+e);
+            }
+            return value;
         },
 
         /**
@@ -102,7 +107,7 @@ define([
                     decimals : 0,
                     downArrowText : scope.options.labels.decreaseLabel,
                     upArrowText :  scope.options.labels.increaseLabel,
-                    format :   scope.options.renderOptions.numberFormat,
+                    /*format :   scope.options.renderOptions.numberFormat,*/
                     max :      scope.options.renderOptions.max,
                     min :      scope.options.renderOptions.min,
                     change :   function () {
@@ -110,6 +115,7 @@ define([
                         scope.setValue({value : this.value()});
                     }
                 };
+
 
             if (_.isObject(scope.options.renderOptions.kendoNumericConfiguration)) {
                 kendoOptions = scope.options.renderOptions.kendoNumericConfiguration;

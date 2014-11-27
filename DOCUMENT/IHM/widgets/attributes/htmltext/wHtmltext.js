@@ -159,7 +159,6 @@ define([
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
                 value.displayValue = value.value;
             }
-            //value.value=value.value.trim();
             if (this.getMode() === "write") {
                 // Flash element only
                 var originalValue = this.ckEditorInstance.getData();

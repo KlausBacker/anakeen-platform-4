@@ -6,19 +6,19 @@
 */
 namespace Dcp\Ui\Crud;
 
+use Dcp\HttpApi\V1\Crud\Exception;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
 class ViewCollection extends View
 {
     /**
      * Create new ressource
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws Exception
      * @return mixed
      */
     public function create()
     {
-        
-        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception = new Exception("CRUD0103", __METHOD__);
         $exception->setHttpStatus("405", "You cannot create a view list with the API");
         throw $exception;
     }
@@ -29,7 +29,6 @@ class ViewCollection extends View
      */
     public function read($resourceId)
     {
-        
         $document = $this->getDocument($resourceId);
         $info = array();
         if ($document->cvid) {
@@ -45,7 +44,7 @@ class ViewCollection extends View
     {
         $cv = DocManager::getDocument($document->cvid);
         if ($cv === null) {
-            throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0006", $document->cvid, $document->getTitle());
+            throw new Exception("CRUDUI0006", $document->cvid, $document->getTitle());
         }
         DocManager::cache()->addDocument($cv);
         /**
@@ -70,26 +69,26 @@ class ViewCollection extends View
     /**
      * Update the ressource
      * @param string|int $resourceId Resource identifier
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws Exception
      * @return mixed
      */
     public function update($resourceId)
     {
         
-        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception = new Exception("CRUD0103", __METHOD__);
         $exception->setHttpStatus("405", "You cannot update a view list with the API");
         throw $exception;
     }
     /**
      * Delete ressource
      * @param string|int $resourceId Resource identifier
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws Exception
      * @return mixed
      */
     public function delete($resourceId)
     {
         
-        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception = new Exception("CRUD0103", __METHOD__);
         $exception->setHttpStatus("405", "You cannot delete a view list with the API");
         throw $exception;
     }

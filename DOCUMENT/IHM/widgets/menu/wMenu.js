@@ -22,8 +22,6 @@ define([
             console.time("widget menu");
             var $content, $mainElement;
             var scopeWidget = this;
-            // this.element.addClass("navbar navbar-default navbar-fixed-top");
-            // this.element.attr("role", "navigation");
             $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid: this.uuid}, this.options)));
             $content = $mainElement.find(".menu__content");
             this._insertMenuContent(this.options.menus, $content);
@@ -147,8 +145,6 @@ define([
                     }
                 }
             });
-
-
         },
 
         _insertMenuContent: function (menus, $content, currentWidget, scopeMenu) {
@@ -190,7 +186,6 @@ define([
                     }
 
                 });
-
 
                 currentMenu.disabled = (currentMenu.visibility === 'disabled');
                 if (currentMenu.type === "listMenu") {
@@ -237,7 +232,10 @@ define([
         },
 
         _getTemplate: function (name) {
-            if (window.dcp && window.dcp.templates && window.dcp.templates.menu && window.dcp.templates.menu[name]) {
+            if (this.options.templates && this.options.templates.menu && this.options.templates.menu[name]) {
+                return this.options.templates.menu[name];
+            }
+            if (window.dcp.templates && window.dcp.templates.menu && window.dcp.templates.menu[name]) {
                 return window.dcp.templates.menu[name];
             }
             throw new Error("Menu unknown template " + name);
