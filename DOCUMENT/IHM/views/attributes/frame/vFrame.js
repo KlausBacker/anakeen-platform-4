@@ -19,12 +19,13 @@ define([
             this.listenTo(this.model.get("content"), 'reset', this.render);
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.templateLabel = this.model.getTemplates().attribute.frame.label;
-            this.templateContent = this.model.getTemplates().attribute.frame.content;
+            this.listenTo(this.model, 'cleanView', this.remove);
         },
 
         render : function () {
             var $content;
+            this.templateLabel = this.model.getTemplates().attribute.frame.label;
+            this.templateContent = this.model.getTemplates().attribute.frame.content;
             var labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
             var contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
 
@@ -64,7 +65,7 @@ define([
         },
 
         getAttributeModel : function (attributeId) {
-            var docModel = this.model.get("documentModel");
+            var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 

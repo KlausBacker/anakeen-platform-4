@@ -2,6 +2,7 @@
 
 define([
     'underscore',
+    'jquery',
     'backbone',
     'mustache',
     'views/document/menu/vMenu',
@@ -12,23 +13,32 @@ define([
     'kendo/kendo.core',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
-], function (_, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
+], function (_, $, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader, ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, kendo) {
     'use strict';
 
     return Backbone.View.extend({
 
         className : "dcpDocument container-fluid",
 
-        initialize : function () {
+        initialize : function initialize() {
             this.listenTo(this.model, 'destroy', this.remove);
-            this.template = this.getTemplates("body");
-            this.partials = this.getTemplates("sections");
+            this.listenTo(this.model, 'sync', this.cleanAndRender);
         },
 
-        render : function () {
+        cleanAndRender : function cleanAndRender() {
+            this.model.trigger("cleanView");
+            this.render();
+        },
+
+        render : function render() {
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
-            // console.time("render doc");
+
+            this.template = this.getTemplates("body");
+            this.partials = this.getTemplates("sections");
+
+            this.updateTitle();
+            this.updateIcon();
 
             if (!locale) {
                 locale = "fr-FR";
@@ -45,16 +55,14 @@ define([
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
             this.trigger("loading", 10);
             //add menu
-            //console.time("render menu");
+            console.time("render menu");
             try {
                 var viewMenu = new ViewDocumentMenu({
                     model : this.model,
                     el :    this.$el.find(".dcpDocument__menu")[0]
                 }).render();
 
-                this.listenTo(viewMenu, 'document:history', this.showHistory);
-                this.listenTo(viewMenu, 'document:properties', this.showProperties);
-                this.listenTo(viewMenu, 'document:delete', this.deleteDocument);
+                this.listenTo(viewMenu, 'document', this.actionDocument);
             } catch (e) {
                 console.error(e);
             }
@@ -66,10 +74,10 @@ define([
             } catch (e) {
                 console.error(e);
             }
-            // console.timeEnd("render menu");
+            console.timeEnd("render menu");
             this.trigger("loading", 20);
             //add first level attributes
-            //  console.time("render attributes");
+            console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
             this.model.get("attributes").each(function (currentAttr) {
                 var view, viewTabLabel, viewTabContent, tabItems;
@@ -112,6 +120,7 @@ define([
                 }
                 currentView.trigger("partRender");
             });
+            console.timeEnd("render attributes");
             if ($el.find('.dcpDocument__tabs__list a:first').tab) {
                 $el.find('.dcpDocument__tabs__list a:first').tab('show');
             }
@@ -120,10 +129,11 @@ define([
             });
             this.$el.addClass("dcpDocument--show");
             this.trigger("renderDone");
+            this.$el.show();
             return this;
         },
 
-        showHistory :    function documentShowHistory(data) {
+        showHistory : function documentShowHistory(data) {
             var historyWidget = $('body').dcpDocumentHistory({
                 documentId : this.model.get("properties").get("initid"),
                 window :     {
@@ -136,7 +146,6 @@ define([
         },
 
         showProperties : function documentShowProperties(data) {
-
             var propertiesWidget = $('body').dcpDocumentProperties({
                 documentId : this.model.get("properties").get("initid"),
                 window :     {
@@ -146,6 +155,14 @@ define([
             }).data("dcpDocumentProperties");
 
             propertiesWidget.open();
+        },
+
+        updateTitle : function () {
+            document.title = this.model.get("properties").get("title");
+        },
+
+        updateIcon : function () {
+            $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
         deleteDocument : function documentDelete(data) {
@@ -162,6 +179,55 @@ define([
                 console.log("fail delete", xhr);
 
             });
+        },
+
+        saveDocument : function saveDocument() {
+            this.displayLoading();
+            this.model.save();
+        },
+
+        displayLoading :   function () {
+            this.$el.hide();
+            this.trigger("loader", 0);
+            this.trigger("loaderShow");
+        },
+
+        closeDocument : function closeDocument(viewId) {
+            if (!viewId) {
+                if (this.model.get("renderMode") === "edit") {
+                    viewId = "!defaultEdition";
+                } else {
+                    viewId = "!defaultConsultation";
+                }
+            }
+            this.model.set("viewId", viewId);
+            this.displayLoading();
+            this.model.fetch();
+        },
+
+        actionDocument : function (options) {
+            options = options.options;
+            if (options[0] === "save") {
+                return this.saveDocument();
+            }
+            if (options[0] === "history") {
+                return this.showHistory();
+            }
+            if (options[0] === "properties") {
+                return this.showProperties();
+            }
+            if (options[0] === "delete") {
+                return this.deleteDocument();
+            }
+            if (options[0] === "save") {
+                return this.saveDocument();
+            }
+            if (options[0] === "close") {
+                return this.closeDocument(options[1]);
+            }
+            if (options[0] === "edit") {
+                return this.closeDocument("!defaultEdition");
+            }
         },
 
         getTemplates : function getTemplates(key) {

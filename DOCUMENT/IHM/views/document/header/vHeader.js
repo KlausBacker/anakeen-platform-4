@@ -19,6 +19,7 @@ define([
         initialize: function vHeaderInitialize() {
             this.listenTo(this.model.get("properties"), 'change', this.updateHeader);
             this.listenTo(this.model, 'destroy', this.remove);
+            this.listenTo(this.model, 'cleanView', this.remove);
             this.headerTemplate = this.getTemplates("sections").header;
         },
 
@@ -62,6 +63,7 @@ define([
             }
             throw new Error("Unknown template  " + key);
         }
+
     });
 
 });

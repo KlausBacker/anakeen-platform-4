@@ -17,6 +17,7 @@ define([
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
             this.listenTo(this.model.get("content"), 'reset', this.render);
+            this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'destroy', this.remove);
         },
 

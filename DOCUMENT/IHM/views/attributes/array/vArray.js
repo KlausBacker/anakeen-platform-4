@@ -23,6 +23,7 @@ define([
         initialize: function (options) {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
+            this.listenTo(this.model, 'cleanView', this.remove);
 
         },
 

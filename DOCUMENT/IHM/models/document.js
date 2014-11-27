@@ -100,12 +100,13 @@ define([
         /**
          * reset all properties with a new set of properties
          */
-        setProperties :                   function documentSetProperties(values) {
+        setProperties : function documentSetProperties(values) {
             var model = this;
             _.each(values, function (value, key) {
                 model.get("properties").set(key, value);
             });
         },
+
         hasAttributesChanged :            function () {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
@@ -283,6 +284,10 @@ define([
                 });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
+        },
+
+        toJSON : function () {
+            return {document : {attributes : this.getValues()}};
         }
     });
 

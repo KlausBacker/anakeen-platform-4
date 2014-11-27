@@ -6,9 +6,14 @@
 */
 namespace Dcp\Ui\Crud;
 
+use Dcp\AttributeIdentifiers\Cvrender;
+use Dcp\HttpApi\V1\Crud\Crud;
+use Dcp\HttpApi\V1\Crud\Document as DocumentCrud;
+use Dcp\HttpApi\V1\Crud\DocumentUtils;
+use Dcp\HttpApi\V1\Crud\Exception;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
-class View extends \Dcp\HttpApi\V1\Crud\Crud
+class View extends Crud
 {
     
     const defaultViewConsultationId = "!defaultConsultation";
@@ -45,23 +50,24 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     );
     /**
      * Create new ressource
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws Exception
      * @return mixed
      */
     public function create()
     {
-        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception = new Exception("CRUD0103", __METHOD__);
         $exception->setHttpStatus("405", "You cannot create a view with the API");
         throw $exception;
     }
+
     /**
      * Read a resource
      * @param string|int $resourceId Resource identifier
+     * @throws Exception
      * @return mixed
      */
     public function read($resourceId)
     {
-        
         if ($this->viewIdentifier === self::coreViewCreationId) {
             $document = $this->createDocument($resourceId);
         } else {
@@ -74,7 +80,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             self::coreViewConsultationId,
             self::coreViewEditionId
         )) && !$document->cvid) {
-            $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0001", $this->viewIdentifier, $resourceId);
+            $exception = new Exception("CRUDUI0001", $this->viewIdentifier, $resourceId);
             $exception->setHttpStatus("404", "View not found");
             throw $exception;
         }
@@ -83,9 +89,9 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "uri" => $this->getUri($document, $this->viewIdentifier)
         );
         /**
-         * @var \Cvdoc $cv
+         * @var \Cvdoc $controlView
          */
-        $cv = DocManager::getDocument($document->cvid);
+        $controlView = DocManager::getDocument($document->cvid);
         
         $vid = $this->viewIdentifier;
         $info["view"] = $this->getViewInformation($document, $vid);
@@ -103,13 +109,45 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
                 $info["properties"] = $coreViews[self::coreViewCreationId];
             }
         } else {
-            
-            $viewInfo = $cv->getView($vid);
-            $info["properties"] = $this->getViewProperties($cv, $viewInfo);
+            $viewInfo = $controlView->getView($vid);
+            $info["properties"] = $this->getViewProperties($controlView, $viewInfo);
         }
         return $info;
     }
-    
+
+    /**
+     * Update the ressource
+     * @param string|int $resourceId Resource identifier
+     * @throws Exception
+     * @return mixed
+     */
+    public function update($resourceId)
+    {
+        $documentData = new DocumentCrud();
+        $documentData->setContentParameters($this->contentParameters);
+        $documentData->update($resourceId);
+        return $this->read($resourceId);
+    }
+
+    /**
+     * Delete ressource
+     * @param string|int $resourceId Resource identifier
+     * @throws Exception
+     * @return mixed
+     */
+    public function delete($resourceId)
+    {
+        $exception = new Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus("405", "You cannot delete a view with the API");
+        throw $exception;
+    }
+
+    /**
+     * Compute abstract standard view
+     *
+     * @param \Doc $document
+     * @return array
+     */
     protected function getCoreViews(\Doc $document)
     {
         $defaultConsultation = array(
@@ -159,27 +197,40 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             self::coreViewCreationId => $defaultCreate
         );
     }
-    
-    protected function getViewProperties(\CVDoc $cv, array $viewInfo)
+
+    /**
+     * Compute properties
+     *
+     * @param \CVDoc $controlView
+     * @param array $viewInfo
+     * @return array
+     */
+    protected function getViewProperties(\CVDoc $controlView, array $viewInfo)
     {
-        $vid = $viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_idview];
+        $viewId = $viewInfo[Cvrender::cv_idview];
         return array(
-            "identifier" => $vid,
-            "mode" => ($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_kview] === "VCONS") ? "consultation" : "edition",
-            "label" => $cv->getLocaleViewLabel($vid) ,
-            "isDisplayable" => ($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_displayed] === "yes") ,
-            "order" => intval($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_order]) ,
-            self::fieldMenu => $cv->getLocaleViewMenu($vid) ,
+            "identifier" => $viewId,
+            "mode" => ($viewInfo[Cvrender::cv_kview] === "VCONS") ? "consultation" : "edition",
+            "label" => $controlView->getLocaleViewLabel($viewId) ,
+            "isDisplayable" => ($viewInfo[Cvrender::cv_displayed] === "yes") ,
+            "order" => intval($viewInfo[Cvrender::cv_order]) ,
+            self::fieldMenu => $controlView->getLocaleViewMenu($viewId) ,
             "mask" => array(
-                "id" => intval($viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_mskid]) ,
-                "title" => $viewInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_msk]
+                "id" => intval($viewInfo[Cvrender::cv_mskid]) ,
+                "title" => $viewInfo[Cvrender::cv_msk]
             )
         );
     }
-    
-    protected function getViewInformation($document, &$vid)
+
+    /**
+     * @param $document
+     * @param $viewId
+     * @return array
+     * @throws Exception
+     */
+    protected function getViewInformation($document, &$viewId)
     {
-        $config = $this->getRenderConfig($document, $vid);
+        $config = $this->getRenderConfig($document, $viewId);
         $fields = $this->getFields();
         
         $viewInfo = array();
@@ -237,16 +288,18 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "css" => $cssArray
         );
     }
+
     /**
      * @param \Dcp\Ui\IRenderConfig $config
      * @param \Doc $document
+     * @throws Exception
      * @return array|bool
      */
     protected function getScriptData($config, $document)
     {
         $jsList = $config->getJsReferences($document);
         if (!is_array($jsList)) {
-            throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0007");
+            throw new Exception("CRUDUI0007");
         }
         $jsArray = array();
         foreach ($jsList as $cssId => $cssPath) {
@@ -260,17 +313,28 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             "js" => $jsArray
         );
     }
-    
+
+    /**
+     * Get the current local
+     *
+     * @return array|bool
+     */
     protected function getLocaleData()
     {
         $localeId = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         $config = getLocaleConfig($localeId);
         return $config;
     }
-    
+
+    /**
+     * Get the document from the standard CRUD
+     *
+     * @param $document
+     * @return mixed
+     */
     protected function renderDocument($document)
     {
-        $documentData = new \Dcp\HttpApi\V1\Crud\Document();
+        $documentData = new DocumentCrud();
         $fields = "document.attributes, document.properties.family, document.properties.icon, document.properties.status, document.properties.revision";
         if ($document->doctype !== "C") {
             $fields.= ",family.structure";
@@ -278,7 +342,15 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
         $documentData->setDefaultFields($fields);
         return $documentData->getInternal($document);
     }
-    
+
+    /**
+     * Get the current document
+     *
+     * @param $resourceId
+     * @return \Doc
+     * @throws Exception
+     * @throws \Dcp\HttpApi\V1\DocManager\Exception
+     */
     protected function getDocument($resourceId)
     {
         if ($this->revision === - 1) {
@@ -288,7 +360,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             $document = DocManager::getDocument($revId, false);
         }
         if ($document === null) {
-            $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0200", $resourceId);
+            $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
@@ -298,11 +370,10 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
     
     protected function createDocument($resourceId)
     {
-        
         $document = DocManager::createDocument($resourceId);
         
         if ($document === null) {
-            $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0200", $resourceId);
+            $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
@@ -349,7 +420,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
      *
      * The restrict fields is used for restrict the return of the get request
      *
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws Exception
      * @return array
      */
     protected function getFields()
@@ -359,7 +430,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             $fields = array_map("trim", explode(",", $parameterfields));
             foreach ($fields as $field) {
                 if (!in_array($field, $this->fields)) {
-                    throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0004", $field, implode(", ", $this->fields));
+                    throw new Exception("CRUDUI0004", $field, implode(", ", $this->fields));
                 }
             }
         } else {
@@ -372,7 +443,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
      * @param \Doc $document
      * @param string $vid
      * @return \Dcp\Ui\IRenderConfig
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @throws Exception
      * @throws \Dcp\Ui\Exception
      */
     protected function getRenderConfig(\Doc $document, &$vid)
@@ -404,7 +475,7 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
             case "view":
                 $err = $document->control("view");
                 if ($err) {
-                    $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0201", $this->resourceIdentifier, $err);
+                    $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
                     $exception->setHttpStatus("403", "Forbidden");
                     throw $exception;
                 }
@@ -412,51 +483,27 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
 
             case "edit":
                 if ($document->locked == - 1) {
-                    throw new \Dcp\HttpApi\V1\Crud\Exception("CRUDUI0005", $vid);
+                    throw new Exception("CRUDUI0005", $vid);
                 }
                 if ($renderMode === "create") {
                     
                     $err = $document->control("icreate");
                     $err.= $document->control("create");
                     if ($err) {
-                        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0201", $this->resourceIdentifier, $err);
+                        $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
                         $exception->setHttpStatus("403", "Forbidden");
                         throw $exception;
                     }
                 } else {
                     $err = $document->canEdit();
                     if ($err) {
-                        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0201", $this->resourceIdentifier, $err);
+                        $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
                         $exception->setHttpStatus("403", "Forbidden");
                         throw $exception;
                     }
                 }
         }
         return $config;
-    }
-    /**
-     * Update the ressource
-     * @param string|int $resourceId Resource identifier
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     * @return mixed
-     */
-    public function update($resourceId)
-    {
-        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot update a view with the API");
-        throw $exception;
-    }
-    /**
-     * Delete ressource
-     * @param string|int $resourceId Resource identifier
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     * @return mixed
-     */
-    public function delete($resourceId)
-    {
-        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot delete a view with the API");
-        throw $exception;
     }
     /**
      * Set the url parameters
@@ -515,5 +562,11 @@ class View extends \Dcp\HttpApi\V1\Crud\Crud
         // Necessary only when use family.structure
         $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         return join(" ", $result);
+    }
+
+    public function analyseJSON($jsonString)
+    {
+        $values = DocumentUtils::analyzeDocumentJSON($jsonString);
+        return $values;
     }
 }
