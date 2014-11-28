@@ -11,8 +11,7 @@ require([
     'models/document',
     'views/document/vDocument',
     'widgets/window/wConfirm',
-    'widgets/window/wLoading',
-    'bootstrap'
+    'widgets/window/wLoading'
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
     'use strict';
     console.timeEnd("js loading");
@@ -34,6 +33,7 @@ require([
         $loading.dcpLoading('setPercent', data);
     });
     documentView.on('loaderShow', function () {
+        console.time("hotRender");
         $loading.dcpLoading('show');
     });
 
@@ -41,14 +41,14 @@ require([
         $loading.dcpLoading('addItem');
     });
     documentView.on('renderDone', function () {
-        console.timeEnd('documentRender');
+        console.timeEnd("hotRender");
         $loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
         _.delay(function () {
             $loading.dcpLoading("hide");
             console.timeEnd('main');
         }, 500);
     });
-    console.time('documentRender');
+
     document.fetch({
         error :   function () {
             throw new Error("Unable to get the data from documents");
