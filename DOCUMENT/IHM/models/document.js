@@ -42,7 +42,7 @@ define([
         url : function () {
             var urlData = "api/v1/documents/" + encodeURIComponent(this.id);
             if (this.get("revision")) {
-                urlData += "/revisions/" + encodeURIComponent(this.get("revisionId"));
+                urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
             }
             urlData += "/views/" + encodeURIComponent(this.get("viewId"));
             return urlData;
