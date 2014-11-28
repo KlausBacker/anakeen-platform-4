@@ -32,6 +32,7 @@ define([
         },
 
         render : function render() {
+            console.time("render document");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
 
@@ -56,7 +57,6 @@ define([
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
             this.trigger("loading", 10);
             //add menu
-            console.time("render menu");
             try {
                 var viewMenu = new ViewDocumentMenu({
                     model : this.model,
@@ -75,7 +75,6 @@ define([
             } catch (e) {
                 console.error(e);
             }
-            console.timeEnd("render menu");
             this.trigger("loading", 20);
             //add first level attributes
             console.time("render attributes");
@@ -135,6 +134,7 @@ define([
             });
             this.$el.addClass("dcpDocument--show");
             this.trigger("renderDone");
+            console.timeEnd("render document");
             this.$el.show();
             return this;
         },
