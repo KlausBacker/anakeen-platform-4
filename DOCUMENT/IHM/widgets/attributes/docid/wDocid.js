@@ -68,13 +68,35 @@ define([
             }
         },
 
-        _initEvent: function wDocidInitEvent() {
 
-            if (this.getMode() === "read") {
-                this._initLinkEvent();
-            }
+
+        /**
+         * Init event when a hyperlink is associated to the attribute
+         *
+         * @protected
+         */
+        _initLinkEvent: function wAttributeInitLinkEvent() {
             this._super();
+            var htmlLink = this.getLink();
+            var scope = this;
+            if (htmlLink) {
+                this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
+                    if (htmlLink.target === "_render") {
+                        event.preventDefault();
+                        if (_.isUndefined($(this).data("index"))) {
+                            window.dcp.document.set("initid", scope.options.value.value);
+                        } else {
+                            window.dcp.document.set("initid", scope.options.value[$(this).data("index")].value);
+                        }
+                        window.dcp.document.get("viewId", "!defaultConsultation");
+                        window.dcp.document.fetch();
+                    }
+                });
+            }
+            return this;
         },
+
+
         /**
          * Define inputs for focus
          * @protected
