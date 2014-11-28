@@ -264,8 +264,13 @@ define([
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
 
             if (this.options.renderOptions.useSourceUri) {
-                kddl.dataSource.data([this.options.value]);
-                kddl.value(this.options.value.value);
+                if (this.options.value.value === null) {
+                    kddl.dataSource.data([]);
+                    kddl.value('');
+                } else {
+                    kddl.dataSource.data([this.options.value]);
+                    kddl.value(this.options.value.value);
+                }
             }
 
         },

@@ -395,7 +395,6 @@ define([
                             });
                             console.log("fail", response);
                         });
-
                 }
             }).addClass('table table-condensed table-bordered table-hover');
 

@@ -13,7 +13,9 @@ define([
             type :          "color",
 
             renderOptions : {
-                kendoColorConfiguration : {}
+                kendoColorConfiguration : {
+                    buttons:false
+                }
             },
             labels : {
             }
@@ -80,6 +82,7 @@ define([
                 }
             } else if (this.getMode() === "read") {
                 this.getContentElements().text(value.displayValue);
+                this.element.find(".dcpAttribute__content--read").css("border-color", value.value);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

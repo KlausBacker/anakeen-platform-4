@@ -1,11 +1,27 @@
-.dcpDocument__tabs .nav > li {
+.dcpDocument__tabs .dcpDocument__tabs__list > li {
   max-width: 200px;
 }
 
-.dcpDocument__tabs .nav > li > a {
+.dcpDocument__tabs .dcpTab__label  a {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   padding: 10px 5% 5px 5%;
   text-align: center;
+  width:100%;
+  box-sizing: border-box;
+}
+
+
+.k-tabstrip-items .dcpTab__label  a.k-state-active {
+  background-color: transparent;
+}
+
+.dcpDocument__tabs--pane * {
+  box-sizing: border-box;
+}
+.dcpDocument__tabs--pane .k-picker-wrap,
+.dcpDocument__tabs--pane .k-numeric-wrap
+{
+  box-sizing: content-box;
 }

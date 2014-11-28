@@ -39,7 +39,8 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
-            this.options = options;
+            this.listenTo(this.model.getDocumentModel(), 'showTab', this.afterShow);
+this.options = options;
         },
 
         getData : function (index) {
@@ -250,6 +251,10 @@ define([
             }
         },
 
+        afterShow : function (event, data) {
+            // propagate event to widgets
+            this.getDOMElements().trigger("show");
+        },
         updateValue : function (event, data) {
             this.model.setValue(data.value, data.index);
         },

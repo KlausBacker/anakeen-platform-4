@@ -10,7 +10,7 @@ define([
 
         tagName: "div",
 
-        className: "tab-pane",
+        className: "dcpDocument__tabs--pane",
 
         initialize: function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
@@ -23,7 +23,7 @@ define([
 
         render: function () {
             var $content = this.$el, model = this.model;
-            console.time("render tab " + this.model.id);
+            //console.time("render tab " + this.model.id);
             this.$el.empty();
             this.$el.attr("id", this.model.id);
 
@@ -52,7 +52,7 @@ define([
                     }
                 });
             }
-            console.timeEnd("render tab " + this.model.id);
+            //console.timeEnd("render tab " + this.model.id);
             this.trigger("renderDone");
             return this;
         },
