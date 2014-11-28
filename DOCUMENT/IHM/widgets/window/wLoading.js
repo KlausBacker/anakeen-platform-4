@@ -66,6 +66,10 @@ define([
             }
         },
 
+        show : function () {
+            this.element.show();
+        },
+
         complete : function (onComplete) {
             this.barElement.data("kendoProgressBar").bind("complete", onComplete);
         },

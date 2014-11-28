@@ -9,7 +9,7 @@ define([
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 
-    var flattenAttributes = function (mode, currentAttributes, attributes, parent) {
+    var flattenAttributes = function (currentAttributes, attributes, parent) {
         if (!_.isArray(attributes)) {
             attributes = _.values(attributes);
         }
@@ -18,13 +18,10 @@ define([
                 value.parent = parent;
             });
         }
-        _.each(attributes, function (value) {
-            value.documentMode = mode || "read";
-        });
         currentAttributes = _.union(currentAttributes, attributes);
         _.each(attributes, function (currentAttr) {
             if (currentAttr.content) {
-                currentAttributes = _.union(currentAttributes, flattenAttributes(mode, currentAttributes, currentAttr.content, currentAttr.id));
+                currentAttributes = _.union(currentAttributes, flattenAttributes(currentAttributes, currentAttr.content, currentAttr.id));
             }
         });
         return currentAttributes;
@@ -32,25 +29,23 @@ define([
 
     return Backbone.Model.extend({
 
-        initialize : function (values, options) {
-            var attributes = [],
-                currentModel = this;
-            this.id = options.properties.id;
-            this.set("properties", new DocumentProperties(options.properties));
-            this.set("menus", new CollectionMenus(options.menus));
-            this.set("renderMode", options.renderMode);
-            this.set("locale", options.locale);
-            attributes = flattenAttributes(options.renderMode, attributes, options.family.structure);
-            _.each(attributes, function (value) {
-                if (value.id && options.attributes[value.id]) {
-                    value.value = options.attributes[value.id];
-                }
-            });
-            this.set("attributes", new CollectionAttributes(attributes));
-            attributes = this.get("attributes");
-            attributes.each(function (currentAttributeModel) {
-                currentAttributeModel.setContentCollection(attributes, currentModel);
-            });
+        idAttribute : "initid",
+
+        defaults : {
+            revisionId : false,
+            renderMode : "read",
+            properties : undefined,
+            menus :      undefined,
+            attributes : undefined
+        },
+
+        url : function () {
+            var urlData = "api/v1/documents/" + encodeURIComponent(this.id);
+            if (this.get("revision")) {
+                urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
+            }
+            urlData += "/views/" + encodeURIComponent(this.get("viewId"));
+            return urlData;
         },
 
         toData : function () {
@@ -59,6 +54,7 @@ define([
             };
             returnObject.document.properties = this.get("properties").toJSON();
             returnObject.menus = this.get("menus").toJSON();
+            returnObject.templates = this.get("templates");
             return returnObject;
         },
 
@@ -73,10 +69,10 @@ define([
                     currentValue = _.toArray(currentValue);
                     if (currentValue.length > 0) {
                         for (i = 0; i < currentValue.length; i++) {
-                            arrayValues.push(currentValue[i] || { value : null});
+                            arrayValues.push(currentValue[i] || {value : null});
                         }
                     } else {
-                        arrayValues = { value : null};
+                        arrayValues = {value : null};
                     }
                     values[currentAttribute.id] = arrayValues;
                 } else {
@@ -97,7 +93,7 @@ define([
                 }
                 currentAttribute.set("value", newValue);
                 // reset change also
-                currentAttribute.changed={};
+                currentAttribute.changed = {};
             });
         },
 
@@ -105,11 +101,12 @@ define([
          * reset all properties with a new set of properties
          */
         setProperties : function documentSetProperties(values) {
-            var model=this;
-            _.each(values , function (value, key) {
+            var model = this;
+            _.each(values, function (value, key) {
                 model.get("properties").set(key, value);
             });
         },
+
         hasAttributesChanged :            function () {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
@@ -130,12 +127,14 @@ define([
                             $notification.dcpNotification("showError", {
                                 title :       message.contentText,
                                 htmlMessage : message.contentHtml,
-                                message :     attrModel.attributes.label + ' : ' + message.data.err});
+                                message : attrModel.attributes.label + ' : ' + message.data.err
+                            });
                         } else {
                             $notification.dcpNotification("showError", {
                                 title :       message.contentText,
                                 htmlMessage : message.contentHtml,
-                                message :     message.data.err});
+                                message :     message.data.err
+                            });
                         }
                     }
                     break;
@@ -148,12 +147,14 @@ define([
                                 $notification.dcpNotification("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message :     attrModel.attributes.label + ' : ' + constraint.err});
+                                    message : attrModel.attributes.label + ' : ' + constraint.err
+                                });
                             } else {
                                 $notification.dcpNotification("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message :     constraint.err});
+                                    message :     constraint.err
+                                });
                             }
                         });
                     }
@@ -161,7 +162,8 @@ define([
                         $notification.dcpNotification("showError", {
                             title :       message.contentText,
                             htmlMessage : message.contentHtml,
-                            message :     message.data.preStore});
+                            message :     message.data.preStore
+                        });
                     }
                     break;
 
@@ -211,7 +213,8 @@ define([
             if (!success) {
                 $notification.dcpNotification("showError", {
                     title :   "Needed Attribute",
-                    message : attrLabel.join(', ')});
+                    message : attrLabel.join(', ')
+                });
                 success = false;
             }
             return success;
@@ -223,6 +226,68 @@ define([
                 attrModel.setErrorMessage(null);
             });
 
+        },
+
+        parse : function parse(response) {
+            var attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes;
+            if (response.success === false) {
+                throw new Error("Unable to get the data from documents");
+            }
+            if (response.data.view.renderOptions.mode) {
+                if (response.data.view.renderOptions.mode === "edit") {
+                    renderMode = "edit";
+                } else if (response.data.view.renderOptions.mode === "view") {
+                    renderMode = "view";
+                } else {
+                    throw new Error("Unkown render mode " + response.data.view.renderOptions.mode);
+                }
+            }
+            valueAttributes = response.data.view.documentData.document.attributes;
+            visibilityAttributes = response.data.view.renderOptions.visibilities;
+            structureAttributes = response.data.view.documentData.family.structure;
+            attributes = flattenAttributes(attributes, structureAttributes);
+            _.each(attributes, function (currentAttributeStructure) {
+                if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
+                    currentAttributeStructure.value = valueAttributes[currentAttributeStructure.id];
+                }
+                if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
+                    currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
+                }
+            });
+            return {
+                properties :    response.data.view.documentData.document.properties,
+                menus :         response.data.view.menu,
+                locale :        response.data.view.locale.culture,
+                renderMode : renderMode || "view",
+                attributes :    attributes,
+                templates :     response.data.view.templates,
+                renderOptions : response.data.view.renderOptions
+            };
+        },
+
+        "set" : function setValues(attributes, options) {
+            var currentModel = this;
+            if (attributes.properties !== undefined && !(attributes.properties instanceof DocumentProperties)) {
+                attributes.properties = new DocumentProperties(attributes.properties);
+            }
+            if (attributes.menus !== undefined && !(attributes.menu instanceof CollectionMenus)) {
+                attributes.menus = new CollectionMenus(attributes.menus);
+            }
+            if (attributes.attributes !== undefined && !(attributes.attributes instanceof CollectionAttributes)) {
+                attributes.attributes = new CollectionAttributes(attributes.attributes, {
+                    documentModel : currentModel,
+                    renderOptions : attributes.renderOptions,
+                    renderMode :    attributes.renderMode
+                });
+                attributes.attributes.each(function (currentAttributeModel) {
+                    currentAttributeModel.setContentCollection(attributes.attributes);
+                });
+            }
+            return Backbone.Model.prototype.set.call(this, attributes, options);
+        },
+
+        toJSON : function () {
+            return {document : {attributes : this.getValues()}};
         }
     });
 

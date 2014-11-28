@@ -28,7 +28,7 @@ class DefaultEdit extends RenderDefault
         $menu = new BarMenu();
         $user = getCurrentUser();
         
-        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#save/{{document.properties.id}}");
+        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#event/document:save");
         $item->setBeforeContent('<div class="fa fa-save" />');
         $item->setTooltipLabel(___("Record document to server", "UiMenu"));
         if (empty($document->id)) {
@@ -63,7 +63,7 @@ class DefaultEdit extends RenderDefault
         $item->setTooltipLabel(___("Abord modifications", "UiMenu"));
         $menu->appendElement($item);
         */
-        $item = new ItemMenu("close", ___("Close", "UiMenu") , "#close/{{document.properties.id}}");
+        $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation");
         $item->setBeforeContent('<div class="fa fa-times" />');
         $item->setTooltipLabel(___("See document in read mode", "UiMenu"));
         $menu->appendElement($item);

@@ -93,7 +93,7 @@ class DefaultView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "?app=DOCUMENT&mode=edit&id={{document.properties.id}}");
+        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "#event/document:edit");
         $item->setTooltipLabel(___("Display document form", "UiMenu"));
         $item->setBeforeContent('<div class="fa fa-pencil" />');
         

@@ -19,7 +19,8 @@ define([
             this.listenTo(this.model.get("content"), 'reset', this.render);
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.templateLabel = window.dcp.templates.attribute.tab.label;
+            this.listenTo(this.model, 'cleanView', this.remove);
+            this.templateLabel = this.model.getTemplates().attribute.tab.label;
         },
 
         render : function () {

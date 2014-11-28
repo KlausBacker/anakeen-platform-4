@@ -37,7 +37,8 @@ define([
             this.listenTo(this.model, 'change:value', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.templateWrapper = window.dcp.templates.attribute.simpleWrapper;
+            this.listenTo(this.model, 'cleanView', this.remove);
+            this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
             this.options = options;
         },
 
@@ -53,21 +54,21 @@ define([
             data.renderOptions = this.model.getOptions();
             data.labels = data.labels || {};
             data.labels.deleteAttributeNames = this.getDeleteLabels();
-            data.locale = this.model.get("documentModel").get("locale");
+            data.locale = this.model.getDocumentModel().get("locale");
             data.templates = {};
-            if (window.dcp && window.dcp.templates && window.dcp.templates.attribute) {
-                if (window.dcp.templates.attribute[this.model.get("type")]) {
-                    data.templates = window.dcp.templates.attribute[this.model.get("type")];
+            if (this.model.getTemplates().attribute) {
+                if (this.model.getTemplates().attribute[this.model.get("type")]) {
+                    data.templates = this.model.getTemplates().attribute[this.model.get("type")];
                 } else {
                     // fallback in case of no specific templates
-                    data.templates = window.dcp.templates.attribute.default;
+                    data.templates = this.model.getTemplates().attribute.default;
                 }
             }
             data.deleteButton = true;
 
             data.sourceValues=this.model.get("enumItems");
             data.sourceUri=this.model.get("enumUri");
-            data.templates.label = window.dcp.templates.attribute.label;
+            data.templates.label = this.model.getTemplates().attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
             return data;
@@ -137,10 +138,10 @@ define([
          * @param valueIndex the index which comes from modification action
          */
         changeAttributesValue : function (event, dataItem, valueIndex) {
-            var scope = this;
+            var currentView = this;
             _.each(dataItem.values, function (val, aid) {
                 if (typeof val === "object") {
-                    var attrModel = scope.model.get("documentModel").get('attributes').get(aid);
+                    var attrModel = currentView.model.getDocumentModel().get('attributes').get(aid);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
                             attrModel.addValue({value : val.value, displayValue : val.displayValue}, valueIndex);
@@ -161,7 +162,7 @@ define([
         deleteValue : function (event, data) {
             if (data.id === this.model.id) {
                 var attrToClear = this.model.get('helpOutputs'),
-                    docModel = this.model.get("documentModel");
+                    docModel = this.model.getDocumentModel();
                 if ((!attrToClear) || typeof attrToClear === "undefined") {
                     attrToClear = [this.model.id];
                 } else {
@@ -183,7 +184,7 @@ define([
         },
 
         getAttributeModel : function (attributeId) {
-            var docModel = this.model.get("documentModel");
+            var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
@@ -211,7 +212,7 @@ define([
          * @param options
          */
         autocompleteRequestRead : function (options) {
-            var documentModel = this.model.get("documentModel");
+            var documentModel = this.model.getDocumentModel();
             options.data.attributes = documentModel.getValues();
             $.ajax({
                 type : "POST",

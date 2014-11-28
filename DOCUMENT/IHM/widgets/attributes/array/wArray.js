@@ -113,8 +113,6 @@ define([
                                 drap.insertAfter(drop);
                             }
                             scope._indexLine();
-
-
                         }
                     }
                 });
@@ -252,12 +250,6 @@ define([
         _getTemplate : function (key) {
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
-            }
-            if (window.dcp && window.dcp.templates && window.dcp.templates.array && window.dcp.templates.array[key]) {
-                return window.dcp.templates.array[key];
-            }
-            if (window.dcp && window.dcp.templates && window.dcp.templates["default"] && window.dcp.templates["default"][key]) {
-                return window.dcp.templates["default"][key];
             }
             throw new Error("Unknown template  " + key + "/" + this.options.type);
 

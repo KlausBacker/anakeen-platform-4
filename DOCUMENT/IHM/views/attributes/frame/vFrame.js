@@ -10,24 +10,25 @@ define([
 
     return Backbone.View.extend({
 
-        className: "panel panel-default css-frame frame",
+        className : "panel panel-default css-frame frame",
 
-        initialize: function () {
+        initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
             this.listenTo(this.model.get("content"), 'reset', this.render);
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.templateLabel = window.dcp.templates.attribute.frame.label;
-            this.templateContent = window.dcp.templates.attribute.frame.content;
+            this.listenTo(this.model, 'cleanView', this.remove);
         },
 
-        render: function () {
+        render : function () {
             var $content;
+            this.templateLabel = this.model.getTemplates().attribute.frame.label;
+            this.templateContent = this.model.getTemplates().attribute.frame.content;
             var labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
             var contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
-            //console.time("render frame " + this.model.id);
+
             this.$el.empty();
             this.$el.append(labelElement);
             this.$el.append(contentElement);
@@ -46,13 +47,14 @@ define([
                     }
                     try {
                         if (currentAttr.get("valueAttribute")) {
-                            $content.append((new ViewAttribute({model: currentAttr})).render().$el);
+                            $content.append((new ViewAttribute({model : currentAttr})).render().$el);
                             return;
                         }
                         if (currentAttr.get("type") === "array") {
-                            $content.append((new ViewAttributeArray({model: currentAttr})).render().$el);
+                            $content.append((new ViewAttributeArray({model : currentAttr})).render().$el);
                         }
                     } catch (e) {
+                        $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
                         console.error(e);
                     }
                 });
@@ -62,12 +64,12 @@ define([
             return this;
         },
 
-        getAttributeModel: function (attributeId) {
-            var docModel = this.model.get("documentModel");
+        getAttributeModel : function (attributeId) {
+            var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
-        setError: function (event, data) {
+        setError : function (event, data) {
             var parentId = this.model.get('parent');
             if (data) {
                 this.$el.find(".dcpFrame__label").addClass("has-warning");
@@ -82,11 +84,11 @@ define([
             }
         },
 
-        updateLabel: function () {
+        updateLabel : function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        toggle: function () {
+        toggle : function () {
             var $contentElement = this.$(".dcpFrame__content");
             if ($contentElement.hasClass("dcpFrame__content--open")) {
                 // Hide frame panel

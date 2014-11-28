@@ -37,32 +37,42 @@ define([
     window.dcp.templates = window.dcp.templates || template;
 
     // Mock family definition
-    generateFamilyStructure = function (localeAttrId, attrDef) {
-        var attrStruct, struct = {
-            structure : {
-                'test_f_frame' : {
-                    id :       'test_f_frame',
-                    label :    'frame',
-                    multiple : false,
-                    options :  [],
-                    type :     'frame',
-                    content :  {}
-                }
-            }
+    generateFamilyStructure = function (localeAttrId, attrDef, renderMode, value) {
+        var structure = [], secondStruct, attrStruct = {
+            "id" :           "test_f_frame",
+            "visibility" :   "W",
+            "label" :        "frame",
+            "type" :         "frame",
+            "logicalOrder" : 0,
+            "multiple" :     false,
+            "options" :      [],
+            "renderMode" :   renderMode,
+            "content" :      {}
         };
-        if (localeAttrId) {
-            attrStruct = {
-                id :        localeAttrId,
-                label : attrDef.label || ("label of " + localeAttrId),
-                label_old : localeAttrId,
-                multiple :  false,
-                options : attrDef.options || [],
-                type :      attrDef.type
-            };
 
-            struct.structure.test_f_frame.content[localeAttrId] = _.extend(attrStruct, attrDef);
+        structure.push(attrStruct);
+
+        if (localeAttrId) {
+            value = _.clone(value);
+            secondStruct = {
+                "id" :           localeAttrId,
+                "visibility" : attrDef.visibility || 'W',
+                "label" : attrDef.label || ("label of " + localeAttrId),
+                "label_old" :    localeAttrId,
+                "type" :         attrDef.type,
+                "logicalOrder" : 0,
+                "multiple" :     false,
+                "options" : attrDef.options || [],
+                "renderMode" : renderMode,
+                "content" :      {},
+                "value" : value
+            };
+            secondStruct = _.extend(secondStruct, attrDef);
+
+            attrStruct.content[localeAttrId] = _.extend(secondStruct, attrDef);
+            structure.push(secondStruct);
         }
-        return struct;
+        return structure;
     };
 
     //Mock current visibility conf
@@ -95,7 +105,7 @@ define([
         var options = config.options || {};
         var otherValue = config.otherValue;
         var renderOptions = config.renderOptions || {};
-        var familyStructure = null;
+        var familyStructure;
         var modelDocument, currentSandbox, localAttrId, getSandbox = function () {
             return currentSandbox;
         }, findWidgetName = function ($element) {
@@ -112,30 +122,25 @@ define([
                 $renderZone = $("body");
             }
             $renderZone.append(currentSandbox);
-            familyStructure = options.familyContent || generateFamilyStructure(localAttrId, attributeDefinition);
 
-            if (!window.dcp.renderOptions) {
-                window.dcp.renderOptions = {attributes : {}};
-            }
-            window.dcp.renderOptions.attributes[localAttrId] = renderOptions;
-
-            window.dcp.renderOptions.visibilities = generateVisibility(localAttrId, attributeDefinition);
+            familyStructure = generateFamilyStructure(localAttrId, attributeDefinition, options.renderMode, initialValue);
 
             //Generate mock model to test interaction between model, view and widget
             modelDocument = new ModelDocument(
-                {},
                 {
-                    properties : {
-                        id :        localId,
-                        title : title + "_" + localAttrId,
-                        fromname :  localId,
-                        fromtitle : localId
+                    properties :    {
+                        id :       localId,
+                        title : title + "_" + localId,
+                        fromname : localId,
+                        family :   {
+                            title : localId
+                        }
                     },
-                    menus :      [],
-                    family :     familyStructure,
+                    menus :         [],
                     locale : options.locale || "fr_FR",
                     renderMode : options.renderMode || "view",
-                    attributes : options.attributes || generateDocumentContent(localAttrId, initialValue)
+                    attributes : options.attributes || familyStructure,
+                    renderOptions : renderOptions
                 }
             );
         });
@@ -154,7 +159,7 @@ define([
 
             it("label", function () {
                 var $sandBox = getSandbox(), view, newLabel = _.uniqueId(title);
-                var iniLabel = familyStructure.structure.test_f_frame.content[localAttrId].label;
+                var iniLabel = familyStructure[1].label;
 
                 view = new ViewDocument({model : modelDocument, el : $sandBox});
                 view.render();

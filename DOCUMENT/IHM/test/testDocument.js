@@ -32,43 +32,40 @@ require([
     window.dcp.templates = _.defaults(window.dcp.templates, template) || template;
 
     // Mock family definition
-    generateFamilyStructure = function (localeAttrId, attrDef) {
-        var attrStruct, struct = {
-            structure : {
-                'test_f_frame' : {
-                    id :       'test_f_frame',
-                    label :    'frame',
-                    multiple : false,
-                    options :  [],
-                    type :     'frame',
-                    content :  {}
-                }
-            }
+    generateFamilyStructure = function (options) {
+
+        var structure = [], secondStruct, attrStruct = {
+            "id" :           "test_f_frame",
+            "visibility" :   "W",
+            "label" :        "frame",
+            "type" :         "frame",
+            "logicalOrder" : 0,
+            "multiple" :     false,
+            "options" :      [],
+            "renderMode" : options.renderMode,
+            "content" :      {}
         };
-        if (localeAttrId) {
-            attrStruct = {
-                id :        localeAttrId,
-                label : attrDef.label || ("label of " + localeAttrId),
-                label_old : localeAttrId,
-                multiple :  false,
-                options : attrDef.options || [],
-                type :      attrDef.type
+
+        structure.push(attrStruct);
+
+        /*if (localeAttrId) {
+            secondStruct = {
+                "id" :           localeAttrId,
+                "visibility" : attrDef.visibility || 'W',
+                "label" : attrDef.label || ("label of " + localeAttrId),
+                "label_old" :    localeAttrId,
+                "type" :         attrDef.type,
+                "logicalOrder" : 0,
+                "multiple" :     false,
+                "options" : attrDef.options || [],
+                "content" :      {}
             };
+            secondStruct = _.extend(secondStruct, attrDef);
 
-            struct.structure.test_f_frame.content[localeAttrId] = _.extend(attrStruct, attrDef);
-        }
-        return struct;
-    };
-
-    //Mock current visibility conf
-    generateVisibility = function (localAttrId, attrDef) {
-        var values = {
-            'test_f_frame' : 'W'
-        };
-        if (localAttrId) {
-            values[localAttrId] = attrDef.visibility || 'W';
-        }
-        return values;
+            attrStruct.content[localeAttrId] = _.extend(secondStruct, attrDef);
+            structure.push(secondStruct);
+        }*/
+        return structure;
     };
 
     // Clone the value to avoid cross modification between test
@@ -100,24 +97,21 @@ require([
                 $renderZone.append(currentSandbox);
                 //currentSandbox = setFixtures(sandbox());
                 window.dcp = window.dcp || {};
-                window.dcp.renderOptions = window.dcp.renderOptions || {};
-                window.dcp.renderOptions.visibilities = generateVisibility();
                 modelDocument = new ModelDocument(
-                    {},
                     {
-                        properties : {
-                            id : localId,
-                            title : title+"_"+localId,
+                        properties :    {
+                            id :       localId,
+                            title : title + "_" + localId,
                             fromname : localId,
-                            family : {
+                            family :   {
                                 title : localId
                             }
                         },
-                        menus :      [],
-                        family :     options.familyContent || generateFamilyStructure(),
-                        locale :     options.locale || "fr_FR",
+                        menus :         [],
+                        locale : options.locale || "fr_FR",
                         renderMode : options.renderMode || "view",
-                        attributes : options.attributes || generateDocumentContent()
+                        attributes : options.attributes || generateFamilyStructure(options),
+                        renderOptions : {}
                     }
                 );
             });
@@ -179,10 +173,10 @@ require([
         });
     };
 
-    testDocument("view", false, "Charles Bonnissent", {});
-    testDocument("edit", "text", "Charles Bonnissent", {renderMode : "edit"});
-    testDocument("view locale us", "text", "Charles Bonnissent", {locale : "en_US"});
-    testDocument("edit locale us", "text", "Charles Bonnissent", {renderMode : "edit", locale : "en_US"});
+    testDocument("view", {});
+    testDocument("edit", {renderMode : "edit"});
+    testDocument("view locale us", {locale : "en_US"});
+    testDocument("edit locale us", {renderMode : "edit", locale : "en_US"});
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();
