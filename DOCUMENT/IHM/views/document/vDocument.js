@@ -122,7 +122,11 @@ define([
                 currentView.trigger("partRender");
             });
 
-             $(".dcpDocument__tabs").kendoTabStrip().data("kendoTabStrip").select(0);
+             $(".dcpDocument__tabs").kendoTabStrip({
+                 show: function () {
+                     currentView.model.trigger("showTab");
+                 }
+             }).data("kendoTabStrip").select(0);
 
 
 

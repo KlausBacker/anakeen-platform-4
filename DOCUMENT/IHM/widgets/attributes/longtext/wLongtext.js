@@ -24,7 +24,7 @@ define([
 
         _initEvent: function _initEvent() {
             if (this.getMode() === "write") {
-                this._initKeyPress();
+                this._initAutoFit();
             }
             this._super();
         },
@@ -70,7 +70,7 @@ define([
             }
         },
 
-        _initKeyPress: function () {
+        _initAutoFit: function () {
             var scope = this;
             _.defer(function () {
                 scope._fitToContent(scope.getContentElements());
@@ -81,6 +81,10 @@ define([
                 })
                 .on("focus", function (event) {
                     scope._fitToContent($(this));
+                });
+
+            this.element.on("show", function (event) {
+                    scope._fitToContent(scope.getContentElements());
                 });
         },
 
