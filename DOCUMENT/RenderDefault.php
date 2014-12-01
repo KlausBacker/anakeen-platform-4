@@ -47,8 +47,9 @@ class RenderDefault implements IRenderConfig
         return array(
             "src" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
-            "main" => "DOCUMENT/IHM/main.js?ws=" . $version,
-            //  "prod" => "DOCUMENT/IHM/main-built.js?ws=" . $version
+            "kendo" => "lib/KendoUI/2014.3/js/kendo-builded.min.js?ws=" . $version,
+            "debug" => "DOCUMENT/IHM/main.js?ws=" . $version,
+            //"prod" => "DOCUMENT/IHM/main-built.js?ws=" . $version
             
         );
     }

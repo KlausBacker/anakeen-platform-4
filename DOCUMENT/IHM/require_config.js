@@ -22,6 +22,7 @@
             "dcpDocumentTest" :  "IHM/test",
             "text" :             '../lib/RequireJS/text',
             "jquery" :           "../lib/KendoUI/js/jquery",
+            "kendo/jquery" :     "../lib/KendoUI/js/jquery",
             "underscore" :       "../lib/underscore/underscore",
             "backbone" :         "../lib/backbone/backbone",
             "mustache" :         "../lib/mustache.js/mustache",

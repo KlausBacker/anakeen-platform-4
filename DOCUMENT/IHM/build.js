@@ -1,9 +1,9 @@
 ({
-    shim :    {
-        "bootstrap" :       [ 'jquery' ],
-        "kendo" :           [ 'jquery' ],
-        "kendo-culture" :   [ 'kendo/kendo.core' ],
-        "ckeditor-jquery" : [ 'jquery', 'ckeditor' ]
+    shim : {
+        "bootstrap" :       ['jquery'],
+        "kendo" :           ['jquery'],
+        "kendo-culture" :   ['kendo'],
+        "ckeditor-jquery" : ['jquery', 'ckeditor']
     },
     baseUrl : "../",
     paths :   {
@@ -12,16 +12,22 @@
         "models" :           "IHM/models",
         "views" :            "IHM/views",
         "routers" :          "IHM/routers",
-        "jquery" :           "/home/charles/vagrants/doc2/lib/KendoUI/js/jquery",
-        "underscore" :       "/home/charles/vagrants/doc2/lib/underscore/underscore",
-        "backbone" :         "/home/charles/vagrants/doc2/lib/backbone/backbone",
-        "mustache" :         "/home/charles/vagrants/doc2/lib/mustache.js/mustache",
-        "bootstrap" :        "/home/charles/vagrants/doc2/lib/bootstrap/js/bootstrap",
-        "kendo" :            "/home/charles/vagrants/doc2/lib/KendoUI/js/kendo.ui.core",
-        "kendo-culture-fr" : "/home/charles/vagrants/doc2/lib/KendoUI/js/cultures/kendo.culture.fr-FR",
-        "ckeditor" :         "/home/charles/vagrants/doc2/lib/ckeditor/ckeditor",
-        "ckeditor-jquery" :  "/home/charles/vagrants/doc2/lib/ckeditor/adapters/jquery"
+        "text" :                 'empty:',
+        "jquery" :               "empty:",
+        "underscore" :           "empty:",
+        "backbone" :             "empty:",
+        "mustache" :             "empty:",
+        "bootstrap" :            "empty:",
+        "kendo" :                "empty:",
+        "kendo-culture-fr" :     "empty:",
+        "ckeditor" :             "empty:",
+        "ckeditor-jquery" :      "empty:",
+        "datatables" :           "empty:",
+        "datatables-bootstrap" : "empty:"
     },
+    generateSourceMaps : true,
+    preserveLicenseComments : false,
+    optimize : "uglify2",
     name :    "IHM/main",
     out :     "main-built.js"
 })

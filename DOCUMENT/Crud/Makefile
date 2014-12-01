@@ -1,2 +1,2 @@
-
-include $(utildir)/PubRule
+publish:
+	rsync -rupE . $(pubdir)/$(appname)/Crud
