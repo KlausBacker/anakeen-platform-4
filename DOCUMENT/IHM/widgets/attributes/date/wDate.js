@@ -168,6 +168,14 @@ define([
             }
 
             return _.extend(defaultOptions, kendoOptions);
+        },
+
+        _destroy : function _destroy() {
+            //Destroy autocomplete if activated
+            if (this.kendoWidget.data(this.kendoWidgetClass)) {
+                this.kendoWidget.data(this.kendoWidgetClass).destroy();
+            }
+            this._super();
         }
     });
 

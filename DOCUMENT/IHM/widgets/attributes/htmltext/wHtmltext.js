@@ -184,6 +184,13 @@ define([
 
         getType : function () {
             return "htmltext";
+        },
+
+        _destroy : function _destroy() {
+            if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
+                this.ckEditorInstance.destroy();
+            }
+            this._super();
         }
 
     });

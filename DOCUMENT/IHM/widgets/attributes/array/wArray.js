@@ -26,6 +26,10 @@ define([
         selectedLineIndex: function () {
             return this.getSelectedLineElement().data("line");
         },
+        /**
+         *
+         * @private
+         */
         _create: function () {
             this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
             this._initDom();
@@ -204,6 +208,12 @@ define([
         },
 
         _destroy: function () {
+            if (this.element.find('tbody').data("kendoDropTargetArea")) {
+                this.element.find('tbody').data("kendoDropTargetArea").destroy();
+            }
+            if (this.element.find('tbody').data("kendoDraggable")) {
+                this.element.find('tbody').data("kendoDraggable").destroy();
+            }
             this.element.empty();
             this._super();
         },
@@ -241,6 +251,7 @@ define([
             throw new Error("Unknown template  " + key + "/" + this.options.type);
 
         }
+
     });
 
     return $.fn.dcpArray;

@@ -114,10 +114,10 @@ define([
                     scope.uploadFile(files[0]);
                 }
             });
-            inputText.on("click", function () {
+            inputText.on("click" + this.eventNamespace, function () {
                 inputFile.trigger("click");
             });
-            inputFile.on("change", function (event) {
+            inputFile.on("change" + this.eventNamespace, function (event) {
                 if (this.files.length > 0) {
                     scope.uploadFile(this.files[0]);
                 }
