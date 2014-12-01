@@ -34,5 +34,5 @@ clean-test:
 	make -C Test clean
 
 clean: clean-test
-	/bin/rm -f *.*~ config.* Makefile configure $(appname)_init.php info.xml *.webinst
+	/bin/rm -f *.*~ config.* Makefile configure DOCUMENT/DOCUMENT_init.php Test/TEST_DOCUMENT/TEST_DOCUMENT_init.php info.xml *.webinst
 	/bin/rm -fr autom4te.cache
