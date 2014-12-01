@@ -14,6 +14,10 @@ define([
                 elements.push(currentAttribute.toData());
             });
             return elements;
+        },
+
+        destroy : function () {
+            this.invoke("trigger", "destroy");
         }
     });
 });

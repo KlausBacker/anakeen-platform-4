@@ -6,6 +6,10 @@ define([
     'use strict';
 
     return Backbone.Collection.extend({
-        model : ModelMenu
+        model : ModelMenu,
+
+        destroy : function () {
+            this.invoke("trigger", "destroy");
+        }
     });
 });
