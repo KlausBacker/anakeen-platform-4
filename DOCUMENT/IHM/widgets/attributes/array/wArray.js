@@ -47,28 +47,12 @@ define([
                 this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
                 if (this.options.mode === "write") {
-                    this.element.find('.dcpArray__tools button').kendoTooltip({
-                        position: "top",
-                        show: function (event) {
-                            // need to shift to bottom because callout is in target
-                            var contain = this.popup.element.parent();
-                            var ktop = parseFloat(contain.css("top"));
-                            if (ktop > 0) {
-                                contain.css("top", ktop - 6);
-                            }
-                        }
+                    this.element.find('.dcpArray__tools button').tooltip({
+                        placement: "top"
                     });
-                    this.element.kendoTooltip({
-                        filter: ".dcpArray__content__toolCell span",
-                        position: "top",
-                        show: function (event) {
-                            // need to shift to bottom because callout is in target
-                            var contain = this.popup.element.parent();
-                            var ktop = parseFloat(contain.css("top"));
-                            if (ktop > 0) {
-                                contain.css("top", ktop - 10);
-                            }
-                        }
+                    this.element.tooltip({
+                        selector: ".dcpArray__content__toolCell span",
+                        placement: "top"
                     });
                 }
                 this.addAllLines(this.options.nbLines);
@@ -95,7 +79,10 @@ define([
                             var dragLine = $(event.currentTarget).closest('tr');
                             dragLine.css("opacity", "");
 
-                            scope._trigger("lineMoved", {}, {fromLine: dragLine.data("fromLine"), toLine: dragLine.data("line")});
+                            scope._trigger("lineMoved", {}, {
+                                fromLine: dragLine.data("fromLine"),
+                                toLine: dragLine.data("line")
+                            });
                         }
                     }
                 });
@@ -247,7 +234,7 @@ define([
          * @returns string
          * @private
          */
-        _getTemplate : function (key) {
+        _getTemplate: function (key) {
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }

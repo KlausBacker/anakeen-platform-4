@@ -69,7 +69,6 @@ define([
         },
 
 
-
         /**
          * Init event when a hyperlink is associated to the attribute
          *
@@ -203,7 +202,7 @@ define([
                 inputValue.data("kendoMultiSelect").open();
             });
 
-            this.element.find('.dcpAttribute__content--docid--button[title]').kendoTooltip();
+            this.element.find('.dcpAttribute__content--docid--button[title]').tooltip();
         },
         /**
          * Return true if attribut has multiple option

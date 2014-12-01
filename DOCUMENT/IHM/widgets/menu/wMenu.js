@@ -9,27 +9,27 @@ define([
 
     $.widget("dcp.dcpMenu", {
 
-        destroy : function () {
+        destroy: function () {
             this.element.empty();
             this._super();
         },
 
-        _create : function () {
+        _create: function () {
             this._initStructure();
         },
 
-        _initStructure : function () {
+        _initStructure: function () {
             console.time("widget menu");
             var $content, $mainElement;
             var scopeWidget = this;
-            $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid : this.uuid}, this.options)));
+            $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid: this.uuid}, this.options)));
             $content = $mainElement.find(".menu__content");
             this._insertMenuContent(this.options.menus, $content);
             this.element.append($mainElement);
             $content.kendoMenu({
-                openOnClick :  true,
-                closeOnClick : false,
-                select :       function (event) {
+                openOnClick: true,
+                closeOnClick: false,
+                select: function (event) {
                     var menuElement = $(event.item), eventContent;
 
                     if (!menuElement.hasClass("menu__element--item")) {
@@ -42,8 +42,8 @@ define([
                                     menuElement.find(".listmenu__content"),
                                     scopeWidget, menuElement);
                                 menuElement.kendoMenu({
-                                    openOnClick :  true,
-                                    closeOnClick : false
+                                    openOnClick: true,
+                                    closeOnClick: false
                                 });
                             }).fail(function (data) {
                                 console.log(data);
@@ -68,15 +68,15 @@ define([
                             var confirmOptions = configMenu.confirmationOptions || {};
 
                             var dwConfirm = $('body').dcpConfirm({
-                                title :    Mustache.render(confirmOptions.title, window.dcp.documentData),
-                                width :    confirmOptions.windowWidth,
-                                height :   confirmOptions.windowHeight,
-                                messages : {
-                                    okMessage :     Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
-                                    cancelMessage : Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
-                                    textMessage :   confirmText
+                                title: Mustache.render(confirmOptions.title, window.dcp.documentData),
+                                width: confirmOptions.windowWidth,
+                                height: confirmOptions.windowHeight,
+                                messages: {
+                                    okMessage: Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
+                                    cancelMessage: Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
+                                    textMessage: confirmText
                                 },
-                                confirm :  function () {
+                                confirm: function () {
                                     thea.removeClass('menu--confirm');
                                     thea.trigger("click");
                                     thea.addClass('menu--confirm');
@@ -87,8 +87,8 @@ define([
                             if (href.substring(0, 7) === "#event/") {
                                 eventContent = href.substring(7).split(":");
                                 menuElement.trigger("menuSelected", {
-                                    eventId : eventContent.shift(),
-                                    options : eventContent
+                                    eventId: eventContent.shift(),
+                                    options: eventContent
                                 });
                             } else {
                                 var target = thea.attr("target") || '_self';
@@ -103,11 +103,11 @@ define([
                                     $('body').append(bdw);
 
                                     var dw = bdw.dcpWindow({
-                                        title :   Mustache.render(targetOptions.title, window.dcp.documentData),
-                                        width :   targetOptions.windowWidth,
-                                        height :  targetOptions.windowHeight,
-                                        content : href,
-                                        iframe :  true
+                                        title: Mustache.render(targetOptions.title, window.dcp.documentData),
+                                        width: targetOptions.windowWidth,
+                                        height: targetOptions.windowHeight,
+                                        content: href,
+                                        iframe: true
                                     });
 
                                     dw.data('dcpWindow').kendoWindow().center();
@@ -116,7 +116,7 @@ define([
                                     _.defer(function () {
                                         dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
                                             dw.data('dcpWindow').kendoWindow().setOptions({
-                                                title : $(this).contents().find("title").html()
+                                                title: $(this).contents().find("title").html()
                                             });
                                         });
                                     });
@@ -148,7 +148,7 @@ define([
             });
         },
 
-        _insertMenuContent : function (menus, $content, currentWidget, scopeMenu) {
+        _insertMenuContent: function (menus, $content, currentWidget, scopeMenu) {
             var subMenu;
             var hasBeforeContent = false;
             currentWidget = currentWidget || this;
@@ -183,7 +183,7 @@ define([
                     if (attrId === "class") {
                         currentMenu.cssClass = attrValue;
                     } else {
-                        currentMenu.htmlAttr.push({"attrId" : attrId, "attrValue" : attrValue});
+                        currentMenu.htmlAttr.push({"attrId": attrId, "attrValue": attrValue});
                     }
 
                 });
@@ -210,20 +210,11 @@ define([
                     $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type), currentMenu));
                 }
                 if (currentMenu.tooltipLabel) {
-                    $currentMenu.kendoTooltip(
+                    $currentMenu.tooltip(
                         {
-                            autoHide :    true,
-                            showOnClick : false,
-                            callout :     true,
-                            position :    "bottom",
-                            show :        function (event) {
-                                // need to shift to bottom because callout is in target
-                                var contain = this.popup.element.parent();
-                                var ktop = parseFloat(contain.css("top"));
-                                if (ktop > 0) {
-                                    contain.css("top", ktop + 6);
-                                }
-                            }
+                            trigger: "hover",
+                            placement: "bottom",
+
                         });
                 }
                 $currentMenu.data("menuConfiguration", currentMenu);
@@ -231,7 +222,7 @@ define([
             });
         },
 
-        _getTemplate : function (name) {
+        _getTemplate: function (name) {
             if (this.options.templates && this.options.templates.menu && this.options.templates.menu[name]) {
                 return this.options.templates.menu[name];
             }

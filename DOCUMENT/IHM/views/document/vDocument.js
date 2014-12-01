@@ -19,19 +19,19 @@ define([
 
     return Backbone.View.extend({
 
-        className : "dcpDocument container-fluid",
+        className: "dcpDocument container-fluid",
 
-        initialize : function initialize() {
+        initialize: function initialize() {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
         },
 
-        cleanAndRender : function cleanAndRender() {
+        cleanAndRender: function cleanAndRender() {
             this.model.trigger("cleanView");
             this.render();
         },
 
-        render : function render() {
+        render: function render() {
             console.time("render document");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
@@ -59,8 +59,8 @@ define([
             //add menu
             try {
                 var viewMenu = new ViewDocumentMenu({
-                    model : this.model,
-                    el :    this.$el.find(".dcpDocument__menu")[0]
+                    model: this.model,
+                    el: this.$el.find(".dcpDocument__menu")[0]
                 }).render();
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
@@ -69,8 +69,8 @@ define([
             }
             try {
                 new ViewDocumentHeader({
-                    model : this.model,
-                    el :    this.$el.find(".dcpDocument__header")[0]
+                    model: this.model,
+                    el: this.$el.find(".dcpDocument__header")[0]
                 }).render();
             } catch (e) {
                 console.error(e);
@@ -87,7 +87,7 @@ define([
                 }
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
-                        view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
+                        view = new ViewAttributeFrame({model: model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
                         console.error(e);
@@ -95,20 +95,18 @@ define([
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
-                        viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
-                            tabItems.css("width", Math.floor(100 / tabItems.length) + '%').kendoTooltip({
-                                position : "top",
-                                content :  function (e) {
-                                    var target = e.target; // the element for which the tooltip is shown
-                                    return $(target).text(); // set the element text as content of the tooltip
+                            tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
+                                placement: "top",
+                                title: function (e) {
+                                    return $(this).text(); // set the element text as content of the tooltip
                                 }
                             });
                         } else {
-                            tabItems.css("width", "80%");
                             tabItems.css("width", "80%");
                         }
 
@@ -121,12 +119,11 @@ define([
                 currentView.trigger("partRender");
             });
 
-             $(".dcpDocument__tabs").kendoTabStrip({
-                 show: function () {
-                     currentView.model.trigger("showTab");
-                 }
-             }).data("kendoTabStrip").select(0);
-
+            $(".dcpDocument__tabs").kendoTabStrip({
+                show: function () {
+                    currentView.model.trigger("showTab");
+                }
+            }).data("kendoTabStrip").select(0);
 
 
             $(document).on('drop dragover', function (e) {
@@ -139,45 +136,45 @@ define([
             return this;
         },
 
-        showHistory : function documentShowHistory(data) {
+        showHistory: function documentShowHistory(data) {
             var historyWidget = $('body').dcpDocumentHistory({
-                documentId : this.model.get("properties").get("initid"),
-                window :     {
-                    width :  "80%",
-                    height : "80%"
+                documentId: this.model.get("properties").get("initid"),
+                window: {
+                    width: "80%",
+                    height: "80%"
                 }
             }).data("dcpDocumentHistory");
 
             historyWidget.open();
         },
 
-        showProperties : function documentShowProperties(data) {
+        showProperties: function documentShowProperties(data) {
             var propertiesWidget = $('body').dcpDocumentProperties({
-                documentId : this.model.get("properties").get("initid"),
-                window :     {
-                    width :  "400px",
-                    height : "auto"
+                documentId: this.model.get("properties").get("initid"),
+                window: {
+                    width: "400px",
+                    height: "auto"
                 }
             }).data("dcpDocumentProperties");
 
             propertiesWidget.open();
         },
 
-        updateTitle : function () {
+        updateTitle: function () {
             document.title = this.model.get("properties").get("title");
         },
 
-        updateIcon : function () {
+        updateIcon: function () {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
-        deleteDocument : function documentDelete(data) {
+        deleteDocument: function documentDelete(data) {
 
             $.ajax({
-                type :        "DELETE",
-                dataType :    "json",
-                contentType : 'application/json',
-                url : "api/v1/documents/" + this.model.get("properties").get("initid")
+                type: "DELETE",
+                dataType: "json",
+                contentType: 'application/json',
+                url: "api/v1/documents/" + this.model.get("properties").get("initid")
             }).done(function (response) {
                 console.log("delete", response);
                 window.location.href = window.location.href;
@@ -187,18 +184,18 @@ define([
             });
         },
 
-        saveDocument : function saveDocument() {
+        saveDocument: function saveDocument() {
             this.displayLoading();
             this.model.save();
         },
 
-        displayLoading :   function () {
+        displayLoading: function () {
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderShow");
         },
 
-        closeDocument : function closeDocument(viewId) {
+        closeDocument: function closeDocument(viewId) {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -211,7 +208,7 @@ define([
             this.model.fetch();
         },
 
-        actionDocument : function (options) {
+        actionDocument: function (options) {
             options = options.options;
             if (options[0] === "save") {
                 return this.saveDocument();
@@ -236,7 +233,7 @@ define([
             }
         },
 
-        getTemplates : function getTemplates(key) {
+        getTemplates: function getTemplates(key) {
             var templates = {};
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");

@@ -6,14 +6,15 @@
 }
 
 .dcpAttribute__contentWrapper {
-  padding-top:(@padding-base-vertical - 2);
+  padding-top: (@padding-base-vertical - 2);
 }
 
 .dcpAttribute__contentWrapper .input-group .k-autocomplete input {
   height: (@attrInputHeight - 2);
 }
+
 .dcpAttribute__contentWrapper .k-widget > .k-state-default {
-  border-radius : 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 .dcpAttribute__contentWrapper .input-group input,
@@ -30,7 +31,7 @@
 
 .dcpAttribute__contentWrapper .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button, {
- /* background-color: transparent;*/
+  /* background-color: transparent;*/
   border: none;
   min-width: 2em;
   height: 100%;
@@ -44,7 +45,7 @@
 
 .dcpAttribute__content--flash input,
 .dcpAttribute__content--flash textarea,
-.dcpAttribute__content--flash .k-input ,
+.dcpAttribute__content--flash .k-input,
 iframe.dcpAttribute__content--flash {
   background-color: @brand-info;
 }
@@ -52,9 +53,13 @@ iframe.dcpAttribute__content--flash {
 .dcpAttribute__content--endflash input,
 .dcpAttribute__content--endflash textarea,
 .dcpAttribute__content--endflash .k-input,
-iframe.dcpAttribute__content--endflash  {
+iframe.dcpAttribute__content--endflash {
   background-color: inherit;
   transition: background-color 500ms linear;
+}
+
+.button-close-error {
+  padding-right: 0;
 }
 
 .dcpAttribute__contentWrapper .k-autocomplete .k-loading {
@@ -70,34 +75,6 @@ iframe.dcpAttribute__content--endflash  {
   display: inline-block;
 }
 
-.k-widget.k-tooltip.has-error {
-  border-color: @brand-danger;
-  background-color: @brand-danger;
-  color: #ffffff;
-}
-
-.has-error .k-callout-n {
-  border-bottom-color: @brand-danger;
-}
-
-.has-error .k-callout-s {
-  border-top-color: @brand-danger;
-}
-
-.k-widget.k-tooltip.dcpAttribute__editlabel {
-  border-color: @brand-info;
-  background-color: @brand-info;
-  color: #ffffff;
-}
-
-.dcpAttribute__editlabel .k-callout-n {
-  border-bottom-color: @brand-info;
-}
-
-.dcpAttribute__editlabel .k-callout-s {
-  border-top-color: @brand-info;
-}
-
 .dcpAttribute__content {
   box-sizing: border-box;
   height: @attrInputHeight;
@@ -110,13 +87,13 @@ iframe.dcpAttribute__content--endflash  {
 .k-multiselect.k-header.k-state-hover,
 .k-dropdown-wrap.k-state-hover {
 
-   border-color: @input-border-focus;
+  border-color: @input-border-focus;
 }
 
 .dcpAttribute__contentWrapper .input-group-addon button.dcpAttribute__content__button--extra,
 .dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {
-  padding-left:4px;
-  padding-right:4px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 /**

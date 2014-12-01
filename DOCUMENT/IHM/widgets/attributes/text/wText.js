@@ -82,7 +82,7 @@ define([
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
-            this.element.find('.dcpAttribute__content--autocomplete--button[title]').kendoTooltip();
+            this.element.find('.dcpAttribute__content--autocomplete--button[title]').tooltip();
 
         },
 
