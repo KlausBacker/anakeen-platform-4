@@ -11,7 +11,8 @@ require([
     'models/document',
     'views/document/vDocument',
     'widgets/window/wConfirm',
-    'widgets/window/wLoading'
+    'widgets/window/wLoading',
+    'bootstrap'
 ], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
     'use strict';
     console.timeEnd("js loading");

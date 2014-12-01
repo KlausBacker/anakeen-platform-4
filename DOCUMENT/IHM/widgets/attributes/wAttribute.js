@@ -17,7 +17,8 @@ define([
             index: -1,
             labels: {
                 deleteAttributeNames: "",
-                deleteLabel: ""
+                deleteLabel: "",
+                closeErrorMessage: "Close message"
             },
             template: null,
             deleteButton: false,
@@ -95,26 +96,28 @@ define([
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
                         scope.element.addClass("has-error");
-                        scope.element.kendoTooltip({
-                            position: "bottom",
-                            content: indexMessage.message,
-                            autoHide: false,
-                            show: function onShow(e) {
-                                var contain = this.popup.element.parent();
-                                var ktop = parseFloat(contain.css("top"));
-                                if (ktop > 0) {
-                                    contain.css("top", ktop + 6);
-                                }
-                                this.popup.element.addClass("has-error");
-                            }
+                        scope.element.tooltip({
+                            placement: "bottom",
+                            html: true,
+                            title: function () {
+                                var rawMessage = $('<div/>').text(indexMessage.message).html();
+                                return '<div>' + rawMessage + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i></div>';
+                            },
+                            trigger: "manual",
+                            template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+
                         });
+                        scope.element.data("hasErrorTooltip", true);
+                        scope.element.tooltip("show");
+
                     }
                 });
             } else {
                 this.element.removeClass("has-error");
-                kt = this.element.data("kendoTooltip");
-                if (kt) {
-                    kt.destroy();
+
+                if (this.element.data("hasErrorTooltip")) {
+                    this.element.tooltip("destroy");
+                    this.element.data("hasErrorTooltip", false);
                 }
 
             }
@@ -207,9 +210,9 @@ define([
          * @return this
          */
         hideInputTooltip: function wAttributeHideInputTooltip(ktTarget) {
-            var kTooltip = ktTarget.data("kendoTooltip");
-            if (kTooltip) {
-                kTooltip.hide();
+            var $ktTarger = $(ktTarget).closest(".input-group");
+            if ($ktTarger.data("hasTooltip")) {
+                $ktTarger.tooltip("hide");
             }
             return this;
         },
@@ -224,24 +227,21 @@ define([
             var scope = this;
 
             if (scope.options.renderOptions.inputHtmlTooltip) {
-                var kt = ktTarget.data("kendoTooltip");
+                var $ktTarger = $(ktTarget).closest(".input-group");
+                var kt = $ktTarger.data("hasTooltip");
 
                 if (!kt) {
-                    kt = ktTarget.kendoTooltip({
-                        autoHide: false,
-                        content: scope.options.renderOptions.inputHtmlTooltip,
-                        showOn: _.uniqueId(),
-                        show: function () {
-                            var contain = this.popup.element.parent();
-                            var ktop = parseFloat(contain.css("top"));
-                            if (ktop > 0) {
-                                contain.css("top", ktop + 6);
-                            }
-                            this.popup.element.addClass("dcpAttribute__editlabel");
-                        }
-                    }).data("kendoTooltip");
+                    $ktTarger.tooltip({
+                        trigger: "manual",
+                        title: scope.options.renderOptions.inputHtmlTooltip,
+                        placement: "bottom",
+                        template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+
+
+                    });
+                    $ktTarger.data("hasTooltip", true);
                 }
-                kt.show();
+                $ktTarger.tooltip("show");
             }
             return this;
         },
@@ -338,6 +338,7 @@ define([
             if (this.getMode() === "read") {
                 this._initLinkEvent();
             }
+            this._initErrorEvent();
             return this;
         },
 
@@ -405,6 +406,21 @@ define([
         },
 
         /**
+         * Init events for delete button on error tooltip
+         *
+         * @protected
+         */
+        _initErrorEvent: function wAttributeInitErrotEvent() {
+            var scope = this;
+            // tooltip is created in same parent
+            this.element.parent().on("click", ".button-close-error", function (event) {
+                if (scope.element.data("hasErrorTooltip")) {
+                    scope.element.tooltip("destroy");
+                    scope.element.data("hasErrorTooltip", false);
+                }
+            });
+        },
+        /**
          * Init events for delete button (only for write attributes)
          *
          * @protected
@@ -422,35 +438,25 @@ define([
                 titleDelete = $deleteButton.attr('title');
                 titleDelete += this.options.labels.deleteAttributeNames;
             }
-            $deleteButton.on("mousedown." + this.eventNamespace,function (event) {
+            $deleteButton.on("mousedown." + this.eventNamespace, function (event) {
 
-                // Hide tooltip because it mask the input focus
-                var kt = $(this).data("kendoTooltip");
-                if (kt) {
-                    kt.hide();
-                }
 
             }).attr('title', titleDelete);
 
             $deleteButton.on("click." + this.eventNamespace, function (event) {
-                currentWidget._trigger("delete", event, {index: currentWidget._getIndex(), id: currentWidget.options.id});
+                currentWidget._trigger("delete", event, {
+                    index: currentWidget._getIndex(),
+                    id: currentWidget.options.id
+                });
                 // main input is focuses after deletion
                 _.defer(function () {
                     currentWidget.element.find("input").focus();
                 });
             });
 
-            this.element.find(".dcpAttribute__content__buttons button").kendoTooltip({
-                position: "left",
-                autoHide: true,
-                callout: true,
-                show: function (event) {
-                    var contain = this.popup.element.parent();
-                    var kleft = parseFloat(contain.css("left"));
-                    if (kleft > 0) {
-                        contain.css("left", kleft - 6);
-                    }
-                }
+            this.element.find(".dcpAttribute__content__buttons button").tooltip({
+                placement: "left",
+                trigger: "hover"
             });
             return this;
         },
@@ -494,19 +500,10 @@ define([
                     }
                 });
 
-                this.element.find('.dcpAttribute__content__link[title]').kendoTooltip({
-                    position: "top",
-                    autoHide:true,
-                    show: function () {
-                        var contain = this.popup.element.parent();
-
-                            var ktop = parseFloat(contain.css("top"));
-                            if (ktop > 0) {
-                                contain.css("top", ktop - 6);
-                            }
-
-                        this.popup.element.addClass("dcpAttribute__editlabel");
-                    }
+                this.element.find('.dcpAttribute__content__link[title]').tooltip({
+                    placement: "top",
+                    template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+                    trigger: "hover"
                 });
 
             }

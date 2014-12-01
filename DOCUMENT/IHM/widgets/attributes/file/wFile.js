@@ -48,16 +48,10 @@ define([
                 visibleInput.attr("placeholder", this.options.labels.placeHolder);
                 this.element.find(".dcpAttribute__content__button--file").attr("title", this.options.labels.downloadLabel);
 
-                visibleInput.kendoTooltip({
-                    autoHide: true,
-                    position: "bottom",
-                    show: function () {
-                        var contain = this.popup.element.parent();
-                        var ktop = parseFloat(contain.css("top"));
-                        if (ktop > 0) {
-                            contain.css("top", ktop + 6);
-                        }
-                    }
+                visibleInput.tooltip({
+                    trigger: "hover",
+                    placement: "bottom"
+
                 });
 
             }
