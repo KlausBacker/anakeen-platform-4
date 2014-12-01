@@ -308,20 +308,19 @@ define([
             var currentModel = this;
             if (attributes.properties !== undefined) {
                 if (currentModel.get("properties") instanceof DocumentProperties) {
-                    currentModel.get("properties").destroy();
+                    currentModel.get("properties").trigger("destroy");
                 }
                 attributes.properties = new DocumentProperties(attributes.properties);
 
             }
             if (attributes.menus !== undefined) {
                 if (currentModel.get("menus") instanceof CollectionMenus) {
-                    currentModel.get("menus").invoke('destroy');
+                    currentModel.get("menus").destroy();
                 }
                 attributes.menus = new CollectionMenus(attributes.menus);
             }
             if (attributes.attributes !== undefined) {
                 if (currentModel.get("attributes") instanceof CollectionAttributes) {
-                    currentModel.get("attributes").invoke('destroy');
                     currentModel.get("attributes").destroy();
                 }
                 attributes.attributes = new CollectionAttributes(attributes.attributes, {
