@@ -63,6 +63,8 @@ define([
 
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
                 value.displayValue = this.formatNumber(value.value);
+            } else if (parseFloat(value.displayValue) === parseFloat(value.value)) {
+                value.displayValue = this.formatNumber(value.value);
             }
 
             $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
@@ -107,7 +109,7 @@ define([
                     decimals : 0,
                     downArrowText : scope.options.labels.decreaseLabel,
                     upArrowText :  scope.options.labels.increaseLabel,
-                    /*format :   scope.options.renderOptions.numberFormat,*/
+                    format :   scope.options.renderOptions.numberFormat,
                     max :      scope.options.renderOptions.max,
                     min :      scope.options.renderOptions.min,
                     change :   function () {

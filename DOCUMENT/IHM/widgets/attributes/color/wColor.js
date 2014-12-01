@@ -104,12 +104,6 @@ define([
             var scope = this,
                 kendoOptions = {},
                 defaultOptions = {
-                    decimals : 0,
-                    downArrowText : scope.options.labels.decreaseLabel,
-                    upArrowText :  scope.options.labels.increaseLabel,
-                    format :   scope.options.renderOptions.numberFormat,
-                    max :      scope.options.renderOptions.max,
-                    min :      scope.options.renderOptions.min,
                     change :   function () {
                         // Need to set by widget to honor decimals option
                         scope.setValue({value : this.value()});

@@ -15,6 +15,7 @@ class RenderOptions implements \JsonSerializable
     protected $arrayOptions = null;
     protected $docidOptions = null;
     protected $enumOptions = null;
+    protected $colorOptions = null;
     protected $accountOptions = null;
     protected $thesaurusOptions = null;
     protected $intOptions = null;
@@ -308,6 +309,19 @@ class RenderOptions implements \JsonSerializable
         }
         $this->accountOptions->setScope($attrid);
         return $this->accountOptions;
+    }
+
+    /**
+     * @param string $attrid
+     * @return ColorRenderOptions
+     */
+    public function color($attrid = '')
+    {
+        if ($this->colorOptions === null) {
+            $this->colorOptions = new ColorRenderOptions($this);
+        }
+        $this->colorOptions->setScope($attrid);
+        return $this->colorOptions;
     }
     /**
      * @param string $attrid
