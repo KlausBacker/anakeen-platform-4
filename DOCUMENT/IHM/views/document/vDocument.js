@@ -24,6 +24,8 @@ define([
         initialize: function initialize() {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
+            this.listenTo(this.model, 'invalid', this.showView);
+            this.listenTo(this.model, 'error', this.showView);
         },
 
         cleanAndRender: function cleanAndRender() {
@@ -195,6 +197,14 @@ define([
             this.trigger("loaderShow");
         },
 
+        showView : function () {
+            this.$el.hide();
+            this.trigger("loader", 0);
+            this.trigger("loaderHide");
+            this.model.clearErrorMessages();
+            this.$el.show();
+        },
+
         closeDocument: function closeDocument(viewId) {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
@@ -208,6 +218,12 @@ define([
             this.model.fetch();
         },
 
+        /**
+         * Propagate menu event
+         *
+         * @param options
+         * @returns {*}
+         */
         actionDocument: function (options) {
             options = options.options;
             if (options[0] === "save") {
@@ -241,6 +257,7 @@ define([
             if (templates[key]) {
                 return templates[key];
             }
+            // Get from a gobal element (for unittest)
             if (window.dcp && window.dcp.templates && window.dcp.templates[key]) {
                 return window.dcp.templates[key];
             }

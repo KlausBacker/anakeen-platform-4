@@ -17,25 +17,32 @@ require([
     'use strict';
     console.timeEnd("js loading");
     /*jshint nonew:false*/
-    var $document, $loading, document, documentView;
+    var $document, $loading, document, documentView, $notification;
 
     $document = $(".dcpDocument");
 
     $loading = $(".dcpLoading").dcpLoading();
 
-    $('body').dcpNotification(); // active notification
+    $notification = $('body').dcpNotification(); // active notification
+
+    // TODO : Move the code of main in the document widget controller
 
     document = new ModelDocument({
         "initid" : window.dcp.viewData.documentIdentifier,
         "viewId" : window.dcp.viewData.vid
     });
     documentView = new ViewDocument({model : document, el : $document[0]});
+
     documentView.on('loading', function (data) {
         $loading.dcpLoading('setPercent', data);
     });
     documentView.on('loaderShow', function () {
         console.time("hotRender");
         $loading.dcpLoading('show');
+    });
+
+    documentView.on('loaderHide', function () {
+        $loading.dcpLoading('hide');
     });
 
     documentView.on('partRender', function () {
@@ -55,5 +62,14 @@ require([
             throw new Error("Unable to get the data from documents");
         }
     });
+
+    document.on("invalid", function showInvalid(model, error) {
+        $notification.dcpNotification("showError", error);
+    });
+
+    document.on("showError", function showError(error) {
+        $notification.dcpNotification("showError", error);
+    });
+
     window.dcp.document = document;
 });

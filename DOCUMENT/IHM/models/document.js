@@ -48,6 +48,10 @@ define([
             return urlData;
         },
 
+        initialize : function () {
+            this.listenTo(this, "error", this.propagateSynchroError);
+        },
+
         toData : function () {
             var returnObject = {
                 document : {}
@@ -107,91 +111,119 @@ define([
             });
         },
 
-        hasAttributesChanged :            function () {
+        hasAttributesChanged :  function () {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
             });
         },
 
-        // add new attribute error
-        addErrorMessage :                 function (message) {
-            var attrModel;
-            var scope = this;
-            var $notification = $('body').dcpNotification();
-            switch (message.code) {
-                case "CRUD0211":// Syntax Error
-                    if (message.data && message.data.id) {
-                        attrModel = this.get('attributes').get(message.data.id);
-                        if (attrModel) {
-                            attrModel.setErrorMessage(message.data.err, message.data.index);
-                            $notification.dcpNotification("showError", {
-                                title :       message.contentText,
-                                htmlMessage : message.contentHtml,
-                                message : attrModel.attributes.label + ' : ' + message.data.err
-                            });
-                        } else {
-                            $notification.dcpNotification("showError", {
-                                title :       message.contentText,
-                                htmlMessage : message.contentHtml,
-                                message :     message.data.err
-                            });
-                        }
-                    }
-                    break;
-                case "CRUD0212": // Constraint Error
-                    if (message.data && message.data.constraint) {
-                        _.each(message.data.constraint, function (constraint, aid) {
-                            attrModel = scope.get('attributes').get(constraint.id);
+        /**
+         * Analyze return in case of sync uncomplete and trigger event error
+         *
+         * @param model
+         * @param xhr
+         * @param options
+         */
+        propagateSynchroError : function (model, xhr, options) {
+            var attrModel, currentModel = this, parsedReturn;
+            //Analyze XHR
+            var messages = [];
+            try {
+                var result = JSON.parse(xhr.responseText);
+                messages = result.messages;
+            } catch (e) {
+                //Unable to parse responseText (error is not in JSON)
+            }
+
+            parsedReturn = {
+                messages : messages,
+                responseText : "Unexpected error: " + xhr.status + " " + xhr.statusText
+            };
+
+            if (parsedReturn.messages.length === 0) {
+                //Status 0 indicate offline browser
+                if (xhr.status === 0) {
+                    parsedReturn.responseText = "Your navigator seems offline, try later";
+                }
+                currentModel.trigger("showError", {
+                    "title" : "Unable to synchronise " + currentModel.get("properties").get("title"),
+                    "message" :     parsedReturn.responseText
+                });
+            }
+            _.each(parsedReturn.messages, function (message) {
+                switch (message.code) {
+                    case "CRUD0211":// Syntax Error
+                        if (message.data && message.data.id) {
+                            attrModel = this.get('attributes').get(message.data.id);
                             if (attrModel) {
-                                attrModel.setErrorMessage(constraint.err, constraint.index);
-                                $notification.dcpNotification("showError", {
+                                attrModel.setErrorMessage(message.data.err, message.data.index);
+                                currentModel.trigger("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message : attrModel.attributes.label + ' : ' + constraint.err
+                                    message : attrModel.attributes.label + ' : ' + message.data.err
                                 });
                             } else {
-                                $notification.dcpNotification("showError", {
+                                currentModel.trigger("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message :     constraint.err
+                                    message :     message.data.err
                                 });
                             }
-                        });
-                    }
-                    if (message.data && message.data.preStore) {
-                        $notification.dcpNotification("showError", {
-                            title :       message.contentText,
-                            htmlMessage : message.contentHtml,
-                            message :     message.data.preStore
-                        });
-                    }
-                    break;
+                        }
+                        break;
+                    case "CRUD0212": // Constraint Error
+                        if (message.data && message.data.constraint) {
+                            _.each(message.data.constraint, function (constraint, aid) {
+                                attrModel = currentModel.get('attributes').get(constraint.id);
+                                if (attrModel) {
+                                    attrModel.setErrorMessage(constraint.err, constraint.index);
+                                   currentModel.trigger("showError", {
+                                        title :       message.contentText,
+                                        htmlMessage : message.contentHtml,
+                                        message : attrModel.attributes.label + ' : ' + constraint.err
+                                    });
+                                } else {
+                                   currentModel.trigger("showError", {
+                                        title :       message.contentText,
+                                        htmlMessage : message.contentHtml,
+                                        message :     constraint.err
+                                    });
+                                }
+                            });
+                        }
+                        if (message.data && message.data.preStore) {
+                           currentModel.trigger("showError", {
+                                title :       message.contentText,
+                                htmlMessage : message.contentHtml,
+                                message :     message.data.preStore
+                            });
+                        }
+                        break;
 
-                default:
-                    if (message.contentText) {
-                        $notification.dcpNotification("showError", {
-                            title :       message.contentText,
-                            htmlMessage : message.contentHtml
-
-                        });
-                    } else {
-                        console.error("Error", message);
-                    }
-            }
+                    default:
+                        if (message.type === "error" && message.contentText) {
+                           currentModel.trigger("showError", {
+                                title :       message.contentText,
+                                htmlMessage : message.contentHtml
+                            });
+                        } else {
+                            console.error("Error", message);
+                        }
+                }
+            });
         },
+
         /**
-         * Verify
-         * @returns {boolean}
+         * Validate the content of the model before synchro
          */
-        verifyAndNotifyNeededAttributes : function () {
-            var $notification = $('body').dcpNotification(),
-                success = true,
-                scope = this,
+        validate : function () {
+            var success = true,
+                currentDocument = this,
                 attrLabel = [];
             this.get("attributes").each(function (currentAttribute) {
                 if (currentAttribute.get("needed") === true) {
                     var currentValue = currentAttribute.get("value"),
-                        parentAttribute = scope.get("attributes").get(currentAttribute.get("parent")),
+                        parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent")),
                         oneSuccess = true;
                     if (currentAttribute.get("multiple")) {
                         if (!currentValue || currentValue.length === 0) {
@@ -211,15 +243,17 @@ define([
                 }
             });
             if (!success) {
-                $notification.dcpNotification("showError", {
+                return {
                     title :   "Needed Attribute",
                     message : attrLabel.join(', ')
-                });
-                success = false;
+                };
             }
-            return success;
+            return undefined;
         },
 
+        /**
+         * Propagate to attributes a clear message for the error displayed
+         */
         clearErrorMessages : function () {
             var attrModels = this.get('attributes');
             _.each(attrModels.models, function (attrModel) {
@@ -228,6 +262,11 @@ define([
 
         },
 
+        /**
+         * Parse the return of the REST API
+         * @param response
+         * @returns {{properties: (*|properties|exports.defaults.properties|exports.parse.properties|.createObjectExpression.properties|AST_Object.$propdoc.properties), menus: (app.views.shared.menu|*), locale: *, renderMode: string, attributes: Array, templates: *, renderOptions: *}}
+         */
         parse : function parse(response) {
             var attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes;
             if (response.success === false) {
@@ -267,13 +306,24 @@ define([
 
         "set" : function setValues(attributes, options) {
             var currentModel = this;
-            if (attributes.properties !== undefined && !(attributes.properties instanceof DocumentProperties)) {
+            if (attributes.properties !== undefined) {
+                if (currentModel.get("properties") instanceof DocumentProperties) {
+                    currentModel.get("properties").destroy();
+                }
                 attributes.properties = new DocumentProperties(attributes.properties);
+
             }
-            if (attributes.menus !== undefined && !(attributes.menu instanceof CollectionMenus)) {
+            if (attributes.menus !== undefined) {
+                if (currentModel.get("menus") instanceof CollectionMenus) {
+                    currentModel.get("menus").invoke('destroy');
+                }
                 attributes.menus = new CollectionMenus(attributes.menus);
             }
-            if (attributes.attributes !== undefined && !(attributes.attributes instanceof CollectionAttributes)) {
+            if (attributes.attributes !== undefined) {
+                if (currentModel.get("attributes") instanceof CollectionAttributes) {
+                    currentModel.get("attributes").invoke('destroy');
+                    currentModel.get("attributes").destroy();
+                }
                 attributes.attributes = new CollectionAttributes(attributes.attributes, {
                     documentModel : currentModel,
                     renderOptions : attributes.renderOptions,
