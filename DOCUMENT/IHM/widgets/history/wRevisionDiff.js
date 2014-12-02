@@ -10,47 +10,46 @@ define([
     'use strict';
 
     $.widget("dcp.dcpRevisionDiff", {
-        options: {
-            documentId: 0,
-            firstRevision: 0,
-            secondRevision: 0,
-            window: {
-                modal: true,
-                animation: {
-                    open: {
-                        effects: "fade:in",
-                        duration: 1000
-                    }, close: {
-                        effects: "fade:out",
-                        duration: 1000
+        options :        {
+            documentId :     0,
+            firstRevision :  0,
+            secondRevision : 0,
+            window :         {
+                modal :     true,
+                animation : {
+                    open :     {
+                        effects :  "fade:in",
+                        duration : 1000
+                    }, close : {
+                        effects :  "fade:out",
+                        duration : 1000
                     }
                 },
-                actions: [
+                actions :   [
                     "Maximize",
                     "Close"
                 ],
-                visible: false,
-                height: "300px",
-                width: "500px",
-                title: "Document difference"
+                visible :   false,
+                height :    "300px",
+                width :     "500px",
+                title :     "Document difference"
             },
-            labels: {
-                "first": "First document",
-                "second": "Second document",
-                "attributeId": "Attribute id",
-                "attributeLabel": "Attribute label",
-                "documentHeader": '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>',
-                "filterMessages": "Filter data",
-                "showOnlyDiff": "Show only differences",
-                "showAll": "Show all"
+            labels :         {
+                "first" :          "First document",
+                "second" :         "Second document",
+                "attributeId" :    "Attribute id",
+                "attributeLabel" : "Attribute label",
+                "documentHeader" : '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>',
+                "filterMessages" : "Filter data",
+                "showOnlyDiff" :   "Show only differences",
+                "showAll" :        "Show all"
             }
         },
-        firstDocument: null,
-        secondDocument: null,
-        _create: function () {
+        firstDocument :  null,
+        secondDocument : null,
+        _create :        function () {
             var scope = this;
             this.currentWidget = $('<div class="revision-diff"/>').html(this.htmlCaneva());
-
 
             this.element.append(this.currentWidget);
             this._initDatatable();
@@ -60,7 +59,7 @@ define([
             };
             this.currentWidget.kendoWindow(this.options.window);
 
-            this.currentWidget.on("click", ".revision-diff-button-showonlydiff", function () {
+            this.currentWidget.on("click." + this.eventNamespace, ".revision-diff-button-showonlydiff", function () {
                 if ($(this).data("showOnlyDiff")) {
                     $(this).data("showOnlyDiff", false);
                     $(this).text(scope.options.labels.showOnlyDiff).removeClass("btn-primary");
@@ -74,16 +73,16 @@ define([
             });
 
         },
-        open: function open() {
+        open :           function open() {
             this.currentWidget.data("kendoWindow").open();
             this.currentWidget.data("kendoWindow").center();
         },
-        destroy: function wRevisionDiffDestroy() {
+        destroy :        function wRevisionDiffDestroy() {
             this.currentWidget.data("kendoWindow").destroy();
             this._super();
         },
 
-        htmlCaneva: function () {
+        htmlCaneva :            function () {
             return '<table class="revision-diff-main"><thead>' +
             '<tr class="revision-diff-header">' +
             '<th class="revision-diff-header--attribute-id"/>' +
@@ -93,40 +92,40 @@ define([
             '</tr>' +
             '</thead></table>';
         },
-        _initDatatable: function () {
+        _initDatatable :        function () {
 
             var revisionDiffWidget = this;
-            $('.revision-diff-main').dataTable({
-                "autoWidth": false,
-                "ordering": false,
-                "paging": false,
+            this.element.find('.revision-diff-main').dataTable({
+                "autoWidth" :      false,
+                "ordering" :       false,
+                "paging" :         false,
                 // "scrollY": "200px",
-                "scrollCollapse": false,
-                "info": false,
-                "language": {
-                    "search": " "
+                "scrollCollapse" : false,
+                "info" :           false,
+                "language" :       {
+                    "search" : " "
                 },
-                "columns": [
+                "columns" :        [
                     {
-                        data: "attributeId",
-                        name: "attributeId",
-                        title: revisionDiffWidget.options.labels.attributeId,
-                        className: "revision-diff-attributeid",
-                        visible: false
+                        data :      "attributeId",
+                        name :      "attributeId",
+                        title :     revisionDiffWidget.options.labels.attributeId,
+                        className : "revision-diff-attributeid",
+                        visible :   false
                     },
                     {
-                        data: "attributeLabel",
-                        name: "attributeLabel",
-                        title: revisionDiffWidget.options.labels.attributeLabel,
-                        className: "revision-diff-attributelabel"
+                        data :      "attributeLabel",
+                        name :      "attributeLabel",
+                        title :     revisionDiffWidget.options.labels.attributeLabel,
+                        className : "revision-diff-attributelabel"
 
                     },
                     {
-                        data: "first",
-                        name: "first",
-                        title: revisionDiffWidget.options.labels.first,
-                        className: "revision-diff-first",
-                        render: function (data) {
+                        data :      "first",
+                        name :      "first",
+                        title :     revisionDiffWidget.options.labels.first,
+                        className : "revision-diff-first",
+                        render :    function (data) {
                             if (_.isArray(data)) {
                                 return _.pluck(data, 'displayValue').join(', ');
                             } else {
@@ -135,11 +134,11 @@ define([
                         }
                     },
                     {
-                        data: "second",
-                        name: "second",
-                        title: revisionDiffWidget.options.labels.second,
-                        className: "revision-diff-second",
-                        render: function (data) {
+                        data :      "second",
+                        name :      "second",
+                        title :     revisionDiffWidget.options.labels.second,
+                        className : "revision-diff-second",
+                        render :    function (data) {
                             if (_.isArray(data)) {
                                 return _.pluck(data, 'displayValue').join(', ');
                             } else {
@@ -149,11 +148,10 @@ define([
                     }
                 ],
 
-                "drawCallback": function () {
-
+                "drawCallback" : function () {
 
                 },
-                "initComplete": function () {
+                "initComplete" : function () {
                     var api = this.api();
                     // var data = api.rows({page: 'current'}).data();
                     // Output the data for the visible rows to the browser's console
@@ -164,10 +162,9 @@ define([
                     var firstHeadCell = revisionDiffWidget.currentWidget.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
                     firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
 
-
                 },
 
-                "ajax": function (data, callback) {
+                "ajax" : function (data, callback) {
                     var myData = [];
 
                     $.getJSON("api/v1/documents/" + revisionDiffWidget.options.documentId +
@@ -183,16 +180,16 @@ define([
                                     _.each(data1.data.revision.attributes, function (firstValue, index) {
                                         var secondValue = data2.data.revision.attributes[index];
                                         myData.push({
-                                            attributeId: index,
-                                            attributeLabel: revisionDiffWidget._findAttributeLabel(data1.data.family.structure, index),
-                                            first: firstValue,
-                                            second: secondValue,
-                                            "DT_RowClass": (revisionDiffWidget.isEqualAttributeValue(firstValue, secondValue)) ? "revision-diff-equal" : "revision-diff-not-equal"
+                                            attributeId :    index,
+                                            attributeLabel : revisionDiffWidget._findAttributeLabel(data1.data.family.structure, index),
+                                            first :          firstValue,
+                                            second :         secondValue,
+                                            "DT_RowClass" :  (revisionDiffWidget.isEqualAttributeValue(firstValue, secondValue)) ? "revision-diff-equal" : "revision-diff-not-equal"
                                         });
 
                                     });
                                     callback(
-                                        {data: myData}
+                                        {data : myData}
                                     );
                                 }).fail(function (xhr) {
                                     var result = JSON.parse(xhr.responseText);
@@ -204,11 +201,10 @@ define([
                         });
                 }
 
-
             }).addClass('table table-condensed table-bordered table-hover');
 
         },
-        isEqualAttributeValue: function (v1, v2) {
+        isEqualAttributeValue : function (v1, v2) {
             if (_.isEqual(v1, v2)) {
                 return true;
             }
@@ -221,7 +217,7 @@ define([
             return false;
         },
 
-        _findAttributeLabel: function wRevisionDiffFindAttributeLabel(structure, aid) {
+        _findAttributeLabel : function wRevisionDiffFindAttributeLabel(structure, aid) {
             var scope = this;
             var label = null;
             _.some(structure, function (attributInfo, attributId) {
@@ -243,9 +239,20 @@ define([
             return label;
         },
 
-        _getDocHeader: function wRevisionDiffGetDocHeader(documentStructure) {
+        _getDocHeader : function wRevisionDiffGetDocHeader(documentStructure) {
             var documentHeader = this.options.labels.documentHeader;
             return Mustache.render(documentHeader, documentStructure.properties);
+        },
+
+        _destroy : function _destroy() {
+            var $history = this.element.find('.revision-diff-main');
+            if (this.kendoWidget.data("kendoWindow")) {
+                this.kendoWidget.data("kendoWindow").destroy();
+            }
+            if ($history.DataTable) {
+                $history.DataTable().destroy();
+            }
+            this._super();
         }
     });
 });
