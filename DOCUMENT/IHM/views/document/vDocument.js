@@ -29,7 +29,6 @@ define([
         },
 
         cleanAndRender: function cleanAndRender() {
-            this.model.trigger("cleanView");
             this.render();
         },
 

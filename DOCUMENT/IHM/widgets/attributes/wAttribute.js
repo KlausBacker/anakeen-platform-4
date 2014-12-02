@@ -293,7 +293,7 @@ define([
          *
          * @private
          */
-        _destroy: function () {
+        _destroy: function _destroy() {
             this.element.removeClass("dcpAttribute__contentWrapper");
             this.element.removeAttr("data-type");
             this.element.removeAttr("data-id");

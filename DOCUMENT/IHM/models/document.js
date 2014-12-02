@@ -50,6 +50,7 @@ define([
 
         initialize : function initialize() {
             this.listenTo(this, "error", this.propagateSynchroError);
+            this.listenTo(this, "destroy", this.destroySubcollection);
         },
 
         toData : function toData() {
@@ -333,6 +334,18 @@ define([
                 });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
+        },
+
+        destroySubcollection : function destroySubcollection() {
+            if (this.get("menus") instanceof CollectionMenus) {
+                this.get("menus").destroy();
+            }
+            if (this.get("properties") instanceof DocumentProperties) {
+                this.get("properties").trigger("destroy");
+            }
+            if (this.get("attributes") instanceof CollectionAttributes) {
+                this.get("attributes").destroy();
+            }
         },
 
         toJSON : function toJSON() {

@@ -49,10 +49,16 @@ define([
         },
 
         remove : function () {
-            if (this.$el.dcpMenu) {
+            if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
                 this.$el.dcpMenu("destroy");
             }
             return Backbone.View.prototype.remove.call(this);
+        },
+
+        _findWidgetName : function ($element) {
+            return _.find(_.keys($element.data()), function (currentKey) {
+                return currentKey.indexOf("dcpDcp") !== -1;
+            });
         }
 
     });

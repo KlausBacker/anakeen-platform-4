@@ -1,49 +1,45 @@
 define([
+    "jquery",
     'underscore',
     'mustache',
     "kendo/kendo.menu",
     "kendo/kendo.window",
     'widgets/widget'
-], function (_, Mustache) {
+], function ($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpMenu", {
 
-        destroy: function () {
-            this.element.empty();
-            this._super();
-        },
-
-        _create: function () {
+        _create : function _create() {
+            this._tooltips= [];
             this._initStructure();
         },
 
-        _initStructure: function () {
-            console.time("widget menu");
-            var $content, $mainElement;
-            var scopeWidget = this;
-            $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid: this.uuid}, this.options)));
+        _initStructure : function _initStructure() {
+            var $content, $mainElement, scopeWidget = this;
+            $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid : this.uuid}, this.options)));
             $content = $mainElement.find(".menu__content");
             this._insertMenuContent(this.options.menus, $content);
             this.element.append($mainElement);
             $content.kendoMenu({
-                openOnClick: true,
-                closeOnClick: false,
-                select: function (event) {
-                    var menuElement = $(event.item), eventContent;
+                openOnClick :  true,
+                closeOnClick : false,
+                select :       function (event) {
+                    var menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
+                        confirmDcpWindow, target, targetOptions, dcpWindow, bodyDiv;
 
                     if (!menuElement.hasClass("menu__element--item")) {
                         var menuUrl = menuElement.data("menu-url");
                         if (menuUrl) {
-                            $.getJSON(menuUrl, function (data) {
+                            $.get(menuUrl, function (data) {
                                 menuElement.find(".listmenu__content").html('');
                                 scopeWidget._insertMenuContent(
                                     data.content,
                                     menuElement.find(".listmenu__content"),
                                     scopeWidget, menuElement);
                                 menuElement.kendoMenu({
-                                    openOnClick: true,
-                                    closeOnClick: false
+                                    openOnClick :  true,
+                                    closeOnClick : false
                                 });
                             }).fail(function (data) {
                                 console.log(data);
@@ -56,71 +52,69 @@ define([
                     if (!menuElement.hasClass("menu__element--item")) {
                         return;
                     }
-                    var thea = $(event.item).find('a');
-                    var href = thea.data('url');
-                    var configMenu;
+                    $elementA = $(event.item).find('a');
+                    href = $elementA.data('url');
                     //noinspection JSHint
                     if (href != '') {
-                        if (thea.hasClass("menu--confirm")) {
-                            var confirmText = thea.data('confirm-message');
+                        if ($elementA.hasClass("menu--confirm")) {
+                            confirmText = $elementA.data('confirm-message');
 
                             configMenu = menuElement.data("menuConfiguration");
-                            var confirmOptions = configMenu.confirmationOptions || {};
+                            confirmOptions = configMenu.confirmationOptions || {};
 
-                            var dwConfirm = $('body').dcpConfirm({
-                                title: Mustache.render(confirmOptions.title, window.dcp.documentData),
-                                width: confirmOptions.windowWidth,
-                                height: confirmOptions.windowHeight,
-                                messages: {
-                                    okMessage: Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
-                                    cancelMessage: Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
-                                    textMessage: confirmText
+                            confirmDcpWindow = $('body').dcpConfirm({
+                                title :    Mustache.render(confirmOptions.title, window.dcp.documentData),
+                                width :    confirmOptions.windowWidth,
+                                height :   confirmOptions.windowHeight,
+                                messages : {
+                                    okMessage :     Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
+                                    cancelMessage : Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
+                                    textMessage :   confirmText
                                 },
-                                confirm: function () {
-                                    thea.removeClass('menu--confirm');
-                                    thea.trigger("click");
-                                    thea.addClass('menu--confirm');
+                                confirm :  function confirm() {
+                                    $elementA.removeClass('menu--confirm');
+                                    $elementA.trigger("click");
+                                    $elementA.addClass('menu--confirm');
                                 }
                             });
-                            dwConfirm.data('dcpWindow').open();
+                            confirmDcpWindow.data('dcpWindow').open();
                         } else {
                             if (href.substring(0, 7) === "#event/") {
                                 eventContent = href.substring(7).split(":");
                                 menuElement.trigger("menuSelected", {
-                                    eventId: eventContent.shift(),
-                                    options: eventContent
+                                    eventId : eventContent.shift(),
+                                    options : eventContent
                                 });
                             } else {
-                                var target = thea.attr("target") || '_self';
+                                target = $elementA.attr("target") || '_self';
 
                                 if (target === "_self") {
                                     window.location.href = href;
                                 } else if (target === "_dialog") {
                                     configMenu = menuElement.data("menuConfiguration");
-                                    var targetOptions = configMenu.targetOptions || {};
+                                    targetOptions = configMenu.targetOptions || {};
 
-                                    var bdw = $('<div/>');
-                                    $('body').append(bdw);
+                                    bodyDiv = $('<div/>');
+                                    $('body').append(bodyDiv);
 
-                                    var dw = bdw.dcpWindow({
-                                        title: Mustache.render(targetOptions.title, window.dcp.documentData),
-                                        width: targetOptions.windowWidth,
-                                        height: targetOptions.windowHeight,
-                                        content: href,
-                                        iframe: true
+                                    dcpWindow = bodyDiv.dcpWindow({
+                                        title :   Mustache.render(targetOptions.title, window.dcp.documentData),
+                                        width :   targetOptions.windowWidth,
+                                        height :  targetOptions.windowHeight,
+                                        content : href,
+                                        iframe :  true
                                     });
 
-                                    dw.data('dcpWindow').kendoWindow().center();
-                                    dw.data('dcpWindow').open();
+                                    dcpWindow.data('dcpWindow').kendoWindow().center();
+                                    dcpWindow.data('dcpWindow').open();
 
                                     _.defer(function () {
-                                        dw.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
-                                            dw.data('dcpWindow').kendoWindow().setOptions({
-                                                title: $(this).contents().find("title").html()
+                                        dcpWindow.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
+                                            dcpWindow.data('dcpWindow').kendoWindow().setOptions({
+                                                title : $(this).contents().find("title").html()
                                             });
                                         });
                                     });
-
                                 } else {
                                     window.open(href, target);
                                 }
@@ -148,7 +142,7 @@ define([
             });
         },
 
-        _insertMenuContent: function (menus, $content, currentWidget, scopeMenu) {
+        _insertMenuContent : function (menus, $content, currentWidget, scopeMenu) {
             var subMenu;
             var hasBeforeContent = false;
             currentWidget = currentWidget || this;
@@ -162,7 +156,6 @@ define([
                 });
                 if (hasBeforeContent) {
                     _.each(menus, function (currentMenu) {
-
                         if (!currentMenu.iconUrl && !currentMenu.beforeContent) {
                             if (currentMenu.type !== "separatorMenu") {
                                 currentMenu.beforeContent = ' ';
@@ -173,7 +166,6 @@ define([
             }
 
             _.each(menus, function (currentMenu) {
-
                 var $currentMenu;
                 if (currentMenu.visibility === "hidden") {
                     return;
@@ -183,9 +175,8 @@ define([
                     if (attrId === "class") {
                         currentMenu.cssClass = attrValue;
                     } else {
-                        currentMenu.htmlAttr.push({"attrId": attrId, "attrValue": attrValue});
+                        currentMenu.htmlAttr.push({"attrId" : attrId, "attrValue" : attrValue});
                     }
-
                 });
 
                 currentMenu.disabled = (currentMenu.visibility === 'disabled');
@@ -210,19 +201,19 @@ define([
                     $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type), currentMenu));
                 }
                 if (currentMenu.tooltipLabel) {
-                    $currentMenu.tooltip(
+                    currentWidget._tooltips.push($currentMenu.tooltip(
                         {
-                            trigger: "hover",
-                            placement: "bottom",
+                            trigger :   "hover",
+                            placement : "bottom"
 
-                        });
+                        }));
                 }
                 $currentMenu.data("menuConfiguration", currentMenu);
                 $content.append($currentMenu);
             });
         },
 
-        _getTemplate: function (name) {
+        _getTemplate : function (name) {
             if (this.options.templates && this.options.templates.menu && this.options.templates.menu[name]) {
                 return this.options.templates.menu[name];
             }
@@ -230,6 +221,18 @@ define([
                 return window.dcp.templates.menu[name];
             }
             throw new Error("Menu unknown template " + name);
+        },
+
+        _destroy : function _destroy() {
+            var kendoWidget = this.element.find(".menu__content").data("kendoMenu");
+            if (kendoWidget) {
+                kendoWidget.destroy();
+            }
+            _.each(this._tooltips, function(currentTooltip) {
+                currentTooltip.tooltip("destroy");
+            });
+            this.element.empty();
+            this._super();
         }
 
     });
