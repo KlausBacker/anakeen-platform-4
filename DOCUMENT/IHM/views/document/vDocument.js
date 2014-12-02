@@ -19,27 +19,32 @@ define([
 
     return Backbone.View.extend({
 
-        className: "dcpDocument container-fluid",
+        className : "dcpDocument container-fluid",
 
-        initialize: function initialize() {
+        initialize : function initialize() {
             this.listenTo(this.model, 'destroy', this.remove);
+            this.listenTo(this.model, 'request', this.displayLoading);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
         },
 
-        cleanAndRender: function cleanAndRender() {
+        cleanAndRender : function cleanAndRender() {
             this.trigger("cleanNotification");
             this.render();
         },
 
-        render: function render() {
+        render : function render() {
             console.time("render document");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
-
             this.template = this.getTemplates("body");
             this.partials = this.getTemplates("sections");
+
+            this.$el.empty();
+
+            this.renderCss();
+            this.renderJS();
 
             this.updateTitle();
             this.updateIcon();
@@ -52,7 +57,7 @@ define([
 
             //add document base
             try {
-                this.$el.empty().append($(Mustache.render(this.template, this.model.toData(), this.partials)));
+                this.$el.append($(Mustache.render(this.template, this.model.toData(), this.partials)));
             } catch (e) {
                 console.log(e);
             }
@@ -61,8 +66,8 @@ define([
             //add menu
             try {
                 var viewMenu = new ViewDocumentMenu({
-                    model: this.model,
-                    el: this.$el.find(".dcpDocument__menu")[0]
+                    model : this.model,
+                    el :    this.$el.find(".dcpDocument__menu")[0]
                 }).render();
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
@@ -71,8 +76,8 @@ define([
             }
             try {
                 new ViewDocumentHeader({
-                    model: this.model,
-                    el: this.$el.find(".dcpDocument__header")[0]
+                    model : this.model,
+                    el :    this.$el.find(".dcpDocument__header")[0]
                 }).render();
             } catch (e) {
                 console.error(e);
@@ -89,7 +94,7 @@ define([
                 }
                 if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
                     try {
-                        view = new ViewAttributeFrame({model: model.get("attributes").get(currentAttr.id)});
+                        view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
                         console.error(e);
@@ -97,14 +102,14 @@ define([
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
-                        viewTabLabel = new ViewAttributeTabLabel({model: model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model: model.get("attributes").get(currentAttr.id)});
+                        viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
                             tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
-                                placement: "top",
-                                title: function (e) {
+                                placement : "top",
+                                title :     function (e) {
                                     return $(this).text(); // set the element text as content of the tooltip
                                 }
                             });
@@ -122,7 +127,7 @@ define([
             });
 
             this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-                show: function () {
+                show : function () {
                     currentView.model.trigger("showTab");
                 }
             });
@@ -141,45 +146,65 @@ define([
             return this;
         },
 
-        showHistory: function documentShowHistory(data) {
+        renderCss : function renderCss() {
+            // add custom css style
+            var currentView = this;
+            _.each(this.model.get("customCSS"), function (cssItem) {
+                var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
+                if ($existsLink.length === 0) {
+                    currentView.$el.append('<link rel="stylesheet" type="text/css" href="' + cssItem.path + '" data-id="' + cssItem.key + '" >');
+                }
+            });
+        },
+
+        renderJS : function renderJS() {
+            _.each(this.model.get("customJS"), function (jsItem) {
+                var $existsLink = $('script[data-id=' + jsItem.key + ']');
+                if ($existsLink.length === 0) {
+                    $("body script:last").after('<script type="text/javascript" src="' + jsItem.path + '" data-id="' + jsItem.key + '" ></script>');
+                }
+            });
+        },
+
+        showHistory : function documentShowHistory(data) {
             var historyWidget = $('body').dcpDocumentHistory({
-                documentId: this.model.get("properties").get("initid"),
-                window: {
-                    width: "80%",
-                    height: "80%"
+                documentId : this.model.get("properties").get("initid"),
+                window :     {
+                    width :  "80%",
+                    height : "80%"
                 }
             }).data("dcpDocumentHistory");
 
             historyWidget.open();
         },
 
-        showProperties: function documentShowProperties(data) {
+        showProperties : function documentShowProperties(data) {
             var propertiesWidget = $('body').dcpDocumentProperties({
-                documentId: this.model.get("properties").get("initid"),
-                window: {
-                    width: "400px",
-                    height: "auto"
+                documentId : this.model.get("properties").get("initid"),
+                window :     {
+                    width :  "400px",
+                    height : "auto"
                 }
             }).data("dcpDocumentProperties");
 
             propertiesWidget.open();
         },
 
-        updateTitle: function () {
+        updateTitle : function () {
             document.title = this.model.get("properties").get("title");
         },
 
-        updateIcon: function () {
+        updateIcon : function () {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
-        deleteDocument: function documentDelete(data) {
+        deleteDocument : function documentDelete(data) {
 
             $.ajax({
-                type: "DELETE",
-                dataType: "json",
-                contentType: 'application/json',
-                url: "api/v1/documents/" + this.model.get("properties").get("initid")
+                type :        "DELETE",
+                dataType :    "json",
+                contentType : 'application/json',
+                url : "api/v1/documents/" + this.model.get("properties").get("initid")
             }).done(function (response) {
                 console.log("delete", response);
                 window.location.href = window.location.href;
@@ -189,14 +214,13 @@ define([
             });
         },
 
-        saveDocument: function saveDocument() {
-            this.displayLoading();
-            this.trigger("cleanNotification");
+        saveDocument : function saveDocument() {
             this.model.save();
         },
 
-        displayLoading: function () {
+        displayLoading : function () {
             this.$el.hide();
+            this.trigger("cleanNotification");
             this.trigger("loader", 0);
             this.trigger("loaderShow");
         },
@@ -209,7 +233,7 @@ define([
             this.$el.show();
         },
 
-        closeDocument: function closeDocument(viewId) {
+        closeDocument : function closeDocument(viewId) {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -218,8 +242,6 @@ define([
                 }
             }
             this.model.set("viewId", viewId);
-            this.displayLoading();
-            this.trigger("cleanNotification");
             this.model.fetch();
         },
 
@@ -229,7 +251,7 @@ define([
          * @param options
          * @returns {*}
          */
-        actionDocument: function (options) {
+        actionDocument : function (options) {
             options = options.options;
             if (options[0] === "save") {
                 return this.saveDocument();
@@ -254,7 +276,7 @@ define([
             }
         },
 
-        getTemplates: function getTemplates(key) {
+        getTemplates : function getTemplates(key) {
             var templates = {};
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");

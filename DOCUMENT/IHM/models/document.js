@@ -260,7 +260,6 @@ define([
             _.each(attrModels.models, function (attrModel) {
                 attrModel.setErrorMessage(null);
             });
-
         },
 
         /**
@@ -301,7 +300,9 @@ define([
                 renderMode : renderMode || "view",
                 attributes :    attributes,
                 templates :     response.data.view.templates,
-                renderOptions : response.data.view.renderOptions
+                renderOptions : response.data.view.renderOptions,
+                customCSS : response.data.view.style.css,
+                customJS : response.data.view.script.js
             };
         },
 
