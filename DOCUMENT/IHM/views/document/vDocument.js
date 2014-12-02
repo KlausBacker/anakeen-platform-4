@@ -29,6 +29,7 @@ define([
         },
 
         cleanAndRender: function cleanAndRender() {
+            this.trigger("cleanNotification");
             this.render();
         },
 
@@ -190,6 +191,7 @@ define([
 
         saveDocument: function saveDocument() {
             this.displayLoading();
+            this.trigger("cleanNotification");
             this.model.save();
         },
 
@@ -217,6 +219,7 @@ define([
             }
             this.model.set("viewId", viewId);
             this.displayLoading();
+            this.trigger("cleanNotification");
             this.model.fetch();
         },
 
