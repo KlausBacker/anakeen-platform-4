@@ -15,7 +15,7 @@ define([
         barElement :    null,
         original :      null,
 
-        _create : function () {
+        _create : function _create() {
             this.barElement = $('<div class="dcpLoading--progressbar dcpLoading--progressbar-complete" />');
 
             this.element.find('.dcpLoading--progressbar').hide();
@@ -29,16 +29,16 @@ define([
             );
         },
 
-        reset : function () {
+        reset : function reset() {
             this.element.find('.dcpLoading--progressbar').show();
             this.element.find('.dcpLoading--progressbar-complete').hide();
         },
 
-        setTitle : function (val) {
+        setTitle : function setTitle(val) {
             this.element.find('.dcpLoading--title').html(val);
         },
 
-        modalMode : function () {
+        modalMode : function modalMode() {
             var scopeElement = this.element;
             this.element.kendoWindow({
                 modal :     true,
@@ -58,7 +58,7 @@ define([
 
         },
 
-        hide : function () {
+        hide : function hide() {
             this.element.hide();
             this.element.removeClass("dcpLoading--hide");
             if (this.element.data('kendoWindow')) {
@@ -66,30 +66,43 @@ define([
             }
         },
 
-        show : function () {
+        show : function show() {
+            this.barElement.data("kendoProgressBar").value(0);
+            this.reset();
             this.element.show();
         },
 
-        complete : function (onComplete) {
+        complete : function complete(onComplete) {
             this.barElement.data("kendoProgressBar").bind("complete", onComplete);
         },
 
-        setPercent : function (pc) {
+        setPercent : function setPercent(pc) {
             this.pc = pc;
             this.barElement.data("kendoProgressBar").value(Math.round(this.pc));
         },
 
-        setNbItem : function (restItem) {
+        setNbItem : function setNbItem(restItem) {
             this.rest = 100 - this.pc;
             this.restItem = restItem;
         },
 
-        addItem : function (number) {
+        addItem : function addItem(number) {
             number = number || 1;
             number = parseInt(number, 10);
             this.doneItems += number;
             var pv = (this.rest / this.restItem) * number;
             this.setPercent(this.pc + pv);
+        },
+
+        _destroy : function _destroy() {
+            if (this.element.data('kendoWindow')) {
+                this.element.data('kendoWindow').destroy();
+            }
+            if (this.barElement.data("kendoProgressBar")) {
+                this.barElement.data("kendoProgressBar").destroy();
+            }
+            this._trigger("destroy");
+            this._super();
         }
 
     });

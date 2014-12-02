@@ -50,7 +50,7 @@ function jasmine(Action & $action)
     $js = array(
         $require["src"],
         $require["config"],
-        'lib/KendoUI/js/jquery.js?ws=' . $version,
+        'lib/KendoUI/2014.3/js/jquery.js?ws=' . $version,
         'lib/jasmine/jasmine.js?ws=' . $version,
         'lib/jasmine/jasmine-html.js?ws=' . $version,
         'lib/jasmine/boot.js?ws=' . $version,

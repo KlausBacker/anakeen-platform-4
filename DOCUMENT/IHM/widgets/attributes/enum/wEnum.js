@@ -509,13 +509,13 @@ define([
         },
 
         _destroy : function _destroy() {
-            if (this.kendoWidget.data("kendoDropDownList")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoDropDownList")) {
                 this.kendoWidget.data("kendoDropDownList").destroy();
             }
-            if (this.kendoWidget.data("kendoComboBox")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoComboBox")) {
                 this.kendoWidget.data("kendoComboBox").destroy();
             }
-            if (this.kendoWidget.data("kendoMultiSelect")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
                 this.kendoWidget.data("kendoMultiSelect").destroy();
             }
             this._super();

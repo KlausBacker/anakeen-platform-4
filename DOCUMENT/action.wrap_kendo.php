@@ -18,10 +18,9 @@ function wrap_kendo(Action &$action)
     $usage->setStrictMode(false);
     $usage->verify();
 
-    $jsFile = str_replace("/", "", $jsFile);
     $jsFile = str_replace("..", "", $jsFile);
 
-    $action->lay->set("KENDO", file_get_contents("lib/KendoUI/js/$jsFile.js"));
+    $action->lay->set("KENDO", file_get_contents("lib/KendoUI/$jsFile.js"));
 
     $etagManager->generateResponseHeader($etag, $useCache);
 }

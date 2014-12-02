@@ -134,10 +134,10 @@ define([
         },
 
         _destroy : function _destroy() {
-            if (this.kendoWidget.data("kendoColorPicker")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoColorPicker")) {
                 this.kendoWidget.data("kendoColorPicker").destroy();
             }
-            this.super();
+            this._super();
         }
 
     });

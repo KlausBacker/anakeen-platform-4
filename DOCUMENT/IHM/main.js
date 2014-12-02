@@ -32,6 +32,10 @@ require([
     });
     documentView = new ViewDocument({model : document, el : $document[0]});
 
+    documentView.on("cleanNotification", function() {
+        $notification.dcpNotification("clear");
+    });
+
     documentView.on('loading', function (data) {
         $loading.dcpLoading('setPercent', data);
     });

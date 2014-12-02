@@ -2,7 +2,8 @@
 define([
     'underscore',
     'mustache',
-    'widgets/widget'
+    'widgets/widget',
+    'bootstrap'
 ], function (_, Mustache) {
     'use strict';
 
@@ -293,7 +294,7 @@ define([
          *
          * @private
          */
-        _destroy: function () {
+        _destroy: function _destroy() {
             this.element.removeClass("dcpAttribute__contentWrapper");
             this.element.removeAttr("data-type");
             this.element.removeAttr("data-id");

@@ -29,7 +29,7 @@ define([
         },
 
         cleanAndRender: function cleanAndRender() {
-            this.model.trigger("cleanView");
+            this.trigger("cleanNotification");
             this.render();
         },
 
@@ -121,14 +121,17 @@ define([
                 currentView.trigger("partRender");
             });
 
-            $(".dcpDocument__tabs").kendoTabStrip({
+            this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
                 show: function () {
                     currentView.model.trigger("showTab");
                 }
-            }).data("kendoTabStrip").select(0);
+            });
 
+            if (this.kendoTabs.data("kendoTabStrip")) {
+                this.kendoTabs.data("kendoTabStrip").select(0);
+            }
 
-            $(document).on('drop dragover', function (e) {
+            $(document).on('drop.ddui dragover.ddui', function (e) {
                 e.preventDefault();
             });
             this.$el.addClass("dcpDocument--show");
@@ -188,6 +191,7 @@ define([
 
         saveDocument: function saveDocument() {
             this.displayLoading();
+            this.trigger("cleanNotification");
             this.model.save();
         },
 
@@ -215,6 +219,7 @@ define([
             }
             this.model.set("viewId", viewId);
             this.displayLoading();
+            this.trigger("cleanNotification");
             this.model.fetch();
         },
 
@@ -262,6 +267,19 @@ define([
                 return window.dcp.templates[key];
             }
             throw new Error("Unknown template  " + key);
+        },
+
+        remove : function remove() {
+            try {
+                if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
+                    this.kendoTabs.data("kendoTabStrip").destroy();
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            $(document).off("ddui");
+
+            return Backbone.View.prototype.remove.call(this);
         }
     });
 
