@@ -246,6 +246,9 @@ define([
                     viewId = "!defaultConsultation";
                 }
             }
+            if (this.model.hasAttributesChanged() && !window.confirm("It has been changed !! Are you sure ??")) {
+                return;
+            }
             this.model.set("viewId", viewId);
             this.model.fetch();
         },
