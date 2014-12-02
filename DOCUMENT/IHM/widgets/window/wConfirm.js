@@ -33,9 +33,8 @@ define([
 
         _create: function () {
             var scoppedCancel = _.bind(this.options.cancel, this);
-
             this.options.close = scoppedCancel;
-            this.options.templateData.messages = this.options.messages;
+            this.options.templateData.messages = this.options.messages || [];
             this.currentWidget = $(Mustache.render(this._getWindowTemplate('confirm'), this.options.templateData));
             this.element.append(this.currentWidget);
             this.currentWidget.kendoWindow(this.options);
@@ -58,7 +57,6 @@ define([
             });
 
             this.element.data("dcpWindow", this);
-            // this.currentWidget.find('button').kendoButton();
         }
 
 

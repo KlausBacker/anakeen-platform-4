@@ -37,7 +37,6 @@ define([
             this.listenTo(this.model, 'change:value', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'destroy', this.remove);
-            //this.listenTo(this.model, 'cleanView', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
             this.listenTo(this.model.getDocumentModel(), 'showTab', this.afterShow);
             this.options = options;
@@ -340,7 +339,6 @@ define([
             } catch (e) {
                 console.error(e);
             }
-
             return Backbone.View.prototype.remove.call(this);
         },
 

@@ -25,6 +25,7 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'request', this.displayLoading);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
+            this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
         },
@@ -198,24 +199,28 @@ define([
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
-        deleteDocument : function documentDelete(data) {
-
-            $.ajax({
-                type :        "DELETE",
-                dataType :    "json",
-                contentType : 'application/json',
-                url : "api/v1/documents/" + this.model.get("properties").get("initid")
-            }).done(function (response) {
-                console.log("delete", response);
-                window.location.href = window.location.href;
-            }).fail(function (xhr) {
-                console.log("fail delete", xhr);
-
-            });
+        deleteDocument : function documentDelete() {
+            var currentView = this, destroy = this.model.destroy();
+            if (destroy !== false) {
+                destroy.done(function destroyDone(response) {
+                    currentView.trigger("reinit", {
+                            initid :   response.data.view.documentData.document.properties.id,
+                            revision : response.data.view.documentData.document.properties.revision,
+                            viewId :   response.data.properties.identifier
+                        }
+                    );
+                });
+            }
         },
 
         saveDocument : function saveDocument() {
-            this.model.save();
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function displaySuccess() {
+                    currentView.trigger("showSuccess", {title : "Document Recorded"});
+                });
+            }
         },
 
         displayLoading : function () {

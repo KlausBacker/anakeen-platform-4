@@ -112,7 +112,7 @@ define([
             });
         },
 
-        hasAttributesChanged :  function hasAttributesChanged() {
+        hasAttributesChanged : function hasAttributesChanged() {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
             });
@@ -148,7 +148,7 @@ define([
                 }
                 currentModel.trigger("showError", {
                     "title" : "Unable to synchronise " + currentModel.get("properties").get("title"),
-                    "message" :     parsedReturn.responseText
+                    "message" : parsedReturn.responseText
                 });
             }
             _.each(parsedReturn.messages, function (message) {
@@ -178,13 +178,13 @@ define([
                                 attrModel = currentModel.get('attributes').get(constraint.id);
                                 if (attrModel) {
                                     attrModel.setErrorMessage(constraint.err, constraint.index);
-                                   currentModel.trigger("showError", {
+                                    currentModel.trigger("showError", {
                                         title :       message.contentText,
                                         htmlMessage : message.contentHtml,
                                         message : attrModel.attributes.label + ' : ' + constraint.err
                                     });
                                 } else {
-                                   currentModel.trigger("showError", {
+                                    currentModel.trigger("showError", {
                                         title :       message.contentText,
                                         htmlMessage : message.contentHtml,
                                         message :     constraint.err
@@ -193,7 +193,7 @@ define([
                             });
                         }
                         if (message.data && message.data.preStore) {
-                           currentModel.trigger("showError", {
+                            currentModel.trigger("showError", {
                                 title :       message.contentText,
                                 htmlMessage : message.contentHtml,
                                 message :     message.data.preStore
@@ -203,7 +203,7 @@ define([
 
                     default:
                         if (message.type === "error" && message.contentText) {
-                           currentModel.trigger("showError", {
+                            currentModel.trigger("showError", {
                                 title :       message.contentText,
                                 htmlMessage : message.contentHtml
                             });
@@ -294,6 +294,9 @@ define([
                 }
             });
             return {
+                initid :            response.data.view.documentData.document.properties.id,
+                revision :      response.data.view.documentData.document.properties.revision,
+                viewId :        response.data.properties.identifier,
                 properties :    response.data.view.documentData.document.properties,
                 menus :         response.data.view.menu,
                 locale :        response.data.view.locale.culture,
@@ -301,8 +304,8 @@ define([
                 attributes :    attributes,
                 templates :     response.data.view.templates,
                 renderOptions : response.data.view.renderOptions,
-                customCSS : response.data.view.style.css,
-                customJS : response.data.view.script.js
+                customCSS :     response.data.view.style.css,
+                customJS :      response.data.view.script.js
             };
         },
 

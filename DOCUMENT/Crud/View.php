@@ -137,9 +137,9 @@ class View extends Crud
      */
     public function delete($resourceId)
     {
-        $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot delete a view with the API");
-        throw $exception;
+        $documentData = new DocumentCrud();
+        $documentData->delete($resourceId);
+        return $this->read($resourceId);
     }
 
     /**
