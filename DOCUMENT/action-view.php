@@ -106,7 +106,7 @@ function view(Action & $action)
     
     $action->lay->set("viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(array(
         "documentIdentifier" => intval($docId) ,
-        "revision" => intval($revision) ,
+        "revision" => intval($doc->getPropertyValue("revision")) ,
         "vid" => $vId
     )));
     

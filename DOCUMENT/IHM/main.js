@@ -85,6 +85,9 @@ require([
         document.fetch();
     });
 
+    Backbone.history.start();
+
+    window.dcp.router = new Router({document : document});
     window.dcp.document = document;
     window.dcp.documentView = documentView;
 });

@@ -150,7 +150,7 @@ define([
 
         publishMessages : function publishMessages() {
             var currentView = this;
-            _.each(this.document.get("messages"), function (aMessage) {
+            _.each(this.model.get("messages"), function (aMessage) {
                 if (aMessage.type === "message") {
                     aMessage.type = "info";
                 }
