@@ -208,11 +208,12 @@ define([
         },
 
         _destroy: function () {
-            if (this.element.find('tbody').data("kendoDropTargetArea")) {
-                this.element.find('tbody').data("kendoDropTargetArea").destroy();
+            var tbody = this.element.find('tbody');
+            if (tbody && tbody.data("kendoDropTargetArea")) {
+                tbody.data("kendoDropTargetArea").destroy();
             }
-            if (this.element.find('tbody').data("kendoDraggable")) {
-                this.element.find('tbody').data("kendoDraggable").destroy();
+            if (tbody && tbody.data("kendoDraggable")) {
+                tbody.data("kendoDraggable").destroy();
             }
             this.element.empty();
             this._super();

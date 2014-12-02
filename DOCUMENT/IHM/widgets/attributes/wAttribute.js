@@ -2,7 +2,8 @@
 define([
     'underscore',
     'mustache',
-    'widgets/widget'
+    'widgets/widget',
+    'bootstrap'
 ], function (_, Mustache) {
     'use strict';
 

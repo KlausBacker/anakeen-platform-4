@@ -135,7 +135,7 @@ define([
         },
 
         _destroy : function _destroy() {
-            if (this.kendoWidget.data("kendoNumericTextBox")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoNumericTextBox")) {
                 this.kendoWidget.data("kendoNumericTextBox").destroy();
             }
             this._super();

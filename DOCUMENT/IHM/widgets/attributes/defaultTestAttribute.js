@@ -5,6 +5,10 @@ define(["underscore"], function (_) {
 
         var currentSandbox, getSandbox = function () {
             return currentSandbox;
+        }, findWidgetName = function ($element) {
+            return _.find(_.keys($element.data()), function (currentKey) {
+                return currentKey.indexOf("dcpDcp") !== -1;
+            });
         };
 
         if (!_.isFunction(widget)) {
@@ -14,13 +18,22 @@ define(["underscore"], function (_) {
         describe(type+" defaultTest", function () {
 
             beforeEach(function () {
-                var $renderZone = $("#render");
-                if ($renderZone.length === 0) {
-                    $renderZone = $("body");
+                //var $renderZone = $("#render");
+                //if ($renderZone.length === 0) {
+                //    $renderZone = $("body");
+                //}
+                //currentSandbox = $("<div></div>");
+                //$renderZone.prepend(currentSandbox);
+                currentSandbox = setFixtures(sandbox());
+            });
+
+            afterEach(function() {
+                var $sandBox = getSandbox();
+                try {
+                    widget.call($sandBox, "destroy");
+                } catch(e) {
+                    //console.log(e);
                 }
-                currentSandbox = $("<div></div>");
-                $renderZone.prepend(currentSandbox);
-                //currentSandbox = setFixtures(sandbox());
             });
 
             describe(type + " : creation", function () {

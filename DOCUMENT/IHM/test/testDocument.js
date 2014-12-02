@@ -93,9 +93,9 @@ require([
                 if ($renderZone.length === 0) {
                     $renderZone = $("body");
                 }
-                currentSandbox = $("<div></div>");
-                $renderZone.append(currentSandbox);
-                //currentSandbox = setFixtures(sandbox());
+                //currentSandbox = $("<div></div>");
+                //$renderZone.append(currentSandbox);
+                currentSandbox = setFixtures(sandbox());
                 window.dcp = window.dcp || {};
                 modelDocument = new ModelDocument(
                     {
@@ -114,6 +114,10 @@ require([
                         renderOptions : {}
                     }
                 );
+            });
+
+            afterEach(function() {
+                modelDocument.trigger("destroy");
             });
 
             describe(title + " : creation", function () {

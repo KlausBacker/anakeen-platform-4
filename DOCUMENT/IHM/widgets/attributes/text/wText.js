@@ -122,7 +122,7 @@ define([
 
         _destroy : function _destroy() {
             //Destroy autocomplete if activated
-            if (this.kendoWidget.data("kendoAutoComplete")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoAutoComplete")) {
                 this.kendoWidget.data("kendoAutoComplete").destroy();
             }
             this._super();
