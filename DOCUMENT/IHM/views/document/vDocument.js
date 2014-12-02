@@ -253,6 +253,21 @@ define([
             this.model.fetch();
         },
 
+        saveDocument : function saveDocument() {
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function displaySuccess() {
+                    currentView.trigger("showSuccess", {title : "Document Recorded"});
+                });
+            }
+        },
+
+        createDocument : function createDocument() {
+            /* TODO : implement that (review creation process) */
+            alert("You need to implement that !");
+        },
+
         /**
          * Propagate menu event
          *
@@ -281,6 +296,9 @@ define([
             }
             if (options[0] === "edit") {
                 return this.closeDocument("!defaultEdition");
+            }
+            if (options[0] === "create") {
+                return this.createDocument();
             }
         },
 
