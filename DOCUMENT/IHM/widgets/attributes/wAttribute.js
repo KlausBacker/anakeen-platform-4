@@ -2,8 +2,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/widget',
-    'kendo/kendo.tooltip'
+    'widgets/widget'
 ], function (_, Mustache) {
     'use strict';
 
@@ -164,7 +163,6 @@ define([
         /**
          * Return the value of something
          *
-         * TODO : ask to eric why ?
          *
          * @returns {*}
          */
@@ -301,6 +299,7 @@ define([
             this.element.removeAttr("data-id");
             this.element.empty();
             this._trigger("destroy");
+            this._super();
         },
 
         /**

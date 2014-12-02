@@ -7,13 +7,12 @@ require([
     'underscore',
     'backbone',
     'routers/router',
-    'collections/documents',
     'models/document',
     'views/document/vDocument',
     'widgets/window/wConfirm',
     'widgets/window/wLoading',
     'bootstrap'
-], function ($, _, Backbone, Router, CollectionDocument, ModelDocument, ViewDocument) {
+], function ($, _, Backbone, Router, ModelDocument, ViewDocument) {
     'use strict';
     console.timeEnd("js loading");
     /*jshint nonew:false*/

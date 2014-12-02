@@ -262,6 +262,13 @@ define([
 
         getType: function () {
             return "docid";
+        },
+
+        _destroy : function _destroy() {
+            if (this.kendoWidget.data("kendoMultiSelect")) {
+                this.kendoWidget.data("kendoMultiSelect").destroy();
+            }
+            this._super();
         }
 
     });

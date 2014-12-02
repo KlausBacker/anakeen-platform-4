@@ -9,7 +9,7 @@ define([
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 
-    var flattenAttributes = function (currentAttributes, attributes, parent) {
+    var flattenAttributes = function flattenAttributes(currentAttributes, attributes, parent) {
         if (!_.isArray(attributes)) {
             attributes = _.values(attributes);
         }
@@ -39,7 +39,7 @@ define([
             attributes : undefined
         },
 
-        url : function () {
+        url : function url() {
             var urlData = "api/v1/documents/" + encodeURIComponent(this.id);
             if (this.get("revision")) {
                 urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
@@ -48,11 +48,11 @@ define([
             return urlData;
         },
 
-        initialize : function () {
+        initialize : function initialize() {
             this.listenTo(this, "error", this.propagateSynchroError);
         },
 
-        toData : function () {
+        toData : function toData() {
             var returnObject = {
                 document : {}
             };
@@ -111,7 +111,7 @@ define([
             });
         },
 
-        hasAttributesChanged :  function () {
+        hasAttributesChanged :  function hasAttributesChanged() {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("value");
             });
@@ -124,7 +124,7 @@ define([
          * @param xhr
          * @param options
          */
-        propagateSynchroError : function (model, xhr, options) {
+        propagateSynchroError : function propagateSynchroError(model, xhr, options) {
             var attrModel, currentModel = this, parsedReturn;
             //Analyze XHR
             var messages = [];
@@ -216,7 +216,7 @@ define([
         /**
          * Validate the content of the model before synchro
          */
-        validate : function () {
+        validate : function validate() {
             var success = true,
                 currentDocument = this,
                 attrLabel = [];
@@ -254,7 +254,7 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        clearErrorMessages : function () {
+        clearErrorMessages : function clearErrorMessages() {
             var attrModels = this.get('attributes');
             _.each(attrModels.models, function (attrModel) {
                 attrModel.setErrorMessage(null);
@@ -335,7 +335,7 @@ define([
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },
 
-        toJSON : function () {
+        toJSON : function toJSON() {
             return {document : {attributes : this.getValues()}};
         }
     });

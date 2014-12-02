@@ -132,6 +132,13 @@ define([
             if (!_.isNumber(value.value)) {
                 throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
             }
+        },
+
+        _destroy : function _destroy() {
+            if (this.kendoWidget.data("kendoNumericTextBox")) {
+                this.kendoWidget.data("kendoNumericTextBox").destroy();
+            }
+            this._super();
         }
 
     });

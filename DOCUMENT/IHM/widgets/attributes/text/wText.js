@@ -16,7 +16,6 @@ define([
         _initDom : function wTextInitDom() {
             this._super();
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
-
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this.activateAutocomplete(this.kendoWidget);
             } else {
@@ -50,7 +49,7 @@ define([
          * @param inputValue
          * @protected
          */
-        activateAutocomplete : function (inputValue) {
+        activateAutocomplete : function activateAutocomplete(inputValue) {
             var scope = this;
             inputValue.kendoAutoComplete({
                 dataTextField : "title",
@@ -60,14 +59,11 @@ define([
                                     '#if (data.error) {#' +
                                     '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>',
-
                 dataSource : {
                     type :            "json",
                     serverFiltering : true,
                     transport :       {
-
                         read : scope.options.autocompleteRequest
-
                     }
                 },
                 select :     function (event) {
@@ -120,8 +116,16 @@ define([
             }
         },
 
-        getType : function () {
+        getType : function getType() {
             return "text";
+        },
+
+        _destroy : function _destroy() {
+            //Destroy autocomplete if activated
+            if (this.kendoWidget.data("kendoAutoComplete")) {
+                this.kendoWidget.data("kendoAutoComplete").destroy();
+            }
+            this._super();
         }
 
     });

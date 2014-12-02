@@ -76,14 +76,14 @@ define([
                 scope._fitToContent(scope.getContentElements());
             });
             this.getContentElements()
-                .on("keyup", function (event) {
+                .on("keyup." + this.eventNamespace, function (event) {
                     scope._fitToContent($(this));
                 })
-                .on("focus", function (event) {
+                .on("focus." + this.eventNamespace, function (event) {
                     scope._fitToContent($(this));
                 });
 
-            this.element.on("show", function (event) {
+            this.element.on("show." + this.eventNamespace, function (event) {
                     scope._fitToContent(scope.getContentElements());
                 });
         },

@@ -131,6 +131,13 @@ define([
             if (!_.isNumber(value.value)) {
                 throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
             }
+        },
+
+        _destroy : function _destroy() {
+            if (this.kendoWidget.data("kendoColorPicker")) {
+                this.kendoWidget.data("kendoColorPicker").destroy();
+            }
+            this.super();
         }
 
     });

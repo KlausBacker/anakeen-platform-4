@@ -32,20 +32,27 @@ define([
             "dcpattributechangeattrsvalue .dcpAttribute__contentWrapper" :         "changeAttributesValue"
         },
 
-        initialize : function (options) {
+        initialize : function initialize(options) {
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:value', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'destroy', this.remove);
-            this.listenTo(this.model, 'cleanView', this.remove);
+            //this.listenTo(this.model, 'cleanView', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
             this.listenTo(this.model.getDocumentModel(), 'showTab', this.afterShow);
-this.options = options;
+            this.options = options;
         },
 
-        getData : function (index) {
+        /**
+         * The Data are the source of data shared with widget and templates
+         *
+         * @param index
+         * @returns {*}
+         */
+        getData : function getData(index) {
             var data;
 
+            //Made to JSON for all the values, or to data for value indexed (in cas of multiple)
             if (typeof index === "undefined" || index === null) {
                 data = this.model.toJSON();
             } else {
@@ -67,15 +74,15 @@ this.options = options;
             }
             data.deleteButton = true;
 
-            data.sourceValues=this.model.get("enumItems");
-            data.sourceUri=this.model.get("enumUri");
+            data.sourceValues = this.model.get("enumItems");
+            data.sourceUri = this.model.get("enumUri");
             data.templates.label = this.model.getTemplates().attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
             return data;
         },
 
-        render : function () {
+        render : function render() {
             //console.time("render attribute " + this.model.id);
             var data = this.getData();
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
@@ -86,15 +93,18 @@ this.options = options;
             }
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), data);
+            this.currentDcpWidget = this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), data);
             return this;
         },
 
-        refreshLabel : function () {
+        refreshLabel : function refreshLabel() {
             this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
         },
 
-        refreshValue : function () {
+        /**
+         * Autorefresh value when model change
+         */
+        refreshValue : function refreshValue() {
             var values = this.model.get("value"),
                 scope = this, allWrapper, arrayWrapper;
             if (this.model.inArray()) {
@@ -116,9 +126,11 @@ this.options = options;
             }
         },
 
-        refreshError : function (event) {
-            console.log("DISPLAY ERROR for label", this.$el);
-            console.log("DISPLAY ERROR for value", this.getDOMElements());
+        /**
+         * Dispay error message around the widget if needed
+         * @param event
+         */
+        refreshError : function refreshError(event) {
             var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
             this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper").andSelf().filter(".dcpAttribute__contentWrapper"),
@@ -184,13 +196,23 @@ this.options = options;
             }
         },
 
+        /**
+         * Return another attribute model
+         *
+         * @param attributeId
+         * @returns {*}
+         */
         getAttributeModel : function (attributeId) {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
-        getDeleteLabels : function () {
-
+        /**
+         * Used for render attribute
+         *
+         * @returns {Array}
+         */
+        getDeleteLabels : function getDeleteLabels() {
             var attrToClear = this.model.get('helpOutputs'),
                 scope = this, attrLabels;
             if ((!attrToClear) || typeof attrToClear === "undefined") {
@@ -217,9 +239,9 @@ this.options = options;
             options.data.attributes = documentModel.getValues();
             $.ajax({
                 type : "POST",
-                url :  "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id +
-                           "&id=" + documentModel.id +
-                           "&fromid=" + documentModel.get("properties").get("family").id,
+                url : "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id +
+                      "&id=" + documentModel.id +
+                      "&fromid=" + documentModel.get("properties").get("family").id,
                 data : options.data,
 
                 dataType : "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
@@ -251,23 +273,28 @@ this.options = options;
             }
         },
 
-        afterShow : function (event, data) {
+        afterShow :   function afterShow(event, data) {
             // propagate event to widgets
             this.getDOMElements().trigger("show");
         },
-        updateValue : function (event, data) {
+        /**
+         *
+         * @param event
+         * @param data
+         */
+        updateValue : function updateValue(event, data) {
             this.model.setValue(data.value, data.index);
         },
 
-        widgetApply : function ($element, method, argument) {
+        widgetApply : function widgetApply($element, method, argument) {
             return this.getWidgetClass().call($element, method, argument);
         },
 
-        getWidgetClass : function () {
+        getWidgetClass : function getTypedWidgetClass() {
             return this.getTypedWidgetClass(this.model.get("type"));
         },
 
-        getTypedWidgetClass : function (type) {
+        getTypedWidgetClass : function getTypedWidgetClass(type) {
             switch (type) {
                 case "text" :
                     return $.fn.dcpText;
@@ -303,6 +330,24 @@ this.options = options;
                 default:
                     return $.fn.dcpText;
             }
+        },
+
+        remove : function remove() {
+            try {
+                if (this.currentDcpWidget && this._findWidgetName(this.currentDcpWidget)) {
+                    this.widgetApply(this.currentDcpWidget, "destroy");
+                }
+            } catch (e) {
+                console.error(e);
+            }
+
+            return Backbone.View.prototype.remove.call(this);
+        },
+
+        _findWidgetName : function ($element) {
+            return _.find(_.keys($element.data()), function (currentKey) {
+                return currentKey.indexOf("dcpDcp") !== -1;
+            });
         }
     });
 
