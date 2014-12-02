@@ -46,6 +46,7 @@ define([
 
             this.renderCss();
             this.renderJS();
+            this.publishMessages();
 
             this.updateTitle();
             this.updateIcon();
@@ -147,6 +148,19 @@ define([
             return this;
         },
 
+        publishMessages : function publishMessages() {
+            var currentView = this;
+            _.each(this.document.get("messages"), function (aMessage) {
+                if (aMessage.type === "message") {
+                    aMessage.type = "info";
+                }
+                currentView.trigger("showInfo", {
+                    title :       aMessage.contentText,
+                    htmlMessage : aMessage.contentHtml
+                });
+            });
+        },
+
         renderCss : function renderCss() {
             // add custom css style
             var currentView = this;
@@ -209,16 +223,6 @@ define([
                             viewId :   response.data.properties.identifier
                         }
                     );
-                });
-            }
-        },
-
-        saveDocument : function saveDocument() {
-            var currentView = this, save = this.model.save();
-            //Use jquery xhr delegate done to display success
-            if (save && save.done) {
-                save.done(function displaySuccess() {
-                    currentView.trigger("showSuccess", {title : "Document Recorded"});
                 });
             }
         },

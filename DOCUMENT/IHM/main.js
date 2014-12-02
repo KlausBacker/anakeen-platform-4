@@ -64,6 +64,9 @@ require([
                 console.timeEnd('main');
             }, 500);
         });
+        documentView.on("showInfo", function showInfo(message) {
+            $notification.dcpNotification("showInfo", message);
+        });
         documentView.on("showSuccess", function showError(message) {
             $notification.dcpNotification("showSuccess", message);
         });

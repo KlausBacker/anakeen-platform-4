@@ -294,7 +294,7 @@ define([
                 }
             });
             return {
-                initid :            response.data.view.documentData.document.properties.id,
+                initid :        response.data.view.documentData.document.properties.id,
                 revision :      response.data.view.documentData.document.properties.revision,
                 viewId :        response.data.properties.identifier,
                 properties :    response.data.view.documentData.document.properties,
@@ -305,7 +305,8 @@ define([
                 templates :     response.data.view.templates,
                 renderOptions : response.data.view.renderOptions,
                 customCSS :     response.data.view.style.css,
-                customJS :      response.data.view.script.js
+                customJS :      response.data.view.script.js,
+                messages :      response.messages
             };
         },
 
