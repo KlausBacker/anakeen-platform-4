@@ -68,7 +68,7 @@ define([
                     data.templates = this.model.getTemplates().attribute[this.model.get("type")];
                 } else {
                     // fallback in case of no specific templates
-                    data.templates = this.model.getTemplates().attribute.default;
+                    data.templates = this.model.getTemplates().attribute["default"];
                 }
             }
             data.deleteButton = true;
