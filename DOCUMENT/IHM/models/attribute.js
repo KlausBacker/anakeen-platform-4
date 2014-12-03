@@ -239,8 +239,8 @@ define([
         },
 
         _computeValueMode : function () {
-            var type = this.get("type");
-            if (type === "frame" || type === "array" || type === "tab") {
+            var type = this.get("type"), visibility = this.get("visibility");
+            if (type === "frame" || type === "array" || type === "tab" || visibility === "I") {
                 this.set("valueAttribute", false);
             }
         },
