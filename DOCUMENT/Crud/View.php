@@ -11,6 +11,8 @@ use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\Crud\Document as DocumentCrud;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\HttpApi\V1\Crud\Exception;
+use Dcp\HttpApi\V1\Crud\Family;
+use Dcp\HttpApi\V1\Crud\FamilyDocument;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
 class View extends Crud
@@ -181,6 +183,7 @@ class View extends Crud
             "uri" => $this->getUri($document, self::coreViewCreationId) ,
             "identifier" => self::coreViewCreationId,
             "mode" => "edition",
+            "creationView" => true,
             "label" => ___("Core View Create", "ddui") ,
             "isDisplayable" => false,
             "order" => 0,
