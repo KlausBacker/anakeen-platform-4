@@ -145,15 +145,15 @@ define([
             var myData = [];
             _.each(data.data.history, function (revisionInfo) {
                 myData.push({
-                    "version": revisionInfo.version,
-                    "revision": revisionInfo.revision,
+                    "version": revisionInfo.properties.version,
+                    "revision": revisionInfo.properties.revision,
                     "code": '',
                     "level": 'revision',
-                    "message": revisionInfo,
-                    "owner": revisionInfo.owner.title,
-                    "date": revisionInfo.revisionDate,
+                    "message": revisionInfo.properties,
+                    "owner": revisionInfo.properties.owner.title,
+                    "date": revisionInfo.properties.revisionDate,
                     "diff": 1,
-                    "color": revisionInfo.state.color,
+                    "color": revisionInfo.properties.state.color,
                     "DT_RowClass": "history-level--revision"
                 });
                 _.each(revisionInfo.messages, function (message) {
@@ -166,7 +166,7 @@ define([
                         "owner": message.uname,
                         "date": message.date,
                         "diff": 0,
-                        "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.fixed ? " history-comment--fixed" : "")
+                        "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.properties.status==="fixed" ? " history-comment--fixed" : "")
                     });
                 });
 
@@ -209,7 +209,7 @@ define([
                                 if (data.state.reference) {
 
                                     return '<div><span class="history-state-color" style="background-color:' + data.state.color + '" >&nbsp;</span>' +
-                                    (data.fixed ? data.state.stateLabel : data.state.activity) +
+                                    (data.status==="fixed" ? data.state.stateLabel : data.state.activity) +
                                     '</div>';
                                 }
                                 return $("<div/>").text(data.title).html();

@@ -30,7 +30,8 @@ define([
             this.listenTo(this.model, 'error', this.showView);
         },
 
-        cleanAndRender : function cleanAndRender() {
+        cleanAndRender: function cleanAndRender() {
+            this.$el.removeClass("dcpDocument--" + this.model.previous("renderMode"));
             this.trigger("cleanNotification");
             this.render();
         },
@@ -39,6 +40,8 @@ define([
             console.time("render document");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
+            var documentView=this;
+
             this.template = this.getTemplates("body");
             this.partials = this.getTemplates("sections");
 
@@ -138,8 +141,10 @@ define([
                 this.kendoTabs.data("kendoTabStrip").select(0);
             }
 
-            $(document).on('drop.ddui dragover.ddui', function (e) {
+            $(window.document).on('drop.ddui dragover.ddui', function (e) {
                 e.preventDefault();
+            }).on('redrawErrorMessages.ddui', function (e) {
+                documentView.model.redrawErrorMessages();
             });
             this.$el.addClass("dcpDocument--show");
             this.trigger("renderDone");
@@ -238,8 +243,8 @@ define([
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderHide");
-            this.model.clearErrorMessages();
             this.$el.show();
+            this.model.redrawErrorMessages();
         },
 
         closeDocument : function closeDocument(viewId) {
@@ -329,7 +334,7 @@ define([
             } catch (e) {
                 console.error(e);
             }
-            $(document).off("ddui");
+            $(window.document).off("ddui");
 
             return Backbone.View.prototype.remove.call(this);
         }

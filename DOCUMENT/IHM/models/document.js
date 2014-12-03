@@ -32,7 +32,7 @@ define([
         idAttribute : "initid",
 
         defaults : {
-            revisionId : false,
+            revision : -1,
             renderMode : "read",
             properties : undefined,
             menus :      undefined,
@@ -41,7 +41,7 @@ define([
 
         url : function url() {
             var urlData = "api/v1/documents/" + encodeURIComponent(this.id);
-            if (this.get("revision")) {
+            if (this.get("revision") >= 0 ) {
                 urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
             }
             urlData += "/views/" + encodeURIComponent(this.get("viewId"));
@@ -255,10 +255,13 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        clearErrorMessages : function clearErrorMessages() {
+        redrawErrorMessages : function clearErrorMessages() {
             var attrModels = this.get('attributes');
             _.each(attrModels.models, function (attrModel) {
+                var message=attrModel.get("errorMessage");
+                // redo error after document is show
                 attrModel.setErrorMessage(null);
+                attrModel.setErrorMessage(message);
             });
         },
 
@@ -295,7 +298,7 @@ define([
             });
             return {
                 initid :        response.data.view.documentData.document.properties.id,
-                revision :      response.data.view.documentData.document.properties.revision,
+               // revision :      response.data.view.documentData.document.properties.revision,
                 viewId :        response.data.properties.identifier,
                 properties :    response.data.view.documentData.document.properties,
                 menus :         response.data.view.menu,

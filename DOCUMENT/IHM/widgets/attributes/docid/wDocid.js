@@ -87,7 +87,8 @@ define([
                         } else {
                             window.dcp.document.set("initid", scope.options.value[$(this).data("index")].value);
                         }
-                        window.dcp.document.get("viewId", "!defaultConsultation");
+                        window.dcp.document.set("revision",-1);
+                        window.dcp.document.set("viewId", "!defaultConsultation");
                         window.dcp.document.fetch();
                     }
                 });

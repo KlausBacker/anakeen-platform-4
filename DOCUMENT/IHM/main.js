@@ -75,7 +75,8 @@ require([
 
     document = initModel({
         "initid" : window.dcp.viewData.documentIdentifier,
-        "viewId" : window.dcp.viewData.vid
+        "viewId" : window.dcp.viewData.vid,
+        "revision" : window.dcp.viewData.revision
     });
     documentView = initView(document);
     document.fetch();

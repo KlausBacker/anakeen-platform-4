@@ -13,10 +13,19 @@ define([
         initialize : function (options) {
             var currentRouter = this;
             this.document = options.document;
-            this.urlFragmentTemplate = _.template("?app=DOCUMENT&mode=<%= mode %>&id=<%= initid %>&revision=<%= revision %>&vid=<%= viewId %>");
+            this.urlFragmentTemplate = _.template("<%= path %>?app=DOCUMENT&mode=<%= mode %>&id=<%= initid %>&revision=<%= revision %>&vid=<%= viewId %>");
+
+            this.route(this.urlFragmentTemplate({
+                "path" : window.location.pathname,
+                "initid" : ":initid",
+                "revision" : ":revision",
+                "viewId" : ":viewId",
+                "mode" : ":mode"
+            }).substring(1), "fetch");
             // Listen to document sync and update url
             this.document.listenTo(this.document, "sync", function sync() {
                 var options = {
+                    "path" : window.location.pathname,
                     "initid" :   currentRouter.document.get("initid"),
                     "revision" : currentRouter.document.get("revision"),
                     "viewId" :   currentRouter.document.get("viewId"),
