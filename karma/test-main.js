@@ -1,6 +1,13 @@
 var allTestFiles = ['jasmine-jquery'];
 var TEST_REGEXP = /\/(test)[a-zA-Z]*\.js$/i;
 
+if (!(window.console.time)) {
+    window.console.timeEnd = function (x) {
+    };
+    window.console.time = function (x) {
+    };
+}
+
 var pathToModule = function (path) {
     return path.replace(/^\/.*IHM\//, "").replace(/\.js$/, '');
 };
