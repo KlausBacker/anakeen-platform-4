@@ -37,7 +37,7 @@ define([
         },
 
         render : function render() {
-            console.time("render document");
+            console.time("render document view");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
             var documentView=this;
@@ -72,7 +72,7 @@ define([
             try {
                 var viewMenu = new ViewDocumentMenu({
                     model : this.model,
-                    el :    this.$el.find(".dcpDocument__menu")[0]
+                    el :    this.$el.find(".dcpDocument__menu:first")[0]
                 }).render();
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
@@ -82,7 +82,7 @@ define([
             try {
                 new ViewDocumentHeader({
                     model : this.model,
-                    el :    this.$el.find(".dcpDocument__header")[0]
+                    el :    this.$el.find(".dcpDocument__header:first")[0]
                 }).render();
             } catch (e) {
                 console.error(e);
@@ -108,7 +108,9 @@ define([
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
                         viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({
+                            model : model.get("attributes").get(currentAttr.id)
+                        });
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
@@ -132,8 +134,9 @@ define([
             });
 
             this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-                show : function () {
-                    currentView.model.trigger("showTab");
+                show : function (event) {
+                    var tabId = $(event.item).data("id");
+                    currentView.model.get("attributes").get(tabId).trigger("showTab");
                 }
             });
 
@@ -147,8 +150,8 @@ define([
                 documentView.model.redrawErrorMessages();
             });
             this.$el.addClass("dcpDocument--show");
+            console.timeEnd("render document view");
             this.trigger("renderDone");
-            console.timeEnd("render document");
             this.$el.show();
             return this;
         },

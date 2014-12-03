@@ -18,6 +18,13 @@ define([
 
         destroy : function () {
             this.invoke("trigger", "destroy");
+        },
+
+        propageEvent : function (eventName) {
+            this.each(function (currentModel) {
+                currentModel.trigger(eventName);
+                currentModel.get("content").propageEvent(eventName);
+            });
         }
     });
 });
