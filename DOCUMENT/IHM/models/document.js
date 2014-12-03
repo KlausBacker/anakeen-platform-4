@@ -33,22 +33,31 @@ define([
 
         defaults : {
             revision : -1,
-            renderMode : "read",
+            viewId : undefined,
+            renderMode : "view",
             properties : undefined,
             menus :      undefined,
             attributes : undefined
         },
 
         url : function url() {
-            var urlData = "api/v1/";
+            var urlData = "api/v1/", viewId = this.get("viewId");
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid"))+"/documentsViews/";
             } else {
                 urlData += "documents/" + encodeURIComponent(this.id);
-                if (this.get("revision")) {
+                if (this.get("revision") && this.get("revision") !== -1) {
                     urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
                 }
-                urlData += "/views/" + encodeURIComponent(this.get("viewId"));
+                if (viewId === undefined) {
+                    if (this.get("renderMode") === "view") {
+                        viewId = "!defaultConsultation";
+                    }
+                    if (this.get("renderMode") === "edit") {
+                        viewId = "!defaultEdition";
+                    }
+                }
+                urlData += "/views/" + encodeURIComponent(viewId);
             }
             return urlData;
         },
@@ -304,8 +313,6 @@ define([
             });
             values = {
                 initid :        response.data.properties.creationView === true ? null : view.documentData.document.properties.id,
-                revision :      view.documentData.document.properties.revision,
-                viewId :        response.data.properties.identifier,
                 properties :    view.documentData.document.properties,
                 menus :         view.menu,
                 locale :        view.locale.culture,
