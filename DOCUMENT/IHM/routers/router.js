@@ -53,12 +53,13 @@ define([
             }
             if (!_.isUndefined(searchObject.vid)) {
                 newValues.viewId = searchObject.vid;
+            } else {
+                newValues.viewId = undefined;
             }
-            this.document.set({
-                "initid" :   newValues.initid,
-                "revision" : newValues.revision,
-                "viewId" :   newValues.viewId
-            }).fetch();
+            if (!_.isUndefined(searchObject.mode)) {
+                newValues.renderMode = searchObject.mode;
+            }
+            this.document.set(newValues).fetch();
         }
 
     });
