@@ -301,7 +301,12 @@ define([
             }
             valueAttributes = view.documentData.document.attributes;
             visibilityAttributes = view.renderOptions.visibilities;
-            structureAttributes = view.documentData.family.structure;
+if (view.documentData.family) {
+                structureAttributes = view.documentData.family.structure;
+            } else {
+                structureAttributes=[];
+            }
+
             attributes = flattenAttributes(attributes, structureAttributes);
             _.each(attributes, function (currentAttributeStructure) {
                 if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {

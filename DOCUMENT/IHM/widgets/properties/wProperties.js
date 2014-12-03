@@ -153,7 +153,15 @@ define([
 
         open: function open() {
             this.currentWidget.data("kendoWindow").open();
+        },
+
+        _destroy : function _destroy() {
+            if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
+                this.currentWidget.data("kendoWindow").destroy();
+            }
         }
+
+
 
 
     });

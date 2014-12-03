@@ -402,8 +402,8 @@ define([
 
         _destroy : function _destroy() {
             var $history = this.element.find('.history-main');
-            if (this.kendoWidget.data("kendoWindow")) {
-                this.kendoWidget.data("kendoWindow").destroy();
+            if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
+                this.currentWidget.data("kendoWindow").destroy();
             }
             if ($history.DataTable) {
                 $history.DataTable().destroy();

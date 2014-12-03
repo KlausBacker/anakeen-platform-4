@@ -61,7 +61,6 @@ class View extends Crud
         $exception->setHttpStatus("405", "You cannot create a view with the API");
         throw $exception;
     }
-
     /**
      * Read a resource
      * @param string|int $resourceId Resource identifier
@@ -116,7 +115,6 @@ class View extends Crud
         }
         return $info;
     }
-
     /**
      * Update the ressource
      * @param string|int $resourceId Resource identifier
@@ -130,7 +128,6 @@ class View extends Crud
         $documentData->update($resourceId);
         return $this->read($resourceId);
     }
-
     /**
      * Delete ressource
      * @param string|int $resourceId Resource identifier
@@ -143,7 +140,6 @@ class View extends Crud
         $documentData->delete($resourceId);
         return $this->read($resourceId);
     }
-
     /**
      * Compute abstract standard view
      *
@@ -200,7 +196,6 @@ class View extends Crud
             self::coreViewCreationId => $defaultCreate
         );
     }
-
     /**
      * Compute properties
      *
@@ -224,7 +219,6 @@ class View extends Crud
             )
         );
     }
-
     /**
      * @param $document
      * @param $viewId
@@ -291,7 +285,6 @@ class View extends Crud
             "css" => $cssArray
         );
     }
-
     /**
      * @param \Dcp\Ui\IRenderConfig $config
      * @param \Doc $document
@@ -316,7 +309,6 @@ class View extends Crud
             "js" => $jsArray
         );
     }
-
     /**
      * Get the current local
      *
@@ -328,7 +320,6 @@ class View extends Crud
         $config = getLocaleConfig($localeId);
         return $config;
     }
-
     /**
      * Get the document from the standard CRUD
      *
@@ -345,7 +336,6 @@ class View extends Crud
         $documentData->setDefaultFields($fields);
         return $documentData->getInternal($document);
     }
-
     /**
      * Get the current document
      *
@@ -551,11 +541,15 @@ class View extends Crud
     protected function extractEtagDocument($id)
     {
         $result = array();
-        $sql = sprintf("select id, revdate, cvid, views from docread where id = %d", $id);
+        $sql = sprintf("select id, revdate, cvid, views, fromid from docread where id = %d", $id);
         simpleQuery(getDbAccess() , $sql, $result, false, true);
         $user = getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;
+        
+        $sql = sprintf("select revdate from docfam where id = %d", $result["fromid"]);
+        simpleQuery(getDbAccess() , $sql, $familyRevdate, true, true);
+        $result[] = $familyRevdate;
         
         if ($result["cvid"]) {
             $sql = sprintf("select revdate from docread where id = %d", $result["cvid"]);
@@ -566,7 +560,7 @@ class View extends Crud
         $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         return join(" ", $result);
     }
-
+    
     public function analyseJSON($jsonString)
     {
         $values = DocumentUtils::analyzeDocumentJSON($jsonString);

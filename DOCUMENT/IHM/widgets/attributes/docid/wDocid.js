@@ -82,6 +82,7 @@ define([
                 this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
+                        window.dcp.document.clear();
                         if (_.isUndefined($(this).data("index"))) {
                             window.dcp.document.set("initid", scope.options.value.value);
                         } else {
