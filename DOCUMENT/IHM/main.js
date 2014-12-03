@@ -85,7 +85,8 @@ require([
         document.fetch();
     });
 
-    Backbone.history.start();
+    // Add pushstate for modern browser
+    Backbone.history.start({pushState : true});
 
     window.dcp.router = new Router({document : document});
     window.dcp.document = document;

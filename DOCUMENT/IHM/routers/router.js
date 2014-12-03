@@ -7,29 +7,33 @@ define([
 
     return Backbone.Router.extend({
         routes : {
-            ":initid/:revision/:viewid" : "fetch"
+            "?app=DOCUMENT&mode=:mode&id=:initid&revision=:revision&vid=:viewId" : "fetch"
         },
 
         initialize : function (options) {
             var currentRouter = this;
             this.document = options.document;
-            this.urlFragmentTemplate = _.template("<%= initid %>/<%= revision %>/<%= viewId %>");
+            this.urlFragmentTemplate = _.template("?app=DOCUMENT&mode=<%= mode %>&id=<%= initid %>&revision=<%= revision %>&vid=<%= viewId %>");
+            // Listen to document sync and update url
             this.document.listenTo(this.document, "sync", function sync() {
                 var options = {
                     "initid" :   currentRouter.document.get("initid"),
                     "revision" : currentRouter.document.get("revision"),
-                    "viewId" :   currentRouter.document.get("viewId")
+                    "viewId" :   currentRouter.document.get("viewId"),
+                    "mode" :     currentRouter.document.get("renderMode")
                 };
                 if (window.dcp.viewData.documentIdentifier === options.initid &&
                     window.dcp.viewData.revision === options.revision &&
                     window.dcp.viewData.vid === options.viewId) {
                     return;
                 }
-                currentRouter.navigate(currentRouter.urlFragmentTemplate(options));
+                if (options.initid) {
+                    currentRouter.navigate(currentRouter.urlFragmentTemplate(options));
+                }
             });
         },
 
-        fetch : function fetch(initid, revision, viewId) {
+        fetch : function fetch(mode, initid, revision, viewId) {
             this.document.set({"initid" : initid, "revision" : revision, "viewId" : viewId}).fetch();
         }
 
