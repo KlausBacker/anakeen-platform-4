@@ -63,19 +63,20 @@ define([
                             confirmOptions = configMenu.confirmationOptions || {};
 
                             confirmDcpWindow = $('body').dcpConfirm({
-                                title :    Mustache.render(confirmOptions.title, window.dcp.documentData),
+                                title :    Mustache.render(confirmOptions.title, scopeWidget.options),
                                 width :    confirmOptions.windowWidth,
                                 height :   confirmOptions.windowHeight,
                                 messages : {
-                                    okMessage :     Mustache.render(confirmOptions.confirmButton, window.dcp.documentData),
-                                    cancelMessage : Mustache.render(confirmOptions.cancelButton, window.dcp.documentData),
+                                    okMessage :     Mustache.render(confirmOptions.confirmButton, scopeWidget.options),
+                                    cancelMessage : Mustache.render(confirmOptions.cancelButton, scopeWidget.options),
                                     textMessage :   confirmText
                                 },
                                 confirm :  function confirm() {
                                     $elementA.removeClass('menu--confirm');
                                     $elementA.trigger("click");
                                     $elementA.addClass('menu--confirm');
-                                }
+                                },
+                                templateData : scopeWidget.options
                             });
                             confirmDcpWindow.data('dcpWindow').open();
                         } else {

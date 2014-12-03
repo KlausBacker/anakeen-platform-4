@@ -24,3 +24,9 @@ You should modify the proxy options to indicate where is the dynacase URL (root 
 ## Links
 
 See [karma](https://karma-runner.github.io/0.12/index.html)
+
+## List of the browser
+
+You can have the list of the browserstack browser with the following command :
+
+`curl -u "my_user:my_api_password" https://www.browserstack.com/automate/browsers.json`

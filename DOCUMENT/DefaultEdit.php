@@ -36,7 +36,7 @@ class DefaultEdit extends RenderDefault
         }
         $menu->appendElement($item);
         if ($user->id === "1") {
-            $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#save!/{{document.properties.id}}");
+            $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#event/document:save:force");
             $item->setVisibility($item::VisibilityHidden);
             $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
             if (empty($document->id)) {
@@ -46,7 +46,7 @@ class DefaultEdit extends RenderDefault
         }
         
         if (empty($document->id)) {
-            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#create/{{document.properties.id}}");
+            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#event/document:create");
             $item->setBeforeContent('<div class="fa fa-save" />');
             $item->setTooltipLabel(___("Record document to server", "UiMenu"));
             $menu->appendElement($item);
