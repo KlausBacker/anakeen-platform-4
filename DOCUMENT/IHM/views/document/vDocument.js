@@ -169,10 +169,11 @@ define([
         publishMessages : function publishMessages() {
             var currentView = this;
             _.each(this.model.get("messages"), function (aMessage) {
-                if (aMessage.type === "message") {
+                if (aMessage.type === "message" || aMessage.type === "notice") {
                     aMessage.type = "info";
                 }
-                currentView.trigger("showInfo", {
+                currentView.trigger("showMessage",  {
+                    type: aMessage.type,
                     title :       aMessage.contentText,
                     htmlMessage : aMessage.contentHtml
                 });
