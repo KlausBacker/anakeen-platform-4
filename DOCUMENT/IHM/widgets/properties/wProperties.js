@@ -70,18 +70,18 @@ define([
 
             '<tr><td class="properties-separator" colspan="2"></td></tr>' +
 
-            '<tr><td class="properties-description">{{labels.workflow}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{workflow.id}}">{{#workflow.icon}}<img src="{{workflow.icon}}"/>{{/workflow.icon}}{{workflow.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.workflow}}</td><td class="properties-value"><a  data-document-id="{{workflow.id}}" href="?app=DOCUMENT&id={{workflow.id}}">{{#workflow.icon}}<img src="{{workflow.icon}}"/>{{/workflow.icon}}{{workflow.title}}</a></td></tr>' +
             '<tr><td class="properties-description">{{labels.activity}}</td><td class="properties-value">{{#state.reference}}<div class="properties-value-statecolor" style="background-color:{{state.color}}"/>{{state.displayValue}}{{/state.reference}}</td></tr>' +
 
 
-            '<tr><td class="properties-description">{{labels.family}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{family.id}}"><img src="{{family.icon}}"/>{{family.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.family}}</td><td class="properties-value"><a data-document-id="{{family.id}}" href="?app=DOCUMENT&id={{family.id}}"><img src="{{family.icon}}"/>{{family.title}}</a></td></tr>' +
 
             '<tr><td class="properties-separator" colspan="2"></td></tr>' +
-            '<tr><td class="properties-description">{{labels.createdBy}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{createdBy.id}}"><img src="{{createdBy.icon}}"/>{{createdBy.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.createdBy}}</td><td class="properties-value"><a data-document-id="{{createdBy.id}}" href="?app=DOCUMENT&id={{createdBy.id}}"><img src="{{createdBy.icon}}"/>{{createdBy.title}}</a></td></tr>' +
 
             '<tr><td class="properties-description">{{labels.lockedBy}}</td><td class="properties-value">' +
             '{{#security.lock.lockedBy.id}}' +
-            '<a href="?app=DOCUMENT&id={{security.lock.lockedBy.id}}"><img src="{{security.lock.lockedBy.icon}}"/>{{security.lock.lockedBy.title}}</a>' +
+            '<a data-document-id="{{security.lock.lockedBy.id}}" href="?app=DOCUMENT&id={{security.lock.lockedBy.id}}"><img src="{{security.lock.lockedBy.icon}}"/>{{security.lock.lockedBy.title}}</a>' +
             '{{/security.lock.lockedBy.id}}' +
             '{{^security.lock.lockedBy.id}}{{labels.notLocked}}{{/security.lock.lockedBy.id}}' +
             '</td></tr>' +
@@ -103,10 +103,10 @@ define([
             '<tr><td class="properties-description">{{labels.lastAccessDate}}</td><td class="properties-value">{{#formatDate}}{{lastAccessDate}}{{/formatDate}}</td></tr>' +
 
             '<tr><td class="properties-separator" colspan="2"></td></tr>' +
-            '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{security.profil.id}}">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
-            '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{security.profil.reference.id}}">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a data-document-id="{{security.profil.id}}" href="?app=DOCUMENT&id={{security.profil.id}}">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a data-document-id="{{security.profil.reference.id}}" href="?app=DOCUMENT&id={{security.profil.reference.id}}">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
 
-            '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a href="?app=DOCUMENT&id={{viewController.id}}">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a data-document-id="{{viewController.id}}" href="?app=DOCUMENT&id={{viewController.id}}">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
 
             '</tbody></table>';
         },
@@ -122,6 +122,15 @@ define([
 
             this.element.data("dcpDocumentProperties", this);
 
+            this.currentWidget.on("click"+ this.eventNamespace, "a[data-document-id]", function (event) {
+                var docid=$(this).data("document-id");
+                if (window.dcp.document && docid) {
+                    event.preventDefault();
+                    window.dcp.document.clear();
+                    window.dcp.document.set("initid", docid);
+                    window.dcp.document.fetch();
+                }
+            });
             this.currentWidget.kendoWindow(this.options.window);
 
         },
