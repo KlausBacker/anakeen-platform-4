@@ -169,7 +169,7 @@ define([
                 switch (message.code) {
                     case "CRUD0211":// Syntax Error
                         if (message.data && message.data.id) {
-                            attrModel = this.get('attributes').get(message.data.id);
+                            attrModel = currentModel.get('attributes').get(message.data.id);
                             if (attrModel) {
                                 attrModel.setErrorMessage(message.data.err, message.data.index);
                                 currentModel.trigger("showError", {

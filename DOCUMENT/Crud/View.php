@@ -123,6 +123,36 @@ class View extends Crud
      */
     public function update($resourceId)
     {
+        
+        if ($this->viewIdentifier != self::coreViewEditionId) {
+            $document = $this->getDocument($resourceId);
+            // apply specified mask
+            if (($this->viewIdentifier != self::defaultViewEditionId) && ($document->cvid > 0)) {
+                // special controlled view
+                
+                /**
+                 * @var \CVDoc $cvdoc
+                 */
+                $cvdoc = DocManager::getDocument($document->cvid);
+                $cvdoc->Set($document);
+                $err = $cvdoc->control($this->viewIdentifier); // control special view
+                if ($err != "") {
+                    $exception = new Exception("CRUDUI0008", $this->viewIdentifier, $cvdoc->getTitle() , $document->getTitle());
+                    $exception->setUserMessage($err);
+                    $exception->setHttpStatus("403", "Access deny");
+                    throw $exception;
+                }
+                $tview = $cvdoc->getView($this->viewIdentifier);
+                $mask = $tview[cvrender::cv_mskid];
+                if ($mask) {
+                    $document->setMask($mask); // apply mask to avoid modification of invisible attribute
+                    
+                }
+            } else if ($document->cvid > 0) {
+                $document->setMask($document::USEMASKCVEDIT);
+            }
+        }
+        
         $documentData = new DocumentCrud();
         $documentData->setContentParameters($this->contentParameters);
         $documentData->update($resourceId);
@@ -348,6 +378,7 @@ class View extends Crud
     {
         if ($this->revision === - 1) {
             $document = DocManager::getDocument($resourceId);
+            DocManager::cache()->addDocument($document);
         } else {
             $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
             $document = DocManager::getDocument($revId, false);
