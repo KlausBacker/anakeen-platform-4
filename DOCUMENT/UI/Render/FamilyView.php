@@ -31,10 +31,6 @@ class FamilyView extends RenderDefault
         
         $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document:history");
         $item->setBeforeContent('<div class="fa fa-history" />');
-        /*$targetOption = new MenuTargetOptions();
-        $targetOption->windowHeight = "400px";
-        $targetOption->windowWidth = "600px";
-        $item->setTarget("_dialog", $targetOption);*/
         $menu->appendElement($item);
         
         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
