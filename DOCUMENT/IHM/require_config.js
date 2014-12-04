@@ -34,7 +34,8 @@
             "ckeditor-jquery" :  "../lib/ckeditor/4/adapters/jquery",
             "datatables":         "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
             "datatables-bootstrap":  "../lib/jquery-dataTables/1.10/bootstrap/3"
-        }
+        },
+        "waitSeconds" : 60
     };
     if (window.dcp.ws) {
         config.urlArgs = "ws=" + window.dcp.ws;

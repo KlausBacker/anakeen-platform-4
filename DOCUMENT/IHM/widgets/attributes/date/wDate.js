@@ -26,11 +26,19 @@ define([
         kendoWidgetClass: "kendoDatePicker",
 
         _initDom: function () {
+
+            if (this.options.renderOptions.kendoDateConfiguration.format) {
+                console.log("render date", this.options.renderOptions.kendoDateConfiguration, this.options.value);
+                this.options.value.displayValue=this.formatDate(this.parseDate(this.options.value.value));
+            }
+
             this.element.addClass("dcpAttribute__contentWrapper");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-id", this.options.id);
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+
+
             if (this.kendoWidget.length) {
                 if (this.options.hasAutocomplete) {
                     this.activateAutocomplete(this.kendoWidget);
@@ -54,6 +62,8 @@ define([
             var originalValue, originalDate;
             value = _.clone(value);
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
+                value.displayValue = this.formatDate(this.parseDate(value.value));
+            } else if (this.options.renderOptions.kendoDateConfiguration.format) {
                 value.displayValue = this.formatDate(this.parseDate(value.value));
             }
 
@@ -130,6 +140,9 @@ define([
         },
 
         formatDate: function formatDate(value) {
+            if (this.options.renderOptions.kendoDateConfiguration.format) {
+                return kendo.toString(value, this.options.renderOptions.kendoDateConfiguration.format);
+            }
             return kendo.toString(value, "d");
         },
 

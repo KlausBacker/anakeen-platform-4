@@ -32,19 +32,33 @@ define([
         idAttribute : "initid",
 
         defaults : {
-            revisionId : false,
-            renderMode : "read",
+            revision : -1,
+            viewId : undefined,
+            renderMode : "view",
             properties : undefined,
             menus :      undefined,
             attributes : undefined
         },
 
         url : function url() {
-            var urlData = "api/v1/documents/" + encodeURIComponent(this.id);
-            if (this.get("revision")) {
-                urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
+            var urlData = "api/v1/", viewId = this.get("viewId");
+            if (this.get("creationFamid") && this.id === null) {
+                urlData += "families/" + encodeURIComponent(this.get("creationFamid"))+"/documentsViews/";
+            } else {
+                urlData += "documents/" + encodeURIComponent(this.id);
+                if (this.get("revision") && this.get("revision") !== -1) {
+                    urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
+                }
+                if (viewId === undefined) {
+                    if (this.get("renderMode") === "view") {
+                        viewId = "!defaultConsultation";
+                    }
+                    if (this.get("renderMode") === "edit") {
+                        viewId = "!defaultEdition";
+                    }
+                }
+                urlData += "/views/" + encodeURIComponent(viewId);
             }
-            urlData += "/views/" + encodeURIComponent(this.get("viewId"));
             return urlData;
         },
 
@@ -255,10 +269,13 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        clearErrorMessages : function clearErrorMessages() {
+        redrawErrorMessages : function clearErrorMessages() {
             var attrModels = this.get('attributes');
             _.each(attrModels.models, function (attrModel) {
+                var message=attrModel.get("errorMessage");
+                // redo error after document is show
                 attrModel.setErrorMessage(null);
+                attrModel.setErrorMessage(message);
             });
         },
 
@@ -268,22 +285,23 @@ define([
          * @returns {{properties: (*|properties|exports.defaults.properties|exports.parse.properties|.createObjectExpression.properties|AST_Object.$propdoc.properties), menus: (app.views.shared.menu|*), locale: *, renderMode: string, attributes: Array, templates: *, renderOptions: *}}
          */
         parse : function parse(response) {
-            var attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes;
+            var values, attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes,
+                view = response.data.view;
             if (response.success === false) {
                 throw new Error("Unable to get the data from documents");
             }
-            if (response.data.view.renderOptions.mode) {
-                if (response.data.view.renderOptions.mode === "edit") {
+            if (view.renderOptions.mode) {
+                if (view.renderOptions.mode === "edit") {
                     renderMode = "edit";
-                } else if (response.data.view.renderOptions.mode === "view") {
+                } else if (view.renderOptions.mode === "view") {
                     renderMode = "view";
                 } else {
-                    throw new Error("Unkown render mode " + response.data.view.renderOptions.mode);
+                    throw new Error("Unkown render mode " + view.renderOptions.mode);
                 }
             }
-            valueAttributes = response.data.view.documentData.document.attributes;
-            visibilityAttributes = response.data.view.renderOptions.visibilities;
-            structureAttributes = response.data.view.documentData.family.structure;
+            valueAttributes = view.documentData.document.attributes;
+            visibilityAttributes = view.renderOptions.visibilities;
+            structureAttributes = view.documentData.family.structure;
             attributes = flattenAttributes(attributes, structureAttributes);
             _.each(attributes, function (currentAttributeStructure) {
                 if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
@@ -293,21 +311,25 @@ define([
                     currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
                 }
             });
-            return {
-                initid :        response.data.view.documentData.document.properties.id,
-                revision :      response.data.view.documentData.document.properties.revision,
-                viewId :        response.data.properties.identifier,
-                properties :    response.data.view.documentData.document.properties,
-                menus :         response.data.view.menu,
-                locale :        response.data.view.locale.culture,
+            values = {
+                initid :        response.data.properties.creationView === true ? null : view.documentData.document.properties.id,
+                properties :    view.documentData.document.properties,
+                menus :         view.menu,
+                locale :        view.locale.culture,
                 renderMode : renderMode || "view",
                 attributes :    attributes,
-                templates :     response.data.view.templates,
-                renderOptions : response.data.view.renderOptions,
-                customCSS :     response.data.view.style.css,
-                customJS :      response.data.view.script.js,
+                templates :     view.templates,
+                renderOptions : view.renderOptions,
+                customCSS :     view.style.css,
+                customJS :      view.script.js,
                 messages :      response.messages
             };
+            if (response.data.properties.creationView === true) {
+                values.creationFamid = view.documentData.document.properties.family.name;
+            } else {
+                values.creationFamid = null;
+            }
+            return values;
         },
 
         "set" : function setValues(attributes, options) {

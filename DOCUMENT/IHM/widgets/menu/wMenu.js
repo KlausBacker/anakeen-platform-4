@@ -133,11 +133,13 @@ define([
                     if (!$mainElement.data("isFixed")) {
                         $mainElement.data("isFixed", "1");
                         $mainElement.parent().addClass("menu--fixed");
+                        $(window.document).trigger("redrawErrorMessages");
                     }
                 } else {
                     if ($mainElement.data("isFixed")) {
                         $mainElement.data("isFixed", null);
                         $mainElement.parent().removeClass("menu--fixed");
+                        $(window.document).trigger("redrawErrorMessages");
                     }
                 }
             });

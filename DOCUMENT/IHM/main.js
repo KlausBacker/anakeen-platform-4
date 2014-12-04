@@ -47,7 +47,7 @@ require([
             $loading.dcpLoading('setPercent', data);
         });
         documentView.on('loaderShow', function () {
-            console.time("hotRender");
+            console.time("xhr+render document view");
             $loading.dcpLoading('show');
         });
         documentView.on('loaderHide', function () {
@@ -57,7 +57,7 @@ require([
             $loading.dcpLoading('addItem');
         });
         documentView.on('renderDone', function () {
-            console.timeEnd("hotRender");
+            console.timeEnd("xhr+render document view");
             $loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
             _.delay(function () {
                 $loading.dcpLoading("hide");
@@ -75,7 +75,8 @@ require([
 
     document = initModel({
         "initid" : window.dcp.viewData.documentIdentifier,
-        "viewId" : window.dcp.viewData.vid
+        "viewId" : window.dcp.viewData.vid,
+        "revision" : window.dcp.viewData.revision
     });
     documentView = initView(document);
     document.fetch();

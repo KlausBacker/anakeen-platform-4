@@ -38,7 +38,7 @@ define([
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
-            this.listenTo(this.model.getDocumentModel(), 'showTab', this.afterShow);
+            this.listenTo(this.model, 'showTab', this.afterShow);
             this.options = options;
         },
 
@@ -68,7 +68,7 @@ define([
                     data.templates = this.model.getTemplates().attribute[this.model.get("type")];
                 } else {
                     // fallback in case of no specific templates
-                    data.templates = this.model.getTemplates().attribute.default;
+                    data.templates = this.model.getTemplates().attribute["default"];
                 }
             }
             data.deleteButton = true;

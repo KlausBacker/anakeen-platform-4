@@ -30,15 +30,18 @@ define([
             this.listenTo(this.model, 'error', this.showView);
         },
 
-        cleanAndRender : function cleanAndRender() {
+        cleanAndRender: function cleanAndRender() {
+            this.$el.removeClass("dcpDocument--" + this.model.previous("renderMode"));
             this.trigger("cleanNotification");
             this.render();
         },
 
         render : function render() {
-            console.time("render document");
+            console.time("render document view");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
+            var documentView=this;
+
             this.template = this.getTemplates("body");
             this.partials = this.getTemplates("sections");
 
@@ -69,7 +72,7 @@ define([
             try {
                 var viewMenu = new ViewDocumentMenu({
                     model : this.model,
-                    el :    this.$el.find(".dcpDocument__menu")[0]
+                    el :    this.$el.find(".dcpDocument__menu:first")[0]
                 }).render();
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
@@ -79,7 +82,7 @@ define([
             try {
                 new ViewDocumentHeader({
                     model : this.model,
-                    el :    this.$el.find(".dcpDocument__header")[0]
+                    el :    this.$el.find(".dcpDocument__header:first")[0]
                 }).render();
             } catch (e) {
                 console.error(e);
@@ -105,7 +108,9 @@ define([
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
                     try {
                         viewTabLabel = new ViewAttributeTabLabel({model : model.get("attributes").get(currentAttr.id)});
-                        viewTabContent = new ViewAttributeTabContent({model : model.get("attributes").get(currentAttr.id)});
+                        viewTabContent = new ViewAttributeTabContent({
+                            model : model.get("attributes").get(currentAttr.id)
+                        });
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                         if (tabItems.length > 1) {
@@ -129,8 +134,9 @@ define([
             });
 
             this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-                show : function () {
-                    currentView.model.trigger("showTab");
+                show : function (event) {
+                    var tabId = $(event.item).data("id");
+                    currentView.model.get("attributes").get(tabId).trigger("showTab");
                 }
             });
 
@@ -138,12 +144,14 @@ define([
                 this.kendoTabs.data("kendoTabStrip").select(0);
             }
 
-            $(document).on('drop.ddui dragover.ddui', function (e) {
+            $(window.document).on('drop.ddui dragover.ddui', function (e) {
                 e.preventDefault();
+            }).on('redrawErrorMessages.ddui', function (e) {
+                documentView.model.redrawErrorMessages();
             });
             this.$el.addClass("dcpDocument--show");
+            console.timeEnd("render document view");
             this.trigger("renderDone");
-            console.timeEnd("render document");
             this.$el.show();
             return this;
         },
@@ -238,8 +246,8 @@ define([
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderHide");
-            this.model.clearErrorMessages();
             this.$el.show();
+            this.model.redrawErrorMessages();
         },
 
         closeDocument : function closeDocument(viewId) {
@@ -268,8 +276,13 @@ define([
         },
 
         createDocument : function createDocument() {
-            /* TODO : implement that (review creation process) */
-            alert("You need to implement that !");
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function displaySuccess() {
+                    currentView.trigger("showSuccess", {title : "Document Saved"});
+                });
+            }
         },
 
         /**
@@ -329,7 +342,7 @@ define([
             } catch (e) {
                 console.error(e);
             }
-            $(document).off("ddui");
+            $(window.document).off("ddui");
 
             return Backbone.View.prototype.remove.call(this);
         }

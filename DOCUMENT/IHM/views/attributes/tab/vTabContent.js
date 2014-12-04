@@ -8,41 +8,54 @@ define([
 
     return Backbone.View.extend({
 
-        tagName: "div",
+        tagName : "div",
 
-        className: "dcpDocument__tabs--pane",
+        className : "dcpDocument__tabs--pane",
 
-        initialize: function () {
+        initialize : function (options) {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
             this.listenTo(this.model.get("content"), 'reset', this.render);
             this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'destroy', this.remove);
+            this.listenTo(this.model, 'showTab', this.renderContent);
+            this.listenTo(this.model, 'showTab', this.propageShowTab);
+            this.initializeContent = options.initializeContent;
+            this.initialized = false;
         },
 
-        render: function () {
-            var $content = this.$el, model = this.model;
-            //console.time("render tab " + this.model.id);
+        render : function () {
             this.$el.empty();
             this.$el.attr("id", this.model.id);
+            this.$el.append('<p> Loading : <i class="fa fa-spinner fa-spin"></i></p>');
 
             var hasOneContent = this.model.get("content").some(function (value) {
                 return value.isDisplayable();
             });
 
-            if (!hasOneContent) {
-                $content.append(this.model.getOption('showEmptyContent'));
+            if (!hasOneContent || !this.initializeContent) {
+                this.$el.append(this.model.getOption('showEmptyContent'));
             } else {
+                this.renderContent();
+            }
+            this.trigger("renderDone");
+            return this;
+        },
+
+        renderContent : function () {
+            var $content = this.$el, model = this.model;
+            if (this.initialized === false) {
+                this.$el.empty();
+                console.time("render tab " + this.model.id);
                 this.model.get("content").each(function (currentAttr) {
                     var view;
                     try {
                         if (!currentAttr.isDisplayable()) {
-                            $(".dcpLoading").dcpLoading("addItem", currentAttr.attributes.content.length );
                             return;
                         }
                         if (currentAttr.get("type") === "frame") {
-                            view = new ViewAttributeFrame({model: currentAttr});
+                            view = new ViewAttributeFrame({model : currentAttr});
                             $content.append(view.render().$el);
                         } else {
                             throw new Error("unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id);
@@ -51,13 +64,16 @@ define([
                         console.error(e);
                     }
                 });
+                this.initialized = true;
+                console.timeEnd("render tab " + this.model.id);
             }
-            //console.timeEnd("render tab " + this.model.id);
-            this.trigger("renderDone");
-            return this;
         },
 
-        updateLabel: function () {
+        propageShowTab : function propageShowTab() {
+            this.model.get("content").propageEvent('showTab');
+        },
+
+        updateLabel : function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         }
     });
