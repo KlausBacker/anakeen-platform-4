@@ -199,7 +199,7 @@ define([
                 options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
             }
             inputValue.kendoMultiSelect(options);
-            this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
+            this.element.find('.dcpAttribute__content--docid--button').on("click"+ this.eventNamespace, function (event) {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });

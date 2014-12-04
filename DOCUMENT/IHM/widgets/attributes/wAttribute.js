@@ -352,7 +352,7 @@ define([
                 var scope = this;
 
                 var inputTargetFilter = ".dcpAttribute__content";
-                this._getFocusInput().on("focus." + this.eventNamespace, function (event) {
+                this._getFocusInput().on("focus" + this.eventNamespace, function (event) {
                     var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.showInputTooltip(ktTarget);
                 });
@@ -372,7 +372,7 @@ define([
         _initButtonsEvent: function _initButtonsEvent() {
             var scope = this;
             var $extraButtons = this.element.find(".dcpAttribute__content__button--extra");
-            $extraButtons.on("click." + this.eventNamespace, function (event) {
+            $extraButtons.on("click" + this.eventNamespace, function (event) {
                 var buttonsConfig = scope.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
@@ -438,12 +438,12 @@ define([
                 titleDelete = $deleteButton.attr('title');
                 titleDelete += this.options.labels.deleteAttributeNames;
             }
-            $deleteButton.on("mousedown." + this.eventNamespace, function (event) {
+            $deleteButton.on("mousedown" + this.eventNamespace, function (event) {
 
 
             }).attr('title', titleDelete);
 
-            $deleteButton.on("click." + this.eventNamespace, function (event) {
+            $deleteButton.on("click" + this.eventNamespace, function (event) {
                 currentWidget._trigger("delete", event, {
                     index: currentWidget._getIndex(),
                     id: currentWidget.options.id

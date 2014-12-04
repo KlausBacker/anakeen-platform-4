@@ -78,31 +78,31 @@ define([
             var fileUrl = this.options.value.url;
 
             if (fileUrl) {
-                this.element.find(".dcpAttribute__content__button--file").on("click", function (event) {
+                this.element.find(".dcpAttribute__content__button--file").on("click"+ this.eventNamespace, function (event) {
                     window.location.href = fileUrl + "&inline=no";
                 });
             } else {
                 this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
             }
-            this.element.on("dragenter." + this.eventNamespace, function (event) {
+            this.element.on("dragenter" + this.eventNamespace, function (event) {
                 inputText.val(scope.options.value.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
             });
-            this.element.on("dragover." + this.eventNamespace, function (event) {
+            this.element.on("dragover" + this.eventNamespace, function (event) {
                 inputText.val(scope.options.labels.dropFileHere);
                 event.stopPropagation();
                 event.preventDefault();
                 scope.element.addClass("dcpAttribute__content--dropzone");
             });
-            this.element.on("dragleave." + this.eventNamespace, function (event) {
+            this.element.on("dragleave" + this.eventNamespace, function (event) {
                 inputText.val(scope.options.value.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
                 scope.element.removeClass("dcpAttribute__content--dropzone");
             });
 
-            this.element.on("drop." + this.eventNamespace, function (event) {
+            this.element.on("drop" + this.eventNamespace, function (event) {
                 inputText.val(scope.options.value.displayValue);
                 scope.element.removeClass("dcpAttribute__content--dropzone");
                 event.stopPropagation();
