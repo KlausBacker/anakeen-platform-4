@@ -55,6 +55,7 @@ define([
                         }
                     } catch (e) {
                         $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
+                        TraceKit.report(e);
                         console.error(e);
                     }
                 });

@@ -32,6 +32,7 @@ define([
                     this.options.value.value = this.ckEditorInstance.getData();
                 }
             } catch (e) {
+                TraceKit.report(e);
                 console.error(e);
             }
         },

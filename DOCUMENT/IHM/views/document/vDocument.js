@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, TraceKit*/
 
 define([
     'underscore',
@@ -74,7 +74,8 @@ define([
             try {
                 this.$el.append($(Mustache.render(this.template, this.model.toData(), this.partials)));
             } catch (e) {
-                console.log(e);
+                TraceKit.report(e);
+                console.error(e);
             }
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
             this.trigger("loading", 10);
@@ -87,6 +88,7 @@ define([
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
             } catch (e) {
+                TraceKit.report(e);
                 console.error(e);
             }
             try {
@@ -95,6 +97,7 @@ define([
                     el :    this.$el.find(".dcpDocument__header:first")[0]
                 }).render();
             } catch (e) {
+                TraceKit.report(e);
                 console.error(e);
             }
             this.trigger("loading", 20);
@@ -112,6 +115,7 @@ define([
                         view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
+                        TraceKit.report(e);
                         console.error(e);
                     }
                 }
@@ -137,6 +141,7 @@ define([
                         $el.find(".dcpDocument__tabs").append(viewTabContent.render().$el);
                         $el.find(".dcpDocument__tabs").show();
                     } catch (e) {
+                        TraceKit.report(e);
                         console.error(e);
                     }
                 }
@@ -352,6 +357,7 @@ define([
                 }
 
             } catch (e) {
+                TraceKit.report(e);
                 console.error(e);
             }
             $(window.document).off("ddui");

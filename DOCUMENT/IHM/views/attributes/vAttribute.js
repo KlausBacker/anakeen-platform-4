@@ -337,6 +337,7 @@ define([
                     this.widgetApply(this.currentDcpWidget, "destroy");
                 }
             } catch (e) {
+                TraceKit.report(e);
                 console.error(e);
             }
             return Backbone.View.prototype.remove.call(this);
