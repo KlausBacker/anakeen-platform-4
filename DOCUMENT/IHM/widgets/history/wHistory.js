@@ -135,6 +135,17 @@ define([
                     scope.currentWidget.find(".history-diff-input").removeAttr("disabled", "disabled");
                 }
             });
+
+            this.currentWidget.on("click" + this.eventNamespace, "a[data-document-id]", function (event) {
+                var docid=$(this).data("document-id");
+                if (window.dcp.document && docid) {
+                    event.preventDefault();
+                    window.dcp.document.clear();
+                    window.dcp.document.set("revision", parseInt($(this).data("revision")));
+                    window.dcp.document.set("initid", docid);
+                    window.dcp.document.fetch();
+                }
+            });
         },
         open: function open() {
             this.currentWidget.data("kendoWindow").open();
@@ -240,7 +251,10 @@ define([
                             if (data !== '') {
                                 return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&id=' +
                                 historyWidget.options.documentId +
-                                '&revision=' + data + '">' +
+                                '&revision=' + data + '"' +
+                                'data-document-id="'+historyWidget.options.documentId+'" '+
+                                'data-revision="'+data+'"'+
+                                '>' +
                                 historyWidget.options.labels.linkRevision.replace('#', data) + '</a>';
                             } else {
                                 return data;
