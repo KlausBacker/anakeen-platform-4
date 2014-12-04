@@ -1,21 +1,22 @@
 define([
+    'mustache',
     'widgets/attributes/file/wFile'
-], function () {
+], function (Mustache) {
     'use strict';
 
     $.widget("dcp.dcpImage", $.dcp.dcpFile, {
 
-        options : {
-            type : "image",
-            labels : {
-                dropFileHere : "Drop image here",
-                placeHolder : "Click to upload an image",
-                tooltipLabel : "Choose image",
+        options: {
+            type: "image",
+            labels: {
+                dropFileHere: "Drop image here",
+                placeHolder: "Click to upload an image",
+                tooltipLabel: "Choose image",
                 downloadLabel: "Download the image"
             }
         },
 
-        _initDom : function () {
+        _initDom: function () {
             if (this.getMode() === "read") {
                 var urlSep = '?';
                 if (this.options.value.url) {
@@ -24,8 +25,8 @@ define([
                         if (this.options.renderOptions.thumbnailWidth > 0) {
                             urlSep = (this.options.value.thumbnail.indexOf('?') >= 0) ? "&" : "?";
                             this.options.value.thumbnail += urlSep +
-                                "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
-                                "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
+                            "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
+                            "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
                         } else if (this.options.renderOptions.thumbnailWidth === 0) {
                             this.options.value.thumbnail = this.options.value.url;
                         }
@@ -36,11 +37,56 @@ define([
             this._super();
         },
 
+
+        _initEvent: function wFileInitEvent() {
+            this._super();
+            if (this.getMode() === "read") {
+                this._initDisplayEvent();
+            }
+
+        },
+
+        _initDisplayEvent: function wImageinitDisplayEvent() {
+            var scope = this;
+            var htmlLink = this.getLink();
+            this.element.find('.dcpAttribute__content__link').off("click");
+            this.element.find('.dcpAttribute__content__link').on("click" + this.eventNamespace, function (event) {
+
+                if (htmlLink.target === "_dialog") {
+                    event.preventDefault();
+                    var renderTitle;
+                    var index = $(this).data("index");
+                    if (typeof index !== "undefined" && index !== null) {
+                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value[index]);
+                    } else {
+                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value);
+                    }
+
+                    var bdw = $('<div><table class="dcpImage-window"><tr><td><img src="' + $(this).attr("href") + '"/></td></tr></table></div>');
+                    $('body').append(bdw);
+                    // $(this).attr("href"),
+                    var dw = bdw.kendoWindow({
+                        title: scope.options.value.displayValue,
+                        width: htmlLink.windowWidth,
+                        height: htmlLink.windowHeight,
+                        iframe: false,
+                        actions: [
+                            "Maximize",
+                            "Close"
+                        ]
+                    });
+
+                    dw.data("kendoWindow").center().open();
+                }
+            });
+        },
+
+
         /**
          * Condition before upload file
          * @returns {boolean}
          */
-        uploadCondition : function wImageUploadCondition(file) {
+        uploadCondition: function wImageUploadCondition(file) {
             if (file.type.substr(0, 5) !== "image") {
                 this.setError("Invalid image file");
                 return false;
@@ -49,7 +95,7 @@ define([
             return true;
         },
 
-        getType : function () {
+        getType: function () {
             return "image";
         }
 

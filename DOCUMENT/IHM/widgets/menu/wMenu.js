@@ -12,6 +12,7 @@ define([
 
         _create : function _create() {
             this._tooltips= [];
+            this.popupWindows= [];
             this._initStructure();
         },
 
@@ -78,6 +79,9 @@ define([
                                 },
                                 templateData : scopeWidget.options
                             });
+
+                            scopeWidget.popupWindows.push(confirmDcpWindow.data('dcpWindow'));
+
                             confirmDcpWindow.data('dcpWindow').open();
                         } else {
                             if (href.substring(0, 7) === "#event/") {
@@ -106,6 +110,7 @@ define([
                                         iframe :  true
                                     });
 
+                                    scopeWidget.popupWindows.push(dcpWindow.data('dcpWindow'));
                                     dcpWindow.data('dcpWindow').kendoWindow().center();
                                     dcpWindow.data('dcpWindow').open();
 
@@ -231,6 +236,11 @@ define([
             if (kendoWidget) {
                 kendoWidget.destroy();
             }
+
+            _.each(this.popupWindows, function (pWindow) {
+                pWindow.destroy();
+            });
+
             _.each(this._tooltips, function(currentTooltip) {
                 currentTooltip.tooltip("destroy");
             });

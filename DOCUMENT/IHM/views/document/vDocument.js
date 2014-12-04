@@ -32,6 +32,16 @@ define([
 
         cleanAndRender: function cleanAndRender() {
             this.$el.removeClass("dcpDocument--" + this.model.previous("renderMode"));
+            try {
+                if (this.historyWidget   ) {
+                    this.historyWidget.destroy();
+                }
+                if (this.propertiesWidget   ) {
+                    this.propertiesWidget.destroy();
+                }
+            } catch (e) {
+                console.error(e);
+            }
             this.trigger("cleanNotification");
             this.render();
         },
@@ -159,10 +169,11 @@ define([
         publishMessages : function publishMessages() {
             var currentView = this;
             _.each(this.model.get("messages"), function (aMessage) {
-                if (aMessage.type === "message") {
+                if (aMessage.type === "message" || aMessage.type === "notice") {
                     aMessage.type = "info";
                 }
-                currentView.trigger("showInfo", {
+                currentView.trigger("showMessage",  {
+                    type: aMessage.type,
                     title :       aMessage.contentText,
                     htmlMessage : aMessage.contentHtml
                 });
@@ -190,7 +201,7 @@ define([
         },
 
         showHistory : function documentShowHistory(data) {
-            var historyWidget = $('body').dcpDocumentHistory({
+            this.historyWidget = $('body').dcpDocumentHistory({
                 documentId : this.model.get("properties").get("initid"),
                 window :     {
                     width :  "80%",
@@ -198,11 +209,11 @@ define([
                 }
             }).data("dcpDocumentHistory");
 
-            historyWidget.open();
+            this.historyWidget.open();
         },
 
         showProperties : function documentShowProperties(data) {
-            var propertiesWidget = $('body').dcpDocumentProperties({
+            this.propertiesWidget = $('body').dcpDocumentProperties({
                 documentId : this.model.get("properties").get("initid"),
                 window :     {
                     width :  "400px",
@@ -210,7 +221,7 @@ define([
                 }
             }).data("dcpDocumentProperties");
 
-            propertiesWidget.open();
+            this.propertiesWidget.open();
         },
 
         updateTitle : function () {
@@ -339,6 +350,7 @@ define([
                 if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
                     this.kendoTabs.data("kendoTabStrip").destroy();
                 }
+
             } catch (e) {
                 console.error(e);
             }

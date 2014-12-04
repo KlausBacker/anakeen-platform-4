@@ -113,7 +113,7 @@ define([
 
         _bindEvents: function () {
             var currentWidget = this;
-            this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__check", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check", function () {
                 var $this = $(this);
                 currentWidget._unSelectLines();
                 if ($this.data("selectedRow") === "1") {
@@ -127,7 +127,7 @@ define([
 
                 }
             });
-            this.element.on("click." + this.eventNamespace, ".dcpArray__add", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__add", function () {
                 var sLine = currentWidget.selectedLineIndex();
                 if (sLine === null) {
                     currentWidget.addLine(currentWidget.options.nbLines++, true);
@@ -136,14 +136,14 @@ define([
                     currentWidget.addLine(sLine, true);
                 }
             });
-            this.element.on("click." + this.eventNamespace, ".dcpArray__copy", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function () {
                 var sLine = currentWidget.selectedLineIndex();
 
                 currentWidget.options.nbLines++;
                 currentWidget.copyLine(sLine, true);
 
             });
-            this.element.on("click." + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
         },

@@ -64,10 +64,10 @@ require([
                 console.timeEnd('main');
             }, 500);
         });
-        documentView.on("showInfo", function showInfo(message) {
-            $notification.dcpNotification("showInfo", message);
+        documentView.on("showMessage", function showMessage(message) {
+            $notification.dcpNotification("show", message.type, message);
         });
-        documentView.on("showSuccess", function showError(message) {
+        documentView.on("showSuccess", function showSuccess(message) {
             $notification.dcpNotification("showSuccess", message);
         });
         return documentView;

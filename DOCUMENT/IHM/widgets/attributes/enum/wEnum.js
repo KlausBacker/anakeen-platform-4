@@ -177,7 +177,7 @@ define([
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
 
-            labels.on("change." + this.eventNamespace, "input", function (event) {
+            labels.on("change" + this.eventNamespace, "input", function (event) {
                 var newValue = {};
                 newValue.value = $(this).val();
                 newValue.displayValue = $(this).closest('label').text().trim();
@@ -201,7 +201,7 @@ define([
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
 
-            labels.on("change." + this.eventNamespace, "input", function (event) {
+            labels.on("change" + this.eventNamespace, "input", function (event) {
 
                 var newValue = [];
 

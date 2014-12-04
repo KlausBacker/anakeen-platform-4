@@ -36,4 +36,8 @@ class ErrorCodeCrudUI
      * @see \Dcp\Ui\IRenderConfig::getJsReferences
      */
     const CRUDUI0007 = 'Wrong js reference : list must be an array';
+    /**
+     * @errorCode Access deny to update with this view
+     */
+    const CRUDUI0008 = 'Access deny view "%s". From "%s" view cnntrol assciated to "%s" document';
 }

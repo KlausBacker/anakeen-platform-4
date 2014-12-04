@@ -82,6 +82,7 @@ define([
                 this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
+                        window.dcp.document.clear();
                         if (_.isUndefined($(this).data("index"))) {
                             window.dcp.document.set("initid", scope.options.value.value);
                         } else {
@@ -198,7 +199,7 @@ define([
                 options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
             }
             inputValue.kendoMultiSelect(options);
-            this.element.find('.dcpAttribute__content--docid--button').on("click", function (event) {
+            this.element.find('.dcpAttribute__content--docid--button').on("click"+ this.eventNamespace, function (event) {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });

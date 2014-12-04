@@ -114,7 +114,7 @@ define([
 
         _controlDate: function (inputValue) {
             var scope = this;
-            inputValue.on('blur.' + this.eventNamespace, function validateDate(event) {
+            inputValue.on('blur' + this.eventNamespace, function validateDate(event) {
                 var dateValue = $(this).val().trim();
 
                 scope.setError(null); // clear Error before

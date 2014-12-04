@@ -46,15 +46,16 @@ define([
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid"))+"/documentsViews/";
             } else {
                 urlData += "documents/" + encodeURIComponent(this.id);
-                if (this.get("revision") && this.get("revision") !== -1) {
+                if (this.get("revision") >= 0) {
                     urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
                 }
                 if (viewId === undefined) {
                     if (this.get("renderMode") === "view") {
                         viewId = "!defaultConsultation";
-                    }
-                    if (this.get("renderMode") === "edit") {
+                    } else if (this.get("renderMode") === "edit") {
                         viewId = "!defaultEdition";
+                    } else {
+                        viewId = "!defaultConsultation";
                     }
                 }
                 urlData += "/views/" + encodeURIComponent(viewId);
@@ -169,7 +170,7 @@ define([
                 switch (message.code) {
                     case "CRUD0211":// Syntax Error
                         if (message.data && message.data.id) {
-                            attrModel = this.get('attributes').get(message.data.id);
+                            attrModel = currentModel.get('attributes').get(message.data.id);
                             if (attrModel) {
                                 attrModel.setErrorMessage(message.data.err, message.data.index);
                                 currentModel.trigger("showError", {
@@ -269,8 +270,8 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        redrawErrorMessages : function clearErrorMessages() {
-            var attrModels = this.get('attributes');
+        redrawErrorMessages : function redrawErrorMessages() {
+            var attrModels = this.get('attributes') || [];
             _.each(attrModels.models, function (attrModel) {
                 var message=attrModel.get("errorMessage");
                 // redo error after document is show
@@ -301,7 +302,12 @@ define([
             }
             valueAttributes = view.documentData.document.attributes;
             visibilityAttributes = view.renderOptions.visibilities;
-            structureAttributes = view.documentData.family.structure;
+if (view.documentData.family) {
+                structureAttributes = view.documentData.family.structure;
+            } else {
+                structureAttributes=[];
+            }
+
             attributes = flattenAttributes(attributes, structureAttributes);
             _.each(attributes, function (currentAttributeStructure) {
                 if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {

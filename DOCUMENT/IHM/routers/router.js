@@ -10,7 +10,7 @@ define([
         initialize : function (options) {
             var currentRouter = this;
             this.document = options.document;
-            this.urlFragmentTemplate = _.template("<%= path %>?app=DOCUMENT&mode=<%= mode %>&id=<%= initid %><% if (revision) { %>&revision=<%= revision %><% } %><% if (viewId) { %>&vid=<%= viewId %><% } %>");
+            this.urlFragmentTemplate = _.template("<%= path %>?app=DOCUMENT&mode=<%= mode %>&id=<%= initid %><% if (revision >= 0) { %>&revision=<%= revision %><% } %><% if (viewId) { %>&vid=<%= viewId %><% } %>");
 
             this.route(/[^?]*\?app=DOCUMENT([^#]+)/, "fetch");
             // Listen to document sync and update url
@@ -19,7 +19,7 @@ define([
                     options = {
                         "path" :     window.location.pathname,
                         "initid" :   currentRouter.document.get("initid"),
-                        "revision" : currentRouter.document.get("revision") !== -1 ? currentRouter.document.get("revision") : undefined,
+                        "revision" : currentRouter.document.get("revision") >= 0 ? currentRouter.document.get("revision") : undefined,
                         "mode" :     currentRouter.document.get("renderMode"),
                         "viewId" :   undefined
                     };
