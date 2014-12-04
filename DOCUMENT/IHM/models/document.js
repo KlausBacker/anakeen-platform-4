@@ -46,15 +46,16 @@ define([
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid"))+"/documentsViews/";
             } else {
                 urlData += "documents/" + encodeURIComponent(this.id);
-                if (this.get("revision") && this.get("revision") !== -1) {
+                if (this.get("revision") >= 0) {
                     urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
                 }
                 if (viewId === undefined) {
                     if (this.get("renderMode") === "view") {
                         viewId = "!defaultConsultation";
-                    }
-                    if (this.get("renderMode") === "edit") {
+                    } else if (this.get("renderMode") === "edit") {
                         viewId = "!defaultEdition";
+                    } else {
+                        viewId = "!defaultConsultation";
                     }
                 }
                 urlData += "/views/" + encodeURIComponent(viewId);
@@ -269,8 +270,8 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        redrawErrorMessages : function clearErrorMessages() {
-            var attrModels = this.get('attributes');
+        redrawErrorMessages : function redrawErrorMessages() {
+            var attrModels = this.get('attributes') || [];
             _.each(attrModels.models, function (attrModel) {
                 var message=attrModel.get("errorMessage");
                 // redo error after document is show
