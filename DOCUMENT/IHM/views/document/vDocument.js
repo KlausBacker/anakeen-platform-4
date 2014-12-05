@@ -152,11 +152,18 @@ define([
                 show : function (event) {
                     var tabId = $(event.item).data("id");
                     currentView.model.get("attributes").get(tabId).trigger("showTab");
+
+                    documentView.selectedTab=tabId;
                 }
             });
 
             if (this.kendoTabs.data("kendoTabStrip")) {
-                this.kendoTabs.data("kendoTabStrip").select(0);
+                var selectTab='li[data-id='+this.selectedTab+']';
+                if (this.selectedTab && $(selectTab).length > 0) {
+                    this.kendoTabs.data("kendoTabStrip").select(selectTab);
+                } else {
+                    this.kendoTabs.data("kendoTabStrip").select(0);
+                }
             }
 
             $(window.document).on('drop.ddui dragover.ddui', function (e) {

@@ -32,7 +32,6 @@ define([
         },
 
         setError :    function (event, data) {
-            console.log("tab error", data, this.$el, this.$el.find(".dcpTab__label"));
             if (data) {
                 this.$el.addClass("has-error");
             } else {
