@@ -157,6 +157,7 @@ define([
                 responseText : "Unexpected error: " + xhr.status + " " + xhr.statusText
             };
 
+            this.cleanErrorMessages();
             if (parsedReturn.messages.length === 0) {
                 //Status 0 indicate offline browser
                 if (xhr.status === 0) {
@@ -281,6 +282,15 @@ define([
             });
         },
 
+        /**
+         * Propagate to attributes a clear message for the error displayed
+         */
+        cleanErrorMessages : function cleanErrorMessages() {
+            var attrModels = this.get('attributes') || [];
+            _.each(attrModels.models, function (attrModel) {
+                attrModel.setErrorMessage(null);
+            });
+        },
         /**
          * Parse the return of the REST API
          * @param response

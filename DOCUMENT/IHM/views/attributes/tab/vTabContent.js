@@ -68,6 +68,7 @@ define([
                 this.initialized = true;
                 console.timeEnd("render tab " + this.model.id);
             }
+            $(window.document).trigger("redrawErrorMessages");
         },
 
         propageShowTab : function propageShowTab() {

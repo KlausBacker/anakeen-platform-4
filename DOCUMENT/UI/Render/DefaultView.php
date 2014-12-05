@@ -133,17 +133,25 @@ class DefaultView extends RenderDefault
         $targetOption->windowWidth = "400px";
         $item->setTarget("_dialog", $targetOption);
         $menu->getElement("advanced")->appendElement($item);
-        
+
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
-        $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
+       /* $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
         $targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
         $targetOption->windowWidth = "600px";
         $item->setTarget("_dialog", $targetOption);
+        $securitySubMenu->appendElement($item);*/
+        $item=new ItemMenu("lock", ___("Lock", "UiMenu") , "#event/document:lock");
+        $item->setVisibility(ElementMenu::VisibilityDisabled);
+        $item->setTooltipLabel(___("Not yet implemented","ddui"));
         $securitySubMenu->appendElement($item);
-        $securitySubMenu->appendElement(new ItemMenu("lock", ___("Lock", "UiMenu") , "?app=...={{document.properties.id}}"));
-        $securitySubMenu->appendElement(new ItemMenu("unlock", ___("Unlock", "UiMenu") , "?app=...={{document.properties.id}}"));
-        
+
+        $item=new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#event/document:lock");
+        $item->setVisibility(ElementMenu::VisibilityDisabled);
+        $item->setTooltipLabel(___("Not yet implemented","ddui"));
+        $securitySubMenu->appendElement($item);
+        $securitySubMenu->appendElement($item);
+
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         if ($document->wid > 0) {
             if ($document->locked != - 1) {

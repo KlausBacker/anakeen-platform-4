@@ -96,19 +96,20 @@ define([
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
                         scope.element.addClass("has-error");
-                        scope.element.tooltip({
+                        // need to use sub element because tooltip add a div after element
+                        scope.element.find(".input-group").tooltip({
                             placement: "bottom",
                             html: true,
                             title: function () {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
-                                return '<div>' + rawMessage + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i></div>';
+                                return '<div>'  + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>'+ rawMessage+'</div>';
                             },
                             trigger: "manual",
                             template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
 
                         });
                         scope.element.data("hasErrorTooltip", true);
-                        scope.element.tooltip("show");
+                        scope.element.find(".input-group").tooltip("show");
 
                     }
                 });
@@ -116,7 +117,7 @@ define([
                 this.element.removeClass("has-error");
 
                 if (this.element.data("hasErrorTooltip")) {
-                    this.element.tooltip("destroy");
+                    this.element.find(".input-group").tooltip("destroy");
                     this.element.data("hasErrorTooltip", false);
                 }
 
@@ -458,6 +459,7 @@ define([
                 placement: "left",
                 trigger: "hover"
             });
+
             return this;
         },
         /**

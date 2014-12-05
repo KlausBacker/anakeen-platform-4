@@ -74,7 +74,7 @@ define([
             '<tr><td class="properties-description">{{labels.activity}}</td><td class="properties-value">{{#state.reference}}<div class="properties-value-statecolor" style="background-color:{{state.color}}"/>{{state.displayValue}}{{/state.reference}}</td></tr>' +
 
 
-            '<tr><td class="properties-description">{{labels.family}}</td><td class="properties-value"><a data-document-id="{{family.id}}" href="?app=DOCUMENT&id={{family.id}}"><img src="{{family.icon}}"/>{{family.title}}</a></td></tr>' +
+            '<tr><td class="properties-description">{{labels.family}}</td><td class="properties-value"><a data-document-id="{{family.id}}" href="?app=DOCUMENT&id={{family.id}}"><img src="{{family.icon}}"/>{{family.title}}</a><div class="properties-value--famname">{{family.name}}</div></td></tr>' +
 
             '<tr><td class="properties-separator" colspan="2"></td></tr>' +
             '<tr><td class="properties-description">{{labels.createdBy}}</td><td class="properties-value"><a data-document-id="{{createdBy.id}}" href="?app=DOCUMENT&id={{createdBy.id}}"><img src="{{createdBy.icon}}"/>{{createdBy.title}}</a></td></tr>' +

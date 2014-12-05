@@ -31,7 +31,7 @@ define([
         },
 
         cleanAndRender: function cleanAndRender() {
-            this.$el.removeClass("dcpDocument--" + this.model.previous("renderMode"));
+            this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
                 if (this.historyWidget   ) {
                     this.historyWidget.destroy();
