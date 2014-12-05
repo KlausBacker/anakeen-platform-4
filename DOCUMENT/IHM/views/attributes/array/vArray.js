@@ -30,7 +30,7 @@ define([
         render: function () {
             // console.time("render array " + this.model.id);
             var data = this.model.toData();
-            var scope = this;
+            var scope = this, headers = [];
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
             data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
@@ -71,7 +71,22 @@ define([
                 TraceKit.report(e);
                 console.error(e);
             }
+            this.$("th").each(function () {
+                headers.push($(this).text().trim());
+            });
 
+            // Generate CSS string
+            var css_str = "<style>@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) { ";
+            var header, num, i = 0;
+
+            _.each(headers, function(currentHeader) {
+                header = currentHeader.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
+                num = parseInt(i, 10) + 1;
+                css_str += "table.responsive td:nth-of-type(" + num + "):before { content: \"" + header + "\"; }" + "\n";
+                i+=1;
+            });
+            css_str += " }</style>";
+            this.$el.append(css_str);
 
             // console.timeEnd("render array " + this.model.id);
             return this;

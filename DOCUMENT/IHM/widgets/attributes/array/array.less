@@ -42,11 +42,64 @@
   visibility: hidden;
 }
 
-
-
 /**
  * To fix all width column to be proportionnal to thead
  */
 .dcpArray__wrapper table{
   table-layout: fixed;
+}
+
+table.responsive {
+  border-collapse: collapse;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  table.responsive {
+    width: 100%;
+    min-width: 320px;
+  }
+
+  /* Force table to not be like tables anymore */
+  table.responsive, table.responsive thead, table.responsive tbody, table.responsive th, table.responsive td, table.responsive tr {
+    display: block;
+  }
+
+  .dcpArray__head__toolCell, .dcpArray__content__toolCell {
+    display: none !important;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  table.responsive th {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  table.responsive tr {
+    border: 1px solid #ccc;
+  }
+
+  table.responsive tr:nth-of-type(even) {
+    background-color: #eee;
+  }
+
+  table.responsive td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50% !important;
+    min-height: 2em;
+  }
+
+  table.responsive td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
 }
