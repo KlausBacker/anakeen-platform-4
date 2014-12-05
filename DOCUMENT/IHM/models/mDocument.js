@@ -2,7 +2,7 @@
 define([
     'underscore',
     'backbone',
-    'models/documentProperties',
+    'models/mDocumentProperties',
     'collections/attributes',
     'collections/menus',
     'widgets/window/wNotification'

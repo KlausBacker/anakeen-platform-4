@@ -1,7 +1,7 @@
 define([
     'underscore',
     'backbone',
-    'models/menu'
+    'models/mMenu'
 ], function (_, Backbone, ModelMenu) {
     'use strict';
 
