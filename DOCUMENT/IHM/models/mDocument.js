@@ -270,7 +270,7 @@ define([
         },
 
         /**
-         * Propagate to attributes a clear message for the error displayed
+         * Redraw messages for the error displayed
          */
         redrawErrorMessages: function redrawErrorMessages() {
             var attrModels = this.get('attributes') || [];
@@ -332,6 +332,7 @@ define([
                 initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.id,
                 properties: view.documentData.document.properties,
                 menus: view.menu,
+                viewId : response.data.properties.requestIdentifier,
                 locale: view.locale.culture,
                 renderMode: renderMode || "view",
                 attributes: attributes,
@@ -344,7 +345,7 @@ define([
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
             } else {
-                values.creationFamid = null;
+                values.creationFamid = false;
             }
             return values;
         },

@@ -288,6 +288,7 @@ define([
         },
 
         saveDocument : function saveDocument() {
+            this.trigger("cleanNotification");
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {

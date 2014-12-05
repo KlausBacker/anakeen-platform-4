@@ -179,6 +179,7 @@ class View extends Crud
     protected function getCoreViews(\Doc $document)
     {
         $defaultConsultation = array(
+            "requestIdentifier"=>$this->viewIdentifier,
             "uri" => $this->getUri($document, self::coreViewConsultationId) ,
             "identifier" => self::coreViewConsultationId,
             "mode" => "consultation",
@@ -192,6 +193,7 @@ class View extends Crud
             )
         );
         $defaultEdition = array(
+            "requestIdentifier"=>$this->viewIdentifier,
             "uri" => $this->getUri($document, self::coreViewEditionId) ,
             "identifier" => self::coreViewEditionId,
             "mode" => "edition",
@@ -206,6 +208,7 @@ class View extends Crud
         );
         
         $defaultCreate = array(
+            "requestIdentifier"=>$this->viewIdentifier,
             "uri" => $this->getUri($document, self::coreViewCreationId) ,
             "identifier" => self::coreViewCreationId,
             "mode" => "edition",
@@ -237,6 +240,7 @@ class View extends Crud
     {
         $viewId = $viewInfo[Cvrender::cv_idview];
         return array(
+            "requestIdentifier"=>$this->viewIdentifier,
             "identifier" => $viewId,
             "mode" => ($viewInfo[Cvrender::cv_kview] === "VCONS") ? "consultation" : "edition",
             "label" => $controlView->getLocaleViewLabel($viewId) ,
