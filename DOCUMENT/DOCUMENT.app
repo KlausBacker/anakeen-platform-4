@@ -47,6 +47,12 @@ $action_desc = array(
         "script" => "action.wrap_kendo.php",
         "function" => "wrap_kendo",
         "layout" => "loaderKendo.js"
+    ),
+    array(
+        "name" => "COLLECT_ERROR",
+        "short_name" => N_("COLLECT_ERROR"),
+        "script" => "action.collect_error.php",
+        "function" => "collect_error",
     )
 
 );

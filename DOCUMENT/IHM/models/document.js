@@ -148,6 +148,7 @@ define([
                 var result = JSON.parse(xhr.responseText);
                 messages = result.messages;
             } catch (e) {
+                TraceKit.report(e);
                 //Unable to parse responseText (error is not in JSON)
             }
 

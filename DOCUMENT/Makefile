@@ -1,4 +1,4 @@
-SUBDIR= Crud Render Layout Images IHM
+SUBDIR= Crud Layout Images IHM UI Families
 
 include $(utildir)/PubRule
 

@@ -2,8 +2,15 @@
 
 global $app_const;
 
+$loggerClass = <<<'JSON'
+[
+    "\\Dcp\\UI\\Logger\\JS\\Dcp"
+]
+JSON;
+
 $app_const = array(
     "INIT" => "yes",
-    "VERSION" => "@VERSION@-@RELEASE@"
+    "VERSION" => "@VERSION@-@RELEASE@",
+    "LOGGER" => "$loggerClass"
 );
 ?>

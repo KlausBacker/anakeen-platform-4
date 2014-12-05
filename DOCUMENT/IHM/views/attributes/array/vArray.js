@@ -60,6 +60,7 @@ define([
                             scope.columnViews[currentAttr.id].render();
                         }
                     } catch (e) {
+                        TraceKit.report(e);
                         console.error(e);
                     }
                 });
@@ -67,6 +68,7 @@ define([
             try {
                 this.$el.dcpArray(data);
             } catch(e) {
+                TraceKit.report(e);
                 console.error(e);
             }
 

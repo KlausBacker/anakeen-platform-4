@@ -5,6 +5,7 @@
 
     <requires>
         <module comp='ge' version='3.2.18' name='dynacase-core'/>
+        <module name='dynacase-tracekit-installer'/>
         <module name='dynacase-requirejs-installer'/>
         <module name='dynacase-kendoui-installer'/>
         <module name='dynacase-underscore-installer'/>
@@ -21,7 +22,7 @@
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCUMENT/ddui_cvrender__STRUCT.csv --csv-enclosure=auto --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvrender__STRUCT.csv --csv-enclosure=auto --csv-separator=auto">
             <label>Create Render CV family</label>
         </process>
         <process command="./wsh.php --api=setStyle --style=STYLE/BASE/BASE.sty"/>
@@ -33,7 +34,7 @@
     <post-upgrade>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCUMENT/ddui_cvrender__STRUCT.csv --csv-enclosure=auto --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvrender__STRUCT.csv --csv-enclosure=auto --csv-separator=auto">
             <label>Update Render CV family</label>
         </process>
         <process command="./wsh.php --api=setStyle --style=STYLE/BASE/BASE.sty"/>

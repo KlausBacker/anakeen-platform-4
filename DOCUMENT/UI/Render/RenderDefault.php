@@ -45,6 +45,8 @@ class RenderDefault implements IRenderConfig
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
+            "traceKit" => "lib/TraceKit/tracekit.js?ws=" . $version,
+            "traceError" => "DOCUMENT/IHM/dynacaseReport.js?ws=" . $version,
             "src" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
             "kendo" => "lib/KendoUI/2014.3/js/kendo-builded.min.js?ws=" . $version,
