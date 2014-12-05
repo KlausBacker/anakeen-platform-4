@@ -74,7 +74,7 @@ define([
             try {
                 this.$el.append($(Mustache.render(this.template, this.model.toData(), this.partials)));
             } catch (e) {
-                TraceKit.report(e);
+                window.TraceKit.report(e);
                 console.error(e);
             }
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
@@ -88,7 +88,7 @@ define([
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
             } catch (e) {
-                TraceKit.report(e);
+                window.TraceKit.report(e);
                 console.error(e);
             }
             try {
@@ -97,7 +97,7 @@ define([
                     el :    this.$el.find(".dcpDocument__header:first")[0]
                 }).render();
             } catch (e) {
-                TraceKit.report(e);
+                window.TraceKit.report(e);
                 console.error(e);
             }
             this.trigger("loading", 20);
@@ -115,7 +115,7 @@ define([
                         view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
-                        TraceKit.report(e);
+                        window.TraceKit.report(e);
                         console.error(e);
                     }
                 }
@@ -130,7 +130,7 @@ define([
                         if (tabItems.length > 1) {
                             tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
                                 placement : "top",
-                                title :     function (e) {
+                                title :  function vDocumentTooltipTitle() {
                                     return $(this).text(); // set the element text as content of the tooltip
                                 }
                             });
@@ -141,7 +141,7 @@ define([
                         $el.find(".dcpDocument__tabs").append(viewTabContent.render().$el);
                         $el.find(".dcpDocument__tabs").show();
                     } catch (e) {
-                        TraceKit.report(e);
+                        window.TraceKit.report(e);
                         console.error(e);
                     }
                 }
@@ -152,7 +152,6 @@ define([
                 show : function (event) {
                     var tabId = $(event.item).data("id");
                     currentView.model.get("attributes").get(tabId).trigger("showTab");
-
                     documentView.selectedTab=tabId;
                 }
             });
@@ -168,7 +167,7 @@ define([
 
             $(window.document).on('drop.ddui dragover.ddui', function (e) {
                 e.preventDefault();
-            }).on('redrawErrorMessages.ddui', function (e) {
+            }).on('redrawErrorMessages.ddui', function vDocumentRedrawErrorMessages() {
                 documentView.model.redrawErrorMessages();
             });
             this.$el.addClass("dcpDocument--show");
@@ -364,7 +363,7 @@ define([
                 }
 
             } catch (e) {
-                TraceKit.report(e);
+                window.TraceKit.report(e);
                 console.error(e);
             }
             $(window.document).off("ddui");

@@ -47,7 +47,6 @@ define([
         /**
          * Just to be apply in normal input help
          * @param inputValue
-         * @protected
          */
         activateAutocomplete : function activateAutocomplete(inputValue) {
             var scope = this;
