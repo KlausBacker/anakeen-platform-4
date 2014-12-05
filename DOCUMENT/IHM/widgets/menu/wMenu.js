@@ -10,13 +10,13 @@ define([
 
     $.widget("dcp.dcpMenu", {
 
-        _create : function _create() {
+        _create : function wMenuCreate() {
             this._tooltips= [];
             this.popupWindows= [];
             this._initStructure();
         },
 
-        _initStructure : function _initStructure() {
+        _initStructure : function wMenuInitStructure() {
             var $content, $mainElement, scopeWidget = this;
             $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid : this.uuid}, this.options)));
             $content = $mainElement.find(".menu__content");
@@ -25,14 +25,14 @@ define([
             $content.kendoMenu({
                 openOnClick :  true,
                 closeOnClick : false,
-                select :       function (event) {
+                select :       function wMenuSelect (event) {
                     var menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
                         confirmDcpWindow, target, targetOptions, dcpWindow, bodyDiv;
 
                     if (!menuElement.hasClass("menu__element--item")) {
                         var menuUrl = menuElement.data("menu-url");
                         if (menuUrl) {
-                            $.get(menuUrl, function (data) {
+                            $.get(menuUrl, function wMenuDone (data) {
                                 menuElement.find(".listmenu__content").html('');
                                 scopeWidget._insertMenuContent(
                                     data.content,
@@ -42,9 +42,13 @@ define([
                                     openOnClick :  true,
                                     closeOnClick : false
                                 });
-                            }).fail(function (data) {
-                                console.log(data);
-                                throw new Error("SubMenu");
+                            }).fail(function wMenuFail (data) {
+                                try {
+                                    console.error(data);
+                                    throw new Error("Sub menu");
+                                } catch (e) {
+                                    window.TraceKit.report(e);
+                                }
                             });
                         }
                         return;
@@ -72,7 +76,7 @@ define([
                                     cancelMessage : Mustache.render(confirmOptions.cancelButton, scopeWidget.options),
                                     textMessage :   confirmText
                                 },
-                                confirm :  function confirm() {
+                                confirm :  function wMenuConfirm() {
                                     $elementA.removeClass('menu--confirm');
                                     $elementA.trigger("click");
                                     $elementA.addClass('menu--confirm');
@@ -133,7 +137,7 @@ define([
             /**
              * Fix menu when no see header
              */
-            $(window).scroll(function () {
+            $(window).scroll(function wMenuScroll() {
                 if ($(window).scrollTop() > $mainElement.position().top) {
                     if (!$mainElement.data("isFixed")) {
                         $mainElement.data("isFixed", "1");
@@ -150,7 +154,7 @@ define([
             });
         },
 
-        _insertMenuContent : function (menus, $content, currentWidget, scopeMenu) {
+        _insertMenuContent : function wMenuInsertMenuContent(menus, $content, currentWidget, scopeMenu) {
             var subMenu;
             var hasBeforeContent = false;
             currentWidget = currentWidget || this;
@@ -221,7 +225,7 @@ define([
             });
         },
 
-        _getTemplate : function (name) {
+        _getTemplate : function wMenuTemplate (name) {
             if (this.options.templates && this.options.templates.menu && this.options.templates.menu[name]) {
                 return this.options.templates.menu[name];
             }
@@ -231,7 +235,7 @@ define([
             throw new Error("Menu unknown template " + name);
         },
 
-        _destroy : function _destroy() {
+        _destroy : function wMenuDestroy() {
             var kendoWidget = this.element.find(".menu__content").data("kendoMenu");
             if (kendoWidget) {
                 kendoWidget.destroy();

@@ -28,7 +28,6 @@ define([
         _initDom: function () {
 
             if (this.options.renderOptions.kendoDateConfiguration.format) {
-                console.log("render date", this.options.renderOptions.kendoDateConfiguration, this.options.value);
                 this.options.value.displayValue=this.formatDate(this.parseDate(this.options.value.value));
             }
 
