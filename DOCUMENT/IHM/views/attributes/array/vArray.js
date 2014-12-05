@@ -24,6 +24,7 @@ define([
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
+            this.listenTo(this.model, 'errorMessage', this.setError);
 
         },
 
@@ -60,7 +61,7 @@ define([
                             scope.columnViews[currentAttr.id].render();
                         }
                     } catch (e) {
-                        TraceKit.report(e);
+                        window.TraceKit.report(e);
                         console.error(e);
                     }
                 });
@@ -68,7 +69,7 @@ define([
             try {
                 this.$el.dcpArray(data);
             } catch(e) {
-                TraceKit.report(e);
+                window.TraceKit.report(e);
                 console.error(e);
             }
             this.$("th").each(function () {
@@ -150,6 +151,25 @@ define([
                 currentContent.moveIndexValue(options.fromLine, options.toLine);
 
             });
+        } ,
+        getAttributeModel : function (attributeId) {
+            var docModel = this.model.getDocumentModel();
+            return docModel.get('attributes').get(attributeId);
+        },
+
+        setError : function (event, data) {
+            var parentId = this.model.get('parent');
+            if (data) {
+                this.$el.find(".dcpArray__label").addClass("has-error");
+            } else {
+                this.$el.find(".dcpArray__label").removeClass("has-error");
+            }
+            if (parentId) {
+                var parentModel = this.getAttributeModel(parentId);
+                if (parentModel) {
+                    parentModel.trigger("errorMessage", event, data);
+                }
+            }
         }
     });
 

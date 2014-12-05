@@ -2,7 +2,7 @@
 define([
     'underscore',
     'backbone',
-    'models/attribute'
+    'models/mAttribute'
 ], function (_, Backbone, ModelAttribute) {
     'use strict';
 

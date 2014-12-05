@@ -9,7 +9,7 @@ function collect_error(Action &$action) {
     $message = isset($requestData["message"]) ? $requestData["message"] : "";
     $context = isset($requestData["url"]) ? "## URL : ".$requestData["url"] : "";
     $context .= " ".(isset($requestData["useragent"]) ? "## BrowserUserAgent : ".$requestData["useragent"] : "");
-    $context .= " ##User : " . Doc::getUserId()." ".Doc::getUserName();
+    $context .= " ##User : " . Account::getDisplayName($action->user->id) . "(#".$action->user->id.")";
     $stack = isset($requestData["stack"]) ? print_r($requestData["stack"], true) : "";
     foreach($loggerList as $currentLogger) {
         $logger = new $currentLogger();

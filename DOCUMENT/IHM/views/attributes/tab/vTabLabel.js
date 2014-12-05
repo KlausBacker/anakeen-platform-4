@@ -33,14 +33,14 @@ define([
 
         setError :    function (event, data) {
             if (data) {
-                this.$el.find(".dcpTab__label").addClass("has-warning");
+                this.$el.addClass("has-error");
             } else {
-                this.$el.find(".dcpTab__label").removeClass("has-warning");
+                this.$el.removeClass("has-error");
             }
         },
 
         updateLabel : function () {
-            this.$el.find(".dcpTab__label").text(this.model.get("label"));
+            this.$el.text(this.model.get("label"));
         }
     });
 

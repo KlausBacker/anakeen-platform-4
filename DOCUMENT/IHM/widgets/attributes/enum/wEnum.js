@@ -24,7 +24,7 @@ define([
             renderOptions: {
                 kendoDropDownConfiguration: {
                     filter: "none",
-                    autoBind:true
+                    autoBind: true
                 },
                 kendoComboBoxConfiguration: {
                     filter: "startswith"
@@ -120,7 +120,11 @@ define([
                 });
                 if (selectedIndex === -1 && this.options.value && !_.isUndefined(this.options.value.value) && this.options.value.value !== null) {
                     selectedIndex = source.length;
-                    source.push({value: this.options.value.value, displayValue: this.options.value.displayValue, selected: true});
+                    source.push({
+                        value: this.options.value.value,
+                        displayValue: this.options.value.displayValue,
+                        selected: true
+                    });
                 }
             }
 
@@ -279,7 +283,7 @@ define([
                         case "autoCompletion":
                         case "list":
                             newValues = _.map(value, function (val) {
-                                return  val.value;
+                                return val.value;
                             });
                             kddl = this.kendoWidget.data("kendoMultiSelect");
                             if (!_.isEqual(kddl.value(), newValues)) {
@@ -313,6 +317,9 @@ define([
                             });
 
                             break;
+                        default:
+                            throw new Error("Unknow Enum mode : " + this.options.renderOptions.editDisplay);
+
                     }
                 } else {
                     switch (this.options.renderOptions.editDisplay) {
@@ -361,6 +368,9 @@ define([
                             });
 
                             break;
+                        default:
+                            throw new Error("Unknow Enum mode : " + this.options.renderOptions.editDisplay);
+
                     }
                 }
             }
@@ -370,8 +380,7 @@ define([
          * @param options
          */
         autocompleteRequestEnum: function wEnumAutocompleteRequestEnum(options) {
-            var filter = {
-            };
+            var filter = {};
 
             if (options.data.filter && options.data.filter.filters && options.data.filter.filters.length > 0) {
                 filter = {
@@ -414,7 +423,7 @@ define([
             var scope = this,
                 source = null,
                 kendoOptions = {},
-                defaultOptions = { };
+                defaultOptions = {};
 
             if (this._isMultiple()) {
 
@@ -454,7 +463,7 @@ define([
                     dataValueField: "value",
                     dataSource: source.data,
                     index: source.index,
-                    autoBind : false,
+                    autoBind: false,
                     change: function (event) {
 
                         if (this.value() && this.selectedIndex === -1) {
@@ -508,7 +517,7 @@ define([
             return "enum";
         },
 
-        _destroy : function _destroy() {
+        _destroy: function _destroy() {
             if (this.kendoWidget && this.kendoWidget.data("kendoDropDownList")) {
                 this.kendoWidget.data("kendoDropDownList").destroy();
             }

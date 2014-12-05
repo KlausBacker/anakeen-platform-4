@@ -12,7 +12,7 @@ GZIP_ENV = --best
 export pubdir utildir appname applib PACKAGE localBuildRule
 
 SUBDIR= locale DOCUMENT HTTPAPI_V1 STYLE
-pages_not_php = documentStub.php
+pages_not_php = documentUiStub.php
 
 include $(utildir)/PubRule
 include $(localBuildRule)/localBuildRule
@@ -20,7 +20,7 @@ include $(localBuildRule)/localBuildRule
 # For all families traduction
 # TRANSCSV += $(shell find ./Families -name "STRUCT_*.csv")
 stub:
-	$(utildir)/genStubFamilyClass.php DOCUMENT/*STRUCT*csv > documentStub.php
+	$(utildir)/genStubFamilyClass.php DOCUMENT/Families/*STRUCT*csv > documentUiStub.php
 publish-test:
 	make -C Test publish RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
 

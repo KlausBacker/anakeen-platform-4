@@ -9,7 +9,7 @@ require([
     'underscore',
     'jquery',
     'text!template/' + asset + '?app=DOCUMENT&action=TEMPLATE',
-    'models/document',
+    'models/mDocument',
     'views/document/vDocument'
 ], function (_, $, template, ModelDocument, ViewDocument) {
     "use strict";

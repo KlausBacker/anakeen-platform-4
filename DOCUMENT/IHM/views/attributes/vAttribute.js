@@ -238,8 +238,8 @@ define([
             options.data.attributes = documentModel.getValues();
             $.ajax({
                 type : "POST",
-                url : "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id +
-                      "&id=" + documentModel.id +
+                url : "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
+                (documentModel.id || "0" ) +
                       "&fromid=" + documentModel.get("properties").get("family").id,
                 data : options.data,
 

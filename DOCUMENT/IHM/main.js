@@ -7,7 +7,7 @@ require([
     'underscore',
     'backbone',
     'routers/router',
-    'models/document',
+    'models/mDocument',
     'views/document/vDocument',
     'widgets/window/wConfirm',
     'widgets/window/wLoading',

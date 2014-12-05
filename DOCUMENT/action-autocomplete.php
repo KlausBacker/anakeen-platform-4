@@ -114,8 +114,11 @@ function compatOriginalFormPost($filters, $attributes, $currentAid)
     if (is_array($attributes)) {
         
         foreach ($attributes as $aid => $formatValue) {
-            if (isset($formatValue[0]) && is_array($formatValue[0])) {
+            $first=current($formatValue);
+            if (isset($first) && is_array($first)) {
+                //@TODO do an array with values
             } else {
+                if (!isset($formatValue["value"])) print_r2($formatValue);
                 setHttpVar("_$aid", $formatValue["value"]);
             }
         }

@@ -55,7 +55,7 @@ define([
                         }
                     } catch (e) {
                         $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
-                        TraceKit.report(e);
+                        window.TraceKit.report(e);
                         console.error(e);
                     }
                 });
@@ -73,9 +73,9 @@ define([
         setError : function (event, data) {
             var parentId = this.model.get('parent');
             if (data) {
-                this.$el.find(".dcpFrame__label").addClass("has-warning");
+                this.$el.find(".dcpFrame__label").addClass("has-error");
             } else {
-                this.$el.find(".dcpFrame__label").removeClass("has-warning");
+                this.$el.find(".dcpFrame__label").removeClass("has-error");
             }
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);

@@ -77,10 +77,7 @@ define([
             this.currentWidget.data("kendoWindow").open();
             this.currentWidget.data("kendoWindow").center();
         },
-        destroy :        function wRevisionDiffDestroy() {
-            this.currentWidget.data("kendoWindow").destroy();
-            this._super();
-        },
+
 
         htmlCaneva :            function () {
             return '<table class="revision-diff-main"><thead>' +
@@ -160,8 +157,9 @@ define([
                     revisionDiffWidget.currentWidget.find(".dataTables_filter input").attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
 
                     var firstHeadCell = revisionDiffWidget.currentWidget.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
-                    firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
-
+                    if (firstHeadCell.find('.revision-diff-button-showonlydiff').length === 0) {
+                        firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
+                    }
                 },
 
                 "ajax" : function (data, callback) {
@@ -246,7 +244,7 @@ define([
 
         _destroy : function _destroy() {
             var $history = this.element.find('.revision-diff-main');
-            if (this.kendoWidget.data("kendoWindow")) {
+            if (this.kendoWidget && this.kendoWidget.data("kendoWindow")) {
                 this.kendoWidget.data("kendoWindow").destroy();
             }
             if ($history.DataTable) {
