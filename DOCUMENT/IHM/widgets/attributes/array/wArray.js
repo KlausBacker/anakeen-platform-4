@@ -1,8 +1,9 @@
 define([
     'underscore',
     'mustache',
+    'jquery',
     'widgets/widget'
-], function (_, Mustache) {
+], function (_, Mustache, $) {
     'use strict';
 
     $.widget("dcp.dcpArray", {
@@ -107,8 +108,31 @@ define([
                         }
                     }
                 });
-
+                this._initCSSResponsive();
             }
+        },
+
+        _initCSSResponsive : function _initCSSResponsive() {
+            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function(currentElement) {
+                var $currentElement = $(currentElement);
+                return {
+                    "attrid" : $currentElement.data("attrid"),
+                    "label" : $currentElement.text().trim()
+                };
+            });
+
+            // Generate CSS string
+            cssString = "<style>@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) { ";
+
+            cssTemplate = _.template('.dcpArray__wrapper[data-attrid='+this.options.id+'] .dcpAttribute__contentWrapper[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
+
+            _.each(headers, function (currentHeader) {
+                currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
+                cssString += cssTemplate(currentHeader);
+            });
+            cssString += " }</style>";
+
+            this.element.append(cssString);
         },
 
         _bindEvents: function () {
