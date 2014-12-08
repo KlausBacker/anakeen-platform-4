@@ -1,6 +1,17 @@
 var allTestFiles = ['jasmine-jquery'];
 var TEST_REGEXP = /\/(test)[a-zA-Z]*\.js$/i;
+var pathToModule = function (path) {
+    return path.replace(/^\/.*IHM\//, "").replace(/\.js$/, '');
+};
 
+if (!window.console) {
+    window.console = {};
+    window.console.log = function (x) {
+    };
+}
+if (!window.console.error) {
+    window.console.error = window.console.log;
+}
 if (!(window.console.time)) {
     window.console.timeEnd = function (x) {
     };
@@ -8,10 +19,59 @@ if (!(window.console.time)) {
     };
 }
 
-var pathToModule = function (path) {
-    return path.replace(/^\/.*IHM\//, "").replace(/\.js$/, '');
-};
 
+
+if (!Object.keys) {
+    Object.keys = (function () {
+        'use strict';
+        var hasOwnProperty = Object.prototype.hasOwnProperty,
+            hasDontEnumBug = !({toString : null}).propertyIsEnumerable('toString'),
+            dontEnums = [
+                'toString',
+                'toLocaleString',
+                'valueOf',
+                'hasOwnProperty',
+                'isPrototypeOf',
+                'propertyIsEnumerable',
+                'constructor'
+            ],
+            dontEnumsLength = dontEnums.length;
+
+        return function (obj) {
+            if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+                throw new TypeError('Object.keys called on non-object');
+            }
+
+            var result = [], prop, i;
+
+            for (prop in obj) {
+                if (hasOwnProperty.call(obj, prop)) {
+                    result.push(prop);
+                }
+            }
+
+            if (hasDontEnumBug) {
+                for (i = 0; i < dontEnumsLength; i++) {
+                    if (hasOwnProperty.call(obj, dontEnums[i])) {
+                        result.push(dontEnums[i]);
+                    }
+                }
+            }
+            return result;
+        };
+    }());
+}
+if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function (fn, scope) {
+        'use strict';
+        var i, len;
+        for (i = 0, len = this.length; i < len; ++i) {
+            if (i in this) {
+                fn.call(scope, this[i], i, this);
+            }
+        }
+    };
+}
 Object.keys(window.__karma__.files).forEach(function (file) {
     if (TEST_REGEXP.test(file)) {
         // Normalize paths to RequireJS module names.
