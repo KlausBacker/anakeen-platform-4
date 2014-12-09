@@ -1,6 +1,6 @@
-<div class="panel-body dcpArray__wrapper" data-attrid="{{id}}">
+<div class="panel-body dcpArray__content" data-attrid="{{id}}">
     <table class="table table-condensed table-hover table-bordered responsive">
-        <thead>
+        <thead data-attrid="{{id}}">
         <tr class="dcpArray__head">
             {{#tools}}
                 <th class="dcpArray__head__toolCell"></th>
@@ -10,7 +10,7 @@
             {{/content}}
         </tr>
         </thead>
-        <tbody class="dcpArray__body">
+        <tbody class="dcpArray__body" data-attrid="{{id}}">
 
         </tbody>
     </table>
