@@ -10,7 +10,7 @@ define([
 
         tagName : "div",
 
-        className : "dcpDocument__tabs--pane",
+        className : "dcpDocument__tabs__pane",
 
         initialize : function (options) {
             this.listenTo(this.model, 'change:label', this.updateLabel);

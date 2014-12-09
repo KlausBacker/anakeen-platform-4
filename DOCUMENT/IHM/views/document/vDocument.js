@@ -150,14 +150,16 @@ define([
 
             this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
                 show : function (event) {
-                    var tabId = $(event.item).data("id");
+                    var tabId = $(event.item).data("attrid");
+                    currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
                     currentView.model.get("attributes").get(tabId).trigger("showTab");
+                    currentView.$('.dcpLabel[data-attrid="'+tabId+'"]').addClass("dcpLabel--active").removeClass("dcpLabel--default");
                     documentView.selectedTab=tabId;
                 }
             });
 
             if (this.kendoTabs.data("kendoTabStrip")) {
-                var selectTab='li[data-id='+this.selectedTab+']';
+                var selectTab='li[data-attrid='+this.selectedTab+']';
                 if (this.selectedTab && $(selectTab).length > 0) {
                     this.kendoTabs.data("kendoTabStrip").select(selectTab);
                 } else {

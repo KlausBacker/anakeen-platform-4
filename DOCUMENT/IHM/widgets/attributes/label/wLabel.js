@@ -12,7 +12,7 @@ define([
         },
 
         _initDom: function () {
-            this.element.addClass("dcpAttribute__label control-label ");
+            this.element.addClass("dcpAttribute__label control-label dcpLabel");
             this.element.append(Mustache.render(this._getTemplate(), this.options));
         },
 

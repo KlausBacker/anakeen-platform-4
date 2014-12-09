@@ -30,6 +30,7 @@ class View extends Crud
     const fieldStyle = "style";
     const fieldMenu = "menu";
     const fieldScript = "script";
+    const fieldRenderLabel = "renderLabel";
     /**
      * @var string view Identifier must match one of view control associated document
      */
@@ -42,6 +43,7 @@ class View extends Crud
     protected $revision = - 1;
     
     protected $fields = array(
+        self::fieldRenderLabel,
         self::fieldMenu,
         self::fieldTemplate,
         self::fieldRenderOptions,
@@ -246,7 +248,7 @@ class View extends Crud
             "label" => $controlView->getLocaleViewLabel($viewId) ,
             "isDisplayable" => ($viewInfo[Cvrender::cv_displayed] === "yes") ,
             "order" => intval($viewInfo[Cvrender::cv_order]) ,
-            self::fieldMenu => $controlView->getLocaleViewMenu($viewId) ,
+            self::fieldMenu => $controlView->getLocaleViewMenu($viewId),
             "mask" => array(
                 "id" => intval($viewInfo[Cvrender::cv_mskid]) ,
                 "title" => $viewInfo[Cvrender::cv_msk]
@@ -270,6 +272,10 @@ class View extends Crud
                 case self::fieldRenderOptions:
                     $viewInfo[self::fieldRenderOptions] = $config->getOptions($document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
+                    break;
+
+                case self::fieldRenderLabel:
+                    $viewInfo[self::fieldRenderLabel] = $config->getLabel();
                     break;
 
                 case self::fieldMenu:

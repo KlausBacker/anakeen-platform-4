@@ -10,7 +10,7 @@ define([
 
     return Backbone.View.extend({
 
-        className : "panel panel-default css-frame frame",
+        className : "panel panel-default dcpDocument__frame",
 
         initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);

@@ -10,7 +10,7 @@ define([
 
         tagName : "li",
 
-        className : "dcpTab__label",
+        className : "dcpTab__label dcpLabel",
 
         initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
@@ -26,7 +26,7 @@ define([
             //console.time("render tab " + this.model.id);
             this.$el.empty();
             this.$el.text(this.model.get("label"));
-            this.$el.attr("data-id", this.model.id);
+            this.$el.attr("data-attrid", this.model.id);
             //console.timeEnd("render tab " + this.model.id);
             return this;
         },

@@ -86,10 +86,17 @@ table.responsive {
   }
 
   table.responsive tr {
-    border: 1px solid #ccc;
+    border-color: @gray-lighter;
+    border-width: 1px;
+    border-style: none solid solid solid;
   }
 
-  table.responsive .dcpAttribute__contentWrapper {
+
+  table.responsive tr:nth-of-type(even) {
+    background-color: @gray-lighter;
+  }
+
+  table.responsive td {
     /* Behave  like a "row" */
     //border: none;
     border-bottom: 1px solid #eee;
