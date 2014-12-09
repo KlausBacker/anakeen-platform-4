@@ -1,29 +1,28 @@
 <div class="panel-body dcpArray__wrapper" data-attrid="{{id}}">
-    <div class="table-responsive">
-        <table class="table table-condensed table-hover table-bordered responsive">
-            <thead>
-            <tr class="dcpArray__head">
-                {{#tools}}
+    <table class="table table-condensed table-hover table-bordered responsive">
+        <thead>
+        <tr class="dcpArray__head">
+            {{#tools}}
                 <th class="dcpArray__head__toolCell"></th>
-                {{/tools}}
-                {{#content}}
-                    <th class="dcpArray__head__cell dcpArray__head__cell--{{type}}" data-attrid="{{id}}">{{label}}</th>
-                {{/content}}
-            </tr>
-            </thead>
-            <tbody class="dcpArray__body">
+            {{/tools}}
+            {{#content}}
+                <th class="dcpArray__head__cell dcpArray__head__cell--{{type}}" data-attrid="{{id}}">{{label}}</th>
+            {{/content}}
+        </tr>
+        </thead>
+        <tbody class="dcpArray__body">
 
-            </tbody>
-        </table>
-        <div class="dcpArray__tools">
+        </tbody>
+    </table>
+    <div class="dcpArray__tools">
         {{#tools}}
-            <button type="button" title="[[#i18n]]ddui:Add new line[[/i18n]]" class="btn btn-default dcpArray__add">
-                <span class="glyphicon glyphicon-plus-sign"></span>
-            </button>
-            <button disabled="disabled" type="button" title="[[#i18n]]ddui:Duplicate selected row[[/i18n]]"  class="btn btn-default dcpArray__copy">
-                <span class="glyphicon glyphicon-sound-dolby"></span>
-            </button>
+        <button type="button" title="[[#i18n]]ddui:Add new line[[/i18n]]" class="btn btn-default dcpArray__add">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+        </button>
+        <button disabled="disabled" type="button" title="[[#i18n]]ddui:Duplicate selected row[[/i18n]]"
+                class="btn btn-default dcpArray__copy">
+            <span class="glyphicon glyphicon-sound-dolby"></span>
+        </button>
         {{/tools}}
-        </div>
     </div>
 </div>
