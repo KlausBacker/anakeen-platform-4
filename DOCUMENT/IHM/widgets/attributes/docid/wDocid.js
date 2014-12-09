@@ -77,26 +77,17 @@ define([
         _initLinkEvent: function wAttributeInitLinkEvent() {
             this._super();
             var htmlLink = this.getLink();
-            var scope = this;
+            var currentWidget = this;
             if (htmlLink) {
                 this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
-                        window.dcp.document.clear();
-                        if (_.isUndefined($(this).data("index"))) {
-                            window.dcp.document.set("initid", scope.options.value.value);
-                        } else {
-                            window.dcp.document.set("initid", scope.options.value[$(this).data("index")].value);
-                        }
-                        window.dcp.document.set("revision",-1);
-                        window.dcp.document.set("viewId", "!defaultConsultation");
-                        window.dcp.document.fetch();
+                        currentWidget._trigger("changedocument", event, {"index" : $(this).data("index")});
                     }
                 });
             }
             return this;
         },
-
 
         /**
          * Define inputs for focus
@@ -214,7 +205,7 @@ define([
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
-        setValue: function (value, event) {
+        setValue: function wDocidSetValue(value, event) {
 
             this._super(value, event);
             if (this.getMode() === "write") {
@@ -262,7 +253,7 @@ define([
             }
         },
 
-        getType: function () {
+        getType: function getType() {
             return "docid";
         },
 

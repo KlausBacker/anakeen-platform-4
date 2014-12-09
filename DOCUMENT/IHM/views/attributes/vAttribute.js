@@ -29,7 +29,8 @@ define([
             "dcpattributechange .dcpAttribute__content" :                   "updateValue",
             "dcpattributedelete .dcpAttribute__content" :                   "deleteValue",
             "dcpattributechangeattrmenuvisibility .dcpAttribute__content" : "changeMenuVisibility",
-            "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue"
+            "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue",
+            "dcpattributechangedocument .dcpAttribute__content" :           "changeDocument"
         },
 
         initialize : function initialize(options) {
@@ -163,6 +164,20 @@ define([
                     }
                 }
             });
+        },
+
+        changeDocument : function changeDocument(event, options) {
+            var index = options.index, initid = null, value = this.model.get("value"), documentModel = this.model.getDocumentModel();
+            if (_.isUndefined(index)) {
+                initid = value.value;
+            } else {
+                initid = value[index].value;
+            }
+            documentModel.clear().set({
+                "initid" : initid,
+                "revision" : -1,
+                "viewId" : "!defaultConsultation"
+            }).fetch();
         },
 
         /**
