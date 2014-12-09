@@ -61,54 +61,58 @@ define([
                     });
                 }
                 this.addAllLines(this.options.nbLines);
-                this.element.find('tbody').kendoDraggable({
-                    axis: "y",
-                    container: scope.element.find('tbody'),
-                    filter: '.dcpArray__content__toolCell__dragDrop',
-                    hint: function (element) {
-                        var dragLine = element.closest('tr');
-                        var lineWidth = dragLine.width();
-                        var classTable = element.closest('table').attr("class");
-                        return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).append(dragLine.clone());
-                    },
-                    dragstart: function (event) {
-                        if (event.currentTarget) {
-                            var dragLine = $(event.currentTarget).closest('tr');
-                            dragLine.css("opacity", "0");
-                            dragLine.data("fromLine", dragLine.data("line"));
 
-                        }
-                    },
-                    dragend: function (event) {
-                        if (event.currentTarget) {
-                            var dragLine = $(event.currentTarget).closest('tr');
-                            dragLine.css("opacity", "");
+                if (this.options.mode === "write") {
+                    this.element.find('tbody').kendoDraggable({
+                        axis: "y",
+                        container: scope.element.find('tbody'),
+                        filter: '.dcpArray__content__toolCell__dragDrop',
+                        hint: function (element) {
+                            var dragLine = element.closest('tr');
+                            var lineWidth = dragLine.width();
+                            var classTable = element.closest('table').attr("class");
+                            return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).append(dragLine.clone());
+                        },
+                        dragstart: function (event) {
+                            if (event.currentTarget) {
+                                var dragLine = $(event.currentTarget).closest('tr');
+                                dragLine.css("opacity", "0");
+                                dragLine.data("fromLine", dragLine.data("line"));
 
-                            scope._trigger("lineMoved", {}, {
-                                fromLine: dragLine.data("fromLine"),
-                                toLine: dragLine.data("line")
-                            });
-                        }
-                    }
-                });
-                this.element.find('tbody').kendoDropTargetArea({
-                    filter: '.dcpArray__content__line',
-                    dragenter: function (event) {
-                        if (event.currentTarget) {
-                            var drap = event.draggable.currentTarget.closest('tr');
-                            var drop = event.dropTarget;
-                            var drapLine = drap.data("line");
-                            var dropLine = drop.data("line");
-                            if (drapLine > dropLine) {
-                                drap.insertBefore(drop);
-                            } else {
-                                drap.insertAfter(drop);
                             }
-                            scope._indexLine();
+                        },
+                        dragend: function (event) {
+                            if (event.currentTarget) {
+                                var dragLine = $(event.currentTarget).closest('tr');
+                                dragLine.css("opacity", "");
+
+                                scope._trigger("lineMoved", {}, {
+                                    fromLine: dragLine.data("fromLine"),
+                                    toLine: dragLine.data("line")
+                                });
+                            }
                         }
-                    }
-                });
-                this._initCSSResponsive();
+                    });
+
+                    this.element.find('tbody').kendoDropTargetArea({
+                        filter: '.dcpArray__content__line[data-attrid="'+this.options.id+'"]',
+                        dragenter: function (event) {
+                            if (event.currentTarget) {
+                                var drap = event.draggable.currentTarget.closest('tr');
+                                var drop = event.dropTarget;
+                                var drapLine = drap.data("line");
+                                var dropLine = drop.data("line");
+                                if (drapLine > dropLine) {
+                                    drap.insertBefore(drop);
+                                } else {
+                                    drap.insertAfter(drop);
+                                }
+                                scope._indexLine();
+                            }
+                        }
+                    });
+                    this._initCSSResponsive();
+                }
             }
         },
 
