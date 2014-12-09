@@ -247,11 +247,11 @@ define([
             this.propertiesWidget.open();
         },
 
-        updateTitle : function () {
+        updateTitle : function updateTitle() {
             document.title = this.model.get("properties").get("title");
         },
 
-        updateIcon : function () {
+        updateIcon : function updateIcon() {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
@@ -269,14 +269,14 @@ define([
             }
         },
 
-        displayLoading : function () {
+        displayLoading : function displayLoading() {
             this.$el.hide();
             this.trigger("cleanNotification");
             this.trigger("loader", 0);
             this.trigger("loaderShow");
         },
 
-        showView : function () {
+        showView : function showView() {
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderHide");
@@ -326,7 +326,7 @@ define([
          * @param options
          * @returns {*}
          */
-        actionDocument : function (options) {
+        actionDocument : function actionDocument(options) {
             options = options.options;
             if (options[0] === "save") {
                 return this.saveDocument();
