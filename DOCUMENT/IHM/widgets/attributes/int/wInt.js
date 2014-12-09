@@ -32,7 +32,7 @@ define([
         _initDom : function wIntInitDom() {
             this.element.addClass("dcpAttribute__contentWrapper");
             this.element.attr("data-type", this.getType());
-            this.element.attr("data-id", this.options.id);
+            this.element.attr("data-attrid", this.options.id);
             if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
                 this.options.value.displayValue = this.formatNumber(this.options.value.value);
             }

@@ -21,7 +21,7 @@ define([
         _initDom: function wDocidInitDom() {
             this.element.addClass("dcpAttribute__contentWrapper");
             this.element.attr("data-type", this.getType());
-            this.element.attr("data-id", this.options.id);
+            this.element.attr("data-attrid", this.options.id);
             if (this._isMultiple()) {
                 this.options.values = _.toArray(this.options.value);
                 this.options.isMultiple = true;

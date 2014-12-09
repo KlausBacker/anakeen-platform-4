@@ -61,7 +61,7 @@ define(["underscore"], function (_) {
                     var $sandBox = getSandbox();
                     widget.call($sandBox, options);
                     expect($sandBox).toHaveAttr("data-type", widget.call($sandBox, "getType"));
-                    expect($sandBox).toHaveAttr("data-id", widget.call($sandBox, "option", "id"));
+                    expect($sandBox).toHaveAttr("data-attrid", widget.call($sandBox, "option", "id"));
                 });
 
             });
@@ -95,7 +95,7 @@ define(["underscore"], function (_) {
                     widget.call($sandBox, options);
                     widget.call($sandBox, "destroy");
                     expect($sandBox).not.toHaveAttr("data-type");
-                    expect($sandBox).not.toHaveAttr("data-id");
+                    expect($sandBox).not.toHaveAttr("data-attrid");
                 });
 
             });

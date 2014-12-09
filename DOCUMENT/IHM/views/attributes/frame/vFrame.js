@@ -10,7 +10,7 @@ define([
 
     return Backbone.View.extend({
 
-        className : "panel panel-default dcpDocument__frame",
+        className : "panel panel-default dcpFrame",
 
         initialize : function () {
             this.listenTo(this.model, 'change:label', this.updateLabel);
@@ -32,6 +32,7 @@ define([
             this.$el.empty();
             this.$el.append(labelElement);
             this.$el.append(contentElement);
+            this.$el.attr("data-attrid", this.model.id);
 
             labelElement.on("click", _.bind(this.toggle, this));
             $content = this.$el.find(".dcpFrame__content");

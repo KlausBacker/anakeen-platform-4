@@ -112,6 +112,7 @@ define([
                         }
                     });
                     this._initCSSResponsive();
+
                 }
             }
         },

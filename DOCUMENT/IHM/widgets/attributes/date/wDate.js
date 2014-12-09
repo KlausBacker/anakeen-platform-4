@@ -33,7 +33,7 @@ define([
 
             this.element.addClass("dcpAttribute__contentWrapper");
             this.element.attr("data-type", this.getType());
-            this.element.attr("data-id", this.options.id);
+            this.element.attr("data-attrid", this.options.id);
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
 

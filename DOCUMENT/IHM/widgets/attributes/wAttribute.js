@@ -298,7 +298,7 @@ define([
         _destroy: function _destroy() {
             this.element.removeClass("dcpAttribute__contentWrapper");
             this.element.removeAttr("data-type");
-            this.element.removeAttr("data-id");
+            this.element.removeAttr("data-attrid");
             this.element.empty();
             this._trigger("destroy");
             this._super();
@@ -323,7 +323,7 @@ define([
         _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
             this.element.addClass("dcpAttribute__contentWrapper");
             this.element.attr("data-type", this.getType());
-            this.element.attr("data-id", this.options.id);
+            this.element.attr("data-attrid", this.options.id);
         },
         /**
          * Init the events

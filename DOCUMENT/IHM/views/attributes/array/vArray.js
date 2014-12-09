@@ -10,7 +10,7 @@ define([
     'use strict';
 
     return Backbone.View.extend({
-
+        className : "dcpArray",
         events: {
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
@@ -72,6 +72,8 @@ define([
                 window.TraceKit.report(e);
                 console.error(e);
             }
+
+            this.$el.attr("data-attrid", this.model.id);
 
             // console.timeEnd("render array " + this.model.id);
             return this;
