@@ -111,10 +111,9 @@ define([
                             }
                         }
                     });
-                    this._initCSSResponsive();
-
                 }
             }
+            this._initCSSResponsive();
         },
 
         _initCSSResponsive : function _initCSSResponsive() {
