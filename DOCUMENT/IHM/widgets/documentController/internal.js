@@ -14,12 +14,16 @@ define([
     $.widget("dcp.documentInternal", {
 
         options : {
-            eventPrefix : "dcpDocumentInternal",
+            eventPrefix : "document",
             initid :      null,
             viewId :      undefined,
             revision :    undefined
         },
 
+        /**
+         * Create widget
+         * @private
+         */
         _create : function _create() {
             if (!this.options.initid) {
                 throw new Error("Widget cannot be initialized without an initid");
@@ -32,10 +36,31 @@ define([
             this._super();
         },
 
+        /**
+         * Delete the widget
+         * @private
+         */
+        _destroy : function _destroy() {
+            this.view.remove();
+            delete this._model;
+            this._trigger("destroy");
+            this._super();
+        },
+
+        /**
+         * Return essential element of the current document
+         *
+         * @returns {Object}
+         * @private
+         */
         _getModelValue : function _getModelValue() {
             return _.pick(this.options, "initid", "viewId", "revision");
         },
 
+        /**
+         * Generate the dom where the view is inserted
+         * @private
+         */
         _initDom : function _initDom() {
             var $document = this.element.find(".dcpDocument");
             if (!this.$document || $document.length === 0) {
@@ -44,13 +69,26 @@ define([
             }
         },
 
+        /**
+         * Init the model and bind the events
+         *
+         * @param initialValue
+         * @returns {DocumentModel}
+         * @private
+         */
         _initModel : function _initModel(initialValue) {
-            var model = new DocumentModel(initialValue), currentWidget = this;
+            var model = new DocumentModel(initialValue);
             this._model = model;
             this._initModelEvents();
             return model;
         },
 
+        /**
+         * Init the view and bind the events
+         *
+         * @returns {DocumentView}
+         * @private
+         */
         _initView : function _initView() {
             var documentView, $document;
             this._initDom();
@@ -61,30 +99,72 @@ define([
             return documentView;
         },
 
+        /**
+         * Clear and reinit the model with current widget values
+         *
+         * @private
+         */
         _reinitModel : function _reinitModel() {
             this._model.clear().set(this._getModelValue());
         },
 
+        /**
+         * Init the external elements (loading bar and notification widget)
+         * @private
+         */
         _initExternalElements : function _initExternalElements() {
             this.$loading = $(".dcpLoading").dcpLoading();
             this.$notification = $('body').dcpNotification(); // active notification
         },
 
+        /**
+         * Bind the model event
+         *
+         * Re-trigger the event
+         *
+         * @private
+         */
         _initModelEvents : function _initEvents() {
             var currentWidget = this;
-            this._model.on("invalid", function showInvalid(model, error) {
+            this._model.listenTo(this._model, "invalid", function showInvalid(model, error) {
                 currentWidget.$notification.dcpNotification("showError", error);
+                currentWidget._trigger("error", {}, {
+                    documentData : currentWidget._model.getDocumentData(),
+                    message :      error
+                });
             });
-            this._model.on("showError", function showError(error) {
+            this._model.listenTo(this._model, "showError", function showError(error) {
                 currentWidget.$notification.dcpNotification("showError", error);
+                currentWidget._trigger("error", {}, {
+                    documentData : currentWidget._model.getDocumentData(),
+                    message :      error
+                });
             });
-            this._model.on("sync", function() {
+            this._model.listenTo(this._model, "sync", function () {
                 currentWidget.options.initid = currentWidget._model.id;
                 currentWidget.options.viewId = currentWidget._model.get("viewId");
                 currentWidget.options.revision = currentWidget._model.get("revision");
+                currentWidget.element.data(currentWidget._getModelValue());
+            });
+            this._model.listenTo(this._model, "fetch", function () {
+                currentWidget._trigger("close", {}, {
+                    documentData : currentWidget._model.getDocumentData()
+                });
+            });
+            this._model.listenTo(this._model, "changeValue", function (options) {
+                currentWidget._trigger("change", {}, {
+                    documentData : currentWidget._model.getDocumentData(),
+                    change : options
+                });
             });
         },
 
+        /**
+         * Bind the view
+         * Re-trigger the events
+         *
+         * @private
+         */
         _initViewEvents : function _initViewEvents() {
             var currentWidget = this;
             this.view.on("cleanNotification", function () {
@@ -105,17 +185,28 @@ define([
             });
             this.view.on('renderDone', function () {
                 console.timeEnd("xhr+render document view");
+                currentWidget._trigger("ready", {}, {
+                    documentData : currentWidget._model.getDocumentData()
+                });
                 currentWidget.$loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
                 _.delay(function () {
                     currentWidget.$loading.dcpLoading("hide");
                     console.timeEnd('main');
-                }, 500);
+                }, 250);
             });
             this.view.on("showMessage", function showMessage(message) {
                 currentWidget.$notification.dcpNotification("show", message.type, message);
+                currentWidget._trigger("message", {}, {
+                    documentData : currentWidget._model.getDocumentData(),
+                    message :      message
+                });
             });
             this.view.on("showSuccess", function showSuccess(message) {
                 currentWidget.$notification.dcpNotification("showSuccess", message);
+                currentWidget._trigger("message", {}, {
+                    documentData : currentWidget._model.getDocumentData(),
+                    message :      message
+                });
             });
             this.view.on("reinit", function reinit() {
                 currentWidget._initView();
@@ -123,16 +214,14 @@ define([
             });
         },
 
+        /**
+         * Init the pushstate router
+         *
+         * @private
+         */
         _initRouter : function _initRouter() {
             Backbone.history.start({pushState : true});
             this.router = new Router({document : this._model});
-        },
-
-        _destroy : function _destroy() {
-            this.view.remove();
-            delete this._model;
-            this._trigger("destroy");
-            this._super();
         },
 
         _getAttributeModel : function _getAttributeModel(attributeId) {
@@ -143,28 +232,12 @@ define([
             return attribute;
         },
 
-        getProperty : function getDocumentProperty(property) {
-            return this._model.get("properties").get(property);
-        },
-
-        getProperties : function getDocumentProperties(property) {
-            return this._model.get("properties").toJSON();
-        },
-
-        hideAttribute : function hideAttribute(attributeId) {
-            this._getAttributeModel(attributeId).trigger("hide");
-        },
-
-        showAttribute : function showAttribute(attributeId) {
-            this._getAttributeModel(attributeId).trigger("show");
-        },
-
         reinitDocument : function () {
             this._reinitModel();
             this._model.fetch();
         },
 
-        fetchDocument : function(options) {
+        fetchDocument : function (options) {
             options = _.isUndefined(options) ? {} : options;
             if (!_.isObject(options)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
@@ -177,17 +250,32 @@ define([
             this.reinitDocument();
         },
 
-        getValue : function(attributeId) {
+        getProperty : function getDocumentProperty(property) {
+            return this._model.get("properties").get(property);
+        },
+
+        getProperties : function getDocumentProperties() {
+            return this._model.get("properties").toJSON();
+        },
+
+        hideAttribute : function hideAttribute(attributeId) {
+            this._getAttributeModel(attributeId).trigger("hide");
+        },
+
+        showAttribute : function showAttribute(attributeId) {
+            this._getAttributeModel(attributeId).trigger("show");
+        },
+
+        getValue : function (attributeId) {
             var attribute = this._model.get("attributes").get(attributeId);
             return attribute.get("value");
         },
 
-        getValues : function() {
-            var values = this._model.toJSON();
-            return values.document.attributes;
+        getValues : function () {
+            return this._model.getValues();
         },
 
-        setValue : function(attributeId, value) {
+        setValue : function (attributeId, value) {
             var attribute = this._model.get("attributes").get(attributeId);
             return attribute.set("value", value);
         }
