@@ -45,7 +45,7 @@ define([
                     try {
                         widgetClass.apply($(cells[index]), [data]);
                     } catch (error) {
-                        window.TraceKit.error(error);
+                        window.TraceKit.report(error);
                         console.error(error);
                     }
                 }
