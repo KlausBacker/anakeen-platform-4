@@ -65,11 +65,11 @@ define([
             if (!currentElement) {
                 currentElement = this.element;
             }
-            currentElement.addClass('dcpAttribute__content--flash');
+            currentElement.addClass('dcpAttribute__value--flash');
             _.delay(function () {
-                currentElement.removeClass('dcpAttribute__content--flash').addClass('dcpAttribute__content--endflash');
+                currentElement.removeClass('dcpAttribute__value--flash').addClass('dcpAttribute__value--endflash');
                 _.delay(function () {
-                    currentElement.removeClass('dcpAttribute__content--endflash');
+                    currentElement.removeClass('dcpAttribute__value--endflash');
                 }, 600);
             }, 10);
         },
@@ -159,7 +159,7 @@ define([
          * @returns {*}
          */
         getContentElements: function () {
-            return this.element.find('.dcpAttribute__content[name="' + this.options.id + '"]');
+            return this.element.find('.dcpAttribute__value[name="' + this.options.id + '"]');
         },
 
         /**
