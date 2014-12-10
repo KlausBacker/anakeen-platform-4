@@ -31,7 +31,7 @@ define([
                 this.options.value.displayValue=this.formatDate(this.parseDate(this.options.value.value));
             }
 
-            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));

@@ -26,10 +26,10 @@ define([
         className : "row dcpAttribute form-group",
 
         events : {
-            "dcpattributechange .dcpAttribute__contentWrapper" :                   "updateValue",
-            "dcpattributedelete .dcpAttribute__contentWrapper" :                   "deleteValue",
-            "dcpattributechangeattrmenuvisibility .dcpAttribute__contentWrapper" : "changeMenuVisibility",
-            "dcpattributechangeattrsvalue .dcpAttribute__contentWrapper" :         "changeAttributesValue"
+            "dcpattributechange .dcpAttribute__content" :                   "updateValue",
+            "dcpattributedelete .dcpAttribute__content" :                   "deleteValue",
+            "dcpattributechangeattrmenuvisibility .dcpAttribute__content" : "changeMenuVisibility",
+            "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue"
         },
 
         initialize : function initialize(options) {
@@ -92,7 +92,7 @@ define([
             }
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            this.currentDcpWidget = this.widgetApply(this.$el.find(".dcpAttribute__contentWrapper"), data);
+            this.currentDcpWidget = this.widgetApply(this.$el.find(".dcpAttribute__content"), data);
             return this;
         },
 
@@ -112,8 +112,8 @@ define([
                 arrayWrapper.dcpArray("setLines", values.length);
             }
 
-            allWrapper = this.getDOMElements().find(".dcpAttribute__contentWrapper")
-                .add(this.getDOMElements().filter(".dcpAttribute__contentWrapper"));
+            allWrapper = this.getDOMElements().find(".dcpAttribute__content")
+                .add(this.getDOMElements().filter(".dcpAttribute__content"));
 
             if (this.model.inArray()) {
                 values = _.toArray(values);
@@ -132,7 +132,7 @@ define([
         refreshError : function refreshError(event) {
             var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-            this.widgetApply(this.getDOMElements().find(".dcpAttribute__contentWrapper").andSelf().filter(".dcpAttribute__contentWrapper"),
+            this.widgetApply(this.getDOMElements().find(".dcpAttribute__content").andSelf().filter(".dcpAttribute__content"),
                 "setError", this.model.get("errorMessage"));
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);

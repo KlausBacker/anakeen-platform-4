@@ -47,7 +47,7 @@ define(["underscore"], function (_) {
                 it("class", function () {
                     var $sandBox = getSandbox();
                     widget.call($sandBox, options);
-                    expect($sandBox).toHaveClass("dcpAttribute__contentWrapper");
+                    expect($sandBox).toHaveClass("dcpAttribute__content");
                 });
 
                 it("event", function () {

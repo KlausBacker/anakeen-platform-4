@@ -296,7 +296,7 @@ define([
          * @private
          */
         _destroy: function _destroy() {
-            this.element.removeClass("dcpAttribute__contentWrapper");
+            this.element.removeClass("dcpAttribute__content");
             this.element.removeAttr("data-type");
             this.element.removeAttr("data-attrid");
             this.element.empty();
@@ -321,7 +321,7 @@ define([
          * @public
          */
         _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
-            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
         },
@@ -416,7 +416,7 @@ define([
             // tooltip is created in same parent
             this.element.parent().on("click", ".button-close-error", function (event) {
                 if (scope.element.data("hasErrorTooltip")) {
-                    scope.element.tooltip("destroy");
+                    scope.element.find(".input-group").tooltip("destroy");
                     scope.element.data("hasErrorTooltip", false);
                 }
             });
