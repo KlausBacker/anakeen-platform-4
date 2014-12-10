@@ -29,7 +29,8 @@ define([
             "dcpattributechange .dcpAttribute__content" :                   "updateValue",
             "dcpattributedelete .dcpAttribute__content" :                   "deleteValue",
             "dcpattributechangeattrmenuvisibility .dcpAttribute__content" : "changeMenuVisibility",
-            "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue"
+            "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue",
+            "dcpattributechangedocument .dcpAttribute__content" :           "changeDocument"
         },
 
         initialize : function initialize(options) {
@@ -39,6 +40,8 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
             this.listenTo(this.model, 'showTab', this.afterShow);
+            this.listenTo(this.model, 'hide', this.hide);
+            this.listenTo(this.model, 'show', this.show);
             this.options = options;
         },
 
@@ -165,6 +168,20 @@ define([
             });
         },
 
+        changeDocument : function changeDocument(event, options) {
+            var index = options.index, initid = null, value = this.model.get("value"), documentModel = this.model.getDocumentModel();
+            if (_.isUndefined(index)) {
+                initid = value.value;
+            } else {
+                initid = value[index].value;
+            }
+            documentModel.clear().set({
+                "initid" : initid,
+                "revision" : -1,
+                "viewId" : "!defaultConsultation"
+            }).fetch();
+        },
+
         /**
          * Delete value,
          * If has help, clear also target attributes
@@ -239,7 +256,7 @@ define([
             $.ajax({
                 type : "POST",
                 url : "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
-                (documentModel.id || "0" ) +
+                      (documentModel.id || "0" ) +
                       "&fromid=" + documentModel.get("properties").get("family").id,
                 data : options.data,
 
@@ -341,6 +358,14 @@ define([
                 console.error(e);
             }
             return Backbone.View.prototype.remove.call(this);
+        },
+
+        hide : function hide() {
+            this.$el.hide();
+        },
+
+        show : function show() {
+            this.$el.show();
         },
 
         _findWidgetName : function ($element) {

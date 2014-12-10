@@ -195,11 +195,21 @@ define([
 
         renderCss : function renderCss() {
             // add custom css style
-            var currentView = this;
-            _.each(this.model.get("customCSS"), function (cssItem) {
+            var $target = $("head link:last"),
+                cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" href="<%= path %>" data-id="<%= key %>" data-view="true">'),
+                customCss = this.model.get("customCSS");
+            _.each($("link[data-view=true]"), function (currentLink) {
+                var findCss = function (currentCss) {
+                    return currentLink.dataset.id === currentCss.key;
+                };
+                if (_.find(customCss, findCss) === undefined) {
+                    $(currentLink).remove();
+                }
+            });
+            _.each(customCss, function (cssItem) {
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
                 if ($existsLink.length === 0) {
-                    currentView.$el.append('<link rel="stylesheet" type="text/css" href="' + cssItem.path + '" data-id="' + cssItem.key + '" >');
+                    $target.after(cssLinkTemplate(cssItem));
                 }
             });
         },
@@ -237,11 +247,11 @@ define([
             this.propertiesWidget.open();
         },
 
-        updateTitle : function () {
+        updateTitle : function updateTitle() {
             document.title = this.model.get("properties").get("title");
         },
 
-        updateIcon : function () {
+        updateIcon : function updateIcon() {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
@@ -259,14 +269,14 @@ define([
             }
         },
 
-        displayLoading : function () {
+        displayLoading : function displayLoading() {
             this.$el.hide();
             this.trigger("cleanNotification");
             this.trigger("loader", 0);
             this.trigger("loaderShow");
         },
 
-        showView : function () {
+        showView : function showView() {
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderHide");
@@ -316,7 +326,7 @@ define([
          * @param options
          * @returns {*}
          */
-        actionDocument : function (options) {
+        actionDocument : function actionDocument(options) {
             options = options.options;
             if (options[0] === "save") {
                 return this.saveDocument();

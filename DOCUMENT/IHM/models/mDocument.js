@@ -381,6 +381,11 @@ define([
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },
 
+        clear : function clear(options) {
+            this.destroySubcollection();
+            return Backbone.Model.prototype.clear.call(this, options);
+        },
+
         destroySubcollection: function destroySubcollection() {
             if (this.get("menus") instanceof CollectionMenus) {
                 this.get("menus").destroy();

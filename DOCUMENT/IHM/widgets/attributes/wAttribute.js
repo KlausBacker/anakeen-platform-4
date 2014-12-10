@@ -129,7 +129,7 @@ define([
          *
          * @returns {string}
          */
-        getType: function () {
+        getType: function getType() {
             return this.options.type;
         },
 
@@ -138,7 +138,7 @@ define([
          *
          * @returns {string} Read|Write
          */
-        getMode: function () {
+        getMode: function getMode() {
             if (this.options.mode !== "read" && this.options.mode !== "write" && this.options.mode !== "hidden") {
                 throw new Error("Attribute " + this.option.id + " have unknown mode " + this.options.mode);
             }
@@ -150,7 +150,7 @@ define([
          *
          * @returns {*|number|.options.value}
          */
-        getValue: function () {
+        getValue: function getValue() {
             return this.options.value;
         },
 
@@ -168,7 +168,7 @@ define([
          *
          * @returns {*}
          */
-        getWidgetValue: function () {
+        getWidgetValue: function getWidgetValue() {
             return this.getContentElements().val();
 
         },
@@ -223,7 +223,7 @@ define([
          *
          * @return this
          */
-        showInputTooltip: function (ktTarget) {
+        showInputTooltip: function showInputTooltip(ktTarget) {
             var scope = this;
 
             if (scope.options.renderOptions.inputHtmlTooltip) {
@@ -250,7 +250,7 @@ define([
          * Create the widget
          * @private
          */
-        _create: function () {
+        _create: function _create() {
             //If no id is provided one id generated
             if (this.options.id === null) {
                 this.options.id = _.uniqueId("widget_" + this.getType());
@@ -531,7 +531,7 @@ define([
          * @returns int
          * @protected
          */
-        _getIndex: function () {
+        _getIndex: function _getIndex() {
             if (this.options.index !== -1) {
                 this.options.index = this.element.closest('.dcpArray__content__line').data('line');
             }
@@ -544,7 +544,7 @@ define([
          * @returns {*}
          * @private
          */
-        _getEmptyValue: function () {
+        _getEmptyValue: function _getEmptyValue() {
             if (_.isEmpty(this.options.value) || this.options.value.value === null) {
 
                 if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
@@ -564,7 +564,7 @@ define([
          * @returns string
          * @private
          */
-        _getTemplate: function (key) {
+        _getTemplate: function _getTemplate(key) {
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }
@@ -602,7 +602,7 @@ define([
          * @returns boolean
          * @public
          */
-        _isMultiple: function () {
+        _isMultiple: function _isMultiple() {
             return (this.options.options && this.options.options.multiple === "yes");
         },
 

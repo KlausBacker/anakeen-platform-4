@@ -21,6 +21,8 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'showTab', this.renderContent);
             this.listenTo(this.model, 'showTab', this.propageShowTab);
+            this.listenTo(this.model, 'hide', this.hide);
+            this.listenTo(this.model, 'show', this.show);
             this.initializeContent = options.initializeContent;
             this.initialized = false;
         },
@@ -78,6 +80,14 @@ define([
 
         updateLabel : function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
+        },
+
+        hide : function hide() {
+            this.$el.hide();
+        },
+
+        show : function show() {
+            this.$el.show();
         }
     });
 
