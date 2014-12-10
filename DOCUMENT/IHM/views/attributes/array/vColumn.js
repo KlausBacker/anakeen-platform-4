@@ -18,6 +18,7 @@ define([
                 "dcparraylineadded" : "addNewWidget"
             };
             this._addEvent(absEvents, "changeattrsvalue", "changeAttributesValue");
+            this._addEvent(absEvents, "changedocument", "changeAttributesValue");
             this._addEvent(absEvents, "delete", "deleteValue");
             return absEvents;
         },

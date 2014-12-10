@@ -25,6 +25,8 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'errorMessage', this.setError);
+            this.listenTo(this.model, 'hide', this.hide);
+            this.listenTo(this.model, 'show', this.show);
 
         },
 
@@ -156,6 +158,14 @@ define([
                     parentModel.trigger("errorMessage", event, data);
                 }
             }
+        },
+
+        hide : function hide() {
+            this.$el.hide();
+        },
+
+        show : function show() {
+            this.$el.show();
         }
     });
 

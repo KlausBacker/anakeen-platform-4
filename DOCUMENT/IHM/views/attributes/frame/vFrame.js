@@ -20,6 +20,8 @@ define([
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
+            this.listenTo(this.model, 'hide', this.hide);
+            this.listenTo(this.model, 'show', this.show);
         },
 
         render : function () {
@@ -103,7 +105,14 @@ define([
                 $contentElement.addClass("dcpFrame__content--open").removeClass("dcpFrame__content--close");
                 $contentElement.slideDown();
             }
+        },
 
+        hide : function hide() {
+            this.$el.hide();
+        },
+
+        show : function show() {
+            this.$el.show();
         }
     });
 

@@ -40,6 +40,8 @@ define([
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
             this.listenTo(this.model, 'showTab', this.afterShow);
+            this.listenTo(this.model, 'hide', this.hide);
+            this.listenTo(this.model, 'show', this.show);
             this.options = options;
         },
 
@@ -254,7 +256,7 @@ define([
             $.ajax({
                 type : "POST",
                 url : "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
-                (documentModel.id || "0" ) +
+                      (documentModel.id || "0" ) +
                       "&fromid=" + documentModel.get("properties").get("family").id,
                 data : options.data,
 
@@ -356,6 +358,14 @@ define([
                 console.error(e);
             }
             return Backbone.View.prototype.remove.call(this);
+        },
+
+        hide : function hide() {
+            this.$el.hide();
+        },
+
+        show : function show() {
+            this.$el.show();
         },
 
         _findWidgetName : function ($element) {
