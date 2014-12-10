@@ -15,7 +15,7 @@ define([
 
         _initDom : function wTextInitDom() {
             this._super();
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
                 this.activateAutocomplete(this.kendoWidget);
             } else {
@@ -73,11 +73,11 @@ define([
 
                 }
             });
-            this.element.find('.dcpAttribute__content--autocomplete--button').on("click", function (event) {
+            this.element.find('.dcpAttribute__value--autocomplete--button').on("click", function (event) {
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
-            this.element.find('.dcpAttribute__content--autocomplete--button[title]').tooltip();
+            this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip();
 
         },
 

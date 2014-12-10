@@ -38,7 +38,7 @@ define([
             }
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
                 if (this.options.hasAutocomplete) {
                     this.activateAutocomplete(this.kendoWidget);

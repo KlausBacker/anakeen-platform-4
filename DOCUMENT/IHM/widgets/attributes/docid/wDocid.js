@@ -53,7 +53,7 @@ define([
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             } else if (this.getMode() === "write") {
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-                this.kendoWidget = this.element.find(".dcpAttribute__content--docid");
+                this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
                 if (this._isMultiple()) {
                     this._decorateMultipleValue(this.kendoWidget);
                 } else {
@@ -61,7 +61,7 @@ define([
                 }
                 if (this.options.value && this.options.value.value !== null) {
                     if (!this.hasMultipleOption()) {
-                        this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
+                        this.element.find('.dcpAttribute__value--docid--button').attr("disabled", "disabled");
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
@@ -199,12 +199,12 @@ define([
                 options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
             }
             inputValue.kendoMultiSelect(options);
-            this.element.find('.dcpAttribute__content--docid--button').on("click"+ this.eventNamespace, function (event) {
+            this.element.find('.dcpAttribute__value--docid--button').on("click"+ this.eventNamespace, function (event) {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
 
-            this.element.find('.dcpAttribute__content--docid--button[title]').tooltip();
+            this.element.find('.dcpAttribute__value--docid--button[title]').tooltip();
         },
         /**
          * Return true if attribut has multiple option
@@ -229,10 +229,10 @@ define([
                         value = [];
                     }
                     if (value.length === 0) {
-                        this.element.find('.dcpAttribute__content--docid--button').removeAttr("disabled");
+                        this.element.find('.dcpAttribute__value--docid--button').removeAttr("disabled");
                         this.element.find('input.k-input').removeAttr("disabled");
                     } else {
-                        this.element.find('.dcpAttribute__content--docid--button').attr("disabled", "disabled");
+                        this.element.find('.dcpAttribute__value--docid--button').attr("disabled", "disabled");
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
@@ -256,7 +256,7 @@ define([
                 }
 
             } else if (this.getMode() === "read") {
-                this.element.find(".dcpAttribute__content").text(value.displayValue);
+                this.element.find(".dcpAttribute__value").text(value.displayValue);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

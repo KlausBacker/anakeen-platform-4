@@ -3,18 +3,18 @@
     <span class="input-group-addon">
         <button
                 {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
-                class="dcpAttribute__content--autocomplete--button btn btn-default btn-xs">
+                class="dcpAttribute__value--autocomplete--button btn btn-default btn-xs">
             <i class="fa fa-chevron-down fa-fw"></i>
         </button>
     </span>
     {{/hasAutocomplete}}
     <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none"
-           class="dcpAttribute__content--file"
+           class="dcpAttribute__value--file"
            value="{{value.value}}"/>
 
     <input {{#value.icon}}style="background-image:url({{value.icon}}){{/value.icon}}"
            type="text"
-           class="form-control dcpAttribute__content dcpAttribute__content--edit {{#value.icon}}dcpAttribute__content--fileicon{{/value.icon}}"
+           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#value.icon}}dcpAttribute__value--fileicon{{/value.icon}}"
            value="{{value.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
         <button type="button"  data-index="{{index}}"

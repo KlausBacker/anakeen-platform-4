@@ -128,7 +128,7 @@ define([
             // Generate CSS string
             cssString = "<style>@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) { ";
 
-            cssTemplate = _.template('.dcpArray__content[data-attrid='+this.options.id+'] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
+            cssTemplate = _.template('.dcpArray__content[data-attrid='+this.options.id+'] .dcpAttribute__contentWrapper[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 
             _.each(headers, function (currentHeader) {
                 currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");

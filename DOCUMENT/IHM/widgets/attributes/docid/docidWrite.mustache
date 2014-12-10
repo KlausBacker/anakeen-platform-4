@@ -1,10 +1,10 @@
-<div class="input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__content--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__content--single{{/isMultiple}}">
+<div class="input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}">
     <span class="input-group-addon">
         <button
             {{#renderOptions.autoCompleteHtmlLabel}}
             title="{{renderOptions.autoCompleteHtmlLabel}}"
             {{/renderOptions.autoCompleteHtmlLabel}}
-            class="dcpAttribute__content--docid--button btn btn-default btn-xs">
+            class="dcpAttribute__value--docid--button btn btn-default btn-xs">
                 {{^isMultiple}}
                 <i class="fa fa-chevron-down fa-fw"></i>
                 {{/isMultiple}}
@@ -14,7 +14,7 @@
         </button>
     </span>
     <select name="{{id}}" id="{{viewCid}}"
-            class="form-control dcpAttribute__content dcpAttribute__content--docid"
+            class="form-control dcpAttribute__value dcpAttribute__value--docid"
             >
     </select>
     {{#hadButtons}}

@@ -233,7 +233,7 @@ define([
             var kddl;
 
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
             if (!this.options.renderOptions.useFirstChoice) {
                 kddl.ul.find("li:first-child").addClass("placeholder");
@@ -242,7 +242,7 @@ define([
         multipleSelect: function wEnumMultipleSelect() {
             var kendoOptions = this.getKendoOptions();
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
         },
 
@@ -252,7 +252,7 @@ define([
             var kddl;
 
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
 

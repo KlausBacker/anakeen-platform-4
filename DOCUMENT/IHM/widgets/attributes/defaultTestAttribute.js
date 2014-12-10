@@ -168,9 +168,9 @@ define(["underscore"], function (_) {
                     var $sandBox = getSandbox();
                     widget.call($sandBox, options);
                     widget.call($sandBox, "flashElement");
-                    expect($sandBox).toHaveClass("dcpAttribute__content--flash");
+                    expect($sandBox).toHaveClass("dcpAttribute__value--flash");
                     jasmine.clock().tick(11);
-                    expect($sandBox).not.toHaveClass("dcpAttribute__content--flash");
+                    expect($sandBox).not.toHaveClass("dcpAttribute__value--flash");
                 });
 
                 it("EndFlashClass", function () {
@@ -178,9 +178,9 @@ define(["underscore"], function (_) {
                     widget.call($sandBox, options);
                     widget.call($sandBox, "flashElement");
                     jasmine.clock().tick(11);
-                    expect($sandBox).toHaveClass("dcpAttribute__content--endflash");
+                    expect($sandBox).toHaveClass("dcpAttribute__value--endflash");
                     jasmine.clock().tick(601);
-                    expect($sandBox).not.toHaveClass("dcpAttribute__content--endflash");
+                    expect($sandBox).not.toHaveClass("dcpAttribute__value--endflash");
                 });
             });
 

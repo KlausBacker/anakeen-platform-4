@@ -1,6 +1,6 @@
 @import "../../../../../STYLE/BASE/Layout/variables";
 
-.dcpAttribute--type--enum .dcpAttribute__content--multiple .dcpAttribute__content__value{
+.dcpAttribute--type--enum .dcpAttribute__value--multiple .dcpAttribute__content__value{
   display:block;
   float:left;
   clear:both;
@@ -69,45 +69,45 @@ background-color: @gray-lighter;
  box-shadow: inset 0 0 10px 3px darken(@gray-lighter, 8%);
 }
 
-.dcpAttribute__contentWrapper .dcpAttribute__content--enumlabel input {
+.dcpAttribute__contentWrapper .dcpAttribute__value--enumlabel input {
   height:auto;
   width:auto;
   background-color:transparent;
   border:none;
   /*display:none; *//* no see native radio */
 }
-.dcpAttribute__content--enumlabel.k-button {
+.dcpAttribute__value--enumlabel.k-button {
   border-radius:0;
   border-style: none solid none none;
 }
 /*
-.dcpAttribute--type--enum .dcpAttribute__content--enumlabel.k-button:first-child {
+.dcpAttribute--type--enum .dcpAttribute__value--enumlabel.k-button:first-child {
   border-radius:4px 0 0 4px;
 }
-.dcpAttribute--type--enum .dcpAttribute__content--enumlabel.k-button:last-child {
+.dcpAttribute--type--enum .dcpAttribute__value--enumlabel.k-button:last-child {
   border-radius:0 4px 4px 0;
   border-right-style: solid;
 }
 */
 
-.dcpAttribute__content--enumlabel {
+.dcpAttribute__value--enumlabel {
   font-weight: normal;
 }
-.dcpAttribute__content--enumlabel.selected {
+.dcpAttribute__value--enumlabel.selected {
   background-color: @enum-selected-button-bg;
   color: @enum-selected-button-color;
 }
 
-.dcpAttribute__content--enumbuttons.orientation-horizontal {
+.dcpAttribute__value--enumbuttons.orientation-horizontal {
   width:100%;
   padding:0;
   display:table;
 }
-.dcpAttribute__content--enumbuttons.orientation-horizontal.input-group {
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group {
   display:table;
   table-layout: fixed; /* same width for each item */
 }
-.dcpAttribute__content--enumbuttons.orientation-horizontal.input-group label{
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group label{
   display:table-cell;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -115,20 +115,20 @@ background-color: @gray-lighter;
 }
 
 
-.dcpAttribute__content--enumbuttons.orientation-vertical {
+.dcpAttribute__value--enumbuttons.orientation-vertical {
   width:100%;
   padding:0;
 }
-.dcpAttribute__content--enumbuttons.orientation-vertical.input-group {
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
 
 }
-.dcpAttribute__content--enumbuttons.orientation-vertical.input-group label{
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group label{
   display:block;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
   white-space: nowrap;
 }
-.dcpAttribute__content--enumbuttons.orientation-vertical.input-group label span{
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group label span{
   margin-left: 1em;
 }
