@@ -80,9 +80,13 @@ define([
             var currentWidget = this;
             if (htmlLink) {
                 this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
+                    var $this = $(this);
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
-                        currentWidget._trigger("changedocument", event, {"index" : $(this).data("index")});
+                        currentWidget._trigger("changedocument", event, {
+                            "index" : $this.data("index"),
+                            "tableLine" : $this.closest(".dcpArray__content__line").data("line")
+                        });
                     }
                 });
             }
