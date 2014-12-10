@@ -91,22 +91,22 @@ class Logger
     }
     public function log($pri, $msg)
     {
-        $msg = sprintf("%s %s %s", PHP_SAPI, $this->priName($pri), $msg);
+        $pid = getmypid();
+        $date = date("c");
+        $sapiPri = sprintf("%s %s", PHP_SAPI, $this->priName($pri));
         /*
          * Send to local logfile
         */
         if (isset($this->logfile)) {
-            $newLine = sprintf("%s dynacase-control[%s]: %s", date("c") , getmypid() , $msg);
-            if (substr($newLine, -1, 1) != "\n") {
-                $newLine.= "\n";
-            }
-            error_log($newLine, 3, $this->logfile);
+            file_put_contents($this->logfile, sprintf("%s dynacase-control[%s]: %s %s%s", $date, $pid, $sapiPri, $msg, (substr($msg, -1, 1) != "\n" ? "\n" : "")) , FILE_APPEND | LOCK_EX);
         }
         /*
          * Send to syslog
         */
         openlog($this->ident, LOG_PID, $this->facility);
-        syslog($pri, $msg);
+        foreach (preg_split('/\n/', $msg) as $line) {
+            syslog($pri, sprintf("%s %s", $sapiPri, $line));
+        }
     }
     private function priName($pri)
     {
