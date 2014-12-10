@@ -1,10 +1,10 @@
 <div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
-    <div class="input-group k-textbox dcpAttribute__content--enumbuttons orientation-{{renderOptions.editDisplay}}">
+    <div class="input-group k-textbox dcpAttribute__value--enumbuttons orientation-{{renderOptions.editDisplay}}">
     {{#enumValues}}
-        <label class="dcpAttribute__content--enumlabel{{#selected}} selected{{/selected}}">
+        <label class="dcpAttribute__value--enumlabel{{#selected}} selected{{/selected}}">
             <input name="{{id}}"
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
-                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__content dcpAttribute__content--edit"
+                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
                    value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
             <span>{{displayValue}}</span>
         </label>

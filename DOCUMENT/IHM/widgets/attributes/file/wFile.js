@@ -74,7 +74,7 @@ define([
         _initUploadEvent: function wFileInitUploadEvent() {
             var scope = this;
             var inputFile = this.element.find("input[type=file]");
-            var inputText = this.element.find(".dcpAttribute__content");
+            var inputText = this.element.find(".dcpAttribute__value");
             var fileUrl = this.options.value.url;
 
             if (fileUrl) {
@@ -93,18 +93,18 @@ define([
                 inputText.val(scope.options.labels.dropFileHere);
                 event.stopPropagation();
                 event.preventDefault();
-                scope.element.addClass("dcpAttribute__content--dropzone");
+                scope.element.addClass("dcpAttribute__value--dropzone");
             });
             this.element.on("dragleave" + this.eventNamespace, function (event) {
                 inputText.val(scope.options.value.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
-                scope.element.removeClass("dcpAttribute__content--dropzone");
+                scope.element.removeClass("dcpAttribute__value--dropzone");
             });
 
             this.element.on("drop" + this.eventNamespace, function (event) {
                 inputText.val(scope.options.value.displayValue);
-                scope.element.removeClass("dcpAttribute__content--dropzone");
+                scope.element.removeClass("dcpAttribute__value--dropzone");
                 event.stopPropagation();
                 event.preventDefault();
 
@@ -134,7 +134,7 @@ define([
         },
 
         uploadFile: function wFileUploadFile(firstFile) {
-            var inputText = this.element.find(".dcpAttribute__content");
+            var inputText = this.element.find(".dcpAttribute__value");
             var fd = new FormData();
             var newFileName = firstFile.name;
             var originalText = inputText.val();
@@ -147,7 +147,7 @@ define([
 
             fd.append('dcpFile', firstFile);
 
-            inputText.addClass("dcpAttribute__content--transferring");
+            inputText.addClass("dcpAttribute__value--transferring");
             var infoBgColor = inputText.css("background-color");
             $.ajax({
                 type: 'POST',
@@ -169,12 +169,12 @@ define([
                             }
                             if (percent >= 100) {
                                 inputText.val(scope.options.labels.recording+' ' + newFileName);
-                                inputText.removeClass("dcpAttribute__content--transferring");
-                                inputText.addClass("dcpAttribute__content--recording progress-bar active progress-bar-striped");
+                                inputText.removeClass("dcpAttribute__value--transferring");
+                                inputText.addClass("dcpAttribute__value--recording progress-bar active progress-bar-striped");
                                 inputText.css("background", "");
                                 inputText.css("background-image", "");
                             } else {
-                                inputText.addClass("dcpAttribute__content--transferring");
+                                inputText.addClass("dcpAttribute__value--transferring");
                                 inputText.val(scope.options.labels.transferring+' '  + newFileName);
                                 inputText.css("background-color", "red");
                                 inputText.css("background", "linear-gradient(to right," +
@@ -194,7 +194,7 @@ define([
                 var dataFile = data.data.file;
                 inputText.val(originalText);
                 inputText.css("background", "");
-                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__content--transferring dcpAttribute__content--recording");
+                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
                 scope.setValue({
                     value: dataFile.reference,
                     size: dataFile.size,
@@ -209,7 +209,7 @@ define([
             }).fail(function (data) {
 
                 inputText.val(originalText);
-                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__content--transferring dcpAttribute__content--recording");
+                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
                 inputText.css("background", "");
                 inputText.css("background-image", "url(" + scope.options.value.icon + ')');
                 var result = JSON.parse(data.responseText);

@@ -30,7 +30,7 @@ define([
         kendoWidget : null,
 
         _initDom : function wIntInitDom() {
-            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
             if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
@@ -38,7 +38,7 @@ define([
             }
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
                 if (this.options.hasAutocomplete) {
                     this.activateAutocomplete(this.kendoWidget);

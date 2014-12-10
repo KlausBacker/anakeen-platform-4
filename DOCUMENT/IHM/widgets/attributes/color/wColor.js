@@ -26,7 +26,7 @@ define([
         kendoWidget : null,
 
         _initDom : function wColorInitDom() {
-            this.element.addClass("dcpAttribute__contentWrapper");
+            this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
             if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
@@ -34,7 +34,7 @@ define([
             }
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
-            this.kendoWidget = this.element.find(".dcpAttribute__content--edit");
+            this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
                 if (this.options.hasAutocomplete) {
                     this.activateAutocomplete(this.kendoWidget);
@@ -47,7 +47,7 @@ define([
                 }
             }
 
-            this.element.find(".dcpAttribute__content--read").css("border-color", this.options.value.value);
+            this.element.find(".dcpAttribute__value--read").css("border-color", this.options.value.value);
 
 
         },
@@ -82,7 +82,7 @@ define([
                 }
             } else if (this.getMode() === "read") {
                 this.getContentElements().text(value.displayValue);
-                this.element.find(".dcpAttribute__content--read").css("border-color", value.value);
+                this.element.find(".dcpAttribute__value--read").css("border-color", value.value);
             } else {
                 throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
             }

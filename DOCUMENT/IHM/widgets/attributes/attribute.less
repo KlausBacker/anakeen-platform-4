@@ -1,35 +1,35 @@
 @attrInputHeight : 30px;
 
-.dcpAttribute__content--read {
+.dcpAttribute__value--read {
   position: inherit;
   /*top: (@padding-base-vertical - 2);*/
 }
 
-.dcpAttribute__contentWrapper {
+.dcpAttribute__content {
   padding-top: (@padding-base-vertical - 2);
 }
 
-.dcpAttribute__contentWrapper .input-group .k-autocomplete input {
+.dcpAttribute__content .input-group .k-autocomplete input {
   height: (@attrInputHeight - 2);
 }
 
-.dcpAttribute__contentWrapper .k-widget > .k-state-default {
+.dcpAttribute__content .k-widget > .k-state-default {
   border-radius: 4px 0 0 4px;
 }
 
-.dcpAttribute__contentWrapper .input-group input,
+.dcpAttribute__content .input-group input,
 .dcpArray__content__cell .input-group input,
-.dcpAttribute__contentWrapper .input-group .k-autocomplete {
+.dcpAttribute__content .input-group .k-autocomplete {
   height: @attrInputHeight;
 }
 
-.dcpAttribute__contentWrapper .input-group-addon,
+.dcpAttribute__content .input-group-addon,
 .dcpArray__content__cell .input-group-addon {
   padding: 0;
   height: @attrInputHeight;
 }
 
-.dcpAttribute__contentWrapper .input-group-addon button,
+.dcpAttribute__content .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button, {
   /* background-color: transparent;*/
   border: none;
@@ -38,22 +38,22 @@
   padding: 0;
 }
 
-.dcpAttribute__contentWrapper .input-group-addon button:hover,
+.dcpAttribute__content .input-group-addon button:hover,
 .dcpArray__content__cell .input-group-addon button:hover, {
   /*background-color: @btn-default-bg;*/
 }
 
-.dcpAttribute__content--flash input,
-.dcpAttribute__content--flash textarea,
-.dcpAttribute__content--flash .k-input,
-iframe.dcpAttribute__content--flash {
+.dcpAttribute__value--flash input,
+.dcpAttribute__value--flash textarea,
+.dcpAttribute__value--flash .k-input,
+iframe.dcpAttribute__value--flash {
   background-color: @brand-info;
 }
 
-.dcpAttribute__content--endflash input,
-.dcpAttribute__content--endflash textarea,
-.dcpAttribute__content--endflash .k-input,
-iframe.dcpAttribute__content--endflash {
+.dcpAttribute__value--endflash input,
+.dcpAttribute__value--endflash textarea,
+.dcpAttribute__value--endflash .k-input,
+iframe.dcpAttribute__value--endflash {
   background-color: inherit;
   transition: background-color 500ms linear;
 }
@@ -63,7 +63,7 @@ iframe.dcpAttribute__content--endflash {
   float: right;
 }
 
-.dcpAttribute__contentWrapper .k-autocomplete .k-loading {
+.dcpAttribute__content .k-autocomplete .k-loading {
   position: relative;
   right: 20px;
   z-index: 3;
@@ -76,10 +76,7 @@ iframe.dcpAttribute__content--endflash {
   display: inline-block;
 }
 
-.dcpAttribute__content {
-  box-sizing: border-box;
-  height: @attrInputHeight;
-}
+
 
 .k-textbox:hover,
 .k-autocomplete.k-state-hover,
@@ -91,7 +88,7 @@ iframe.dcpAttribute__content--endflash {
   border-color: @input-border-focus;
 }
 
-.dcpAttribute__contentWrapper .input-group-addon button.dcpAttribute__content__button--extra,
+.dcpAttribute__content .input-group-addon button.dcpAttribute__content__button--extra,
 .dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {
   padding-left: 4px;
   padding-right: 4px;
@@ -101,11 +98,11 @@ iframe.dcpAttribute__content--endflash {
 * no delete button on IE10
 */
 //noinspection CssInvalidPseudoSelector
-.dcpAttribute__contentWrapper input[type=text]::-ms-clear {
+.dcpAttribute__content input[type=text]::-ms-clear {
   display: none;
 }
 
-.dcpAttribute__contentWrapper .tooltip-inner {
+.dcpAttribute__content .tooltip-inner {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;

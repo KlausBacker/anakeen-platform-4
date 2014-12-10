@@ -1,4 +1,4 @@
-<span class="dcpAttribute__content dcpAttribute__content dcpAttribute__content--read dcpAttribute__content--docid" name="{{id}}">
+<span class="dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid" name="{{id}}">
     {{#value.value}}
         {{#renderOptions.htmlLink.renderUrl}}
         <a class="dcpAttribute__content__link"
@@ -6,7 +6,7 @@
                         target="{{renderOptions.htmlLink.target}}"
                         href="{{renderOptions.htmlLink.renderUrl}}">
         {{/renderOptions.htmlLink.renderUrl}}
-        <img class="dcpAttribute__content--icon" src="{{value.icon}}" />
+        <img class="dcpAttribute__value--icon" src="{{value.icon}}" />
         <span class="dcpAttribute__content__value">{{value.displayValue}}</span>
         {{#renderOptions.htmlLink.renderUrl}}
         </a>
@@ -15,12 +15,12 @@
     {{{emptyValue}}}
     {{#values}}
         {{#renderUrl}}
-        <a class="dcpAttribute__content__link dcpAttribute__content--multiple" data-index="{{index}}"
+        <a class="dcpAttribute__content__link dcpAttribute__value--multiple" data-index="{{index}}"
         {{#renderOptions.htmlLink.title}}title="{{renderTitle}}" {{/renderOptions.htmlLink.title}}
                   target="{{renderOptions.htmlLink.target}}"
                    href="{{renderUrl}}">
             {{/renderUrl}}
-            <img class="dcpAttribute__content--icon" src="{{icon}}" />
+            <img class="dcpAttribute__value--icon" src="{{icon}}" />
             <span class="dcpAttribute__content__value">{{displayValue}}</span>
         {{#renderUrl}}
         </a>
