@@ -372,8 +372,7 @@ define([
          */
         _initButtonsEvent: function _initButtonsEvent() {
             var scope = this;
-            var $extraButtons = this.element.find(".dcpAttribute__content__button--extra");
-            $extraButtons.on("click" + this.eventNamespace, function (event) {
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function (event) {
                 var buttonsConfig = scope.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
@@ -433,18 +432,14 @@ define([
             var $deleteButton = this.element.find(".dcpAttribute__content__button--delete");
             var titleDelete;
             if (this.options.labels.deleteLabel) {
-
                 titleDelete = this.options.labels.deleteLabel;
             } else {
                 titleDelete = $deleteButton.attr('title');
                 titleDelete += this.options.labels.deleteAttributeNames;
             }
-            $deleteButton.on("mousedown" + this.eventNamespace, function (event) {
+            $deleteButton.attr('title', titleDelete);
 
-
-            }).attr('title', titleDelete);
-
-            $deleteButton.on("click" + this.eventNamespace, function (event) {
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function (event) {
                 currentWidget._trigger("delete", event, {
                     index: currentWidget._getIndex(),
                     id: currentWidget.options.id
@@ -472,7 +467,7 @@ define([
             var scope = this;
             if (htmlLink) {
 
-                this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
+                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event) {
 
                     if (htmlLink.target === "_dialog") {
                         event.preventDefault();

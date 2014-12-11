@@ -61,7 +61,6 @@ define([
             if (this.getMode() === "write") {
                 this._initUploadEvent();
             }
-
             this._super();
         },
 
@@ -71,6 +70,7 @@ define([
                 this._super();
             }
         },
+
         _initUploadEvent: function wFileInitUploadEvent() {
             var scope = this;
             var inputFile = this.element.find("input[type=file]");
@@ -78,31 +78,31 @@ define([
             var fileUrl = this.options.value.url;
 
             if (fileUrl) {
-                this.element.find(".dcpAttribute__content__button--file").on("click"+ this.eventNamespace, function (event) {
+                this.element.on("click"+ this.eventNamespace, ".dcpAttribute__content__button--file", function (event) {
                     window.location.href = fileUrl + "&inline=no";
                 });
             } else {
                 this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
             }
-            this.element.on("dragenter" + this.eventNamespace, function (event) {
+            this.element.on("dragenter" + this.eventNamespace, ".dcpAttribute__dragTarget", function (event) {
                 inputText.val(scope.options.value.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
             });
-            this.element.on("dragover" + this.eventNamespace, function (event) {
+            this.element.on("dragover" + this.eventNamespace, ".dcpAttribute__dragTarget", function (event) {
                 inputText.val(scope.options.labels.dropFileHere);
                 event.stopPropagation();
                 event.preventDefault();
                 scope.element.addClass("dcpAttribute__value--dropzone");
             });
-            this.element.on("dragleave" + this.eventNamespace, function (event) {
+            this.element.on("dragleave" + this.eventNamespace, ".dcpAttribute__dragTarget", function (event) {
                 inputText.val(scope.options.value.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
                 scope.element.removeClass("dcpAttribute__value--dropzone");
             });
 
-            this.element.on("drop" + this.eventNamespace, function (event) {
+            this.element.on("drop" + this.eventNamespace, ".dcpAttribute__dragTarget", function (event) {
                 inputText.val(scope.options.value.displayValue);
                 scope.element.removeClass("dcpAttribute__value--dropzone");
                 event.stopPropagation();
@@ -114,10 +114,10 @@ define([
                     scope.uploadFile(files[0]);
                 }
             });
-            inputText.on("click" + this.eventNamespace, function () {
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__value", function () {
                 inputFile.trigger("click");
             });
-            inputFile.on("change" + this.eventNamespace, function (event) {
+            this.element.on("change" + this.eventNamespace, "input[type=file]", function (event) {
                 if (this.files.length > 0) {
                     scope.uploadFile(this.files[0]);
                 }

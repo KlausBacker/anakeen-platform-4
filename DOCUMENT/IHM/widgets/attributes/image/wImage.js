@@ -49,8 +49,8 @@ define([
         _initDisplayEvent: function wImageinitDisplayEvent() {
             var scope = this;
             var htmlLink = this.getLink();
-            this.element.find('.dcpAttribute__content__link').off("click");
-            this.element.find('.dcpAttribute__content__link').on("click" + this.eventNamespace, function (event) {
+            this.element.off("click");
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__content__link', function (event) {
 
                 if (htmlLink.target === "_dialog") {
                     event.preventDefault();

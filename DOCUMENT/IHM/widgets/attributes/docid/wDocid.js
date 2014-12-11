@@ -79,7 +79,7 @@ define([
             var htmlLink = this.getLink();
             var currentWidget = this;
             if (htmlLink) {
-                this.element.find('.dcpAttribute__content__link').on("click." + this.eventNamespace, function (event) {
+                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event) {
                     var $this = $(this);
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
@@ -194,7 +194,7 @@ define([
                 options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
             }
             inputValue.kendoMultiSelect(options);
-            this.element.find('.dcpAttribute__value--docid--button').on("click"+ this.eventNamespace, function (event) {
+            this.element.on("click"+ this.eventNamespace, '.dcpAttribute__value--docid--button', function (event) {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
