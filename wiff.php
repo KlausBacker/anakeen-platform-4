@@ -54,6 +54,10 @@ if (get_magic_quotes_gpc()) {
 function checkInitServer()
 {
     $errors = array();
+    // Check PHP version
+    if (version_compare(PHP_VERSION, '5.4') < 0) {
+        array_push($errors, sprintf("PHP version %s is not supported: you must use PHP >= 5.4.", PHP_VERSION));
+    }
     // Check for required classes
     foreach (array(
         'DOMDocument' => 'dom',
