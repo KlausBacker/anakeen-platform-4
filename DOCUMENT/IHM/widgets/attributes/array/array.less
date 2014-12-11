@@ -1,5 +1,5 @@
 .dcpArray__head__toolCell, .dcpArray__content__toolCell {
-  width : 7em;
+  width : 9.5em;
   font-size: 80%;
 }
 
@@ -10,9 +10,7 @@
 .dcpArray__content__toolCell__dragDrop {
   cursor: move;
   float : left;
-  width: 1em;
 }
-
 
 .dcpArray__content__toolCell__delete {
   float: right;
@@ -95,6 +93,14 @@ table.responsive {
     position: relative;
     padding-left: 50%;
     min-height: 3em;
+    &:before,
+    &:after {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
   }
 
   table.responsive .dcpAttribute__content:before {
@@ -106,11 +112,9 @@ table.responsive {
     width: 45%;
     padding-right: 10px;
     word-break: break-word;
-    //white-space: nowrap;
   }
 
   .dcpArray__content__toolCell, table.responsive > tbody > tr > td.dcpArray__content__toolCell {
-    height: 2.5em;
     width: 100%;
     border-top: 0;
     padding-left: 5px;
