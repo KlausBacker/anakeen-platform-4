@@ -370,23 +370,34 @@ define([
                     currentModel.get("attributes").destroy();
                 }
                 attributes.attributes = new CollectionAttributes(attributes.attributes, {
-                    documentModel: currentModel,
-                    renderOptions: attributes.renderOptions,
-                    renderMode: attributes.renderMode
+                    documentModel : currentModel,
+                    renderOptions : attributes.renderOptions,
+                    renderMode :    attributes.renderMode
                 });
+                //Set the internal content collection (for structure attributes)
                 attributes.attributes.each(function (currentAttributeModel) {
                     currentAttributeModel.setContentCollection(attributes.attributes);
+                });
+                //Propagate the change event to the model
+                currentModel.listenTo(attributes.attributes, "change:value", function (model, value) {
+                    currentModel.trigger("changeValue", {attributeId : model.id, value : value, previousValue : model.previous("value")});
                 });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },
 
+        /**
+         * Destroy sub collection on clear event
+         *
+         * @param options
+         * @returns {*}
+         */
         clear : function clear(options) {
             this.destroySubcollection();
             return Backbone.Model.prototype.clear.call(this, options);
         },
 
-        destroySubcollection: function destroySubcollection() {
+        destroySubcollection : function destroySubcollection() {
             if (this.get("menus") instanceof CollectionMenus) {
                 this.get("menus").destroy();
             }
@@ -398,8 +409,16 @@ define([
             }
         },
 
-        toJSON: function toJSON() {
-            return {document: {attributes: this.getValues()}};
+        toJSON : function toJSON() {
+            return {document : {attributes : this.getValues()}};
+        },
+
+        getDocumentData : function getDocumentData() {
+            return {
+                "initid" :   this.get("initid"),
+                "viewId" :   this.get("viewId"),
+                "revision" : this.get("revision")
+            };
         }
     });
 
