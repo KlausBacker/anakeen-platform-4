@@ -28,7 +28,7 @@ webinst-test:
 	make -C Test webinst RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
 	mv Test/*.webinst .
 
-webinst: webinst-test
+webinst-all: webinst webinst-test
 
 clean-test:
 	make -C Test clean
