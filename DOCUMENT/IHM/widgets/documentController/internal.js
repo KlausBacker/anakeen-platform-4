@@ -11,7 +11,7 @@ define([
 ], function ($, _, Backbone, Router, DocumentModel, DocumentView) {
     'use strict';
 
-    $.widget("dcp.documentInternal", {
+    $.widget("dcp.documentController", {
 
         options : {
             eventPrefix : "document",
