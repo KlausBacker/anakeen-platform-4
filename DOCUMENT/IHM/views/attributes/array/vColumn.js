@@ -11,7 +11,7 @@ define([
 
         /**
          * Use special event to trigger only attributes of model
-         * @returns {{dcparraylineadded: string, dcparraylineremoved: string}}
+         * @returns {}
          */
         events : function () {
             var absEvents = {
