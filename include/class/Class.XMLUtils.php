@@ -120,7 +120,4 @@ class XMLUtils
         }
         return true;
     }
-    public static function validateModuleDOMDoccument(DOMDocument $dom, $ns, $catalog)
-    {
-    }
 }

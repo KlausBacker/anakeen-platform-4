@@ -26,12 +26,15 @@ class Validator
     /**
      * @var string
      */
-    protected $catalog = null;
+    protected $catalogFile = null;
     /**
-     * @var bool|string
+     * @var array
      */
-    protected $env_XML_CATALOG_FILES = false;
-    const XML_CATALOG_FILES = 'XML_CATALOG_FILES';
+    protected $catalog = array();
+    /**
+     * @param string $catalog
+     * @throws GeneralException
+     */
     public function __construct($catalog)
     {
         if (!is_file($catalog) || $catalog === false) {
@@ -40,31 +43,52 @@ class Validator
         if (!is_readable($catalog)) {
             throw new GeneralException(sprintf("Catalog file '%s' is not readable.", $catalog));
         }
-        $this->catalog = $catalog;
+        $this->catalogFile = $catalog;
+        $this->initializeCatalog();
     }
-    private function set_XML_CATALOG_FILES()
+    private function initializeCatalog()
     {
-        $this->env_XML_CATALOG_FILES = getenv(self::XML_CATALOG_FILES);
-        putenv(sprintf('%s=%s', self::XML_CATALOG_FILES, $this->catalog));
-    }
-    private function restore_XML_CATALOG_FILES()
-    {
-        if ($this->env_XML_CATALOG_FILES === false) {
-            putenv(self::XML_CATALOG_FILES);
-        } else {
-            putenv(sprintf("%s=%s", self::XML_CATALOG_FILES, $this->env_XML_CATALOG_FILES));
+        $catalogDir = realpath(dirname($this->catalogFile));
+        if ($catalogDir === false) {
+            throw new GeneralException(sprintf("Could not get catalog directory from catalog file '%s'.", $this->catalogFile));
         }
+        $dom = new \DOMDocument();
+        libxml_clear_errors();
+        if ($dom->load($this->catalogFile) === false) {
+            $err = $this->formatLibXMLError(libxml_get_last_error());
+            throw new GeneralException("Error loading catalog file '%s': %s", $this->catalogFile, $err);
+        }
+        $xpath = new \DOMXpath($dom);
+        $xpath->registerNamespace('ns', 'urn:oasis:names:tc:entity:xmlns:xml:catalog');
+        $nodeList = $xpath->query('/ns:catalog/ns:system');
+        /**
+         * @var \DOMElement $node
+         */
+        foreach ($nodeList as $node) {
+            $this->catalog[$node->getAttribute('systemId') ] = $catalogDir . DIRECTORY_SEPARATOR . $node->getAttribute('uri');
+        }
+    }
+    private function external_entity_loader($public, $system, $context)
+    {
+        if (isset($this->catalog[$system])) {
+            return $this->catalog[$system];
+        }
+        if (is_file($system)) {
+            return $system;
+        }
+        return null;
     }
     public function validate($urn)
     {
-        $this->set_XML_CATALOG_FILES();
+        libxml_set_external_entity_loader(array(
+            $this,
+            'external_entity_loader'
+        ));
         libxml_clear_errors();
         if ($this->document->schemaValidate($urn) === false) {
-            $this->restore_XML_CATALOG_FILES();
             $err = $this->formatLibXMLError(libxml_get_last_error());
             throw new ValidationException($err);
         }
-        $this->restore_XML_CATALOG_FILES();
         return true;
     }
     public function loadData($xmlData)
