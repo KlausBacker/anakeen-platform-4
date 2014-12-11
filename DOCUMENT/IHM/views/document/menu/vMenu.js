@@ -11,13 +11,17 @@ define([
 
         className : "dcpDocument",
 
+        events : {
+            "dcpmenuselected" : "propagateSelected"
+        },
+
         /**
          * The current model is the document model
          * So menuModel reference the menu model
          */
         menuModel : null,
 
-        initialize : function () {
+        initialize : function vMenuInitialize() {
             this.listenTo(this.model.get("properties"), 'change', this.updateWidget);
             this.listenTo(this.model.get("menus"), 'change', this.updateWidget);
             this.listenTo(this.model.get("attributes"), 'changeMenuVisibility', this.changeVisibility);
@@ -27,35 +31,35 @@ define([
             this.menuModel = this.model.get("menus");
         },
 
-        render : function () {
-            var scope = this;
+        render : function vMenuRender() {
             this.$el.dcpMenu(this.model.toData());
-            this.$el.on("menuSelected", function (event, options) {
-                scope.trigger(options.eventId, {target : event.target, options : options.options});
-            });
             return this;
         },
 
-        changeVisibility : function changeVisibility(event, data) {
+        propagateSelected : function vMenuPropagateSelected(event, options) {
+            this.trigger(options.eventId, {target : event.target, options : options.options});
+        },
+
+        changeVisibility : function vMenuchangeVisibility(event, data) {
             var menuItem = this.menuModel.get(data.id);
             if (menuItem) {
                 menuItem.set("visibility", data.visibility);
             }
         },
 
-        updateWidget : function () {
+        updateWidget : function vMenuUpdateWidget() {
             this.$el.dcpMenu("destroy");
             return this.render();
         },
 
-        remove : function () {
+        remove : function vMenuRemove() {
             if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
                 this.$el.dcpMenu("destroy");
             }
             return Backbone.View.prototype.remove.call(this);
         },
 
-        _findWidgetName : function ($element) {
+        _findWidgetName : function vMenu_findWidgetName($element) {
             return _.find(_.keys($element.data()), function (currentKey) {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
