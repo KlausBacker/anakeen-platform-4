@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<module name="@PACKAGE@" disabled="no" version="@VERSION@" release="@RELEASE@">
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@PACKAGE@"  version="@VERSION@" release="@RELEASE@">
 
     <description>@PACKAGE@</description>
 
     <requires>
+        <installer version="1.5.0" comp="ge"/>
         <module comp='ge' version='3.2.18' name='dynacase-core'/>
         <module name='dynacase-tracekit-installer'/>
         <module name='dynacase-requirejs-installer'/>
