@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module name="dynacase-document-uis-test" disabled="no" version="@VERSION@"
+<module xmlns="urn:dynacase:webinst:module/1.0" name="dynacase-document-uis-test" version="@VERSION@"
         release="@RELEASE@" >
 
     <description>Document UIS auto-test</description>
