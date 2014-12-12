@@ -32,7 +32,7 @@ define([
         redraw: function wAttributeRedraw() {
             this.element.empty();
             this._initDom();
-            this.element.off("." + this.eventNamespace);
+            this.element.off(this.eventNamespace);
             this._initEvent();
             return this;
         },

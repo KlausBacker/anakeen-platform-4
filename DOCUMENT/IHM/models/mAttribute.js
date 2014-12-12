@@ -62,7 +62,6 @@ define([
 
             if (this.get("multiple") && index >= 0) {
                 currentValue[index].push(value);
-                currentValue = _.extend({}, currentValue);
                 this.set("value", currentValue);
             } else {
                 currentValue.push(value);
