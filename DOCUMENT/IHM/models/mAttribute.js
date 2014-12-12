@@ -60,7 +60,11 @@ define([
             // clone array references
             currentValue = _.toArray(_.map(this.get("value"), _.clone));
 
-            if (this.get("multiple") && index >= 0) {
+            if (this.hasMultipleOption() && index >= 0) {
+                //Init the multiple value if void
+                if (!currentValue[index]) {
+                    currentValue[index] = [];
+                }
                 currentValue[index].push(value);
                 this.set("value", currentValue);
             } else {
@@ -86,7 +90,7 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue);
+            this.set("value", currentValue, {updateArray : true});
         },
 
         addIndexValue : function mAttributeaddIndexValue(index, copy) {
@@ -112,7 +116,7 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("value", currentValue);
+            this.set("value", currentValue, {updateArray : true});
         },
 
         /**

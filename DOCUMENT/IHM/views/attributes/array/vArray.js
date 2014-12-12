@@ -33,7 +33,7 @@ define([
         render: function () {
             // console.time("render array " + this.model.id);
             var data = this.model.toData();
-            var scope = this, headers = [];
+            var scope = this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
             data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
