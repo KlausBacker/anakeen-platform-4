@@ -59,7 +59,7 @@ define([
             };
             this.currentWidget.kendoWindow(this.options.window);
 
-            this.currentWidget.on("click." + this.eventNamespace, ".revision-diff-button-showonlydiff", function () {
+            this.currentWidget.on("click" + this.eventNamespace, ".revision-diff-button-showonlydiff", function () {
                 if ($(this).data("showOnlyDiff")) {
                     $(this).data("showOnlyDiff", false);
                     $(this).text(scope.options.labels.showOnlyDiff).removeClass("btn-primary");

@@ -35,7 +35,7 @@ define([
         _initChangeEvent : function wTextInitChangeEvent() {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.getContentElements().on("change." + this.eventNamespace, function () {
+                this.getContentElements().on("change" + this.eventNamespace, function () {
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
                     newValue.displayValue = newValue.value;
@@ -54,18 +54,18 @@ define([
                 dataTextField : "title",
                 filter :        "contains",
                 minLength :     1,
-                template :      '<span><span class="k-state-default">#= data.title#</span>' +
-                                    '#if (data.error) {#' +
-                                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>',
-                dataSource : {
+                template : '<span><span class="k-state-default">#= data.title#</span>' +
+                           '#if (data.error) {#' +
+                           '<span class="k-state-error">#: data.error#</span>' +
+                '#}# </span>',
+                dataSource :    {
                     type :            "json",
                     serverFiltering : true,
                     transport :       {
                         read : scope.options.autocompleteRequest
                     }
                 },
-                select :     function (event) {
+                select :        function (event) {
                     var valueIndex = scope._getIndex();
                     var dataItem = this.dataItem(event.item.index());
                     event.preventDefault(); // no fire change event
@@ -73,7 +73,7 @@ define([
 
                 }
             });
-            this.element.find('.dcpAttribute__value--autocomplete--button').on("click", function (event) {
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function (event) {
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });

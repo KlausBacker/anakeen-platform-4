@@ -79,7 +79,7 @@ define([
 
             this.currentWidget.kendoWindow(this.options.window);
 
-            this.currentWidget.on("click." + this.eventNamespace, ".history-button-showdetail", function () {
+            this.currentWidget.on("click" + this.eventNamespace, ".history-button-showdetail", function () {
                 var noticeButton = scope.currentWidget.find(".history-button-shownotice");
                 var noticeShowed = noticeButton.data("showNotice");
                 if ($(this).data("showDetail")) {
@@ -99,7 +99,7 @@ define([
 
                 }
             });
-            this.currentWidget.on("click." + this.eventNamespace, ".history-button-shownotice", function () {
+            this.currentWidget.on("click" + this.eventNamespace, ".history-button-shownotice", function () {
                 var detailShowed = scope.currentWidget.find(".history-button-showdetail").data("showDetail");
                 if ($(this).data("showNotice")) {
                     $(this).data("showNotice", false);
@@ -114,7 +114,7 @@ define([
                     $(this).text(scope.options.labels.hideNotice).addClass("btn-primary");
                 }
             });
-            this.currentWidget.on("click." + this.eventNamespace, ".history-diff-input", function () {
+            this.currentWidget.on("click" + this.eventNamespace, ".history-diff-input", function () {
                 var selectedDiff = scope.currentWidget.find(".history-diff-input:checked");
 
                 if (selectedDiff.length === 2) {

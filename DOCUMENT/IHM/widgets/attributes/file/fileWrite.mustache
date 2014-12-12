@@ -1,4 +1,4 @@
-<div class="input-group margin-bottom-sm">
+<div class="input-group margin-bottom-sm dcpAttribute__dragTarget">
     {{# hasAutocomplete}}
     <span class="input-group-addon">
         <button
@@ -8,7 +8,7 @@
         </button>
     </span>
     {{/hasAutocomplete}}
-    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none"
+    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none;"
            class="dcpAttribute__value--file"
            value="{{value.value}}"/>
 
@@ -19,7 +19,7 @@
     <span class="dcpAttribute__content__buttons input-group-addon">
         <button type="button"  data-index="{{index}}"
                 class="dcpAttribute__content__button--file btn btn-default btn-xs">
-            <i class="fa fa-download fa-fw"/>
+            <span class="fa fa-download fa-fw"></span>
         </button>
         {{#renderOptions.buttons}}
         <button type="button" title="{{title}}" data-index="{{index}}"

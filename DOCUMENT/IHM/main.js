@@ -10,7 +10,7 @@ require([
 
     var $document = $(".document");
 
-    $document.documentInternal({
+    $document.documentController({
         "initid" :   window.dcp.viewData.documentIdentifier,
         "viewId" :   window.dcp.viewData.vid,
         "revision" : window.dcp.viewData.revision

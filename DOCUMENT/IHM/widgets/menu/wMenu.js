@@ -10,6 +10,10 @@ define([
 
     $.widget("dcp.dcpMenu", {
 
+        options : {
+            eventPrefix : "dcpmenu"
+        },
+
         _create : function wMenuCreate() {
             this._tooltips= [];
             this.popupWindows= [];
@@ -18,10 +22,12 @@ define([
 
         _initStructure : function wMenuInitStructure() {
             var $content, $mainElement, scopeWidget = this;
+            //InitDom
             $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid : this.uuid}, this.options)));
             $content = $mainElement.find(".menu__content");
             this._insertMenuContent(this.options.menus, $content);
             this.element.append($mainElement);
+            //Init kendo widget
             $content.kendoMenu({
                 openOnClick :  true,
                 closeOnClick : false,
@@ -32,6 +38,7 @@ define([
                     if (!menuElement.hasClass("menu__element--item")) {
                         var menuUrl = menuElement.data("menu-url");
                         if (menuUrl) {
+                            //get subMenu
                             $.get(menuUrl, function wMenuDone (data) {
                                 menuElement.find(".listmenu__content").html('');
                                 scopeWidget._insertMenuContent(
@@ -61,6 +68,7 @@ define([
                     href = $elementA.data('url');
                     //noinspection JSHint
                     if (href != '') {
+                        //Display confirm message
                         if ($elementA.hasClass("menu--confirm")) {
                             confirmText = $elementA.data('confirm-message');
 
@@ -88,9 +96,10 @@ define([
 
                             confirmDcpWindow.data('dcpWindow').open();
                         } else {
+                            //if href is event kind propagate event instead of default behaviour
                             if (href.substring(0, 7) === "#event/") {
                                 eventContent = href.substring(7).split(":");
-                                menuElement.trigger("menuSelected", {
+                                scopeWidget._trigger("selected", event, {
                                     eventId : eventContent.shift(),
                                     options : eventContent
                                 });
