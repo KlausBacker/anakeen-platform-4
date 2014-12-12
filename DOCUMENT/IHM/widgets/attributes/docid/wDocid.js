@@ -159,14 +159,18 @@ define([
                             }
                         }
                     },
-                    select: function (event) {
+                    select: function kendoDocidSelect(event) {
                         var valueIndex = scope._getIndex();
-                        var dataItem = this.dataItem(event.item.index());
+                        var dataItem = this.dataSource.at(event.item.index());
+                        //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
+                        if (dataItem.toJSON) {
+                            dataItem = dataItem.toJSON();
+                        }
                         event.preventDefault(); // no fire change event
-                        scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]);
+                        scope._trigger("changeattrsvalue", event, { dataItem : dataItem, valueIndex : valueIndex});
 
                     },
-                    change: function (event) {
+                    change: function kendoChangeSelect(event) {
                         // set in case of delete item
                         var oldValues = scope.options.value;
                         var displayValue;

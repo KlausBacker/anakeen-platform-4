@@ -35,7 +35,7 @@ define([
         _initChangeEvent : function wTextInitChangeEvent() {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.getContentElements().on("change" + this.eventNamespace, function () {
+                this.getContentElements().on("change" + this.eventNamespace, function wTextChangeElement() {
                     var newValue = _.clone(currentWidget.options.value);
                     newValue.value = $(this).val();
                     newValue.displayValue = newValue.value;
@@ -65,11 +65,15 @@ define([
                         read : scope.options.autocompleteRequest
                     }
                 },
-                select :        function (event) {
+                select :        function kendoAutocompleteSelect(event) {
                     var valueIndex = scope._getIndex();
-                    var dataItem = this.dataItem(event.item.index());
+                    var dataItem = this.dataSource.at(event.item.index());
+                    //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
+                    if (dataItem.toJSON) {
+                        dataItem = dataItem.toJSON();
+                    }
                     event.preventDefault(); // no fire change event
-                    scope._trigger("changeattrsvalue", event, [dataItem, valueIndex]);
+                    scope._trigger("changeattrsvalue", event, {dataItem : dataItem, valueIndex : valueIndex});
 
                 }
             });
