@@ -84,7 +84,6 @@ define([
                             if (event.currentTarget) {
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "");
-
                                 scope._trigger("lineMoved", {}, {
                                     fromLine: dragLine.data("fromLine"),
                                     toLine: dragLine.data("line")
@@ -175,7 +174,6 @@ define([
             });
         },
 
-
         setLines: function wArraySetLines(lineNumber) {
             var currentLineNumber = this.options.nbLines;
             var i;
@@ -228,10 +226,13 @@ define([
             this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
         },
 
-        removeLine: function (line) {
+        removeLine: function (line, options) {
+            options = options || {};
             this.element.find("[data-line=" + line + "]").remove();
             this._indexLine();
-            this._trigger("lineRemoved", {}, {line: line});
+            if (options.silent !== true) {
+                this._trigger("lineRemoved", {}, {line : line});
+            }
         },
 
         _destroy: function () {
@@ -249,9 +250,8 @@ define([
         _indexLine: function () {
             var i = 0;
             this.element.find(".dcpArray__content__line").each(
-                function () {
-                    $(this).attr("data-line", i);
-                    $(this).data("line", i);
+                function numeroteLine() {
+                    $(this).attr("data-line", i).data("line", i);
                     i++;
                 }
             );

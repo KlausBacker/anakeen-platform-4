@@ -24,7 +24,7 @@ define([
          * Create widget
          * @private
          */
-        _create : function _create() {
+        _create : function documentController_create() {
             if (!this.options.initid) {
                 throw new Error("Widget cannot be initialized without an initid");
             }
@@ -40,7 +40,7 @@ define([
          * Delete the widget
          * @private
          */
-        _destroy : function _destroy() {
+        _destroy : function documentController_destroy() {
             this.view.remove();
             delete this._model;
             this._trigger("destroy");
@@ -53,7 +53,7 @@ define([
          * @returns {Object}
          * @private
          */
-        _getModelValue : function _getModelValue() {
+        _getModelValue : function documentController_getModelValue() {
             return _.pick(this.options, "initid", "viewId", "revision");
         },
 
@@ -61,7 +61,7 @@ define([
          * Generate the dom where the view is inserted
          * @private
          */
-        _initDom : function _initDom() {
+        _initDom : function documentController_initDom() {
             var $document = this.element.find(".dcpDocument");
             if (!this.$document || $document.length === 0) {
                 this.element.append('<div class="dcpDocument"></div>');
@@ -76,7 +76,7 @@ define([
          * @returns {DocumentModel}
          * @private
          */
-        _initModel : function _initModel(initialValue) {
+        _initModel : function documentController_initModel(initialValue) {
             var model = new DocumentModel(initialValue);
             this._model = model;
             this._initModelEvents();
@@ -89,7 +89,7 @@ define([
          * @returns {DocumentView}
          * @private
          */
-        _initView : function _initView() {
+        _initView : function documentController_initView() {
             var documentView, $document;
             this._initDom();
             $document = this.$document;
@@ -104,7 +104,7 @@ define([
          *
          * @private
          */
-        _reinitModel : function _reinitModel() {
+        _reinitModel : function documentController_reinitModel() {
             this._model.clear().set(this._getModelValue());
         },
 
@@ -112,7 +112,7 @@ define([
          * Init the external elements (loading bar and notification widget)
          * @private
          */
-        _initExternalElements : function _initExternalElements() {
+        _initExternalElements : function documentController_initExternalElements() {
             this.$loading = $(".dcpLoading").dcpLoading();
             this.$notification = $('body').dcpNotification(); // active notification
         },
@@ -124,7 +124,7 @@ define([
          *
          * @private
          */
-        _initModelEvents : function _initEvents() {
+        _initModelEvents : function documentController_initEvents() {
             var currentWidget = this;
             this._model.listenTo(this._model, "invalid", function showInvalid(model, error) {
                 currentWidget.$notification.dcpNotification("showError", error);
@@ -154,7 +154,7 @@ define([
             this._model.listenTo(this._model, "changeValue", function (options) {
                 currentWidget._trigger("change", {}, {
                     documentData : currentWidget._model.getDocumentData(),
-                    change : options
+                    change :       options
                 });
             });
         },
@@ -165,7 +165,7 @@ define([
          *
          * @private
          */
-        _initViewEvents : function _initViewEvents() {
+        _initViewEvents : function documentController_initViewEvents() {
             var currentWidget = this;
             this.view.on("cleanNotification", function () {
                 currentWidget.$notification.dcpNotification("clear");
@@ -219,12 +219,12 @@ define([
          *
          * @private
          */
-        _initRouter : function _initRouter() {
+        _initRouter : function documentController_initRouter() {
             Backbone.history.start({pushState : true});
             this.router = new Router({document : this._model});
         },
 
-        _getAttributeModel : function _getAttributeModel(attributeId) {
+        _getAttributeModel : function documentController_getAttributeModel(attributeId) {
             var attribute = this._model.get("attributes").get(attributeId);
             if (!attribute) {
                 throw new Error("The attribute " + attributeId + " doesn't exist");
@@ -232,12 +232,18 @@ define([
             return attribute;
         },
 
-        reinitDocument : function () {
+        _getMaxIndex : function documentController_getMaxIndex(attributeArray) {
+            return _.size(attributeArray.get("content").max(function (currentAttr) {
+                return _.size(currentAttr.get("value"));
+            }).get("value"));
+        },
+
+        reinitDocument : function documentControllerReinitDocument() {
             this._reinitModel();
             this._model.fetch();
         },
 
-        fetchDocument : function (options) {
+        fetchDocument : function documentControllerFetchDocument(options) {
             options = _.isUndefined(options) ? {} : options;
             if (!_.isObject(options)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
@@ -250,37 +256,75 @@ define([
             this.reinitDocument();
         },
 
-        getProperty : function getDocumentProperty(property) {
+        getProperty : function documentControllerGetDocumentProperty(property) {
             return this._model.get("properties").get(property);
         },
 
-        getProperties : function getDocumentProperties() {
+        getProperties : function documentControllerGetDocumentProperties() {
             return this._model.get("properties").toJSON();
         },
 
-        hideAttribute : function hideAttribute(attributeId) {
+        hideAttribute : function documentControllerHideAttribute(attributeId) {
             this._getAttributeModel(attributeId).trigger("hide");
         },
 
-        showAttribute : function showAttribute(attributeId) {
+        showAttribute : function documentControllerShowAttribute(attributeId) {
             this._getAttributeModel(attributeId).trigger("show");
         },
 
-        getValue : function (attributeId) {
-            var attribute = this._model.get("attributes").get(attributeId);
+        getValue : function documentControllerGetValue(attributeId) {
+            var attribute = this._getAttributeModel(attributeId);
             return attribute.get("value");
         },
 
-        getValues : function () {
+        getValues : function documentControllerGetValues() {
             return this._model.getValues();
         },
 
-        setValue : function (attributeId, value) {
-            var attribute = this._model.get("attributes").get(attributeId);
+        setValue : function documentControllerSetValue(attributeId, value) {
+            var attribute = this._getAttributeModel(attributeId);
+            if (!_.isObject(value)) {
+                throw Error("Value must be an object with value and displayValue properties");
+            }
+            value = _.defaults(value, {value : "", displayValue : ""});
             return attribute.set("value", value);
+        },
+
+        appendArrayRow : function documentControllerAddArrayRow(attributeId, values) {
+            var attribute = this._getAttributeModel(attributeId), index;
+            if (attribute.get("type") !== "array") {
+                throw Error("Attribute " + attributeId + " must be an attribute of type array");
+            }
+            if (!_.isObject(values)) {
+                throw Error("Values must be an object where each properties is an attribute of the array for "+attributeId);
+            }
+            index = this._getMaxIndex(attribute);
+            attribute.get("content").each(function addACell(currentAttribute) {
+                var currentValue = values[currentAttribute.id];
+                if (_.isUndefined(currentValue)) {
+                    return;
+                }
+                currentValue = _.defaults(currentValue, {value : "", displayValue : ""});
+                currentAttribute.addValue(currentValue, index);
+            });
+        },
+
+        removeArrayRow : function documentControllerRemoveArrayRow(attributeId, index) {
+            var attribute = this._getAttributeModel(attributeId), maxIndex;
+            if (attribute.get("type") !== "array") {
+                throw Error("Attribute " + attributeId + " must be an attribute of type array");
+            }
+            maxIndex = this._getMaxIndex(attribute) - 1;
+            if (index < 0 || index > maxIndex) {
+                throw Error("Index must be between 0 and "+maxIndex+" for " + attributeId);
+            }
+            attribute.get("content").each(function removeACell(currentAttribute) {
+                currentAttribute.removeIndexValue(index);
+            });
+            attribute.removeIndexLine(index);
         }
 
     });
 
-    return $.fn.documentInternal;
+    return $.fn.documentController;
 });

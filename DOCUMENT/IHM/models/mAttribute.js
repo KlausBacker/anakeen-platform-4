@@ -73,7 +73,7 @@ define([
             }
         },
 
-        removeIndexValue : function mAttributeremoveIndexValue(index) {
+        removeIndexValue : function mAttributeremoveIndexValue(index, options) {
             var currentValue, oldValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -89,6 +89,9 @@ define([
                     delete currentValue[currentIndex];
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
+            });
+            currentValue = _.filter(currentValue, function removeUndefined(currentValue) {
+                return !_.isUndefined(currentValue);
             });
             this.set("value", currentValue, {updateArray : true});
         },
@@ -136,6 +139,13 @@ define([
             currentValue.splice(toIndex, 0, fromValue);
 
             this.set("value", currentValue);
+        },
+
+        removeIndexLine : function mAttributeRemoveIndexLine(index) {
+            if (this.get("type") !== "array") {
+                throw Error("You can only remove line on array " + this.id);
+            }
+            this.trigger("removeWidgetLine", {index : index}, {silent : true});
         },
 
         getNbLines : function mAttributegetNbLines() {

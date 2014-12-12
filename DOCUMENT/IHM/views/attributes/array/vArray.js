@@ -27,6 +27,7 @@ define([
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
+            this.listenTo(this.model, 'removeWidgetLine', this.removeWidgetLine);
 
         },
 
@@ -118,6 +119,10 @@ define([
             this.model.get("content").each(function (currentContent) {
                 currentContent.removeIndexValue(options.line);
             });
+        },
+
+        removeWidgetLine : function vArrayRemoveWidgetLine(options) {
+            this.$el.dcpArray("removeLine", options.index, {silent : true});
         },
 
         addLine: function vArrayAddLine(event, options) {
