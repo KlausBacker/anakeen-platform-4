@@ -20,7 +20,7 @@ define([
             documentModel :  null
         },
 
-        initialize : function () {
+        initialize : function mAttributeinitialize() {
             this.listenTo(this, "change:documentMode", this._computeMode);
             this.listenTo(this, "change:visibility", this._computeMode);
             this.listenTo(this, "change:type", this._computeValueMode);
@@ -30,7 +30,7 @@ define([
             this.set("title", this.id + '(' + this.get("label") + ')');
         },
 
-        setContentCollection : function (attributes) {
+        setContentCollection : function mAttributesetContentCollection(attributes) {
             var content = this.get("content"), collection = new CollectionContentAttributes();
             _.each(content, function (currentChild) {
                 collection.push(attributes.get(currentChild.id));
@@ -38,7 +38,7 @@ define([
             this.set("content", collection);
         },
 
-        setValue : function (value, index) {
+        setValue : function mAttributesetValue(value, index) {
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -52,7 +52,7 @@ define([
             }
         },
 
-        addValue : function (value, index) {
+        addValue : function mAttributeaddValue(value, index) {
             var currentValue;
             if (this.get("multiple") && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -69,7 +69,7 @@ define([
             }
         },
 
-        removeIndexValue : function (index) {
+        removeIndexValue : function mAttributeremoveIndexValue(index) {
             var currentValue, oldValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -86,10 +86,10 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue, {silent : true});
+            this.set("value", currentValue);
         },
 
-        addIndexValue : function addIndexValue(index, copy) {
+        addIndexValue : function mAttributeaddIndexValue(index, copy) {
             var currentValue, defaultValue;
             var newValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
@@ -112,7 +112,7 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("value", currentValue, {silent : true});
+            this.set("value", currentValue);
         },
 
         /**
@@ -120,7 +120,7 @@ define([
          * @param fromIndex
          * @param toIndex
          */
-        moveIndexValue : function moveIndexValue(fromIndex, toIndex) {
+        moveIndexValue : function mAttributemoveIndexValue(fromIndex, toIndex) {
             var currentValue, fromValue;
             if (!this.get("multiple")) {
                 throw new Error("Move only multiple attribute : " + this.id);
@@ -131,10 +131,10 @@ define([
             currentValue.splice(fromIndex, 1);
             currentValue.splice(toIndex, 0, fromValue);
 
-            this.set("value", currentValue, {silent : true});
+            this.set("value", currentValue);
         },
 
-        getNbLines : function () {
+        getNbLines : function mAttributegetNbLines() {
             var nbLines = 0;
             if (!this.get("multiple")) {
                 return -1;
@@ -147,7 +147,7 @@ define([
             return nbLines;
         },
 
-        toData : function (index) {
+        toData : function mAttributetoData(index) {
             var content = this.toJSON();
             if (index && this.get("multiple") === false) {
                 throw new Error("You need to be multiple");
@@ -161,7 +161,7 @@ define([
             return content;
         },
 
-        isDisplayable : function () {
+        isDisplayable : function mAttributeisDisplayable() {
             if (this.get("mode") === "hidden") {
                 return false;
             }
@@ -179,23 +179,23 @@ define([
             return true;
         },
 
-        hasMultipleOption : function () {
+        hasMultipleOption : function mAttributehasMultipleOption() {
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
 
-        inArray : function () {
+        isInArray : function mAttributeisInArray() {
             var aparent = this.getParent();
             return (aparent && aparent.attributes && aparent.attributes.type === "array");
         },
 
-        getParent : function () {
+        getParent : function mAttributegetParent() {
             if (this.attributes.parent) {
                 return this.getDocumentModel().get('attributes').get(this.attributes.parent);
             }
             return null;
         },
 
-        _computeMode : function () {
+        _computeMode : function mAttribute_computeMode() {
             var visibility = this.get("visibility"), documentMode = this.collection.renderMode;
             if (visibility === "H" || visibility === "I") {
                 this.set("mode", "hidden");
@@ -237,7 +237,7 @@ define([
             throw new Error("unkown mode " + documentMode + " or visibility " + visibility + " " + this.get("id"));
         },
 
-        _computeValueMode : function () {
+        _computeValueMode : function mAttribute_computeValueMode() {
             var type = this.get("type"), visibility = this.get("visibility");
             if (type === "frame" || type === "array" || type === "tab" || visibility === "I") {
                 this.set("valueAttribute", false);
@@ -248,7 +248,7 @@ define([
          *
          * @returns {{}}
          */
-        getOptions :        function () {
+        getOptions :        function mAttributegetOptions() {
             var optionsCommon, optionsValue, optionsAttribute, renderOptions;
             this._options = this._options || false;
 
@@ -278,7 +278,7 @@ define([
          * @param key option identifier
          * @returns {*}
          */
-        getOption : function (key) {
+        getOption : function mAttributegetOption(key) {
             var options = this.getOptions();
             if (typeof options[key] !== "undefined") {
                 return options[key];
@@ -286,11 +286,11 @@ define([
             return null;
         },
 
-        getDocumentModel : function getDocumentModel() {
+        getDocumentModel : function mAttributegetDocumentModelgetDocumentModel() {
             return this.collection.documentModel;
         },
 
-        getTemplates : function getTemplates() {
+        getTemplates : function mAttributegetTemplatesgetTemplates() {
             var templates = this.getDocumentModel().get("templates");
             if (!templates) {
                 templates = window.dcp.templates;
@@ -298,7 +298,7 @@ define([
             return templates;
         },
 
-        setErrorMessage : function (message, index) {
+        setErrorMessage : function mAttributesetErrorMessage(message, index) {
             if (this.get("multiple") && typeof index !== "undefined") {
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate

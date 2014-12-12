@@ -137,7 +137,6 @@ define([
         moveLine: function moveLine(event, options) {
             this.model.get("content").each(function (currentContent) {
                 currentContent.moveIndexValue(options.fromLine, options.toLine);
-
             });
         } ,
         getAttributeModel : function (attributeId) {

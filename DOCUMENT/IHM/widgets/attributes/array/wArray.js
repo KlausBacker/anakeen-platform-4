@@ -78,7 +78,6 @@ define([
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "0");
                                 dragLine.data("fromLine", dragLine.data("line"));
-
                             }
                         },
                         dragend: function (event) {
