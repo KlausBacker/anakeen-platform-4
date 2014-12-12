@@ -192,6 +192,13 @@ define([
                 $(this).closest("label").addClass("k-button");
 
             });
+            if (scope.options.renderOptions.useFirstChoice && scope.options.value.value === null ) {
+                // Set to first enum item if empty
+                var firstItem=tplOption.enumValues[0];
+                if (firstItem) {
+                    scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
+                }
+            }
 
         },
         checkboxButtons: function wEnumRadioButtons() {
@@ -458,7 +465,7 @@ define([
 
                 defaultOptions = {
                     /*valuePrimitive: true,*/
-                    optionLabel: (!this.options.renderOptions.useFirstChoice) ? (this.options.labels.chooseMessage + ' ') : '',
+                    optionLabel: this.options.labels.chooseMessage + ' ',
                     dataTextField: "displayValue",
                     dataValueField: "value",
                     dataSource: source.data,
@@ -476,6 +483,15 @@ define([
 
                             var newValue = {value: this.value(), displayValue: this.text()};
                             scope.setValue(newValue, event);
+                        }
+                    },
+                    dataBound: function(e) {
+                        if (scope.options.renderOptions.useFirstChoice && scope.options.value.value === null ) {
+                            // Set to first enum item if empty
+                            var firstItem=this.dataSource.at(0);
+                            if (firstItem) {
+                                scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
+                            }
                         }
                     }
                 };
