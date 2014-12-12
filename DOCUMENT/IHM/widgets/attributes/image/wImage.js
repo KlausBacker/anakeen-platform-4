@@ -62,7 +62,7 @@ define([
                         renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value);
                     }
 
-                    var bdw = $('<div><table class="dcpImage-window"><tr><td><img src="' + $(this).attr("href") + '"/></td></tr></table></div>');
+                    var bdw = $('<div class="dcpImage-window"><img class="img-responsive" src="' + $(this).attr("href") + '"/></div>');
                     $('body').append(bdw);
                     // $(this).attr("href"),
                     var dw = bdw.kendoWindow({
