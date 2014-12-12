@@ -1552,11 +1552,14 @@ class Context extends WiffCommon
      */
     public function archiveContext($archiveName, $archiveDesc = '', $vaultExclude = false)
     {
-        require_once ('class/Class.WIFF.php');
-
         $wiff = WIFF::getInstance();
+        $wiff_root = $wiff->getWiffRoot();
+        if ($wiff_root === false) {
+            $this->errorMessage = sprintf("Could not get wiff root directory.");
+            return false;
+        }
 
-        $tmp = 'archived-tmp';
+        $tmp = $wiff_root . 'archived-tmp';
         // --- Create or reuse directory --- //
         if (is_dir($tmp)) {
             if (!is_writable($tmp)) {
@@ -1572,10 +1575,6 @@ class Context extends WiffCommon
         
         $zip = new ZipArchiveCmd();
         
-        $wiff_root = getenv('WIFF_ROOT');
-        if ($wiff_root !== false) {
-            $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
-        }
         $archived_root = $wiff_root . WIFF::archive_filepath;
         // --- Generate archive id --- //
         $datetime = new DateTime();

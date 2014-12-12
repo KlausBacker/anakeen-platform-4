@@ -918,7 +918,6 @@ class WIFF extends WiffCommon
     
     public function getArchivedContextList()
     {
-        
         $archivedContextList = array();
         
         $wiff_root = getenv('WIFF_ROOT');
@@ -1065,6 +1064,21 @@ class WIFF extends WiffCommon
 
         return $archivedContextList;
     }
+
+    /**
+     * @param $archiveId
+     * @return bool
+     */
+    function getArchivedContextById($archiveId) {
+        $archiveList = $this->getArchivedContextList();
+        foreach ($archiveList as $archive) {
+            if ($archive['id'] === $archiveId) {
+                return $archive;
+            }
+        }
+        return false;
+    }
+
     /**
      * Compute file size based on the number of blocks
      * (of 512 bytes) returned by stat().
@@ -1101,7 +1115,6 @@ class WIFF extends WiffCommon
 
     public function createContextFromArchive($archiveId, $name, $root, $desc, $url, $vault_root, $pgservice, $remove_profiles, $user_login, $user_password, $clean_tmp_directory = false)
     {
-
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;

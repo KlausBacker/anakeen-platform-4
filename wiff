@@ -20,6 +20,10 @@ if( $wiff_root === false ) {
 set_include_path(get_include_path().PATH_SEPARATOR."$wiff_root".DIRECTORY_SEPARATOR.'include');
 putenv('WIFF_ROOT='.$wiff_root);
 
+function __autoload($class_name) {
+  require_once sprintf('class/Class.%s.php', $class_name);
+}
+
 require('lib/Lib.Cli.php');
 
 $ret = setuid_wiff($_SERVER['SCRIPT_FILENAME']);
@@ -84,6 +88,10 @@ case 'register':
   wiff_lock();
   $ret = wiff_register($argv);
   wiff_unlock();
+  break;
+case 'archive':
+  $cmd = array_shift($argv);
+  $ret = wiff_archive($argv);
   break;
 default:
   $ret = wiff_default($argv);
