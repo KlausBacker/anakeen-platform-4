@@ -95,7 +95,7 @@ define([
             }
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            this.currentDcpWidget = this.widgetApply(this.$el.find(".dcpAttribute__content"), data);
+            this.currentDcpWidget = this.widgetInit(this.$el.find(".dcpAttribute__content"), data);
             return this;
         },
 
@@ -109,7 +109,7 @@ define([
         refreshValue : function refreshValue() {
             var values = this.model.get("value"),
                 scope = this, allWrapper, arrayWrapper;
-            if (this.model.inArray()) {
+            if (this.model.isInArray()) {
                 // adjust line number to column length
                 arrayWrapper = this.$el;
                 arrayWrapper.dcpArray("setLines", values.length);
@@ -118,7 +118,7 @@ define([
             allWrapper = this.getDOMElements().find(".dcpAttribute__content")
                 .add(this.getDOMElements().filter(".dcpAttribute__content"));
 
-            if (this.model.inArray()) {
+            if (this.model.isInArray()) {
                 values = _.toArray(values);
                 allWrapper.each(function (index, element) {
                     scope.widgetApply($(element), "setValue", values[index]);
@@ -149,20 +149,22 @@ define([
         /**
          * Modify several attribute
          * @param event event object
-         * @param dataItem values {id: menuId, visibility: "disabled", "visible", "hidden"}
-         * @param valueIndex the index which comes from modification action
+         * @param options object {dataItem :, valueIndex :}
          */
-        changeAttributesValue : function (event, dataItem, valueIndex) {
-            var currentView = this;
-            _.each(dataItem.values, function (val, aid) {
-                if (typeof val === "object") {
-                    var attrModel = currentView.model.getDocumentModel().get('attributes').get(aid);
+        changeAttributesValue : function (event, options) {
+            var currentView = this, dataItem = options.dataItem, valueIndex = options.valueIndex;
+            _.each(dataItem.values, function vAttributeChangeAttributeValue(value, attributeId) {
+                if (typeof value === "object") {
+                    var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
-                            attrModel.addValue({value : val.value, displayValue : val.displayValue}, valueIndex);
+                            attrModel.addValue({value : value.value, displayValue : value.displayValue}, valueIndex);
                         } else {
-                            attrModel.setValue({value : val.value, displayValue : val.displayValue}, valueIndex);
+                            attrModel.setValue({value : value.value, displayValue : value.displayValue}, valueIndex);
                         }
+                    }
+                    else {
+                        console.error("Unable to find "+attributeId);
                     }
                 }
             });
@@ -189,6 +191,7 @@ define([
          * @param data index info {index:"the index}
          */
         deleteValue : function (event, data) {
+
             if (data.id === this.model.id) {
                 var attrToClear = this.model.get('helpOutputs'),
                     docModel = this.model.getDocumentModel();
@@ -302,8 +305,20 @@ define([
             this.model.setValue(data.value, data.index);
         },
 
+        widgetInit : function vAttributeWidgetInit($element, data) {
+            return this.getWidgetClass().call($element, data);
+        },
+
         widgetApply : function widgetApply($element, method, argument) {
-            return this.getWidgetClass().call($element, method, argument);
+            try {
+                if (_.isString(method) && $element && this._findWidgetName($element)) {
+                    this.getWidgetClass().call($element, method, argument);
+                }
+            } catch (e) {
+                TraceKit.report(e);
+                console.error(e);
+            }
+            return this;
         },
 
         getWidgetClass : function getTypedWidgetClass() {

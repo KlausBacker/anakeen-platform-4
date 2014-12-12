@@ -43,7 +43,7 @@ define([
 
                 if (cells[index]) {
                     try {
-                        widgetClass.apply($(cells[index]), [data]);
+                        this.widgetInit($(cells[index]), data);
                     } catch (error) {
                         window.TraceKit.report(error);
                         console.error(error);
