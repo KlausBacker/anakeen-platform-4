@@ -139,6 +139,11 @@ define([
             currentValue.splice(toIndex, 0, fromValue);
 
             this.set("value", currentValue);
+
+
+
+            this.trigger("moved", {from: fromIndex, to: toIndex});
+
         },
 
         removeIndexLine : function mAttributeRemoveIndexLine(index) {

@@ -130,6 +130,12 @@ define([
                     scope.hideInputTooltip(ktTarget);
                     scope.element.find(".cke").removeClass("k-state-focused");
                 });
+
+                this.element.on("postMoved"+this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {
+                    if (eventData && (eventData.to === scope.options.index )) {
+                        scope.redraw();
+                    }
+                });
             }
         },
         /**

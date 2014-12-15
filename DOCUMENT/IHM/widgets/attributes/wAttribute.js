@@ -102,7 +102,7 @@ define([
                             html: true,
                             title: function () {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
-                                return '<div>'  + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>'+ rawMessage+'</div>';
+                                return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
                             },
                             trigger: "manual",
                             template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
@@ -335,6 +335,7 @@ define([
                 this._initDeleteEvent();
                 this._initButtonsEvent();
                 this._initFocusEvent();
+                this._initMoveEvent();
             }
             if (this.getMode() === "read") {
                 this._initLinkEvent();
@@ -364,7 +365,24 @@ define([
             }
             return this;
         },
-
+        /**
+         * Reindex widget when a move is performed in an array
+         *
+         * @protected
+         */
+        _initMoveEvent: function wAttributeInitFocusEvent() {
+            var scope = this;
+            if (this.options.index !== -1) {
+                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent(event, eventData) {
+                        var domLine = scope.element.closest('tr').data('line');
+                        if (!_.isUndefined(domLine)) {
+                            scope.options.index = domLine;
+                        }
+                    }
+                );
+            }
+            return this;
+        },
         /**
          * Init the events associated to buttons (only for write attributes)
          *
