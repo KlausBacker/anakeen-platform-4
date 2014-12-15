@@ -106,9 +106,11 @@ define([
         /**
          * Autorefresh value when model change
          */
-        refreshValue : function refreshValue() {
-            var values = this.model.get("value"),
-                scope = this, allWrapper, arrayWrapper;
+        refreshValue : function refreshValue(model, values, options) {
+            var scope = this, allWrapper, arrayWrapper;
+            if (options.updateArray) {
+                return this;
+            }
             if (this.model.isInArray()) {
                 // adjust line number to column length
                 arrayWrapper = this.$el;
@@ -120,8 +122,10 @@ define([
 
             if (this.model.isInArray()) {
                 values = _.toArray(values);
-                allWrapper.each(function (index, element) {
-                    scope.widgetApply($(element), "setValue", values[index]);
+                allWrapper.each(function vAttributeRefreshOneValue(index, element) {
+                    if (!_.isUndefined(values[index])) {
+                        scope.widgetApply($(element), "setValue", values[index]);
+                    }
                 });
             } else {
                 this.widgetApply(allWrapper, "setValue", values);

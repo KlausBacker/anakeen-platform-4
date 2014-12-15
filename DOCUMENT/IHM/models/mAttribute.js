@@ -60,7 +60,11 @@ define([
             // clone array references
             currentValue = _.toArray(_.map(this.get("value"), _.clone));
 
-            if (this.get("multiple") && index >= 0) {
+            if (this.hasMultipleOption() && index >= 0) {
+                //Init the multiple value if void
+                if (!currentValue[index]) {
+                    currentValue[index] = [];
+                }
                 currentValue[index].push(value);
                 this.set("value", currentValue);
             } else {
@@ -69,7 +73,7 @@ define([
             }
         },
 
-        removeIndexValue : function mAttributeremoveIndexValue(index) {
+        removeIndexValue : function mAttributeremoveIndexValue(index, options) {
             var currentValue, oldValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
@@ -86,7 +90,10 @@ define([
                     currentValue[currentIndex - 1] = oldValue[currentIndex];
                 }
             });
-            this.set("value", currentValue);
+            currentValue = _.filter(currentValue, function removeUndefined(currentValue) {
+                return !_.isUndefined(currentValue);
+            });
+            this.set("value", currentValue, {updateArray : true});
         },
 
         addIndexValue : function mAttributeaddIndexValue(index, copy) {
@@ -112,7 +119,7 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("value", currentValue);
+            this.set("value", currentValue, {updateArray : true});
         },
 
         /**
@@ -132,6 +139,13 @@ define([
             currentValue.splice(toIndex, 0, fromValue);
 
             this.set("value", currentValue);
+        },
+
+        removeIndexLine : function mAttributeRemoveIndexLine(index) {
+            if (this.get("type") !== "array") {
+                throw Error("You can only remove line on array " + this.id);
+            }
+            this.trigger("removeWidgetLine", {index : index}, {silent : true});
         },
 
         getNbLines : function mAttributegetNbLines() {

@@ -27,13 +27,14 @@ define([
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
+            this.listenTo(this.model, 'removeWidgetLine', this.removeWidgetLine);
 
         },
 
         render: function () {
             // console.time("render array " + this.model.id);
             var data = this.model.toData();
-            var scope = this, headers = [];
+            var scope = this;
             $(".dcpLoading").dcpLoading("addItem", data.content.length + 1);
             data.content = _.filter(data.content, function (currentContent) {
                 return currentContent.isDisplayable;
@@ -118,6 +119,10 @@ define([
             this.model.get("content").each(function (currentContent) {
                 currentContent.removeIndexValue(options.line);
             });
+        },
+
+        removeWidgetLine : function vArrayRemoveWidgetLine(options) {
+            this.$el.dcpArray("removeLine", options.index, {silent : true});
         },
 
         addLine: function vArrayAddLine(event, options) {
