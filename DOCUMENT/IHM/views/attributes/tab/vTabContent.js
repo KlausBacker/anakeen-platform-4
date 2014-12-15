@@ -64,8 +64,11 @@ define([
                             throw new Error("unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id);
                         }
                     } catch (e) {
-                        window.TraceKit.report(e);
-                        console.error(e);
+                        if (window.dcp.logger) {
+                            window.dcp.logger(e);
+                        } else {
+                            console.error(e);
+                        }
                     }
                 });
                 this.initialized = true;

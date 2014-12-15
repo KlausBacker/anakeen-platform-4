@@ -74,8 +74,11 @@ define([
             try {
                 this.$el.append($(Mustache.render(this.template, this.model.toData(), this.partials)));
             } catch (e) {
-                window.TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
             this.trigger("loading", 10);
@@ -88,8 +91,11 @@ define([
 
                 this.listenTo(viewMenu, 'document', this.actionDocument);
             } catch (e) {
-                window.TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
             try {
                 new ViewDocumentHeader({
@@ -97,8 +103,11 @@ define([
                     el :    this.$el.find(".dcpDocument__header:first")[0]
                 }).render();
             } catch (e) {
-                window.TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
             this.trigger("loading", 20);
             //add first level attributes
@@ -115,8 +124,11 @@ define([
                         view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
                     } catch (e) {
-                        window.TraceKit.report(e);
-                        console.error(e);
+                        if (window.dcp.logger) {
+                            window.dcp.logger(e);
+                        } else {
+                            console.error(e);
+                        }
                     }
                 }
                 if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
@@ -141,8 +153,11 @@ define([
                         $el.find(".dcpDocument__tabs").append(viewTabContent.render().$el);
                         $el.find(".dcpDocument__tabs").show();
                     } catch (e) {
-                        window.TraceKit.report(e);
-                        console.error(e);
+                        if (window.dcp.logger) {
+                            window.dcp.logger(e);
+                        } else {
+                            console.error(e);
+                        }
                     }
                 }
                 currentView.trigger("partRender");
@@ -376,8 +391,11 @@ define([
                 }
 
             } catch (e) {
-                window.TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
             $(window.document).off("ddui");
 

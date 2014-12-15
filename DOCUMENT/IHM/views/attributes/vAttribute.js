@@ -319,8 +319,11 @@ define([
                     this.getWidgetClass().call($element, method, argument);
                 }
             } catch (e) {
-                TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
             return this;
         },
@@ -373,8 +376,11 @@ define([
                     this.widgetApply(this.currentDcpWidget, "destroy");
                 }
             } catch (e) {
-                TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
             return Backbone.View.prototype.remove.call(this);
         },

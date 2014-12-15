@@ -148,7 +148,11 @@ define([
                 var result = JSON.parse(xhr.responseText);
                 messages = result.messages;
             } catch (e) {
-                window.TraceKit.report(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
                 //Unable to parse responseText (error is not in JSON)
             }
 

@@ -64,16 +64,22 @@ define([
                             scope.columnViews[currentAttr.id].render();
                         }
                     } catch (e) {
-                        window.TraceKit.report(e);
-                        console.error(e);
+                        if (window.dcp.logger) {
+                            window.dcp.logger(e);
+                        } else {
+                            console.error(e);
+                        }
                     }
                 });
             }
             try {
                 this.$el.dcpArray(data);
             } catch(e) {
-                window.TraceKit.report(e);
-                console.error(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
             }
 
             this.$el.attr("data-attrid", this.model.id);

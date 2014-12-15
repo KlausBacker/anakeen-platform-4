@@ -1,6 +1,8 @@
-!(function (Tracekit) {
+!(function (TraceKit) {
 
-    var request = function request(url, content, success, fail) {
+    "use strict";
+
+    var request = function requestFunction(url, content, success, fail) {
         var request, getRequest, stateChange, postBody;
 
         stateChange = function () {
@@ -13,11 +15,14 @@
             }
         };
 
-        getRequest = function () {
-            if (window.ActiveXObject)
+        getRequest = function getRequest() {
+            if (window.ActiveXObject) {
                 return new ActiveXObject('Microsoft.XMLHTTP');
-            else if (window.XMLHttpRequest)
+            }
+            else if (window.XMLHttpRequest) {
                 return new XMLHttpRequest();
+            }
+
             return false;
         };
 
@@ -40,7 +45,7 @@
         }
     };
 
-    TraceKit.report.subscribe(function yourLogger(errorReport) {
+    TraceKit.report.subscribe(function dcpLogger(errorReport) {
         try {
             if (!errorReport.stack) {
                 errorReport.stack = (new Error('make stack')).stack;
@@ -55,4 +60,16 @@
         }
         request("?app=DOCUMENT&action=COLLECT_ERROR", errorReport);
     });
+
+    window.dcp = window.dcp || {};
+
+    window.dcp.logger = function dcpLogger(error) {
+        try {
+            TraceKit.report(error);
+        } catch(e) {
+
+        }
+        console.error(error);
+    };
+
 }(TraceKit));
