@@ -93,7 +93,11 @@ define([
             try {
                 value = kendo.toString(value, this.getKendoNumericOptions().format);
             } catch(e) {
-                window.TraceKit.report(e);
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
                 console.error("Unable to format the number "+e);
             }
             return value;

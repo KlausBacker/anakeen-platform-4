@@ -54,7 +54,11 @@ define([
                                     console.error(data);
                                     throw new Error("Sub menu");
                                 } catch (e) {
-                                    window.TraceKit.report(e);
+                                    if (window.dcp.logger) {
+                                        window.dcp.logger(e);
+                                    } else {
+                                        console.error(e);
+                                    }
                                 }
                             });
                         }

@@ -45,8 +45,11 @@ define([
                     try {
                         this.widgetInit($(cells[index]), data);
                     } catch (error) {
-                        window.TraceKit.report(error);
-                        console.error(error);
+                        if (window.dcp.logger) {
+                            window.dcp.logger(e);
+                        } else {
+                            console.error(e);
+                        }
                     }
                 }
             }
