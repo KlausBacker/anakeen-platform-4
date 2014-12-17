@@ -33,9 +33,11 @@ function wiff_help(&$argv)
     echo "\n";
     echo "  wiff param help\n";
     echo "\n";
-    echo "  wiff list context\n";
+    echo "  wiff list help\n";
     echo "\n";
     echo "  wiff context <context-name> help\n";
+    echo "\n";
+    echo "  wiff archive <archive-id> help\n";
     echo "\n";
     echo "  wiff whattext <context-name>\n";
     echo "  wiff wstop <context-name>\n";
@@ -196,8 +198,17 @@ function wiff_list(&$argv)
     $op = array_shift($argv);
     
     switch ($op) {
+        case 'help':
+            return wiff_list_help($argv);
+            break;
+
         case 'context':
             $ret = wiff_list_context($argv);
+            return $ret;
+            break;
+
+        case 'archive':
+            $ret = wiff_list_archive($argv);
             return $ret;
             break;
 
@@ -245,6 +256,7 @@ function wiff_list_help(&$argv)
     echo "-----\n";
     echo "\n";
     echo "  wiff list context\n";
+    echo "  wiff list archive\n";
     echo "\n";
     return 0;
 }
@@ -311,6 +323,13 @@ function wiff_context(&$argv)
             return $ret;
             break;
 
+        case 'archive':
+            wiff_lock();
+            $ret = wiff_context_archive($context, $argv);
+            wiff_unlock();
+            return $ret;
+            break;
+
         case 'help':
             return wiff_context_help($context, $argv);
             break;
@@ -338,6 +357,7 @@ function wiff_context_help(&$context, &$argv)
     echo "  wiff context <context-name> shell\n";
     echo "  wiff context <context-name> exec /bin/bash --login\n";
     echo "  wiff context <context-name> register\n";
+    echo "  wiff context <context-name> archive <archive-name> [--without-vault] [--description=<description>]\n";
     echo "\n";
     echo "Sub-commands help\n";
     echo "-----------------\n";
@@ -1722,6 +1742,11 @@ function color_reset()
 {
     return (!posix_isatty(STDOUT)) ? '' : chr(0x1b) . '[0m';
 }
+
+function ascii_underline($msg) {
+    return $msg . "\n" . str_repeat('-', strlen($msg)) . "\n";
+}
+
 /**
  * change UID to the owner of the wiff script
  * @param $path
@@ -1772,6 +1797,13 @@ function wiff_delete(&$argv)
             return $ret;
             break;
 
+        case 'archive':
+            wiff_lock();
+            $ret = wiff_delete_archive($argv);
+            wiff_unlock();
+            return $ret;
+            break;
+
         default:
             printerr(sprintf("Unknown operation '%s'!\n", $op));
             return wiff_delete_help($argv);
@@ -1785,6 +1817,7 @@ function wiff_delete_help(&$argv)
     echo "-----\n";
     echo "\n";
     echo "  wiff delete context [delete-options] <context-name>\n";
+    echo "  wiff delete archive <archive-id>\n";
     echo "\n";
     echo "delete-options\n";
     echo "---------------\n";
@@ -2037,6 +2070,7 @@ function wiff_create_context(&$argv) {
         printerr(sprintf("Error: missing context-root.\n"));
         return 1;
     }
+
 
     $wiff = WIFF::getInstance();
 
@@ -2445,6 +2479,218 @@ function wiff_register(&$argv) {
             return 1;
         }
         printf("Successfully registered dynacase-control.\n");
+    }
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_context_archive_help(&$argv) {
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff context <context-name> archive <archive-name> [--without-vault] [--description=<description>]\n";
+    echo "\n";
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param array $argv
+ */
+function wiff_context_archive(&$context, $argv) {
+    $archiveName = array_shift($argv);
+    if ($archiveName === null) {
+        printerr(sprintf("Error: missing archive name.\n"));
+        wiff_context_archive_help($argv);
+        return 1;
+    }
+    $options = parse_argv_options($argv);
+    $excludeVault = (isset($options['without-vault']) && $options['without-vault'] === true);
+    $archiveDesc = sprintf("%s@%s", $context->name, strftime("%Y-%m-%dT%H:%M:%S"));
+    if (isset($options['description'])) {
+        $archiveDesc = $options['description'];
+    }
+    $archiveId = $context->archiveContext($archiveName, $archiveDesc, $excludeVault);
+    if ($archiveId === false) {
+        printerr(sprintf("Error: could not archive context: %s\n", $context->errorMessage));
+        return 1;
+    }
+    printf("%s\n", $archiveId);
+    return 0;
+}
+
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_archive_help(&$argv) {
+    echo "\n";
+    echo "Usage\n";
+    echo "-----\n";
+    echo "\n";
+    echo "  wiff archive <archive-id> info\n";
+    echo "  wiff archive <archive-id> restore <context-name> <context-root> <pg-service-name> <vault-root>\n";
+    echo "                                    [--remove-profiles --user-login=<login> --user-password=<password>]\n";
+    echo "                                    [--clean-tmp-directory]\n";
+    echo "\n";
+    return 0;
+}
+
+/**
+ * @param $argv
+ */
+function wiff_archive(&$argv) {
+    $archiveId = array_shift($argv);
+    if ($archiveId === null) {
+        printerr("Error: missing archive id.\n");
+        wiff_archive_help($argv);
+        return 1;
+    }
+    $cmd = array_shift($argv);
+    switch ($cmd) {
+        case 'info':
+            $ret = wiff_archive_info($archiveId, $argv);
+            return $ret;
+            break;
+        case 'restore':
+            wiff_lock();
+            $ret = wiff_archive_restore($archiveId, $argv);
+            wiff_unlock();
+            return $ret;
+            break;
+    }
+    wiff_archive_help($argv);
+    return 1;
+}
+
+/**
+ * @param $archiveId
+ * @param $argv
+ */
+function wiff_archive_restore($archiveId, &$argv) {
+    $wiff = WIFF::getInstance();
+    $archive = $wiff->getArchivedContextById($archiveId);
+    if ($archive === false) {
+        printerr(sprintf("Error: could not find archive with id '%s'.\n", $archiveId));
+        return 1;
+    }
+    $contextName = array_shift($argv);
+    if ($contextName === null) {
+        printerr(sprintf("Error: missing context name.\n"));
+        return 1;
+    }
+    $contextRoot = array_shift($argv);
+    if ($contextRoot === null) {
+        printerr(sprintf("Error: missing context root directory.\n"));
+        return 1;
+    }
+    $pgService = array_shift($argv);
+    if ($pgService === null) {
+        printerr(sprintf("Error: missing postgresql's service name.\n"));
+        return 1;
+    }
+    $vaultRoot = array_shift($argv);
+    if ($vaultRoot === null) {
+        printerr(sprintf("Error: missing vault root directory.\n"));
+        return 1;
+    }
+    $options = parse_argv_options($argv);
+    $removeProfiles = false;
+    $userLogin = '';
+    $userPassword = '';
+    if (isset($options['remove-profiles']) && $options['remove-profiles'] === true) {
+        $removeProfiles = true;
+        if (!isset($options['user_login'])) {
+            printerr(sprintf("Error: missing --user-login=<login>.\n"));
+            return 1;
+        }
+        $userLogin = $options['user_login'];
+        if (!isset($options['user_password'])) {
+            printerr(sprintf("Error: missing --user-password=<password>.\n"));
+            return 1;
+        }
+        $userPassword = $options['user_password'];
+    }
+    $cleanTmpDirectory = true;
+    if (isset($options['clean-tmp-directory'])) {
+        switch ($options['clean-tmp-directory']) {
+            case 'yes':
+                $cleanTmpDirectory = true;
+                break;
+            case 'no':
+                $cleanTmpDirectory = false;
+                break;
+            default:
+                printerr(sprintf("Error: invalid value '%s' for option --clean-tmp-directory.", $options['clean-tmp-directory']));
+                return 1;
+        }
+    }
+    $ret = $wiff->createContextFromArchive($archiveId, $contextName, $contextRoot, '', '', $vaultRoot, $pgService, $removeProfiles, $userLogin, $userPassword, $cleanTmpDirectory);
+    if ($ret === false) {
+        printerr(sprintf("Error: could not restore archive '%s' to new context '%s': %s", $archiveId, $contextName, $wiff->errorMessage));
+        return 1;
+    }
+    printf("Context '%s' successfully created from archive '%s'.\n", $contextName, $archiveId);
+    return 0;
+}
+
+/**
+ * @param $archiveId
+ * @param $argv
+ */
+function wiff_archive_info($archiveId, &$argv) {
+    $wiff = WIFF::getInstance();
+    $archive = $wiff->getArchivedContextById($archiveId);
+    if ($archive === false) {
+        printerr(sprintf("Error: could not find archived context with id '%s'.", $archiveId));
+        return 1;
+    }
+    print ascii_underline(sprintf("Archive '%s'", $archiveId));
+    printf("\n");
+    printf("id          = %s\n", $archive['id']);
+    printf("date        = %s\n", $archive['datetime']);
+    printf("name        = %s\n", $archive['name']);
+    printf("size        = %s\n", $archive['size']);
+    printf("vault       = %s\n", $archive['vault']);
+    printf("description = %s\n", $archive['description']);
+    printf("\n");
+    printf("Installed modules:\n");
+    /**
+     * @var Module $module
+     */
+    foreach ($archive['moduleList'] as $module) {
+        printf("- %s (%s-%s)\n", $module->name, $module->version, $module->release);
+    }
+    printf("\n");
+    return 0;
+}
+/**
+ * @param $argv
+ * @return int
+ */
+function wiff_list_archive(&$argv) {
+    $wiff = WIFF::getInstance();
+    $archiveList = $wiff->getArchivedContextList();
+    foreach ($archiveList as $archive) {
+        printf("%s\n", $archive['id']);
+    }
+    return 0;
+}
+
+function wiff_delete_archive(&$argv) {
+    $archiveId = array_shift($argv);
+    if ($archiveId === null) {
+        printerr(sprintf("Error: missing archive id.\n"));
+        return 1;
+    }
+    $wiff = WIFF::getInstance();
+    if ($wiff->deleteArchive($archiveId) === false) {
+        printerr(sprintf("Error: could not delete archive with id '%s'.\n", $archiveId));
+        return 1;
     }
     return 0;
 }
