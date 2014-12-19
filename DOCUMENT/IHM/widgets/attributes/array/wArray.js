@@ -93,7 +93,7 @@ define([
                     });
 
                     this.element.find('tbody').kendoDropTargetArea({
-                        filter: '.dcpArray__content__line[data-attrid="'+this.options.id+'"]',
+                        filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
                         dragenter: function (event) {
                             if (event.currentTarget) {
                                 var drap = event.draggable.currentTarget.closest('tr');
@@ -114,19 +114,19 @@ define([
             this._initCSSResponsive();
         },
 
-        _initCSSResponsive : function _initCSSResponsive() {
-            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function(currentElement) {
+        _initCSSResponsive: function _initCSSResponsive() {
+            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function (currentElement) {
                 var $currentElement = $(currentElement);
                 return {
-                    "attrid" : $currentElement.data("attrid"),
-                    "label" : $currentElement.text().trim()
+                    "attrid": $currentElement.data("attrid"),
+                    "label": $currentElement.text().trim()
                 };
             });
 
             // Generate CSS string
             cssString = "<style>@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) { ";
 
-            cssTemplate = _.template('.dcpArray__content[data-attrid='+this.options.id+'] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
+            cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 
             _.each(headers, function (currentHeader) {
                 currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
@@ -171,6 +171,20 @@ define([
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
+            });
+            this.element.on("click" + this.eventNamespace, ".dcpArray__label", function () {
+                var $contentElement = currentWidget.element.find(".dcpArray__content");
+                if ($contentElement.hasClass("dcpArray__content--open")) {
+                    // Hide array panel
+                    currentWidget.element.find(".dcp__array__caret").addClass("fa-caret-right").removeClass("fa-caret-down");
+                    $contentElement.removeClass("dcpArray__content--open").addClass("dcpArray__content--close");
+                    $contentElement.slideUp();
+                } else {
+                    // Show array panel
+                    currentWidget.element.find(".dcp__array__caret").removeClass("fa-caret-right").addClass("fa-caret-down");
+                    $contentElement.addClass("dcpArray__content--open").removeClass("dcpArray__content--close");
+                    $contentElement.slideDown();
+                }
             });
         },
 
@@ -231,7 +245,7 @@ define([
             this.element.find("[data-line=" + line + "]").remove();
             this._indexLine();
             if (options.silent !== true) {
-                this._trigger("lineRemoved", {}, {line : line});
+                this._trigger("lineRemoved", {}, {line: line});
             }
         },
 
