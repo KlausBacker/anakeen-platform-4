@@ -37,6 +37,7 @@ define([
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:value', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
+            this.listenTo(this.model, 'moved', this.moveValueIndex);
             this.listenTo(this.model, 'destroy', this.remove);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
             this.listenTo(this.model, 'showTab', this.afterShow);
@@ -251,6 +252,14 @@ define([
                 return '';
             });
             return attrLabels;
+        },
+
+        /**
+         * Propagate move value event to widgets
+         * @param eventData
+         */
+        moveValueIndex : function vAttributeMoveValueIndex(eventData) {
+            this.getDOMElements().trigger("postMoved", eventData);
         },
 
         /**

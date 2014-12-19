@@ -44,6 +44,7 @@ define([
                 if (cells[index]) {
                     try {
                         this.widgetInit($(cells[index]), data);
+                        this.moveValueIndex({});
                     } catch (error) {
                         if (window.dcp.logger) {
                             window.dcp.logger(e);
