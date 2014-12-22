@@ -390,31 +390,15 @@ class Module
         $wiff = WIFF::getInstance();
         $moduleName = $dom->documentElement->getAttribute('name');
         if (!XMLUtils::DOMDocumentHaveNamespace($dom, self::SCHEMA_NAMESPACE)) {
-            if (!XMLUtils::isBasicModuleDOMDocument($dom)) {
+            if (!XMLUtils::isBasicModuleDOMDocument($dom, $err)) {
                 /**
                  * Return a hard error if the XML lacks a basic <module name="xxx"/> root node
                  */
+                $this->errorMessage = $err;
                 return false;
             }
-            /*
-             * This looks like an old info.xml (without webinst module XMLNS),
-             * so we validate it but return a soft error on validation failure.
-             */
-            $this->warningMessage = (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0\">Module '%s' uses a legacy 'info.xml' without namespace declaration.</p><p style=\"margin: 0.5em 0 0.5em 0\">Support for legacy 'info.xml' format is deprecated and will be removed in future version of dynacase-control.</p><p style=\"margin: 0.5em 0 0.5em 0\">You should update this 'info.xml' definition with the correct XML Schema Definition as soon as possible.</p></div>", new \String\HTML($moduleName), new \String\HTML(self::SCHEMA_NAMESPACE)));
-            try {
-                $dom = XMLUtils::upgradeDOMDocumentWithNamespace($dom, self::SCHEMA_NAMESPACE);
-            } catch (\Exception $e) {
-                $this->errorMessage = $e->getMessage();
-                $dom = false;
-            }
-            if ($dom === false) {
-                $this->errorMessage = sprintf("Error upgrading info.xml with namespace: %s", $this->errorMessage);
-                return false;
-            }
-            $validationError = $wiff->validateDOMDocument($dom, self::SCHEMA_NAMESPACE);
-            if ($validationError != '') {
-                $this->warningMessage .= (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0; padding: 1em; text-align: center; background-color: #FF8; color: black\">Module '<b>%s</b>' did not passed XML validation!</p>", new \String\Text($moduleName)));
-            }
+            $wiff->log(LOG_INFO, (string)new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0\">Module '%s' uses a legacy 'info.xml' without namespace declaration.</p><p style=\"margin: 0.5em 0 0.5em 0\">Support for legacy 'info.xml' format is deprecated and will be removed in future version of dynacase-control.</p><p style=\"margin: 0.5em 0 0.5em 0\">You should update this 'info.xml' definition with the correct XML Schema Definition as soon as possible.</p></div>", new \String\HTML($moduleName), new \String\HTML(self::SCHEMA_NAMESPACE))));
+            return $dom;
         } else {
             /*
              * This looks like a new info.xml with the webinst module XMLNS,

@@ -110,13 +110,15 @@ class XMLUtils
      * @return bool
      * @throws Exception
      */
-    public static function isBasicModuleDOMDocument(DOMDocument & $dom)
+    public static function isBasicModuleDOMDocument(DOMDocument & $dom, &$err)
     {
         if ($dom->documentElement->tagName != 'module') {
-            throw new Exception(sprintf("Root node 'module' not found in 'info.xml'."));
+            $err = sprintf("Root node 'module' not found in 'info.xml'.");
+            return false;
         }
         if (!$dom->documentElement->hasAttribute('name')) {
-            throw new Exception(sprintf("Missing attribute 'name' in 'module' node."));
+            $err = sprintf("Missing attribute 'name' in 'module' node.");
+            return false;
         }
         return true;
     }
