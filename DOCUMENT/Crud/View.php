@@ -485,10 +485,10 @@ class View extends Crud
         $renderMode = "view";
         if ($vid == self::defaultViewConsultationId) {
             $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
-            $vid = '';
+            $vid = '!none';
         } elseif ($vid == self::defaultViewEditionId) {
             $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
-            $vid = '';
+            $vid = '!none';
         } elseif ($vid == self::coreViewConsultationId) {
             $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
             $vid = '!none';

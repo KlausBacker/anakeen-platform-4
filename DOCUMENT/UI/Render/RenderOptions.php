@@ -101,6 +101,9 @@ class RenderOptions implements \JsonSerializable
                 TextRenderOptions::sizeOption => null,
                 TextRenderOptions::formatOption => "%s"
             ) ,
+            ArrayRenderOptions::type => array(
+                ArrayRenderOptions::rowCountThresholdOption => -1
+            ) ,
             "time" => array(
                 "format" => "%H:%M"
             ) ,
@@ -214,6 +217,7 @@ class RenderOptions implements \JsonSerializable
         $this->htmltextOptions->setScope($attrid);
         return $this->htmltextOptions;
     }
+
     /**
      * @param string $attrid
      * @return IntRenderOptions
@@ -254,7 +258,7 @@ class RenderOptions implements \JsonSerializable
      * @param string $attrid
      * @return ArrayRenderOptions
      */
-    public function typeArray($attrid = '')
+    public function arrayAttribute($attrid = '')
     {
         if ($this->arrayOptions === null) {
             $this->arrayOptions = new ArrayRenderOptions($this);
