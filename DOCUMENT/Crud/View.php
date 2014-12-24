@@ -181,7 +181,7 @@ class View extends Crud
     protected function getCoreViews(\Doc $document)
     {
         $defaultConsultation = array(
-            "requestIdentifier"=>$this->viewIdentifier,
+            "requestIdentifier" => $this->viewIdentifier,
             "uri" => $this->getUri($document, self::coreViewConsultationId) ,
             "identifier" => self::coreViewConsultationId,
             "mode" => "consultation",
@@ -195,7 +195,7 @@ class View extends Crud
             )
         );
         $defaultEdition = array(
-            "requestIdentifier"=>$this->viewIdentifier,
+            "requestIdentifier" => $this->viewIdentifier,
             "uri" => $this->getUri($document, self::coreViewEditionId) ,
             "identifier" => self::coreViewEditionId,
             "mode" => "edition",
@@ -210,7 +210,7 @@ class View extends Crud
         );
         
         $defaultCreate = array(
-            "requestIdentifier"=>$this->viewIdentifier,
+            "requestIdentifier" => $this->viewIdentifier,
             "uri" => $this->getUri($document, self::coreViewCreationId) ,
             "identifier" => self::coreViewCreationId,
             "mode" => "edition",
@@ -242,13 +242,13 @@ class View extends Crud
     {
         $viewId = $viewInfo[Cvrender::cv_idview];
         return array(
-            "requestIdentifier"=>$this->viewIdentifier,
+            "requestIdentifier" => $this->viewIdentifier,
             "identifier" => $viewId,
             "mode" => ($viewInfo[Cvrender::cv_kview] === "VCONS") ? "consultation" : "edition",
             "label" => $controlView->getLocaleViewLabel($viewId) ,
             "isDisplayable" => ($viewInfo[Cvrender::cv_displayed] === "yes") ,
             "order" => intval($viewInfo[Cvrender::cv_order]) ,
-            self::fieldMenu => $controlView->getLocaleViewMenu($viewId),
+            self::fieldMenu => $controlView->getLocaleViewMenu($viewId) ,
             "mask" => array(
                 "id" => intval($viewInfo[Cvrender::cv_mskid]) ,
                 "title" => $viewInfo[Cvrender::cv_msk]
@@ -360,10 +360,11 @@ class View extends Crud
         $config = getLocaleConfig($localeId);
         return $config;
     }
+
     /**
      * Get the document from the standard CRUD
      *
-     * @param $document
+     * @param \Doc $document
      * @return mixed
      */
     protected function renderDocument($document)
