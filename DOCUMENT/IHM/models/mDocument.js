@@ -335,7 +335,7 @@ define([
 
 
             values = {
-                initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.id,
+                initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
                 properties: view.documentData.document.properties,
                 menus: view.menu,
                 viewId: response.data.properties.requestIdentifier,
