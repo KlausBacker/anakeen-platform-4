@@ -27,6 +27,7 @@ class RenderOptions implements \JsonSerializable
     protected $passwordOptions = null;
     protected $htmltextOptions = null;
     protected $timeOptions = null;
+    protected $tabOptions = null;
     protected $dateOptions = null;
     protected $timestampOptions = null;
     protected $commonOptions = null;
@@ -100,6 +101,9 @@ class RenderOptions implements \JsonSerializable
             TextRenderOptions::type => array(
                 TextRenderOptions::sizeOption => null,
                 TextRenderOptions::formatOption => "%s"
+            ) ,
+            ArrayRenderOptions::type => array(
+                ArrayRenderOptions::rowCountThresholdOption => - 1
             ) ,
             "time" => array(
                 "format" => "%H:%M"
@@ -192,6 +196,18 @@ class RenderOptions implements \JsonSerializable
     }
     /**
      * @param string $attrid
+     * @return TabRenderOptions
+     */
+    public function tab($attrid = '')
+    {
+        if ($this->tabOptions === null) {
+            $this->tabOptions = new TabRenderOptions($this);
+        }
+        $this->tabOptions->setScope($attrid);
+        return $this->tabOptions;
+    }
+    /**
+     * @param string $attrid
      * @return TimestampRenderOptions
      */
     public function timestamp($attrid = '')
@@ -254,7 +270,7 @@ class RenderOptions implements \JsonSerializable
      * @param string $attrid
      * @return ArrayRenderOptions
      */
-    public function typeArray($attrid = '')
+    public function arrayAttribute($attrid = '')
     {
         if ($this->arrayOptions === null) {
             $this->arrayOptions = new ArrayRenderOptions($this);
@@ -310,7 +326,6 @@ class RenderOptions implements \JsonSerializable
         $this->accountOptions->setScope($attrid);
         return $this->accountOptions;
     }
-
     /**
      * @param string $attrid
      * @return ColorRenderOptions

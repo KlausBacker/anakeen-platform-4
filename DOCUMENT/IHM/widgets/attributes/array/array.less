@@ -40,6 +40,13 @@
   visibility: hidden;
 }
 
+.dcpArray__label--count::after {
+  content : ")"
+}
+.dcpArray__label--count::before {
+  content : "("
+}
+
 /**
  * To fix all width column to be proportionnal to thead
  */
@@ -50,7 +57,9 @@
 .dcpArray__label {
   cursor:pointer;
 }
-
+.dcp__array__caret {
+  width: 1em;
+}
 table.responsive {
   border-collapse: collapse;
 }

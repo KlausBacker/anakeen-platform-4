@@ -232,6 +232,12 @@ class RenderDefault implements IRenderConfig
         $opt->date()->setLabels(array(
             "invalidDate" => ___("Invalid date", "ddui-enum")
         ));
+        
+        $selectedTab = $document->getUTag("lasttab");
+        if ($selectedTab) {
+            $opt->tab($selectedTab->comment)->setOpenFirst(true);
+        }
+        
         return $opt;
     }
     

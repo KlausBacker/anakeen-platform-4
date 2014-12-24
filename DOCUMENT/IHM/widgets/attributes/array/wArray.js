@@ -10,7 +10,10 @@ define([
 
         options: {
             tools: true,
-            nbLines: 0
+            nbLines: 0,
+            renderOptions: {
+                rowCountThreshold : -1
+            }
         },
 
         /**
@@ -43,12 +46,17 @@ define([
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
                     // showEmptyCOntent option
+
+
                     this.element.append(Mustache.render(this._getTemplate("label"), this.options));
                     this.element.append(this.options.showEmpty);
                 }
             } else {
                 this.element.addClass("panel panel-default");
-                this.element.append(Mustache.render(this._getTemplate("label"), this.options));
+                this.element.append(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
+                    displayCount : (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
+                })));
+
                 this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
                 if (this.options.mode === "write") {
@@ -188,6 +196,16 @@ define([
             });
         },
 
+        /**
+         * Redraw label with current count
+         */
+        redrawLabel : function wArrayRedrawLabel() {
+            this.element.find(".dcpArray__label").html(
+              $(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
+                    displayCount : (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
+                }))).html()
+            );
+        },
         setLines: function wArraySetLines(lineNumber) {
             var currentLineNumber = this.options.nbLines;
             var i;
@@ -225,6 +243,7 @@ define([
                 this.element.find(".dcpArray__body").append($content);
             }
             this._indexLine();
+            this.redrawLabel();
             return $content;
         },
 
@@ -247,6 +266,8 @@ define([
             if (options.silent !== true) {
                 this._trigger("lineRemoved", {}, {line: line});
             }
+
+            this.redrawLabel();
         },
 
         _destroy: function () {
