@@ -41,6 +41,8 @@ define([
             if (this._isMultiple()) {
                 this.options.isMultiple = true;
             }
+
+
             if (this.getMode() === "read") {
                 if (this._isMultiple()) {
                     this.options.values = _.toArray(this.options.value);
@@ -53,7 +55,9 @@ define([
             }
 
             if (this.getMode() === "write") {
-
+                if (this.options.options && this.options.options.eformat === "auto") {
+                    this.options.renderOptions.useSourceUri=true;
+                }
                 this._initMainElemeentClass();
                 if (this._isMultiple()) {
                     switch (this.options.renderOptions.editDisplay) {
