@@ -360,7 +360,6 @@ class View extends Crud
         $config = getLocaleConfig($localeId);
         return $config;
     }
-
     /**
      * Get the document from the standard CRUD
      *
@@ -486,10 +485,10 @@ class View extends Crud
         $renderMode = "view";
         if ($vid == self::defaultViewConsultationId) {
             $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
-            $vid = '!none';
+            $vid = '';
         } elseif ($vid == self::defaultViewEditionId) {
             $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
-            $vid = '!none';
+            $vid = '';
         } elseif ($vid == self::coreViewConsultationId) {
             $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
             $vid = '!none';
@@ -500,7 +499,7 @@ class View extends Crud
             $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
             $vid = '!none';
         }
-        if ($vid === "!none") {
+        if ($vid === "!none" || $document->cvid == 0) {
             $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $document);
             $vid = '';
         } else {
