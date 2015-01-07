@@ -54,7 +54,7 @@ define([
 
         addValue : function mAttributeaddValue(value, index) {
             var currentValue;
-            if (this.get("multiple") && !_.isNumber(index)) {
+            if (this.hasMultipleOption() && !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
             // clone array references
@@ -96,7 +96,7 @@ define([
             this.set("value", currentValue, {updateArray : true});
         },
 
-        addIndexValue : function mAttributeaddIndexValue(index, copy) {
+        createIndexedValue : function mAttributeCreateIndexedValue(index, copy) {
             var currentValue, defaultValue;
             var newValue;
             if (!this.get("multiple") || !_.isNumber(index)) {
@@ -146,11 +146,18 @@ define([
 
         },
 
-        removeIndexLine : function mAttributeRemoveIndexLine(index) {
+        removeIndexedLine : function mAttributeRemoveIndexLine(index) {
             if (this.get("type") !== "array") {
                 throw Error("You can only remove line on array " + this.id);
             }
             this.trigger("removeWidgetLine", {index : index}, {silent : true});
+        },
+
+        addIndexedLine : function mAttributeaddIndexedLine(index) {
+            if (this.get("type") !== "array") {
+                throw Error("You can only remove line on array " + this.id);
+            }
+            this.trigger("addWidgetLine", {index : index});
         },
 
         getNbLines : function mAttributegetNbLines() {
