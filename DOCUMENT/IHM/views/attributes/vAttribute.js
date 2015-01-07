@@ -177,7 +177,7 @@ define([
         },
 
         changeDocument : function changeDocument(event, options) {
-            var index = options.index, initid = null, attributeValue = this.model.get("value"), documentModel = this.model.getDocumentModel();
+            var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
                 initid = attributeValue.value;
             } else {

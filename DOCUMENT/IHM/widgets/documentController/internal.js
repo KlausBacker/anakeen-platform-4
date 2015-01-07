@@ -274,7 +274,7 @@ define([
 
         getValue : function documentControllerGetValue(attributeId) {
             var attribute = this._getAttributeModel(attributeId);
-            return attribute.get("value");
+            return attribute.get("attributeValue");
         },
 
         getValues : function documentControllerGetValues() {
