@@ -36,7 +36,7 @@ define([
             var currentWidget = this;
             if (this.getMode() === "write") {
                 this.getContentElements().on("change" + this.eventNamespace, function wTextChangeElement() {
-                    var newValue = _.clone(currentWidget.options.value);
+                    var newValue = _.clone(currentWidget.options.attributeValue);
                     newValue.value = $(this).val();
                     newValue.displayValue = newValue.value;
                     currentWidget.setValue(newValue);

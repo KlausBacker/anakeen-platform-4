@@ -234,8 +234,8 @@ define([
 
         _getMaxIndex : function documentController_getMaxIndex(attributeArray) {
             return _.size(attributeArray.get("content").max(function (currentAttr) {
-                return _.size(currentAttr.get("value"));
-            }).get("value"));
+                return _.size(currentAttr.get("attributeValue"));
+            }).get("attributeValue"));
         },
 
         reinitDocument : function documentControllerReinitDocument() {
@@ -287,7 +287,7 @@ define([
                 throw new Error("Value must be an object with value and displayValue properties");
             }
             value = _.defaults(value, {value : "", displayValue : ""});
-            return attribute.set("value", value);
+            return attribute.set("attributeValue", value);
         },
 
         appendArrayRow : function documentControllerAddArrayRow(attributeId, values) {

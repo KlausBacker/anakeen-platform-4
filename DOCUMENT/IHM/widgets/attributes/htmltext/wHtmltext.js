@@ -26,10 +26,11 @@ define([
             try {
                 if (this.getMode() === "write") {
                     var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
+                   // if put it on a div : this.getContentElements().attr("contenteditable","true");
                     this.ckEditorInstance = this.getContentElements().ckeditor(
                         options
                     ).editor;
-                    this.options.value.value = this.ckEditorInstance.getData();
+                    this.options.attributeValue.value = this.ckEditorInstance.getData();
                 }
             } catch (e) {
                 if (window.dcp.logger) {

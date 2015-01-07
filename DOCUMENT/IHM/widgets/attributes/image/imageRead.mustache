@@ -5,12 +5,12 @@
         {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
         href="{{renderOptions.htmlLink.url}}">
     {{/renderOptions.htmlLink.url}}
-    {{^value.thumbnail}}
-        <span class="dcpAttribute__content__value">{{value.displayValue}}</span>
-    {{/value.thumbnail}}
-    {{#value.thumbnail}}
-        <img src="{{value.thumbnail}}"/>
-    {{/value.thumbnail}}
+    {{^attributeValue.thumbnail}}
+        <span class="dcpAttribute__content__value">{{attributeValue.displayValue}}</span>
+    {{/attributeValue.thumbnail}}
+    {{#attributeValue.thumbnail}}
+        <img src="{{attributeValue.thumbnail}}"/>
+    {{/attributeValue.thumbnail}}
     {{#renderOptions.htmlLink.url}}
     </a>
     {{/renderOptions.htmlLink.url}}

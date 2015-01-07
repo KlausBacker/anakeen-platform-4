@@ -148,10 +148,10 @@ define([
         /**
          * Return the value stored in the wiget
          *
-         * @returns {*|number|.options.value}
+         * @returns {*|number|.options.attributeValue}
          */
         getValue: function getValue() {
-            return this.options.value;
+            return this.options.attributeValue;
         },
 
         /**
@@ -173,7 +173,7 @@ define([
 
         },
         /**
-         * Set options value element and trigger the view
+         * Set options.attributeValue element and trigger the view
          *
          * @param value
          * @param event
@@ -184,16 +184,16 @@ define([
             var isEqual = false;
 
             if (this._isMultiple()) {
-                isEqual = _.toArray(this.options.value).length === value.length;
+                isEqual = _.toArray(this.options.attributeValue).length === value.length;
                 if (isEqual) {
 
-                    isEqual = _.isEqual(this.options.value, value);
+                    isEqual = _.isEqual(this.options.attributeValue, value);
                 }
             } else {
-                isEqual = _.isEqual(this.options.value.value, value.value);
+                isEqual = _.isEqual(this.options.attributeValue.value, value.value);
             }
             if (!isEqual) {
-                this.options.value = value;
+                this.options.attributeValue = value;
 
                 this._trigger("change", event, {
                     id: this.options.id,
@@ -256,11 +256,11 @@ define([
                 this.options.id = _.uniqueId("widget_" + this.getType());
             }
 
-            if (_.isUndefined(this.options.value) || this.options.value === null) {
+            if (_.isUndefined(this.options.attributeValue) || this.options.attributeValue === null) {
                 if (this._isMultiple()) {
-                    this.options.value = [];
+                    this.options.attributeValue = [];
                 } else {
-                    this.options.value = {
+                    this.options.attributeValue = {
                         "value": null,
                         displayValue: ""
                     };
@@ -395,13 +395,13 @@ define([
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
                 if (buttonConfig && buttonConfig.url) {
-                    var url = Mustache.render(buttonConfig.url, scope.options.value);
+                    var url = Mustache.render(buttonConfig.url, scope.options.attributeValue);
                     if (buttonConfig.target !== "_dialog") {
                         window.open(url, buttonConfig.target);
                     } else {
                         var bdw = $('<div/>');
                         $('body').append(bdw);
-                        var renderTitle = Mustache.render(buttonConfig.windowTitle, scope.options.value);
+                        var renderTitle = Mustache.render(buttonConfig.windowTitle, scope.options.attributeValue);
                         var dw = bdw.dcpWindow({
                             title: renderTitle,
                             width: buttonConfig.windowWidth,
@@ -416,7 +416,7 @@ define([
 
                 scope._trigger("click", event, {
                     id: scope.option.id,
-                    value: scope.options.value,
+                    value: scope.options.attributeValue,
                     index: scope._getIndex()
                 });
             });
@@ -493,9 +493,9 @@ define([
                         var renderTitle;
                         var index = $(this).data("index");
                         if (typeof index !== "undefined" && index !== null) {
-                            renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value[index]);
+                            renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.attributeValue[index]);
                         } else {
-                            renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value);
+                            renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.attributeValue);
                         }
 
                         var bdw = $('<div/>');
@@ -558,7 +558,7 @@ define([
          * @private
          */
         _getEmptyValue: function _getEmptyValue() {
-            if (_.isEmpty(this.options.value) || this.options.value.value === null) {
+            if (_.isEmpty(this.options.attributeValue) || this.options.attributeValue.value === null) {
 
                 if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
                     return this.options.renderOptions.showEmptyContent;

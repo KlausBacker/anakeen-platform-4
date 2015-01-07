@@ -10,10 +10,10 @@
     {{/hasAutocomplete}}
     <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none" accept="image/*"
            class="dcpAttribute__value--file"
-          value="{{value.value}}"/>
-    <input {{#value.thumbnail}}style="background-image:url({{value.thumbnail}}){{/value.thumbnail}}"  type="text"
-           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#value.thumbnail}}dcpAttribute__value--filethumb{{/value.thumbnail}}"
-           value="{{value.displayValue}}"/>
+          value="{{attributeValue.value}}"/>
+    <input {{#attributeValue.thumbnail}}style="background-image:url({{attributeValue.thumbnail}}){{/attributeValue.thumbnail}}"  type="text"
+           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.thumbnail}}dcpAttribute__value--filethumb{{/attributeValue.thumbnail}}"
+           value="{{attributeValue.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
         <button type="button"  data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs">
             <span class="fa fa-download fa-fw"></span>

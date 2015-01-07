@@ -43,11 +43,11 @@ define([
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
             if (this.get("multiple") && index >= 0) {
-                currentValue = _.clone(this.get("value"));
+                currentValue = _.clone(this.get("attributeValue"));
                 currentValue[index] = value;
-                this.set("value", currentValue);
+                this.set("attributeValue", currentValue);
             } else {
-                this.set("value", value);
+                this.set("attributeValue", value);
             }
         },
 
@@ -57,7 +57,7 @@ define([
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
             // clone array references
-            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+            currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
 
             if (this.hasMultipleOption() && index >= 0) {
                 //Init the multiple value if void
@@ -65,10 +65,10 @@ define([
                     currentValue[index] = [];
                 }
                 currentValue[index].push(value);
-                this.set("value", currentValue);
+                this.set("attributeValue", currentValue);
             } else {
                 currentValue.push(value);
-                this.set("value", currentValue);
+                this.set("attributeValue", currentValue);
             }
         },
 
@@ -77,8 +77,8 @@ define([
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            oldValue = this.get("value");
-            currentValue = _.clone(this.get("value"));
+            oldValue = this.get("attributeValue");
+            currentValue = _.clone(this.get("attributeValue"));
             _.each(currentValue, function (value, currentIndex) {
                 currentIndex = parseInt(currentIndex, 10);
                 if (currentIndex === index) {
@@ -92,7 +92,7 @@ define([
             currentValue = _.filter(currentValue, function removeUndefined(currentValue) {
                 return !_.isUndefined(currentValue);
             });
-            this.set("value", currentValue, {updateArray : true});
+            this.set("attributeValue", currentValue, {updateArray : true});
         },
 
         /**
@@ -108,7 +108,7 @@ define([
             if (!this.get("multiple") || !_.isNumber(index)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
-            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+            currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
             defaultValue = this.attributes.defaultValue;
             if (copy) {
                 newValue = _.clone(currentValue[index]);
@@ -125,7 +125,7 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("value", currentValue, {updateArray : true});
+            this.set("attributeValue", currentValue, {updateArray : true});
         },
 
         /**
@@ -160,13 +160,16 @@ define([
             if (!this.get("multiple")) {
                 throw new Error("Move only multiple attribute : " + this.id);
             }
-            currentValue = _.toArray(this.get("value"));
+            currentValue = _.toArray(this.get("attributeValue"));
             fromValue = _.clone(currentValue[fromIndex]);
 
             currentValue.splice(fromIndex, 1);
             currentValue.splice(toIndex, 0, fromValue);
 
-            this.set("value", currentValue);
+            this.set("attributeValue", currentValue);
+
+
+
             this.trigger("moved", {from: fromIndex, to: toIndex});
 
         },
@@ -176,7 +179,7 @@ define([
             if (!this.get("multiple")) {
                 return -1;
             }
-            _.each(this.get("value"), function (value, index) {
+            _.each(this.get("attributeValue"), function (value, index) {
                 if (index > nbLines) {
                     nbLines = index;
                 }
@@ -190,7 +193,7 @@ define([
                 throw new Error("You need to be multiple");
             }
             if (_.isNumber(index)) {
-                content.value = content.value ? content.value[index] : null;
+                content.attributeValue = content.attributeValue ? content.attributeValue[index] : null;
                 content.index = index;
             }
             content.isDisplayable = this.isDisplayable();
@@ -243,7 +246,7 @@ define([
                     this.set("mode", "hidden");
                     return;
                 }
-                if (this.get("valueAttribute") && (this.get("value").value === null || _.isEmpty(this.get("value")))) {
+                if (this.get("valueAttribute") && (_.isEmpty(this.get("attributeValue")) || _.isUndefined(this.get("attributeValue") || this.get("attributeValue").value === null  ))) {
                     if (this.getOption('showEmptyContent') === null) {
                         this.set("mode", "hidden");
                         return;

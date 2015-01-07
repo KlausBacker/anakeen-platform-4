@@ -1,19 +1,19 @@
 <span class="dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid" name="{{id}}">
-    {{#value.value}}
+    {{#attributeValue.value}}
         {{#renderOptions.htmlLink.renderUrl}}
         <a class="dcpAttribute__content__link"
         {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.title}}
                         target="{{renderOptions.htmlLink.target}}"
                         href="{{renderOptions.htmlLink.renderUrl}}">
         {{/renderOptions.htmlLink.renderUrl}}
-        <img class="dcpAttribute__value--icon" src="{{value.icon}}" />
-        <span class="dcpAttribute__content__value">{{value.displayValue}}</span>
+        <img class="dcpAttribute__value--icon" src="{{attributeValue.icon}}" />
+        <span class="dcpAttribute__content__value">{{attributeValue.displayValue}}</span>
         {{#renderOptions.htmlLink.renderUrl}}
         </a>
         {{/renderOptions.htmlLink.renderUrl}}
-    {{/value.value}}
+    {{/attributeValue.value}}
     {{{emptyValue}}}
-    {{#values}}
+    {{#attributeValues}}
         {{#renderUrl}}
         <a class="dcpAttribute__content__link dcpAttribute__value--multiple" data-index="{{index}}"
         {{#renderOptions.htmlLink.title}}title="{{renderTitle}}" {{/renderOptions.htmlLink.title}}
@@ -25,5 +25,5 @@
         {{#renderUrl}}
         </a>
         {{/renderUrl}}
-    {{/values}}
+    {{/attributeValues}}
 </span>

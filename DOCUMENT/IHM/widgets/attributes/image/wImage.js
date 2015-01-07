@@ -19,16 +19,16 @@ define([
         _initDom: function () {
             if (this.getMode() === "read") {
                 var urlSep = '?';
-                if (this.options.value.url) {
+                if (this.options.attributeValue.url) {
                     if (!this.options.renderOptions.htmlLink.url) {
 
                         if (this.options.renderOptions.thumbnailWidth > 0) {
-                            urlSep = (this.options.value.thumbnail.indexOf('?') >= 0) ? "&" : "?";
-                            this.options.value.thumbnail += urlSep +
+                            urlSep = (this.options.attributeValue.thumbnail.indexOf('?') >= 0) ? "&" : "?";
+                            this.options.attributeValue.thumbnail += urlSep +
                             "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
                             "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
                         } else if (this.options.renderOptions.thumbnailWidth === 0) {
-                            this.options.value.thumbnail = this.options.value.url;
+                            this.options.attributeValue.thumbnail = this.options.attributeValue.url;
                         }
 
                     }
@@ -57,16 +57,16 @@ define([
                     var renderTitle;
                     var index = $(this).data("index");
                     if (typeof index !== "undefined" && index !== null) {
-                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value[index]);
+                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.attributeValue[index]);
                     } else {
-                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.value);
+                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.attributeValue);
                     }
 
                     var bdw = $('<div class="dcpImage-window"><img class="img-responsive" src="' + $(this).attr("href") + '"/></div>');
                     $('body').append(bdw);
                     // $(this).attr("href"),
                     var dw = bdw.kendoWindow({
-                        title: scope.options.value.displayValue,
+                        title: scope.options.attributeValue.displayValue,
                         width: htmlLink.windowWidth,
                         height: htmlLink.windowHeight,
                         iframe: false,
