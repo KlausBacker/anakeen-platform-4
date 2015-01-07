@@ -23,7 +23,6 @@ define([
         initialize : function mAttributeinitialize() {
             this.listenTo(this, "change:documentMode", this._computeMode);
             this.listenTo(this, "change:visibility", this._computeMode);
-            this.listenTo(this, "change:type", this._computeValueMode);
 
             this._computeValueMode();
             this._computeMode();
@@ -96,6 +95,13 @@ define([
             this.set("value", currentValue, {updateArray : true});
         },
 
+        /**
+         * Add an indexed value with or without default value
+         * Used by attributes in array to add new line or duplicate line
+         *
+         * @param index
+         * @param copy
+         */
         createIndexedValue : function mAttributeCreateIndexedValue(index, copy) {
             var currentValue, defaultValue;
             var newValue;
@@ -123,6 +129,28 @@ define([
         },
 
         /**
+         * Add values to indexed element
+         * Used by attributes in array to add new line or duplicate line
+         *
+         * @param newValue
+         * @param index
+         */
+        addIndexedValue : function mAttributeAddIndexedValue(newValue, index) {
+            var currentValue;
+            if (!_.isNumber(index)) {
+                throw new Error("You need to add an index to set value indexed value " + this.id);
+            }
+            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+
+            if (index > currentValue.length) {
+                currentValue.push(newValue);
+            } else {
+                currentValue.splice(index, 0, newValue);
+            }
+            this.set("value", currentValue);
+        },
+
+        /**
          * move a value in multiple value attribute
          * @param fromIndex
          * @param toIndex
@@ -139,25 +167,8 @@ define([
             currentValue.splice(toIndex, 0, fromValue);
 
             this.set("value", currentValue);
-
-
-
             this.trigger("moved", {from: fromIndex, to: toIndex});
 
-        },
-
-        removeIndexedLine : function mAttributeRemoveIndexLine(index) {
-            if (this.get("type") !== "array") {
-                throw Error("You can only remove line on array " + this.id);
-            }
-            this.trigger("removeWidgetLine", {index : index}, {silent : true});
-        },
-
-        addIndexedLine : function mAttributeaddIndexedLine(index) {
-            if (this.get("type") !== "array") {
-                throw Error("You can only remove line on array " + this.id);
-            }
-            this.trigger("addWidgetLine", {index : index});
         },
 
         getNbLines : function mAttributegetNbLines() {
