@@ -35,7 +35,7 @@ define([
 
         initialize : function initialize(options) {
             this.listenTo(this.model, 'change:label', this.refreshLabel);
-            this.listenTo(this.model, 'change:value', this.refreshValue);
+            this.listenTo(this.model, 'change:attributeValue', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
             this.listenTo(this.model, 'moved', this.moveValueIndex);
             this.listenTo(this.model, 'destroy', this.remove);
@@ -88,6 +88,7 @@ define([
         render : function render() {
             //console.time("render attribute " + this.model.id);
             var data = this.getData();
+            console.log("data", data);
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
             this.$el.attr("data-attrid", this.model.get("id"));
@@ -158,14 +159,14 @@ define([
          */
         changeAttributesValue : function (event, options) {
             var currentView = this, dataItem = options.dataItem, valueIndex = options.valueIndex;
-            _.each(dataItem.values, function vAttributeChangeAttributeValue(value, attributeId) {
-                if (typeof value === "object") {
+            _.each(dataItem.values, function vAttributeChangeAttributeValue(attributeValue, attributeId) {
+                if (typeof attributeValue === "object") {
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
-                            attrModel.addValue({value : value.value, displayValue : value.displayValue}, valueIndex);
+                            attrModel.addValue({value : attributeValue.value, displayValue : attributeValue.displayValue}, valueIndex);
                         } else {
-                            attrModel.setValue({value : value.value, displayValue : value.displayValue}, valueIndex);
+                            attrModel.setValue({value : attributeValue.value, displayValue : attributeValue.displayValue}, valueIndex);
                         }
                     }
                     else {
@@ -176,11 +177,11 @@ define([
         },
 
         changeDocument : function changeDocument(event, options) {
-            var index = options.index, initid = null, value = this.model.get("value"), documentModel = this.model.getDocumentModel();
+            var index = options.index, initid = null, attributeValue = this.model.get("value"), documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
-                initid = value.value;
+                initid = attributeValue.value;
             } else {
-                initid = value[index].value;
+                initid = attributeValue[index].value;
             }
             documentModel.clear().set({
                 "initid" : initid,

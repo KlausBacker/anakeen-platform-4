@@ -20,8 +20,8 @@ define([
 
         _initDom: function wasswordInitDom() {
             if (this.getMode() === "read") {
-                if (this.options.value.value) {
-                    this.options.value.displayValue = this.options.renderOptions.hideValue;
+                if (this.options.attributeValue.value) {
+                    this.options.attributeValue.displayValue = this.options.renderOptions.hideValue;
                 }
             }
 

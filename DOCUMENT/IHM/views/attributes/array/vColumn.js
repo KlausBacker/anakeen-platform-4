@@ -64,12 +64,12 @@ define([
             var tableLine = options.tableLine,
                 index = options.index,
                 initid,
-                value = this.model.get("value")[tableLine],
+                valueLine = this.model.get("value")[tableLine],
                 documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
-                initid = value.value;
+                initid = valueLine.value;
             } else {
-                initid = value[index].value;
+                initid = valueLine[index].value;
             }
             documentModel.clear().set({
                 "initid" :   initid,

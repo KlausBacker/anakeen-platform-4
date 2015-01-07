@@ -45,10 +45,10 @@ define([
 
             if (this.getMode() === "read") {
                 if (this._isMultiple()) {
-                    this.options.values = _.toArray(this.options.value);
+                    this.options.attributeValues = _.toArray(this.options.attributeValue);
                     this.options.isMultiple = true;
                 } else {
-                    this.options.values = [this.options.value];
+                    this.options.attributeValues = [this.options.attributeValue];
                     this.options.isMultiple = false;
                 }
                 this._super();
@@ -97,8 +97,8 @@ define([
             var item;
 
             if (this.options.renderOptions.useSourceUri) {
-                source = [this.options.value];
-                selectedIndex = this.options.value.value;
+                source = [this.options.attributeValue];
+                selectedIndex = this.options.attributeValue.value;
             } else {
 
                 _.each(this.options.sourceValues, function (enumItem) {
@@ -112,7 +112,7 @@ define([
 
                         // : no === because json encode use numeric cast when index is numeric
                         //noinspection JSHint
-                        if (enumItem.key == scope.options.value.value) {
+                        if (enumItem.key == scope.options.attributeValue.value) {
                             selectedIndex = source.length;
                             item.selected = true;
                         } else {
@@ -122,11 +122,11 @@ define([
                         source.push(item);
                     }
                 });
-                if (selectedIndex === -1 && this.options.value && !_.isUndefined(this.options.value.value) && this.options.value.value !== null) {
+                if (selectedIndex === -1 && this.options.attributeValue && !_.isUndefined(this.options.attributeValue.value) && this.options.attributeValue.value !== null) {
                     selectedIndex = source.length;
                     source.push({
-                        value: this.options.value.value,
-                        displayValue: this.options.value.displayValue,
+                        value: this.options.attributeValue.value,
+                        displayValue: this.options.attributeValue.displayValue,
                         selected: true
                     });
                 }
@@ -140,7 +140,7 @@ define([
             var selectedValues = [];
             var isIn = false;
             var item;
-            var values = _.toArray(this.options.value);
+            var values = _.toArray(this.options.attributeValue);
 
 
             if (this.options.renderOptions.useSourceUri) {
@@ -196,7 +196,7 @@ define([
                 $(this).closest("label").addClass("k-button");
 
             });
-            if (scope.options.renderOptions.useFirstChoice && scope.options.value.value === null ) {
+            if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null ) {
                 // Set to first enum item if empty
                 var firstItem=tplOption.enumValues[0];
                 if (firstItem) {
@@ -268,12 +268,12 @@ define([
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
 
             if (this.options.renderOptions.useSourceUri) {
-                if (this.options.value.value === null) {
+                if (this.options.attributeValue.value === null) {
                     kddl.dataSource.data([]);
                     kddl.value('');
                 } else {
-                    kddl.dataSource.data([this.options.value]);
-                    kddl.value(this.options.value.value);
+                    kddl.dataSource.data([this.options.attributeValue]);
+                    kddl.value(this.options.attributeValue.value);
                 }
             }
 
@@ -490,7 +490,7 @@ define([
                         }
                     },
                     dataBound: function(e) {
-                        if (scope.options.renderOptions.useFirstChoice && scope.options.value.value === null ) {
+                        if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null ) {
                             // Set to first enum item if empty
                             var firstItem=this.dataSource.at(0);
                             if (firstItem) {
@@ -503,7 +503,7 @@ define([
                 if (this.options.renderOptions.editDisplay === "autoCompletion") {
 
                     defaultOptions.index = -1;
-                    defaultOptions.value = this.options.value.value;
+                    defaultOptions.value = this.options.attributeValue.value;
                     defaultOptions.placeholder = this.options.labels.chooseMessage;
 
                     if (_.isObject(scope.options.renderOptions.kendoComboBoxConfiguration)) {

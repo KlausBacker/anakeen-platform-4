@@ -92,8 +92,8 @@ define([
         getNbLines: function () {
             var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function (currentAttr) {
-                if (currentAttr.get("value") && nbLigne < _.size(currentAttr.get("value"))) {
-                    nbLigne = _.size(currentAttr.get("value"));
+                if (currentAttr.get("attributeValue") && nbLigne < _.size(currentAttr.get("attributeValue"))) {
+                    nbLigne = _.size(currentAttr.get("attributeValue"));
                 }
             });
             return nbLigne;

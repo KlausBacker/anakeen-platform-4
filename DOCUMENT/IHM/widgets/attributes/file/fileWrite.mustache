@@ -10,12 +10,12 @@
     {{/hasAutocomplete}}
     <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none;"
            class="dcpAttribute__value--file"
-           value="{{value.value}}"/>
+           value="{{attributeValue.value}}"/>
 
-    <input {{#value.icon}}style="background-image:url({{value.icon}}){{/value.icon}}"
+    <input {{#attributeValue.icon}}style="background-image:url({{attributeValue.icon}}){{/attributeValue.icon}}"
            type="text"
-           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#value.icon}}dcpAttribute__value--fileicon{{/value.icon}}"
-           value="{{value.displayValue}}"/>
+           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.icon}}dcpAttribute__value--fileicon{{/attributeValue.icon}}"
+           value="{{attributeValue.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
         <button type="button"  data-index="{{index}}"
                 class="dcpAttribute__content__button--file btn btn-default btn-xs">

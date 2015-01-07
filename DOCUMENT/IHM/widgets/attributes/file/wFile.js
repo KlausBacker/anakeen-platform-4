@@ -24,17 +24,17 @@ define([
             var visibleInput;
             if (this.getMode() === "read") {
                 var urlSep = '?';
-                if (this.options.value.url) {
+                if (this.options.attributeValue.url) {
                     if (!this.options.renderOptions.htmlLink.url) {
-                        if (this.options.value.url && this.options.renderOptions.downloadInline) {
-                            urlSep = (this.options.value.url.indexOf('?') >= 0) ? "&" : "?";
-                            this.options.value.url += urlSep + 'inline=yes';
+                        if (this.options.attributeValue.url && this.options.renderOptions.downloadInline) {
+                            urlSep = (this.options.attributeValue.url.indexOf('?') >= 0) ? "&" : "?";
+                            this.options.attributeValue.url += urlSep + 'inline=yes';
                         }
-                        this.options.renderOptions.htmlLink.url = this.options.value.url;
+                        this.options.renderOptions.htmlLink.url = this.options.attributeValue.url;
 
                         if (!this.options.renderOptions.htmlLink.title) {
-                            this.options.renderOptions.htmlLink.title = this.options.value.displayValue;
-                            this.options.renderOptions.htmlLink.title += ' ('+ (Math.round(this.options.value.size/1024)) + ' '+
+                            this.options.renderOptions.htmlLink.title = this.options.attributeValue.displayValue;
+                            this.options.renderOptions.htmlLink.title += ' ('+ (Math.round(this.options.attributeValue.size/1024)) + ' '+
                                 this.options.labels.kiloByte+')';
                         }
                     }
@@ -75,7 +75,7 @@ define([
             var scope = this;
             var inputFile = this.element.find("input[type=file]");
             var inputText = this.element.find(".dcpAttribute__value");
-            var fileUrl = this.options.value.url;
+            var fileUrl = this.options.attributeValue.url;
 
             if (fileUrl) {
                 this.element.on("click"+ this.eventNamespace, ".dcpAttribute__content__button--file", function wFileOnButtonClickr(event) {
@@ -85,7 +85,7 @@ define([
                 this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
             }
             this.element.on("dragenter" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDragEnter(event) {
-                inputText.val(scope.options.value.displayValue);
+                inputText.val(scope.options.attributeValue.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
             });
@@ -96,14 +96,14 @@ define([
                 scope.element.addClass("dcpAttribute__value--dropzone");
             });
             this.element.on("dragleave" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnLeave(event) {
-                inputText.val(scope.options.value.displayValue);
+                inputText.val(scope.options.attributeValue.displayValue);
                 event.stopPropagation();
                 event.preventDefault();
                 scope.element.removeClass("dcpAttribute__value--dropzone");
             });
 
             this.element.on("drop" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDrop(event) {
-                inputText.val(scope.options.value.displayValue);
+                inputText.val(scope.options.attributeValue.displayValue);
                 scope.element.removeClass("dcpAttribute__value--dropzone");
                 event.stopPropagation();
                 event.preventDefault();
@@ -211,7 +211,7 @@ define([
                 inputText.val(originalText);
                 inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
                 inputText.css("background", "");
-                inputText.css("background-image", "url(" + scope.options.value.icon + ')');
+                inputText.css("background-image", "url(" + scope.options.attributeValue.icon + ')');
                 var result = JSON.parse(data.responseText);
                 if (result) {
                     _.each(result.messages, function (errorMessage) {
@@ -255,8 +255,8 @@ define([
          */
         getLink: function getLink() {
             var link = this._super();
-            if (this.options.value.url && (!link || !link.url)) {
-                link.url = this.options.value.url;
+            if (this.options.attributeValue.url && (!link || !link.url)) {
+                link.url = this.options.attributeValue.url;
             }
 
             return link;

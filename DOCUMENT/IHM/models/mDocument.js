@@ -81,7 +81,7 @@ define([
         getValues: function documentGetValues() {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
-                var currentValue = currentAttribute.get("value"), i, arrayValues = [];
+                var currentValue = currentAttribute.get("attributeValue"), i, arrayValues = [];
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
@@ -111,7 +111,7 @@ define([
                 if (!currentAttribute.get("valueAttribute")) {
                     return;
                 }
-                currentAttribute.set("value", newValue);
+                currentAttribute.set("attributeValue", newValue);
                 // reset change also
                 currentAttribute.changed = {};
             });
@@ -129,7 +129,7 @@ define([
 
         hasAttributesChanged: function hasAttributesChanged() {
             return this.get("attributes").some(function (currentAttr) {
-                return currentAttr.hasChanged("value");
+                return currentAttr.hasChanged("attributeValue");
             });
         },
 
@@ -244,7 +244,7 @@ define([
                 attrLabel = [];
             this.get("attributes").each(function (currentAttribute) {
                 if (currentAttribute.get("needed") === true) {
-                    var currentValue = currentAttribute.get("value"),
+                    var currentValue = currentAttribute.get("attributeValue"),
                         parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent")),
                         oneSuccess = true;
                     if (currentAttribute.get("multiple")) {
@@ -326,7 +326,7 @@ define([
             attributes = flattenAttributes(attributes, structureAttributes);
             _.each(attributes, function (currentAttributeStructure) {
                 if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
-                    currentAttributeStructure.value = valueAttributes[currentAttributeStructure.id];
+                    currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
                 }
                 if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
                     currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
@@ -385,11 +385,11 @@ define([
                     currentAttributeModel.setContentCollection(attributes.attributes);
                 });
                 //Propagate the change event to the model
-                currentModel.listenTo(attributes.attributes, "change:value", function (model, value) {
+                currentModel.listenTo(attributes.attributes, "change:attributeValue", function (model, value) {
                     currentModel.trigger("changeValue", {
                         attributeId: model.id,
                         value: value,
-                        previousValue: model.previous("value")
+                        previousValue: model.previous("attributeValue")
                     });
                 });
             }

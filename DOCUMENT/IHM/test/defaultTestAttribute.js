@@ -65,7 +65,7 @@ define([
                 "options" : attrDef.options || [],
                 "renderMode" : renderMode,
                 "content" :      {},
-                "value" : value
+                "attributeValue" : value
             };
             secondStruct = _.extend(secondStruct, attrDef);
 
@@ -179,7 +179,7 @@ define([
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
                     view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
-                    modelValue = modelDocument.get("attributes").get(localAttrId).get("value");
+                    modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
                     $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
                     widget = $content.data(findWidgetName($content));
                     widgetValue = widget.getValue();
@@ -200,8 +200,8 @@ define([
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
                     view = new ViewDocument({model : modelDocument, el : $sandBox});
                     view.render();
-                    modelDocument.get("attributes").get(localAttrId).set("value", otherValue);
-                    modelValue = modelDocument.get("attributes").get(localAttrId).get("value");
+                    modelDocument.get("attributes").get(localAttrId).set("attributeValue", otherValue);
+                    modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
                     $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
                     widget = $content.data(findWidgetName($content));
                     widgetValue = widget.getValue();
@@ -226,7 +226,7 @@ define([
                     widget = $content.data(findWidgetName($content));
                     widget.setValue(otherValue);
                     widgetValue = widget.getValue();
-                    modelValue = modelDocument.get("attributes").get(localAttrId).get("value");
+                    modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
                     if (_.isArray(initialValue)) {
                         // verify each values
                         _.each(otherValue, function (v, k) {
@@ -262,7 +262,7 @@ define([
                     change = jasmine.createSpy("change");
                     $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
                     $content.on("dcpattributechange", change);
-                    modelDocument.get("attributes").get(localAttrId).set("value", initialValue);
+                    modelDocument.get("attributes").get(localAttrId).set("attributeValue", initialValue);
 
                     expect(change.calls.count()).toEqual(0);
                 });
@@ -288,7 +288,7 @@ define([
                     change = jasmine.createSpy("change");
                     modelAttribute = modelDocument.get("attributes").get(localAttrId);
                     modelAttribute.on("change:value", change);
-                    modelAttribute.set("value", initialValue);
+                    modelAttribute.set("attributeValue", initialValue);
                     expect(change.calls.count()).toEqual(0);
                 });
             });
@@ -313,7 +313,7 @@ define([
                     change = jasmine.createSpy("change");
                     $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
                     $content.on("dcpattributechange", change);
-                    modelDocument.get("attributes").get(localAttrId).set("value", otherValue);
+                    modelDocument.get("attributes").get(localAttrId).set("attributeValue", otherValue);
 
                     expect(change.calls.count()).toEqual(1);
                 });
@@ -326,7 +326,7 @@ define([
                     $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
                     widget = $content.data(findWidgetName($content));
                     modelAttribute = modelDocument.get("attributes").get(localAttrId);
-                    modelAttribute.on("change:value", change);
+                    modelAttribute.on("change:attributeValue", change);
                     widget.setValue(otherValue);
 
                     expect(change.calls.count()).toEqual(1);
@@ -338,8 +338,8 @@ define([
                     view.render();
                     change = jasmine.createSpy("change");
                     modelAttribute = modelDocument.get("attributes").get(localAttrId);
-                    modelAttribute.on("change:value", change);
-                    modelAttribute.set("value", otherValue);
+                    modelAttribute.on("change:attributeValue", change);
+                    modelAttribute.set("attributeValue", otherValue);
                     expect(change.calls.count()).toEqual(1);
                 });
             });

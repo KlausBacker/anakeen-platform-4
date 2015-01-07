@@ -1,6 +1,6 @@
 <span class="dcpAttribute__value dcpAttribute__value--read {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}"
       name="{{id}}">
-    {{#values}}
+    {{#attributeValues}}
         {{#renderOptions.htmlLink.url}}
         <a  class="dcpAttribute__content__link"
             target="{{renderOptions.htmlLink.target}}"
@@ -11,6 +11,6 @@
         {{#renderOptions.htmlLink.url}}
         </a>
         {{/renderOptions.htmlLink.url}}
-    {{/values}}
+    {{/attributeValues}}
     {{{emptyValue}}}
 </span>

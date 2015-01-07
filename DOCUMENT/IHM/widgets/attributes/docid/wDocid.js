@@ -23,7 +23,7 @@ define([
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
             if (this._isMultiple()) {
-                this.options.values = _.toArray(this.options.value);
+                this.options.attributeValues = _.toArray(this.options.attributeValue);
                 this.options.isMultiple = true;
             }
 
@@ -35,11 +35,11 @@ define([
                     this.options.renderOptions = this.options.renderOptions || {};
                     this.options.renderOptions.htmlLink = htmlLink;
                 }
-                this.options.renderOptions.htmlLink.renderUrl = Mustache.render(this.options.renderOptions.htmlLink.url, this.options.value);
-                this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.value);
+                this.options.renderOptions.htmlLink.renderUrl = Mustache.render(this.options.renderOptions.htmlLink.url, this.options.attributeValue);
+                this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.attributeValue);
 
                 if (this._isMultiple()) {
-                    this.options.values = _.map(this.options.value, function (val, index) {
+                    this.options.attributeValues = _.map(this.options.attributeValue, function (val, index) {
                         val.rawValue = val.value;
                         val.renderUrl = Mustache.render(htmlLink.url, val);
                         val.renderTitle = Mustache.render(htmlLink.title, val);
@@ -59,7 +59,7 @@ define([
                 } else {
                     this._decorateSingleValue(this.kendoWidget);
                 }
-                if (this.options.value && this.options.value.value !== null) {
+                if (this.options.attributeValue && this.options.attributeValue.value !== null) {
                     if (!this.hasMultipleOption()) {
                         this.element.find('.dcpAttribute__value--docid--button').attr("disabled", "disabled");
                         this.element.find('input.k-input').attr("disabled", "disabled");
@@ -106,9 +106,9 @@ define([
          * @param inputValue select  element
          */
         _decorateSingleValue: function wDocidDecorateSingleValue(inputValue) {
-            this.options.values = [];
-            if (this.options.value) {
-                this.options.values.push(this.options.value);
+            this.options.attributeValues = [];
+            if (this.options.attributeValue) {
+                this.options.attributeValues.push(this.options.attributeValue);
             }
 
             this._decorateMultipleValue(inputValue, {
@@ -130,7 +130,7 @@ define([
                     dataTextField: "docTitle",
                     dataValueField: "docId",
 
-                    value: _.map(this.options.values, function (val) {
+                    value: _.map(this.options.attributeValues, function (val) {
                         var info = {};
                         info.docTitle = val.displayValue;
                         info.docId = val.value;
@@ -167,12 +167,13 @@ define([
                             dataItem = dataItem.toJSON();
                         }
                         event.preventDefault(); // no fire change event
+                        console.log("select",{ dataItem : dataItem, valueIndex : valueIndex} );
                         scope._trigger("changeattrsvalue", event, { dataItem : dataItem, valueIndex : valueIndex});
 
                     },
                     change: function kendoChangeSelect(event) {
                         // set in case of delete item
-                        var oldValues = scope.options.value;
+                        var oldValues = scope.options.attributeValue;
                         var displayValue;
                         var newValues = [];
 
@@ -214,7 +215,6 @@ define([
         },
 
         setValue: function wDocidSetValue(value, event) {
-
             this._super(value, event);
             if (this.getMode() === "write") {
                 if (!this.hasMultipleOption()) {

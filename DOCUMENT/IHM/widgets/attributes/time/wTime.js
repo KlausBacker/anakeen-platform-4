@@ -32,8 +32,8 @@ define([
             };
             inputValue.kendoTimePicker(kOptions);
             this._controlDate(inputValue);
-            if (this.options.value && this.options.value.value) {
-                this.setValue(this.options.value);
+            if (this.options.attributeValue && this.options.attributeValue.value) {
+                this.setValue(this.options.attributeValue);
             }
         },
 

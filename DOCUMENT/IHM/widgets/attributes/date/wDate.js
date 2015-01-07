@@ -28,7 +28,7 @@ define([
         _initDom: function () {
 
             if (this.options.renderOptions.kendoDateConfiguration.format) {
-                this.options.value.displayValue=this.formatDate(this.parseDate(this.options.value.value));
+                this.options.attributeValue.displayValue=this.formatDate(this.parseDate(this.options.attributeValue.value));
             }
 
             this.element.addClass("dcpAttribute__content");

@@ -29,8 +29,8 @@ define([
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
-            if (parseFloat(this.options.value.displayValue) === parseFloat(this.options.value.value)) {
-                this.options.value.displayValue = this.formatNumber(this.options.value.value);
+            if (parseFloat(this.options.attributeValue.displayValue) === parseFloat(this.options.attributeValue.value)) {
+                this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
             }
 
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
@@ -47,7 +47,7 @@ define([
                 }
             }
 
-            this.element.find(".dcpAttribute__value--read").css("border-color", this.options.value.value);
+            this.element.find(".dcpAttribute__value--read").css("border-color", this.options.attributeValue.value);
 
 
         },

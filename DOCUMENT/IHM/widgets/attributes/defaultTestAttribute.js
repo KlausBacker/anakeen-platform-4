@@ -126,7 +126,7 @@ define(["underscore"], function (_) {
 
                 it("init", function () {
                     var $sandBox = getSandbox(), attrValue;
-                    widget.call($sandBox, _.defaults({"value" : value}, options));
+                    widget.call($sandBox, _.defaults({"attributeValue" : value}, options));
                     attrValue = widget.call($sandBox, "getValue");
                     expect(value.value).toEqual(attrValue.value);
                 });
