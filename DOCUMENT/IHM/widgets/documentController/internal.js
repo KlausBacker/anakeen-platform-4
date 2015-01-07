@@ -325,7 +325,7 @@ define([
                 if (!_.isUndefined(currentValue)) {
                     currentValue = _.defaults(currentValue, {value : "", displayValue : ""});
                 }
-                currentAttribute.addIndexedLine(index, currentValue);
+                currentAttribute.addIndexedValue(currentValue, index);
             });
         },
 

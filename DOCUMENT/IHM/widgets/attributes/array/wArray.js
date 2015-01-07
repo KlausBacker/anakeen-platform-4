@@ -46,8 +46,6 @@ define([
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
                     // showEmptyCOntent option
-
-
                     this.element.append(Mustache.render(this._getTemplate("label"), this.options));
                     this.element.append(this.options.showEmpty);
                 }
@@ -164,7 +162,7 @@ define([
                 var selectedLine = currentWidget.selectedLineIndex();
                 if (selectedLine === null) {
                     currentWidget.options.nbLines += 1;
-                    currentWidget.addLine(currentWidget.options.nbLines, {needAddValue : true});
+                    currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue : true});
                 } else {
                     currentWidget.options.nbLines += 1;
                     currentWidget.addLine(selectedLine, {needAddValue : true});
@@ -247,6 +245,7 @@ define([
 
         addLine : function dcpArrayaddLine(lineNumber, options) {
             var $content = this._addNewLine(lineNumber);
+            options = _.defaults(options || {}, {"silent" : false, "needAddValue" : false});
             if (options.silent !== true) {
                 this._trigger("lineAdded", {}, {
                     line :         lineNumber,
