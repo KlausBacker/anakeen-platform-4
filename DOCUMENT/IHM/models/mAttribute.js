@@ -140,14 +140,14 @@ define([
             if (!_.isNumber(index)) {
                 throw new Error("You need to add an index to set value indexed value " + this.id);
             }
-            currentValue = _.toArray(_.map(this.get("value"), _.clone));
+            currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
 
             if (index > currentValue.length) {
                 currentValue.push(newValue);
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("value", currentValue);
+            this.set("attributeValue", currentValue);
         },
 
         /**

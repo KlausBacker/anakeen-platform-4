@@ -64,7 +64,7 @@ define([
             var tableLine = options.tableLine,
                 index = options.index,
                 initid,
-                valueLine = this.model.get("value")[tableLine],
+                valueLine = this.model.get("attributeValue")[tableLine],
                 documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
                 initid = valueLine.value;
