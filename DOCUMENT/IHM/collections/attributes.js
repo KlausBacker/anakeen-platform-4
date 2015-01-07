@@ -2,13 +2,20 @@
 define([
     'underscore',
     'backbone',
-    'models/mAttribute'
-], function (_, Backbone, ModelAttribute) {
+    'models/mAttribute',
+    'models/mAttributeArray'
+], function (_, Backbone, ModelAttribute, ModelAttributeArray) {
     'use strict';
 
     return Backbone.Collection.extend({
         comparator : "logicalOrder",
-        model : ModelAttribute,
+
+        model :      function CollectionAttributesSelectModel(attributes, options) {
+            if (attributes.type === "array") {
+                return new ModelAttributeArray(attributes, options);
+            }
+            return new ModelAttribute(attributes, options);
+        },
 
         initialize : function initialize(values, options) {
             this.documentModel = options.documentModel;
@@ -16,7 +23,7 @@ define([
             this.renderMode = options.renderMode;
         },
 
-        destroy : function() {
+        destroy : function () {
             this.invoke("trigger", "destroy");
             delete this.documentModel;
             delete this.renderOptions;

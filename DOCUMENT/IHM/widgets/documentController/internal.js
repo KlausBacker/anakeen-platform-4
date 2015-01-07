@@ -284,28 +284,48 @@ define([
         setValue : function documentControllerSetValue(attributeId, value) {
             var attribute = this._getAttributeModel(attributeId);
             if (!_.isObject(value)) {
-                throw Error("Value must be an object with value and displayValue properties");
+                throw new Error("Value must be an object with value and displayValue properties");
             }
             value = _.defaults(value, {value : "", displayValue : ""});
             return attribute.set("value", value);
         },
 
         appendArrayRow : function documentControllerAddArrayRow(attributeId, values) {
-            var attribute = this._getAttributeModel(attributeId), index;
+            var attribute = this._getAttributeModel(attributeId);
             if (attribute.get("type") !== "array") {
-                throw Error("Attribute " + attributeId + " must be an attribute of type array");
+                throw new Error("Attribute " + attributeId + " must be an attribute of type array");
             }
             if (!_.isObject(values)) {
-                throw Error("Values must be an object where each properties is an attribute of the array for "+attributeId);
+                throw new Error("Values must be an object where each properties is an attribute of the array for "+attributeId);
             }
-            index = this._getMaxIndex(attribute);
             attribute.get("content").each(function addACell(currentAttribute) {
                 var currentValue = values[currentAttribute.id];
                 if (_.isUndefined(currentValue)) {
                     return;
                 }
                 currentValue = _.defaults(currentValue, {value : "", displayValue : ""});
-                currentAttribute.addValue(currentValue, index);
+                currentAttribute.addValue(currentValue);
+            });
+        },
+
+        insertBeforeArrayRow : function documentControllerInsertBeforeArrayRow(attributeId, values, index) {
+            var attribute = this._getAttributeModel(attributeId), maxValue;
+            if (attribute.get("type") !== "array") {
+                throw new Error("Attribute " + attributeId + " must be an attribute of type array");
+            }
+            if (!_.isObject(values)) {
+                throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
+            }
+            maxValue = this._getMaxIndex(attribute);
+            if ( index < 0 || index > maxValue) {
+                throw new Error("Index must be between 0 and "+maxValue);
+            }
+            attribute.get("content").each(function addACell(currentAttribute) {
+                var currentValue = values[currentAttribute.id];
+                if (!_.isUndefined(currentValue)) {
+                    currentValue = _.defaults(currentValue, {value : "", displayValue : ""});
+                }
+                currentAttribute.addIndexedValue(currentValue, index);
             });
         },
 
@@ -321,7 +341,7 @@ define([
             attribute.get("content").each(function removeACell(currentAttribute) {
                 currentAttribute.removeIndexValue(index);
             });
-            attribute.removeIndexLine(index);
+            attribute.removeIndexedLine(index);
         }
 
     });

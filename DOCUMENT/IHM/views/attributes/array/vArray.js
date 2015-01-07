@@ -28,6 +28,7 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'removeWidgetLine', this.removeWidgetLine);
+            this.listenTo(this.model, 'addWidgetLine', this.addWidgetLine);
 
         },
 
@@ -131,16 +132,20 @@ define([
             this.$el.dcpArray("removeLine", options.index, {silent : true});
         },
 
-        addLine: function vArrayAddLine(event, options) {
-            var scope = this;
-            this.model.get("content").each(function (currentContent) {
-                if (options.needAddValue || options.copyValue) {
-                    currentContent.addIndexValue(options.line, options.copyValue);
-                }
+        addWidgetLine : function vArrayaddWidgetLine(options) {
+            this.$el.dcpArray("addLine", options.index);
+        },
 
-                var vColumn = scope.columnViews[currentContent.id];
-                if (vColumn) {
-                    vColumn.addNewWidget(options.line);
+        addLine: function vArrayAddLine(event, options) {
+            var currentArrayView = this;
+            this.model.get("content").each(function (currentContent) {
+                var currentViewColumn;
+                if (options.needAddValue || options.copyValue) {
+                    currentContent.createIndexedValue(options.line, options.copyValue);
+                }
+                currentViewColumn = currentArrayView.columnViews[currentContent.id];
+                if (currentViewColumn) {
+                    currentViewColumn.addNewWidget(options.line);
                 }
             });
         },

@@ -39,7 +39,6 @@ define([
             if (this.options) {
                 var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
                 var data = this.getData(index);
-                var widgetClass = this.getTypedWidgetClass(data.type);
 
                 if (cells[index]) {
                     try {
@@ -47,9 +46,9 @@ define([
                         this.moveValueIndex({});
                     } catch (error) {
                         if (window.dcp.logger) {
-                            window.dcp.logger(e);
+                            window.dcp.logger(error);
                         } else {
-                            console.error(e);
+                            console.error(error);
                         }
                     }
                 }

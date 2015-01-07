@@ -20,34 +20,32 @@ define([
          * get Selected line element (jquery, length = 0 if no selected)
          * @returns {*}
          */
-        getSelectedLineElement: function () {
+        getSelectedLineElement : function dcpArraygetSelectedLineElement() {
             return this.element.find('.dcpArray__content__line--selected.active');
         },
         /**
          * get Selected line index (0 : first, null : no selected line)
          * @returns {*}
          */
-        selectedLineIndex: function () {
+        selectedLineIndex :      function dcpArrayselectedLineIndex() {
             return this.getSelectedLineElement().data("line");
         },
         /**
          *
          * @private
          */
-        _create: function () {
+        _create :                function dcpArray_create() {
             this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
             this._initDom();
             this._bindEvents();
         },
 
-        _initDom: function () {
+        _initDom : function dcpArray_initDom() {
             var scope = this;
             if (this.options.mode === "read" && this.options.nbLines === 0) {
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
                     // showEmptyCOntent option
-
-
                     this.element.append(Mustache.render(this._getTemplate("label"), this.options));
                     this.element.append(this.options.showEmpty);
                 }
@@ -61,47 +59,47 @@ define([
 
                 if (this.options.mode === "write") {
                     this.element.find('.dcpArray__tools button').tooltip({
-                        placement: "top"
+                        placement : "top"
                     });
                     this.element.tooltip({
-                        selector: ".dcpArray__content__toolCell span",
-                        placement: "top"
+                        selector :  ".dcpArray__content__toolCell span",
+                        placement : "top"
                     });
                 }
                 this.addAllLines(this.options.nbLines);
 
                 if (this.options.mode === "write") {
                     this.element.find('tbody').kendoDraggable({
-                        axis: "y",
-                        container: scope.element.find('tbody'),
-                        filter: '.dcpArray__content__toolCell__dragDrop',
-                        hint: function (element) {
+                        axis :      "y",
+                        container : scope.element.find('tbody'),
+                        filter :    '.dcpArray__content__toolCell__dragDrop',
+                        hint :      function dcpArrayhint(element) {
                             var dragLine = element.closest('tr');
                             var lineWidth = dragLine.width();
                             var classTable = element.closest('table').attr("class");
                             return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).append(dragLine.clone());
                         },
-                        dragstart: function (event) {
+                        dragstart : function dcpArraydragstart(event) {
                             if (event.currentTarget) {
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "0");
                                 dragLine.data("fromLine", dragLine.data("line"));
                             }
                         },
-                        dragend: function (event) {
+                        dragend :   function dcpArraydragend(event) {
                             if (event.currentTarget) {
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "");
                                 scope._trigger("lineMoved", {}, {
-                                    fromLine: dragLine.data("fromLine"),
-                                    toLine: dragLine.data("line")
+                                    fromLine : dragLine.data("fromLine"),
+                                    toLine :   dragLine.data("line")
                                 });
                             }
                         }
                     });
 
                     this.element.find('tbody').kendoDropTargetArea({
-                        filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
+                        filter: '.dcpArray__content__line[data-attrid="'+this.options.id+'"]',
                         dragenter: function (event) {
                             if (event.currentTarget) {
                                 var drap = event.draggable.currentTarget.closest('tr');
@@ -122,12 +120,12 @@ define([
             this._initCSSResponsive();
         },
 
-        _initCSSResponsive: function _initCSSResponsive() {
-            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function (currentElement) {
+        _initCSSResponsive : function _initCSSResponsive() {
+            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function(currentElement) {
                 var $currentElement = $(currentElement);
                 return {
-                    "attrid": $currentElement.data("attrid"),
-                    "label": $currentElement.text().trim()
+                    "attrid" : $currentElement.data("attrid"),
+                    "label" : $currentElement.text().trim()
                 };
             });
 
@@ -136,7 +134,7 @@ define([
 
             cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 
-            _.each(headers, function (currentHeader) {
+            _.each(headers, function initCssHeader(currentHeader) {
                 currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
                 cssString += cssTemplate(currentHeader);
             });
@@ -145,9 +143,9 @@ define([
             this.element.append(cssString);
         },
 
-        _bindEvents: function () {
+        _bindEvents : function dcpArray_bindEvents() {
             var currentWidget = this;
-            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check", function selectLineEvent() {
                 var $this = $(this);
                 currentWidget._unSelectLines();
                 if ($this.data("selectedRow") === "1") {
@@ -158,26 +156,25 @@ define([
                     $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
                     $this.data("selectedRow", "1");
                     currentWidget.element.find(".dcpArray__copy").removeAttr("disabled");
-
                 }
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__add", function () {
-                var sLine = currentWidget.selectedLineIndex();
-                if (sLine === null) {
-                    currentWidget.addLine(currentWidget.options.nbLines++, true);
+            this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent() {
+                var selectedLine = currentWidget.selectedLineIndex();
+                if (selectedLine === null) {
+                    currentWidget.options.nbLines += 1;
+                    currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue : true});
                 } else {
-                    currentWidget.options.nbLines++;
-                    currentWidget.addLine(sLine, true);
+                    currentWidget.options.nbLines += 1;
+                    currentWidget.addLine(selectedLine, {needAddValue : true});
                 }
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function () {
-                var sLine = currentWidget.selectedLineIndex();
-
-                currentWidget.options.nbLines++;
-                currentWidget.copyLine(sLine, true);
+            this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent() {
+                var selectedLine = currentWidget.selectedLineIndex();
+                currentWidget.options.nbLines += 1;
+                currentWidget.copyLine(selectedLine, {needAddValue : true});
 
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function deleteLineEvent() {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__label", function () {
@@ -210,32 +207,31 @@ define([
             var currentLineNumber = this.options.nbLines;
             var i;
             if (lineNumber > currentLineNumber) {
-                for (i = 0; i < (lineNumber - currentLineNumber); i++) {
+                for (i = 0; i < (lineNumber - currentLineNumber); i += 1) {
                     this.addLine(currentLineNumber + i);
                 }
             } else if (lineNumber < currentLineNumber) {
-                for (i = 0; i < (currentLineNumber - lineNumber ); i++) {
+                for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
                     this.removeLine(this.options.nbLines - 1);
                 }
-
             }
-
         },
-        addAllLines: function (lineNumber) {
+
+        addAllLines : function dcpArrayaddAllLines(lineNumber) {
             var i;
             this.element.find(".dcpArray__body").empty();
 
-            for (i = 0; i < lineNumber; i++) {
+            for (i = 0; i < lineNumber; i += 1) {
                 this.addLine(i);
             }
             this._trigger("linesGenerated");
         },
 
-        _addNewLine: function (lineNumber) {
+        _addNewLine : function dcpArray_addNewLine(lineNumber) {
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
-            var $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: lineNumber}, this.options)));
+            var $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber : lineNumber}, this.options)));
             var selectedLine = this.getSelectedLineElement();
             if (selectedLine.length === 1) {
                 $content.insertBefore(selectedLine);
@@ -247,19 +243,24 @@ define([
             return $content;
         },
 
-        addLine: function (lineNumber, needAddValue) {
+        addLine : function dcpArrayaddLine(lineNumber, options) {
             var $content = this._addNewLine(lineNumber);
-
-            this._trigger("lineAdded", {}, {line: lineNumber, element: $content, needAddValue: needAddValue});
+            options = _.defaults(options || {}, {"silent" : false, "needAddValue" : false});
+            if (options.silent !== true) {
+                this._trigger("lineAdded", {}, {
+                    line :         lineNumber,
+                    element :      $content,
+                    needAddValue : options.needAddValue
+                });
+            }
         },
 
-        copyLine: function (lineNumber) {
-
+        copyLine : function dcpArraycopyLine(lineNumber) {
             var $content = this._addNewLine(lineNumber);
-            this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
+            this._trigger("lineAdded", {}, {line : lineNumber, element : $content, copyValue : true});
         },
 
-        removeLine: function (line, options) {
+        removeLine : function dcpArrayremoveLine(line, options) {
             options = options || {};
             this.element.find("[data-line=" + line + "]").remove();
             this._indexLine();
@@ -270,7 +271,7 @@ define([
             this.redrawLabel();
         },
 
-        _destroy: function () {
+        _destroy : function dcpArray_destroy() {
             var tbody = this.element.find('tbody');
             if (tbody && tbody.data("kendoDropTargetArea")) {
                 tbody.data("kendoDropTargetArea").destroy();
@@ -282,18 +283,18 @@ define([
             this._super();
         },
 
-        _indexLine: function () {
+        _indexLine : function dcpArray_indexLine() {
             var i = 0;
             this.element.find(".dcpArray__content__line").each(
                 function numeroteLine() {
                     $(this).attr("data-line", i).data("line", i);
-                    i++;
+                    i += 1;
                 }
             );
             this.options.nbLines = i;
         },
 
-        _unSelectLines: function () {
+        _unSelectLines : function dcpArray_unSelectLines() {
             this.element.find(".dcpArray__content__toolCell__check .fa-check").hide();
             this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
         },
@@ -307,7 +308,7 @@ define([
          * @returns string
          * @private
          */
-        _getTemplate: function (key) {
+        _getTemplate : function dcpArray_getTemplate(key) {
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }
