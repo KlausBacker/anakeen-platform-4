@@ -16,7 +16,6 @@ require([
 
     var testDocument,
         generateFamilyStructure,
-        generateVisibility,
         generateDocumentContent;
 
     template = JSON.parse(template);
@@ -34,7 +33,7 @@ require([
     // Mock family definition
     generateFamilyStructure = function (options) {
 
-        var structure = [], secondStruct, attrStruct = {
+        var structure = [], attrStruct = {
             "id" :           "test_f_frame",
             "visibility" :   "W",
             "label" :        "frame",
@@ -48,23 +47,6 @@ require([
 
         structure.push(attrStruct);
 
-        /*if (localeAttrId) {
-            secondStruct = {
-                "id" :           localeAttrId,
-                "visibility" : attrDef.visibility || 'W',
-                "label" : attrDef.label || ("label of " + localeAttrId),
-                "label_old" :    localeAttrId,
-                "type" :         attrDef.type,
-                "logicalOrder" : 0,
-                "multiple" :     false,
-                "options" : attrDef.options || [],
-                "content" :      {}
-            };
-            secondStruct = _.extend(secondStruct, attrDef);
-
-            attrStruct.content[localeAttrId] = _.extend(secondStruct, attrDef);
-            structure.push(secondStruct);
-        }*/
         return structure;
     };
 

@@ -106,7 +106,7 @@ define([
         var otherValue = config.otherValue;
         var renderOptions = config.renderOptions || {};
         var familyStructure;
-        var modelDocument, currentSandbox, localAttrId, currentWidget, getSandbox = function () {
+        var modelDocument, currentSandbox, localAttrId, getSandbox = function () {
             return currentSandbox;
         }, findWidgetName = function ($element) {
             return _.find(_.keys($element.data()), function (currentKey) {
@@ -115,13 +115,8 @@ define([
         };
 
         beforeEach(function () {
-            var localId = _.uniqueId("Document"), $renderZone = $("#render");
+            var localId = _.uniqueId("Document");
             localAttrId = _.uniqueId(attributeDefinition.type);
-            //currentSandbox = $("<div></div>");
-            //if ($renderZone.length === 0) {
-            //    $renderZone = $("body");
-            //}
-            //$renderZone.append(currentSandbox);
             currentSandbox = setFixtures(sandbox());
 
             familyStructure = generateFamilyStructure(localAttrId, attributeDefinition, options.renderMode, initialValue);
