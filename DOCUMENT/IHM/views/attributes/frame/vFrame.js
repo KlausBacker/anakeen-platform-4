@@ -49,7 +49,7 @@ define([
                         return;
                     }
                     try {
-                        if (currentAttr.get("valueAttribute")) {
+                        if (currentAttr.get("isValueAttribute")) {
                             $content.append((new ViewAttribute({model : currentAttr})).render().$el);
                             return;
                         }

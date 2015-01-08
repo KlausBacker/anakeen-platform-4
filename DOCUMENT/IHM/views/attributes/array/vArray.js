@@ -54,7 +54,7 @@ define([
                         return;
                     }
                     try {
-                        if (currentAttr.get("valueAttribute")) {
+                        if (currentAttr.get("isValueAttribute")) {
                             scope.columnViews[currentAttr.id] = new ViewColumn({
                                 el: scope.el,
                                 els: function () {

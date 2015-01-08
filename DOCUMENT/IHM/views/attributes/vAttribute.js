@@ -88,7 +88,6 @@ define([
         render : function render() {
             //console.time("render attribute " + this.model.id);
             var data = this.getData();
-            console.log("data", data);
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
             this.$el.attr("data-attrid", this.model.get("id"));
@@ -148,7 +147,6 @@ define([
                 if (parentModel) {
                     parentModel.trigger("errorMessage", event, this.model.get("errorMessage"));
                 }
-
             }
         },
 

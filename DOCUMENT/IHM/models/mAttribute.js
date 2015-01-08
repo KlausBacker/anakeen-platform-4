@@ -1,9 +1,11 @@
 /*global define*/
 define([
     'underscore',
+    'jquery',
     'backbone',
-    'collections/contentAttributes'
-], function (_, Backbone, CollectionContentAttributes) {
+    'collections/contentAttributes',
+    'models/constraintHandler'
+], function (_, $, Backbone, CollectionContentAttributes, ConstraintHandler) {
     'use strict';
 
     return Backbone.Model.extend({
@@ -11,7 +13,7 @@ define([
         defaults : {
             parent :         undefined,
             content :        [],
-            valueAttribute : true,
+            isValueAttribute : true,
             multiple :       false,
             mode :           "read",
             documentMode :   "read",
@@ -23,6 +25,7 @@ define([
         initialize : function mAttributeinitialize() {
             this.listenTo(this, "change:documentMode", this._computeMode);
             this.listenTo(this, "change:visibility", this._computeMode);
+            this.listenTo(this, "change:attributeValue", this.checkConstraint);
 
             this._computeValueMode();
             this._computeMode();
@@ -167,9 +170,6 @@ define([
             currentValue.splice(toIndex, 0, fromValue);
 
             this.set("attributeValue", currentValue);
-
-
-
             this.trigger("moved", {from: fromIndex, to: toIndex});
 
         },
@@ -205,7 +205,7 @@ define([
             if (this.get("mode") === "hidden") {
                 return false;
             }
-            if (this.get("valueAttribute")) {
+            if (this.get("isValueAttribute")) {
                 return true;
             }
             if (this.get("content").length === 0) {
@@ -246,7 +246,7 @@ define([
                     this.set("mode", "hidden");
                     return;
                 }
-                if (this.get("valueAttribute") && (_.isEmpty(this.get("attributeValue")) || _.isUndefined(this.get("attributeValue") || this.get("attributeValue").value === null  ))) {
+                if (this.get("isValueAttribute") && (_.isEmpty(this.get("attributeValue")) || _.isUndefined(this.get("attributeValue") || this.get("attributeValue").value === null  ))) {
                     if (this.getOption('showEmptyContent') === null) {
                         this.set("mode", "hidden");
                         return;
@@ -280,7 +280,7 @@ define([
         _computeValueMode : function mAttribute_computeValueMode() {
             var type = this.get("type"), visibility = this.get("visibility");
             if (type === "frame" || type === "array" || type === "tab" || visibility === "I") {
-                this.set("valueAttribute", false);
+                this.set("isValueAttribute", false);
             }
         },
         /**
@@ -347,9 +347,27 @@ define([
                 });
 
                 this.set('errorMessage', [{message : message, index : index}].concat(errorMessage));
-
             } else {
                 this.set('errorMessage', message);
+            }
+        },
+
+        checkConstraint : function mAttributecheckConstraint() {
+            var response = new ConstraintHandler(), responseText;
+            if (this.get("isValueAttribute") !== true) {
+                return true;
+            }
+            this.trigger("constraint", {model : this, response : response, value : this.get("attributeValue")});
+            if (response.hasConstraintMessages()) {
+                responseText = "";
+                _.each(response.getConstraintMessages(), function(currentResponse) {
+                    responseText += currentResponse.message+" ";
+                });
+                this.setErrorMessage(responseText);
+                return false;
+            } else {
+                this.setErrorMessage(null);
+                return true;
             }
         }
 

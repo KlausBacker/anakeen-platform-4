@@ -14,10 +14,11 @@ define([
     $.widget("dcp.documentController", {
 
         options : {
-            eventPrefix : "document",
-            initid :      null,
-            viewId :      undefined,
-            revision :    undefined
+            eventPrefix :    "document",
+            initid :         null,
+            viewId :         undefined,
+            revision :       undefined,
+            constraintList : []
         },
 
         /**
@@ -28,6 +29,8 @@ define([
             if (!this.options.initid) {
                 throw new Error("Widget cannot be initialized without an initid");
             }
+            this.options.constraintList = [];
+            this.activatedConstraint = [];
             this._initExternalElements();
             this._initModel(this._getModelValue());
             this._initView();
@@ -127,24 +130,31 @@ define([
         _initModelEvents : function documentController_initEvents() {
             var currentWidget = this;
             this._model.listenTo(this._model, "invalid", function showInvalid(model, error) {
-                currentWidget.$notification.dcpNotification("showError", error);
-                currentWidget._trigger("error", {}, {
+                var event = $.Event("error");
+                currentWidget._trigger("error", event, {
                     documentData : currentWidget._model.getDocumentData(),
                     message :      error
                 });
+                if (!event.isDefaultPrevented()) {
+                    currentWidget.$notification.dcpNotification("showError", error);
+                }
             });
             this._model.listenTo(this._model, "showError", function showError(error) {
-                currentWidget.$notification.dcpNotification("showError", error);
-                currentWidget._trigger("error", {}, {
+                var event = $.Event("error");
+                currentWidget._trigger("error", event, {
                     documentData : currentWidget._model.getDocumentData(),
                     message :      error
                 });
+                if (!event.isDefaultPrevented()) {
+                    currentWidget.$notification.dcpNotification("showError", error);
+                }
             });
             this._model.listenTo(this._model, "sync", function () {
                 currentWidget.options.initid = currentWidget._model.id;
                 currentWidget.options.viewId = currentWidget._model.get("viewId");
                 currentWidget.options.revision = currentWidget._model.get("revision");
                 currentWidget.element.data(currentWidget._getModelValue());
+                currentWidget._initActivatedConstraint();
             });
             this._model.listenTo(this._model, "fetch", function () {
                 currentWidget._trigger("close", {}, {
@@ -155,6 +165,18 @@ define([
                 currentWidget._trigger("change", {}, {
                     documentData : currentWidget._model.getDocumentData(),
                     change :       options
+                });
+            });
+            this._model.listenTo(this._model, "constraint", function (document, attribute, response) {
+                currentWidget._trigger("validate", {}, {
+                    document :  document,
+                    attribute : attribute,
+                    response :  response
+                });
+                _.each(currentWidget.activatedConstraint, function (currentConstraint) {
+                    if (currentConstraint.attributeCheck) {
+                        currentConstraint.constraintCheck(document, attribute, response);
+                    }
                 });
             });
         },
@@ -195,20 +217,27 @@ define([
                 }, 250);
             });
             this.view.on("showMessage", function showMessage(message) {
-                currentWidget.$notification.dcpNotification("show", message.type, message);
-                currentWidget._trigger("message", {}, {
+                var event = $.Event("message");
+                currentWidget._trigger("message", event, {
                     documentData : currentWidget._model.getDocumentData(),
                     message :      message
                 });
+                if (!event.isDefaultPrevented()) {
+                    currentWidget.$notification.dcpNotification("show", message.type, message);
+                }
             });
             this.view.on("showSuccess", function showSuccess(message) {
-                currentWidget.$notification.dcpNotification("showSuccess", message);
-                currentWidget._trigger("message", {}, {
+                var event = $.Event("message");
+                currentWidget._trigger("message", event, {
                     documentData : currentWidget._model.getDocumentData(),
                     message :      message
                 });
+                if (!event.isDefaultPrevented()) {
+                    currentWidget.$notification.dcpNotification("showSuccess", message);
+                }
             });
             this.view.on("reinit", function reinit() {
+                this._initModel(this._getModelValue());
                 currentWidget._initView();
                 currentWidget.model.fetch();
             });
@@ -236,6 +265,13 @@ define([
             return _.size(attributeArray.get("content").max(function (currentAttr) {
                 return _.size(currentAttr.get("attributeValue"));
             }).get("attributeValue"));
+        },
+
+        _initActivatedConstraint : function documentController_initActivatedConstraint() {
+            var currentDocumentProperties = this._model.getProperties();
+            this.activatedConstraint = _.filter(this.options.constraintList, function (currentConstraint) {
+                return currentConstraint.documentCheck(currentDocumentProperties);
+            });
         },
 
         reinitDocument : function documentControllerReinitDocument() {
@@ -296,7 +332,7 @@ define([
                 throw new Error("Attribute " + attributeId + " must be an attribute of type array");
             }
             if (!_.isObject(values)) {
-                throw new Error("Values must be an object where each properties is an attribute of the array for "+attributeId);
+                throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
             }
             attribute.get("content").each(function addACell(currentAttribute) {
                 var currentValue = values[currentAttribute.id];
@@ -317,8 +353,8 @@ define([
                 throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
             }
             maxValue = this._getMaxIndex(attribute);
-            if ( index < 0 || index > maxValue) {
-                throw new Error("Index must be between 0 and "+maxValue);
+            if (index < 0 || index > maxValue) {
+                throw new Error("Index must be between 0 and " + maxValue);
             }
             attribute.get("content").each(function addACell(currentAttribute) {
                 var currentValue = values[currentAttribute.id];
@@ -336,12 +372,41 @@ define([
             }
             maxIndex = this._getMaxIndex(attribute) - 1;
             if (index < 0 || index > maxIndex) {
-                throw Error("Index must be between 0 and "+maxIndex+" for " + attributeId);
+                throw Error("Index must be between 0 and " + maxIndex + " for " + attributeId);
             }
             attribute.get("content").each(function removeACell(currentAttribute) {
                 currentAttribute.removeIndexValue(index);
             });
             attribute.removeIndexedLine(index);
+        },
+
+        addConstraint : function documentControlleraddConstraint(parameters) {
+            if (!_.isFunction(parameters.constraintCheck)) {
+                throw new Error("A constraint must have a constraintCheck function");
+            }
+            parameters = _.defaults(parameters, {
+                "documentCheck" : function() { return true;},
+                "attributeCheck" : function() { return true;},
+                "name" : _.uniqueId("constraint")
+            });
+            this.options.constraintList.push(parameters);
+            this._initActivatedConstraint();
+            return parameters.name;
+        },
+
+        listConstraints : function documentControllerListConstraint() {
+            return this.options.constraintList;
+        },
+
+        removeConstraint : function documentControllerRemoveConstraint(constraintName) {
+            var testRegExp = new RegExp("\\." + constraintName + "$");
+            this.options.constraintList = _.filter(this.options.constraintList, function(currentConstrait) {
+                return currentConstrait.name !== constraintName && !testRegExp.test(currentConstrait.name);
+            });
+            if (this.options.constraintList[constraintName]) {
+                delete this.options.constraintList[constraintName];
+            }
+            this._initActivatedConstraint();
         }
 
     });
