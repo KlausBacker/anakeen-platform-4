@@ -73,17 +73,19 @@ define([
             }
             throw new Error("Unknown window template  " + templateId);
         },
-        destroy :            function () {
-            this.currentWidget.data("kendoWindow").destroy();
+        destroy :            function wWindowDestroy () {
+            if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
+                this.currentWidget.data("kendoWindow").destroy();
+            }
             this._super();
         },
-        open :               function open() {
+        open :               function wWindowopen() {
             this.currentWidget.data("kendoWindow").open();
         },
         close :              function close() {
             this.currentWidget.data("kendoWindow").close();
         },
-        kendoWindow :        function kendoWindow() {
+        kendoWindow :        function wWindowkendoWindow() {
             return this.currentWidget.data("kendoWindow");
         }
     });

@@ -237,9 +237,9 @@ define([
                 }
             });
             this.view.on("reinit", function reinit() {
-                this._initModel(this._getModelValue());
+                currentWidget._initModel(currentWidget._getModelValue());
                 currentWidget._initView();
-                currentWidget.model.fetch();
+                currentWidget._model.fetch();
             });
         },
 
