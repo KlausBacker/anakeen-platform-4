@@ -1,0 +1,22 @@
+define([
+    "underscore",
+    "models/mAttribute",
+    'collections/contentAttributes'
+], function (_, AttributeModel, CollectionContentAttributes) {
+    'use strict';
+
+    return AttributeModel.extend({
+        defaults : {
+            content :      []
+        },
+
+        setContentCollection : function mAttributesetContentCollection(attributes) {
+            var collection = new CollectionContentAttributes();
+            _.each(attributes, function (currentChild) {
+                collection.push(currentChild);
+            });
+            this.set("content", collection);
+        }
+
+    });
+});

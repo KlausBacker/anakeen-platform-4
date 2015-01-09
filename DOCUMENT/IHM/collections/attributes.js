@@ -2,9 +2,10 @@
 define([
     'underscore',
     'backbone',
-    'models/mAttribute',
+    'models/mAttributeData',
+    'models/mAttributeStructural',
     'models/mAttributeArray'
-], function (_, Backbone, ModelAttribute, ModelAttributeArray) {
+], function (_, Backbone, ModelAttributeData, ModelAttributeStructural, ModelAttributeArray) {
     'use strict';
 
     return Backbone.Collection.extend({
@@ -14,7 +15,10 @@ define([
             if (attributes.type === "array") {
                 return new ModelAttributeArray(attributes, options);
             }
-            return new ModelAttribute(attributes, options);
+            if (attributes.type === "tab" || attributes.type === "frame") {
+                return new ModelAttributeStructural(attributes, options);
+            }
+            return new ModelAttributeData(attributes, options);
         },
 
         initialize : function initialize(values, options) {

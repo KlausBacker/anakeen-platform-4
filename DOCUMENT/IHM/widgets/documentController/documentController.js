@@ -300,14 +300,6 @@ define([
             return this._model.get("properties").toJSON();
         },
 
-        hideAttribute : function documentControllerHideAttribute(attributeId) {
-            this._getAttributeModel(attributeId).trigger("hide");
-        },
-
-        showAttribute : function documentControllerShowAttribute(attributeId) {
-            this._getAttributeModel(attributeId).trigger("show");
-        },
-
         getValue : function documentControllerGetValue(attributeId) {
             var attribute = this._getAttributeModel(attributeId);
             return attribute.get("attributeValue");
@@ -407,6 +399,37 @@ define([
                 delete this.options.constraintList[constraintName];
             }
             this._initActivatedConstraint();
+        },
+
+        hideAttribute : function documentControllerHideAttribute(attributeId) {
+            this._getAttributeModel(attributeId).trigger("hide");
+        },
+
+        showAttribute : function documentControllerShowAttribute(attributeId) {
+            this._getAttributeModel(attributeId).trigger("show");
+        },
+
+        showMessage : function documentControllerShowMessage(message) {
+            if (_.isString(message)) {
+                message = {
+                    type : "info",
+                    message : message
+                };
+            }
+            if (_.isObject(message)) {
+                message = _.defaults(message, {
+                    type : "info"
+                });
+            }
+            this.$notification.dcpNotification("show", message.type, message);
+        },
+
+        setAttributeErrorMessage : function documentControllersetAttributeErrorMessage(attributeId, message, index) {
+            this._getAttributeModel(attributeId).setErrorMessage(message, index);
+        },
+
+        cleanAttributeErrorMessage : function documentControllercleanAttributeErrorMessage(attributeId, index) {
+            this._getAttributeModel(attributeId).setErrorMessage(null, index);
         }
 
     });

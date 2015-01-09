@@ -23,7 +23,9 @@ define([
         propageEvent : function (eventName) {
             this.each(function (currentModel) {
                 currentModel.trigger(eventName);
-                currentModel.get("content").propageEvent(eventName);
+                if (currentModel.get("content")) {
+                    currentModel.get("content").propageEvent(eventName);
+                }
             });
         }
     });

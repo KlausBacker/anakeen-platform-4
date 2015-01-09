@@ -388,7 +388,15 @@ define([
                 });
                 //Set the internal content collection (for structure attributes)
                 attributes.attributes.each(function (currentAttributeModel) {
-                    currentAttributeModel.setContentCollection(attributes.attributes);
+                    if (currentAttributeModel.get("isValueAttribute")) {
+                        return;
+                    }
+                    var childAttributes = attributes.attributes.filter(function(candidateChildModel) {
+                        return candidateChildModel.get("parent") === currentAttributeModel.id;
+                    });
+                    if (childAttributes.length > 0) {
+                        currentAttributeModel.setContentCollection(childAttributes);
+                    }
                 });
                 //Propagate the change event to the model
                 currentModel.listenTo(attributes.attributes, "change:attributeValue", function (model, value) {

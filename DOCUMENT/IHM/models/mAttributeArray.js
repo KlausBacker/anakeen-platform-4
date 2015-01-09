@@ -1,10 +1,10 @@
 define([
     "underscore",
-    "models/mAttribute"
-], function (_, AttributeModel) {
+    "models/mAttributeStructural"
+], function (_, AttributeStructuralModel) {
     'use strict';
 
-    return AttributeModel.extend({
+    return AttributeStructuralModel.extend({
 
         removeIndexedLine : function mAttributeArrayRemoveIndexLine(index) {
             this.trigger("removeWidgetLine", {index : index}, {silent : true});
