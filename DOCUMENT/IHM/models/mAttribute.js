@@ -46,7 +46,11 @@ define([
                 return false;
             }
             if (this.get("isValueAttribute")) {
-                return true;
+                if (this.getOption('showEmptyContent') !== null) {
+                    return true;
+                } else {
+                    return (this.get("attributeValue") && this.get("attributeValue").value !== null);
+                }
             }
             if (this.get("content").length === 0) {
                 return false;
