@@ -424,7 +424,7 @@ define([
                     console.error(e);
                 }
             }
-            $(window.document).off("ddui");
+            $(window.document).off(".ddui");
 
             return Backbone.View.prototype.remove.call(this);
         }
