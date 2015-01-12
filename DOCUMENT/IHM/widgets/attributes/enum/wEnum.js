@@ -384,6 +384,9 @@ define([
 
                     }
                 }
+            } else {
+                this._super(value, event);
+                this.redraw();
             }
         },
         /**
