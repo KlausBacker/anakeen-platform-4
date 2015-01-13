@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-19 13:39+0100\n"
+"POT-Creation-Date: 2015-01-13 09:39+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -41,6 +41,9 @@ msgstr ""
 msgid "Autocomplete attributes"
 msgstr ""
 
+msgid "COLLECT_ERROR"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Cancel"
 msgstr ""
@@ -55,6 +58,10 @@ msgstr ""
 
 msgctxt "ddui-image"
 msgid "Choose image"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Click to answer \"{{displayValue}}\""
 msgstr ""
 
 msgctxt "ddui-file"
@@ -82,6 +89,18 @@ msgid "Confirm deletion"
 msgstr ""
 
 msgid "Confirm deletion of {{{document.properties.title}}}"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Core View Consultation"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Core View Create"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Core View Edition"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -236,6 +255,10 @@ msgctxt "ddui"
 msgid "No result found"
 msgstr ""
 
+msgctxt "ddui"
+msgid "Not yet implemented"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Old Properties"
 msgstr ""
@@ -305,9 +328,6 @@ msgctxt "my"
 msgid "Séparateur"
 msgstr ""
 
-msgid "Test"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "Transferring"
 msgstr ""
@@ -343,19 +363,25 @@ msgstr ""
 msgid "ddui::Delete : "
 msgstr ""
 
+msgid "ddui::DocumentDeleted"
+msgstr ""
+
 msgid "ddui::Loading"
 msgstr ""
 
 msgid "ddui::Revision :"
 msgstr ""
 
-msgid "ddui::RevisionCreated :"
+msgid "ddui::RevisionCreated"
 msgstr ""
 
 msgid "ddui:Add new line"
 msgstr ""
 
 msgid "ddui:Delete line"
+msgstr ""
+
+msgid "ddui:Document Render"
 msgstr ""
 
 msgid "ddui:Drag to move line"
