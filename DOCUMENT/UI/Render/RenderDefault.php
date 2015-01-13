@@ -227,7 +227,8 @@ class RenderDefault implements IRenderConfig
         
         $opt->enum()->setLabels(array(
             "chooseMessage" => ___("Choose", "ddui-enum") ,
-            "invalidEntry" => ___("Invalid entry", "ddui-enum")
+            "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
+            "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum")
         ));
         $opt->date()->setLabels(array(
             "invalidDate" => ___("Invalid date", "ddui-enum")

@@ -85,11 +85,14 @@ background-color: @gray-lighter;
 .dcpAttribute--type--enum .dcpAttribute__value--enumlabel.k-button:first-child {
   border-radius:4px 0 0 4px;
 }
-.dcpAttribute--type--enum .dcpAttribute__value--enumlabel.k-button:last-child {
-  border-radius:0 4px 4px 0;
-  border-right-style: solid;
-}
 */
+.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel {
+  border-right-style: none;
+}
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel:last-child {
+  border-right-style: none;
+}
+
 
 .dcpAttribute__value--enumlabel {
   font-weight: normal;
@@ -99,20 +102,42 @@ background-color: @gray-lighter;
   color: @enum-selected-button-color;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-horizontal {
+.dcpAttribute__value--enumbuttons.orientation-horizontal,
+.dcpAttribute__value--enumbuttons.orientation-bool {
   width:100%;
   padding:0;
   display:table;
 }
-.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group {
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group,
+.dcpAttribute__value--enumbuttons.orientation-bool.input-group
+{
   display:table;
   table-layout: fixed; /* same width for each item */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
-.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group label{
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel,
+{
   display:table-cell;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel {
+  display:none;
+  width:100%;
+  text-align: left;
+}
+.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel span {
+  padding-left:1em;
+}
+.dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel.selected {
+  display:inherit;
+}
+.dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel.unselected {
+  display:inherit;
+  background-color:inherit;
 }
 
 
@@ -123,13 +148,13 @@ background-color: @gray-lighter;
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
 
 }
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group label{
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel{
   display:block;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
   white-space: nowrap;
 }
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group label span{
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel span{
   margin-left: 1em;
 }

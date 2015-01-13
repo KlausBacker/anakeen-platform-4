@@ -19,7 +19,8 @@ define([
             sourceUri: null, // when enum definition is dynamically get by server request
             labels: {
                 chooseMessage: 'Select', // Message to display when no useFirstChoice is true and no value selected
-                invalidEntry: "Invalid Entry"
+                invalidEntry: "Invalid Entry",
+                invertSelection: "Click to answer {{displayValue}}"
             },
             renderOptions: {
                 kendoDropDownConfiguration: {
@@ -56,7 +57,7 @@ define([
 
             if (this.getMode() === "write") {
                 if (this.options.options && this.options.options.eformat === "auto") {
-                    this.options.renderOptions.useSourceUri=true;
+                    this.options.renderOptions.useSourceUri = true;
                 }
                 this._initMainElemeentClass();
                 if (this._isMultiple()) {
@@ -67,8 +68,10 @@ define([
                             break;
                         case "horizontal" :
                         case "vertical" :
-                            this.checkboxButtons(true);
+                            this.checkboxButtons();
                             break;
+                        case "bool":
+                            throw new Error("Enum bool display cannot be applied to a multiple attribute : " + this.options.id);
                         default:
                             this.multipleSelect();
                     }
@@ -79,6 +82,9 @@ define([
                             break;
                         case "list" :
                             this.singleDropdown();
+                            break;
+                        case "bool" :
+                            this.boolButtons();
                             break;
                         case "horizontal" :
                         case "vertical" :
@@ -174,6 +180,61 @@ define([
         },
 
 
+        boolButtons: function wEnumBoolButtons() {
+            var enumData = this.getSingleEnumData();
+            var tplOption = this.options;
+            var labels;
+            var scope = this;
+
+            tplOption.enumValues = enumData.data;
+
+            this.options.isMultiple = true; // Just to have checkbox
+
+            this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
+            this.options.isMultiple = false; // restore isMultiple : it never can be multiple
+            labels = this.element.find("label");
+
+
+            if (tplOption.enumValues[0].value === this.options.attributeValue.value) {
+                this.element.find("input[type=checkbox]").removeAttr("checked");
+                this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
+            }
+
+            this.element.find(".dcpAttribute__value--enumlabel").each(function (kItem) {
+                if (tplOption.enumValues[kItem]) {
+                    $(this).tooltip({
+                        title: Mustache.render(scope.options.labels.invertSelection,
+                            tplOption.enumValues[(kItem + 1) % 2])
+                    });
+                }
+            });
+
+            labels.on("click" + this.eventNamespace, "input", function (event) {
+                event.preventDefault();
+                // Invert selection
+                _.some(tplOption.enumValues, function (item, kItem) {
+                    if (scope.options.attributeValue.value === null || item.value !== scope.options.attributeValue.value) {
+                        scope.setValue(item, event);
+                        return true;
+                    }
+                    return false;
+                });
+            });
+
+
+            this.getContentElements().each(function () {
+                $(this).closest("label").addClass("k-button");
+
+            });
+            if (scope.options.attributeValue.value === null) {
+                // Set to first enum item if empty
+                var firstItem = tplOption.enumValues[0];
+                if (firstItem) {
+                    scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
+                }
+            }
+
+        },
         radioButtons: function wEnumRadioButtons() {
             var enumData = this.getSingleEnumData();
             var tplOption = this.options;
@@ -182,8 +243,10 @@ define([
 
             tplOption.enumValues = enumData.data;
 
+
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
+
 
             labels.on("change" + this.eventNamespace, "input", function (event) {
                 var newValue = {};
@@ -192,13 +255,14 @@ define([
                 scope.setValue(newValue, event);
             });
 
+
             this.getContentElements().each(function () {
                 $(this).closest("label").addClass("k-button");
 
             });
-            if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null ) {
+            if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                 // Set to first enum item if empty
-                var firstItem=tplOption.enumValues[0];
+                var firstItem = tplOption.enumValues[0];
                 if (firstItem) {
                     scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
                 }
@@ -287,6 +351,14 @@ define([
          */
         setValue: function wEnumSetValue(value, event) {
             var kddl, newValues;
+            if (this.options.renderOptions.editDisplay === "bool") {
+                // This display has only 2 values and cannot be set to null
+                if (value.value === null) {
+                    if (this.options.enumValues[0]) {
+                        value = this.options.enumValues[0];
+                    }
+                }
+            }
             this._super(value, event);
             if (this.getMode() === "write") {
                 if (this._isMultiple()) {
@@ -319,10 +391,10 @@ define([
                                     return (x.value == inputValue);
                                 });
                                 if (isIn) {
-                                    $(this).attr("checked", "checked");
+                                    $(this).prop("checked", true);
                                     $(this).closest("label").addClass("selected");
                                 } else {
-                                    $(this).removeAttr("checked");
+                                    $(this).prop("checked", false);
                                     $(this).closest("label").removeClass("selected");
                                 }
                             });
@@ -365,15 +437,33 @@ define([
                                 kddl.value(value.value);
                             }
                             break;
+                        case "bool":
+                            this.getContentElements().each(function (kItem) {
+                                //noinspection JSHint
+                                if ($(this).val() == value.value) {
+                                    if (kItem > 0) {
+                                        $(this).prop("checked", true);
+                                        $(this).closest("label").addClass("selected").removeClass("unselected");
+                                    } else {
+                                        $(this).prop("checked", false);
+                                        $(this).closest("label").addClass("unselected").removeClass("selected");
+                                    }
+                                } else {
+                                    $(this).prop("checked", false);
+                                    $(this).closest("label").removeClass("selected").removeClass("unselected");
+                                }
+                            });
+
+                            break;
                         case "horizontal":
                         case "vertical":
                             this.getContentElements().each(function () {
                                 //noinspection JSHint
                                 if ($(this).val() == value.value) {
-                                    $(this).attr("checked", "checked");
+                                    $(this).prop("checked", true);
                                     $(this).closest("label").addClass("selected");
                                 } else {
-                                    $(this).removeAttr("checked");
+                                    $(this).prop("checked", false);
                                     $(this).closest("label").removeClass("selected");
                                 }
                             });
@@ -492,10 +582,10 @@ define([
                             scope.setValue(newValue, event);
                         }
                     },
-                    dataBound: function(e) {
-                        if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null ) {
+                    dataBound: function (e) {
+                        if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                             // Set to first enum item if empty
-                            var firstItem=this.dataSource.at(0);
+                            var firstItem = this.dataSource.at(0);
                             if (firstItem) {
                                 scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
                             }
