@@ -305,14 +305,25 @@ define([
          * @returns {boolean}
          */
         _triggerControllerEvent : function documentController_triggerControllerEvent(eventName) {
-            var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(eventName);
+            var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(eventName), onArgs;
             args.unshift(event);
+            onArgs = args.slice(0);
+            onArgs.unshift(eventName);
             event.target = currentWidget.element;
-            currentWidget._trigger.apply(currentWidget, args.slice(0).unshift(eventName));
+            currentWidget._trigger.apply(currentWidget, onArgs);
             _.chain(this.activatedEvent).filter(function (currentEvent) {
                 return currentEvent.eventType === eventName;
             }).some(function (currentEvent) {
-                currentEvent.eventCallback.apply(currentWidget.element, args);
+                try {
+                    currentEvent.eventCallback.apply(currentWidget.element, args);
+                } catch(e) {
+                    if (window.dcp.logger) {
+                        window.dcp.logger(e);
+                    } else {
+                        console.error(e);
+                    }
+                }
+
             });
             return !event.isDefaultPrevented();
         },
