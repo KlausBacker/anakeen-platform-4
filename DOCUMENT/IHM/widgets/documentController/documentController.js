@@ -248,6 +248,12 @@ define([
             this.router = new Router({document : this._model});
         },
 
+        /**
+         * Get a backbone model of an attribute
+         *
+         * @param attributeId
+         * @returns {*}
+         */
         _getAttributeModel : function documentController_getAttributeModel(attributeId) {
             var attribute = this._model.get("attributes").get(attributeId);
             if (!attribute) {
@@ -256,12 +262,23 @@ define([
             return attribute;
         },
 
+        /**
+         * Get max index of an array
+         *
+         * @param attributeArray
+         * @returns {*}
+         */
         _getMaxIndex : function documentController_getMaxIndex(attributeArray) {
             return _.size(attributeArray.get("content").max(function (currentAttr) {
                 return _.size(currentAttr.get("attributeValue"));
             }).get("attributeValue"));
         },
 
+        /**
+         * Activate constraint on the current document
+         * Used on the fetch of a new document
+         *
+         */
         _initActivatedConstraint : function documentController_initActivatedConstraint() {
             var currentDocumentProperties = this._model.getProperties();
             this.activatedConstraint = _.filter(this.options.constraintList, function (currentConstraint) {
@@ -269,6 +286,10 @@ define([
             });
         },
 
+        /**
+         * Activate events on the current document
+         * Used on the fetch of a new document
+         */
         _initActivatedEvents : function documentController_initActivatedEvents() {
             var currentDocumentProperties = this._model.getProperties();
             this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
@@ -276,10 +297,18 @@ define([
             });
         },
 
+        /**
+         * Trigger a controller event
+         * That kind of event are only for this widget
+         *
+         * @param eventName
+         * @returns {boolean}
+         */
         _triggerControllerEvent : function documentController_triggerControllerEvent(eventName) {
             var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(eventName);
             args.unshift(event);
             event.target = currentWidget.element;
+            currentWidget._trigger.apply(currentWidget, args.slice(0).unshift(eventName));
             _.chain(this.activatedEvent).filter(function (currentEvent) {
                 return currentEvent.eventType === eventName;
             }).some(function (currentEvent) {
@@ -288,11 +317,21 @@ define([
             return !event.isDefaultPrevented();
         },
 
+        /***************************************************************************************************************
+         * External function
+         **************************************************************************************************************/
+        /**
+         * Reinit the current document (close it and re-open it)
+         */
         reinitDocument : function documentControllerReinitDocument() {
             this._reinitModel();
             this._model.fetch();
         },
 
+        /**
+         * Fetch a new document
+         * @param options object {"initid" : int, "revision" : int, "viewId" : string}
+         */
         fetchDocument : function documentControllerFetchDocument(options) {
             options = _.isUndefined(options) ? {} : options;
             if (!_.isObject(options)) {
@@ -306,23 +345,52 @@ define([
             this.reinitDocument();
         },
 
+        /**
+         * Get a property value
+         *
+         * @param property
+         * @returns {*}
+         */
         getProperty : function documentControllerGetDocumentProperty(property) {
             return this._model.get("properties").get(property);
         },
 
+        /**
+         * Get all the properties
+         * @returns {*}
+         */
         getProperties : function documentControllerGetDocumentProperties() {
             return this._model.get("properties").toJSON();
         },
 
+        /**
+         * Get an attribute value
+         *
+         * @param attributeId
+         * @returns {*}
+         */
         getValue : function documentControllerGetValue(attributeId) {
             var attribute = this._getAttributeModel(attributeId);
             return attribute.get("attributeValue");
         },
 
+        /**
+         * Get all the values
+         *
+         * @returns {*|{}}
+         */
         getValues : function documentControllerGetValues() {
             return this._model.getValues();
         },
 
+        /**
+         * Set a value
+         * Trigger a change event
+         *
+         * @param attributeId string attribute identifier
+         * @param value object { "value" : *, "displayValue" : *}
+         * @returns {*}
+         */
         setValue : function documentControllerSetValue(attributeId, value) {
             var attribute = this._getAttributeModel(attributeId);
             if (!_.isObject(value)) {
@@ -332,6 +400,12 @@ define([
             return attribute.set("attributeValue", value);
         },
 
+        /**
+         * Add a row to an array
+         *
+         * @param attributeId string attribute array
+         * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
+         */
         appendArrayRow : function documentControllerAddArrayRow(attributeId, values) {
             var attribute = this._getAttributeModel(attributeId);
             if (attribute.get("type") !== "array") {
@@ -350,6 +424,13 @@ define([
             });
         },
 
+        /**
+         * Add a row before another row
+         *
+         * @param attributeId string attribute array
+         * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
+         * @param index int index of the row
+         */
         insertBeforeArrayRow : function documentControllerInsertBeforeArrayRow(attributeId, values, index) {
             var attribute = this._getAttributeModel(attributeId), maxValue;
             if (attribute.get("type") !== "array") {
@@ -371,6 +452,11 @@ define([
             });
         },
 
+        /**
+         * Remove an array row
+         * @param attributeId string attribute array
+         * @param index int index of the row
+         */
         removeArrayRow : function documentControllerRemoveArrayRow(attributeId, index) {
             var attribute = this._getAttributeModel(attributeId), maxIndex;
             if (attribute.get("type") !== "array") {
@@ -386,6 +472,11 @@ define([
             attribute.removeIndexedLine(index);
         },
 
+        /**
+         * Add a constraint to the widget
+         * @param parameters object
+         * @returns {*}
+         */
         addConstraint : function documentControlleraddConstraint(parameters) {
             if (!_.isFunction(parameters.constraintCheck)) {
                 throw new Error("A constraint must have a constraintCheck function");
@@ -404,10 +495,21 @@ define([
             return parameters.name;
         },
 
+        /**
+         * List the constraint of the widget
+         *
+         * @returns {*}
+         */
         listConstraints : function documentControllerListConstraint() {
             return this.options.constraintList.splice(0);
         },
 
+        /**
+         * Remove a constraint of the widget
+         *
+         * @param constraintName
+         * @returns {*}
+         */
         removeConstraint : function documentControllerRemoveConstraint(constraintName) {
             var testRegExp = new RegExp("\\" + constraintName + "$");
             this.options.constraintList = _.filter(this.options.constraintList, function (currentConstrait) {
@@ -417,6 +519,14 @@ define([
             return this.listConstraints();
         },
 
+        /**
+         * Add an event to the widget
+         *
+         * @param eventType string kind of event
+         * @param options object { "name" : string, "documentCheck": function}
+         * @param callback function callback called when the event is triggered
+         * @returns {*|Window.options.name}
+         */
         addEvent : function documentControllerAddEvent(eventType, options, callback) {
             //options is facultative
             if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -444,10 +554,21 @@ define([
             return options.name;
         },
 
+        /**
+         * List of the events of the current widget
+         *
+         * @returns {*}
+         */
         listEvents : function documentControllerListEvents() {
             return this.options.eventList.splice(0);
         },
 
+        /**
+         * Remove an event of the current widget
+         *
+         * @param eventName string can be an event name or a namespace
+         * @returns {*}
+         */
         removeEvent : function documentControllerRemoveEvent(eventName) {
             var testRegExp = new RegExp("\\" + eventName + "$");
             this.options.eventList = _.filter(this.options.eventList, function (currentEvent) {
@@ -457,14 +578,28 @@ define([
             return this.listEvents();
         },
 
+        /**
+         * Hide a visible attribute
+         *
+         * @param attributeId
+         */
         hideAttribute : function documentControllerHideAttribute(attributeId) {
             this._getAttributeModel(attributeId).trigger("hide");
         },
-
+        /**
+         * show a visible attribute (previously hidden)
+         *
+         * @param attributeId
+         */
         showAttribute : function documentControllerShowAttribute(attributeId) {
             this._getAttributeModel(attributeId).trigger("show");
         },
 
+        /**
+         * Display a message to the user
+         *
+         * @param message
+         */
         showMessage : function documentControllerShowMessage(message) {
             if (_.isString(message)) {
                 message = {
@@ -480,10 +615,23 @@ define([
             this.$notification.dcpNotification("show", message.type, message);
         },
 
+        /**
+         * Add an error message to an attribute
+         *
+         * @param attributeId
+         * @param message
+         * @param index
+         */
         setAttributeErrorMessage : function documentControllersetAttributeErrorMessage(attributeId, message, index) {
             this._getAttributeModel(attributeId).setErrorMessage(message, index);
         },
 
+        /**
+         * Clean the error message of an attribute
+         *
+         * @param attributeId
+         * @param index
+         */
         cleanAttributeErrorMessage : function documentControllercleanAttributeErrorMessage(attributeId, index) {
             this._getAttributeModel(attributeId).setErrorMessage(null, index);
         }
