@@ -9,7 +9,7 @@ define([
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 
-    var flattenAttributes = function flattenAttributes(currentAttributes, attributes, parent) {
+    var flattenAttributes = function mDocumentflattenAttributes(currentAttributes, attributes, parent) {
         if (!_.isArray(attributes)) {
             attributes = _.values(attributes);
         }
@@ -40,7 +40,14 @@ define([
             attributes : undefined
         },
 
-        url : function url() {
+        /**
+         * Compute the REST URL for the current document
+         *
+         * Used internaly by backbone in fetch, save, destroy
+         *
+         * @returns {string}
+         */
+        url : function mDocumenturl() {
             var urlData = "api/v1/", viewId = this.get("viewId");
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
@@ -63,22 +70,36 @@ define([
             return urlData;
         },
 
-        initialize : function initialize() {
+        /**
+         * Initialize event handling
+         *
+         */
+        initialize : function mDocumentinitialize() {
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
         },
 
-        toData : function toData() {
+        /**
+         * Return a plain object of the current document for an usage in the view
+         *
+         * @returns {{document: {}}}
+         */
+        toData : function mDocumenttoData() {
             var returnObject = {
                 document : {}
             };
-            returnObject.document.properties = this.get("properties").toJSON();
+            returnObject.document.properties = this.getProperties();
             returnObject.menus = this.get("menus").toJSON();
             returnObject.templates = this.get("templates");
             return returnObject;
         },
 
-        getValues : function documentGetValues() {
+        /**
+         * Return all the values of the current document
+         *
+         * @returns {{}}
+         */
+        getValues : function mDocumentdocumentGetValues() {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
                 var currentValue = currentAttribute.get("attributeValue"), i, arrayValues = [];
@@ -105,7 +126,7 @@ define([
         /**
          * reset all values with a new set of values
          */
-        setValues : function documentSetValues(values) {
+        setValues : function mDocumentdocumentSetValues(values) {
             this.get("attributes").each(function (currentAttribute) {
                 var newValue = values[currentAttribute.id];
                 if (!currentAttribute.get("isValueAttribute")) {
@@ -120,18 +141,36 @@ define([
         /**
          * reset all properties with a new set of properties
          */
-        setProperties : function documentSetProperties(values) {
+        setProperties : function mDocumentdocumentSetProperties(values) {
             var model = this;
             _.each(values, function (value, key) {
                 model.get("properties").set(key, value);
             });
         },
 
-        getProperties : function documentGetProperties() {
-            return this.get("properties").toJSON();
+        /**
+         * Get a plain object with properties of the document
+         *
+         * @returns {*}
+         */
+        getProperties : function mDocumentdocumentGetProperties(initialValue) {
+            var properties;
+            if (initialValue === true) {
+                return this.initialProperties;
+            } else {
+                properties = this.get("properties").toJSON();
+                properties.viewId = this.get("viewId");
+                properties.renderMode = this.get("renderMode");
+                return properties;
+            }
         },
 
-        hasAttributesChanged : function hasAttributesChanged() {
+        /**
+         * Return true if one the attribute of the document hasChanged
+         *
+         * @returns {boolean|*}
+         */
+        hasAttributesChanged : function mDocumenthasAttributesChanged() {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("attributeValue");
             });
@@ -144,7 +183,7 @@ define([
          * @param xhr
          * @param options
          */
-        propagateSynchroError : function propagateSynchroError(model, xhr, options) {
+        propagateSynchroError : function mDocumentpropagateSynchroError(model, xhr, options) {
             var attrModel, currentModel = this, parsedReturn;
             //Analyze XHR
             var messages = [];
@@ -242,7 +281,7 @@ define([
         /**
          * Validate the content of the model before synchro
          */
-        validate : function validate() {
+        validate : function mDocumentvalidate() {
             var success = true,
                 currentDocument = this,
                 errorMessage = [];
@@ -283,7 +322,7 @@ define([
         /**
          * Redraw messages for the error displayed
          */
-        redrawErrorMessages : function redrawErrorMessages() {
+        redrawErrorMessages : function mDocumentredrawErrorMessages() {
             var attrModels = this.get('attributes') || [];
             _.each(attrModels.models, function (attrModel) {
                 var message = attrModel.get("errorMessage");
@@ -296,7 +335,7 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        cleanErrorMessages : function cleanErrorMessages() {
+        cleanErrorMessages : function mDocumentcleanErrorMessages() {
             var attrModels = this.get('attributes') || [];
             _.each(attrModels.models, function (attrModel) {
                 attrModel.setErrorMessage(null);
@@ -340,6 +379,11 @@ define([
                 }
             });
 
+            this.initialProperties = _.defaults({
+                "renderMode" : renderMode || "view",
+                "viewId" :     response.data.properties.requestIdentifier
+            }, view.documentData.document.properties);
+
             values = {
                 initid :        response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
                 properties :    view.documentData.document.properties,
@@ -362,15 +406,22 @@ define([
             return values;
         },
 
-        "set" : function setValues(attributes, options) {
+        /**
+         * Generate the collection of the current model
+         *
+         * @param attributes
+         * @param options
+         * @returns {*}
+         */
+        "set" : function mDocumentsetValues(attributes, options) {
             var currentModel = this;
             if (attributes.properties !== undefined) {
                 if (currentModel.get("properties") instanceof DocumentProperties) {
                     currentModel.get("properties").trigger("destroy");
                 }
                 attributes.properties = new DocumentProperties(attributes.properties);
-
             }
+
             if (attributes.menus !== undefined) {
                 if (currentModel.get("menus") instanceof CollectionMenus) {
                     currentModel.get("menus").destroy();
@@ -391,7 +442,7 @@ define([
                     if (currentAttributeModel.get("isValueAttribute")) {
                         return;
                     }
-                    var childAttributes = attributes.attributes.filter(function(candidateChildModel) {
+                    var childAttributes = attributes.attributes.filter(function (candidateChildModel) {
                         return candidateChildModel.get("parent") === currentAttributeModel.id;
                     });
                     if (childAttributes.length > 0) {
@@ -421,12 +472,16 @@ define([
          * @param options
          * @returns {*}
          */
-        clear : function clear(options) {
+        clear : function mDocumentclear(options) {
             this.destroySubcollection();
             return Backbone.Model.prototype.clear.call(this, options);
         },
 
-        destroySubcollection : function destroySubcollection() {
+        /**
+         * Destroy the collection associated to the document (used in the destroy part of the view)
+         *
+         */
+        destroySubcollection : function mDocumentdestroySubcollection() {
             if (this.get("menus") instanceof CollectionMenus) {
                 this.get("menus").destroy();
             }
@@ -438,15 +493,16 @@ define([
             }
         },
 
-        toJSON : function toJSON() {
-            return {document : {attributes : this.getValues()}};
-        },
-
-        getDocumentData : function getDocumentData() {
+        /**
+         * Used by backbone for the save part
+         * @returns {{document: {attributes: *, properties : *}}}
+         */
+        toJSON : function mDocumenttoJSON() {
             return {
-                "initid" :   this.get("initid"),
-                "viewId" :   this.get("viewId"),
-                "revision" : this.get("revision")
+                document : {
+                    properties : this.getProperties(),
+                    attributes : this.getValues()
+                }
             };
         }
     });
