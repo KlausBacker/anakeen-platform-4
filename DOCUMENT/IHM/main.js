@@ -16,5 +16,5 @@ require([
         "revision" : window.dcp.viewData.revision
     });
 
-    window.dcp.documentController = $document;
+    window.dcp.document = $document;
 });

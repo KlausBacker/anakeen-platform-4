@@ -59,7 +59,7 @@ define([
             if (!_.isUndefined(searchObject.mode)) {
                 newValues.renderMode = searchObject.mode;
             }
-            this.document.set(newValues).fetch();
+            this.document.clear().set(newValues).fetch();
         }
 
     });
