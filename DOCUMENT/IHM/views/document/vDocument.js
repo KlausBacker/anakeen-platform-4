@@ -257,10 +257,19 @@ define([
         },
 
         renderJS: function renderJS() {
+            var insertJs = function (path, key) {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.setAttribute("data-id",  key);
+                script.async = true;
+                script.src = path;
+                document.getElementsByTagName('head')[0].appendChild(script);
+            };
+
             _.each(this.model.get("customJS"), function (jsItem) {
                 var $existsLink = $('script[data-id=' + jsItem.key + ']');
                 if ($existsLink.length === 0) {
-                    $("body script:last").after('<script type="text/javascript" src="' + jsItem.path + '" data-id="' + jsItem.key + '" ></script>');
+                    insertJs(jsItem.path, jsItem.key);
                 }
             });
         },
