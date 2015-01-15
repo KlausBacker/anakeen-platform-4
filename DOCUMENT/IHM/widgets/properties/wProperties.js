@@ -113,8 +113,8 @@ define([
 
         currentWidget: null,
         _create: function () {
+            var scope = this;
             this.currentWidget = $('<div class="document-properties"/>');
-
 
             this.element.append(this.currentWidget);
 
@@ -122,13 +122,11 @@ define([
 
             this.element.data("dcpDocumentProperties", this);
 
-            this.currentWidget.on("click"+ this.eventNamespace, "a[data-document-id]", function (event) {
-                var docid=$(this).data("document-id");
-                if (window.dcp.document && docid) {
+            this.currentWidget.on("click" + this.eventNamespace, "a[data-document-id]", function (event) {
+                var docid = $(this).data("document-id");
+                if (docid) {
                     event.preventDefault();
-                    window.dcp.document.clear();
-                    window.dcp.document.set("initid", docid);
-                    window.dcp.document.fetch();
+                    scope.currentWidget.trigger("viewDocument", docid);
                 }
             });
             this.currentWidget.kendoWindow(this.options.window);
@@ -145,13 +143,10 @@ define([
                     info = _.extend(scope.documentProperties, {labels: scope.options.labels});
                     info.formatDate = function () {
                         return function (text, render) {
-                            return kendo.toString(new Date(render(text).replace(' ','T')), "G");
-
-
+                            return kendo.toString(new Date(render(text).replace(' ', 'T')), "G");
                         };
                     };
                     scope.currentWidget.html(Mustache.render(scope.htmlCaneva(), info));
-
                     scope.currentWidget.data("kendoWindow").center();
 
                 }).fail(function (xhr) {
@@ -164,13 +159,11 @@ define([
             this.currentWidget.data("kendoWindow").open();
         },
 
-        _destroy : function _destroy() {
+        _destroy: function _destroy() {
             if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
                 this.currentWidget.data("kendoWindow").destroy();
             }
         }
-
-
 
 
     });

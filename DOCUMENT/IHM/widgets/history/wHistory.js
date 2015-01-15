@@ -137,13 +137,13 @@ define([
             });
 
             this.currentWidget.on("click" + this.eventNamespace, "a[data-document-id]", function (event) {
-                var docid=$(this).data("document-id");
-                if (window.dcp.document && docid) {
+                var docid = $(this).data("document-id");
+                if (docid) {
                     event.preventDefault();
-                    window.dcp.document.clear();
-                    window.dcp.document.set("revision", parseInt($(this).data("revision")));
-                    window.dcp.document.set("initid", docid);
-                    window.dcp.document.fetch();
+                    scope.currentWidget.trigger("viewRevision", {
+                        initid: docid,
+                        revision: parseInt($(this).data("revision"))
+                    });
                 }
             });
         },
@@ -177,7 +177,7 @@ define([
                         "owner": message.uname,
                         "date": message.date,
                         "diff": 0,
-                        "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.properties.status==="fixed" ? " history-comment--fixed" : "")
+                        "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.properties.status === "fixed" ? " history-comment--fixed" : "")
                     });
                 });
 
@@ -220,7 +220,7 @@ define([
                                 if (data.state.reference) {
 
                                     return '<div><span class="history-state-color" style="background-color:' + data.state.color + '" >&nbsp;</span>' +
-                                    (data.status==="fixed" ? data.state.stateLabel : data.state.activity) +
+                                    (data.status === "fixed" ? data.state.stateLabel : data.state.activity) +
                                     '</div>';
                                 }
                                 return $("<div/>").text(data.title).html();
@@ -252,8 +252,8 @@ define([
                                 return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&id=' +
                                 historyWidget.options.documentId +
                                 '&revision=' + data + '"' +
-                                'data-document-id="'+historyWidget.options.documentId+'" '+
-                                'data-revision="'+data+'"'+
+                                'data-document-id="' + historyWidget.options.documentId + '" ' +
+                                'data-revision="' + data + '"' +
                                 '>' +
                                 historyWidget.options.labels.linkRevision.replace('#', data) + '</a>';
                             } else {
@@ -385,7 +385,7 @@ define([
                                 if (error.code === "CRUD0219" && error.uri) {
                                     console.log("need retry with", error.uri);
                                     // redirect with the good trash uri
-                                    $.getJSON(error.uri.replace('.json','') + '/history/').
+                                    $.getJSON(error.uri.replace('.json', '') + '/history/').
                                         done(function (response) {
                                             var tableData = historyWidget._fillDataTable(response);
                                             callback(
@@ -414,7 +414,7 @@ define([
 
         },
 
-        _destroy : function _destroy() {
+        _destroy: function _destroy() {
             var $history = this.element.find('.history-main');
             if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
                 this.currentWidget.data("kendoWindow").destroy();
