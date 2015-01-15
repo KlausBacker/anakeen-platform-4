@@ -162,10 +162,12 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEvents();
             });
-            this._model.listenTo(this._model, "request", function () {
+            this._model.listenTo(this._model, "close", function (type, event) {
+                var result = true;
                 if (currentWidget.initialLoaded !== false) {
-                    currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
+                    result = currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true), type);
                 }
+                event.prevent = !result;
             });
             this._model.listenTo(this._model, "changeValue", function (options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
@@ -585,7 +587,7 @@ define([
                 })) {
                 throw new Error("The event type " + eventType + " is not known. It must be one of " + eventList.join(" ,"));
             }
-            if (_.isFunction(callback)) {
+            if (!_.isFunction(callback)) {
                 throw new Error("An event need a callback");
             }
             options = _.defaults(options, {

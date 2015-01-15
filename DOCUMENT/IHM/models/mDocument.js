@@ -302,12 +302,12 @@ define([
                     }
                     if (!oneSuccess) {
                         errorMessage.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label") + ' is needed');
-                        currentAttribute.setErrorMessage( "The field must not be empty"  );
+                        currentAttribute.setErrorMessage("The field must not be empty");
                         success = false;
                     }
                 }
 
-                if (!currentAttribute.checkConstraint({clearError:false})) {
+                if (!currentAttribute.checkConstraint({clearError : false})) {
                     success = false;
                     errorMessage.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label") + ' ' + currentAttribute.get("errorMessage"));
                 }
@@ -315,7 +315,7 @@ define([
             if (!success) {
                 return {
                     title :   "Unable to save",
-                    message : errorMessage.join(', '+"\n")
+                    message : errorMessage.join(', ' + "\n")
                 };
             }
             return undefined;
@@ -458,7 +458,7 @@ define([
                 //Propagate the change event to the model
                 currentModel.listenTo(attributes.attributes, "change:attributeValue", function (model, value) {
                     currentModel.trigger("changeValue", {
-                        attributeId :   model.id
+                        attributeId : model.id
                     });
                 });
                 //Propagate the validate event to the model
@@ -507,6 +507,33 @@ define([
                     attributes : this.getValues()
                 }
             };
+        },
+
+        fetch : function mDocumentFetch() {
+            var event = {prevent : false};
+            this.trigger("close", "fetch", event);
+            if (event.prevent === false) {
+                return Backbone.Model.prototype.fetch.apply(this, arguments);
+            }
+            return false;
+        },
+
+        save : function mDocumentSave() {
+            var event = {prevent : false};
+            this.trigger("close", "save", event);
+            if (event.prevent === false) {
+                return Backbone.Model.prototype.save.apply(this, arguments);
+            }
+            return false;
+        },
+
+        destroy : function mDocumentDestroy() {
+            var event = {prevent : false};
+            this.trigger("close", "destroy", event);
+            if (event.prevent === false) {
+                return Backbone.Model.prototype.destroy.apply(this, arguments);
+            }
+            return false;
         }
     });
 
