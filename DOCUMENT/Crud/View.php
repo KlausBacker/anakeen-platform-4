@@ -272,6 +272,7 @@ class View extends Crud
                 case self::fieldRenderOptions:
                     $viewInfo[self::fieldRenderOptions] = $config->getOptions($document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($document)->jsonSerialize();
                     break;
 
                 case self::fieldRenderLabel:
@@ -499,7 +500,7 @@ class View extends Crud
             $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
             $vid = '!none';
         }
-        if ($vid === "!none" || $document->cvid == 0) {
+        if (($vid === "!none" || $document->cvid == 0) && $document->doctype !== "C") {
             $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $document);
             $vid = '';
         } else {

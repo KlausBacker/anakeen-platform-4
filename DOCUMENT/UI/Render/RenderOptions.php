@@ -123,7 +123,8 @@ class RenderOptions implements \JsonSerializable
         $this->options[$optName] = $optValue;
     }
     /**
-     * @param string $attrid
+     * Set common option
+     * @param string $attrid attribute identifier
      * @return CommonRenderOptions
      */
     public function commonOption($attrid = '')
@@ -135,7 +136,7 @@ class RenderOptions implements \JsonSerializable
         return $this->commonOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return TextRenderOptions
      */
     public function text($attrid = '')
@@ -147,7 +148,7 @@ class RenderOptions implements \JsonSerializable
         return $this->textOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return ImageRenderOptions
      */
     public function image($attrid = '')
@@ -159,7 +160,7 @@ class RenderOptions implements \JsonSerializable
         return $this->imageOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return FileRenderOptions
      */
     public function file($attrid = '')
@@ -171,7 +172,7 @@ class RenderOptions implements \JsonSerializable
         return $this->fileOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return dateRenderOptions
      */
     public function date($attrid = '')
@@ -183,7 +184,7 @@ class RenderOptions implements \JsonSerializable
         return $this->dateOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return TimeRenderOptions
      */
     public function time($attrid = '')
@@ -195,7 +196,7 @@ class RenderOptions implements \JsonSerializable
         return $this->timeOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return TabRenderOptions
      */
     public function tab($attrid = '')
@@ -207,7 +208,7 @@ class RenderOptions implements \JsonSerializable
         return $this->tabOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return TimestampRenderOptions
      */
     public function timestamp($attrid = '')
@@ -219,7 +220,7 @@ class RenderOptions implements \JsonSerializable
         return $this->timestampOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return HtmltextRenderOptions
      */
     public function htmltext($attrid = '')
@@ -231,7 +232,7 @@ class RenderOptions implements \JsonSerializable
         return $this->htmltextOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return IntRenderOptions
      */
     public function int($attrid = '')
@@ -243,7 +244,7 @@ class RenderOptions implements \JsonSerializable
         return $this->intOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return DoubleRenderOptions
      */
     public function double($attrid = '')
@@ -255,7 +256,7 @@ class RenderOptions implements \JsonSerializable
         return $this->doubleOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return MoneyRenderOptions
      */
     public function money($attrid = '')
@@ -267,7 +268,7 @@ class RenderOptions implements \JsonSerializable
         return $this->moneyOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return ArrayRenderOptions
      */
     public function arrayAttribute($attrid = '')
@@ -279,7 +280,7 @@ class RenderOptions implements \JsonSerializable
         return $this->arrayOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return DocidRenderOptions
      */
     public function docid($attrid = '')
@@ -291,7 +292,7 @@ class RenderOptions implements \JsonSerializable
         return $this->docidOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return LongtextRenderOptions
      */
     public function longtext($attrid = '')
@@ -303,7 +304,7 @@ class RenderOptions implements \JsonSerializable
         return $this->longtextOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return PasswordRenderOptions
      */
     public function password($attrid = '')
@@ -315,7 +316,7 @@ class RenderOptions implements \JsonSerializable
         return $this->passwordOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return AccountRenderOptions
      */
     public function account($attrid = '')
@@ -327,7 +328,7 @@ class RenderOptions implements \JsonSerializable
         return $this->accountOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return ColorRenderOptions
      */
     public function color($attrid = '')
@@ -339,7 +340,7 @@ class RenderOptions implements \JsonSerializable
         return $this->colorOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return ThesaurusRenderOptions
      */
     public function thesaurus($attrid = '')
@@ -351,7 +352,7 @@ class RenderOptions implements \JsonSerializable
         return $this->thesaurusOptions;
     }
     /**
-     * @param string $attrid
+     * @param string $attrid attribute identifier
      * @return EnumRenderOptions
      */
     public function enum($attrid = '')
@@ -397,7 +398,7 @@ class RenderOptions implements \JsonSerializable
     }
     /**
      * Apply option to a specific attribute
-     * @param string $attrId attribute identifier
+     * @param string $attrid attribute identifier attribute identifier
      * @param string $optName option name
      * @param string $optValue option value
      */
@@ -407,7 +408,7 @@ class RenderOptions implements \JsonSerializable
     }
     /**
      * Get option to a specific attribute
-     * @param string $attrId attribute identifier
+     * @param string $attrid attribute identifier attribute identifier
      * @param string $optName option name
      * @return mixed
      */
