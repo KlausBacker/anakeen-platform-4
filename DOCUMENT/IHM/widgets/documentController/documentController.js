@@ -306,6 +306,8 @@ define([
             this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
+            //Trigger new added ready event
+            this._triggerControllerEvent("ready");
         },
 
         /**
