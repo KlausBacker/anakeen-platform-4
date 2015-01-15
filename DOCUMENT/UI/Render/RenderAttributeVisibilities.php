@@ -33,14 +33,14 @@ class RenderAttributeVisibilities implements \JsonSerializable
     public function getVisibilities()
     {
         $this->refreshVisibility();
-        
+        unset($this->finalVisibilities['FIELD_HIDDENS']);
         return $this->finalVisibilities;
     }
     /**
      * Affect new visibility to an attribute
      * This visibility is more prioritary than mask
-     * @param string $attributeId
-     * @param string $visibility
+     * @param string $attributeId attribute identifier
+     * @param string $visibility one of I,H,O,R,W,S
      * @return $this
      * @throws Exception
      */
@@ -105,20 +105,6 @@ class RenderAttributeVisibilities implements \JsonSerializable
     protected function computeVisibility(\BasicAttribute $oa)
     {
         $this->finalVisibilities[$oa->id] = ComputeVisibility($this->finalVisibilities[$oa->id], $this->finalVisibilities[$oa->fieldSet->id], isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : '');
-    }
-    /**
-     * Set visibilies to document attribute proerties
-     */
-    public function applyToDocumentMask()
-    {
-        $this->refreshVisibility();
-        $oas = $this->document->getAttributes();
-        foreach ($oas as & $v) {
-            
-            if (!empty($this->finalVisibilities[$v->id])) {
-                $v->mvisibility = $this->finalVisibilities[$v->id];
-            }
-        }
     }
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>

@@ -56,22 +56,37 @@ namespace {
          * @errorCode the menu item not exist
          * @see \Dcp\Ui\BarMenu::insertBefore
          */
-        const UI0100 = 'Menu insertBefore : Element index \"%s\" not exists';
+        const UI0100 = 'Menu insertBefore : Element index "%s" not exists';
         /**
          * @errorCode the menu item not exist
          * @see \Dcp\Ui\BarMenu::insertAfter
          */
-        const UI0101 = 'Menu insertAfter : Element index \"%s\" not exists';
+        const UI0101 = 'Menu insertAfter : Element index "%s" not exists';
         /**
          * @errorCode the attribte not exists
          * @see \Dcp\Ui\RenderAttributeVisibilities::setVisibility
          */
-        const UI0102 = 'setVisibility : Attribute \"%s\" not exists for "%s" document';
+        const UI0102 = 'setVisibility : Attribute "%s" not exists for "%s" document';
         /**
          * @errorCode Visibility must be one of R,W,O,I,S,H
          * @see \Dcp\Ui\RenderAttributeVisibilities::setVisibility
          */
         const UI0103 = 'setVisibility : Visibility "%s" not correct. Allowed are "%s';
+        /**
+         * @errorCode the attribute not exists
+         * @see \Dcp\Ui\RenderAttributeNeeded::setNeeded
+         */
+        const UI0104 = 'setNeeded : Attribute "%s" not exists for "%s" document';
+        /**
+         * @errorCode Cannot apply needed on tab, frame or menu attributes, only an "normal" attribute
+         * @see \Dcp\Ui\RenderAttributeNeeded::setNeeded
+         */
+        const UI0105 = 'setNeeded : Attribute "%s" cannot be needed (not allowed type)  for "%s" document';
+        /**
+         * @errorCode Cannot apply needed an attribute wich is in an array
+         * @see \Dcp\Ui\RenderAttributeNeeded::setNeeded
+         */
+        const UI0106 = 'setNeeded : Attribute "%s" cannot be needed (must not be in an array)  for "%s" document';
         /**
          * @errorCode the menu item not exist
          */

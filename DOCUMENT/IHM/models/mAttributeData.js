@@ -169,18 +169,24 @@ define([
             return (aparent && aparent.attributes && aparent.attributes.type === "array");
         },
 
-        checkConstraint : function mAttributecheckConstraint() {
+        checkConstraint : function mAttributecheckConstraint(config) {
             var response = new ConstraintHandler(), responseText;
+
+            config = _.extend({clearError:true, displayError : true}, config);
             this.trigger("constraint", {model : this, response : response, value : this.get("attributeValue")});
             if (response.hasConstraintMessages()) {
                 responseText = "";
                 _.each(response.getConstraintMessages(), function (currentResponse) {
                     responseText += currentResponse.message + " ";
                 });
-                this.setErrorMessage(responseText);
+                if (config.displayError) {
+                    this.setErrorMessage(responseText);
+                }
                 return false;
             } else {
-                this.setErrorMessage(null);
+                if (config.clearError) {
+                    this.setErrorMessage(null);
+                }
                 return true;
             }
         }

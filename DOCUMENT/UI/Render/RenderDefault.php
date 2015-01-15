@@ -271,6 +271,14 @@ class RenderDefault implements IRenderConfig
     {
         return new RenderAttributeVisibilities($document);
     }
+    /**
+     * @param \Doc $document
+     * @return RenderAttributeNeeded new mandatory attributes
+     */
+    public function getNeeded(\Doc $document)
+    {
+        return new RenderAttributeNeeded($document);
+    }
     
     public function getType()
     {

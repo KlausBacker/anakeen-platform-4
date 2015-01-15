@@ -302,10 +302,12 @@ define([
                     }
                     if (!oneSuccess) {
                         errorMessage.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label") + ' is needed');
+                        currentAttribute.setErrorMessage( "The field must not be empty"  );
                         success = false;
                     }
                 }
-                if (!currentAttribute.checkConstraint()) {
+
+                if (!currentAttribute.checkConstraint({clearError:false})) {
                     success = false;
                     errorMessage.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label") + ' ' + currentAttribute.get("errorMessage"));
                 }
@@ -313,7 +315,7 @@ define([
             if (!success) {
                 return {
                     title :   "Unable to save",
-                    message : errorMessage.join(', ')
+                    message : errorMessage.join(', '+"\n")
                 };
             }
             return undefined;
@@ -327,8 +329,10 @@ define([
             _.each(attrModels.models, function (attrModel) {
                 var message = attrModel.get("errorMessage");
                 // redo error after document is show
-                attrModel.setErrorMessage(null);
-                attrModel.setErrorMessage(message);
+                if (message) {
+                    attrModel.setErrorMessage(null);
+                    attrModel.setErrorMessage(message);
+                }
             });
         },
 
@@ -348,7 +352,7 @@ define([
          */
         parse :              function mDocumentParse(response) {
             var values, attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes,
-                view = response.data.view;
+                neededAttributes, view = response.data.view;
             if (response.success === false) {
                 throw new Error("Unable to get the data from documents");
             }
@@ -363,6 +367,7 @@ define([
             }
             valueAttributes = view.documentData.document.attributes;
             visibilityAttributes = view.renderOptions.visibilities;
+            neededAttributes = view.renderOptions.needed;
             if (view.documentData.family) {
                 structureAttributes = view.documentData.family.structure;
             } else {
@@ -373,6 +378,7 @@ define([
             _.each(attributes, function (currentAttributeStructure) {
                 if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
                     currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
+                    currentAttributeStructure.needed  = (neededAttributes[currentAttributeStructure.id] === true);
                 }
                 if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
                     currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];

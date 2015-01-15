@@ -39,6 +39,11 @@ interface IRenderConfig {
      */
     public function getVisibilities(\Doc $document);
     /**
+     * @param \Doc $document
+     * @return RenderAttributeNeeded new mandatory attribute
+     */
+    public function getNeeded(\Doc $document);
+    /**
      * @param \Doc $document Document instance
      * @return DocumentTemplateContext get template controller
      */

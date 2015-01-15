@@ -275,6 +275,7 @@ define([
         },
 
         showHistory: function documentShowHistory(data) {
+            var scope=this;
             this.historyWidget = $('body').dcpDocumentHistory({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
@@ -284,9 +285,15 @@ define([
             }).data("dcpDocumentHistory");
 
             this.historyWidget.open();
+            this.historyWidget.currentWidget.on("viewRevision", function (event, data) {
+                scope.model.clear();
+                scope.model.set( {initid: data.initid, revision: data.revision});
+                scope.model.fetch();
+            });
         },
 
         showProperties: function documentShowProperties(data) {
+            var scope=this;
             this.propertiesWidget = $('body').dcpDocumentProperties({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
@@ -296,6 +303,11 @@ define([
             }).data("dcpDocumentProperties");
 
             this.propertiesWidget.open();
+            this.propertiesWidget.currentWidget.on("viewDocument", function (event, data) {
+                scope.model.clear();
+                scope.model.set("initid", data);
+                    scope.model.fetch();
+            });
         },
 
         updateTitle: function updateTitle() {
