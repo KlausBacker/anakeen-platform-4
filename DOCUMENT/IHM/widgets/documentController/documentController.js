@@ -12,7 +12,7 @@ define([
 ], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, DocumentView) {
     'use strict';
 
-    var eventList = ["ready", "close", "save", "change", "message", "error"];
+    var eventList = ["ready", "close", "save", "change", "message", "error", "validate", "delete"];
 
     $.widget("dcp.documentController", {
 
@@ -162,12 +162,21 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEvents();
             });
-            this._model.listenTo(this._model, "close", function (type, event) {
+            this._model.listenTo(this._model, "close", function (event) {
                 var result = true;
                 if (currentWidget.initialLoaded !== false) {
-                    result = currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true), type);
+                    result = currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
                 }
                 event.prevent = !result;
+            });
+            this._model.listenTo(this._model, "save", function (event) {
+                event.prevent = !currentWidget._triggerControllerEvent("save", currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "delete", function (event) {
+                event.prevent = !currentWidget._triggerControllerEvent("delete", currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "validate", function (event) {
+                event.prevent = currentWidget._triggerControllerEvent("validate", currentWidget._model.getProperties());
             });
             this._model.listenTo(this._model, "changeValue", function (options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
@@ -532,14 +541,14 @@ define([
                 throw new Error("An event need a callback");
             }
             parameters = _.defaults(options, {
-                "documentCheck" :  function () {
+                "documentCheck" :   function () {
                     return true;
                 },
-                "attributeCheck" : function () {
+                "attributeCheck" :  function () {
                     return true;
                 },
                 "constraintCheck" : callback,
-                "name" :           _.uniqueId("constraint")
+                "name" :            _.uniqueId("constraint")
             });
             this.options.constraintList.push(parameters);
             this._initActivatedConstraint();

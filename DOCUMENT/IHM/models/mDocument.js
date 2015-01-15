@@ -284,7 +284,13 @@ define([
         validate : function mDocumentvalidate() {
             var success = true,
                 currentDocument = this,
-                errorMessage = [];
+                errorMessage = [], event = {prevent : false};
+            this.trigger("validate", event);
+            if (event.prevent) {
+                return {
+                    title : "Unable to save"
+                };
+            }
             this.get("attributes").each(function (currentAttribute) {
                 var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
                 if (currentAttribute.get("needed") === true) {
@@ -520,7 +526,7 @@ define([
 
         save : function mDocumentSave() {
             var event = {prevent : false};
-            this.trigger("close", "save", event);
+            this.trigger("save", event);
             if (event.prevent === false) {
                 return Backbone.Model.prototype.save.apply(this, arguments);
             }
@@ -529,7 +535,7 @@ define([
 
         destroy : function mDocumentDestroy() {
             var event = {prevent : false};
-            this.trigger("close", "destroy", event);
+            this.trigger("delete", event);
             if (event.prevent === false) {
                 return Backbone.Model.prototype.destroy.apply(this, arguments);
             }
