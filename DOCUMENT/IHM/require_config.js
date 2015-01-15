@@ -19,6 +19,7 @@
             "models" :           "IHM/models",
             "views" :            "IHM/views",
             "routers" :          "IHM/routers",
+            "controllerObjects" : "IHM/controllerObjects",
             "dcpDocumentTest" :  "IHM/test",
             "text" :             '../lib/RequireJS/text',
             "jquery" :           "../lib/KendoUI/js/jquery",

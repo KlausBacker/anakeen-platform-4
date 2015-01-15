@@ -458,15 +458,12 @@ define([
                 //Propagate the change event to the model
                 currentModel.listenTo(attributes.attributes, "change:attributeValue", function (model, value) {
                     currentModel.trigger("changeValue", {
-                        documentId :    currentModel.get("initid"),
-                        attributeId :   model.id,
-                        value :         value,
-                        previousValue : model.previous("attributeValue")
+                        attributeId :   model.id
                     });
                 });
                 //Propagate the validate event to the model
                 currentModel.listenTo(attributes.attributes, "constraint", function (options) {
-                    currentModel.trigger("constraint", currentModel.get("properties").toJSON(), options.model.toJSON(), options.response);
+                    currentModel.trigger("constraint", options.model.id, options.response);
                 });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
