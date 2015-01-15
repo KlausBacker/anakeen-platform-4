@@ -316,7 +316,9 @@ define([
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
             //Trigger new added ready event
-            this._triggerControllerEvent("ready");
+            if (this.initialLoaded !== false) {
+                this._triggerControllerEvent("ready");
+            }
         },
 
         /**
