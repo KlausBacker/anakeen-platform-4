@@ -517,7 +517,7 @@ define([
 
         fetch : function mDocumentFetch() {
             var event = {prevent : false};
-            this.trigger("close", "fetch", event);
+            this.trigger("close", event);
             if (event.prevent === false) {
                 return Backbone.Model.prototype.fetch.apply(this, arguments);
             }
