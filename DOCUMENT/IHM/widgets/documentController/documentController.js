@@ -163,11 +163,9 @@ define([
                 currentWidget._initActivatedEvents();
             });
             this._model.listenTo(this._model, "close", function (event) {
-                var result = true;
                 if (currentWidget.initialLoaded !== false) {
-                    result = currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
+                    event.prevent = !currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
                 }
-                event.prevent = !result;
             });
             this._model.listenTo(this._model, "save", function (event) {
                 event.prevent = !currentWidget._triggerControllerEvent("save", currentWidget._model.getProperties(true));
@@ -330,11 +328,9 @@ define([
          */
         _triggerControllerEvent : function documentController_triggerControllerEvent(eventName) {
             var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(eventName), onArgs;
-            args.unshift(event);
-            onArgs = args.slice(0);
-            onArgs.unshift(eventName);
             event.target = currentWidget.element;
-            currentWidget._trigger.apply(currentWidget, onArgs);
+            // internal event trigger
+            args.unshift(event);
             _.chain(this.activatedEvent).filter(function (currentEvent) {
                 return currentEvent.eventType === eventName;
             }).some(function (currentEvent) {
@@ -347,8 +343,18 @@ define([
                         console.error(e);
                     }
                 }
-
             });
+            //prepare argument for widget event trigger
+            // duplicate
+            onArgs = args.slice(0);
+            // add event type
+            onArgs.unshift(eventName);
+            // concatenate other argument in one element
+            onArgs[2] = onArgs.slice(2);
+            // suppress other arguments
+            onArgs = onArgs.slice(0, 3);
+            //trigger external event
+            currentWidget._trigger.apply(currentWidget, onArgs);
             return !event.isDefaultPrevented();
         },
 
@@ -573,12 +579,17 @@ define([
          * @returns {*}
          */
         removeConstraint : function documentControllerRemoveConstraint(constraintName) {
-            var testRegExp = new RegExp("\\" + constraintName + "$");
+            var removed = [],
+                testRegExp = new RegExp("\\" + constraintName + "$");
             this.options.constraintList = _.filter(this.options.constraintList, function (currentConstrait) {
-                return currentConstrait.name !== constraintName && !testRegExp.test(currentConstrait.name);
+                if (currentConstrait.name === constraintName && testRegExp.test(currentConstrait.name)) {
+                    removed.push(currentConstrait);
+                    return false;
+                }
+                return true;
             });
             this._initActivatedConstraint();
-            return this.listConstraints();
+            return removed;
         },
 
         /**
@@ -632,12 +643,16 @@ define([
          * @returns {*}
          */
         removeEvent : function documentControllerRemoveEvent(eventName) {
-            var testRegExp = new RegExp("\\" + eventName + "$");
+            var removed = [], testRegExp = new RegExp("\\" + eventName + "$");
             this.options.eventList = _.filter(this.options.eventList, function (currentEvent) {
-                return currentEvent.name !== eventName && !testRegExp.test(currentEvent.name);
+                if (currentEvent.name === eventName && testRegExp.test(currentEvent.name)) {
+                    removed.push(currentEvent);
+                    return false;
+                }
+                return true;
             });
             this._initActivatedEvents();
-            return this.listEvents();
+            return removed;
         },
 
         /**
