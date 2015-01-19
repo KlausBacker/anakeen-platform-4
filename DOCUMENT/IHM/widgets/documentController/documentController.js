@@ -174,7 +174,7 @@ define([
                 event.prevent = !currentWidget._triggerControllerEvent("delete", currentWidget._model.getProperties(true));
             });
             this._model.listenTo(this._model, "validate", function (event) {
-                event.prevent = currentWidget._triggerControllerEvent("validate", currentWidget._model.getProperties());
+                event.prevent = !currentWidget._triggerControllerEvent("validate", currentWidget._model.getProperties());
             });
             this._model.listenTo(this._model, "changeValue", function (options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
