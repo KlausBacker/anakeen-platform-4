@@ -204,7 +204,9 @@ define([
                 inputValue.data("kendoMultiSelect").open();
             });
 
-            this.element.find('.dcpAttribute__value--docid--button[title]').tooltip();
+            this.element.find('.dcpAttribute__value--docid--button[title]').tooltip({
+                html:true
+            });
         },
         /**
          * Return true if attribut has multiple option

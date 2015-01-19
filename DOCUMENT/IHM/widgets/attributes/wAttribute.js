@@ -517,7 +517,7 @@ define([
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+                    template: '<div class="tooltip dcpAttribute__linkvalue" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
                     trigger: "hover"
                 });
 

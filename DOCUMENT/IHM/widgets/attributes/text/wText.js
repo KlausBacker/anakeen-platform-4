@@ -81,7 +81,9 @@ define([
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
-            this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip();
+            this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip({
+                html:true
+            });
 
         },
 
