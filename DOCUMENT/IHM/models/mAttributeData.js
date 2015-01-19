@@ -1,7 +1,7 @@
 define([
     "underscore",
     "models/mAttribute",
-    'models/constraintHandler'
+    'controllerObjects/constraintHandler'
 ], function (_, AttributeModel, ConstraintHandler) {
     'use strict';
 
@@ -14,6 +14,7 @@ define([
 
         initialize : function mAttributeinitialize() {
             this.listenTo(this, "change:attributeValue", this.checkConstraint);
+            this._initialAttributeValue = this.get("attributeValue");
             AttributeModel.prototype.initialize.apply(this, arguments);
         },
 

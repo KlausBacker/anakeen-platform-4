@@ -320,7 +320,7 @@ define([
 
         deleteDocument: function documentDelete() {
             var currentView = this, destroy = this.model.destroy();
-            if (destroy !== false) {
+            if (destroy !== false && destroy.done) {
                 destroy.done(function destroyDone(response) {
                     currentView.trigger("reinit", {
                             initid: response.data.view.documentData.document.properties.id,

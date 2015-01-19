@@ -4,14 +4,15 @@ define([
     'backbone',
     'routers/router',
     'models/mDocument',
+    'controllerObjects/attributeInterface',
     'views/document/vDocument',
     'widgets/widget',
     'widgets/window/wConfirm',
     'widgets/window/wLoading'
-], function ($, _, Backbone, Router, DocumentModel, DocumentView) {
+], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, DocumentView) {
     'use strict';
 
-    var eventList = ["ready", "close", "save", "change", "message", "error"];
+    var eventList = ["ready", "close", "save", "change", "message", "error", "validate", "delete"];
 
     $.widget("dcp.documentController", {
 
@@ -161,18 +162,37 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEvents();
             });
-            this._model.listenTo(this._model, "request", function () {
+            this._model.listenTo(this._model, "close", function (event) {
+                var result = true;
                 if (currentWidget.initialLoaded !== false) {
-                    currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
+                    result = currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
                 }
+                event.prevent = !result;
+            });
+            this._model.listenTo(this._model, "save", function (event) {
+                event.prevent = !currentWidget._triggerControllerEvent("save", currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "delete", function (event) {
+                event.prevent = !currentWidget._triggerControllerEvent("delete", currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "validate", function (event) {
+                event.prevent = currentWidget._triggerControllerEvent("validate", currentWidget._model.getProperties());
             });
             this._model.listenTo(this._model, "changeValue", function (options) {
-                currentWidget._triggerControllerEvent("change", currentWidget._model.getProperties(), options);
+                var currentAttribute = currentWidget.getAttribute(options.attributeId);
+                currentWidget._triggerControllerEvent("change",
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
+                    currentAttribute.getValue("all")
+                );
             });
-            this._model.listenTo(this._model, "constraint", function (document, attribute, response) {
+            this._model.listenTo(this._model, "constraint", function (attribute, response) {
                 _.each(currentWidget.activatedConstraint, function (currentConstraint) {
                     if (currentConstraint.attributeCheck) {
-                        currentConstraint.constraintCheck(document, attribute, response);
+                        currentConstraint.constraintCheck(
+                            currentWidget._model.getProperties(),
+                            currentWidget.getAttribute(attribute),
+                            response);
                     }
                 });
             });
@@ -295,6 +315,10 @@ define([
             this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
+            //Trigger new added ready event
+            if (this.initialLoaded !== false) {
+                this._triggerControllerEvent("ready");
+            }
         },
 
         /**
@@ -316,7 +340,7 @@ define([
             }).some(function (currentEvent) {
                 try {
                     currentEvent.eventCallback.apply(currentWidget.element, args);
-                } catch(e) {
+                } catch (e) {
                     if (window.dcp.logger) {
                         window.dcp.logger(e);
                     } else {
@@ -334,7 +358,7 @@ define([
         /**
          * Reinit the current document (close it and re-open it)
          */
-        reinitDocument : function documentControllerReinitDocument() {
+        reinitDocument :          function documentControllerReinitDocument() {
             this._reinitModel();
             this._model.fetch();
         },
@@ -375,14 +399,37 @@ define([
         },
 
         /**
+         * Get the attribute interface object
+         *
+         * @param attributeId
+         * @returns {AttributeInterface}
+         */
+        getAttribute : function documentControllerGetAttribute(attributeId) {
+            return new AttributeInterface(this._getAttributeModel(attributeId));
+        },
+
+        /**
+         * Get all the attributes of the current document
+         *
+         * @returns [AttributeInterface]
+         */
+        getAttributes : function documentControllerGetAttributes() {
+            return this._model.get("attributes").map(function (currentAttribute) {
+                    return new AttributeInterface(currentAttribute);
+                }
+            );
+        },
+
+        /**
          * Get an attribute value
          *
          * @param attributeId
+         * @param type string (current|previous|initial|all) what kind of value (default : current)
          * @returns {*}
          */
-        getValue : function documentControllerGetValue(attributeId) {
-            var attribute = this._getAttributeModel(attributeId);
-            return attribute.get("attributeValue");
+        getValue : function documentControllerGetValue(attributeId, type) {
+            var attribute = new AttributeInterface(this._getAttributeModel(attributeId));
+            return attribute.getValue(type);
         },
 
         /**
@@ -403,12 +450,8 @@ define([
          * @returns {*}
          */
         setValue : function documentControllerSetValue(attributeId, value) {
-            var attribute = this._getAttributeModel(attributeId);
-            if (!_.isObject(value)) {
-                throw new Error("Value must be an object with value and displayValue properties");
-            }
-            value = _.defaults(value, {value : "", displayValue : ""});
-            return attribute.set("attributeValue", value);
+            var attribute = new AttributeInterface(this._getAttributeModel(attributeId));
+            return attribute.setValue(value);
         },
 
         /**
@@ -485,21 +528,29 @@ define([
 
         /**
          * Add a constraint to the widget
-         * @param parameters object
+         *
+         * @param options object { "name" : string, "documentCheck": function}
+         * @param callback function callback called when the event is triggered
          * @returns {*}
          */
-        addConstraint : function documentControlleraddConstraint(parameters) {
-            if (!_.isFunction(parameters.constraintCheck)) {
-                throw new Error("A constraint must have a constraintCheck function");
+        addConstraint : function documentControlleraddConstraint(options, callback) {
+            var parameters;
+            if (_.isUndefined(callback) && _.isFunction(options)) {
+                callback = options;
+                options = {};
             }
-            parameters = _.defaults(parameters, {
-                "documentCheck" :  function () {
+            if (!_.isFunction(callback)) {
+                throw new Error("An event need a callback");
+            }
+            parameters = _.defaults(options, {
+                "documentCheck" :   function () {
                     return true;
                 },
-                "attributeCheck" : function () {
+                "attributeCheck" :  function () {
                     return true;
                 },
-                "name" :           _.uniqueId("constraint")
+                "constraintCheck" : callback,
+                "name" :            _.uniqueId("constraint")
             });
             this.options.constraintList.push(parameters);
             this._initActivatedConstraint();
@@ -549,7 +600,7 @@ define([
                 })) {
                 throw new Error("The event type " + eventType + " is not known. It must be one of " + eventList.join(" ,"));
             }
-            if (_.isUndefined(callback)) {
+            if (!_.isFunction(callback)) {
                 throw new Error("An event need a callback");
             }
             options = _.defaults(options, {

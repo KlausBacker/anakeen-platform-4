@@ -169,6 +169,21 @@ define([
             return null;
         },
 
+        /**
+         * Set the value of an option
+         *
+         * @param key
+         * @param value
+         * @returns {*}
+         */
+        setOption : function mAttributesetOption(key, value) {
+            var options = this.getOptions();
+            options[key] = value;
+            this._options = options;
+            this.trigger("optionModified", key);
+            return this;
+        },
+
         getDocumentModel : function mAttributegetDocumentModelgetDocumentModel() {
             return this.collection.documentModel;
         },
