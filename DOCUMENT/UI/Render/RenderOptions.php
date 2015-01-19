@@ -31,6 +31,7 @@ class RenderOptions implements \JsonSerializable
     protected $dateOptions = null;
     protected $timestampOptions = null;
     protected $commonOptions = null;
+    protected $labels = array();
     
     public function __construct()
     {
@@ -386,7 +387,7 @@ class RenderOptions implements \JsonSerializable
     public function getAttributeTypeOption($attrType, $optName)
     {
         if ($attrType === "common") {
-            if ($this->options[$attrType][$optName]) {
+            if (! empty($this->options[$attrType][$optName])) {
                 return $this->options[$attrType][$optName];
             }
         } else {

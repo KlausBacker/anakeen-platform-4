@@ -235,7 +235,7 @@ class ButtonOptions
      */
     public $class = "";
     /**
-     * @var string tootip of button
+     * @var string tooltip of button
      */
     public $title = "";
     /**

@@ -395,7 +395,13 @@ define([
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
                 if (buttonConfig && buttonConfig.url) {
-                    var url = Mustache.render(buttonConfig.url, scope.options.attributeValue);
+
+                    var encodedInfo=_.chain(scope.options.attributeValue).clone().each(
+                        function(value, key, list) {list[key] = encodeURIComponent(value);}
+                    ).value();
+
+
+                    var url = Mustache.render(buttonConfig.url, encodedInfo);
                     if (buttonConfig.target !== "_dialog") {
                         window.open(url, buttonConfig.target);
                     } else {

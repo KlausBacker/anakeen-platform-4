@@ -135,21 +135,26 @@ define([
          * @returns {{}}
          */
         getOptions :        function mAttributegetOptions() {
-            var optionsCommon, optionsValue, optionsAttribute, renderOptions;
+            var optionsCommon, optionsValue, optionsAttribute, renderOptions, labels={};
             this._options = this._options || false;
 
             if (this._options === false) {
                 renderOptions = this.collection.renderOptions;
                 if (renderOptions.common) {
                     optionsCommon = renderOptions.common || {};
+                    labels= renderOptions.common.labels || {};
                 }
 
                 if (renderOptions.types) {
                     optionsValue = renderOptions.types[this.get("type")] || {};
+                    labels= _.extend(labels, optionsValue.labels);
                 }
                 if (renderOptions.attributes) {
                     optionsAttribute = renderOptions.attributes[this.id] || {};
+
                 }
+                // labels must be merged
+                optionsAttribute.labels= _.extend(labels, optionsAttribute.labels);
                 this._options = {};
             }
 
