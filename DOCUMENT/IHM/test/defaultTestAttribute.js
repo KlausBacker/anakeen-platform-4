@@ -116,9 +116,18 @@ define([
         };
 
         beforeEach(function () {
-            var localId = _.uniqueId("Document");
+            var localId = _.uniqueId("Document"), $renderZone = $("#render");
             localAttrId = _.uniqueId(attributeDefinition.type);
-            currentSandbox = setFixtures(sandbox());
+
+            if (window.location.hash === "#displayDom") {
+                currentSandbox = $("<div></div>");
+                if ($renderZone.length === 0) {
+                    $renderZone = $("body");
+                }
+                $renderZone.append(currentSandbox);
+            } else {
+                currentSandbox = setFixtures(sandbox());
+            }
 
             familyStructure = generateFamilyStructure(localAttrId, attributeDefinition, options.renderMode, initialValue);
 

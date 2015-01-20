@@ -18,13 +18,17 @@ define(["underscore"], function (_) {
         describe(type+" defaultTest", function () {
 
             beforeEach(function () {
-                //var $renderZone = $("#render");
-                //if ($renderZone.length === 0) {
-                //    $renderZone = $("body");
-                //}
-                //currentSandbox = $("<div></div>");
-                //$renderZone.prepend(currentSandbox);
-                currentSandbox = setFixtures(sandbox());
+                var $renderZone = $("#render");
+
+                if (window.location.hash === "#displayDom") {
+                    currentSandbox = $("<div></div>");
+                    if ($renderZone.length === 0) {
+                        $renderZone = $("body");
+                    }
+                    $renderZone.append(currentSandbox);
+                } else {
+                    currentSandbox = setFixtures(sandbox());
+                }
             });
 
             afterEach(function() {
