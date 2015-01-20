@@ -60,9 +60,12 @@ define([
                 return false;
             }
             if (this.getOption('showEmptyContent') === null) {
-                return this.get("content").some(function (value) {
-                    return value.isDisplayable();
-                });
+                if (this.get("content").some) {
+                    return this.get("content").some(function (value) {
+                        return value.isDisplayable();
+                    });
+                }
+                return false;
             }
             return true;
         },

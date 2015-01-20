@@ -31,7 +31,6 @@ module.exports = function (config) {
         reporters :     ['progress'],
 
         proxies :   {
-            '/dynacase/' : 'http://dynacase.dev:8081/'
         },
 
         // web server port
@@ -98,6 +97,7 @@ module.exports = function (config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
 
+        browsers : ['PhantomJS'],
 
         browserDisconnectTimeout :   '100000',
         browserNoActivityTimeout :   '100000',

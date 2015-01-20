@@ -65,7 +65,8 @@ define([
                 "options" : attrDef.options || [],
                 "renderMode" : renderMode,
                 "content" :      {},
-                "attributeValue" : value
+                "attributeValue" : value,
+                "parent" : "test_f_frame"
             };
             secondStruct = _.extend(secondStruct, attrDef);
 

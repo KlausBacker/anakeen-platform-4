@@ -312,8 +312,18 @@ define([
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }
+            if (window.dcp && window.dcp.templates && window.dcp.templates[this.getType()] && window.dcp.templates[this.getType()][key]) {
+                return window.dcp.templates[this.getType()][key];
+            }
+            if (window.dcp && window.dcp.templates && window.dcp.templates["default"] && window.dcp.templates["default"][key]) {
+                return window.dcp.templates["default"][key];
+            }
             throw new Error("Unknown template  " + key + "/" + this.options.type);
 
+        },
+
+        getType : function dcpArray_getType() {
+            return "array";
         }
 
     });

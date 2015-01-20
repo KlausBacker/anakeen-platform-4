@@ -138,18 +138,14 @@ define([
             var currentWidget = this;
             this._model.listenTo(this._model, "invalid", function showInvalid(model, error) {
                 var result = currentWidget._triggerControllerEvent("error",
-                    currentWidget._model.getProperties(), {
-                        message : error
-                    });
+                    currentWidget._model.getProperties(), error);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showError", error);
                 }
             });
             this._model.listenTo(this._model, "showError", function showError(error) {
                 var result = currentWidget._triggerControllerEvent("error",
-                    currentWidget._model.getProperties(), {
-                        message : error
-                    });
+                    currentWidget._model.getProperties(), error);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showError", error);
                 }
@@ -185,12 +181,16 @@ define([
                 );
             });
             this._model.listenTo(this._model, "constraint", function (attribute, response) {
+                var currentAttribute = currentWidget.getAttribute(attribute),
+                    currentModel = currentWidget._model.getProperties();
                 _.each(currentWidget.activatedConstraint, function (currentConstraint) {
-                    if (currentConstraint.attributeCheck) {
+                    if (currentConstraint.attributeCheck(currentModel, currentAttribute)) {
                         currentConstraint.constraintCheck(
-                            currentWidget._model.getProperties(),
-                            currentWidget.getAttribute(attribute),
-                            response);
+                            response,
+                            currentModel,
+                            currentAttribute,
+                            currentAttribute.getValue("all")
+                        );
                     }
                 });
             });
@@ -233,18 +233,14 @@ define([
             });
             this.view.on("showMessage", function showMessage(message) {
                 var result = currentWidget._triggerControllerEvent("message",
-                    currentWidget._model.getProperties(), {
-                        message : message
-                    });
+                    currentWidget._model.getProperties(), message);
                 if (result) {
                     currentWidget.$notification.dcpNotification("show", message.type, message);
                 }
             });
             this.view.on("showSuccess", function showSuccess(message) {
                 var result = currentWidget._triggerControllerEvent("message",
-                    currentWidget._model.getProperties(), {
-                        message : message
-                    });
+                    currentWidget._model.getProperties(), message);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showSuccess", message);
                 }
@@ -393,7 +389,7 @@ define([
          * @returns {*}
          */
         getProperty : function documentControllerGetDocumentProperty(property) {
-            return this._model.get("properties").get(property);
+            return this._model.getProperties()[property];
         },
 
         /**
@@ -401,7 +397,7 @@ define([
          * @returns {*}
          */
         getProperties : function documentControllerGetDocumentProperties() {
-            return this._model.get("properties").toJSON();
+            return this._model.getProperties();
         },
 
         /**
@@ -582,7 +578,7 @@ define([
             var removed = [],
                 testRegExp = new RegExp("\\" + constraintName + "$");
             this.options.constraintList = _.filter(this.options.constraintList, function (currentConstrait) {
-                if (currentConstrait.name === constraintName && testRegExp.test(currentConstrait.name)) {
+                if (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name)) {
                     removed.push(currentConstrait);
                     return false;
                 }
@@ -645,7 +641,7 @@ define([
         removeEvent : function documentControllerRemoveEvent(eventName) {
             var removed = [], testRegExp = new RegExp("\\" + eventName + "$");
             this.options.eventList = _.filter(this.options.eventList, function (currentEvent) {
-                if (currentEvent.name === eventName && testRegExp.test(currentEvent.name)) {
+                if (currentEvent.name === eventName || testRegExp.test(currentEvent.name)) {
                     removed.push(currentEvent);
                     return false;
                 }
