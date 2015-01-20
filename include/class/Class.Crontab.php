@@ -115,7 +115,7 @@ class Crontab
             return FALSE;
         }
         
-        $crontab = "# BEGIN:CONTROL_CRONTAB:" . $this->wiff_root . ":" . $file . "\n" . $crontab . "\n" . "# END:CONTROL_CRONTAB:" . $this->wiff_root . ":" . $file . "\n";
+        $crontab = "# BEGIN:CONTROL_CRONTAB:" . $this->wiff_root . ":" . $file . "\n" . "WIFF_ROOT=" . $this->wiff_root . "\n" . $crontab . "\n" . "# END:CONTROL_CRONTAB:" . $this->wiff_root . ":" . $file . "\n";
         
         $activeCrontab = $this->load();
         if ($activeCrontab === FALSE) {

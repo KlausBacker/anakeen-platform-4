@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-$WIFF_ROOT = dirname(__FILE__).DIRECTORY_SEPARATOR.'..';
+$WIFF_ROOT = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..');
 set_include_path(get_include_path().PATH_SEPARATOR.$WIFF_ROOT.DIRECTORY_SEPARATOR.'include');
 putenv('WIFF_ROOT='.$WIFF_ROOT);
 
@@ -85,6 +85,16 @@ if (file_exists($oldLog)) {
     }
   }
   unlink($oldLog);
+}
+
+/*
+ * Update crontab
+ */
+$crontab = new Crontab();
+if ($crontab->registerFile("control.cron") === false) {
+    $err = $crontab->getErrors();
+    error_log(sprintf("Error re-registering crontab 'control.cron': %s", $err));
+    exit(1);
 }
 
 exit(0);
