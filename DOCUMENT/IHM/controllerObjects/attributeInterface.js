@@ -76,6 +76,14 @@ define([
             _attributeModel.set("attributeValue", value);
         };
 
+        this.toJSON = function AttributeInterfacetoJSON() {
+            return {
+                "id" : _attributeModel.id,
+                "properties" : _.omit(_attributeModel.attributes, "isValueAttribute", "title", "options", "attributeValue"),
+                "options" : _attributeModel.getOptions()
+            };
+        };
+
     };
 
 });
