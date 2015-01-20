@@ -1,4 +1,4 @@
-/*global require, describe, beforeEach, setFixtures, expect, it, sandbox, spyOnEvent, jasmine, afterEach*/
+/*global require, describe, beforeEach, setFixtures, expect, it, sandbox, jasmine, afterEach*/
 
 var asset = "index.php";
 if (window.__karma__) {
@@ -72,12 +72,19 @@ require([
             beforeEach(function () {
                 var localId = _.uniqueId("Document");
                 var $renderZone = $("#render");
-                if ($renderZone.length === 0) {
-                    $renderZone = $("body");
+
+                if (window.location.hash === "#displayDom") {
+                    if ($renderZone.length === 0) {
+                        $renderZone = $("body");
+                    }
+                    currentSandbox = $("<div></div>");
+                    if ($renderZone.length === 0) {
+                        $renderZone = $("body");
+                    }
+                    $renderZone.append(currentSandbox);
+                } else {
+                    currentSandbox = setFixtures(sandbox());
                 }
-                //currentSandbox = $("<div></div>");
-                //$renderZone.append(currentSandbox);
-                currentSandbox = setFixtures(sandbox());
                 window.dcp = window.dcp || {};
                 modelDocument = new ModelDocument(
                     {
