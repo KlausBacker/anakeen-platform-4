@@ -42,7 +42,7 @@ define([
             } else {
                 this.renderContent();
             }
-            this.trigger("renderDone");
+            this.model.trigger("renderDone", this.model);
             return this;
         },
 

@@ -471,6 +471,14 @@ define([
                 currentModel.listenTo(attributes.attributes, "constraint", function (options) {
                     currentModel.trigger("constraint", options.model.id, options.response);
                 });
+                //Propagate the render done event to the model
+                currentModel.listenTo(attributes.attributes, "array", function (type, model, options) {
+                    currentModel.trigger("arrayModified", {
+                        attributeId : model.id,
+                        "type" : type,
+                        "options" : options
+                    });
+                });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },

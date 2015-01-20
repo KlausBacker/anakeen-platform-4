@@ -97,6 +97,7 @@ define([
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
             this.$el.find(".dcpAttribute__label").dcpLabel(data);
             this.currentDcpWidget = this.widgetInit(this.$el.find(".dcpAttribute__content"), data);
+            this.model.trigger("renderDone", this.model);
             return this;
         },
 
