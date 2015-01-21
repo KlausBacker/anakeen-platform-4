@@ -38,8 +38,12 @@ define([
                     var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom"));
                     var lineH = $element.css("line-height");
                     // In IE9 , the result is just a number without unit
-                    if (lineH && lineH.indexOf("px") > 0) {
-                        $element.css("max-height", (lineNumber * parseFloat(lineH) + delta) + "px");
+                    if (lineH) {
+                        if (lineH.indexOf("px") > 0) {
+                            $element.css("max-height", (lineNumber * parseFloat(lineH) + delta) + "px");
+                        } else {
+                            $element.css("max-height", (lineNumber * 1.1) + "em");
+                        }
                     }
                 });
             }

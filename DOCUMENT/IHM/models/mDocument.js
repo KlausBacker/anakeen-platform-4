@@ -154,13 +154,16 @@ define([
          * @returns {*}
          */
         getProperties : function mDocumentdocumentGetProperties(initialValue) {
-            var properties;
+            var properties={};
             if (initialValue === true) {
                 return this.initialProperties;
             } else {
-                properties = this.get("properties").toJSON();
+                if (this.get("properties")) {
+                    properties = this.get("properties").toJSON();
+                }
                 properties.viewId = this.get("viewId");
                 properties.renderMode = this.get("renderMode");
+
                 return properties;
             }
         },

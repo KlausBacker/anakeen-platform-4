@@ -103,7 +103,12 @@ namespace {
          * @errorCode The max lenght must be a positive number
          * @see TextRenderOptions::setMaxLength
          */
-        const UI0203 = 'Max lenght  "%s" is is not a positive number';
+        const UI0203 = 'Max length  "%s" is not a positive number';
+        /**
+         * @errorCode The line number must be a positive number
+         * @see LongtextRenderOptions::setDisplayedLineNumber
+         */
+        const UI0204 = 'Line number  "%s" is not a positive number';
         /**
          * @errorCode Only view,edit, create are allowed
          */

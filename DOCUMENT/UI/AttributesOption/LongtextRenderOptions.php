@@ -16,11 +16,14 @@ class LongtextRenderOptions extends TextRenderOptions
      * Number of line which are displayed before a scroll bar appears
      * @note use only in edition mode
      * @param int $number ( 0 if no limit)
+     * @throws Exception UI0204
      * @return $this
      */
-    public function setdisplayedLineNumber($number)
+    public function setDisplayedLineNumber($number)
     {
-        
+        if (!is_int($number) || $number < 0) {
+            throw new Exception("UI0204", $number);
+        }
         return $this->setOption(self::displayedLineNumberOption, (int)$number);
     }
 }
