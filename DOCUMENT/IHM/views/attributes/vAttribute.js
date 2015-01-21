@@ -30,10 +30,11 @@ define([
             "dcpattributedelete .dcpAttribute__content" :                   "deleteValue",
             "dcpattributechangeattrmenuvisibility .dcpAttribute__content" : "changeMenuVisibility",
             "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue",
-            "dcpattributechangedocument .dcpAttribute__content" :           "changeDocument"
+            "dcpattributechangedocument .dcpAttribute__content" :           "changeDocument",
+            "dcpattributeexternallinkselected .dcpAttribute__content" :     "externalLinkSelected"
         },
 
-        initialize : function initialize(options) {
+        initialize : function vAttributeInitialize(options) {
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:attributeValue', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
@@ -52,7 +53,7 @@ define([
          * @param index
          * @returns {*}
          */
-        getData : function getData(index) {
+        getData : function vAttributeGetData(index) {
             var data;
 
             //Made to JSON for all the values, or to data for value indexed (in cas of multiple)
@@ -85,7 +86,7 @@ define([
             return data;
         },
 
-        render : function render() {
+        render : function vAttributeRender() {
             //console.time("render attribute " + this.model.id);
             var data = this.getData();
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
@@ -101,14 +102,14 @@ define([
             return this;
         },
 
-        refreshLabel : function refreshLabel() {
+        refreshLabel : function vAttributeRefreshLabel() {
             this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
         },
 
         /**
          * Autorefresh value when model change
          */
-        refreshValue : function refreshValue(model, values, options) {
+        refreshValue : function vAttributeRefreshValue(model, values, options) {
             var scope = this, allWrapper, arrayWrapper;
             if (options.updateArray) {
                 return this;
@@ -138,7 +139,7 @@ define([
          * Dispay error message around the widget if needed
          * @param event
          */
-        refreshError : function refreshError(event) {
+        refreshError : function vAttributeRefreshError(event) {
             var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
             this.widgetApply(this.getDOMElements().find(".dcpAttribute__content").andSelf().filter(".dcpAttribute__content"),
@@ -156,26 +157,32 @@ define([
          * @param event event object
          * @param options object {dataItem :, valueIndex :}
          */
-        changeAttributesValue : function (event, options) {
+        changeAttributesValue : function vAttributeChangeAttributesValue(event, options) {
             var currentView = this, dataItem = options.dataItem, valueIndex = options.valueIndex;
             _.each(dataItem.values, function vAttributeChangeAttributeValue(attributeValue, attributeId) {
                 if (typeof attributeValue === "object") {
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
-                            attrModel.addValue({value : attributeValue.value, displayValue : attributeValue.displayValue}, valueIndex);
+                            attrModel.addValue({
+                                value :        attributeValue.value,
+                                displayValue : attributeValue.displayValue
+                            }, valueIndex);
                         } else {
-                            attrModel.setValue({value : attributeValue.value, displayValue : attributeValue.displayValue}, valueIndex);
+                            attrModel.setValue({
+                                value :        attributeValue.value,
+                                displayValue : attributeValue.displayValue
+                            }, valueIndex);
                         }
                     }
                     else {
-                        console.error("Unable to find "+attributeId);
+                        console.error("Unable to find " + attributeId);
                     }
                 }
             });
         },
 
-        changeDocument : function changeDocument(event, options) {
+        changeDocument : function changeAttributesValueChangeDocument(event, options) {
             var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
                 initid = attributeValue.value;
@@ -183,10 +190,15 @@ define([
                 initid = attributeValue[index].value;
             }
             documentModel.clear().set({
-                "initid" : initid,
+                "initid" :   initid,
                 "revision" : -1,
-                "viewId" : "!defaultConsultation"
+                "viewId" :   "!defaultConsultation"
             }).fetch();
+        },
+
+        externalLinkSelected : function changeAttributesValueExternalLinkSelected(event, options) {
+            options.attrid = this.model.id;
+            this.model.trigger("internalLinkSelected", options);
         },
 
         /**
@@ -195,7 +207,7 @@ define([
          * @param event
          * @param data index info {index:"the index}
          */
-        deleteValue : function (event, data) {
+        deleteValue : function changeAttributesValueDeleteValue(event, data) {
 
             if (data.id === this.model.id) {
                 var attrToClear = this.model.get('helpOutputs'),
@@ -205,7 +217,7 @@ define([
                 } else {
                     attrToClear = _.toArray(attrToClear);
                 }
-                _.each(attrToClear, function (aid) {
+                _.each(attrToClear, function vAttributeCleanAssociatedElement(aid) {
                     var attr = docModel.get('attributes').get(aid);
                     if (attr) {
                         if (attr.hasMultipleOption()) {
@@ -226,7 +238,7 @@ define([
          * @param attributeId
          * @returns {*}
          */
-        getAttributeModel : function (attributeId) {
+        getAttributeModel : function vAttributeGetAttributeModel(attributeId) {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
@@ -236,7 +248,7 @@ define([
          *
          * @returns {Array}
          */
-        getDeleteLabels : function getDeleteLabels() {
+        getDeleteLabels : function vAttributeGetDeleteLabels() {
             var attrToClear = this.model.get('helpOutputs'),
                 scope = this, attrLabels;
             if ((!attrToClear) || typeof attrToClear === "undefined") {
@@ -244,7 +256,7 @@ define([
             } else {
                 attrToClear = _.toArray(attrToClear);
             }
-            attrLabels = _.map(attrToClear, function (aid) {
+            attrLabels = _.map(attrToClear, function vAttributeGetAssociatedLabel(aid) {
                 var attr = scope.getAttributeModel(aid);
                 if (attr) {
                     return attr.attributes.label;
@@ -266,14 +278,14 @@ define([
          * method use for transport multiselect widget
          * @param options
          */
-        autocompleteRequestRead : function (options) {
+        autocompleteRequestRead : function vAttributeAutocompleteRequestRead(options) {
             var documentModel = this.model.getDocumentModel();
             options.data.attributes = documentModel.getValues();
             $.ajax({
                 type : "POST",
-                url : "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
-                      (documentModel.id || "0" ) +
-                      "&fromid=" + documentModel.get("properties").get("family").id,
+                url :  "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
+                       (documentModel.id || "0" ) +
+                       "&fromid=" + documentModel.get("properties").get("family").id,
                 data : options.data,
 
                 dataType : "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
@@ -293,11 +305,11 @@ define([
          * @param event event object
          * @param data menu config {id: menuId, visibility: "disabled", "visible", "hidden"}
          */
-        changeMenuVisibility : function changeMenuVisibility(event, data) {
+        changeMenuVisibility : function vAttributeChangeMenuVisibility(event, data) {
             this.model.trigger("changeMenuVisibility", event, data);
         },
 
-        getDOMElements : function () {
+        getDOMElements : function vAttributeGetDOMElements() {
             if (this.options && this.options.els) {
                 return this.options.els();
             } else {
@@ -305,7 +317,7 @@ define([
             }
         },
 
-        afterShow :   function afterShow(event, data) {
+        afterShow :   function vAttributeAfterShow(event, data) {
             // propagate event to widgets
             this.getDOMElements().trigger("show");
         },
@@ -314,7 +326,7 @@ define([
          * @param event
          * @param data
          */
-        updateValue : function updateValue(event, data) {
+        updateValue : function vAttributeUpdateValue(event, data) {
             this.model.setValue(data.value, data.index);
         },
 
@@ -322,7 +334,7 @@ define([
             return this.getWidgetClass().call($element, data);
         },
 
-        widgetApply : function widgetApply($element, method, argument) {
+        widgetApply : function vAttributeWidgetApply($element, method, argument) {
             try {
                 if (_.isString(method) && $element && this._findWidgetName($element)) {
                     this.getWidgetClass().call($element, method, argument);
@@ -337,11 +349,11 @@ define([
             return this;
         },
 
-        getWidgetClass : function getTypedWidgetClass() {
+        getWidgetClass : function vAttributeGetTypedWidgetClass() {
             return this.getTypedWidgetClass(this.model.get("type"));
         },
 
-        getTypedWidgetClass : function getTypedWidgetClass(type) {
+        getTypedWidgetClass : function vAttributeGetTypedWidgetClass(type) {
             switch (type) {
                 case "text" :
                     return $.fn.dcpText;
@@ -379,7 +391,7 @@ define([
             }
         },
 
-        remove : function remove() {
+        remove : function vAttributeRemove() {
             try {
                 if (this.currentDcpWidget && this._findWidgetName(this.currentDcpWidget)) {
                     this.widgetApply(this.currentDcpWidget, "destroy");
@@ -394,15 +406,15 @@ define([
             return Backbone.View.prototype.remove.call(this);
         },
 
-        hide : function hide() {
+        hide : function vAttributeHide() {
             this.$el.hide();
         },
 
-        show : function show() {
+        show : function vAttributeShow() {
             this.$el.show();
         },
 
-        _findWidgetName : function ($element) {
+        _findWidgetName : function vAttribute_findWidgetName($element) {
             return _.find(_.keys($element.data()), function (currentKey) {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });

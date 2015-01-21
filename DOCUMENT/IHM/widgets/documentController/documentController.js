@@ -13,7 +13,7 @@ define([
     'use strict';
 
     var eventList = ["ready", "close", "save", "change", "message", "error", "validate", "delete", "attributeReady",
-    "arrayModified"];
+    "arrayModified", "internalLinkSelected"];
 
     $.widget("dcp.documentController", {
 
@@ -195,6 +195,12 @@ define([
                     currentAttribute,
                     options.type,
                     options.options
+                );
+            });
+            this._model.listenTo(this._model, "internalLinkSelected", function (event, options) {
+                event.prevent = !currentWidget._triggerControllerEvent("internalLinkSelected",
+                    currentWidget._model.getProperties(),
+                    options
                 );
             });
             this._model.listenTo(this._model, "constraint", function (attribute, response) {
