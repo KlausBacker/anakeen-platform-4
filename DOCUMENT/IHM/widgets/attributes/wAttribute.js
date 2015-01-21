@@ -233,6 +233,7 @@ define([
                 if (!kt) {
                     $ktTarger.tooltip({
                         trigger: "manual",
+                        html:true,
                         title: scope.options.renderOptions.inputHtmlTooltip,
                         placement: "bottom",
                         template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'

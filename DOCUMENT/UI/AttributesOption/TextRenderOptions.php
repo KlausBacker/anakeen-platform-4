@@ -11,25 +11,41 @@ class TextRenderOptions extends CommonRenderOptions
 {
     
     const type = "text";
-    const sizeOption = "size";
+    const maxLengthOption = "maxLength";
+    const placeHolderOption = "placeHolder";
     const formatOption = "format";
+
     /**
-     * Number of characters for the input
+     * Max number of characters for the input
      * @note use only in edition mode
      * @param int $number
+     * @throws Exception
      * @return $this
      */
-    public function size($number)
+    public function setMaxLength($number)
     {
-        return $this->setOption(self::sizeOption, (int)$number);
+        if (! is_int($number) || $number < 0) {
+            throw new Exception("UI0203", $number);
+        }
+        return $this->setOption(self::maxLengthOption, (int)$number);
     }
     /**
-     * Forrmat use to decorate string
+     * Text to set into input when is empty
+     * @note use only in edition mode
+     * @param string $text text to display
+     * @return $this
+     */
+    public function setPlaceHolder($text)
+    {
+        return $this->setOption(self::placeHolderOption, $text);
+    }
+    /**
+     * Format use to decorate string
      * @note use only in consultation mode
      * @param string $format
      * @return $this
      */
-    public function format($format)
+    public function setFormat($format)
     {
         return $this->setOption(self::formatOption, $format);
     }

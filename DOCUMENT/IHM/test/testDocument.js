@@ -97,7 +97,7 @@ require([
                             }
                         },
                         menus :         [],
-                        locale : options.locale || "fr_FR",
+                        locale : options.locale || {"culture": "fr-FR"},
                         renderMode : options.renderMode || "view",
                         attributes : options.attributes || generateFamilyStructure(options),
                         renderOptions : {}
@@ -168,8 +168,8 @@ require([
 
     testDocument("view", {});
     testDocument("edit", {renderMode : "edit"});
-    testDocument("view locale us", {locale : "en_US"});
-    testDocument("edit locale us", {renderMode : "edit", locale : "en_US"});
+    testDocument("view locale us", {locale : {"culture": "en-US"}});
+    testDocument("edit locale us", {renderMode : "edit", locale :  {"culture": "en-US"}});
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

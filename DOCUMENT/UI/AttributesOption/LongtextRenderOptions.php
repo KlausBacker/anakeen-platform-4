@@ -7,7 +7,7 @@
 
 namespace Dcp\Ui;
 
-class LongtextRenderOptions extends CommonRenderOptions
+class LongtextRenderOptions extends TextRenderOptions
 {
     
     const type = "longtext";

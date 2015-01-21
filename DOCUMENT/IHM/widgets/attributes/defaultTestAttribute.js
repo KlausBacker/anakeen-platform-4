@@ -34,7 +34,9 @@ define(["underscore"], function (_) {
             afterEach(function() {
                 var $sandBox = getSandbox();
                 try {
-                    widget.call($sandBox, "destroy");
+                    if (window.location.hash !== "#displayDom") {
+                        widget.call($sandBox, "destroy");
+                    }
                 } catch(e) {
                     //console.log(e);
                 }

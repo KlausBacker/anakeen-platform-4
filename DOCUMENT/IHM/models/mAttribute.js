@@ -135,14 +135,14 @@ define([
          * @returns {{}}
          */
         getOptions :        function mAttributegetOptions() {
-            var optionsCommon, optionsValue, optionsAttribute, renderOptions, labels={};
+            var optionsCommon={}, optionsValue={}, optionsAttribute={}, renderOptions, labels={};
             this._options = this._options || false;
 
             if (this._options === false) {
                 renderOptions = this.collection.renderOptions;
                 if (renderOptions.common) {
                     optionsCommon = renderOptions.common || {};
-                    labels= renderOptions.common.labels || {};
+                    labels= optionsCommon.labels || {};
                 }
 
                 if (renderOptions.types) {

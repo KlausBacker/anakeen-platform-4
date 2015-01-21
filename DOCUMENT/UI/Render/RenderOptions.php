@@ -100,8 +100,8 @@ class RenderOptions implements \JsonSerializable
                 MoneyRenderOptions::currencyOption => '€'
             ) ,
             TextRenderOptions::type => array(
-                TextRenderOptions::sizeOption => null,
-                TextRenderOptions::formatOption => "%s"
+                TextRenderOptions::maxLengthOption => null,
+                TextRenderOptions::formatOption => "{{displayValue}}"
             ) ,
             ArrayRenderOptions::type => array(
                 ArrayRenderOptions::rowCountThresholdOption => - 1
