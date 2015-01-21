@@ -66,7 +66,7 @@ define([
                     }
                 });
             }
-            this.trigger("renderDone");
+            this.model.trigger("renderDone", this.model);
             //console.timeEnd("render frame " + this.model.id);
             return this;
         },

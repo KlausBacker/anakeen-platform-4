@@ -85,6 +85,7 @@ define([
             this.$el.attr("data-attrid", this.model.id);
 
             // console.timeEnd("render array " + this.model.id);
+            this.model.trigger("renderDone", this.model);
             return this;
         },
 
@@ -125,6 +126,7 @@ define([
             this.model.get("content").each(function (currentContent) {
                 currentContent.removeIndexValue(options.line);
             });
+            this.model.trigger("array", "removeLine", this.model, options.line);
         },
 
         removeWidgetLine : function vArrayRemoveWidgetLine(options) {
@@ -147,12 +149,14 @@ define([
                     currentViewColumn.addNewWidget(options.line);
                 }
             });
+            this.model.trigger("array", "addLine", this.model, options.line);
         },
 
         moveLine: function moveLine(event, options) {
             this.model.get("content").each(function (currentContent) {
                 currentContent.moveIndexValue(options.fromLine, options.toLine);
             });
+            this.model.trigger("array", "moveLine", this.model, options);
         } ,
         getAttributeModel : function (attributeId) {
             var docModel = this.model.getDocumentModel();

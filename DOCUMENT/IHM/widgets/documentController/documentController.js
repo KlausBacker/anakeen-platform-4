@@ -12,7 +12,8 @@ define([
 ], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, DocumentView) {
     'use strict';
 
-    var eventList = ["ready", "close", "save", "change", "message", "error", "validate", "delete"];
+    var eventList = ["ready", "close", "save", "change", "message", "error", "validate", "delete", "attributeReady",
+    "arrayModified", "internalLinkSelected"];
 
     $.widget("dcp.documentController", {
 
@@ -178,6 +179,28 @@ define([
                     currentWidget._model.getProperties(),
                     currentAttribute,
                     currentAttribute.getValue("all")
+                );
+            });
+            this._model.listenTo(this._model, "attributeRender", function (options) {
+                var currentAttribute = currentWidget.getAttribute(options.attributeId);
+                currentWidget._triggerControllerEvent("attributeReady",
+                    currentWidget._model.getProperties(),
+                    currentAttribute
+                );
+            });
+            this._model.listenTo(this._model, "arrayModified", function (options) {
+                var currentAttribute = currentWidget.getAttribute(options.attributeId);
+                currentWidget._triggerControllerEvent("arrayModified",
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
+                    options.type,
+                    options.options
+                );
+            });
+            this._model.listenTo(this._model, "internalLinkSelected", function (event, options) {
+                event.prevent = !currentWidget._triggerControllerEvent("internalLinkSelected",
+                    currentWidget._model.getProperties(),
+                    options
                 );
             });
             this._model.listenTo(this._model, "constraint", function (attribute, response) {
