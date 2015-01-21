@@ -1,19 +1,32 @@
 define([
     'underscore',
+    'mustache',
     'widgets/attributes/wAttribute',
     'kendo/kendo.autocomplete'
-], function (_) {
+], function (_, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpText", $.dcp.dcpAttribute, {
 
         options : {
-            type : "text"
+            type : "text",
+            renderOptions : {
+                maxLength:0, // char max length
+                placeHolder:'',
+                format:""
+            }
         },
 
         kendoWidget : null,
 
         _initDom : function wTextInitDom() {
+             if (this.getMode() === "read") {
+                 if (this.options.renderOptions.format) {
+                     this.options.attributeValue.formatValue=Mustache.render(this.options.renderOptions.format,
+                     this.options.attributeValue);
+                 }
+             }
+
             this._super();
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget && this.options.hasAutocomplete) {
@@ -81,7 +94,9 @@ define([
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
-            this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip();
+            this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip({
+                html:true
+            });
 
         },
 

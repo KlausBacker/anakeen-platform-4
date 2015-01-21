@@ -167,7 +167,6 @@ define([
                             dataItem = dataItem.toJSON();
                         }
                         event.preventDefault(); // no fire change event
-                        console.log("select",{ dataItem : dataItem, valueIndex : valueIndex} );
                         scope._trigger("changeattrsvalue", event, { dataItem : dataItem, valueIndex : valueIndex});
 
                     },
@@ -204,7 +203,9 @@ define([
                 inputValue.data("kendoMultiSelect").open();
             });
 
-            this.element.find('.dcpAttribute__value--docid--button[title]').tooltip();
+            this.element.find('.dcpAttribute__value--docid--button[title]').tooltip({
+                html:true
+            });
         },
         /**
          * Return true if attribut has multiple option

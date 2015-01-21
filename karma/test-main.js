@@ -1,4 +1,4 @@
-var allTestFiles = ['jasmine-jquery'];
+var allTestFiles = ['test-css','jasmine-jquery'];
 var TEST_REGEXP = /\/(test)[a-zA-Z]*\.js$/i;
 var pathToModule = function (path) {
     return path.replace(/^\/.*IHM\//, "").replace(/\.js$/, '');
@@ -85,7 +85,7 @@ window.dcp.executeTests = (function () {
     "use strict";
     var nbTest = allTestFiles.length;
     return function () {
-        if (--nbTest < 2) {
+        if (--nbTest < 3) {
             return window.__karma__.start();
         }
     };
@@ -98,6 +98,7 @@ require.config({
         "bootstrap" :       ['jquery'],
         "kendo-culture" :   ['kendo'],
         "jasmine-jquery" :  ['jquery'],
+        "test-css" :  ['jquery'],
         "ckeditor-jquery" : ['jquery', 'ckeditor']
     },
     paths :   {
@@ -120,6 +121,7 @@ require.config({
         "ckeditor" :             "../../lib/ckeditor/4/ckeditor",
         "ckeditor-jquery" :      "../../lib/ckeditor/4/adapters/jquery",
         "jasmine-jquery" :       '../../lib/jasmine/jasmine-jquery',
+        "test-css" :             '../../karma/test-css',
         "datatables" :           "../../lib/jquery-dataTables/1.10/js/jquery.dataTables",
         "datatables-bootstrap" : "../../lib/jquery-dataTables/1.10/bootstrap/3"
     },
@@ -139,5 +141,5 @@ require.config({
 
     urlArgs : "bust=" + (new Date()).getTime()
     // we have to kickoff jasmine, as it is asynchronous
-    //callback : window.__karma__.start
+    //,callback : window.__karma__.start
 });

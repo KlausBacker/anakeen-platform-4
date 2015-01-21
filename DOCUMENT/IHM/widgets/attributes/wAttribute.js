@@ -233,6 +233,7 @@ define([
                 if (!kt) {
                     $ktTarger.tooltip({
                         trigger: "manual",
+                        html:true,
                         title: scope.options.renderOptions.inputHtmlTooltip,
                         placement: "bottom",
                         template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
@@ -395,7 +396,13 @@ define([
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
                 if (buttonConfig && buttonConfig.url) {
-                    var url = Mustache.render(buttonConfig.url, scope.options.attributeValue);
+
+                    var encodedInfo=_.chain(scope.options.attributeValue).clone().each(
+                        function(value, key, list) {list[key] = encodeURIComponent(value);}
+                    ).value();
+
+
+                    var url = Mustache.render(buttonConfig.url, encodedInfo);
                     if (buttonConfig.target !== "_dialog") {
                         window.open(url, buttonConfig.target);
                     } else {
@@ -529,7 +536,7 @@ define([
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+                    template: '<div class="tooltip dcpAttribute__linkvalue" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
                     trigger: "hover"
                 });
 

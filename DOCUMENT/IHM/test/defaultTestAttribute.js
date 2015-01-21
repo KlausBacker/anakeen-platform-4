@@ -173,7 +173,7 @@ define([
 
                 view = new ViewDocument({model : modelDocument, el : $sandBox});
                 view.render();
-                expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
+                expect($sandBox.find(".dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
                 modelDocument.get("attributes").get(localAttrId).set("label", newLabel);
                 expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toHaveText(newLabel);
             });

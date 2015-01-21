@@ -9,7 +9,8 @@
     </span>
     {{/hasAutocomplete}}
     <input type="text" name="{{id}}" id="{{viewCid}}"
-           {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
+           {{# renderOptions.maxLength}}maxlength="{{renderOptions.maxLength}}"{{/ renderOptions.maxLength}}
+           {{# renderOptions.placeHolder}}placeHolder="{{renderOptions.placeHolder}}"{{/ renderOptions.placeHolder}}
            class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
            value="{{attributeValue.value}}"/>
     {{#hadButtons}}

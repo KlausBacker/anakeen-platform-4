@@ -100,6 +100,16 @@ namespace {
          */
         const UI0202 = 'View control document  "%s" is not found : menu cannot be completed';
         /**
+         * @errorCode The max lenght must be a positive number
+         * @see TextRenderOptions::setMaxLength
+         */
+        const UI0203 = 'Max length  "%s" is not a positive number';
+        /**
+         * @errorCode The line number must be a positive number
+         * @see LongtextRenderOptions::setDisplayedLineNumber
+         */
+        const UI0204 = 'Line number  "%s" is not a positive number';
+        /**
          * @errorCode Only view,edit, create are allowed
          */
         const UI0300 = 'Mode "%s" is not a valid render mode';
