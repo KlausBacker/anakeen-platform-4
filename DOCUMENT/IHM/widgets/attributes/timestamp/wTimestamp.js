@@ -12,12 +12,16 @@ define([
             renderOptions: {
                 kendoDateConfiguration: {
                     timeFormat: "HH:mm", //24 hours format
-                    parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss"]
+                    parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss"],
+                    format:null
                 }
             }
         },
 
         kendoWidgetClass: "kendoDateTimePicker",
+
+
+
 
         _activateDate: function (inputValue) {
             var scope = this;
@@ -49,6 +53,9 @@ define([
         },
 
         formatDate: function formatDate(value) {
+            if (this.options.renderOptions.kendoDateConfiguration.format) {
+                return kendo.toString(value, this.options.renderOptions.kendoDateConfiguration.format);
+            }
             return kendo.toString(value, "g");
         },
         getType: function () {

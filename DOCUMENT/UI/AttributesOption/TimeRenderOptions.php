@@ -9,9 +9,10 @@ namespace Dcp\Ui;
 
 class TimeRenderOptions extends CommonRenderOptions
 {
-    
+    use TFormatRenderOption;
     const type = "time";
     const kendoTimeConfigurationOption = "kendoTimeConfiguration";
+    const formatOption = "format";
     /**
      * Set extra configuration for kendoTime widget
      *
@@ -24,4 +25,5 @@ class TimeRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::kendoTimeConfigurationOption, $config);
     }
+
 }

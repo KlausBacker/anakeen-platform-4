@@ -31,6 +31,7 @@ class CommonRenderOptions
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
+    const formatOption = "format";
     
     public function __construct(RenderOptions & $options = null)
     {

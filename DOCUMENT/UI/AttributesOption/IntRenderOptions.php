@@ -9,11 +9,12 @@ namespace Dcp\Ui;
 
 class IntRenderOptions extends CommonRenderOptions
 {
-    
+    use TFormatRenderOption;
     const type = "int";
     const maxOption = "max";
     const minOption = "min";
     const kendoNumericConfigurationOption = "kendoNumericConfiguration";
+    const formatOption = "format";
     /**
      * Maximum limit that number can reach
      * @note use only in edition mode
@@ -52,4 +53,5 @@ class IntRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::kendoNumericConfigurationOption, $config);
     }
+
 }

@@ -18,7 +18,14 @@ define([
 
         kendoWidgetClass: "kendoTimePicker",
 
-        _activateDate: function (inputValue) {
+        _initDom: function wTimeInitDom() {
+            if (this.options.renderOptions.kendoTimeConfiguration.format) {
+                this.options.attributeValue.displayValue = this.formatDate(this.parseDate(this.options.attributeValue.value));
+            }
+            this._super();
+        },
+
+        _activateDate: function wTimeActivateDate(inputValue) {
             var scope = this;
             var kOptions = this.getKendoOptions();
 
@@ -37,7 +44,7 @@ define([
             }
         },
 
-        setValue: function (value) {
+        setValue: function wTimeSetValue(value) {
             var originalValue;
 
             value = _.clone(value);
@@ -69,7 +76,7 @@ define([
             }
         },
 
-        getValue: function () {
+        getValue: function wTimeGetValue() {
             var value = this._super();
             if (value.value && _.isDate(value.value)) {
                 value.value = this.convertDateToPseudoIsoString(value.value);
@@ -77,19 +84,22 @@ define([
             return value;
         },
 
-        convertDateToPseudoIsoString: function (date) {
+        convertDateToPseudoIsoString: function wTimeConvertDateToPseudoIsoString(date) {
             if (_.isDate(date)) {
                 return this.padNumber(date.getHours()) + ':' +
-                    this.padNumber(date.getMinutes());
+                this.padNumber(date.getMinutes());
             }
             return '';
         },
 
-        formatDate: function formatDate(value) {
+        formatDate: function wTimeFormatDate(value) {
+            if (this.options.renderOptions.kendoTimeConfiguration.format) {
+                return kendo.toString(value, this.options.renderOptions.kendoTimeConfiguration.format);
+            }
             return kendo.toString(value, "T");
         },
 
-        parseDate: function (value) {
+        parseDate: function wTimeParseDate(value) {
             return kendo.parseDate(value, this.options.renderOptions.kendoTimeConfiguration.timeDataFormat);
         },
 

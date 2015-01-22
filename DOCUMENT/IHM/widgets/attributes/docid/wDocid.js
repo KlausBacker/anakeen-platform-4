@@ -12,7 +12,13 @@ define([
         options: {
             type: "docid",
             renderOptions: {
-                kendoMultiSelectConfiguration: {}
+                kendoMultiSelectConfiguration: {
+                    minLength: 1,
+                    itemTemplate: '<span><span class="k-state-default">#= data.title#</span>' +
+                                '#if (data.error) {#' +
+                                '<span class="k-state-error">#: data.error#</span>' +
+                                '#}# </span>'
+                }
             }
         },
 
@@ -52,6 +58,7 @@ define([
 
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             } else if (this.getMode() === "write") {
+
                 this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
                 this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
                 if (this._isMultiple()) {
@@ -84,8 +91,8 @@ define([
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
                         currentWidget._trigger("changedocument", event, {
-                            "index" : $this.data("index"),
-                            "tableLine" : $this.closest(".dcpArray__content__line").data("line")
+                            "index": $this.data("index"),
+                            "tableLine": $this.closest(".dcpArray__content__line").data("line")
                         });
                     }
                 });
@@ -121,11 +128,6 @@ define([
             var scope = this,
                 options = {
                     filter: "contains",
-                    minLength: 1,
-                    itemTemplate: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>',
                     autoBind: false,
                     dataTextField: "docTitle",
                     dataValueField: "docId",
@@ -167,7 +169,7 @@ define([
                             dataItem = dataItem.toJSON();
                         }
                         event.preventDefault(); // no fire change event
-                        scope._trigger("changeattrsvalue", event, { dataItem : dataItem, valueIndex : valueIndex});
+                        scope._trigger("changeattrsvalue", event, {dataItem: dataItem, valueIndex: valueIndex});
 
                     },
                     change: function kendoChangeSelect(event) {
@@ -195,16 +197,16 @@ define([
             }
 
             if (this.options.renderOptions.kendoMultiSelectConfiguration) {
-                options = _.extend(options, this.options.renderOptions.kendoMultiSelectConfiguration);
+                options = _.extend(this.options.renderOptions.kendoMultiSelectConfiguration, options);
             }
             inputValue.kendoMultiSelect(options);
-            this.element.on("click"+ this.eventNamespace, '.dcpAttribute__value--docid--button', function (event) {
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--docid--button', function (event) {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").open();
             });
 
             this.element.find('.dcpAttribute__value--docid--button[title]').tooltip({
-                html:true
+                html: true
             });
         },
         /**
@@ -266,7 +268,7 @@ define([
             return "docid";
         },
 
-        _destroy : function _destroy() {
+        _destroy: function _destroy() {
             if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
                 this.kendoWidget.data("kendoMultiSelect").destroy();
             }

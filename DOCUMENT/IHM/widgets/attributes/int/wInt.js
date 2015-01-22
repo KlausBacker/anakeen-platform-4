@@ -37,6 +37,13 @@ define([
                 this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
             }
 
+            if (this.getMode() === "read") {
+                if (this.options.renderOptions.format) {
+                    this.options.attributeValue.formatValue=Mustache.render(this.options.renderOptions.format,
+                        this.options.attributeValue);
+                }
+            }
+
             this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
@@ -127,6 +134,7 @@ define([
             if (_.isObject(scope.options.renderOptions.kendoNumericConfiguration)) {
                 kendoOptions = scope.options.renderOptions.kendoNumericConfiguration;
             }
+
             return _.extend(defaultOptions, kendoOptions);
         },
 

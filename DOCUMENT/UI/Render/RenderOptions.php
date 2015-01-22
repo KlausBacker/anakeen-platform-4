@@ -50,9 +50,7 @@ class RenderOptions implements \JsonSerializable
             "account" => array(
                 "noAccessText" => ___("Account access deny", 'ddui')
             ) ,
-            "date" => array(
-                "format" => _("Y-m-d")
-            ) ,
+            "date" => array() ,
             "docid" => array(
                 "noAccessText" => ___("Information access deny", 'ddui')
             ) ,
@@ -91,7 +89,7 @@ class RenderOptions implements \JsonSerializable
             DoubleRenderOptions::type => array(
                 DoubleRenderOptions::maxOption => null,
                 DoubleRenderOptions::minOption => null,
-                DoubleRenderOptions::decimalPrecisionOption => 2
+                DoubleRenderOptions::decimalPrecisionOption => null
             ) ,
             MoneyRenderOptions::type => array(
                 MoneyRenderOptions::maxOption => null,
@@ -106,12 +104,8 @@ class RenderOptions implements \JsonSerializable
             ArrayRenderOptions::type => array(
                 ArrayRenderOptions::rowCountThresholdOption => - 1
             ) ,
-            "time" => array(
-                "format" => "%H:%M"
-            ) ,
-            "timestamp" => array(
-                "format" => _("Y-m-d") . " %H:%M"
-            )
+            "time" => array() ,
+            "timestamp" => array()
         ));
     }
     /**
@@ -387,7 +381,7 @@ class RenderOptions implements \JsonSerializable
     public function getAttributeTypeOption($attrType, $optName)
     {
         if ($attrType === "common") {
-            if (! empty($this->options[$attrType][$optName])) {
+            if (!empty($this->options[$attrType][$optName])) {
                 return $this->options[$attrType][$optName];
             }
         } else {
