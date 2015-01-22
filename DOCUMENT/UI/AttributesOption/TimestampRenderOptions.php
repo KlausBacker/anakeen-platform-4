@@ -7,7 +7,7 @@
 
 namespace Dcp\Ui;
 
-class TimestampRenderOptions extends CommonRenderOptions
+class TimestampRenderOptions extends DateRenderOptions
 {
     
     const type = "timestamp";

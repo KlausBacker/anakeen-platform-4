@@ -15,7 +15,8 @@ define([
             minDate: new Date(1700, 0, 1),
             renderOptions: {
                 kendoDateConfiguration: {
-                    parseFormats: ["yyyy-MM-dd"]
+                    parseFormats: ["yyyy-MM-dd"],
+                    format:null
                 }
             },
             labels : {
@@ -25,12 +26,17 @@ define([
 
         kendoWidgetClass: "kendoDatePicker",
 
-        _initDom: function () {
+        _initDom: function wDateInitDom() {
 
             if (this.options.renderOptions.kendoDateConfiguration.format) {
                 this.options.attributeValue.displayValue=this.formatDate(this.parseDate(this.options.attributeValue.value));
             }
-
+            if (this.getMode() === "read") {
+                if (this.options.renderOptions.format) {
+                    this.options.attributeValue.formatValue=Mustache.render(this.options.renderOptions.format,
+                        this.options.attributeValue);
+                }
+            }
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
@@ -47,14 +53,14 @@ define([
             }
         },
 
-        _initChangeEvent: function _initChangeEvent() {
+        _initChangeEvent: function wDate_initChangeEvent() {
             // set by widget if no autocomplete
             if (this.options.hasAutocomplete) {
                 this._super();
             }
         },
 
-        setValue: function (value) {
+        setValue: function wDateSetValue(value) {
             // this._super.(value);
             // Don't call dcpText::setValue()
 
@@ -91,7 +97,7 @@ define([
             }
         },
 
-        _activateDate: function (inputValue) {
+        _activateDate: function wDateSetValueActivateDate(inputValue) {
             var scope = this;
             var kOptions = this.getKendoOptions();
 
@@ -111,7 +117,7 @@ define([
             this._controlDate(inputValue);
         },
 
-        _controlDate: function (inputValue) {
+        _controlDate: function wDateControlDate(inputValue) {
             var scope = this;
             inputValue.on('blur' + this.eventNamespace, function validateDate(event) {
                 var dateValue = $(this).val().trim();
@@ -138,14 +144,14 @@ define([
             });
         },
 
-        formatDate: function formatDate(value) {
+        formatDate: function wDateFormatDate(value) {
             if (this.options.renderOptions.kendoDateConfiguration.format) {
                 return kendo.toString(value, this.options.renderOptions.kendoDateConfiguration.format);
             }
             return kendo.toString(value, "d");
         },
 
-        parseDate: function (value) {
+        parseDate: function wDateParseDate(value) {
             return kendo.parseDate(value);
         },
 
@@ -156,7 +162,7 @@ define([
             return '';
         },
 
-        padNumber: function pad(number) {
+        padNumber: function wDatePadNumber(number) {
             if (number < 10) {
                 return '0' + number;
             }
@@ -182,7 +188,7 @@ define([
             return _.extend(defaultOptions, kendoOptions);
         },
 
-        _destroy : function _destroy() {
+        _destroy : function wDateDestroy() {
             //Destroy autocomplete if activated
             if (this.kendoWidget.data(this.kendoWidgetClass)) {
                 this.kendoWidget.data(this.kendoWidgetClass).destroy();

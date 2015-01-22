@@ -205,7 +205,9 @@ class RenderDefault implements IRenderConfig
         
         $opt->setCustomOption("mode", $this->getType());
         $this->setLinkOption($document, $opt);
-        $opt->commonOption()->setLabels( array("closeErrorMessage"=>___("Close message","ddui")));
+        $opt->commonOption()->setLabels(array(
+            "closeErrorMessage" => ___("Close message", "ddui")
+        ));
         $opt->image()->setLabels(array(
             "dropFileHere" => ___("Drop image here", "ddui-image") ,
             "placeHolder" => ___("Click to upload image", "ddui-image") ,

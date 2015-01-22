@@ -9,7 +9,7 @@ define([
             type: "double",
             renderOptions : {
                 decimalPrecision : null, // unlimited precision
-                numberFormat :  'n'
+                numberFormat :  '#,#.######################'
             }
         },
 
@@ -21,6 +21,7 @@ define([
                     this.options.renderOptions.numberFormat += '0';
                 }
             }
+
             this._super();
         },
         /**
@@ -29,7 +30,11 @@ define([
          */
         getKendoNumericOptions: function wDoubleGetKendoNumericOptions () {
             var options=this._super(); // get from wInt
-            options.decimals=this.options.renderOptions.decimalPrecision;
+            if (this.options.renderOptions.decimalPrecision !== null) {
+                options.decimals = this.options.renderOptions.decimalPrecision;
+            } else {
+                options.decimals = 20;
+            }
             return options;
         },
 

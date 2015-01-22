@@ -23,6 +23,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title" id="displayMode"><span class="glyphicon glyphicon-plus"></span> Contenu des tests</h3>
+
     </div>
     <div class="panel-body panel--hide" id="render" >
         Panel content
@@ -43,7 +44,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("displayMode").addEventListener("click", function () {
                 var $render=$("#render");
-console.log("render", $render);
                 if ($render.hasClass("panel--hide")) {
                     $render.removeClass("panel--hide");
                 } else {

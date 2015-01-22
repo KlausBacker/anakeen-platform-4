@@ -14,6 +14,7 @@ class IntRenderOptions extends CommonRenderOptions
     const maxOption = "max";
     const minOption = "min";
     const kendoNumericConfigurationOption = "kendoNumericConfiguration";
+    const formatOption = "format";
     /**
      * Maximum limit that number can reach
      * @note use only in edition mode
@@ -51,5 +52,15 @@ class IntRenderOptions extends CommonRenderOptions
     public function setKendoNumericConfiguration($config)
     {
         return $this->setOption(self::kendoNumericConfigurationOption, $config);
+    }
+    /**
+     * Format use to decorate string
+     * @note use only in consultation mode
+     * @param string $format
+     * @return $this
+     */
+    public function setFormat($format)
+    {
+        return $this->setOption(self::formatOption, $format);
     }
 }

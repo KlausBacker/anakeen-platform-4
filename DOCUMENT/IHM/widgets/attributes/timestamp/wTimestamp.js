@@ -12,7 +12,8 @@ define([
             renderOptions: {
                 kendoDateConfiguration: {
                     timeFormat: "HH:mm", //24 hours format
-                    parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss"]
+                    parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss"],
+                    format:null
                 }
             }
         },
