@@ -9,7 +9,7 @@ namespace Dcp\Ui;
 
 class IntRenderOptions extends CommonRenderOptions
 {
-    
+    use TFormatRenderOption;
     const type = "int";
     const maxOption = "max";
     const minOption = "min";
@@ -53,14 +53,5 @@ class IntRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::kendoNumericConfigurationOption, $config);
     }
-    /**
-     * Format use to decorate string
-     * @note use only in consultation mode
-     * @param string $format
-     * @return $this
-     */
-    public function setFormat($format)
-    {
-        return $this->setOption(self::formatOption, $format);
-    }
+
 }

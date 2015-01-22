@@ -9,7 +9,7 @@ namespace Dcp\Ui;
 
 class TextRenderOptions extends CommonRenderOptions
 {
-    
+    use TFormatRenderOption;
     const type = "text";
     const maxLengthOption = "maxLength";
     const placeHolderOption = "placeHolder";
@@ -39,14 +39,5 @@ class TextRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::placeHolderOption, $text);
     }
-    /**
-     * Format use to decorate string
-     * @note use only in consultation mode
-     * @param string $format
-     * @return $this
-     */
-    public function setFormat($format)
-    {
-        return $this->setOption(self::formatOption, $format);
-    }
+
 }

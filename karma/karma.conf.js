@@ -16,6 +16,8 @@ module.exports = function (config) {
             'test-main.js',
             {pattern : '../DOCUMENT/IHM/widgets/attributes/**/test*.js', included : false},
             {pattern : '../DOCUMENT/IHM/test/test*.js', included : false}
+          //  {pattern : '../css/dcp/document/bootstrap.css', included : false},
+          ///  {pattern : '../css/dcp/document/kendo.css', included : false}
         ],
 
         // list of files to exclude
@@ -31,7 +33,10 @@ module.exports = function (config) {
         reporters :     ['progress'],
 
         proxies :   {
+//            '/dynacase/' : 'http://dynacase.dev:8081/'
+            '/dynacase/' : 'http://localhost/tmp32/'
         },
+
 
         // web server port
         port :      9876,
@@ -97,7 +102,8 @@ module.exports = function (config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
 
-        browsers : ['PhantomJS'],
+       browsers : ['PhantomJS'],
+ //       browsers : ['Chrome'],
 
         browserDisconnectTimeout :   '100000',
         browserNoActivityTimeout :   '100000',

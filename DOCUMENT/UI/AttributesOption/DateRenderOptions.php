@@ -9,10 +9,9 @@ namespace Dcp\Ui;
 
 class DateRenderOptions extends CommonRenderOptions
 {
-    
+    use TFormatRenderOption;
     const type = "date";
     const kendoDateConfigurationOption = "kendoDateConfiguration";
-    const formatOption = "format";
     /**
      * Set extra configuration for kendoDate widget
      *
@@ -25,14 +24,5 @@ class DateRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::kendoDateConfigurationOption, $config);
     }
-    /**
-     * Format use to decorate string
-     * @note use only in consultation mode
-     * @param string $format
-     * @return $this
-     */
-    public function setFormat($format)
-    {
-        return $this->setOption(self::formatOption, $format);
-    }
+
 }
