@@ -611,9 +611,13 @@ class Context extends WiffCommon
      */
     public function cmpVersionReleaseAsc($v1, $r1, $v2, $r2)
     {
-        $r1 = WIFF::explodeVersion($r1);
-        $r2 = WIFF::explodeVersion($r2);
-        return version_compare("$v1-$r1", "$v2-$r2");
+        $cmp = version_compare($v1, $v2);
+        if ($cmp === 0) {
+            $r1 = WIFF::explodeVersion($r1);
+            $r2 = WIFF::explodeVersion($r2);
+            $cmp = version_compare($r1, $r2);
+        }
+        return $cmp;
     }
     /**
      * Compare two module Objects by ascending version-release
