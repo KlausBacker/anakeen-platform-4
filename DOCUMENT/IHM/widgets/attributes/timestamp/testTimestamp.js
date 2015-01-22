@@ -31,6 +31,17 @@ require([
         }
     }, {value: '2015-02-28 12:05:00'}, {formatValue: "28/02/2015 12:05"});
 
+    dateTestSuite("timestamp : spec", widget, {
+        mode: "read",
+        deleteButton: true,
+        renderOptions: {
+            format: "<b>{{displayValue}}</b>",
+            kendoDateConfiguration: {
+                format: "F"
+            }
+        }
+    }, {value: '2015-02-28 12:05:10'}, {formatValue: "<b>samedi 28 février 2015 12:05:10</b>"});
+
     if (window.dcp.executeTests) {
         window.dcp.executeTests();
     }

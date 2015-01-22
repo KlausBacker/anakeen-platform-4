@@ -20,6 +20,9 @@ define([
 
         kendoWidgetClass: "kendoDateTimePicker",
 
+
+
+
         _activateDate: function (inputValue) {
             var scope = this;
             var kOptions = this.getKendoOptions();
@@ -50,6 +53,9 @@ define([
         },
 
         formatDate: function formatDate(value) {
+            if (this.options.renderOptions.kendoDateConfiguration.format) {
+                return kendo.toString(value, this.options.renderOptions.kendoDateConfiguration.format);
+            }
             return kendo.toString(value, "g");
         },
         getType: function () {
