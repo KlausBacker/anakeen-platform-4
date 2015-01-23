@@ -12,8 +12,11 @@ define([
 ], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, DocumentView) {
     'use strict';
 
-    var eventList = ["ready", "close", "save", "change", "message", "error", "validate", "delete", "attributeReady",
-    "arrayModified", "internalLinkSelected"];
+    var eventList = ["ready", "change", "message", "error", "validate", "attributeReady",
+        "arrayModified", "documentLinkSelected",
+        "beforeClose", "close",
+        "beforeSave", "afterSave",
+        "beforeDelete", "afterDelete"];
 
     $.widget("dcp.documentController", {
 
@@ -159,16 +162,33 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEvents();
             });
-            this._model.listenTo(this._model, "close", function (event) {
+            this._model.listenTo(this._model, "beforeClose", function (event) {
                 if (currentWidget.initialLoaded !== false) {
-                    event.prevent = !currentWidget._triggerControllerEvent("close", currentWidget._model.getProperties(true));
+                    event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
+                        currentWidget._model.getProperties(true));
                 }
             });
-            this._model.listenTo(this._model, "save", function (event) {
-                event.prevent = !currentWidget._triggerControllerEvent("save", currentWidget._model.getProperties(true));
+            this._model.listenTo(this._model, "close", function () {
+                if (currentWidget.initialLoaded !== false) {
+                   currentWidget._triggerControllerEvent("close",
+                        currentWidget._model.getProperties(true));
+                }
             });
-            this._model.listenTo(this._model, "delete", function (event) {
-                event.prevent = !currentWidget._triggerControllerEvent("delete", currentWidget._model.getProperties(true));
+            this._model.listenTo(this._model, "beforeSave", function (event) {
+                event.prevent = !currentWidget._triggerControllerEvent("beforeSave",
+                    currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "afterSave", function (event) {
+                currentWidget._triggerControllerEvent("afterSave",
+                    currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "beforeDelete", function (event) {
+                event.prevent = !currentWidget._triggerControllerEvent("beforeDelete",
+                    currentWidget._model.getProperties(true));
+            });
+            this._model.listenTo(this._model, "afterDelete", function (event) {
+                currentWidget._triggerControllerEvent("afterDelete",
+                    currentWidget._model.getProperties(true));
             });
             this._model.listenTo(this._model, "validate", function (event) {
                 event.prevent = !currentWidget._triggerControllerEvent("validate", currentWidget._model.getProperties());
@@ -198,7 +218,7 @@ define([
                 );
             });
             this._model.listenTo(this._model, "internalLinkSelected", function (event, options) {
-                event.prevent = !currentWidget._triggerControllerEvent("internalLinkSelected",
+                event.prevent = !currentWidget._triggerControllerEvent("documentLinkSelected",
                     currentWidget._model.getProperties(),
                     options
                 );

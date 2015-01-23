@@ -187,7 +187,7 @@ define([
          * @param options
          */
         propagateSynchroError : function mDocumentpropagateSynchroError(model, xhr, options) {
-            var attrModel, currentModel = this, parsedReturn;
+            var attrModel, currentModel = this, parsedReturn, errorCode = null;
             //Analyze XHR
             var messages = [];
             try {
@@ -207,13 +207,16 @@ define([
                 responseText : "Unexpected error: " + xhr.status + " " + xhr.statusText
             };
 
+
             this.cleanErrorMessages();
             if (parsedReturn.messages.length === 0) {
                 //Status 0 indicate offline browser
                 if (xhr.status === 0) {
                     parsedReturn.responseText = "Your navigator seems offline, try later";
+                    errorCode = "offline";
                 }
                 currentModel.trigger("showError", {
+                    "errorCode" : errorCode,
                     "title" :   "Unable to synchronise " + currentModel.get("properties").get("title"),
                     "message" : parsedReturn.responseText
                 });
@@ -531,28 +534,42 @@ define([
         },
 
         fetch : function mDocumentFetch() {
-            var event = {prevent : false};
-            this.trigger("close", event);
+            var event = {prevent : false}, xhr, currentModel = this;
+            this.trigger("beforeClose", event);
             if (event.prevent === false) {
-                return Backbone.Model.prototype.fetch.apply(this, arguments);
+                xhr = Backbone.Model.prototype.fetch.apply(this, arguments);
+                xhr.done(function() {
+                    currentModel.trigger("close");
+                });
+                return xhr;
             }
             return false;
         },
 
         save : function mDocumentSave() {
-            var event = {prevent : false};
-            this.trigger("save", event);
+            var event = {prevent : false}, xhr, currentModel = this;
+            this.trigger("beforeSave", event);
             if (event.prevent === false) {
-                return Backbone.Model.prototype.save.apply(this, arguments);
+                xhr = Backbone.Model.prototype.save.apply(this, arguments);
+                xhr.done(function () {
+                    currentModel.trigger("afterSave");
+                    currentModel.trigger("close");
+                });
+                return xhr;
             }
             return false;
         },
 
         destroy : function mDocumentDestroy() {
-            var event = {prevent : false};
-            this.trigger("delete", event);
+            var event = {prevent : false}, xhr, currentModel = this;
+            this.trigger("beforeDelete", event);
             if (event.prevent === false) {
-                return Backbone.Model.prototype.destroy.apply(this, arguments);
+                xhr = Backbone.Model.prototype.fetch.apply(this, arguments);
+                xhr.done(function () {
+                    currentModel.trigger("afterDelete");
+                    currentModel.trigger("close");
+                });
+                return xhr;
             }
             return false;
         }
