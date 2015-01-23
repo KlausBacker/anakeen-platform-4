@@ -20,7 +20,7 @@ define(["underscore"], function (_) {
             beforeEach(function () {
                 var $renderZone = $("#render");
 
-                if (window.location.hash === "#displayDom") {
+                if (options.useRender || window.location.hash === "#displayDom") {
                     currentSandbox = $("<div></div>");
                     if ($renderZone.length === 0) {
                         $renderZone = $("body");
@@ -73,7 +73,7 @@ define(["underscore"], function (_) {
             });
 
             describe(type + " : destroy", function () {
-
+            if (! options.noDestroyTesting) {
                 it("content", function () {
                     var $sandBox = getSandbox();
                     widget.call($sandBox, options);
@@ -103,7 +103,7 @@ define(["underscore"], function (_) {
                     expect($sandBox).not.toHaveAttr("data-type");
                     expect($sandBox).not.toHaveAttr("data-attrid");
                 });
-
+            }
             });
 
             describe(type + " : setValue", function () {
