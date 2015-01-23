@@ -21,7 +21,10 @@ define([
 
         className : "dcpDocument container-fluid",
 
-        initialize : function initialize() {
+        /**
+         * Init event
+         */
+        initialize : function vDocumentInitialize() {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'request', this.displayLoading);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
@@ -30,7 +33,10 @@ define([
             this.listenTo(this.model, 'error', this.showView);
         },
 
-        cleanAndRender : function cleanAndRender() {
+        /**
+         * Clean the associated view and re-render it
+         */
+        cleanAndRender : function vDocumentCleanAndRender() {
             this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
                 if (this.historyWidget) {
@@ -46,7 +52,11 @@ define([
             this.render();
         },
 
-        render : function render() {
+        /**
+         * Render the document view
+         * @returns {*}
+         */
+        render : function vDocumentRender() {
             console.time("render document view");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
@@ -114,7 +124,7 @@ define([
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
 
-            this.model.get("attributes").each(function (currentAttr) {
+            this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
                 var view, viewTabLabel, viewTabContent, tabItems;
                 if (!currentAttr.isDisplayable()) {
                     currentView.trigger("partRender");
@@ -141,7 +151,7 @@ define([
                         });
                         if (tabModel.getOption("openFirst")) {
                             currentView.selectedTab = currentAttr.id;
-                            console.log("open ", currentAttr.id);
+                            //console.log("open ", currentAttr.id);
                         }
                         $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                         tabItems = $el.find(".dcpDocument__tabs__list").find('li');
@@ -170,7 +180,7 @@ define([
             });
 
             this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-                show : function (event) {
+                show : function vDocumentShowTab(event) {
                     var tabId = $(event.item).data("attrid");
                     currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
                     currentView.model.get("attributes").get(tabId).trigger("showTab");
@@ -191,7 +201,7 @@ define([
                 }
             }
 
-            $(window.document).on('drop.ddui dragover.ddui', function (e) {
+            $(window.document).on('drop.ddui dragover.ddui', function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
             }).on('redrawErrorMessages.ddui', function vDocumentRedrawErrorMessages() {
                 documentView.model.redrawErrorMessages();
@@ -203,25 +213,35 @@ define([
             return this;
         },
 
-        recordSelectedTab : function recordSelectedTab(tabId) {
-            var documentView = this;
+        /**
+         * @Todo rewrite this part to suppress $.ajax
+         *
+         * Register the current tab for the current user
+         *
+         * @param tabId
+         */
+        recordSelectedTab : function vDocumentRecordSelectedTab(tabId) {
+            //var documentView = this;
             $.ajax({
                 url :         "api/v1/documents/" + this.model.get("initid") + '/usertags/lasttab',
                 type :        "PUT",
                 dataType :    "json",
                 contentType : 'application/json',
                 data :        tabId
-            }).fail(function (response) {
-                documentView.model.trigger("showError", {
+            }).fail(function vDocumentTabRegisterError(response) {
+                /*documentView.model.trigger("showError", {
                     "title" :   "User Tags",
                     "message" : "Cannot record tab selection"
-                });
+                });*/
             });
         },
 
-        publishMessages : function publishMessages() {
+        /**
+         * Publish associated model message
+         */
+        publishMessages : function vDocumentPublishMessages() {
             var currentView = this;
-            _.each(this.model.get("messages"), function (aMessage) {
+            _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage) {
                 if (aMessage.type === "message" || aMessage.type === "notice") {
                     aMessage.type = "info";
                 }
@@ -233,12 +253,18 @@ define([
             });
         },
 
-        renderCss : function renderCss() {
+        /**
+         * Inject associated CSS in the DOM
+         *
+         * Inject new CSS, remove old CSS
+         */
+        renderCss : function vDocumentRenderCss() {
             // add custom css style
             var $target = $("head link:last"),
                 cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" href="<%= path %>" data-id="<%= key %>" data-view="true">'),
                 customCss = this.model.get("customCSS");
-            _.each($("link[data-view=true]"), function (currentLink) {
+            //Remove old CSS
+            _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink) {
                 var findCss = function (currentCss) {
                     return currentLink.dataset.id === currentCss.key;
                 };
@@ -246,16 +272,20 @@ define([
                     $(currentLink).remove();
                 }
             });
-            _.each(customCss, function (cssItem) {
+            // Inject new CSS
+            _.each(customCss, function vDocumentInjectNewCSS(cssItem) {
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
                 if ($existsLink.length === 0) {
                     $target.after(cssLinkTemplate(cssItem));
                 }
             });
         },
-
-        renderJS : function renderJS() {
-            var insertJs = function (path, key) {
+        /**
+         * Inject new JS script in the dom
+         * Use the facebook style injection
+         */
+        renderJS : function vDocumentRenderJS() {
+            var insertJs = function vDocumentInsertJs(path, key) {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
                 script.setAttribute("data-id", key);
@@ -264,7 +294,7 @@ define([
                 document.getElementsByTagName('head')[0].appendChild(script);
             };
 
-            _.each(this.model.get("customJS"), function (jsItem) {
+            _.each(this.model.get("customJS"), function vDocumentHandleJS(jsItem) {
                 var $existsLink = $('script[data-id=' + jsItem.key + ']');
                 if ($existsLink.length === 0) {
                     insertJs(jsItem.path, jsItem.key);
@@ -272,9 +302,13 @@ define([
             });
         },
 
-        showHistory : function documentShowHistory(data) {
+        /**
+         * Show the history widget
+         *
+         */
+        showHistory : function vDocumentShowHistory() {
             var scope = this;
-            this.historyWidget = $('body').dcpDocumentHistory({
+            this.historyWidget = this.$el.dcpDocumentHistory({
                 documentId : this.model.get("properties").get("initid"),
                 window :     {
                     width :  "80%",
@@ -283,16 +317,20 @@ define([
             }).data("dcpDocumentHistory");
 
             this.historyWidget.open();
-            this.historyWidget.currentWidget.on("viewRevision", function (event, data) {
+            this.historyWidget.currentWidget.on("viewRevision", function vDocumentViewRevision(event, data) {
                 scope.model.clear();
                 scope.model.set({initid : data.initid, revision : data.revision});
                 scope.model.fetch();
             });
         },
 
-        showProperties : function documentShowProperties(data) {
+        /**
+         * Show the properties widget
+         *
+         */
+        showProperties : function vDocumentShowProperties() {
             var scope = this;
-            this.propertiesWidget = $('body').dcpDocumentProperties({
+            this.propertiesWidget = this.$el.dcpDocumentProperties({
                 documentId : this.model.get("properties").get("initid"),
                 window :     {
                     width :  "400px",
@@ -301,25 +339,36 @@ define([
             }).data("dcpDocumentProperties");
 
             this.propertiesWidget.open();
-            this.propertiesWidget.currentWidget.on("viewDocument", function (event, data) {
+            this.propertiesWidget.currentWidget.on("viewDocument", function vDocumentViewDocument(event, data) {
                 scope.model.clear();
                 scope.model.set("initid", data);
                 scope.model.fetch();
             });
         },
 
-        updateTitle : function updateTitle() {
+        /**
+         * Update the title of the current page
+         */
+        updateTitle : function vDocumentUpdateTitle() {
             document.title = this.model.get("properties").get("title");
         },
 
-        updateIcon : function updateIcon() {
+        /**
+         * Update the icon of the current page
+         */
+        updateIcon : function vDocumentUpdateIcon() {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
-        deleteDocument : function documentDelete() {
+        /**
+         * Delete the current document
+         *
+         * BEWARE : the deletion delete the model => so this function trigger a reinit event that create a new model
+         */
+        deleteDocument : function dvDocumentDocumentDelete() {
             var currentView = this, destroy = this.model.destroy();
             if (destroy !== false && destroy.done) {
-                destroy.done(function destroyDone(response) {
+                destroy.done(function vDocumentDestroyDone(response) {
                     currentView.trigger("reinit", {
                             initid :   response.data.view.documentData.document.properties.id,
                             revision : response.data.view.documentData.document.properties.revision,
@@ -330,14 +379,22 @@ define([
             }
         },
 
-        displayLoading : function displayLoading() {
+        /**
+         * Display the loading widget
+         */
+        displayLoading : function vDocumentDisplayLoading() {
             this.$el.hide();
             this.trigger("cleanNotification");
             this.trigger("loader", 0);
             this.trigger("loaderShow");
         },
 
-        showView : function showView() {
+        /**
+         * Show the view
+         *
+         * Hide the loader, show the view
+         */
+        showView : function vDocumentShowView() {
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderHide");
@@ -345,7 +402,12 @@ define([
             this.model.redrawErrorMessages();
         },
 
-        closeDocument : function closeDocument(viewId) {
+        /**
+         * Switch the view
+         *
+         * @param viewId
+         */
+        closeDocument : function vDocumentCloseDocument(viewId) {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -360,22 +422,28 @@ define([
             this.model.fetch();
         },
 
-        saveDocument : function saveDocument() {
+        /**
+         * Save the current document
+         */
+        saveDocument : function vDocumentSaveDocument() {
             this.trigger("cleanNotification");
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function displaySuccess() {
+                save.done(function vDocumentDisplaySuccess() {
                     currentView.trigger("showSuccess", {title : "Document Recorded"});
                 });
             }
         },
 
-        createDocument : function createDocument() {
+        /**
+         * Create the current document
+         */
+        createDocument : function vDocumentCreateDocument() {
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function displaySuccess() {
+                save.done(function vDocumentDisplaySuccess() {
                     currentView.trigger("showSuccess", {title : "Document Saved"});
                 });
             }
@@ -387,7 +455,7 @@ define([
          * @param options
          * @returns {*}
          */
-        actionDocument : function actionDocument(options) {
+        actionDocument : function vDocumentActionDocument(options) {
             var event = {prevent : false};
             this.model.trigger("internalLinkSelected", event, options);
             if (event.prevent) {
@@ -420,7 +488,13 @@ define([
             }
         },
 
-        getTemplates : function getTemplates(key) {
+        /**
+         * Get the template for the current view
+         *
+         * @param key
+         * @returns {*}
+         */
+        getTemplates : function vDocumentGetTemplates(key) {
             var templates = {};
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");
@@ -435,7 +509,12 @@ define([
             throw new Error("Unknown template  " + key);
         },
 
-        remove : function remove() {
+        /**
+         * Destroy the associated widget and suppress event listener before remov the dom
+         *
+         * @returns {*}
+         */
+        remove : function vDocumentRemove() {
             try {
                 if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
                     this.kendoTabs.data("kendoTabStrip").destroy();
