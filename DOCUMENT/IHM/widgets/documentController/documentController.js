@@ -201,8 +201,8 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "attributeRender", function (options) {
-                var currentAttribute = currentWidget.getAttribute(options.attributeId);
+            this._model.listenTo(this._model, "attributeRender", function (attributeId) {
+                var currentAttribute = currentWidget.getAttribute(attributeId);
                 currentWidget._triggerControllerEvent("attributeReady",
                     currentWidget._model.getProperties(),
                     currentAttribute
@@ -319,6 +319,12 @@ define([
             return attribute;
         },
 
+        _getRenderedAttributes : function documentController_getRenderedAttributes() {
+            return this._model.get("attributes").filter(function(currentAttribute) {
+                return currentAttribute.haveView();
+            });
+        },
+
         /**
          * Get max index of an array
          *
@@ -348,13 +354,19 @@ define([
          * Used on the fetch of a new document
          */
         _initActivatedEvents : function documentController_initActivatedEvents() {
-            var currentDocumentProperties = this._model.getProperties();
+            var currentDocumentProperties = this._model.getProperties(), currentWidget = this;
             this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
             //Trigger new added ready event
             if (this.initialLoaded !== false) {
                 this._triggerControllerEvent("ready");
+                _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
+                    currentWidget._triggerControllerEvent("attributeReady",
+                        currentDocumentProperties,
+                        currentWidget.getAttribute(currentAttribute.id)
+                    );
+                });
             }
         },
 

@@ -477,6 +477,10 @@ define([
                 currentModel.listenTo(attributes.attributes, "constraint", function (options) {
                     currentModel.trigger("constraint", options.model.id, options.response);
                 });
+                //Propagate the renderDone event to the model
+                currentModel.listenTo(attributes.attributes, "renderDone", function (options) {
+                    currentModel.trigger("attributeRender", options.id);
+                });
                 //Propagate the array event modified to the model
                 currentModel.listenTo(attributes.attributes, "array", function (type, model, options) {
                     currentModel.trigger("arrayModified", {

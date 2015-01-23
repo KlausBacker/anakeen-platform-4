@@ -22,6 +22,7 @@ define([
             this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
+            this.listenTo(this.model, 'haveView', this._identifyView);
         },
 
         render : function () {
@@ -116,6 +117,10 @@ define([
 
         show : function show() {
             this.$el.show();
+        },
+
+        _identifyView : function vAttribute_identifyView(event) {
+            event.haveView = true;
         }
     });
 

@@ -12,7 +12,7 @@ define([
 
         className : "dcpTab__content",
 
-        initialize : function (options) {
+        initialize : function vTabContentInitialize(options) {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -23,17 +23,19 @@ define([
             this.listenTo(this.model, 'showTab', this.propageShowTab);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
+            this.listenTo(this.model, 'haveView', this._identifyView);
             this.initializeContent = options.initializeContent;
             this.initialized = false;
         },
 
-        render : function () {
+        render : function vTabContentRender() {
+            var hasOneContent;
             this.$el.empty();
             this.$el.attr("id", this.model.id);
             this.$el.append('<p> Loading : <i class="fa fa-spinner fa-spin"></i></p>');
             this.$el.attr("data-attrid", this.model.id);
 
-            var hasOneContent = this.model.get("content").some(function (value) {
+            hasOneContent = this.model.get("content").some(function vTabContentIsDisplayable(value) {
                 return value.isDisplayable();
             });
 
@@ -46,12 +48,12 @@ define([
             return this;
         },
 
-        renderContent : function () {
+        renderContent : function vTabContentRenderContent() {
             var $content = this.$el, model = this.model;
             if (this.initialized === false) {
                 this.$el.empty();
                 console.time("render tab " + this.model.id);
-                this.model.get("content").each(function (currentAttr) {
+                this.model.get("content").each(function vTabContentRenderContent(currentAttr) {
                     var view;
                     try {
                         if (!currentAttr.isDisplayable()) {
@@ -61,6 +63,7 @@ define([
                             view = new ViewAttributeFrame({model : currentAttr});
                             $content.append(view.render().$el);
                         } else {
+                            //noinspection ExceptionCaughtLocallyJS
                             throw new Error("unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id);
                         }
                     } catch (e) {
@@ -77,20 +80,24 @@ define([
             $(window.document).trigger("redrawErrorMessages");
         },
 
-        propageShowTab : function propageShowTab() {
+        propageShowTab : function vTabContentPropageShowTab() {
             this.model.get("content").propageEvent('showTab');
         },
 
-        updateLabel : function () {
+        updateLabel : function vTabContentUpdateLabel() {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        hide : function hide() {
+        hide : function vTabContentHide() {
             this.$el.hide();
         },
 
-        show : function show() {
+        show : function vTabContentShow() {
             this.$el.show();
+        },
+
+        _identifyView : function vAttribute_identifyView(event) {
+            event.haveView = true;
         }
     });
 

@@ -1,4 +1,4 @@
-/*global define, TraceKit*/
+/*global define*/
 
 define([
     'underscore',
@@ -130,7 +130,7 @@ define([
                     currentView.trigger("partRender");
                     return;
                 }
-                if (currentAttr.get("type") === "frame" && currentAttr.get("parent") === undefined) {
+                if (currentAttr.get("type") === "frame" && _.isUndefined(currentAttr.get("parent"))) {
                     try {
                         view = new ViewAttributeFrame({model : model.get("attributes").get(currentAttr.id)});
                         $content.append(view.render().$el);
@@ -142,13 +142,11 @@ define([
                         }
                     }
                 }
-                if (currentAttr.get("type") === "tab" && currentAttr.get("parent") === undefined) {
+                if (currentAttr.get("type") === "tab" && _.isUndefined(currentAttr.get("parent"))) {
                     try {
                         var tabModel = model.get("attributes").get(currentAttr.id);
                         viewTabLabel = new ViewAttributeTabLabel({model : tabModel});
-                        viewTabContent = new ViewAttributeTabContent({
-                            model : tabModel
-                        });
+                        viewTabContent = new ViewAttributeTabContent({model : tabModel});
                         if (tabModel.getOption("openFirst")) {
                             currentView.selectedTab = currentAttr.id;
                             //console.log("open ", currentAttr.id);
