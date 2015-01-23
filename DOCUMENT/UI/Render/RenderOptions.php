@@ -24,6 +24,7 @@ class RenderOptions implements \JsonSerializable
     protected $fileOptions = null;
     protected $doubleOptions = null;
     protected $longtextOptions = null;
+    protected $frameOptions = null;
     protected $passwordOptions = null;
     protected $htmltextOptions = null;
     protected $timeOptions = null;
@@ -201,6 +202,18 @@ class RenderOptions implements \JsonSerializable
         }
         $this->tabOptions->setScope($attrid);
         return $this->tabOptions;
+    }
+    /**
+     * @param string $attrid attribute identifier
+     * @return FrameRenderOptions
+     */
+    public function frame($attrid = '')
+    {
+        if ($this->frameOptions === null) {
+            $this->frameOptions = new FrameRenderOptions($this);
+        }
+        $this->frameOptions->setScope($attrid);
+        return $this->frameOptions;
     }
     /**
      * @param string $attrid attribute identifier

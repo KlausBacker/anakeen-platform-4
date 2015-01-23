@@ -119,7 +119,7 @@ define([
             var localId = _.uniqueId("Document"), $renderZone = $("#render");
             localAttrId = _.uniqueId(attributeDefinition.type);
 
-            if (window.location.hash === "#displayDom") {
+            if (config.useRender || window.location.hash === "#displayDom") {
                 currentSandbox = $("<div></div>");
                 if ($renderZone.length === 0) {
                     $renderZone = $("body");

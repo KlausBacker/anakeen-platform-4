@@ -4,16 +4,17 @@ require([
 ], function (defaultTestSuite) {
     "use strict";
 
-
     defaultTestSuite({
         title: "text : read",
         attribute: {type: "text"},
         initialValue: {
             value: "John Doe",
-            displayValue: "John Doe l'inconnu"},
+            displayValue: "John Doe l'inconnu"
+        },
         otherValue: {
             value: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine",
-            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine"}
+            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine"
+        }
     });
 
     defaultTestSuite({
@@ -24,10 +25,12 @@ require([
         },
         initialValue: {
             value: "John Doe",
-            displayValue: "John Doe l'inconnu"},
+            displayValue: "John Doe l'inconnu"
+        },
         otherValue: {
             value: "Les parties supérieures sont gris-bleu",
-            displayValue: "Les parties supérieures sont gris-bleu"}
+            displayValue: "Les parties supérieures sont gris-bleu"
+        }
     });
 
     defaultTestSuite({
@@ -163,7 +166,8 @@ require([
                 {key: "E", label: "Mi"},
                 {key: "F", label: "Fa"},
                 {key: "G", label: "Sol"}
-            ]},
+            ]
+        },
 
         options: {
             renderMode: "edit"
@@ -186,7 +190,8 @@ require([
                 {key: "E", label: "Mi"},
                 {key: "F", label: "Fa"},
                 {key: "G", label: "Sol"}
-            ]},
+            ]
+        },
 
         options: {
             renderMode: "edit"
@@ -209,7 +214,8 @@ require([
                 {key: "E", label: "Mi"},
                 {key: "F", label: "Fa"},
                 {key: "G", label: "Sol"}
-            ]},
+            ]
+        },
 
         options: {
             renderMode: "edit"
@@ -233,7 +239,8 @@ require([
                 {key: "E", label: "Mi"},
                 {key: "F", label: "Fa"},
                 {key: "G", label: "Sol"}
-            ]},
+            ]
+        },
 
         options: {
             renderMode: "edit"
@@ -258,7 +265,8 @@ require([
             ],
             options: {
                 multiple: "yes"
-            }},
+            }
+        },
         options: {
             renderMode: "view"
 
@@ -287,7 +295,8 @@ require([
             ],
             options: {
                 multiple: "yes"
-            }},
+            }
+        },
         options: {
             renderMode: "edit"
         },
@@ -315,7 +324,8 @@ require([
             ],
             options: {
                 multiple: "yes"
-            }},
+            }
+        },
 
         options: {
             renderMode: "edit"
@@ -346,7 +356,8 @@ require([
             ],
             options: {
                 multiple: "yes"
-            }},
+            }
+        },
 
         options: {
             renderMode: "edit"
@@ -377,7 +388,8 @@ require([
             ],
             options: {
                 multiple: "yes"
-            }},
+            }
+        },
 
         options: {
             renderMode: "edit"
@@ -400,10 +412,12 @@ require([
         attribute: {type: "file"},
         initialValue: {
             value: "image/png|J123|ping.png",
-            displayValue: "ping.png"},
+            displayValue: "ping.png"
+        },
         otherValue: {
             value: "image/png|678|pong.png",
-            displayValue: "pong.png"}
+            displayValue: "pong.png"
+        }
     });
 
     defaultTestSuite({
@@ -414,10 +428,12 @@ require([
         },
         initialValue: {
             value: "image/png|J123|ping.png",
-            displayValue: "ping.png"},
+            displayValue: "ping.png"
+        },
         otherValue: {
             value: "image/png|678|pong.png",
-            displayValue: "pong.png"}
+            displayValue: "pong.png"
+        }
     });
 
 
@@ -426,10 +442,12 @@ require([
         attribute: {type: "image"},
         initialValue: {
             value: "image/png|J123|ping.png",
-            displayValue: "ping.png"},
+            displayValue: "ping.png"
+        },
         otherValue: {
             value: "image/png|678|pong.png",
-            displayValue: "pong.png"}
+            displayValue: "pong.png"
+        }
     });
 
     defaultTestSuite({
@@ -440,36 +458,44 @@ require([
         },
         initialValue: {
             value: "image/png|J123|ping.png",
-            displayValue: "ping.png"},
+            displayValue: "ping.png"
+        },
         otherValue: {
             value: "image/png|678|pong.png",
-            displayValue: "pong.png"}
+            displayValue: "pong.png"
+        }
     });
 
 
     defaultTestSuite({
         title: "htmltext : read",
         attribute: {type: "htmltext"},
+        useRender: true,
         initialValue: {
             value: "<p>John Doe</p>",
-            displayValue: "<p>John Doe l'inconnu</p>"},
+            displayValue: "<p>John Doe l'inconnu</p>"
+        },
         otherValue: {
             value: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>",
-            displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"}
+            displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"
+        }
     });
 
     defaultTestSuite({
         title: "htmltext : write",
         attribute: {type: "htmltext"},
+        useRender: true,
         options: {
             renderMode: "edit"
         },
         initialValue: {
             value: "<p>John Doe</p>",
-            displayValue: "<p>John Doe l'inconnu</p>"},
+            displayValue: "<p>John Doe l'inconnu</p>"
+        },
         otherValue: {
             value: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>",
-            displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"}
+            displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"
+        }
     });
 
 
@@ -478,10 +504,12 @@ require([
         attribute: {type: "longtext"},
         initialValue: {
             value: "John Doe",
-            displayValue: "John Doe\nl'inconnu"},
+            displayValue: "John Doe\nl'inconnu"
+        },
         otherValue: {
             value: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie",
-            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"}
+            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"
+        }
     });
 
     defaultTestSuite({
@@ -492,10 +520,12 @@ require([
         },
         initialValue: {
             value: "John Doe",
-            displayValue: "John Doe\nl'inconnu"},
+            displayValue: "John Doe\nl'inconnu"
+        },
         otherValue: {
             value: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie",
-            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"}
+            displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"
+        }
 
     });
 

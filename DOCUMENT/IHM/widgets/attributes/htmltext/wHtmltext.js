@@ -8,25 +8,25 @@ define([
 
     $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
 
-        options : {
-            type :          "htmltext",
-            renderOptions : {
-                toolbar :                'Basic',
-                height :                 '100px',
-                toolbarStartupExpanded : true,
-                ckEditorConfiguration :  {}
+        options: {
+            type: "htmltext",
+            renderOptions: {
+                toolbar: 'Basic',
+                height: '100px',
+                toolbarStartupExpanded: true,
+                ckEditorConfiguration: {}
             },
-            locale :        "en"
+            locale: "en"
         },
 
-        ckEditorInstance : null,
+        ckEditorInstance: null,
 
-        _initDom : function wHtmlTextInitDom() {
+        _initDom: function wHtmlTextInitDom() {
             this._super();
             try {
                 if (this.getMode() === "write") {
                     var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
-                   // if put it on a div : this.getContentElements().attr("contenteditable","true");
+                    // if put it on a div : this.getContentElements().attr("contenteditable","true");
                     this.ckEditorInstance = this.getContentElements().ckeditor(
                         options
                     ).editor;
@@ -45,7 +45,7 @@ define([
          * Define option set for ckEditor widget
          * @returns {{language: string, contentsCss: string[], removePlugins: string, toolbarCanCollapse: boolean, entities: boolean, filebrowserImageBrowseUrl: string, filebrowserImageUploadUrl: string, toolbar_Full: *[], toolbar_Default: *[], toolbar_Simple: *[], toolbar_Basic: *[], removeButtons: string}}
          */
-        ckOptions : function wHtmlTextCkOptions() {
+        ckOptions: function wHtmlTextCkOptions() {
             var locale = this.options.locale;
             if (this.options.renderOptions.toolbar) {
                 this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
@@ -56,83 +56,115 @@ define([
             if (!_.isUndefined(this.options.renderOptions.toolbarStartupExpande)) {
                 this.options.renderOptions.ckEditorConfiguration.toolbarStartupExpanded = this.options.renderOptions.toolbarStartupExpanded;
             }
-            return   {
-                language :                  locale.substring(0, 2),
-                contentsCss :               ['lib/ckeditor/4/contents.css', 'css/dcp/document/ckeditor.css'],
-                removePlugins :             'elementspath', // no see HTML path elements
-                toolbarCanCollapse :        true,
-                entities :                  false, // no use HTML entities
-                filebrowserImageBrowseUrl : '?sole=Y&app=FDL&action=CKIMAGE',
-                filebrowserImageUploadUrl : '?sole=Y&app=FDL&action=CKUPLOAD',
-                toolbar_Full :              [
-                    { name : 'document', items : [ 'Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
-                    { name : 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-                    { name : 'editing', items : [ 'Find', 'Replace', '-', 'SelectAll', '-' ] },
-                    { name : 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                        'HiddenField' ] },
+            return {
+                language: locale.substring(0, 2),
+                contentsCss: ['lib/ckeditor/4/contents.css', 'css/dcp/document/ckeditor.css'],
+                removePlugins: 'elementspath', // no see HTML path elements
+                toolbarCanCollapse: true,
+                entities: false, // no use HTML entities
+                filebrowserImageBrowseUrl: '?sole=Y&app=FDL&action=CKIMAGE',
+                filebrowserImageUploadUrl: '?sole=Y&app=FDL&action=CKUPLOAD',
+                toolbar_Full: [
+                    {
+                        name: 'document',
+                        items: ['Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates']
+                    },
+                    {
+                        name: 'clipboard',
+                        items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
+                    },
+                    {name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-']},
+                    {
+                        name: 'forms',
+                        items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                            'HiddenField']
+                    },
                     '/',
-                    { name : 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-                    { name : 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
-                        '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
-                    { name : 'links', items : [ 'Link', 'Unlink' ] },
-                    { name : 'insert', items : [ 'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+                    {
+                        name: 'basicstyles',
+                        items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
+                    },
+                    {
+                        name: 'paragraph',
+                        items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+                            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']
+                    },
+                    {name: 'links', items: ['Link', 'Unlink']},
+                    {
+                        name: 'insert',
+                        items: ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+                    },
                     '/',
-                    { name : 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-                    { name : 'colors', items : [ 'TextColor', 'BGColor' ] },
-                    { name : 'tools', items : [ 'Maximize', 'ShowBlocks', '-', 'About' ] }
+                    {name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize']},
+                    {name: 'colors', items: ['TextColor', 'BGColor']},
+                    {name: 'tools', items: ['Maximize', 'ShowBlocks', '-', 'About']}
                 ],
-                toolbar_Default :           [
-                    { name : 'document', items : [  'Source'] },
-                    { name : 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-                    { name : 'editing', items : [ 'Find', 'Replace', '-', 'SelectAll' ] },
-                    { name : 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-                    { name : 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
-                        '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
-                    { name : 'links', items : [ 'Link', 'Unlink' ] },
-                    { name : 'insert', items : [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-                    { name : 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-                    { name : 'colors', items : [ 'TextColor', 'BGColor' ] },
-                    { name : 'tools', items : [ 'Maximize', 'ShowBlocks', '-', 'About' ] }
+                toolbar_Default: [
+                    {name: 'document', items: ['Source']},
+                    {
+                        name: 'clipboard',
+                        items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
+                    },
+                    {name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll']},
+                    {
+                        name: 'basicstyles',
+                        items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
+                    },
+                    {
+                        name: 'paragraph',
+                        items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+                            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']
+                    },
+                    {name: 'links', items: ['Link', 'Unlink']},
+                    {name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak', 'Iframe']},
+                    {name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize']},
+                    {name: 'colors', items: ['TextColor', 'BGColor']},
+                    {name: 'tools', items: ['Maximize', 'ShowBlocks', '-', 'About']}
                 ],
-                toolbar_Simple :            [
-                    { name : 'document', items : [] },
-                    { name : 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-                    { name : 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
-                        '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-                    { name : 'links', items : [ 'Link', 'Unlink' ] },
-                    { name : 'insert', items : [ 'Image', 'Table', 'SpecialChar' ] },
-                    { name : 'styles', items : [ 'Format', 'FontSize' ] },
-                    { name : 'colors', items : [ 'TextColor', 'BGColor' ] },
-                    { name : 'tools', items : [ 'Maximize', 'Source', '-', 'About' ] }
+                toolbar_Simple: [
+                    {name: 'document', items: []},
+                    {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat']},
+                    {
+                        name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
+                        '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+                    },
+                    {name: 'links', items: ['Link', 'Unlink']},
+                    {name: 'insert', items: ['Image', 'Table', 'SpecialChar']},
+                    {name: 'styles', items: ['Format', 'FontSize']},
+                    {name: 'colors', items: ['TextColor', 'BGColor']},
+                    {name: 'tools', items: ['Maximize', 'Source', '-', 'About']}
                 ],
-                toolbar_Basic :             [
-                    { name : 'links', items : ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'quicksave', 'About'] }
+                toolbar_Basic: [
+                    {
+                        name: 'links',
+                        items: ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'quicksave', 'About']
+                    }
                 ],
-                removeButtons :             ""
+                removeButtons: ""
             };
         },
 
-        _initEvent :       function _initEvent() {
+        _initEvent: function _initEvent() {
             var scope = this;
             this._super();
             if (this.ckEditorInstance) {
-                this.ckEditorInstance.on("change" , function () {
-                    scope.setValue({value : this.getData()});
+                this.ckEditorInstance.on("change", function () {
+                    scope.setValue({value: this.getData()});
                 });
 
-                this.ckEditorInstance.on("focus" , function () {
+                this.ckEditorInstance.on("focus", function () {
                     var ktTarget = scope.element.find(".input-group");
                     scope.showInputTooltip(ktTarget);
                     scope.element.find(".cke").addClass("k-state-focused");
                 });
 
-                this.ckEditorInstance.on("blur" , function () {
+                this.ckEditorInstance.on("blur", function () {
                     var ktTarget = scope.element.find(".input-group");
                     scope.hideInputTooltip(ktTarget);
                     scope.element.find(".cke").removeClass("k-state-focused");
                 });
 
-                this.element.on("postMoved"+this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {
+                this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {
                     if (eventData && (eventData.to === scope.options.index )) {
                         scope.redraw();
                     }
@@ -143,17 +175,17 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _getFocusInput :   function () {
+        _getFocusInput: function () {
             return this.element;
         },
         /**
          * No use parent change
          */
-        _initChangeEvent : function _initChangeEvent() {
+        _initChangeEvent: function _initChangeEvent() {
 
         },
 
-        getWidgetValue : function () {
+        getWidgetValue: function () {
             return this.getContentElements().val();
         },
 
@@ -161,7 +193,7 @@ define([
          *
          * @param value
          */
-        setValue : function wHtmltextSetValue(value) {
+        setValue: function wHtmltextSetValue(value) {
             value = _.clone(value);
             if (value.value === null) {
                 // ckEditor restore original value if set to null
@@ -178,7 +210,7 @@ define([
                 //noinspection JSHint
                 if (originalValue.trim() != value.value.trim()) {
 
-                    // Modify value only if different
+                  // Modify value only if different
                     this.getContentElements().val(value.value);
                     // this.ckEditorInstance.setData(value.value);
                     this.flashElement(this.element.find('iframe'));
@@ -193,14 +225,23 @@ define([
             $.dcp.dcpAttribute.prototype.setValue.call(this, value);
         },
 
-        getType : function () {
+        getType: function () {
             return "htmltext";
         },
 
-        _destroy : function _destroy() {
+        _destroy: function wHtmlTextDestroy() {
+            var scope=this;
             if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
-                this.ckEditorInstance.destroy();
+                    if (this.ckEditorInstance.status === "loaded") {
+                        this.ckEditorInstance.destroy();
+                    } else if (this.ckEditorInstance.status === "unloaded") {
+                        this.ckEditorInstance.on("loaded", function () {
+                            scope._destroy();
+                        });
+                        return;
+                    }
             }
+
             this._super();
         }
 
