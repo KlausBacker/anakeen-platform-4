@@ -46,15 +46,15 @@ define([
                 return false;
             }
             if (this.get("isValueAttribute")) {
-                 if (this.get("mode") === "read") {
-                     if (this.getOption('showEmptyContent') !== null) {
-                         return true;
-                     } else {
-                         return (this.get("attributeValue") && this.get("attributeValue").value !== null);
-                     }
-                 } else if (this.get("mode") === "write") {
-                     return true;
-                 }
+                if (this.get("mode") === "read") {
+                    if (this.getOption('showEmptyContent') !== null) {
+                        return true;
+                    } else {
+                        return (this.get("attributeValue") && this.get("attributeValue").value !== null);
+                    }
+                } else if (this.get("mode") === "write") {
+                    return true;
+                }
             }
             if (this.get("content").length === 0) {
                 return false;
@@ -220,6 +220,12 @@ define([
 
         checkConstraint : function mAttributecheckConstraint() {
             return true;
+        },
+
+        haveView : function mAttributeHaveView() {
+            var view = {haveView : false};
+            this.trigger("haveView", view);
+            return view.haveView;
         }
 
     });

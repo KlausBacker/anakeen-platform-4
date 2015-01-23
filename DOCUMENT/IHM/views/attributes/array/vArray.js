@@ -29,6 +29,7 @@ define([
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'removeWidgetLine', this.removeWidgetLine);
             this.listenTo(this.model, 'addWidgetLine', this.addWidgetLine);
+            this.listenTo(this.model, 'haveView', this._identifyView);
 
         },
 
@@ -184,6 +185,10 @@ define([
 
         show : function show() {
             this.$el.show();
+        },
+
+        _identifyView : function vAttribute_identifyView(event) {
+            event.haveView = true;
         }
     });
 

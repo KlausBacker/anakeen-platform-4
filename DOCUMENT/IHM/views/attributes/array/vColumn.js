@@ -28,6 +28,7 @@ define([
         },
 
         render : function () {
+            this.model.trigger("renderDone", this.model);
             return this;
         },
 

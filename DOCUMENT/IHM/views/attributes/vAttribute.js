@@ -44,6 +44,7 @@ define([
             this.listenTo(this.model, 'showTab', this.afterShow);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
+            this.listenTo(this.model, 'haveView', this._identifyView);
             this.options = options;
         },
 
@@ -418,6 +419,10 @@ define([
             return _.find(_.keys($element.data()), function (currentKey) {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
+        },
+
+        _identifyView : function vAttribute_identifyView(event) {
+            event.haveView = true;
         }
     });
 
