@@ -10,6 +10,8 @@ require([
     defaultTestSuite("htmltext : write", widget, {mode : "write", noDestroyTesting:true, useRender:true}, {value : "<p>Lorem <strong>Ispum</strong></p>"});
 
 
+
+
     htmltextTestSuite("htmltext : spec", widget, {
         mode : "write",
         deleteButton : true,
@@ -56,7 +58,8 @@ require([
         deleteButton : true,
         renderOptions : {
             height:"250px",
-            toolbar : "Full"
+            toolbar : "Full",
+            toolbarStartupExpanded:false
         }
     }, {value : "<h1>250px Full</h1>"},{
         height:250,

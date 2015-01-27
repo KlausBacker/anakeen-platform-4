@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-19 16:03+0100\n"
-"PO-Revision-Date: 2015-01-19 16:03+0100\n"
+"POT-Creation-Date: 2015-01-26 17:41+0100\n"
+"PO-Revision-Date: 2015-01-26 17:42+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -43,6 +43,10 @@ msgstr ""
 
 msgid "Autocomplete attributes"
 msgstr ""
+
+msgctxt "ddui-file"
+msgid "B"
+msgstr "octets"
 
 msgid "COLLECT_ERROR"
 msgstr ""
@@ -361,9 +365,6 @@ msgstr ""
 msgid "Wrap kendo"
 msgstr ""
 
-msgid "Y-m-d"
-msgstr ""
-
 msgid "cl_nomscientifique"
 msgstr ""
 
@@ -409,6 +410,9 @@ msgstr ""
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "ko"
+
+msgid "tst_title"
+msgstr ""
 
 #, php-format
 msgctxt "ddui"

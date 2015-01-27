@@ -223,6 +223,7 @@ class RenderDefault implements IRenderConfig
             "tooltipLabel" => ___("Choose file", "ddui-file") ,
             "downloadLabel" => ___("Download file", "ddui-file") ,
             "kiloByte" => ___("kB", "ddui-file") ,
+            "byte" => ___("B", "ddui-file") ,
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));

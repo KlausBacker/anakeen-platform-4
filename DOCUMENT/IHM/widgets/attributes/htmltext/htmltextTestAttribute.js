@@ -18,6 +18,11 @@ define(["underscore"], function (_) {
             throw Error("First argument must be a widget function");
         }
 
+
+        if (_.isUndefined(options.renderOptions.toolbarStartupExpanded)) {
+            options.renderOptions.toolbarStartupExpanded = true;
+        }
+
         describe(type + " htmlTest", function () {
 
             beforeEach(function () {
@@ -38,7 +43,9 @@ define(["underscore"], function (_) {
                 var $sandBox = getSandbox();
                 try {
                     if (window.location.hash !== "#displayDom") {
+
                         widget.call($sandBox, "destroy");
+
                     }
                 } catch (e) {
                     //console.log(e);
@@ -47,52 +54,37 @@ define(["underscore"], function (_) {
 
             if (options.mode === "write") {
 
-                describe(type + " : destroy", function () {
-                    beforeEach(function (done) {
-                        var $sandBox = getSandbox();
-                        widget.call($sandBox, _.defaults({"attributeValue": value}, options));
-                        $sandBox.on("dcpattributedestroy", function () {
-                            done();
-                        });
-
-                        widget.call($sandBox, "destroy");
-                    });
-                    it("destroy", function () {
-                        var $sandBox = getSandbox();
-                        expect($sandBox).toBeEmpty();
-                        expect($sandBox).toHaveAttr("class", "");
-                        expect($sandBox).not.toHaveAttr("data-type");
-                        expect($sandBox).not.toHaveAttr("data-attrid");
-
-                    });
-                });
 
                 describe(type + " : height", function () {
                     beforeEach(function (done) {
                         var $sandBox = getSandbox();
                         var ckEditor;
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
-                        ckEditor=$sandBox.dcpHtmltext().data("dcpDcpHtmltext").ckEditorInstance;
+                        ckEditor = $sandBox.dcpHtmltext().data("dcpDcpHtmltext").ckEditorInstance;
                         ckEditor.on("loaded", function () {
                             done();
                         });
-
                     });
-                     describe(type + " : icon+ height", function () {
-                         it("height and iicon", function () {
-                             var $sandBox = getSandbox();
-                             var $ckElement=$sandBox.find("iframe.cke_reset");
-                             expect($sandBox).not.toBeEmpty();
-                             expect($ckElement.height()).toEqual(expected.height);
 
-                             _.each(expected.icons, function (icon) {
-                                 expect($ckElement.find("."+icon)).not.toBeEmpty();
-                             });
-                             _.each(expected.notIcons, function (icon) {
-                                 expect($ckElement.find("."+icon)).not.toExist();
-                             });
-                         });
-                     });
+                    describe(type + " : icon+ height", function () {
+                        it("height and icon", function () {
+                            var $sandBox = getSandbox();
+                            var wHtmlText = $sandBox.dcpHtmltext().data("dcpDcpHtmltext");
+                            var $ckElement = $sandBox.find("iframe.cke_reset");
+                            expect($sandBox).not.toBeEmpty();
+                            expect($ckElement.height()).toEqual(expected.height);
+
+                            _.each(expected.icons, function (icon) {
+                                expect($ckElement.find("." + icon)).not.toBeEmpty();
+                            });
+                            _.each(expected.notIcons, function (icon) {
+                                expect($ckElement.find("." + icon)).not.toExist();
+                            });
+
+                            expect(wHtmlText.ckEditorInstance.config.toolbarStartupExpanded).toEqual(options.renderOptions.toolbarStartupExpanded);
+                            expect(wHtmlText.ckEditorInstance.config.toolbar).toEqual(options.renderOptions.toolbar);
+                        });
+                    });
                 });
             }
             if (options.mode === "read") {
