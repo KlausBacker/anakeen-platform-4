@@ -283,22 +283,44 @@ define([
             var documentModel = this.model.getDocumentModel();
             options.data.attributes = documentModel.getValues();
             $.ajax({
-                type : "POST",
-                url :  "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
-                       (documentModel.id || "0" ) +
-                       "&fromid=" + documentModel.get("properties").get("family").id,
-                data : options.data,
-
-                dataType : "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                success :  function (result) {
-                    // notify the data source that the request succeeded
-                    options.success(result);
+                type :     "POST",
+                url :      "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
+                           (documentModel.id || "0" ) +
+                           "&fromid=" + documentModel.get("properties").get("family").id,
+                data :     options.data,
+                dataType : "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requestsons.error(result);
+            }).pipe(
+                function vAttributeAutocompletehandleSuccessRequest(response) {
+                    if (response.success) {
+                        return ( response );
+                    } else {
+                        return ($.Deferred().reject(response));
+                    }
                 },
-                error :    function (result) {
-                    // notify the data source that the request failed
-                    options.error(result);
+                function vAttributeAutocompletehandleErrorRequest(response) {
+                    if (response.status === 0) {
+                        return {
+                            success : false,
+                            error : "Your navigator seems offline, try later"
+                        };
+                    }
+                    return ({
+                        success : false,
+                        error :   "Unexpected error: " + response.status + " " + response.statusText
+                    });
                 }
-            });
+            ).then(function vAttributeAutocompleteSuccessResult(result) {
+                    // notify the data source that the request succeeded
+                    options.success(result.data);
+                }, function vAttributeAutocompleteErrorResult(result) {
+                    // notify the data source that the request failed
+                    if (_.isArray(result.error)) {
+                        result.error = result.error.join(" ");
+                    }
+                    //use the sucess callback because http error are handling by the pipe
+                    options.success([{"title" : "", "error" : result.error}]);
+                }
+            );
         },
 
         /**

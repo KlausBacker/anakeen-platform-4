@@ -195,7 +195,7 @@ define([
             });
             this._model.listenTo(this._model, "changeValue", function (options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
-                currentWidget._triggerControllerEvent("change",
+                currentWidget._triggerAttributeControllerEvent("change", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute,
                     currentAttribute.getValue("all")
@@ -203,14 +203,14 @@ define([
             });
             this._model.listenTo(this._model, "attributeRender", function (attributeId) {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
-                currentWidget._triggerControllerEvent("attributeReady",
+                currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute
                 );
             });
             this._model.listenTo(this._model, "arrayModified", function (options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
-                currentWidget._triggerControllerEvent("arrayModified",
+                currentWidget._triggerAttributeControllerEvent("arrayModified", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute,
                     options.type,
@@ -362,12 +362,45 @@ define([
             if (this.initialLoaded !== false) {
                 this._triggerControllerEvent("ready");
                 _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
-                    currentWidget._triggerControllerEvent("attributeReady",
+                    currentAttribute = currentWidget.getAttribute(currentAttribute.id);
+                    currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                         currentDocumentProperties,
-                        currentWidget.getAttribute(currentAttribute.id)
+                        currentAttribute
                     );
                 });
             }
+        },
+
+        _triggerAttributeControllerEvent : function documentController_triggerAttributeControllerEvent(eventName, attributeInternalElement) {
+            var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName), externalEventArgument;
+            event.target = currentWidget.element;
+            // internal event trigger
+            args.unshift(event);
+            _.chain(this.activatedEvent).filter(function (currentEvent) {
+                if (currentEvent.eventType === eventName) {
+                    if (!_.isFunction(currentEvent.attributeCheck)) {
+                        return true;
+                    }
+                    if (currentEvent.attributeCheck(attributeInternalElement)) {
+                        return true;
+                    }
+                }
+                return false;
+            }).some(function (currentEvent) {
+                try {
+                    currentEvent.eventCallback.apply(currentWidget.element, args);
+                } catch (e) {
+                    if (window.dcp.logger) {
+                        window.dcp.logger(e);
+                    } else {
+                        console.error(e);
+                    }
+                }
+            });
+            externalEventArgument = Array.prototype.slice.call(arguments, 0);
+            externalEventArgument.splice(1, 1);
+            currentWidget._triggerExternalEvent.apply(currentWidget, externalEventArgument);
+            return !event.isDefaultPrevented();
         },
 
         /**
@@ -378,7 +411,7 @@ define([
          * @returns {boolean}
          */
         _triggerControllerEvent : function documentController_triggerControllerEvent(eventName) {
-            var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(eventName), onArgs;
+            var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(eventName);
             event.target = currentWidget.element;
             // internal event trigger
             args.unshift(event);
@@ -395,18 +428,23 @@ define([
                     }
                 }
             });
-            //prepare argument for widget event trigger
-            // duplicate
-            onArgs = args.slice(0);
-            // add event type
-            onArgs.unshift(eventName);
-            // concatenate other argument in one element
-            onArgs[2] = onArgs.slice(2);
-            // suppress other arguments
-            onArgs = onArgs.slice(0, 3);
-            //trigger external event
-            currentWidget._trigger.apply(currentWidget, onArgs);
+            currentWidget._triggerExternalEvent.apply(currentWidget, arguments);
             return !event.isDefaultPrevented();
+        },
+
+        _triggerExternalEvent : function documentController_triggerExternalEvent(type) {
+            var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(type);
+            //prepare argument for widget event trigger (we want type, event, data)
+            // add the eventObject
+            args.unshift(event);
+            // add the type
+            args.unshift(type);
+            // concatenate other argument in one element (to respect widget pattern)
+            args[2] = args.slice(2);
+            // suppress other arguments (since they have been concatened)
+            args = args.slice(0, 3);
+            //trigger external event
+            currentWidget._trigger.apply(currentWidget, args);
         },
 
         /***************************************************************************************************************
