@@ -16,7 +16,7 @@ class EnumRenderOptions extends CommonRenderOptions
     const useSourceUriOption = "useSourceUri";
     const verticalDisplay = "vertical";
     const horizontalDisplay = "horizontal";
-    const selectDisplay = "list";
+    const listDisplay = "list";
     const autocompletionDisplay = "autoCompletion";
     const boolDisplay = "bool";
     /**
@@ -31,7 +31,7 @@ class EnumRenderOptions extends CommonRenderOptions
         $allow = array(
             self::verticalDisplay,
             self::horizontalDisplay,
-            self::selectDisplay,
+            self::listDisplay,
             self::autocompletionDisplay,
             self::boolDisplay
         );

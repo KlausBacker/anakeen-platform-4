@@ -6,7 +6,7 @@
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
                    class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
                    value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
-            <span>{{displayValue}}</span>
+            <div class="dcpAttribute__value--enumlabel--text">{{displayValue}}</div>
         </label>
     {{/enumValues}}
     </div>

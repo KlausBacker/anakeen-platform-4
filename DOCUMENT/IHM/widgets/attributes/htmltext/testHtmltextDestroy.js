@@ -6,6 +6,7 @@ require([
 ], function (widget, defaultTestSuite,  htmltextTestDestroy) {
     "use strict";
 
+    /*
     htmltextTestDestroy("htmltext : spec",  widget, {
         mode : "write",
         deleteButton : true,
@@ -14,7 +15,7 @@ require([
             toolbar : "Basic"
         }
     }, {value : "<h1>TO DESTROY</h1>"},{});
-
+*/
     if (window.dcp.executeTests) {
         window.dcp.executeTests();
     }

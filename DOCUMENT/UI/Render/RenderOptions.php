@@ -57,7 +57,7 @@ class RenderOptions implements \JsonSerializable
             ) ,
             EnumRenderOptions::type => array(
                 "boolColor" => "",
-                EnumRenderOptions::displayOption => EnumRenderOptions::selectDisplay,
+                EnumRenderOptions::displayOption => EnumRenderOptions::listDisplay,
                 EnumRenderOptions::useFirstChoiceOption => false,
                 EnumRenderOptions::useSourceUriOption => false
             ) ,

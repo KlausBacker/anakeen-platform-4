@@ -20,7 +20,9 @@ define([
             labels: {
                 chooseMessage: 'Select', // Message to display when no useFirstChoice is true and no value selected
                 invalidEntry: "Invalid Entry",
-                invertSelection: "Click to answer {{displayValue}}"
+                invertSelection: "Click to answer {{displayValue}}",
+                selectMessage: 'Select',
+                unselectMessage: 'UnSelect'
             },
             renderOptions: {
                 kendoDropDownConfiguration: {
@@ -179,13 +181,40 @@ define([
             return {data: source, selectedValues: selectedValues};
         },
 
+        retrieveItems: function wEnumretrieveItemse(done) {
+            var scope=this;
+            // Get enums data and defer render
+            $.ajax({
+                type: "GET",
+                url: this.options.sourceUri,
+                dataType: "json"
+            }).done(function (result) {
+                scope.options.sourceValues=result.data.enumItems;
+                scope.options.renderOptions.useSourceUri=false;
+                done(scope);
+            }).fail(function (response) {
+                $('body').trigger("notification", {
+                    htmlMessage: "Enumerate "+scope.options.id,
+                    message: response.statusText,
+                    type: "error"
+                });
+            });
+        },
 
         boolButtons: function wEnumBoolButtons() {
-            var enumData = this.getSingleEnumData();
+            var enumData;
             var tplOption = this.options;
             var labels;
             var scope = this;
 
+            if (this.options.renderOptions.useSourceUri) {
+                this.retrieveItems(function (theWidget) {
+                    theWidget.boolButtons();
+                });
+                return;
+            }
+
+             enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
 
             this.options.isMultiple = true; // Just to have checkbox
@@ -235,12 +264,22 @@ define([
             }
 
         },
+
+
         radioButtons: function wEnumRadioButtons() {
-            var enumData = this.getSingleEnumData();
+            var enumData;
             var tplOption = this.options;
             var labels;
             var scope = this;
 
+            if (this.options.renderOptions.useSourceUri) {
+                this.retrieveItems(function (theWidget) {
+                    theWidget.radioButtons();
+                });
+                return;
+            }
+
+            enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
 
 
@@ -256,6 +295,7 @@ define([
             });
 
 
+
             this.getContentElements().each(function () {
                 $(this).closest("label").addClass("k-button");
 
@@ -268,13 +308,31 @@ define([
                 }
             }
 
+            this.element.tooltip({
+                selector:'.dcpAttribute__value--enumlabel--text' ,
+                title: function (a) {
+                    if ($(this).closest("label").find("input").prop("checked")) {
+                        return null;
+                    } else {
+                        return scope.options.labels.selectMessage+' "'+$(this).text()+'"';
+                    }
+                }
+            });
+
         },
         checkboxButtons: function wEnumRadioButtons() {
-            var enumData = this.getMultipleEnumData();
+            var enumData;
             var tplOption = this.options;
             var labels;
             var scope = this;
 
+            if (this.options.renderOptions.useSourceUri) {
+                this.retrieveItems(function (theWidget) {
+                    theWidget.checkboxButtons();
+                });
+                return;
+            }
+            enumData = this.getMultipleEnumData();
             tplOption.enumValues = enumData.data;
 
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
@@ -298,7 +356,17 @@ define([
 
             this.getContentElements().each(function () {
                 $(this).closest("label").addClass("k-button");
+            });
 
+            this.element.tooltip({
+                selector:'.dcpAttribute__value--enumlabel--text' ,
+                title: function (a) {
+                    if ($(this).closest("label").find("input").prop("checked")) {
+                        return scope.options.labels.unselectMessage+' "'+$(this).text()+'"';
+                    } else {
+                        return scope.options.labels.selectMessage+' "'+$(this).text()+'"';
+                    }
+                }
             });
 
         },
@@ -330,13 +398,16 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
-
             if (this.options.renderOptions.useSourceUri) {
                 if (this.options.attributeValue.value === null) {
                     kddl.dataSource.data([]);
                     kddl.value('');
                 } else {
                     kddl.dataSource.data([this.options.attributeValue]);
+                    kddl.value(this.options.attributeValue.value);
+                }
+            } else {
+                if (this.options.attributeValue.value) {
                     kddl.value(this.options.attributeValue.value);
                 }
             }
