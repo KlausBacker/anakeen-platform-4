@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-19 16:03+0100\n"
-"PO-Revision-Date: 2015-01-19 16:03+0100\n"
+"POT-Creation-Date: 2015-01-28 11:01+0100\n"
+"PO-Revision-Date: 2015-01-28 11:02+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -43,6 +43,10 @@ msgstr ""
 
 msgid "Autocomplete attributes"
 msgstr ""
+
+msgctxt "ddui-file"
+msgid "B"
+msgstr "octets"
 
 msgid "COLLECT_ERROR"
 msgstr ""
@@ -116,7 +120,7 @@ msgstr "Créer"
 
 msgctxt "UiMenu"
 msgid "Create !"
-msgstr ""
+msgstr "Créer !"
 
 msgctxt "my"
 msgid "Custom Menu"
@@ -326,6 +330,10 @@ msgctxt "UiMenu"
 msgid "See document in read mode"
 msgstr "Afficher le document en lecture"
 
+msgctxt "ddui-enum"
+msgid "Select"
+msgstr "Sélectionner"
+
 #, php-format
 msgctxt "UiMenu"
 msgid "Sure delete %s ?"
@@ -343,6 +351,10 @@ msgctxt "UiMenu"
 msgid "Unlock"
 msgstr "Déverouiller"
 
+msgctxt "ddui-enum"
+msgid "Unselect"
+msgstr "Désélectionner"
+
 msgctxt "UiMenu"
 msgid "View current revision"
 msgstr "Voir la révision courante"
@@ -359,9 +371,6 @@ msgid "View {{displayValue}}"
 msgstr ""
 
 msgid "Wrap kendo"
-msgstr ""
-
-msgid "Y-m-d"
 msgstr ""
 
 msgid "cl_nomscientifique"
@@ -409,6 +418,9 @@ msgstr ""
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "ko"
+
+msgid "tst_title"
+msgstr ""
 
 #, php-format
 msgctxt "ddui"

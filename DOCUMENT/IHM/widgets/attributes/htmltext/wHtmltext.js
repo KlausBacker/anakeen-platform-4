@@ -53,7 +53,7 @@ define([
             if (this.options.renderOptions.height) {
                 this.options.renderOptions.ckEditorConfiguration.height = this.options.renderOptions.height;
             }
-            if (!_.isUndefined(this.options.renderOptions.toolbarStartupExpande)) {
+            if (!_.isUndefined(this.options.renderOptions.toolbarStartupExpanded)) {
                 this.options.renderOptions.ckEditorConfiguration.toolbarStartupExpanded = this.options.renderOptions.toolbarStartupExpanded;
             }
             return {
@@ -232,8 +232,12 @@ define([
         _destroy: function wHtmlTextDestroy() {
             var scope=this;
             if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
-                    if (this.ckEditorInstance.status === "loaded") {
+                    if (this.ckEditorInstance.status === "loaded" || this.ckEditorInstance.status === "ready") {
                         this.ckEditorInstance.destroy();
+                        _.defer(function () {
+                            scope._destroy();
+                        });
+                        return;
                     } else if (this.ckEditorInstance.status === "unloaded") {
                         this.ckEditorInstance.on("loaded", function () {
                             scope._destroy();
@@ -241,6 +245,7 @@ define([
                         return;
                     }
             }
+
 
             this._super();
         }

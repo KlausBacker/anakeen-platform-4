@@ -6,7 +6,6 @@
   clear:both;
 }
 
-
 .dcpAttribute__content .k-dropdown-wrap  {
   height: (@attrInputHeight );
   box-sizing: border-box;
@@ -94,6 +93,7 @@ background-color: @gray-lighter;
 }
 
 
+
 .dcpAttribute__value--enumlabel {
   font-weight: normal;
 }
@@ -155,6 +155,14 @@ background-color: @gray-lighter;
   text-align: left;
   white-space: nowrap;
 }
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel span{
+
+
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text{
   margin-left: 1em;
+  display:inline-block;
+  width:100%
+}
+.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel--text{
+  margin-left: 1em;
+  display:inline-block;
 }

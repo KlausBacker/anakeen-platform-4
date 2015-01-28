@@ -57,22 +57,18 @@ class RenderOptions implements \JsonSerializable
             ) ,
             EnumRenderOptions::type => array(
                 "boolColor" => "",
-                EnumRenderOptions::displayOption => EnumRenderOptions::selectDisplay,
+                EnumRenderOptions::displayOption => EnumRenderOptions::listDisplay,
                 EnumRenderOptions::useFirstChoiceOption => false,
                 EnumRenderOptions::useSourceUriOption => false
             ) ,
-            "file" => array(
-                "downloadInline" => false
+            FileRenderOptions::type => array(
+                FileRenderOptions::downloadInlineOption => false
             ) ,
-            "image" => array(
-                "downloadInline" => false,
-                "width" => "80px"
-            ) ,
-            "money" => array(
-                "format" => "%!.2n"
-            ) ,
+            
             ImageRenderOptions::type => array(
                 ImageRenderOptions::htmlLinkOption => $imageLinkOption,
+                ImageRenderOptions::downloadInlineOption => true,
+                ImageRenderOptions::thumbnailWidthOption => 48,
                 ImageRenderOptions::downloadInlineOption => true
             ) ,
             HtmltextRenderOptions::type => array(

@@ -9,6 +9,10 @@ define([
 
         options: {
             type: "file",
+            renderOptions : {
+                downloadInline:false,
+                htmlLink : {}
+            },
             labels: {
                 dropFileHere: "Drop file here",
                 placeHolder: "Click to upload file",
@@ -16,7 +20,8 @@ define([
                 downloadLabel: "Download file",
                 recording: "Recording",
                 transferring : "Transferring",
-                kiloByte : "kB"
+                kiloByte : "kB",
+                byte : "B"
             }
         },
 
@@ -28,14 +33,20 @@ define([
                     if (!this.options.renderOptions.htmlLink.url) {
                         if (this.options.attributeValue.url && this.options.renderOptions.downloadInline) {
                             urlSep = (this.options.attributeValue.url.indexOf('?') >= 0) ? "&" : "?";
+                            this.options.attributeValue.url=this.options.attributeValue.url.replace('&inline=no','');
                             this.options.attributeValue.url += urlSep + 'inline=yes';
                         }
                         this.options.renderOptions.htmlLink.url = this.options.attributeValue.url;
 
                         if (!this.options.renderOptions.htmlLink.title) {
                             this.options.renderOptions.htmlLink.title = this.options.attributeValue.displayValue;
-                            this.options.renderOptions.htmlLink.title += ' ('+ (Math.round(this.options.attributeValue.size/1024)) + ' '+
-                                this.options.labels.kiloByte+')';
+                            if (this.options.attributeValue.size >= 1024) {
+                                this.options.renderOptions.htmlLink.title += ' (' + (Math.round(this.options.attributeValue.size / 1024)) + ' ' +
+                                this.options.labels.kiloByte + ')';
+                            } else {
+                                this.options.renderOptions.htmlLink.title += ' (' + this.options.attributeValue.size + ' ' +
+                                this.options.labels.byte + ')';
+                            }
                         }
                     }
                 }

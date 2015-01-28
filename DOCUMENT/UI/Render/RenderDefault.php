@@ -223,6 +223,7 @@ class RenderDefault implements IRenderConfig
             "tooltipLabel" => ___("Choose file", "ddui-file") ,
             "downloadLabel" => ___("Download file", "ddui-file") ,
             "kiloByte" => ___("kB", "ddui-file") ,
+            "byte" => ___("B", "ddui-file") ,
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
@@ -230,7 +231,9 @@ class RenderDefault implements IRenderConfig
         $opt->enum()->setLabels(array(
             "chooseMessage" => ___("Choose", "ddui-enum") ,
             "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
-            "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum")
+            "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
+            "selectMessage" => ___("Select", "ddui-enum") ,
+            "unselectMessage" => ___("Unselect", "ddui-enum")
         ));
         $opt->date()->setLabels(array(
             "invalidDate" => ___("Invalid date", "ddui-enum")

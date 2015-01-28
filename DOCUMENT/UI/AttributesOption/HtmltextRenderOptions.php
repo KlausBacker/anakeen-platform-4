@@ -44,7 +44,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
     }
     /**
      * Set height of text edior body
-     * Need to precise unit like "px"
+     * Need to precise unit like "px" or "em", if not "px" is used
      *
      * @note use only in edition mode
      * @param string $height the body height

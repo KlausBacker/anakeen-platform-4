@@ -1,8 +1,9 @@
 /*global require*/
 require([
     'widgets/attributes/enum/loaderEnum',
-    'widgets/attributes/defaultTestAttribute'
-], function (widget, defaultTestSuite) {
+    'widgets/attributes/defaultTestAttribute',
+    'widgets/attributes/enum/enumTestAttribute'
+], function (widget, defaultTestSuite, enumTestSuite) {
     "use strict";
 
     defaultTestSuite("enum : read", widget, {}, {value : "g", displayValue : "Sol"});
@@ -40,7 +41,7 @@ require([
             options : {
                 multiple:"yes"
             },
-            ssourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
         [{value : "navyblue", displayValue : "Si"},{value : "c", displayValue : "Do"}]);
 
@@ -66,6 +67,93 @@ require([
             sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
         },
         [{value : "blue", displayValue : "Si"},{value : "red", displayValue : "Do"}]);
+
+
+    enumTestSuite("enum vertical spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"vertical"
+            },
+            options : {
+                multiple:"no"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
+        },
+        {value : "blue", displayValue : "Bleu"});
+
+    enumTestSuite("enum vertical spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"vertical"
+            },
+            options : {
+                multiple:"no"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
+        },
+        {value : "nothing", displayValue : "Nothing"});
+
+    enumTestSuite("enum horizontal spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"horizontal"
+            },
+            options : {
+                multiple:"no"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
+        },
+        {value : "blue", displayValue : "Bleu"});
+
+    enumTestSuite("enum horizontal spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"horizontal"
+            },
+            options : {
+                multiple:"no"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"navyblue", label:"Bleu Marine"}]
+        },
+        {value : "nothing", displayValue : "Nothing"});
+
+
+    enumTestSuite("enum bool spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"bool"
+            },
+            options : {
+                multiple:"no"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"}]
+        },
+        {value : "blue", displayValue : "Bleu"});
+
+
+    enumTestSuite("enum vertical multiple spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"vertical"
+            },
+            options : {
+                multiple:"yes"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"green", label:"Vert"},{key:"navyblue", label:"Bleu Marine"}]
+        },
+        [{value : "red", displayValue : "Rouge"},{value:"green"}]);
+
+    enumTestSuite("enum horizontal multiple spec : write", widget, {
+            mode : "write",
+            renderOptions : {
+                editDisplay:"horizontal"
+            },
+            options : {
+                multiple:"yes"
+            },
+            sourceValues:[{key:"red", label:"Rouge"},{key:"blue", label:"Bleu"},{key:"green", label:"Vert"},{key:"navyblue", label:"Bleu Marine"}]
+        },
+        [{value : "red", displayValue : "Rouge"},{value:"green"}]);
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

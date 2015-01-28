@@ -13,6 +13,9 @@ define([
                 placeHolder: "Click to upload an image",
                 tooltipLabel: "Choose image",
                 downloadLabel: "Download the image"
+            },
+            renderOptions : {
+                thumbnailWidth : 100
             }
         },
 

@@ -12,15 +12,14 @@ class ImageRenderOptions extends FileRenderOptions
     
     const type = "image";
     const thumbnailWidthOption = "thumbnailWidth";
-
     /**
      * Define image width
-     * The image link is modified to upload the image in this size
+     * Width of displayed image
      * @note use only in view mode
-     * @param int $size size width in px
+     * @param int $size width in px
      * @return $this
      */
-    public function setThumbnailSize($size)
+    public function setThumbnailWidth($size)
     {
         return $this->setOption(self::thumbnailWidthOption, (int)$size);
     }
