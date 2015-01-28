@@ -161,7 +161,7 @@ define([
                 currentWidget.options.revision = currentWidget._model.get("revision");
                 currentWidget.element.data(currentWidget._getModelValue());
                 currentWidget._initActivatedConstraint();
-                currentWidget._initActivatedEvents();
+                currentWidget._initActivatedEvents({launchReady : false});
             });
             this._model.listenTo(this._model, "beforeClose", function (event) {
                 if (currentWidget.initialLoaded !== false) {
@@ -290,10 +290,9 @@ define([
             });
             this.view.on('renderDone', function () {
                 console.timeEnd("xhr+render document view");
-                currentWidget._triggerControllerEvent("ready",
-                    currentWidget._model.getProperties());
                 currentWidget.$loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
                 currentWidget.initialLoaded = true;
+                currentWidget._triggerControllerEvent("ready", currentWidget._model.getProperties());
                 _.delay(function () {
                     currentWidget.$loading.dcpLoading("hide");
                     console.timeEnd('main');
@@ -378,13 +377,14 @@ define([
          * Activate events on the current document
          * Used on the fetch of a new document
          */
-        _initActivatedEvents : function documentController_initActivatedEvents() {
+        _initActivatedEvents : function documentController_initActivatedEvents(options) {
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this;
+            options = options || {};
             this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
             //Trigger new added ready event
-            if (this.initialLoaded !== false) {
+            if (this.initialLoaded !== false && options.launchReady !== false) {
                 this._triggerControllerEvent("ready");
                 _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
                     currentAttribute = currentWidget.getAttribute(currentAttribute.id);
