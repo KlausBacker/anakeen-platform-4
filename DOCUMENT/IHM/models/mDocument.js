@@ -493,6 +493,18 @@ define([
                 currentModel.listenTo(attributes.attributes, "internalLinkSelected", function (options) {
                     currentModel.trigger("internalLinkSelected", {}, options);
                 });
+                //Propagate the event helperSearch to the model
+                currentModel.listenTo(attributes.attributes, "helperSearch", function (event, attrid, options) {
+                    currentModel.trigger("helperSearch", event, attrid, options);
+                });
+                //Propagate the event helperResponse to the model
+                currentModel.listenTo(attributes.attributes, "helperResponse", function (event, attrid, options) {
+                    currentModel.trigger("helperResponse", event, attrid, options);
+                });
+                //Propagate the event helperResponse to the model
+                currentModel.listenTo(attributes.attributes, "helperSelect", function (event, attrid, options) {
+                    currentModel.trigger("helperSelect", event, attrid, options);
+                });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },

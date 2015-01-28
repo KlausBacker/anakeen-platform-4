@@ -62,7 +62,7 @@ define([
          * @param inputValue
          */
         activateAutocomplete : function activateAutocomplete(inputValue) {
-            var scope = this;
+            var currentWidget = this;
             inputValue.kendoAutoComplete({
                 dataTextField : "title",
                 filter :        "contains",
@@ -75,18 +75,18 @@ define([
                     type :            "json",
                     serverFiltering : true,
                     transport :       {
-                        read : scope.options.autocompleteRequest
+                        read : currentWidget.options.autocompleteRequest
                     }
                 },
                 select :        function kendoAutocompleteSelect(event) {
-                    var valueIndex = scope._getIndex();
+                    var valueIndex = currentWidget._getIndex();
                     var dataItem = this.dataSource.at(event.item.index());
                     //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
                     if (dataItem.toJSON) {
                         dataItem = dataItem.toJSON();
                     }
                     event.preventDefault(); // no fire change event
-                    scope._trigger("changeattrsvalue", event, {dataItem : dataItem, valueIndex : valueIndex});
+                    currentWidget._trigger("changeattrsvalue", event, {dataItem : dataItem, valueIndex : valueIndex});
 
                 }
             });

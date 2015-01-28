@@ -13,6 +13,7 @@ define([
     'use strict';
 
     var eventList = ["ready", "change", "message", "error", "validate", "attributeReady",
+        "helperSearch", "helperResponse", "helperSelect",
         "arrayModified", "documentLinkSelected",
         "beforeClose", "close",
         "beforeSave", "afterSave",
@@ -220,6 +221,30 @@ define([
             this._model.listenTo(this._model, "internalLinkSelected", function (event, options) {
                 event.prevent = !currentWidget._triggerControllerEvent("documentLinkSelected",
                     currentWidget._model.getProperties(),
+                    options
+                );
+            });
+            this._model.listenTo(this._model, "helperSearch", function (event, attrid, options) {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("helperSearch", currentAttribute,
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
+                    options
+                );
+            });
+            this._model.listenTo(this._model, "helperResponse", function (event, attrid, options) {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("helperResponse", currentAttribute,
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
+                    options
+                );
+            });
+            this._model.listenTo(this._model, "helperSelect", function (event, attrid, options) {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("helperSelect", currentAttribute,
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
                     options
                 );
             });
