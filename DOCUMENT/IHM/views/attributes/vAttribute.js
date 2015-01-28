@@ -159,7 +159,14 @@ define([
          * @param options object {dataItem :, valueIndex :}
          */
         changeAttributesValue : function vAttributeChangeAttributesValue(event, options) {
-            var currentView = this, dataItem = options.dataItem, valueIndex = options.valueIndex;
+            var externalEvent = {prevent : false},
+                currentView = this,
+                dataItem = options.dataItem,
+                valueIndex = options.valueIndex;
+            this.model.trigger("helperSelect", externalEvent, this.model.id, dataItem);
+            if (externalEvent.prevent) {
+                return this;
+            }
             _.each(dataItem.values, function vAttributeChangeAttributeValue(attributeValue, attributeId) {
                 if (typeof attributeValue === "object") {
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
@@ -280,8 +287,33 @@ define([
          * @param options
          */
         autocompleteRequestRead : function vAttributeAutocompleteRequestRead(options) {
-            var documentModel = this.model.getDocumentModel();
+            var currentView = this,
+                documentModel = this.model.getDocumentModel(),
+                success = options.success,
+                externalOptions = {
+                    setResult : function (content) {
+                        success(content);
+                    },
+                    data :      options.data
+                },
+                event = {prevent : false};
+            //Add helperResonse event (can be used to reprocess the content of the request)
+            success = _.wrap(success, function (success, content) {
+                var options = {}, event = {prevent : false};
+                options.data = content;
+                currentView.model.trigger("helperResponse", event, currentView.model.id, options);
+                if (event.prevent) {
+                    return success([]);
+                }
+                success(content);
+            });
+
+            //Add helperSearch event (can prevent default ajax request)
             options.data.attributes = documentModel.getValues();
+            this.model.trigger("helperSearch", event, this.model.id, externalOptions);
+            if (event.prevent) {
+                return this;
+            }
             $.ajax({
                 type :     "POST",
                 url :      "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
@@ -292,7 +324,7 @@ define([
             }).pipe(
                 function vAttributeAutocompletehandleSuccessRequest(response) {
                     if (response.success) {
-                        return ( response );
+                        return response;
                     } else {
                         return ($.Deferred().reject(response));
                     }
@@ -301,7 +333,7 @@ define([
                     if (response.status === 0) {
                         return {
                             success : false,
-                            error : "Your navigator seems offline, try later"
+                            error :   "Your navigator seems offline, try later"
                         };
                     }
                     return ({
@@ -311,14 +343,14 @@ define([
                 }
             ).then(function vAttributeAutocompleteSuccessResult(result) {
                     // notify the data source that the request succeeded
-                    options.success(result.data);
+                    success(result.data);
                 }, function vAttributeAutocompleteErrorResult(result) {
                     // notify the data source that the request failed
                     if (_.isArray(result.error)) {
                         result.error = result.error.join(" ");
                     }
                     //use the sucess callback because http error are handling by the pipe
-                    options.success([{"title" : "", "error" : result.error}]);
+                    success([{"title" : "", "error" : result.error}]);
                 }
             );
         },
