@@ -11,6 +11,11 @@ interface IRenderConfig {
     
     const editType = "edit";
     const viewType = "view";
+
+    /**
+     * Get the label of this view
+     * @return string the text label
+     */
     public function getLabel();
     /**
      * @return string

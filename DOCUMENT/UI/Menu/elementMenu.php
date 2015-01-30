@@ -65,6 +65,7 @@ class ElementMenu implements \JsonSerializable
         return $this->id;
     }
     /**
+     * set raw text to the menu
      * @param string $label
      * @return $this
      */
@@ -74,6 +75,7 @@ class ElementMenu implements \JsonSerializable
         return $this;
     }
     /**
+     * set html fragment to the menu
      * @param string $label
      * @return $this
      */
@@ -83,6 +85,7 @@ class ElementMenu implements \JsonSerializable
         return $this;
     }
     /**
+     * Set tooltip for the menu
      * @param string $tooltipLabel
      * @return $this
      */
@@ -92,7 +95,7 @@ class ElementMenu implements \JsonSerializable
         return $this;
     }
     /**
-     * Set a custom css class to element menu
+     * Set a custom html attribute to element menu
      * @param string $attrid Html attribute name
      * @param string $value attribute value
      * @return $this

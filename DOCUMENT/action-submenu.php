@@ -14,7 +14,12 @@ function submenu(Action & $action)
     
     $documentId = $usage->addRequiredParameter("id", "document identifier");
     $menuId = $usage->addRequiredParameter("menu", "sub menu identifier");
-    $renderId = $usage->addOptionalParameter("render", "render identifier", array() , "defaultView");
+    $vId = $usage->addOptionalParameter("vid", "view identifier");
+    $renderMode = $usage->addOptionalParameter("mode", "render mode", array(
+        "view",
+        "edit",
+        "create"
+    ) , "view");
     $usage->setStrictMode(false);
     $usage->verify();
     
@@ -27,9 +32,27 @@ function submenu(Action & $action)
     if ($err) {
         $action->exitError($err);
     }
-    
-    $config = Dcp\Ui\Utils::getRenderConfigObject($renderId);
-    
+
+    if (!$vId) {
+        switch ($renderMode) {
+            case "view":
+                $vId = Dcp\Ui\Crud\View::defaultViewConsultationId;
+                break;
+
+            case "edit":
+                $vId = Dcp\Ui\Crud\View::defaultViewEditionId;
+                break;
+
+            case "create":
+                $vId = Dcp\Ui\Crud\View::coreViewCreationId;
+                $docId = $doc->fromid;
+                break;
+        }
+    }
+
+
+
+    $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vid);
     $menu = $config->getMenu($doc);
     /**
      * @var \Dcp\Ui\DynamicMenu $element
