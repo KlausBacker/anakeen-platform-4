@@ -106,7 +106,7 @@ class DefaultView extends RenderDefault
         $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
         $confirmOption->windowWidth = "350px";
         $confirmOption->windowHeight = "150px";
-        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getTitle()) , $confirmOption);
+        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getHtmlTitle()) , $confirmOption);
         $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);
         
@@ -114,7 +114,7 @@ class DefaultView extends RenderDefault
         $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
         $menu->appendElement($item);
         
-        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document:history");
+        $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#event/document:history");
         $item->setBeforeContent('<div class="fa fa-history" />');
         /*$targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
@@ -307,7 +307,7 @@ class DefaultView extends RenderDefault
                 $idMenu = "vid-" . $vid;
                 $cvMenu = $view["cv_menu"];
                 $menuItem = new ItemMenu($idMenu, $label);
-                $menuItem->setUrl(sprintf("?app=DOCUMENT&vid=%s&id=%s", $vid, $doc->id));
+                $menuItem->setUrl(sprintf("#event/document:load:%d:%s", $doc->initid, $vid));
                 if ($cvMenu) {
                     $idListMenu = $cvMenu;
                     $lmenu = $menu->getElement($idListMenu);

@@ -14,7 +14,7 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
     protected $confirmationText = null;
     protected $confirmationOptions = null;
     protected $targetOptions = null;
-    public function __construct($identifier, $label, $url = '')
+    public function __construct($identifier, $label='', $url = '')
     {
         parent::__construct($identifier, $label);
         $this->url = $url;
@@ -30,27 +30,28 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
     }
     /**
      * Set url target : default is _self
-     * @param string $target
+     * @param string $target window target
+     * @param MenuTargetOptions $dialogOptions
      * @return $this
      */
-    public function setTarget($target, MenuTargetOptions $options = null)
+    public function setTarget($target, MenuTargetOptions $dialogOptions = null)
     {
         $this->target = $target;
-        if ($options === null) {
-            $options = new MenuTargetOptions();
+        if ($dialogOptions === null) {
+            $dialogOptions = new MenuTargetOptions();
         }
-        $this->targetOptions = $options;
+        $this->targetOptions = $dialogOptions;
         return $this;
     }
     /**
      * If text is not null, ask a confirmation before send request
-     * @param string|null $text confirmation text
+     * @param string|null $question confirmation text
      * @param \Dcp\Ui\MenuConfirmOptions $options additionnal options (confirmTitle, confirmOkMessage, confirmCancelMEssage, windowWidth, windowHeight)
      * @return $this
      */
-    public function useConfirm($text, MenuConfirmOptions $options = null)
+    public function useConfirm($question, MenuConfirmOptions $options = null)
     {
-        $this->confirmationText = $text;
+        $this->confirmationText = $question;
         if ($options === null) {
             $options = new MenuConfirmOptions();
         }

@@ -74,11 +74,10 @@ define([
                     if (href != '') {
                         //Display confirm message
                         if ($elementA.hasClass("menu--confirm")) {
-                            confirmText = $elementA.data('confirm-message');
+                            confirmText = Mustache.render($elementA.data('confirm-message'), scopeWidget.options);
 
                             configMenu = menuElement.data("menuConfiguration");
                             confirmOptions = configMenu.confirmationOptions || {};
-
                             confirmDcpWindow = $('body').dcpConfirm({
                                 title :    Mustache.render(confirmOptions.title, scopeWidget.options),
                                 width :    confirmOptions.windowWidth,
@@ -86,7 +85,8 @@ define([
                                 messages : {
                                     okMessage :     Mustache.render(confirmOptions.confirmButton, scopeWidget.options),
                                     cancelMessage : Mustache.render(confirmOptions.cancelButton, scopeWidget.options),
-                                    textMessage :   confirmText
+                                    htmlMessage :   confirmText,
+                                    textMessage :   ''
                                 },
                                 confirm :  function wMenuConfirm() {
                                     $elementA.removeClass('menu--confirm');

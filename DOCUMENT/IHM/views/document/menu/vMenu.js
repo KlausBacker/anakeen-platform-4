@@ -37,7 +37,9 @@ define([
         },
 
         propagateSelected : function vMenuPropagateSelected(event, options) {
-            this.trigger(options.eventId, {target : event.target, eventId : options.eventId, options : options.options});
+            this.trigger("menuselected", {target : event.item,
+                eventId : options.eventId,
+                options : options.options});
         },
 
         changeVisibility : function vMenuchangeVisibility(event, data) {
