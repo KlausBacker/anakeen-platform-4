@@ -99,7 +99,7 @@ define([
                     el :    this.$el.find(".dcpDocument__menu:first")[0]
                 }).render();
 
-                this.listenTo(viewMenu, 'document', this.actionDocument);
+                this.listenTo(viewMenu, 'menuselected', this.actionDocument);
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
@@ -447,6 +447,19 @@ define([
             }
         },
 
+
+        /**
+         * load another document document
+         */
+        loadDocument : function vDocumentLoadDocument(docid, viewId) {
+            this.model.clear();
+            this.model.set({initid : docid});
+            if (viewId) {
+                this.model.set({viewId : viewId});
+            }
+            this.model.fetch();
+        },
+
         /**
          * Propagate menu event
          *
@@ -472,9 +485,6 @@ define([
             if (options[0] === "delete") {
                 return this.deleteDocument();
             }
-            if (options[0] === "save") {
-                return this.saveDocument();
-            }
             if (options[0] === "close") {
                 return this.closeDocument(options[1]);
             }
@@ -483,6 +493,9 @@ define([
             }
             if (options[0] === "create") {
                 return this.createDocument();
+            }
+            if (options[0] === "load") {
+                return this.loadDocument(options[1], options[2]);
             }
         },
 
