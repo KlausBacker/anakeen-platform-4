@@ -508,6 +508,11 @@ define([
             return !event.isDefaultPrevented();
         },
 
+        /**
+         * Trigger event as jQuery standard events (all events are prefixed by document)
+         *
+         * @param type
+         */
         _triggerExternalEvent : function documentController_triggerExternalEvent(type) {
             var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(type);
             //prepare argument for widget event trigger (we want type, event, data)
@@ -549,6 +554,27 @@ define([
             });
             this.options = _.defaults(options, this.options);
             this.reinitDocument();
+        },
+
+        /**
+         * Save the current document
+         * Reload the interface in the same mode
+         */
+        saveDocument : function documentControllerSave() {
+            this._model.save();
+        },
+
+        /**
+         * Delete the current document
+         * Reload the interface in the same mode
+         */
+        deleteDocument : function documentControllerDelete() {
+            var currentWidget = this, destroy = this._model.destroy();
+            destroy.done(function() {
+                currentWidget._initModel(currentWidget._getModelValue());
+                currentWidget._initView();
+                currentWidget._model.fetch();
+            });
         },
 
         /**
