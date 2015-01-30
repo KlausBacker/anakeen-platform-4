@@ -78,7 +78,7 @@ class MustacheLoaderSection implements \Mustache_Loader
         }
         if ($name === "templates") {
             // need to revert json encode for mustache
-            return $delimiter . preg_replace('/\[\[\\\\\/([a-z0-9]+)\]\]/','[[/\1]]',JsonHandler::encodeForHTML($this->getTemplates(null)));
+            return $delimiter . preg_replace('/\[\[\\\\\/([a-zA-Z0-9]+)\]\]/','[[/\1]]',JsonHandler::encodeForHTML($this->getTemplates(null)));
         } else {
             throw new Mustache_Exception_UnknownTemplateException($name);
         }

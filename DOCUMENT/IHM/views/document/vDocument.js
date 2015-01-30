@@ -61,6 +61,10 @@ define([
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
             var documentView = this;
+            var htmlBody='<div class="dcpDocument__form form-horizontal">'+
+                            '<div class="dcpDocument__frames"></div>'+
+                            '<div style="display:none" class="dcpDocument__tabs">'+
+                            '<ul class="dcpDocument__tabs__list"></ul></div></div>';
 
             this.template = this.getTemplates("body");
             this.partials = this.getTemplates("sections");
@@ -79,10 +83,12 @@ define([
             }
 
             kendo.culture(locale);
-
             //add document base
             try {
-                this.$el.append($(Mustache.render(this.template, this.model.toData(), this.partials)));
+                var renderData=this.model.toData();
+                renderData.document.attributes=this.model.getValues();
+                this.$el.append($(Mustache.render(this.template, renderData, this.partials)));
+                this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);

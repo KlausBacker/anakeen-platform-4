@@ -205,11 +205,12 @@ class DocumentTemplateContext implements \ArrayAccess
      * @param mixed $value <p>
      * The value to set.
      * </p>
-     * @return void
+     * @return $this
      */
     public function offsetSet($offset, $value)
     {
         $this->keys[$offset] = $value;
+        return $this;
     }
     /**
      *
@@ -218,10 +219,11 @@ class DocumentTemplateContext implements \ArrayAccess
      * @param mixed $offset <p>
      * The offset to unset.
      * </p>
-     * @return void
+     * @return $this
      */
     public function offsetUnset($offset)
     {
         unset($this->keys[$offset]);
+        return $this;
     }
 }

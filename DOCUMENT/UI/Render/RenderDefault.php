@@ -14,14 +14,7 @@ class RenderDefault implements IRenderConfig
         return ___("Abstract view", "ddui");
     }
     
-    public function getDocumentTemplate()
-    {
-        $templateFile = "DOCUMENT/Render/defaultView.html";
-        if (!file_exists($templateFile)) {
-            throw new Exception("UI0005", $templateFile);
-        }
-        return file_get_contents($templateFile);
-    }
+
     
     public function getCssReferences()
     {

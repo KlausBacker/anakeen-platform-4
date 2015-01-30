@@ -18,10 +18,6 @@ interface IRenderConfig {
      */
     public function getLabel();
     /**
-     * @return string
-     */
-    public function getDocumentTemplate();
-    /**
      * @return string[] list of css url
      */
     public function getCssReferences();
