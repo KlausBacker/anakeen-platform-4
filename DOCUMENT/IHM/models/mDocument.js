@@ -586,7 +586,7 @@ define([
             var event = {prevent : false}, xhr, currentModel = this;
             this.trigger("beforeDelete", event);
             if (event.prevent === false) {
-                xhr = Backbone.Model.prototype.fetch.apply(this, arguments);
+                xhr = Backbone.Model.prototype.destroy.apply(this, arguments);
                 xhr.done(function () {
                     currentModel.trigger("afterDelete");
                     currentModel.trigger("close");
