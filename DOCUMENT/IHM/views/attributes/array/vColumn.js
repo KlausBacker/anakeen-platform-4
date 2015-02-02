@@ -36,14 +36,18 @@ define([
          * called by vArray::addLine()
          * @param index
          */
-        addNewWidget : function addNewWidget(index) {
+        addNewWidget : function addNewWidget(index, customView) {
             if (this.options) {
                 var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
                 var data = this.getData(index);
 
                 if (cells[index]) {
                     try {
-                        this.widgetInit($(cells[index]), data);
+                        if (customView) {
+                            $(cells[index]).append(customView);
+                        } else {
+                            this.widgetInit($(cells[index]), data);
+                        }
                         this.moveValueIndex({});
                     } catch (error) {
                         if (window.dcp.logger) {

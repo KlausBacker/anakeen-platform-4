@@ -4,7 +4,7 @@ define([
     'mustache',
     'widgets/widget',
     'bootstrap'
-], function (_, Mustache) {
+], function (_, Mustache ) {
     'use strict';
 
     $.widget("dcp.dcpAttribute", {
@@ -22,7 +22,7 @@ define([
             },
             template: null,
             deleteButton: false,
-            renderOptions: null,
+            renderOptions: {},
             locale: "fr_FR"
         },
 
@@ -233,7 +233,7 @@ define([
                 if (!kt) {
                     $ktTarger.tooltip({
                         trigger: "manual",
-                        html:true,
+                        html: true,
                         title: scope.options.renderOptions.inputHtmlTooltip,
                         placement: "bottom",
                         template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
@@ -308,20 +308,23 @@ define([
         /**
          * Init the DOM of the template
          *
-         * @private
+         * @protected
          */
         _initDom: function wAttributeInitDom() {
 
-            this._initMainElemeentClass();
-            this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
+            this._initMainElementClass();
+
+                this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
+
         },
+
 
         /**
          * Init the DOM of the template
          *
          * @public
          */
-        _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
+        _initMainElementClass: function wAttributeInitMainElementClass() {
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
@@ -397,8 +400,10 @@ define([
                 var buttonConfig = buttonsConfig[buttonIndex];
                 if (buttonConfig && buttonConfig.url) {
 
-                    var encodedInfo=_.chain(scope.options.attributeValue).clone().each(
-                        function(value, key, list) {list[key] = encodeURIComponent(value);}
+                    var encodedInfo = _.chain(scope.options.attributeValue).clone().each(
+                        function (value, key, list) {
+                            list[key] = encodeURIComponent(value);
+                        }
                     ).value();
 
 
@@ -500,9 +505,9 @@ define([
                         event.preventDefault();
                         eventContent = href.substring(7).split(":");
                         scopeWidget._trigger("externalLinkSelected", event, {
-                            target : event.target,
-                            eventId : eventContent.shift(),
-                            options : eventContent
+                            target: event.target,
+                            eventId: eventContent.shift(),
+                            options: eventContent
                         });
                         return this;
                     }

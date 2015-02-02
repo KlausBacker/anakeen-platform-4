@@ -169,6 +169,24 @@ define([
         },
 
         /**
+         * Get document properties, values and labels of attributes
+         */
+        getDocumentData: function mDocumentGetDocumentData() {
+
+            var documentData={
+                properties:this.getProperties(false),
+                attributeValues:this.getValues(),
+                attributeLabels:{},
+                createAttributeView:function ()  {
+                    return this.id;
+                }
+            };
+            this.get("attributes").each(function (currentAttribute) {
+                documentData.attributeLabels[currentAttribute.id]=currentAttribute.get("label");
+            });
+            return documentData;
+        },
+        /**
          * Return true if one the attribute of the document hasChanged
          *
          * @returns {boolean|*}

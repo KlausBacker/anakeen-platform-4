@@ -24,6 +24,7 @@ class CommonRenderOptions
     const labelPositionOption = "labelPosition";
     const htmlLinkOption = "htmlLink";
     const buttonsOption = "buttons";
+    const templateOption = "template";
     const inputHtmlTooltip = "inputHtmlTooltip";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const labelsOption = "labels";
@@ -138,6 +139,18 @@ class CommonRenderOptions
     public function setLink(HtmlLinkOptions $options)
     {
         $this->setOption(self::htmlLinkOption, $options);
+        return $this;
+    }
+
+
+    /**
+     * At custom template for an attribute
+     * @param string $htmlText
+     * @return $this
+     */
+    public function setTemplate( $htmlText)
+    {
+        $this->setOption(self::templateOption, $htmlText);
         return $this;
     }
     /**

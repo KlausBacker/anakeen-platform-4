@@ -56,10 +56,13 @@ define([
                     this.options.isMultiple = true;
                 }
 
-                this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
+                //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
+                $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
+
             } else if (this.getMode() === "write") {
 
-                this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
+                //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
+                $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
                 this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
                 if (this._isMultiple()) {
                     this._decorateMultipleValue(this.kendoWidget);
