@@ -231,13 +231,15 @@ define([
                                 currentModel.trigger("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message :     attrModel.attributes.label + ' : ' + message.data.err
+                                    message :     attrModel.attributes.label + ' : ' + message.data.err,
+                                    "errorCode" : message.code
                                 });
                             } else {
                                 currentModel.trigger("showError", {
                                     title :       message.contentText,
                                     htmlMessage : message.contentHtml,
-                                    message :     message.data.err
+                                    message :     message.data.err,
+                                    "errorCode" : message.code
                                 });
                             }
                         }
@@ -251,13 +253,15 @@ define([
                                     currentModel.trigger("showError", {
                                         title :       message.contentText,
                                         htmlMessage : message.contentHtml,
-                                        message :     attrModel.attributes.label + ' : ' + constraint.err
+                                        message :     attrModel.attributes.label + ' : ' + constraint.err,
+                                        "errorCode" : message.code
                                     });
                                 } else {
                                     currentModel.trigger("showError", {
                                         title :       message.contentText,
                                         htmlMessage : message.contentHtml,
-                                        message :     constraint.err
+                                        message :     constraint.err,
+                                        "errorCode" : message.code
                                     });
                                 }
                             });
@@ -266,7 +270,8 @@ define([
                             currentModel.trigger("showError", {
                                 title :       message.contentText,
                                 htmlMessage : message.contentHtml,
-                                message :     message.data.preStore
+                                message :     message.data.preStore,
+                                "errorCode" : message.code
                             });
                         }
                         break;
@@ -275,7 +280,8 @@ define([
                         if (message.type === "error" && message.contentText) {
                             currentModel.trigger("showError", {
                                 title :       message.contentText,
-                                htmlMessage : message.contentHtml
+                                htmlMessage : message.contentHtml,
+                                "errorCode" : message.code
                             });
                         } else {
                             console.error("Error", message);
@@ -580,7 +586,7 @@ define([
             var event = {prevent : false}, xhr, currentModel = this;
             this.trigger("beforeDelete", event);
             if (event.prevent === false) {
-                xhr = Backbone.Model.prototype.fetch.apply(this, arguments);
+                xhr = Backbone.Model.prototype.destroy.apply(this, arguments);
                 xhr.done(function () {
                     currentModel.trigger("afterDelete");
                     currentModel.trigger("close");

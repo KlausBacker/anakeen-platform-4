@@ -171,7 +171,7 @@ define([
             });
             this._model.listenTo(this._model, "close", function () {
                 if (currentWidget.initialLoaded !== false) {
-                   currentWidget._triggerControllerEvent("close",
+                    currentWidget._triggerControllerEvent("close",
                         currentWidget._model.getProperties(true));
                 }
             });
@@ -344,7 +344,7 @@ define([
         },
 
         _getRenderedAttributes : function documentController_getRenderedAttributes() {
-            return this._model.get("attributes").filter(function(currentAttribute) {
+            return this._model.get("attributes").filter(function (currentAttribute) {
                 return currentAttribute.haveView();
             });
         },
@@ -381,11 +381,14 @@ define([
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this;
             options = options || {};
             this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
+                if (!_.isFunction(currentEvent.documentCheck)) {
+                    return true;
+                }
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
             //Trigger new added ready event
             if (this.initialLoaded !== false && options.launchReady !== false) {
-                this._triggerControllerEvent("ready");
+                this._triggerControllerEvent("ready", currentDocumentProperties);
                 _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
                     currentAttribute = currentWidget.getAttribute(currentAttribute.id);
                     currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
@@ -396,22 +399,70 @@ define([
             }
         },
 
+        _addAndInitNewEvents : function documentController_addAndInitNewEvents(newEvent) {
+            var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event;
+            this.options.eventList.push(newEvent);
+            // Check if the event is for the current document
+            if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
+                this.activatedEvent.push(newEvent);
+                // Check if we need to manually trigger this callback (late registered : only for ready events)
+                if (this.initialLoaded !== false) {
+                    if (newEvent.eventType === "ready") {
+                        event = $.Event(newEvent.eventType);
+                        event.target = currentWidget.element;
+                        try {
+                            // add element as function context
+                            newEvent.eventCallback.call(currentWidget.element, event, currentDocumentProperties);
+                        } catch (e) {
+                            console.error(e);
+                        }
+
+                    }
+                    if (newEvent.eventType === "attributeReady") {
+                        event = $.Event(newEvent.eventType);
+                        event.target = currentWidget.element;
+                        _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
+                            currentAttribute = currentWidget.getAttribute(currentAttribute.id);
+                            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck(currentAttribute)) {
+                                try {
+                                    // add element as function context
+                                    newEvent.eventCallback.call(currentWidget.element, event, currentDocumentProperties, currentAttribute);
+                                } catch (e) {
+                                    console.error(e);
+                                }
+
+                            }
+                        });
+                    }
+                }
+            }
+        },
+
+        /**
+         * Trigger attribute event
+         *
+         * Similar at trigger document event with a constraint on attribute
+         *
+         * @param eventName
+         * @param attributeInternalElement
+         * @returns {boolean}
+         */
         _triggerAttributeControllerEvent : function documentController_triggerAttributeControllerEvent(eventName, attributeInternalElement) {
             var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName), externalEventArgument;
             event.target = currentWidget.element;
             // internal event trigger
             args.unshift(event);
-            _.chain(this.activatedEvent).filter(function (currentEvent) {
+            _.chain(this.activatedEvent).filter(function documentController__filterUsableEvents(currentEvent) {
+                // Check by eventType (only call callback with good eventType)
                 if (currentEvent.eventType === eventName) {
+                    //Check with attributeCheck if the function exist
                     if (!_.isFunction(currentEvent.attributeCheck)) {
                         return true;
                     }
-                    if (currentEvent.attributeCheck(attributeInternalElement)) {
-                        return true;
-                    }
+                    return currentEvent.attributeCheck(attributeInternalElement);
                 }
                 return false;
-            }).some(function (currentEvent) {
+            }).each(function (currentEvent) {
                 try {
                     currentEvent.eventCallback.apply(currentWidget.element, args);
                 } catch (e) {
@@ -442,7 +493,7 @@ define([
             args.unshift(event);
             _.chain(this.activatedEvent).filter(function (currentEvent) {
                 return currentEvent.eventType === eventName;
-            }).some(function (currentEvent) {
+            }).each(function (currentEvent) {
                 try {
                     currentEvent.eventCallback.apply(currentWidget.element, args);
                 } catch (e) {
@@ -457,6 +508,11 @@ define([
             return !event.isDefaultPrevented();
         },
 
+        /**
+         * Trigger event as jQuery standard events (all events are prefixed by document)
+         *
+         * @param type
+         */
         _triggerExternalEvent : function documentController_triggerExternalEvent(type) {
             var currentWidget = this, args = Array.prototype.slice.call(arguments, 1), event = $.Event(type);
             //prepare argument for widget event trigger (we want type, event, data)
@@ -478,7 +534,7 @@ define([
         /**
          * Reinit the current document (close it and re-open it)
          */
-        reinitDocument :          function documentControllerReinitDocument() {
+        reinitDocument :        function documentControllerReinitDocument() {
             this._reinitModel();
             this._model.fetch();
         },
@@ -498,6 +554,27 @@ define([
             });
             this.options = _.defaults(options, this.options);
             this.reinitDocument();
+        },
+
+        /**
+         * Save the current document
+         * Reload the interface in the same mode
+         */
+        saveDocument : function documentControllerSave() {
+            this._model.save();
+        },
+
+        /**
+         * Delete the current document
+         * Reload the interface in the same mode
+         */
+        deleteDocument : function documentControllerDelete() {
+            var currentWidget = this, destroy = this._model.destroy();
+            destroy.done(function() {
+                currentWidget._initModel(currentWidget._getModelValue());
+                currentWidget._initView();
+                currentWidget._model.fetch();
+            });
         },
 
         /**
@@ -715,29 +792,38 @@ define([
          * @returns {*|Window.options.name}
          */
         addEvent : function documentControllerAddEvent(eventType, options, callback) {
-            //options is facultative
+            var eventContent;
+            //options is facultative and the callback can be the second parameters
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
                 options = {};
             }
-            if (!_.isString("event") || !_.find(eventList, function (currentEvent) {
-                    return currentEvent === eventType;
-                })) {
-                throw new Error("The event type " + eventType + " is not known. It must be one of " + eventList.join(" ,"));
-            }
-            if (!_.isFunction(callback)) {
-                throw new Error("An event need a callback");
-            }
-            options = _.defaults(options, {
-                "name" :          _.uniqueId("event_" + eventType),
-                "eventType" :     eventType,
-                "eventCallback" : callback,
-                "documentCheck" : function () {
-                    return true;
+            // the first parameters can be the final object (chain removeEvent and addEvent)
+            if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
+                eventContent = eventType;
+                if (!eventContent.name) {
+                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(eventContent));
                 }
-            });
-            this.options.eventList.push(options);
-            this._initActivatedEvents();
+            } else {
+                eventContent = _.defaults(options, {
+                    "name" :          _.uniqueId("event_" + eventType),
+                    "eventType" :     eventType,
+                    "eventCallback" : callback
+                });
+            }
+            // the eventType must be one the list
+            if (!_.isString(eventContent.eventType) || !_.find(eventList, function documentControllerCheckEventType(currentEvent) {
+                    return currentEvent === eventContent.eventType;
+                })) {
+                throw new Error("The event type " + eventContent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
+            }
+            // callback is mandatory and must be a function
+            if (!_.isFunction(eventContent.eventCallback)) {
+                throw new Error("An event needs a callback that is a function");
+            }
+
+            this._addAndInitNewEvents(eventContent);
+            // return the name of
             return options.name;
         },
 
