@@ -21,6 +21,16 @@ define([
         kendoWidgetClass: "kendoDateTimePicker",
 
 
+        _initDom: function wTimeStampInitDom() {
+            if (this.options.attributeValue.value) {
+                // Add T (iso date) if not set
+                if (this.options.attributeValue.value.length > 10) {
+                    this.options.attributeValue.value[11]='T';
+                }
+            }
+            console.log("NEW TS", this.options.attributeValue);
+            this._super();
+        },
 
 
         _activateDate: function (inputValue) {

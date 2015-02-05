@@ -90,7 +90,9 @@ define([
                         this.getContentElements().val('');
                     }
                     // Modify value only if different
-                    this.flashElement();
+                    if (originalValue || value.value) {
+                        this.flashElement();
+                    }
                 }
             } else if (this.getMode() === "read") {
                 this.getContentElements().text(value.displayValue);
