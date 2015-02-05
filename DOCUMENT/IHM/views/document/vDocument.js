@@ -10,13 +10,13 @@ define([
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
-    'views/document/attributeTemplate',
     'kendo/kendo.core',
     'kendo/kendo.tabstrip',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader,
-             ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent, attributeTemplate, kendo) {
+             ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
+              kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -140,12 +140,9 @@ define([
                 }
                 if (currentAttr.get("type") === "frame" && _.isUndefined(currentAttr.get("parent"))) {
                     try {
-                        if (currentAttr.getOption("template")) {
-                            customView = attributeTemplate.customView(currentAttr);
-                        }
+
                         view = new ViewAttributeFrame({
-                            model: model.get("attributes").get(currentAttr.id),
-                            customView: customView
+                            model: model.get("attributes").get(currentAttr.id)
                         });
                         $content.append(view.render().$el);
 
@@ -162,12 +159,9 @@ define([
                         var tabModel = model.get("attributes").get(currentAttr.id);
                         var tabContent;
                         viewTabLabel = new ViewAttributeTabLabel({model: tabModel});
-                        if (currentAttr.getOption("template")) {
-                            customView = $(attributeTemplate.customView(currentAttr));
-                        }
+
                         viewTabContent = new ViewAttributeTabContent({
-                            model: tabModel,
-                            customView: customView
+                            model: tabModel
                         });
                         tabContent = viewTabContent.render().$el;
 

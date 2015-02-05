@@ -3,6 +3,7 @@ define([
     'underscore',
     'backbone',
     'mustache',
+    'views/document/attributeTemplate',
     'widgets/attributes/label/wLabel',
     'widgets/attributes/text/wText',
     'widgets/attributes/int/wInt',
@@ -18,7 +19,7 @@ define([
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
-], function (_, Backbone, Mustache) {
+], function (_, Backbone, Mustache, attributeTemplate) {
     'use strict';
 
     return Backbone.View.extend({
@@ -28,6 +29,7 @@ define([
         displayLabel: true,
         events: function () {
             if (this.customView === false) {
+
                 return {
                     "dcpattributechange .dcpAttribute__content": "updateValue",
                     "dcpattributedelete .dcpAttribute__content": "deleteValue",
@@ -43,9 +45,7 @@ define([
         },
 
         initialize: function vAttributeInitialize(options) {
-            if (options.customView) {
-                this.customView = options.customView;
-            }
+
             if (options.displayLabel === false) {
                 this.displayLabel = false;
             }
@@ -59,6 +59,14 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
+
+            if (options.originalView !== true) {
+                if (this.model.getOption("template")) {
+                    this.customView = attributeTemplate.customView(this.model);
+                }
+            } else {
+                this.customView = false;
+            }
             this.options = options;
         },
 
@@ -186,7 +194,6 @@ define([
          * @param options object {dataItem :, valueIndex :}
          */
         changeAttributesValue: function vAttributeChangeAttributesValue(event, options) {
-            console.log("changeAttributesValue", this);
             var externalEvent = {prevent: false},
                 currentView = this,
                 dataItem = options.dataItem,
@@ -200,7 +207,6 @@ define([
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
-                            console.log("ADD ONE MORE", attributeValue);
                             attrModel.addValue({
                                 value: attributeValue.value,
                                 displayValue: attributeValue.displayValue
@@ -247,7 +253,6 @@ define([
         deleteValue: function changeAttributesValueDeleteValue(event, data) {
 
             if (data.id === this.model.id) {
-                console.log("delete", data.id, data.index);
                 var attrToClear = this.model.get('helpOutputs'),
                     docModel = this.model.getDocumentModel();
                 if ((!attrToClear) || typeof attrToClear === "undefined") {
@@ -412,7 +417,6 @@ define([
          * @param data
          */
         updateValue: function vAttributeUpdateValue(event, data) {
-            console.log("View catch setValue", data);
             this.model.setValue(data.value, data.index);
         },
 

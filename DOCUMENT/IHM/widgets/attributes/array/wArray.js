@@ -66,7 +66,12 @@ define([
                 if (this.options.customTemplate) {
                     // The template is already composed on view
                     this.element.append(this.options.customTemplate);
+                    this.element.find(".dcpCustomTemplate tbody tr").addClass("dcpArray__content__line");
                     this._indexLine();
+                    this.element.find(".dcpArray__content__line").attr("data-attrid", this.options.id);
+                    this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
+                    this.element.find(".dcpCustomTemplate tbody").addClass("dcpArray__body");
+
                 } else {
                     this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
@@ -80,57 +85,60 @@ define([
                             placement: "top"
                         });
                     }
-                    this.addAllLines(this.options.nbLines);
-
-                    if (this.options.mode === "write") {
-                        this.element.find('tbody').kendoDraggable({
-                            axis: "y",
-                            container: scope.element.find('tbody'),
-                            filter: '.dcpArray__content__toolCell__dragDrop',
-                            hint: function dcpArrayhint(element) {
-                                var dragLine = element.closest('tr');
-                                var lineWidth = dragLine.width();
-                                var classTable = element.closest('table').attr("class");
-                                return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).append(dragLine.clone());
-                            },
-                            dragstart: function dcpArraydragstart(event) {
-                                if (event.currentTarget) {
-                                    var dragLine = $(event.currentTarget).closest('tr');
-                                    dragLine.css("opacity", "0");
-                                    dragLine.data("fromLine", dragLine.data("line"));
-                                }
-                            },
-                            dragend: function dcpArraydragend(event) {
-                                if (event.currentTarget) {
-                                    var dragLine = $(event.currentTarget).closest('tr');
-                                    dragLine.css("opacity", "");
-                                    scope._trigger("lineMoved", {}, {
-                                        fromLine: dragLine.data("fromLine"),
-                                        toLine: dragLine.data("line")
-                                    });
-                                }
-                            }
-                        });
-
-                        this.element.find('tbody').kendoDropTargetArea({
-                            filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
-                            dragenter: function (event) {
-                                if (event.currentTarget) {
-                                    var drap = event.draggable.currentTarget.closest('tr');
-                                    var drop = event.dropTarget;
-                                    var drapLine = drap.data("line");
-                                    var dropLine = drop.data("line");
-                                    if (drapLine > dropLine) {
-                                        drap.insertBefore(drop);
-                                    } else {
-                                        drap.insertAfter(drop);
-                                    }
-                                    scope._indexLine();
-                                }
-                            }
-                        });
-                    }
                 }
+                this.addAllLines(this.options.nbLines);
+                if (this.options.mode === "write") {
+                    this.element.find('tbody').kendoDraggable({
+                        axis: "y",
+                        container: scope.element.find('tbody'),
+                        filter: '.dcpArray__content__toolCell__dragDrop',
+                        hint: function dcpArrayhint(element) {
+                            var dragLine = element.closest('tr');
+                            var lineWidth = dragLine.width();
+                            var classTable = element.closest('table').attr("class");
+                            return $('<table/>').addClass("dcpArray__dragLine " + classTable).
+                                css("width", lineWidth).
+                                css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px"). // @TODO compute delta left
+                                append(dragLine.clone());
+                        },
+                        dragstart: function dcpArraydragstart(event) {
+                            if (event.currentTarget) {
+                                var dragLine = $(event.currentTarget).closest('tr');
+                                dragLine.css("opacity", "0");
+                                dragLine.data("fromLine", dragLine.data("line"));
+                            }
+                        },
+                        dragend: function dcpArraydragend(event) {
+                            if (event.currentTarget) {
+                                var dragLine = $(event.currentTarget).closest('tr');
+                                dragLine.css("opacity", "");
+                                scope._trigger("lineMoved", {}, {
+                                    fromLine: dragLine.data("fromLine"),
+                                    toLine: dragLine.data("line")
+                                });
+                            }
+                        }
+                    });
+
+                    this.element.find('tbody').kendoDropTargetArea({
+                        filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
+                        dragenter: function (event) {
+                            if (event.currentTarget) {
+                                var drap = event.draggable.currentTarget.closest('tr');
+                                var drop = event.dropTarget;
+                                var drapLine = drap.data("line");
+                                var dropLine = drop.data("line");
+                                if (drapLine > dropLine) {
+                                    drap.insertBefore(drop);
+                                } else {
+                                    drap.insertAfter(drop);
+                                }
+                                scope._indexLine();
+                            }
+                        }
+                    });
+                }
+
             }
             this._initCSSResponsive();
         },
@@ -243,11 +251,25 @@ define([
             this._trigger("linesGenerated");
         },
 
+        _getLineContent: function (index) {
+            var $content = "NULL LINE";
+            if (this.options.customTemplate) {
+                //$content=$("<tr><td>CUSOMLINE</td><td>CUSOMLINE</td><td>CUSOMLINE</td></tr>");
+                $content = this.options.customLineCallback.apply(this, [index]);
+                $content.addClass("dcpArray__content__line");
+                $content.attr("data-attrid", this.options.id);
+            } else {
+                $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: index}, this.options)));
+
+            }
+            return $content;
+        },
+
         _addNewLine: function dcpArray_addNewLine(lineNumber) {
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
-            var $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: lineNumber}, this.options)));
+            var $content = this._getLineContent(lineNumber);
             var selectedLine = this.getSelectedLineElement();
             if (selectedLine.length === 1) {
                 $content.insertBefore(selectedLine);

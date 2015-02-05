@@ -16,9 +16,7 @@ define([
         customView: false,
 
         initialize: function vTabContentInitialize(options) {
-            if (options.customView) {
-                this.customView = options.customView;
-            }
+
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -32,6 +30,11 @@ define([
             this.listenTo(this.model, 'haveView', this._identifyView);
             this.initializeContent = options.initializeContent;
             this.initialized = false;
+            if (options.originalView !== true) {
+                if (this.model.getOption("template")) {
+                    this.customView = attributeTemplate.customView(this.model);
+                }
+            }
             this.options = options;
         },
 
@@ -70,20 +73,9 @@ define([
                                 return;
                             }
                             if (currentAttr.get("type") === "frame") {
-                                if (currentAttr.getOption("template")) {
-                                    // @TODO I don't know why but need require one more time
-                                    if (_.isUndefined(attributeTemplate) || !attributeTemplate.customView) {
-                                        /*global require*/
-                                        attributeTemplate = require('views/document/attributeTemplate');
-                                    }
-                                    customView = attributeTemplate.customView(currentAttr);
-                                }
-                                // @TODO I don't know why but need require one more time
-                                if (_.isUndefined(ViewAttributeFrame)) {
-                                    /*global require*/
-                                    ViewAttributeFrame = require('views/attributes/frame/vFrame');
-                                }
-                                view = new ViewAttributeFrame({model: currentAttr, customView: customView});
+
+
+                                view = new ViewAttributeFrame({model: currentAttr});
                                 $content.append(view.render().$el);
 
                             } else {

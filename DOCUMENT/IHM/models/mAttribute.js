@@ -22,6 +22,7 @@ define([
             this._computeValueMode();
             this._computeMode();
             this.set("title", this.id + '(' + this.get("label") + ')');
+            this.set("errorMessage", null);
         },
 
         toData : function mAttributetoData(index) {

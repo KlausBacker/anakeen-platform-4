@@ -12,7 +12,7 @@ define([
             renderOptions: {
                 kendoDateConfiguration: {
                     timeFormat: "HH:mm", //24 hours format
-                    parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss"],
+                    parseFormats: ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm"],
                     format:null
                 }
             }
@@ -24,15 +24,23 @@ define([
         _initDom: function wTimeStampInitDom() {
             if (this.options.attributeValue.value) {
                 // Add T (iso date) if not set
-                if (this.options.attributeValue.value.length > 10) {
-                    this.options.attributeValue.value[11]='T';
-                }
+
+                this.options.attributeValue.value= this.replaceAt(this.options.attributeValue.value, 10, 'T');
+
             }
-            console.log("NEW TS", this.options.attributeValue);
             this._super();
         },
 
-
+        replaceAt : function wTimeStampReplaceAt(s, n, t) {
+            return s.substring(0, n) + t + s.substring(n + 1);
+        },
+        setValue: function wDateSetValue(value) {
+            if (value.value) {
+                // Add T (iso date) if not set
+                value.value= this.replaceAt(value.value, 10, 'T');
+            }
+            this._super(value);
+        },
         _activateDate: function (inputValue) {
             var scope = this;
             var kOptions = this.getKendoOptions();

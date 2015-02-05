@@ -13,6 +13,8 @@ define([
     return Backbone.View.extend({
         className: "dcpArray",
         displayLabel:true,
+        customView:false,
+        customRowView:false,
         events: {
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
@@ -37,6 +39,15 @@ define([
             this.listenTo(this.model, 'removeWidgetLine', this.removeWidgetLine);
             this.listenTo(this.model, 'addWidgetLine', this.addWidgetLine);
             this.listenTo(this.model, 'haveView', this._identifyView);
+            if (options.originalView !== true) {
+                if (this.model.getOption("template")) {
+                    this.customView = attributeTemplate.customView(this.model);
+                    if (this.model.getOption("template").match('{{#attribute.*\\.rows}}')) {
+                        // Two case of custom : custom line or global custom array
+                        this.customRowView = true;
+                    }
+                }
+            }
             this.options = options;
         },
 
@@ -58,38 +69,49 @@ define([
             if (data.nbLines === 0 && data.mode === "read") {
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
-                this.model.get("content").each(function (currentAttr) {
-                    if (!currentAttr.isDisplayable()) {
-                        return;
-                    }
-                    try {
-                        if (currentAttr.get("isValueAttribute")) {
-                            scope.columnViews[currentAttr.id] = new ViewColumn({
-                                el: scope.el,
-                                els: function () {
-                                    return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
-                                },
-                                model: currentAttr,
-                                parentElement: scope.$el
-                            });
-                            scope.columnViews[currentAttr.id].render();
-                        }
-                    } catch (e) {
-                        if (window.dcp.logger) {
-                            window.dcp.logger(e);
-                        } else {
-                            console.error(e);
-                        }
-                    }
-                });
+                  if (!this.customView || this.customRowView) {
+                      this.model.get("content").each(function (currentAttr) {
+                          if (!currentAttr.isDisplayable()) {
+                              return;
+                          }
+                          try {
+                              if (currentAttr.get("isValueAttribute")) {
+                                  scope.columnViews[currentAttr.id] = new ViewColumn({
+                                      el: scope.el,
+                                      els: function () {
+                                          return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
+                                      },
+                                      originalView: true,
+                                      model: currentAttr,
+                                      parentElement: scope.$el
+                                  });
+                                  scope.columnViews[currentAttr.id].render();
+                              }
+                          } catch (e) {
+                              if (window.dcp.logger) {
+                                  window.dcp.logger(e);
+                              } else {
+                                  console.error(e);
+                              }
+                          }
+                      });
+                  }
             }
 
-            if (this.model.getOption("template")) {
-                data.customTemplate = attributeTemplate.customView(this.model, null, this);
+
+            if ( this.customView) {
+                data.customTemplate = this.customView;
+                data.customLineCallback = function (index) {
+                    return attributeTemplate.customArrayRowView(index, scope.model, scope);
+                };
             }
 
             try {
-                this.$el.dcpArray(data);
+                if (this.customView && !this.customRowView) {
+                    this.$el.append(this.customView);
+                } else {
+                    this.$el.dcpArray(data);
+                }
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);

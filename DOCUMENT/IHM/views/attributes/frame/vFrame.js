@@ -16,9 +16,7 @@ define([
         displayLabel:true,
 
         initialize: function (options) {
-            if (options.customView) {
-                this.customView=options.customView;
-            }
+
             if (options.displayLabel === false) {
                 this.displayLabel=false;
             }
@@ -32,6 +30,11 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
+            if (options.originalView !== true) {
+                if (this.model.getOption("template")) {
+                    this.customView = attributeTemplate.customView(this.model);
+                }
+            }
             this.options = options;
         },
 
@@ -64,6 +67,8 @@ define([
             var hasOneContent = this.model.get("content").some(function (value) {
                 return value.isDisplayable();
             });
+
+
             if (!this.customView) {
                 if (!hasOneContent) {
                     $content.append(this.model.getOption('showEmptyContent'));
@@ -75,9 +80,7 @@ define([
                         try {
                             customView = null;
                             if (currentAttr.get("isValueAttribute")) {
-                                if (currentAttr.getOption("template")) {
-                                    customView = attributeTemplate.customView(currentAttr);
-                                }
+
                                 $content.append((new ViewAttribute({
                                     model: currentAttr,
                                     customView: customView
@@ -85,12 +88,9 @@ define([
                                 return;
                             }
                             if (currentAttr.get("type") === "array") {
-
-
                                 $content.append((new ViewAttributeArray({
                                     model: currentAttr
                                 })).render().$el);
-
                             }
                         } catch (e) {
                             $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');

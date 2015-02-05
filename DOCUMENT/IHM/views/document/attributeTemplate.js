@@ -8,9 +8,11 @@ define(function (require, exports, module) {
 
         return {
 
+            customLineTemplate: '',
             /**
              * Get some data to complete custom attribute template
              * @returns {{properties: *, attributes: {}}}
+             * @private
              */
             getTemplateInfo: function attributeTemplateGetTemplateInfo(attributeModel) {
                 var attributeId = attributeModel.id;
@@ -19,8 +21,7 @@ define(function (require, exports, module) {
                     properties: documentData.properties,
                     attributes: {}
                 };
-                var createContentFunction = this.createAttributeView;
-                var createArrayRow = this.createArrayRow;
+                var scope = this;
                 _.each(documentData.attributeValues, function (aValue, aId) {
                     tplInfo.attributes[aId] = {attributeValue: aValue};
                 });
@@ -32,29 +33,39 @@ define(function (require, exports, module) {
                         tplInfo.attributes[aId] = {label: aValue};
                     }
                     tplInfo.attributes[aId].id = aId;
-                    tplInfo.attributes[aId].htmlContent = _.bind(createContentFunction, this, currentAttributeModel, false);
-                    tplInfo.attributes[aId].htmlView = _.bind(createContentFunction, this, currentAttributeModel, true);
+                    tplInfo.attributes[aId].htmlContent = _.bind(scope.getCustomTemplate, scope, currentAttributeModel, false);
+                    tplInfo.attributes[aId].htmlView = _.bind(scope.getCustomTemplate, scope, currentAttributeModel, true);
+                    tplInfo.attributes[aId].isReadMode = (currentAttributeModel.get("mode") === "read");
+                    tplInfo.attributes[aId].isWriteMode = (currentAttributeModel.get("mode") === "write");
+
                     if (currentAttributeModel.get("type") === "array") {
-                        /*tplInfo.attributes[aId].rows = function () {
-                         return function (text, render) {
-                         console.log("Hello");
-                         };
-                         };*/
-                        tplInfo.attributes[aId].rows = _.bind(createArrayRow, this, currentAttributeModel);
+
+                        tplInfo.attributes[aId].rows = _.bind(scope.getArrayRowInfo, scope, currentAttributeModel);
+                        tplInfo.attributes[aId].tableTools = _.bind(scope.getArrayTools, scope, currentAttributeModel);
+
                     }
                 });
                 tplInfo.attribute = tplInfo.attributes[attributeId];
+
                 return tplInfo;
             },
 
-            customView: function (attrModel, callBackView, callerView) {
-
+            /**
+             * Construct custom view based on template options
+             * @param attrModel Attribute model
+             * @param callBackView Callback to call after
+             * @returns {*|HTMLElement}
+             * @param config
+             */
+            customView: function (attrModel, callBackView, config) {
+                var scope = this;
                 var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
 
                 var $render = $(Mustache.render(
                     customTpl,
                     this.getTemplateInfo(attrModel)));
+
 
                 $render.find(".dcpCustomTemplate--content").each(function () {
                     var attrId = $(this).data("attrid");
@@ -63,67 +74,78 @@ define(function (require, exports, module) {
                     var attrContent = "NO VIEW FOR " + attrId;
                     var view = '';
                     var BackView = null;
-                    var parentAttributeId = null;
-                    var parentAttribute = null;
+                    var originalView = null;
+
                     if (elAttrModel) {
-                        if (elAttrModel.get("type") === "array") {
-                            BackView = require('views/attributes/array/vArray');
-                            view = new BackView({model: elAttrModel, displayLabel: displayLabel});
-                            attrContent = view.render().$el;
+
+                        if (_.isFunction(callBackView)) {
+                            // When called from vColumn to render widget in a cell
+                            callBackView.apply($(this));
+                            attrContent = '';
                         } else {
-                            if (_.isFunction(callBackView)) {
-                                // When called from vColumn to render widget in a cell
-                                callBackView.apply($(this));
-                                attrContent = '';
-                            } else {
-                                if (elAttrModel.get("type") === "tab") {
-                                    BackView = require('views/attributes/tab/vTabContent');
-                                    view = new BackView({model: elAttrModel, displayLabel: displayLabel});
-                                    attrContent = view.render().$el;
-                                } else if (elAttrModel.get("type") === "frame") {
-                                    BackView = require('views/attributes/frame/vFrame');
-                                    view = new BackView({model: elAttrModel, displayLabel: displayLabel});
-                                    attrContent = view.render().$el;
-                                } else {
-                                    BackView = require('views/attributes/vAttribute');
-                                    view = new BackView({model: elAttrModel, displayLabel: displayLabel});
-                                    attrContent = view.render().$el;
+                            switch (elAttrModel.get("type")) {
+                                case "array":
+                                    BackView = require.apply(require, ['views/attributes/array/vArray']);
+                                    break;
+                                case "tab":
+                                    BackView = require.apply(require, ['views/attributes/tab/vTabContent']);
+                                    break;
+                                case "frame":
+                                    BackView = require.apply(require, ['views/attributes/frame/vFrame']);
+                                    break;
+
+                                default:
+                                    BackView = require.apply(require, ['views/attributes/vAttribute']);
+                            }
+
+                            originalView = true;
+                            if (elAttrModel.getOption("template")) {
+                                if (config && config.useCustomAttribute) {
+                                    // when use custom template in another custom template
+                                    originalView = false;
                                 }
                             }
+
+                            view = new BackView({
+                                model: elAttrModel,
+                                originalView: originalView,
+                                displayLabel: displayLabel
+                            });
+                            attrContent = view.render().$el;
                         }
+
                     }
                     $(this).append(attrContent);
                 });
 
 
-                $render.find(".dcpCustomTemplate--row").each(function () {
-                    var attrId = $(this).data("attrid");
-                    var index = $(this).data("rowindex");
-                    var elAttrModel = attrModel.getDocumentModel().get('attributes').get(attrId);
-                    var columnView = callerView.columnViews[attrId];
-                    var attrContent = "NO VIEW FOR " + attrId;
-
-                    if (elAttrModel && columnView) {
-                        // Need to add system class for array widget
-                        $(this).closest("tr").addClass("dcpArray__content__line");
-                        columnView.widgetInit(
-                            $(this),
-                            columnView.getData(index));
-
-                        attrContent = '';
-                    }
-                    $(this).append(attrContent);
-                });
                 return $render;
             },
-            createAttributeView: function attributeTemplateCreateAttributeView(attributeModel, displayLabel) {
 
-                return '<div class="dcpCustomTemplate--content" data-displaylabel="' + (displayLabel ? "true" : "false") + '" data-attrid="' + attributeModel.id + '"/>';
+            /**
+             * Information used when add new line
+             * @param attributeModel
+             * @private
+             * @returns {{properties: *, attributes: {}}}
+             */
+            getLineInfo: function attributeTemplategetLineInfo(attributeModel) {
+                var attributeId = attributeModel.id;
+                var documentData = attributeModel.getDocumentModel().getDocumentData();
+                var tplInfo = this.getTemplateInfo(attributeModel);
+                var scope = this;
 
-            },
-            createArrayRow: function attributeTemplateCreateArrayRow(attributeModel) {
 
-                var rows = [];
+                _.each(documentData.attributeLabels, function (aValue, aId) {
+                    var currentAttributeModel = attributeModel.getDocumentModel().get('attributes').get(aId);
+                    // Reset some special keys which are not allowed here
+                    if (currentAttributeModel.get("type") === "array") {
+                        tplInfo.attributes[aId].rows = [];
+                        tplInfo.attributes[aId].tableTools = 'NO TABLE TOOL ALLOWED HERE';
+                    }
+                });
+
+                tplInfo.rowTools = this.getRowTool(attributeModel);
+                tplInfo.content = {};
                 attributeModel.get("content").each(function (currentAttr) {
                     var values;
                     var aId = currentAttr.id;
@@ -131,18 +153,147 @@ define(function (require, exports, module) {
                     if (!currentAttr.isDisplayable()) {
                         return;
                     }
+
+                    tplInfo.content[aId] = {};
+                    tplInfo.content[aId].attributeValue = {
+                        value: null, // No value for the moment. Value will be set by array view with default values
+                        displayValue: ""
+                    };
+                    tplInfo.content[aId].label = aLabel;
+                    tplInfo.content[aId].htmlContent = '<div class="dcpCustomTemplate--row dcpArray__content__cell" data-displaylabel="false" data-attrid="' + aId + '"/>';
+
+                });
+
+                return tplInfo;
+            },
+
+            /**
+             * Extract rows template line to customLineTemplate
+             * @param attrModel
+             * @private
+             * @returns {{attribute: {rows: Function}}}
+             */
+            extractRow: function (attrModel) {
+                var attributeId = attrModel.id;
+                var scope = this;
+                var info;
+
+                info = {
+                    attribute: {
+                        rows: function () {
+                            return function (text, render) {
+                                scope.customLineTemplate = text.trim();
+                            };
+                        }
+                    }
+                };
+                info.attributes = {};
+                info.attributes[attrModel.id] = info.attributes;
+                return info;
+            },
+
+            /**
+             * Construct custom line (declared in vArray::render and used in wArray::_getLineContent)
+             * @param index
+             * @param attrModel
+             * @param callerView
+             * @returns {*|HTMLElement}
+             */
+            customArrayRowView: function (index, attrModel, callerView) {
+
+                var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
+                    attrModel.getOption("template") + '</div>';
+                var $render;
+
+                // Extract line to customLineTemplate variable
+                Mustache.render(attrModel.getOption("template"), this.extractRow(attrModel));
+                $render = $(Mustache.render(
+                    this.customLineTemplate,
+                    this.getLineInfo(attrModel)));
+
+                return $render;
+            },
+
+            /**
+             * Get element where custom template will be inserted (htmlContent and htmlView)
+             * @param attributeModel
+             * @param displayLabel
+             * @private
+             * @returns {string}
+             */
+            getCustomTemplate: function attributeTemplategetCustomTemplate(attributeModel, displayLabel) {
+
+                return '<div class="dcpCustomTemplate--content" data-displaylabel="' + (displayLabel ? "true" : "false") + '" data-attrid="' + attributeModel.id + '"/>';
+
+            },
+
+
+            /**
+             * Extract dcpArray__tools from content array template
+             * @param attributeModel
+             * @private
+             * @returns {*}
+             */
+            getArrayTools: function (attributeModel) {
+                var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
+                if (tpls && tpls.content) {
+                    return $(Mustache.render(tpls.content, {tools: true})).find(".dcpArray__tools").get(0).outerHTML;
+
+                }
+                return 'no tools';
+            },
+
+            /**
+             * Extract dcpArray__content__toolCell from line array template
+             * @param attributeModel
+             * @private
+             * @returns {*}
+             */
+            getRowTool: function (attributeModel) {
+                var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
+                var tool = '';
+                if (tpls && tpls.line) {
+                    tool = '<div class="dcpArray__content__toolCell">' +
+                    $(Mustache.render(tpls.line, {tools: true})).find(".dcpArray__content__toolCell").html() + "</div>";
+
+                }
+                return tool;
+            },
+
+
+            /**
+             * Get data for mustache "rows" variable
+             * @param attributeModel
+             * @private
+             * @returns {Array}
+             */
+            getArrayRowInfo: function attributeTemplategetArrayRowInfo(attributeModel) {
+
+                var rows = [];
+                var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
+                var line = this.getRowTool(attributeModel);
+
+                attributeModel.get("content").each(function (currentAttr) {
+                    var values;
+                    var aId = currentAttr.id;
+                    var aLabel = currentAttr.get('label');
+                    if (!currentAttr.isDisplayable()) {
+                        return;
+                    }
+
                     values = currentAttr.get('attributeValue');
                     _.each(values, function (singleValue, index) {
                         if (_.isUndefined(rows[index])) {
                             rows[index] = {content: {}};
                         }
 
-
                         rows[index].content[aId] = {
                             label: aLabel,
                             attributeValue: singleValue,
-                            htmlContent: '<div class="dcpCustomTemplate--row dcpArray__content__cell" data-rowindex="' + index + '" data-attrid="' + currentAttr.id + '"/>'
+                            htmlContent: '<div class="dcpCustomTemplate--row dcpArray__content__cell"  data-attrid="' + currentAttr.id + '"/>'
                         };
+
+                        rows[index].rowTools = line;
                     });
                 });
                 return rows;

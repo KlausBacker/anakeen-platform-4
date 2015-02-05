@@ -74,6 +74,7 @@ define([
                 value.displayValue = this.formatDate(this.parseDate(value.value));
             }
 
+            //noinspection JSPotentiallyInvalidConstructorUsage
             $.dcp.dcpAttribute.prototype.setValue.call(this, value);
 
             if (this.getMode() === "write") {

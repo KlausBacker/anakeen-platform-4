@@ -13,9 +13,9 @@ define([
          * Use special event to trigger only attributes of model
          * @returns {}
          */
-        events : function () {
+        events: function () {
             var absEvents = {
-                "dcparraylineadded" : "addNewWidget"
+                "dcparraylineadded": "addNewWidget"
             };
             this._addEvent(absEvents, "changeattrsvalue", "changeAttributesValue");
             this._addEvent(absEvents, "delete", "deleteValue");
@@ -23,11 +23,11 @@ define([
             return absEvents;
         },
 
-        _addEvent : function (events, name, method) {
+        _addEvent: function (events, name, method) {
             events["dcpattribute" + name + ' .dcpArray__content__cell[data-attrid="' + this.model.id + '"]'] = method;
         },
 
-        render : function () {
+        render: function () {
             this.model.trigger("renderDone", this.model);
             return this;
         },
@@ -36,7 +36,7 @@ define([
          * called by vArray::addLine()
          * @param index
          */
-        addNewWidget : function addNewWidget(index, customView) {
+        addNewWidget: function addNewWidget(index, customView) {
             if (this.options) {
                 var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
                 var data = this.getData(index);
@@ -65,7 +65,7 @@ define([
          * @param event
          * @param options
          */
-        changeDocument : function changeDocument(event, options) {
+        changeDocument: function changeDocument(event, options) {
             var tableLine = options.tableLine,
                 index = options.index,
                 initid,
@@ -77,9 +77,9 @@ define([
                 initid = valueLine[index].value;
             }
             documentModel.clear().set({
-                "initid" :   initid,
-                "revision" : -1,
-                "viewId" :   "!defaultConsultation"
+                "initid": initid,
+                "revision": -1,
+                "viewId": "!defaultConsultation"
             }).fetch();
         }
 
