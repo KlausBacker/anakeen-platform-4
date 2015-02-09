@@ -25,6 +25,7 @@ class CommonRenderOptions
     const htmlLinkOption = "htmlLink";
     const buttonsOption = "buttons";
     const templateOption = "template";
+    const templateKeysOption = "templateKeys";
     const inputHtmlTooltip = "inputHtmlTooltip";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const labelsOption = "labels";
@@ -141,16 +142,17 @@ class CommonRenderOptions
         $this->setOption(self::htmlLinkOption, $options);
         return $this;
     }
-
-
     /**
      * At custom template for an attribute
-     * @param string $htmlText
+     * @param string $htmlText mustache template
+     * @param array $extraKeys extra data for template
      * @return $this
      */
-    public function setTemplate( $htmlText)
+    public function setTemplate($htmlText, array $extraKeys = array())
     {
         $this->setOption(self::templateOption, $htmlText);
+        $this->setOption(self::templateKeysOption, $extraKeys);
+        
         return $this;
     }
     /**

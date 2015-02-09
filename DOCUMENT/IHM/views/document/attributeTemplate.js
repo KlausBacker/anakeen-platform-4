@@ -17,6 +17,8 @@ define(function (require, exports, module) {
             getTemplateInfo: function attributeTemplateGetTemplateInfo(attributeModel) {
                 var attributeId = attributeModel.id;
                 var documentData = attributeModel.getDocumentModel().getDocumentData();
+                var extraKeys = attributeModel.getOption("templateKeys");
+
                 var tplInfo = {
                     properties: documentData.properties,
                     attributes: {}
@@ -46,8 +48,28 @@ define(function (require, exports, module) {
                     }
                 });
                 tplInfo.attribute = tplInfo.attributes[attributeId];
-
+                if (extraKeys) {
+                    var copyextraKeys = _.clone(extraKeys);
+                    if (copyextraKeys.attribute && copyextraKeys.attribute.rows) {
+                        copyextraKeys.attribute = _.clone(extraKeys.attribute);
+                        delete copyextraKeys.attribute.rows;
+                    }
+                    tplInfo = this._deepExtend(tplInfo, copyextraKeys);
+                }
                 return tplInfo;
+            },
+
+            _deepExtend: function attributeTemplate_deepExtend(target, source) {
+                for (var prop in source) {
+                    if (source.hasOwnProperty(prop)) {
+                        if (prop in target) {
+                            this._deepExtend(target[prop], source[prop]);
+                        } else {
+                            target[prop] = source[prop];
+                        }
+                    }
+                }
+                return target;
             },
 
             /**
@@ -57,7 +79,7 @@ define(function (require, exports, module) {
              * @returns {*|HTMLElement}
              * @param config
              */
-            customView: function (attrModel, callBackView, config) {
+            customView: function attributeTemplateCustomView(attrModel, callBackView, config) {
                 var scope = this;
                 var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
@@ -93,7 +115,6 @@ define(function (require, exports, module) {
                                 case "frame":
                                     BackView = require.apply(require, ['views/attributes/frame/vFrame']);
                                     break;
-
                                 default:
                                     BackView = require.apply(require, ['views/attributes/vAttribute']);
                             }
@@ -113,7 +134,6 @@ define(function (require, exports, module) {
                             });
                             attrContent = view.render().$el;
                         }
-
                     }
                     $(this).append(attrContent);
                 });
@@ -125,14 +145,16 @@ define(function (require, exports, module) {
             /**
              * Information used when add new line
              * @param attributeModel
+             * @param index line index
              * @private
              * @returns {{properties: *, attributes: {}}}
              */
-            getLineInfo: function attributeTemplategetLineInfo(attributeModel) {
+            getLineInfo: function attributeTemplategetLineInfo(attributeModel, index) {
                 var attributeId = attributeModel.id;
                 var documentData = attributeModel.getDocumentModel().getDocumentData();
                 var tplInfo = this.getTemplateInfo(attributeModel);
                 var scope = this;
+                var extraKeys = attributeModel.getOption("templateKeys");
 
 
                 _.each(documentData.attributeLabels, function (aValue, aId) {
@@ -164,6 +186,12 @@ define(function (require, exports, module) {
 
                 });
 
+                if (extraKeys && extraKeys.attribute && extraKeys.attribute.rows) {
+                    _.each(extraKeys.attribute.rows, function (extraValues, extraKey) {
+                        tplInfo[extraKey] = extraValues[index];
+                    });
+                }
+
                 return tplInfo;
             },
 
@@ -173,7 +201,7 @@ define(function (require, exports, module) {
              * @private
              * @returns {{attribute: {rows: Function}}}
              */
-            extractRow: function (attrModel) {
+            extractRow: function attributeTemplateExtractRow(attrModel) {
                 var attributeId = attrModel.id;
                 var scope = this;
                 var info;
@@ -199,7 +227,7 @@ define(function (require, exports, module) {
              * @param callerView
              * @returns {*|HTMLElement}
              */
-            customArrayRowView: function (index, attrModel, callerView) {
+            customArrayRowView: function attributeTemplateCustomArrayRowView(index, attrModel, callerView) {
 
                 var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
@@ -209,7 +237,7 @@ define(function (require, exports, module) {
                 Mustache.render(attrModel.getOption("template"), this.extractRow(attrModel));
                 $render = $(Mustache.render(
                     this.customLineTemplate,
-                    this.getLineInfo(attrModel)));
+                    this.getLineInfo(attrModel, index)));
 
                 return $render;
             },
@@ -234,7 +262,7 @@ define(function (require, exports, module) {
              * @private
              * @returns {*}
              */
-            getArrayTools: function (attributeModel) {
+            getArrayTools: function attributeTemplateGetArrayTools(attributeModel) {
                 var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 if (tpls && tpls.content) {
                     return $(Mustache.render(tpls.content, {tools: true})).find(".dcpArray__tools").get(0).outerHTML;
@@ -249,7 +277,7 @@ define(function (require, exports, module) {
              * @private
              * @returns {*}
              */
-            getRowTool: function (attributeModel) {
+            getRowTool: function attributeTemplateGetRowTool(attributeModel) {
                 var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var tool = '';
                 if (tpls && tpls.line) {
@@ -294,8 +322,10 @@ define(function (require, exports, module) {
                         };
 
                         rows[index].rowTools = line;
+
                     });
                 });
+
                 return rows;
             }
         };
