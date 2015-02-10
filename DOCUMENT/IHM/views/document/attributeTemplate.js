@@ -18,7 +18,6 @@ define(function (require, exports, module) {
                 var attributeId = attributeModel.id;
                 var documentData = attributeModel.getDocumentModel().getDocumentData();
                 var extraKeys = attributeModel.getOption("templateKeys");
-
                 var tplInfo = {
                     properties: documentData.properties,
                     attributes: {}
@@ -83,11 +82,13 @@ define(function (require, exports, module) {
                 var scope = this;
                 var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
+                var tplInfo = this.getTemplateInfo(attrModel);
+                var $render;
 
-                var $render = $(Mustache.render(
-                    customTpl,
-                    this.getTemplateInfo(attrModel)));
-
+                if (config && !_.isUndefined(config.index) && config.index >= 0) {
+                    tplInfo.attribute.attributeValue=tplInfo.attribute.attributeValue[config.index];
+                }
+                $render = $(Mustache.render(customTpl, tplInfo));
 
                 $render.find(".dcpCustomTemplate--content").each(function () {
                     var attrId = $(this).data("attrid");
@@ -102,6 +103,7 @@ define(function (require, exports, module) {
 
                         if (_.isFunction(callBackView)) {
                             // When called from vColumn to render widget in a cell
+
                             callBackView.apply($(this));
                             attrContent = '';
                         } else {

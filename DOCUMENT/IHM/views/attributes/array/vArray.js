@@ -191,7 +191,7 @@ define([
                                     $(this),
                                     currentViewColumn.getData(options.line));
                                 currentViewColumn.moveValueIndex({});
-                            }
+                            }, {index:options.line}
                         );
                     }
                     currentViewColumn.addNewWidget(options.line, customView);
