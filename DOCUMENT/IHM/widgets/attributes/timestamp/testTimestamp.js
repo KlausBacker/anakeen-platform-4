@@ -29,7 +29,7 @@ require([
                 format: "g"
             }
         }
-    }, {value: '2015-02-28 12:05:00'}, {formatValue: "28/02/2015 12:05"});
+    }, {value: '2015-02-28 12:05'}, {value:"2015-02-28T12:05", formatValue: "28/02/2015 12:05"});
 
     dateTestSuite("timestamp : spec", widget, {
         mode: "read",
@@ -40,7 +40,7 @@ require([
                 format: "F"
             }
         }
-    }, {value: '2015-02-28 12:05:10'}, {formatValue: "<b>samedi 28 février 2015 12:05:10</b>"});
+    }, {value: '2015-02-28 12:05:10'}, {value: '2015-02-28T12:05:10',formatValue: "<b>samedi 28 février 2015 12:05:10</b>"});
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();
