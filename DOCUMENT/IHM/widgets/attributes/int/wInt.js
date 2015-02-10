@@ -44,7 +44,9 @@ define([
                 }
             }
 
-            this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
+            //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
+            $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
+
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
                 if (this.options.hasAutocomplete) {
@@ -74,6 +76,7 @@ define([
                 value.displayValue = this.formatNumber(value.value);
             }
 
+            //noinspection JSPotentiallyInvalidConstructorUsage
             $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
 
             if (this.getMode() === "write") {

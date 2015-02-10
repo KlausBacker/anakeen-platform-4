@@ -55,7 +55,11 @@ define(["underscore"], function (_) {
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
 
                         attrValue = widget.call($sandBox, "getValue");
-                        expect(value.value).toEqual(attrValue.value);
+                        if (expected.value) {
+                            expect(expected.value).toEqual(attrValue.value);
+                        } else {
+                            expect(value.value).toEqual(attrValue.value);
+                        }
                         expect($sandBox.find(".dcpAttribute__value .dcpAttribute__content__value")).toHaveHtml(expected.formatValue);
                     });
                 });

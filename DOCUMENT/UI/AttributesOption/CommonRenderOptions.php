@@ -24,6 +24,8 @@ class CommonRenderOptions
     const labelPositionOption = "labelPosition";
     const htmlLinkOption = "htmlLink";
     const buttonsOption = "buttons";
+    const templateOption = "template";
+    const templateKeysOption = "templateKeys";
     const inputHtmlTooltip = "inputHtmlTooltip";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const labelsOption = "labels";
@@ -141,6 +143,19 @@ class CommonRenderOptions
         return $this;
     }
     /**
+     * At custom template for an attribute
+     * @param string $htmlText mustache template
+     * @param array $extraKeys extra data for template
+     * @return $this
+     */
+    public function setTemplate($htmlText, array $extraKeys = array())
+    {
+        $this->setOption(self::templateOption, $htmlText);
+        $this->setOption(self::templateKeysOption, $extraKeys);
+        
+        return $this;
+    }
+    /**
      * Add an html tooltip when input has focus
      * @note use only in edit mode
      * @param string  $htmlText Html fragment
@@ -163,8 +178,7 @@ class CommonRenderOptions
         return $this;
     }
     /**
-     * Add a html link on value (view mode only)
-     * @note use only in edit mode
+     * Add a html link on value 
      * @param \Dcp\Ui\ButtonOptions $options
      * @return $this
      */

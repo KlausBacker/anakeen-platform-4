@@ -61,7 +61,7 @@ define([
                 if (this.options.options && this.options.options.eformat === "auto") {
                     this.options.renderOptions.useSourceUri = true;
                 }
-                this._initMainElemeentClass();
+                this._initMainElementClass();
                 if (this._isMultiple()) {
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion" :
@@ -182,19 +182,19 @@ define([
         },
 
         retrieveItems: function wEnumretrieveItemse(done) {
-            var scope=this;
+            var scope = this;
             // Get enums data and defer render
             $.ajax({
                 type: "GET",
                 url: this.options.sourceUri,
                 dataType: "json"
             }).done(function (result) {
-                scope.options.sourceValues=result.data.enumItems;
-                scope.options.renderOptions.useSourceUri=false;
+                scope.options.sourceValues = result.data.enumItems;
+                scope.options.renderOptions.useSourceUri = false;
                 done(scope);
             }).fail(function (response) {
                 $('body').trigger("notification", {
-                    htmlMessage: "Enumerate "+scope.options.id,
+                    htmlMessage: "Enumerate " + scope.options.id,
                     message: response.statusText,
                     type: "error"
                 });
@@ -214,7 +214,7 @@ define([
                 return;
             }
 
-             enumData = this.getSingleEnumData();
+            enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
 
             this.options.isMultiple = true; // Just to have checkbox
@@ -295,7 +295,6 @@ define([
             });
 
 
-
             this.getContentElements().each(function () {
                 $(this).closest("label").addClass("k-button");
 
@@ -309,12 +308,12 @@ define([
             }
 
             this.element.tooltip({
-                selector:'.dcpAttribute__value--enumlabel--text' ,
+                selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a) {
                     if ($(this).closest("label").find("input").prop("checked")) {
                         return null;
                     } else {
-                        return scope.options.labels.selectMessage+' "'+$(this).text()+'"';
+                        return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
                     }
                 }
             });
@@ -359,12 +358,12 @@ define([
             });
 
             this.element.tooltip({
-                selector:'.dcpAttribute__value--enumlabel--text' ,
+                selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a) {
                     if ($(this).closest("label").find("input").prop("checked")) {
-                        return scope.options.labels.unselectMessage+' "'+$(this).text()+'"';
+                        return scope.options.labels.unselectMessage + ' "' + $(this).text() + '"';
                     } else {
-                        return scope.options.labels.selectMessage+' "'+$(this).text()+'"';
+                        return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
                     }
                 }
             });

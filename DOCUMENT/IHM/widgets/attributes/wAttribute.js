@@ -22,7 +22,7 @@ define([
             },
             template: null,
             deleteButton: false,
-            renderOptions: null,
+            renderOptions: {},
             locale: "fr_FR"
         },
 
@@ -233,7 +233,7 @@ define([
                 if (!kt) {
                     $ktTarger.tooltip({
                         trigger: "manual",
-                        html:true,
+                        html: true,
                         title: scope.options.renderOptions.inputHtmlTooltip,
                         placement: "bottom",
                         template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
@@ -271,15 +271,16 @@ define([
                 this.options.hasAutocomplete = true;
             }
 
-            if (this.getMode() === "write") {
-                if (this.options.renderOptions && this.options.renderOptions.buttons) {
-                    // Add index for template to identify buttons
-                    this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index) {
-                        val.index = index;
-                        return val;
-                    });
-                }
+
+            if (this.options.renderOptions && this.options.renderOptions.buttons) {
+
+                // Add index for template to identify buttons
+                this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index) {
+                    val.index = index;
+                    return val;
+                });
             }
+
             this.options.emptyValue = _.bind(this._getEmptyValue, this);
             this.options.hadButtons = this._hasButtons();
             if (this.options.renderOptions && this.options.renderOptions.labels) {
@@ -308,20 +309,21 @@ define([
         /**
          * Init the DOM of the template
          *
-         * @private
+         * @protected
          */
         _initDom: function wAttributeInitDom() {
 
-            this._initMainElemeentClass();
+            this._initMainElementClass();
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
+
 
         /**
          * Init the DOM of the template
          *
          * @public
          */
-        _initMainElemeentClass: function wAttributeInitMainElemeentClass() {
+        _initMainElementClass: function wAttributeInitMainElementClass() {
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
@@ -339,6 +341,7 @@ define([
                 this._initMoveEvent();
             }
             if (this.getMode() === "read") {
+                this._initButtonsEvent();
                 this._initLinkEvent();
             }
             this._initErrorEvent();
@@ -395,14 +398,13 @@ define([
                 var buttonsConfig = scope.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
+
                 if (buttonConfig && buttonConfig.url) {
+                    var originalEscape=Mustache.escape;
+                    Mustache.escape=encodeURIComponent;
+                    var url = Mustache.render(buttonConfig.url, scope.options.attributeValue);
+                    Mustache.escape=originalEscape;
 
-                    var encodedInfo=_.chain(scope.options.attributeValue).clone().each(
-                        function(value, key, list) {list[key] = encodeURIComponent(value);}
-                    ).value();
-
-
-                    var url = Mustache.render(buttonConfig.url, encodedInfo);
                     if (buttonConfig.target !== "_dialog") {
                         window.open(url, buttonConfig.target);
                     } else {
@@ -426,6 +428,10 @@ define([
                     value: scope.options.attributeValue,
                     index: scope._getIndex()
                 });
+            });
+            this.element.find(".dcpAttribute__content__buttons button").tooltip({
+                placement: "top",
+                trigger: "hover"
             });
             return this;
         },
@@ -475,10 +481,7 @@ define([
                 });
             });
 
-            this.element.find(".dcpAttribute__content__buttons button").tooltip({
-                placement: "left",
-                trigger: "hover"
-            });
+
 
             return this;
         },
@@ -500,9 +503,9 @@ define([
                         event.preventDefault();
                         eventContent = href.substring(7).split(":");
                         scopeWidget._trigger("externalLinkSelected", event, {
-                            target : event.target,
-                            eventId : eventContent.shift(),
-                            options : eventContent
+                            target: event.target,
+                            eventId: eventContent.shift(),
+                            options: eventContent
                         });
                         return this;
                     }
@@ -646,7 +649,11 @@ define([
          * @returns boolean
          */
         _hasButtons: function wAttributeHasButtons() {
-            return this.options.hasAutocomplete || this.options.deleteButton || (this.options.renderOptions && this.options.renderOptions.buttons);
+            if (this.getMode() === "write") {
+                return this.options.hasAutocomplete || this.options.deleteButton || (this.options.renderOptions && this.options.renderOptions.buttons && true);
+            } else {
+                return (this.options.renderOptions && this.options.renderOptions.buttons && true);
+            }
         }
 
     });

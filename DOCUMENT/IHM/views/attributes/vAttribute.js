@@ -3,6 +3,7 @@ define([
     'underscore',
     'backbone',
     'mustache',
+    'views/document/attributeTemplate',
     'widgets/attributes/label/wLabel',
     'widgets/attributes/text/wText',
     'widgets/attributes/int/wInt',
@@ -18,23 +19,36 @@ define([
     'widgets/attributes/file/wFile',
     'widgets/attributes/double/wDouble',
     'widgets/attributes/docid/wDocid'
-], function (_, Backbone, Mustache) {
+], function (_, Backbone, Mustache, attributeTemplate) {
     'use strict';
 
     return Backbone.View.extend({
 
-        className : "row dcpAttribute form-group",
+        className: "row dcpAttribute form-group",
+        customView: false,
+        displayLabel: true,
+        events: function () {
+            if (this.customView === false) {
 
-        events : {
-            "dcpattributechange .dcpAttribute__content" :                   "updateValue",
-            "dcpattributedelete .dcpAttribute__content" :                   "deleteValue",
-            "dcpattributechangeattrmenuvisibility .dcpAttribute__content" : "changeMenuVisibility",
-            "dcpattributechangeattrsvalue .dcpAttribute__content" :         "changeAttributesValue",
-            "dcpattributechangedocument .dcpAttribute__content" :           "changeDocument",
-            "dcpattributeexternallinkselected .dcpAttribute__content" :     "externalLinkSelected"
+                return {
+                    "dcpattributechange .dcpAttribute__content": "updateValue",
+                    "dcpattributedelete .dcpAttribute__content": "deleteValue",
+                    "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
+                    "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
+                    "dcpattributechangedocument .dcpAttribute__content": "changeDocument",
+                    "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected"
+                };
+            } else {
+                // No events in custom
+                return {};
+            }
         },
 
-        initialize : function vAttributeInitialize(options) {
+        initialize: function vAttributeInitialize(options) {
+
+            if (options.displayLabel === false) {
+                this.displayLabel = false;
+            }
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:attributeValue', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
@@ -45,6 +59,14 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
+
+            if (options.originalView !== true) {
+                if (this.model.getOption("template")) {
+                    this.customView = attributeTemplate.customView(this.model);
+                }
+            } else {
+                this.customView = false;
+            }
             this.options = options;
         },
 
@@ -54,7 +76,7 @@ define([
          * @param index
          * @returns {*}
          */
-        getData : function vAttributeGetData(index) {
+        getData: function vAttributeGetData(index) {
             var data;
 
             //Made to JSON for all the values, or to data for value indexed (in cas of multiple)
@@ -84,10 +106,12 @@ define([
             data.templates.label = this.model.getTemplates().attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
+
+
             return data;
         },
 
-        render : function vAttributeRender() {
+        render: function vAttributeRender() {
             //console.time("render attribute " + this.model.id);
             var data = this.getData();
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
@@ -96,21 +120,32 @@ define([
             if (this.model.get("needed")) {
                 this.$el.addClass("dcpAttribute--needed");
             }
+
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
-            this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            this.currentDcpWidget = this.widgetInit(this.$el.find(".dcpAttribute__content"), data);
+
+            if (this.displayLabel === false) {
+                this.$el.find(".dcpAttribute__label").remove();
+            } else {
+                this.$el.find(".dcpAttribute__label").dcpLabel(data);
+            }
+
+            if (this.customView) {
+                this.$el.find(".dcpAttribute__content").append(this.customView);
+            } else {
+                this.currentDcpWidget = this.widgetInit(this.$el.find(".dcpAttribute__content"), data);
+            }
             this.model.trigger("renderDone", this.model);
             return this;
         },
 
-        refreshLabel : function vAttributeRefreshLabel() {
+        refreshLabel: function vAttributeRefreshLabel() {
             this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
         },
 
         /**
          * Autorefresh value when model change
          */
-        refreshValue : function vAttributeRefreshValue(model, values, options) {
+        refreshValue: function vAttributeRefreshValue(model, values, options) {
             var scope = this, allWrapper, arrayWrapper;
             if (options.updateArray) {
                 return this;
@@ -121,8 +156,8 @@ define([
                 arrayWrapper.dcpArray("setLines", values.length);
             }
 
-            allWrapper = this.getDOMElements().find(".dcpAttribute__content")
-                .add(this.getDOMElements().filter(".dcpAttribute__content"));
+            allWrapper = this.getDOMElements().find(".dcpAttribute__content--widget")
+                .add(this.getDOMElements().filter(".dcpAttribute__content--widget"));
 
             if (this.model.isInArray()) {
                 values = _.toArray(values);
@@ -140,7 +175,7 @@ define([
          * Dispay error message around the widget if needed
          * @param event
          */
-        refreshError : function vAttributeRefreshError(event) {
+        refreshError: function vAttributeRefreshError(event) {
             var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
             this.widgetApply(this.getDOMElements().find(".dcpAttribute__content").andSelf().filter(".dcpAttribute__content"),
@@ -158,8 +193,8 @@ define([
          * @param event event object
          * @param options object {dataItem :, valueIndex :}
          */
-        changeAttributesValue : function vAttributeChangeAttributesValue(event, options) {
-            var externalEvent = {prevent : false},
+        changeAttributesValue: function vAttributeChangeAttributesValue(event, options) {
+            var externalEvent = {prevent: false},
                 currentView = this,
                 dataItem = options.dataItem,
                 valueIndex = options.valueIndex;
@@ -173,13 +208,13 @@ define([
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
                             attrModel.addValue({
-                                value :        attributeValue.value,
-                                displayValue : attributeValue.displayValue
+                                value: attributeValue.value,
+                                displayValue: attributeValue.displayValue
                             }, valueIndex);
                         } else {
                             attrModel.setValue({
-                                value :        attributeValue.value,
-                                displayValue : attributeValue.displayValue
+                                value: attributeValue.value,
+                                displayValue: attributeValue.displayValue
                             }, valueIndex);
                         }
                     }
@@ -190,7 +225,7 @@ define([
             });
         },
 
-        changeDocument : function changeAttributesValueChangeDocument(event, options) {
+        changeDocument: function changeAttributesValueChangeDocument(event, options) {
             var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
                 initid = attributeValue.value;
@@ -198,13 +233,13 @@ define([
                 initid = attributeValue[index].value;
             }
             documentModel.clear().set({
-                "initid" :   initid,
-                "revision" : -1,
-                "viewId" :   "!defaultConsultation"
+                "initid": initid,
+                "revision": -1,
+                "viewId": "!defaultConsultation"
             }).fetch();
         },
 
-        externalLinkSelected : function changeAttributesValueExternalLinkSelected(event, options) {
+        externalLinkSelected: function changeAttributesValueExternalLinkSelected(event, options) {
             options.attrid = this.model.id;
             this.model.trigger("internalLinkSelected", options);
         },
@@ -215,7 +250,7 @@ define([
          * @param event
          * @param data index info {index:"the index}
          */
-        deleteValue : function changeAttributesValueDeleteValue(event, data) {
+        deleteValue: function changeAttributesValueDeleteValue(event, data) {
 
             if (data.id === this.model.id) {
                 var attrToClear = this.model.get('helpOutputs'),
@@ -231,7 +266,7 @@ define([
                         if (attr.hasMultipleOption()) {
                             attr.setValue([], data.index);
                         } else {
-                            attr.setValue({value : null, displayValue : ''}, data.index);
+                            attr.setValue({value: null, displayValue: ''}, data.index);
                         }
                     }
                 });
@@ -246,7 +281,7 @@ define([
          * @param attributeId
          * @returns {*}
          */
-        getAttributeModel : function vAttributeGetAttributeModel(attributeId) {
+        getAttributeModel: function vAttributeGetAttributeModel(attributeId) {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
@@ -256,7 +291,7 @@ define([
          *
          * @returns {Array}
          */
-        getDeleteLabels : function vAttributeGetDeleteLabels() {
+        getDeleteLabels: function vAttributeGetDeleteLabels() {
             var attrToClear = this.model.get('helpOutputs'),
                 scope = this, attrLabels;
             if ((!attrToClear) || typeof attrToClear === "undefined") {
@@ -278,7 +313,7 @@ define([
          * Propagate move value event to widgets
          * @param eventData
          */
-        moveValueIndex : function vAttributeMoveValueIndex(eventData) {
+        moveValueIndex: function vAttributeMoveValueIndex(eventData) {
             this.getDOMElements().trigger("postMoved", eventData);
         },
 
@@ -286,20 +321,20 @@ define([
          * method use for transport multiselect widget
          * @param options
          */
-        autocompleteRequestRead : function vAttributeAutocompleteRequestRead(options) {
+        autocompleteRequestRead: function vAttributeAutocompleteRequestRead(options) {
             var currentView = this,
                 documentModel = this.model.getDocumentModel(),
                 success = options.success,
                 externalOptions = {
-                    setResult : function (content) {
+                    setResult: function (content) {
                         success(content);
                     },
-                    data :      options.data
+                    data: options.data
                 },
-                event = {prevent : false};
+                event = {prevent: false};
             //Add helperResonse event (can be used to reprocess the content of the request)
             success = _.wrap(success, function (success, content) {
-                var options = {}, event = {prevent : false};
+                var options = {}, event = {prevent: false};
                 options.data = content;
                 currentView.model.trigger("helperResponse", event, currentView.model.id, options);
                 if (event.prevent) {
@@ -315,12 +350,12 @@ define([
                 return this;
             }
             $.ajax({
-                type :     "POST",
-                url :      "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
-                           (documentModel.id || "0" ) +
-                           "&fromid=" + documentModel.get("properties").get("family").id,
-                data :     options.data,
-                dataType : "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requestsons.error(result);
+                type: "POST",
+                url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
+                (documentModel.id || "0" ) +
+                "&fromid=" + documentModel.get("properties").get("family").id,
+                data: options.data,
+                dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requestsons.error(result);
             }).pipe(
                 function vAttributeAutocompletehandleSuccessRequest(response) {
                     if (response.success) {
@@ -332,13 +367,13 @@ define([
                 function vAttributeAutocompletehandleErrorRequest(response) {
                     if (response.status === 0) {
                         return {
-                            success : false,
-                            error :   "Your navigator seems offline, try later"
+                            success: false,
+                            error: "Your navigator seems offline, try later"
                         };
                     }
                     return ({
-                        success : false,
-                        error :   "Unexpected error: " + response.status + " " + response.statusText
+                        success: false,
+                        error: "Unexpected error: " + response.status + " " + response.statusText
                     });
                 }
             ).then(function vAttributeAutocompleteSuccessResult(result) {
@@ -350,7 +385,7 @@ define([
                         result.error = result.error.join(" ");
                     }
                     //use the sucess callback because http error are handling by the pipe
-                    success([{"title" : "", "error" : result.error}]);
+                    success([{"title": "", "error": result.error}]);
                 }
             );
         },
@@ -360,11 +395,11 @@ define([
          * @param event event object
          * @param data menu config {id: menuId, visibility: "disabled", "visible", "hidden"}
          */
-        changeMenuVisibility : function vAttributeChangeMenuVisibility(event, data) {
+        changeMenuVisibility: function vAttributeChangeMenuVisibility(event, data) {
             this.model.trigger("changeMenuVisibility", event, data);
         },
 
-        getDOMElements : function vAttributeGetDOMElements() {
+        getDOMElements: function vAttributeGetDOMElements() {
             if (this.options && this.options.els) {
                 return this.options.els();
             } else {
@@ -372,7 +407,7 @@ define([
             }
         },
 
-        afterShow :   function vAttributeAfterShow(event, data) {
+        afterShow: function vAttributeAfterShow(event, data) {
             // propagate event to widgets
             this.getDOMElements().trigger("show");
         },
@@ -381,15 +416,16 @@ define([
          * @param event
          * @param data
          */
-        updateValue : function vAttributeUpdateValue(event, data) {
+        updateValue: function vAttributeUpdateValue(event, data) {
             this.model.setValue(data.value, data.index);
         },
 
-        widgetInit : function vAttributeWidgetInit($element, data) {
+        widgetInit: function vAttributeWidgetInit($element, data) {
+            $element.addClass("dcpAttribute__content--widget");
             return this.getWidgetClass().call($element, data);
         },
 
-        widgetApply : function vAttributeWidgetApply($element, method, argument) {
+        widgetApply: function vAttributeWidgetApply($element, method, argument) {
             try {
                 if (_.isString(method) && $element && this._findWidgetName($element)) {
                     this.getWidgetClass().call($element, method, argument);
@@ -404,11 +440,11 @@ define([
             return this;
         },
 
-        getWidgetClass : function vAttributeGetTypedWidgetClass() {
+        getWidgetClass: function vAttributeGetTypedWidgetClass() {
             return this.getTypedWidgetClass(this.model.get("type"));
         },
 
-        getTypedWidgetClass : function vAttributeGetTypedWidgetClass(type) {
+        getTypedWidgetClass: function vAttributeGetTypedWidgetClass(type) {
             switch (type) {
                 case "text" :
                     return $.fn.dcpText;
@@ -446,7 +482,7 @@ define([
             }
         },
 
-        remove : function vAttributeRemove() {
+        remove: function vAttributeRemove() {
             try {
                 if (this.currentDcpWidget && this._findWidgetName(this.currentDcpWidget)) {
                     this.widgetApply(this.currentDcpWidget, "destroy");
@@ -461,21 +497,21 @@ define([
             return Backbone.View.prototype.remove.call(this);
         },
 
-        hide : function vAttributeHide() {
+        hide: function vAttributeHide() {
             this.$el.hide();
         },
 
-        show : function vAttributeShow() {
+        show: function vAttributeShow() {
             this.$el.show();
         },
 
-        _findWidgetName : function vAttribute_findWidgetName($element) {
+        _findWidgetName: function vAttribute_findWidgetName($element) {
             return _.find(_.keys($element.data()), function (currentKey) {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
         },
 
-        _identifyView : function vAttribute_identifyView(event) {
+        _identifyView: function vAttribute_identifyView(event) {
             event.haveView = true;
         }
     });

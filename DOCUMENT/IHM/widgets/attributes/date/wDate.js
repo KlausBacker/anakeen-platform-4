@@ -40,7 +40,9 @@ define([
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
-            this.element.append(Mustache.render(this._getTemplate(this.getMode()), this.options));
+            //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
+            $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
+
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
 
@@ -72,6 +74,7 @@ define([
                 value.displayValue = this.formatDate(this.parseDate(value.value));
             }
 
+            //noinspection JSPotentiallyInvalidConstructorUsage
             $.dcp.dcpAttribute.prototype.setValue.call(this, value);
 
             if (this.getMode() === "write") {
@@ -88,7 +91,9 @@ define([
                         this.getContentElements().val('');
                     }
                     // Modify value only if different
-                    this.flashElement();
+                    if (originalValue || value.value) {
+                        this.flashElement();
+                    }
                 }
             } else if (this.getMode() === "read") {
                 this.getContentElements().text(value.displayValue);

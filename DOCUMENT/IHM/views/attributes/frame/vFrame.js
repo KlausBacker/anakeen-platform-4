@@ -4,15 +4,22 @@ define([
     'backbone',
     'mustache',
     'views/attributes/vAttribute',
-    'views/attributes/array/vArray'
-], function (_, Backbone, Mustache, ViewAttribute, ViewAttributeArray) {
+    'views/attributes/array/vArray',
+    'views/document/attributeTemplate'
+], function (_, Backbone, Mustache, ViewAttribute, ViewAttributeArray, attributeTemplate) {
     'use strict';
 
     return Backbone.View.extend({
 
-        className : "panel panel-default dcpFrame",
+        className: "panel panel-default dcpFrame",
+        customView:false,
+        displayLabel:true,
 
-        initialize : function () {
+        initialize: function (options) {
+
+            if (options.displayLabel === false) {
+                this.displayLabel=false;
+            }
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -23,17 +30,35 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
+            if (options.originalView !== true) {
+                if (this.model.getOption("template")) {
+                    this.customView = attributeTemplate.customView(this.model);
+                }
+            }
+            this.options = options;
         },
 
-        render : function () {
+        render: function () {
             var $content;
-            this.templateLabel = this.model.getTemplates().attribute.frame.label;
-            this.templateContent = this.model.getTemplates().attribute.frame.content;
-            var labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
-            var contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
+            var labelElement;
+            var contentElement = '';
+            var currentView = this;
+            var customView = null;
 
+            this.templateLabel = this.model.getTemplates().attribute.frame.label;
+            labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
+
+            if (this.customView) {
+                contentElement = this.customView;
+                contentElement.addClass("dcpFrame__content--open");
+            } else {
+                this.templateContent = this.model.getTemplates().attribute.frame.content;
+                contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
+            }
             this.$el.empty();
-            this.$el.append(labelElement);
+            if (this.displayLabel === true) {
+                this.$el.append(labelElement);
+            }
             this.$el.append(contentElement);
             this.$el.attr("data-attrid", this.model.id);
 
@@ -42,42 +67,54 @@ define([
             var hasOneContent = this.model.get("content").some(function (value) {
                 return value.isDisplayable();
             });
-            if (!hasOneContent) {
-                $content.append(this.model.getOption('showEmptyContent'));
-            } else {
-                this.model.get("content").each(function (currentAttr) {
-                    if (!currentAttr.isDisplayable()) {
-                        return;
-                    }
-                    try {
-                        if (currentAttr.get("isValueAttribute")) {
-                            $content.append((new ViewAttribute({model : currentAttr})).render().$el);
+
+
+            if (!this.customView) {
+                if (!hasOneContent) {
+                    $content.append(this.model.getOption('showEmptyContent'));
+                } else {
+                    this.model.get("content").each(function (currentAttr) {
+                        if (!currentAttr.isDisplayable()) {
                             return;
                         }
-                        if (currentAttr.get("type") === "array") {
-                            $content.append((new ViewAttributeArray({model : currentAttr})).render().$el);
+                        try {
+                            customView = null;
+                            if (currentAttr.get("isValueAttribute")) {
+
+                                $content.append((new ViewAttribute({
+                                    model: currentAttr,
+                                    customView: customView
+                                })).render().$el);
+                                return;
+                            }
+                            if (currentAttr.get("type") === "array") {
+                                $content.append((new ViewAttributeArray({
+                                    model: currentAttr
+                                })).render().$el);
+                            }
+                        } catch (e) {
+                            $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
+                            if (window.dcp.logger) {
+                                window.dcp.logger(e);
+                            } else {
+                                console.error(e);
+                            }
                         }
-                    } catch (e) {
-                        $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
-                        if (window.dcp.logger) {
-                            window.dcp.logger(e);
-                        } else {
-                            console.error(e);
-                        }
-                    }
-                });
+                    });
+                }
             }
             this.model.trigger("renderDone", this.model);
             //console.timeEnd("render frame " + this.model.id);
             return this;
         },
 
-        getAttributeModel : function (attributeId) {
+
+        getAttributeModel: function (attributeId) {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
-        setError : function (event, data) {
+        setError: function (event, data) {
             var parentId = this.model.get('parent');
             if (data) {
                 this.$el.find(".dcpFrame__label").addClass("has-error");
@@ -92,12 +129,15 @@ define([
             }
         },
 
-        updateLabel : function () {
+        updateLabel: function () {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        toggle : function () {
-            var $contentElement = this.$(".dcpFrame__content");
+        toggle: function () {
+            var $contentElement = this.$(".dcpCustomTemplate");
+            if ($contentElement.length === 0) {
+                $contentElement = this.$(".dcpFrame__content");
+            }
             if ($contentElement.hasClass("dcpFrame__content--open")) {
                 // Hide frame panel
                 this.$(".dcp__frame__caret").addClass("fa-caret-right").removeClass("fa-caret-down");
@@ -111,15 +151,15 @@ define([
             }
         },
 
-        hide : function hide() {
+        hide: function hide() {
             this.$el.hide();
         },
 
-        show : function show() {
+        show: function show() {
             this.$el.show();
         },
 
-        _identifyView : function vAttribute_identifyView(event) {
+        _identifyView: function vAttribute_identifyView(event) {
             event.haveView = true;
         }
     });
