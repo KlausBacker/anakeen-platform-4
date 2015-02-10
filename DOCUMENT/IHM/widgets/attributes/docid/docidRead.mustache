@@ -27,3 +27,11 @@
         {{/renderUrl}}
     {{/attributeValues}}
 </span>
+{{#hadButtons}}
+<span class="dcpAttribute__content__buttons">
+    {{#renderOptions.buttons}}
+    <button type="button" title="{{title}}" data-index="{{index}}"
+            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+    {{/renderOptions.buttons}}
+</span>
+{{/hadButtons}}

@@ -178,8 +178,7 @@ class CommonRenderOptions
         return $this;
     }
     /**
-     * Add a html link on value (view mode only)
-     * @note use only in edit mode
+     * Add a html link on value 
      * @param \Dcp\Ui\ButtonOptions $options
      * @return $this
      */
