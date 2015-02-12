@@ -90,9 +90,9 @@ define([
             //add document base
             try {
                 var renderData = this.model.toData();
-                renderData.document.attributes = attributeTemplate.getTemplateModelInfo(this.model).attributes;
+                renderData.document = attributeTemplate.getTemplateModelInfo(this.model);
                 this.$el.append($(Mustache.render(this.template, renderData, this.partials)));
-                attributeTemplate.completeCustomContent(this.$el, this.model);
+                attributeTemplate.completeCustomContent(this.$el, this.model, null, {initializeContent:true});
 
                 $body = this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");
             } catch (e) {

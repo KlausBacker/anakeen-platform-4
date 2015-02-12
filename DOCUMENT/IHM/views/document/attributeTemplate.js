@@ -159,7 +159,7 @@ define(function (require, exports, module) {
                             view = new BackView({
                                 model: elAttrModel,
                                 originalView: originalView,
-                                initializeContent:false,
+                                initializeContent:(config && config.initializeContent) || false,
                                 displayLabel: displayLabel
                             });
                             attrContent = view.render().$el;
