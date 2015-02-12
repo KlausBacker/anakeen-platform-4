@@ -112,7 +112,6 @@ define([
             }
 
             familyStructure = generateFamilyStructure(localAttrId, attributeDefinition, options.renderMode, initialValue);
-console.log("init options", renderOptions);
             //Generate mock model to test interaction between model, view and widget
             modelDocument = new ModelDocument(
                 {
