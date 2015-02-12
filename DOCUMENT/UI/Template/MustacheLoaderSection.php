@@ -50,17 +50,19 @@ class MustacheLoaderSection implements \Mustache_Loader
     
     protected function getTemplatePart(array & $tplPart)
     {
+        if (!empty($tplPart["content"]) && is_string($tplPart["content"])) {
+            $tplPart = $tplPart["content"];
+            return;
+        }
+        if (!empty($tplPart["file"]) && is_string($tplPart["file"])) {
+            $tplPart = file_get_contents($tplPart["file"]);
+            return;
+        }
         
         foreach ($tplPart as $index => $content) {
-            if ($index === "file" && is_string($content)) {
-                $tplPart = file_get_contents($content);
-                return;
-            } else {
-                $this->getTemplatePart($tplPart[$index]);
-            }
+            $this->getTemplatePart($tplPart[$index]);
         }
     }
-
     /**
      * Load a Template by name.
      *
@@ -78,7 +80,7 @@ class MustacheLoaderSection implements \Mustache_Loader
         }
         if ($name === "templates") {
             // need to revert json encode for mustache
-            return $delimiter . preg_replace('/\[\[\\\\\/([a-zA-Z0-9]+)\]\]/','[[/\1]]',JsonHandler::encodeForHTML($this->getTemplates(null)));
+            return $delimiter . preg_replace('/\[\[\\\\\/([a-zA-Z0-9]+)\]\]/', '[[/\1]]', JsonHandler::encodeForHTML($this->getTemplates(null)));
         } else {
             throw new Mustache_Exception_UnknownTemplateException($name);
         }

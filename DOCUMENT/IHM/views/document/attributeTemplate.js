@@ -9,25 +9,29 @@ define(function (require, exports, module) {
         return {
 
             customLineTemplate: '',
+
             /**
              * Get some data to complete custom attribute template
+             * @param documentModel document model
              * @returns {{properties: *, attributes: {}}}
-             * @private
+             * @public
              */
-            getTemplateInfo: function attributeTemplateGetTemplateInfo(attributeModel) {
-                var attributeId = attributeModel.id;
-                var documentData = attributeModel.getDocumentModel().getDocumentData();
-                var extraKeys = attributeModel.getOption("templateKeys");
+            getTemplateModelInfo: function attributeTemplateGetTemplateModelInfo(documentModel) {
+                var documentData=documentModel.getDocumentData() ;
                 var tplInfo = {
                     properties: documentData.properties,
                     attributes: {}
                 };
                 var scope = this;
+
+                tplInfo.properties.isWriteMode = (tplInfo.properties.renderMode === "edit");
+                tplInfo.properties.isReadMode = (tplInfo.properties.renderMode === "view");
+
                 _.each(documentData.attributeValues, function (aValue, aId) {
                     tplInfo.attributes[aId] = {attributeValue: aValue};
                 });
                 _.each(documentData.attributeLabels, function (aValue, aId) {
-                    var currentAttributeModel = attributeModel.getDocumentModel().get('attributes').get(aId);
+                    var currentAttributeModel = documentModel.get('attributes').get(aId);
                     if (tplInfo.attributes[aId]) {
                         tplInfo.attributes[aId].label = aValue;
                     } else {
@@ -46,6 +50,19 @@ define(function (require, exports, module) {
 
                     }
                 });
+                return tplInfo;
+            },
+
+            /**
+             * Get some data to complete custom attribute template
+             * @returns {{properties: *, attributes: {}}}
+             * @private
+             */
+            getTemplateInfo: function attributeTemplateGetTemplateInfo(attributeModel) {
+                var tplInfo=this.getTemplateModelInfo(attributeModel.getDocumentModel());
+                var attributeId = attributeModel.id;
+                var extraKeys = attributeModel.getOption("templateKeys");
+
                 tplInfo.attribute = tplInfo.attributes[attributeId];
                 if (extraKeys) {
                     var copyextraKeys = _.clone(extraKeys);
@@ -89,11 +106,21 @@ define(function (require, exports, module) {
                     tplInfo.attribute.attributeValue=tplInfo.attribute.attributeValue[config.index];
                 }
                 $render = $(Mustache.render(customTpl, tplInfo));
+                this.completeCustomContent($render,attrModel.getDocumentModel(),callBackView, config);
 
-                $render.find(".dcpCustomTemplate--content").each(function () {
+
+
+                return $render;
+            },
+
+
+
+            completeCustomContent: function attributeTemplateCompleteCustomContent($el, documentModel, callBackView, config) {
+
+                $el.find(".dcpCustomTemplate--content").each(function () {
                     var attrId = $(this).data("attrid");
                     var displayLabel = ($(this).data("displaylabel") === true);
-                    var elAttrModel = attrModel.getDocumentModel().get('attributes').get(attrId);
+                    var elAttrModel = documentModel.get('attributes').get(attrId);
                     var attrContent = "NO VIEW FOR " + attrId;
                     var view = '';
                     var BackView = null;
@@ -132,6 +159,7 @@ define(function (require, exports, module) {
                             view = new BackView({
                                 model: elAttrModel,
                                 originalView: originalView,
+                                initializeContent:(config && config.initializeContent) || false,
                                 displayLabel: displayLabel
                             });
                             attrContent = view.render().$el;
@@ -141,7 +169,6 @@ define(function (require, exports, module) {
                 });
 
 
-                return $render;
             },
 
             /**

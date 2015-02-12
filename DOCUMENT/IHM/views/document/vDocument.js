@@ -10,13 +10,14 @@ define([
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
+    'views/document/attributeTemplate',
     'kendo/kendo.core',
     'kendo/kendo.tabstrip',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-              kendo) {
+             attributeTemplate, kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -67,6 +68,7 @@ define([
                 '<div class="dcpDocument__frames"></div>' +
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
+            var $body;
 
             this.template = this.getTemplates("body");
             this.partials = this.getTemplates("sections");
@@ -88,9 +90,11 @@ define([
             //add document base
             try {
                 var renderData = this.model.toData();
-                renderData.document.attributes = this.model.getValues();
+                renderData.document = attributeTemplate.getTemplateModelInfo(this.model);
                 this.$el.append($(Mustache.render(this.template, renderData, this.partials)));
-                this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");
+                attributeTemplate.completeCustomContent(this.$el, this.model, null, {initializeContent:true});
+
+                $body = this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
@@ -131,92 +135,92 @@ define([
             //add first level attributes
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
-
-            this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
-                var view, viewTabLabel, viewTabContent, tabItems, customView = null;
-                if (!currentAttr.isDisplayable()) {
-                    currentView.trigger("partRender");
-                    return;
-                }
-                if (currentAttr.get("type") === "frame" && _.isUndefined(currentAttr.get("parent"))) {
-                    try {
-
-                        view = new ViewAttributeFrame({
-                            model: model.get("attributes").get(currentAttr.id)
-                        });
-                        $content.append(view.render().$el);
-
-                    } catch (e) {
-                        if (window.dcp.logger) {
-                            window.dcp.logger(e);
-                        } else {
-                            console.error(e);
-                        }
+            if ($body.length > 0) {
+                this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
+                    var view, viewTabLabel, viewTabContent, tabItems, customView = null;
+                    if (!currentAttr.isDisplayable()) {
+                        currentView.trigger("partRender");
+                        return;
                     }
-                }
-                if (currentAttr.get("type") === "tab" && _.isUndefined(currentAttr.get("parent"))) {
-                    try {
-                        var tabModel = model.get("attributes").get(currentAttr.id);
-                        var tabContent;
-                        viewTabLabel = new ViewAttributeTabLabel({model: tabModel});
+                    if (currentAttr.get("type") === "frame" && _.isUndefined(currentAttr.get("parent"))) {
+                        try {
 
-                        viewTabContent = new ViewAttributeTabContent({
-                            model: tabModel
-                        });
-                        tabContent = viewTabContent.render().$el;
-
-                        if (tabModel.getOption("openFirst")) {
-                            currentView.selectedTab = currentAttr.id;
-                            //console.log("open ", currentAttr.id);
-                        }
-                        $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
-                        tabItems = $el.find(".dcpDocument__tabs__list").find('li');
-                        if (tabItems.length > 1) {
-                            tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
-                                placement: "top",
-                                title: function vDocumentTooltipTitle() {
-                                    return $(this).text(); // set the element text as content of the tooltip
-                                }
+                            view = new ViewAttributeFrame({
+                                model: model.get("attributes").get(currentAttr.id)
                             });
-                        } else {
-                            tabItems.css("width", "80%");
-                        }
+                            $content.append(view.render().$el);
 
-                        $el.find(".dcpDocument__tabs").append(tabContent);
-                        $el.find(".dcpDocument__tabs").show();
-                    } catch (e) {
-                        if (window.dcp.logger) {
-                            window.dcp.logger(e);
-                        } else {
-                            console.error(e);
+                        } catch (e) {
+                            if (window.dcp.logger) {
+                                window.dcp.logger(e);
+                            } else {
+                                console.error(e);
+                            }
                         }
                     }
-                }
-                currentView.trigger("partRender");
-            });
+                    if (currentAttr.get("type") === "tab" && _.isUndefined(currentAttr.get("parent"))) {
+                        try {
+                            var tabModel = model.get("attributes").get(currentAttr.id);
+                            var tabContent;
+                            viewTabLabel = new ViewAttributeTabLabel({model: tabModel});
 
-            this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-                show: function vDocumentShowTab(event) {
-                    var tabId = $(event.item).data("attrid");
-                    currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
-                    currentView.model.get("attributes").get(tabId).trigger("showTab");
-                    currentView.$('.dcpLabel[data-attrid="' + tabId + '"]').addClass("dcpLabel--active").removeClass("dcpLabel--default");
-                    if (documentView.selectedTab !== tabId) {
-                        documentView.selectedTab = tabId;
-                        documentView.recordSelectedTab(tabId);
+                            viewTabContent = new ViewAttributeTabContent({
+                                model: tabModel
+                            });
+                            tabContent = viewTabContent.render().$el;
+
+                            if (tabModel.getOption("openFirst")) {
+                                currentView.selectedTab = currentAttr.id;
+                                //console.log("open ", currentAttr.id);
+                            }
+                            $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
+                            tabItems = $el.find(".dcpDocument__tabs__list").find('li');
+                            if (tabItems.length > 1) {
+                                tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
+                                    placement: "top",
+                                    title: function vDocumentTooltipTitle() {
+                                        return $(this).text(); // set the element text as content of the tooltip
+                                    }
+                                });
+                            } else {
+                                tabItems.css("width", "80%");
+                            }
+
+                            $el.find(".dcpDocument__tabs").append(tabContent);
+                            $el.find(".dcpDocument__tabs").show();
+                        } catch (e) {
+                            if (window.dcp.logger) {
+                                window.dcp.logger(e);
+                            } else {
+                                console.error(e);
+                            }
+                        }
                     }
-                }
-            });
+                    currentView.trigger("partRender");
+                });
 
-            if (this.kendoTabs.data("kendoTabStrip")) {
-                var selectTab = 'li[data-attrid=' + this.selectedTab + ']';
-                if (this.selectedTab && $(selectTab).length > 0) {
-                    this.kendoTabs.data("kendoTabStrip").select(selectTab);
-                } else {
-                    this.kendoTabs.data("kendoTabStrip").select(0);
+                this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+                    show: function vDocumentShowTab(event) {
+                        var tabId = $(event.item).data("attrid");
+                        currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
+                        currentView.model.get("attributes").get(tabId).trigger("showTab");
+                        currentView.$('.dcpLabel[data-attrid="' + tabId + '"]').addClass("dcpLabel--active").removeClass("dcpLabel--default");
+                        if (documentView.selectedTab !== tabId) {
+                            documentView.selectedTab = tabId;
+                            documentView.recordSelectedTab(tabId);
+                        }
+                    }
+                });
+
+                if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
+                    var selectTab = 'li[data-attrid=' + this.selectedTab + ']';
+                    if (this.selectedTab && $(selectTab).length > 0) {
+                        this.kendoTabs.data("kendoTabStrip").select(selectTab);
+                    } else {
+                        this.kendoTabs.data("kendoTabStrip").select(0);
+                    }
                 }
             }
-
             $(window.document).on('drop.ddui dragover.ddui', function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
             }).on('redrawErrorMessages.ddui', function vDocumentRedrawErrorMessages() {
