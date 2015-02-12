@@ -42,7 +42,6 @@ define([
             var hasOneContent;
             this.$el.empty();
             this.$el.attr("id", this.model.id);
-            this.$el.append('<p> Loading : <i class="fa fa-spinner fa-spin"></i></p>');
             this.$el.attr("data-attrid", this.model.id);
 
             hasOneContent = this.model.get("content").some(function vTabContentIsDisplayable(value) {

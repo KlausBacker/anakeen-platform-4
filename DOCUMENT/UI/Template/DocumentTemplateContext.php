@@ -112,7 +112,16 @@ class DocumentTemplateContext implements \ArrayAccess
         if ($this->_document->doctype === "C") {
             return array();
         }
-        return $this->_getDocumentData("document.attributes");
+        $attrData = $this->_getDocumentData("document.attributes");
+        $ctxData = array();
+        foreach ($attrData as $aid => $value) {
+            $oa = $this->_document->getAttribute($aid);
+            $ctxData[$aid] = array(
+                "attributeValue" => $value,
+                "label" => ($oa) ? $oa->getLabel() : ""
+            );
+        }
+        return $ctxData;
     }
     /**
      * Keys for mustache
