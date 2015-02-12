@@ -85,7 +85,7 @@ define([
             } else {
                 data = this.model.toData(index);
             }
-            data.viewCid = this.cid;
+            data.viewCid = this.cid+'-'+this.model.id;
             data.renderOptions = this.model.getOptions();
             data.labels = data.labels || {};
             data.labels.deleteAttributeNames = this.getDeleteLabels();
