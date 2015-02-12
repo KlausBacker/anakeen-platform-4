@@ -390,7 +390,7 @@ class Context extends WiffCommon
     /**
      * Get installed Module list
      * @param boolean $withAvailableVersion returned objects will have last available version from Repository attribute populated
-     * @return array of object Module
+     * @return Module[]
      */
     public function getInstalledModuleList($withAvailableVersion = false)
     {
