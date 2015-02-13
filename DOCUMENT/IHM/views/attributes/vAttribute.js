@@ -46,7 +46,7 @@ define([
 
         initialize: function vAttributeInitialize(options) {
 
-            if (options.displayLabel === false) {
+            if (options.displayLabel === false || this.model.getOption("labelPosition")==="none") {
                 this.displayLabel = false;
             }
             this.listenTo(this.model, 'change:label', this.refreshLabel);
@@ -123,17 +123,22 @@ define([
 
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
 
-            if (this.displayLabel === false) {
-                this.$el.find(".dcpAttribute__label").remove();
-            } else {
-                this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            }
+
 
             if (this.customView) {
                 this.$el.find(".dcpAttribute__content").append(this.customView);
             } else {
                 this.currentDcpWidget = this.widgetInit(this.$el.find(".dcpAttribute__content"), data);
             }
+
+            if (this.displayLabel === false) {
+                this.$el.find(".dcpAttribute__label").remove();
+                // set to 100% width
+                this.$el.find(".col-sm-10").addClass("col-sm-12").removeClass("col-sm-10");
+            } else {
+                this.$el.find(".dcpAttribute__label").dcpLabel(data);
+            }
+
             this.model.trigger("renderDone", this.model);
             return this;
         },

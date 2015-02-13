@@ -12,7 +12,7 @@ class DefaultEdit extends RenderDefault
     
     public function getLabel()
     {
-        return _("Default Edit");
+        return ___("Default Edit", "ddui");
     }
     
     public function getType()

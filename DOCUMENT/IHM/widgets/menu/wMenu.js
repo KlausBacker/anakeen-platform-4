@@ -229,9 +229,10 @@ define([
                     currentWidget._tooltips.push($currentMenu.tooltip(
                         {
                             trigger :   "hover",
-                            placement : "bottom"
+                            placement : currentMenu.tooltipPlacement?currentMenu.tooltipPlacement:"bottom"
 
                         }));
+
                 }
                 $currentMenu.data("menuConfiguration", currentMenu);
                 $content.append($currentMenu);

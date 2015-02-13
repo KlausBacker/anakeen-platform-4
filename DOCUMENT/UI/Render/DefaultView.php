@@ -133,25 +133,25 @@ class DefaultView extends RenderDefault
         $targetOption->windowWidth = "400px";
         $item->setTarget("_dialog", $targetOption);
         $menu->getElement("advanced")->appendElement($item);
-
+        
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
-       /* $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
+        /* $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
         $targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
         $targetOption->windowWidth = "600px";
         $item->setTarget("_dialog", $targetOption);
         $securitySubMenu->appendElement($item);*/
-        $item=new ItemMenu("lock", ___("Lock", "UiMenu") , "#event/document:lock");
+        $item = new ItemMenu("lock", ___("Lock", "UiMenu") , "#event/document:lock");
         $item->setVisibility(ElementMenu::VisibilityDisabled);
-        $item->setTooltipLabel(___("Not yet implemented","ddui"));
+        $item->setTooltipLabel(___("Not yet implemented", "ddui"));
         $securitySubMenu->appendElement($item);
-
-        $item=new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#event/document:lock");
+        
+        $item = new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#event/document:lock");
         $item->setVisibility(ElementMenu::VisibilityDisabled);
-        $item->setTooltipLabel(___("Not yet implemented","ddui"));
+        $item->setTooltipLabel(___("Not yet implemented", "ddui"));
         $securitySubMenu->appendElement($item);
         $securitySubMenu->appendElement($item);
-
+        
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         if ($document->wid > 0) {
             if ($document->locked != - 1) {
@@ -211,13 +211,8 @@ class DefaultView extends RenderDefault
                 $label = $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v)));
                 $itemMenu = new ItemMenu($v, $label);
                 
-                if ((empty($tr["nr"])) || ((!empty($tr["ask"])) && is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
-                    $itemMenu->setUrl(sprintf("?app=FDL&action=EDITCHANGESTATE&nstate=%s&id={{document.properties.id}}", urlencode($v)));
-                    $itemMenu->setTarget("_dialog"); // alternative to data-popup
-                    
-                } else {
-                    $itemMenu->setUrl(sprintf("?app=FREEDOM&action=MODSTATE&newstate=%s&id={{document.properties.id}}", urlencode($v)));
-                }
+                $itemMenu->setUrl(sprintf("#event/document:state:%s:%s", urlencode($tr['id']) , urlencode($v)));
+                $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
                 $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
                 //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
@@ -249,7 +244,7 @@ class DefaultView extends RenderDefault
                     $itemMenu->setIcon($icon);
                 }
                 if ($tooltip) {
-                    $itemMenu->setTooltipLabel($tooltip);
+                    $itemMenu->setTooltipLabel($tooltip, "auto");
                 }
                 
                 $color = $wdoc->getColor($v);
