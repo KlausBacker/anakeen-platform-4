@@ -18,10 +18,10 @@ define([
          * Initialize event handling
          *
          */
-        initialize2 : function mDocumentinitialize() {
+        initialize2: function mDocumentinitialize() {
             //mDocument.prototype.initialize.apply(this, arguments);
-          //  this.listenTo(this, "error", _.bind(this.propagateSynchroError, this.get("documentModel")));
-           // this.listenTo(this, "error", this.viewError);
+            //  this.listenTo(this, "error", _.bind(this.propagateSynchroError, this.get("documentModel")));
+            // this.listenTo(this, "error", this.viewError);
         },
 
         /**
@@ -51,13 +51,12 @@ define([
             if (response.success === false) {
                 throw new Error("Unable to get the data from change state");
             }
-console.log("RESPONSE", response);
             attributes = [];
 
-            renderOptions=documentModel.get("renderOptions");
+            renderOptions = response.data.renderOptions;
 
-            if (response.data.renderOptions) {
-                renderOptions.attributes = _.extend(renderOptions.attributes, response.data.renderOptions.attributes);
+            if (!renderOptions) {
+                renderOptions = documentModel.get("renderOptions");
             }
             if (response.data.transition && response.data.transition.askAttributes.length > 0) {
 
@@ -67,34 +66,40 @@ console.log("RESPONSE", response);
                 });
             }
             templates = documentModel.get("templates");
-            templates.body = '<div class="dcpChangeState--graph"/>{{>content}}';
+
+            if (response.data.templates) {
+                templates.body = response.data.templates.body;
+                _.each(response.data.templates.sections, function (tpl, tplIdx) {
+                    templates.sections[tplIdx] = tpl;
+                });
+            }
+
             this.initialProperties = _.defaults({
                 "renderMode": "edit",
                 "viewId": "!changeState"
             }, {});
 
-            console.log("ATTR", attributes);
-
+            console.log("WID", documentModel.get("properties"));
             values = {
-                initid: null, // set to null to send a POST (create) when save
-                properties: documentModel.get("properties"),
+                initid: null,//response.data.workflow.properties.initid, // set to null to send a POST (create) when save
+                properties: response.data.workflow.properties,
                 menus: [],
                 viewId: "!changeState",
                 locale: documentModel.get("locale").culture,
                 renderMode: "edit",
                 attributes: attributes,
                 templates: documentModel.get("templates"),
-                renderOptions:renderOptions,
+                renderOptions: renderOptions,
                 customCSS: [],
                 customJS: [],
                 messages: response.messages,
-                workflow : {
-                    transition : response.data.transition,
-                    state : response.data.state,
-                    labels : response.data.labels
+                workflow: {
+                    transition: response.data.transition,
+                    state: response.data.state,
+                    labels: response.data.labels
                 }
             };
-
+            window.dcp.changeState = this;
             return values;
         },
 
@@ -103,24 +108,29 @@ console.log("RESPONSE", response);
          * @returns {{document: {attributes: *, properties : *}}}
          */
         toJSON: function mChangeStatetoJSON() {
-            var values=this.getValues();
-            var to={parameters:{}};
+            var values = this.getValues();
+            var to = {parameters: {}};
 
             _.each(values, function (value, aid) {
-                if (aid==="_workflow_comment_") {
-                    to.comment=(_.isObject(value))?value.value:'';
+                if (aid === "_workflow_comment_") {
+                    to.comment = (_.isObject(value)) ? value.value : '';
                 } else {
-                    if (!_.isArray(value)) {
-                        to.parameters[aid] = value.value;
-                    } else {
+
+                    if (_.isArray(value)) {
                         if (value.length > 0 && _.isArray(value[0])) {
                             // double multiple
                             to.parameters[aid] = _.map(value, function (aValue) {
                                 return _.pluck(aValue, "value");
                             });
                         } else {
-                        to.parameters[aid] = _.pluck(value, "value");
+                            to.parameters[aid] = _.pluck(value, "value");
                         }
+                    } else if (_.isObject(value)) {
+                        to.parameters[aid] = value.value;
+                    } else {
+
+                        to.parameters[aid] = value;
+
                     }
                 }
             });

@@ -28,5 +28,16 @@ class FileRenderOptions extends CommonRenderOptions
         
         return $this->setOption(self::downloadInlineOption, (bool)$inline);
     }
-
+    /**
+     * Text to set into input when is empty
+     * @note use only in edition mode
+     * @param string $text text to display
+     * @return $this
+     */
+    public function setPlaceHolder($text)
+    {
+        return $this->setLabels(array(
+            "placeholder" => $text
+        ));
+    }
 }

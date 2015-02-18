@@ -9,20 +9,19 @@ define([
 
     return ViewDocument.extend({
 
+        messages: [],
         initialize: function vAttributeInitialize(options) {
             ViewDocument.prototype.initialize.apply(this, arguments);
-            this.listenTo(this.model, 'sync', this.clearError);
             this.listenTo(this.model, 'showError', this.displayError);
             this.listenTo(this.model, 'request', this.displayLoading);
             this.options = options;
         },
 
         displayError: function (error) {
-            var workflow=this.model.get("workflow");
-            var attributes=this.model.get("attributes");
-            var $okButton=this.$el.find(".dcpChangeState-button-ok");
-            var $cancelButton=this.$el.find(".dcpChangeState-button-cancel");
-            console.log("DISPLAY ERROR", error);
+            var workflow = this.model.get("workflow");
+            var attributes = this.model.get("attributes");
+            var $okButton = this.$el.find(".dcpChangeState-button-ok");
+            var $cancelButton = this.$el.find(".dcpChangeState-button-cancel");
             this.reactiveWidget();
             if (_.isObject(error)) {
                 var errorMessage = '<div class="dcpChangeState--error">{{title}} {{{htmlMessage}}}</div>';
@@ -35,30 +34,46 @@ define([
                 $okButton.text(workflow.labels.retry);
             }
         },
-        clearError: function (error) {
-            this.reactiveWidget();
-            console.log("SYNC");
-            this.$el.find(".dcpChangeState--error").remove();
+        cleanAndRender: function () {
+
+            var workflow = this.model.get("workflow");
+            var attributes = this.model.get("attributes");
+            var transition = workflow.transition;
+            var state = workflow.state;
+
+
+            this.render();
 
             this.displayMessages(this.model.get("messages"));
+            this.clearError();
+            this.reactiveWidget();
+            if (!transition && state) {
+                this.$el.trigger("reload", [this.messages]);
+            }
 
+        },
+
+        clearError: function () {
+            this.$el.find(".dcpChangeState--error").remove();
         },
 
         reactiveWidget: function () {
 
-            var workflow=this.model.get("workflow");
-            var attributes=this.model.get("attributes");
+            var workflow = this.model.get("workflow");
+            var attributes = this.model.get("attributes");
 
-            var $okButton=this.$el.find(".dcpChangeState-button-ok");
-            var $cancelButton=this.$el.find(".dcpChangeState-button-cancel");
+            var $loading = this.$el.find(".dcpChangeState--loading");
+            var $okButton = this.$el.find(".dcpChangeState-button-ok");
+            var $cancelButton = this.$el.find(".dcpChangeState-button-cancel");
             if (attributes.length > 0) {
-             if (workflow && workflow.labels.confirm) {
+                if (workflow && workflow.labels.confirm) {
 
-                 $okButton.text(workflow.labels.confirm);
-             }
+                    $okButton.text(workflow.labels.confirm);
+                }
                 $okButton.prop("disabled", false);
             }
             $cancelButton.prop("disabled", false);
+            $loading.hide();
         },
 
         /**
@@ -66,28 +81,37 @@ define([
          */
         displayLoading: function vChangeStateDisplayLoading() {
 
-            var loadTpl='<i class="fa fa-spinner fa-spin"></i>';
-            var workflow=this.model.get("workflow");
+            var workflow = this.model.get("workflow");
 
-            var $okButton=this.$el.find(".dcpChangeState-button-ok");
-            var $cancelButton=this.$el.find(".dcpChangeState-button-cancel");
+            var $loading = this.$el.find(".dcpChangeState--loading");
+            var $okButton = this.$el.find(".dcpChangeState-button-ok");
+            var $cancelButton = this.$el.find(".dcpChangeState-button-cancel");
 
-            if (workflow && workflow.labels.inprogress) {
-                loadTpl += workflow.labels.inprogress;
-            }
+            $loading.show();
+
             this.clearError();
-            $okButton.html(loadTpl).prop("disabled", true);
+            $okButton.prop("disabled", true);
             $cancelButton.prop("disabled", true);
         },
 
         displayMessages: function (messages) {
-           console.log("NEW MESSAGES", arguments);
+            var scope = this;
+            var documentModel = this.model.get("documentModel");
+            var tpl = '<div class="dcpChangeState--message dcpChangeState--message--{{type}}">{{contentText}} {{{contentHtml}}}</div>';
+            var $buttons = this.$el.find(".dcpChangeState--buttons");
+            var $message = this.$el.find(".dcpChangeState--messages");
 
-            var tpl='<div class="dcpChangeState--message dcpChangeState--message--{{type}}">{{contentText}} {{{contentHtml}}}</div>';
-            var $buttons=this.$el.find(".dcpChangeState--buttons");
+            this.messages = [];
 
             _.each(messages, function (message) {
-                $(Mustache.render(tpl, message)).insertBefore($buttons);
+                $message.append($(Mustache.render(tpl, message)));
+
+                scope.messages.push({
+                    title: message.contentText,
+                    type: message.type,
+                    htmlMessage: message.contentHtml
+                });
+
             });
 
         },
@@ -97,52 +121,51 @@ define([
          * @returns {*}
          */
         render: function vChangeStateRender() {
-            var scope=this;
-            var workflow=this.model.get("workflow");
-            var attributes=this.model.get("attributes");
-            var transition=this.model.get("workflow").transition;
-            var state=this.model.get("workflow").state;
+            var scope = this;
+            var workflow = this.model.get("workflow");
+            var attributes = this.model.get("attributes");
+            var transition = workflow.transition;
+            var state = workflow.state;
             ViewDocument.prototype.render.apply(this, arguments);
-            console.log("model", this.model);
 
 
-            workflow.hasAttributes=(attributes.length > 0);
+            workflow.hasAttributes = (attributes.length > 0);
             if (transition) {
-                this.$el.find(".dcpChangeState--graph").append(Mustache.render(this.htmlContent(), workflow));
-                if (this.options.dialogWindow) {
-                    this.options.dialogWindow.kendoWindow("center");
-                    this.options.dialogWindow.kendoWindow("title", workflow.transition.label);
-                }
+                // Transition ask
+                this.$el.find(".dcpChangeState--header").append(Mustache.render(this.htmlContent(), workflow));
 
-                this.$el.append(Mustache.render(this.htmlButtons, workflow));
-                this.$el.find(".dcpChangeState-button-ok").on("click" , function () {
+                this.$el.find(".dcpChangeState--messages").append(Mustache.render(this.htmlLoading, workflow));
+                    this.$el.kendoWindow("center");
+                    this.$el.kendoWindow("title", workflow.transition.label);
+
+
+                this.$el.find(".dcpChangeState--buttons").append(Mustache.render(this.htmlButtons, workflow));
+                this.$el.find(".dcpChangeState-button-ok").on("click", function () {
                     scope.model.save();
                 }).tooltip();
-                this.$el.find(".dcpChangeState-button-cancel").on("click" , function () {
+                this.$el.find(".dcpChangeState-button-cancel").on("click", function () {
                     scope.$el.kendoWindow("close");
                 });
 
                 if (attributes.length === 0) {
+                    // Direct send transition without user control
                     _.defer(function () {
                         scope.model.save();
                     });
                 }
 
             } else if (state) {
-                this.$el.find(".dcpChangeState--graph").append(Mustache.render(this.htmlStateContent(), workflow));
+                // Transition success
+                this.$el.find(".dcpChangeState--header").append(Mustache.render(this.htmlStateContent(), workflow));
 
-                this.$el.find(".dcpChangeState-button-close").on("click" , function () {
-                    console.log("Send reload trigger", scope.$el);
+                this.$el.find(".dcpChangeState--buttons").append(Mustache.render(this.htmlStateButtons, workflow));
+                this.$el.find(".dcpChangeState-button-close").on("click", function () {
+
                     scope.$el.kendoWindow("close");
                 }).tooltip();
 
 
-
-                scope.$el.trigger("reload");
             }
-
-
-
 
 
         },
@@ -150,26 +173,31 @@ define([
 
         htmlContent: function () {
             return '<div class="dcpChangeState--content-activity">' +
-            '<span class="dcpChangeState--activity" style="background-color:{{transition.currentState.color}}">{{transition.currentState.displayValue}}</span>' +
+            '{{transition.currentState.displayValue}} <span class="dcpChangeState--activity" style="background-color:{{transition.currentState.color}}">&nbsp;</span>' +
             '<span class="dcpChangeState--transition {{^transition.id}}dcpChangeState--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
             '<span><i class="fa fa-chevron-right {{^transition.id}}dcpChangeState--transition--invalid{{/transition.id}}"></i></span>' +
-            '<span class="dcpChangeState--activity" style="background-color:{{transition.nextState.color}}">{{transition.nextState.displayValue}}</span>' +
+            '<span class="dcpChangeState--activity" style="background-color:{{transition.nextState.color}}">&nbsp;</span> {{transition.nextState.displayValue}}' +
             '</div>';
         },
         htmlStateContent: function () {
             return '<div class="dcpChangeState--content-activity">' +
             '<span class="dcpChangeState--success" >{{labels.success}}</span>' +
-            '</div><div class="dcpChangeState--buttons">'+
-            '<button title="{{labels.close}}" class="dcpChangeState-button-close btn btn-default btn-sm">' +
-            '{{labels.close}}' +
-            '</button> </div>' ;
+            '</div>'  ;
         },
 
-        htmlButtons : '<div class="dcpChangeState--buttons">' +
-        '</button>{{#hasAttributes}}<button class="dcpChangeState-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>{{/hasAttributes}}'+
-        '<button title="{{transition.label}}" class="dcpChangeState-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
-        '{{labels.confirm}}</button>' +
+        htmlStateButtons : '<button title="{{labels.close}}" class="dcpChangeState-button-close btn btn-default btn-sm">' +
+            '{{labels.close}}' +
+            '</button>',
 
-        '</div>'
+        htmlLoading:'<div class="dcpChangeState--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> {{labels.inprogress}}</div>',
+
+        htmlButtons:
+
+        '{{#hasAttributes}}<button class="dcpChangeState-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
+        '<button title="{{transition.label}}" ' +
+        'class="dcpChangeState-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
+        '{{labels.confirm}}</button>{{/hasAttributes}}'
+
+
     });
 });

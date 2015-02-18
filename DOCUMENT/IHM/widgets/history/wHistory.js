@@ -14,15 +14,6 @@ define([
             documentId: 0,
             window: {
                 modal: true,
-                animation: {
-                    open: {
-                        effects: "fade:in",
-                        duration: 1000
-                    }, close: {
-                        effects: "fade:out",
-                        duration: 1000
-                    }
-                },
                 actions: [
                     "Maximize",
                     "Close"
@@ -148,8 +139,8 @@ define([
             });
         },
         open: function open() {
-            this.currentWidget.data("kendoWindow").open();
             this.currentWidget.data("kendoWindow").center();
+            this.currentWidget.data("kendoWindow").open();
         },
 
         _fillDataTable: function (data) {
@@ -205,9 +196,9 @@ define([
                         title: historyWidget.options.labels.date,
                         className: "history-date",
                         "render": function (data) {
-
-                            return kendo.toString(new Date(data.replace(' ', 'T')), "G");
-
+                            var theDate= new Date(data.substr(0,10) );
+                            // The time is not manage by date because each navigator defer with timezone
+                            return kendo.toString(theDate, "D") + ' '+data.substr(11,8);
                         }
                     },
                     {

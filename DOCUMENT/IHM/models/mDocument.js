@@ -591,7 +591,6 @@ define([
             this.trigger("beforeSave", event);
             if (event.prevent === false) {
                 xhr = Backbone.Model.prototype.save.apply(this, arguments);
-                console.log("save xhr", xhr);
                 if (xhr) {
                     xhr.done(function () {
                         currentModel.trigger("afterSave");

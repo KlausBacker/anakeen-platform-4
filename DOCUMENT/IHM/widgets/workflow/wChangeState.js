@@ -50,7 +50,10 @@ define([
             this.element.append(this.currentWidget);
 
             this.element.data("dcpChangeState", this);
-
+this.currentWidget.attr("data-state", this.options.nextState);
+            if (this.options.transition) {
+                this.currentWidget.attr("data-transition", this.options.transition);
+            }
             this.options.window.close = function () {
                 _.delay(function () {
                     scope.destroy();
@@ -90,8 +93,11 @@ define([
         },
 
         open: function wChangeStateOpen() {
-            this.currentWidget.data("kendoWindow").open();
             this.currentWidget.data("kendoWindow").center();
+            this.currentWidget.data("kendoWindow").open();
+        },
+        close: function wChangeStateOpen() {
+            this.currentWidget.data("kendoWindow").close();
         },
 
 

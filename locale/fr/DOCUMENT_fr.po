@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-18 10:17+0100\n"
-"PO-Revision-Date: 2015-02-18 10:18+0100\n"
+"PO-Revision-Date: 2015-02-19 10:40+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -294,7 +294,7 @@ msgstr "Retirer le document de la poubelle"
 
 msgctxt "ddui"
 msgid "Retry transition"
-msgstr "Retenter"
+msgstr "Confirmer"
 
 #, php-format
 msgctxt "ddui"

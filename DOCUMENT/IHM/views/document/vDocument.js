@@ -261,13 +261,8 @@ define([
         publishMessages: function vDocumentPublishMessages() {
             var currentView = this;
             _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage) {
-                if (aMessage.type === "message" || aMessage.type === "notice") {
-                    aMessage.notificationType = "info";
-                } else {
-                    aMessage.notificationType=aMessage.type;
-                }
                 currentView.trigger("showMessage", {
-                    type: aMessage.notificationType,
+                    type: aMessage.type,
                     title: aMessage.contentText,
                     htmlMessage: aMessage.contentHtml
                 });
@@ -363,8 +358,21 @@ define([
                 nextState: nextState
             }).data("dcpChangeState");
             this.changeStateWidget.open();
-            this.changeStateWidget.currentWidget.on("reload", function vDocumentChangeStateReload(event, data) {
-                scope.model.fetch();
+            this.changeStateWidget.currentWidget.on("reload", function vDocumentChangeStateReload(event, messages) {
+                var xhr=scope.model.fetch();
+                if (xhr) {
+                    xhr.done(function () {
+                        scope.changeStateWidget.close();
+                        _.each(messages, function (message) {
+                            scope.trigger("showMessage", message);
+                        });
+                    });
+                }
+
+            });
+            this.changeStateWidget.currentWidget.on("showMessage", function vDocumentChangeStateShowMessage(event, message) {
+
+                scope.trigger("showMessage", message);
             });
 
         },
