@@ -85,6 +85,8 @@ body {
 
 .k-menu .k-item.menu--right {
   float: right;
+    border-left-width: 1px;
+    border-right-width: 0;
 }
 
 .menu--separator.menu--workflow,
@@ -95,4 +97,16 @@ body {
 
 div[data-role=draggable] .k-window-title {
   cursor: move;
+}
+
+.menu--loading {
+  padding: 2em 5em;
+}
+
+.menu--right.k-last .k-animation-container{
+  right:0;
+  left:auto! important; /* need to correct kendo bug when scrollbar is visible */
+}
+.menu--right.k-last .k-animation-container ul{
+  right: 0;
 }
