@@ -3,8 +3,9 @@ define([
     'jquery',
     'backbone',
     'mustache',
-    'views/document/vDocument'
-], function (_, $, Backbone, Mustache, ViewDocument) {
+    'views/document/vDocument',
+    'widgets/workflow/wTransitionWindow'
+], function (_, $, Backbone, Mustache, ViewDocument, transitionWindow) {
     'use strict';
 
     return ViewDocument.extend({
@@ -19,7 +20,9 @@ define([
 
 
         remove: function vTransitionRemove() {
-
+            if (this.transitionWindow) {
+                this.transitionWindow.close();
+            }
             ViewDocument.prototype.remove.apply(this, arguments);
             //Remove custom CSS
             var customCss= _.pluck(this.model.get("customCSS"), "key");
@@ -29,6 +32,8 @@ define([
                     $('link[data-view=true][data-id="'+cssKey+'"]').remove();
                 });
             }
+
+
         },
 
         displayError: function (error) {
@@ -62,7 +67,7 @@ define([
             this.clearError();
             this.reactiveWidget();
             if (!transition && state) {
-                this.$el.trigger("reload", [this.messages]);
+                this.model.trigger("success", this.messages);
             }
 
         },
@@ -144,13 +149,14 @@ define([
 
 
             workflow.hasAttributes = (attributes.length > 0);
+
+
             if (transition) {
                 // Transition ask
                 this.$el.find(".dcpTransition--header").append(Mustache.render(this.htmlContent(), workflow));
 
                 this.$el.find(".dcpTransition--messages").append(Mustache.render(this.htmlLoading, workflow));
-                    this.$el.kendoWindow("center");
-                    this.$el.kendoWindow("title", workflow.transition.label);
+
 
 
                 this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.htmlButtons, workflow));
@@ -167,7 +173,10 @@ define([
                         scope.model.save();
                     });
                 }
-
+                this.$el.attr("data-state", state.id);
+                if (transition.id) {
+                    this.$el.attr("data-transition", transition.id);
+                }
             } else if (state) {
                 // Transition success
                 this.$el.find(".dcpTransition--header").append(Mustache.render(this.htmlStateContent(), workflow));
@@ -175,13 +184,23 @@ define([
                 this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.htmlStateButtons, workflow));
                 this.$el.find(".dcpTransition-button-close").on("click", function () {
 
-                    scope.$el.kendoWindow("close");
+                    scope.transitionWindow.close();
                 }).tooltip();
-
 
             }
 
+            if (! this.transitionWindow) {
+                this.transitionWindow = this.$el.dcpTransitionWindow({
+                    window: {
+                        width: "600px",
+                        height: "auto"
+                    }
+                }).data("dcpTransitionWindow");
 
+                    this.$el.kendoWindow("title", workflow.transition.label);
+                    this.$el.kendoWindow("center");
+                    this.$el.kendoWindow("open");
+            }
         },
 
 

@@ -11,13 +11,14 @@ define([
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'views/document/attributeTemplate',
+    'models/mTransition',
     'kendo/kendo.core',
     'kendo/kendo.tabstrip',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, kendo) {
+             attributeTemplate, transitionModel, kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -48,8 +49,8 @@ define([
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
                 }
-                if (this.transitionWidget) {
-                    this.transitionWidget.close();
+                if (this.transition && this.transition.view) {
+                    this.transition.view.remove();
                 }
             } catch (e) {
                 console.error(e);
@@ -344,41 +345,42 @@ define([
         },
 
         /**
-         * Show the transition widget
+         * Show the transition view
          *
          */
         showtransition: function vDocumentShowtransition(transition, nextState) {
 
             var scope = this;
-            this.transitionWidget = this.$el.dcpTransition({
-                documentModel : this.model,
-                documentId: this.model.get("properties").get("initid"),
-                window: {
-                    width: "600px",
-                    height: "auto"
-                },
-                transition: transition,
-                nextState: nextState
-            }).data("dcpTransition");
-            this.transitionWidget.open();
-            this.transitionWidget.currentWidget.on("reload", function vDocumenttransitionReload(event, messages) {
+            /* global require */
+            var transitionView=require.apply(require, ["views/workflow/vTransition"]);
+            var $target=$('<div class="dcpTransition"/>');
+            this.transition={};
+
+            this.transition.model = new transitionModel({
+                documentId: this.model.id,
+                documentModel: this.model,
+                state: nextState,
+                transition: transition
+            });
+
+            this.transition.view = new transitionView({
+                model: this.transition.model,
+                el: $target
+            });
+            this.listenTo(this.transition.model, 'success', function vDocumenttransitionReload( messages) {
                 var xhr=scope.model.fetch();
                 if (xhr) {
                     xhr.done(function () {
-                        scope.transitionWidget.close();
+                        scope.transition.view.remove();
                         _.each(messages, function (message) {
                             scope.trigger("showMessage", message);
                         });
 
                     });
                 }
-
-            });
-            this.transitionWidget.currentWidget.on("showMessage", function vDocumenttransitionShowMessage(event, message) {
-
-                scope.trigger("showMessage", message);
             });
 
+            this.transition.model.fetch();
         },
         /**
          * Show the properties widget
