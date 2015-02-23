@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-28 11:01+0100\n"
-"PO-Revision-Date: 2015-01-28 11:02+0100\n"
+"POT-Creation-Date: 2015-02-18 10:17+0100\n"
+"PO-Revision-Date: 2015-02-19 10:40+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -22,37 +22,41 @@ msgstr "Création %s"
 
 msgctxt "ddui"
 msgid "Abstract view"
-msgstr ""
+msgstr "Vue abstraite"
 
 msgctxt "ddui"
 msgid "Account access deny"
 msgstr "Accès interdit au compte"
 
+msgctxt "ddui"
+msgid "Add a note to the history"
+msgstr "Ajouter une note à consigner dans l'historique"
+
 msgctxt "UiMenu"
 msgid "Advanced"
 msgstr "Autres"
 
-msgctxt "my"
-msgid "Anakeen"
-msgstr ""
-
 #, php-format
 msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
-msgstr ""
+msgstr "Attribut \"%s\" non trouvé"
 
 msgid "Autocomplete attributes"
-msgstr ""
+msgstr "Attribut autocomplete"
 
 msgctxt "ddui-file"
 msgid "B"
 msgstr "octets"
 
 msgid "COLLECT_ERROR"
-msgstr ""
+msgstr "Renvoi d'erreur"
 
 msgctxt "UiMenu"
 msgid "Cancel"
+msgstr "Annuler"
+
+msgctxt "ddui"
+msgid "Cancel transition"
 msgstr "Annuler"
 
 msgctxt "ddui-enum"
@@ -84,16 +88,16 @@ msgid "Close"
 msgstr "Fermer"
 
 msgctxt "ddui"
+msgid "Close Transition Window"
+msgstr "Fermer la fenêtre de transition"
+
+msgctxt "ddui"
 msgid "Close message"
 msgstr "Fermer le message"
 
-msgctxt "my"
-msgid "Confims"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmer"
 
 msgctxt "UiMenu"
 msgid "Confirm deletion"
@@ -103,16 +107,20 @@ msgid "Confirm deletion of {{{document.properties.title}}}"
 msgstr "Confirmer la suppression de \"{{{document.properties.title}}}\""
 
 msgctxt "ddui"
+msgid "Confirm transition"
+msgstr "Confirmer"
+
+msgctxt "ddui"
 msgid "Core View Consultation"
-msgstr ""
+msgstr "Vue de consultation core"
 
 msgctxt "ddui"
 msgid "Core View Create"
-msgstr ""
+msgstr "Vue de création core"
 
 msgctxt "ddui"
 msgid "Core View Edition"
-msgstr ""
+msgstr "Vue de consultation core"
 
 msgctxt "UiMenu"
 msgid "Create"
@@ -122,28 +130,25 @@ msgctxt "UiMenu"
 msgid "Create !"
 msgstr "Créer !"
 
-msgctxt "my"
-msgid "Custom Menu"
-msgstr ""
-
 msgid "DUIT:Document render : unit test"
-msgstr ""
+msgstr "Action test unitaire"
 
 msgid "DUIT:Jasmine"
-msgstr ""
+msgstr "Action Jasmine"
 
 msgid "DUIT:Render a document"
-msgstr ""
+msgstr "Action test rendu de document"
 
 msgid "DUIT:Right to autotest"
-msgstr ""
+msgstr "Action droit des tests automatiques"
 
+msgctxt "ddui"
 msgid "Default Edit"
-msgstr ""
+msgstr "Vue de modification par défaut"
 
 msgctxt "ddui"
 msgid "Default View"
-msgstr ""
+msgstr "Vue de consultation par défault"
 
 msgctxt "UiMenu"
 msgid "Delete"
@@ -160,17 +165,19 @@ msgstr "Voir la dernière révision du document"
 #, php-format
 msgctxt "ddui"
 msgid "Document \"%s\" not found "
-msgstr ""
+msgstr "Document \"%s\" non trouvé"
 
 #, php-format
 msgctxt "ddui"
 msgid "Document identifier \"%s\" must be a family in create mode"
 msgstr ""
+"L'identifiant de document \"%s\" doit indiquer une famille dans le mode "
+"création"
 
 #, php-format
 msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
-msgstr ""
+msgstr "Identifiant de document \"%s\" non trouvé"
 
 msgid "Document render"
 msgstr "Rendu de documen"
@@ -193,17 +200,21 @@ msgstr "Déposer l'image ici"
 
 msgctxt "ddui"
 msgid "Family View"
-msgstr ""
+msgstr "Vue de famille"
 
 msgid "Get dynamic sub menu"
-msgstr ""
+msgstr "Action de sous-menu"
 
 msgid "Get some template"
-msgstr ""
+msgstr "Action de template"
 
 msgctxt "UiMenu"
 msgid "Historic"
 msgstr "Historique"
+
+msgctxt "ddui"
+msgid "In progress transition"
+msgstr "Transition en cours"
 
 msgctxt "ddui"
 msgid "Information access deny"
@@ -217,6 +228,10 @@ msgctxt "ddui-enum"
 msgid "Invalid entry"
 msgstr "Entrée invalide"
 
+msgctxt "ddui"
+msgid "Invalid transition"
+msgstr "Transition invalide"
+
 msgctxt "UiMenu"
 msgid "Lock"
 msgstr "Verrouiller"
@@ -224,55 +239,23 @@ msgstr "Verrouiller"
 #, php-format
 msgctxt "ddui"
 msgid "Menu id \"%s\" not found "
-msgstr ""
+msgstr "Menu \"%s\" non trouvé"
 
 msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
 
-msgctxt "my"
-msgid "My Conf 1"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 2 In Blanck"
-msgstr ""
-
-msgctxt "my"
-msgid "My Conf 2 in dialog"
-msgstr ""
-
-msgctxt "my"
-msgid "My Disable"
-msgstr ""
-
-msgctxt "my"
-msgid "My Hidden"
-msgstr ""
-
-msgctxt "my"
-msgid "My label"
-msgstr ""
-
-msgctxt "my"
-msgid "My label 2"
-msgstr ""
-
-msgctxt "my"
-msgid "My label 3"
-msgstr ""
-
 msgctxt "ddui"
 msgid "No result found"
-msgstr ""
+msgstr "Pas de résultat"
 
 msgctxt "ddui"
 msgid "Not yet implemented"
-msgstr ""
+msgstr "Pas encore disponible"
 
 msgctxt "UiMenu"
 msgid "Old Properties"
-msgstr ""
+msgstr "Anciennes propriétés"
 
 msgctxt "UiMenu"
 msgid "Profil access"
@@ -309,10 +292,14 @@ msgctxt "UiMenu"
 msgid "Restore document from the trash"
 msgstr "Retirer le document de la poubelle"
 
+msgctxt "ddui"
+msgid "Retry transition"
+msgstr "Confirmer"
+
 #, php-format
 msgctxt "ddui"
 msgid "Revision \"%s\" must be a number "
-msgstr ""
+msgstr "La révision \"%s\" doit être un nombre"
 
 msgctxt "UiMenu"
 msgid "Save"
@@ -339,13 +326,17 @@ msgctxt "UiMenu"
 msgid "Sure delete %s ?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" ?"
 
-msgctxt "my"
-msgid "Séparateur"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "Transferring"
 msgstr "Téléversement de"
+
+msgctxt "ddui"
+msgid "Transition Comment"
+msgstr "Commentaire de transition"
+
+msgctxt "ddui"
+msgid "Transition success"
+msgstr "Transition réussie"
 
 msgctxt "UiMenu"
 msgid "Unlock"
@@ -360,21 +351,26 @@ msgid "View current revision"
 msgstr "Voir la révision courante"
 
 msgid "View documents"
-msgstr ""
+msgstr "Action vue de document"
 
 msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr "Voir le graphe du cycle"
 
 msgctxt "ddui"
-msgid "View {{displayValue}}"
-msgstr ""
+msgid "View {{{displayValue}}}"
+msgstr "Voir {{{displayValue}}}"
+
+msgctxt "ddui"
+msgid "Workflow Parameters"
+msgstr "Paramètres pour la transition"
+
+msgctxt "ddui"
+msgid "Workflow Transition Comment"
+msgstr "Commentaire de transition du cycle de vie"
 
 msgid "Wrap kendo"
-msgstr ""
-
-msgid "cl_nomscientifique"
-msgstr ""
+msgstr "Action include kendo ui"
 
 msgid "ddui::Delete : "
 msgstr "Suppression de : "
@@ -409,28 +405,16 @@ msgstr "Dupliquer la ligne sélectionnée"
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"
 
-msgid "de_tab_info"
-msgstr ""
-
-msgid "es_caracteristique"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "ko"
-
-msgid "tst_title"
-msgstr ""
 
 #, php-format
 msgctxt "ddui"
 msgid ""
 "wrong return type when calling function %s\n"
 "%s"
-msgstr ""
-
-msgid "zct_workpostalcode"
-msgstr ""
+msgstr "la transition"
 
 #~ msgctxt "UiMenu"
 #~ msgid "Abord modifications"

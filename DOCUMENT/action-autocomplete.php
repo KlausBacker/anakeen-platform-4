@@ -11,12 +11,11 @@ function autocomplete(Action & $action)
 {
     $return = array(
         "success" => true,
-        "error" => array(),
+        "error" => array() ,
         "data" => array()
     );
-
+    
     try {
-
         //Usage part
         $usage = new ActionUsage($action);
         $usage->setText("autocomplete result for ddui");
@@ -26,33 +25,32 @@ function autocomplete(Action & $action)
         $index = $usage->addOptionalParameter("index", -1);
         $usage->setStrictMode(false);
         $usage->verify(true);
-
+        
         $err = '';
         if ($documentId !== "0") {
             $doc = DocManager::getDocument($documentId);
             $err = $doc->control("view");
             if ($err) {
-                throw new Exception("Unable to view the document ".$documentId);
+                throw new Exception("Unable to view the document " . $documentId);
             }
         } else {
             $doc = DocManager::getFamily($fromid);
         }
-
+        
         if (!$doc) {
             throw new Exception(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
         }
-
+        
         $attributeObject = $doc->getAttribute($attrId);
         if (!$attributeObject) {
             throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui") , $attrId));
         }
-
         /**
          * @var NormalAttribute $attributeObject
          */
         $attributeName = $attributeObject->id;
         $famid = $attributeObject->format;
-
+        
         if (!$attributeObject->phpfile) {
             // in coherence with editutil.php
             $filter = array(); //no filter by default
@@ -98,23 +96,24 @@ function autocomplete(Action & $action)
                         $values[strtolower($argName) ]["value"] = isset($currentResult[$key]) ? $currentResult[$key] : null;
                     }
                 }
-
+                
                 $return["data"][] = array(
                     "title" => $title,
                     "values" => $values
                 );
             }
         }
-
+        
         if (count($return["data"]) === 0) {
             throw new Exception(___("No result found", "ddui"));
         }
-    } catch (Exception $e) {
+    }
+    catch(Exception $e) {
         $return["success"] = false;
         $return["error"][] = $e->getMessage();
         unset($return["data"]);
     }
-
+    
     $action->lay->template = json_encode($return);
     $action->lay->noparse = true;
     header('Content-type: application/json');
@@ -126,12 +125,15 @@ function compatOriginalFormPost($filters, $attributes, $currentAid)
     if (is_array($attributes)) {
         
         foreach ($attributes as $aid => $formatValue) {
-            $first=current($formatValue);
-            if (isset($first) && is_array($first)) {
-                //@TODO do an array with values
-            } else {
-                if (!isset($formatValue["value"])) print_r2($formatValue);
-                setHttpVar("_$aid", $formatValue["value"]);
+            if ($formatValue) {
+                $first = current($formatValue);
+                if (isset($first) && is_array($first)) {
+                    //@TODO do an array with values
+                    
+                } else {
+                    if (!isset($formatValue["value"])) print_r2($formatValue);
+                    setHttpVar("_$aid", $formatValue["value"]);
+                }
             }
         }
     }

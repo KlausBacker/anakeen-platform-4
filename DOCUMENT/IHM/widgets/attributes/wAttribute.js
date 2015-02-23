@@ -115,7 +115,6 @@ define([
                 });
             } else {
                 this.element.removeClass("has-error");
-
                 if (this.element.data("hasErrorTooltip")) {
                     this.element.find(".input-group").tooltip("destroy");
                     this.element.data("hasErrorTooltip", false);

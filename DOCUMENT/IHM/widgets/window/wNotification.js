@@ -13,7 +13,7 @@ define([
             autoHideAfter: 0,
             appendTo: "#dcpNotificationContainer",
             position: {
-                top: 30,
+                top: 60, // override by notification.less
                 right: 100
             },
             templates: [
@@ -39,6 +39,13 @@ define([
                     '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
                 },
                 {
+                    type: "notice",
+                    template: '<div class="dcpNotification--content dcpNotification--notice">' +
+                    '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-info fa-inverse fa-flip-horizontal"></i></span>' +
+                    '<div class="dcpNotification--message"><h1>#: title #</h1>' +
+                    '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
+                },
+                {
                     type: "success",
                     template: '<div class="dcpNotification--content dcpNotification--info">' +
                     '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-check fa-inverse"></i></span>' +
@@ -55,6 +62,7 @@ define([
 
             this.element.append($('<div id="dcpNotificationContainer" class="dcpNotifications"/>'));
             this.element.append(this.notificationElement);
+
             this.notificationElement.kendoNotification(this.options);
 
             this.element.on("notification", function (event, data) {
@@ -62,14 +70,19 @@ define([
             });
         },
 
+
+
         show: function (type, options) {
             options.title = options.title || '';
             options.message = options.message || '';
             options.htmlMessage = options.htmlMessage || '';
+            if ($.inArray(type, ["error","info","warning","success","notice"]) === -1) {
+                type="info";
+            }
             this.notificationElement.data("kendoNotification").show({
                 title: options.title,
                 message: options.message,
-                htmlMessage: options.htmlMessage
+                htmlMessage: options.htmlMessage // @TODO NEED TO CLEAN HTML TO PREVENT XSS
             }, type);
         },
 

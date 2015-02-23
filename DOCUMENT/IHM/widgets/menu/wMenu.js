@@ -38,6 +38,8 @@ define([
                     if (!menuElement.hasClass("menu__element--item")) {
                         var menuUrl = menuElement.data("menu-url");
                         if (menuUrl) {
+                            menuElement.find(".listmenu__content").html('<div class="menu--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> Loading menu.</div>');
+
                             //get subMenu
                             $.get(menuUrl, function wMenuDone (data) {
                                 menuElement.find(".listmenu__content").html('');
@@ -229,9 +231,10 @@ define([
                     currentWidget._tooltips.push($currentMenu.tooltip(
                         {
                             trigger :   "hover",
-                            placement : "bottom"
+                            placement : currentMenu.tooltipPlacement?currentMenu.tooltipPlacement:"bottom"
 
                         }));
+
                 }
                 $currentMenu.data("menuConfiguration", currentMenu);
                 $content.append($currentMenu);

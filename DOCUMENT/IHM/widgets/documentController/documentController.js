@@ -6,6 +6,7 @@ define([
     'models/mDocument',
     'controllerObjects/attributeInterface',
     'views/document/vDocument',
+    'widgets/workflow/wChangeState',
     'widgets/widget',
     'widgets/window/wConfirm',
     'widgets/window/wLoading'

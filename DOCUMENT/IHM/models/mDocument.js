@@ -366,7 +366,7 @@ define([
                 var message = attrModel.get("errorMessage");
                 // redo error after document is show
                 if (message) {
-                    attrModel.setErrorMessage(null);
+                    //attrModel.setErrorMessage(null); // use null to move tooltip if placment change but cannot use it because destroy tooltip is defer in bootstrap
                     attrModel.setErrorMessage(message);
                 }
             });
@@ -591,11 +591,13 @@ define([
             this.trigger("beforeSave", event);
             if (event.prevent === false) {
                 xhr = Backbone.Model.prototype.save.apply(this, arguments);
-                xhr.done(function () {
-                    currentModel.trigger("afterSave");
-                    currentModel.trigger("close");
-                });
-                return xhr;
+                if (xhr) {
+                    xhr.done(function () {
+                        currentModel.trigger("afterSave");
+                        currentModel.trigger("close");
+                    });
+                    return xhr;
+                }
             }
             return false;
         },

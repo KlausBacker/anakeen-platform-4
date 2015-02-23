@@ -27,9 +27,13 @@ class ElementMenu implements \JsonSerializable
      */
     protected $htmlLabel = '';
     /**
-     * @var string
+     * @var string right,left,top,bottom
      */
     protected $tooltipLabel = '';
+    /**
+     * @var string
+     */
+    protected $tooltipPlacement = '';
     /**
      * @var string
      */
@@ -89,9 +93,10 @@ class ElementMenu implements \JsonSerializable
      * @param string $tooltipLabel
      * @return $this
      */
-    public function setTooltipLabel($tooltipLabel)
+    public function setTooltipLabel($tooltipLabel, $placement = "")
     {
         $this->tooltipLabel = $tooltipLabel;
+        $this->tooltipPlacement = $placement;
         return $this;
     }
     /**
@@ -168,6 +173,7 @@ class ElementMenu implements \JsonSerializable
             "label" => $this->textLabel,
             "htmlLabel" => $this->htmlLabel,
             "tooltipLabel" => $this->tooltipLabel,
+            "tooltipPlacement" => $this->tooltipPlacement,
             "htmlAttributes" => $this->htmlAttributes,
             "visibility" => $this->visibility,
             "beforeContent" => $this->beforeLabelHtmlText,

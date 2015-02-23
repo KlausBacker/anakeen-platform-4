@@ -11,8 +11,6 @@ use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\Crud\Document as DocumentCrud;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\HttpApi\V1\Crud\Exception;
-use Dcp\HttpApi\V1\Crud\Family;
-use Dcp\HttpApi\V1\Crud\FamilyDocument;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
 class View extends Crud
@@ -71,10 +69,12 @@ class View extends Crud
      */
     public function read($resourceId)
     {
+        $refreshMsg = '';
         if ($this->viewIdentifier === self::coreViewCreationId) {
             $document = $this->createDocument($resourceId);
         } else {
             $document = $this->getDocument($resourceId);
+            $refreshMsg = $document->refresh();
         }
         if (!in_array($this->viewIdentifier, array(
             self::coreViewCreationId,
@@ -114,6 +114,14 @@ class View extends Crud
         } else {
             $viewInfo = $controlView->getView($vid);
             $info["properties"] = $this->getViewProperties($controlView, $viewInfo);
+        }
+        if ($refreshMsg) {
+            $msg = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
+            $msg->contentHtml = $refreshMsg;
+            $msg->type = \Dcp\HttpApi\V1\Api\RecordReturnMessage::MESSAGE;
+            $msg->code = "REFRESH";
+            
+            $this->addMessage($msg);
         }
         return $info;
     }

@@ -22,6 +22,22 @@ class DocidRenderOptions extends CommonRenderOptions
      */
     public function setKendoMultiSelectConfiguration($config)
     {
+        $opt = $this->getOption(self::kendoMultiSelectConfigurationOption);
+        if (is_array($opt)) {
+            $config = array_merge($opt, $config);
+        }
         return $this->setOption(self::kendoMultiSelectConfigurationOption, $config);
+    }
+    /**
+     * Text to set into input when is empty
+     * @note use only in edition mode
+     * @param string $text text to display
+     * @return $this
+     */
+    public function setPlaceHolder($text)
+    {
+        return $this->setKendoMultiSelectConfiguration(array(
+            "placeholder" => $text
+        ));
     }
 }

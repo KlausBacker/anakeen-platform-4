@@ -48,6 +48,9 @@ define([
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
                 }
+                if (this.changeStateWidget) {
+                    this.changeStateWidget.close();
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -92,7 +95,7 @@ define([
                 var renderData = this.model.toData();
                 renderData.document = attributeTemplate.getTemplateModelInfo(this.model);
                 this.$el.append($(Mustache.render(this.template, renderData, this.partials)));
-                attributeTemplate.completeCustomContent(this.$el, this.model, null, {initializeContent:true});
+                attributeTemplate.completeCustomContent(this.$el, this.model, null, {initializeContent: true});
 
                 $body = this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");
             } catch (e) {
@@ -142,7 +145,7 @@ define([
                         currentView.trigger("partRender");
                         return;
                     }
-                    if (currentAttr.get("type") === "frame" && _.isUndefined(currentAttr.get("parent"))) {
+                    if (currentAttr.get("type") === "frame" && _.isEmpty(currentAttr.get("parent"))) {
                         try {
 
                             view = new ViewAttributeFrame({
@@ -158,7 +161,7 @@ define([
                             }
                         }
                     }
-                    if (currentAttr.get("type") === "tab" && _.isUndefined(currentAttr.get("parent"))) {
+                    if (currentAttr.get("type") === "tab" && _.isEmpty(currentAttr.get("parent"))) {
                         try {
                             var tabModel = model.get("attributes").get(currentAttr.id);
                             var tabContent;
@@ -171,7 +174,6 @@ define([
 
                             if (tabModel.getOption("openFirst")) {
                                 currentView.selectedTab = currentAttr.id;
-                                //console.log("open ", currentAttr.id);
                             }
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                             tabItems = $el.find(".dcpDocument__tabs__list").find('li');
@@ -262,9 +264,6 @@ define([
         publishMessages: function vDocumentPublishMessages() {
             var currentView = this;
             _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage) {
-                if (aMessage.type === "message" || aMessage.type === "notice") {
-                    aMessage.type = "info";
-                }
                 currentView.trigger("showMessage", {
                     type: aMessage.type,
                     title: aMessage.contentText,
@@ -345,6 +344,43 @@ define([
         },
 
         /**
+         * Show the changeState widget
+         *
+         */
+        showChangeState: function vDocumentShowChangeState(transition, nextState) {
+
+            var scope = this;
+            this.changeStateWidget = this.$el.dcpChangeState({
+                documentModel : this.model,
+                documentId: this.model.get("properties").get("initid"),
+                window: {
+                    width: "600px",
+                    height: "auto"
+                },
+                transition: transition,
+                nextState: nextState
+            }).data("dcpChangeState");
+            this.changeStateWidget.open();
+            this.changeStateWidget.currentWidget.on("reload", function vDocumentChangeStateReload(event, messages) {
+                var xhr=scope.model.fetch();
+                if (xhr) {
+                    xhr.done(function () {
+                        scope.changeStateWidget.close();
+                        _.each(messages, function (message) {
+                            scope.trigger("showMessage", message);
+                        });
+
+                    });
+                }
+
+            });
+            this.changeStateWidget.currentWidget.on("showMessage", function vDocumentChangeStateShowMessage(event, message) {
+
+                scope.trigger("showMessage", message);
+            });
+
+        },
+        /**
          * Show the properties widget
          *
          */
@@ -370,7 +406,11 @@ define([
          * Update the title of the current page
          */
         updateTitle: function vDocumentUpdateTitle() {
-            document.title = this.model.get("properties").get("title");
+            var title=this.model.get("properties").get("title");
+
+            if (! _.isEmpty(title)) {
+                document.title = title;
+            }
         },
 
         /**
@@ -501,6 +541,9 @@ define([
             if (options[0] === "history") {
                 return this.showHistory();
             }
+            if (options[0] === "state") {
+                return this.showChangeState(options[1], options[2]);
+            }
             if (options[0] === "properties") {
                 return this.showProperties();
             }
@@ -560,7 +603,7 @@ define([
                     console.error(e);
                 }
             }
-            $(window.document).off(".ddui");
+            this.$el.off(".ddui");
 
             return Backbone.View.prototype.remove.call(this);
         }

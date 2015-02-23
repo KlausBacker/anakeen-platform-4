@@ -20,6 +20,14 @@
         "description": "Document View",
         "canonicalURL": "documents/<documentId>/revision/<revision>/views/<viewId>"
     },
+
+    {
+        "order": 300,
+        "class": "\\Dcp\\Ui\\Crud\\TransitionView",
+        "regExp": "%^/documents/(?P<identifier>[^/]+)/views/states/(?P<state>[^/]+)$%",
+        "description": "Document Workflow Transition View",
+        "canonicalURL": "documents/<documentId>/views/states/<state>"
+    },
     {
         "order" :        400,
         "class" :        "\\Dcp\\Ui\\Crud\\CreationView",
