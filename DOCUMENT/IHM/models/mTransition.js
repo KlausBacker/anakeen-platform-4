@@ -14,15 +14,7 @@ define([
             state: undefined,
             attributes: []
         },
-        /**
-         * Initialize event handling
-         *
-         */
-        initialize2: function mDocumentinitialize() {
-            //mDocument.prototype.initialize.apply(this, arguments);
-            //  this.listenTo(this, "error", _.bind(this.propagateSynchroError, this.get("documentModel")));
-            // this.listenTo(this, "error", this.viewError);
-        },
+
 
         /**
          * Compute the REST URL for the current document
@@ -35,7 +27,6 @@ define([
             var urlData = "api/v1/documents/<%= documentId %>/views/states/<%= state %>";
 
             urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
-            urlData = urlData.replace("<%= transition %>", encodeURIComponent(this.get("transition")));
             urlData = urlData.replace("<%= state %>", encodeURIComponent(this.get("state")));
 
             return urlData;
@@ -98,7 +89,6 @@ define([
                     labels: response.data.labels
                 }
             };
-            window.dcp.Transition = this;
             return values;
         },
 
