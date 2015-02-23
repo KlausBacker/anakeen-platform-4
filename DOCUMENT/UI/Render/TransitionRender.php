@@ -150,10 +150,10 @@ class TransitionRender
         return array(
             "body" => "{{>transitionHeader}}{{>transitionAsk}}{{>transitionMessages}}{{>transitionButtons}}",
             "sections" => array(
-                "transitionHeader" => '<div class="dcpChangeState--header"/>',
-                "transitionMessages" => '<div class="dcpChangeState--messages"/>',
-                "transitionAsk" => '<section class="dcpChangeState--ask dcpDocument__body"/>',
-                "transitionButtons" => '<div class="dcpChangeState--buttons"/>'
+                "transitionHeader" => '<div class="dcpTransition--header"/>',
+                "transitionMessages" => '<div class="dcpTransition--messages"/>',
+                "transitionAsk" => '<section class="dcpTransition--ask dcpDocument__body"/>',
+                "transitionButtons" => '<div class="dcpTransition--buttons"/>'
             )
         );
     }

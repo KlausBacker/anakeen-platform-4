@@ -1,8 +1,8 @@
-.dcpChangeState * {
+.dcpTransition * {
   box-sizing: border-box;
 }
 
-.dcpChangeState--activity {
+.dcpTransition--activity {
   /* border: solid 1px;
    padding: 2em 1em;
    border-radius: 4em;
@@ -13,18 +13,18 @@
   width : 1.6em;
 }
 
-.dcpChangeState--content-activity i.fa {
+.dcpTransition--content-activity i.fa {
   position: relative;
   top: 0.2em;
 }
 
-.dcpChangeState--content-activity {
+.dcpTransition--content-activity {
   /*padding: 2em;*/
   margin-bottom: 1em;
   text-align: center;
 }
 
-.dcpChangeState--transition {
+.dcpTransition--transition {
   border-bottom: solid 2px black;
   position: relative;
   top: -0.6em;
@@ -32,31 +32,31 @@
   padding-right: 1em;
 }
 
-.dcpChangeState--transition--invalid {
+.dcpTransition--transition--invalid {
   color: @brand-danger;
   border-color: @brand-danger;
 }
 
-.dcpChangeState--success {
+.dcpTransition--success {
   background-color: @brand-success;
   color: @btn-success-color;
   padding: 4px 20px;
   border-radius: 4px;
 }
-.dcpChangeState--loading {
+.dcpTransition--loading {
   text-align: center;
   font-weight: bold;
 }
-.dcpChangeState--buttons {
+.dcpTransition--buttons {
   padding-top: 1em;
   text-align: right;
 }
 
-.dcpChangeState-button-ok .fa {
+.dcpTransition-button-ok .fa {
   margin-right: 1em;
 }
 
-.dcpChangeState--error {
+.dcpTransition--error {
   color: white;
   border: solid 1px fade(@brand-danger, 50%);
   background-color: @brand-danger;
@@ -70,7 +70,7 @@
   word-wrap: break-word;
 }
 
-.dcpChangeState--message {
+.dcpTransition--message {
   color: white;
   border: none;
   background-color: @brand-info;
@@ -83,19 +83,19 @@
   word-wrap: break-word;
 }
 
-.dcpChangeState--message--message {
+.dcpTransition--message--message {
   background-color: @brand-info;
 }
 
-.dcpChangeState--message--warning {
+.dcpTransition--message--warning {
   background-color: @brand-warning;
 }
 
-.dcpChangeState--message--notice {
+.dcpTransition--message--notice {
   background-color: @gray;
 }
 
-.dcpChangeState--message--error {
+.dcpTransition--message--error {
   background-color: @brand-danger;
 }
 

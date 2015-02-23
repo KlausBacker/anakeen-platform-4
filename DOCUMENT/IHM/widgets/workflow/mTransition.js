@@ -31,7 +31,7 @@ define([
          *
          * @returns {string}
          */
-        url: function mChangeStateurl() {
+        url: function mTransitionurl() {
             var urlData = "api/v1/documents/<%= documentId %>/views/states/<%= state %>";
 
             urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
@@ -45,7 +45,7 @@ define([
          * @param response
          * @returns {{properties: (*|properties|exports.defaults.properties|exports.parse.properties|.createObjectExpression.properties), menus: (app.views.shared.menu|*), locale: *, renderMode: string, attributes: Array, templates: *, renderOptions: *}}
          */
-        parse: function mChangeStatetParse(response) {
+        parse: function mTransitiontParse(response) {
             var values, attributes, templates, renderOptions;
             var documentModel = this.get("documentModel");
             if (response.success === false) {
@@ -76,14 +76,14 @@ define([
 
             this.initialProperties = _.defaults({
                 "renderMode": "edit",
-                "viewId": "!changeState"
+                "viewId": "!Transition"
             }, {});
 
             values = {
                 initid: null,//response.data.workflow.properties.initid, // set to null to send a POST (create) when save
                 properties: response.data.workflow.properties,
                 menus: [],
-                viewId: "!changeState",
+                viewId: "!Transition",
                 locale: documentModel.get("locale").culture,
                 renderMode: "edit",
                 attributes: attributes,
@@ -98,7 +98,7 @@ define([
                     labels: response.data.labels
                 }
             };
-            window.dcp.changeState = this;
+            window.dcp.Transition = this;
             return values;
         },
 
@@ -106,7 +106,7 @@ define([
          * Used by backbone for the save part
          * @returns {{document: {attributes: *, properties : *}}}
          */
-        toJSON: function mChangeStatetoJSON() {
+        toJSON: function mTransitiontoJSON() {
             var values = this.getValues();
             var to = {parameters: {}};
 

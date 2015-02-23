@@ -48,8 +48,8 @@ define([
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
                 }
-                if (this.changeStateWidget) {
-                    this.changeStateWidget.close();
+                if (this.transitionWidget) {
+                    this.transitionWidget.close();
                 }
             } catch (e) {
                 console.error(e);
@@ -344,13 +344,13 @@ define([
         },
 
         /**
-         * Show the changeState widget
+         * Show the transition widget
          *
          */
-        showChangeState: function vDocumentShowChangeState(transition, nextState) {
+        showtransition: function vDocumentShowtransition(transition, nextState) {
 
             var scope = this;
-            this.changeStateWidget = this.$el.dcpChangeState({
+            this.transitionWidget = this.$el.dcpTransition({
                 documentModel : this.model,
                 documentId: this.model.get("properties").get("initid"),
                 window: {
@@ -359,13 +359,13 @@ define([
                 },
                 transition: transition,
                 nextState: nextState
-            }).data("dcpChangeState");
-            this.changeStateWidget.open();
-            this.changeStateWidget.currentWidget.on("reload", function vDocumentChangeStateReload(event, messages) {
+            }).data("dcpTransition");
+            this.transitionWidget.open();
+            this.transitionWidget.currentWidget.on("reload", function vDocumenttransitionReload(event, messages) {
                 var xhr=scope.model.fetch();
                 if (xhr) {
                     xhr.done(function () {
-                        scope.changeStateWidget.close();
+                        scope.transitionWidget.close();
                         _.each(messages, function (message) {
                             scope.trigger("showMessage", message);
                         });
@@ -374,7 +374,7 @@ define([
                 }
 
             });
-            this.changeStateWidget.currentWidget.on("showMessage", function vDocumentChangeStateShowMessage(event, message) {
+            this.transitionWidget.currentWidget.on("showMessage", function vDocumenttransitionShowMessage(event, message) {
 
                 scope.trigger("showMessage", message);
             });
@@ -542,7 +542,7 @@ define([
                 return this.showHistory();
             }
             if (options[0] === "state") {
-                return this.showChangeState(options[1], options[2]);
+                return this.showtransition(options[1], options[2]);
             }
             if (options[0] === "properties") {
                 return this.showProperties();

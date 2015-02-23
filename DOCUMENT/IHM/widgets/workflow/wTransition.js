@@ -1,15 +1,15 @@
 define([
     'underscore',
     'mustache',
-    'widgets/workflow/mChangeState',
-    'widgets/workflow/vChangeState',
+    'widgets/workflow/mTransition',
+    'widgets/workflow/vTransition',
     'kendo/kendo.core',
     'widgets/widget',
     'kendo/kendo.window'
-], function (_, Mustache, mChangeState, vChangeState, kendo) {
+], function (_, Mustache, mTransition, vTransition, kendo) {
     'use strict';
 
-    $.widget("dcp.dcpChangeState", {
+    $.widget("dcp.dcpTransition", {
         view: null, // Backbone view
         model: null, // Backbone model
         options: {
@@ -36,8 +36,8 @@ define([
         },
         htmlCaneva: function () {
 
-            return '<div class="dcpChangeState">' +
-            '<div class="dcpChangeState--content">Loading</div>' +
+            return '<div class="dcpTransition">' +
+            '<div class="dcpTransition--content">Loading</div>' +
 
             '</div>';
         },
@@ -45,11 +45,11 @@ define([
         currentWidget: null,
         _create: function () {
             var scope = this;
-            this.currentWidget = $('<div class="dcpChangeState"/>');
+            this.currentWidget = $('<div class="dcpTransition"/>');
 
             this.element.append(this.currentWidget);
 
-            this.element.data("dcpChangeState", this);
+            this.element.data("dcpTransition", this);
             this.currentWidget.attr("data-state", this.options.nextState);
             if (this.options.transition) {
                 this.currentWidget.attr("data-transition", this.options.transition);
@@ -67,9 +67,9 @@ define([
 
 
         _initContent: function () {
-            var $content = this.currentWidget.find(".dcpChangeState--content");
+            var $content = this.currentWidget.find(".dcpTransition--content");
 
-            this.model = new mChangeState({
+            this.model = new mTransition({
                 documentId: this.options.documentId,
                 documentModel: this.options.documentModel,
                 state: this.options.nextState,
@@ -77,7 +77,7 @@ define([
 
             });
 
-            this.view = new vChangeState({
+            this.view = new vTransition({
                 model: this.model,
                 el: this.currentWidget,
                 dialogWindow: this.currentWidget
@@ -86,11 +86,11 @@ define([
             this.model.fetch();
         },
 
-        open: function wChangeStateOpen() {
+        open: function wTransitionOpen() {
             this.currentWidget.data("kendoWindow").center();
             this.currentWidget.data("kendoWindow").open();
         },
-        close: function wChangeStateOpen() {
+        close: function wTransitionOpen() {
             var kw=this.currentWidget.data("kendoWindow");
             if (kw) {
             kw.close();
@@ -98,7 +98,7 @@ define([
         },
 
 
-        _destroy: function wChangeStateDestroy() {
+        _destroy: function wTransitionDestroy() {
             if (this.view) {
                 this.view.remove();
             }
