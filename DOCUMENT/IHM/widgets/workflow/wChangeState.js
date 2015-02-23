@@ -50,7 +50,7 @@ define([
             this.element.append(this.currentWidget);
 
             this.element.data("dcpChangeState", this);
-this.currentWidget.attr("data-state", this.options.nextState);
+            this.currentWidget.attr("data-state", this.options.nextState);
             if (this.options.transition) {
                 this.currentWidget.attr("data-transition", this.options.transition);
             }
@@ -63,9 +63,6 @@ this.currentWidget.attr("data-state", this.options.nextState);
 
             this.currentWidget.kendoWindow(this.options.window);
             this._initContent();
-
-
-
         },
 
 
@@ -83,13 +80,10 @@ this.currentWidget.attr("data-state", this.options.nextState);
             this.view = new vChangeState({
                 model: this.model,
                 el: this.currentWidget,
-                dialogWindow:this.currentWidget
+                dialogWindow: this.currentWidget
             });
 
             this.model.fetch();
-            window.dcp.changeStateModel=this.model;
-
-
         },
 
         open: function wChangeStateOpen() {
@@ -97,7 +91,10 @@ this.currentWidget.attr("data-state", this.options.nextState);
             this.currentWidget.data("kendoWindow").open();
         },
         close: function wChangeStateOpen() {
-            this.currentWidget.data("kendoWindow").close();
+            var kw=this.currentWidget.data("kendoWindow");
+            if (kw) {
+            kw.close();
+            }
         },
 
 

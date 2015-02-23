@@ -67,6 +67,8 @@ class TransitionView extends \Dcp\HttpApi\V1\Crud\WorkflowState
             "askAttributes" => $render->getTransitionParameters($transitionId)
         );
         
+        $info["css"] = $this->getStyleData($render->getCssReferences($transitionId));
+        $info["js"] = $this->getStyleData($render->getJsReferences($transitionId));
         $info["templates"] = $render->getTemplates($transitionId);
         $info["renderOptions"] = $render->getRenderOptions($transitionId);
         $info["labels"] = array(
@@ -80,7 +82,22 @@ class TransitionView extends \Dcp\HttpApi\V1\Crud\WorkflowState
         $info["workflow"] = $render->getViewWorkflow("document");
         return $info;
     }
-    
+    /**
+     * @param array $list indexed array
+     * @return array|bool
+     */
+    protected function getStyleData($list)
+    {
+        $pathArray = array();
+        foreach ($list as $id => $path) {
+            $pathArray[] = array(
+                "path" => $path,
+                "key" => $id
+            );
+        }
+        
+        return $pathArray;
+    }
     protected function getWorkflowData()
     {
         

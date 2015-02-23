@@ -48,6 +48,9 @@ define([
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
                 }
+                if (this.changeStateWidget) {
+                    this.changeStateWidget.close();
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -142,7 +145,7 @@ define([
                         currentView.trigger("partRender");
                         return;
                     }
-                    if (currentAttr.get("type") === "frame" && _.isUndefined(currentAttr.get("parent"))) {
+                    if (currentAttr.get("type") === "frame" && _.isEmpty(currentAttr.get("parent"))) {
                         try {
 
                             view = new ViewAttributeFrame({
@@ -158,7 +161,7 @@ define([
                             }
                         }
                     }
-                    if (currentAttr.get("type") === "tab" && _.isUndefined(currentAttr.get("parent"))) {
+                    if (currentAttr.get("type") === "tab" && _.isEmpty(currentAttr.get("parent"))) {
                         try {
                             var tabModel = model.get("attributes").get(currentAttr.id);
                             var tabContent;
@@ -366,6 +369,7 @@ define([
                         _.each(messages, function (message) {
                             scope.trigger("showMessage", message);
                         });
+
                     });
                 }
 
@@ -599,7 +603,7 @@ define([
                     console.error(e);
                 }
             }
-            $(window.document).off(".ddui");
+            this.$el.off(".ddui");
 
             return Backbone.View.prototype.remove.call(this);
         }

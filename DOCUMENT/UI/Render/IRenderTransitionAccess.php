@@ -9,7 +9,8 @@ namespace Dcp\Ui;
 
 interface IRenderTransitionAccess {
     /**
-     * @param
+     * Get Transition Render object to configure transition render
+     * @param string $transitionId transition identifier
      * @return TransitionRender
      */
     public function getTransitionRender($transitionId);

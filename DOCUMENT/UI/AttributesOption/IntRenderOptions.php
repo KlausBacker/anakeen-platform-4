@@ -51,7 +51,22 @@ class IntRenderOptions extends CommonRenderOptions
      */
     public function setKendoNumericConfiguration($config)
     {
+        $opt = $this->getOption(self::kendoNumericConfigurationOption);
+        if (is_array($opt)) {
+            $config = array_merge($opt, $config);
+        }
         return $this->setOption(self::kendoNumericConfigurationOption, $config);
     }
-
+    /**
+     * Text to set into input when is empty
+     * @note use only in edition mode
+     * @param string $text text to display
+     * @return $this
+     */
+    public function setPlaceHolder($text)
+    {
+        return $this->setKendoNumericConfiguration(array(
+            "placeholder" => $text
+        ));
+    }
 }

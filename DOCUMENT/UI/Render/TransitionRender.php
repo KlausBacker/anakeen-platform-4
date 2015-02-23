@@ -15,6 +15,9 @@ namespace Dcp\Ui;
 
 class TransitionRender
 {
+    const commentAttribute = "_workflow_comment_";
+    const commentFrameAttribute = "_workflow_fr_comment_";
+    const parameterFrameAttribute = "_workflow_fr_askes_";
     /**
      * @var \WDoc
      */
@@ -67,11 +70,11 @@ class TransitionRender
     }
     /**
      * @param $transitionId
-     * @return array
+     * @return AttributeInfo[]
      */
     public function getTransitionParameters($transitionId)
     {
-        $transition = isset($this->workflow->transitions[$transitionId])?$this->workflow->transitions[$transitionId]:null;
+        $transition = isset($this->workflow->transitions[$transitionId]) ? $this->workflow->transitions[$transitionId] : null;
         
         $askes = isset($transition["ask"]) ? $transition["ask"] : array();
         $addComment = empty($transition["nr"]);
@@ -80,7 +83,7 @@ class TransitionRender
         $attrData = array();
         
         if (count($askes) > 0) {
-            $askFrame = new \FieldSetAttribute("_workflow_fr_askes_", $this->workflow->id, ___("Workflow Parameters", "ddui") , "W", "N");
+            $askFrame = new \FieldSetAttribute(self::parameterFrameAttribute, $this->workflow->id, ___("Workflow Parameters", "ddui") , "W", "N");
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
             
             foreach ($askes as $ask) {
@@ -101,22 +104,31 @@ class TransitionRender
             }
         }
         if ($addComment) {
-            $frComment = new \FieldSetAttribute("_workflow_fr_comment_", $this->workflow->id, ___("Workflow Transition Comment", "ddui") , "W", "N");
+            $frComment = new \FieldSetAttribute(self::commentFrameAttribute, $this->workflow->id, ___("Workflow Transition Comment", "ddui") , "W", "N");
             
-            $commentAttr = new \NormalAttribute("_workflow_comment_", $this->workflow->id, ___("Transition Comment", "ddui") , "longtext", "", false, 10, "", "W", false, false, false, $frComment, "", "", "");
+            $commentAttr = new \NormalAttribute(self::commentAttribute, $this->workflow->id, ___("Transition Comment", "ddui") , "longtext", "", false, 10, "", "W", false, false, false, $frComment, "", "", "");
             $attrData[] = $this->getAttributeInfo($workflow, $frComment);
             $attrData[] = $this->getAttributeInfo($workflow, $commentAttr);
         }
         return $attrData;
     }
+    /**
+     * @param \Dcp\HttpApi\V1\Crud\Document $document
+     * @param \BasicAttribute $attribute
+     * @return AttributeInfo
+     */
     protected function getAttributeInfo(\Dcp\HttpApi\V1\Crud\Document $document, \BasicAttribute $attribute)
     {
         if ($this->formatCollection === null) {
             $this->formatCollection = new \FormatCollection($this->workflow);
         }
+        $aInfo = new AttributeInfo();
+        
         $info = $document->getAttributeInfo($attribute, $this->attributeCount++);
+        $aInfo->importData($info);
+        
         if (!empty($attribute->fieldSet->id)) {
-            $info["parent"] = $attribute->fieldSet->id;
+            $aInfo->setParent($attribute->fieldSet->id);
         }
         $value = null;
         if ($attribute->usefor === "Q") {
@@ -125,11 +137,12 @@ class TransitionRender
             $value = $this->workflow->getRawValue($attribute->id);
         }
         if ($attribute->isNormal) {
-            $info["attributeValue"] = $this->formatCollection->getInfo($attribute, $value, $this->workflow);
+            $aInfo->setAttributeValue($this->formatCollection->getInfo($attribute, $value, $this->workflow));
         }
-        return $info;
+        return $aInfo;
     }
     /**
+     * @param string $transitionId transition identifier
      * @return array
      */
     public function getTemplates($transitionId)
@@ -145,15 +158,34 @@ class TransitionRender
         );
     }
     /**
+     * @param string $transitionId transition identifier
      * @return RenderOptions
      * @throws Exception
      */
     public function getRenderOptions($transitionId)
     {
         $options = new RenderOptions();
-        $options->longtext("_workflow_comment_")->setPlaceHolder(___("Add a note to the history", "ddui"))->setLabelPosition(CommonRenderOptions::nonePosition);
-        $options->frame("_workflow_fr_comment_")->setLabelPosition(CommonRenderOptions::nonePosition);
+        $options->longtext(self::commentAttribute)->setPlaceHolder(___("Add a note to the history", "ddui"))->setLabelPosition(CommonRenderOptions::nonePosition);
+        $options->frame(self::commentFrameAttribute)->setLabelPosition(CommonRenderOptions::nonePosition);
         
         return $options;
+    }
+    /**
+     * Add custom css file references
+     * @param string $transitionId transition identifier
+     * @return array
+     */
+    public function getCssReferences($transitionId)
+    {
+        return array();
+    }
+    /**
+     * Add custom js file references
+     * @param string $transitionId transition identifier
+     * @return array
+     */
+    public function getJsReferences($transitionId)
+    {
+        return array();
     }
 }

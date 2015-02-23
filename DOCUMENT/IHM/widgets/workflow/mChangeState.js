@@ -79,7 +79,6 @@ define([
                 "viewId": "!changeState"
             }, {});
 
-            console.log("WID", documentModel.get("properties"));
             values = {
                 initid: null,//response.data.workflow.properties.initid, // set to null to send a POST (create) when save
                 properties: response.data.workflow.properties,
@@ -90,8 +89,8 @@ define([
                 attributes: attributes,
                 templates: documentModel.get("templates"),
                 renderOptions: renderOptions,
-                customCSS: [],
-                customJS: [],
+                customCSS: response.data.css,
+                customJS: response.data.js,
                 messages: response.messages,
                 workflow: {
                     transition: response.data.transition,

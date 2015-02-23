@@ -17,6 +17,20 @@ define([
             this.options = options;
         },
 
+
+        remove: function vChangeStateRemove() {
+
+            ViewDocument.prototype.remove.apply(this, arguments);
+            //Remove custom CSS
+            var customCss= _.pluck(this.model.get("customCSS"), "key");
+
+            if (customCss.length > 0) {
+                _.each(customCss, function (cssKey) {
+                    $('link[data-view=true][data-id="'+cssKey+'"]').remove();
+                });
+            }
+        },
+
         displayError: function (error) {
             var workflow = this.model.get("workflow");
             var attributes = this.model.get("attributes");
