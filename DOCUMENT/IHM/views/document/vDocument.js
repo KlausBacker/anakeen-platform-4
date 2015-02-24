@@ -427,18 +427,14 @@ define([
          *
          * BEWARE : the deletion delete the model => so this function trigger a reinit event that create a new model
          */
-        deleteDocument: function dvDocumentDocumentDelete() {
-            var currentView = this, destroy = this.model.destroy();
-            if (destroy !== false && destroy.done) {
-                destroy.done(function vDocumentDestroyDone(response) {
-                    currentView.trigger("reinit", {
-                            initid: response.data.view.documentData.document.properties.id,
-                            revision: response.data.view.documentData.document.properties.revision,
-                            viewId: response.data.properties.identifier
-                        }
-                    );
-                });
-            }
+        deleteDocument : function dvDocumentDocumentDelete() {
+            var currentView = this, properties = this.model.getProperties();
+
+            this.model.destroy({
+                success : function vDocumentDestroyDone() {
+                    currentView.trigger("reinit", properties);
+                }
+            });
         },
 
         /**
