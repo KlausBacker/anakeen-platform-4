@@ -326,7 +326,12 @@ define([
          * @private
          */
         _initRouter : function documentController_initRouter() {
-            Backbone.history.start({pushState : true});
+            if (window.history && history.pushState) {
+                Backbone.history.start({pushState : true});
+            } else {
+                //For browser without API history
+                Backbone.history.start();
+            }
             this.router = new Router({document : this._model});
         },
 
