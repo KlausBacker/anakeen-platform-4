@@ -586,7 +586,7 @@ define([
                         success.apply(this, arguments);
                     });
                 } else {
-                    options.success = afterDone();
+                    options.success = afterDone;
                 }
                 Backbone.Model.prototype.fetch.call(this, attributes, options);
             }
@@ -607,7 +607,7 @@ define([
                         success.apply(this, arguments);
                     });
                 } else {
-                    options.success = afterDone();
+                    options.success = afterDone;
                 }
                 Backbone.Model.prototype.save.call(this, attributes, options);
             }
@@ -628,7 +628,7 @@ define([
                         success.apply(this, arguments);
                     });
                 } else {
-                    options.success = afterDone();
+                    options.success = afterDone;
                 }
                 Backbone.Model.prototype.destroy.call(this, attributes, options);
             }
