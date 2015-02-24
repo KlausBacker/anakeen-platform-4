@@ -834,7 +834,7 @@ define([
          * @returns {*}
          */
         listEvents : function documentControllerListEvents() {
-            return this.options.eventList.splice(0);
+            return this.options.eventList.slice();
         },
 
         /**
