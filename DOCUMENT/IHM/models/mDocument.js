@@ -109,7 +109,7 @@ define([
                 if (currentAttribute.get("multiple")) {
                     currentValue = _.toArray(currentValue);
                     if (currentValue.length > 0) {
-                        for (i = 0; i < currentValue.length; i++) {
+                        for (i = 0; i < currentValue.length; i+=1) {
                             arrayValues.push(currentValue[i] || {value : null});
                         }
                     } else {
@@ -573,45 +573,64 @@ define([
             };
         },
 
-        fetch : function mDocumentFetch() {
-            var event = {prevent : false}, xhr, currentModel = this;
+        fetch : function mDocumentFetch(attributes, options) {
+            var event = {prevent : false}, currentModel = this, afterDone = function afterDone() {
+                currentModel.trigger("close");
+            };
+            options = options || {};
             this.trigger("beforeClose", event);
             if (event.prevent === false) {
-                xhr = Backbone.Model.prototype.fetch.apply(this, arguments);
-                xhr.done(function() {
-                    currentModel.trigger("close");
-                });
-                return xhr;
+                if (options.success) {
+                    options.success = _.wrap(options.success, function (success) {
+                        afterDone();
+                        success.apply(this, arguments);
+                    });
+                } else {
+                    options.success = afterDone();
+                }
+                Backbone.Model.prototype.fetch.call(this, attributes, options);
             }
             return false;
         },
 
-        save : function mDocumentSave() {
-            var event = {prevent : false}, xhr, currentModel = this;
+        save : function mDocumentSave(attributes, options) {
+            var event = {prevent : false}, currentModel = this, afterDone = function afterDone() {
+                    currentModel.trigger("afterSave");
+                    currentModel.trigger("close");
+            };
+            options = options || {};
             this.trigger("beforeSave", event);
             if (event.prevent === false) {
-                xhr = Backbone.Model.prototype.save.apply(this, arguments);
-                if (xhr) {
-                    xhr.done(function () {
-                        currentModel.trigger("afterSave");
-                        currentModel.trigger("close");
+                if (options.success) {
+                    options.success = _.wrap(options.success, function (success) {
+                        afterDone();
+                        success.apply(this, arguments);
                     });
-                    return xhr;
+                } else {
+                    options.success = afterDone();
                 }
+                Backbone.Model.prototype.save.call(this, attributes, options);
             }
             return false;
         },
 
-        destroy : function mDocumentDestroy() {
-            var event = {prevent : false}, xhr, currentModel = this;
+        destroy : function mDocumentDestroy(attributes, options) {
+            var event = {prevent : false}, currentModel = this, afterDone = function afterDone() {
+                currentModel.trigger("afterDelete");
+                currentModel.trigger("close");
+            };
+            options = options || {};
             this.trigger("beforeDelete", event);
             if (event.prevent === false) {
-                xhr = Backbone.Model.prototype.destroy.apply(this, arguments);
-                xhr.done(function () {
-                    currentModel.trigger("afterDelete");
-                    currentModel.trigger("close");
-                });
-                return xhr;
+                if (options.success) {
+                    options.success = _.wrap(options.success, function (success) {
+                        afterDone();
+                        success.apply(this, arguments);
+                    });
+                } else {
+                    options.success = afterDone();
+                }
+                Backbone.Model.prototype.destroy.call(this, attributes, options);
             }
             return false;
         }

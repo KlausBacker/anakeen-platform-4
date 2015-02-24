@@ -857,7 +857,7 @@ define([
                 }
                 return true;
             });
-            this._initActivatedEvents();
+            this._initActivatedEvents({"launchReady" : false});
             return removed;
         },
 
