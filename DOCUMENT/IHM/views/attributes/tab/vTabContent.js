@@ -53,7 +53,7 @@ define([
             } else {
                 this.renderContent();
             }
-            this.model.trigger("renderDone", this.model);
+            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
             return this;
         },
 
@@ -66,14 +66,12 @@ define([
                     $content.append(this.customView);
                 } else {
                     this.model.get("content").each(function vTabContentRenderContent(currentAttr) {
-                        var view, customView = null;
+                        var view;
                         try {
                             if (!currentAttr.isDisplayable()) {
                                 return;
                             }
                             if (currentAttr.get("type") === "frame") {
-
-
                                 view = new ViewAttributeFrame({model: currentAttr});
                                 $content.append(view.render().$el);
 
@@ -114,6 +112,8 @@ define([
 
         _identifyView: function vAttribute_identifyView(event) {
             event.haveView = true;
+            //Add the pointer to the current jquery element to a list passed by the event
+            event.elements = event.elements.add(this.$el);
         }
     });
 

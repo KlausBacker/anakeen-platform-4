@@ -15,7 +15,7 @@ define([
         customView:false,
         displayLabel:true,
 
-        initialize: function (options) {
+        initialize: function vFrame_initialize(options) {
 
             if (options.displayLabel === false || this.model.getOption("labelPosition")==="none") {
                 this.displayLabel=false;
@@ -38,11 +38,10 @@ define([
             this.options = options;
         },
 
-        render: function () {
+        render: function vFrame_render() {
             var $content;
             var labelElement;
             var contentElement = '';
-            var currentView = this;
             var customView = null;
 
             this.templateLabel = this.model.getTemplates().attribute.frame.label;
@@ -64,16 +63,15 @@ define([
 
             labelElement.on("click", _.bind(this.toggle, this));
             $content = this.$el.find(".dcpFrame__content");
-            var hasOneContent = this.model.get("content").some(function (value) {
+            var hasOneContent = this.model.get("content").some(function vFrame_getDisplayable(value) {
                 return value.isDisplayable();
             });
-
 
             if (!this.customView) {
                 if (!hasOneContent) {
                     $content.append(this.model.getOption('showEmptyContent'));
                 } else {
-                    this.model.get("content").each(function (currentAttr) {
+                    this.model.get("content").each(function vFrame_AnalyzeContent(currentAttr) {
                         if (!currentAttr.isDisplayable()) {
                             return;
                         }
@@ -103,18 +101,18 @@ define([
                     });
                 }
             }
-            this.model.trigger("renderDone", this.model);
+            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
             //console.timeEnd("render frame " + this.model.id);
             return this;
         },
 
 
-        getAttributeModel: function (attributeId) {
+        getAttributeModel: function vFrame_getAttributeModel(attributeId) {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
-        setError: function (event, data) {
+        setError: function vFrame_setError(event, data) {
             var parentId = this.model.get('parent');
             if (data) {
                 this.$el.find(".dcpFrame__label").addClass("has-error");
@@ -129,11 +127,11 @@ define([
             }
         },
 
-        updateLabel: function () {
+        updateLabel: function vFrame_updateLabel() {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        toggle: function () {
+        toggle: function vFrame_toggle() {
             var $contentElement = this.$(".dcpCustomTemplate");
             if ($contentElement.length === 0) {
                 $contentElement = this.$(".dcpFrame__content");
@@ -151,16 +149,18 @@ define([
             }
         },
 
-        hide: function hide() {
+        hide: function vFrame_hide() {
             this.$el.hide();
         },
 
-        show: function show() {
+        show: function vFrame_show() {
             this.$el.show();
         },
 
-        _identifyView: function vAttribute_identifyView(event) {
+        _identifyView: function vFrame_identifyView(event) {
             event.haveView = true;
+            //Add the pointer to the current jquery element to a list passed by the event
+            event.elements = event.elements.add(this.$el);
         }
     });
 
