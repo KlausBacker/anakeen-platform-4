@@ -96,6 +96,11 @@ define([
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
                         scope.element.addClass("has-error");
+
+                         if (scope.element.data("hasErrorTooltip")) {
+                             // need to destroy data to update tooltip
+                             scope.element.find(".input-group").data("tooltip", false);
+                         }
                         // need to use sub element because tooltip add a div after element
                         scope.element.find(".input-group").tooltip({
                             placement: "bottom",
@@ -110,7 +115,6 @@ define([
                         });
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
-
                     }
                 });
             } else {

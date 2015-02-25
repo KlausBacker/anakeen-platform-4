@@ -74,7 +74,7 @@ define([
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
 
-            this.template = this.getTemplates("body");
+            this.template = this.getTemplates("body").trim();
             this.partials = this.getTemplates("sections");
 
             this.$el.empty();
@@ -286,7 +286,7 @@ define([
             //Remove old CSS
             _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink) {
                 var findCss = function (currentCss) {
-                    return currentLink.dataset.id === currentCss.key;
+                    return $(currentLink).data("id") === currentCss.key;
                 };
                 if (_.find(customCss, findCss) === undefined) {
                     $(currentLink).remove();
