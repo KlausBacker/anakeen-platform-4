@@ -197,6 +197,7 @@ class RenderConfigManager
                     throw new Exception("UI0300", $mode);
             }
         }
-        return self::getRenderDefaultConfig($mode);
+        return self::getDefaultFamilyRenderConfig($mode, $document);
+
     }
 }
