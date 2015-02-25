@@ -28,7 +28,7 @@ define([
         },
 
         render: function () {
-            this.model.trigger("renderDone", this.model);
+            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
             return this;
         },
 

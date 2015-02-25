@@ -224,9 +224,9 @@ define([
         },
 
         haveView : function mAttributeHaveView() {
-            var view = {haveView : false};
+            var view = {haveView : false, elements : $()};
             this.trigger("haveView", view);
-            return view.haveView;
+            return view;
         }
 
     });

@@ -24,9 +24,7 @@ define([
 
         columnViews: {},
 
-        initialize: function (options) {
-
-
+        initialize: function vArray_initialize(options) {
             if (options.displayLabel === false) {
                 this.displayLabel=false;
             }
@@ -51,11 +49,11 @@ define([
             this.options = options;
         },
 
-        render: function () {
+        render: function vArray_render() {
             // console.time("render array " + this.model.id);
             var data = this.model.toData();
             var scope = this;
-            data.content = _.filter(data.content, function (currentContent) {
+            data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent) {
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
@@ -70,7 +68,7 @@ define([
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
                   if (!this.customView || this.customRowView) {
-                      this.model.get("content").each(function (currentAttr) {
+                      this.model.get("content").each(function vArray_analyzeContent(currentAttr) {
                           if (!currentAttr.isDisplayable()) {
                               return;
                           }
@@ -78,7 +76,7 @@ define([
                               if (currentAttr.get("isValueAttribute")) {
                                   scope.columnViews[currentAttr.id] = new ViewColumn({
                                       el: scope.el,
-                                      els: function () {
+                                      els: function vArray_findScope() {
                                           return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
                                       },
                                       originalView: true,
@@ -98,10 +96,9 @@ define([
                   }
             }
 
-
             if ( this.customView) {
                 data.customTemplate = this.customView;
-                data.customLineCallback = function (index) {
+                data.customLineCallback = function vArray_callCustomLine(index) {
                     return attributeTemplate.customArrayRowView(index, scope.model, scope);
                 };
             }
@@ -122,13 +119,13 @@ define([
 
             this.$el.attr("data-attrid", this.model.id);
             // console.timeEnd("render array " + this.model.id);
-            this.model.trigger("renderDone", this.model);
+            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
             return this;
         },
 
         getNbLines: function () {
             var nbLigne = this.nbLines || 0;
-            this.model.get("content").each(function (currentAttr) {
+            this.model.get("content").each(function vArray_getCurrentLine(currentAttr) {
                 if (currentAttr.get("attributeValue") && nbLigne < _.size(currentAttr.get("attributeValue"))) {
                     nbLigne = _.size(currentAttr.get("attributeValue"));
                 }
@@ -145,7 +142,7 @@ define([
          * @param event
          * @param options
          */
-        updateValue: function vArrayUpdateValue(event, options) {
+        updateValue: function vArray_UpdateValue(event, options) {
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
@@ -153,30 +150,30 @@ define([
             attributeModel.setValue(options.value, options.index);
         },
 
-        refresh: function vArrayRefresh() {
+        refresh: function vArray_Refresh() {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
             this.render();
         },
 
         removeLine: function (event, options) {
-            this.model.get("content").each(function (currentContent) {
+            this.model.get("content").each(function vArray_removeLine(currentContent) {
                 currentContent.removeIndexValue(options.line);
             });
             this.model.trigger("array", "removeLine", this.model, options.line);
         },
 
-        removeWidgetLine: function vArrayRemoveWidgetLine(options) {
+        removeWidgetLine: function vArray_RemoveWidgetLine(options) {
             this.$el.dcpArray("removeLine", options.index, {silent: true});
         },
 
-        addWidgetLine: function vArrayaddWidgetLine(options) {
+        addWidgetLine: function vArray_addWidgetLine(options) {
             this.$el.dcpArray("addLine", options.index);
         },
 
-        addLine: function vArrayAddLine(event, options) {
+        addLine: function vArray_AddLine(event, options) {
             var currentArrayView = this, customView = null;
-            this.model.get("content").each(function (currentContent) {
+            this.model.get("content").each(function vArray_addLineGetContent(currentContent) {
                 var currentViewColumn;
                 if (options.needAddValue || options.copyValue) {
                     currentContent.createIndexedValue(options.line, options.copyValue);
@@ -186,7 +183,7 @@ define([
                     customView = null;
                     if (currentContent.getOption("template")) {
                         customView = attributeTemplate.customView(currentContent,
-                            function () {
+                            function vArray_customViewInit() {
                                 currentViewColumn.widgetInit(
                                     $(this),
                                     currentViewColumn.getData(options.line));
@@ -200,18 +197,18 @@ define([
             this.model.trigger("array", "addLine", this.model, options.line);
         },
 
-        moveLine: function moveLine(event, options) {
-            this.model.get("content").each(function (currentContent) {
+        moveLine: function vArray_moveLine(event, options) {
+            this.model.get("content").each(function vArray_getMoveLineContent(currentContent) {
                 currentContent.moveIndexValue(options.fromLine, options.toLine);
             });
             this.model.trigger("array", "moveLine", this.model, options);
         },
-        getAttributeModel: function (attributeId) {
+        getAttributeModel: function vArray_getAttributeModel(attributeId) {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
-        setError: function (event, data) {
+        setError: function vArray_setError(event, data) {
             var parentId = this.model.get('parent');
             if (data) {
                 this.$el.find(".dcpArray__label").addClass("has-error");
@@ -226,16 +223,18 @@ define([
             }
         },
 
-        hide: function hide() {
+        hide: function vArray_hide() {
             this.$el.hide();
         },
 
-        show: function show() {
+        show: function vArray_show() {
             this.$el.show();
         },
 
-        _identifyView: function vAttribute_identifyView(event) {
+        _identifyView: function vArray_identifyView(event) {
             event.haveView = true;
+            //Add the pointer to the current jquery element to a list passed by the event
+            event.elements = event.elements.add(this.$el);
         }
     });
 

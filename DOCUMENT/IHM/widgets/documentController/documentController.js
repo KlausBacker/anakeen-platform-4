@@ -203,11 +203,12 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId) {
+            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el) {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                     currentWidget._model.getProperties(),
-                    currentAttribute
+                    currentAttribute,
+                    $el
                 );
             });
             this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options) {
@@ -350,9 +351,14 @@ define([
         },
 
         _getRenderedAttributes : function documentController_getRenderedAttributes() {
-            return this._model.get("attributes").filter(function documentController_getRenderedAttribute(currentAttribute) {
-                return currentAttribute.haveView();
-            });
+            return this._model.get("attributes").chain().map(function documentController_getRenderedAttribute(currentAttribute) {
+                return {
+                    "view" : currentAttribute.haveView(),
+                    "id" : currentAttribute.id
+                };
+            }).filter(function documentController_suppressNoView(currentAttribut) {
+                return currentAttribut.view.haveView;
+            }).value();
         },
 
         /**
@@ -396,10 +402,11 @@ define([
             if (this.initialLoaded !== false && options.launchReady !== false) {
                 this._triggerControllerEvent("ready", currentDocumentProperties);
                 _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
-                    currentAttribute = currentWidget.getAttribute(currentAttribute.id);
+                    var objectAttribute = currentWidget.getAttribute(currentAttribute.id);
                     currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                         currentDocumentProperties,
-                        currentAttribute
+                        objectAttribute,
+                        currentAttribute.view.elements
                     );
                 });
             }
@@ -422,21 +429,23 @@ define([
                         } catch (e) {
                             console.error(e);
                         }
-
                     }
                     if (newEvent.eventType === "attributeReady") {
                         event = $.Event(newEvent.eventType);
                         event.target = currentWidget.element;
                         _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute) {
-                            currentAttribute = currentWidget.getAttribute(currentAttribute.id);
+                            var objectAttribute = currentWidget.getAttribute(currentAttribute.id);
                             if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck(currentAttribute)) {
                                 try {
                                     // add element as function context
-                                    newEvent.eventCallback.call(currentWidget.element, event, currentDocumentProperties, currentAttribute);
+                                    newEvent.eventCallback.call(currentWidget.element,
+                                        event,
+                                        currentDocumentProperties,
+                                        objectAttribute,
+                                        currentAttribute.view.elements);
                                 } catch (e) {
                                     console.error(e);
                                 }
-
                             }
                         });
                     }
