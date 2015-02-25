@@ -501,9 +501,9 @@ define([
                 currentModel.listenTo(attributes.attributes, "constraint", function (options) {
                     currentModel.trigger("constraint", options.model.id, options.response);
                 });
-                //Propagate the renderDone event to the model
+                //Propagate the renderDone event of the attributes to the model
                 currentModel.listenTo(attributes.attributes, "renderDone", function (options) {
-                    currentModel.trigger("attributeRender", options.id);
+                    currentModel.trigger("attributeRender", options.model.id, options.$el);
                 });
                 //Propagate the array event modified to the model
                 currentModel.listenTo(attributes.attributes, "array", function (type, model, options) {
@@ -583,12 +583,12 @@ define([
                 if (options.success) {
                     options.success = _.wrap(options.success, function (success) {
                         afterDone();
-                        success.apply(this, arguments);
+                        return success.apply(this, arguments);
                     });
                 } else {
                     options.success = afterDone;
                 }
-                Backbone.Model.prototype.fetch.call(this, attributes, options);
+                return Backbone.Model.prototype.fetch.call(this, attributes, options);
             }
             return false;
         },
@@ -604,12 +604,12 @@ define([
                 if (options.success) {
                     options.success = _.wrap(options.success, function (success) {
                         afterDone();
-                        success.apply(this, arguments);
+                        return success.apply(this, arguments);
                     });
                 } else {
                     options.success = afterDone;
                 }
-                Backbone.Model.prototype.save.call(this, attributes, options);
+                return Backbone.Model.prototype.save.call(this, attributes, options);
             }
             return false;
         },
@@ -625,12 +625,12 @@ define([
                 if (options.success) {
                     options.success = _.wrap(options.success, function (success) {
                         afterDone();
-                        success.apply(this, arguments);
+                        return success.apply(this, arguments);
                     });
                 } else {
                     options.success = afterDone;
                 }
-                Backbone.Model.prototype.destroy.call(this, attributes, options);
+                return Backbone.Model.prototype.destroy.call(this, attributes, options);
             }
             return false;
         }
