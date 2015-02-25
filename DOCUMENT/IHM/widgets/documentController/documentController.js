@@ -142,21 +142,21 @@ define([
          */
         _initModelEvents : function documentController_initEvents() {
             var currentWidget = this;
-            this._model.listenTo(this._model, "invalid", function showInvalid(model, error) {
+            this._model.listenTo(this._model, "invalid", function documentController_triggerShowInvalid(model, error) {
                 var result = currentWidget._triggerControllerEvent("error",
                     currentWidget._model.getProperties(), error);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showError", error);
                 }
             });
-            this._model.listenTo(this._model, "showError", function showError(error) {
+            this._model.listenTo(this._model, "showError", function documentController_triggerShowError(error) {
                 var result = currentWidget._triggerControllerEvent("error",
                     currentWidget._model.getProperties(), error);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showError", error);
                 }
             });
-            this._model.listenTo(this._model, "sync", function () {
+            this._model.listenTo(this._model, "sync", function documentController_triggerSync() {
                 currentWidget.options.initid = currentWidget._model.id;
                 currentWidget.options.viewId = currentWidget._model.get("viewId");
                 currentWidget.options.revision = currentWidget._model.get("revision");
@@ -164,38 +164,38 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEvents({launchReady : false});
             });
-            this._model.listenTo(this._model, "beforeClose", function (event) {
+            this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event) {
                 if (currentWidget.initialLoaded !== false) {
                     event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
                         currentWidget._model.getProperties(true));
                 }
             });
-            this._model.listenTo(this._model, "close", function () {
+            this._model.listenTo(this._model, "close", function documentController_triggerClose() {
                 if (currentWidget.initialLoaded !== false) {
                     currentWidget._triggerControllerEvent("close",
                         currentWidget._model.getProperties(true));
                 }
             });
-            this._model.listenTo(this._model, "beforeSave", function (event) {
+            this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event) {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeSave",
                     currentWidget._model.getProperties(true));
             });
-            this._model.listenTo(this._model, "afterSave", function (event) {
+            this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(event) {
                 currentWidget._triggerControllerEvent("afterSave",
                     currentWidget._model.getProperties(true));
             });
-            this._model.listenTo(this._model, "beforeDelete", function (event) {
+            this._model.listenTo(this._model, "beforeDelete", function documentController_triggerBeforeDelete(event) {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeDelete",
                     currentWidget._model.getProperties(true));
             });
-            this._model.listenTo(this._model, "afterDelete", function (event) {
+            this._model.listenTo(this._model, "afterDelete", function documentController_triggerAfterDelete(event) {
                 currentWidget._triggerControllerEvent("afterDelete",
                     currentWidget._model.getProperties(true));
             });
-            this._model.listenTo(this._model, "validate", function (event) {
+            this._model.listenTo(this._model, "validate", function documentController_triggerValidate(event) {
                 event.prevent = !currentWidget._triggerControllerEvent("validate", currentWidget._model.getProperties());
             });
-            this._model.listenTo(this._model, "changeValue", function (options) {
+            this._model.listenTo(this._model, "changeValue", function documentController_triggerChangeValue(options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
                 currentWidget._triggerAttributeControllerEvent("change", currentAttribute,
                     currentWidget._model.getProperties(),
@@ -203,14 +203,14 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "attributeRender", function (attributeId) {
+            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId) {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute
                 );
             });
-            this._model.listenTo(this._model, "arrayModified", function (options) {
+            this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options) {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
                 currentWidget._triggerAttributeControllerEvent("arrayModified", currentAttribute,
                     currentWidget._model.getProperties(),
@@ -219,13 +219,13 @@ define([
                     options.options
                 );
             });
-            this._model.listenTo(this._model, "internalLinkSelected", function (event, options) {
+            this._model.listenTo(this._model, "internalLinkSelected", function documentController_triggerInternalLinkSelected(event, options) {
                 event.prevent = !currentWidget._triggerControllerEvent("documentLinkSelected",
                     currentWidget._model.getProperties(),
                     options
                 );
             });
-            this._model.listenTo(this._model, "helperSearch", function (event, attrid, options) {
+            this._model.listenTo(this._model, "helperSearch", function documentController_triggerHelperSearch(event, attrid, options) {
                 var currentAttribute = currentWidget.getAttribute(attrid);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("helperSearch", currentAttribute,
                     currentWidget._model.getProperties(),
@@ -233,7 +233,7 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "helperResponse", function (event, attrid, options) {
+            this._model.listenTo(this._model, "helperResponse", function documentController_triggerHelperResponse(event, attrid, options) {
                 var currentAttribute = currentWidget.getAttribute(attrid);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("helperResponse", currentAttribute,
                     currentWidget._model.getProperties(),
@@ -241,7 +241,7 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "helperSelect", function (event, attrid, options) {
+            this._model.listenTo(this._model, "helperSelect", function documentController_triggerHelperSelect(event, attrid, options) {
                 var currentAttribute = currentWidget.getAttribute(attrid);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("helperSelect", currentAttribute,
                     currentWidget._model.getProperties(),
@@ -249,10 +249,10 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "constraint", function (attribute, response) {
+            this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, response) {
                 var currentAttribute = currentWidget.getAttribute(attribute),
                     currentModel = currentWidget._model.getProperties();
-                _.each(currentWidget.activatedConstraint, function (currentConstraint) {
+                _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint) {
                     if (currentConstraint.attributeCheck(currentModel, currentAttribute)) {
                         currentConstraint.constraintCheck(
                             response,
@@ -273,23 +273,23 @@ define([
          */
         _initViewEvents : function documentController_initViewEvents() {
             var currentWidget = this;
-            this.view.on("cleanNotification", function () {
+            this.view.on("cleanNotification", function documentController_triggerCleanNotification() {
                 currentWidget.$notification.dcpNotification("clear");
             });
-            this.view.on('loading', function (data) {
+            this.view.on('loading', function documentController_triggerLoading(data) {
                 currentWidget.$loading.dcpLoading('setPercent', data);
             });
-            this.view.on('loaderShow', function () {
+            this.view.on('loaderShow', function documentController_triggerLoaderShow() {
                 console.time("xhr+render document view");
                 currentWidget.$loading.dcpLoading('show');
             });
-            this.view.on('loaderHide', function () {
+            this.view.on('loaderHide', function documentController_triggerHide() {
                 currentWidget.$loading.dcpLoading('hide');
             });
-            this.view.on('partRender', function () {
+            this.view.on('partRender', function documentController_triggerPartRender() {
                 currentWidget.$loading.dcpLoading('addItem');
             });
-            this.view.on('renderDone', function () {
+            this.view.on('renderDone', function documentController_triggerRenderDone() {
                 console.timeEnd("xhr+render document view");
                 currentWidget.$loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
                 currentWidget.initialLoaded = true;
@@ -299,21 +299,21 @@ define([
                     console.timeEnd('main');
                 }, 250);
             });
-            this.view.on("showMessage", function showMessage(message) {
+            this.view.on("showMessage", function documentController_triggerShowMessage(message) {
                 var result = currentWidget._triggerControllerEvent("message",
                     currentWidget._model.getProperties(), message);
                 if (result) {
                     currentWidget.$notification.dcpNotification("show", message.type, message);
                 }
             });
-            this.view.on("showSuccess", function showSuccess(message) {
+            this.view.on("showSuccess", function documentController_triggerShowSuccess(message) {
                 var result = currentWidget._triggerControllerEvent("message",
                     currentWidget._model.getProperties(), message);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showSuccess", message);
                 }
             });
-            this.view.on("reinit", function reinit() {
+            this.view.on("reinit", function documentController_triggerReinit() {
                 currentWidget._initModel(currentWidget._getModelValue());
                 currentWidget._initView();
                 currentWidget._model.fetch();
@@ -326,7 +326,12 @@ define([
          * @private
          */
         _initRouter : function documentController_initRouter() {
-            Backbone.history.start({pushState : true});
+            if (window.history && history.pushState) {
+                Backbone.history.start({pushState : true});
+            } else {
+                //For browser without API history
+                Backbone.history.start();
+            }
             this.router = new Router({document : this._model});
         },
 
@@ -345,7 +350,7 @@ define([
         },
 
         _getRenderedAttributes : function documentController_getRenderedAttributes() {
-            return this._model.get("attributes").filter(function (currentAttribute) {
+            return this._model.get("attributes").filter(function documentController_getRenderedAttribute(currentAttribute) {
                 return currentAttribute.haveView();
             });
         },
@@ -357,7 +362,7 @@ define([
          * @returns {*}
          */
         _getMaxIndex : function documentController_getMaxIndex(attributeArray) {
-            return _.size(attributeArray.get("content").max(function (currentAttr) {
+            return _.size(attributeArray.get("content").max(function documentController_getMax(currentAttr) {
                 return _.size(currentAttr.get("attributeValue"));
             }).get("attributeValue"));
         },
@@ -369,7 +374,7 @@ define([
          */
         _initActivatedConstraint : function documentController_initActivatedConstraint() {
             var currentDocumentProperties = this._model.getProperties();
-            this.activatedConstraint = _.filter(this.options.constraintList, function (currentConstraint) {
+            this.activatedConstraint = _.filter(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint) {
                 return currentConstraint.documentCheck(currentDocumentProperties);
             });
         },
@@ -381,7 +386,7 @@ define([
         _initActivatedEvents : function documentController_initActivatedEvents(options) {
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this;
             options = options || {};
-            this.activatedEvent = _.filter(this.options.eventList, function (currentEvent) {
+            this.activatedEvent = _.filter(this.options.eventList, function documentController_getActivatedEvent(currentEvent) {
                 if (!_.isFunction(currentEvent.documentCheck)) {
                     return true;
                 }
@@ -463,7 +468,7 @@ define([
                     return currentEvent.attributeCheck(attributeInternalElement);
                 }
                 return false;
-            }).each(function (currentEvent) {
+            }).each(function documentController_applyCallBack(currentEvent) {
                 try {
                     currentEvent.eventCallback.apply(currentWidget.element, args);
                 } catch (e) {
@@ -492,9 +497,9 @@ define([
             event.target = currentWidget.element;
             // internal event trigger
             args.unshift(event);
-            _.chain(this.activatedEvent).filter(function (currentEvent) {
+            _.chain(this.activatedEvent).filter(function documentController_getEventName(currentEvent) {
                 return currentEvent.eventType === eventName;
-            }).each(function (currentEvent) {
+            }).each(function documentController_triggerAnEvent(currentEvent) {
                 try {
                     currentEvent.eventCallback.apply(currentWidget.element, args);
                 } catch (e) {
@@ -571,7 +576,7 @@ define([
          */
         deleteDocument : function documentControllerDelete() {
             var currentWidget = this, destroy = this._model.destroy();
-            destroy.done(function() {
+            destroy.done(function documentController_destroyer() {
                 currentWidget._initModel(currentWidget._getModelValue());
                 currentWidget._initView();
                 currentWidget._model.fetch();
@@ -612,7 +617,7 @@ define([
          * @returns [AttributeInterface]
          */
         getAttributes : function documentControllerGetAttributes() {
-            return this._model.get("attributes").map(function (currentAttribute) {
+            return this._model.get("attributes").map(function documentController_mapAttribute(currentAttribute) {
                     return new AttributeInterface(currentAttribute);
                 }
             );
@@ -666,7 +671,7 @@ define([
             if (!_.isObject(values)) {
                 throw new Error("Values must be an object where each properties is an attribute of the array for " + attributeId);
             }
-            attribute.get("content").each(function addACell(currentAttribute) {
+            attribute.get("content").each(function documentController_addACell(currentAttribute) {
                 var currentValue = values[currentAttribute.id];
                 if (_.isUndefined(currentValue)) {
                     return;
@@ -695,7 +700,7 @@ define([
             if (index < 0 || index > maxValue) {
                 throw new Error("Index must be between 0 and " + maxValue);
             }
-            attribute.get("content").each(function addACell(currentAttribute) {
+            attribute.get("content").each(function documentController_addACell(currentAttribute) {
                 var currentValue = values[currentAttribute.id];
                 if (!_.isUndefined(currentValue)) {
                     currentValue = _.defaults(currentValue, {value : "", displayValue : ""});
@@ -718,7 +723,7 @@ define([
             if (index < 0 || index > maxIndex) {
                 throw Error("Index must be between 0 and " + maxIndex + " for " + attributeId);
             }
-            attribute.get("content").each(function removeACell(currentAttribute) {
+            attribute.get("content").each(function documentController_removeACell(currentAttribute) {
                 currentAttribute.removeIndexValue(index);
             });
             attribute.removeIndexedLine(index);
@@ -741,10 +746,10 @@ define([
                 throw new Error("An event need a callback");
             }
             parameters = _.defaults(options, {
-                "documentCheck" :   function () {
+                "documentCheck" :   function documentController_defaultDocumentCheck() {
                     return true;
                 },
-                "attributeCheck" :  function () {
+                "attributeCheck" :  function documentController_defaultAttributeCheck() {
                     return true;
                 },
                 "constraintCheck" : callback,
@@ -773,7 +778,7 @@ define([
         removeConstraint : function documentControllerRemoveConstraint(constraintName) {
             var removed = [],
                 testRegExp = new RegExp("\\" + constraintName + "$");
-            this.options.constraintList = _.filter(this.options.constraintList, function (currentConstrait) {
+            this.options.constraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(currentConstrait) {
                 if (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name)) {
                     removed.push(currentConstrait);
                     return false;
@@ -813,7 +818,7 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(eventContent.eventType) || !_.find(eventList, function documentControllerCheckEventType(currentEvent) {
+            if (!_.isString(eventContent.eventType) || !_.find(eventList, function documentController_CheckEventType(currentEvent) {
                     return currentEvent === eventContent.eventType;
                 })) {
                 throw new Error("The event type " + eventContent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
@@ -834,7 +839,7 @@ define([
          * @returns {*}
          */
         listEvents : function documentControllerListEvents() {
-            return this.options.eventList.splice(0);
+            return this.options.eventList.slice();
         },
 
         /**
@@ -845,14 +850,14 @@ define([
          */
         removeEvent : function documentControllerRemoveEvent(eventName) {
             var removed = [], testRegExp = new RegExp("\\" + eventName + "$");
-            this.options.eventList = _.filter(this.options.eventList, function (currentEvent) {
+            this.options.eventList = _.filter(this.options.eventList, function documentController_removeCurrentEvent(currentEvent) {
                 if (currentEvent.name === eventName || testRegExp.test(currentEvent.name)) {
                     removed.push(currentEvent);
                     return false;
                 }
                 return true;
             });
-            this._initActivatedEvents();
+            this._initActivatedEvents({"launchReady" : false});
             return removed;
         },
 
