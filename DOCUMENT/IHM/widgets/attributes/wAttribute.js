@@ -120,7 +120,8 @@ define([
             } else {
                 this.element.removeClass("has-error");
                 if (this.element.data("hasErrorTooltip")) {
-                    this.element.find(".input-group").tooltip("destroy");
+                    // No use destroy because the destruction is deferred
+                    this.element.find(".input-group").tooltip("close").data("tooltip", false);
                     this.element.data("hasErrorTooltip", false);
                 }
 

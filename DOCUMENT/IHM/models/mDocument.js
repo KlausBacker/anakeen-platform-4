@@ -366,7 +366,7 @@ define([
                 var message = attrModel.get("errorMessage");
                 // redo error after document is show
                 if (message) {
-                        attrModel.setErrorMessage("-");// use double affect to force tooltip redraw
+                        attrModel.setErrorMessage(null);// use double affect to force tooltip redraw
                         attrModel.setErrorMessage(message);
                 }
             });

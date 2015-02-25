@@ -56,7 +56,6 @@ define([
         cleanAndRender: function () {
 
             var workflow = this.model.get("workflow");
-            var attributes = this.model.get("attributes");
             var transition = workflow.transition;
             var state = workflow.state;
 
@@ -100,7 +99,6 @@ define([
          */
         displayLoading: function vTransitionDisplayLoading() {
 
-            var workflow = this.model.get("workflow");
 
             var $loading = this.$el.find(".dcpTransition--loading");
             var $okButton = this.$el.find(".dcpTransition-button-ok");
@@ -115,9 +113,7 @@ define([
 
         displayMessages: function (messages) {
             var scope = this;
-            var documentModel = this.model.get("documentModel");
             var tpl = '<div class="dcpTransition--message dcpTransition--message--{{type}}">{{contentText}} {{{contentHtml}}}</div>';
-            var $buttons = this.$el.find(".dcpTransition--buttons");
             var $message = this.$el.find(".dcpTransition--messages");
 
             this.messages = [];
