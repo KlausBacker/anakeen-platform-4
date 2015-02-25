@@ -50,6 +50,9 @@ class View extends Crud
         self::fieldStyle,
         self::fieldScript
     );
+    protected $needSendFamilyStructure=true;
+
+
     /**
      * Create new ressource
      * @throws Exception
@@ -76,6 +79,7 @@ class View extends Crud
             $document = $this->getDocument($resourceId);
             $refreshMsg = $document->refresh();
         }
+
         if (!in_array($this->viewIdentifier, array(
             self::coreViewCreationId,
             self::defaultViewConsultationId,
@@ -95,9 +99,11 @@ class View extends Crud
          * @var \Cvdoc $controlView
          */
         $controlView = DocManager::getDocument($document->cvid);
-        
+
         $vid = $this->viewIdentifier;
+
         $info["view"] = $this->getViewInformation($document, $vid);
+
         if ($vid === "") {
             $coreViews = $this->getCoreViews($document);
             if ($this->viewIdentifier === self::defaultViewConsultationId) {
@@ -115,6 +121,7 @@ class View extends Crud
             $viewInfo = $controlView->getView($vid);
             $info["properties"] = $this->getViewProperties($controlView, $viewInfo);
         }
+
         if ($refreshMsg) {
             $msg = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
             $msg->contentHtml = $refreshMsg;
@@ -379,7 +386,7 @@ class View extends Crud
     {
         $documentData = new DocumentCrud();
         $fields = "document.attributes, document.properties.family, document.properties.icon, document.properties.status, document.properties.revision";
-        if ($document->doctype !== "C") {
+        if ($this->needSendFamilyStructure && $document->doctype !== "C") {
             $fields.= ",family.structure";
         }
         $documentData->setDefaultFields($fields);
@@ -478,6 +485,9 @@ class View extends Crud
             }
         } else {
             $fields = $this->fields;
+        }
+        if (!empty($this->contentParameters["noStructureFamily"])) {
+            $this->needSendFamilyStructure=false;
         }
         
         return $fields;
