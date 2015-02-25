@@ -141,7 +141,7 @@ define([
             $content = this.$el.find(".dcpDocument__frames");
             if ($body.length > 0) {
                 this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
-                    var view, viewTabLabel, viewTabContent, tabItems, customView = null;
+                    var view, viewTabLabel, viewTabContent, tabItems;
                     if (!currentAttr.isDisplayable()) {
                         currentView.trigger("partRender");
                         return;
@@ -367,17 +367,14 @@ define([
                 model: this.transition.model,
                 el: $target
             });
-            this.listenTo(this.transition.model, 'success', function vDocumenttransitionReload( messages) {
-                var xhr=scope.model.fetch();
-                if (xhr) {
-                    xhr.done(function () {
-                        scope.transition.view.remove();
+            this.listenTo(this.transition.model, 'success', function vDocumenttransitionReload(messages) {
+                scope.once("renderDone", function () {
+                    scope.transition.view.remove();
                         _.each(messages, function (message) {
                             scope.trigger("showMessage", message);
                         });
-
-                    });
-                }
+                });
+                scope.model.fetch();
             });
 
             this.transition.model.fetch();
