@@ -1,4 +1,4 @@
-/*global define, _super*/
+/*global define*/
 define([
     'underscore',
     'mustache',

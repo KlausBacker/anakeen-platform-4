@@ -479,6 +479,7 @@ define([
                     return $.fn.dcpEnum;
                 case "password" :
                     return $.fn.dcpPassword;
+                case "thesaurus" :
                 case "account" :
                 case "docid" :
                     return $.fn.dcpDocid;

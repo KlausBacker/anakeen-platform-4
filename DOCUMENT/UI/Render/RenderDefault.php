@@ -151,6 +151,14 @@ class RenderDefault implements IRenderConfig
                         "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ) ,
+                "thesaurus" => array(
+                    "write" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                    ) ,
+                    "read" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                    )
+                ) ,
                 "image" => array(
                     "write" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/image/imageWrite.mustache"
