@@ -143,12 +143,12 @@ define([
                 renderOptions = this.collection.renderOptions;
                 if (renderOptions.common) {
                     optionsCommon = renderOptions.common || {};
-                    labels= optionsCommon.labels || {};
+                    labels= _.clone(optionsCommon.labels) || {};
                 }
 
                 if (renderOptions.types) {
                     optionsValue = renderOptions.types[this.get("type")] || {};
-                    labels= _.extend(labels, optionsValue.labels);
+                    labels= _.extend(labels, _.clone(optionsValue.labels));
                 }
                 if (renderOptions.attributes) {
                     optionsAttribute = renderOptions.attributes[this.id] || {};
