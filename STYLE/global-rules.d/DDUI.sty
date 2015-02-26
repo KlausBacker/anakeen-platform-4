@@ -6,19 +6,18 @@
 */
 
 $sty_desc = array(
-    "name" => "BASE", //Name
-    "description" => "BASE LESS STYLE", //long description
+    "name" => "DDUI", //Name
+    "description" => "DDUI LESS STYLE", //long description
     
 );
 
-$sty_inherit = "STYLE/MODERN/MODERN.sty";
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
         'dcp/document/bootstrap.css' => array(
             "src" => array(
-                "bootstrap" => "STYLE/BASE/Layout/bootstrap.less",
-                "fontAwesome" => "STYLE/BASE/Layout/fontawesome.less"
+                "bootstrap" => "STYLE/DDUI/dduiAssets/bootstrap.less",
+                "fontAwesome" => "STYLE/DDUI/dduiAssets/fontawesome.less"
             ) ,
             "deploy_parser" => array(
                 
@@ -30,8 +29,8 @@ $sty_rules = array(
         ) ,
         'dcp/document/kendo.css' => array(
             "src" => array(
-                "kendo-bootstrap-common" => "STYLE/BASE/Layout/kendo.common.less",
-                "kendo-bootstrap" => "STYLE/BASE/Layout/kendo.bootstrap.less",
+                "kendo-bootstrap-common" => "STYLE/DDUI/dduiAssets/kendo.common.less",
+                "kendo-bootstrap" => "STYLE/DDUI/dduiAssets/kendo.bootstrap.less",
             ) ,
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',

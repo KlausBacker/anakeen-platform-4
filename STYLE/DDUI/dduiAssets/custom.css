@@ -1,0 +1,110 @@
+
+.dcpDocument .dcpAttribute__content {
+
+    background-color: yellow;
+}
+.dcpDocument .dcpArray__content {
+
+    background-color: #ffbc42;
+}
+.dcpDocument .dcpFrame__content {
+
+    background-color: #85dbff;
+}
+.dcpDocument .dcpTab__content {
+
+    background-color: #ffc8f4 ! important;
+}
+
+.dcpDocument [data-attrid=tst_integer_array] {
+    background-color: #ac88ff ! important;
+}
+.dcpDocument .my-red {
+    color:red;
+}
+
+/*
+.dcpDocument {
+    background-color: black;
+}
+
+
+.dcpDocument__header {
+    background-color: yellow;
+}
+.dcpDocument .dcpDocument__footer {
+    background-color: darkgreen;
+}
+
+
+.dcpDocument .dcpDocument__header,
+.dcpDocument .dcpDocument__menu,
+.dcpDocument .dcpDocument__body,
+.dcpDocument .dcpDocument__footer
+{
+    background-color: lightgoldenrodyellow;
+}
+
+.dcpDocument .dcpDocument__body
+{
+    background-color: #85adff;
+}
+.dcpDocument .dcpDocument__menu
+{
+    background-color: #6be1ff;
+}
+.dcpDocument .dcpDocument__header
+{
+    background-color: #fffc9e;
+}
+.dcpDocument .dcpDocument__footer
+{
+    background-color: #7dffdd;
+}
+
+*/
+/*
+.dcpDocument .dcpLabel {
+    color: green;
+}
+
+.dcpDocument .dcpLabel {
+    color: #ffff00;
+    background-color: #262600;
+}
+
+.dcpDocument .dcpLabel.dcpLabel--active {
+    background-color: #262600;
+}
+
+.dcpDocument .dcpLabel.dcpLabel--default {
+    background-color: #262600;
+}
+
+.dcpDocument .dcpLabel.dcpLabel--active a {
+    color: #f7f700;
+}
+
+.dcpDocument .dcpLabel.dcpLabel--default a {
+    color: #eae6e5;
+}
+*/
+/*
+.dcpDocument .dcpLabel[data-attrid="tst_apibase_title"] {
+    color:blue;
+}
+.dcpDocument .dcpLabel[data-attrid=tst_apibase_double_array] {
+    color: #ff6d8c;
+}
+
+
+.dcpDocument .dcpLabel--default[data-attrid=tst_apibase_f_tab_array4]  {
+    color:violet;
+    background: #fdffbb;
+}
+.dcpDocument .dcpLabel--active[data-attrid=tst_apibase_f_tab_array4]  {
+    background:violet;
+    color: #fdffbb;
+}
+
+*/
