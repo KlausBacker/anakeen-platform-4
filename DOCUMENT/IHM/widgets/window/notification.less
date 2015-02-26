@@ -36,6 +36,7 @@
   line-height: @dcpNotifierHeight;
   cursor:pointer;
 }
+
 .dcpNotifications {
   position:fixed;
   top:6em;
@@ -44,6 +45,12 @@
   max-height: 80%;
   overflow: auto;
   z-index: 2;
+  @media (max-width: @screen-sm-min) {
+    right: 0;
+  }
+  @media (max-width: (@dcpNotifierWidth + 30)) {
+    width: 100%;
+  }
 }
 
 .dcpNotification--symbol {
