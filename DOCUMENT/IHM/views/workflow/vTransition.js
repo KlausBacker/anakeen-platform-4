@@ -5,87 +5,113 @@ define([
     'mustache',
     'views/document/vDocument',
     'widgets/workflow/wTransitionWindow'
-], function (_, $, Backbone, Mustache, ViewDocument, transitionWindow) {
+], function (_, $, Backbone, Mustache, ViewDocument) {
     'use strict';
 
     return ViewDocument.extend({
 
-        messages: [],
-        initialize: function vAttributeInitialize(options) {
+        messages : [],
+
+        templates : {
+            htmlContent : '<div class="dcpTransition--content-activity">' +
+                          '{{transition.currentState.displayValue}} <span class="dcpTransition--activity" style="background-color:{{transition.currentState.color}}">&nbsp;</span>' +
+                          '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
+                          '<span><i class="fa fa-chevron-right {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
+                          '<span class="dcpTransition--activity" style="background-color:{{transition.nextState.color}}">&nbsp;</span> {{transition.nextState.displayValue}}' +
+            '</div>',
+
+            htmlStateContent : '<div class="dcpTransition--content-activity">' +
+                               '<span class="dcpTransition--success" >{{labels.success}}</span>' +
+            '</div>',
+
+            htmlStateButtons : '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-default btn-sm">' +
+            '{{labels.close}} </button>',
+
+            htmlLoading : '<div class="dcpTransition--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> {{labels.inprogress}}</div>',
+
+            htmlButtons : '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
+                          '<button title="{{transition.label}}" ' +
+                          'class="dcpTransition-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
+            '{{labels.confirm}}</button>{{/hasAttributes}}'
+        },
+
+        events : {
+            "click .dcpTransition-button-ok " : "clickOnOk",
+            "click .dcpTransition-button-cancel" : "clickOnCancel",
+            "click .dcpTransition-button-close" : "clickOnClose"
+        },
+
+        initialize : function vTransition_initialize(options) {
+            //Call parent
             ViewDocument.prototype.initialize.apply(this, arguments);
             this.listenTo(this.model, 'showError', this.displayError);
             this.listenTo(this.model, 'request', this.displayLoading);
             this.options = options;
         },
 
-
-        remove: function vTransitionRemove() {
+        remove : function vTransition_remove() {
             if (this.transitionWindow) {
                 this.transitionWindow.close();
             }
+            //Call parent
             ViewDocument.prototype.remove.apply(this, arguments);
             //Remove custom CSS
-            var customCss= _.pluck(this.model.get("customCSS"), "key");
-
+            var customCss = _.pluck(this.model.get("customCSS"), "key");
             if (customCss.length > 0) {
                 _.each(customCss, function (cssKey) {
-                    $('link[data-view=true][data-id="'+cssKey+'"]').remove();
+                    $('link[data-view=true][data-id="' + cssKey + '"]').remove();
                 });
             }
-
-
         },
 
-        displayError: function (error) {
-            var workflow = this.model.get("workflow");
-            var attributes = this.model.get("attributes");
-            var $okButton = this.$el.find(".dcpTransition-button-ok");
-            var $cancelButton = this.$el.find(".dcpTransition-button-cancel");
+        displayError : function vTransition_displayError(error) {
+            var workflow = this.model.get("workflow"),
+                attributes = this.model.get("attributes"),
+                $okButton = this.$el.find(".dcpTransition-button-ok"),
+                $cancelButton = this.$el.find(".dcpTransition-button-cancel"),
+                errorMessage;
             this.reactiveWidget();
             if (_.isObject(error)) {
-                var errorMessage = '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
+                errorMessage = '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
                 $(Mustache.render(errorMessage, error)).insertBefore(this.$el.find(".dcpTransition--buttons"));
             }
             if (attributes.length === 0) {
                 $okButton.hide();
                 $cancelButton.text(workflow.labels.close);
             } else {
+                //noinspection JSUnresolvedVariable
                 $okButton.text(workflow.labels.retry);
             }
         },
-        cleanAndRender: function () {
 
-            var workflow = this.model.get("workflow");
-            var transition = workflow.transition;
-            var state = workflow.state;
-
+        cleanAndRender : function vTransition_cleanAndRender() {
+            var workflow = this.model.get("workflow"),
+                transition = workflow.transition,
+                state = workflow.state;
 
             this.render();
-
             this.displayMessages(this.model.get("messages"));
             this.clearError();
             this.reactiveWidget();
             if (!transition && state) {
                 this.model.trigger("success", this.messages);
             }
-
         },
 
-        clearError: function () {
+        clearError : function vTransition_clearError() {
             this.$el.find(".dcpTransition--error").remove();
         },
 
-        reactiveWidget: function () {
+        reactiveWidget : function vTransition_reactiveWidget() {
 
-            var workflow = this.model.get("workflow");
-            var attributes = this.model.get("attributes");
+            var workflow = this.model.get("workflow"),
+                attributes = this.model.get("attributes"),
+                $loading = this.$el.find(".dcpTransition--loading"),
+                $okButton = this.$el.find(".dcpTransition-button-ok"),
+                $cancelButton = this.$el.find(".dcpTransition-button-cancel");
 
-            var $loading = this.$el.find(".dcpTransition--loading");
-            var $okButton = this.$el.find(".dcpTransition-button-ok");
-            var $cancelButton = this.$el.find(".dcpTransition-button-cancel");
             if (attributes.length > 0) {
                 if (workflow && workflow.labels.confirm) {
-
                     $okButton.text(workflow.labels.confirm);
                 }
                 $okButton.prop("disabled", false);
@@ -97,76 +123,62 @@ define([
         /**
          * Display the loading widget
          */
-        displayLoading: function vTransitionDisplayLoading() {
-
-
-            var $loading = this.$el.find(".dcpTransition--loading");
-            var $okButton = this.$el.find(".dcpTransition-button-ok");
-            var $cancelButton = this.$el.find(".dcpTransition-button-cancel");
+        displayLoading : function vTransition_displayLoading() {
+            var $loading = this.$el.find(".dcpTransition--loading"),
+                $okButton = this.$el.find(".dcpTransition-button-ok"),
+                $cancelButton = this.$el.find(".dcpTransition-button-cancel");
 
             $loading.show();
-
             this.clearError();
             $okButton.prop("disabled", true);
             $cancelButton.prop("disabled", true);
         },
 
-        displayMessages: function (messages) {
-            var scope = this;
-            var tpl = '<div class="dcpTransition--message dcpTransition--message--{{type}}">{{contentText}} {{{contentHtml}}}</div>';
-            var $message = this.$el.find(".dcpTransition--messages");
+        displayMessages : function vTransition_displayMessages(messages) {
+            var currentView = this,
+                template = '<div class="dcpTransition--message dcpTransition--message--{{type}}">{{contentText}} {{{contentHtml}}}</div>',
+                $message = this.$el.find(".dcpTransition--messages");
 
             this.messages = [];
 
-            _.each(messages, function (message) {
-                $message.append($(Mustache.render(tpl, message)));
-
-                scope.messages.push({
-                    title: message.contentText,
-                    type: message.type,
-                    htmlMessage: message.contentHtml
+            _.each(messages, function vTransition_analyzeCurrentMessage(message) {
+                $message.append($(Mustache.render(template, message)));
+                //noinspection JSUnresolvedVariable
+                currentView.messages.push({
+                    title :       message.contentText,
+                    type :        message.type,
+                    htmlMessage : message.contentHtml
                 });
-
             });
-
         },
 
         /**
          * Render the document view
          * @returns {*}
          */
-        render: function vTransitionRender() {
-            var scope = this;
-            var workflow = this.model.get("workflow");
-            var attributes = this.model.get("attributes");
-            var transition = workflow.transition;
-            var state = workflow.state;
+        render : function vTransition_render() {
+            var currentView = this,
+                workflow = this.model.get("workflow"),
+                attributes = this.model.get("attributes"),
+                transition = workflow.transition,
+                state = workflow.state;
+
+            //Call parent
             ViewDocument.prototype.render.apply(this, arguments);
 
-
+            //@TODO : refactor dom event directly in the view
             workflow.hasAttributes = (attributes.length > 0);
-
-
             if (transition) {
                 // Transition ask
-                this.$el.find(".dcpTransition--header").append(Mustache.render(this.htmlContent(), workflow));
-
-                this.$el.find(".dcpTransition--messages").append(Mustache.render(this.htmlLoading, workflow));
-
-
-
-                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.htmlButtons, workflow));
-                this.$el.find(".dcpTransition-button-ok").on("click", function () {
-                    scope.model.save();
-                }).tooltip();
-                this.$el.find(".dcpTransition-button-cancel").on("click", function () {
-                    scope.$el.kendoWindow("close");
-                });
+                this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlContent, workflow));
+                this.$el.find(".dcpTransition--messages").append(Mustache.render(this.templates.htmlLoading, workflow));
+                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlButtons, workflow));
+                this.$el.find(".dcpTransition-button-ok").tooltip();
 
                 if (attributes.length === 0) {
                     // Direct send transition without user control
-                    _.defer(function () {
-                        scope.model.save();
+                    _.defer(function vTransition_saveForMe() {
+                        currentView.model.save();
                     });
                 }
                 this.$el.attr("data-state", state.id);
@@ -175,58 +187,38 @@ define([
                 }
             } else if (state) {
                 // Transition success
-                this.$el.find(".dcpTransition--header").append(Mustache.render(this.htmlStateContent(), workflow));
-
-                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.htmlStateButtons, workflow));
-                this.$el.find(".dcpTransition-button-close").on("click", function () {
-
-                    scope.transitionWindow.close();
-                }).tooltip();
+                this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlStateContent, workflow));
+                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlStateButtons, workflow));
+                this.$el.find(".dcpTransition-button-close").tooltip();
 
             }
 
-            if (! this.transitionWindow) {
+            if (!this.transitionWindow) {
                 this.transitionWindow = this.$el.dcpTransitionWindow({
                     window: {
-                        width: "600px",
+                        maxWidth: "600px",
                         height: "auto"
                     }
                 }).data("dcpTransitionWindow");
-
-                    this.$el.kendoWindow("title", workflow.transition.label);
-                    this.$el.kendoWindow("center");
-                    this.$el.kendoWindow("open");
+                this.$el.kendoWindow("title", workflow.transition.label);
+                this.$el.kendoWindow("center");
+                this.$el.kendoWindow("open");
             }
         },
 
-
-        htmlContent: function () {
-            return '<div class="dcpTransition--content-activity">' +
-            '{{transition.currentState.displayValue}} <span class="dcpTransition--activity" style="background-color:{{transition.currentState.color}}">&nbsp;</span>' +
-            '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
-            '<span><i class="fa fa-chevron-right {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
-            '<span class="dcpTransition--activity" style="background-color:{{transition.nextState.color}}">&nbsp;</span> {{transition.nextState.displayValue}}' +
-            '</div>';
-        },
-        htmlStateContent: function () {
-            return '<div class="dcpTransition--content-activity">' +
-            '<span class="dcpTransition--success" >{{labels.success}}</span>' +
-            '</div>'  ;
+        clickOnOk : function vTransition_clickOnOk ()
+        {
+            this.model.save();
         },
 
-        htmlStateButtons : '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-default btn-sm">' +
-            '{{labels.close}}' +
-            '</button>',
+        clickOnCancel : function vTransition_clickOnCancel()
+        {
+            this.$el.kendoWindow("close");
+        },
 
-        htmlLoading:'<div class="dcpTransition--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> {{labels.inprogress}}</div>',
-
-        htmlButtons:
-
-        '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
-        '<button title="{{transition.label}}" ' +
-        'class="dcpTransition-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
-        '{{labels.confirm}}</button>{{/hasAttributes}}'
-
+        clickOnClose : function vTransition_clickOnClose() {
+            this.transitionWindow.close();
+        }
 
     });
 });

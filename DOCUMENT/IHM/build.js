@@ -12,6 +12,8 @@
         "models" :           "IHM/models",
         "views" :            "IHM/views",
         "routers" :          "IHM/routers",
+        "controllerObjects" : "IHM/controllerObjects",
+        "dcpDocumentTest" :   "IHM/test",
         "text" :                 'empty:',
         "jquery" :               "empty:",
         "underscore" :           "empty:",
