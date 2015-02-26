@@ -12,14 +12,13 @@ define([
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'views/document/attributeTemplate',
-    'models/mTransition',
     'kendo/kendo.core',
     'kendo/kendo.tabstrip',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, transitionModel, kendo) {
+             attributeTemplate, kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -344,35 +343,7 @@ define([
          *
          */
         showtransition: function vDocumentShowtransition(transition, nextState) {
-
-            var scope = this;
-            /* global require */
-            var transitionView=require.apply(require, ["views/workflow/vTransition"]);
-            var $target=$('<div class="dcpTransition"/>');
-            this.transition={};
-
-            this.transition.model = new transitionModel({
-                documentId: this.model.id,
-                documentModel: this.model,
-                state: nextState,
-                transition: transition
-            });
-
-            this.transition.view = new transitionView({
-                model: this.transition.model,
-                el: $target
-            });
-            this.listenTo(this.transition.model, 'success', function vDocumenttransitionReload(messages) {
-                scope.once("renderDone", function () {
-                    scope.transition.view.remove();
-                        _.each(messages, function (message) {
-                            scope.trigger("showMessage", message);
-                        });
-                });
-                scope.model.fetch();
-            });
-
-            this.transition.model.fetch();
+            this.model.trigger("showTransition", nextState, transition);
         },
         /**
          * Show the properties widget

@@ -6,11 +6,12 @@ define([
     'models/mDocument',
     'controllerObjects/attributeInterface',
     'views/document/vDocument',
+    'models/mTransition',
     'views/workflow/vTransition',
     'widgets/widget',
     'widgets/window/wConfirm',
     'widgets/window/wLoading'
-], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, DocumentView) {
+], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, DocumentView, TransitionModel, TransitionView) {
     'use strict';
 
     var eventList = ["ready", "change", "message", "error", "validate", "attributeReady",
@@ -264,6 +265,7 @@ define([
                     }
                 });
             });
+            this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayChangeState, this));
         },
 
         /**
@@ -337,6 +339,40 @@ define([
         },
 
         /**
+         * Init and display the change state pop-up
+         *
+         * @param nextState
+         * @param transition
+         */
+        _initAndDisplayChangeState : function documentController_initAndDisplayChangeState(nextState, transition) {
+            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this;
+
+            transitionElements.model = new TransitionModel({
+                documentId :    currentWidget._model.id,
+                documentModel : currentWidget._model,
+                state :         nextState,
+                transition :    transition
+            });
+
+            transitionElements.view = new TransitionView({
+                model : transitionElements.model,
+                el :    $target
+            });
+
+            transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionReload(messages) {
+                currentWidget.view.once("renderDone", function () {
+                    transitionElements.view.remove();
+                    _.each(messages, function documentController_parseMessage(message) {
+                        currentWidget.view.trigger("showMessage", message);
+                    });
+                });
+                currentWidget._model.fetch();
+            });
+
+            transitionElements.model.fetch();
+        },
+
+        /**
          * Get a backbone model of an attribute
          *
          * @param attributeId
@@ -354,7 +390,7 @@ define([
             return this._model.get("attributes").chain().map(function documentController_getRenderedAttribute(currentAttribute) {
                 return {
                     "view" : currentAttribute.haveView(),
-                    "id" : currentAttribute.id
+                    "id" :   currentAttribute.id
                 };
             }).filter(function documentController_suppressNoView(currentAttribut) {
                 return currentAttribut.view.haveView;

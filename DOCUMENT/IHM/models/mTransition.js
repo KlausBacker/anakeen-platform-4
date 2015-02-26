@@ -15,7 +15,6 @@ define([
             attributes: []
         },
 
-
         /**
          * Compute the REST URL for the current document
          *
