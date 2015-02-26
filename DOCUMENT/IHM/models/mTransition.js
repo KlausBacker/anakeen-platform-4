@@ -23,7 +23,7 @@ define([
          *
          * @returns {string}
          */
-        url: function mTransitionurl() {
+        url: function mTransition_url() {
             var urlData = "api/v1/documents/<%= documentId %>/views/states/<%= state %>";
 
             urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
@@ -36,7 +36,7 @@ define([
          * @param response
          * @returns {{properties: (*|properties|exports.defaults.properties|exports.parse.properties|.createObjectExpression.properties), menus: (app.views.shared.menu|*), locale: *, renderMode: string, attributes: Array, templates: *, renderOptions: *}}
          */
-        parse: function mTransitiontParse(response) {
+        parse: function mTransition_Parse(response) {
             var values, attributes, templates, renderOptions;
             var documentModel = this.get("documentModel");
             if (response.success === false) {
@@ -50,9 +50,7 @@ define([
                 renderOptions = documentModel.get("renderOptions");
             }
             if (response.data.transition && response.data.transition.askAttributes.length > 0) {
-
-                _.each(response.data.transition.askAttributes, function (ask, index) {
-
+                _.each(response.data.transition.askAttributes, function mTransition_parseAsk(ask) {
                     attributes.push(ask);
                 });
             }
@@ -60,15 +58,15 @@ define([
 
             if (response.data.templates) {
                 templates.body = response.data.templates.body;
-                _.each(response.data.templates.sections, function (tpl, tplIdx) {
-                    templates.sections[tplIdx] = tpl;
+                _.each(response.data.templates.sections, function mTransition_parseTemplate(templateContent, templateIndex) {
+                    templates.sections[templateIndex] = templateContent;
                 });
             }
 
-            this.initialProperties = _.defaults({
+            this.initialProperties = {
                 "renderMode": "edit",
                 "viewId": "!Transition"
-            }, {});
+            };
 
             values = {
                 initid: null,//response.data.workflow.properties.initid, // set to null to send a POST (create) when save
@@ -96,34 +94,31 @@ define([
          * Used by backbone for the save part
          * @returns {{document: {attributes: *, properties : *}}}
          */
-        toJSON: function mTransitiontoJSON() {
-            var values = this.getValues();
-            var to = {parameters: {}};
+        toJSON: function mTransition_toJSON() {
+            var values = this.getValues(), returnValues = {parameters: {}};
 
-            _.each(values, function (value, aid) {
+            _.each(values, function mTransition_analyzeContent(value, aid) {
                 if (aid === "_workflow_comment_") {
-                    to.comment = (_.isObject(value)) ? value.value : '';
+                    returnValues.comment = (_.isObject(value)) ? value.value : '';
                 } else {
 
                     if (_.isArray(value)) {
                         if (value.length > 0 && _.isArray(value[0])) {
                             // double multiple
-                            to.parameters[aid] = _.map(value, function (aValue) {
+                            returnValues.parameters[aid] = _.map(value, function mTransition_getParameter(aValue) {
                                 return _.pluck(aValue, "value");
                             });
                         } else {
-                            to.parameters[aid] = _.pluck(value, "value");
+                            returnValues.parameters[aid] = _.pluck(value, "value");
                         }
                     } else if (_.isObject(value)) {
-                        to.parameters[aid] = value.value;
+                        returnValues.parameters[aid] = value.value;
                     } else {
-
-                        to.parameters[aid] = value;
-
+                        returnValues.parameters[aid] = value;
                     }
                 }
             });
-            return to;
+            return returnValues;
         }
     });
 });
