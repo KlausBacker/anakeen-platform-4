@@ -203,6 +203,12 @@ define([
                 });
 
                 this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+                    animation : {
+                        open : {
+                            duration : 100,
+                            effects :  "fadeIn"
+                        }
+                    },
                     show: function vDocumentShowTab(event) {
                         var tabId = $(event.item).data("attrid");
                         currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
