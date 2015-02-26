@@ -71,8 +71,14 @@ function autocomplete(Action & $action)
             if (count($filter) == 0) {
                 $serializedFilter = serialize($filter);
             }
-            $attributeObject->phpfunc = "lfamily(D,'$famid',CT,0,$serializedFilter,'$idType):${attributeName},CT";
-            $attributeObject->phpfile = "fdl.php";
+            if ($attributeObject->type === "thesaurus") {
+                $th = $doc->getRawValue("thc_thesaurus");
+                $attributeObject->phpfunc = "getThConcept(D,$th,CT):${attributeName},CT";
+                $attributeObject->phpfile = "thesaurus.php";
+            } else {
+                $attributeObject->phpfunc = "lfamily(D,'$famid',CT,0,$serializedFilter,'$idType):${attributeName},CT";
+                $attributeObject->phpfile = "fdl.php";
+            }
         }
         //BEWARE SET LOT OF HTTPVAR
         //@todo rewrite this part to be less invasive
