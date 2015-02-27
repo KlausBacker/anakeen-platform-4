@@ -12,9 +12,9 @@ define([
 
     return Backbone.View.extend({
         className: "dcpArray",
-        displayLabel:true,
-        customView:false,
-        customRowView:false,
+        displayLabel: true,
+        customView: false,
+        customRowView: false,
         events: {
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
@@ -26,11 +26,12 @@ define([
 
         initialize: function vArray_initialize(options) {
             if (options.displayLabel === false) {
-                this.displayLabel=false;
+                this.displayLabel = false;
             }
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
+            this.listenTo(this.model, 'change:errorMessage', this.setArrayError);
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
@@ -67,36 +68,36 @@ define([
             if (data.nbLines === 0 && data.mode === "read") {
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
-                  if (!this.customView || this.customRowView) {
-                      this.model.get("content").each(function vArray_analyzeContent(currentAttr) {
-                          if (!currentAttr.isDisplayable()) {
-                              return;
-                          }
-                          try {
-                              if (currentAttr.get("isValueAttribute")) {
-                                  scope.columnViews[currentAttr.id] = new ViewColumn({
-                                      el: scope.el,
-                                      els: function vArray_findScope() {
-                                          return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
-                                      },
-                                      originalView: true,
-                                      model: currentAttr,
-                                      parentElement: scope.$el
-                                  });
-                                  scope.columnViews[currentAttr.id].render();
-                              }
-                          } catch (e) {
-                              if (window.dcp.logger) {
-                                  window.dcp.logger(e);
-                              } else {
-                                  console.error(e);
-                              }
-                          }
-                      });
-                  }
+                if (!this.customView || this.customRowView) {
+                    this.model.get("content").each(function vArray_analyzeContent(currentAttr) {
+                        if (!currentAttr.isDisplayable()) {
+                            return;
+                        }
+                        try {
+                            if (currentAttr.get("isValueAttribute")) {
+                                scope.columnViews[currentAttr.id] = new ViewColumn({
+                                    el: scope.el,
+                                    els: function vArray_findScope() {
+                                        return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
+                                    },
+                                    originalView: true,
+                                    model: currentAttr,
+                                    parentElement: scope.$el
+                                });
+                                scope.columnViews[currentAttr.id].render();
+                            }
+                        } catch (e) {
+                            if (window.dcp.logger) {
+                                window.dcp.logger(e);
+                            } else {
+                                console.error(e);
+                            }
+                        }
+                    });
+                }
             }
 
-            if ( this.customView) {
+            if (this.customView) {
                 data.customTemplate = this.customView;
                 data.customLineCallback = function vArray_callCustomLine(index) {
                     return attributeTemplate.customArrayRowView(index, scope.model, scope);
@@ -119,7 +120,7 @@ define([
 
             this.$el.attr("data-attrid", this.model.id);
             // console.timeEnd("render array " + this.model.id);
-            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
+            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             return this;
         },
 
@@ -188,7 +189,7 @@ define([
                                     $(this),
                                     currentViewColumn.getData(options.line));
                                 currentViewColumn.moveValueIndex({});
-                            }, {index:options.line}
+                            }, {index: options.line}
                         );
                     }
                     currentViewColumn.addNewWidget(options.line, customView);
@@ -208,19 +209,27 @@ define([
             return docModel.get('attributes').get(attributeId);
         },
 
-        setError: function vArray_setError(event, data) {
+        setError: function vArray_setError(event, message) {
             var parentId = this.model.get('parent');
-            if (data) {
+
+            if (message) {
                 this.$el.find(".dcpArray__label").addClass("has-error");
             } else {
                 this.$el.find(".dcpArray__label").removeClass("has-error");
             }
+
+
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);
                 if (parentModel) {
-                    parentModel.trigger("errorMessage", event, data);
+                    parentModel.trigger("errorMessage", event, message);
                 }
             }
+        },
+        setArrayError: function vArray_setArrayError(event, message) {
+            this.setError(event, message);
+            // global error on array itself
+            this.$el.dcpArray("setError", message);
         },
 
         hide: function vArray_hide() {

@@ -75,7 +75,7 @@ define([
         },
 
         /**
-         * Display an error message
+         * Display tooltip an error message
          *
          * @param message string or array of [{message:, index:}, ...]
          */
@@ -97,14 +97,12 @@ define([
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
                         scope.element.addClass("has-error");
 
-                         if (scope.element.data("hasErrorTooltip")) {
-                             // need to destroy data to update tooltip
-                             scope.element.find(".input-group").data("tooltip", false);
-                         }
+
                         // need to use sub element because tooltip add a div after element
                         scope.element.find(".input-group").tooltip({
                             placement: "bottom",
                             html: true,
+                            animation: false,
                             title: function () {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
@@ -121,7 +119,11 @@ define([
                 this.element.removeClass("has-error");
                 if (this.element.data("hasErrorTooltip")) {
                     // No use destroy because the destruction is deferred
-                    this.element.find(".input-group").tooltip("close").data("tooltip", false);
+                    kt = this.element.find(".input-group");
+
+                    kt.tooltip("hide").data("bs.tooltip", null);
+
+
                     this.element.data("hasErrorTooltip", false);
                 }
 
@@ -404,10 +406,10 @@ define([
                 var buttonConfig = buttonsConfig[buttonIndex];
 
                 if (buttonConfig && buttonConfig.url) {
-                    var originalEscape=Mustache.escape;
-                    Mustache.escape=encodeURIComponent;
+                    var originalEscape = Mustache.escape;
+                    Mustache.escape = encodeURIComponent;
                     var url = Mustache.render(buttonConfig.url, scope.options.attributeValue);
-                    Mustache.escape=originalEscape;
+                    Mustache.escape = originalEscape;
 
                     if (buttonConfig.target !== "_dialog") {
                         window.open(url, buttonConfig.target);
@@ -484,7 +486,6 @@ define([
                     currentWidget.element.find("input").focus();
                 });
             });
-
 
 
             return this;
