@@ -234,9 +234,9 @@ define([
                     errorCode = "offline";
                 }
                 currentModel.trigger("showError", {
-                    "errorCode": errorCode,
-                    "title": "Unable to synchronise " + currentModel.get("properties").get("title"),
-                    "message": parsedReturn.responseText
+                    "errorCode" : errorCode,
+                    "title" :   "Unable to synchronise " + currentModel.get("properties").get("title"),
+                    "message" : parsedReturn.responseText
                 });
             }
             _.each(parsedReturn.messages, function (message) {

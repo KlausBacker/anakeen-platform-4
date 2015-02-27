@@ -46,6 +46,17 @@ define([
             ViewDocument.prototype.initialize.apply(this, arguments);
             this.listenTo(this.model, 'showError', this.displayError);
             this.listenTo(this.model, 'request', this.displayLoading);
+            this.listenTo(this.model, 'hide', function vTransition_hide() {
+                this.$el.hide();
+            });
+            this.listenTo(this.model, 'show', function vTransition_show()
+            {
+                this.$el.show();
+            });
+            this.listenTo(this.model, 'close', function vTransition_close()
+            {
+                this.$el.kendoWindow("close");
+            });
             this.options = options;
         },
 
@@ -72,7 +83,11 @@ define([
                 errorMessage;
             this.reactiveWidget();
             if (_.isObject(error)) {
-                errorMessage = '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
+                if (error.errorCode === "offline") {
+                    errorMessage = '<div class="dcpTransition--error">{{{htmlMessage}}}</div>';
+                } else {
+                    errorMessage = '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
+                }
                 $(Mustache.render(errorMessage, error)).insertBefore(this.$el.find(".dcpTransition--buttons"));
             }
             if (attributes.length === 0) {
@@ -207,16 +222,28 @@ define([
 
         clickOnOk : function vTransition_clickOnOk ()
         {
-            this.model.save();
+            var event = {prevent : false};
+            this.model.trigger("beforeChangeState", event);
+            if (event.prevent !== false) {
+                this.model.save();
+            }
         },
 
         clickOnCancel : function vTransition_clickOnCancel()
         {
-            this.$el.kendoWindow("close");
+            var event = {prevent : false};
+            this.model.trigger("beforeChangeStateClose", event);
+            if (event.prevent !== false) {
+                this.$el.kendoWindow("close");
+            }
         },
 
         clickOnClose : function vTransition_clickOnClose() {
-            this.transitionWindow.close();
+            var event = {prevent : false};
+            this.model.trigger("beforeChangeStateClose", event);
+            if (event.prevent !== false) {
+                this.transitionWindow.close();
+            }
         }
 
     });
