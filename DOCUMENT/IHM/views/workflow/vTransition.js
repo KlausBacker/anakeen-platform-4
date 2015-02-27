@@ -166,7 +166,6 @@ define([
             //Call parent
             ViewDocument.prototype.render.apply(this, arguments);
 
-            //@TODO : refactor dom event directly in the view
             workflow.hasAttributes = (attributes.length > 0);
             if (transition) {
                 // Transition ask

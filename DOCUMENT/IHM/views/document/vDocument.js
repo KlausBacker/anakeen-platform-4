@@ -5,20 +5,20 @@ define([
     'jquery',
     'backbone',
     'mustache',
+    'models/mDocumentTab',
     'views/document/menu/vMenu',
     'views/document/header/vHeader',
     'views/attributes/frame/vFrame',
     'views/attributes/tab/vTabLabel',
     'views/attributes/tab/vTabContent',
     'views/document/attributeTemplate',
-    'models/mTransition',
     'kendo/kendo.core',
     'kendo/kendo.tabstrip',
     'widgets/history/wHistory',
     'widgets/properties/wProperties'
-], function (_, $, Backbone, Mustache, ViewDocumentMenu, ViewDocumentHeader,
+], function (_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, transitionModel, kendo) {
+             attributeTemplate, kendo) {
     'use strict';
 
     return Backbone.View.extend({
@@ -243,26 +243,14 @@ define([
         },
 
         /**
-         * @Todo rewrite this part to suppress $.ajax
          *
          * Register the current tab for the current user
          *
          * @param tabId
          */
         recordSelectedTab: function vDocumentRecordSelectedTab(tabId) {
-            //var documentView = this;
-            $.ajax({
-                url: "api/v1/documents/" + this.model.get("initid") + '/usertags/lasttab',
-                type: "PUT",
-                dataType: "json",
-                contentType: 'application/json',
-                data: tabId
-            }).fail(function vDocumentTabRegisterError(response) {
-                /*documentView.model.trigger("showError", {
-                 "title" :   "User Tags",
-                 "message" : "Cannot record tab selection"
-                 });*/
-            });
+            var tagTab = new ModelDocumentTab({"initid" : this.model.get("initid"), "tabId" : tabId});
+            tagTab.save();
         },
 
         /**
@@ -355,35 +343,7 @@ define([
          *
          */
         showtransition: function vDocumentShowtransition(transition, nextState) {
-
-            var scope = this;
-            /* global require */
-            var transitionView=require.apply(require, ["views/workflow/vTransition"]);
-            var $target=$('<div class="dcpTransition"/>');
-            this.transition={};
-
-            this.transition.model = new transitionModel({
-                documentId: this.model.id,
-                documentModel: this.model,
-                state: nextState,
-                transition: transition
-            });
-
-            this.transition.view = new transitionView({
-                model: this.transition.model,
-                el: $target
-            });
-            this.listenTo(this.transition.model, 'success', function vDocumenttransitionReload(messages) {
-                scope.once("renderDone", function () {
-                    scope.transition.view.remove();
-                        _.each(messages, function (message) {
-                            scope.trigger("showMessage", message);
-                        });
-                });
-                scope.model.fetch();
-            });
-
-            this.transition.model.fetch();
+            this.model.trigger("showTransition", nextState, transition);
         },
         /**
          * Show the properties widget
