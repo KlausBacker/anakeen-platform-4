@@ -127,7 +127,10 @@ define([
             inputValue.on('blur' + this.eventNamespace, function validateDate(event) {
                 var dateValue = $(this).val().trim();
 
-                scope.setError(null); // clear Error before
+                if (scope.invalidDate) {
+                    scope.setError(null); // clear Error before
+                    scope.invalidDate=false;
+                }
                 scope._trigger("changeattrmenuvisibility", event, {
                     id: "save",
                     visibility: "visible"
@@ -143,6 +146,7 @@ define([
                         _.defer(function () {
                             scope._getFocusInput().focus();
                         });
+                        scope.invalidDate=true;
                         scope.setError(scope.options.labels.invalidDate);
                     }
                 }

@@ -4,7 +4,8 @@ define([
     'mustache',
     'widgets/widget',
     'bootstrap'
-], function (_, Mustache) {
+], function (_, Mustache)
+{
     'use strict';
 
     $.widget("dcp.dcpAttribute", {
@@ -29,7 +30,8 @@ define([
         /**
          * Redraw element with updated values
          */
-        redraw: function wAttributeRedraw() {
+        redraw: function wAttributeRedraw()
+        {
             this.element.empty();
             this._initDom();
             this.element.off(this.eventNamespace);
@@ -42,14 +44,16 @@ define([
          *
          * @returns boolean
          */
-        hasLink: function hasLink() {
+        hasLink: function hasLink()
+        {
             return !!(this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url);
         },
         /**
          * Return the url of link
          * @returns string
          */
-        getLink: function wAttributeGetLink() {
+        getLink: function wAttributeGetLink()
+        {
             if (this.options.renderOptions && this.options.renderOptions.htmlLink) {
                 return this.options.renderOptions.htmlLink;
             }
@@ -61,14 +65,17 @@ define([
          *
          * @param currentElement
          */
-        flashElement: function wAttributeFlashElement(currentElement) {
+        flashElement: function wAttributeFlashElement(currentElement)
+        {
             if (!currentElement) {
                 currentElement = this.element;
             }
             currentElement.addClass('dcpAttribute__value--flash');
-            _.delay(function () {
+            _.delay(function ()
+            {
                 currentElement.removeClass('dcpAttribute__value--flash').addClass('dcpAttribute__value--endflash');
-                _.delay(function () {
+                _.delay(function ()
+                {
                     currentElement.removeClass('dcpAttribute__value--endflash');
                 }, 600);
             }, 10);
@@ -79,7 +86,8 @@ define([
          *
          * @param message string or array of [{message:, index:}, ...]
          */
-        setError: function wAttributeSetError(message) {
+        setError: function wAttributeSetError(message)
+        {
             var kt;
             var scope = this;
             if (message) {
@@ -91,7 +99,8 @@ define([
                 } else {
                     messages = _.toArray(message);
                 }
-                _.each(messages, function (indexMessage) {
+                _.each(messages, function (indexMessage)
+                {
 
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
@@ -103,7 +112,8 @@ define([
                             placement: "bottom",
                             html: true,
                             animation: false,
-                            title: function () {
+                            title: function ()
+                            {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
                             },
@@ -120,10 +130,7 @@ define([
                 if (this.element.data("hasErrorTooltip")) {
                     // No use destroy because the destruction is deferred
                     kt = this.element.find(".input-group");
-
                     kt.tooltip("hide").data("bs.tooltip", null);
-
-
                     this.element.data("hasErrorTooltip", false);
                 }
 
@@ -135,7 +142,8 @@ define([
          *
          * @returns {string}
          */
-        getType: function getType() {
+        getType: function getType()
+        {
             return this.options.type;
         },
 
@@ -144,7 +152,8 @@ define([
          *
          * @returns {string} Read|Write
          */
-        getMode: function getMode() {
+        getMode: function getMode()
+        {
             if (this.options.mode !== "read" && this.options.mode !== "write" && this.options.mode !== "hidden") {
                 throw new Error("Attribute " + this.option.id + " have unknown mode " + this.options.mode);
             }
@@ -156,7 +165,8 @@ define([
          *
          * @returns {*|number|.options.attributeValue}
          */
-        getValue: function getValue() {
+        getValue: function getValue()
+        {
             return this.options.attributeValue;
         },
 
@@ -164,7 +174,8 @@ define([
          * Identify the input where is the raw value
          * @returns {*}
          */
-        getContentElements: function () {
+        getContentElements: function ()
+        {
             return this.element.find('.dcpAttribute__value[name="' + this.options.id + '"]');
         },
 
@@ -174,7 +185,8 @@ define([
          *
          * @returns {*}
          */
-        getWidgetValue: function getWidgetValue() {
+        getWidgetValue: function getWidgetValue()
+        {
             return this.getContentElements().val();
 
         },
@@ -184,7 +196,8 @@ define([
          * @param value
          * @param event
          */
-        setValue: function wAttributeSetValue(value, event) {
+        setValue: function wAttributeSetValue(value, event)
+        {
             this._checkValue(value);
 
             var isEqual = false;
@@ -215,7 +228,8 @@ define([
          *
          * @return this
          */
-        hideInputTooltip: function wAttributeHideInputTooltip(ktTarget) {
+        hideInputTooltip: function wAttributeHideInputTooltip(ktTarget)
+        {
             var $ktTarger = $(ktTarget).closest(".input-group");
             if ($ktTarger.data("hasTooltip")) {
                 $ktTarger.tooltip("hide");
@@ -229,7 +243,8 @@ define([
          *
          * @return this
          */
-        showInputTooltip: function showInputTooltip(ktTarget) {
+        showInputTooltip: function showInputTooltip(ktTarget)
+        {
             var scope = this;
 
             if (scope.options.renderOptions.inputHtmlTooltip) {
@@ -257,7 +272,8 @@ define([
          * Create the widget
          * @private
          */
-        _create: function _create() {
+        _create: function _create()
+        {
             //If no id is provided one id generated
             if (this.options.id === null) {
                 this.options.id = _.uniqueId("widget_" + this.getType());
@@ -281,7 +297,8 @@ define([
             if (this.options.renderOptions && this.options.renderOptions.buttons) {
 
                 // Add index for template to identify buttons
-                this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index) {
+                this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index)
+                {
                     val.index = index;
                     return val;
                 });
@@ -303,7 +320,8 @@ define([
          *
          * @private
          */
-        _destroy: function _destroy() {
+        _destroy: function _destroy()
+        {
             this.element.removeClass("dcpAttribute__content");
             this.element.removeAttr("data-type");
             this.element.removeAttr("data-attrid");
@@ -317,7 +335,8 @@ define([
          *
          * @protected
          */
-        _initDom: function wAttributeInitDom() {
+        _initDom: function wAttributeInitDom()
+        {
 
             this._initMainElementClass();
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
@@ -329,7 +348,8 @@ define([
          *
          * @public
          */
-        _initMainElementClass: function wAttributeInitMainElementClass() {
+        _initMainElementClass: function wAttributeInitMainElementClass()
+        {
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
@@ -339,7 +359,8 @@ define([
          *
          * @protected
          */
-        _initEvent: function _initEvent() {
+        _initEvent: function _initEvent()
+        {
             if (this.getMode() === "write") {
                 this._initDeleteEvent();
                 this._initButtonsEvent();
@@ -359,16 +380,19 @@ define([
          *
          * @protected
          */
-        _initFocusEvent: function wAttributeInitFocusEvent() {
+        _initFocusEvent: function wAttributeInitFocusEvent()
+        {
             if (this.options.renderOptions && this.options.renderOptions.inputHtmlTooltip) {
                 var scope = this;
 
                 var inputTargetFilter = ".dcpAttribute__value";
-                this._getFocusInput().on("focus" + this.eventNamespace, function (event) {
+                this._getFocusInput().on("focus" + this.eventNamespace, function (event)
+                {
                     var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.showInputTooltip(ktTarget);
                 });
-                this._getFocusInput().on("blur." + this.eventNamespace, function (event) {
+                this._getFocusInput().on("blur." + this.eventNamespace, function (event)
+                {
                     var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.hideInputTooltip(ktTarget);
                 });
@@ -380,10 +404,12 @@ define([
          *
          * @protected
          */
-        _initMoveEvent: function wAttributeInitFocusEvent() {
+        _initMoveEvent: function wAttributeInitFocusEvent()
+        {
             var scope = this;
             if (this.options.index !== -1) {
-                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent(event, eventData) {
+                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent(event, eventData)
+                    {
                         var domLine = scope.element.closest('tr').data('line');
                         if (!_.isUndefined(domLine)) {
                             scope.options.index = domLine;
@@ -398,9 +424,11 @@ define([
          *
          * @protected
          */
-        _initButtonsEvent: function _initButtonsEvent() {
+        _initButtonsEvent: function _initButtonsEvent()
+        {
             var scope = this;
-            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function (event) {
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function (event)
+            {
                 var buttonsConfig = scope.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
@@ -447,10 +475,12 @@ define([
          *
          * @protected
          */
-        _initErrorEvent: function wAttributeInitErrotEvent() {
+        _initErrorEvent: function wAttributeInitErrotEvent()
+        {
             var scope = this;
             // tooltip is created in same parent
-            this.element.parent().on("click", ".button-close-error", function (event) {
+            this.element.parent().on("click", ".button-close-error", function (event)
+            {
                 if (scope.element.data("hasErrorTooltip")) {
                     scope.element.find(".input-group").tooltip("destroy");
                     scope.element.data("hasErrorTooltip", false);
@@ -462,7 +492,8 @@ define([
          *
          * @protected
          */
-        _initDeleteEvent: function wAttributeInitDeleteEvent() {
+        _initDeleteEvent: function wAttributeInitDeleteEvent()
+        {
             var currentWidget = this;
 
             // Compose delete button title
@@ -476,13 +507,15 @@ define([
             }
             $deleteButton.attr('title', titleDelete);
 
-            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function (event) {
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function (event)
+            {
                 currentWidget._trigger("delete", event, {
                     index: currentWidget._getIndex(),
                     id: currentWidget.options.id
                 });
                 // main input is focuses after deletion
-                _.defer(function () {
+                _.defer(function ()
+                {
                     currentWidget.element.find("input").focus();
                 });
             });
@@ -495,12 +528,14 @@ define([
          *
          * @protected
          */
-        _initLinkEvent: function wAttributeInitLinkEvent() {
+        _initLinkEvent: function wAttributeInitLinkEvent()
+        {
             var htmlLink = this.getLink();
             var scopeWidget = this;
             if (htmlLink) {
 
-                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event) {
+                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event)
+                {
 
                     var renderTitle, index, dialogDiv, dpcWindow, href = $(this).attr("href"), eventContent;
 
@@ -561,7 +596,8 @@ define([
          *
          * @protected
          */
-        _getFocusInput: function wAttributeFocusInput() {
+        _getFocusInput: function wAttributeFocusInput()
+        {
             return this.element.find('input[name="' + this.options.id + '"]');
         },
 
@@ -571,7 +607,8 @@ define([
          * @returns int
          * @protected
          */
-        _getIndex: function _getIndex() {
+        _getIndex: function _getIndex()
+        {
             if (this.options.index !== -1) {
                 this.options.index = this.element.closest('.dcpArray__content__line').data('line');
             }
@@ -584,7 +621,8 @@ define([
          * @returns {*}
          * @private
          */
-        _getEmptyValue: function _getEmptyValue() {
+        _getEmptyValue: function _getEmptyValue()
+        {
             if (_.isEmpty(this.options.attributeValue) || this.options.attributeValue.value === null) {
 
                 if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
@@ -604,7 +642,8 @@ define([
          * @returns string
          * @private
          */
-        _getTemplate: function _getTemplate(key) {
+        _getTemplate: function _getTemplate(key)
+        {
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }
@@ -623,7 +662,8 @@ define([
          * @param value
          * @returns {boolean}
          */
-        _checkValue: function wAttributeTestValue(value) {
+        _checkValue: function wAttributeTestValue(value)
+        {
             //noinspection JSHint
             if (this._isMultiple()) {
                 // TODO : Verify each array entry
@@ -642,7 +682,8 @@ define([
          * @returns boolean
          * @public
          */
-        _isMultiple: function _isMultiple() {
+        _isMultiple: function _isMultiple()
+        {
             return (this.options.options && this.options.options.multiple === "yes");
         },
 
@@ -653,7 +694,8 @@ define([
          *
          * @returns boolean
          */
-        _hasButtons: function wAttributeHasButtons() {
+        _hasButtons: function wAttributeHasButtons()
+        {
             if (this.getMode() === "write") {
                 return this.options.hasAutocomplete || this.options.deleteButton || (this.options.renderOptions && this.options.renderOptions.buttons && true);
             } else {
