@@ -29,15 +29,15 @@ define([
 
     return Backbone.Model.extend({
 
-        idAttribute : "initid",
+        idAttribute: "initid",
 
-        defaults : {
-            revision :   -1,
-            viewId :     undefined,
-            renderMode : "view",
-            properties : undefined,
-            menus :      undefined,
-            attributes : undefined
+        defaults: {
+            revision: -1,
+            viewId: undefined,
+            renderMode: "view",
+            properties: undefined,
+            menus: undefined,
+            attributes: undefined
         },
 
         /**
@@ -47,7 +47,7 @@ define([
          *
          * @returns {string}
          */
-        url : function mDocumenturl() {
+        url: function mDocumenturl() {
             var urlData = "api/v1/", viewId = this.get("viewId");
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
@@ -74,7 +74,7 @@ define([
          * Initialize event handling
          *
          */
-        initialize : function mDocumentinitialize() {
+        initialize: function mDocumentinitialize() {
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
         },
@@ -84,9 +84,9 @@ define([
          *
          * @returns {{document: {}}}
          */
-        toData : function mDocumenttoData() {
+        toData: function mDocumenttoData() {
             var returnObject = {
-                document : {}
+                document: {}
             };
             returnObject.document.properties = this.getProperties();
             returnObject.menus = this.get("menus").toJSON();
@@ -99,7 +99,7 @@ define([
          *
          * @returns {{}}
          */
-        getValues : function mDocumentdocumentGetValues() {
+        getValues: function mDocumentdocumentGetValues() {
             var values = {};
             this.get("attributes").each(function (currentAttribute) {
                 var currentValue = currentAttribute.get("attributeValue"), i, arrayValues = [];
@@ -109,11 +109,11 @@ define([
                 if (currentAttribute.get("multiple")) {
                     currentValue = _.toArray(currentValue);
                     if (currentValue.length > 0) {
-                        for (i = 0; i < currentValue.length; i+=1) {
-                            arrayValues.push(currentValue[i] || {value : null});
+                        for (i = 0; i < currentValue.length; i += 1) {
+                            arrayValues.push(currentValue[i] || {value: null});
                         }
                     } else {
-                        arrayValues = {value : null};
+                        arrayValues = {value: null};
                     }
                     values[currentAttribute.id] = arrayValues;
                 } else {
@@ -126,7 +126,7 @@ define([
         /**
          * reset all values with a new set of values
          */
-        setValues : function mDocumentdocumentSetValues(values) {
+        setValues: function mDocumentdocumentSetValues(values) {
             this.get("attributes").each(function (currentAttribute) {
                 var newValue = values[currentAttribute.id];
                 if (!currentAttribute.get("isValueAttribute")) {
@@ -141,7 +141,7 @@ define([
         /**
          * reset all properties with a new set of properties
          */
-        setProperties : function mDocumentdocumentSetProperties(values) {
+        setProperties: function mDocumentdocumentSetProperties(values) {
             var model = this;
             _.each(values, function (value, key) {
                 model.get("properties").set(key, value);
@@ -153,8 +153,8 @@ define([
          *
          * @returns {*}
          */
-        getProperties : function mDocumentdocumentGetProperties(initialValue) {
-            var properties={};
+        getProperties: function mDocumentdocumentGetProperties(initialValue) {
+            var properties = {};
             if (initialValue === true) {
                 return this.initialProperties;
             } else {
@@ -173,16 +173,16 @@ define([
          */
         getDocumentData: function mDocumentGetDocumentData() {
 
-            var documentData={
-                properties:this.getProperties(false),
-                attributeValues:this.getValues(),
-                attributeLabels:{},
-                createAttributeView:function ()  {
+            var documentData = {
+                properties: this.getProperties(false),
+                attributeValues: this.getValues(),
+                attributeLabels: {},
+                createAttributeView: function () {
                     return this.id;
                 }
             };
             this.get("attributes").each(function (currentAttribute) {
-                documentData.attributeLabels[currentAttribute.id]=currentAttribute.get("label");
+                documentData.attributeLabels[currentAttribute.id] = currentAttribute.get("label");
             });
             return documentData;
         },
@@ -191,7 +191,7 @@ define([
          *
          * @returns {boolean|*}
          */
-        hasAttributesChanged : function mDocumenthasAttributesChanged() {
+        hasAttributesChanged: function mDocumenthasAttributesChanged() {
             return this.get("attributes").some(function (currentAttr) {
                 return currentAttr.hasChanged("attributeValue");
             });
@@ -204,7 +204,7 @@ define([
          * @param xhr
          * @param options
          */
-        propagateSynchroError : function mDocumentpropagateSynchroError(model, xhr, options) {
+        propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr, options) {
             var attrModel, currentModel = this, parsedReturn, errorCode = null;
             //Analyze XHR
             var messages = [];
@@ -221,8 +221,8 @@ define([
             }
 
             parsedReturn = {
-                messages :     messages,
-                responseText : "Unexpected error: " + xhr.status + " " + xhr.statusText
+                messages: messages,
+                responseText: "Unexpected error: " + xhr.status + " " + xhr.statusText
             };
 
 
@@ -234,9 +234,9 @@ define([
                     errorCode = "offline";
                 }
                 currentModel.trigger("showError", {
-                    "errorCode" : errorCode,
-                    "title" :   "Unable to synchronise " + currentModel.get("properties").get("title"),
-                    "message" : parsedReturn.responseText
+                    "errorCode": errorCode,
+                    "title": "Unable to synchronise " + currentModel.get("properties").get("title"),
+                    "message": parsedReturn.responseText
                 });
             }
             _.each(parsedReturn.messages, function (message) {
@@ -247,17 +247,17 @@ define([
                             if (attrModel) {
                                 attrModel.setErrorMessage(message.data.err, message.data.index);
                                 currentModel.trigger("showError", {
-                                    title :       message.contentText,
-                                    htmlMessage : message.contentHtml,
-                                    message :     attrModel.attributes.label + ' : ' + message.data.err,
-                                    "errorCode" : message.code
+                                    title: message.contentText,
+                                    htmlMessage: message.contentHtml,
+                                    message: attrModel.attributes.label + ' : ' + message.data.err,
+                                    "errorCode": message.code
                                 });
                             } else {
                                 currentModel.trigger("showError", {
-                                    title :       message.contentText,
-                                    htmlMessage : message.contentHtml,
-                                    message :     message.data.err,
-                                    "errorCode" : message.code
+                                    title: message.contentText,
+                                    htmlMessage: message.contentHtml,
+                                    message: message.data.err,
+                                    "errorCode": message.code
                                 });
                             }
                         }
@@ -269,27 +269,27 @@ define([
                                 if (attrModel) {
                                     attrModel.setErrorMessage(constraint.err, constraint.index);
                                     currentModel.trigger("showError", {
-                                        title :       message.contentText,
-                                        htmlMessage : message.contentHtml,
-                                        message :     attrModel.attributes.label + ' : ' + constraint.err,
-                                        "errorCode" : message.code
+                                        title: message.contentText,
+                                        htmlMessage: message.contentHtml,
+                                        message: attrModel.attributes.label + ' : ' + constraint.err,
+                                        "errorCode": message.code
                                     });
                                 } else {
                                     currentModel.trigger("showError", {
-                                        title :       message.contentText,
-                                        htmlMessage : message.contentHtml,
-                                        message :     constraint.err,
-                                        "errorCode" : message.code
+                                        title: message.contentText,
+                                        htmlMessage: message.contentHtml,
+                                        message: constraint.err,
+                                        "errorCode": message.code
                                     });
                                 }
                             });
                         }
                         if (message.data && message.data.preStore) {
                             currentModel.trigger("showError", {
-                                title :       message.contentText,
-                                htmlMessage : message.contentHtml,
-                                message :     message.data.preStore,
-                                "errorCode" : message.code
+                                title: message.contentText,
+                                htmlMessage: message.contentHtml,
+                                message: message.data.preStore,
+                                "errorCode": message.code
                             });
                         }
                         break;
@@ -297,9 +297,9 @@ define([
                     default:
                         if (message.type === "error" && message.contentText) {
                             currentModel.trigger("showError", {
-                                title :       message.contentText,
-                                htmlMessage : message.contentHtml,
-                                "errorCode" : message.code
+                                title: message.contentText,
+                                htmlMessage: message.contentHtml,
+                                "errorCode": message.code
                             });
                         } else {
                             console.error("Error", message);
@@ -311,27 +311,42 @@ define([
         /**
          * Validate the content of the model before synchro
          */
-        validate : function mDocumentvalidate() {
+        validate: function mDocumentvalidate() {
             var success = true,
                 currentDocument = this,
-                errorMessage = [], event = {prevent : false};
+                errorMessage = [], event = {prevent: false};
             this.trigger("validate", event);
             if (event.prevent) {
                 return {
-                    title : "Unable to save"
+                    title: "Unable to save"
                 };
             }
             this.get("attributes").each(function (currentAttribute) {
                 var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
+                currentAttribute.setErrorMessage(null);
+
                 if (currentAttribute.get("needed") === true) {
                     var currentValue = currentAttribute.get("attributeValue"),
                         oneSuccess = true;
+
                     if (currentAttribute.get("multiple")) {
-                        if (!currentValue || currentValue.length === 0) {
-                            oneSuccess = false;
+                        if (parentAttribute.get("type") === "array") {
+                            // Verify each index
+                            _.each(currentValue, function (attributeValue, index) {
+                                if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
+                                    currentAttribute.setErrorMessage("Empty value not allowed", index);
+                                    errorMessage.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label") + ' (row #' + (index + 1) + ') is needed');
+                                    success = false;
+                                }
+                            });
+
+                        } else {
+                            if (!currentValue || currentValue.length === 0) {
+                                oneSuccess = false;
+                            }
                         }
                     } else {
-                        if (!currentValue || !currentValue.value) {
+                        if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
                             currentAttribute.setErrorMessage("Empty value not allowed");
                             oneSuccess = false;
                         }
@@ -343,15 +358,15 @@ define([
                     }
                 }
 
-                if (!currentAttribute.checkConstraint({clearError : false})) {
+                if (!currentAttribute.checkConstraint({clearError: false})) {
                     success = false;
                     errorMessage.push(parentAttribute.get('label') + ' / ' + currentAttribute.get("label") + ' ' + currentAttribute.get("errorMessage"));
                 }
             });
             if (!success) {
                 return {
-                    title :   "Unable to save",
-                    message : errorMessage.join(', ' + "\n")
+                    title: "Unable to save",
+                    message: errorMessage.join(', ' + "\n")
                 };
             }
             return undefined;
@@ -360,14 +375,14 @@ define([
         /**
          * Redraw messages for the error displayed
          */
-        redrawErrorMessages : function mDocumentredrawErrorMessages() {
+        redrawErrorMessages: function mDocumentredrawErrorMessages() {
             var attrModels = this.get('attributes') || [];
             _.each(attrModels.models, function (attrModel) {
                 var message = attrModel.get("errorMessage");
                 // redo error after document is show
                 if (message) {
-                        attrModel.setErrorMessage(null);// use double affect to force tooltip redraw
-                        attrModel.setErrorMessage(message);
+                    attrModel.setErrorMessage(null);// use double affect to force tooltip redraw
+                    attrModel.setErrorMessage(message);
                 }
             });
         },
@@ -375,7 +390,7 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        cleanErrorMessages : function mDocumentcleanErrorMessages() {
+        cleanErrorMessages: function mDocumentcleanErrorMessages() {
             var attrModels = this.get('attributes') || [];
             _.each(attrModels.models, function (attrModel) {
                 attrModel.setErrorMessage(null);
@@ -386,7 +401,7 @@ define([
          * @param response
          * @returns {{properties: (*|properties|exports.defaults.properties|exports.parse.properties|.createObjectExpression.properties), menus: (app.views.shared.menu|*), locale: *, renderMode: string, attributes: Array, templates: *, renderOptions: *}}
          */
-        parse :              function mDocumentParse(response) {
+        parse: function mDocumentParse(response) {
             var values, attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes,
                 neededAttributes, view = response.data.view;
             if (response.success === false) {
@@ -414,7 +429,7 @@ define([
             _.each(attributes, function (currentAttributeStructure) {
                 if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
                     currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
-                    currentAttributeStructure.needed  = (neededAttributes[currentAttributeStructure.id] === true);
+                    currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
                 }
                 if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
                     currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
@@ -422,23 +437,23 @@ define([
             });
 
             this.initialProperties = _.defaults({
-                "renderMode" : renderMode || "view",
-                "viewId" :     response.data.properties.requestIdentifier
+                "renderMode": renderMode || "view",
+                "viewId": response.data.properties.requestIdentifier
             }, view.documentData.document.properties);
 
             values = {
-                initid :        response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
-                properties :    view.documentData.document.properties,
-                menus :         view.menu,
-                viewId :        response.data.properties.requestIdentifier,
-                locale :        view.locale.culture,
-                renderMode :    renderMode || "view",
-                attributes :    attributes,
-                templates :     view.templates,
-                renderOptions : view.renderOptions,
-                customCSS :     view.style.css,
-                customJS :      view.script.js,
-                messages :      response.messages
+                initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
+                properties: view.documentData.document.properties,
+                menus: view.menu,
+                viewId: response.data.properties.requestIdentifier,
+                locale: view.locale.culture,
+                renderMode: renderMode || "view",
+                attributes: attributes,
+                templates: view.templates,
+                renderOptions: view.renderOptions,
+                customCSS: view.style.css,
+                customJS: view.script.js,
+                messages: response.messages
             };
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
@@ -455,7 +470,7 @@ define([
          * @param options
          * @returns {*}
          */
-        "set" : function mDocumentsetValues(attributes, options) {
+        "set": function mDocumentsetValues(attributes, options) {
             var currentModel = this;
             if (attributes.properties !== undefined) {
                 if (currentModel.get("properties") instanceof DocumentProperties) {
@@ -475,9 +490,9 @@ define([
                     currentModel.get("attributes").destroy();
                 }
                 attributes.attributes = new CollectionAttributes(attributes.attributes, {
-                    documentModel : currentModel,
-                    renderOptions : attributes.renderOptions,
-                    renderMode :    attributes.renderMode
+                    documentModel: currentModel,
+                    renderOptions: attributes.renderOptions,
+                    renderMode: attributes.renderMode
                 });
                 //Set the internal content collection (for structure attributes)
                 attributes.attributes.each(function (currentAttributeModel) {
@@ -494,7 +509,7 @@ define([
                 //Propagate the change event to the model
                 currentModel.listenTo(attributes.attributes, "change:attributeValue", function (model, value) {
                     currentModel.trigger("changeValue", {
-                        attributeId : model.id
+                        attributeId: model.id
                     });
                 });
                 //Propagate the validate event to the model
@@ -508,9 +523,9 @@ define([
                 //Propagate the array event modified to the model
                 currentModel.listenTo(attributes.attributes, "array", function (type, model, options) {
                     currentModel.trigger("arrayModified", {
-                        attributeId : model.id,
-                        "type" : type,
-                        "options" : options
+                        attributeId: model.id,
+                        "type": type,
+                        "options": options
                     });
                 });
                 //Propagate the event externalLinkSelected to the model
@@ -539,7 +554,7 @@ define([
          * @param options
          * @returns {*}
          */
-        clear : function mDocumentclear(options) {
+        clear: function mDocumentclear(options) {
             this.destroySubcollection();
             return Backbone.Model.prototype.clear.call(this, options);
         },
@@ -548,7 +563,7 @@ define([
          * Destroy the collection associated to the document (used in the destroy part of the view)
          *
          */
-        destroySubcollection : function mDocumentdestroySubcollection() {
+        destroySubcollection: function mDocumentdestroySubcollection() {
             if (this.get("menus") instanceof CollectionMenus) {
                 this.get("menus").destroy();
             }
@@ -564,17 +579,17 @@ define([
          * Used by backbone for the save part
          * @returns {{document: {attributes: *, properties : *}}}
          */
-        toJSON : function mDocumenttoJSON() {
+        toJSON: function mDocumenttoJSON() {
             return {
-                document : {
-                    properties : this.getProperties(),
-                    attributes : this.getValues()
+                document: {
+                    properties: this.getProperties(),
+                    attributes: this.getValues()
                 }
             };
         },
 
-        fetch : function mDocumentFetch(attributes, options) {
-            var event = {prevent : false}, currentModel = this, afterDone = function afterDone() {
+        fetch: function mDocumentFetch(attributes, options) {
+            var event = {prevent: false}, currentModel = this, afterDone = function afterDone() {
                 currentModel.trigger("close");
             };
             options = options || {};
@@ -593,10 +608,10 @@ define([
             return false;
         },
 
-        save : function mDocumentSave(attributes, options) {
-            var event = {prevent : false}, currentModel = this, afterDone = function afterDone() {
-                    currentModel.trigger("afterSave");
-                    currentModel.trigger("close");
+        save: function mDocumentSave(attributes, options) {
+            var event = {prevent: false}, currentModel = this, afterDone = function afterDone() {
+                currentModel.trigger("afterSave");
+                currentModel.trigger("close");
             };
             options = options || {};
             this.trigger("beforeSave", event);
@@ -614,8 +629,8 @@ define([
             return false;
         },
 
-        destroy : function mDocumentDestroy(attributes, options) {
-            var event = {prevent : false}, currentModel = this, afterDone = function afterDone() {
+        destroy: function mDocumentDestroy(attributes, options) {
+            var event = {prevent: false}, currentModel = this, afterDone = function afterDone() {
                 currentModel.trigger("afterDelete");
                 currentModel.trigger("close");
             };

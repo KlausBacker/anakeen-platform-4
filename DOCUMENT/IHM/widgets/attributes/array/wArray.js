@@ -15,7 +15,10 @@ define([
                 rowCountThreshold: -1
             },
             displayLabel: true,
-            customTemplate: false
+            customTemplate: false,
+            labels: {
+                closeErrorMessage: "Close message"
+            }
         },
 
         /**
@@ -43,7 +46,7 @@ define([
         },
 
         _initDom: function dcpArray_initDom() {
-            var scope = this, content = '';
+            var scope = this;
             if (this.options.mode === "read" && this.options.nbLines === 0) {
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
@@ -336,7 +339,32 @@ define([
             this.element.find(".dcpArray__content__toolCell__check .fa-check").hide();
             this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
         },
+        /**
+         * Display tooltip an error message
+         *
+         * @param message string or array of [{message:, index:}, ...]
+         */
+        setError: function dcpArray_SetError(message) {
+            var scope=this;
+            var $target=this.element.find(".dcpArray__content table.table");
+            if (message) {
+                $target.tooltip({
+                    placement: "top",
+                    trigger: "manual",
+                    animation:false,
+                    html: true,
+                    title: function () {
+                        var rawMessage = $('<div/>').text(message).html();
+                        return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
+                    },
+                    template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
 
+                }).tooltip("show").addClass("dcpArray--error");
+            } else {
+                $target.tooltip("hide").removeClass("dcpArray--error");
+
+            }
+        },
         /**
          * Get the template of the current attribute
          *

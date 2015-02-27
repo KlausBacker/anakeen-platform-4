@@ -1,15 +1,16 @@
 .dcpArray__head__toolCell, .dcpArray__content__toolCell {
-  width : 9.6em;
+  width: 9.6em;
   font-size: 80%;
 }
 
 .dcpArray__content__toolCell__check, .dcpArray__content__toolCell__delete {
   cursor: pointer;
-  float : left;
+  float: left;
 }
+
 .dcpArray__content__toolCell__dragDrop {
   cursor: move;
-  float : left;
+  float: left;
 }
 
 .dcpArray__content__toolCell__delete {
@@ -21,45 +22,58 @@
   visibility: visible;
 }
 
-.dcpArray__dragLine {
-  background-color:fade(@brand-primary,90%);
-  cursor: move;
-  margin:0;
-  opacity:90%;
+.dcpAttribute--needed.dcpArray__head__cell:after {
+  content: "*";
+  padding-left: 0.1em;
 }
+
+.dcpArray__dragLine {
+  background-color: fade(@brand-primary, 90%);
+  cursor: move;
+  margin: 0;
+  opacity: 90%;
+}
+
 .dcpArray__dragLine input,
 .dcpArray__dragLine button,
-.dcpArray__dragLine .k-input ,
+.dcpArray__dragLine .k-input,
 .dcpArray__dragLine .k-button {
   cursor: move;
 }
 
 .dcpArray__dragLine .dcpArray__content__toolCell,
-.dcpArray__dragLine .dcpArray__content__line--selected .dcpArray__content__toolCell__delete
-{
+.dcpArray__dragLine .dcpArray__content__line--selected .dcpArray__content__toolCell__delete {
   visibility: hidden;
 }
 
-.dcpArray__label--count::after {
-  content : ")"
+.dcpArray--error {
+  outline: solid 1px @brand-danger;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px fadein(@brand-danger, 60%);
 }
+
+.dcpArray__label--count::after {
+  content: ")"
+}
+
 .dcpArray__label--count::before {
-  content : "("
+  content: "("
 }
 
 /**
  * To fix all width column to be proportionnal to thead
  */
-.dcpArray__content table{
+.dcpArray__content table {
   table-layout: fixed;
 }
 
 .dcpArray__label {
-  cursor:pointer;
+  cursor: pointer;
 }
+
 .dcp__array__caret {
   width: 1em;
 }
+
 table.responsive {
   border-collapse: collapse;
 }
@@ -79,7 +93,7 @@ table.responsive {
   }
 
   .dcpArray__content__toolCell__delete {
-    float : left;
+    float: left;
   }
 
   /* Hide table headers (but not display: none;, for accessibility) */
@@ -94,7 +108,6 @@ table.responsive {
     border-width: 1px;
     border-style: none solid solid solid;
   }
-
 
   table.responsive tr:nth-of-type(even) {
     background-color: @gray-lighter;
