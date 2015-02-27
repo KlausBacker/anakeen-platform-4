@@ -173,7 +173,7 @@ define([
         checkConstraint : function mAttributecheckConstraint(config) {
             var response = new ConstraintHandler(), responseText;
 
-            config = _.extend({clearError:true, displayError : true}, config);
+            config = _.extend({clearError:this.hasInternalError, displayError : true}, config);
             this.trigger("constraint", {model : this, response : response, value : this.get("attributeValue")});
             if (response.hasConstraintMessages()) {
                 responseText = "";
@@ -181,12 +181,15 @@ define([
                     responseText += currentResponse.message + " ";
                 });
                 if (config.displayError) {
+                    this.hasInternalError=true;
+                    this.setErrorMessage(null); // Force change
                     this.setErrorMessage(responseText);
                 }
                 return false;
             } else {
                 if (config.clearError) {
                     this.setErrorMessage(null);
+                    this.hasInternalError=false;
                 }
                 return true;
             }
