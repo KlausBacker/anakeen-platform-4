@@ -394,9 +394,9 @@ define([
         {
             var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, changeStateInterface;
 
-            result = currentWidget._triggerControllerEvent("beforeDisplayChangeState",
+            result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
                 currentWidget._model.getProperties(), new ChangeStateInterface(null, $target, nextState, transition));
-            if (!result) {
+            if (result) {
                 return this;
             }
 
@@ -417,7 +417,7 @@ define([
             changeStateInterface = new ChangeStateInterface(transitionElements.model, $target, nextState, transition);
 
             //Propagate afterDisplayChange on renderDone
-            transitionElements.view.once("renderDone", function documentController_propagateAfter()
+            transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter()
             {
                 currentWidget._triggerControllerEvent("afterDisplayChangeState",
                     currentWidget._model.getProperties(), changeStateInterface);
@@ -426,20 +426,20 @@ define([
             //Propagate the beforeChangeState
             transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBefore(event)
             {
-                event.prevent = currentWidget._triggerControllerEvent("beforeChangeState",
+                event.prevent = !currentWidget._triggerControllerEvent("beforeChangeState",
                     currentWidget._model.getProperties(), changeStateInterface);
             });
 
             //Propagate the beforeChangeStateClose
             transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateBeforeClose(event)
             {
-                event.prevent = currentWidget._triggerControllerEvent("beforeChangeStateClose",
+                event.prevent = !currentWidget._triggerControllerEvent("beforeChangeStateClose",
                     currentWidget._model.getProperties(), changeStateInterface);
             });
 
             transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateBeforeClose(error)
             {
-                event.prevent = currentWidget._triggerControllerEvent("failChangeState",
+                event.prevent = !currentWidget._triggerControllerEvent("failChangeState",
                     currentWidget._model.getProperties(), changeStateInterface, error);
             });
 

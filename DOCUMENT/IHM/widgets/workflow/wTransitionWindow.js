@@ -28,9 +28,12 @@ define([
                     _.defer(_.bind(currentWidget.destroy, currentWidget));
                 };
             } else {
-                this.options.window.close = _.wrap(this.options.window.close, function dcpTransitionWindow_closeWrap(close) {
-                    close();
-                    _.defer(_.bind(currentWidget.destroy, currentWidget));
+                this.options.window.close = _.wrap(this.options.window.close, function dcpTransitionWindow_closeWrap(close, argument) {
+                    var event = arguments[1];
+                    close.apply(this, _.rest(arguments));
+                    if (!event.isDefaultPrevented()) {
+                        _.defer(_.bind(currentWidget.destroy, currentWidget));
+                    }
                 });
             }
 

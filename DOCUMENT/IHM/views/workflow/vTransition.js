@@ -211,39 +211,40 @@ define([
                 this.transitionWindow = this.$el.dcpTransitionWindow({
                     window: {
                         maxWidth: "600px",
-                        height: "auto"
+                        height: "auto",
+                        close: function registerCloseEvent(e)
+                        {
+                            var event = {prevent: false};
+                            currentView.model.trigger("beforeChangeStateClose", event);
+                            if (event.prevent !== false) {
+                                e.preventDefault();
+                            }
+                        }
                     }
                 }).data("dcpTransitionWindow");
                 this.$el.kendoWindow("title", workflow.transition.label);
                 this.$el.kendoWindow("center");
                 this.$el.kendoWindow("open");
             }
+            this.trigger("renderTransitionWindowDone");
         },
 
         clickOnOk : function vTransition_clickOnOk ()
         {
             var event = {prevent : false};
             this.model.trigger("beforeChangeState", event);
-            if (event.prevent !== false) {
+            if (event.prevent === false) {
                 this.model.save();
             }
         },
 
         clickOnCancel : function vTransition_clickOnCancel()
         {
-            var event = {prevent : false};
-            this.model.trigger("beforeChangeStateClose", event);
-            if (event.prevent !== false) {
-                this.$el.kendoWindow("close");
-            }
+            this.transitionWindow.close();
         },
 
         clickOnClose : function vTransition_clickOnClose() {
-            var event = {prevent : false};
-            this.model.trigger("beforeChangeStateClose", event);
-            if (event.prevent !== false) {
-                this.transitionWindow.close();
-            }
+            this.transitionWindow.close();
         }
 
     });
