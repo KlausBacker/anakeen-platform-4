@@ -1,9 +1,9 @@
 /*global require*/
 require([
-    'widgets/attributes/image/loaderImage',
-    'widgets/attributes/defaultTestAttribute',
-    'widgets/attributes/file/fileTestAttribute',
-    'widgets/attributes/image/imageTestAttribute'
+    'dcpDocument/widgets/attributes/image/loaderImage',
+    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/file/fileTestAttribute',
+    'dcpDocument/widgets/attributes/image/imageTestAttribute'
 ], function (widget, defaultTestSuite, fileTestSuite, imageTestSuite) {
     "use strict";
 

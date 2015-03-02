@@ -1,10 +1,10 @@
 /*global require*/
 require([
-    'widgets/attributes/money/loaderMoney',
-    'widgets/attributes/defaultTestAttribute',
-    'widgets/attributes/int/intTestAttribute',
-    'widgets/attributes/double/doubleTestAttribute',
-    'widgets/attributes/money/moneyTestAttribute',
+    'dcpDocument/widgets/attributes/money/loaderMoney',
+    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/int/intTestAttribute',
+    'dcpDocument/widgets/attributes/double/doubleTestAttribute',
+    'dcpDocument/widgets/attributes/money/moneyTestAttribute',
     'kendo-culture-fr'
 ], function (widget, defaultTestSuite, intTestSuite, doubleTestSuite, moneyTestSuite, kendo) {
     "use strict";

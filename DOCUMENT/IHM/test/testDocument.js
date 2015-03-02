@@ -8,9 +8,9 @@ if (window.__karma__) {
 require([
     'underscore',
     'jquery',
-    'text!template/' + asset + '?app=DOCUMENT&action=TEMPLATE',
-    'models/mDocument',
-    'views/document/vDocument'
+    'text!dcpDocumentTemplate/' + asset + '?app=DOCUMENT&action=TEMPLATE',
+    'dcpDocument/models/mDocument',
+    'dcpDocument/views/document/vDocument'
 ], function (_, $, template, ModelDocument, ViewDocument) {
     "use strict";
 

@@ -2,7 +2,7 @@
 define([
     'underscore',
     'backbone',
-    'models/mDocument'
+    'dcpDocument/models/mDocument'
 ], function (_, Backbone, mDocument) {
     'use strict';
 

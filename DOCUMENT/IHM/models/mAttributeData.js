@@ -1,7 +1,7 @@
 define([
     "underscore",
-    "models/mAttribute",
-    'controllerObjects/constraintHandler'
+    "dcpDocument/models/mAttribute",
+    'dcpDocument/controllerObjects/constraintHandler'
 ], function (_, AttributeModel, ConstraintHandler) {
     'use strict';
 

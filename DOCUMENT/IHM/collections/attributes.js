@@ -2,9 +2,9 @@
 define([
     'underscore',
     'backbone',
-    'models/mAttributeData',
-    'models/mAttributeStructural',
-    'models/mAttributeArray'
+    'dcpDocument/models/mAttributeData',
+    'dcpDocument/models/mAttributeStructural',
+    'dcpDocument/models/mAttributeArray'
 ], function (_, Backbone, ModelAttributeData, ModelAttributeStructural, ModelAttributeArray) {
     'use strict';
 

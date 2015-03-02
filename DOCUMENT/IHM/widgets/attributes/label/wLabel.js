@@ -1,7 +1,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/widget'
+    'dcpDocument/widgets/widget'
 ], function (_, Mustache) {
     'use strict';
 

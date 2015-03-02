@@ -1,42 +1,38 @@
 /*global require*/
 
-(function () {
+(function ()
+{
     "use strict";
     var config = {
-        baseUrl : "DOCUMENT/",
+        baseUrl: "DOCUMENT/",
         // The shim config allows us to configure dependencies for
         // scripts that do not call define() to register a module
-        shim :    {
-            "bootstrap" :       [ 'jquery' ],
-            "kendo" :           [ 'jquery' ],
-            "kendo-culture" :   [ 'kendo' ],
-            "ckeditor-jquery" : [ 'jquery', 'ckeditor' ]
+        shim: {
+            "bootstrap": ['jquery'],
+            "kendo": ['jquery'],
+            "kendo-culture": ['kendo'],
+            "ckeditor-jquery": ['jquery', 'ckeditor']
         },
-        paths :   {
-            "template" :         "../",
-            "widgets" :          "IHM/widgets",
-            "collections" :      "IHM/collections",
-            "models" :           "IHM/models",
-            "views" :            "IHM/views",
-            "routers" :          "IHM/routers",
-            "controllerObjects" : "IHM/controllerObjects",
-            "dcpDocumentTest" :  "IHM/test",
-            "text" :             '../lib/RequireJS/text',
-            "jquery" :           "../lib/KendoUI/2014.3/js/jquery",
-            "kendo/jquery" :     "../lib/KendoUI/2014.3/js/jquery",
-            "underscore" :       "../lib/underscore/underscore",
-            "backbone" :         "../lib/backbone/backbone",
-            "mustache" :         "../lib/mustache.js/mustache",
-            "bootstrap" :        "../lib/bootstrap/3/js/bootstrap",
-            "kendo" :            "../lib/KendoUI/2014.3/js/",
-            "kendo/kendo.core" : "../index.php?jsFile=2014.3/js/kendo.core&app=DOCUMENT&action=WRAP_KENDO",
-            "kendo-culture-fr" : "../lib/KendoUI/2014.3/js/cultures/kendo.culture.fr-FR",
-            "ckeditor" :         "../lib/ckeditor/4/ckeditor",
-            "ckeditor-jquery" :  "../lib/ckeditor/4/adapters/jquery",
-            "datatables":         "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-            "datatables-bootstrap":  "../lib/jquery-dataTables/1.10/bootstrap/3"
+        paths: {
+            "dcpDocumentTemplate": "../",
+            "dcpDocument": "IHM",
+            "dcpDocumentTest": "IHM/test",
+            "text": '../lib/RequireJS/text',
+            "jquery": "../lib/KendoUI/2014.3/js/jquery",
+            "kendo/jquery": "../lib/KendoUI/2014.3/js/jquery",
+            "underscore": "../lib/underscore/underscore",
+            "backbone": "../lib/backbone/backbone",
+            "mustache": "../lib/mustache.js/mustache",
+            "bootstrap": "../lib/bootstrap/3/js/bootstrap",
+            "kendo": "../lib/KendoUI/2014.3/js/",
+            "kendo/kendo.core": "../index.php?jsFile=2014.3/js/kendo.core&app=DOCUMENT&action=WRAP_KENDO",
+            "kendo-culture-fr": "../lib/KendoUI/2014.3/js/cultures/kendo.culture.fr-FR",
+            "ckeditor": "../lib/ckeditor/4/ckeditor",
+            "ckeditor-jquery": "../lib/ckeditor/4/adapters/jquery",
+            "datatables": "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
+            "datatables-bootstrap": "../lib/jquery-dataTables/1.10/bootstrap/3"
         },
-        "waitSeconds" : 60
+        "waitSeconds": 60
     };
     if (window.dcp.ws) {
         config.urlArgs = "ws=" + window.dcp.ws;

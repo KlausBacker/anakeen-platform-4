@@ -4,8 +4,8 @@ if (window.__karma__) {
 }
 
 define([
-    'text!template/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=enum',
-    'widgets/attributes/enum/wEnum'
+    'text!dcpDocumentTemplate/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=enum',
+    'dcpDocument/widgets/attributes/enum/wEnum'
 ], function (data, widget) {
     'use strict';
     window.dcp = window.dcp || {};

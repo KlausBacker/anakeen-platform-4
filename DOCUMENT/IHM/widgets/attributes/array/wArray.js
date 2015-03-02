@@ -2,7 +2,7 @@ define([
     'underscore',
     'mustache',
     'jquery',
-    'widgets/widget'
+    'dcpDocument/widgets/widget'
 ], function (_, Mustache, $) {
     'use strict';
 

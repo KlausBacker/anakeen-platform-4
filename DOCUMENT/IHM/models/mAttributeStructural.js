@@ -1,7 +1,7 @@
 define([
     "underscore",
-    "models/mAttribute",
-    'collections/contentAttributes'
+    "dcpDocument/models/mAttribute",
+    'dcpDocument/collections/contentAttributes'
 ], function (_, AttributeModel, CollectionContentAttributes) {
     'use strict';
 

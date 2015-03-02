@@ -2,7 +2,7 @@
 define([
     'underscore',
     'ckeditor-jquery',
-    'widgets/attributes/text/wText'
+    'dcpDocument/widgets/attributes/text/wText'
 ], function (_) {
     'use strict';
 

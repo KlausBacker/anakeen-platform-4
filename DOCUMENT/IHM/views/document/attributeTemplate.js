@@ -96,7 +96,6 @@ define(function (require, exports, module) {
              * @param config
              */
             customView: function attributeTemplateCustomView(attrModel, callBackView, config) {
-                var scope = this;
                 var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
                 var tplInfo = this.getTemplateInfo(attrModel);
@@ -136,16 +135,16 @@ define(function (require, exports, module) {
                         } else {
                             switch (elAttrModel.get("type")) {
                                 case "array":
-                                    BackView = require.apply(require, ['views/attributes/array/vArray']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/array/vArray']);
                                     break;
                                 case "tab":
-                                    BackView = require.apply(require, ['views/attributes/tab/vTabContent']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/tab/vTabContent']);
                                     break;
                                 case "frame":
-                                    BackView = require.apply(require, ['views/attributes/frame/vFrame']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/frame/vFrame']);
                                     break;
                                 default:
-                                    BackView = require.apply(require, ['views/attributes/vAttribute']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
                             }
 
                             originalView = true;
@@ -179,10 +178,8 @@ define(function (require, exports, module) {
              * @returns {{properties: *, attributes: {}}}
              */
             getLineInfo: function attributeTemplategetLineInfo(attributeModel, index) {
-                var attributeId = attributeModel.id;
                 var documentData = attributeModel.getDocumentModel().getDocumentData();
                 var tplInfo = this.getTemplateInfo(attributeModel);
-                var scope = this;
                 var extraKeys = attributeModel.getOption("templateKeys");
 
 
@@ -198,7 +195,6 @@ define(function (require, exports, module) {
                 tplInfo.rowTools = this.getRowTool(attributeModel);
                 tplInfo.content = {};
                 attributeModel.get("content").each(function (currentAttr) {
-                    var values;
                     var aId = currentAttr.id;
                     var aLabel = currentAttr.get('label');
                     if (!currentAttr.isDisplayable()) {
@@ -231,7 +227,6 @@ define(function (require, exports, module) {
              * @returns {{attribute: {rows: Function}}}
              */
             extractRow: function attributeTemplateExtractRow(attrModel) {
-                var attributeId = attrModel.id;
                 var scope = this;
                 var info;
 
@@ -258,8 +253,6 @@ define(function (require, exports, module) {
              */
             customArrayRowView: function attributeTemplateCustomArrayRowView(index, attrModel, callerView) {
 
-                var customTpl = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
-                    attrModel.getOption("template") + '</div>';
                 var $render;
 
                 // Extract line to customLineTemplate variable
@@ -327,7 +320,6 @@ define(function (require, exports, module) {
             getArrayRowInfo: function attributeTemplategetArrayRowInfo(attributeModel) {
 
                 var rows = [];
-                var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var line = this.getRowTool(attributeModel);
 
                 attributeModel.get("content").each(function (currentAttr) {

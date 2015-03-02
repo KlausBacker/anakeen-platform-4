@@ -2,7 +2,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/attributes/wAttribute',
+    'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect'
 ], function (_, Mustache) {
     'use strict';

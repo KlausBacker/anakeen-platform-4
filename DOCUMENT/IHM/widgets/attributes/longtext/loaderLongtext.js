@@ -4,8 +4,8 @@ if (window.__karma__) {
 }
 
 define([
-    'text!template/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=longtext',
-    'widgets/attributes/longtext/wLongtext'
+    'text!dcpDocumentTemplate/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=longtext',
+    'dcpDocument/widgets/attributes/longtext/wLongtext'
 ], function (data, widget) {
     'use strict';
     window.dcp = window.dcp || {};

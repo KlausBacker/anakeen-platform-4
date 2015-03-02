@@ -1,8 +1,8 @@
 define([
     'underscore',
     'kendo/kendo.core',
-    'widgets/widget',
-    'widgets/history/wRevisionDiff',
+    'dcpDocument/widgets/widget',
+    'dcpDocument/widgets/history/wRevisionDiff',
     'kendo/kendo.window',
     'datatables',
     "datatables-bootstrap/dataTables.bootstrap"

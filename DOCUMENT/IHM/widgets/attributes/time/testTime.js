@@ -1,8 +1,8 @@
 /*global require*/
 require([
-    'widgets/attributes/time/loaderTime',
-    'widgets/attributes/defaultTestAttribute',
-    'widgets/attributes/date/dateTestAttribute',
+    'dcpDocument/widgets/attributes/time/loaderTime',
+    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/date/dateTestAttribute',
     'kendo-culture-fr'
 ], function (widget, defaultTestSuite, dateTestSuite, kendo) {
     "use strict";

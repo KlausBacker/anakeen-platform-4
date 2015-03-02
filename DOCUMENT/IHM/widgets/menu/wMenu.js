@@ -4,7 +4,7 @@ define([
     'mustache',
     "kendo/kendo.menu",
     "kendo/kendo.window",
-    'widgets/widget'
+    'dcpDocument/widgets/widget'
 ], function ($, _, Mustache) {
     'use strict';
 

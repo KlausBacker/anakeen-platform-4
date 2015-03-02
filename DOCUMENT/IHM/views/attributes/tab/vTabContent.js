@@ -3,8 +3,8 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/frame/vFrame',
-    'views/document/attributeTemplate'
+    'dcpDocument/views/attributes/frame/vFrame',
+    'dcpDocument/views/document/attributeTemplate'
 ], function (_, Backbone, Mustache, ViewAttributeFrame, attributeTemplate) {
     'use strict';
 

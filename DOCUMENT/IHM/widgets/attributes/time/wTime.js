@@ -1,7 +1,7 @@
 define([
     'underscore',
     'kendo/kendo.timepicker',
-    'widgets/attributes/date/wDate'
+    'dcpDocument/widgets/attributes/date/wDate'
 ], function (_, kendo) {
     'use strict';
 
