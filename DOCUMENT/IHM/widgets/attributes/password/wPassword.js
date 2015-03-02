@@ -2,7 +2,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/attributes/text/wText'
+    'dcpDocument/widgets/attributes/text/wText'
 ], function (_, Mustache) {
     'use strict';
 

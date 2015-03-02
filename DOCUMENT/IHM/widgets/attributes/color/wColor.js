@@ -3,7 +3,7 @@ define([
     'underscore',
     'mustache',
     'kendo/kendo.colorpicker',
-    'widgets/attributes/text/wText'
+    'dcpDocument/widgets/attributes/text/wText'
 ], function (_, Mustache, kendo) {
     'use strict';
 

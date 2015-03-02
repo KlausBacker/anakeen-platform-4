@@ -1,5 +1,5 @@
 define([
-    'widgets/attributes/int/wInt'
+    'dcpDocument/widgets/attributes/int/wInt'
 ], function () {
     'use strict';
 

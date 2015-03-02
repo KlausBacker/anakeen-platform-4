@@ -2,7 +2,7 @@ define([
     'underscore',
     'mustache',
     'kendo/kendo.core',
-    'widgets/widget',
+    'dcpDocument/widgets/widget',
     'kendo/kendo.window'
 ], function (_, Mustache, kendo) {
     'use strict';

@@ -1,8 +1,8 @@
 /*global require*/
 require([
-    'widgets/attributes/int/loaderInt',
-    'widgets/attributes/defaultTestAttribute',
-    'widgets/attributes/int/intTestAttribute',
+    'dcpDocument/widgets/attributes/int/loaderInt',
+    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/int/intTestAttribute',
     'kendo-culture-fr'
 ], function (widget, defaultTestSuite, intTestSuite, kendo) {
     "use strict";

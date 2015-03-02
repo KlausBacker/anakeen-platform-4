@@ -2,7 +2,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/widget',
+    'dcpDocument/widgets/widget',
     'bootstrap'
 ], function (_, Mustache)
 {

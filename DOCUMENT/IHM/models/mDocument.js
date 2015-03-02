@@ -2,10 +2,10 @@
 define([
     'underscore',
     'backbone',
-    'models/mDocumentProperties',
-    'collections/attributes',
-    'collections/menus',
-    'widgets/window/wNotification'
+    'dcpDocument/models/mDocumentProperties',
+    'dcpDocument/collections/attributes',
+    'dcpDocument/collections/menus',
+    'dcpDocument/widgets/window/wNotification'
 ], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus) {
     'use strict';
 

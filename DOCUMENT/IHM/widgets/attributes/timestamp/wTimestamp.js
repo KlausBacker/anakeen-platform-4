@@ -1,6 +1,6 @@
 define([
     'kendo/kendo.datetimepicker',
-    'widgets/attributes/date/wDate'
+    'dcpDocument/widgets/attributes/date/wDate'
 ], function (kendo) {
     'use strict';
 

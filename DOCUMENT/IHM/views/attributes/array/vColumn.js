@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/vAttribute'
+    'dcpDocument/views/attributes/vAttribute'
 ], function (_, Backbone, Mustache, ViewAttribute) {
     'use strict';
 

@@ -14,6 +14,7 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files :         [
             'test-main.js',
+            {pattern: 'test-css.js', watched: false, served: true, included: false},
             {pattern : '../DOCUMENT/IHM/widgets/attributes/**/test*.js', included : false},
             {pattern : '../DOCUMENT/IHM/test/test*.js', included : false}
           //  {pattern : '../css/dcp/document/bootstrap.css', included : false},
@@ -34,7 +35,8 @@ module.exports = function (config) {
 
         proxies :   {
 //            '/dynacase/' : 'http://dynacase.dev:8081/'
-            '/dynacase/' : 'http://localhost/tmp32/'
+            '/dynacase/' : 'http://localhost:8080/dynacase/',
+            '/resizeimg.php': 'http://localhost:8080/dynacase/resizeimg.php'
         },
 
 
@@ -102,8 +104,8 @@ module.exports = function (config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
 
-       browsers : ['PhantomJS'],
- //       browsers : ['Chrome'],
+    //   browsers : ['PhantomJS'],
+        browsers : ['Chrome'],
 
         browserDisconnectTimeout :   '100000',
         browserNoActivityTimeout :   '100000',
@@ -112,6 +114,6 @@ module.exports = function (config) {
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun :                  true
+        singleRun :                  false
     });
 };

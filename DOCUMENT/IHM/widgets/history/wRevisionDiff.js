@@ -2,7 +2,7 @@ define([
     'underscore',
     'mustache',
     'kendo/kendo.core',
-    'widgets/widget',
+    'dcpDocument/widgets/widget',
     'kendo/kendo.window',
     'datatables',
     "datatables-bootstrap/dataTables.bootstrap"

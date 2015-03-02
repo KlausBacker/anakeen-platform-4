@@ -2,7 +2,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/attributes/wAttribute',
+    'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect',
     'kendo/kendo.combobox',
     'kendo/kendo.dropdownlist'

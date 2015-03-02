@@ -3,7 +3,7 @@
  */
 /*global require*/
 require([
-    'widgets/documentController/documentController'
+    'dcpDocument/widgets/documentController/documentController'
 ], function () {
     'use strict';
     console.timeEnd("js loading");

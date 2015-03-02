@@ -1,7 +1,7 @@
 define([
     'underscore',
     'mustache',
-    'widgets/attributes/wAttribute',
+    'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.autocomplete'
 ], function (_, Mustache) {
     'use strict';

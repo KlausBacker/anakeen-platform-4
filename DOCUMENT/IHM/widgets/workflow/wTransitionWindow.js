@@ -1,6 +1,6 @@
 define([
     'underscore',
-    'widgets/widget',
+    'dcpDocument/widgets/widget',
     'kendo/kendo.window'
 ], function (_) {
     'use strict';

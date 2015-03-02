@@ -1,6 +1,6 @@
 define([
     'mustache',
-    'widgets/attributes/file/wFile'
+    'dcpDocument/widgets/attributes/file/wFile'
 ], function (Mustache) {
     'use strict';
 

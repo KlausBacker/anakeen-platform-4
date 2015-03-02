@@ -1,7 +1,7 @@
 /*global define, _super*/
 define([
     'underscore',
-    'widgets/attributes/text/wText'
+    'dcpDocument/widgets/attributes/text/wText'
 ], function (_) {
     'use strict';
 

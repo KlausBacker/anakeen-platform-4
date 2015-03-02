@@ -3,10 +3,10 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'views/attributes/vAttribute',
-    'views/attributes/array/vColumn',
-    'views/document/attributeTemplate',
-    'widgets/attributes/array/wArray'
+    'dcpDocument/views/attributes/vAttribute',
+    'dcpDocument/views/attributes/array/vColumn',
+    'dcpDocument/views/document/attributeTemplate',
+    'dcpDocument/widgets/attributes/array/wArray'
 ], function (_, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate) {
     'use strict';
 

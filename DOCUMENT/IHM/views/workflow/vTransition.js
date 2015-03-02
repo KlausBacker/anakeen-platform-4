@@ -3,8 +3,8 @@ define([
     'jquery',
     'backbone',
     'mustache',
-    'views/document/vDocument',
-    'widgets/workflow/wTransitionWindow'
+    'dcpDocument/views/document/vDocument',
+    'dcpDocument/widgets/workflow/wTransitionWindow'
 ], function (_, $, Backbone, Mustache, ViewDocument) {
     'use strict';
 

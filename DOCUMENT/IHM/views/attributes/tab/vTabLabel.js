@@ -1,9 +1,8 @@
 /*global define*/
 define([
     'underscore',
-    'backbone',
-    'mustache'
-], function (_, Backbone, Mustache) {
+    'backbone'
+], function (_, Backbone) {
     'use strict';
 
     return Backbone.View.extend({
@@ -12,7 +11,7 @@ define([
 
         className : "dcpTab__label dcpLabel",
 
-        initialize : function () {
+        initialize : function vTabLabel_initialize() {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -24,7 +23,7 @@ define([
             this.listenTo(this.model, 'show', this.show);
         },
 
-        render : function () {
+        render : function vTabLabel_render() {
             //console.time("render tab " + this.model.id);
             this.$el.empty();
             this.$el.text(this.model.get("label"));
@@ -33,7 +32,7 @@ define([
             return this;
         },
 
-        setError :    function (event, data) {
+        setError :    function vTabLabel_setError(event, data) {
             if (data) {
                 this.$el.addClass("has-error");
             } else {
@@ -41,15 +40,15 @@ define([
             }
         },
 
-        updateLabel : function () {
+        updateLabel : function vTabLabel_updateLabel() {
             this.$el.text(this.model.get("label"));
         },
 
-        hide : function hide() {
+        hide : function vTabLabel_hide() {
             this.$el.hide();
         },
 
-        show : function show() {
+        show : function vTabLabel_show() {
             this.$el.show();
         }
     });

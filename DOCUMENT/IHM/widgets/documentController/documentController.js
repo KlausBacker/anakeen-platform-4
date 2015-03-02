@@ -2,16 +2,16 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'routers/router',
-    'models/mDocument',
-    'controllerObjects/attributeInterface',
-    'controllerObjects/changeStateInterface',
-    'views/document/vDocument',
-    'models/mTransition',
-    'views/workflow/vTransition',
-    'widgets/widget',
-    'widgets/window/wConfirm',
-    'widgets/window/wLoading'
+    'dcpDocument/routers/router',
+    'dcpDocument/models/mDocument',
+    'dcpDocument/controllerObjects/attributeInterface',
+    'dcpDocument/controllerObjects/changeStateInterface',
+    'dcpDocument/views/document/vDocument',
+    'dcpDocument/models/mTransition',
+    'dcpDocument/views/workflow/vTransition',
+    'dcpDocument/widgets/widget',
+    'dcpDocument/widgets/window/wConfirm',
+    'dcpDocument/widgets/window/wLoading'
 ], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, ChangeStateInterface, DocumentView, TransitionModel, TransitionView)
 {
     'use strict';

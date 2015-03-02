@@ -1,7 +1,7 @@
 /*global require*/
 require([
-    'widgets/attributes/docid/loaderDocid',
-    'widgets/attributes/defaultTestAttribute'
+    'dcpDocument/widgets/attributes/docid/loaderDocid',
+    'dcpDocument/widgets/attributes/defaultTestAttribute'
 ], function (widget, defaultTestSuite) {
     "use strict";
 

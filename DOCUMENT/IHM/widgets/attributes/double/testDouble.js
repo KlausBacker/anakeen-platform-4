@@ -1,9 +1,9 @@
 /*global require*/
 require([
-    'widgets/attributes/double/loaderDouble',
-    'widgets/attributes/defaultTestAttribute',
-    'widgets/attributes/int/intTestAttribute',
-    'widgets/attributes/double/doubleTestAttribute',
+    'dcpDocument/widgets/attributes/double/loaderDouble',
+    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/int/intTestAttribute',
+    'dcpDocument/widgets/attributes/double/doubleTestAttribute',
     'kendo-culture-fr'
 ], function (widget, defaultTestSuite, intTestSuite, doubleTestSuite, kendo) {
     "use strict";

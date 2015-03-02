@@ -135,16 +135,16 @@ define(function (require, exports, module) {
                         } else {
                             switch (elAttrModel.get("type")) {
                                 case "array":
-                                    BackView = require.apply(require, ['views/attributes/array/vArray']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/array/vArray']);
                                     break;
                                 case "tab":
-                                    BackView = require.apply(require, ['views/attributes/tab/vTabContent']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/tab/vTabContent']);
                                     break;
                                 case "frame":
-                                    BackView = require.apply(require, ['views/attributes/frame/vFrame']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/frame/vFrame']);
                                     break;
                                 default:
-                                    BackView = require.apply(require, ['views/attributes/vAttribute']);
+                                    BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
                             }
 
                             originalView = true;

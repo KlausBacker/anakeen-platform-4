@@ -1,7 +1,7 @@
 /*global require*/
 require([
-    'widgets/attributes/color/loaderColor',
-    'widgets/attributes/defaultTestAttribute'
+    'dcpDocument/widgets/attributes/color/loaderColor',
+    'dcpDocument/widgets/attributes/defaultTestAttribute'
 ], function (widget, defaultTestSuite) {
     "use strict";
 

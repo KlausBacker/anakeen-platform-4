@@ -1,5 +1,5 @@
 define([
-    'widgets/attributes/double/wDouble'
+    'dcpDocument/widgets/attributes/double/wDouble'
 ], function () {
     'use strict';
 

@@ -1,8 +1,8 @@
 /*global require*/
 require([
-    'widgets/attributes/htmltext/loaderHtmltext',
-    'widgets/attributes/defaultTestAttribute',
-    'widgets/attributes/htmltext/htmltextTestAttribute'
+    'dcpDocument/widgets/attributes/htmltext/loaderHtmltext',
+    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/htmltext/htmltextTestAttribute'
 ], function (widget, defaultTestSuite, htmltextTestSuite) {
     "use strict";
 

@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'widgets/menu/wMenu'
+    'dcpDocument/widgets/menu/wMenu'
 ], function (_, Backbone, Mustache, WidgetMenu) {
     'use strict';
 

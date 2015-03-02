@@ -3,7 +3,7 @@ define([
     'underscore',
     'mustache',
     'kendo/kendo.datepicker',
-    'widgets/attributes/text/wText',
+    'dcpDocument/widgets/attributes/text/wText',
     "kendo-culture-fr"
 ], function (_, Mustache, kendo) {
     'use strict';

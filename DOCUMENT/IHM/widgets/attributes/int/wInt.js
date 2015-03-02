@@ -3,7 +3,7 @@ define([
     'underscore',
     'mustache',
     'kendo/kendo.numerictextbox',
-    'widgets/attributes/text/wText',
+    'dcpDocument/widgets/attributes/text/wText',
     "kendo-culture-fr"
 ], function (_, Mustache, kendo) {
     'use strict';
