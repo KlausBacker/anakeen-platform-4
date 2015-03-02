@@ -141,7 +141,10 @@ define([
                         }
                     });
                 }
-
+                this.element.on("click" + this.eventNamespace, ".button-close-error", function (event)
+                {
+                        scope.element.find(".dcpArray__content table.table").tooltip("destroy");
+                });
             }
             this._initCSSResponsive();
         },

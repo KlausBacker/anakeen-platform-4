@@ -479,7 +479,7 @@ define([
         {
             var scope = this;
             // tooltip is created in same parent
-            this.element.parent().on("click", ".button-close-error", function (event)
+            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function (event)
             {
                 if (scope.element.data("hasErrorTooltip")) {
                     scope.element.find(".input-group").tooltip("destroy");
