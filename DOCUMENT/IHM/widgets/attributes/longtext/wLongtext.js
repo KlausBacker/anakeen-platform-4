@@ -61,9 +61,10 @@ define([
             var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom")),
                 element = $element.get(0),
                 maxHeight = parseFloat($element.css("max-height"));
-            if (element && element.scrollHeight > 0) {
+            console.log("h",delta );
+            if (element && element.scrollHeight > element.clientHeight) {
 
-                $element.height(element.scrollHeight - delta);
+                $element.height(element.scrollHeight  - delta +1);
                 if (maxHeight > 0) {
                     if (element.scrollHeight > maxHeight) {
                         $element.css("resize", "none");
