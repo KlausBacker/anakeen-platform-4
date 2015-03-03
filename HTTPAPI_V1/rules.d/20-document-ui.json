@@ -38,8 +38,8 @@
     {
         "order" :        400,
         "class" :        "\\Dcp\\Ui\\Crud\\I18nCollection",
-        "regExp" :       "%^/i18n/$%",
+        "regExp" :       "%^/i18n/(?P<identifier>[^\\/]+)$%",
         "description" :  "Locale catalog",
-        "canonicalURL" : "i18n/"
+        "canonicalURL" : "i18n/<catalog>"
     }
 ]

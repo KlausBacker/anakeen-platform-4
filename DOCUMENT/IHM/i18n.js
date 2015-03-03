@@ -1,5 +1,6 @@
 /*global define*/
-define(["text!dcpDocumentTemplate/api/v1/i18n/"], function i18n(translation)
+// use "text!dcpDocumentTemplate/api/v1/i18n/DOCUMENT" to get only DDUI translation
+define(["text!dcpDocumentTemplate/api/v1/i18n/_all"], function i18n(translation)
 {
     "use strict";
     try {

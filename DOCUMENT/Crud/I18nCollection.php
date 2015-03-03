@@ -12,8 +12,7 @@ use Dcp\HttpApi\V1\Crud\Crud;
 
 class I18nCollection extends Crud
 {
-    protected $userLocale=null;
-
+    protected $userLocale = null;
     /**
      * Create new ressource
      * @throws Exception
@@ -34,15 +33,24 @@ class I18nCollection extends Crud
     {
         $currentLocale = $this->getUserLocale();
         $shortLocale = strtok($currentLocale, '_');
-        $catalog = json_decode(file_get_contents('./locale/' . $shortLocale . '/js/catalog.js'), true);
+        
+        if ($resourceId === "_all") {
+            $file = sprintf("./locale/%s/js/catalog.js", $shortLocale);
+        } else {
+            $file = sprintf("./locale/%s/js/catalog-%s_%s.js", $shortLocale, $resourceId, $shortLocale);
+        }
+        if (!file_exists($file)) {
+            $exception = new Exception("CRUDUI0009", $file);
+            $exception->setHttpStatus("404", "Catalog file not found");
+            throw $exception;
+        }
+        $catalog = json_decode(file_get_contents($file) , true);
         $response = array(
-            "locale" => getLocaleConfig($currentLocale),
+            "locale" => getLocaleConfig($currentLocale) ,
             "catalog" => $catalog
         );
         return $response;
     }
-    
-
     /**
      * Update the ressource
      * @param string|int $resourceId Resource identifier
@@ -69,12 +77,12 @@ class I18nCollection extends Crud
         $exception->setHttpStatus("405", "You cannot delete a view list with the API");
         throw $exception;
     }
-
     /**
      *
      */
-    protected function getUserLocale() {
-        if ($this->userLocale===null) {
+    protected function getUserLocale()
+    {
+        if ($this->userLocale === null) {
             $this->userLocale = \ApplicationParameterManager::getUserParameterValue("CORE", "CORE_LANG");
             if (empty($this->userLocale)) {
                 $this->userLocale = "fr_FR";
@@ -82,7 +90,6 @@ class I18nCollection extends Crud
         }
         return $this->userLocale;
     }
-
     /**
      * Return etag info
      *
@@ -90,7 +97,7 @@ class I18nCollection extends Crud
      */
     public function getEtagInfo()
     {
-
+        
         return $this->getUserLocale();
     }
 }
