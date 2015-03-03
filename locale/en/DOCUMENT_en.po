@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-18 10:17+0100\n"
+"POT-Creation-Date: 2015-03-03 13:29+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -127,18 +127,6 @@ msgctxt "UiMenu"
 msgid "Create !"
 msgstr ""
 
-msgid "DUIT:Document render : unit test"
-msgstr ""
-
-msgid "DUIT:Jasmine"
-msgstr ""
-
-msgid "DUIT:Render a document"
-msgstr ""
-
-msgid "DUIT:Right to autotest"
-msgstr ""
-
 msgctxt "ddui"
 msgid "Default Edit"
 msgstr ""
@@ -195,6 +183,10 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Family View"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Force transition"
 msgstr ""
 
 msgid "Get dynamic sub menu"

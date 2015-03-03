@@ -34,5 +34,12 @@
         "regExp" :       "/^\\/families\\/(?P<familyId>[^\\/]+)\\/documentsViews\\/$/",
         "description" :  "Create a document with the ddui view",
         "canonicalURL" : "families/<familyId>/documentsViews/"
+    },
+    {
+        "order" :        400,
+        "class" :        "\\Dcp\\Ui\\Crud\\I18nCollection",
+        "regExp" :       "%^/i18n/$%",
+        "description" :  "Locale catalog",
+        "canonicalURL" : "i18n/"
     }
 ]

@@ -1,6 +1,23 @@
-pages_mo = $(patsubst %.po,$(localedir)/en/LC_MESSAGES/%.mo,$(wildcard *.po))
+pages_src = $(patsubst %.po,$(localedir)/en/LC_MESSAGES/src/%.po,$(wildcard DOC*.po))
+pages_jssrc = $(patsubst %.po,$(localedir)/en/js/src/%.po,$(wildcard js*.po))
 
-include $(utildir)/PubRule
 
-$(localedir)/en/LC_MESSAGES/%.mo:  /var/tmp/%.gmo  $(localedir)/en/LC_MESSAGES $(wildcard *.po)
+localedir=$(pubdir)/locale
+installcp = cp -f
+#include $(utildir)/PubRule
+
+
+
+$(localedir)/en/js/src:
+	mkdir -p $@
+$(localedir)/en/LC_MESSAGES/src:
+	mkdir -p $@
+
+
+$(localedir)/en/LC_MESSAGES/src/%.po:  %.po $(localedir)/en/LC_MESSAGES/src
 	 $(installcp) $< $@
+
+$(localedir)/en/js/src/%.po:  %.po $(localedir)/en/js/src
+	 $(installcp) $< $@
+
+publish : $(pages_src) $(pages_jssrc)

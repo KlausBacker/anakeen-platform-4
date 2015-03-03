@@ -1,0 +1,36 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DDUI\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-03 13:29+0100\n"
+"PO-Revision-Date: 2015-03-03 13:30+0100\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: French Team\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "ddui"
+msgid "Empty value not allowed"
+msgstr "Les valeurs vides ne sont pas autorisées"
+
+msgctxt "ddui"
+msgid "The field must not be empty"
+msgstr "Le champ ne doit pas être vide"
+
+msgctxt "ddui"
+msgid "Unable to save"
+msgstr "Enregistrement impossible"
+
+msgctxt "ddui"
+msgid "{{parentLabel}} / {{label}} (row # {{index}}) is needed"
+msgstr "{{parentLabel}} / {{label}} (rangée n°{{index}}) est requis"
+
+msgctxt "ddui"
+msgid "{{parentLabel}} / {{label}} is needed"
+msgstr "{{parentLabel}} / {{label}} est requis"

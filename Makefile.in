@@ -17,6 +17,8 @@ pages_not_php = documentUiStub.php
 include $(utildir)/PubRule
 include $(localBuildRule)/localBuildRule
 
+JSPOFIND = DOCUMENT/IHM
+PHPPOFIND = DOCUMENT
 # For all families traduction
 # TRANSCSV += $(shell find ./Families -name "STRUCT_*.csv")
 stub:
