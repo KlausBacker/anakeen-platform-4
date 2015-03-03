@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DDUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 13:29+0100\n"
-"PO-Revision-Date: 2015-03-03 13:30+0100\n"
+"POT-Creation-Date: 2015-03-03 17:04+0100\n"
+"PO-Revision-Date: 2015-03-03 17:09+0100\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: French Team\n"
 "Language: French\n"
@@ -15,17 +15,213 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgctxt "historyUi"
+msgid "Activity"
+msgstr "Activité"
+
+msgctxt "propertyUi"
+msgid "Activity"
+msgstr "Activité"
+
+msgctxt "historyDiffUi"
+msgid "Attribute id"
+msgstr "Id attribut"
+
+msgctxt "historyDiffUi"
+msgid "Attribute label"
+msgstr "Attribut"
+
+msgctxt "historyUi"
+msgid "Code"
+msgstr "Code"
+
+msgctxt "propertyUi"
+msgid "Confidential"
+msgstr "Confidentiel"
+
+msgctxt "propertyUi"
+msgid "Created by"
+msgstr "Créé par"
+
+msgctxt "propertyUi"
+msgid "Creation date"
+msgstr "Date de création"
+
+msgctxt "historyUi"
+msgid "Date"
+msgstr "Date"
+
+msgctxt "historyUi"
+msgid "Diff"
+msgstr "Diff"
+
+msgctxt "historyDiffUi"
+msgid "Difference between two revisions"
+msgstr "Différences entre deux révisions"
+
+msgctxt "historyUi"
+msgid "Document History"
+msgstr "Historique du document"
+
+msgctxt "propertyUi"
+msgid "Document properties"
+msgstr "Propriétés du document"
+
 msgctxt "ddui"
 msgid "Empty value not allowed"
 msgstr "Les valeurs vides ne sont pas autorisées"
+
+msgctxt "propertyUi"
+msgid "Family"
+msgstr "Famille"
+
+msgctxt "historyDiffUi"
+msgid "Filter data"
+msgstr "Filtrer les données"
+
+msgctxt "historyUi"
+msgid "Filter messages"
+msgstr "Filtrer les messages"
+
+msgctxt "historyDiffUi"
+msgid "First document"
+msgstr "Premier document"
+
+msgctxt "historyUi"
+msgid "Hide details"
+msgstr "Cacher les messages"
+
+msgctxt "historyUi"
+msgid "Hide notices"
+msgstr "Cacher les détails"
+
+msgctxt "propertyUi"
+msgid "Identifier"
+msgstr "Identifiant"
+
+msgctxt "propertyUi"
+msgid "Last access date"
+msgstr "Date de dernier accès"
+
+msgctxt "propertyUi"
+msgid "Last modification date"
+msgstr "Date de dernière modification"
+
+msgctxt "historyUi"
+msgid "Level"
+msgstr "Niveau"
+
+msgctxt "historyUi"
+msgid "Loading ..."
+msgstr "Chargement de l'historique"
+
+msgctxt "propertyUi"
+msgid "Locked by"
+msgstr "Verrouillé par"
+
+msgctxt "propertyUi"
+msgid "Logical name"
+msgstr "Nom logique"
+
+msgctxt "historyUi"
+msgid "Message"
+msgstr "Message"
+
+msgctxt "propertyUi"
+msgid "Not confidential"
+msgstr "Non confidentiel"
+
+msgctxt "propertyUi"
+msgid "Not locked"
+msgstr "Aucun verrou"
+
+msgctxt "historyUi"
+msgid "Owner"
+msgstr "Auteur"
+
+msgctxt "propertyUi"
+msgid "Profil"
+msgstr "Profil"
+
+msgctxt "propertyUi"
+msgid "Profil reference"
+msgstr "Profil de référence"
+
+msgctxt "propertyUi"
+msgid "Property"
+msgstr "Propriété"
+
+msgctxt "historyUi"
+msgid "Rev"
+msgstr "Rév"
+
+msgctxt "propertyUi"
+msgid "Revision number"
+msgstr "Révision"
+
+msgctxt "historyDiffUi"
+msgid "Second document"
+msgstr "Deuxième document"
+
+msgctxt "historyUi"
+msgid "See revision number #"
+msgstr "Voir la révision n°#"
+
+msgctxt "historyDiffUi"
+msgid "Show all"
+msgstr "Montrer tout"
+
+msgctxt "historyUi"
+msgid "Show details"
+msgstr "Montrer les messages"
+
+msgctxt "historyUi"
+msgid "Show notices"
+msgstr "Montrer les détails"
+
+msgctxt "historyDiffUi"
+msgid "Show only differences"
+msgstr "Montrer seulement les différences"
+
+msgctxt "historyUi"
+msgid "State"
+msgstr "État"
 
 msgctxt "ddui"
 msgid "The field must not be empty"
 msgstr "Le champ ne doit pas être vide"
 
+msgctxt "propertyUi"
+msgid "Title"
+msgstr "Titre"
+
 msgctxt "ddui"
 msgid "Unable to save"
 msgstr "Enregistrement impossible"
+
+msgctxt "propertyUi"
+msgid "Value"
+msgstr "Valeur"
+
+msgctxt "historyUi"
+msgid "Version"
+msgstr "Version"
+
+msgctxt "propertyUi"
+msgid "Version"
+msgstr "Version"
+
+msgctxt "propertyUi"
+msgid "View controller"
+msgstr "Contrôle de vue"
+
+msgctxt "propertyUi"
+msgid "Workflow"
+msgstr "Cycle de vie"
+
+msgctxt "historyUi"
+msgid "past Revision"
+msgstr "&nbsp; "
 
 msgctxt "ddui"
 msgid "{{parentLabel}} / {{label}} (row # {{index}}) is needed"
@@ -34,3 +230,9 @@ msgstr "{{parentLabel}} / {{label}} (rangée n°{{index}}) est requis"
 msgctxt "ddui"
 msgid "{{parentLabel}} / {{label}} is needed"
 msgstr "{{parentLabel}} / {{label}} est requis"
+
+msgctxt "historyDiffUi"
+msgid ""
+"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>"
+msgstr ""
+"{{title}}  (Révision : {{revision}}). <br/>Créé le <em>{{revdate}}</em>"

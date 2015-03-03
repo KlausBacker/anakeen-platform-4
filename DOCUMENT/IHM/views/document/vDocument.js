@@ -13,12 +13,14 @@ define([
     'dcpDocument/views/attributes/tab/vTabContent',
     'dcpDocument/views/document/attributeTemplate',
     'kendo/kendo.core',
+    'dcpDocument/i18n',
     'kendo/kendo.tabstrip',
     'dcpDocument/widgets/history/wHistory',
     'dcpDocument/widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, kendo) {
+             attributeTemplate, kendo, i18n)
+{
     'use strict';
 
     return Backbone.View.extend({
@@ -28,7 +30,8 @@ define([
         /**
          * Init event
          */
-        initialize: function vDocumentInitialize() {
+        initialize: function vDocumentInitialize()
+        {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'request', this.displayLoading);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
@@ -40,7 +43,8 @@ define([
         /**
          * Clean the associated view and re-render it
          */
-        cleanAndRender: function vDocumentCleanAndRender() {
+        cleanAndRender: function vDocumentCleanAndRender()
+        {
             this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
                 if (this.historyWidget) {
@@ -63,7 +67,8 @@ define([
          * Render the document view
          * @returns {*}
          */
-        render: function vDocumentRender() {
+        render: function vDocumentRender()
+        {
             console.time("render document view");
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
@@ -140,7 +145,8 @@ define([
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
             if ($body.length > 0) {
-                this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
+                this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr)
+                {
                     var view, viewTabLabel, viewTabContent, tabItems;
                     if (!currentAttr.isDisplayable()) {
                         currentView.trigger("partRender");
@@ -181,7 +187,8 @@ define([
                             if (tabItems.length > 1) {
                                 tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
                                     placement: "top",
-                                    title: function vDocumentTooltipTitle() {
+                                    title: function vDocumentTooltipTitle()
+                                    {
                                         return $(this).text(); // set the element text as content of the tooltip
                                     }
                                 });
@@ -203,13 +210,14 @@ define([
                 });
 
                 this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
-                    animation : {
-                        open : {
-                            duration : 100,
-                            effects :  "fadeIn"
+                    animation: {
+                        open: {
+                            duration: 100,
+                            effects: "fadeIn"
                         }
                     },
-                    show: function vDocumentShowTab(event) {
+                    show: function vDocumentShowTab(event)
+                    {
                         var tabId = $(event.item).data("attrid");
                         currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
                         currentView.model.get("attributes").get(tabId).trigger("showTab");
@@ -230,9 +238,11 @@ define([
                     }
                 }
             }
-            $(window.document).on('drop.ddui dragover.ddui', function vDocumentPreventDragDrop(e) {
+            $(window.document).on('drop.ddui dragover.ddui', function vDocumentPreventDragDrop(e)
+            {
                 e.preventDefault();
-            }).on('redrawErrorMessages.ddui', function vDocumentRedrawErrorMessages() {
+            }).on('redrawErrorMessages.ddui', function vDocumentRedrawErrorMessages()
+            {
                 documentView.model.redrawErrorMessages();
             });
             this.$el.addClass("dcpDocument--show");
@@ -248,17 +258,20 @@ define([
          *
          * @param tabId
          */
-        recordSelectedTab: function vDocumentRecordSelectedTab(tabId) {
-            var tagTab = new ModelDocumentTab({"initid" : this.model.get("initid"), "tabId" : tabId});
+        recordSelectedTab: function vDocumentRecordSelectedTab(tabId)
+        {
+            var tagTab = new ModelDocumentTab({"initid": this.model.get("initid"), "tabId": tabId});
             tagTab.save();
         },
 
         /**
          * Publish associated model message
          */
-        publishMessages: function vDocumentPublishMessages() {
+        publishMessages: function vDocumentPublishMessages()
+        {
             var currentView = this;
-            _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage) {
+            _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage)
+            {
                 currentView.trigger("showMessage", {
                     type: aMessage.type,
                     title: aMessage.contentText,
@@ -272,14 +285,18 @@ define([
          *
          * Inject new CSS, remove old CSS
          */
-        renderCss: function vDocumentRenderCss() {
+        renderCss: function vDocumentRenderCss()
+        {
             // add custom css style
             var $target = $("head link:last"),
-                cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" href="<%= path %>" data-id="<%= key %>" data-view="true">'),
+                cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
+                'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
                 customCss = this.model.get("customCSS");
             //Remove old CSS
-            _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink) {
-                var findCss = function (currentCss) {
+            _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink)
+            {
+                var findCss = function (currentCss)
+                {
                     return $(currentLink).data("id") === currentCss.key;
                 };
                 if (_.find(customCss, findCss) === undefined) {
@@ -287,7 +304,8 @@ define([
                 }
             });
             // Inject new CSS
-            _.each(customCss, function vDocumentInjectNewCSS(cssItem) {
+            _.each(customCss, function vDocumentInjectNewCSS(cssItem)
+            {
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
                 if ($existsLink.length === 0) {
                     $target.after(cssLinkTemplate(cssItem));
@@ -298,8 +316,10 @@ define([
          * Inject new JS script in the dom
          * Use the facebook style injection
          */
-        renderJS: function vDocumentRenderJS() {
-            var insertJs = function vDocumentInsertJs(path, key) {
+        renderJS: function vDocumentRenderJS()
+        {
+            var insertJs = function vDocumentInsertJs(path, key)
+            {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
                 script.setAttribute("data-id", key);
@@ -308,7 +328,8 @@ define([
                 document.getElementsByTagName('head')[0].appendChild(script);
             };
 
-            _.each(this.model.get("customJS"), function vDocumentHandleJS(jsItem) {
+            _.each(this.model.get("customJS"), function vDocumentHandleJS(jsItem)
+            {
                 var $existsLink = $('script[data-id=' + jsItem.key + ']');
                 if ($existsLink.length === 0) {
                     insertJs(jsItem.path, jsItem.key);
@@ -320,18 +341,52 @@ define([
          * Show the history widget
          *
          */
-        showHistory: function vDocumentShowHistory() {
+        showHistory: function vDocumentShowHistory()
+        {
             var scope = this;
             this.historyWidget = this.$el.dcpDocumentHistory({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "80%",
-                    height: "80%"
+                    height: "80%",
+                    title: i18n.___("Document History", "historyUi")
+                },
+                labels: {
+                    version: i18n.___("Version", "historyUi"),
+                    revision: i18n.___("Rev", "historyUi"),
+                    state: i18n.___("State", "historyUi"),
+                    activity: i18n.___("Activity", "historyUi"),
+                    owner: i18n.___("Owner", "historyUi"),
+                    code: i18n.___("Code", "historyUi"),
+                    date: i18n.___("Date", "historyUi"),
+                    diff: i18n.___("Diff", "historyUi"),
+                    level: i18n.___("Level", "historyUi"),
+                    message: i18n.___("Message", "historyUi"),
+                    pastRevision: i18n.___("past Revision", "historyUi"),
+                    showDetail: i18n.___("Show details", "historyUi"),
+                    hideDetail: i18n.___("Hide details", "historyUi"),
+                    showNotice: i18n.___("Show notices", "historyUi"),
+                    hideNotice: i18n.___("Hide notices", "historyUi"),
+                    filterMessages: i18n.___("Filter messages", "historyUi"),
+                    linkRevision: i18n.___("See revision number #", "historyUi"),
+                    loading: i18n.___("Loading ...", "historyUi"),
+                    revisionDiffLabels: {
+                        "title": i18n.___("Difference between two revisions", "historyDiffUi"),
+                        "first": i18n.___("First document", "historyDiffUi"),
+                        "second": i18n.___("Second document", "historyDiffUi"),
+                        "attributeId": i18n.___("Attribute id", "historyDiffUi"),
+                        "attributeLabel": i18n.___("Attribute label", "historyDiffUi"),
+                        "documentHeader": i18n.___("{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>", "historyDiffUi"),
+                        "filterMessages": i18n.___("Filter data", "historyDiffUi"),
+                        "showOnlyDiff": i18n.___("Show only differences", "historyDiffUi"),
+                        "showAll": i18n.___("Show all", "historyDiffUi")
+                    }
                 }
             }).data("dcpDocumentHistory");
 
             this.historyWidget.open();
-            this.historyWidget.currentWidget.on("viewRevision", function vDocumentViewRevision(event, data) {
+            this.historyWidget.currentWidget.on("viewRevision", function vDocumentViewRevision(event, data)
+            {
                 scope.model.clear();
                 scope.model.set({initid: data.initid, revision: data.revision});
                 scope.model.fetch();
@@ -342,25 +397,52 @@ define([
          * Show the transition view
          *
          */
-        showtransition: function vDocumentShowtransition(transition, nextState) {
+        showtransition: function vDocumentShowtransition(transition, nextState)
+        {
             this.model.trigger("showTransition", nextState, transition);
         },
         /**
          * Show the properties widget
          *
          */
-        showProperties: function vDocumentShowProperties() {
+        showProperties: function vDocumentShowProperties()
+        {
             var scope = this;
             this.propertiesWidget = this.$el.dcpDocumentProperties({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "400px",
-                    height: "auto"
+                    height: "auto",
+                    title : i18n.___("Document properties", "propertyUi")
+                },
+                labels: {
+                    identifier: i18n.___("Identifier", "propertyUi"),
+                    title: i18n.___("Title","propertyUi"),
+                    logicalName: i18n.___("Logical name","propertyUi"),
+                    revision: i18n.___("Revision number","propertyUi"),
+                    version: i18n.___("Version","propertyUi"),
+                    family: i18n.___("Family","propertyUi"),
+                    lockedBy: i18n.___("Locked by","propertyUi"),
+                    createdBy: i18n.___("Created by","propertyUi"),
+                    notLocked: i18n.___("Not locked","propertyUi"),
+                    confidential: i18n.___("Confidential","propertyUi"),
+                    notConfidential: i18n.___("Not confidential","propertyUi"),
+                    creationDate: i18n.___("Creation date","propertyUi"),
+                    lastModificationDate: i18n.___("Last modification date","propertyUi"),
+                    lastAccessDate: i18n.___("Last access date","propertyUi"),
+                    profil: i18n.___("Profil","propertyUi"),
+                    profilReference: i18n.___("Profil reference","propertyUi"),
+                    viewController: i18n.___("View controller","propertyUi"),
+                    property: i18n.___("Property","propertyUi"),
+                    propertyValue: i18n.___("Value","propertyUi"),
+                    workflow: i18n.___("Workflow","propertyUi"),
+                    activity: i18n.___("Activity","propertyUi")
                 }
             }).data("dcpDocumentProperties");
 
             this.propertiesWidget.open();
-            this.propertiesWidget.currentWidget.on("viewDocument", function vDocumentViewDocument(event, data) {
+            this.propertiesWidget.currentWidget.on("viewDocument", function vDocumentViewDocument(event, data)
+            {
                 scope.model.clear();
                 scope.model.set("initid", data);
                 scope.model.fetch();
@@ -370,10 +452,11 @@ define([
         /**
          * Update the title of the current page
          */
-        updateTitle: function vDocumentUpdateTitle() {
-            var title=this.model.get("properties").get("title");
+        updateTitle: function vDocumentUpdateTitle()
+        {
+            var title = this.model.get("properties").get("title");
 
-            if (! _.isEmpty(title)) {
+            if (!_.isEmpty(title)) {
                 document.title = title;
             }
         },
@@ -381,7 +464,8 @@ define([
         /**
          * Update the icon of the current page
          */
-        updateIcon: function vDocumentUpdateIcon() {
+        updateIcon: function vDocumentUpdateIcon()
+        {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
@@ -390,11 +474,13 @@ define([
          *
          * BEWARE : the deletion delete the model => so this function trigger a reinit event that create a new model
          */
-        deleteDocument : function dvDocumentDocumentDelete() {
+        deleteDocument: function dvDocumentDocumentDelete()
+        {
             var currentView = this, properties = this.model.getProperties();
 
             this.model.destroy({
-                success : function vDocumentDestroyDone() {
+                success: function vDocumentDestroyDone()
+                {
                     currentView.trigger("reinit", properties);
                 }
             });
@@ -403,7 +489,8 @@ define([
         /**
          * Display the loading widget
          */
-        displayLoading: function vDocumentDisplayLoading() {
+        displayLoading: function vDocumentDisplayLoading()
+        {
             this.$el.hide();
             this.trigger("cleanNotification");
             this.trigger("loader", 0);
@@ -415,7 +502,8 @@ define([
          *
          * Hide the loader, show the view
          */
-        showView: function vDocumentShowView() {
+        showView: function vDocumentShowView()
+        {
             this.$el.hide();
             this.trigger("loader", 0);
             this.trigger("loaderHide");
@@ -428,7 +516,8 @@ define([
          *
          * @param viewId
          */
-        closeDocument: function vDocumentCloseDocument(viewId) {
+        closeDocument: function vDocumentCloseDocument(viewId)
+        {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -446,12 +535,14 @@ define([
         /**
          * Save the current document
          */
-        saveDocument: function vDocumentSaveDocument() {
+        saveDocument: function vDocumentSaveDocument()
+        {
             this.trigger("cleanNotification");
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function vDocumentDisplaySuccess() {
+                save.done(function vDocumentDisplaySuccess()
+                {
                     currentView.trigger("showSuccess", {title: "Document Recorded"});
                 });
             }
@@ -460,11 +551,13 @@ define([
         /**
          * Create the current document
          */
-        createDocument: function vDocumentCreateDocument() {
+        createDocument: function vDocumentCreateDocument()
+        {
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function vDocumentDisplaySuccess() {
+                save.done(function vDocumentDisplaySuccess()
+                {
                     currentView.trigger("showSuccess", {title: "Document Saved"});
                 });
             }
@@ -474,7 +567,8 @@ define([
         /**
          * load another document document
          */
-        loadDocument: function vDocumentLoadDocument(docid, viewId) {
+        loadDocument: function vDocumentLoadDocument(docid, viewId)
+        {
             this.model.clear();
             this.model.set({initid: docid});
             if (viewId) {
@@ -489,7 +583,8 @@ define([
          * @param options
          * @returns {*}
          */
-        actionDocument: function vDocumentActionDocument(options) {
+        actionDocument: function vDocumentActionDocument(options)
+        {
             var event = {prevent: false};
             this.model.trigger("internalLinkSelected", event, options);
             if (event.prevent) {
@@ -531,7 +626,8 @@ define([
          * @param key
          * @returns {*}
          */
-        getTemplates: function vDocumentGetTemplates(key) {
+        getTemplates: function vDocumentGetTemplates(key)
+        {
             var templates = {};
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");
@@ -551,7 +647,8 @@ define([
          *
          * @returns {*}
          */
-        remove: function vDocumentRemove() {
+        remove: function vDocumentRemove()
+        {
             try {
                 if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
                     this.kendoTabs.data("kendoTabStrip").destroy();
