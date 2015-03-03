@@ -39,7 +39,6 @@ class I18nCollection extends Crud
             "locale" => getLocaleConfig($currentLocale),
             "catalog" => $catalog
         );
-
         return $response;
     }
     
