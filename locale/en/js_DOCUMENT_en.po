@@ -1,0 +1,238 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DDUI\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-03 17:04+0100\n"
+"PO-Revision-Date: 2015-03-03 12:53+0100\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: English Team\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "historyUi"
+msgid "Activity"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Activity"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Attribute id"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Attribute label"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Code"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Confidential"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Created by"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Creation date"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Date"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Diff"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Difference between two revisions"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Document History"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Document properties"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Empty value not allowed"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Family"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Filter data"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Filter messages"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "First document"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Hide details"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Hide notices"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Identifier"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Last access date"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Last modification date"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Level"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Loading ..."
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Locked by"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Logical name"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Message"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Not confidential"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Not locked"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Owner"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Profil"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Profil reference"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Property"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Rev"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Revision number"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Second document"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "See revision number #"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Show all"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Show details"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Show notices"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid "Show only differences"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "State"
+msgstr ""
+
+msgctxt "ddui"
+msgid "The field must not be empty"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Title"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Unable to save"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Value"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "Version"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Version"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "View controller"
+msgstr ""
+
+msgctxt "propertyUi"
+msgid "Workflow"
+msgstr ""
+
+msgctxt "historyUi"
+msgid "past Revision"
+msgstr ""
+
+msgctxt "ddui"
+msgid "{{parentLabel}} / {{label}} (row # {{index}}) is needed"
+msgstr ""
+
+msgctxt "ddui"
+msgid "{{parentLabel}} / {{label}} is needed"
+msgstr ""
+
+msgctxt "historyDiffUi"
+msgid ""
+"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>"
+msgstr ""

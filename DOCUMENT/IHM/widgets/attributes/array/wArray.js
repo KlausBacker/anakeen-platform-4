@@ -80,7 +80,8 @@ define([
 
 
                     if (this.options.mode === "write") {
-                        this.element.find('.dcpArray__tools button').tooltip({
+                        this.element.find('.dcpArray__tools').tooltip({
+                            selector: ".dcpArray__button",
                             placement: "top"
                         });
                         this.element.tooltip({

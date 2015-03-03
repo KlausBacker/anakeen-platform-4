@@ -40,7 +40,9 @@ define([
                 showNotice: "Show notices",
                 hideNotice: "Hide notices",
                 filterMessages: "Filter messages",
-                linkRevision: "See revision number #"
+                linkRevision: "See revision number #",
+                loading: "Loading ...",
+                revisionDiffLabels : {}
             }
         },
         htmlCaneva: function () {
@@ -116,8 +118,10 @@ define([
                         secondRevision: $(selectedDiff.get(0)).data("revision"),
                         window: {
                             width: "70%",
-                            height: "70%"
-                        }
+                            height: "70%",
+                            title:scope.options.labels.revisionDiffLabels.title
+                        },
+                        labels:scope.options.labels.revisionDiffLabels
                     }).data("dcpRevisionDiff");
 
                     diffWidget.open();
@@ -187,7 +191,8 @@ define([
                 "scrollCollapse": false,
                 "info": false,
                 "language": {
-                    "search": " "
+                    "search": " ",
+                    "loadingRecords" : this.options.labels.loading
                 },
                 "columns": [
                     {
@@ -363,7 +368,7 @@ define([
 
 
                 "ajax": function (data, callback) {
-                    var myData = [];
+
                     $.getJSON("api/v1/documents/" + historyWidget.options.documentId + '/history/').
                         done(function (response) {
                             var tableData = historyWidget._fillDataTable(response);
