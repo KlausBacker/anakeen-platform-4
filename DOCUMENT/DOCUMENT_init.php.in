@@ -11,6 +11,7 @@ JSON;
 $app_const = array(
     "INIT" => "yes",
     "VERSION" => "@VERSION@-@RELEASE@",
-    "LOGGER" => "$loggerClass"
+    "LOGGER" => "$loggerClass",
+    "MODE_DEBUG" => "FALSE"
 );
 ?>

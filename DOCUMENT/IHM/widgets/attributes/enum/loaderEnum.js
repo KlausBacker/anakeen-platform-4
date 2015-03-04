@@ -4,7 +4,7 @@ if (window.__karma__) {
 }
 
 define([
-    'text!dcpDocumentTemplate/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=enum',
+    'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=enum',
     'dcpDocument/widgets/attributes/enum/wEnum'
 ], function (data, widget) {
     'use strict';

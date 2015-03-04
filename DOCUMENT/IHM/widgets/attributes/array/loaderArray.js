@@ -4,7 +4,7 @@ if (window.__karma__) {
 }
 
 define([
-    'text!dcpDocumentTemplate/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=array',
+    'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=array',
     'dcpDocument/widgets/attributes/array/wArray'
 ], function (data, widget) {
     'use strict';

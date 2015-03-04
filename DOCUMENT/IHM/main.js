@@ -3,8 +3,10 @@
  */
 /*global require*/
 require([
+    'underscore',
+    'jquery',
     'dcpDocument/widgets/documentController/documentController'
-], function () {
+], function (_, $) {
     'use strict';
     console.timeEnd("js loading");
 
@@ -17,4 +19,7 @@ require([
     });
 
     window.dcp.document = $document;
+    if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
+        window.documentLoaded($document);
+    }
 });

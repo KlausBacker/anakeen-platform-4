@@ -14,7 +14,7 @@
             "ckeditor-jquery": ['jquery', 'ckeditor']
         },
         paths: {
-            "dcpDocumentTemplate": "../",
+            "dcpContextRoot": "../",
             "dcpDocument": "IHM",
             "dcpDocumentTest": "IHM/test",
             "text": '../lib/RequireJS/text',
