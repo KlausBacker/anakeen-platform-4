@@ -8,7 +8,7 @@ if (window.__karma__) {
 require([
     'underscore',
     'jquery',
-    'text!dcpDocumentTemplate/' + asset + '?app=DOCUMENT&action=TEMPLATE',
+    'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
 ], function (_, $, template, ModelDocument, ViewDocument) {

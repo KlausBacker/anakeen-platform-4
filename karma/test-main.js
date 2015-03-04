@@ -113,7 +113,7 @@ require.config({
     },
     paths: {
         //noinspection Annotator
-        'dcpDocumentTemplate': '../../',
+        'dcpContextRoot': '../../',
         "dcpDocument": "../IHM",
         "dcpDocumentTest": "../IHM/test",
         "text": '../../lib/RequireJS/text',

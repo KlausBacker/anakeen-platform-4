@@ -4,7 +4,7 @@ if (window.__karma__) {
 }
 
 define([
-    'text!dcpDocumentTemplate/'+asset+'?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=default',
+    'text!dcpContextRoot/'+asset+'?app=DOCUMENT&action=TEMPLATE&part=attribute&subPart=default',
     'dcpDocument/widgets/attributes/timestamp/wTimestamp'
 ], function (data, widget) {
     'use strict';
