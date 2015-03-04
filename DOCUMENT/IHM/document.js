@@ -8,7 +8,7 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" src="?app=DOCUMENT&id=<%= id %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= id %>"></iframe>'),
 
         _create: function dcpDocument_create()
         {
@@ -16,6 +16,7 @@ define([
                 throw new Error("Unable to create a document without index");
             }
             this._render();
+            this._bindEvents();
         },
 
         _render: function dcpDocument_render()
@@ -55,6 +56,27 @@ define([
                 }
                 innerWindow.contentWindow.documentLoaded = loadedCallback;
             });
+        },
+
+        _bindEvents : function dcpDocument_bindEvents() {
+            $(window).resize(_.debounce(_.bind(this._resize, this), 50));
+            this._resize();
+        },
+
+        _resize : function dcpDocument_resize() {
+            var event = this._trigger("resize"),
+                $documentWrapper = this.element.find(".dcpDocumentWrapper"),
+                element = this.element;
+            //the computation can be done by an external function and default prevented
+            if (event) {
+                //compute two times height (one for disapear horizontal scrollbar, two to get the actual size)
+                $documentWrapper.height(element.innerHeight() - 3);
+                $documentWrapper.width(element.innerWidth());
+                //defer height computation to let the time to scrollbar disapear
+                _.defer(function dcpDocument_computeHeight() {
+                    $documentWrapper.height(element.innerHeight() - 3);
+                });
+            }
         }
     });
 
