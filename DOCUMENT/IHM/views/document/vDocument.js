@@ -543,7 +543,7 @@ define([
             if (save && save.done) {
                 save.done(function vDocumentDisplaySuccess()
                 {
-                    currentView.trigger("showSuccess", {title: "Document Recorded"});
+                    currentView.trigger("showSuccess", {title: i18n.___("Document Recorded", "ddui")});
                 });
             }
         },
@@ -558,7 +558,7 @@ define([
             if (save && save.done) {
                 save.done(function vDocumentDisplaySuccess()
                 {
-                    currentView.trigger("showSuccess", {title: "Document Saved"});
+                    currentView.trigger("showSuccess", {title: i18n.___("Document Created", "ddui")});
                 });
             }
         },

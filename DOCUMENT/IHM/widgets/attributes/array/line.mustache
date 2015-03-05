@@ -2,19 +2,15 @@
     {{#tools}}
     <td class="dcpArray__content__toolCell">
         <span title="[[#i18n]]ddui:Drag to move line[[/i18n]]" class="dcpArray__content__toolCell__dragDrop">
-            <button class="btn btn-default btn-xs"><span class="fa fa-ellipsis-v fa-2x"></span></button>
+            <button class="btn btn-default btn-xs"><span class="fa fa-ellipsis-v"></span></button>
         </span>
         <span title="[[#i18n]]ddui:Select line[[/i18n]]" class="dcpArray__content__toolCell__check">
-            <button class="btn btn-default btn-xs">
-                <span class="fa-stack">
-                    <span class="fa fa-circle-thin fa-stack-2x"></span>
-                    <span class="fa fa-check fa-stack-1x" style="display : none;"></span>
-                </span>
-            </button>
+            <input name="check_{{id}}" type="radio" />
+
         </span>
         <span title="[[#i18n]]ddui:Delete line[[/i18n]]" class="dcpArray__content__toolCell__delete">
             <button class="btn btn-default btn-xs">
-                <span class="fa fa-trash-o fa-2x"></span>
+                <span class="fa fa-trash-o"></span>
             </button>
         </span>
     </td>

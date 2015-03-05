@@ -83,7 +83,8 @@ class TransitionRender
         $attrData = array();
         
         if (count($askes) > 0) {
-            $askFrame = new \FieldSetAttribute(self::parameterFrameAttribute, $this->workflow->id, ___("Workflow Parameters", "ddui") , "W", "N");
+            $transitionLabel=isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui") ;
+            $askFrame = new \FieldSetAttribute(self::parameterFrameAttribute, $this->workflow->id, sprintf(___("Workflow Parameters : %s", "ddui"),$transitionLabel) , "W", "N");
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
             
             foreach ($askes as $ask) {

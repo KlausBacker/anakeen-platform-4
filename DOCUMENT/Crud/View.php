@@ -610,6 +610,10 @@ class View extends Crud
         $sql = sprintf("select revdate from docfam where id = %d", $result["fromid"]);
         simpleQuery(getDbAccess() , $sql, $familyRevdate, true, true);
         $result[] = $familyRevdate;
+
+        $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $id);
+        simpleQuery(getDbAccess() , $sql, $lastTab, true, true);
+        $result[] = $lastTab;
         
         if ($result["cvid"]) {
             $sql = sprintf("select revdate from docread where id = %d", $result["cvid"]);

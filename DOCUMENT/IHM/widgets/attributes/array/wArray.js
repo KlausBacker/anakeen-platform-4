@@ -100,6 +100,8 @@ define([
                             var dragLine = element.closest('tr');
                             var lineWidth = dragLine.width();
                             var classTable = element.closest('table').attr("class");
+
+                            element.tooltip("hide");
                             return $('<table/>').addClass("dcpArray__dragLine " + classTable).
                                 css("width", lineWidth).
                                 css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px"). // @TODO compute delta left
@@ -176,17 +178,19 @@ define([
 
         _bindEvents: function dcpArray_bindEvents() {
             var currentWidget = this;
-            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check", function selectLineEvent() {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check input", function selectLineEvent() {
                 var $this = $(this);
                 currentWidget._unSelectLines();
                 if ($this.data("selectedRow") === "1") {
                     $this.data("selectedRow", "0");
-                    currentWidget.element.find(".dcpArray__copy").attr("disabled", "disabled");
+                    currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
+                    $(this).prop("checked",false);
                 } else {
                     $this.find('.fa-check').show();
                     $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
                     $this.data("selectedRow", "1");
-                    currentWidget.element.find(".dcpArray__copy").removeAttr("disabled");
+                    currentWidget.element.find(".dcpArray__copy").prop("disabled", false);
+                    $(this).prop("checked",true);
                 }
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent() {

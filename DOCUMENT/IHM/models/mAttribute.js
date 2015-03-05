@@ -152,7 +152,6 @@ define([
                 }
                 if (renderOptions.attributes) {
                     optionsAttribute = renderOptions.attributes[this.id] || {};
-
                 }
                 // labels must be merged
                 optionsAttribute.labels= _.extend(labels, optionsAttribute.labels);
