@@ -8,12 +8,12 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= id %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= options.initid %><% if (options.viewId) { %> &vid=<%= options.viewId %> <% } %><% if (options.revision) { %> &revision=<%= options.revision %> <% } %>"></iframe>'),
 
         _create: function dcpDocument_create()
         {
-            if (!this.options.id) {
-                throw new Error("Unable to create a document without index");
+            if (!this.options.initid) {
+                throw new Error("Unable to create a document without initid");
             }
             this._render();
             this._bindEvents();
@@ -23,7 +23,7 @@ define([
         {
             var innerWindow, $iframe, currentWidgetObject = this.element.data(this.widgetFullName);
             //inject the iframe
-            this.element.append(this._template(this.options));
+            this.element.append(this._template({options : this.options}));
             //bind the internal controller to the documentWidget
             $iframe = this.element.find("iframe");
             //Listen the load to the iframe (initial JS added and page loaded)
@@ -34,7 +34,7 @@ define([
                     var widgetController = domNode.data("dcpDocumentController"), key;
                     for(key in widgetController) {
                         //noinspection JSUnfilteredForInLoop
-                        if ((currentWidgetObject[key] === void 0) && _.isFunction(widgetController[key]) && key.charAt(0) !== "_") {
+                        if (/*(currentWidgetObject[key] === void 0) &&*/ _.isFunction(widgetController[key]) && key.charAt(0) !== "_") {
                             //noinspection JSUnfilteredForInLoop
                             currentWidgetObject[key] = _.bind(widgetController[key], widgetController);
                         }
