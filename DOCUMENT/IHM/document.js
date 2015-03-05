@@ -1,3 +1,4 @@
+/*global define*/
 define([
     'underscore',
     'jquery',
@@ -21,7 +22,7 @@ define([
 
         _render: function dcpDocument_render()
         {
-            var innerWindow, $iframe, currentWidgetObject = this.element.data(this.widgetFullName);
+            var innerWindow, $iframe, currentWidgetObject = this.element.data(this.widgetFullName), currentWidget = this;
             //inject the iframe
             this.element.append(this._template({options : this.options}));
             //bind the internal controller to the documentWidget
@@ -39,23 +40,13 @@ define([
                             currentWidgetObject[key] = _.bind(widgetController[key], widgetController);
                         }
                     }
+                    currentWidget._trigger("ready");
                 };
                 //Find the iframe object
                 innerWindow = $iframe[0];
-                //Inhect in the iframe window a callback function used by the internalController
-                if (_.isFunction(innerWindow.contentWindow.documentLoaded)) {
-                    //Wrap is there is a function with the same name
-                    loadedCallback = _.wrap(innerWindow.contentWindow.documentLoaded, function dcpDocument_wrapLoaded(loaded) {
-                        try {
-                            loaded.apply(this, _.rest(arguments));
-                        } catch(e) {
-                            console.error(e);
-                        }
-                        loadedCallback.apply(this, _.rest(arguments));
-                    });
-                }
+                //Inject in the iframe window a callback function used by the internalController
                 innerWindow.contentWindow.documentLoaded = loadedCallback;
-            });
+            }).trigger("load");
         },
 
         _bindEvents : function dcpDocument_bindEvents() {
