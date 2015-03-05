@@ -20,7 +20,7 @@ class JSONAnswer
     
     public function __construct($data = null, $error = null, $success = true, $warnings = array())
     {
-        if (is_scalar($warnings) && $warnings == '') {
+        if ($warnings === null || (is_scalar($warnings) && $warnings == '')) {
             $warnings = array();
         } else if (!is_array($warnings)) {
             $warnings = array($warnings);
