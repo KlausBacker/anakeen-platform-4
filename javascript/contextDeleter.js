@@ -69,6 +69,7 @@ WIFF.ContextDeleter = function (contextName, options) {
 	/* Program/instruction counter */
 	this.PC = 0;
 	this.instructions = [
+		[this.deactivateAllRepo],
 		[this.getInstalledModules],
 		[this.orderInstalledModules],
 		[this.preDeleteModules],
@@ -123,6 +124,35 @@ WIFF.ContextDeleter.prototype.run = function () {
 		argv = stage[1];
 	}
 	method.apply(this, argv);
+};
+
+WIFF.ContextDeleter.prototype.deactivateAllRepo = function () {
+	Ext.Ajax.request({
+		scope: this,
+		url: 'wiff.php',
+		params: {
+			context: this.contextName,
+			deactivateAllRepo: true
+		},
+		success: function (response, options) {
+			var responseDecode = Ext.util.JSON.decode(response.responseText);
+			if (responseDecode.success == false) {
+				Ext.Msg.alert('Warning', responseDecode.error.toString());
+				this.hideMask();
+				return this.failure();
+			}
+			this.modules = responseDecode.data;
+			return this.next();
+		},
+		failure: function (response, options) {
+			if (options.failureType) {
+				Ext.Msg.alert('Warning', options.failureType);
+			} else {
+				Ext.Msg.alert('Warning', 'Unknow Error');
+			}
+			return this.failure();
+		}
+	});
 };
 
 WIFF.ContextDeleter.prototype.getInstalledModules = function () {
