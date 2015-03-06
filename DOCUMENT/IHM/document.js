@@ -281,6 +281,10 @@ define([
                 this.element.data("internalWidget").removeConstraint(constraintName, true);
             }
             return removed;
+        },
+
+        isLoaded : function dcpDocument_isLoaded() {
+            return this.element.data("internalWidgetInitialised");
         }
 
     });
