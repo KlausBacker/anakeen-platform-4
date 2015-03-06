@@ -163,14 +163,14 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(eventContent.eventType) || !_.find(eventList, function documentController_CheckEventType(currentEvent)
+            if (!_.isString(eventContent.eventType) || !_.find(eventList, function dcpDocument_CheckEventType(currentEvent)
                 {
                     return currentEvent === eventContent.eventType;
                 })) {
                 throw new Error("The event type " + eventContent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
             }
             if (eventContent.once === true) {
-                eventContent.eventCallback = _.wrap(eventContent.eventCallback, function documentController_onceWrapper(callback)
+                eventContent.eventCallback = _.wrap(eventContent.eventCallback, function dcpDocument_onceWrapper(callback)
                 {
                     try {
                         callback.apply(this, _.rest(arguments));
@@ -192,7 +192,7 @@ define([
         removeEvent : function dcpDocument_removeEvent(eventName) {
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
-            newList = _.filter(this.options.eventList, function documentController_removeCurrentEvent(currentEvent)
+            newList = _.filter(this.options.eventList, function dcpDocument_removeCurrentEvent(currentEvent)
             {
                 if (currentEvent.name === eventName || testRegExp.test(currentEvent.name)) {
                     removed.push(currentEvent);
@@ -212,7 +212,7 @@ define([
             return removed;
         },
 
-        addConstraint: function documentControlleraddConstraint(options, callback)
+        addConstraint: function dcpDocument_addConstraint(options, callback)
         {
             var parameters, currentWidget = this;
             if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -225,11 +225,11 @@ define([
                 }
             } else {
                 parameters = _.defaults(options, {
-                    "documentCheck": function documentController_defaultDocumentCheck()
+                    "documentCheck": function dcpDocument_defaultDocumentCheck()
                     {
                         return true;
                     },
-                    "attributeCheck": function documentController_defaultAttributeCheck()
+                    "attributeCheck": function dcpDocument_defaultAttributeCheck()
                     {
                         return true;
                     },
@@ -243,7 +243,7 @@ define([
                 throw new Error("An event need a callback");
             }
             if (parameters.once === true) {
-                parameters.eventCallback = _.wrap(parameters.constraintCheck, function documentController_onceWrapper(callback)
+                parameters.eventCallback = _.wrap(parameters.constraintCheck, function dcpDocument_onceWrapper(callback)
                 {
                     try {
                         callback.apply(this, _.rest(arguments));
@@ -260,10 +260,10 @@ define([
             return parameters.name;
         },
 
-        removeConstraint : function removeConstraint(constraintName) {
+        removeConstraint : function dcpDocument_removeConstraint(constraintName) {
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
-            newConstraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(currentConstrait)
+            newConstraintList = _.filter(this.options.constraintList, function dcpDocument_removeConstraint(currentConstrait)
             {
                 if (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name)) {
                     removed.push(currentConstrait);
@@ -272,7 +272,7 @@ define([
                 return true;
             });
             constraintList = {};
-            _.each(newConstraintList, function documentController_reinitConstraint(currentConstraint)
+            _.each(newConstraintList, function dcpDocument_reinitConstraint(currentConstraint)
             {
                 constraintList[currentConstraint.name] = currentConstraint;
             });
