@@ -31,7 +31,7 @@ define([
 
         _internalWidget: null,
 
-        _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= options.initid %><% if (options.viewId) { %> &vid=<%= options.viewId %> <% } %><% if (options.revision) { %> &revision=<%= options.revision %> <% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= options.initid %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
         _create: function dcpDocument_create()
         {
