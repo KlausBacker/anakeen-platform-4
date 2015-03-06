@@ -18,14 +18,14 @@ define([
         "beforeChangeState", "beforeChangeStateClose"
     ];
 
-    var ErrorNotReady = function ErrorNotReady(message)
+    var ErrorNotLoaded = function dcpDocument_ErrorNotLoaded(message)
     {
-        this.name = 'WidgetDocumentNotReady';
-        this.message = message || 'The document widget is not ready';
+        this.name = 'WidgetDocumentNotLoaded';
+        this.message = message || 'The document widget is not loaded, wait for the documentloaded event';
     };
 
-    ErrorNotReady.prototype = Object.create(Error.prototype);
-    ErrorNotReady.prototype.constructor = ErrorNotReady;
+    ErrorNotLoaded.prototype = Object.create(Error.prototype);
+    ErrorNotLoaded.prototype.constructor = ErrorNotLoaded;
 
     $.widget("dcp.document", {
 
@@ -299,7 +299,7 @@ define([
             if (error.name === "noSuchMethodError") {
                 isMethodCall = typeof methodName === "string";
                 if (isMethodCall && !this.data("internalWidgetInitialised")) {
-                    throw new ErrorNotReady();
+                    throw new ErrorNotLoaded();
                 }
                 internalWidget = this.data("internalWidget");
                 if (_.isFunction(internalWidget[methodName]) && methodName.charAt(0) !== "_") {
