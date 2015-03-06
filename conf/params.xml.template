@@ -19,6 +19,7 @@
     <param name="auto-configuration-sender-interval" value="30" />
     <param name="syslog-facility" value="LOG_USER" mode="hidden" />
     <param name="local-log" value="no" mode="hidden" />
+    <param name="connect-timeout" value="3" />
   </parameters>
   
 </wiff>
