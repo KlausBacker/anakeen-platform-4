@@ -162,6 +162,13 @@ define([
                     "once": false
                 });
             }
+            // the eventType must be one the list
+            if (!_.isString(eventContent.eventType) || !_.find(eventList, function documentController_CheckEventType(currentEvent)
+                {
+                    return currentEvent === eventContent.eventType;
+                })) {
+                throw new Error("The event type " + eventContent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
+            }
             if (eventContent.once === true) {
                 eventContent.eventCallback = _.wrap(eventContent.eventCallback, function documentController_onceWrapper(callback)
                 {
