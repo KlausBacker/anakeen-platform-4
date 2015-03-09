@@ -4,16 +4,17 @@ define([
     'backbone',
     'mustache',
     'dcpDocument/views/attributes/vAttribute'
-], function (_, Backbone, Mustache, ViewAttribute) {
+], function (_, Backbone, Mustache, ViewAttribute)
+{
     'use strict';
 
     return ViewAttribute.extend({
 
         /**
          * Use special event to trigger only attributes of model
-         * @returns {}
          */
-        events: function () {
+        events: function vColumnEvents()
+        {
             var absEvents = {
                 "dcparraylineadded": "addNewWidget"
             };
@@ -23,27 +24,32 @@ define([
             return absEvents;
         },
 
-        _addEvent: function (events, name, method) {
+        _addEvent: function vColumn_addEvent(events, name, method)
+        {
             events["dcpattribute" + name + ' .dcpArray__content__cell[data-attrid="' + this.model.id + '"]'] = method;
         },
 
-        render: function () {
-            var scope=this;
+        render: function vColumnRender()
+        {
+            var scope = this;
             if (this.displayLabel === false) {
                 // Need to defer because thead is not construct yet
-                _.defer(function () {
-                    scope.$el.find('.dcpArray__head__cell[data-attrid="'+scope.model.id+'"]').hide();
+                _.defer(function vColumnHideHead()
+                {
+                    scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]').hide();
                 });
             }
-            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
+            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             return this;
         },
 
         /**
          * called by vArray::addLine()
-         * @param index
+         * @param index row index
+         * @param customView HTML fragment to use for a custom view
          */
-        addNewWidget: function addNewWidget(index, customView) {
+        addNewWidget: function vColumnAddNewWidget(index, customView)
+        {
             if (this.options) {
                 var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
                 var data = this.getData(index);
@@ -72,7 +78,8 @@ define([
          * @param event
          * @param options
          */
-        changeDocument: function changeDocument(event, options) {
+        changeDocument: function vColumnChangeDocument(event, options)
+        {
             var tableLine = options.tableLine,
                 index = options.index,
                 initid,
