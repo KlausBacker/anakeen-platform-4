@@ -1,10 +1,11 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'mustache',
     'dcpDocument/widgets/widget',
     'bootstrap'
-], function (_, Mustache)
+], function ($, _, Mustache)
 {
     'use strict';
 

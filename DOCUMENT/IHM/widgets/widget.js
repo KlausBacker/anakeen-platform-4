@@ -1,24 +1,36 @@
+/*global define*/
 define([
     'jquery'
-], function () {
+], function (jQuery) {
+
+    "use strict";
+
+    var ErrorNoSuchMethod = function ErrorNoSuchMethod(message)
+    {
+        this.name = 'noSuchMethodError';
+        this.message = message || 'No such method for current widget instance';
+    };
+
+    ErrorNoSuchMethod.prototype = Object.create(Error.prototype);
+    ErrorNoSuchMethod.prototype.constructor = ErrorNoSuchMethod;
+
     (function ($, undefined) {
 
         var uuid = 0,
             slice = Array.prototype.slice,
             _cleanData = $.cleanData;
         $.cleanData = function (elems) {
-            for (var i = 0, elem; (elem = elems[i]) != null; i++) {
+            for (var i = 0, elem; (elem = elems[i]) != null; i++) { // jshint ignore:line
                 try {
                     $(elem).triggerHandler("remove");
-                    // http://bugs.jquery.com/ticket/8235
                 } catch (e) {
                 }
             }
             _cleanData(elems);
         };
 
-        $.widget = function (name, base, prototype) {
-            var fullName, existingConstructor, constructor, basePrototype,
+        $.widget = function (name, Base, prototype) {
+            var fullName, existingConstructor, Constructor, basePrototype,
             // proxiedPrototype allows the provided prototype to remain unmodified
             // so that it can be used as a mixin for multiple widgets (#8876)
                 proxiedPrototype = {},
@@ -28,8 +40,8 @@ define([
             fullName = namespace + "-" + name;
 
             if (!prototype) {
-                prototype = base;
-                base = $.Widget;
+                prototype = Base;
+                Base = $.Widget;
             }
 
             // create selector for plugin
@@ -39,10 +51,10 @@ define([
 
             $[ namespace ] = $[ namespace ] || {};
             existingConstructor = $[ namespace ][ name ];
-            constructor = $[ namespace ][ name ] = function (options, element) {
+            Constructor = $[ namespace ][ name ] = function (options, element) {
                 // allow instantiation without "new" keyword
                 if (!this._createWidget) {
-                    return new constructor(options, element);
+                    return new Constructor(options, element);
                 }
 
                 // allow instantiation without initializing for simple inheritance
@@ -52,7 +64,7 @@ define([
                 }
             };
             // extend with the existing constructor to carry over any static properties
-            $.extend(constructor, existingConstructor, {
+            $.extend(Constructor, existingConstructor, {
                 version :            prototype.version,
                 // copy the object used to create the prototype in case we need to
                 // redefine the widget later
@@ -62,7 +74,7 @@ define([
                 _childConstructors : []
             });
 
-            basePrototype = new base();
+            basePrototype = new Base();
             // we need to make the options hash a property directly on the new instance
             // otherwise we'll modify the options hash on the prototype that we're
             // inheriting from
@@ -74,10 +86,10 @@ define([
                 }
                 proxiedPrototype[ prop ] = (function () {
                     var _super = function () {
-                            return base.prototype[ prop ].apply(this, arguments);
+                            return Base.prototype[ prop ].apply(this, arguments);
                         },
                         _superApply = function (args) {
-                            return base.prototype[ prop ].apply(this, args);
+                            return Base.prototype[ prop ].apply(this, args);
                         };
                     return function () {
                         var __super = this._super,
@@ -96,9 +108,9 @@ define([
                     };
                 })();
             });
-            constructor.prototype = $.widget.extend(basePrototype, {
+            Constructor.prototype = $.widget.extend(basePrototype, {
             }, proxiedPrototype, {
-                constructor :    constructor,
+                constructor :    Constructor,
                 namespace :      namespace,
                 widgetName :     name,
                 widgetFullName : fullName
@@ -114,16 +126,16 @@ define([
 
                     // redefine the child widget using the same prototype that was
                     // originally used, but inherit from the new version of the base
-                    $.widget(childPrototype.namespace + "." + childPrototype.widgetName, constructor, child._proto);
+                    $.widget(childPrototype.namespace + "." + childPrototype.widgetName, Constructor, child._proto);
                 });
                 // remove the list of existing child constructors from the old constructor
                 // so the old child constructors can be garbage collected
                 delete existingConstructor._childConstructors;
             } else {
-                base._childConstructors.push(constructor);
+                Base._childConstructors.push(Constructor);
             }
 
-            $.widget.bridge(name, constructor);
+            $.widget.bridge(name, Constructor);
         };
 
         $.widget.extend = function (target) {
@@ -133,7 +145,7 @@ define([
                 key,
                 value;
             for (; inputIndex < inputLength; inputIndex++) {
-                for (key in input[ inputIndex ]) {
+                for (key in input[ inputIndex ]) { // jshint ignore:line
                     value = input[ inputIndex ][ key ];
                     if (input[ inputIndex ].hasOwnProperty(key) && value !== undefined) {
                         // Clone objects
@@ -152,8 +164,8 @@ define([
             return target;
         };
 
-        $.widget.bridge = function (name, object) {
-            var fullName = object.prototype.widgetFullName || name;
+        $.widget.bridge = function (name, Object) {
+            var fullName = Object.prototype.widgetFullName || name;
             $.fn[ name ] = function (options) {
                 var isMethodCall = typeof options === "string",
                     args = slice.call(arguments, 1),
@@ -173,7 +185,7 @@ define([
                                 "attempted to call method '" + options + "'");
                         }
                         if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
-                            return $.error("no such method '" + options + "' for " + name + " widget instance");
+                            throw new ErrorNoSuchMethod("no such method '" + options + "' for " + name + " widget instance");
                         }
                         methodValue = instance[ options ].apply(instance, args);
                         if (methodValue !== instance && methodValue !== undefined) {
@@ -189,7 +201,7 @@ define([
                         if (instance) {
                             instance.option(options || {})._init();
                         } else {
-                            $.data(this, fullName, new object(options, this));
+                            $.data(this, fullName, new Object(options, this));
                         }
                     });
                 }
@@ -254,16 +266,10 @@ define([
 
             destroy :  function () {
                 this._destroy();
-                // we can probably remove the unbind calls in 2.0
-                // all event bindings should go through this._on()
                 this.element
                     .unbind(this.eventNamespace)
-                    // 1.9 BC for #7810
-                    // TODO remove dual storage
                     .removeData(this.widgetName)
                     .removeData(this.widgetFullName)
-                    // support: jquery <1.6.3
-                    // http://bugs.jquery.com/ticket/9413
                     .removeData($.camelCase(this.widgetFullName));
                 this.widget()
                     .unbind(this.eventNamespace)
@@ -320,7 +326,7 @@ define([
             _setOptions : function (options) {
                 var key;
 
-                for (key in options) {
+                for (key in options) { // jshint ignore:line
                     this._setOption(key, options[ key ]);
                 }
 
@@ -410,7 +416,7 @@ define([
                 // copy original event properties over to the new event
                 orig = event.originalEvent;
                 if (orig) {
-                    for (prop in orig) {
+                    for (prop in orig) {// jshint ignore:line
                         if (!( prop in event )) {
                             event[ prop ] = orig[ prop ];
                         }

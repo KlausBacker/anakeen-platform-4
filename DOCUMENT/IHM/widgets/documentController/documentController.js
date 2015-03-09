@@ -1,3 +1,4 @@
+/* global define, console */
 define([
     'jquery',
     'underscore',
@@ -48,8 +49,8 @@ define([
                 throw new Error("Widget cannot be initialized without an initid");
             }
             this.initialLoaded = false;
-            this.options.constraintList = [];
-            this.options.eventList = [];
+            this.options.constraintList = {};
+            this.options.eventList = {};
             this.activatedConstraint = [];
             this.activatedEvent = [];
             this._initExternalElements();
@@ -187,7 +188,7 @@ define([
             {
                 if (currentWidget.initialLoaded !== false) {
                     event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
-                        currentWidget._model.getProperties(true));
+                        currentWidget._model.getProperties(true), currentWidget._model.getProperties());
                 }
             });
             this._model.listenTo(this._model, "close", function documentController_triggerClose()
@@ -564,7 +565,7 @@ define([
         _addAndInitNewEvents: function documentController_addAndInitNewEvents(newEvent)
         {
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event;
-            this.options.eventList.push(newEvent);
+            this.options.eventList[newEvent.name] = newEvent;
             // Check if the event is for the current document
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
                 this.activatedEvent.push(newEvent);
@@ -924,27 +925,46 @@ define([
          */
         addConstraint: function documentControlleraddConstraint(options, callback)
         {
-            var parameters;
+            var parameters, currentWidget = this;
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
                 options = {};
             }
-            if (!_.isFunction(callback)) {
+            if (_.isObject(options) && _.isUndefined(callback)) {
+                if (!options.name) {
+                    throw new Error("When a constraint is initiated with a single object, this object needs to have the name property ".JSON.stringify(options));
+                }
+            } else {
+                parameters = _.defaults(options, {
+                    "documentCheck": function documentController_defaultDocumentCheck()
+                    {
+                        return true;
+                    },
+                    "attributeCheck": function documentController_defaultAttributeCheck()
+                    {
+                        return true;
+                    },
+                    "constraintCheck": callback,
+                    "name": _.uniqueId("constraint"),
+                    "externalConstraint": false,
+                    "once": false
+                });
+            }
+            if (!_.isFunction(parameters.constraintCheck)) {
                 throw new Error("An event need a callback");
             }
-            parameters = _.defaults(options, {
-                "documentCheck": function documentController_defaultDocumentCheck()
+            if (parameters.once === true) {
+                parameters.eventCallback = _.wrap(parameters.constraintCheck, function documentController_onceWrapper(callback)
                 {
-                    return true;
-                },
-                "attributeCheck": function documentController_defaultAttributeCheck()
-                {
-                    return true;
-                },
-                "constraintCheck": callback,
-                "name": _.uniqueId("constraint")
-            });
-            this.options.constraintList.push(parameters);
+                    try {
+                        callback.apply(this, _.rest(arguments));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    currentWidget.removeConstraint(parameters.name, parameters.externalConstraint);
+                });
+            }
+            this.options.constraintList[parameters.name] = parameters;
             this._initActivatedConstraint();
             return parameters.name;
         },
@@ -963,20 +983,28 @@ define([
          * Remove a constraint of the widget
          *
          * @param constraintName
+         * @param removeExternal
          * @returns {*}
          */
-        removeConstraint: function documentControllerRemoveConstraint(constraintName)
+        removeConstraint: function documentControllerRemoveConstraint(constraintName, removeExternal)
         {
-            var removed = [],
+            var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
-            this.options.constraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(currentConstrait)
+            removeExternal = !!removeExternal;
+            newConstraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(currentConstrait)
             {
-                if (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name)) {
+                if (removeExternal === currentConstrait.externalConstraint && (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name))) {
                     removed.push(currentConstrait);
                     return false;
                 }
                 return true;
             });
+            constraintList = {};
+            _.each(newConstraintList, function documentController_reinitConstraint(currentConstraint)
+            {
+                constraintList[currentConstraint.name] = currentConstraint;
+            });
+            this.options.constraintList = constraintList;
             this._initActivatedConstraint();
             return removed;
         },
@@ -991,7 +1019,7 @@ define([
          */
         addEvent: function documentControllerAddEvent(eventType, options, callback)
         {
-            var eventContent;
+            var eventContent, currentWidget = this;
             //options is facultative and the callback can be the second parameters
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
@@ -1007,7 +1035,9 @@ define([
                 eventContent = _.defaults(options, {
                     "name": _.uniqueId("event_" + eventType),
                     "eventType": eventType,
-                    "eventCallback": callback
+                    "eventCallback": callback,
+                    "externalEvent": false,
+                    "once": false
                 });
             }
             // the eventType must be one the list
@@ -1021,10 +1051,20 @@ define([
             if (!_.isFunction(eventContent.eventCallback)) {
                 throw new Error("An event needs a callback that is a function");
             }
-
+            if (eventContent.once === true) {
+                eventContent.eventCallback = _.wrap(eventContent.eventCallback, function documentController_onceWrapper(callback)
+                {
+                    try {
+                        callback.apply(this, _.rest(arguments));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    currentWidget.removeEvent(eventContent.name, eventContent.externalEvent);
+                });
+            }
             this._addAndInitNewEvents(eventContent);
             // return the name of
-            return options.name;
+            return eventContent.name;
         },
 
         /**
@@ -1041,19 +1081,28 @@ define([
          * Remove an event of the current widget
          *
          * @param eventName string can be an event name or a namespace
+         * @param removeExternal remove the external typed event
          * @returns {*}
          */
-        removeEvent: function documentControllerRemoveEvent(eventName)
+        removeEvent: function documentControllerRemoveEvent(eventName, removeExternal)
         {
-            var removed = [], testRegExp = new RegExp("\\" + eventName + "$");
-            this.options.eventList = _.filter(this.options.eventList, function documentController_removeCurrentEvent(currentEvent)
+            var removed = [],
+                testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
+            removeExternal = !!removeExternal;
+            newList = _.filter(this.options.eventList, function documentController_removeCurrentEvent(currentEvent)
             {
-                if (currentEvent.name === eventName || testRegExp.test(currentEvent.name)) {
+                if (currentEvent.externalEvent === removeExternal && (currentEvent.name === eventName || testRegExp.test(currentEvent.name))) {
                     removed.push(currentEvent);
                     return false;
                 }
                 return true;
             });
+            eventList = {};
+            _.each(newList, function (currentEvent)
+            {
+                eventList[currentEvent.name] = currentEvent;
+            });
+            this.options.eventList = eventList;
             this._initActivatedEvents({"launchReady": false});
             return removed;
         },
