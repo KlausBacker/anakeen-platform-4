@@ -349,6 +349,7 @@ define([
                 window: {
                     width: "80%",
                     height: "80%",
+                    maxWidth:$(window).width(),
                     title: i18n.___("Document History", "historyUi")
                 },
                 labels: {
@@ -412,6 +413,7 @@ define([
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "400px",
+                    maxWidth:$(window).width(),
                     height: "auto",
                     title : i18n.___("Document properties", "propertyUi")
                 },

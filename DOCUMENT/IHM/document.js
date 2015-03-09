@@ -229,7 +229,7 @@ define([
                 {
                     return currentEventType === currentEvent.eventType;
                 })) {
-                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
+                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(", "));
             }
             if (currentEvent.once === true) {
                 currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function dcpDocument_onceWrapper(callback)
