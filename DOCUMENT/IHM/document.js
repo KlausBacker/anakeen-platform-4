@@ -18,32 +18,46 @@ define([
         "beforeChangeState", "beforeChangeStateClose"
     ];
 
+    //Create a new kind of event
     var ErrorNotLoaded = function dcpDocument_ErrorNotLoaded(message)
     {
         this.name = 'WidgetDocumentNotLoaded';
         this.message = message || 'The document widget is not loaded, wait for the documentloaded event';
     };
-
     ErrorNotLoaded.prototype = Object.create(Error.prototype);
     ErrorNotLoaded.prototype.constructor = ErrorNotLoaded;
 
     $.widget("dcp.document", {
 
-        _internalWidget: null,
-
         _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= options.initid %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
+        defaults: {
+            "resizeMarginHeight": 3,
+            "resizeMarginWidth": 0,
+            "resizeDebounceTime": 50,
+            "withoutResize": false
+        },
+
+        /**
+         * Create the widget
+         *
+         * Check if initid is present
+         */
         _create: function dcpDocument_create()
         {
             if (!this.options.initid) {
                 throw new Error("Unable to create a document without initid");
             }
+            this.options = _.extend({}, this.defaults, this.options);
             this.options.eventList = {};
             this.options.constraintList = {};
             this._render();
             this._bindEvents();
         },
 
+        /**
+         * Create the iframe with the content and register to load event
+         */
         _render: function dcpDocument_render()
         {
             var $iframe, currentWidget = this;
@@ -60,13 +74,17 @@ define([
                     //Bind the internalController function to the current widget
                     currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"));
                 };
-                $iframe[0].contentWindow.documentUnloaded = function dcpDocument_unloadedCallback() {
+                $iframe[0].contentWindow.documentUnloaded = function dcpDocument_unloadedCallback()
+                {
                     currentWidget._trigger("unloaded");
                 };
                 currentWidget._unbindInternalWidget();
             }).trigger("load");
         },
 
+        /**
+         * Suppress internal widget reference
+         */
         _unbindInternalWidget: function dcpDocument_unbindInternalWidget()
         {
             this.element.data("internalWidgetInitialised", false);
@@ -74,11 +92,18 @@ define([
             this._trigger("internalWidgetUnloaded");
         },
 
-        _bindInternalWidget : function dcpDocument_bindInternalWidget(internalController)
+        /**
+         * Bind the internal controller to the current widget
+         * Reinit the constraint and the event
+         *
+         * @param internalController
+         */
+        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController)
         {
             this.element.data("internalWidget", internalController);
             //Rebind event
-            _.each(this.options.eventList, function dcpDocument_bindEvent(currentEvent) {
+            _.each(this.options.eventList, function dcpDocument_bindEvent(currentEvent)
+            {
                 internalController.addEvent(currentEvent);
             });
             //Rebind constraint
@@ -90,32 +115,45 @@ define([
             this._trigger("loaded");
         },
 
+        /**
+         * Add resize event
+         */
         _bindEvents: function dcpDocument_bindEvents()
         {
             if (!this.options.withoutResize) {
-                $(window).on("resize" + this.eventNamespace, _.debounce(_.bind(this._resize, this), 50));
+                $(window).on("resize" + this.eventNamespace, _.debounce(_.bind(this._resize, this), parseInt(this.options.resizeDebounceTime, 10)));
                 this._resize();
             }
         },
 
+        /**
+         * Compute the size of the widget
+         */
         _resize: function dcpDocument_resize()
         {
-            var event = this._trigger("resize"),
+            var event = this._trigger("autoresize"),
                 $documentWrapper = this.element.find(".dcpDocumentWrapper"),
+                currentWidget = this,
                 element = this.element;
             //the computation can be done by an external function and default prevented
             if (event) {
                 //compute two times height (one for disapear horizontal scrollbar, two to get the actual size)
-                $documentWrapper.height(element.innerHeight() - 3);
-                $documentWrapper.width(element.innerWidth());
+                //noinspection JSValidateTypes
+                $documentWrapper.height(element.innerHeight() - parseInt(currentWidget.options.resizeMarginHeight, 10));
+                //noinspection JSValidateTypes
+                $documentWrapper.width(element.innerWidth() - parseInt(currentWidget.options.resizeMarginWidth, 10));
                 //defer height computation to let the time to scrollbar disapear
                 _.defer(function dcpDocument_computeHeight()
                 {
-                    $documentWrapper.height(element.innerHeight() - 3);
+                    //noinspection JSValidateTypes
+                    $documentWrapper.height(element.innerHeight() - parseInt(currentWidget.options.resizeMarginHeight, 10));
                 });
             }
         },
 
+        /**
+         * Destroy the widget
+         */
         _destroy: function dcpDocument_destroy()
         {
             $(window).off(this.eventNamespace);
@@ -125,6 +163,9 @@ define([
             this._super();
         },
 
+        /**
+         * Update options
+         */
         options: function dcpDocument_options()
         {
             throw new Error("You cannot modify the options, you need to suppress the widget");
@@ -152,20 +193,30 @@ define([
             }
         },
 
-        addEvent : function dcpDocument_addEvent(eventType, options, callback) {
-            var eventContent, currentWidget = this;
+        /**
+         * Add a new external event
+         * The event is added in the widget and is auto-rebinded when the internal widget is reloaded
+         *
+         * @param eventType string|object type of the widget or an object event
+         * @param options object|function conf of the event or callback
+         * @param callback function callback
+         * @returns {*}
+         */
+        addEvent: function dcpDocument_addEvent(eventType, options, callback)
+        {
+            var currentEvent, currentWidget = this;
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
                 options = {};
             }
             // the first parameters can be the final object (chain removeEvent and addEvent)
             if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
-                eventContent = eventType;
-                if (!eventContent.name) {
-                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(eventContent));
+                currentEvent = eventType;
+                if (!currentEvent.name) {
+                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(currentEvent));
                 }
             } else {
-                eventContent = _.defaults(options, {
+                currentEvent = _.defaults(options, {
                     "name": _.uniqueId("event_" + eventType),
                     "eventType": eventType,
                     "eventCallback": callback,
@@ -174,33 +225,40 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(eventContent.eventType) || !_.find(eventList, function dcpDocument_CheckEventType(currentEvent)
+            if (!_.isString(currentEvent.eventType) || !_.find(eventList, function dcpDocument_CheckEventType(currentEventType)
                 {
-                    return currentEvent === eventContent.eventType;
+                    return currentEventType === currentEvent.eventType;
                 })) {
-                throw new Error("The event type " + eventContent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
+                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
             }
-            if (eventContent.once === true) {
-                eventContent.eventCallback = _.wrap(eventContent.eventCallback, function dcpDocument_onceWrapper(callback)
+            if (currentEvent.once === true) {
+                currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function dcpDocument_onceWrapper(callback)
                 {
                     try {
                         callback.apply(this, _.rest(arguments));
                     } catch (e) {
                         console.error(e);
                     }
-                    currentWidget.removeEvent(eventContent.name);
+                    currentWidget.removeEvent(currentEvent.name);
                 });
             }
             //Remove once property because already wrapped
-            eventContent.once = false;
-            this.options.eventList[eventContent.name] = eventContent;
+            currentEvent.once = false;
+            this.options.eventList[currentEvent.name] = currentEvent;
             if (this.element.data("internalWidgetInitialised")) {
-                this.element.data("internalWidget").addEvent(eventContent);
+                this.element.data("internalWidget").addEvent(currentEvent);
             }
-            return eventContent.name;
+            return currentEvent.name;
         },
 
-        removeEvent : function dcpDocument_removeEvent(eventName) {
+        /**
+         * Remove the event of the widget list and the internal list (if internal is ready)
+         *
+         * @param eventName
+         * @returns {Array}
+         */
+        removeEvent: function dcpDocument_removeEvent(eventName)
+        {
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
             newList = _.filter(this.options.eventList, function dcpDocument_removeCurrentEvent(currentEvent)
@@ -223,6 +281,14 @@ define([
             return removed;
         },
 
+        /**
+         * Add a constraint
+         * The constraint is added in the widget and is auto-rebinded when the internal widget is reloaded
+         *
+         * @param options
+         * @param callback
+         * @returns {*}
+         */
         addConstraint: function dcpDocument_addConstraint(options, callback)
         {
             var parameters, currentWidget = this;
@@ -271,7 +337,14 @@ define([
             return parameters.name;
         },
 
-        removeConstraint : function dcpDocument_removeConstraint(constraintName) {
+        /**
+         * Remove the constraint of the widget
+         *
+         * @param constraintName
+         * @returns {Array}
+         */
+        removeConstraint: function dcpDocument_removeConstraint(constraintName)
+        {
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
             newConstraintList = _.filter(this.options.constraintList, function dcpDocument_removeConstraint(currentConstrait)
@@ -294,13 +367,21 @@ define([
             return removed;
         },
 
-        isLoaded : function dcpDocument_isLoaded() {
+        isLoaded: function dcpDocument_isLoaded()
+        {
             return this.element.data("internalWidgetInitialised");
         }
 
     });
 
-    //noinspection JSUnresolvedVariable
+    /**
+     * Wrap the brigde that find the function to be executed
+     * Search in the current widget if the function is here
+     * Search in the internal widget (if ready to find the widget)
+     *
+     * @type {Function|function(): Function|function(): _Chain<T>|*}
+     */
+        //noinspection JSUnresolvedVariable
     $.fn.document = _.wrap($.fn.document, function (initialDocumentBridge, methodName)
     { // jshint ignore:line
         var isMethodCall, internalWidget;
