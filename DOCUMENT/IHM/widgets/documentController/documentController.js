@@ -986,17 +986,17 @@ define([
          * Remove a constraint of the widget
          *
          * @param constraintName
-         * @param removeExternal
+         * @param allKind
          * @returns {*}
          */
-        removeConstraint: function documentControllerRemoveConstraint(constraintName, removeExternal)
+        removeConstraint: function documentControllerRemoveConstraint(constraintName, allKind)
         {
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
-            removeExternal = !!removeExternal;
+            allKind = !!allKind;
             newConstraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(currentConstrait)
             {
-                if (removeExternal === currentConstrait.externalConstraint && (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name))) {
+                if ((allKind || !currentConstrait.externalConstraint) && (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name))) {
                     removed.push(currentConstrait);
                     return false;
                 }
@@ -1086,17 +1086,17 @@ define([
          * Remove an event of the current widget
          *
          * @param eventName string can be an event name or a namespace
-         * @param removeExternal remove the external typed event
+         * @param allKind remove internal/external events
          * @returns {*}
          */
-        removeEvent: function documentControllerRemoveEvent(eventName, removeExternal)
+        removeEvent: function documentControllerRemoveEvent(eventName, allKind)
         {
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
-            removeExternal = !!removeExternal;
+            allKind = !!allKind;
             newList = _.filter(this.options.eventList, function documentController_removeCurrentEvent(currentEvent)
             {
-                if (currentEvent.externalEvent === removeExternal && (currentEvent.name === eventName || testRegExp.test(currentEvent.name))) {
+                if ((allKind || !currentEvent.externalEvent) && (currentEvent.name === eventName || testRegExp.test(currentEvent.name))) {
                     removed.push(currentEvent);
                     return false;
                 }
