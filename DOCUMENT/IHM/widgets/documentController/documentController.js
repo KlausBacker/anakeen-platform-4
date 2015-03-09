@@ -979,7 +979,7 @@ define([
          */
         listConstraints: function documentControllerListConstraint()
         {
-            return this.options.constraintList.splice(0);
+            return this.options.constraintList;
         },
 
         /**
@@ -1079,7 +1079,7 @@ define([
          */
         listEvents: function documentControllerListEvents()
         {
-            return this.options.eventList.slice();
+            return this.options.eventList;
         },
 
         /**

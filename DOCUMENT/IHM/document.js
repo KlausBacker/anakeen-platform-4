@@ -194,6 +194,15 @@ define([
         },
 
         /**
+         * Reinit the document
+         *
+         */
+        reinitDocument: function dcpDocument_reinitDocument()
+        {
+            this.fetchDocument();
+        },
+
+        /**
          * Add a new external event
          * The event is added in the widget and is auto-rebinded when the internal widget is reloaded
          *
@@ -249,6 +258,20 @@ define([
                 this.element.data("internalWidget").addEvent(currentEvent);
             }
             return currentEvent.name;
+        },
+
+        /**
+         * List of the events of the current widget
+         *
+         * @returns {*}
+         */
+        listEvents: function documentControllerListEvents()
+        {
+            if (this.element.data("internalWidgetInitialised")) {
+                return this.element.data("internalWidget").listEvents();
+            } else {
+                return this.options.eventList;
+            }
         },
 
         /**
@@ -336,7 +359,19 @@ define([
             }
             return parameters.name;
         },
-
+        /**
+         * List the constraint of the widget
+         *
+         * @returns {*}
+         */
+        listConstraints: function documentControllerListConstraint()
+        {
+            if (this.element.data("internalWidgetInitialised")) {
+                return this.element.data("internalWidget").listConstraints();
+            } else {
+                return this.options.constraintList;
+            }
+        },
         /**
          * Remove the constraint of the widget
          *
