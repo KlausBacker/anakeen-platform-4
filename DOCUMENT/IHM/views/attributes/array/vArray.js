@@ -25,7 +25,7 @@ define([
         columnViews: {},
 
         initialize: function vArray_initialize(options) {
-            if (options.displayLabel === false) {
+            if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
                 this.displayLabel = false;
             }
             this.listenTo(this.model, 'change:label', this.updateLabel);

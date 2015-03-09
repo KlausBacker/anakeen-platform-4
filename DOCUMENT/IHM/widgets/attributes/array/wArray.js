@@ -3,7 +3,8 @@ define([
     'mustache',
     'jquery',
     'dcpDocument/widgets/widget'
-], function (_, Mustache, $) {
+], function (_, Mustache, $)
+{
     'use strict';
 
     $.widget("dcp.dcpArray", {
@@ -25,27 +26,31 @@ define([
          * get Selected line element (jquery, length = 0 if no selected)
          * @returns {*}
          */
-        getSelectedLineElement: function dcpArraygetSelectedLineElement() {
+        getSelectedLineElement: function dcpArraygetSelectedLineElement()
+        {
             return this.element.find('.dcpArray__content__line--selected.active');
         },
         /**
          * get Selected line index (0 : first, null : no selected line)
          * @returns {*}
          */
-        selectedLineIndex: function dcpArrayselectedLineIndex() {
+        selectedLineIndex: function dcpArrayselectedLineIndex()
+        {
             return this.getSelectedLineElement().data("line");
         },
         /**
          *
          * @private
          */
-        _create: function dcpArray_create() {
+        _create: function dcpArray_create()
+        {
             this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
             this._initDom();
             this._bindEvents();
         },
 
-        _initDom: function dcpArray_initDom() {
+        _initDom: function dcpArray_initDom()
+        {
             var scope = this;
             if (this.options.mode === "read" && this.options.nbLines === 0) {
                 if (this.options.showEmpty) {
@@ -53,6 +58,9 @@ define([
                     // showEmptyCOntent option
                     if (this.options.displayLabel !== false) {
                         this.element.append(Mustache.render(this._getTemplate("label"), this.options));
+                        if (this.options.renderOptions.labelPosition === "left") {
+                            this.element.find(".dcpLabel").addClass("dcpArray__label--left");
+                        }
                     }
 
                     this.element.append(this.options.showEmpty);
@@ -64,6 +72,7 @@ define([
                     this.element.append(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
                         displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
                     })));
+
                 }
 
                 if (this.options.customTemplate) {
@@ -90,29 +99,49 @@ define([
                         });
                     }
                 }
+                if (this.options.displayLabel !== false) {
+                    var labelPosition = this.options.renderOptions.labelPosition;
+                    if (labelPosition === "auto" || labelPosition === "left") {
+                        this.element.find(".dcpArray__label").addClass("dcpAttribute__left");
+                        this.element.find(".dcpArray__content").addClass("dcpAttribute__right");
+                        this.element.addClass("dcpArray--left");
+                        console.log("options", labelPosition);
+                        if (labelPosition === "left") {
+                            this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
+                            this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
+                             this.element.addClass("dcpAttribute__labelPosition--left");
+                        }
+                    }
+                }
+
                 this.addAllLines(this.options.nbLines);
                 if (this.options.mode === "write") {
                     this.element.find('tbody').kendoDraggable({
                         axis: "y",
                         container: scope.element.find('tbody'),
                         filter: '.dcpArray__content__toolCell__dragDrop',
-                        hint: function dcpArrayhint(element) {
+                        hint: function dcpArrayhint(element)
+                        {
                             var dragLine = element.closest('tr');
                             var lineWidth = dragLine.width();
                             var classTable = element.closest('table').attr("class");
+
+                            element.tooltip("hide");
                             return $('<table/>').addClass("dcpArray__dragLine " + classTable).
                                 css("width", lineWidth).
                                 css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px"). // @TODO compute delta left
                                 append(dragLine.clone());
                         },
-                        dragstart: function dcpArraydragstart(event) {
+                        dragstart: function dcpArraydragstart(event)
+                        {
                             if (event.currentTarget) {
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "0");
                                 dragLine.data("fromLine", dragLine.data("line"));
                             }
                         },
-                        dragend: function dcpArraydragend(event) {
+                        dragend: function dcpArraydragend(event)
+                        {
                             if (event.currentTarget) {
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "");
@@ -126,7 +155,8 @@ define([
 
                     this.element.find('tbody').kendoDropTargetArea({
                         filter: '.dcpArray__content__line[data-attrid="' + this.options.id + '"]',
-                        dragenter: function (event) {
+                        dragenter: function (event)
+                        {
                             if (event.currentTarget) {
                                 var drap = event.draggable.currentTarget.closest('tr');
                                 var drop = event.dropTarget;
@@ -144,15 +174,17 @@ define([
                 }
                 this.element.on("click" + this.eventNamespace, ".button-close-error", function (event)
                 {
-                        scope.element.find(".dcpArray__content table.table").tooltip("destroy");
+                    scope.element.find(".dcpArray__content table.table").tooltip("destroy");
                 });
             }
             this._initCSSResponsive();
         },
 
 
-        _initCSSResponsive: function _initCSSResponsive() {
-            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function (currentElement) {
+        _initCSSResponsive: function _initCSSResponsive()
+        {
+            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function (currentElement)
+            {
                 var $currentElement = $(currentElement);
                 return {
                     "attrid": $currentElement.data("attrid"),
@@ -165,7 +197,8 @@ define([
 
             cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 
-            _.each(headers, function initCssHeader(currentHeader) {
+            _.each(headers, function initCssHeader(currentHeader)
+            {
                 currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
                 cssString += cssTemplate(currentHeader);
             });
@@ -174,22 +207,27 @@ define([
             this.element.append(cssString);
         },
 
-        _bindEvents: function dcpArray_bindEvents() {
+        _bindEvents: function dcpArray_bindEvents()
+        {
             var currentWidget = this;
-            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check", function selectLineEvent() {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check input", function selectLineEvent()
+            {
                 var $this = $(this);
                 currentWidget._unSelectLines();
                 if ($this.data("selectedRow") === "1") {
                     $this.data("selectedRow", "0");
-                    currentWidget.element.find(".dcpArray__copy").attr("disabled", "disabled");
+                    currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
+                    $(this).prop("checked", false);
                 } else {
                     $this.find('.fa-check').show();
                     $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
                     $this.data("selectedRow", "1");
-                    currentWidget.element.find(".dcpArray__copy").removeAttr("disabled");
+                    currentWidget.element.find(".dcpArray__copy").prop("disabled", false);
+                    $(this).prop("checked", true);
                 }
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent() {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent()
+            {
                 var selectedLine = currentWidget.selectedLineIndex();
                 if (selectedLine === null) {
                     currentWidget.options.nbLines += 1;
@@ -199,16 +237,19 @@ define([
                     currentWidget.addLine(selectedLine, {needAddValue: true});
                 }
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent() {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent()
+            {
                 var selectedLine = currentWidget.selectedLineIndex();
                 currentWidget.options.nbLines += 1;
                 currentWidget.copyLine(selectedLine, {needAddValue: true});
 
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function deleteLineEvent() {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function deleteLineEvent()
+            {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__label", function () {
+            this.element.on("click" + this.eventNamespace, ".dcpArray__label", function ()
+            {
                 var $contentElement = currentWidget.element.find(".dcpArray__content");
                 if ($contentElement.hasClass("dcpArray__content--open")) {
                     // Hide array panel
@@ -227,28 +268,32 @@ define([
         /**
          * Redraw label with current count
          */
-        redrawLabel: function wArrayRedrawLabel() {
+        redrawLabel: function wArrayRedrawLabel()
+        {
             this.element.find(".dcpArray__label").html(
                 $(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
                     displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
                 }))).html()
             );
         },
-        setLines: function wArraySetLines(lineNumber) {
+        setLines: function wArraySetLines(lineNumber)
+        {
             var currentLineNumber = this.options.nbLines;
             var i;
             if (lineNumber > currentLineNumber) {
                 for (i = 0; i < (lineNumber - currentLineNumber); i += 1) {
                     this.addLine(currentLineNumber + i);
                 }
-            } else if (lineNumber < currentLineNumber) {
-                for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
-                    this.removeLine(this.options.nbLines - 1);
+            } else
+                if (lineNumber < currentLineNumber) {
+                    for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
+                        this.removeLine(this.options.nbLines - 1);
+                    }
                 }
-            }
         },
 
-        addAllLines: function dcpArrayaddAllLines(lineNumber) {
+        addAllLines: function dcpArrayaddAllLines(lineNumber)
+        {
             var i;
             this.element.find(".dcpArray__body").empty();
 
@@ -258,7 +303,8 @@ define([
             this._trigger("linesGenerated");
         },
 
-        _getLineContent: function (index) {
+        _getLineContent: function (index)
+        {
             var $content = "NULL LINE";
             if (this.options.customTemplate) {
                 //$content=$("<tr><td>CUSOMLINE</td><td>CUSOMLINE</td><td>CUSOMLINE</td></tr>");
@@ -272,7 +318,8 @@ define([
             return $content;
         },
 
-        _addNewLine: function dcpArray_addNewLine(lineNumber) {
+        _addNewLine: function dcpArray_addNewLine(lineNumber)
+        {
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
@@ -288,7 +335,8 @@ define([
             return $content;
         },
 
-        addLine: function dcpArrayaddLine(lineNumber, options) {
+        addLine: function dcpArrayaddLine(lineNumber, options)
+        {
             var $content = this._addNewLine(lineNumber);
             options = _.defaults(options || {}, {"silent": false, "needAddValue": false});
             if (options.silent !== true) {
@@ -300,12 +348,14 @@ define([
             }
         },
 
-        copyLine: function dcpArraycopyLine(lineNumber) {
+        copyLine: function dcpArraycopyLine(lineNumber)
+        {
             var $content = this._addNewLine(lineNumber);
             this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
         },
 
-        removeLine: function dcpArrayremoveLine(line, options) {
+        removeLine: function dcpArrayremoveLine(line, options)
+        {
             options = options || {};
             this.element.find("[data-line=" + line + "]").remove();
             this._indexLine();
@@ -316,7 +366,8 @@ define([
             this.redrawLabel();
         },
 
-        _destroy: function dcpArray_destroy() {
+        _destroy: function dcpArray_destroy()
+        {
             var tbody = this.element.find('tbody');
             if (tbody && tbody.data("kendoDropTargetArea")) {
                 tbody.data("kendoDropTargetArea").destroy();
@@ -328,10 +379,12 @@ define([
             this._super();
         },
 
-        _indexLine: function dcpArray_indexLine() {
+        _indexLine: function dcpArray_indexLine()
+        {
             var i = 0;
             this.element.find(".dcpArray__content__line").each(
-                function numeroteLine() {
+                function numeroteLine()
+                {
                     $(this).attr("data-line", i).data("line", i);
                     i += 1;
                 }
@@ -339,7 +392,8 @@ define([
             this.options.nbLines = i;
         },
 
-        _unSelectLines: function dcpArray_unSelectLines() {
+        _unSelectLines: function dcpArray_unSelectLines()
+        {
             this.element.find(".dcpArray__content__toolCell__check .fa-check").hide();
             this.element.find(".dcpArray__content__line--selected").removeClass("dcpArray__content__line--selected active");
         },
@@ -348,16 +402,18 @@ define([
          *
          * @param message string or array of [{message:, index:}, ...]
          */
-        setError: function dcpArray_SetError(message) {
-            var scope=this;
-            var $target=this.element.find(".dcpArray__content table.table");
+        setError: function dcpArray_SetError(message)
+        {
+            var scope = this;
+            var $target = this.element.find(".dcpArray__content table.table");
             if (message) {
                 $target.tooltip({
                     placement: "top",
                     trigger: "manual",
-                    animation:false,
+                    animation: false,
                     html: true,
-                    title: function () {
+                    title: function ()
+                    {
                         var rawMessage = $('<div/>').text(message).html();
                         return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
                     },
@@ -378,7 +434,8 @@ define([
          * @returns string
          * @private
          */
-        _getTemplate: function dcpArray_getTemplate(key) {
+        _getTemplate: function dcpArray_getTemplate(key)
+        {
             if (this.options.templates && this.options.templates[key]) {
                 return this.options.templates[key];
             }
@@ -392,7 +449,8 @@ define([
 
         },
 
-        getType: function dcpArray_getType() {
+        getType: function dcpArray_getType()
+        {
             return "array";
         }
 

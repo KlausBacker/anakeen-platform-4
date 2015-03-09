@@ -131,8 +131,17 @@ define([
             if (this.displayLabel === false) {
                 this.$el.find(".dcpAttribute__label").remove();
                 // set to 100% width
-                this.$el.find(".col-sm-10").addClass("col-sm-12").removeClass("col-sm-10");
+                this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
             } else {
+                if (this.model.getOption("labelPosition") === "left") {
+                    this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
+                    this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
+                }
+                if (this.model.getOption("labelPosition") === "up") {
+                    this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--up");
+                    this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--up");
+                }
+
                 this.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 

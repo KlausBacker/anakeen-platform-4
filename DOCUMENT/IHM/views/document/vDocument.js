@@ -349,6 +349,7 @@ define([
                 window: {
                     width: "80%",
                     height: "80%",
+                    maxWidth:$(window).width(),
                     title: i18n.___("Document History", "historyUi")
                 },
                 labels: {
@@ -412,6 +413,7 @@ define([
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "400px",
+                    maxWidth:$(window).width(),
                     height: "auto",
                     title : i18n.___("Document properties", "propertyUi")
                 },
@@ -543,7 +545,7 @@ define([
             if (save && save.done) {
                 save.done(function vDocumentDisplaySuccess()
                 {
-                    currentView.trigger("showSuccess", {title: "Document Recorded"});
+                    currentView.trigger("showSuccess", {title: i18n.___("Document Recorded", "ddui")});
                 });
             }
         },
@@ -558,7 +560,7 @@ define([
             if (save && save.done) {
                 save.done(function vDocumentDisplaySuccess()
                 {
-                    currentView.trigger("showSuccess", {title: "Document Saved"});
+                    currentView.trigger("showSuccess", {title: i18n.___("Document Created", "ddui")});
                 });
             }
         },
