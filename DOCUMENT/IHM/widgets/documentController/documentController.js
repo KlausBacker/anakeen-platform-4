@@ -564,8 +564,9 @@ define([
          */
         _addAndInitNewEvents: function documentController_addAndInitNewEvents(newEvent)
         {
-            var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event;
-            this.options.eventList[newEvent.name] = newEvent;
+            var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event, uniqueName;
+            uniqueName = (newEvent.externalEvent ? "external_" : "internal_")+newEvent.name;
+            this.options.eventList[uniqueName] = newEvent;
             // Check if the event is for the current document
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
                 this.activatedEvent.push(newEvent);
@@ -720,15 +721,15 @@ define([
          */
         fetchDocument: function documentControllerFetchDocument(options)
         {
+            var currentWidget = this;
             options = _.isUndefined(options) ? {} : options;
             if (!_.isObject(options)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
-            options = _.defaults(options, {
-                "revision": -1,
-                "viewId": "!defaultConsultation"
+            _.each(_.pick(options, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            {
+                currentWidget.options[key] = value;
             });
-            this.options = _.defaults(options, this.options);
             this.reinitDocument();
         },
 
@@ -925,7 +926,7 @@ define([
          */
         addConstraint: function documentControlleraddConstraint(options, callback)
         {
-            var parameters, currentWidget = this;
+            var currentConstraint, currentWidget = this, uniqueName;
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
                 options = {};
@@ -935,7 +936,7 @@ define([
                     throw new Error("When a constraint is initiated with a single object, this object needs to have the name property ".JSON.stringify(options));
                 }
             } else {
-                parameters = _.defaults(options, {
+                currentConstraint = _.defaults(options, {
                     "documentCheck": function documentController_defaultDocumentCheck()
                     {
                         return true;
@@ -950,23 +951,25 @@ define([
                     "once": false
                 });
             }
-            if (!_.isFunction(parameters.constraintCheck)) {
+            if (!_.isFunction(currentConstraint.constraintCheck)) {
                 throw new Error("An event need a callback");
             }
-            if (parameters.once === true) {
-                parameters.eventCallback = _.wrap(parameters.constraintCheck, function documentController_onceWrapper(callback)
+            //If constraint is once : wrap it an callback that execute callback and delete it
+            if (currentConstraint.once === true) {
+                currentConstraint.eventCallback = _.wrap(currentConstraint.constraintCheck, function documentController_onceWrapper(callback)
                 {
                     try {
                         callback.apply(this, _.rest(arguments));
                     } catch (e) {
                         console.error(e);
                     }
-                    currentWidget.removeConstraint(parameters.name, parameters.externalConstraint);
+                    currentWidget.removeConstraint(currentConstraint.name, currentConstraint.externalConstraint);
                 });
             }
-            this.options.constraintList[parameters.name] = parameters;
+            uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
+            this.options.constraintList[uniqueName] = currentConstraint;
             this._initActivatedConstraint();
-            return parameters.name;
+            return currentConstraint.name;
         },
 
         /**
@@ -1000,9 +1003,10 @@ define([
                 return true;
             });
             constraintList = {};
-            _.each(newConstraintList, function documentController_reinitConstraint(currentConstraint)
+            _.each(newConstraintList, function documentController_rebuildConstraintList(currentConstraint)
             {
-                constraintList[currentConstraint.name] = currentConstraint;
+                var uniqueName = (currentConstraint.externalConstraint ? "external_" : "internal_") + currentConstraint.name;
+                constraintList[uniqueName] = currentConstraint;
             });
             this.options.constraintList = constraintList;
             this._initActivatedConstraint();
@@ -1019,7 +1023,7 @@ define([
          */
         addEvent: function documentControllerAddEvent(eventType, options, callback)
         {
-            var eventContent, currentWidget = this;
+            var currentEvent, currentWidget = this;
             //options is facultative and the callback can be the second parameters
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
@@ -1027,12 +1031,12 @@ define([
             }
             // the first parameters can be the final object (chain removeEvent and addEvent)
             if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
-                eventContent = eventType;
-                if (!eventContent.name) {
-                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(eventContent));
+                currentEvent = eventType;
+                if (!currentEvent.name) {
+                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(currentEvent));
                 }
             } else {
-                eventContent = _.defaults(options, {
+                currentEvent = _.defaults(options, {
                     "name": _.uniqueId("event_" + eventType),
                     "eventType": eventType,
                     "eventCallback": callback,
@@ -1041,30 +1045,31 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(eventContent.eventType) || !_.find(eventList, function documentController_CheckEventType(currentEvent)
+            if (!_.isString(currentEvent.eventType) || !_.find(eventList, function documentController_CheckEventType(currentEventType)
                 {
-                    return currentEvent === eventContent.eventType;
+                    return currentEventType === currentEvent.eventType;
                 })) {
-                throw new Error("The event type " + eventContent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
+                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
             }
             // callback is mandatory and must be a function
-            if (!_.isFunction(eventContent.eventCallback)) {
+            if (!_.isFunction(currentEvent.eventCallback)) {
                 throw new Error("An event needs a callback that is a function");
             }
-            if (eventContent.once === true) {
-                eventContent.eventCallback = _.wrap(eventContent.eventCallback, function documentController_onceWrapper(callback)
+            //If event is once : wrap it an callback that execute event and delete it
+            if (currentEvent.once === true) {
+                currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function documentController_onceWrapper(callback)
                 {
                     try {
                         callback.apply(this, _.rest(arguments));
                     } catch (e) {
                         console.error(e);
                     }
-                    currentWidget.removeEvent(eventContent.name, eventContent.externalEvent);
+                    currentWidget.removeEvent(currentEvent.name, currentEvent.externalEvent);
                 });
             }
-            this._addAndInitNewEvents(eventContent);
-            // return the name of
-            return eventContent.name;
+            this._addAndInitNewEvents(currentEvent);
+            // return the name of the event
+            return currentEvent.name;
         },
 
         /**
@@ -1098,9 +1103,10 @@ define([
                 return true;
             });
             eventList = {};
-            _.each(newList, function (currentEvent)
+            _.each(newList, function documentController__rebuildEventList(currentEvent)
             {
-                eventList[currentEvent.name] = currentEvent;
+                var uniqueName = (currentEvent.externalEvent ? "external_" : "internal_") + currentEvent.name;
+                eventList[uniqueName] = currentEvent;
             });
             this.options.eventList = eventList;
             this._initActivatedEvents({"launchReady": false});
