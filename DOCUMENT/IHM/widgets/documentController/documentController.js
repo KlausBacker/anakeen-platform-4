@@ -721,15 +721,15 @@ define([
          */
         fetchDocument: function documentControllerFetchDocument(options)
         {
+            var currentWidget = this;
             options = _.isUndefined(options) ? {} : options;
             if (!_.isObject(options)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
-            options = _.defaults(options, {
-                "revision": -1,
-                "viewId": "!defaultConsultation"
+            _.each(_.pick(options, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            {
+                currentWidget.options[key] = value;
             });
-            this.options = _.defaults(options, this.options);
             this.reinitDocument();
         },
 
