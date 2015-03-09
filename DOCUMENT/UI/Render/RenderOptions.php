@@ -42,7 +42,7 @@ class RenderOptions implements \JsonSerializable
         $imageLinkOption->windowWidth = "400px";
         $this->setCustomOption(CommonRenderOptions::type, array(
             CommonRenderOptions::showEmptyContentOption => null,
-            CommonRenderOptions::labelPositionOption => CommonRenderOptions::leftPosition,
+            CommonRenderOptions::labelPositionOption => CommonRenderOptions::autoPosition,
             CommonRenderOptions::autoCompleteHtmlLabelOption => "",
             CommonRenderOptions::inputHtmlTooltip => "",
             CommonRenderOptions::htmlLinkOption => new HtmlLinkOptions()

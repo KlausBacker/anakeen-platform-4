@@ -28,6 +28,13 @@ define([
         },
 
         render: function () {
+            var scope=this;
+            if (this.displayLabel === false) {
+                // Need to defer because thead is not construct yet
+                _.defer(function () {
+                    scope.$el.find('.dcpArray__head__cell[data-attrid="'+scope.model.id+'"]').hide();
+                });
+            }
             this.model.trigger("renderDone", {model : this.model, $el : this.$el});
             return this;
         },
