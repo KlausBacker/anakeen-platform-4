@@ -130,12 +130,23 @@ define([
             throw new Error("You cannot modify the options, you need to suppress the widget");
         },
 
-        fetchDocument : function dcpDocument_fetchDocument(options) {
-            var internalWidget;
-            this.options = _.defaults(options, this.options);
+        /**
+         * Fetch a new document
+         *
+         * Use internal controller if ready
+         * Re-render the widget if internal is not ready
+         * @param options
+         */
+        fetchDocument: function dcpDocument_fetchDocument(options)
+        {
+            var internalWidget, currentWidget = this;
+            _.each(_.pick(options, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            {
+                currentWidget.options[key] = value;
+            });
             if (this.element.data("internalWidgetInitialised")) {
                 internalWidget = this.element.data("internalWidget");
-                internalWidget.fetchDocument.apply(internalWidget, options);
+                internalWidget.fetchDocument.call(internalWidget, options);
             } else {
                 this._render();
             }
