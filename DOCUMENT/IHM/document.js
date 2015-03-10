@@ -80,6 +80,7 @@ define([
                 };
                 currentWidget._unbindInternalWidget();
             }).trigger("load");
+            this._resize();
         },
 
         /**
@@ -136,7 +137,7 @@ define([
                 currentWidget = this,
                 element = this.element;
             //the computation can be done by an external function and default prevented
-            if (event) {
+            if (!this.options.withoutResize && event) {
                 //compute two times height (one for disapear horizontal scrollbar, two to get the actual size)
                 //noinspection JSValidateTypes
                 $documentWrapper.height(element.innerHeight() - parseInt(currentWidget.options.resizeMarginHeight, 10));
