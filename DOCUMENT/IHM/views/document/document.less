@@ -120,11 +120,6 @@ body {
   min-width: 6em;
 }
 
-.dcpLoading--hide {
-  transition: opacity 0.5s linear;
-  opacity: 0;
-}
-
 .dcpDocument {
   opacity: 0;
 }
@@ -133,21 +128,52 @@ body {
   transition: opacity 0.7s linear;
   opacity: 1;
 }
+.dcpDocument--disabled {
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:3;
+  margin:0;
+  padding:0;
+  border:0;
+  background-color: fade(@gray, "10%");
 
-.dcpLoading {
-  background-color: @body-bg;
-  width: 50%;
-  padding: 10px;
-  border: solid 1px darken(@body-bg, 5%);
-  text-align: center;
-  position: absolute;
-  top: 30px;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+}
+/**
+ * Loading
+ */
+.dcpLoading--hide {
+  transition: opacity 0.5s linear;
+  opacity: 0;
 }
 
+
+
+.dcpLoading {
+  padding: 0;
+  border: none;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  margin:0;
+  line-height: 1px;
+  z-index: 4;
+}
+.dcpLoading .k-progressbar-horizontal,
+.dcpLoading .progress
+{
+  width: 100%;
+  height: 3px;
+  box-sizing: border-box;
+  border:none;
+}
+.dcpLoading .k-progress-status-wrap {
+  box-sizing: border-box;
+}
 .k-window .dcpLoading {
   top: auto;
   position: inherit;

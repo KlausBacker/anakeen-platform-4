@@ -15,13 +15,16 @@ define([
         barElement :    null,
         original :      null,
 
-        _create : function _create() {
-            this.barElement = $('<div class="dcpLoading--progressbar dcpLoading--progressbar-complete" />');
 
-            this.element.find('.dcpLoading--progressbar').hide();
-            this.element.append(this.barElement);
+        _create : function _create() {
+            this.barElement = $('<div class="dcpLoading--bar" />');
+            this.initBar=this.element.find(".progress");
+
+            this.barElement.hide();
+            this.barElement.insertBefore(this.element.find(".dcpLoading--header"));
             this.barElement.kendoProgressBar({
                     type :      "percent",
+                    showStatus: false,
                     animation : {
                         duration : 1
                     }
@@ -30,8 +33,8 @@ define([
         },
 
         reset : function reset() {
-            this.element.find('.dcpLoading--progressbar').show();
-            this.element.find('.dcpLoading--progressbar-complete').hide();
+            this.barElement.show();
+            this.initBar.hide();
         },
 
         setTitle : function setTitle(val) {
@@ -59,6 +62,7 @@ define([
         },
 
         hide : function hide() {
+
             this.element.hide();
             this.element.removeClass("dcpLoading--hide");
             if (this.element.data('kendoWindow')) {
@@ -66,24 +70,40 @@ define([
             }
         },
 
-        show : function show() {
-            this.barElement.data("kendoProgressBar").value(0);
-            this.reset();
+        show : function show(type) {
+
+            if (type==="rendering") {
+
+                this.initBar.find(".progress-bar").removeClass("progress-bar-warning").addClass("progress-bar-success");
+                this.barElement.hide();
+                this.initBar.show();
+            } else if (type==="loading") {
+                this.initBar.find(".progress-bar").removeClass("progress-bar-danger").addClass("progress-bar-warning");
+                this.barElement.hide();
+                this.initBar.show();
+            } else {
+                this.barElement.data("kendoProgressBar").value(0);
+                this.reset();
+            }
             this.element.show();
         },
 
         complete : function complete(onComplete) {
             this.barElement.data("kendoProgressBar").bind("complete", onComplete);
+
         },
 
         setPercent : function setPercent(pc) {
             this.pc = pc;
             this.barElement.data("kendoProgressBar").value(Math.round(this.pc));
+
+
         },
 
         setNbItem : function setNbItem(restItem) {
             this.rest = 100 - this.pc;
             this.restItem = restItem;
+            this.reset();
         },
 
         addItem : function addItem(number) {

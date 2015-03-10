@@ -45,6 +45,8 @@ define([
          */
         cleanAndRender: function vDocumentCleanAndRender()
         {
+            console.log("clean render");
+            this.trigger("loaderShow", "rendering");
             this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
                 if (this.historyWidget) {
@@ -140,7 +142,7 @@ define([
                     console.error(e);
                 }
             }
-            this.trigger("loading", 20);
+            this.trigger("loading", 20, this.model.get("attributes").length);
             //add first level attributes
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
@@ -493,10 +495,12 @@ define([
          */
         displayLoading: function vDocumentDisplayLoading()
         {
-            this.$el.hide();
+            //this.$el.hide();
+            console.log("display laoding");
+            this.$el.append('<div class="dcpDocument--disabled"/>');
             this.trigger("cleanNotification");
             this.trigger("loader", 0);
-            this.trigger("loaderShow");
+            this.trigger("loaderShow", "loading");
         },
 
         /**

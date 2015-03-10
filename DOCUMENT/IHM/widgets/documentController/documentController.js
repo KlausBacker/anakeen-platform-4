@@ -316,14 +316,17 @@ define([
             {
                 currentWidget.$notification.dcpNotification("clear");
             });
-            this.view.on('loading', function documentController_triggerLoading(data)
+            this.view.on('loading', function documentController_triggerLoading(data, nbItem)
             {
                 currentWidget.$loading.dcpLoading('setPercent', data);
+                if (nbItem) {
+                    currentWidget.$loading.dcpLoading('setNbItem', nbItem);
+                }
             });
-            this.view.on('loaderShow', function documentController_triggerLoaderShow()
+            this.view.on('loaderShow', function documentController_triggerLoaderShow(data)
             {
                 console.time("xhr+render document view");
-                currentWidget.$loading.dcpLoading('show');
+                currentWidget.$loading.dcpLoading('show', data);
             });
             this.view.on('loaderHide', function documentController_triggerHide()
             {
@@ -336,7 +339,7 @@ define([
             this.view.on('renderDone', function documentController_triggerRenderDone()
             {
                 console.timeEnd("xhr+render document view");
-                currentWidget.$loading.dcpLoading("setPercent", 100).addClass("dcpLoading--hide");
+                currentWidget.$loading.dcpLoading("setPercent", 100);
                 currentWidget.initialLoaded = true;
                 currentWidget._triggerControllerEvent("ready", currentWidget._model.getProperties());
                 _.delay(function ()

@@ -111,7 +111,7 @@ define([
         },
 
         render : function vAttributeRender() {
-            //console.time("render attribute " + this.model.id);
+            console.time("render attribute " + this.model.id);
             var data = this.getData();
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
@@ -145,6 +145,7 @@ define([
                 this.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 
+            console.timeEnd("render attribute " + this.model.id);
             this.model.trigger("renderDone", {model : this.model, $el : this.$el});
             return this;
         },
