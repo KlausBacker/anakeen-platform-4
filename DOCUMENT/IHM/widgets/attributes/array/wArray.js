@@ -105,7 +105,6 @@ define([
                         this.element.find(".dcpArray__label").addClass("dcpAttribute__left");
                         this.element.find(".dcpArray__content").addClass("dcpAttribute__right");
                         this.element.addClass("dcpArray--left");
-                        console.log("options", labelPosition);
                         if (labelPosition === "left") {
                             this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
                             this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
