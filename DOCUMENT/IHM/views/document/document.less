@@ -155,25 +155,34 @@ body {
   padding: 0;
   border: none;
   text-align: center;
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0;
   right: 0;
   margin:0;
   line-height: 1px;
-  z-index: 4;
+  z-index: 11;
 }
-.dcpLoading .k-progressbar-horizontal,
 .dcpLoading .progress
 {
   width: 100%;
   height: 3px;
   box-sizing: border-box;
   border:none;
+  margin: 0;
+  background: @body-bg;
 }
-.dcpLoading .k-progress-status-wrap {
-  box-sizing: border-box;
+.dcpLoading--header .fa {
+  color: darken(@brand-info, 30%);
 }
+.dcpLoading--header {
+  background: @body-bg;
+  width: 10em;
+  display: inline-block;
+  padding: 4px;
+  border-radius: 0 0 4px 4px;
+}
+
 .k-window .dcpLoading {
   top: auto;
   position: inherit;

@@ -617,7 +617,6 @@ define([
          */
         clear: function mDocumentclear(options)
         {
-            this.destroySubcollection();
             return Backbone.Model.prototype.clear.call(this, options);
         },
 

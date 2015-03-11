@@ -323,10 +323,10 @@ define([
                     currentWidget.$loading.dcpLoading('setNbItem', nbItem);
                 }
             });
-            this.view.on('loaderShow', function documentController_triggerLoaderShow(data)
+            this.view.on('loaderShow', function documentController_triggerLoaderShow(text, pc)
             {
                 console.time("xhr+render document view");
-                currentWidget.$loading.dcpLoading('show', data);
+                currentWidget.$loading.dcpLoading('show', text, pc);
             });
             this.view.on('loaderHide', function documentController_triggerHide()
             {
@@ -340,13 +340,14 @@ define([
             {
                 console.timeEnd("xhr+render document view");
                 currentWidget.$loading.dcpLoading("setPercent", 100);
+                currentWidget.$loading.dcpLoading("setLabel", null);
                 currentWidget.initialLoaded = true;
                 currentWidget._triggerControllerEvent("ready", currentWidget._model.getProperties());
                 _.delay(function ()
                 {
                     currentWidget.$loading.dcpLoading("hide");
                     console.timeEnd('main');
-                }, 250);
+                }, 850);
             });
             this.view.on("showMessage", function documentController_triggerShowMessage(message)
             {
