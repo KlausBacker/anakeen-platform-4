@@ -74,8 +74,21 @@ define([
 
         },
         open :           function open() {
-            this.currentWidget.data("kendoWindow").open();
-            this.currentWidget.data("kendoWindow").center();
+            var kWindow=this.currentWidget.data("kendoWindow");
+            console.log("open");
+            if ($(window).width() <= 480) {
+                kWindow.setOptions({
+                    actions : ["Close"]
+                });
+                kWindow.maximize();
+                kWindow.open();
+            } else {
+                kWindow.setOptions({
+                    actions : this.options.window.actions
+                });
+                kWindow.center();
+                kWindow.open();
+            }
         },
 
 

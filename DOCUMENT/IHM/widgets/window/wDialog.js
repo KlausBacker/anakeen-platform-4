@@ -1,12 +1,11 @@
 define([
     'underscore',
     'dcpDocument/widgets/widget',
-    'dcpDocument/widgets/window/wDialog',
     'kendo/kendo.window'
 ], function (_) {
     'use strict';
 
-    $.widget("dcp.dcpTransitionWindow", $.dcp.dcpDialog, {
+    $.widget("dcp.dcpDialog", {
         options : {
             window : {
                 modal :    true,
@@ -21,15 +20,15 @@ define([
             }
         },
 
-        _create : function dcpTransitionWindow_create() {
+        _create : function dcpDialog_create() {
             var currentWidget = this;
-            this.element.data("dcpTransitionWindow", this);
+            this.element.data("dcpDialog", this);
             if (!this.options.window.close) {
-                this.options.window.close = function dcpTransitionWindow_onclose() {
+                this.options.window.close = function dcpDialog_onclose() {
                     _.defer(_.bind(currentWidget.destroy, currentWidget));
                 };
             } else {
-                this.options.window.close = _.wrap(this.options.window.close, function dcpTransitionWindow_closeWrap(close, argument) {
+                this.options.window.close = _.wrap(this.options.window.close, function dcpDialog_closeWrap(close, argument) {
                     var event = arguments[1];
                     close.apply(this, _.rest(arguments));
                     if (!event.isDefaultPrevented()) {
@@ -41,7 +40,7 @@ define([
             this.element.kendoWindow(this.options.window);
         },
 
-        open : function dcpTransitionWindow_Open() {
+        open : function dcpDialog_Open() {
             var kWindow=this.element.data("kendoWindow");
             console.log("open transition");
             if ($(window).width() <= 480) {
@@ -59,14 +58,14 @@ define([
             }
         },
 
-        close : function dcpTransitionWindow_close() {
+        close : function dcpDialog_close() {
             var kendoWindow = this.element.data("kendoWindow");
             if (kendoWindow) {
                 kendoWindow.close();
             }
         },
 
-        _destroy : function dcpTransitionWindow_destroy() {
+        _destroy : function dcpDialog_destroy() {
             if (this.element && this.element.data("kendoWindow")) {
                 this.element.data("kendoWindow").destroy();
             }

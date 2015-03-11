@@ -147,8 +147,21 @@ define([
         },
 
         open: function open() {
-            this.currentWidget.data("kendoWindow").center();
-            this.currentWidget.data("kendoWindow").open();
+            var kWindow=this.currentWidget.data("kendoWindow");
+
+            if ($(window).width() <= 480) {
+                kWindow.setOptions({
+                    actions : ["Close"]
+                });
+                kWindow.maximize();
+                kWindow.open();
+            } else {
+                kWindow.setOptions({
+                    actions : this.options.window.actions
+                });
+                kWindow.center();
+                kWindow.open();
+            }
         },
 
         _destroy: function _destroy() {

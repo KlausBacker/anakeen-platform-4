@@ -70,6 +70,12 @@ define([
             this._initDatatable();
             this.element.data("dcpDocumentHistory", this);
 
+            if (!this.options.window.close) {
+                this.options.window.close = function dcpDocumentHistoryonclose() {
+                    _.defer(_.bind(scope.destroy, scope));
+                };
+            }
+
             this.currentWidget.kendoWindow(this.options.window);
 
             this.currentWidget.on("click" + this.eventNamespace, ".history-button-showdetail", function () {
@@ -143,8 +149,21 @@ define([
             });
         },
         open: function open() {
-            this.currentWidget.data("kendoWindow").center();
-            this.currentWidget.data("kendoWindow").open();
+            var kWindow=this.currentWidget.data("kendoWindow");
+            console.log("open");
+            if ($(window).width() <= 480) {
+                kWindow.setOptions({
+                    actions : ["Close"]
+                });
+                kWindow.maximize();
+                kWindow.open();
+            } else {
+                kWindow.setOptions({
+                    actions : this.options.window.actions
+                });
+                kWindow.center();
+                kWindow.open();
+            }
         },
 
         _fillDataTable: function (data) {

@@ -223,8 +223,7 @@ define([
                     }
                 }).data("dcpTransitionWindow");
                 this.$el.kendoWindow("title", workflow.transition.label);
-                this.$el.kendoWindow("center");
-                this.$el.kendoWindow("open");
+                this.transitionWindow.open();
             }
             this.trigger("renderTransitionWindowDone");
         },
