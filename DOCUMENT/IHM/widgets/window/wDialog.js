@@ -2,33 +2,40 @@ define([
     'underscore',
     'dcpDocument/widgets/widget',
     'kendo/kendo.window'
-], function (_) {
+], function (_)
+{
     'use strict';
 
     $.widget("dcp.dcpDialog", {
-        options : {
-            window : {
-                modal :    true,
-                actions :  [
+        options: {
+            window: {
+                modal: true,
+                actions: [
                     "Maximize",
                     "Close"
                 ],
-                visible :  false,
-                height :   "300px",
-                maxWidth : "500px",
-                title :    "-"
-            }
+                visible: false,
+                height: "300px",
+                width: "500px",
+                title: "-"
+            },
+            maximizeWidth:480 // Limit in px to open with maximize
         },
 
-        _create : function dcpDialog_create() {
+        dialogWindow: null,
+
+        _create: function dcpDialog_create()
+        {
             var currentWidget = this;
             this.element.data("dcpDialog", this);
             if (!this.options.window.close) {
-                this.options.window.close = function dcpDialog_onclose() {
+                this.options.window.close = function dcpDialog_onclose()
+                {
                     _.defer(_.bind(currentWidget.destroy, currentWidget));
                 };
             } else {
-                this.options.window.close = _.wrap(this.options.window.close, function dcpDialog_closeWrap(close, argument) {
+                this.options.window.close = _.wrap(this.options.window.close, function dcpDialog_closeWrap(close, argument)
+                {
                     var event = arguments[1];
                     close.apply(this, _.rest(arguments));
                     if (!event.isDefaultPrevented()) {
@@ -36,40 +43,43 @@ define([
                     }
                 });
             }
-
-            this.element.kendoWindow(this.options.window);
+            this.dialogWindow = this.element.kendoWindow(this.options.window).data("kendoWindow");
         },
 
-        open : function dcpDialog_Open() {
-            var kWindow=this.element.data("kendoWindow");
-            console.log("open transition");
-            if ($(window).width() <= 480) {
+        open: function dcpDialog_Open()
+        {
+            var kWindow = this.dialogWindow;
+            if ($(window).width() <= this.options.maximizeWidth) {
                 kWindow.setOptions({
-                    actions : ["Close"]
+                    actions: ["Close"]
                 });
                 kWindow.maximize();
                 kWindow.open();
             } else {
                 kWindow.setOptions({
-                    actions : this.options.window.actions
+                    actions: this.options.window.actions
                 });
                 kWindow.center();
                 kWindow.open();
             }
         },
 
-        close : function dcpDialog_close() {
-            var kendoWindow = this.element.data("kendoWindow");
+        close: function dcpDialog_close()
+        {
+            var kendoWindow = this.dialogWindow;
             if (kendoWindow) {
                 kendoWindow.close();
             }
         },
 
-        _destroy : function dcpDialog_destroy() {
-            if (this.element && this.element.data("kendoWindow")) {
-                this.element.data("kendoWindow").destroy();
+        _destroy: function dcpDialog_destroy()
+        {
+            if (this.element && this.dialogWindow && this.element.data("kendoWindow")) {
+                this.dialogWindow.destroy();
+                this.dialogWindow = null;
+            } else {
+                this._super();
             }
-            this._super();
         }
 
     });

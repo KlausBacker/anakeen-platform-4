@@ -4,7 +4,7 @@ define([
     'backbone',
     'mustache',
     'dcpDocument/views/document/vDocument',
-    'dcpDocument/widgets/workflow/wTransitionWindow'
+    'dcpDocument/widgets/window/wDialog'
 ], function (_, $, Backbone, Mustache, ViewDocument) {
     'use strict';
 
@@ -208,7 +208,7 @@ define([
             }
 
             if (!this.transitionWindow) {
-                this.transitionWindow = this.$el.dcpTransitionWindow({
+                this.transitionWindow = this.$el.dcpDialog({
                     window: {
                         maxWidth: "600px",
                         height: "auto",
@@ -221,7 +221,7 @@ define([
                             }
                         }
                     }
-                }).data("dcpTransitionWindow");
+                }).data("dcpDialog");
                 this.$el.kendoWindow("title", workflow.transition.label);
                 this.transitionWindow.open();
             }
