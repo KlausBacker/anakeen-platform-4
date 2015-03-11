@@ -1,92 +1,115 @@
 define([
     'underscore',
     'dcpDocument/widgets/widget',
-    'kendo/kendo.window',
-    'kendo/kendo.progressbar'
-], function (_) {
+    'kendo/kendo.window'
+], function (_)
+{
     'use strict';
 
     $.widget("dcp.dcpLoading", {
-        pc :            0,
-        rest :          0,
-        restItem :      0,
-        currentWidget : null,
-        doneItems :     0,
-        barElement :    null,
-        original :      null,
+        pc: 0,
+        rest: 0,
+        restItem: 0,
+        currentWidget: null,
+        doneItems: 0,
+        original: null,
 
-        _create : function _create() {
-            this.barElement = $('<div class="dcpLoading--progressbar dcpLoading--progressbar-complete" />');
 
-            this.element.find('.dcpLoading--progressbar').hide();
-            this.element.append(this.barElement);
-            this.barElement.kendoProgressBar({
-                    type :      "percent",
-                    animation : {
-                        duration : 1
-                    }
-                }
-            );
+        _create: function dcpLoading_create()
+        {
+            this.initBar = this.element.find(".progress");
+            this.$title = this.element.find(".dcpLoading--title");
+            this.$header = this.element.find(".dcpLoading--header");
+
         },
 
-        reset : function reset() {
-            this.element.find('.dcpLoading--progressbar').show();
-            this.element.find('.dcpLoading--progressbar-complete').hide();
+        reset: function dcpLoadingReset()
+        {
+            this.initBar.show();
         },
 
-        setTitle : function setTitle(val) {
+        setTitle: function dcpLoadingsetTitle(val)
+        {
             this.element.find('.dcpLoading--title').html(val);
         },
 
-        modalMode : function modalMode() {
+        modalMode: function dcpLoadingmodalMode()
+        {
             var scopeElement = this.element;
             this.element.kendoWindow({
-                modal :     true,
-                actions :   [],
-                visible :   false,
-                draggable : false,
-                title :     false,
-                width :     "400px",
-                height :    "100px"
+                modal: true,
+                actions: [],
+                visible: false,
+                draggable: false,
+                title: false,
+                width: "400px",
+                height: "100px"
             });
             this.element.show();
             this.element.data('kendoWindow').center();
             this.element.data('kendoWindow').open();
-            _.defer(function () {
+            _.defer(function ()
+            {
                 scopeElement.show();
             });
 
         },
 
-        hide : function hide() {
+        hide: function dcpLoadinghide()
+        {
+
             this.element.hide();
             this.element.removeClass("dcpLoading--hide");
             if (this.element.data('kendoWindow')) {
                 this.element.data('kendoWindow').close();
             }
+            this.setPercent(0);
         },
 
-        show : function show() {
-            this.barElement.data("kendoProgressBar").value(0);
-            this.reset();
+        show: function dcpLoadingshow(text, pc)
+        {
+
+            if (text) {
+                this.setLabel(text);
+            }
+            if (pc) {
+                this.setPercent(pc);
+            }
+
             this.element.show();
+            this.$header.show().removeClass("dcpLoading--hide");
         },
 
-        complete : function complete(onComplete) {
-            this.barElement.data("kendoProgressBar").bind("complete", onComplete);
+
+        setLabel: function dcpLoadingsetLabel(text)
+        {
+            if (text) {
+                this.$title.text(text);
+            } else {
+                this.$header.addClass("dcpLoading--hide");
+            }
         },
 
-        setPercent : function setPercent(pc) {
+        setPercent: function dcpLoadingsetPercent(pc)
+        {
+            var $initbar = this.initBar.find(".progress-bar");
+            var rpc = Math.round(pc);
             this.pc = pc;
-            this.barElement.data("kendoProgressBar").value(Math.round(this.pc));
+            window.requestAnimationFrame(function ()
+            {
+                $initbar.css("width", rpc + '%');
+            });
+
         },
 
-        setNbItem : function setNbItem(restItem) {
+        setNbItem: function dcpLoadingSetNbItem(restItem)
+        {
             this.rest = 100 - this.pc;
             this.restItem = restItem;
         },
 
-        addItem : function addItem(number) {
+        addItem: function dcpLoadingAddItem(number)
+        {
             number = number || 1;
             number = parseInt(number, 10);
             this.doneItems += number;
@@ -94,13 +117,12 @@ define([
             this.setPercent(this.pc + pv);
         },
 
-        _destroy : function _destroy() {
+        _destroy: function dcpLoading_destroy()
+        {
             if (this.element.data('kendoWindow')) {
                 this.element.data('kendoWindow').destroy();
             }
-            if (this.barElement.data("kendoProgressBar")) {
-                this.barElement.data("kendoProgressBar").destroy();
-            }
+
             this._trigger("destroy");
             this._super();
         }

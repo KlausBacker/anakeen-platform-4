@@ -33,7 +33,8 @@ define([
         initialize: function vDocumentInitialize()
         {
             this.listenTo(this.model, 'destroy', this.remove);
-            this.listenTo(this.model, 'request', this.displayLoading);
+            this.listenTo(this.model, 'beforeClose', this.displayLoading);
+            this.listenTo(this.model, 'beforeSave', this.displaySaving);
             this.listenTo(this.model, 'sync', this.cleanAndRender);
             this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
@@ -45,6 +46,7 @@ define([
          */
         cleanAndRender: function vDocumentCleanAndRender()
         {
+            this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
             this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
                 if (this.historyWidget) {
@@ -140,7 +142,7 @@ define([
                     console.error(e);
                 }
             }
-            this.trigger("loading", 20);
+            this.trigger("loading", 20, this.model.get("attributes").length);
             //add first level attributes
             console.time("render attributes");
             $content = this.$el.find(".dcpDocument__frames");
@@ -349,7 +351,7 @@ define([
                 window: {
                     width: "80%",
                     height: "80%",
-                    maxWidth:$(window).width(),
+                    maxWidth: $(window).width(),
                     title: i18n.___("Document History", "historyUi")
                 },
                 labels: {
@@ -413,32 +415,32 @@ define([
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "400px",
-                    maxWidth:$(window).width(),
+                    maxWidth: $(window).width(),
                     height: "auto",
-                    title : i18n.___("Document properties", "propertyUi")
+                    title: i18n.___("Document properties", "propertyUi")
                 },
                 labels: {
                     identifier: i18n.___("Identifier", "propertyUi"),
-                    title: i18n.___("Title","propertyUi"),
-                    logicalName: i18n.___("Logical name","propertyUi"),
-                    revision: i18n.___("Revision number","propertyUi"),
-                    version: i18n.___("Version","propertyUi"),
-                    family: i18n.___("Family","propertyUi"),
-                    lockedBy: i18n.___("Locked by","propertyUi"),
-                    createdBy: i18n.___("Created by","propertyUi"),
-                    notLocked: i18n.___("Not locked","propertyUi"),
-                    confidential: i18n.___("Confidential","propertyUi"),
-                    notConfidential: i18n.___("Not confidential","propertyUi"),
-                    creationDate: i18n.___("Creation date","propertyUi"),
-                    lastModificationDate: i18n.___("Last modification date","propertyUi"),
-                    lastAccessDate: i18n.___("Last access date","propertyUi"),
-                    profil: i18n.___("Profil","propertyUi"),
-                    profilReference: i18n.___("Profil reference","propertyUi"),
-                    viewController: i18n.___("View controller","propertyUi"),
-                    property: i18n.___("Property","propertyUi"),
-                    propertyValue: i18n.___("Value","propertyUi"),
-                    workflow: i18n.___("Workflow","propertyUi"),
-                    activity: i18n.___("Activity","propertyUi")
+                    title: i18n.___("Title", "propertyUi"),
+                    logicalName: i18n.___("Logical name", "propertyUi"),
+                    revision: i18n.___("Revision number", "propertyUi"),
+                    version: i18n.___("Version", "propertyUi"),
+                    family: i18n.___("Family", "propertyUi"),
+                    lockedBy: i18n.___("Locked by", "propertyUi"),
+                    createdBy: i18n.___("Created by", "propertyUi"),
+                    notLocked: i18n.___("Not locked", "propertyUi"),
+                    confidential: i18n.___("Confidential", "propertyUi"),
+                    notConfidential: i18n.___("Not confidential", "propertyUi"),
+                    creationDate: i18n.___("Creation date", "propertyUi"),
+                    lastModificationDate: i18n.___("Last modification date", "propertyUi"),
+                    lastAccessDate: i18n.___("Last access date", "propertyUi"),
+                    profil: i18n.___("Profil", "propertyUi"),
+                    profilReference: i18n.___("Profil reference", "propertyUi"),
+                    viewController: i18n.___("View controller", "propertyUi"),
+                    property: i18n.___("Property", "propertyUi"),
+                    propertyValue: i18n.___("Value", "propertyUi"),
+                    workflow: i18n.___("Workflow", "propertyUi"),
+                    activity: i18n.___("Activity", "propertyUi")
                 }
             }).data("dcpDocumentProperties");
 
@@ -493,10 +495,17 @@ define([
          */
         displayLoading: function vDocumentDisplayLoading()
         {
-            this.$el.hide();
+            this.$el.append('<div class="dcpDocument--disabled"/>');
             this.trigger("cleanNotification");
-            this.trigger("loader", 0);
-            this.trigger("loaderShow");
+            this.trigger("loaderShow", i18n.___("Loading", "ddui"), 50);
+        },
+        /**
+         * Display the loading widget
+         */
+        displaySaving: function vDocumentDisplaySaving()
+        {
+            this.$el.append('<div class="dcpDocument--disabled"/>');
+            this.trigger("loaderShow", i18n.___("Recording", "ddui"), 70);
         },
 
         /**
@@ -507,7 +516,7 @@ define([
         showView: function vDocumentShowView()
         {
             this.$el.hide();
-            this.trigger("loader", 0);
+            this.$el.find(".dcpDocument--disabled").remove();
             this.trigger("loaderHide");
             this.$el.show();
             this.model.redrawErrorMessages();
