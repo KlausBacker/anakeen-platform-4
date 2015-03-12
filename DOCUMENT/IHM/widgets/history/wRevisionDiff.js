@@ -3,13 +3,13 @@ define([
     'mustache',
     'kendo/kendo.core',
     'dcpDocument/widgets/widget',
-    'kendo/kendo.window',
+    'dcpDocument/widgets/window/wDialog',
     'datatables',
     "datatables-bootstrap/dataTables.bootstrap"
 ], function (_, Mustache) {
     'use strict';
 
-    $.widget("dcp.dcpRevisionDiff", {
+    $.widget("dcp.dcpRevisionDiff",  $.dcp.dcpDialog, {
         options :        {
             documentId :     0,
             firstRevision :  0,
@@ -49,34 +49,28 @@ define([
         secondDocument : null,
         _create :        function () {
             var scope = this;
-            this.currentWidget = $('<div class="revision-diff"/>').html(this.htmlCaneva());
 
-            this.element.append(this.currentWidget);
+            this.element.html(this.htmlCaneva());
             this._initDatatable();
             this.element.data("dcpRevisionDiff", this);
-            this.options.window.close = function () {
-                scope.destroy();
-            };
-            this.currentWidget.kendoWindow(this.options.window);
 
-            this.currentWidget.on("click" + this.eventNamespace, ".revision-diff-button-showonlydiff", function () {
+            this._super();
+
+            this.element.on("click" + this.eventNamespace, ".revision-diff-button-showonlydiff", function () {
                 if ($(this).data("showOnlyDiff")) {
                     $(this).data("showOnlyDiff", false);
                     $(this).text(scope.options.labels.showOnlyDiff).removeClass("btn-primary");
-                    scope.currentWidget.find(".revision-diff-equal").show();
+                    scope.element.find(".revision-diff-equal").show();
                 } else {
                     $(this).data("showOnlyDiff", true);
-                    scope.currentWidget.find(".revision-diff-equal").hide();
+                    scope.element.find(".revision-diff-equal").hide();
 
                     $(this).text(scope.options.labels.showAll).addClass("btn-primary");
                 }
             });
 
         },
-        open :           function open() {
-            this.currentWidget.data("kendoWindow").open();
-            this.currentWidget.data("kendoWindow").center();
-        },
+
 
 
         htmlCaneva :            function () {
@@ -154,9 +148,9 @@ define([
                     // Output the data for the visible rows to the browser's console
                     $(api.columns('first:name').header()).html(revisionDiffWidget._getDocHeader(revisionDiffWidget.firstDocument));
                     $(api.columns('second:name').header()).html(revisionDiffWidget._getDocHeader(revisionDiffWidget.secondDocument));
-                    revisionDiffWidget.currentWidget.find(".dataTables_filter input").attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
+                    revisionDiffWidget.element.find(".dataTables_filter input").attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
 
-                    var firstHeadCell = revisionDiffWidget.currentWidget.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
+                    var firstHeadCell = revisionDiffWidget.element.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
                     if (firstHeadCell.find('.revision-diff-button-showonlydiff').length === 0) {
                         firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
                     }
@@ -244,9 +238,7 @@ define([
 
         _destroy : function _destroy() {
             var $history = this.element.find('.revision-diff-main');
-            if (this.kendoWidget && this.kendoWidget.data("kendoWindow")) {
-                this.kendoWidget.data("kendoWindow").destroy();
-            }
+
             if ($history.DataTable) {
                 $history.DataTable().destroy();
             }

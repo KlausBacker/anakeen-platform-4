@@ -3,22 +3,15 @@ define([
     'mustache',
     'kendo/kendo.core',
     'dcpDocument/widgets/widget',
-    'kendo/kendo.window'
+    'dcpDocument/widgets/window/wDialog'
 ], function (_, Mustache, kendo) {
     'use strict';
 
-    $.widget("dcp.dcpDocumentProperties", {
+    $.widget("dcp.dcpDocumentProperties", $.dcp.dcpDialog, {
         options: {
             documentId: 0,
             window: {
                 modal: true,
-                actions: [
-                    "Maximize",
-                    "Close"
-                ],
-                visible: false,
-                height: "300px",
-                width: "500px",
                 title: "Document properties"
             },
             labels: {
@@ -102,26 +95,22 @@ define([
             '</tbody></table>';
         },
 
-        currentWidget: null,
         _create: function () {
             var scope = this;
-            this.currentWidget = $('<div class="document-properties"/>');
-
-            this.element.append(this.currentWidget);
 
             this._displayProperties();
 
-            this.element.data("dcpDocumentProperties", this);
+            this._super();
 
-            this.currentWidget.on("click" + this.eventNamespace, "a[data-document-id]", function (event) {
+            this.element.data("dcpDocumentProperties", this);
+            this.element.on("click" + this.eventNamespace, "a[data-document-id]", function (event) {
                 var docid = $(this).data("document-id");
                 if (docid) {
                     event.preventDefault();
-                    scope.currentWidget.trigger("viewDocument", docid);
+                    scope.element.trigger("viewDocument", docid);
                 }
             });
-            this.currentWidget.kendoWindow(this.options.window);
-
+            this.element.kendoWindow(this.options.window);
         },
 
         _displayProperties: function wPropertiesGetProperties() {
@@ -137,25 +126,17 @@ define([
                             return kendo.toString(new Date(render(text).replace(' ', 'T')), "G");
                         };
                     };
-                    scope.currentWidget.html(Mustache.render(scope.htmlCaneva(), info));
-                    scope.currentWidget.data("kendoWindow").center();
+                    scope.element.html(Mustache.render(scope.htmlCaneva(), info));
+                    scope.element.data("kendoWindow").center();
 
                 }).fail(function (xhr) {
                     var result = JSON.parse(xhr.responseText);
                     window.alert(result.exceptionMessage);
                 });
-        },
-
-        open: function open() {
-            this.currentWidget.data("kendoWindow").center();
-            this.currentWidget.data("kendoWindow").open();
-        },
-
-        _destroy: function _destroy() {
-            if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
-                this.currentWidget.data("kendoWindow").destroy();
-            }
         }
+
+
+
 
 
     });

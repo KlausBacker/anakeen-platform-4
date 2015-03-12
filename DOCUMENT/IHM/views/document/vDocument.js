@@ -346,12 +346,12 @@ define([
         showHistory: function vDocumentShowHistory()
         {
             var scope = this;
-            this.historyWidget = this.$el.dcpDocumentHistory({
+            var $target=$('<div class="document-history"/>');
+            this.historyWidget = $target.dcpDocumentHistory({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "80%",
                     height: "80%",
-                    maxWidth: $(window).width(),
                     title: i18n.___("Document History", "historyUi")
                 },
                 labels: {
@@ -388,7 +388,7 @@ define([
             }).data("dcpDocumentHistory");
 
             this.historyWidget.open();
-            this.historyWidget.currentWidget.on("viewRevision", function vDocumentViewRevision(event, data)
+            this.historyWidget.element.on("viewRevision", function vDocumentViewRevision(event, data)
             {
                 scope.model.clear();
                 scope.model.set({initid: data.initid, revision: data.revision});
@@ -411,11 +411,12 @@ define([
         showProperties: function vDocumentShowProperties()
         {
             var scope = this;
-            this.propertiesWidget = this.$el.dcpDocumentProperties({
+            var $target=$('<div class="document-properties"/>');
+
+            this.propertiesWidget = $target.dcpDocumentProperties({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
                     width: "400px",
-                    maxWidth: $(window).width(),
                     height: "auto",
                     title: i18n.___("Document properties", "propertyUi")
                 },
@@ -445,7 +446,7 @@ define([
             }).data("dcpDocumentProperties");
 
             this.propertiesWidget.open();
-            this.propertiesWidget.currentWidget.on("viewDocument", function vDocumentViewDocument(event, data)
+            this.propertiesWidget.element.on("viewDocument", function vDocumentViewDocument(event, data)
             {
                 scope.model.clear();
                 scope.model.set("initid", data);

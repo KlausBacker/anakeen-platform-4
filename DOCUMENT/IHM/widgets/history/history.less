@@ -14,11 +14,21 @@
   color: @gray;
 }
 .history-message {
-  white-space: pre-line;
+  @media (min-width: @screen-sm-min) {
+    white-space: pre-line;
+  }
 }
 
 .history-date, .history-owner {
-  white-space: nowrap;
+  @media (min-width: @screen-sm-min) {
+    white-space: nowrap;
+  }
+}
+
+.history-revision-link {
+  @media (max-width: @screen-sm-min) {
+    white-space: normal;
+  }
 }
 
 .history-header {
@@ -51,6 +61,11 @@
 }
 .history-main.table td {
   vertical-align: middle;
+}
+.history-main {
+  @media (max-width: @screen-sm-min) {
+    table-layout: fixed;
+  }
 }
 .document-history .dataTables_filter {
 
