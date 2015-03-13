@@ -8,7 +8,7 @@
 $sty_desc = array(
     "name" => "DDUI", //Name
     "description" => "DDUI LESS STYLE", //long description
-    
+
 );
 
 // global parameters which can be use for other css
@@ -18,40 +18,41 @@ $sty_rules = array(
             "src" => array(
                 "bootstrap" => "STYLE/DDUI/dduiAssets/bootstrap.less",
                 "fontAwesome" => "STYLE/DDUI/dduiAssets/fontawesome.less"
-            ) ,
+            ),
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true
                 )
             )
-        ) ,
+        ),
         'dcp/document/kendo.css' => array(
             "src" => array(
                 "kendo-bootstrap-common" => "STYLE/DDUI/dduiAssets/kendo.common.less",
                 "kendo-bootstrap" => "STYLE/DDUI/dduiAssets/kendo.bootstrap.less",
-            ) ,
-            "deploy_parser" => array("className" => '\Dcp\Style\dcpLessParser',
+            ),
+            "deploy_parser" => array(
+                "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true
                 )
-            ) ,
-        ) ,
+            ),
+        ),
         'dcp/document/document.css' => array(
             "src" => array(
-                "document" => "DOCUMENT/IHM/views/document/document.less"
-            ) ,
+                "document" => "STYLE/DDUI/dduiAssets/document.less"
+            ),
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true
                 )
             )
-        ) ,
+        ),
         'dcp/document/ckeditor.css' => array(
             "src" => array(
                 "document" => "DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.less"
-            ) ,
+            ),
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(

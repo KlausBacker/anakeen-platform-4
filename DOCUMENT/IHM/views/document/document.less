@@ -1,6 +1,4 @@
 //noinspection CssUnknownTarget
-@import "../../../../lib/bootstrap/3/less/variables";
-//noinspection CssUnknownTarget
 @import "../../../../lib/bootstrap/3/less/mixins.less";
 @import "menu/menu";
 @import "../attributes/attribute";
@@ -29,10 +27,6 @@
 @import "../../widgets/workflow/transition";
 
 @documentHeaderHeight : 30px;
-
-.dcpDocument__menu.navbar-fixed-top {
-  top: @documentHeaderHeight;
-}
 
 .dcpDocument__body {
   padding: 10px;
@@ -128,19 +122,20 @@ body {
   transition: opacity 0.7s linear;
   opacity: 1;
 }
-.dcpDocument--disabled {
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:3;
-  margin:0;
-  padding:0;
-  border:0;
-  background-color: fade(@gray, "10%");
 
+.dcpDocument--disabled {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: fade(@gray, "10%");
 }
+
 /**
  * Loading
  */
@@ -149,32 +144,32 @@ body {
   opacity: 0;
 }
 
-
-
 .dcpLoading {
   padding: 0;
   border: none;
   text-align: center;
   position: fixed;
-  top: 0px;
+  top: 0;
   left: 0;
   right: 0;
-  margin:0;
+  margin: 0;
   line-height: 1px;
   z-index: 11;
 }
-.dcpLoading .progress
-{
+
+.dcpLoading .progress {
   width: 100%;
   height: 3px;
   box-sizing: border-box;
-  border:none;
+  border: none;
   margin: 0;
   background: @body-bg;
 }
+
 .dcpLoading--header .fa {
   color: darken(@brand-info, 30%);
 }
+
 .dcpLoading--header {
   background: @body-bg;
   width: 10em;
@@ -187,7 +182,6 @@ body {
   top: auto;
   position: inherit;
   width: auto;
-
 }
 
 .dcpLoading img {
@@ -197,20 +191,21 @@ body {
 .dcpDocument__header--fixed {
   background-color: lighten(@brand-warning, 20%);
 }
+
 .dcpDocument__header--deleted {
   background-color: lighten(@brand-danger, 20%);
 }
+
 .dcpDocument__header--fixed .dcpDocument__header__revision,
 .dcpDocument__header--deleted .dcpDocument__header__revision,
-
 {
   padding-right: 2em;
   padding-left: 2em;
   font-size: @documentHeaderHeight/2;
 }
+
 .dcpDocument__header--fixed .dcpDocument__header__revdate,
 .dcpDocument__header--deleted .dcpDocument__header__revdate,
-
 {
   padding-right: 2em;
   font-size: @documentHeaderHeight/2;
