@@ -177,8 +177,9 @@ define([
                 if (this.get("properties")) {
                     properties = this.get("properties").toJSON();
                 }
+                properties.initid = this.get("initid");
+                properties.revision = this.get("revision");
                 properties.viewId = this.get("viewId");
-                properties.renderMode = this.get("renderMode");
 
                 return properties;
             }
@@ -362,9 +363,9 @@ define([
                             _.each(currentValue, function (attributeValue, index)
                             {
                                 if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
-                                    currentAttribute.setErrorMessage(i18n.___("Empty value not allowed","ddui"), index);
+                                    currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
 
-                                    templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed","ddui"), {escape: /\{\{(.+?)\}\}/g});
+                                    templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
                                     errorMessage.push(templateMessage({
                                         parentLabel: parentAttribute.get('label'),
                                         label: currentAttribute.get("label"),
@@ -381,17 +382,17 @@ define([
                         }
                     } else {
                         if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
-                            currentAttribute.setErrorMessage(i18n.___("Empty value not allowed","ddui"));
+                            currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"));
                             oneSuccess = false;
                         }
                     }
                     if (!oneSuccess) {
-                        templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} is needed","ddui"), {escape: /\{\{(.+?)\}\}/g});
+                        templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
                         errorMessage.push(templateMessage({
                             parentLabel: parentAttribute.get('label'),
                             label: currentAttribute.get("label")
                         }));
-                        currentAttribute.setErrorMessage(i18n.___("The field must not be empty","ddui"));
+                        currentAttribute.setErrorMessage(i18n.___("The field must not be empty", "ddui"));
                         success = false;
                     }
                 }
@@ -669,6 +670,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
+                this.trigger("displayLoading");
                 return Backbone.Model.prototype.fetch.call(this, attributes, options);
             }
             return false;
@@ -693,6 +695,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
+                this.trigger("displayLoading", {isSaving: true});
                 return Backbone.Model.prototype.save.call(this, attributes, options);
             }
             return false;
@@ -717,6 +720,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
+                this.trigger("displayLoading");
                 return Backbone.Model.prototype.destroy.call(this, attributes, options);
             }
             return false;
