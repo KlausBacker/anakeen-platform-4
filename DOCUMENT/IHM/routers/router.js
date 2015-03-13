@@ -1,4 +1,5 @@
 /*global define*/
+/*global define*/
 define([
     'underscore',
     'backbone'

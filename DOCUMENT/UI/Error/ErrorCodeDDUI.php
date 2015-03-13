@@ -44,4 +44,8 @@ class ErrorCodeCrudUI
      * @errorCode Translation catalog not found
      */
     const CRUDUI0009 = 'Catalog "%s" not found';
+    /**
+     * @errorCode Cannot access user lock
+     */
+    const CRUDUI0010 = 'Cannot access user lock : %s';
 }

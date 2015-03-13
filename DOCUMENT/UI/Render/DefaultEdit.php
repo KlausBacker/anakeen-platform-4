@@ -63,7 +63,7 @@ class DefaultEdit extends RenderDefault
         $item->setTooltipLabel(___("Abord modifications", "UiMenu"));
         $menu->appendElement($item);
         */
-        $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation");
+        $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation:unlock");
         $item->setBeforeContent('<div class="fa fa-times" />');
         $item->setTooltipLabel(___("See document in read mode", "UiMenu"));
         $menu->appendElement($item);

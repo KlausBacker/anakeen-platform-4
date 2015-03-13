@@ -396,6 +396,22 @@ define([
         },
 
         /**
+         * Lock document
+         *
+         */
+        lockDocument: function vDocumentLockDocument()
+        {
+            this.model.lockDocument();
+        },
+        /**
+         * Lock document
+         *
+         */
+        unlockDocument: function vDocumentUnLockDocument()
+        {
+            this.model.unlockDocument();
+        },
+        /**
          * Show the transition view
          *
          */
@@ -626,6 +642,12 @@ define([
             }
             if (options[0] === "load") {
                 return this.loadDocument(options[1], options[2]);
+            }
+            if (options[0] === "lock") {
+                return this.lockDocument();
+            }
+            if (options[0] === "unlock") {
+                return this.unlockDocument();
             }
         },
 

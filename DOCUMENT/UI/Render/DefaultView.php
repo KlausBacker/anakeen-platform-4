@@ -60,6 +60,7 @@ class DefaultView extends RenderDefault
                 
                 if ($editErr = $document->CanEdit()) {
                     $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($editErr);
+                    $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
                 }
                 $deleteErr = $document->control("delete");
                 if ($deleteErr) {
@@ -69,13 +70,12 @@ class DefaultView extends RenderDefault
                 // Alive document
                 if ($document->isLocked()) {
                     $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
-                    $cuf = ($document->CanUnLockFile() == "");
-                    if (!$cuf) {
+                    $errcuf = $document->CanUnLockFile();
+                    if ($errcuf) {
                         if ($document->locked == - 1) {
-                            
                             $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
                         } else {
-                            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled);
+                            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($errcuf);
                         }
                     }
                 } else {
@@ -142,13 +142,13 @@ class DefaultView extends RenderDefault
         $item->setTarget("_dialog", $targetOption);
         $securitySubMenu->appendElement($item);*/
         $item = new ItemMenu("lock", ___("Lock", "UiMenu") , "#event/document:lock");
-        $item->setVisibility(ElementMenu::VisibilityDisabled);
-        $item->setTooltipLabel(___("Not yet implemented", "ddui"));
+        
+        $item->setTooltipLabel(___("Lock document", "ddui"));
         $securitySubMenu->appendElement($item);
         
-        $item = new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#event/document:lock");
-        $item->setVisibility(ElementMenu::VisibilityDisabled);
-        $item->setTooltipLabel(___("Not yet implemented", "ddui"));
+        $item = new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#event/document:unlock");
+        
+        $item->setTooltipLabel(___("Unlock document", "ddui"));
         $securitySubMenu->appendElement($item);
         $securitySubMenu->appendElement($item);
         
@@ -244,7 +244,7 @@ class DefaultView extends RenderDefault
                     $itemMenu->setIcon($icon);
                 }
                 if ($tooltip) {
-                    $itemMenu->setTooltipLabel($tooltip, "auto");
+                    $itemMenu->setTooltipLabel($tooltip, "left");
                 }
                 
                 $color = $wdoc->getColor($v);
