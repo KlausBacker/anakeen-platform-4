@@ -28,12 +28,21 @@ define([
          * @returns {*}
          */
         render: function vheaderRender() {
-            var headerRender=$(Mustache.render(this.headerTemplate, this.model.toData()));
+            var data=this.model.toData();
+            data.document.properties.security.lock.isLocked=(data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0);
+            
+            var headerRender=$(Mustache.render(this.headerTemplate, data));
             var $header=this.$el;
             $header.empty();
             _.each(headerRender.children(), (function (elt) {
                 $header.append(elt);
             }));
+
+            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly").tooltip({
+                placement:"bottom",
+                html:true
+            });
+
             return this;
         },
 

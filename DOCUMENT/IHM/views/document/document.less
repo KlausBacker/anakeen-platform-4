@@ -26,7 +26,6 @@
 @import "../../widgets/properties/properties";
 @import "../../widgets/workflow/transition";
 
-@documentHeaderHeight : 30px;
 
 .dcpDocument__body {
   padding: 10px;
@@ -187,7 +186,30 @@ body {
 .dcpLoading img {
   width: 2em;
 }
+.dcpDocument__header__lock,
+.dcpDocument__header__readonly
+{
+  float:right;
+  padding:0.3em;
+  padding-right: 1em;
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+}
+.dcpDocument__header__lock{
+ // color:@brand-success;
+}
+.dcpDocument__header--readonly .dcpDocument__header__lock{
+ // color:@brand-danger;
+}
 
+.dcpDocument__header__lock--temporary{
+  color:lighten(@gray, 30%);
+}
+
+.dcpDocument__header--readonly {
+  background-color: lighten(@gray, 60%);
+}
 .dcpDocument__header--fixed {
   background-color: lighten(@brand-warning, 20%);
 }

@@ -1,5 +1,13 @@
-<header class="dcpDocument__header">
+<header class="dcpDocument__header {{#document.properties.security.readOnly}} dcpDocument__header--readonly {{/document.properties.security.readOnly}}">
     <img class="dcpDocument__header__icon" src="{{document.properties.icon}}" alt="Document icon"/>
     <a class="dcpDocument__header__title" href="?app=DOCUMENT&id={{document.properties.id}}">{{document.properties.title}}</a>
+   {{#document.properties.security.lock.lockedBy.id}} <i title="[[#i18n]]ddui:Locked by[[/i18n]] <b>{{document.properties.security.lock.lockedBy.title}}</b>" class="dcpDocument__header__lock {{#document.properties.security.lock.temporary}} dcpDocument__header__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></i>{{/document.properties.security.lock.lockedBy.id}}
+{{#document.properties.security.readOnly}}
+<span title="[[#i18n]]ddui:Read only[[/i18n]]" class="dcpDocument__header__readonly  fa-stack  text-danger">
+  <i class="fa fa-pencil fa-stack-1x"></i>
+  <i class="fa fa-ban fa-stack-1x fa-rotate-90"></i>
+</span>
+
+ {{/document.properties.security.readOnly}}
     <div class="dcpDocument__header__family">{{document.properties.family.title}}</div>
 </header>

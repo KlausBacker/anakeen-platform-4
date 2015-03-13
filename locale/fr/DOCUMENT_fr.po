@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-10 17:30+0100\n"
-"PO-Revision-Date: 2015-03-10 16:15+0100\n"
+"POT-Creation-Date: 2015-03-12 09:11+0100\n"
+"PO-Revision-Date: 2015-03-13 13:34+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -332,7 +332,7 @@ msgstr "Transition réussie"
 
 msgctxt "UiMenu"
 msgid "Unlock"
-msgstr "Déverouiller"
+msgstr "Déverrouiller"
 
 msgctxt "ddui-enum"
 msgid "Unselect"
@@ -394,6 +394,12 @@ msgstr "Cliquer pour déplacer la ligne"
 
 msgid "ddui:Duplicate selected row"
 msgstr "Dupliquer la ligne sélectionnée"
+
+msgid "ddui:Locked by"
+msgstr "Verrouillé par"
+
+msgid "ddui:Read only"
+msgstr "Lecture seule"
 
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"

@@ -50,9 +50,7 @@ class View extends Crud
         self::fieldStyle,
         self::fieldScript
     );
-    protected $needSendFamilyStructure=true;
-
-
+    protected $needSendFamilyStructure = true;
     /**
      * Create new ressource
      * @throws Exception
@@ -79,7 +77,7 @@ class View extends Crud
             $document = $this->getDocument($resourceId);
             $refreshMsg = $document->refresh();
         }
-
+        
         if (!in_array($this->viewIdentifier, array(
             self::coreViewCreationId,
             self::defaultViewConsultationId,
@@ -99,11 +97,11 @@ class View extends Crud
          * @var \Cvdoc $controlView
          */
         $controlView = DocManager::getDocument($document->cvid);
-
+        
         $vid = $this->viewIdentifier;
-
+        
         $info["view"] = $this->getViewInformation($document, $vid);
-
+        
         if ($vid === "") {
             $coreViews = $this->getCoreViews($document);
             if ($this->viewIdentifier === self::defaultViewConsultationId) {
@@ -121,7 +119,7 @@ class View extends Crud
             $viewInfo = $controlView->getView($vid);
             $info["properties"] = $this->getViewProperties($controlView, $viewInfo);
         }
-
+        
         if ($refreshMsg) {
             $msg = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
             $msg->contentHtml = $refreshMsg;
@@ -271,7 +269,7 @@ class View extends Crud
         );
     }
     /**
-     * @param $document
+     * @param \Doc $document
      * @param $viewId
      * @return array
      * @throws Exception
@@ -288,6 +286,15 @@ class View extends Crud
                     $viewInfo[self::fieldRenderOptions] = $config->getOptions($document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($document)->jsonSerialize();
+                    
+                    if ($viewInfo[self::fieldRenderOptions]["mode"] === "edit") {
+                        $err = $document->lock(true);
+                        if ($err) {
+                            $exception = new Exception("CRUDUI0010", $err);
+                            $exception->setHttpStatus("403", "Forbidden");
+                            throw $exception;
+                        }
+                    }
                     break;
 
                 case self::fieldRenderLabel:
@@ -385,11 +392,18 @@ class View extends Crud
     protected function renderDocument($document)
     {
         $documentData = new DocumentCrud();
-        $fields = "document.attributes, document.properties.family, document.properties.icon, document.properties.status, document.properties.revision";
+        $fields = array(
+            "document.attributes",
+            " document.properties.family",
+            " document.properties.icon",
+            " document.properties.status",
+            " document.properties.revision",
+            " document.properties.security"
+        );
         if ($this->needSendFamilyStructure && $document->doctype !== "C") {
-            $fields.= ",family.structure";
+            $fields[] = ",family.structure";
         }
-        $documentData->setDefaultFields($fields);
+        $documentData->setDefaultFields(implode(",", $fields));
         return $documentData->getInternal($document);
     }
     /**
@@ -487,7 +501,7 @@ class View extends Crud
             $fields = $this->fields;
         }
         if (!empty($this->contentParameters["noStructureFamily"])) {
-            $this->needSendFamilyStructure=false;
+            $this->needSendFamilyStructure = false;
         }
         
         return $fields;
@@ -601,7 +615,7 @@ class View extends Crud
     protected function extractEtagDocument($id)
     {
         $result = array();
-        $sql = sprintf("select id, revdate, cvid, views, fromid from docread where id = %d", $id);
+        $sql = sprintf("select id, revdate, cvid, views, fromid, locked from docread where id = %d", $id);
         simpleQuery(getDbAccess() , $sql, $result, false, true);
         $user = getCurrentUser();
         $result[] = $user->id;
@@ -610,7 +624,7 @@ class View extends Crud
         $sql = sprintf("select revdate from docfam where id = %d", $result["fromid"]);
         simpleQuery(getDbAccess() , $sql, $familyRevdate, true, true);
         $result[] = $familyRevdate;
-
+        
         $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $id);
         simpleQuery(getDbAccess() , $sql, $lastTab, true, true);
         $result[] = $lastTab;

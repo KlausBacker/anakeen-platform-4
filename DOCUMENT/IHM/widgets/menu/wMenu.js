@@ -231,8 +231,8 @@ define([
                     currentWidget._tooltips.push($currentMenu.tooltip(
                         {
                             trigger :   "hover",
-                            placement : currentMenu.tooltipPlacement?currentMenu.tooltipPlacement:"bottom"
-
+                            placement : currentMenu.tooltipPlacement?currentMenu.tooltipPlacement:"bottom",
+                            container: ".dcpDocument__menu"
                         }));
 
                 }

@@ -3,11 +3,12 @@ define([
     'underscore',
     'backbone',
     'dcpDocument/models/mDocumentProperties',
+    'dcpDocument/models/mDocumentLock',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
     'dcpDocument/i18n',
     'dcpDocument/widgets/window/wNotification'
-], function (_, Backbone, DocumentProperties, CollectionAttributes, CollectionMenus, i18n)
+], function (_, Backbone, DocumentProperties, DocumentLock, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 
@@ -85,6 +86,9 @@ define([
         {
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
+
+
+            
         },
 
         /**
@@ -163,6 +167,66 @@ define([
             });
         },
 
+
+        lockDocument: function mDocumentLockDocument()  {
+            var docModel=this;
+            var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "permanent"});
+            var security=this.get("properties").get("security");
+            lockModel.save({}, {
+                    success: function (theModel, data)
+                    {
+                        var menu=docModel.get("menus");
+                        security.lock=data.data.lock;
+                        docModel.get("properties").set("security,", security);
+
+                        menu.setMenu("lock", "visibility","hidden");
+                        menu.setMenu("unlock", "visibility","visible");
+
+                        docModel.get("properties").trigger("change");
+                    },
+                    error: function (theModel, HttpResponse)
+                    {
+                        var response=JSON.parse(HttpResponse.responseText);
+
+                        docModel.trigger("showError", {
+                            title: response.exceptionMessage
+                        });
+                    }
+                }
+            );
+        },
+
+        unlockDocument: function mDocumentLockDocument()  {
+            var docModel=this;
+            var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "permanent"});
+            var security=this.get("properties").get("security");
+            lockModel.destroy({
+                    success: function ()
+                    {
+                        var menu=docModel.get("menus");
+                        security.lock={
+                            lockedBy: {
+                                id: 0
+                            }
+                        };
+                        docModel.get("properties").set("security,", security);
+
+                        menu.setMenu("lock", "visibility","visible");
+                        menu.setMenu("unlock", "visibility","hidden");
+                        docModel.get("properties").trigger("change");
+
+                    },
+                    error: function (theModel, HttpResponse)
+                    {
+                        var response=JSON.parse(HttpResponse.responseText);
+
+                        docModel.trigger("showError", {
+                            title: response.exceptionMessage
+                        });
+                    }
+                }
+            );
+        },
         /**
          * Get a plain object with properties of the document
          *
@@ -658,6 +722,8 @@ define([
             {
                 currentModel.trigger("close");
             };
+            var security = this.get("properties") ? (this.get("properties").get("security")) : null;
+            var theModel = this;
             options = options || {};
             this.trigger("beforeClose", event);
             if (event.prevent === false) {
@@ -670,8 +736,23 @@ define([
                 } else {
                     options.success = afterDone;
                 }
-                this.trigger("displayLoading");
-                return Backbone.Model.prototype.fetch.call(this, attributes, options);
+		this.trigger("displayLoading");
+                if (this.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
+
+                    var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "temporary"});
+                    lockModel.destroy({
+                        success: function ()
+                        {
+                            Backbone.Model.prototype.fetch.call(theModel, attributes, options);
+                        },
+                        error: function ()
+                        {
+                            Backbone.Model.prototype.fetch.call(theModel, attributes, options);
+                        }
+                    });
+                } else {
+                    return Backbone.Model.prototype.fetch.call(this, attributes, options);
+                }
             }
             return false;
         },
