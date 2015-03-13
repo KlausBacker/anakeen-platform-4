@@ -68,6 +68,9 @@ define([
             //Listen the load to the iframe (initial JS added and page loaded)
             $iframe.on("load", function dcpDocument_setReadyEvent()
             {
+                if (!$iframe[0].contentWindow) {
+                    return;
+                }
                 //Inject in the iframe window a callback function used by the internalController
                 $iframe[0].contentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode)
                 {
