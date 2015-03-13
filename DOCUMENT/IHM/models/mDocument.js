@@ -177,8 +177,9 @@ define([
                 if (this.get("properties")) {
                     properties = this.get("properties").toJSON();
                 }
+                properties.initid = this.get("initid");
+                properties.revision = this.get("revision");
                 properties.viewId = this.get("viewId");
-                properties.renderMode = this.get("renderMode");
 
                 return properties;
             }
@@ -669,6 +670,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
+                this.trigger("displayLoading");
                 return Backbone.Model.prototype.fetch.call(this, attributes, options);
             }
             return false;
@@ -693,6 +695,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
+                this.trigger("displayLoading");
                 return Backbone.Model.prototype.save.call(this, attributes, options);
             }
             return false;
@@ -717,6 +720,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
+                this.trigger("displayLoading");
                 return Backbone.Model.prototype.destroy.call(this, attributes, options);
             }
             return false;
