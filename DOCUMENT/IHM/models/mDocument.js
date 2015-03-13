@@ -88,7 +88,6 @@ define([
             this.listenTo(this, "destroy", this.destroySubcollection);
 
 
-            
         },
 
         /**
@@ -168,25 +167,26 @@ define([
         },
 
 
-        lockDocument: function mDocumentLockDocument()  {
-            var docModel=this;
+        lockDocument: function mDocumentLockDocument()
+        {
+            var docModel = this;
             var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "permanent"});
-            var security=this.get("properties").get("security");
+            var security = this.get("properties").get("security");
             lockModel.save({}, {
                     success: function (theModel, data)
                     {
-                        var menu=docModel.get("menus");
-                        security.lock=data.data.lock;
+                        var menu = docModel.get("menus");
+                        security.lock = data.data.lock;
                         docModel.get("properties").set("security,", security);
 
-                        menu.setMenu("lock", "visibility","hidden");
-                        menu.setMenu("unlock", "visibility","visible");
+                        menu.setMenu("lock", "visibility", "hidden");
+                        menu.setMenu("unlock", "visibility", "visible");
 
                         docModel.get("properties").trigger("change");
                     },
                     error: function (theModel, HttpResponse)
                     {
-                        var response=JSON.parse(HttpResponse.responseText);
+                        var response = JSON.parse(HttpResponse.responseText);
 
                         docModel.trigger("showError", {
                             title: response.exceptionMessage
@@ -196,29 +196,31 @@ define([
             );
         },
 
-        unlockDocument: function mDocumentLockDocument()  {
-            var docModel=this;
-            var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "permanent"});
-            var security=this.get("properties").get("security");
+        unlockDocument: function mDocumentLockDocument()
+        {
+            var docModel = this;
+            //  type = empty means Delete all locks
+            var lockModel = new DocumentLock({"initid": this.get("initid"), "type": ""});
+            var security = this.get("properties").get("security");
             lockModel.destroy({
                     success: function ()
                     {
-                        var menu=docModel.get("menus");
-                        security.lock={
+                        var menu = docModel.get("menus");
+                        security.lock = {
                             lockedBy: {
                                 id: 0
                             }
                         };
                         docModel.get("properties").set("security,", security);
 
-                        menu.setMenu("lock", "visibility","visible");
-                        menu.setMenu("unlock", "visibility","hidden");
+                        menu.setMenu("lock", "visibility", "visible");
+                        menu.setMenu("unlock", "visibility", "hidden");
                         docModel.get("properties").trigger("change");
 
                     },
                     error: function (theModel, HttpResponse)
                     {
-                        var response=JSON.parse(HttpResponse.responseText);
+                        var response = JSON.parse(HttpResponse.responseText);
 
                         docModel.trigger("showError", {
                             title: response.exceptionMessage
@@ -736,7 +738,7 @@ define([
                 } else {
                     options.success = afterDone;
                 }
-		this.trigger("displayLoading");
+                this.trigger("displayLoading");
                 if (this.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
 
                     var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "temporary"});
