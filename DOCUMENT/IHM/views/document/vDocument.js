@@ -493,19 +493,17 @@ define([
         /**
          * Display the loading widget
          */
-        displayLoading: function vDocumentDisplayLoading()
+        displayLoading: function vDocumentDisplayLoading(options)
         {
+            var text = i18n.___("Loading", "ddui"), avance = 50;
+            options = options || {};
             this.$el.append('<div class="dcpDocument--disabled"/>');
+            if (!options.isSaving) {
+                text = i18n.___("Recording", "ddui");
+                avance = 70;
+            }
             this.trigger("cleanNotification");
-            this.trigger("loaderShow", i18n.___("Loading", "ddui"), 50);
-        },
-        /**
-         * Display the loading widget
-         */
-        displaySaving: function vDocumentDisplaySaving()
-        {
-            this.$el.append('<div class="dcpDocument--disabled"/>');
-            this.trigger("loaderShow", i18n.___("Recording", "ddui"), 70);
+            this.trigger("loaderShow", text, avance);
         },
 
         /**
