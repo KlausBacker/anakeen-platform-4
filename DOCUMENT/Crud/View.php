@@ -394,14 +394,14 @@ class View extends Crud
         $documentData = new DocumentCrud();
         $fields = array(
             "document.attributes",
-            " document.properties.family",
-            " document.properties.icon",
-            " document.properties.status",
-            " document.properties.revision",
-            " document.properties.security"
+            "document.properties.family",
+            "document.properties.icon",
+            "document.properties.status",
+            "document.properties.revision",
+            "document.properties.security"
         );
         if ($this->needSendFamilyStructure && $document->doctype !== "C") {
-            $fields[] = ",family.structure";
+            $fields[] = "family.structure";
         }
         $documentData->setDefaultFields(implode(",", $fields));
         return $documentData->getInternal($document);

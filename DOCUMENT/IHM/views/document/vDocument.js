@@ -541,7 +541,7 @@ define([
          *
          * @param viewId
          */
-        closeDocument: function vDocumentCloseDocument(viewId, action)
+        closeDocument: function vDocumentCloseDocument(viewId)
         {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {

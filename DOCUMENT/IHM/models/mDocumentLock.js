@@ -15,10 +15,6 @@ define([
                 initid : this.get("initid"),
                 type : this.get("type")
             });
-        },
-
-        toJSON : function mDocumentLock_toJSON() {
-            return {"hello":"world"};
         }
     });
 });
