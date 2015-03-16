@@ -12,6 +12,8 @@ define([
     'dcpDocument/views/attributes/tab/vTabLabel',
     'dcpDocument/views/attributes/tab/vTabContent',
     'dcpDocument/views/document/attributeTemplate',
+    'dcpDocument/models/mTransitionGraph',
+    'dcpDocument/views/workflow/vTransitionGraph',
     'kendo/kendo.core',
     'dcpDocument/i18n',
     'kendo/kendo.tabstrip',
@@ -19,7 +21,7 @@ define([
     'dcpDocument/widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, kendo, i18n)
+             attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
 {
     'use strict';
 
@@ -421,6 +423,34 @@ define([
         {
             this.model.trigger("showTransition", nextState, transition);
         },
+
+        /**
+         * Show the transition view
+         *
+         */
+        showTransitionGraph: function vDocumentShowtransitionGraph(transition, nextState)
+        {
+            var transitionGraph={};
+            var $target=$('<div class="dcpTransitionGraph"/>');
+            //Init transition model
+            console.log("show graph");
+            transitionGraph.model = new ModelTransitionGraph({
+                documentId: this.model.id,
+                state: this.model.get("properties").get("state")
+            });
+
+
+            transitionGraph.model.fetch({
+                success:function () {
+                    //Init transition view
+                    transitionGraph.view = new ViewTransitionGraph({
+                        model: transitionGraph.model,
+                        el: $target
+                    });
+                    transitionGraph.view.render();
+                }
+            });
+        },
         /**
          * Show the properties widget
          *
@@ -662,8 +692,11 @@ define([
             if (options[0] === "history") {
                 return this.showHistory();
             }
-            if (options[0] === "state") {
+            if (options[0] === "transition") {
                 return this.showtransition(options[1], options[2]);
+            }
+            if (options[0] === "transitionGraph") {
+                return this.showTransitionGraph();
             }
             if (options[0] === "properties") {
                 return this.showProperties();

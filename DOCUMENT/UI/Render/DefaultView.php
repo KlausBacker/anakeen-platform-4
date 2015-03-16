@@ -214,7 +214,7 @@ class DefaultView extends RenderDefault
                 $label = $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v)));
                 $itemMenu = new ItemMenu($v, $label);
                 
-                $itemMenu->setUrl(sprintf("#event/document:state:%s:%s", urlencode($tr['id']) , urlencode($v)));
+                $itemMenu->setUrl(sprintf("#event/document:transition:%s:%s", urlencode($tr['id']) , urlencode($v)));
                 $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
                 $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
@@ -264,8 +264,9 @@ class DefaultView extends RenderDefault
             $menu->appendElement($sep);
             
             $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph", "UiMenu"));
-            $itemMenu->setTarget("_dialog");
-            $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
+            $itemMenu->setUrl(sprintf("#event/document:transitionGraph"));
+            //$itemMenu->setTarget("_dialog");
+            //$itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
         }
     }
