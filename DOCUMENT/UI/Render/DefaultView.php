@@ -12,7 +12,7 @@ use Dcp\HttpApi\V1\DocManager\DocManager;
 class DefaultView extends RenderDefault
 {
     
-    public function getLabel()
+    public function getLabel(\Doc $document = null)
     {
         return ___("Default View", "ddui");
     }
