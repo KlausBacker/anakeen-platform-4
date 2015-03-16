@@ -10,7 +10,7 @@ namespace Dcp\Ui;
 class DefaultEdit extends RenderDefault
 {
     
-    public function getLabel()
+    public function getLabel(\Doc $document=null)
     {
         return ___("Default Edit", "ddui");
     }

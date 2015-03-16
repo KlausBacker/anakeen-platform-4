@@ -13,19 +13,23 @@ interface IRenderConfig {
     const viewType = "view";
 
     /**
+     * @param \Doc $document
      * Get the label of this view
      * @return string the text label
      */
-    public function getLabel();
+    public function getLabel(\Doc $document = null);
     /**
+     * @param \Doc $document
      * @return string[] list of css url
      */
-    public function getCssReferences();
+    public function getCssReferences(\Doc $document = null);
     /**
+     * @param \Doc $document
      * @return string[] list of js url
      */
-    public function getJsReferences();
+    public function getJsReferences(\Doc $document = null);
     /**
+     * @param \Doc $document
      * @return array set of indexed template
      */
     public function getTemplates(\Doc $document = null);

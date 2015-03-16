@@ -9,12 +9,12 @@ namespace Dcp\Ui;
 
 class RenderDefault implements IRenderConfig
 {
-    public function getLabel()
+    public function getLabel(\Doc $document = null)
     {
         return ___("Abstract view", "ddui");
     }
     
-    public function getCssReferences()
+    public function getCssReferences(\Doc $document = null)
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         return array(
@@ -25,7 +25,7 @@ class RenderDefault implements IRenderConfig
         );
     }
     
-    public function getJsReferences()
+    public function getJsReferences(\Doc $document = null)
     {
         return array( //"lib/jquery/jquery.js"
             
