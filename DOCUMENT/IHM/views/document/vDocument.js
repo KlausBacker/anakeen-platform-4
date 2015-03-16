@@ -514,7 +514,7 @@ define([
             var text = i18n.___("Loading", "ddui"), avance = 50;
             options = options || {};
             this.$el.append('<div class="dcpDocument--disabled"/>');
-            if (!options.isSaving) {
+            if (options.isSaving) {
                 text = i18n.___("Recording", "ddui");
                 avance = 70;
             }
