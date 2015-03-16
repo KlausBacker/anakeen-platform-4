@@ -84,10 +84,16 @@ define([
          */
         initialize: function mDocumentinitialize()
         {
+            var theModel = this;
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
-
-
+            $(window).on("unload", function () {
+                var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
+                if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
+                    var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
+                    lockModel.destroy();
+                }
+            });
         },
 
         /**
