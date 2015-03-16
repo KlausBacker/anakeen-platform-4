@@ -261,8 +261,10 @@ define([
          */
         recordSelectedTab: function vDocumentRecordSelectedTab(tabId)
         {
-            var tagTab = new ModelDocumentTab({"initid": this.model.get("initid"), "tabId": tabId});
-            tagTab.save();
+            if (this.model.get("initid")) {
+                var tagTab = new ModelDocumentTab({"initid": this.model.get("initid"), "tabId": tabId});
+                tagTab.save();
+            }
         },
 
         /**
@@ -566,9 +568,27 @@ define([
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function vDocumentDisplaySuccess()
+                save.done(function vDocumentSaveDisplaySuccess()
                 {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Recorded", "ddui")});
+                });
+            }
+        },
+
+
+        /**
+         * Save and close the current document
+         */
+        saveAndCloseDocument: function vDocumentSaveAndCloseDocument()
+        {
+            this.trigger("cleanNotification");
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function vDocumentSaveAndCloseSuccess()
+                {
+                    currentView.model.set("viewId", "!defaultConsultation");
+                    currentView.model.fetch();
                 });
             }
         },
@@ -581,13 +601,28 @@ define([
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function vDocumentDisplaySuccess()
+                save.done(function vDocumentCreateDisplaySuccess()
                 {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Created", "ddui")});
                 });
             }
         },
 
+        /**
+         * Create the current document
+         */
+        createAndCloseDocument: function vDocumentCreateDocument()
+        {
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function vDocumentCreateAndCloseSuccess()
+                {
+                    currentView.model.set("viewId", "!defaultConsultation");
+                    currentView.model.fetch();
+                });
+            }
+        },
 
         /**
          * load another document document
@@ -619,6 +654,11 @@ define([
             if (options[0] === "save") {
                 return this.saveDocument();
             }
+
+            if (options[0] === "saveAndClose") {
+                return this.saveAndCloseDocument();
+            }
+
             if (options[0] === "history") {
                 return this.showHistory();
             }
@@ -640,6 +680,11 @@ define([
             if (options[0] === "create") {
                 return this.createDocument();
             }
+
+            if (options[0] === "createAndClose") {
+                return this.createAndCloseDocument();
+            }
+
             if (options[0] === "load") {
                 return this.loadDocument(options[1], options[2]);
             }

@@ -287,7 +287,7 @@ class View extends Crud
                     $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($document)->jsonSerialize();
                     
-                    if ($viewInfo[self::fieldRenderOptions]["mode"] === "edit") {
+                    if ($document->id > 0 && $viewInfo[self::fieldRenderOptions]["mode"] === "edit") {
                         $err = $document->lock(true);
                         if ($err) {
                             $exception = new Exception("CRUDUI0010", $err);

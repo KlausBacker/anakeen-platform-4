@@ -127,11 +127,14 @@ class DefaultView extends RenderDefault
         $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
         $menu->getElement("advanced")->appendElement($item);
         
-        $item = new ItemMenu("propertiesOld", ___("Old Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
-        $targetOption = new MenuTargetOptions();
-        $targetOption->windowHeight = "400px";
-        $targetOption->windowWidth = "400px";
-        $item->setTarget("_dialog", $targetOption);
+        if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG") !== "FALSE") {
+            $item = new ItemMenu("propertiesOld", ___("Old Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
+            $targetOption = new MenuTargetOptions();
+            $targetOption->windowHeight = "400px";
+            $targetOption->windowWidth = "400px";
+            $item->setTarget("_dialog", $targetOption);
+        }
+        
         $menu->getElement("advanced")->appendElement($item);
         
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));

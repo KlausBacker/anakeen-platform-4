@@ -10,7 +10,7 @@ namespace Dcp\Ui;
 class DefaultEdit extends RenderDefault
 {
     
-    public function getLabel(\Doc $document=null)
+    public function getLabel(\Doc $document = null)
     {
         return ___("Default Edit", "ddui");
     }
@@ -35,6 +35,14 @@ class DefaultEdit extends RenderDefault
             $item->setVisibility($item::VisibilityHidden);
         }
         $menu->appendElement($item);
+        
+        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#event/document:saveAndClose");
+        $item->setBeforeContent('<div class="fa fa-save" />');
+        $item->setTooltipLabel(___("Record to server and view document", "UiMenu"));
+        if (empty($document->id)) {
+            $item->setVisibility($item::VisibilityHidden);
+        }
+        $menu->appendElement($item);
         if ($user->id === "1") {
             $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#event/document:save:force");
             $item->setVisibility($item::VisibilityHidden);
@@ -48,8 +56,14 @@ class DefaultEdit extends RenderDefault
         if (empty($document->id)) {
             $item = new ItemMenu("create", ___("Create", "UiMenu") , "#event/document:create");
             $item->setBeforeContent('<div class="fa fa-save" />');
-            $item->setTooltipLabel(___("Record document to server", "UiMenu"));
+            $item->setTooltipLabel(___("Create new document to server", "UiMenu"));
             $menu->appendElement($item);
+            
+            $item = new ItemMenu("createAndClose", ___("Create and close", "UiMenu") , "#event/document:createAndClose");
+            $item->setBeforeContent('<div class="fa fa-save" />');
+            $item->setTooltipLabel(___("Create to server and view document", "UiMenu"));
+            $menu->appendElement($item);
+            
             if ($user->id === "1") {
                 $item = new ItemMenu("create!", ___("Create !", "UiMenu") , "#create!/{{document.properties.id}}");
                 $item->setVisibility($item::VisibilityHidden);
@@ -63,11 +77,13 @@ class DefaultEdit extends RenderDefault
         $item->setTooltipLabel(___("Abord modifications", "UiMenu"));
         $menu->appendElement($item);
         */
-        $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation:unlock");
-        $item->setBeforeContent('<div class="fa fa-times" />');
-        $item->setTooltipLabel(___("See document in read mode", "UiMenu"));
-        $menu->appendElement($item);
         
+        if ($document->id > 0) {
+            $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation:unlock");
+            $item->setBeforeContent('<div class="fa fa-times" />');
+            $item->setTooltipLabel(___("See document in read mode", "UiMenu"));
+            $menu->appendElement($item);
+        }
         if ($document->wid > 0) {
             $workflowMenu = new SeparatorMenu("workflow", _($document->getStateActivity($document->getState())));
             //$workflowMenu->setHtmlAttribute("style", "float:right;background-color:inherit");

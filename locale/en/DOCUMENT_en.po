@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-12 09:11+0100\n"
+"POT-Creation-Date: 2015-03-16 11:54+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -127,6 +127,18 @@ msgctxt "UiMenu"
 msgid "Create !"
 msgstr ""
 
+msgctxt "UiMenu"
+msgid "Create and close"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create new document to server"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create to server and view document"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Default Edit"
 msgstr ""
@@ -223,6 +235,10 @@ msgctxt "UiMenu"
 msgid "Lock"
 msgstr ""
 
+msgctxt "ddui"
+msgid "Lock document"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid "Menu id \"%s\" not found "
@@ -234,10 +250,6 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "No result found"
-msgstr ""
-
-msgctxt "ddui"
-msgid "Not yet implemented"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -262,6 +274,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Record document without constraint check"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Record to server and view document"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -297,6 +313,10 @@ msgid "Save !"
 msgstr ""
 
 msgctxt "UiMenu"
+msgid "Save and close"
+msgstr ""
+
+msgctxt "UiMenu"
 msgid "Security"
 msgstr ""
 
@@ -327,6 +347,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Unlock"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Unlock document"
 msgstr ""
 
 msgctxt "ddui-enum"
