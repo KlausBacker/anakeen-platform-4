@@ -45,7 +45,8 @@ define([
             //Call parent
             ViewDocument.prototype.initialize.apply(this, arguments);
             this.listenTo(this.model, 'showError', this.displayError);
-            this.listenTo(this.model, 'request', this.displayLoading);
+            //this.listenTo(this.model, 'invalid', this.displayError);
+            this.listenTo(this.model, 'request', this.transitionDisplayLoading);
             this.listenTo(this.model, 'hide', function vTransition_hide() {
                 this.$el.hide();
             });
@@ -138,7 +139,7 @@ define([
         /**
          * Display the loading widget
          */
-        displayLoading : function vTransition_displayLoading() {
+        transitionDisplayLoading : function vTransition_transitionDisplayLoading() {
             var $loading = this.$el.find(".dcpTransition--loading"),
                 $okButton = this.$el.find(".dcpTransition-button-ok"),
                 $cancelButton = this.$el.find(".dcpTransition-button-cancel");

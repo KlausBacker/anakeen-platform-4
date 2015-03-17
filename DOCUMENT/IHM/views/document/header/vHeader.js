@@ -29,6 +29,8 @@ define([
          */
         render: function vheaderRender() {
             var data=this.model.toData();
+
+            data.document.properties.security = data.document.properties.security || {lock:{lockedBy:null}};
             data.document.properties.security.lock.isLocked=(data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0);
             
             var headerRender=$(Mustache.render(this.headerTemplate, data));
