@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DDUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-16 11:54+0100\n"
+"POT-Creation-Date: 2015-03-17 12:56+0100\n"
 "PO-Revision-Date: 2015-03-03 12:53+0100\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: English Team\n"
@@ -22,6 +22,10 @@ msgstr ""
 
 msgctxt "propertyUi"
 msgid "Activity"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Apply transition {{label}}"
 msgstr ""
 
 msgctxt "historyDiffUi"
@@ -214,6 +218,10 @@ msgstr ""
 
 msgctxt "propertyUi"
 msgid "Title"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Transition Graph"
 msgstr ""
 
 msgctxt "ddui"

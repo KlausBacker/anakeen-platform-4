@@ -104,37 +104,43 @@
 /**
  * GRAPH TRANSITION
  */
+
+.dcpTransitionGraph.k-window-content {
+  padding-top:3em;
+}
+
 .dcpTransitionGraph .dcpTransitionGraph_state {
   padding:1em;
   margin:1em;
   text-align: center;
   width: 10em;
   display: inline-block;
-  max-height:3em;
+  min-height:3em;
   border-style:solid;
   border-width:0.5em 1px 1px 1px;
   border-radius: 4px;
+  box-shadow: 5px 5px 5px @gray;
+  flex:1;
+  // flex-basis:3em;
 
 }
 .dcpTransitionGraph .dcpTransitionGraph--from {
   width:40%;
   float:left;
   display:flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: column;
   align-items: flex-start;
 }
 
-
-.dcpTransitionGraph_state{
-
-  flex:1;
+.dcpTransitionGraph--to .dcpTransitionGraph_state:hover {
+  background-color: darken(@body-bg, 10%);
+  cursor:pointer;
 }
 .dcpTransitionGraph__arrow__end {
   right:-0.3em;
   top: -0.4em;
   position: absolute;
-  transform: rotate(90deg);
   color:@gray;
 }
 .dcpTransitionGraph .dcpTransitionGraph--to {
@@ -149,14 +155,22 @@
 
 }
 
-
-
 .dcpTransitionGraph__arrow  {
   padding:0px;
-  margin:0px;line-height:2em; position:absolute;
+  margin:0px;
+  line-height:2em;
+  position:absolute;
   background-color: @gray;
 }
 .dcpTransitionGraph__arrow .dcpTransitionGraph__arrow__label {
-  padding-left:30%;
+  text-align: center;
   margin-top:-1.7em;
+}
+
+.dcpTransitionGraph__arrow.dcpTransitionGraph__arrow--selected {
+  font-weight:   bold;
+  background-color: @gray-base;
+}
+.dcpTransitionGraph__arrow.dcpTransitionGraph__arrow--selected .dcpTransitionGraph__arrow__end {
+  color: @gray-base;
 }

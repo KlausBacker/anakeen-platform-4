@@ -59,6 +59,12 @@ define([
                 if (this.transition && this.transition.view) {
                     this.transition.view.remove();
                 }
+                if (this.transition && this.transition.view) {
+                    this.transition.view.remove();
+                }
+                if (this.transitionGraph && this.transitionGraph.view) {
+                    this.transitionGraph.view.remove();
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -349,7 +355,7 @@ define([
         showHistory: function vDocumentShowHistory()
         {
             var scope = this;
-            var $target=$('<div class="document-history"/>');
+            var $target = $('<div class="document-history"/>');
             this.historyWidget = $target.dcpDocumentHistory({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
@@ -430,10 +436,10 @@ define([
          */
         showTransitionGraph: function vDocumentShowtransitionGraph(transition, nextState)
         {
-            var transitionGraph={};
-            var $target=$('<div class="dcpTransitionGraph"/>');
+            var documentView = this;
+            var transitionGraph = {};
+            var $target = $('<div class="dcpTransitionGraph"/>');
             //Init transition model
-            console.log("show graph");
             transitionGraph.model = new ModelTransitionGraph({
                 documentId: this.model.id,
                 state: this.model.get("properties").get("state")
@@ -441,15 +447,23 @@ define([
 
 
             transitionGraph.model.fetch({
-                success:function () {
+                success: function ()
+                {
                     //Init transition view
                     transitionGraph.view = new ViewTransitionGraph({
                         model: transitionGraph.model,
                         el: $target
                     });
                     transitionGraph.view.render();
+                    transitionGraph.view.$el.on("viewTransition", function (event, nextState)
+                    {
+                        transitionGraph.view.remove();
+                        documentView.model.trigger("showTransition", nextState);
+                    });
                 }
             });
+
+            this.transitionGraph = transitionGraph;
         },
         /**
          * Show the properties widget
@@ -458,7 +472,7 @@ define([
         showProperties: function vDocumentShowProperties()
         {
             var scope = this;
-            var $target=$('<div class="document-properties"/>');
+            var $target = $('<div class="document-properties"/>');
 
             this.propertiesWidget = $target.dcpDocumentProperties({
                 documentId: this.model.get("properties").get("initid"),

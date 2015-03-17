@@ -263,7 +263,7 @@ class DefaultView extends RenderDefault
             $sep = new SeparatorMenu('workflowSep');
             $menu->appendElement($sep);
             
-            $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph", "UiMenu"));
+            $itemMenu = new ItemMenu('workflowDraw', ___("View transition graph", "UiMenu"));
             $itemMenu->setUrl(sprintf("#event/document:transitionGraph"));
             //$itemMenu->setTarget("_dialog");
             //$itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
