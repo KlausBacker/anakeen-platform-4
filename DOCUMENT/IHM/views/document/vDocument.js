@@ -194,7 +194,7 @@ define([
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                             tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                             if (tabItems.length > 1) {
-                                tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
+                                tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%').tooltip({
                                     placement: "top",
                                     title: function vDocumentTooltipTitle()
                                     {
