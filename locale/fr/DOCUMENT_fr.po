@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-12 09:11+0100\n"
-"PO-Revision-Date: 2015-03-13 13:34+0100\n"
+"POT-Creation-Date: 2015-03-17 12:56+0100\n"
+"PO-Revision-Date: 2015-03-17 12:56+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -130,6 +130,18 @@ msgctxt "UiMenu"
 msgid "Create !"
 msgstr "Créer !"
 
+msgctxt "UiMenu"
+msgid "Create and close"
+msgstr "Créer et fermer"
+
+msgctxt "UiMenu"
+msgid "Create new document to server"
+msgstr "Créer un nouveau document sur le serveur"
+
+msgctxt "UiMenu"
+msgid "Create to server and view document"
+msgstr "Créer sur le serveur et quitter le formulaire "
+
 msgctxt "ddui"
 msgid "Default Edit"
 msgstr "Vue de modification par défaut"
@@ -228,6 +240,10 @@ msgctxt "UiMenu"
 msgid "Lock"
 msgstr "Verrouiller"
 
+msgctxt "ddui"
+msgid "Lock document"
+msgstr "Verrouiller le document"
+
 #, php-format
 msgctxt "ddui"
 msgid "Menu id \"%s\" not found "
@@ -240,10 +256,6 @@ msgstr "Modifier"
 msgctxt "ddui"
 msgid "No result found"
 msgstr "Pas de résultat"
-
-msgctxt "ddui"
-msgid "Not yet implemented"
-msgstr "Pas encore disponible"
 
 msgctxt "UiMenu"
 msgid "Old Properties"
@@ -268,6 +280,10 @@ msgstr "Enregistrer le document sur le serveur"
 msgctxt "UiMenu"
 msgid "Record document without constraint check"
 msgstr "Enregistrer le document sans tenir compte des contraintes"
+
+msgctxt "UiMenu"
+msgid "Record to server and view document"
+msgstr "Enregistrer le document et quitter le formulaire"
 
 msgctxt "ddui-file"
 msgid "Recording"
@@ -302,6 +318,10 @@ msgid "Save !"
 msgstr "Enregistrer !"
 
 msgctxt "UiMenu"
+msgid "Save and close"
+msgstr "Enregistrer et fermer"
+
+msgctxt "UiMenu"
 msgid "Security"
 msgstr "Sécurité"
 
@@ -334,6 +354,10 @@ msgctxt "UiMenu"
 msgid "Unlock"
 msgstr "Déverrouiller"
 
+msgctxt "ddui"
+msgid "Unlock document"
+msgstr "Déverrouiller le document"
+
 msgctxt "ddui-enum"
 msgid "Unselect"
 msgstr "Désélectionner"
@@ -346,8 +370,8 @@ msgid "View documents"
 msgstr "Action vue de document"
 
 msgctxt "UiMenu"
-msgid "View workflow graph"
-msgstr "Voir le graphe du cycle"
+msgid "View transition graph"
+msgstr "Voir le graphe de transition"
 
 msgctxt "ddui"
 msgid "View {{{displayValue}}}"
@@ -436,9 +460,17 @@ msgstr ""
 #~ msgid "DUIT:Right to autotest"
 #~ msgstr "Action droit des tests automatiques"
 
+#~ msgctxt "ddui"
+#~ msgid "Not yet implemented"
+#~ msgstr "Pas encore disponible"
+
 #~ msgctxt "UiMenu"
 #~ msgid "Transition"
 #~ msgstr "Étapes"
+
+#~ msgctxt "UiMenu"
+#~ msgid "View workflow graph"
+#~ msgstr "Voir le graphe du cycle"
 
 #~ msgctxt "ddui"
 #~ msgid "Workflow Parameters"

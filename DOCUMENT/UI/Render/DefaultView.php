@@ -127,11 +127,14 @@ class DefaultView extends RenderDefault
         $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
         $menu->getElement("advanced")->appendElement($item);
         
-        $item = new ItemMenu("propertiesOld", ___("Old Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
-        $targetOption = new MenuTargetOptions();
-        $targetOption->windowHeight = "400px";
-        $targetOption->windowWidth = "400px";
-        $item->setTarget("_dialog", $targetOption);
+        if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG") !== "FALSE") {
+            $item = new ItemMenu("propertiesOld", ___("Old Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
+            $targetOption = new MenuTargetOptions();
+            $targetOption->windowHeight = "400px";
+            $targetOption->windowWidth = "400px";
+            $item->setTarget("_dialog", $targetOption);
+        }
+        
         $menu->getElement("advanced")->appendElement($item);
         
         $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
@@ -211,7 +214,7 @@ class DefaultView extends RenderDefault
                 $label = $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v)));
                 $itemMenu = new ItemMenu($v, $label);
                 
-                $itemMenu->setUrl(sprintf("#event/document:state:%s:%s", urlencode($tr['id']) , urlencode($v)));
+                $itemMenu->setUrl(sprintf("#event/document:transition:%s:%s", urlencode($tr['id']) , urlencode($v)));
                 $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
                 $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
@@ -260,9 +263,10 @@ class DefaultView extends RenderDefault
             $sep = new SeparatorMenu('workflowSep');
             $menu->appendElement($sep);
             
-            $itemMenu = new ItemMenu('workflowDraw', ___("View workflow graph", "UiMenu"));
-            $itemMenu->setTarget("_dialog");
-            $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
+            $itemMenu = new ItemMenu('workflowDraw', ___("View transition graph", "UiMenu"));
+            $itemMenu->setUrl(sprintf("#event/document:transitionGraph"));
+            //$itemMenu->setTarget("_dialog");
+            //$itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
         }
     }

@@ -12,6 +12,8 @@ define([
     'dcpDocument/views/attributes/tab/vTabLabel',
     'dcpDocument/views/attributes/tab/vTabContent',
     'dcpDocument/views/document/attributeTemplate',
+    'dcpDocument/models/mTransitionGraph',
+    'dcpDocument/views/workflow/vTransitionGraph',
     'kendo/kendo.core',
     'dcpDocument/i18n',
     'kendo/kendo.tabstrip',
@@ -19,7 +21,7 @@ define([
     'dcpDocument/widgets/properties/wProperties'
 ], function (_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, kendo, i18n)
+             attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
 {
     'use strict';
 
@@ -56,6 +58,12 @@ define([
                 }
                 if (this.transition && this.transition.view) {
                     this.transition.view.remove();
+                }
+                if (this.transition && this.transition.view) {
+                    this.transition.view.remove();
+                }
+                if (this.transitionGraph && this.transitionGraph.view) {
+                    this.transitionGraph.view.remove();
                 }
             } catch (e) {
                 console.error(e);
@@ -186,7 +194,7 @@ define([
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                             tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                             if (tabItems.length > 1) {
-                                tabItems.css("width", Math.floor(100 / tabItems.length) + '%').tooltip({
+                                tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%').tooltip({
                                     placement: "top",
                                     title: function vDocumentTooltipTitle()
                                     {
@@ -261,8 +269,10 @@ define([
          */
         recordSelectedTab: function vDocumentRecordSelectedTab(tabId)
         {
-            var tagTab = new ModelDocumentTab({"initid": this.model.get("initid"), "tabId": tabId});
-            tagTab.save();
+            if (this.model.get("initid")) {
+                var tagTab = new ModelDocumentTab({"initid": this.model.get("initid"), "tabId": tabId});
+                tagTab.save();
+            }
         },
 
         /**
@@ -345,7 +355,7 @@ define([
         showHistory: function vDocumentShowHistory()
         {
             var scope = this;
-            var $target=$('<div class="document-history"/>');
+            var $target = $('<div class="document-history"/>');
             this.historyWidget = $target.dcpDocumentHistory({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
@@ -419,6 +429,42 @@ define([
         {
             this.model.trigger("showTransition", nextState, transition);
         },
+
+        /**
+         * Show the transition view
+         *
+         */
+        showTransitionGraph: function vDocumentShowtransitionGraph(transition, nextState)
+        {
+            var documentView = this;
+            var transitionGraph = {};
+            var $target = $('<div class="dcpTransitionGraph"/>');
+            //Init transition model
+            transitionGraph.model = new ModelTransitionGraph({
+                documentId: this.model.id,
+                state: this.model.get("properties").get("state")
+            });
+
+
+            transitionGraph.model.fetch({
+                success: function ()
+                {
+                    //Init transition view
+                    transitionGraph.view = new ViewTransitionGraph({
+                        model: transitionGraph.model,
+                        el: $target
+                    });
+                    transitionGraph.view.render();
+                    transitionGraph.view.$el.on("viewTransition", function (event, nextState)
+                    {
+                        transitionGraph.view.remove();
+                        documentView.model.trigger("showTransition", nextState);
+                    });
+                }
+            });
+
+            this.transitionGraph = transitionGraph;
+        },
         /**
          * Show the properties widget
          *
@@ -426,7 +472,7 @@ define([
         showProperties: function vDocumentShowProperties()
         {
             var scope = this;
-            var $target=$('<div class="document-properties"/>');
+            var $target = $('<div class="document-properties"/>');
 
             this.propertiesWidget = $target.dcpDocumentProperties({
                 documentId: this.model.get("properties").get("initid"),
@@ -514,7 +560,7 @@ define([
             var text = i18n.___("Loading", "ddui"), avance = 50;
             options = options || {};
             this.$el.append('<div class="dcpDocument--disabled"/>');
-            if (!options.isSaving) {
+            if (options.isSaving) {
                 text = i18n.___("Recording", "ddui");
                 avance = 70;
             }
@@ -566,9 +612,27 @@ define([
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function vDocumentDisplaySuccess()
+                save.done(function vDocumentSaveDisplaySuccess()
                 {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Recorded", "ddui")});
+                });
+            }
+        },
+
+
+        /**
+         * Save and close the current document
+         */
+        saveAndCloseDocument: function vDocumentSaveAndCloseDocument()
+        {
+            this.trigger("cleanNotification");
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function vDocumentSaveAndCloseSuccess()
+                {
+                    currentView.model.set("viewId", "!defaultConsultation");
+                    currentView.model.fetch();
                 });
             }
         },
@@ -581,13 +645,28 @@ define([
             var currentView = this, save = this.model.save();
             //Use jquery xhr delegate done to display success
             if (save && save.done) {
-                save.done(function vDocumentDisplaySuccess()
+                save.done(function vDocumentCreateDisplaySuccess()
                 {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Created", "ddui")});
                 });
             }
         },
 
+        /**
+         * Create the current document
+         */
+        createAndCloseDocument: function vDocumentCreateDocument()
+        {
+            var currentView = this, save = this.model.save();
+            //Use jquery xhr delegate done to display success
+            if (save && save.done) {
+                save.done(function vDocumentCreateAndCloseSuccess()
+                {
+                    currentView.model.set("viewId", "!defaultConsultation");
+                    currentView.model.fetch();
+                });
+            }
+        },
 
         /**
          * load another document document
@@ -619,11 +698,19 @@ define([
             if (options[0] === "save") {
                 return this.saveDocument();
             }
+
+            if (options[0] === "saveAndClose") {
+                return this.saveAndCloseDocument();
+            }
+
             if (options[0] === "history") {
                 return this.showHistory();
             }
-            if (options[0] === "state") {
+            if (options[0] === "transition") {
                 return this.showtransition(options[1], options[2]);
+            }
+            if (options[0] === "transitionGraph") {
+                return this.showTransitionGraph();
             }
             if (options[0] === "properties") {
                 return this.showProperties();
@@ -640,6 +727,11 @@ define([
             if (options[0] === "create") {
                 return this.createDocument();
             }
+
+            if (options[0] === "createAndClose") {
+                return this.createAndCloseDocument();
+            }
+
             if (options[0] === "load") {
                 return this.loadDocument(options[1], options[2]);
             }

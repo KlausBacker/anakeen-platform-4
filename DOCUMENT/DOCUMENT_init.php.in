@@ -12,6 +12,10 @@ $app_const = array(
     "INIT" => "yes",
     "VERSION" => "@VERSION@-@RELEASE@",
     "LOGGER" => "$loggerClass",
-    "MODE_DEBUG" => "FALSE"
+    "MODE_DEBUG" => array(
+        "val" => "FALSE",
+        "descr" => N_("ddui:debug mode") ,
+        "kind" => "enum(FALSE|TRUE)"
+    )
 );
 ?>
