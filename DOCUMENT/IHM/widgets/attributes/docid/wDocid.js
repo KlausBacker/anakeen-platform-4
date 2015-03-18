@@ -145,7 +145,10 @@ define([
                         type: "json",
                         serverFiltering: true,
                         transport: {
-                            read: scope.options.autocompleteRequest
+                            read: function (options) {
+                                options.data.index=scope._getIndex();
+                                return scope.options.autocompleteRequest.call(null, options);
+                            }
                         },
                         schema: {
                             // Filter data to delete already recorded ids

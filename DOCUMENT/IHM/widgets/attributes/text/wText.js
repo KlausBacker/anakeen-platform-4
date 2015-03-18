@@ -3,29 +3,31 @@ define([
     'mustache',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.autocomplete'
-], function (_, Mustache) {
+], function (_, Mustache)
+{
     'use strict';
 
     $.widget("dcp.dcpText", $.dcp.dcpAttribute, {
 
-        options : {
-            type : "text",
-            renderOptions : {
-                maxLength:0, // char max length
-                placeHolder:'',
-                format:""
+        options: {
+            type: "text",
+            renderOptions: {
+                maxLength: 0, // char max length
+                placeHolder: '',
+                format: ""
             }
         },
 
-        kendoWidget : null,
+        kendoWidget: null,
 
-        _initDom : function wTextInitDom() {
-             if (this.getMode() === "read") {
-                 if (this.options.renderOptions.format) {
-                     this.options.attributeValue.formatValue=Mustache.render(this.options.renderOptions.format,
-                     this.options.attributeValue);
-                 }
-             }
+        _initDom: function wTextInitDom()
+        {
+            if (this.getMode() === "read") {
+                if (this.options.renderOptions.format) {
+                    this.options.attributeValue.formatValue = Mustache.render(this.options.renderOptions.format,
+                        this.options.attributeValue);
+                }
+            }
 
             this._super();
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
@@ -38,17 +40,20 @@ define([
             }
         },
 
-        _initEvent : function wTextInitEvent() {
+        _initEvent: function wTextInitEvent()
+        {
             if (this.getMode() === "write") {
                 this._initChangeEvent();
             }
             this._super();
         },
 
-        _initChangeEvent : function wTextInitChangeEvent() {
+        _initChangeEvent: function wTextInitChangeEvent()
+        {
             var currentWidget = this;
             if (this.getMode() === "write") {
-                this.getContentElements().on("change" + this.eventNamespace, function wTextChangeElement() {
+                this.getContentElements().on("change" + this.eventNamespace, function wTextChangeElement()
+                {
                     var newValue = _.clone(currentWidget.options.attributeValue);
                     newValue.value = $(this).val();
                     newValue.displayValue = newValue.value;
@@ -61,24 +66,32 @@ define([
          * Just to be apply in normal input help
          * @param inputValue
          */
-        activateAutocomplete : function activateAutocomplete(inputValue) {
+        activateAutocomplete: function activateAutocomplete(inputValue)
+        {
             var currentWidget = this;
             inputValue.kendoAutoComplete({
-                dataTextField : "title",
-                filter :        "contains",
-                minLength :     1,
-                template : '<span><span class="k-state-default">#= data.title#</span>' +
-                           '#if (data.error) {#' +
-                           '<span class="k-state-error">#: data.error#</span>' +
+                dataTextField: "title",
+                filter: "contains",
+                minLength: 1,
+                template: '<span><span class="k-state-default">#= data.title#</span>' +
+                '#if (data.error) {#' +
+                '<span class="k-state-error">#: data.error#</span>' +
                 '#}# </span>',
-                dataSource :    {
-                    type :            "json",
-                    serverFiltering : true,
-                    transport :       {
-                        read : currentWidget.options.autocompleteRequest
+                dataSource: {
+                    type: "json",
+
+                    serverFiltering: true,
+                    transport: {
+
+                        read: function (options) {
+                            console.log("map", arguments);
+                            options.data.index=currentWidget._getIndex();
+                            return currentWidget.options.autocompleteRequest.call(null, options);
+                        }
                     }
                 },
-                select :        function kendoAutocompleteSelect(event) {
+                select: function kendoAutocompleteSelect(event)
+                {
                     var valueIndex = currentWidget._getIndex();
                     var dataItem = this.dataSource.at(event.item.index());
                     //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
@@ -86,16 +99,17 @@ define([
                         dataItem = dataItem.toJSON();
                     }
                     event.preventDefault(); // no fire change event
-                    currentWidget._trigger("changeattrsvalue", event, {dataItem : dataItem, valueIndex : valueIndex});
+                    currentWidget._trigger("changeattrsvalue", event, {dataItem: dataItem, valueIndex: valueIndex});
 
                 }
             });
-            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function (event) {
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function (event)
+            {
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' ');
             });
             this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip({
-                html:true
+                html: true
             });
 
         },
@@ -104,7 +118,8 @@ define([
          * Modify value to widget and send notification to the view
          * @param value
          */
-        setValue : function wTextSetValue(value) {
+        setValue: function wTextSetValue(value)
+        {
 
             var originalValue;
 
@@ -127,18 +142,21 @@ define([
                     this.getContentElements().val(value.value);
                     this.flashElement();
                 }
-            } else if (this.getMode() === "read") {
-                this.redraw();
-            } else {
-                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
-            }
+            } else
+                if (this.getMode() === "read") {
+                    this.redraw();
+                } else {
+                    throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
+                }
         },
 
-        getType : function getType() {
+        getType: function getType()
+        {
             return "text";
         },
 
-        _destroy : function _destroy() {
+        _destroy: function _destroy()
+        {
             //Destroy autocomplete if activated
             if (this.kendoWidget && this.kendoWidget.data("kendoAutoComplete")) {
                 this.kendoWidget.data("kendoAutoComplete").destroy();
