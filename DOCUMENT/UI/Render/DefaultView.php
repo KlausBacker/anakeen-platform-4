@@ -265,8 +265,14 @@ class DefaultView extends RenderDefault
             
             $itemMenu = new ItemMenu('workflowDraw', ___("View transition graph", "UiMenu"));
             $itemMenu->setUrl(sprintf("#event/document:transitionGraph"));
-            //$itemMenu->setTarget("_dialog");
-            //$itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&format=png&orient=LR&tool=dot&id=%d", $wdoc->id));
+            $menu->appendElement($itemMenu);
+
+            $itemMenu = new ItemMenu('workflowGraph', ___("View workflow graph", "UiMenu"));
+            $targetOption = new MenuTargetOptions();
+            $targetOption->windowHeight = "80%";
+            $targetOption->windowWidth = "480px";
+            $itemMenu->setTarget("_dialog", $targetOption);
+            $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&type=justactivity&format=png&orient=TB&size=11.88%%2C12.73&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
         }
     }
