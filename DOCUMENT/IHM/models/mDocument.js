@@ -94,6 +94,11 @@ define([
                     lockModel.destroy();
                 }
             });
+            $(window).bind("beforeunload", function () {
+                if (theModel.hasAttributesChanged()) {
+                    return i18n.___("The form has been modified and is is not saved", "ddui");
+                }
+            });
         },
 
         /**
