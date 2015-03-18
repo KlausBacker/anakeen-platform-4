@@ -76,11 +76,11 @@ define([
             throw new Error("Unknown template  " + key);
         },
         documentHasChanged :function () {
-            var wTitle=window.document.title.replace(/\*+$/g, "");
+            var wTitle=window.document.title.replace(/^\*+/g, "");
 
             if (this.model.hasAttributesChanged()) {
                 this.$el.find(".dcpDocument__header__modified").show();
-                window.document.title = wTitle + " *";
+                window.document.title = "*" + wTitle;
             } else {
                 this.$el.find(".dcpDocument__header__modified").hide();
                 window.document.title = wTitle;
