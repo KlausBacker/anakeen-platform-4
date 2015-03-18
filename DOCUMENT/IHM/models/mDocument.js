@@ -87,14 +87,16 @@ define([
             var theModel = this;
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
-            $(window).on("unload", function () {
+            $(window).on("unload", function ()
+            {
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
                     lockModel.destroy();
                 }
             });
-            $(window).bind("beforeunload", function () {
+            $(window).bind("beforeunload", function ()
+            {
                 if (theModel.hasAttributesChanged()) {
                     return i18n.___("The form has been modified and is is not saved", "ddui");
                 }
@@ -292,7 +294,7 @@ define([
         {
             return this.get("attributes").some(function (currentAttr)
             {
-                return currentAttr.hasChanged("attributeValue");
+                return (currentAttr.hasChanged("attributeValue")) && ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''));
             });
         },
 

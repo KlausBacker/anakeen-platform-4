@@ -785,6 +785,7 @@ define([
             throw new Error("Unknown template  " + key);
         },
 
+
         /**
          * Destroy the associated widget and suppress event listener before remov the dom
          *

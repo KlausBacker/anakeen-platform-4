@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-18 10:29+0100\n"
+"POT-Creation-Date: 2015-03-18 11:52+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -412,6 +412,9 @@ msgid "ddui:Drag to move line"
 msgstr ""
 
 msgid "ddui:Duplicate selected row"
+msgstr ""
+
+msgid "ddui:Editing form"
 msgstr ""
 
 msgid "ddui:Locked by"
