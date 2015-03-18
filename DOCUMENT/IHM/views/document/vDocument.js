@@ -589,6 +589,8 @@ define([
          */
         closeDocument: function vDocumentCloseDocument(viewId)
         {
+            var confirmWindow;
+            var documentView = this;
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -596,11 +598,29 @@ define([
                     viewId = "!defaultConsultation";
                 }
             }
-            if (this.model.hasAttributesChanged() && !window.confirm("It has been changed !! Are you sure ??")) {
-                return;
+            if (this.model.hasAttributesChanged()) {
+                confirmWindow = $('body').dcpConfirm({
+                    title: i18n.___("Confirm close document", "ddui"),
+                    width: "480px",
+                    height: "150px",
+                    messages: {
+                        okMessage: i18n.___("Abord modification", "ddui"),
+                        cancelMessage: i18n.___("Stay on the form", "ddui"),
+                        htmlMessage: i18n.___("The form has been modified without saving", "ddui"),
+                        textMessage: ''
+                    },
+                    confirm: function wMenuConfirm()
+                    {
+                        documentView.model.set("viewId", viewId);
+                        documentView.model.fetch();
+                    },
+                    templateData: {templates: this.model.get("templates")}
+                });
+                confirmWindow.data('dcpWindow').open();
+            } else {
+                this.model.set("viewId", viewId);
+                this.model.fetch();
             }
-            this.model.set("viewId", viewId);
-            this.model.fetch();
         },
 
         /**
@@ -764,6 +784,7 @@ define([
             }
             throw new Error("Unknown template  " + key);
         },
+
 
         /**
          * Destroy the associated widget and suppress event listener before remov the dom

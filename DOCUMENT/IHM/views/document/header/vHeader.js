@@ -20,6 +20,7 @@ define([
             this.listenTo(this.model.get("properties"), 'change', this.updateHeader);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
+            this.listenTo(this.model, 'changeValue', this.documentHasChanged);
             this.headerTemplate = this.getTemplates("sections").header;
         },
 
@@ -40,7 +41,7 @@ define([
                 $header.append(elt);
             }));
 
-            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly").tooltip({
+            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified").tooltip({
                 placement:"bottom",
                 html:true
             });
@@ -73,6 +74,17 @@ define([
                 return window.dcp.templates[key];
             }
             throw new Error("Unknown template  " + key);
+        },
+        documentHasChanged :function () {
+            var wTitle=window.document.title.replace(/\*+$/g, "");
+
+            if (this.model.hasAttributesChanged()) {
+                this.$el.find(".dcpDocument__header__modified").show();
+                window.document.title = wTitle + " *";
+            } else {
+                this.$el.find(".dcpDocument__header__modified").hide();
+                window.document.title = wTitle;
+            }
         }
 
     });

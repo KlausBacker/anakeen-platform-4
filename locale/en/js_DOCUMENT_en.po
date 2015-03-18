@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DDUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-17 12:56+0100\n"
+"POT-Creation-Date: 2015-03-18 11:52+0100\n"
 "PO-Revision-Date: 2015-03-03 12:53+0100\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: English Team\n"
@@ -15,6 +15,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "ddui"
+msgid "Abord modification"
+msgstr ""
 
 msgctxt "historyUi"
 msgid "Activity"
@@ -42,6 +46,10 @@ msgstr ""
 
 msgctxt "propertyUi"
 msgid "Confidential"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Confirm close document"
 msgstr ""
 
 msgctxt "propertyUi"
@@ -213,7 +221,19 @@ msgid "State"
 msgstr ""
 
 msgctxt "ddui"
+msgid "Stay on the form"
+msgstr ""
+
+msgctxt "ddui"
 msgid "The field must not be empty"
+msgstr ""
+
+msgctxt "ddui"
+msgid "The form has been modified and is is not saved"
+msgstr ""
+
+msgctxt "ddui"
+msgid "The form has been modified without saving"
 msgstr ""
 
 msgctxt "propertyUi"
