@@ -1,2 +1,2 @@
 publish:
-	rsync -rupE . $(pubdir)/$(appname)/Families
+	rsync -rupE . $(pubdir)/$(appname)/Families --exclude "Makefile"
