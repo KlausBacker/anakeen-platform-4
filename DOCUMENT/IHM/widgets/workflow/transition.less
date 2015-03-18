@@ -9,13 +9,17 @@
    max-width: 15em;*/
   display: inline-block;
   padding: 0.3em 0.3em;
-  border-radius: 0.8em;
-  width : 1.6em;
+  border-radius: 4px;
+  min-width : 10em;
+  min-height: 3em;
+  border-style : solid;
+  border-width: 0.5em 1px 1px 1px;
+  vertical-align: middle;
 }
 
 .dcpTransition--content-activity i.fa {
   position: relative;
-  top: 0.2em;
+  top: 0.25em;
 }
 
 .dcpTransition--content-activity {
@@ -113,17 +117,25 @@
   padding:1em;
   margin:1em;
   text-align: center;
-  width: 10em;
+  width: 12em;
   display: inline-block;
   min-height:3em;
   border-style:solid;
   border-width:0.5em 1px 1px 1px;
   border-radius: 4px;
   box-shadow: 5px 5px 5px @gray;
+  overflow: auto;
   flex:1;
   // flex-basis:3em;
 
 }
+
+.dcpTransitionGraph_state_message {
+  text-align: left;
+  padding-top: 0.5em;
+  border-top: solid 1px @gray;
+}
+
 .dcpTransitionGraph .dcpTransitionGraph--from {
   width:40%;
   float:left;
@@ -162,6 +174,25 @@
   position:absolute;
   background-color: @gray;
 }
+
+.dcpTransitionGraph_state--error {
+  color:@gray;
+}
+.dcpTransitionGraph__arrow--error  {
+  background-color: lighten(@gray, 30%);
+}
+
+.dcpTransitionGraph--to .dcpTransitionGraph_state--error:hover {
+  cursor: not-allowed;
+}
+.dcpTransitionGraph__arrow--error .dcpTransitionGraph__arrow__end{
+  color:lighten(@gray, 30%);
+}
+
+.dcpTransitionGraph__arrow--error .dcpTransitionGraph__arrow__label {
+  color:lighten(@gray, 30%);
+}
+
 .dcpTransitionGraph__arrow .dcpTransitionGraph__arrow__label {
   text-align: center;
   margin-top:-1.7em;

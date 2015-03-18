@@ -43,7 +43,10 @@ define([
             this.$el.on("mouseover", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function ()
             {
                 var to = $(this).data("to");
-                currentView.$el.find(".dcpTransitionGraph__arrow--" + to).addClass("dcpTransitionGraph__arrow--selected");
+                if (!$(this).hasClass("dcpTransitionGraph_state--error")) {
+
+                    currentView.$el.find(".dcpTransitionGraph__arrow--" + to).addClass("dcpTransitionGraph__arrow--selected");
+                }
             });
             this.$el.on("mouseout", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function ()
             {
@@ -54,7 +57,10 @@ define([
             this.$el.on("click", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function ()
             {
                 var to = $(this).data("to");
-                currentView.$el.trigger("viewTransition", to);
+
+                 if (! $(this).hasClass("dcpTransitionGraph_state--error")) {
+                     currentView.$el.trigger("viewTransition", to);
+                 }
 
             });
 
@@ -67,6 +73,7 @@ define([
                 this.transitionGraphWindow = this.$el.dcpDialog({
                     window: {
                         height: "auto",
+                        width: "600px",
                         close: function registerCloseEvent(e)
                         {
                             currentView.remove();
@@ -104,7 +111,10 @@ define([
 
         displayCurrentState: function vTransitionGraphdisplayCurrentState()
         {
-            var tpl = '<div class="dcpTransitionGraph_state" data-to="{{id}}" title="{{title}}" style="border-color:{{color}}">{{displayValue}}</div>';
+            var tpl = '<div class="dcpTransitionGraph_state {{#transition.error}}dcpTransitionGraph_state--error{{/transition.error}}" ' +
+                'data-to="{{id}}" {{^transition.error}}title="{{title}}{{transition.error}}"{{/transition.error}} style="border-color:{{color}}">{{displayValue}}' +
+                '{{#transition.error}}<div class="dcpTransitionGraph_state_message">{{transition.error}}</div>{{/transition.error}}' +
+                '</div>';
             var states = this.model.get("workflowStates");
             var currentState = this.model.get("state");
             var currentView = this;
@@ -136,8 +146,7 @@ define([
             {
                 if (item.transition) {
                     $to = currentView.$el.find(".dcpTransitionGraph--to .dcpTransitionGraph_state[data-to=" + item.id + "]");
-                    currentView.connect($from.get(0), $to.get(0), 2, item.transition.label, item.id);
-
+                    currentView.connect($from.get(0), $to.get(0), 2, item);
                 }
             });
 
@@ -163,14 +172,12 @@ define([
          * @param div1 from div
          * @param div2 to div
          * @param thickness of the arraow
-         * @param text label
-         * @param id identifier
+         * @param item transition info
          */
-        connect: function vTransitionGraph_connect(div1, div2, thickness, text, id)
+        connect: function vTransitionGraph_connect(div1, div2, thickness, item)
         {
             var off1 = this.getOffset(div1);
             var off2 = this.getOffset(div2);
-
             var origin = this.getOffset(this.$el.get(0));
 
 
@@ -190,7 +197,7 @@ define([
 
 
             //
-            var htmlLine = "<div class='dcpTransitionGraph__arrow dcpTransitionGraph__arrow--{{id}}' " +
+            var htmlLine = "<div class='dcpTransitionGraph__arrow dcpTransitionGraph__arrow--{{id}} {{#error}}dcpTransitionGraph__arrow--error{{/error}}' " +
                 "style=' height:{{height}}px;left:{{left}}px; top:{{top}}px; width:{{width}}px;" +
                 " -moz-transform:rotate({{angle}}deg); " +
                 "-webkit-transform:rotate({{angle}}deg); " +
@@ -201,13 +208,14 @@ define([
 
 
             this.$el.append(Mustache.render(htmlLine, {
-                id: id,
+                error:item.transition.error,
+                id: item.id,
                 height: thickness,
                 width: length,
                 top: cy,
                 left: cx,
                 angle: angle,
-                text: text
+                text: item.transition.label
             }));
         }
 

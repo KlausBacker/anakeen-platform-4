@@ -13,11 +13,11 @@ define([
         messages : [],
 
         templates : {
-            htmlContent : '<div class="dcpTransition--content-activity">' +
-                          '{{transition.currentState.displayValue}} <span class="dcpTransition--activity" style="background-color:{{transition.currentState.color}}">&nbsp;</span>' +
+            htmlContent : '<div class="dcpTransition--content-activity" >' +
+                          ' <span class="dcpTransition--activity" style="border-color:{{transition.currentState.color}}">{{transition.currentState.displayValue}}</span>' +
                           '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
-                          '<span><i class="fa fa-chevron-right {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
-                          '<span class="dcpTransition--activity" style="background-color:{{transition.nextState.color}}">&nbsp;</span> {{transition.nextState.displayValue}}' +
+                          '<span><i class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
+                          '<span class="dcpTransition--activity" style="border-color:{{transition.nextState.color}}">{{transition.nextState.displayValue}}</span> ' +
             '</div>',
 
             htmlStateContent : '<div class="dcpTransition--content-activity">' +
