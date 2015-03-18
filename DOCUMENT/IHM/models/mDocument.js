@@ -1,5 +1,6 @@
-/*global define*/
+/*global define, console*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'dcpDocument/models/mDocumentProperties',
@@ -8,7 +9,7 @@ define([
     'dcpDocument/collections/menus',
     'dcpDocument/i18n',
     'dcpDocument/widgets/window/wNotification'
-], function (_, Backbone, DocumentProperties, DocumentLock, CollectionAttributes, CollectionMenus, i18n)
+], function ($, _, Backbone, DocumentProperties, DocumentLock, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 
