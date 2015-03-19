@@ -419,6 +419,7 @@ define([
                 el: $target
             });
 
+
             changeStateInterface = new ChangeStateInterface(transitionElements.model, $target, nextState, transition);
 
             //Propagate afterDisplayChange on renderDone
@@ -466,7 +467,14 @@ define([
                 currentWidget.reinitDocument();
             });
 
+            transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose()
+            {
+                this.trigger("close");
+            });
+
             transitionElements.model.fetch();
+
+
         },
 
         /**
@@ -569,7 +577,7 @@ define([
         _addAndInitNewEvents: function documentController_addAndInitNewEvents(newEvent)
         {
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event, uniqueName;
-            uniqueName = (newEvent.externalEvent ? "external_" : "internal_")+newEvent.name;
+            uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
             this.options.eventList[uniqueName] = newEvent;
             // Check if the event is for the current document
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
