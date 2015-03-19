@@ -82,8 +82,7 @@ function autocomplete(Action & $action)
         }
         //BEWARE SET LOT OF HTTPVAR
         //@todo rewrite this part to be less invasive
-        compatOriginalFormPost($action->getArgument("filter") , $action->getArgument("attributes") , $attributeObject->id);
-        //print_r($oattr->phpfunc);
+        compatOriginalFormPost($action->getArgument("filter") , $action->getArgument("attributes") , $attributeObject->id, $index);
         $result = getResPhpFunc($doc, $attributeObject, $rargids, $tselect, $tval, true, $index);
         if (!is_array($result)) {
             if ($result == "") {
@@ -125,9 +124,9 @@ function autocomplete(Action & $action)
     header('Content-type: application/json');
 }
 
-function compatOriginalFormPost($filters, $attributes, $currentAid)
+function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
 {
-    setHttpVar("_ct", " ");
+    dduiSetHttpVar("_ct", " ");
     if (is_array($attributes)) {
         
         foreach ($attributes as $aid => $formatValue) {
@@ -135,10 +134,14 @@ function compatOriginalFormPost($filters, $attributes, $currentAid)
                 $first = current($formatValue);
                 if (isset($first) && is_array($first)) {
                     //@TODO do an array with values
-                    
+                    $rawValue=array();
+                    foreach ($formatValue as $fmtValue) {
+                        $rawValue[]=$fmtValue["value"];
+                    }
+                    dduiSetHttpVar("_$aid", $rawValue);
                 } else {
                     if (!isset($formatValue["value"])) print_r2($formatValue);
-                    setHttpVar("_$aid", $formatValue["value"]);
+                    dduiSetHttpVar("_$aid", $formatValue["value"]);
                 }
             }
         }
@@ -146,9 +149,20 @@ function compatOriginalFormPost($filters, $attributes, $currentAid)
     
     if (is_array($filters)) {
         if (!empty($filters["filters"][0]["value"])) {
-            
-            setHttpVar("_ct", $filters["filters"][0]["value"]);
-            setHttpVar("_$currentAid", $filters["filters"][0]["value"]);
+            $ct=$filters["filters"][0]["value"];
+            dduiSetHttpVar("_ct",$ct );
+            if ($index >= 0) {
+                $current=getHttpVars("_$currentAid");
+                $current[$index]=$ct;
+                dduiSetHttpVar("_$currentAid", $current);
+            } else {
+                dduiSetHttpVar("_$currentAid", $ct);
+            }
         }
     }
+}
+function dduiSetHttpVar($name, $def)
+{
+    global $ZONE_ARGS;
+     $ZONE_ARGS[$name] = $def;
 }
