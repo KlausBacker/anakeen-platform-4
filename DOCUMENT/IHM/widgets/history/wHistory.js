@@ -372,7 +372,7 @@ define([
 
                         });
                         historyWidget.element.find(".dataTables_filter input").attr("placeholder", historyWidget.options.labels.filterMessages);
-                        // historyWidget.element.find(".row:nth-child(1) .col-sm-6:nth-child(1)").append(historyWidget.element.find(".dataTables_filter"));
+                        historyWidget.element.find(".row:nth-child(1) .col-sm-6").addClass("col-xs-6");
                     }
 
                 },
