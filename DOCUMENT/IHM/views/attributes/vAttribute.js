@@ -257,7 +257,7 @@ define([
             } else {
                 initid = attributeValue[index].value;
             }
-            documentModel.clear().set({
+            documentModel.set({
                 "initid": initid,
                 "revision": -1,
                 "viewId": "!defaultConsultation"

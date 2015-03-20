@@ -691,17 +691,6 @@ define([
         },
 
         /**
-         * Destroy sub collection on clear event
-         *
-         * @param options
-         * @returns {*}
-         */
-        clear: function mDocumentclear(options)
-        {
-            return Backbone.Model.prototype.clear.call(this, options);
-        },
-
-        /**
          * Destroy the collection associated to the document (used in the destroy part of the view)
          *
          */
@@ -740,7 +729,6 @@ define([
                 currentModel.trigger("close", currentProperties);
             };
             var security = this.get("properties") ? (this.get("properties").get("security")) : null;
-            var theModel = this;
             options = options || {};
             this.trigger("beforeClose", event);
             if (event.prevent === false) {
@@ -759,17 +747,19 @@ define([
                     lockModel.destroy({
                         success: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(theModel, attributes, options);
+                            Backbone.Model.prototype.fetch.call(currentModel, attributes, options);
                         },
                         error: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(theModel, attributes, options);
+                            Backbone.Model.prototype.fetch.call(currentModel, attributes, options);
                         }
                     });
                 } else {
                     return Backbone.Model.prototype.fetch.call(this, attributes, options);
                 }
             }
+            //cancelled : re-set initial properties
+            this.set(_.pick(currentProperties, "initid", "viewId", "renderMode"));
             return false;
         },
 
