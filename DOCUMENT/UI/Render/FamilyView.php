@@ -7,12 +7,11 @@
 
 namespace Dcp\Ui;
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class FamilyView extends RenderDefault
 {
     
-    public function getLabel()
+    public function getLabel(\Doc $document=null)
     {
         return ___("Family View", "ddui");
     }
