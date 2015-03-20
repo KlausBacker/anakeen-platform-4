@@ -40,6 +40,8 @@ define([
             this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
+
+            $(window).on("resize", _.bind(this.resizeForFooter, this));
         },
 
         /**
@@ -55,12 +57,6 @@ define([
                 }
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
-                }
-                if (this.transition && this.transition.view) {
-                    this.transition.view.remove();
-                }
-                if (this.transition && this.transition.view) {
-                    this.transition.view.remove();
                 }
                 if (this.transitionGraph && this.transitionGraph.view) {
                     this.transitionGraph.view.remove();
@@ -249,11 +245,25 @@ define([
                 documentView.model.redrawErrorMessages();
             });
             this.$el.addClass("dcpDocument--show");
+
+            this.resizeForFooter();
             console.timeEnd("render document view");
             this.trigger("renderDone");
             this.$el.show();
             return this;
         },
+
+
+        resizeForFooter: function vDocumentresizeForFooter() {
+            var $footer=this.$el.find(".dcpDocument__footer");
+            if ($footer.length > 0) {
+                var footerHeight=$footer.height();
+                if (footerHeight > 0) {
+                    $("body").css("margin-bottom", footerHeight + "px");
+                }
+            }
+        },
+
 
         /**
          *
