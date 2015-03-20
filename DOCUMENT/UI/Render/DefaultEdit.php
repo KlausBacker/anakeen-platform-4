@@ -81,7 +81,7 @@ class DefaultEdit extends RenderDefault
         if ($document->id > 0) {
             $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation:unlock");
             $item->setBeforeContent('<div class="fa fa-times" />');
-            $item->setTooltipLabel(___("See document in read mode", "UiMenu"));
+            $item->setTooltipLabel(___("Close form", "UiMenu"));
             $menu->appendElement($item);
         }
         if ($document->wid > 0) {
