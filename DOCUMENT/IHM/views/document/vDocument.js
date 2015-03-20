@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, console*/
 
 define([
     'underscore',
@@ -194,13 +194,7 @@ define([
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                             tabItems = $el.find(".dcpDocument__tabs__list").find('li');
                             if (tabItems.length > 1) {
-                                tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%').tooltip({
-                                    placement: "top",
-                                    title: function vDocumentTooltipTitle()
-                                    {
-                                        return $(this).text(); // set the element text as content of the tooltip
-                                    }
-                                });
+                                tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%');
                             } else {
                                 tabItems.css("width", "80%");
                             }
@@ -229,12 +223,12 @@ define([
                     {
                         var tabId = $(event.item).data("attrid");
                         currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
-                        currentView.model.get("attributes").get(tabId).trigger("showTab");
                         currentView.$('.dcpLabel[data-attrid="' + tabId + '"]').addClass("dcpLabel--active").removeClass("dcpLabel--default");
                         if (documentView.selectedTab !== tabId) {
                             documentView.selectedTab = tabId;
                             documentView.recordSelectedTab(tabId);
                         }
+                        _.defer(function() {currentView.model.get("attributes").get(tabId).trigger("showTab");});
                     }
                 });
 

@@ -1,2 +1,2 @@
 publish:
-	rsync -rupE . $(pubdir)/$(appname)/Crud
+	rsync -rupE . $(pubdir)/$(appname)/Crud  --exclude "Makefile"

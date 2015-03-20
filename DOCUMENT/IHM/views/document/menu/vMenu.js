@@ -27,7 +27,6 @@ define([
             this.listenTo(this.model.get("attributes"), 'changeMenuVisibility', this.changeVisibility);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
-
             this.menuModel = this.model.get("menus");
         },
 

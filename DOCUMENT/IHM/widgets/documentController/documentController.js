@@ -191,32 +191,32 @@ define([
                         currentWidget._model.getProperties(true), currentWidget._model.getProperties());
                 }
             });
-            this._model.listenTo(this._model, "close", function documentController_triggerClose()
+            this._model.listenTo(this._model, "close", function documentController_triggerClose(oldProperties)
             {
                 if (currentWidget.initialLoaded !== false) {
                     currentWidget._triggerControllerEvent("close",
-                        currentWidget._model.getProperties(true));
+                        currentWidget._model.getProperties(true), oldProperties);
                 }
             });
             this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeSave",
-                    currentWidget._model.getProperties(true));
+                    currentWidget._model.getProperties(true), currentWidget._model.getProperties());
             });
-            this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(event)
+            this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(oldProperties)
             {
                 currentWidget._triggerControllerEvent("afterSave",
-                    currentWidget._model.getProperties(true));
+                    currentWidget._model.getProperties(true), oldProperties);
             });
             this._model.listenTo(this._model, "beforeDelete", function documentController_triggerBeforeDelete(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeDelete",
-                    currentWidget._model.getProperties(true));
+                    currentWidget._model.getProperties(true), currentWidget._model.getProperties());
             });
-            this._model.listenTo(this._model, "afterDelete", function documentController_triggerAfterDelete(event)
+            this._model.listenTo(this._model, "afterDelete", function documentController_triggerAfterDelete(oldProperties)
             {
                 currentWidget._triggerControllerEvent("afterDelete",
-                    currentWidget._model.getProperties(true));
+                    currentWidget._model.getProperties(true), oldProperties);
             });
             this._model.listenTo(this._model, "validate", function documentController_triggerValidate(event)
             {

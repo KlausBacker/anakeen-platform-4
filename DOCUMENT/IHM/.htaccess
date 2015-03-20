@@ -1,0 +1,4 @@
+<FilesMatch "\.(js|css|less|map)$">
+        Order Deny,Allow
+        Allow from All
+</FilesMatch>

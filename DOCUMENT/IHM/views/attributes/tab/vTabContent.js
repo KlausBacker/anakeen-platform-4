@@ -1,11 +1,13 @@
-/*global define*/
+/*global define, console*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'mustache',
     'dcpDocument/views/attributes/frame/vFrame',
     'dcpDocument/views/document/attributeTemplate'
-], function (_, Backbone, Mustache, ViewAttributeFrame, attributeTemplate) {
+], function ($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate)
+{
     'use strict';
 
     return Backbone.View.extend({
@@ -15,8 +17,8 @@ define([
         className: "dcpTab__content",
         customView: false,
 
-        initialize: function vTabContentInitialize(options) {
-
+        initialize: function vTabContentInitialize(options)
+        {
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -24,7 +26,6 @@ define([
             this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'showTab', this.renderContent);
-            this.listenTo(this.model, 'showTab', this.propageShowTab);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
@@ -38,13 +39,15 @@ define([
             this.options = options;
         },
 
-        render: function vTabContentRender() {
+        render: function vTabContentRender()
+        {
             var hasOneContent;
             this.$el.empty();
             this.$el.attr("id", this.model.id);
             this.$el.attr("data-attrid", this.model.id);
 
-            hasOneContent = this.model.get("content").some(function vTabContentIsDisplayable(value) {
+            hasOneContent = this.model.get("content").some(function vTabContentIsDisplayable(value)
+            {
                 return value.isDisplayable();
             });
 
@@ -53,11 +56,13 @@ define([
             } else {
                 this.renderContent();
             }
-            this.model.trigger("renderDone", {model : this.model, $el : this.$el});
+            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
+            this.propageShowTab();
             return this;
         },
 
-        renderContent: function vTabContentRenderContent() {
+        renderContent: function vTabContentRenderContent()
+        {
             var $content = this.$el, model = this.model;
             if (this.initialized === false) {
                 this.$el.empty();
@@ -65,7 +70,8 @@ define([
                 if (this.customView) {
                     $content.append(this.customView);
                 } else {
-                    this.model.get("content").each(function vTabContentRenderContent(currentAttr) {
+                    this.model.get("content").each(function vTabContentRenderContent(currentAttr)
+                    {
                         var view;
                         try {
                             if (!currentAttr.isDisplayable()) {
@@ -94,23 +100,28 @@ define([
             $(window.document).trigger("redrawErrorMessages");
         },
 
-        propageShowTab: function vTabContentPropageShowTab() {
+        propageShowTab: function vTabContentPropageShowTab()
+        {
             this.model.get("content").propageEvent('showTab');
         },
 
-        updateLabel: function vTabContentUpdateLabel() {
+        updateLabel: function vTabContentUpdateLabel()
+        {
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        hide: function vTabContentHide() {
+        hide: function vTabContentHide()
+        {
             this.$el.hide();
         },
 
-        show: function vTabContentShow() {
+        show: function vTabContentShow()
+        {
             this.$el.show();
         },
 
-        _identifyView: function vAttribute_identifyView(event) {
+        _identifyView: function vAttribute_identifyView(event)
+        {
             event.haveView = true;
             //Add the pointer to the current jquery element to a list passed by the event
             event.elements = event.elements.add(this.$el);

@@ -1,5 +1,6 @@
-/*global define*/
+/*global define, console*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'dcpDocument/models/mDocumentProperties',
@@ -8,7 +9,7 @@ define([
     'dcpDocument/collections/menus',
     'dcpDocument/i18n',
     'dcpDocument/widgets/window/wNotification'
-], function (_, Backbone, DocumentProperties, DocumentLock, CollectionAttributes, CollectionMenus, i18n)
+], function ($, _, Backbone, DocumentProperties, DocumentLock, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 
@@ -733,9 +734,10 @@ define([
 
         fetch: function mDocumentFetch(attributes, options)
         {
-            var event = {prevent: false}, currentModel = this, afterDone = function afterDone()
+            var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true), lockModel,
+                afterDone = function afterDone()
             {
-                currentModel.trigger("close");
+                currentModel.trigger("close", currentProperties);
             };
             var security = this.get("properties") ? (this.get("properties").get("security")) : null;
             var theModel = this;
@@ -753,8 +755,7 @@ define([
                 }
                 this.trigger("displayLoading");
                 if (this.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-
-                    var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "temporary"});
+                    lockModel = new DocumentLock({"initid": this.get("initid"), "type": "temporary"});
                     lockModel.destroy({
                         success: function ()
                         {
@@ -774,10 +775,11 @@ define([
 
         save: function mDocumentSave(attributes, options)
         {
-            var event = {prevent: false}, currentModel = this, afterDone = function afterDone()
+            var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
+                afterDone = function afterDone()
             {
-                currentModel.trigger("afterSave");
-                currentModel.trigger("close");
+                currentModel.trigger("afterSave", currentProperties);
+                currentModel.trigger("close", currentProperties);
             };
             options = options || {};
             this.trigger("beforeSave", event);
@@ -799,10 +801,11 @@ define([
 
         destroy: function mDocumentDestroy(attributes, options)
         {
-            var event = {prevent: false}, currentModel = this, afterDone = function afterDone()
+            var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
+                afterDone = function afterDone()
             {
-                currentModel.trigger("afterDelete");
-                currentModel.trigger("close");
+                currentModel.trigger("afterDelete", currentProperties);
+                currentModel.trigger("close", currentProperties);
             };
             options = options || {};
             this.trigger("beforeDelete", event);

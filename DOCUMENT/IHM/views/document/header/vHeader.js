@@ -1,9 +1,11 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'mustache'
-], function (_, Backbone, Mustache) {
+], function ($, _, Backbone, Mustache)
+{
     'use strict';
 
     return Backbone.View.extend({
@@ -16,7 +18,8 @@ define([
          */
         headerTemplate: null,
 
-        initialize: function vHeaderInitialize() {
+        initialize: function vHeaderInitialize()
+        {
             this.listenTo(this.model.get("properties"), 'change', this.updateHeader);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
@@ -28,20 +31,22 @@ define([
          * apply mustache template to inner content
          * @returns {*}
          */
-        render: function vheaderRender() {
-            var data=this.model.toData();
+        render: function vheaderRender()
+        {
+            var data = this.model.toData();
 
-            data.document.properties.security = data.document.properties.security || {lock:{lockedBy:null}};
-            data.document.properties.security.lock.isLocked=(data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0);
-            
-            var headerRender=$(Mustache.render(this.headerTemplate, data));
-            var $header=this.$el;
+            data.document.properties.security = data.document.properties.security || {lock: {lockedBy: null}};
+            data.document.properties.security.lock.isLocked = (data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0);
+
+            var headerRender = $(Mustache.render(this.headerTemplate, data));
+            var $header = this.$el;
             $header.empty();
-            _.each(headerRender.children(), (function (elt) {
+            _.each(headerRender.children(), (function (elt)
+            {
                 $header.append(elt);
             }));
 
-            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified").tooltip({
+            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly").tooltip({
                 placement:"bottom",
                 html:true
             });
@@ -54,15 +59,17 @@ define([
          * update window title also
          * @returns {*}
          */
-        updateHeader: function vheaderUpdateHeader() {
-            var doctitle=this.model.get("properties").get('title');
+        updateHeader: function vheaderUpdateHeader()
+        {
+            var doctitle = this.model.get("properties").get('title');
             if (doctitle) {
-                window.document.title=doctitle;
+                window.document.title = doctitle;
             }
             return this.render();
         },
 
-        getTemplates : function getTemplates(key) {
+        getTemplates: function vheadergetTemplates(key)
+        {
             var templates = {};
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");
@@ -75,7 +82,7 @@ define([
             }
             throw new Error("Unknown template  " + key);
         },
-        documentHasChanged :function () {
+        documentHasChanged :function vheaderdocumentHasChanged() {
             var wTitle=window.document.title.replace(/^\*+/g, "");
 
             if (this.model.hasAttributesChanged()) {

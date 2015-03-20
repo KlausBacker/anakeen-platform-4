@@ -1,2 +1,2 @@
 publish:
-	rsync -rupE . $(pubdir)/STYLE
+	rsync -rupE . $(pubdir)/STYLE --exclude "Makefile"
