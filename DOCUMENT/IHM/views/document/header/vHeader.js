@@ -46,7 +46,7 @@ define([
                 $header.append(elt);
             }));
 
-            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly").tooltip({
+            $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified").tooltip({
                 placement:"bottom",
                 html:true
             });
