@@ -3,7 +3,7 @@ Dynacase Control
 
 _Install and control update of dynacase modules._  
 
-Dynacase Control is the official installer programs need to manage installation of your dynacase modules.
+Dynacase Control is the official installer program needed to manage the installation of your Dynacase modules.
 
 Getting Help
 ------------

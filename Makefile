@@ -28,6 +28,8 @@ tarball:
 		--exclude "*~" \
 		--exclude .git \
 		--exclude .gitmodules \
+		--exclude PubRule \
+		--exclude po2js.php \
 		. | tar -C tmp/$(TAR_DIST_DIR) -xf -
 	tar -C tmp -zcf $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz $(TAR_DIST_OPTS) $(TAR_DIST_DIR)
 	rm -Rf tmp
