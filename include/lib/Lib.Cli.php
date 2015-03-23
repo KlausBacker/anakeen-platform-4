@@ -920,34 +920,8 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     break;
 
                 default:
-                    $phase = $module->getPhase($phaseName);
-                    $processList = $phase->getProcessList();
-                    
-                    foreach ($processList as $process) {
-                        /**
-                         * @var Process $process
-                         */
-                        while (true) {
-                            echo sprintf("Running '%s'... ", $process->label);
-                            echo fg_yellow();
-                            $exec = $process->execute();
-                            echo color_reset();
-                            if ($exec['ret'] === false) {
-                                echo sprintf("\nError: process '%s' returned with error: %s%s%s\n", $process->label, fg_red() , $exec['output'], color_reset());
-                                $ret = param_ask($options, "(R)etry, (c)continue or (a)bort", "R/c/a", "R", "a");
-                                if (preg_match('/^a.*$/i', $ret)) {
-                                    echo sprintf("[%sABORTED%s] (%s)\n", fg_red() , color_reset() , $exec['output']);
-                                    return 1;
-                                }
-                                if (preg_match('/^(c.*)$/i', $ret)) {
-                                    echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue() , color_reset() , $exec['output']);
-                                    break;
-                                }
-                            } else {
-                                echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
-                                break;
-                            }
-                        }
+                    if (($ret = executeModulePhase($module, $phaseName, $options)) != 0) {
+                        return $ret;
                     }
                     break;
             }
@@ -1848,6 +1822,9 @@ function wiff_delete_context(&$argv)
         printerr(sprintf("Error: could not get context '%s': %s\n", $ctx_name, $wiff->errorMessage));
         return 1;
     }
+
+    $context->wstop();
+
     $moduleList = $context->getInstalledModuleList();
     if (count($moduleList) > 0) {
         $moduleNameList = array();
@@ -1872,37 +1849,8 @@ function wiff_delete_context(&$argv)
             }
             foreach ($phaseList as & $phaseName) {
                 printf("Doing '%s' of module '%s'.\n", $phaseName, $module->name);
-                $phase = $module->getPhase($phaseName);
-                $processList = $phase->getProcessList();
-                /**
-                 * @var Process $process
-                 */
-                foreach ($processList as & $process) {
-                    while (true) {
-                        printf("Running '%s'... ", $process->label);
-                        echo fg_yellow();
-                        $exec = $process->execute();
-                        echo color_reset();
-                        if ($exec['ret'] === false) {
-                            echo sprintf("\nError: process '%s' returned with error: %s%s%s\n", $process->label, fg_red(), $exec['output'], color_reset());
-                            if (boolopt('force', $options)) {
-                                echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue(), color_reset(), $exec['output']);
-                                break;
-                            }
-                            $ret = param_ask($options, "(R)etry, (c)continue or (a)bort", "R/c/a", "R", "a");
-                            if (preg_match('/^a.*$/i', $ret)) {
-                                echo sprintf("[%sABORTED%s] (%s)\n", fg_red(), color_reset(), $exec['output']);
-                                return 1;
-                            }
-                            if (preg_match('/^(c.*)$/i', $ret)) {
-                                echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue(), color_reset(), $exec['output']);
-                                break;
-                            }
-                        } else {
-                            echo sprintf("[%sOK%s]\n", fg_green(), color_reset());
-                            break;
-                        }
-                    }
+                if (($ret = executeModulePhase($module, $phaseName, $options)) != 0) {
+                    return $ret;
                 }
                 unset($process);
             }
@@ -2502,6 +2450,8 @@ function wiff_context_archive_help(&$argv) {
  * @param array $argv
  */
 function wiff_context_archive(&$context, $argv) {
+    $context->wstop();
+
     $archiveName = array_shift($argv);
     if ($archiveName === null) {
         printerr(sprintf("Error: missing archive name.\n"));
@@ -2514,11 +2464,32 @@ function wiff_context_archive(&$context, $argv) {
     if (isset($options['description'])) {
         $archiveDesc = $options['description'];
     }
+    $modules = $context->getInstalledModuleList();
+    /* pre-archive */
+    foreach ($modules as & $module) {
+        printf("Doing '%s' of module '%s'.\n", 'pre-archive', $module->name);
+        if (($ret = executeModulePhase($module, 'pre-archive', $options)) != 0) {
+            return $ret;
+        }
+    }
+    unset($module);
+    /* archive */
     $archiveId = $context->archiveContext($archiveName, $archiveDesc, $excludeVault);
     if ($archiveId === false) {
         printerr(sprintf("Error: could not archive context: %s\n", $context->errorMessage));
         return 1;
     }
+    /* post-archive */
+    foreach ($modules as & $module) {
+        printf("Doing '%s' of module '%s'.\n", 'post-archive', $module->name);
+        if (($ret = executeModulePhase($module, 'post-archive', $options)) != 0) {
+            return $ret;
+        }
+    }
+    unset($module);
+
+    $context->wstart();
+
     printf("%s\n", $archiveId);
     return 0;
 }
@@ -2634,6 +2605,22 @@ function wiff_archive_restore($archiveId, &$argv) {
         printerr(sprintf("Error: could not restore archive '%s' to new context '%s': %s", $archiveId, $contextName, $wiff->errorMessage));
         return 1;
     }
+    $context = $wiff->getContext($contextName);
+    if ($context === false) {
+        printerr(sprintf("Error: could not get context '%s': %s\n", $contextName, $wiff->errorMessage));
+        return 1;
+    }
+    $modules = $context->getInstalledModuleList();
+    foreach ($modules as & $module) {
+        printf("Doing '%s' of module '%s'.\n", 'post-restore', $module->name);
+        if (($ret = executeModulePhase($module, 'post-restore', $options)) != 0) {
+            return $ret;
+        }
+    }
+    unset($module);
+
+    $context->wstart();
+
     printf("Context '%s' successfully created from archive '%s'.\n", $contextName, $archiveId);
     return 0;
 }
@@ -2693,4 +2680,52 @@ function wiff_delete_archive(&$argv) {
         return 1;
     }
     return 0;
+}
+
+/**
+ * @param Process[] $processList
+ * @param array $options
+ * @return int
+ */
+function executeProcessList($processList, $options = array()) {
+    foreach ($processList as & $process) {
+        while (true) {
+            printf("Running '%s'... ", $process->label);
+            echo fg_yellow();
+            $exec = $process->execute();
+            echo color_reset();
+            if ($exec['ret'] === false) {
+                echo sprintf("\nError: process '%s' returned with error: %s%s%s\n", $process->label, fg_red(), $exec['output'], color_reset());
+                if (boolopt('force', $options)) {
+                    echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue(), color_reset(), $exec['output']);
+                    break;
+                }
+                $ret = param_ask($options, "(R)etry, (c)continue or (a)bort", "R/c/a", "R", "a");
+                if (preg_match('/^a.*$/i', $ret)) {
+                    echo sprintf("[%sABORTED%s] (%s)\n", fg_red(), color_reset(), $exec['output']);
+                    return 1;
+                }
+                if (preg_match('/^(c.*)$/i', $ret)) {
+                    echo sprintf("[%sSKIPPED%s] (%s)\n", fg_blue(), color_reset(), $exec['output']);
+                    break;
+                }
+            } else {
+                echo sprintf("[%sOK%s]\n", fg_green(), color_reset());
+                break;
+            }
+        }
+    }
+    return 0;
+}
+
+/**
+ * @param Module $module
+ * @param string $phaseName
+ * @param array $options
+ * @return int
+ */
+function executeModulePhase(&$module, $phaseName, $options = array()) {
+    $phase = $module->getPhase($phaseName);
+    $processList = $phase->getProcessList();
+    return executeProcessList($processList, $options);
 }

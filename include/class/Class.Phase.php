@@ -34,7 +34,7 @@ class Phase
     }
     /**
      * Get Process list
-     * @return array of object Process
+     * @return Process[]
      */
     public function getProcessList()
     {
