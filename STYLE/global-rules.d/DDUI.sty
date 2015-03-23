@@ -11,6 +11,32 @@ $sty_desc = array(
 
 );
 
+//produce global less file
+
+$generateGlobalVarFile = function() {
+    $globalVarFile = "STYLE/custom-less-variable.d/global_variables.less";
+
+    if (is_file($globalVarFile)) {
+        unlink($globalVarFile);
+    }
+
+    $fullContent = "";
+
+    $iterator = new DirectoryIterator("STYLE/custom-less-variable.d/");
+    foreach ($iterator as $fileinfo) {
+        if ($fileinfo->isDot()) {
+            continue;
+        }
+        $fullContent .= file_get_contents($fileinfo->getPathname()) . "\n";
+    }
+
+    file_put_contents($globalVarFile, $fullContent);
+
+};
+
+$generateGlobalVarFile();
+
+
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
