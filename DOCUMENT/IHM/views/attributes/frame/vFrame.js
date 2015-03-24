@@ -1,12 +1,14 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'mustache',
     'dcpDocument/views/attributes/vAttribute',
     'dcpDocument/views/attributes/array/vArray',
     'dcpDocument/views/document/attributeTemplate'
-], function (_, Backbone, Mustache, ViewAttribute, ViewAttributeArray, attributeTemplate) {
+], function ($, _, Backbone, Mustache, ViewAttribute, ViewAttributeArray, attributeTemplate)
+{
     'use strict';
 
     return Backbone.View.extend({
