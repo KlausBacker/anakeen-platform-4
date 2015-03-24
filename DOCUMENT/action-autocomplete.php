@@ -133,10 +133,17 @@ function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
             if ($formatValue) {
                 $first = current($formatValue);
                 if (isset($first) && is_array($first)) {
-                    //@TODO do an array with values
                     $rawValue=array();
                     foreach ($formatValue as $fmtValue) {
-                        $rawValue[]=$fmtValue["value"];
+                        if (!isset($fmtValue["value"])) {
+                            $secondValue=array();
+                            foreach ($fmtValue as $fmtValue2) {
+                                $secondValue[]=$fmtValue2["value"];
+                            }
+                            $rawValue[]=$secondValue;
+                        } else {
+                            $rawValue[] = $fmtValue["value"];
+                        }
                     }
                     dduiSetHttpVar("_$aid", $rawValue);
                 } else {
