@@ -295,7 +295,10 @@ define([
         {
             return this.get("attributes").some(function (currentAttr)
             {
-                return (currentAttr.hasChanged("attributeValue")) && ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''));
+                return (currentAttr.hasChanged("attributeValue") &&
+                ((currentAttr.get("attributeValue").value !== undefined && ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''))) || !_.isEqual(_.pluck(_.flatten(currentAttr._initialAttributeValue), "value"), _.pluck(_.flatten(currentAttr.get("attributeValue")), "value"))
+                )
+                );
             });
         },
 
@@ -725,9 +728,9 @@ define([
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true), lockModel,
                 afterDone = function afterDone()
-            {
-                currentModel.trigger("close", currentProperties);
-            };
+                {
+                    currentModel.trigger("close", currentProperties);
+                };
             var security = this.get("properties") ? (this.get("properties").get("security")) : null;
             options = options || {};
             this.trigger("beforeClose", event);
@@ -767,10 +770,10 @@ define([
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
                 afterDone = function afterDone()
-            {
-                currentModel.trigger("afterSave", currentProperties);
-                currentModel.trigger("close", currentProperties);
-            };
+                {
+                    currentModel.trigger("afterSave", currentProperties);
+                    currentModel.trigger("close", currentProperties);
+                };
             options = options || {};
             this.trigger("beforeSave", event);
             if (event.prevent === false) {
@@ -793,10 +796,10 @@ define([
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
                 afterDone = function afterDone()
-            {
-                currentModel.trigger("afterDelete", currentProperties);
-                currentModel.trigger("close", currentProperties);
-            };
+                {
+                    currentModel.trigger("afterDelete", currentProperties);
+                    currentModel.trigger("close", currentProperties);
+                };
             options = options || {};
             this.trigger("beforeDelete", event);
             if (event.prevent === false) {
