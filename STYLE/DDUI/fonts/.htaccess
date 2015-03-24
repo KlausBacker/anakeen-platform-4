@@ -1,4 +1,0 @@
-<FilesMatch "\.(ttf|woff|svg|map)$">
-        Order Deny,Allow
-        Allow from All
-</FilesMatch>
