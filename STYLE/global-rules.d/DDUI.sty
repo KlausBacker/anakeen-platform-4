@@ -13,7 +13,7 @@ $sty_desc = array(
 
 //produce global less file
 
-$generateGlobalVarFile = function() {
+$generateGlobalVarFile = function () {
     $globalVarFile = "STYLE/custom-less-variable.d/global_variables.less";
 
     if (is_file($globalVarFile)) {
@@ -22,12 +22,22 @@ $generateGlobalVarFile = function() {
 
     $fullContent = "";
 
+    $files = array();
+
     $iterator = new DirectoryIterator("STYLE/custom-less-variable.d/");
     foreach ($iterator as $fileinfo) {
         if ($fileinfo->isDot()) {
             continue;
         }
-        $fullContent .= file_get_contents($fileinfo->getPathname()) . "\n";
+        $files[$fileinfo->getPathname()] = $fileinfo->getPathname();
+
+    }
+
+    ksort($files);
+
+    foreach ($files as $currentFiles) {
+        $fullContent .= "// $currentFiles\n";
+        $fullContent .= file_get_contents($currentFiles) . "\n";
     }
 
     file_put_contents($globalVarFile, $fullContent);
