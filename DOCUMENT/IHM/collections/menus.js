@@ -1,3 +1,4 @@
+/*global define*/
 define([
     'underscore',
     'backbone',
@@ -9,21 +10,22 @@ define([
     return Backbone.Collection.extend({
         model: ModelMenu,
 
-        destroy: function ()
+        destroy: function CollectionMenu_destroy()
         {
-            this.invoke("trigger", "destroy");
+            var model;
+            while (model = this.first()) { // jshint ignore:line
+                model.destroy();
+            }
         },
 
-        _deepSearchMenu: function (contents, id, key, value)
+        _deepSearchMenu: function CollectionMenu__deepSearchMenu(contents, id, key, value)
         {
-            var scope = this;
-            var subMenu, i, subSubMenu;
+            var scope = this, subMenu, i, subSubMenu;
             if (contents) {
                 for (i = 0; i < contents.length; i++) {
                     subMenu = contents[i];
                     if (subMenu.id === id) {
                         if (key) {
-
                             subMenu[key]=value;
                         }
                         return subMenu;
@@ -38,11 +40,9 @@ define([
             return null;
         },
 
-        getMenu: function (id)
+        getMenu: function CollectionMenu_getMenu(id)
         {
-            var menuInfo = null;
-            var menuInfoItem = null;
-            var scope = this;
+            var menuInfo = null, menuInfoItem = null, scope = this;
 
             if (this.get(id)) {
                 return this.get(id).attributes;
@@ -61,18 +61,12 @@ define([
         },
 
 
-        setMenu: function (id, key, value)
+        setMenu: function CollectionMenu_setMenu(id, key, value)
         {
-            var menuInfo = null;
-            var menuInfoItem = null;
-            var scope = this;
-            var menuModel=null;
-            var currentValue={};
-            var newContent={};
+            var menuInfo = null, menuInfoItem = null, scope = this, menuModel=null, newContent={};
 
             if (this.get(id)) {
                 menuModel= this.get(id);
-                currentValue=menuModel.attributes;
                 menuModel.set(key, value);
                 return menuModel.attributes;
             } else {
@@ -90,7 +84,6 @@ define([
                 });
                 return menuInfo;
             }
-            return null;
         }
 
     });

@@ -226,6 +226,13 @@ define([
             var view = {haveView : false, elements : $()};
             this.trigger("haveView", view);
             return view;
+        },
+        /**
+         * Attribute model are not linked to REST element so always new
+         * @returns {boolean}
+         */
+        isNew : function mAttribute_isNew() {
+            return true;
         }
 
     });
