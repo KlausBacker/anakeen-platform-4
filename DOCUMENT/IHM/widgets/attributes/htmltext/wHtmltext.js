@@ -27,6 +27,7 @@ define([
                 if (this.getMode() === "write") {
                     var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
                     // if put it on a div : this.getContentElements().attr("contenteditable","true");
+
                     this.ckEditorInstance = this.getContentElements().ckeditor(
                         options
                     ).editor;
@@ -60,6 +61,7 @@ define([
                 language: locale.substring(0, 2),
                 contentsCss: ['lib/ckeditor/4/contents.css', 'css/dcp/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
+                //extraPlugins: 'sourcedialog',
                 toolbarCanCollapse: true,
                 entities: false, // no use HTML entities
                 filebrowserImageBrowseUrl: '?sole=Y&app=FDL&action=CKIMAGE',
@@ -67,7 +69,7 @@ define([
                 toolbar_Full: [
                     {
                         name: 'document',
-                        items: ['Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates']
+                        items: ['Sourcedialog', '-', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates']
                     },
                     {
                         name: 'clipboard',
@@ -100,7 +102,7 @@ define([
                     {name: 'tools', items: ['Maximize', 'ShowBlocks', '-', 'About']}
                 ],
                 toolbar_Default: [
-                    {name: 'document', items: ['Source']},
+                    {name: 'document', items: ['Sourcedialog']},
                     {
                         name: 'clipboard',
                         items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
@@ -132,7 +134,7 @@ define([
                     {name: 'insert', items: ['Image', 'Table', 'SpecialChar']},
                     {name: 'styles', items: ['Format', 'FontSize']},
                     {name: 'colors', items: ['TextColor', 'BGColor']},
-                    {name: 'tools', items: ['Maximize', 'Source', '-', 'About']}
+                    {name: 'tools', items: ['Maximize', 'Sourcedialog', '-', 'About']}
                 ],
                 toolbar_Basic: [
                     {
