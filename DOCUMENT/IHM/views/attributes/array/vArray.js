@@ -1,5 +1,6 @@
-/*global define*/
+/*global define, console*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'mustache',
@@ -7,7 +8,8 @@ define([
     'dcpDocument/views/attributes/array/vColumn',
     'dcpDocument/views/document/attributeTemplate',
     'dcpDocument/widgets/attributes/array/wArray'
-], function (_, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate) {
+], function ($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate)
+{
     'use strict';
 
     return Backbone.View.extend({
@@ -24,7 +26,8 @@ define([
 
         columnViews: {},
 
-        initialize: function vArray_initialize(options) {
+        initialize: function vArray_initialize(options)
+        {
             if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
                 this.displayLabel = false;
             }
@@ -50,11 +53,13 @@ define([
             this.options = options;
         },
 
-        render: function vArray_render() {
+        render: function vArray_render()
+        {
             // console.time("render array " + this.model.id);
             var data = this.model.toData();
             var scope = this;
-            data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent) {
+            data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent)
+            {
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
@@ -69,7 +74,8 @@ define([
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
                 if (!this.customView || this.customRowView) {
-                    this.model.get("content").each(function vArray_analyzeContent(currentAttr) {
+                    this.model.get("content").each(function vArray_analyzeContent(currentAttr)
+                    {
                         if (!currentAttr.isDisplayable()) {
                             return;
                         }
@@ -77,7 +83,8 @@ define([
                             if (currentAttr.get("isValueAttribute")) {
                                 scope.columnViews[currentAttr.id] = new ViewColumn({
                                     el: scope.el,
-                                    els: function vArray_findScope() {
+                                    els: function vArray_findScope()
+                                    {
                                         return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
                                     },
                                     originalView: true,
@@ -99,7 +106,8 @@ define([
 
             if (this.customView) {
                 data.customTemplate = this.customView;
-                data.customLineCallback = function vArray_callCustomLine(index) {
+                data.customLineCallback = function vArray_callCustomLine(index)
+                {
                     return attributeTemplate.customArrayRowView(index, scope.model, scope);
                 };
             }
@@ -124,9 +132,11 @@ define([
             return this;
         },
 
-        getNbLines: function () {
+        getNbLines: function ()
+        {
             var nbLigne = this.nbLines || 0;
-            this.model.get("content").each(function vArray_getCurrentLine(currentAttr) {
+            this.model.get("content").each(function vArray_getCurrentLine(currentAttr)
+            {
                 if (currentAttr.get("attributeValue") && nbLigne < _.size(currentAttr.get("attributeValue"))) {
                     nbLigne = _.size(currentAttr.get("attributeValue"));
                 }
@@ -134,7 +144,8 @@ define([
             return nbLigne;
         },
 
-        updateLabel: function () {
+        updateLabel: function ()
+        {
             this.$el.find(".dcpArray__label").text(this.model.get("label"));
         },
 
@@ -143,7 +154,8 @@ define([
          * @param event
          * @param options
          */
-        updateValue: function vArray_UpdateValue(event, options) {
+        updateValue: function vArray_UpdateValue(event, options)
+        {
             var attributeModel = this.model.get("content").get(options.id);
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
@@ -151,30 +163,37 @@ define([
             attributeModel.setValue(options.value, options.index);
         },
 
-        refresh: function vArray_Refresh() {
+        refresh: function vArray_Refresh()
+        {
             this.nbLines = this.$el.dcpArray("option", "nbLines");
             this.$el.dcpArray("destroy");
             this.render();
         },
 
-        removeLine: function (event, options) {
-            this.model.get("content").each(function vArray_removeLine(currentContent) {
+        removeLine: function (event, options)
+        {
+            this.model.get("content").each(function vArray_removeLine(currentContent)
+            {
                 currentContent.removeIndexValue(options.line);
             });
             this.model.trigger("array", "removeLine", this.model, options.line);
         },
 
-        removeWidgetLine: function vArray_RemoveWidgetLine(options) {
+        removeWidgetLine: function vArray_RemoveWidgetLine(options)
+        {
             this.$el.dcpArray("removeLine", options.index, {silent: true});
         },
 
-        addWidgetLine: function vArray_addWidgetLine(options) {
+        addWidgetLine: function vArray_addWidgetLine(options)
+        {
             this.$el.dcpArray("addLine", options.index);
         },
 
-        addLine: function vArray_AddLine(event, options) {
+        addLine: function vArray_AddLine(event, options)
+        {
             var currentArrayView = this, customView = null;
-            this.model.get("content").each(function vArray_addLineGetContent(currentContent) {
+            this.model.get("content").each(function vArray_addLineGetContent(currentContent)
+            {
                 var currentViewColumn;
                 if (options.needAddValue || options.copyValue) {
                     currentContent.createIndexedValue(options.line, options.copyValue);
@@ -184,7 +203,8 @@ define([
                     customView = null;
                     if (currentContent.getOption("template")) {
                         customView = attributeTemplate.customView(currentContent,
-                            function vArray_customViewInit() {
+                            function vArray_customViewInit()
+                            {
                                 currentViewColumn.widgetInit(
                                     $(this),
                                     currentViewColumn.getData(options.line));
@@ -198,18 +218,22 @@ define([
             this.model.trigger("array", "addLine", this.model, options.line);
         },
 
-        moveLine: function vArray_moveLine(event, options) {
-            this.model.get("content").each(function vArray_getMoveLineContent(currentContent) {
+        moveLine: function vArray_moveLine(event, options)
+        {
+            this.model.get("content").each(function vArray_getMoveLineContent(currentContent)
+            {
                 currentContent.moveIndexValue(options.fromLine, options.toLine);
             });
             this.model.trigger("array", "moveLine", this.model, options);
         },
-        getAttributeModel: function vArray_getAttributeModel(attributeId) {
+        getAttributeModel: function vArray_getAttributeModel(attributeId)
+        {
             var docModel = this.model.getDocumentModel();
             return docModel.get('attributes').get(attributeId);
         },
 
-        setError: function vArray_setError(event, message) {
+        setError: function vArray_setError(event, message)
+        {
             var parentId = this.model.get('parent');
 
             if (message) {
@@ -226,21 +250,25 @@ define([
                 }
             }
         },
-        setArrayError: function vArray_setArrayError(event, message) {
+        setArrayError: function vArray_setArrayError(event, message)
+        {
             this.setError(event, message);
             // global error on array itself
             this.$el.dcpArray("setError", message);
         },
 
-        hide: function vArray_hide() {
+        hide: function vArray_hide()
+        {
             this.$el.hide();
         },
 
-        show: function vArray_show() {
+        show: function vArray_show()
+        {
             this.$el.show();
         },
 
-        _identifyView: function vArray_identifyView(event) {
+        _identifyView: function vArray_identifyView(event)
+        {
             event.haveView = true;
             //Add the pointer to the current jquery element to a list passed by the event
             event.elements = event.elements.add(this.$el);

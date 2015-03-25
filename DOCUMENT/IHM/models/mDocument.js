@@ -760,10 +760,11 @@ define([
                 } else {
                     return Backbone.Model.prototype.fetch.call(this, attributes, options);
                 }
+            } else {
+                //cancelled : re-set initial properties
+                this.set(_.pick(currentProperties, "initid", "viewId", "renderMode"));
+                return false;
             }
-            //cancelled : re-set initial properties
-            this.set(_.pick(currentProperties, "initid", "viewId", "renderMode"));
-            return false;
         },
 
         save: function mDocumentSave(attributes, options)

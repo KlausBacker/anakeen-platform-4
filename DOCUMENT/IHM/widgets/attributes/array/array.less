@@ -31,18 +31,22 @@
   visibility: visible;
 }
 
-.dcpAttribute--needed.dcpArray__head__cell:after {
-  content: "*";
-  padding-left: 0.1em;
+.dcpDocument--edit {
+  .dcpAttribute--needed.dcpArray__head__cell:after {
+    content: "*";
+    padding-left: 0.1em;
+  }
 }
+
 .dcpArray__button {
   display:inline-block;
 }
+
 .dcpArray__dragLine {
   background-color: fade(@brand-primary, 90%);
   cursor: move;
   margin: 0;
-  opacity: 90%;
+  opacity: 0.9;
 }
 // More priority than bootstrap
 .table-hover.dcpArray__dragLine > tbody > tr:hover

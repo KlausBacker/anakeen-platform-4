@@ -21,14 +21,17 @@ define([
             return new ModelAttributeData(attributes, options);
         },
 
-        initialize : function initialize(values, options) {
+        initialize : function CollectionAttributes_initialize(values, options) {
             this.documentModel = options.documentModel;
             this.renderOptions = options.renderOptions;
             this.renderMode = options.renderMode;
         },
 
-        destroy : function () {
-            this.invoke("trigger", "destroy");
+        destroy : function CollectionAttributes_destroy() {
+            var model;
+            while (model = this.first()) { // jshint ignore:line
+                model.destroy();
+            }
             delete this.documentModel;
             delete this.renderOptions;
             delete this.renderMode;

@@ -1,3 +1,4 @@
+/*global define*/
 define([
     'underscore',
     'backbone'
@@ -17,7 +18,10 @@ define([
         },
 
         destroy : function () {
-            this.invoke("trigger", "destroy");
+            var model;
+            while (model = this.first()) { // jshint ignore:line
+                model.destroy();
+            }
         },
 
         propageEvent : function (eventName) {

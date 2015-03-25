@@ -250,17 +250,9 @@ define([
             this.element.on("click" + this.eventNamespace, ".dcpArray__label", function ()
             {
                 var $contentElement = currentWidget.element.find(".dcpArray__content");
-                if ($contentElement.hasClass("dcpArray__content--open")) {
-                    // Hide array panel
-                    currentWidget.element.find(".dcp__array__caret").addClass("fa-caret-right").removeClass("fa-caret-down");
-                    $contentElement.removeClass("dcpArray__content--open").addClass("dcpArray__content--close");
-                    $contentElement.slideUp();
-                } else {
-                    // Show array panel
-                    currentWidget.element.find(".dcp__array__caret").removeClass("fa-caret-right").addClass("fa-caret-down");
-                    $contentElement.addClass("dcpArray__content--open").removeClass("dcpArray__content--close");
-                    $contentElement.slideDown();
-                }
+                currentWidget.element.find(".dcp__array__caret").toggleClass("fa-caret-right fa-caret-down");
+                $contentElement.toggleClass("dcpArray__content--open dcpArray__content--close");
+                $contentElement.slideToggle(200);
             });
         },
 
