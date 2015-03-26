@@ -43,7 +43,9 @@ class RenderDefault implements IRenderConfig
             "traceError" => "DOCUMENT/IHM/dynacaseReport.js?ws=" . $version,
             "src" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
-            "kendo" => "lib/KendoUI/2014.3/js/kendo-builded.min.js?ws=" . $version,
+            "kendo" => $modeDebug === "FALSE" ?
+                "lib/KendoUI/2014.3/js/kendo-ddui-builded.min.js?ws=" . $version :
+                "lib/KendoUI/2014.3/js/kendo-ddui-builded.js?ws=" . $version,
             "document" => $modeDebug === "FALSE" ?
                 "DOCUMENT/IHM/main-built.js?ws=" . $version : "DOCUMENT/IHM/main.js?ws=" . $version
         );
