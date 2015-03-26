@@ -605,8 +605,9 @@ define([
             if (this.model.hasAttributesChanged()) {
                 confirmWindow = $('body').dcpConfirm({
                     title: i18n.___("Confirm close document", "ddui"),
-                    width: "480px",
+                    width: "510px",
                     height: "150px",
+                    maxWidth : $(window).width(),
                     messages: {
                         okMessage: i18n.___("Abord modification", "ddui"),
                         cancelMessage: i18n.___("Stay on the form", "ddui"),

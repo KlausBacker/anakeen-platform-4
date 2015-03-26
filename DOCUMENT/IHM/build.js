@@ -15,6 +15,7 @@
         "backbone": "empty:",
         "mustache": "empty:",
         "bootstrap": "empty:",
+        "tooltip": "empty:",
         "kendo": "empty:",
         "kendo-culture-fr": "empty:",
         "ckeditor": "empty:",
