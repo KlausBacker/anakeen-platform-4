@@ -4,7 +4,7 @@ define([
     'underscore',
     'mustache',
     'dcpDocument/widgets/widget',
-    'bootstrap'
+    'tooltip'
 ], function ($, _, Mustache)
 {
     'use strict';

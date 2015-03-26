@@ -24,6 +24,7 @@
             "backbone": "../lib/backbone/backbone",
             "mustache": "../lib/mustache.js/mustache",
             "bootstrap": "../lib/bootstrap/3/js/bootstrap",
+            "tooltip": "../lib/bootstrap/3/js/tooltip",
             "kendo": "../lib/KendoUI/2014.3/js/",
             "kendo/kendo.core": "../index.php?jsFile=2014.3/js/kendo.core&app=DOCUMENT&action=WRAP_KENDO",
             "kendo-culture-fr": "../lib/KendoUI/2014.3/js/cultures/kendo.culture.fr-FR",
