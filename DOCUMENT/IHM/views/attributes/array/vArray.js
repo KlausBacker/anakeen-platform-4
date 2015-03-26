@@ -13,7 +13,7 @@ define([
     'use strict';
 
     return Backbone.View.extend({
-        className: "dcpArray",
+        className: "row dcpArray",
         displayLabel: true,
         customView: false,
         customRowView: false,
