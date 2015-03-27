@@ -50,6 +50,7 @@ define([
         cleanAndRender: function vDocumentCleanAndRender()
         {
             this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
+            this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, '');
             this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
                 if (this.historyWidget) {
@@ -117,6 +118,7 @@ define([
                 }
             }
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
+            this.$el.addClass("dcpDocument dcpFamily--" + this.model.get("properties").get("family").name);
             this.trigger("loading", 10);
             //add menu
             try {
