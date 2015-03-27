@@ -13,6 +13,11 @@ class ArrayRenderOptions extends CommonRenderOptions
     const type = "array";
 
     const rowCountThresholdOption = "rowCountThreshold";
+    const rowAddDisableOption = "rowAddDisable";
+    const rowDelDisableOption = "rowDelDisable";
+    const rowMoveDisableOption = "rowMoveDisable";
+    const rowMinLimitOption = "rowMinLimit";
+    const rowMaxLimitOption = "rowMaxLimit";
     /**
      * Display row count if row number is greater than $since
      * @param int $since : limit to see row numbers (if zero always see count) if (-1) never see count
@@ -22,4 +27,60 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowCountThresholdOption, (int)$since);
     }
+
+    /**
+     * Disable or enable the access to add new row on a table
+     * It is enable by default
+     * @param bool $disable : true disable, false enable
+     * @return $this
+     */
+    public function disableRowAdd($disable)
+    {
+        return $this->setOption(self::rowAddDisableOption, (bool)$disable);
+    }
+    /**
+     * Disable or enable the access to remove row on a table
+     * It is enable by default
+     * @param bool $disable : true disable, false enable
+     * @return $this
+     */
+    public function disableRowDel($disable)
+    {
+        return $this->setOption(self::rowDelDisableOption, (bool)$disable);
+    }
+    /**
+     * Disable or enable the access to move row on a table
+     * It is enable by default
+     * @param bool $disable : true disable, false enable
+     * @return $this
+     */
+    public function disableRowMove($disable)
+    {
+        return $this->setOption(self::rowMoveDisableOption, (bool)$disable);
+    }
+    /**
+     * Set min row to the table
+     * If array has not the min, empty rows are added since reach limit
+     * The remove button is disabled when limit is reach
+     * No limit by default
+     * @param int $limit : min limit, negative (like -1) means no limits
+     * @return $this
+     */
+    public function setRowMinLimit($limit)
+    {
+        return $this->setOption(self::rowMinLimitOption, (int)$limit);
+    }
+
+    /**
+     * Set max row to the table
+     * The add button is disabled when limit is reach
+     * No limit by default
+     * @param int $limit : min limit, negative (like -1) means no limits
+     * @return $this
+     */
+    public function setRowMaxLimit($limit)
+    {
+        return $this->setOption(self::rowMaxLimitOption, (int)$limit);
+    }
+
 }

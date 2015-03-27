@@ -13,7 +13,12 @@ define([
             tools: true,
             nbLines: 0,
             renderOptions: {
-                rowCountThreshold: -1
+                rowCountThreshold: -1,
+                rowAddDisable: false,
+                rowDelDisable: false,
+                rowMoveDisable: false,
+                rowMinLimit: -1,
+                rowMaxLimit: -1
             },
             displayLabel: true,
             customTemplate: false,
@@ -45,6 +50,12 @@ define([
         _create: function dcpArray_create()
         {
             this.options.tools = this.options.mode === "write" && this.options.visibility !== "U";
+            if (this.options.renderOptions.rowAddDisable === true &&
+                this.options.renderOptions.rowDelDisable === true &&
+                this.options.renderOptions.rowMoveDisable === true) {
+                this.options.tools = false;
+            }
+
             this._initDom();
             this._bindEvents();
         },
@@ -108,13 +119,20 @@ define([
                         if (labelPosition === "left") {
                             this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
                             this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
-                             this.element.addClass("dcpAttribute__labelPosition--left");
+                            this.element.addClass("dcpAttribute__labelPosition--left");
                         }
                     }
                 }
 
+                if (this.options.renderOptions.rowAddDisable === true) {
+                    this.element.find(".dcpArray__button--add, .dcpArray__button--copy").hide();
+                }
+
                 this.addAllLines(this.options.nbLines);
-                if (this.options.mode === "write") {
+
+
+                if (this.options.mode === "write" && this.options.renderOptions.rowMoveDisable !== true) {
+                    //Initiate drag drop events
                     this.element.find('tbody').kendoDraggable({
                         axis: "y",
                         container: scope.element.find('tbody'),
@@ -305,6 +323,13 @@ define([
             } else {
                 $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: index}, this.options)));
 
+                if (this.options.renderOptions.rowDelDisable === true) {
+                    $content.find(".dcpArray__content__toolCell__delete").hide();
+                }
+                if (this.options.renderOptions.rowMoveDisable === true) {
+                    $content.find(".dcpArray__content__toolCell__dragDrop").hide();
+                }
+
             }
             return $content;
         },
@@ -316,6 +341,7 @@ define([
             }
             var $content = this._getLineContent(lineNumber);
             var selectedLine = this.getSelectedLineElement();
+
             if (selectedLine.length === 1) {
                 $content.insertBefore(selectedLine);
             } else {
