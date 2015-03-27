@@ -24,7 +24,8 @@ define([
             customTemplate: false,
             labels: {
                 closeErrorMessage: "Close message",
-                limitMaxMessage: "Row count limit to {{limit}}"
+                limitMaxMessage: "Row count limit to {{limit}}",
+                limitMinMessage: "Min row limit is {{limit}}"
             }
         },
 
@@ -267,7 +268,7 @@ define([
                 }
 
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function deleteLineEvent()
+            this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete button", function deleteLineEvent()
             {
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
@@ -315,6 +316,15 @@ define([
             for (i = 0; i < lineNumber; i += 1) {
                 this.addLine(i);
             }
+
+             if (this.options.renderOptions.rowMinLimit >= 0) {
+                 if (this.options.nbLines < this.options.renderOptions.rowMinLimit) {
+                     for (i = this.options.nbLines; i < this.options.renderOptions.rowMinLimit; i += 1) {
+
+                         this.addLine(i, {needAddValue: true});
+                     }
+                 }
+             }
             this._trigger("linesGenerated");
         },
 
@@ -385,6 +395,32 @@ define([
                 } else {
                     this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", false);
                     this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function ()
+                    {
+                        // reset tooltip
+                        $(this).tooltip("hide").data("bs.tooltip", null);
+                        $(this).attr("title", $(this).data("originalTitle"));
+                    });
+                }
+            }
+
+            if (this.options.renderOptions.rowMinLimit >= 0) {
+                if (this.options.nbLines <= this.options.renderOptions.rowMinLimit) {
+                    this.element.find(".dcpArray__content__toolCell__delete button").prop("disabled", true);
+                    this.element.find(".dcpArray__content__toolCell__delete").each(function ()
+                    {
+                        if (!$(this).data("originalTitle")) {
+                            $(this).data("originalTitle", $(this).attr("title"));
+                        }
+                        // reset tooltip
+                        $(this).tooltip("hide").data("bs.tooltip", null);
+
+                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMinMessage,
+                            {limit: currentWidget.options.renderOptions.rowMinLimit}
+                        ));
+                    });
+                } else {
+                    this.element.find(".dcpArray__content__toolCell__delete button").prop("disabled", false);
+                    this.element.find(".dcpArray__content__toolCell__delete").each(function ()
                     {
                         // reset tooltip
                         $(this).tooltip("hide").data("bs.tooltip", null);
