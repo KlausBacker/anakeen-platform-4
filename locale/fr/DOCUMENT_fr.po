@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-20 16:40+0100\n"
-"PO-Revision-Date: 2015-03-20 16:43+0100\n"
+"POT-Creation-Date: 2015-03-27 15:01+0100\n"
+"PO-Revision-Date: 2015-03-27 15:01+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -217,6 +217,10 @@ msgid "Get some template"
 msgstr "Action de template"
 
 msgctxt "UiMenu"
+msgid "Goto next activity"
+msgstr "Passer à l'étape suivante"
+
+msgctxt "UiMenu"
 msgid "Historic"
 msgstr "Historique"
 
@@ -279,7 +283,7 @@ msgstr "Mettre le document à la poubelle"
 
 msgctxt "UiMenu"
 msgid "Record document to server"
-msgstr "Enregistrer le document"
+msgstr "Enregistrer le document et laisser le formulaire ouvert"
 
 msgctxt "UiMenu"
 msgid "Record document without constraint check"
@@ -287,7 +291,7 @@ msgstr "Enregistrer le document sans tenir compte des contraintes"
 
 msgctxt "UiMenu"
 msgid "Record to server and view document"
-msgstr "Enregistrer le document et quitter le formulaire"
+msgstr "Enregistrer et fermer le formulaire"
 
 msgctxt "ddui-file"
 msgid "Recording"
@@ -371,11 +375,11 @@ msgstr "Action vue de document"
 
 msgctxt "UiMenu"
 msgid "View transition graph"
-msgstr "Voir le graphe de transition"
+msgstr "Graphique étape du processus"
 
 msgctxt "UiMenu"
 msgid "View workflow graph"
-msgstr "Voir le graphe du cycle"
+msgstr "Graphique complet du processus"
 
 msgctxt "ddui"
 msgid "View {{{displayValue}}}"
@@ -434,6 +438,9 @@ msgstr "Lecture seule"
 
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"
+
+msgid "ddui:debug mode"
+msgstr "Mode debug"
 
 msgctxt "ddui-file"
 msgid "kB"

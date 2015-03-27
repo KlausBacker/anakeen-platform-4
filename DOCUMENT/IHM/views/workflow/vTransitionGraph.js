@@ -64,10 +64,12 @@ define([
 
             });
 
-            this.$el.find(".dcpTransitionGraph--to .dcpTransitionGraph_state").tooltip({
+            this.$el.find(".dcpTransitionGraph_state ").tooltip({
                 placement: "top",
                 html: true
             });
+
+
 
             if (!this.transitionGraphWindow) {
                 this.transitionGraphWindow = this.$el.dcpDialog({
@@ -119,12 +121,12 @@ define([
             var currentState = this.model.get("state");
             var currentView = this;
 
-            this.$el.find(".dcpTransitionGraph--from").append(Mustache.render(tpl, currentState));
+            this.$el.find(".dcpTransitionGraph--from").append(Mustache.render(tpl, _.extend(currentState, {title:i18n.___("Current workflow activity","ddui")})));
 
             _.each(states, function (item)
             {
                 if (item.transition) {
-                    item.title = Mustache.render(i18n.___("Apply transition {{label}}", "ddui"), {label: item.transition.label});
+                    item.title = Mustache.render(i18n.___("Next step. Apply transition {{label}}", "ddui"), {label: item.transition.label});
                     currentView.$el.find(".dcpTransitionGraph--to").append(Mustache.render(tpl, item));
                 }
             });

@@ -14,7 +14,7 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
     protected $confirmationText = null;
     protected $confirmationOptions = null;
     protected $targetOptions = null;
-    public function __construct($identifier, $label='', $url = '')
+    public function __construct($identifier, $label = '', $url = '')
     {
         parent::__construct($identifier, $label);
         $this->url = $url;
@@ -96,4 +96,5 @@ class MenuTargetOptions
     public $title = null;
     public $windowWidth = "300px";
     public $windowHeight = "200px";
+    public $modal = false;
 }

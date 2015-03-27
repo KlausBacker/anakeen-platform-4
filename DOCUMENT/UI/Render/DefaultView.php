@@ -158,13 +158,15 @@ class DefaultView extends RenderDefault
         $menu->getElement("advanced")->appendElement($securitySubMenu);
         if ($document->wid > 0) {
             if ($document->locked != - 1) {
-                $workflowMenu = new DynamicMenu("workflow", _($document->getStateActivity($document->getState())));
+                $workflowMenu = new DynamicMenu("workflow");
+                $workflowMenu->setHtmlLabel(sprintf('<i style="color:%s" class="menu--workflow-color fa fa-square" /> %s', $document->getStateColor("transparent") , htmlspecialchars(_($document->getStateActivity($document->getState())))));
                 $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
                 {
                     $this->getWorkflowMenu($document, $menu);
                 });
-                $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+                $workflowMenu->setBeforeContent(sprintf('<div class="fa fa-sitemap" />', $document->getStateColor("transparent")));
                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
+                $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu") , "left");
                 $menu->appendElement($workflowMenu);
             } else {
                 $workflowMenu = new SeparatorMenu("workflow", _($document->getState()));
@@ -266,11 +268,13 @@ class DefaultView extends RenderDefault
             $itemMenu = new ItemMenu('workflowDraw', ___("View transition graph", "UiMenu"));
             $itemMenu->setUrl(sprintf("#event/document:transitionGraph"));
             $menu->appendElement($itemMenu);
-
+            
             $itemMenu = new ItemMenu('workflowGraph', ___("View workflow graph", "UiMenu"));
             $targetOption = new MenuTargetOptions();
+            $targetOption->title = $wdoc->getTitle();
             $targetOption->windowHeight = "80%";
             $targetOption->windowWidth = "480px";
+            $targetOption->modal = true;
             $itemMenu->setTarget("_dialog", $targetOption);
             $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&type=justactivity&format=png&orient=TB&size=11.88%%2C12.73&tool=dot&id=%d", $wdoc->id));
             $menu->appendElement($itemMenu);
