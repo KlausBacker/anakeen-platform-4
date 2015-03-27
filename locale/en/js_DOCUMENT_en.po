@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DDUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-20 16:40+0100\n"
+"POT-Creation-Date: 2015-03-27 15:01+0100\n"
 "PO-Revision-Date: 2015-03-03 12:53+0100\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: English Team\n"
@@ -26,10 +26,6 @@ msgstr ""
 
 msgctxt "propertyUi"
 msgid "Activity"
-msgstr ""
-
-msgctxt "ddui"
-msgid "Apply transition {{label}}"
 msgstr ""
 
 msgctxt "historyDiffUi"
@@ -58,6 +54,10 @@ msgstr ""
 
 msgctxt "propertyUi"
 msgid "Creation date"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Current workflow activity"
 msgstr ""
 
 msgctxt "historyUi"
@@ -150,6 +150,10 @@ msgstr ""
 
 msgctxt "historyUi"
 msgid "Message"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Next step. Apply transition {{label}}"
 msgstr ""
 
 msgctxt "propertyUi"

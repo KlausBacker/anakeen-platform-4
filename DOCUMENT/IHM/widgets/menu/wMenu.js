@@ -120,11 +120,11 @@ define([
 
                                     bodyDiv = $('<div/>');
                                     $('body').append(bodyDiv);
-
                                     dcpWindow = bodyDiv.dcpWindow({
                                         title :   Mustache.render(targetOptions.title, window.dcp.documentData),
                                         width :   targetOptions.windowWidth,
                                         height :  targetOptions.windowHeight,
+                                        modal : targetOptions.modal,
                                         content : href,
                                         iframe :  true
                                     });
@@ -133,13 +133,7 @@ define([
                                     dcpWindow.data('dcpWindow').kendoWindow().center();
                                     dcpWindow.data('dcpWindow').open();
 
-                                    _.defer(function () {
-                                        dcpWindow.data('dcpWindow').currentWidget.find('iframe').on("load", function () {
-                                            dcpWindow.data('dcpWindow').kendoWindow().setOptions({
-                                                title : $(this).contents().find("title").html()
-                                            });
-                                        });
-                                    });
+
                                 } else {
                                     window.open(href, target);
                                 }

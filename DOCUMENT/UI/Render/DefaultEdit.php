@@ -28,17 +28,17 @@ class DefaultEdit extends RenderDefault
         $menu = new BarMenu();
         $user = getCurrentUser();
         
-        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#event/document:save");
+        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#event/document:saveAndClose");
         $item->setBeforeContent('<div class="fa fa-save" />');
-        $item->setTooltipLabel(___("Record document to server", "UiMenu"));
+        $item->setTooltipLabel(___("Record to server and view document", "UiMenu"));
         if (empty($document->id)) {
             $item->setVisibility($item::VisibilityHidden);
         }
         $menu->appendElement($item);
         
-        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#event/document:saveAndClose");
+        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#event/document:save");
         $item->setBeforeContent('<div class="fa fa-save" />');
-        $item->setTooltipLabel(___("Record to server and view document", "UiMenu"));
+        $item->setTooltipLabel(___("Record document to server", "UiMenu"));
         if (empty($document->id)) {
             $item->setVisibility($item::VisibilityHidden);
         }
@@ -54,14 +54,15 @@ class DefaultEdit extends RenderDefault
         }
         
         if (empty($document->id)) {
-            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#event/document:create");
-            $item->setBeforeContent('<div class="fa fa-save" />');
-            $item->setTooltipLabel(___("Create new document to server", "UiMenu"));
-            $menu->appendElement($item);
             
             $item = new ItemMenu("createAndClose", ___("Create and close", "UiMenu") , "#event/document:createAndClose");
             $item->setBeforeContent('<div class="fa fa-save" />');
             $item->setTooltipLabel(___("Create to server and view document", "UiMenu"));
+            $menu->appendElement($item);
+            
+            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#event/document:create");
+            $item->setBeforeContent('<div class="fa fa-save" />');
+            $item->setTooltipLabel(___("Create new document to server", "UiMenu"));
             $menu->appendElement($item);
             
             if ($user->id === "1") {
