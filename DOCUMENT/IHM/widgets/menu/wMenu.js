@@ -221,7 +221,6 @@ define([
                     }
                     $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type), currentMenu));
                 }
-                console.log("Menu",$currentMenu.html() );
                 if (currentMenu.tooltipLabel) {
                     currentWidget._tooltips.push($currentMenu.tooltip(
                         {

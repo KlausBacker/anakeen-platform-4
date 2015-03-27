@@ -23,7 +23,8 @@ define([
             displayLabel: true,
             customTemplate: false,
             labels: {
-                closeErrorMessage: "Close message"
+                closeErrorMessage: "Close message",
+                limitMaxMessage: "Row count limit to {{limit}}"
             }
         },
 
@@ -246,19 +247,24 @@ define([
             this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent()
             {
                 var selectedLine = currentWidget.selectedLineIndex();
-                if (selectedLine === null) {
-                    currentWidget.options.nbLines += 1;
-                    currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue: true});
-                } else {
-                    currentWidget.options.nbLines += 1;
-                    currentWidget.addLine(selectedLine, {needAddValue: true});
+
+                if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
+                    if (selectedLine === null) {
+                        currentWidget.options.nbLines += 1;
+                        currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue: true});
+                    } else {
+                        currentWidget.options.nbLines += 1;
+                        currentWidget.addLine(selectedLine, {needAddValue: true});
+                    }
                 }
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent()
             {
                 var selectedLine = currentWidget.selectedLineIndex();
-                currentWidget.options.nbLines += 1;
-                currentWidget.copyLine(selectedLine, {needAddValue: true});
+                if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
+                    currentWidget.options.nbLines += 1;
+                    currentWidget.copyLine(selectedLine, {needAddValue: true});
+                }
 
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete", function deleteLineEvent()
@@ -339,6 +345,7 @@ define([
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
+
             var $content = this._getLineContent(lineNumber);
             var selectedLine = this.getSelectedLineElement();
 
@@ -349,26 +356,65 @@ define([
             }
             this._indexLine();
             this.redrawLabel();
+            this._activateRowLimits();
+
             return $content;
+        },
+
+        /**
+         * Disable/Enable Add/copy button
+         */
+        _activateRowLimits: function wArray_activateRowLimits()
+        {
+            var currentWidget = this;
+            if (this.options.renderOptions.rowMaxLimit >= 0) {
+                if (this.options.nbLines >= this.options.renderOptions.rowMaxLimit) {
+                    this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", true);
+                    this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function ()
+                    {
+                        if (!$(this).data("originalTitle")) {
+                            $(this).data("originalTitle", $(this).attr("title"));
+                        }
+                        // reset tooltip
+                        $(this).tooltip("hide").data("bs.tooltip", null);
+
+                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMaxMessage,
+                            {limit: currentWidget.options.renderOptions.rowMaxLimit}
+                        ));
+                    });
+                } else {
+                    this.element.find(".dcpArray__add, .dcpArray__copy").prop("disabled", false);
+                    this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function ()
+                    {
+                        // reset tooltip
+                        $(this).tooltip("hide").data("bs.tooltip", null);
+                        $(this).attr("title", $(this).data("originalTitle"));
+                    });
+                }
+            }
         },
 
         addLine: function dcpArrayaddLine(lineNumber, options)
         {
             var $content = this._addNewLine(lineNumber);
-            options = _.defaults(options || {}, {"silent": false, "needAddValue": false});
-            if (options.silent !== true) {
-                this._trigger("lineAdded", {}, {
-                    line: lineNumber,
-                    element: $content,
-                    needAddValue: options.needAddValue
-                });
+            if ($content) {
+                options = _.defaults(options || {}, {"silent": false, "needAddValue": false});
+                if (options.silent !== true) {
+                    this._trigger("lineAdded", {}, {
+                        line: lineNumber,
+                        element: $content,
+                        needAddValue: options.needAddValue
+                    });
+                }
             }
         },
 
         copyLine: function dcpArraycopyLine(lineNumber)
         {
             var $content = this._addNewLine(lineNumber);
-            this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
+            if ($content) {
+                this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
+            }
         },
 
         removeLine: function dcpArrayremoveLine(line, options)
@@ -381,6 +427,7 @@ define([
             }
 
             this.redrawLabel();
+            this._activateRowLimits();
         },
 
         _destroy: function dcpArray_destroy()
