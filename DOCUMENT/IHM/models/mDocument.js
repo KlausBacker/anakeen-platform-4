@@ -493,7 +493,8 @@ define([
             if (!success) {
                 return {
                     title: i18n.___("Unable to save", "ddui"),
-                    message: errorMessage.join(', ' + "\n")
+                    message: errorMessage.join(', ' + "\n"),
+                    errorCode : "attributeNeeded"
                 };
             }
             return undefined;
