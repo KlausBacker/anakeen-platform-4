@@ -290,7 +290,7 @@ define([
                     currentModel = currentWidget._model.getProperties();
                 _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                 {
-                    if (currentConstraint.attributeCheck(currentModel, currentAttribute)) {
+                    if (currentConstraint.attributeCheck.apply(currentWidget.element, [currentModel, currentAttribute])) {
                         currentConstraint.constraintCheck.apply(currentWidget.element, [
                                 response,
                                 currentModel,
@@ -600,7 +600,7 @@ define([
                         _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute)
                         {
                             var objectAttribute = currentWidget.getAttribute(currentAttribute.id);
-                            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck(currentAttribute)) {
+                            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck.apply(currentWidget.element, [objectAttribute])) {
                                 try {
                                     // add element as function context
                                     newEvent.eventCallback.call(currentWidget.element,
@@ -641,7 +641,7 @@ define([
                     if (!_.isFunction(currentEvent.attributeCheck)) {
                         return true;
                     }
-                    return currentEvent.attributeCheck(attributeInternalElement);
+                    return currentEvent.attributeCheck.apply(currentWidget.element, [attributeInternalElement]);
                 }
                 return false;
             }).each(function documentController_applyCallBack(currentEvent)
