@@ -11,9 +11,13 @@ define([
         tagName: "li",
 
         className: "dcpTab__label dcpLabel",
+        displayLabel: true,
 
-        initialize: function vTabLabel_initialize()
+        initialize: function vTabLabel_initialize(options)
         {
+            if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
+                this.displayLabel = false;
+            }
             this.listenTo(this.model, 'change:label', this.updateLabel);
             this.listenTo(this.model.get("content"), 'add', this.render);
             this.listenTo(this.model.get("content"), 'remove', this.render);
@@ -30,16 +34,20 @@ define([
             //console.time("render tab " + this.model.id);
             var label = this.model.get("label");
             this.$el.empty();
-            this.$el.text(label);
+            if (this.displayLabel !== false) {
+                this.$el.text(label);
+                this.$el.tooltip({
+                    placement: "top",
+                    container: "body",
+                    title: function vDocumentTooltipTitle()
+                    {
+                        return label; // set the element text as content of the tooltip
+                    }
+                });
+            }
+
             this.$el.attr("data-attrid", this.model.id);
-            this.$el.tooltip({
-                placement: "top",
-                container : "body",
-                title: function vDocumentTooltipTitle()
-                {
-                    return label; // set the element text as content of the tooltip
-                }
-            });
+
             //console.timeEnd("render tab " + this.model.id);
             return this;
         },
