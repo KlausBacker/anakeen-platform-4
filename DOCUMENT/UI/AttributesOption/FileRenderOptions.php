@@ -37,7 +37,7 @@ class FileRenderOptions extends CommonRenderOptions
     public function setPlaceHolder($text)
     {
         return $this->setLabels(array(
-            "placeholder" => $text
+            "placeHolder" => $text
         ));
     }
 }
