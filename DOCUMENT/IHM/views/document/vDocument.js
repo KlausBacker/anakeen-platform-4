@@ -305,11 +305,13 @@ define([
         renderCss: function vDocumentRenderCss()
         {
             // add custom css style
-            var $target = $("head link:last"),
+            var $head = $("head"),
                 cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
                 'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
                 customCss = this.model.get("customCSS");
             //Remove old CSS
+
+
             _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink)
             {
                 var findCss = function (currentCss)
@@ -325,7 +327,7 @@ define([
             {
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
                 if ($existsLink.length === 0) {
-                    $target.after(cssLinkTemplate(cssItem));
+                    $head.append(cssLinkTemplate(cssItem));
                 }
             });
         },
