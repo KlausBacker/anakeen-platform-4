@@ -211,6 +211,10 @@ class RenderDefault implements IRenderConfig
         $opt->commonOption()->setLabels(array(
             "closeErrorMessage" => ___("Close message", "ddui")
         ));
+        $opt->arrayAttribute()->setLabels(array(
+            "limitMaxMessage" => ___("Row count limit to {{limit}}", "ddui"),
+            "limitMinMessage" => ___("Min row limit is {{limit}}", "ddui")
+        ));
         $opt->image()->setLabels(array(
             "dropFileHere" => ___("Drop image here", "ddui-image") ,
             "placeHolder" => ___("Click to upload image", "ddui-image") ,
