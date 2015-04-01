@@ -729,38 +729,42 @@ define([
 
         /**
          * Fetch a new document
-         * @param options object {"initid" : int, "revision" : int, "viewId" : string}
+         * @param values object {"initid" : int, "revision" : int, "viewId" : string}
+         * @param options object {"success": fct, "error", fct}
          */
-        fetchDocument: function documentControllerFetchDocument(options)
+        fetchDocument: function documentControllerFetchDocument(values, options)
         {
             var currentWidget = this;
-            options = _.isUndefined(options) ? {} : options;
+            options = _.isUndefined(values) ? {} : values;
             if (!_.isObject(options)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
-            _.each(_.pick(options, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
             {
                 currentWidget.options[key] = value;
             });
-            this.reinitDocument();
+            this._model.set(this._getModelValue()).fetch(options);
         },
 
         /**
          * Save the current document
          * Reload the interface in the same mode
+         * @param options object {"success": fct, "error", fct}
+         *
          */
-        saveDocument: function documentControllerSave()
+        saveDocument: function documentControllerSave(options)
         {
-            this._model.save();
+            this._model.save(null, options);
         },
 
         /**
          * Delete the current document
          * Reload the interface in the same mode
+         * @param options object {"success": fct, "error", fct}
          */
-        deleteDocument: function documentControllerDelete()
+        deleteDocument: function documentControllerDelete(options)
         {
-            var currentWidget = this, destroy = this._model.destroy();
+            var currentWidget = this, destroy = this._model.destroy(options);
             destroy.done(function documentController_destroyer()
             {
                 currentWidget._initModel(currentWidget._getModelValue());
