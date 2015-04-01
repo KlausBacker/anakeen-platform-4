@@ -291,11 +291,11 @@ define([
                 _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                 {
                     if (currentConstraint.attributeCheck(currentModel, currentAttribute)) {
-                        currentConstraint.constraintCheck(
-                            response,
-                            currentModel,
-                            currentAttribute,
-                            currentAttribute.getValue("all")
+                        currentConstraint.constraintCheck.apply(currentWidget.element, [
+                                response,
+                                currentModel,
+                                currentAttribute,
+                                currentAttribute.getValue("all")]
                         );
                     }
                 });
@@ -952,7 +952,7 @@ define([
                     throw new Error("When a constraint is initiated with a single object, this object needs to have the name property ".JSON.stringify(options));
                 }
             } else {
-                currentConstraint = _.defaults(options, {
+                _.defaults(options, {
                     "documentCheck": function documentController_defaultDocumentCheck()
                     {
                         return true;
@@ -967,6 +967,7 @@ define([
                     "once": false
                 });
             }
+            currentConstraint = options;
             if (!_.isFunction(currentConstraint.constraintCheck)) {
                 throw new Error("An event need a callback");
             }
