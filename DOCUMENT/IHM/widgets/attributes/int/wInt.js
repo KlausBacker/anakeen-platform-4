@@ -1,4 +1,4 @@
-/*global define, _super, kendoNumericTextBox*/
+/*global define*/
 define([
     'underscore',
     'mustache',
@@ -54,6 +54,12 @@ define([
                 } else {
                     this._activateNumber(this.kendoWidget);
                 }
+            }
+
+            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+                console.log("button",this.element,this.element.find(".k-numeric-wrap").length  );
+                this.element.find(".k-numeric-wrap").
+                    addClass("dcpAttribute__content__nobutton");
             }
         },
 

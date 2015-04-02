@@ -27,6 +27,7 @@ class CommonRenderOptions
     const templateOption = "template";
     const templateKeysOption = "templateKeys";
     const inputHtmlTooltip = "inputHtmlTooltip";
+    const displayDeleteButtonOption = "displayDeleteButton";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const labelsOption = "labels";
     const autoPosition = "auto";
@@ -166,6 +167,20 @@ class CommonRenderOptions
         $this->setOption(self::inputHtmlTooltip, $htmlText);
         return $this;
     }
+
+
+    /**
+     * Display or not the delete button
+     * @note use only in edit mode
+     * @param bool $display set true to show (by default), false to hide delete button
+     * @return $this
+     */
+    public function displayDeleteButton($display)
+    {
+        $this->setOption(self::displayDeleteButtonOption, (bool)$display);
+        return $this;
+    }
+
     /**
      * Add an html tooltip on auto complete button
      * @note use only in edit mode

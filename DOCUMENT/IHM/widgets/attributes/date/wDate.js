@@ -46,12 +46,19 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
 
+
             if (this.kendoWidget.length) {
                 if (this.options.hasAutocomplete) {
                     this.activateAutocomplete(this.kendoWidget);
                 } else {
                     this._activateDate(this.kendoWidget);
                 }
+            }
+
+            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+                console.log("button",this.element,this.element.find(".k-picker-wrap").length  );
+                this.element.find(".k-picker-wrap").
+                    addClass("dcpAttribute__content__nobutton");
             }
         },
 

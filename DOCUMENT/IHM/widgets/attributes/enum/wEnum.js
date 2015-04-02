@@ -1,4 +1,4 @@
-/*global define, _super*/
+/*global define */
 define([
     'underscore',
     'mustache',
@@ -97,6 +97,8 @@ define([
                     }
                 }
             }
+
+            this.noButtonDisplay();
         },
         getSingleEnumData: function wEnumGetSingleEnumData() {
             var source = [];
@@ -201,6 +203,15 @@ define([
             });
         },
 
+
+        noButtonDisplay: function wEnumNoDisplayButton() {
+            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+                this.element.find(".dcpAttribute__value--enumbuttons").
+                    addClass("dcpAttribute__content__nobutton");
+                this.element.find(".dcpAttribute__content__buttons").hide();
+            }
+        },
+
         boolButtons: function wEnumBoolButtons() {
             var enumData;
             var tplOption = this.options;
@@ -237,6 +248,9 @@ define([
                     });
                 }
             });
+
+
+            this.noButtonDisplay();
 
             labels.on("click" + this.eventNamespace, "input", function (event) {
                 event.preventDefault();
@@ -287,6 +301,7 @@ define([
             labels = this.element.find("label");
 
 
+            this.noButtonDisplay();
             labels.on("change" + this.eventNamespace, "input", function (event) {
                 var newValue = {};
                 newValue.value = $(this).val();
@@ -337,6 +352,7 @@ define([
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
 
+            this.noButtonDisplay();
             labels.on("change" + this.eventNamespace, "input", function (event) {
 
                 var newValue = [];
