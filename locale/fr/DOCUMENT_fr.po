@@ -184,7 +184,7 @@ msgid "Document identifier \"%s\"not found"
 msgstr "Identifiant de document \"%s\" non trouvé"
 
 msgid "Document render"
-msgstr "Rendu de documen"
+msgstr "Rendu de document"
 
 msgctxt "ddui-file"
 msgid "Download file"
@@ -462,41 +462,3 @@ msgid ""
 msgstr ""
 "Erreur de retour lors de l'appel à %s\n"
 "%s"
-
-#~ msgctxt "UiMenu"
-#~ msgid "Abord modifications"
-#~ msgstr "Abandonner les modifications"
-
-#~ msgid "Confirm deletion of {{document.properties.title}}"
-#~ msgstr "Confirmation de la suppression de {{document.properties.title}}"
-
-#~ msgid "DUIT:Document render : unit test"
-#~ msgstr "Action test unitaire"
-
-#~ msgid "DUIT:Jasmine"
-#~ msgstr "Action Jasmine"
-
-#~ msgid "DUIT:Render a document"
-#~ msgstr "Action test rendu de document"
-
-#~ msgid "DUIT:Right to autotest"
-#~ msgstr "Action droit des tests automatiques"
-
-#~ msgctxt "ddui"
-#~ msgid "Not yet implemented"
-#~ msgstr "Pas encore disponible"
-
-#~ msgctxt "UiMenu"
-#~ msgid "See document in read mode"
-#~ msgstr "Afficher le document en lecture"
-
-#~ msgctxt "UiMenu"
-#~ msgid "Transition"
-#~ msgstr "Étapes"
-
-#~ msgctxt "ddui"
-#~ msgid "Workflow Parameters"
-#~ msgstr "Paramètres pour la transition"
-
-#~ msgid "ddui::Loading"
-#~ msgstr "Chargement"
