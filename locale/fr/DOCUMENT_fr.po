@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-30 09:23+0200\n"
+"POT-Creation-Date: 2015-04-03 13:49+0200\n"
 "PO-Revision-Date: 2015-03-30 09:24+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -184,7 +184,7 @@ msgid "Document identifier \"%s\"not found"
 msgstr "Identifiant de document \"%s\" non trouvé"
 
 msgid "Document render"
-msgstr "Rendu de document"
+msgstr "DDUI : Dynacase document UI (rendu de document HTML5)"
 
 msgctxt "ddui-file"
 msgid "Download file"
@@ -447,8 +447,14 @@ msgstr "Lecture seule"
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"
 
+msgid "ddui:activate logging"
+msgstr "Activer les logs d'erreur client"
+
 msgid "ddui:debug mode"
 msgstr "Mode debug"
+
+msgid "ddui:logging class"
+msgstr "Classes de log"
 
 msgctxt "ddui-file"
 msgid "kB"

@@ -55,10 +55,10 @@
             }
         } catch (e) {
         }
+        console.error(errorReport);
         if (typeof errorReport !== 'string') {
             errorReport = JSON.stringify(errorReport);
         }
-        console.error(errorReport);
         request("?app=DOCUMENT&action=COLLECT_ERROR", errorReport);
     });
 
