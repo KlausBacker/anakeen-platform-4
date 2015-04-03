@@ -260,6 +260,7 @@ define([
                 properties.initid = this.get("initid");
                 properties.revision = this.get("revision");
                 properties.viewId = this.get("viewId");
+                properties.renderMode = this.get("renderMode");
 
                 return properties;
             }
