@@ -24,7 +24,9 @@ define([
             },
             template: null,
             deleteButton: false,
-            renderOptions: {},
+            renderOptions: {
+                displayDeleteButton:true
+            },
             locale: "fr_FR"
         },
 
@@ -310,7 +312,19 @@ define([
             if (this.options.renderOptions && this.options.renderOptions.labels) {
                 this.options.labels = _.extend(this.options.labels, this.options.renderOptions.labels);
             }
+             if (this.options.renderOptions && this.options.renderOptions.displayDeleteButton === false) {
+                 this.options.deleteButton=false;
+             }
             this._initDom();
+
+            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+
+
+                this.element.find(".dcpAttribute__content__buttons").hide();
+                    this.element.find(".dcpAttribute__value").
+                        addClass("dcpAttribute__content__nobutton");
+            }
+
             this._initEvent();
         },
 

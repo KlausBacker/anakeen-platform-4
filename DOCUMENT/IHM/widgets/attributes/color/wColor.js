@@ -50,7 +50,10 @@ define([
                     }
                 }
             }
-
+            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+                this.element.find(".k-picker-wrap").
+                    addClass("dcpAttribute__content__nobutton");
+            }
             this.element.find(".dcpAttribute__value--read").css("border-color", this.options.attributeValue.value);
 
 

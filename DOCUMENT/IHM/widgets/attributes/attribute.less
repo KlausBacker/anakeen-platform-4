@@ -21,15 +21,32 @@
 .dcpAttribute__content .input-group .k-autocomplete input {
   height: (@attrInputHeight - 2);
 }
+.dcpAttribute__content .input-group {
+  width:100%;
+}
+.dcpAttribute__content .input-group-addon {
+  background-color:transparent;
+}
+
 
 .dcpAttribute__value {
   height: @attrInputHeight ;
 }
 
+
+
 .dcpAttribute__content .k-widget > .k-state-default {
   border-radius: 4px 0 0 4px;
 }
-
+.dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
+.dcpAttribute__content .input-group .dcpAttribute__value.dcpAttribute__content__nobutton,
+.dcpAttribute__content .form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__content__nobutton .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content .k-widget > .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content .dcpAttribute__content__nobutton > .k-state-default
+{
+  border-bottom-right-radius: @border-radius-base ;
+  border-top-right-radius: @border-radius-base ;
+}
 .dcpAttribute__content .input-group input,
 .dcpArray__content__cell .input-group input,
 .dcpAttribute__content .input-group .k-autocomplete {
