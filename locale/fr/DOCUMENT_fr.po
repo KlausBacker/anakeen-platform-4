@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 13:49+0200\n"
+"POT-Creation-Date: 2015-04-07 12:05+0200\n"
 "PO-Revision-Date: 2015-03-30 09:24+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -41,15 +41,9 @@ msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
 msgstr "Attribut \"%s\" non trouvé"
 
-msgid "Autocomplete attributes"
-msgstr "Attribut autocomplete"
-
 msgctxt "ddui-file"
 msgid "B"
 msgstr "octets"
-
-msgid "COLLECT_ERROR"
-msgstr "Renvoi d'erreur"
 
 msgctxt "UiMenu"
 msgid "Cancel"
@@ -183,9 +177,6 @@ msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr "Identifiant de document \"%s\" non trouvé"
 
-msgid "Document render"
-msgstr "DDUI : Dynacase document UI (rendu de document HTML5)"
-
 msgctxt "ddui-file"
 msgid "Download file"
 msgstr "Télécharger le fichier"
@@ -209,12 +200,6 @@ msgstr "Vue de famille"
 msgctxt "ddui"
 msgid "Force transition"
 msgstr "Forcer la transition"
-
-msgid "Get dynamic sub menu"
-msgstr "Action de sous-menu"
-
-msgid "Get some template"
-msgstr "Action de template"
 
 msgctxt "UiMenu"
 msgid "Goto next activity"
@@ -301,9 +286,6 @@ msgctxt "ddui-file"
 msgid "Recording"
 msgstr "Enregistrement"
 
-msgid "Render a document"
-msgstr "Visualiser un document"
-
 msgctxt "UiMenu"
 msgid "Restore"
 msgstr "Restaurer"
@@ -378,9 +360,6 @@ msgctxt "UiMenu"
 msgid "View current revision"
 msgstr "Voir la révision courante"
 
-msgid "View documents"
-msgstr "Action vue de document"
-
 msgctxt "UiMenu"
 msgid "View transition graph"
 msgstr "Graphique étape du processus"
@@ -402,9 +381,6 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr "Commentaire de transition du cycle de vie"
 
-msgid "Wrap kendo"
-msgstr "Action include kendo ui"
-
 msgid "ddui::Delete : "
 msgstr "Suppression de : "
 
@@ -423,11 +399,23 @@ msgstr "Créée le"
 msgid "ddui:Add new line"
 msgstr "Ajouter une nouvelle ligne"
 
+msgid "ddui:Autocomplete attributes"
+msgstr "Attribut autocomplete"
+
+msgid "ddui:COLLECT_ERROR"
+msgstr "Récupération des erreurs clients"
+
 msgid "ddui:Delete line"
 msgstr "Supprimer la ligne"
 
 msgid "ddui:Document Render"
 msgstr "Affichage d'un document"
+
+msgid "ddui:Document render"
+msgstr "DDUI : Dynacase document UI"
+
+msgid "ddui:Document render long"
+msgstr "Rendu HTML5 en One Page Application"
 
 msgid "ddui:Drag to move line"
 msgstr "Cliquer pour déplacer la ligne"
@@ -438,14 +426,29 @@ msgstr "Dupliquer la ligne sélectionnée"
 msgid "ddui:Editing form"
 msgstr "Formulaire en cours de modification"
 
+msgid "ddui:Get dynamic sub menu"
+msgstr "Action de sous-menu"
+
+msgid "ddui:Get some template"
+msgstr "Récupération unitaire de template"
+
 msgid "ddui:Locked by"
 msgstr "Verrouillé par"
 
 msgid "ddui:Read only"
 msgstr "Lecture seule"
 
+msgid "ddui:Render a document"
+msgstr "Visualiser un document"
+
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"
+
+msgid "ddui:View documents"
+msgstr "Action vue de document"
+
+msgid "ddui:Wrap kendo"
+msgstr "Action include kendo ui"
 
 msgid "ddui:activate logging"
 msgstr "Activer les logs d'erreur client"
@@ -468,3 +471,4 @@ msgid ""
 msgstr ""
 "Erreur de retour lors de l'appel à %s\n"
 "%s"
+

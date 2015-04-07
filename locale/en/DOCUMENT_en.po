@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 13:49+0200\n"
+"POT-Creation-Date: 2015-04-07 12:05+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -38,14 +38,8 @@ msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
 msgstr ""
 
-msgid "Autocomplete attributes"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "B"
-msgstr ""
-
-msgid "COLLECT_ERROR"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -178,9 +172,6 @@ msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr ""
 
-msgid "Document render"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "Download file"
 msgstr ""
@@ -203,12 +194,6 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Force transition"
-msgstr ""
-
-msgid "Get dynamic sub menu"
-msgstr ""
-
-msgid "Get some template"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -296,9 +281,6 @@ msgctxt "ddui-file"
 msgid "Recording"
 msgstr ""
 
-msgid "Render a document"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Restore"
 msgstr ""
@@ -373,9 +355,6 @@ msgctxt "UiMenu"
 msgid "View current revision"
 msgstr ""
 
-msgid "View documents"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "View transition graph"
 msgstr ""
@@ -397,9 +376,6 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr ""
 
-msgid "Wrap kendo"
-msgstr ""
-
 msgid "ddui::Delete : "
 msgstr ""
 
@@ -418,10 +394,22 @@ msgstr ""
 msgid "ddui:Add new line"
 msgstr ""
 
+msgid "ddui:Autocomplete attributes"
+msgstr ""
+
+msgid "ddui:COLLECT_ERROR"
+msgstr ""
+
 msgid "ddui:Delete line"
 msgstr ""
 
 msgid "ddui:Document Render"
+msgstr ""
+
+msgid "ddui:Document render"
+msgstr ""
+
+msgid "ddui:Document render long"
 msgstr ""
 
 msgid "ddui:Drag to move line"
@@ -433,13 +421,28 @@ msgstr ""
 msgid "ddui:Editing form"
 msgstr ""
 
+msgid "ddui:Get dynamic sub menu"
+msgstr ""
+
+msgid "ddui:Get some template"
+msgstr ""
+
 msgid "ddui:Locked by"
 msgstr ""
 
 msgid "ddui:Read only"
 msgstr ""
 
+msgid "ddui:Render a document"
+msgstr ""
+
 msgid "ddui:Select line"
+msgstr ""
+
+msgid "ddui:View documents"
+msgstr ""
+
+msgid "ddui:Wrap kendo"
 msgstr ""
 
 msgid "ddui:activate logging"
