@@ -12,6 +12,7 @@ JSON;
 $app_const = array(
     "INIT" => "yes",
     "VERSION" => "@VERSION@-@RELEASE@",
+    //region full
     "LOGGER" => array(
         "descr" => N_("ddui:logging class"),
         "val" => "$loggerClass"
@@ -26,5 +27,6 @@ $app_const = array(
         "descr" => N_("ddui:debug mode"),
         "kind" => "enum(FALSE|TRUE)"
     )
+    //endregion full
 );
 ?>

@@ -3,10 +3,18 @@
 
     <description>@PACKAGE@</description>
 
+    <!-- //region full -->
+    <replaces>
+        <module name="dynacase-document-uis-light"/>
+    </replaces>
+    <!-- //endregion full -->
+
     <requires>
         <installer version="1.5.0" comp="ge"/>
         <module comp='ge' version='3.2.19' name='dynacase-core'/>
+        <!-- //region full -->
         <module name='dynacase-tracekit-installer'/>
+        <!-- //endregion full -->
         <module name='dynacase-requirejs-installer'/>
         <module name='dynacase-kendoui-installer'/>
         <module name='dynacase-underscore-installer'/>
