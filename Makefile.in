@@ -12,15 +12,14 @@ GZIP_ENV = --best
 export pubdir utildir appname applib PACKAGE localBuildRule
 
 SUBDIR= locale DOCUMENT HTTPAPI_V1 STYLE
-pages_not_php = documentUiStub.php
+pages_not_php = documentUiStub.php prepareElementForLight.php
 
 include $(utildir)/PubRule
 include $(localBuildRule)/localBuildRule
 
 JSPOFIND = DOCUMENT/IHM
 PHPPOFIND = DOCUMENT
-# For all families traduction
-# TRANSCSV += $(shell find ./Families -name "STRUCT_*.csv")
+
 stub:
 	$(utildir)/genStubFamilyClass.php DOCUMENT/Families/*STRUCT*csv > documentUiStub.php
 publish-test:
@@ -30,7 +29,36 @@ webinst-test:
 	make -C Test webinst RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
 	mv Test/*.webinst .
 
+webinst-full:
+	-rm -fr $(shell pwd)/localpub
+	make publish pubdir=$(shell pwd)/localpub
+	php ./prepareElementForLight.php --modeFull -f $(shell pwd)/info.xml
+	cd localpub ;	GZIP=$(GZIP_ENV) $(TAR)  czf ../content.tar.gz .
+	-rm -rf $(distdir)
+	GZIP=$(GZIP_ENV) $(TAR) czf $(distdir).webinst content.tar.gz info.xml $(wildcard LICENSE)
+	-rm -f content.tar.gz
+	-rm -fr localpub
+
+webinst-light: private PACKAGE=@PACKAGE@-light
+
+webinst-light:
+	-rm -fr $(shell pwd)/localpub
+	make publish pubdir=$(shell pwd)/localpub
+	php ./prepareElementForLight.php -f $(shell pwd)/info.xml
+	php ./prepareElementForLight.php -f $(shell pwd)/localpub/DOCUMENT/DOCUMENT_init.php
+	php ./prepareElementForLight.php -f $(shell pwd)/localpub/DOCUMENT/DOCUMENT.app
+	find $(shell pwd)/localpub/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
+	find $(shell pwd)/localpub/DOCUMENT/IHM/ -name "*.less" -type f -delete
+	cd localpub ;	GZIP=$(GZIP_ENV) $(TAR)  czf ../content.tar.gz .
+	-rm -rf $(distdir)
+	GZIP=$(GZIP_ENV) $(TAR) czf $(distdir).webinst content.tar.gz info.xml $(wildcard LICENSE)
+	-rm -f content.tar.gz
+	-rm -fr localpub
+
 webinst-all: webinst webinst-test
+
+webinst:
+	make webinst-full
 
 clean-test:
 	make -C Test clean
