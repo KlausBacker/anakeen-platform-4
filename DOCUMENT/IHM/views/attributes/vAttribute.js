@@ -298,8 +298,6 @@ define([
                         }
                     }
                 });
-            } else {
-                console.log("NO delete", this.model.id, data, this.model);
             }
         },
 

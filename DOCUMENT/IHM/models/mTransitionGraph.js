@@ -38,7 +38,6 @@ define([
                 throw new Error("Unable to get the data from change state");
             }
 
-            console.log("Parse graphe", response);
             values = {
                 state: this.get("state"),
                 messages: response.messages,
