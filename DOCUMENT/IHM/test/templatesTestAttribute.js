@@ -18,7 +18,8 @@ define([
     'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
-], function (_, $, template, ModelDocument, ViewDocument) {
+], function (_, $, template, ModelDocument, ViewDocument)
+{
     "use strict";
 
     var testAttribute,
@@ -37,17 +38,18 @@ define([
     window.dcp.templates = window.dcp.templates || template;
 
     // Mock family definition
-    generateFamilyStructure = function (localeAttrId, attrDef, renderMode, value) {
+    generateFamilyStructure = function (localeAttrId, attrDef, renderMode, value)
+    {
         var structure = [], secondStruct, attrStruct = {
-            "id" :           "test_f_frame",
-            "visibility" :   "W",
-            "label" :        "frame",
-            "type" :         "frame",
-            "logicalOrder" : 0,
-            "multiple" :     false,
-            "options" :      [],
-            "renderMode" :   renderMode,
-            "content" :      {}
+            "id": "test_f_frame",
+            "visibility": "W",
+            "label": "frame",
+            "type": "frame",
+            "logicalOrder": 0,
+            "multiple": false,
+            "options": [],
+            "renderMode": renderMode,
+            "content": {}
         };
 
         structure.push(attrStruct);
@@ -55,18 +57,18 @@ define([
         if (localeAttrId) {
             value = _.clone(value);
             secondStruct = {
-                "id" :          localeAttrId,
-                "visibility" : attrDef.visibility || 'W',
-                "label" : attrDef.label || ("label of " + localeAttrId),
-                "label_old" :    localeAttrId,
-                "type" :         attrDef.type,
-                "logicalOrder" : 0,
-                "multiple" :     false,
-                "options" : attrDef.options || [],
-                "renderMode" : renderMode,
-                "content" :      {},
-                "attributeValue" : value,
-                "parent" : "test_f_frame"
+                "id": localeAttrId,
+                "visibility": attrDef.visibility || 'W',
+                "label": attrDef.label || ("label of " + localeAttrId),
+                "label_old": localeAttrId,
+                "type": attrDef.type,
+                "logicalOrder": 0,
+                "multiple": false,
+                "options": attrDef.options || [],
+                "renderMode": renderMode,
+                "content": {},
+                "attributeValue": value,
+                "parent": "test_f_frame"
             };
             secondStruct = _.extend(secondStruct, attrDef);
 
@@ -77,9 +79,8 @@ define([
     };
 
 
-
-
-    testAttribute = function (config) {
+    testAttribute = function (config)
+    {
 
         var title = config.title;
         var attributeDefinition = config.attribute;
@@ -89,15 +90,19 @@ define([
         var expectedSubContents = config.expectedSubContents || [];
         var renderOptions = config.renderOptions || {};
         var familyStructure;
-        var modelDocument, currentSandbox, localAttrId, getSandbox = function () {
+        var modelDocument, currentSandbox, localAttrId, getSandbox = function ()
+        {
             return currentSandbox;
-        }, findWidgetName = function ($element) {
-            return _.find(_.keys($element.data()), function (currentKey) {
+        }, findWidgetName = function ($element)
+        {
+            return _.find(_.keys($element.data()), function (currentKey)
+            {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
         };
 
-        beforeEach(function () {
+        beforeEach(function ()
+        {
             var localId = _.uniqueId("Document"), $renderZone = $("#render");
             localAttrId = attributeDefinition.id || _.uniqueId(attributeDefinition.type);
 
@@ -115,33 +120,36 @@ define([
             //Generate mock model to test interaction between model, view and widget
             modelDocument = new ModelDocument(
                 {
-                    properties :    {
-                        id :       localId,
-                        title : title + "_" + localId,
-                        fromname : localId,
-                        family :   {
-                            title : localId
+                    properties: {
+                        id: localId,
+                        title: title + "_" + localId,
+                        fromname: localId,
+                        family: {
+                            title: localId
                         }
                     },
-                    menus :         [],
-                    locale : options.locale || "fr_FR",
-                    renderMode : options.renderMode || "view",
-                    attributes : options.attributes || familyStructure,
-                    renderOptions : renderOptions
+                    menus: [],
+                    locale: options.locale || "fr_FR",
+                    renderMode: options.renderMode || "view",
+                    attributes: options.attributes || familyStructure,
+                    renderOptions: renderOptions
                 }
             );
         });
 
-        afterEach(function () {
-            //modelDocument.trigger("destroy");
+        afterEach(function ()
+        {
+            modelDocument.trigger("destroy");
         });
 
-        describe(title, function () {
+        describe(title, function ()
+        {
 
-            it("dom", function () {
+            it("dom", function ()
+            {
                 var $sandBox = getSandbox(), view;
                 var iniLabel = familyStructure[1].label;
-                view = new ViewDocument({model : modelDocument, el : $sandBox});
+                view = new ViewDocument({model: modelDocument, el: $sandBox});
                 view.render();
 
 
@@ -158,12 +166,13 @@ define([
                     expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "]")).toHaveHtml(expectedContent);
                 }
 
-                _.each(expectedSubContents, function (expectFilter) {
+                _.each(expectedSubContents, function (expectFilter)
+                {
                     if (expectFilter.textValue === null) {
-                        expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] "+expectFilter.filter)).toExist();
+                        expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toExist();
                     } else {
                         if (expectFilter.textValue) {
-                            expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] "+expectFilter.filter)).toHaveText(expectFilter.textValue);
+                            expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toHaveText(expectFilter.textValue);
 
                         }
                         if (expectFilter.htmlValue) {
@@ -173,9 +182,6 @@ define([
 
                 });
             });
-
-
-
 
 
         });

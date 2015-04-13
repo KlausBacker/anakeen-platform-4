@@ -120,6 +120,7 @@ require.config({
         "jquery": "../../lib/KendoUI/2014.3/js/jquery",
         "underscore": "../../lib/underscore/underscore",
         "backbone": "../../lib/backbone/backbone",
+        "tooltip": "../../lib/bootstrap/3/js/tooltip",
         "mustache": "../../lib/mustache.js/mustache",
         "bootstrap": "../../lib/bootstrap/3/js/bootstrap",
         "kendo": "../../lib/KendoUI/2014.3/js/",

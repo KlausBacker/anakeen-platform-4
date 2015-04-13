@@ -1,8 +1,9 @@
 /*global require*/
 require([
+    'jquery',
     'underscore',
     'dcpDocumentTest/templatesTestAttribute'
-], function (_, templateTestSuite) {
+], function ($, _, templateTestSuite) {
     "use strict";
 
 
@@ -303,9 +304,6 @@ require([
         return modObject;
     }
 
-
-
-
     _.each(tplConfig, function (testConf) {
         _.each(tplData, function (data) {
             templateTestSuite(replaceEverywhere(testConf, data));
@@ -313,7 +311,6 @@ require([
 
 
     });
-
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

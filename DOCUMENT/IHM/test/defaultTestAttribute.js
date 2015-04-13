@@ -152,7 +152,7 @@ define([
         });
 
         afterEach(function () {
-            //modelDocument.trigger("destroy");
+            modelDocument.trigger("destroy");
         });
 
         describe(title, function () {

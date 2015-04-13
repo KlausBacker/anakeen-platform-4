@@ -9,11 +9,15 @@ function jasmine(Action & $action)
 {
 
     $usage = new ActionUsage($action);
-    $restrict = $usage->addOptionalParameter("restrict", "restrict test to only");
+    $restrict = $usage->addOptionalParameter(
+        "restrict", "restrict test to only"
+    );
 
     $render = new \Dcp\Ui\RenderDefault();
 
-    $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+    $version = \ApplicationParameterManager::getParameterValue(
+        "CORE", "WVERSION"
+    );
 
     $css = array_values($render->getCssReferences());
     $css[] = "lib/jasmine/jasmine.css?ws=" . $version;
@@ -48,7 +52,7 @@ function jasmine(Action & $action)
     }
 
     $js = array(
-        $require["src"],
+        $require["require"],
         $require["config"],
         'lib/KendoUI/2014.3/js/jquery.js?ws=' . $version,
         'lib/jasmine/jasmine.js?ws=' . $version,
@@ -71,19 +75,24 @@ function jasmine(Action & $action)
         "css" => $css,
         "js" => $js,
         "ws" => $version,
-        "nbTest" => count($widgetList) ,
+        "nbTest" => count($widgetList),
         "icon" => "lib/jasmine/jasmine_favicon.png",
     );
 
     $mustacheRender = new \Mustache_Engine($options);
 
-    $action->lay->template = $mustacheRender->render('{{=[[ ]]=}}' . file_get_contents("TEST_DOCUMENT/Layout/main.mustache") , $keys);
+    $action->lay->template = $mustacheRender->render(
+        '{{=[[ ]]=}}' . file_get_contents("TEST_DOCUMENT/Layout/main.mustache"),
+        $keys
+    );
     $action->lay->noparse = true;
 }
 
 function rsearch($path)
 {
-    $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::FOLLOW_SYMLINKS);
+    $directory = new \RecursiveDirectoryIterator(
+        $path, \FilesystemIterator::FOLLOW_SYMLINKS
+    );
     $filter = new JasmineRecursiveFilterIterator($directory);
     $iterator = new \RecursiveIteratorIterator($filter);
     $files = array();
@@ -101,7 +110,7 @@ class JasmineRecursiveFilterIterator extends \RecursiveFilterIterator
         $filename = $this->current()->getFilename();
         // Skip hidden files and directories.
         if ($filename[0] === '.') {
-            return FALSE;
+            return false;
         }
         if ($this->isDir()) {
             // Only recurse into intended subdirectories.
