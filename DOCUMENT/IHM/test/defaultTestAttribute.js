@@ -15,16 +15,14 @@ if (window.__karma__) {
 define([
     'underscore',
     'jquery',
+    'dcpDocument/test/UnitTestUtilities',
     'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
-], function (_, $, template, ModelDocument, ViewDocument) {
+], function (_, $, unitTestUtils, template, ModelDocument, ViewDocument) {
     "use strict";
 
-    var testAttribute,
-        generateVisibility,
-        generateFamilyStructure,
-        generateDocumentContent;
+    var testAttribute;
 
     // Get the template in JSON form and set it in the global variable
     template = JSON.parse(template);
@@ -34,80 +32,18 @@ define([
     }
     template = template.content;
     window.dcp = window.dcp || {};
-    window.dcp.templates = window.dcp.templates || template;
-
-    // Mock family definition
-    generateFamilyStructure = function (localeAttrId, attrDef, renderMode, value) {
-        var structure = [], secondStruct, attrStruct = {
-            "id" :           "test_f_frame",
-            "visibility" :   "W",
-            "label" :        "frame",
-            "type" :         "frame",
-            "logicalOrder" : 0,
-            "multiple" :     false,
-            "options" :      [],
-            "renderMode" :   renderMode,
-            "content" :      {}
-        };
-
-        structure.push(attrStruct);
-
-        if (localeAttrId) {
-            value = _.clone(value);
-            secondStruct = {
-                "id" :           localeAttrId,
-                "visibility" : attrDef.visibility || 'W',
-                "label" : attrDef.label || ("label of " + localeAttrId),
-                "label_old" :    localeAttrId,
-                "type" :         attrDef.type,
-                "logicalOrder" : 0,
-                "multiple" :     false,
-                "options" : attrDef.options || [],
-                "renderMode" : renderMode,
-                "content" :      {},
-                "attributeValue" : value,
-                "parent" : "test_f_frame"
-            };
-            secondStruct = _.extend(secondStruct, attrDef);
-
-            attrStruct.content[localeAttrId] = _.extend(secondStruct, attrDef);
-            structure.push(secondStruct);
-        }
-        return structure;
-    };
-
-    //Mock current visibility conf
-    generateVisibility = function (localAttrId, attrDef) {
-        var values = {
-            'test_f_frame' : 'W'
-        };
-        values[localAttrId] = attrDef.visibility || 'W';
-        return values;
-    };
-
-    // Clone the value to avoid cross modification between test
-    generateDocumentContent = function (localeAttrId, value) {
-        var data = {};
-
-        value = _.clone(value);
-
-        if (localeAttrId) {
-            data[localeAttrId] = value;
-        }
-
-        return data;
-    };
+    window.dcp.templates = window.dcp.templates || {};
+    _.defaults(window.dcp.templates, template);
 
     testAttribute = function (config) {
 
-        var title = config.title;
-        var attributeDefinition = config.attribute;
-        var initialValue = config.initialValue;
-        var options = config.options || {};
-        var otherValue = config.otherValue;
-        var renderOptions = config.renderOptions || {};
-        var familyStructure;
-        var modelDocument, currentSandbox, localAttrId, getSandbox = function () {
+        var title = config.title,
+            attributeDefinition = config.attribute,
+            initialValue = config.initialValue,
+            options = config.options || {},
+            otherValue = config.otherValue,
+            familyStructure,
+            modelDocument, currentSandbox, localAttrId, getSandbox = function () {
             return currentSandbox;
         }, findWidgetName = function ($element) {
             return _.find(_.keys($element.data()), function (currentKey) {
@@ -116,39 +52,15 @@ define([
         };
 
         beforeEach(function () {
-            var localId = _.uniqueId("Document"), $renderZone = $("#render");
-            localAttrId = _.uniqueId(attributeDefinition.type);
-
-            if (config.useRender || window.location.hash === "#displayDom") {
-                currentSandbox = $("<div></div>");
-                if ($renderZone.length === 0) {
-                    $renderZone = $("body");
-                }
-                $renderZone.append(currentSandbox);
-            } else {
-                currentSandbox = setFixtures(sandbox());
-            }
-
-            familyStructure = generateFamilyStructure(localAttrId, attributeDefinition, options.renderMode, initialValue);
-
+            familyStructure = options.attributes || unitTestUtils.generateFamilyStructure(config.attribute, options.renderMode, initialValue);
+            currentSandbox = unitTestUtils.generateSandBox(config, $("#render"));
             //Generate mock model to test interaction between model, view and widget
-            modelDocument = new ModelDocument(
-                {
-                    properties :    {
-                        id :       localId,
-                        title : title + "_" + localId,
-                        fromname : localId,
-                        family :   {
-                            title : localId
-                        }
-                    },
-                    menus :         [],
-                    locale : options.locale || "fr_FR",
-                    renderMode : options.renderMode || "view",
-                    attributes : options.attributes || familyStructure,
-                    renderOptions : renderOptions
-                }
+            modelDocument = unitTestUtils.generateModelDocument(options,
+                config.title,
+                familyStructure,
+                config.renderOptions || {}
             );
+            localAttrId = familyStructure.localeAttrId;
         });
 
         afterEach(function () {

@@ -1,14 +1,17 @@
 /*global define, describe, beforeEach, setFixtures, expect, it, sandbox, spyOnEvent, jasmine, afterEach*/
-define(["underscore"], function (_) {
-    "use strict";
-    return function (type, widget, options, value, expected) {
+define([
+    "jquery",
+    "underscore"
 
-        var currentSandbox, getSandbox = function () {
+], function ($, _)
+{
+    "use strict";
+    return function (type, widget, options, value, expected)
+    {
+
+        var currentSandbox, getSandbox = function ()
+        {
             return currentSandbox;
-        }, findWidgetName = function ($element) {
-            return _.find(_.keys($element.data()), function (currentKey) {
-                return currentKey.indexOf("dcpDcp") !== -1;
-            });
         };
 
         if (value.value && !_.has(value, "displayValue")) {
@@ -18,16 +21,15 @@ define(["underscore"], function (_) {
             throw Error("First argument must be a widget function");
         }
 
-
         if (_.isUndefined(options.renderOptions.toolbarStartupExpanded)) {
             options.renderOptions.toolbarStartupExpanded = true;
         }
 
-        describe(type + " htmlTest", function () {
-
-            beforeEach(function () {
+        describe(type + " htmlTest", function ()
+        {
+            beforeEach(function ()
+            {
                 var $renderZone = $("#render");
-
                 if (window.location.hash === "#displayDom") {
                     currentSandbox = $("<div></div>");
                     if ($renderZone.length === 0) {
@@ -39,13 +41,12 @@ define(["underscore"], function (_) {
                 }
             });
 
-            afterEach(function () {
+            afterEach(function ()
+            {
                 var $sandBox = getSandbox();
                 try {
                     if (window.location.hash !== "#displayDom") {
-
                         widget.call($sandBox, "destroy");
-
                     }
                 } catch (e) {
                     //console.log(e);
@@ -53,31 +54,35 @@ define(["underscore"], function (_) {
             });
 
             if (options.mode === "write") {
-
-
-                describe(type + " : height", function () {
-                    beforeEach(function (done) {
+                describe(type + " : height", function ()
+                {
+                    beforeEach(function (done)
+                    {
                         var $sandBox = getSandbox();
                         var ckEditor;
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
                         ckEditor = $sandBox.dcpHtmltext().data("dcpDcpHtmltext").ckEditorInstance;
-                        ckEditor.on("loaded", function () {
+                        ckEditor.on("loaded", function ()
+                        {
                             done();
                         });
                     });
 
-                    describe(type + " : icon+ height", function () {
-                        it("height and icon", function () {
+                    describe(type + " : icon+ height", function ()
+                    {
+                        it("height and icon", function ()
+                        {
                             var $sandBox = getSandbox();
                             var wHtmlText = $sandBox.dcpHtmltext().data("dcpDcpHtmltext");
                             var $ckElement = $sandBox.find("iframe.cke_reset");
                             expect($sandBox).not.toBeEmpty();
                             expect($ckElement.height()).toEqual(expected.height);
-
-                            _.each(expected.icons, function (icon) {
+                            _.each(expected.icons, function checkExpectedIcon(icon)
+                            {
                                 expect($ckElement.find("." + icon)).not.toBeEmpty();
                             });
-                            _.each(expected.notIcons, function (icon) {
+                            _.each(expected.notIcons, function checkExpectedIcon(icon)
+                            {
                                 expect($ckElement.find("." + icon)).not.toExist();
                             });
 
@@ -88,8 +93,10 @@ define(["underscore"], function (_) {
                 });
             }
             if (options.mode === "read") {
-                describe(type + " : format", function () {
-                    it("format", function () {
+                describe(type + " : format", function ()
+                {
+                    it("format", function ()
+                    {
                         var $sandBox = getSandbox(), attrValue;
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
 

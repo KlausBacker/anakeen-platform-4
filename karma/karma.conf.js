@@ -17,8 +17,6 @@ module.exports = function (config) {
             {pattern: 'test-css.js', watched: false, served: true, included: false},
             {pattern : '../DOCUMENT/IHM/widgets/attributes/**/test*.js', included : false},
             {pattern : '../DOCUMENT/IHM/test/test*.js', included : false}
-          //  {pattern : '../css/dcp/document/bootstrap.css', included : false},
-          ///  {pattern : '../css/dcp/document/kendo.css', included : false}
         ],
 
         // list of files to exclude
@@ -36,7 +34,10 @@ module.exports = function (config) {
         proxies :   {
 //            '/dynacase/' : 'http://dynacase.dev:8081/'
             '/dynacase/' : 'http://localhost:8080/dynacase/',
-            '/resizeimg.php': 'http://localhost:8080/dynacase/resizeimg.php'
+            '/resizeimg.php': 'http://localhost:8080/dynacase/resizeimg.php',
+            '/lib/': 'http://localhost:8080/dynacase/lib/',
+            '/css/': 'http://localhost:8080/dynacase/css/',
+            '/FDL/': 'http://localhost:8080/dynacase/FDL/'
         },
 
 
