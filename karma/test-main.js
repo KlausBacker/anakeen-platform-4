@@ -1,10 +1,13 @@
-var allTestFiles = ['test-css', 'jasmine-jquery'];
-var TEST_REGEXP = /\/(test)[a-zA-Z]*\.js$/i;
-var pathToModule = function (path)
-{
-    return path.replace(/^\/.*IHM\//, "").replace(/\.js$/, '');
-};
+/*********************************************************************************************************************
+ *
+ * Main launcher of the test by karma
+ * Search all the file with test*.js in the source, add it to the launch list and launch it
+ * The file are get from the
+ *
+ ********************************************************************************************************************/
 
+
+//Add this elements for old browsers
 if (!window.console) {
     window.console = {};
     window.console.log = function (x)
@@ -22,7 +25,6 @@ if (!(window.console.time)) {
     {
     };
 }
-
 
 if (!Object.keys) {
     Object.keys = (function ()
@@ -78,8 +80,20 @@ if (!Array.prototype.forEach) {
         }
     };
 }
+
+//Add this files (inject css and jasmine deps)
+var allTestFiles = ['test-css', 'jasmine-jquery'];
+var TEST_REGEXP = /\/(test)[a-zA-Z]*\.js$/i;
+var pathToModule = function (path)
+{
+    'use strict';
+    return path.replace(/^\/.*IHM\//, "").replace(/\.js$/, '');
+};
+
+
 Object.keys(window.__karma__.files).forEach(function (file)
 {
+    'use strict';
     if (TEST_REGEXP.test(file)) {
         // Normalize paths to RequireJS module names.
         allTestFiles.push(pathToModule(file));
@@ -88,6 +102,7 @@ Object.keys(window.__karma__.files).forEach(function (file)
 
 window.dcp = window.dcp || {};
 
+//This function is called by each test file, the test are launched when all the files are loaded
 window.dcp.executeTests = (function ()
 {
     "use strict";
@@ -101,7 +116,7 @@ window.dcp.executeTests = (function ()
 })();
 
 
-require.config({
+require.config({ // jshint ignore:line
     // Karma serves files under /base, which is the basePath from your config file
     baseUrl: 'http://localhost:9876/dynacase/DOCUMENT/IHM/',
     shim: {
@@ -141,12 +156,11 @@ require.config({
             env: 'xhr',
             useXhr: function (url, protocol, hostname, port)
             {
+                "use strict";
                 return true;
             }
         }
     },
 
     urlArgs: "bust=" + (new Date()).getTime()
-    // we have to kickoff jasmine, as it is asynchronous
-    //,callback : window.__karma__.start
 });
