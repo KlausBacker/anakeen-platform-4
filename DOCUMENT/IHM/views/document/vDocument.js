@@ -41,7 +41,7 @@ define([
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
 
-            $(window).on("resize", _.bind(this.resizeForFooter, this));
+            $(window).on("resize."+this.model.cid, _.bind(this.resizeForFooter, this));
         },
 
         /**

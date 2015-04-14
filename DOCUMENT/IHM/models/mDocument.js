@@ -88,7 +88,9 @@ define([
             var theModel = this;
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
-            $(window).on("unload", function ()
+            this.listenTo(this, "destroy", this.unbindLoadEvent);
+
+            $(window).on("unload." + this.cid, function mDocumentUnload()
             {
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
@@ -96,7 +98,7 @@ define([
                     lockModel.destroy();
                 }
             });
-            $(window).bind("beforeunload", function ()
+            $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
                 if (theModel.hasAttributesChanged()) {
                     return i18n.___("The form has been modified and is is not saved", "ddui");
@@ -495,7 +497,7 @@ define([
                 return {
                     title: i18n.___("Unable to save", "ddui"),
                     message: errorMessage.join(', ' + "\n"),
-                    errorCode : "attributeNeeded"
+                    errorCode: "attributeNeeded"
                 };
             }
             return undefined;
@@ -693,6 +695,11 @@ define([
                 });
             }
             return Backbone.Model.prototype.set.call(this, attributes, options);
+        },
+
+        unbindLoadEvent : function mDocumentUnbindLoadEvent()
+        {
+            $(window).off("."+this.cid);
         },
 
         /**
