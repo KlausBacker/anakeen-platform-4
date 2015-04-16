@@ -133,21 +133,21 @@ define(function (require, exports, module)
                 $el.find(".dcpCustomTemplate--content").each(function ()
                 {
                     var attrId = $(this).data("attrid"),
-                    displayLabel = ($(this).data("displaylabel") === true),
-                    elAttrModel = documentModel.get('attributes').get(attrId),
-                    attrContent = "NO VIEW FOR " + attrId,
-                    view = '',
-                    BackView = null,
-                    originalView = null;
+                        displayLabel = ($(this).data("displaylabel") === true),
+                        currentAttributeModel = documentModel.get('attributes').get(attrId),
+                        attrContent = "NO VIEW FOR " + attrId,
+                        view = '',
+                        BackView = null,
+                        originalView = null;
 
-                    if (elAttrModel) {
+                    if (currentAttributeModel) {
 
                         if (_.isFunction(callBackView)) {
                             // When called from vColumn to render widget in a cell
                             callBackView.apply($(this));
                             attrContent = '';
                         } else {
-                            switch (elAttrModel.get("type")) {
+                            switch (currentAttributeModel.get("type")) {
                                 case "array":
                                     BackView = require.apply(require, ['dcpDocument/views/attributes/array/vArray']);
                                     break;
@@ -162,7 +162,7 @@ define(function (require, exports, module)
                             }
 
                             originalView = true;
-                            if (elAttrModel.getOption("template")) {
+                            if (currentAttributeModel.getOption("template")) {
                                 if (config && config.useCustomAttribute) {
                                     // when use custom template in another custom template
                                     originalView = false;
@@ -170,10 +170,11 @@ define(function (require, exports, module)
                             }
 
                             view = new BackView({
-                                model: elAttrModel,
+                                model: currentAttributeModel,
                                 originalView: originalView,
                                 initializeContent: (config && config.initializeContent) || false,
-                                displayLabel: displayLabel
+                                displayLabel: displayLabel,
+                                secondView: true
                             });
                             attrContent = view.render().$el;
                         }
