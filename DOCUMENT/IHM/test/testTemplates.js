@@ -32,7 +32,6 @@ require([
             attribute: {type: "%type%", label: "%label%", "id": "my%type%1"},
             options: {
                 renderMode: "view"
-
             },
             renderOptions: {
                 types: {
@@ -124,7 +123,8 @@ require([
                     htmlValue: "%displayValue%"
                 }
             ]
-        }, {
+        },
+        {
             title: "%type% : write htmlContent",
             attribute: {type: "%type%", label: "%label%"},
             options: {
@@ -147,7 +147,8 @@ require([
                     textValue: null
                 }
             ]
-        }, {
+        },
+        {
             title: "%type% : read htmlView",
             attribute: {type: "%type%", label: "Mon super libellé"},
             options: {
@@ -220,14 +221,17 @@ require([
             displayValue: "Un compte",
             altValue: "3456",
             altDisplayValue: "Un autre compte"
-        }, {
-            type: "htmltext",
-            label: "Ma rédaction",
-            value: "<p><strong>Grosse rédaction</strong>.</p>",
-            displayValue: "<p><strong>Grosse rédaction</strong>.</p>",
-            altValue: "<p><strong>Grosse rédaction</strong>.</p>",
-            altDisplayValue: "<p><strong>Grosse rédaction</strong>.</p>"
-        }, {
+        },
+//        {
+//            type: "htmltext",
+//            label: "Ma rédaction",
+//            noFixture: true,
+//            value: "<p><strong>Grosse rédaction</strong>.</p>",
+//            displayValue: "<p><strong>Grosse rédaction</strong>.</p>",
+//            altValue: "<p><strong>Grosse rédaction</strong>.</p>",
+//            altDisplayValue: "<p><strong>Grosse rédaction</strong>.</p>"
+//        },
+        {
             type: "longtext",
             label: "Ma remarque",
             value: "Remarque:\nPoint n°1",

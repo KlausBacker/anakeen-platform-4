@@ -19,7 +19,8 @@ define([
     'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
-], function (_, $, unitTestUtils, template, ModelDocument, ViewDocument) {
+], function (_, $, unitTestUtils, template, ModelDocument, ViewDocument)
+{
     "use strict";
 
     var testAttribute;
@@ -35,7 +36,8 @@ define([
     window.dcp.templates = window.dcp.templates || {};
     _.defaults(window.dcp.templates, template);
 
-    testAttribute = function (config) {
+    testAttribute = function (config)
+    {
 
         var title = config.title,
             attributeDefinition = config.attribute,
@@ -43,15 +45,20 @@ define([
             options = config.options || {},
             otherValue = config.otherValue,
             familyStructure,
-            modelDocument, currentSandbox, localAttrId, getSandbox = function () {
-            return currentSandbox;
-        }, findWidgetName = function ($element) {
-            return _.find(_.keys($element.data()), function (currentKey) {
-                return currentKey.indexOf("dcpDcp") !== -1;
-            });
-        };
+            launchTest,
+            modelDocument, currentSandbox, localAttrId, getSandbox = function ()
+            {
+                return currentSandbox;
+            }, findWidgetName = function ($element)
+            {
+                return _.find(_.keys($element.data()), function (currentKey)
+                {
+                    return currentKey.indexOf("dcpDcp") !== -1;
+                });
+            };
 
-        beforeEach(function () {
+        beforeEach(function ()
+        {
             familyStructure = options.attributes || unitTestUtils.generateFamilyStructure(config.attribute, options.renderMode, initialValue);
             currentSandbox = unitTestUtils.generateSandBox(config, $("#render"));
             //Generate mock model to test interaction between model, view and widget
@@ -63,201 +70,292 @@ define([
             localAttrId = familyStructure.localeAttrId;
         });
 
-        afterEach(function () {
+        afterEach(function ()
+        {
             modelDocument.trigger("destroy");
         });
 
-        describe(title, function () {
+        launchTest = function launchTest(view, executeTest)
+        {
+            view.listenTo(view, "renderDone", function viewRenderDone()
+            {
+                executeTest();
+            });
+            view.listenTo(modelDocument, "attributeRender", function execTestAfterRender(id)
+            {
+                if (id === localAttrId) {
+                    executeTest();
+                }
+            });
+            view.render();
+        };
 
-            it("dom", function () {
-                var $sandBox = getSandbox(), view;
-                view = new ViewDocument({model : modelDocument, el : $sandBox});
-                view.render();
-                expect($sandBox.find(".dcpAttribute[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__content--" + attributeDefinition.type + "[data-attrid=" + localAttrId + "]")).toExist();
+        describe(title, function ()
+        {
+
+            it("dom", function (done)
+            {
+                var $sandBox = getSandbox(), view, executeTest;
+                view = new ViewDocument({model: modelDocument, el: $sandBox});
+                executeTest = _.after(2, function executeTest()
+                {
+                    expect($sandBox.find(".dcpAttribute[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__content--" + attributeDefinition.type + "[data-attrid=" + localAttrId + "]")).toExist();
+                    done();
+                });
+                launchTest(view, executeTest);
             });
 
-            it("label", function () {
-                var $sandBox = getSandbox(), view, newLabel = _.uniqueId(title);
+            it("label", function (done)
+            {
+                var $sandBox = getSandbox(), view, newLabel = _.uniqueId(title), executeTest;
                 var iniLabel = familyStructure[1].label;
 
-                view = new ViewDocument({model : modelDocument, el : $sandBox});
-                view.render();
-                expect($sandBox.find(".dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
-                modelDocument.get("attributes").get(localAttrId).set("label", newLabel);
-                expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toHaveText(newLabel);
+                view = new ViewDocument({model: modelDocument, el: $sandBox});
+                executeTest = _.after(2, function executeTest()
+                {
+                    expect($sandBox.find(".dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
+                    modelDocument.get("attributes").get(localAttrId).set("label", newLabel);
+                    expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toHaveText(newLabel);
+                    done();
+                });
+                launchTest(view, executeTest);
             });
 
-            describe("Value", function () {
+            describe("Value", function ()
+            {
                 /* Check the initialValue on the widget and the attribute model*/
-                it("InitialValue", function () {
-                    var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    widgetValue = widget.getValue();
-                    if (_.isArray(initialValue)) {
-                        // verify each values
-                        _.each(initialValue, function (v, k) {
-                            expect(modelValue[k].value).toEqual(v.value);
-                            expect(widgetValue[k].value).toEqual(v.value);
-                        });
+                it("InitialValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        widgetValue = widget.getValue();
+                        if (_.isArray(initialValue)) {
+                            // verify each values
+                            _.each(initialValue, function (v, k)
+                            {
+                                expect(modelValue[k].value).toEqual(v.value);
+                                expect(widgetValue[k].value).toEqual(v.value);
+                            });
 
-                    } else {
-                        expect(modelValue.value).toEqual(initialValue.value);
-                        expect(widgetValue.value).toEqual(initialValue.value);
-                    }
+                        } else {
+                            expect(modelValue.value).toEqual(initialValue.value);
+                            expect(widgetValue.value).toEqual(initialValue.value);
+                        }
+                        done();
+                    });
+                    launchTest(view, executeTest);
+
                 });
                 /* Check the setValue method of the attribute model*/
-                it("ModelSetValue", function () {
-                    var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    modelDocument.get("attributes").get(localAttrId).set("attributeValue", otherValue);
-                    modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    widgetValue = widget.getValue();
+                it("ModelSetValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        modelDocument.get("attributes").get(localAttrId).set("attributeValue", otherValue);
+                        modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        widgetValue = widget.getValue();
 
-                    if (_.isArray(otherValue)) {
-                        // verify each values
-                        _.each(otherValue, function (v, k) {
-                            expect(modelValue[k].value).toEqual(v.value);
-                            expect(widgetValue[k].value).toEqual(v.value);
-                        });
-                    } else {
-                        expect(otherValue.value).toEqual(widgetValue.value);
-                        expect(modelValue.value).toEqual(widgetValue.value);
-                    }
+                        if (_.isArray(otherValue)) {
+                            // verify each values
+                            _.each(otherValue, function (v, k)
+                            {
+                                expect(modelValue[k].value).toEqual(v.value);
+                                expect(widgetValue[k].value).toEqual(v.value);
+                            });
+                        } else {
+                            expect(otherValue.value).toEqual(widgetValue.value);
+                            expect(modelValue.value).toEqual(widgetValue.value);
+                        }
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
                 /* Check the setValue method of the widget*/
-                it("WidgetSetValue", function () {
-                    var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    widget.setValue(otherValue);
-                    widgetValue = widget.getValue();
-                    modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
-                    if (_.isArray(initialValue)) {
-                        // verify each values
-                        _.each(otherValue, function (v, k) {
-                            expect(modelValue[k].value).toEqual(v.value);
-                            expect(widgetValue[k].value).toEqual(v.value);
-                        });
-                    } else {
-                        expect(otherValue.value).toEqual(modelValue.value);
-                        expect(widgetValue.value).toEqual(modelValue.value);
-                    }
+                it("WidgetSetValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        widget.setValue(otherValue);
+                        widgetValue = widget.getValue();
+                        modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
+                        if (_.isArray(initialValue)) {
+                            // verify each values
+                            _.each(otherValue, function (v, k)
+                            {
+                                expect(modelValue[k].value).toEqual(v.value);
+                                expect(widgetValue[k].value).toEqual(v.value);
+                            });
+                        } else {
+                            expect(otherValue.value).toEqual(modelValue.value);
+                            expect(widgetValue.value).toEqual(modelValue.value);
+                        }
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
             });
 
-            describe("Event No Change", function () {
+            describe("Event No Change", function ()
+            {
                 /* Check the dcpattributechange event of the widget */
-                it("WidgetEventFromSetInitialValue", function () {
-                    var $sandBox = getSandbox(), view, $content, widget, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    $content.on("dcpattributechange", change);
+                it("WidgetEventFromSetInitialValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, widget, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        $content.on("dcpattributechange", change);
 
-                    widget.setValue(initialValue);
+                        widget.setValue(initialValue);
 
-                    expect(change.calls.count()).toEqual(0);
+                        expect(change.calls.count()).toEqual(0);
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
-                it("WidgetEventFromModelSetInitial", function () {
-                    var $sandBox = getSandbox(), view, $content, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    $content.on("dcpattributechange", change);
-                    modelDocument.get("attributes").get(localAttrId).set("attributeValue", initialValue);
+                it("WidgetEventFromModelSetInitial", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        $content.on("dcpattributechange", change);
+                        modelDocument.get("attributes").get(localAttrId).set("attributeValue", initialValue);
 
-                    expect(change.calls.count()).toEqual(0);
-                });
-                /* Check the event of the modelAttribute */
-                it("ModelEventFromWidgetSetInitialValue", function () {
-                    var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    modelAttribute = modelDocument.get("attributes").get(localAttrId);
-                    modelAttribute.on("change:value", change);
-                    widget.setValue(initialValue);
+                        expect(change.calls.count()).toEqual(0);
+                        done();
+                    });
+                    launchTest(view, executeTest);
 
-                    expect(change.calls.count()).toEqual(0);
                 });
                 /* Check the event of the modelAttribute */
-                it("ModelEventFromModelSetInitial", function () {
-                    var $sandBox = getSandbox(), view, modelAttribute, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    modelAttribute = modelDocument.get("attributes").get(localAttrId);
-                    modelAttribute.on("change:value", change);
-                    modelAttribute.set("attributeValue", initialValue);
-                    expect(change.calls.count()).toEqual(0);
+                it("ModelEventFromWidgetSetInitialValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        modelAttribute = modelDocument.get("attributes").get(localAttrId);
+                        modelAttribute.on("change:value", change);
+                        widget.setValue(initialValue);
+
+                        expect(change.calls.count()).toEqual(0);
+                        done();
+                    });
+                    launchTest(view, executeTest);
+
+                });
+                /* Check the event of the modelAttribute */
+                it("ModelEventFromModelSetInitial", function (done)
+                {
+                    var $sandBox = getSandbox(), view, modelAttribute, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        modelAttribute = modelDocument.get("attributes").get(localAttrId);
+                        modelAttribute.on("change:value", change);
+                        modelAttribute.set("attributeValue", initialValue);
+                        expect(change.calls.count()).toEqual(0);
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
             });
-            describe("Event Change", function () {
+            describe("Event Change", function ()
+            {
                 /* Check the dcpattributechange event of the widget */
-                it("WidgetEventFromSetValue", function () {
-                    var $sandBox = getSandbox(), view, $content, widget, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    $content.on("dcpattributechange", change);
-                    widget.setValue(otherValue);
+                it("WidgetEventFromSetValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, widget, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        $content.on("dcpattributechange", change);
+                        widget.setValue(otherValue);
 
-                    expect(change.calls.count()).toEqual(1);
+                        expect(change.calls.count()).toEqual(1);
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
-                it("WidgetEventFromModelSet", function () {
-                    var $sandBox = getSandbox(), view, $content, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    $content.on("dcpattributechange", change);
-                    modelDocument.get("attributes").get(localAttrId).set("attributeValue", otherValue);
+                it("WidgetEventFromModelSet", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        $content.on("dcpattributechange", change);
+                        modelDocument.get("attributes").get(localAttrId).set("attributeValue", otherValue);
 
-                    expect(change.calls.count()).toEqual(1);
-                });
-                /* Check the event of the modelAttribute */
-                it("ModelEventFromWidgetSetValue", function () {
-                    var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
-                    widget = $content.data(findWidgetName($content));
-                    modelAttribute = modelDocument.get("attributes").get(localAttrId);
-                    modelAttribute.on("change:attributeValue", change);
-                    widget.setValue(otherValue);
-
-                    expect(change.calls.count()).toEqual(1);
+                        expect(change.calls.count()).toEqual(1);
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
                 /* Check the event of the modelAttribute */
-                it("ModelEventFromModelSet", function () {
-                    var $sandBox = getSandbox(), view, modelAttribute, change;
-                    view = new ViewDocument({model : modelDocument, el : $sandBox});
-                    view.render();
-                    change = jasmine.createSpy("change");
-                    modelAttribute = modelDocument.get("attributes").get(localAttrId);
-                    modelAttribute.on("change:attributeValue", change);
-                    modelAttribute.set("attributeValue", otherValue);
-                    expect(change.calls.count()).toEqual(1);
+                it("ModelEventFromWidgetSetValue", function (done)
+                {
+                    var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        $content = $sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]");
+                        widget = $content.data(findWidgetName($content));
+                        modelAttribute = modelDocument.get("attributes").get(localAttrId);
+                        modelAttribute.on("change:attributeValue", change);
+                        widget.setValue(otherValue);
+
+                        expect(change.calls.count()).toEqual(1);
+                        done();
+                    });
+                    launchTest(view, executeTest);
+                });
+                /* Check the event of the modelAttribute */
+                it("ModelEventFromModelSet", function (done)
+                {
+                    var $sandBox = getSandbox(), view, modelAttribute, change, executeTest;
+                    view = new ViewDocument({model: modelDocument, el: $sandBox});
+                    executeTest = _.after(2, function executeTest()
+                    {
+                        change = jasmine.createSpy("change");
+                        modelAttribute = modelDocument.get("attributes").get(localAttrId);
+                        modelAttribute.on("change:attributeValue", change);
+                        modelAttribute.set("attributeValue", otherValue);
+                        expect(change.calls.count()).toEqual(1);
+                        done();
+                    });
+                    launchTest(view, executeTest);
                 });
             });
 

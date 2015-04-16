@@ -63,43 +63,58 @@ define([
 
         afterEach(function ()
         {
-            modelDocument.trigger("destroy");
+            if (window.location.hash !== "#displayDom") {
+                modelDocument.trigger("destroy");
+            }
         });
 
         describe(config.title, function checkAttribute()
         {
 
-            it("dom", function checkDom()
+            it("dom", function checkDom(done)
             {
-                var $sandBox = getSandbox(), view, iniLabel = familyStructure[1].label;
+                var $sandBox = getSandbox(), view, iniLabel = familyStructure[1].label, executeTest;
                 view = new ViewDocument({model: modelDocument, el: $sandBox});
-                view.render();
-
-                expect($sandBox.find(".dcpFrame__content > .dcpAttribute > .dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
-                expect($sandBox.find(".dcpAttribute[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__content--" + config.attribute.type + "[data-attrid=" + localAttrId + "]")).toExist();
-                expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "]")).toExist();
-
-                if (expectedContent) {
-                    expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "]")).toHaveHtml(expectedContent);
-                }
-
-                _.each(expectedSubContents, function checkExpectedFilter(expectFilter)
+                executeTest = _.after(2, function executeTest()
                 {
-                    if (expectFilter.textValue === null) {
-                        expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toExist();
-                    } else {
-                        if (expectFilter.textValue) {
-                            expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toHaveText(expectFilter.textValue);
-                        }
-                        if (expectFilter.htmlValue) {
-                            expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toHaveHtml(expectFilter.htmlValue);
-                        }
+                    expect($sandBox.find(".dcpFrame__content > .dcpAttribute > .dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
+                    expect($sandBox.find(".dcpAttribute[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__content--" + config.attribute.type + "[data-attrid=" + localAttrId + "]")).toExist();
+                    expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "]")).toExist();
+
+                    if (expectedContent) {
+                        expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "]")).toHaveHtml(expectedContent);
                     }
 
+                    _.each(expectedSubContents, function checkExpectedFilter(expectFilter)
+                    {
+                        if (expectFilter.textValue === null) {
+                            expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toExist();
+                        } else {
+                            if (expectFilter.textValue) {
+                                expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toHaveText(expectFilter.textValue);
+                            }
+                            if (expectFilter.htmlValue) {
+                                expect($sandBox.find(".dcpAttribute__content .dcpCustomTemplate[data-attrid=" + localAttrId + "] " + expectFilter.filter)).toHaveHtml(expectFilter.htmlValue);
+                            }
+                        }
+
+                    });
+                    done();
                 });
+                view.listenTo(view, "renderDone", function viewRenderDone()
+                {
+                    executeTest();
+                });
+                view.listenTo(modelDocument, "attributeRender", function execTestAfterRender(id)
+                {
+                    if (id === localAttrId) {
+                        executeTest();
+                    }
+                });
+                view.render();
             });
 
 

@@ -1,9 +1,10 @@
 define([
     'underscore',
     'mustache',
+    'jquery',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.autocomplete'
-], function (_, Mustache)
+], function (_, Mustache, $)
 {
     'use strict';
 

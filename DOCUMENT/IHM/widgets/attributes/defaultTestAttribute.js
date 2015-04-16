@@ -28,15 +28,11 @@ define([
             afterEach(function ()
             {
                 var $sandBox = getSandbox();
+                $sandBox.off(".testu");
                 try {
                     if (window.location.hash !== "#displayDom") {
                         widget.call($sandBox, "destroy");
-                        if (options.noFixture) {
-                            _.defer(function ()
-                            {
-                                currentSandbox.remove();
-                            });
-                        }
+                        currentSandbox.remove();
                     }
                 } catch (e) {
                     //console.log(e);
@@ -46,34 +42,46 @@ define([
             describe(type + " : creation", function ()
             {
 
-                it("content", function ()
+                it("content", function (done)
                 {
                     var $sandBox = getSandbox();
+                    $sandBox.on("dcpattributewidgetready.testu", function() {
+                        expect($sandBox).not.toBeEmpty();
+                        done();
+                    });
                     widget.call($sandBox, options);
-                    expect($sandBox).not.toBeEmpty();
                 });
 
-                it("class", function ()
+                it("event", function (done)
                 {
                     var $sandBox = getSandbox();
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        expect(true).toBe(true);
+                        done();
+                    });
                     widget.call($sandBox, options);
-                    expect($sandBox).toHaveClass("dcpAttribute__content");
                 });
 
-                it("event", function ()
+                it("class", function (done)
                 {
                     var $sandBox = getSandbox();
-                    spyOnEvent($sandBox, 'dcpattributecreate');
+                    $sandBox.on("dcpattributewidgetready.testu", function() {
+                        expect($sandBox).toHaveClass("dcpAttribute__content");
+                        done();
+                    });
                     widget.call($sandBox, options);
-                    expect('dcpattributecreate').toHaveBeenTriggeredOn($sandBox);
                 });
 
-                it("data", function ()
+                it("data", function (done)
                 {
                     var $sandBox = getSandbox();
+                    $sandBox.on("dcpattributewidgetready.testu", function() {
+                        expect($sandBox).toHaveAttr("data-type", widget.call($sandBox, "getType"));
+                        expect($sandBox).toHaveAttr("data-attrid", widget.call($sandBox, "option", "id"));
+                        done();
+                    });
                     widget.call($sandBox, options);
-                    expect($sandBox).toHaveAttr("data-type", widget.call($sandBox, "getType"));
-                    expect($sandBox).toHaveAttr("data-attrid", widget.call($sandBox, "option", "id"));
                 });
 
             });
@@ -81,39 +89,23 @@ define([
             describe(type + " : destroy", function ()
             {
                 if (!options.noDestroyTesting) {
-                    it("content", function ()
+                    it("clean", function (done)
                     {
                         var $sandBox = getSandbox();
+                        $sandBox.on("dcpattributewidgetready.testu", function() {
+                            widget.call($sandBox, "destroy");
+                        });
+                        $sandBox.on("dcpattributedestroy.testu", function ()
+                        {
+                            expect($sandBox).toBeEmpty();
+                            expect($sandBox).toHaveAttr("class", "");
+                            expect($sandBox).not.toHaveAttr("data-type");
+                            expect($sandBox).not.toHaveAttr("data-attrid");
+                            done();
+                        });
                         widget.call($sandBox, options);
-                        widget.call($sandBox, "destroy");
-                        expect($sandBox).toBeEmpty();
                     });
 
-                    it("class", function ()
-                    {
-                        var $sandBox = getSandbox();
-                        widget.call($sandBox, options);
-                        widget.call($sandBox, "destroy");
-                        expect($sandBox).toHaveAttr("class", "");
-                    });
-
-                    it("event", function ()
-                    {
-                        var $sandBox = getSandbox();
-                        spyOnEvent($sandBox, 'dcpattributedestroy');
-                        widget.call($sandBox, options);
-                        widget.call($sandBox, "destroy");
-                        expect('dcpattributedestroy').toHaveBeenTriggeredOn($sandBox);
-                    });
-
-                    it("data", function ()
-                    {
-                        var $sandBox = getSandbox();
-                        widget.call($sandBox, options);
-                        widget.call($sandBox, "destroy");
-                        expect($sandBox).not.toHaveAttr("data-type");
-                        expect($sandBox).not.toHaveAttr("data-attrid");
-                    });
                 }
             });
 
@@ -124,126 +116,125 @@ define([
                     setFixtures(sandbox());
                 });
 
-                it("equality", function ()
+                it("equality", function (done)
                 {
                     var $sandBox = getSandbox(), attrValue;
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        widget.call($sandBox, "setValue", value);
+                        attrValue = widget.call($sandBox, "getValue");
+                        expect(value.value).toEqual(attrValue.value);
+                        done();
+                    });
                     widget.call($sandBox, options);
-                    widget.call($sandBox, "setValue", value);
-                    attrValue = widget.call($sandBox, "getValue");
-                    expect(value.value).toEqual(attrValue.value);
                 });
 
-                it("event", function ()
+                it("event", function (done)
                 {
                     var $sandBox = getSandbox();
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        widget.call($sandBox, "setValue", value);
+                        expect('dcpattributechange').toHaveBeenTriggeredOn($sandBox);
+                        done();
+                    });
                     spyOnEvent($sandBox, 'dcpattributechange');
                     widget.call($sandBox, options);
-                    widget.call($sandBox, "setValue", value);
-                    expect('dcpattributechange').toHaveBeenTriggeredOn($sandBox);
+
                 });
             });
 
             describe(type + " : getValue", function ()
             {
 
-                it("init", function ()
+                it("init", function (done)
                 {
                     var $sandBox = getSandbox(), attrValue;
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        attrValue = widget.call($sandBox, "getValue");
+                        expect(value.value).toEqual(attrValue.value);
+                        done();
+                    });
                     widget.call($sandBox, _.defaults({"attributeValue": value}, options));
-                    attrValue = widget.call($sandBox, "getValue");
-                    expect(value.value).toEqual(attrValue.value);
+
                 });
             });
 
             describe(type + " : link", function ()
             {
-                it("hasLink", function ()
+                it("hasLink", function (done)
                 {
                     var $sandBox = getSandbox(), value;
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        value = widget.call($sandBox, "hasLink");
+                        expect(value).toBeTruthy();
+                        widget.call($sandBox, "option", "renderOptions", {});
+                        value = widget.call($sandBox, "hasLink");
+                        expect(value).toBeFalsy();
+                        done();
+                    });
                     widget.call($sandBox, _.defaults({"renderOptions": {htmlLink: {url: "http://www.anakeen.com"}}}, options));
-                    value = widget.call($sandBox, "hasLink");
-                    expect(value).toBeTruthy();
-                    widget.call($sandBox, "option", "renderOptions", {});
-                    value = widget.call($sandBox, "hasLink");
-                    expect(value).toBeFalsy();
                 });
 
-                it("getLink", function ()
+                it("getLink", function (done)
                 {
                     var $sandBox = getSandbox(), value;
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        value = widget.call($sandBox, "getLink");
+                        expect(value.url).toEqual("http://www.anakeen.com");
+                        widget.call($sandBox, "option", "renderOptions", {});
+                        value = widget.call($sandBox, "getLink");
+                        expect(value).toBeNull();
+                        done();
+                    });
                     widget.call($sandBox, _.defaults({"renderOptions": {htmlLink: {url: "http://www.anakeen.com"}}}, options));
-                    value = widget.call($sandBox, "getLink");
-                    expect(value.url).toEqual("http://www.anakeen.com");
-                    widget.call($sandBox, "option", "renderOptions", {});
-                    value = widget.call($sandBox, "getLink");
-                    expect(value).toBeNull();
-                });
-            });
-
-            describe(type + " : flashElement", function ()
-            {
-
-                beforeEach(function ()
-                {
-                    jasmine.clock().install();
-                });
-
-                afterEach(function ()
-                {
-                    jasmine.clock().uninstall();
-                });
-
-                it("FlashClass", function ()
-                {
-                    var $sandBox = getSandbox();
-                    widget.call($sandBox, options);
-                    widget.call($sandBox, "flashElement");
-                    expect($sandBox).toHaveClass("dcpAttribute__value--flash");
-                    jasmine.clock().tick(11);
-                    expect($sandBox).not.toHaveClass("dcpAttribute__value--flash");
-                });
-
-                it("EndFlashClass", function ()
-                {
-                    var $sandBox = getSandbox();
-                    widget.call($sandBox, options);
-                    widget.call($sandBox, "flashElement");
-                    jasmine.clock().tick(11);
-                    expect($sandBox).toHaveClass("dcpAttribute__value--endflash");
-                    jasmine.clock().tick(601);
-                    expect($sandBox).not.toHaveClass("dcpAttribute__value--endflash");
                 });
             });
 
             describe(type + " : deleteButton", function ()
             {
 
-                it("Create", function ()
+                it("Create", function (done)
                 {
                     var $sandBox = getSandbox();
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        if (options.mode && options.mode === "write") {
+                            expect($sandBox.find(".dcpAttribute__content__button--delete")).toExist();
+                        } else {
+                            expect($sandBox.find(".dcpAttribute__content__button--delete")).not.toExist();
+                        }
+                        done();
+                    });
                     widget.call($sandBox, _.defaults({"deleteButton": true}, options));
-                    if (options.mode && options.mode === "write") {
-                        expect($sandBox.find(".dcpAttribute__content__button--delete")).toExist();
-                    } else {
-                        expect($sandBox.find(".dcpAttribute__content__button--delete")).not.toExist();
-                    }
                 });
 
-                it("NoRemoveButton", function ()
+                it("NoRemoveButton", function (done)
                 {
                     var $sandBox = getSandbox();
+                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    {
+                        expect($sandBox.find(".dcpAttribute__content__button--delete")).not.toExist();
+                        done();
+                    });
                     widget.call($sandBox, _.defaults({"deleteButton": false}, options));
-                    expect($sandBox.find(".dcpAttribute__content__button--delete")).not.toExist();
                 });
 
                 if (options.mode && options.mode === "write") {
-                    it("Event", function ()
+                    it("Event", function (done)
                     {
                         var $sandBox = getSandbox();
+                        $sandBox.on("dcpattributewidgetready.testu", function ()
+                        {
+                            spyOnEvent($sandBox, 'dcpattributedelete');
+                            $sandBox.find(".dcpAttribute__content__button--delete").trigger("click");
+                            expect('dcpattributedelete').toHaveBeenTriggeredOn($sandBox);
+                            done();
+                        });
                         widget.call($sandBox, _.defaults({"deleteButton": true}, options));
-                        spyOnEvent($sandBox, 'dcpattributedelete');
-                        $sandBox.find(".dcpAttribute__content__button--delete").trigger("click");
-                        expect('dcpattributedelete').toHaveBeenTriggeredOn($sandBox);
                     });
                 }
             });
