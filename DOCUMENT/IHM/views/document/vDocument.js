@@ -41,7 +41,7 @@ define([
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
 
-            $(window).on("resize."+this.model.cid, _.bind(this.resizeForFooter, this));
+            $(window).on("resize." + this.model.cid, _.bind(this.resizeForFooter, this));
         },
 
         /**
@@ -226,7 +226,13 @@ define([
                             documentView.selectedTab = tabId;
                             documentView.recordSelectedTab(tabId);
                         }
-                        _.defer(function() {currentView.model.get("attributes").get(tabId).trigger("showTab");});
+                        _.defer(function selectOneTab()
+                        {
+                            var tab = currentView.model.get("attributes").get(tabId);
+                            if (tab) {
+                                tab.trigger("showTab");
+                            }
+                        });
                     }
                 });
 
@@ -256,10 +262,11 @@ define([
         },
 
 
-        resizeForFooter: function vDocumentresizeForFooter() {
-            var $footer=this.$el.find(".dcpDocument__footer");
+        resizeForFooter: function vDocumentresizeForFooter()
+        {
+            var $footer = this.$el.find(".dcpDocument__footer");
             if ($footer.length > 0) {
-                var footerHeight=$footer.height();
+                var footerHeight = $footer.height();
                 if (footerHeight > 0) {
                     $("body").css("margin-bottom", footerHeight + "px");
                 }
@@ -611,7 +618,7 @@ define([
                     title: i18n.___("Confirm close document", "ddui"),
                     width: "510px",
                     height: "150px",
-                    maxWidth : $(window).width(),
+                    maxWidth: $(window).width(),
                     messages: {
                         okMessage: i18n.___("Abord modification", "ddui"),
                         cancelMessage: i18n.___("Stay on the form", "ddui"),
