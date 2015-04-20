@@ -214,18 +214,21 @@ define([
                     $sandox.documentController("addEvent", "ready", {"once": true}, function test_launchEvents()
                     {
                         var mockReady = getMockFunction(), mockBeforeSave = getMockFunction(), mockClose = getMockFunction(),
-                            mockAfterSave = getMockFunction(), mockSuccess = getMockFunction();
+                            mockAfterSave = getMockFunction(), mockSuccess = getMockFunction(), mockValidate = getMockFunction();
                         $sandox.documentController("addEvent", "ready", mockReady.fct);
+                        $sandox.documentController("addEvent", "validate", mockValidate.fct);
                         $sandox.documentController("addEvent", "beforeSave", mockBeforeSave.fct);
                         $sandox.documentController("addEvent", "close", mockClose.fct);
                         $sandox.documentController("addEvent", "afterSave", mockAfterSave.fct);
                         $sandox.documentController("saveDocument", {success: mockSuccess.fct});
                         //2 because auto launch ready
-                        expect(mockReady.fct.calls.count()).toEqual(2);
-                        expect(mockBeforeSave.fct.calls.count()).toEqual(1);
-                        expect(mockClose.fct.calls.count()).toEqual(1);
-                        expect(mockAfterSave.fct.calls.count()).toEqual(1);
-                        expect(mockSuccess.fct.calls.count()).toEqual(1);
+                        expect(mockReady.fct.calls.count()).toEqual(2, "ready count");
+                        expect(mockBeforeSave.fct.calls.count()).toEqual(1, "save count");
+                        expect(mockClose.fct.calls.count()).toEqual(1, "close count");
+                        expect(mockAfterSave.fct.calls.count()).toEqual(1, "after save count");
+                        expect(mockSuccess.fct.calls.count()).toEqual(1, "success count");
+                        //One for the data from the form, one form the data from the sync
+                        expect(mockValidate.fct.calls.count()).toEqual(2, "validate count");
                         done();
                     });
                 });
@@ -260,6 +263,113 @@ define([
 
             });
 
+            describe("properties", function ()
+            {
+
+                it("getProperty", function test_getProperty(done)
+                {
+                    var $sandox = getSandbox();
+                    $sandox.documentController(prepareDocumentController(documentOptions));
+                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_property()
+                    {
+                        _.each(currentValues.data.view.documentData.document.properties, function (value, attrid)
+                        {
+                            var currentValue;
+                            currentValue = $sandox.documentController("getProperty", attrid);
+                            expect(currentValue).toEqual(value, "for " + attrid);
+                        });
+                        done();
+                    });
+                });
+
+                it("getProperties", function test_getProperty(done)
+                {
+                    var $sandox = getSandbox();
+                    $sandox.documentController(prepareDocumentController(documentOptions));
+                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_property()
+                    {
+                        var properties = $sandox.documentController("getProperties");
+                        _.each(properties, function (value, attrid)
+                        {
+                            if (attrid === "viewId") {
+                                expect(documentOptions.viewId).toEqual(value, "for " + attrid);
+                                return;
+                            }
+                            if (attrid === "renderMode") {
+                                expect(currentValues.data.view.renderOptions.mode).toEqual(value, "for " + attrid);
+                                return;
+                            }
+                            expect(currentValues.data.view.documentData.document.properties[attrid]).toEqual(value, "for " + attrid);
+                        });
+                        done();
+                    });
+                });
+
+            });
+
+            describe("attributes", function ()
+            {
+
+                it("getAttribute", function test_getAttribute(done)
+                {
+                    var $sandox = getSandbox();
+                    $sandox.documentController(prepareDocumentController(documentOptions));
+                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_attribute()
+                    {
+                        _.each(currentValues.data.view.documentData.document.attributes, function (value, attrid)
+                        {
+                            var currentAttribute;
+                            currentAttribute = $sandox.documentController("getAttribute", attrid);
+                            expect(currentAttribute.getValue()).toEqual(value, "for " + attrid);
+                        });
+                        expect(function testUnkownAttribute()
+                        {
+                            $sandox.documentController("getAttribute", "unkown attribute id");
+                        }).toThrow();
+                        done();
+                    });
+                });
+
+                it("internalObject", function test_internalObject(done)
+                {
+                    var $sandox = getSandbox();
+                    $sandox.documentController(prepareDocumentController(documentOptions));
+                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_attribute()
+                    {
+                        var attribute = $sandox.documentController("getAttribute", "zoo_f_title");
+                        expect(attribute.id).toBeDefined("id");
+                        expect(attribute.id).toEqual("zoo_f_title", "Test id value");
+                        expect(attribute.getValue).toBeDefined("getValue");
+                        expect(attribute.getProperties).toBeDefined("getProperties");
+                        expect(attribute.getOptions).toBeDefined("getOptions");
+                        expect(attribute.getOption).toBeDefined("getOption");
+                        expect(attribute.getValue).toBeDefined("getValue");
+                        expect(attribute.setValue).toBeDefined("setValue");
+                        expect(attribute.getValue()).toBeUndefined("getValue of a frame");
+                        done();
+                    });
+                });
+
+                it("getAttributes", function test_getAttributes(done)
+                {
+                    var $sandox = getSandbox();
+                    $sandox.documentController(prepareDocumentController(documentOptions));
+                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_property()
+                    {
+                        var attributes = $sandox.documentController("getAttributes");
+                        _.each(attributes, function (attribute)
+                        {
+                            var type = attribute.getProperties().type;
+                            if (type !== "frame" && type !== "array" && type !== "tab") {
+                                expect(currentValues.data.view.documentData.document.attributes[attribute.id]).toBeDefined("for " + attribute.id);
+                            }
+                        });
+                        done();
+                    });
+                });
+
+            });
+
             describe("value", function ()
             {
 
@@ -273,7 +383,25 @@ define([
                         {
                             var currentValue;
                             currentValue = $sandox.documentController("getValue", attrid);
-                            expect(currentValue).toEqual(value);
+                            expect(currentValue).toEqual(value, "for "+attrid);
+                        });
+                        done();
+                    });
+                });
+
+                it("getValues", function (done)
+                {
+                    var $sandox = getSandbox();
+                    $sandox.documentController(prepareDocumentController(config));
+                    $sandox.documentController("addEvent", "ready", function ()
+                    {
+                        _.each(currentValues.data.view.documentData.document.attributes, function (value, attrid)
+                        {
+                            var values;
+                            values = $sandox.documentController("getValues", attrid);
+                            _.each(values, function(value, attrid) {
+                                expect(currentValues.data.view.documentData.document.attributes[attrid]).toEqual(value, "for " + attrid);
+                            });
                         });
                         done();
                     });
@@ -304,6 +432,148 @@ define([
                         done();
                     });
                 });
+
+            });
+
+            describe("arrayManipulation", function ()
+            {
+
+                describe("append",function() {
+                    it("non array attribute", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var appendNonArrayRow = function ()
+                            {
+                                $sandox.documentController("appendArrayRow", "zoo_date", {"element1": {value: "toto"}});
+                            };
+                            expect(appendNonArrayRow).toThrowError("Attribute zoo_date must be an attribute of type array");
+                            done();
+                        });
+                    });
+
+                    it("non good value", function(done) {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var appendNonArrayRow = function ()
+                            {
+                                $sandox.documentController("appendArrayRow", "zoo_array_dates", "toto");
+                            };
+                            expect(appendNonArrayRow).toThrowError("Values must be an object where each properties is an attribute of the array for zoo_array_dates");
+                            done();
+                        });
+                    });
+
+                    it("add row", function(done) {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var dates, length;
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            length = dates.length;
+                            $sandox.documentController("appendArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}});
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            expect(_.last(dates).value).toEqual("12-05-1985", "Values of new cell");
+                            expect(dates.length).toEqual(length + 1, "Number of row");
+                            done();
+                        });
+                    });
+                });
+
+                describe("insertBeforeArrayRow", function ()
+                {
+                    it("non array attribute", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var appendNonArrayRow = function ()
+                            {
+                                $sandox.documentController("insertBeforeArrayRow", "zoo_date", {"element1": {value: "toto"}});
+                            };
+                            expect(appendNonArrayRow).toThrowError("Attribute zoo_date must be an attribute of type array");
+                            done();
+                        });
+                    });
+
+                    it("non good value", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var appendNonArrayRow = function ()
+                            {
+                                $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", "toto");
+                            };
+                            expect(appendNonArrayRow).toThrowError("Values must be an object where each properties is an attribute of the array for zoo_array_dates");
+                            done();
+                        });
+                    });
+
+                    it("non good index", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var appendToBigIndex, appendToLowIndex, dates, length;
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            length = dates.length;
+                            appendToBigIndex = function ()
+                            {
+                                $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, length+1);
+                            };
+                            appendToLowIndex = function() {
+                                $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, -1);
+                            };
+                            expect(appendToBigIndex).toThrowError("Index must be between 0 and " +length);
+                            expect(appendToLowIndex).toThrowError("Index must be between 0 and " + length);
+                            done();
+                        });
+                    });
+
+                    it("append first row", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var dates, length;
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            length = dates.length;
+                            $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, 0);
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            expect(_.first(dates).value).toEqual("12-05-1985", "Values of new cell");
+                            expect(dates.length).toEqual(length + 1, "Number of row");
+                            done();
+                        });
+                    });
+
+                    it("append second row", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var dates, length;
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            length = dates.length;
+                            $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, 2);
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            expect(dates[2].value).toEqual("12-05-1985", "Values of new cell");
+                            expect(dates.length).toEqual(length + 1, "Number of row");
+                            done();
+                        });
+                    });
+                });
+
 
             });
 
