@@ -776,13 +776,7 @@ define([
          */
         deleteDocument: function documentControllerDelete(options)
         {
-            var currentWidget = this, destroy = this._model.destroy(options);
-            destroy.done(function documentController_destroyer()
-            {
-                currentWidget._initModel(currentWidget._getModelValue());
-                currentWidget._initView();
-                currentWidget._model.fetch();
-            });
+            this._model.deleteDocument(options);
         },
 
         /**

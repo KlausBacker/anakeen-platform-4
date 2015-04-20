@@ -553,18 +553,10 @@ define([
         /**
          * Delete the current document
          *
-         * BEWARE : the deletion delete the model => so this function trigger a reinit event that create a new model
          */
         deleteDocument: function dvDocumentDocumentDelete()
         {
-            var currentView = this, properties = this.model.getProperties();
-
-            this.model.destroy({
-                success: function vDocumentDestroyDone()
-                {
-                    currentView.trigger("reinit", properties);
-                }
-            });
+            this.model.deleteDocument();
         },
 
         /**

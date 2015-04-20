@@ -802,11 +802,18 @@ define([
             return false;
         },
 
-        destroy: function mDocumentDestroy(attributes, options)
+        deleteDocument : function mDocumentDelete(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
-                afterDone = function afterDone()
+                afterError = function afterError(resp) {
+                    currentModel.trigger('error', currentModel, resp);
+                },
+                afterDone = function afterDone(resp)
                 {
+                    if (!currentModel.set(currentModel.parse(resp, options), options)) {
+                        return false;
+                    }
+                    currentModel.trigger("sync", currentModel, resp, options);
                     currentModel.trigger("afterDelete", currentProperties);
                     currentModel.trigger("close", currentProperties);
                 };
@@ -816,14 +823,27 @@ define([
                 if (options.success) {
                     options.success = _.wrap(options.success, function (success)
                     {
-                        afterDone();
-                        return success.apply(this, arguments);
+                        afterDone.apply(this, _.rest(arguments));
+                        return success.apply(this, _.rest(arguments));
                     });
                 } else {
                     options.success = afterDone;
                 }
+                if (options.error) {
+                    options.error = _.wrap(options.error, function(error) {
+                        afterError();
+                        return error.apply(this, _.rest(arguments));
+                    });
+                }
                 this.trigger("displayLoading");
-                return Backbone.Model.prototype.destroy.call(this, attributes, options);
+                if (this.isNew()) {
+                    console.error("Unable to delete new document");
+                    if (options.error) {
+                        options.error();
+                    }
+                    return false;
+                }
+                return this.sync('delete', this, options);
             }
             return false;
         }
