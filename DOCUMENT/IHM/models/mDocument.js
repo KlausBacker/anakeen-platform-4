@@ -143,7 +143,7 @@ define([
                             arrayValues.push(currentValue[i] || {value: null});
                         }
                     } else {
-                        arrayValues = {value: null};
+                        arrayValues = [];//{value: null};
                     }
                     values[currentAttribute.id] = arrayValues;
                 } else {
