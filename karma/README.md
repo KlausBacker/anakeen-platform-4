@@ -21,6 +21,10 @@ The configuration is in the file `karma.conf.js` and in the `test-main.js`.
 
 You should modify the proxy options to indicate where is the dynacase URL (root url).
 
+## Local configuration
+
+You can add `karma.specific.conf.json` with specific configuration, this file is merged with `karma.default.conf.js`
+
 ## Links
 
 See [karma](https://karma-runner.github.io/0.12/index.html)
