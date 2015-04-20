@@ -584,6 +584,7 @@ define([
                 properties: view.documentData.document.properties,
                 menus: view.menu,
                 viewId: response.data.properties.requestIdentifier,
+                revision : view.documentData.document.properties.revision,
                 locale: view.locale.culture,
                 renderMode: renderMode || "view",
                 attributes: attributes,
