@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/password/loaderPassword',
-    'dcpDocument/widgets/attributes/defaultTestAttribute'
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute'
 ], function (widget, defaultTestSuite) {
     "use strict";
 

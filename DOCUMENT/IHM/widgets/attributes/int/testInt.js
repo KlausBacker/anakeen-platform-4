@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/int/loaderInt',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/int/intTestAttribute',
     'kendo-culture-fr'
 ], function (widget, defaultTestSuite, intTestSuite, kendo) {

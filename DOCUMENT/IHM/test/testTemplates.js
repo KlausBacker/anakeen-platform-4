@@ -2,11 +2,10 @@
 require([
     'jquery',
     'underscore',
-    'dcpDocumentTest/templatesTestAttribute'
+    'dcpDocumentTest/suiteTemplatesTestAttribute'
 ], function ($, _, templateTestSuite)
 {
     "use strict";
-
 
     var tplConfig = [
         {

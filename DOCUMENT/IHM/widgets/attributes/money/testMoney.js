@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/money/loaderMoney',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/int/intTestAttribute',
     'dcpDocument/widgets/attributes/double/doubleTestAttribute',
     'dcpDocument/widgets/attributes/money/moneyTestAttribute',

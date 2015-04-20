@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/enum/loaderEnum',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/enum/enumTestAttribute'
 ], function (widget, defaultTestSuite, enumTestSuite) {
     "use strict";

@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/date/loaderDate',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/date/dateTestAttribute',
     'kendo-culture-fr'
 ], function (widget, defaultTestSuite, dateTestSuite, kendo) {
