@@ -747,8 +747,8 @@ define([
         fetchDocument: function documentControllerFetchDocument(values, options)
         {
             var currentWidget = this;
-            options = _.isUndefined(values) ? {} : values;
-            if (!_.isObject(options)) {
+            values = _.isUndefined(values) ? {} : values;
+            if (!_.isObject(values)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
             _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
