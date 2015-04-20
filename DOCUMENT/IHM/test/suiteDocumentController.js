@@ -438,7 +438,8 @@ define([
             describe("arrayManipulation", function ()
             {
 
-                describe("append",function() {
+                describe("append", function ()
+                {
                     it("non array attribute", function (done)
                     {
                         var $sandox = getSandbox();
@@ -454,7 +455,8 @@ define([
                         });
                     });
 
-                    it("non good value", function(done) {
+                    it("non good value", function (done)
+                    {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
                         $sandox.documentController("addEvent", "ready", function ()
@@ -468,7 +470,8 @@ define([
                         });
                     });
 
-                    it("add row", function(done) {
+                    it("add row", function (done)
+                    {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
                         $sandox.documentController("addEvent", "ready", function ()
@@ -528,12 +531,13 @@ define([
                             length = dates.length;
                             appendToBigIndex = function ()
                             {
-                                $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, length+1);
+                                $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, length + 1);
                             };
-                            appendToLowIndex = function() {
+                            appendToLowIndex = function ()
+                            {
                                 $sandox.documentController("insertBeforeArrayRow", "zoo_array_dates", {"zoo_date_array": {"value": "12-05-1985"}}, -1);
                             };
-                            expect(appendToBigIndex).toThrowError("Index must be between 0 and " +length);
+                            expect(appendToBigIndex).toThrowError("Index must be between 0 and " + length);
                             expect(appendToLowIndex).toThrowError("Index must be between 0 and " + length);
                             done();
                         });
@@ -574,6 +578,65 @@ define([
                     });
                 });
 
+                describe("arrayRemoveRow", function ()
+                {
+
+                    it("non array attribute", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var removeNonArrayRow = function ()
+                            {
+                                $sandox.documentController("removeArrayRow", "zoo_date", 0);
+                            };
+                            expect(removeNonArrayRow).toThrowError("Attribute zoo_date must be an attribute of type array");
+                            done();
+                        });
+                    });
+
+                    it("non good index", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var removeToBigIndex, removeToLowIndex, dates, length;
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            length = dates.length - 1;
+                            removeToBigIndex = function ()
+                            {
+                                $sandox.documentController("removeArrayRow", "zoo_array_dates", length + 1);
+                            };
+                            removeToLowIndex = function ()
+                            {
+                                $sandox.documentController("removeArrayRow", "zoo_array_dates", -1);
+                            };
+                            expect(removeToBigIndex).toThrowError("Index must be between 0 and " + length + " for zoo_array_dates");
+                            expect(removeToLowIndex).toThrowError("Index must be between 0 and " + length + " for zoo_array_dates");
+                            done();
+                        });
+
+                    });
+
+                    it("remove one row", function (done)
+                    {
+                        var $sandox = getSandbox();
+                        $sandox.documentController(prepareDocumentController(config));
+                        $sandox.documentController("addEvent", "ready", function ()
+                        {
+                            var dates, length;
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            length = dates.length;
+                            $sandox.documentController("removeArrayRow", "zoo_array_dates", 0);
+                            dates = $sandox.documentController("getValue", "zoo_date_array");
+                            expect(dates.length).toEqual(length - 1, "Number of row");
+                            done();
+                        });
+                    });
+
+                });
 
             });
 
