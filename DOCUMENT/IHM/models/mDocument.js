@@ -733,7 +733,7 @@ define([
             };
         },
 
-        fetch: function mDocumentFetch(attributes, options)
+        fetch: function mDocumentFetch(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true), lockModel,
                 afterDone = function afterDone()
@@ -748,7 +748,7 @@ define([
                     options.success = _.wrap(options.success, function (success)
                     {
                         afterDone();
-                        return success.apply(this, arguments);
+                        return success.apply(this, _.rest(arguments));
                     });
                 } else {
                     options.success = afterDone;
@@ -759,15 +759,15 @@ define([
                     lockModel.destroy({
                         success: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(currentModel, attributes, options);
+                            Backbone.Model.prototype.fetch.call(currentModel);
                         },
                         error: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(currentModel, attributes, options);
+                            Backbone.Model.prototype.fetch.call(currentModel);
                         }
                     });
                 } else {
-                    return Backbone.Model.prototype.fetch.call(this, attributes, options);
+                    return Backbone.Model.prototype.fetch.call(this, options);
                 }
             } else {
                 //cancelled : re-set initial properties
@@ -791,7 +791,7 @@ define([
                     options.success = _.wrap(options.success, function (success)
                     {
                         afterDone();
-                        return success.apply(this, arguments);
+                        return success.apply(this, _.rest(arguments));
                     });
                 } else {
                     options.success = afterDone;
