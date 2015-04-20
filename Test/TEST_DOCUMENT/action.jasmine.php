@@ -51,10 +51,14 @@ function jasmine(Action & $action)
         }
     }
 
+    if (empty($testDocumentLoader)) {
+        throw new Exception("No tests, too much restriction ?");
+    }
+
     $js = array(
         $require["require"],
         $require["config"],
-        'lib/KendoUI/2014.3/js/jquery.js?ws=' . $version,
+        $require["kendo"],
         'lib/jasmine/jasmine.js?ws=' . $version,
         'lib/jasmine/jasmine-html.js?ws=' . $version,
         'lib/jasmine/boot.js?ws=' . $version,
