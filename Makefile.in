@@ -39,9 +39,9 @@ webinst-full:
 	-rm -f content.tar.gz
 	-rm -fr localpub
 
-webinst-light: private PACKAGE=@PACKAGE@-light
+webinst-light: PACKAGE=@PACKAGE@-light
 
-webinst-light:
+webinst-light: 
 	-rm -fr $(shell pwd)/localpub
 	make publish pubdir=$(shell pwd)/localpub
 	php ./prepareElementForLight.php -f $(shell pwd)/info.xml
