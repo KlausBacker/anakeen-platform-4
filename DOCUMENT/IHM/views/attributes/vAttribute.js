@@ -32,14 +32,14 @@ define([
         events: function ()
         {
             if (this.customView === false) {
-
                 return {
                     "dcpattributechange .dcpAttribute__content": "updateValue",
                     "dcpattributedelete .dcpAttribute__content": "deleteValue",
                     "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
                     "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
                     "dcpattributechangedocument .dcpAttribute__content": "changeDocument",
-                    "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected"
+                    "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
+                    "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
                 };
             } else {
                 // No events in custom
@@ -70,6 +70,9 @@ define([
                 }
             } else {
                 this.customView = false;
+            }
+            if (options.secondView) {
+                this.noRenderEvent = false;
             }
             this.options = options;
         },
@@ -147,12 +150,15 @@ define([
                     this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--up");
                     this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--up");
                 }
-
                 this.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 
             // console.timeEnd("render attribute " + this.model.id);
-            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
+            this.renderDone = true;
+            if (this.customView) {
+                this.widgetReady = true;
+            }
+            this.triggerRenderDone();
             return this;
         },
 
@@ -298,8 +304,6 @@ define([
                         }
                     }
                 });
-            } else {
-                console.log("NO delete", this.model.id, data, this.model);
             }
         },
 
@@ -527,6 +531,18 @@ define([
                     return $.fn.dcpDocid;
                 default:
                     return $.fn.dcpText;
+            }
+        },
+
+        setWidgetReady : function Vattribute_setWidgetReady() {
+            this.widgetReady = true;
+            this.triggerRenderDone();
+        },
+
+        triggerRenderDone : function vAttribute_triggerRenderDone() {
+            if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
+                this.model.trigger("renderDone", {model: this.model, $el: this.$el});
+                this.triggerRender = true;
             }
         },
 

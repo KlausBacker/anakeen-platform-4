@@ -8,15 +8,14 @@ if (window.__karma__) {
 require([
     'underscore',
     'jquery',
+    'dcpDocument/test/UnitTestUtilities',
     'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
-], function (_, $, template, ModelDocument, ViewDocument) {
+], function (_, $, unitTestUtils, template, ModelDocument, ViewDocument) {
     "use strict";
 
-    var testDocument,
-        generateFamilyStructure,
-        generateDocumentContent;
+    var testDocument;
 
     template = JSON.parse(template);
 
@@ -30,39 +29,6 @@ require([
 
     window.dcp.templates = _.defaults(window.dcp.templates, template) || template;
 
-    // Mock family definition
-    generateFamilyStructure = function (options) {
-
-        var structure = [], attrStruct = {
-            "id" :           "test_f_frame",
-            "visibility" :   "W",
-            "label" :        "frame",
-            "type" :         "frame",
-            "logicalOrder" : 0,
-            "multiple" :     false,
-            "options" :      [],
-            "renderMode" : options.renderMode,
-            "content" :      {}
-        };
-
-        structure.push(attrStruct);
-
-        return structure;
-    };
-
-    // Clone the value to avoid cross modification between test
-    generateDocumentContent = function (localeAttrId, value) {
-        var data = {};
-
-        value = _.clone(value);
-
-        if (localeAttrId) {
-            data[localeAttrId] = value;
-        }
-
-        return data;
-    };
-
     testDocument = function (title, options) {
         var modelDocument, currentSandbox, getSandbox = function () {
             return currentSandbox;
@@ -70,38 +36,12 @@ require([
 
         describe(title + " Test Document", function () {
             beforeEach(function () {
-                var localId = _.uniqueId("Document");
-                var $renderZone = $("#render");
-
-                if (window.location.hash === "#displayDom") {
-                    if ($renderZone.length === 0) {
-                        $renderZone = $("body");
-                    }
-                    currentSandbox = $("<div></div>");
-                    if ($renderZone.length === 0) {
-                        $renderZone = $("body");
-                    }
-                    $renderZone.append(currentSandbox);
-                } else {
-                    currentSandbox = setFixtures(sandbox());
-                }
-                window.dcp = window.dcp || {};
-                modelDocument = new ModelDocument(
-                    {
-                        properties :    {
-                            id :       localId,
-                            title : title + "_" + localId,
-                            fromname : localId,
-                            family :   {
-                                title : localId
-                            }
-                        },
-                        menus :         [],
-                        locale : options.locale || {"culture": "fr-FR"},
-                        renderMode : options.renderMode || "view",
-                        attributes : options.attributes || generateFamilyStructure(options),
-                        renderOptions : {}
-                    }
+                currentSandbox = unitTestUtils.generateSandBox(options, $("#render"));
+                //Generate mock model to test interaction between model, view and widget
+                modelDocument = unitTestUtils.generateModelDocument(options,
+                    title,
+                    options.attributes || unitTestUtils.generateFamilyStructure({}, options.renderMode),
+                    options.renderOptions || {}
                 );
             });
 

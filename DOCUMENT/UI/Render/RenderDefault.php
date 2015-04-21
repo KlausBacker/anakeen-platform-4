@@ -54,22 +54,26 @@ class RenderDefault implements IRenderConfig
             );
         } else {
             $jsRef = array(
-                "traceError" => "DOCUMENT/IHM/dynacaseReportLight.js?ws=" . $version
+                "traceError" => "DOCUMENT/IHM/dynacaseReportLight.js?ws="
+                    . $version
             );
         }
         return $jsRef = array_merge(
             $jsRef, array(
-            "require" => "lib/RequireJS/require.js?ws=" . $version,
-            "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
-            "kendo" => $modeDebug === "FALSE"
-                ?
-                "lib/KendoUI/2014.3/js/kendo-ddui-builded.min.js?ws=" . $version
-                :
-                "lib/KendoUI/2014.3/js/kendo-ddui-builded.js?ws=" . $version,
-            "document" => $modeDebug === "FALSE" ?
-                "DOCUMENT/IHM/main-built.js?ws=" . $version
-                : "DOCUMENT/IHM/main.js?ws=" . $version
-        )
+                "require" => "lib/RequireJS/require.js?ws=" . $version,
+                "config" => "DOCUMENT/IHM/require_config.js?ws=" . $version,
+                "kendo" => $modeDebug !== "FALSE"
+                    ?
+                    "lib/KendoUI/2014.3/js/kendo-ddui-builded.js?ws=" . $version
+                    :
+                    "lib/KendoUI/2014.3/js/kendo-ddui-builded.min.js?ws="
+                    . $version,
+                "document" => $modeDebug !== "FALSE"
+                    ?
+                    "DOCUMENT/IHM/main.js?ws=" . $version
+                    :
+                    "DOCUMENT/IHM/main-built.js?ws=" . $version
+            )
         );
     }
 

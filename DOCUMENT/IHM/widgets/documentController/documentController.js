@@ -25,7 +25,8 @@ define([
         "beforeDelete", "afterDelete",
         "failChangeState", "successChangeState",
         "beforeDisplayChangeState", "afterDisplayChangeState",
-        "beforeChangeState", "beforeChangeStateClose"
+        "beforeChangeState", "beforeChangeStateClose",
+        "destroy"
     ];
 
     $.widget("dcp.documentController", {
@@ -57,7 +58,9 @@ define([
             this._initModel(this._getModelValue());
             this._initView();
             this._model.fetch();
-            this._initRouter();
+            if (!this.options.noRouter) {
+                this._initRouter();
+            }
             this._super();
         },
 
@@ -67,8 +70,13 @@ define([
          */
         _destroy: function documentController_destroy()
         {
-            this.view.remove();
-            delete this._model;
+            this._triggerControllerEvent("destroy", this._model.getProperties(true));
+            this.options.constraintList = {};
+            this.options.eventList = {};
+            this.activatedConstraint = [];
+            this.activatedEvent = [];
+            this.element.removeData("document");
+            this._model.trigger("destroy");
             this._trigger("destroy");
             this._super();
         },
@@ -136,7 +144,7 @@ define([
          */
         _reinitModel: function documentController_reinitModel()
         {
-            this._model.clear().set(this._getModelValue());
+            this._model.set(this._getModelValue());
         },
 
         /**
@@ -180,7 +188,7 @@ define([
                 currentWidget.options.initid = currentWidget._model.id;
                 currentWidget.options.viewId = currentWidget._model.get("viewId");
                 currentWidget.options.revision = currentWidget._model.get("revision");
-                currentWidget.element.data(currentWidget._getModelValue());
+                currentWidget.element.data("document", currentWidget._getModelValue());
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEvents({launchReady: false});
             });
@@ -380,11 +388,15 @@ define([
          */
         _initRouter: function documentController_initRouter()
         {
-            if (window.history && history.pushState) {
-                Backbone.history.start({pushState: true});
-            } else {
-                //For browser without API history
-                Backbone.history.start();
+            try {
+                if (window.history && history.pushState) {
+                    Backbone.history.start({pushState: true});
+                } else {
+                    //For browser without API history
+                    Backbone.history.start();
+                }
+            } catch (e) {
+                console.error(e);
             }
             this.router = new Router({document: this._model});
         },
@@ -735,8 +747,8 @@ define([
         fetchDocument: function documentControllerFetchDocument(values, options)
         {
             var currentWidget = this;
-            options = _.isUndefined(values) ? {} : values;
-            if (!_.isObject(options)) {
+            values = _.isUndefined(values) ? {} : values;
+            if (!_.isObject(values)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
             _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
@@ -764,13 +776,7 @@ define([
          */
         deleteDocument: function documentControllerDelete(options)
         {
-            var currentWidget = this, destroy = this._model.destroy(options);
-            destroy.done(function documentController_destroyer()
-            {
-                currentWidget._initModel(currentWidget._getModelValue());
-                currentWidget._initView();
-                currentWidget._model.fetch();
-            });
+            this._model.deleteDocument(options);
         },
 
         /**
@@ -1076,12 +1082,12 @@ define([
             if (currentEvent.once === true) {
                 currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function documentController_onceWrapper(callback)
                 {
+                    currentWidget.removeEvent(currentEvent.name, currentEvent.externalEvent);
                     try {
                         callback.apply(this, _.rest(arguments));
                     } catch (e) {
                         console.error(e);
                     }
-                    currentWidget.removeEvent(currentEvent.name, currentEvent.externalEvent);
                 });
             }
             this._addAndInitNewEvents(currentEvent);

@@ -1,9 +1,11 @@
 /*global require*/
 require([
-    'dcpDocumentTest/defaultTestAttribute'
-], function (defaultTestSuite) {
+    'dcpDocumentTest/suiteDefaultTestAttribute'
+], function (defaultTestSuite)
+{
     "use strict";
 
+    //region text
     defaultTestSuite({
         title: "text : read",
         attribute: {type: "text"},
@@ -16,7 +18,6 @@ require([
             displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine"
         }
     });
-
     defaultTestSuite({
         title: "text : write",
         attribute: {type: "text"},
@@ -32,7 +33,8 @@ require([
             displayValue: "Les parties supérieures sont gris-bleu"
         }
     });
-
+    //endregion text
+    //region date
     defaultTestSuite({
         title: "date : read",
         attribute: {type: "date"},
@@ -48,7 +50,8 @@ require([
         initialValue: {value: "2012-12-14", displayValue: "14/12/2012"},
         otherValue: {value: "1985-05-12", displayValue: "12/05/1985"}
     });
-
+    //endregion date
+    //region timestamp
     defaultTestSuite({
         title: "timestamp : read",
         attribute: {type: "timestamp"},
@@ -64,7 +67,9 @@ require([
         initialValue: {value: "2012-12-14T12:56", displayValue: "14/12/2012 12:56"},
         otherValue: {value: "1985-05-12T10:00", displayValue: "12/05/1985 10:00"}
     });
+    //endregion timestamp
 
+    //region time
     defaultTestSuite({
         title: "time : read",
         attribute: {type: "time"},
@@ -80,6 +85,8 @@ require([
         initialValue: {value: "12:56", displayValue: "12:56"},
         otherValue: {value: "23:59", displayValue: "23:59"}
     });
+    //endregion time
+    //region docid
     defaultTestSuite({
         title: "docid : read",
         attribute: {type: "docid"},
@@ -95,8 +102,8 @@ require([
         initialValue: {value: "1253", displayValue: "John Doe"},
         otherValue: {value: "7865", displayValue: "Éléonord Hùço"}
     });
-
-
+    //endregion docid
+    //region int
     defaultTestSuite({
         title: "int : read",
         attribute: {type: "int"},
@@ -112,7 +119,8 @@ require([
         initialValue: {value: "1253", displayValue: "1 253"},
         otherValue: {value: "7098865", displayValue: "7 098 865"}
     });
-
+    //endregion int
+    //region double
     defaultTestSuite({
         title: "double : read",
         attribute: {type: "double"},
@@ -128,8 +136,8 @@ require([
         initialValue: {value: "1253", displayValue: "1 253"},
         otherValue: {value: "7865.678", displayValue: "7 865,678"}
     });
-
-
+    //endregion double
+    //region money
     defaultTestSuite({
         title: "money : read",
         attribute: {type: "money"},
@@ -145,15 +153,14 @@ require([
         initialValue: {value: "1253", displayValue: "1 253 €"},
         otherValue: {value: "7865.68", displayValue: "7 865,68 €"}
     });
-
+    //endregion money
+    //region enum
     defaultTestSuite({
         title: "enum : read",
         attribute: {type: "enum"},
         initialValue: {value: "G", displayValue: "Sol"},
         otherValue: {value: "D", displayValue: "Ré"}
     });
-
-
     defaultTestSuite({
         title: "enum vertical: write",
         attribute: {
@@ -168,7 +175,6 @@ require([
                 {key: "G", label: "Sol"}
             ]
         },
-
         options: {
             renderMode: "edit"
         },
@@ -192,7 +198,6 @@ require([
                 {key: "G", label: "Sol"}
             ]
         },
-
         options: {
             renderMode: "edit"
         },
@@ -216,7 +221,6 @@ require([
                 {key: "G", label: "Sol"}
             ]
         },
-
         options: {
             renderMode: "edit"
         },
@@ -226,7 +230,6 @@ require([
         initialValue: {value: "G", displayValue: "Sol"},
         otherValue: {value: "D", displayValue: "Ré"}
     });
-
     defaultTestSuite({
         title: "enum : write",
         attribute: {
@@ -241,15 +244,12 @@ require([
                 {key: "G", label: "Sol"}
             ]
         },
-
         options: {
             renderMode: "edit"
         },
         initialValue: {value: "G", displayValue: "Sol"},
         otherValue: {value: "D", displayValue: "Ré"}
     });
-
-
     defaultTestSuite({
         title: "enum multiple : read",
         attribute: {
@@ -269,8 +269,6 @@ require([
         },
         options: {
             renderMode: "view"
-
-
         },
         initialValue: [
             {value: "G", displayValue: "Sol"}
@@ -308,7 +306,6 @@ require([
             {value: "A", displayValue: "La"}
         ]
     });
-
     defaultTestSuite({
         title: "enum multiple vertical: write",
         attribute: {
@@ -326,7 +323,6 @@ require([
                 multiple: "yes"
             }
         },
-
         options: {
             renderMode: "edit"
         },
@@ -390,7 +386,6 @@ require([
                 multiple: "yes"
             }
         },
-
         options: {
             renderMode: "edit"
         },
@@ -405,8 +400,8 @@ require([
             {value: "A", displayValue: "La"}
         ]
     });
-
-
+    //endregion enum
+    //region file
     defaultTestSuite({
         title: "file : read",
         attribute: {type: "file"},
@@ -419,7 +414,6 @@ require([
             displayValue: "pong.png"
         }
     });
-
     defaultTestSuite({
         title: "file : write",
         attribute: {type: "file"},
@@ -435,8 +429,8 @@ require([
             displayValue: "pong.png"
         }
     });
-
-
+    //endregion file
+    //region image
     defaultTestSuite({
         title: "image : read",
         attribute: {type: "image"},
@@ -449,7 +443,6 @@ require([
             displayValue: "pong.png"
         }
     });
-
     defaultTestSuite({
         title: "image : write",
         attribute: {type: "image"},
@@ -465,12 +458,12 @@ require([
             displayValue: "pong.png"
         }
     });
-
-
+    //endregion image
+    //region htmltext
     defaultTestSuite({
         title: "htmltext : read",
         attribute: {type: "htmltext"},
-        useRender: true,
+        noFixture: true,
         initialValue: {
             value: "<p>John Doe</p>",
             displayValue: "<p>John Doe l'inconnu</p>"
@@ -480,11 +473,10 @@ require([
             displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"
         }
     });
-
     defaultTestSuite({
         title: "htmltext : write",
         attribute: {type: "htmltext"},
-        useRender: true,
+        noFixture: true,
         options: {
             renderMode: "edit"
         },
@@ -497,8 +489,8 @@ require([
             displayValue: "<p>La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine</p>"
         }
     });
-
-
+    //endregion htmltext
+    //region longtext
     defaultTestSuite({
         title: "longtext : read",
         attribute: {type: "longtext"},
@@ -511,7 +503,6 @@ require([
             displayValue: "La Sittelle du Yunnan est endémique du Sud-Ouest de la Chine\n s'approchant de la frontière avec la Birmanie"
         }
     });
-
     defaultTestSuite({
         title: "longtext : write",
         attribute: {type: "longtext"},
@@ -528,7 +519,7 @@ require([
         }
 
     });
-
+    //endregion longtext
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

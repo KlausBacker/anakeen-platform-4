@@ -108,8 +108,6 @@ define([
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
                         scope.element.addClass("has-error");
-
-
                         // need to use sub element because tooltip add a div after element
                         scope.element.find(".input-group").tooltip({
                             placement: "bottom",
@@ -298,7 +296,6 @@ define([
 
 
             if (this.options.renderOptions && this.options.renderOptions.buttons) {
-
                 // Add index for template to identify buttons
                 this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index)
                 {
@@ -318,14 +315,14 @@ define([
             this._initDom();
 
             if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
-
-
                 this.element.find(".dcpAttribute__content__buttons").hide();
                     this.element.find(".dcpAttribute__value").
                         addClass("dcpAttribute__content__nobutton");
             }
 
             this._initEvent();
+
+            this._triggerReady();
         },
 
         /**
@@ -352,7 +349,6 @@ define([
          */
         _initDom: function wAttributeInitDom()
         {
-
             this._initMainElementClass();
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
@@ -441,17 +437,17 @@ define([
          */
         _initButtonsEvent: function _initButtonsEvent()
         {
-            var scope = this;
+            var currentWidget = this;
             this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function (event)
             {
-                var buttonsConfig = scope.options.renderOptions.buttons;
+                var buttonsConfig = currentWidget.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
 
                 if (buttonConfig && buttonConfig.url) {
                     var originalEscape = Mustache.escape;
                     Mustache.escape = encodeURIComponent;
-                    var url = Mustache.render(buttonConfig.url, scope.options.attributeValue);
+                    var url = Mustache.render(buttonConfig.url, currentWidget.options.attributeValue);
                     Mustache.escape = originalEscape;
 
                     if (buttonConfig.target !== "_dialog") {
@@ -459,7 +455,7 @@ define([
                     } else {
                         var bdw = $('<div/>');
                         $('body').append(bdw);
-                        var renderTitle = Mustache.render(buttonConfig.windowTitle, scope.options.attributeValue);
+                        var renderTitle = Mustache.render(buttonConfig.windowTitle, currentWidget.options.attributeValue);
                         var dw = bdw.dcpWindow({
                             title: renderTitle,
                             width: buttonConfig.windowWidth,
@@ -472,10 +468,10 @@ define([
                     }
                 }
 
-                scope._trigger("click", event, {
-                    id: scope.option.id,
-                    value: scope.options.attributeValue,
-                    index: scope._getIndex()
+                currentWidget._trigger("click", event, {
+                    id: currentWidget.option.id,
+                    value: currentWidget.options.attributeValue,
+                    index: currentWidget._getIndex()
                 });
             });
             this.element.find(".dcpAttribute__content__buttons button").tooltip({
@@ -494,7 +490,7 @@ define([
         {
             var scope = this;
             // tooltip is created in same parent
-            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function (event)
+            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(event)
             {
                 if (scope.element.data("hasErrorTooltip")) {
                     scope.element.find(".input-group").tooltip("destroy");
@@ -522,7 +518,7 @@ define([
             }
             $deleteButton.attr('title', titleDelete);
 
-            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function (event)
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function destroyTable(event)
             {
                 currentWidget._trigger("delete", event, {
                     index: currentWidget._getIndex(),
@@ -534,8 +530,6 @@ define([
                     currentWidget.element.find("input").focus();
                 });
             });
-
-
             return this;
         },
         /**
@@ -581,7 +575,6 @@ define([
                         dpcWindow = dialogDiv.dcpWindow({
                             title: renderTitle,
                             width: htmlLink.windowWidth,
-
                             height: htmlLink.windowHeight,
                             content: href,
                             iframe: true
@@ -689,8 +682,6 @@ define([
                     throw new Error("The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")");
                 }
             }
-
-
             return true;
         },
         /**
@@ -718,6 +709,12 @@ define([
             } else {
                 return (this.options.renderOptions && this.options.renderOptions.buttons && true);
             }
+        },
+        /**
+         * Trigger a ready event when widget is render
+         */
+        _triggerReady : function wAttributeReady() {
+            this._trigger("widgetReady");
         }
 
     });

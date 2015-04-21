@@ -27,7 +27,7 @@ define([
                 if (!_.isUndefined(viewId) && viewId !== "!defaultConsultation" && viewId !== "!defaultEdition") {
                     options.viewId = viewId;
                 }
-                if (window.dcp.viewData.documentIdentifier === options.initid &&
+                if (window.dcp && window.dcp.viewData && window.dcp.viewData.documentIdentifier === options.initid &&
                     window.dcp.viewData.revision === options.revision &&
                     window.dcp.viewData.vid === options.viewId) {
                     return;

@@ -1,10 +1,11 @@
 /*global require*/
 require([
+    'jquery',
     'underscore',
-    'dcpDocumentTest/templatesTestAttribute'
-], function (_, templateTestSuite) {
+    'dcpDocumentTest/suiteTemplatesTestAttribute'
+], function ($, _, templateTestSuite)
+{
     "use strict";
-
 
     var tplConfig = [
         {
@@ -30,7 +31,6 @@ require([
             attribute: {type: "%type%", label: "%label%", "id": "my%type%1"},
             options: {
                 renderMode: "view"
-
             },
             renderOptions: {
                 types: {
@@ -122,7 +122,8 @@ require([
                     htmlValue: "%displayValue%"
                 }
             ]
-        }, {
+        },
+        {
             title: "%type% : write htmlContent",
             attribute: {type: "%type%", label: "%label%"},
             options: {
@@ -145,7 +146,8 @@ require([
                     textValue: null
                 }
             ]
-        }, {
+        },
+        {
             title: "%type% : read htmlView",
             attribute: {type: "%type%", label: "Mon super libellé"},
             options: {
@@ -190,14 +192,14 @@ require([
             displayValue: "23/08/2012",
             altValue: "1987-09-29",
             altDisplayValue: "29/09/1987"
-        },{
+        }, {
             type: "time",
             label: "Mon temps",
             value: "12:00",
             displayValue: "12:00",
             altValue: "14:45",
             altDisplayValue: "14:45"
-        },{
+        }, {
             type: "timestamp",
             label: "Mon horodate",
             value: "2012-08-23 12:00",
@@ -218,63 +220,66 @@ require([
             displayValue: "Un compte",
             altValue: "3456",
             altDisplayValue: "Un autre compte"
-        },{
-            type: "htmltext",
-            label: "Ma rédaction",
-            value: "<p><strong>Grosse rédaction</strong>.</p>",
-            displayValue: "<p><strong>Grosse rédaction</strong>.</p>",
-            altValue: "<p><strong>Grosse rédaction</strong>.</p>",
-            altDisplayValue: "<p><strong>Grosse rédaction</strong>.</p>"
-        },{
+        },
+//        {
+//            type: "htmltext",
+//            label: "Ma rédaction",
+//            noFixture: true,
+//            value: "<p><strong>Grosse rédaction</strong>.</p>",
+//            displayValue: "<p><strong>Grosse rédaction</strong>.</p>",
+//            altValue: "<p><strong>Grosse rédaction</strong>.</p>",
+//            altDisplayValue: "<p><strong>Grosse rédaction</strong>.</p>"
+//        },
+        {
             type: "longtext",
             label: "Ma remarque",
             value: "Remarque:\nPoint n°1",
             displayValue: "Remarque:\nPoint n°1",
             altValue: "Remarque:\nPoint n°1 & Point n°2",
             altDisplayValue: "Remarque:\nPoint n°1 & Point n°2"
-        },{
+        }, {
             type: "file",
             label: "Mon fichier",
             value: "image/png|34|test.jpg",
             displayValue: "test.jpg",
             altValue: "application.pdf|34|Information.pdf",
             altDisplayValue: "Information.pdf"
-        },{
+        }, {
             type: "image",
             label: "Mon image",
             value: "image/png|34|test.jpg",
             displayValue: "test.jpg",
             altValue: "image/jpeg|34|Information.jpeg",
             altDisplayValue: "Information.jpeg"
-        },{
+        }, {
             type: "int",
             label: "Mon entier",
             value: "1234",
             displayValue: "1234",
             altValue: "-67890",
             altDisplayValue: "-67890"
-        },{
+        }, {
             type: "double",
             label: "Mon décimal",
             value: "1234.567",
             displayValue: "1234.567",
             altValue: "-67890.098",
             altDisplayValue: "-67890.098"
-        },{
+        }, {
             type: "money",
             label: "Mes sous",
             value: "1234.56",
             displayValue: "1234.56",
             altValue: "-67890.09",
             altDisplayValue: "-67890.09"
-        },{
+        }, {
             type: "color",
             label: "Ma couleur",
             value: "#00ff55",
             displayValue: "#00ff55",
             altValue: "#00ff55",
             altDisplayValue: "#00ff55"
-        },{
+        }, {
             type: "enum",
             label: "Mon enum",
             value: "A",
@@ -284,36 +289,38 @@ require([
         }
     ];
 
-    function replaceEverywhere(obj, data) {
+    //Generate conf from config
+    function completeConf(obj, data)
+    {
         var modObject;
-         if (_.isString(obj)) {
+        if (_.isString(obj)) {
             modObject = obj;
-            _.map(data, function (val, idx) {
+            _.map(data, function completeElement(val, idx)
+            {
                 modObject = modObject.replace('%%' + idx + '%%', $('<div/>').text(val).html(), "g");
                 modObject = modObject.replace('%' + idx + '%', val, "g");
             });
-        } else if (_.isObject(obj)) {
-            modObject = {};
-            _.map(obj, function (val, idx) {
-                modObject[replaceEverywhere(idx, data)] = replaceEverywhere(obj[idx], data);
-            });
-        } else {
-            return obj;
-        }
+        } else
+            if (_.isObject(obj)) {
+                modObject = {};
+                _.map(obj, function goToNextLevel(val, idx)
+                {
+                    modObject[completeConf(idx, data)] = completeConf(obj[idx], data);
+                });
+            } else {
+                return obj;
+            }
         return modObject;
     }
 
-
-
-
-    _.each(tplConfig, function (testConf) {
-        _.each(tplData, function (data) {
-            templateTestSuite(replaceEverywhere(testConf, data));
+    _.each(tplConfig, function completeTemplateConfiguration(testConf)
+    {
+        _.each(tplData, function executeConfiguration(data)
+        {
+            //Execute test
+            templateTestSuite(completeConf(testConf, data));
         });
-
-
     });
-
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

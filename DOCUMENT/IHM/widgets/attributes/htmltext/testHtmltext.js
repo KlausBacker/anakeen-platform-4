@@ -1,16 +1,13 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/htmltext/loaderHtmltext',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/htmltext/htmltextTestAttribute'
 ], function (widget, defaultTestSuite, htmltextTestSuite) {
     "use strict";
 
     defaultTestSuite("htmltext : read", widget, {}, {value : "<p>Lorem <strong>Ispum</strong></p>"});
-    defaultTestSuite("htmltext : write", widget, {mode : "write", noDestroyTesting:true, useRender:true}, {value : "<p>Lorem <strong>Ispum</strong></p>"});
-
-
-
+    defaultTestSuite("htmltext : write", widget, {mode : "write", noFixture:true}, {value : "<p>Lorem <strong>Ispum</strong></p>"});
 
     htmltextTestSuite("htmltext : spec", widget, {
         mode : "write",
@@ -24,7 +21,6 @@ require([
         icons : ["cke_button__bold_icon","cke_button__italic_icon","cke_button__numberedlist_icon"],
         notIcons : ["cke_button__source_icon","cke_button__image_icon","cke_button__subscript_icon"]
     });
-
     htmltextTestSuite("htmltext : spec", widget, {
         mode : "write",
         deleteButton : true,
@@ -68,21 +64,14 @@ require([
             "cke_button__blockquote_icon","cke_button__image_icon"],
         notIcons : []
     });
-
-
-
-
     htmltextTestSuite("htmltext : spec", widget, {
         mode : "read",
         deleteButton : true,
         renderOptions : {
             format:"<pre>{{{value}}}</pre>"
         }
-
     }, {value : "<h2>Formatage de la valeur</h2>"},{formatValue:"<pre><h2>Formatage de la valeur" +
     "</h2></pre>"});
-
-
 
     if (window.dcp.executeTests) {
         window.dcp.executeTests();

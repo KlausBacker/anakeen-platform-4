@@ -1,9 +1,11 @@
 /*global define, _super*/
 define([
     'underscore',
+    'jquery',
     'ckeditor-jquery',
     'dcpDocument/widgets/attributes/text/wText'
-], function (_) {
+], function (_, $)
+{
     'use strict';
 
     $.widget("dcp.dcpHtmltext", $.dcp.dcpText, {
@@ -21,13 +23,12 @@ define([
 
         ckEditorInstance: null,
 
-        _initDom: function wHtmlTextInitDom() {
+        _initDom: function wHtmlTextInitDom()
+        {
             this._super();
             try {
                 if (this.getMode() === "write") {
                     var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
-                    // if put it on a div : this.getContentElements().attr("contenteditable","true");
-
                     this.ckEditorInstance = this.getContentElements().ckeditor(
                         options
                     ).editor;
@@ -46,7 +47,8 @@ define([
          * Define option set for ckEditor widget
          * @returns {{language: string, contentsCss: string[], removePlugins: string, toolbarCanCollapse: boolean, entities: boolean, filebrowserImageBrowseUrl: string, filebrowserImageUploadUrl: string, toolbar_Full: *[], toolbar_Default: *[], toolbar_Simple: *[], toolbar_Basic: *[], removeButtons: string}}
          */
-        ckOptions: function wHtmlTextCkOptions() {
+        ckOptions: function wHtmlTextCkOptions()
+        {
             var locale = this.options.locale;
             if (this.options.renderOptions.toolbar) {
                 this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
@@ -146,29 +148,39 @@ define([
             };
         },
 
-        _initEvent: function _initEvent() {
-            var scope = this;
+        _initEvent: function _initEvent()
+        {
+            var currentWidget = this;
             this._super();
             if (this.ckEditorInstance) {
-                this.ckEditorInstance.on("change", function () {
-                    scope.setValue({value: this.getData()});
+                this.ckEditorInstance.on("change", function ()
+                {
+                    currentWidget.setValue({value: this.getData()});
                 });
 
-                this.ckEditorInstance.on("focus", function () {
-                    var ktTarget = scope.element.find(".input-group");
-                    scope.showInputTooltip(ktTarget);
-                    scope.element.find(".cke").addClass("k-state-focused");
+                this.ckEditorInstance.on("focus", function ()
+                {
+                    var ktTarget = currentWidget.element.find(".input-group");
+                    currentWidget.showInputTooltip(ktTarget);
+                    currentWidget.element.find(".cke").addClass("k-state-focused");
                 });
 
-                this.ckEditorInstance.on("blur", function () {
-                    var ktTarget = scope.element.find(".input-group");
-                    scope.hideInputTooltip(ktTarget);
-                    scope.element.find(".cke").removeClass("k-state-focused");
+                this.ckEditorInstance.on("blur", function ()
+                {
+                    var ktTarget = currentWidget.element.find(".input-group");
+                    currentWidget.hideInputTooltip(ktTarget);
+                    currentWidget.element.find(".cke").removeClass("k-state-focused");
                 });
 
-                this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData) {
-                    if (eventData && (eventData.to === scope.options.index )) {
-                        scope.redraw();
+                this.ckEditorInstance.on("loaded", function ()
+                {
+                    currentWidget._trigger("widgetReady");
+                });
+
+                this.element.on("postMoved" + this.eventNamespace, function wHtmlTextOnPostMoved(event, eventData)
+                {
+                    if (eventData && (eventData.to === currentWidget.options.index )) {
+                        currentWidget.redraw();
                     }
                 });
             }
@@ -177,25 +189,29 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _getFocusInput: function () {
+        _getFocusInput: function ()
+        {
             return this.element;
         },
         /**
          * No use parent change
          */
-        _initChangeEvent: function _initChangeEvent() {
+        _initChangeEvent: function _initChangeEvent()
+        {
 
         },
 
-        getWidgetValue: function () {
+        getWidgetValue: function ()
+        {
             return this.getContentElements().val();
         },
 
         /**
-         *
+         * Change the value of the widget
          * @param value
          */
-        setValue: function wHtmltextSetValue(value) {
+        setValue: function wHtmltextSetValue(value)
+        {
             value = _.clone(value);
             if (value.value === null) {
                 // ckEditor restore original value if set to null
@@ -212,44 +228,58 @@ define([
                 //noinspection JSHint
                 if (originalValue.trim() != value.value.trim()) {
 
-                  // Modify value only if different
+                    // Modify value only if different
                     this.getContentElements().val(value.value);
                     // this.ckEditorInstance.setData(value.value);
                     this.flashElement(this.element.find('iframe'));
                 }
-            } else if (this.getMode() === "read") {
-                this.getContentElements().html(value.displayValue);
-            } else {
-                throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
-            }
+            } else
+                if (this.getMode() === "read") {
+                    this.getContentElements().html(value.displayValue);
+                } else {
+                    throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
+                }
 
             // call wAttribute::setValue()
             $.dcp.dcpAttribute.prototype.setValue.call(this, value);
         },
 
-        getType: function () {
+        getType: function ()
+        {
             return "htmltext";
         },
 
-        _destroy: function wHtmlTextDestroy() {
-            var scope=this;
+        _destroy: function wHtmlTextDestroy()
+        {
+            var currentWidget = this;
             if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
-                    if (this.ckEditorInstance.status === "loaded" || this.ckEditorInstance.status === "ready") {
-                        this.ckEditorInstance.destroy();
-                        _.defer(function () {
-                            scope._destroy();
-                        });
-                        return;
-                    } else if (this.ckEditorInstance.status === "unloaded") {
-                        this.ckEditorInstance.on("loaded", function () {
-                            scope._destroy();
+                if (this.ckEditorInstance.status === "loaded" || this.ckEditorInstance.status === "ready") {
+                    this.ckEditorInstance.destroy();
+                    _.defer(function ()
+                    {
+                        currentWidget._destroy();
+                    });
+                    return;
+                } else
+                    if (this.ckEditorInstance.status === "unloaded") {
+                        this.ckEditorInstance.on("loaded", function ()
+                        {
+                            currentWidget._destroy();
                         });
                         return;
                     }
             }
-
-
             this._super();
+        },
+
+        /**
+         * Trigger a ready event when widget is render
+         */
+        _triggerReady: function wAttributeReady()
+        {
+            if (this.getMode() !== "write") {
+                this._super();
+            }
         }
 
     });

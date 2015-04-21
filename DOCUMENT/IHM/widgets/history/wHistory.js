@@ -1,4 +1,5 @@
 define([
+    'jquery',
     'underscore',
     'kendo/kendo.core',
     'dcpDocument/widgets/widget',
@@ -7,7 +8,7 @@ define([
     'dcpDocument/widgets/window/wDialog',
     'datatables',
     "datatables-bootstrap/dataTables.bootstrap"
-], function (_, kendo)
+], function ($, _, kendo)
 {
     'use strict';
 
@@ -394,7 +395,6 @@ define([
                             _.each(result.messages, function (error)
                             {
                                 if (error.code === "CRUD0219" && error.uri) {
-                                    console.log("need retry with", error.uri);
                                     // redirect with the good trash uri
                                     $.getJSON(error.uri.replace('.json', '') + '/history/').
                                         done(function (response)
@@ -415,7 +415,7 @@ define([
                                                     });
                                                 }
                                             });
-                                            console.log("fail", response);
+                                            console.error("fail", response);
                                         });
                                 } else
                                     if (error.type === "error") {
@@ -425,7 +425,7 @@ define([
                                         });
                                     }
                             });
-                            console.log("fail", response);
+                            console.error("fail", response);
                         });
                 }
             }).addClass('table table-condensed table-bordered table-hover');

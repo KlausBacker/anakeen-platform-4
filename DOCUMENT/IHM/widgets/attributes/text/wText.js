@@ -1,9 +1,10 @@
 define([
     'underscore',
     'mustache',
+    'jquery',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.autocomplete'
-], function (_, Mustache)
+], function (_, Mustache, $)
 {
     'use strict';
 
@@ -82,9 +83,7 @@ define([
 
                     serverFiltering: true,
                     transport: {
-
-                        read: function (options) {
-                            console.log("map", arguments);
+                        read: function mapAutoActivated(options) {
                             options.data.index=currentWidget._getIndex();
                             return currentWidget.options.autocompleteRequest.call(null, options);
                         }

@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/double/loaderDouble',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/int/intTestAttribute',
     'dcpDocument/widgets/attributes/double/doubleTestAttribute',
     'kendo-culture-fr'

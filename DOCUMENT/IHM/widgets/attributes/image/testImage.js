@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocument/widgets/attributes/image/loaderImage',
-    'dcpDocument/widgets/attributes/defaultTestAttribute',
+    'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/file/fileTestAttribute',
     'dcpDocument/widgets/attributes/image/imageTestAttribute'
 ], function (widget, defaultTestSuite, fileTestSuite, imageTestSuite) {

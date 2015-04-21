@@ -88,7 +88,9 @@ define([
             var theModel = this;
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
-            $(window).on("unload", function ()
+            this.listenTo(this, "destroy", this.unbindLoadEvent);
+
+            $(window).on("unload." + this.cid, function mDocumentUnload()
             {
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
@@ -96,7 +98,7 @@ define([
                     lockModel.destroy();
                 }
             });
-            $(window).bind("beforeunload", function ()
+            $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
                 if (theModel.hasAttributesChanged()) {
                     return i18n.___("The form has been modified and is is not saved", "ddui");
@@ -141,7 +143,7 @@ define([
                             arrayValues.push(currentValue[i] || {value: null});
                         }
                     } else {
-                        arrayValues = {value: null};
+                        arrayValues = [];//{value: null};
                     }
                     values[currentAttribute.id] = arrayValues;
                 } else {
@@ -495,7 +497,7 @@ define([
                 return {
                     title: i18n.___("Unable to save", "ddui"),
                     message: errorMessage.join(', ' + "\n"),
-                    errorCode : "attributeNeeded"
+                    errorCode: "attributeNeeded"
                 };
             }
             return undefined;
@@ -582,6 +584,7 @@ define([
                 properties: view.documentData.document.properties,
                 menus: view.menu,
                 viewId: response.data.properties.requestIdentifier,
+                revision : view.documentData.document.properties.revision,
                 locale: view.locale.culture,
                 renderMode: renderMode || "view",
                 attributes: attributes,
@@ -695,6 +698,11 @@ define([
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },
 
+        unbindLoadEvent : function mDocumentUnbindLoadEvent()
+        {
+            $(window).off("."+this.cid);
+        },
+
         /**
          * Destroy the collection associated to the document (used in the destroy part of the view)
          *
@@ -726,7 +734,7 @@ define([
             };
         },
 
-        fetch: function mDocumentFetch(attributes, options)
+        fetch: function mDocumentFetch(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true), lockModel,
                 afterDone = function afterDone()
@@ -741,7 +749,7 @@ define([
                     options.success = _.wrap(options.success, function (success)
                     {
                         afterDone();
-                        return success.apply(this, arguments);
+                        return success.apply(this, _.rest(arguments));
                     });
                 } else {
                     options.success = afterDone;
@@ -752,15 +760,15 @@ define([
                     lockModel.destroy({
                         success: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(currentModel, attributes, options);
+                            Backbone.Model.prototype.fetch.call(currentModel);
                         },
                         error: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(currentModel, attributes, options);
+                            Backbone.Model.prototype.fetch.call(currentModel);
                         }
                     });
                 } else {
-                    return Backbone.Model.prototype.fetch.call(this, attributes, options);
+                    return Backbone.Model.prototype.fetch.call(this, options);
                 }
             } else {
                 //cancelled : re-set initial properties
@@ -784,7 +792,7 @@ define([
                     options.success = _.wrap(options.success, function (success)
                     {
                         afterDone();
-                        return success.apply(this, arguments);
+                        return success.apply(this, _.rest(arguments));
                     });
                 } else {
                     options.success = afterDone;
@@ -795,11 +803,18 @@ define([
             return false;
         },
 
-        destroy: function mDocumentDestroy(attributes, options)
+        deleteDocument : function mDocumentDelete(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
-                afterDone = function afterDone()
+                afterError = function afterError(resp) {
+                    currentModel.trigger('error', currentModel, resp);
+                },
+                afterDone = function afterDone(resp)
                 {
+                    if (!currentModel.set(currentModel.parse(resp, options), options)) {
+                        return false;
+                    }
+                    currentModel.trigger("sync", currentModel, resp, options);
                     currentModel.trigger("afterDelete", currentProperties);
                     currentModel.trigger("close", currentProperties);
                 };
@@ -809,14 +824,27 @@ define([
                 if (options.success) {
                     options.success = _.wrap(options.success, function (success)
                     {
-                        afterDone();
-                        return success.apply(this, arguments);
+                        afterDone.apply(this, _.rest(arguments));
+                        return success.apply(this, _.rest(arguments));
                     });
                 } else {
                     options.success = afterDone;
                 }
+                if (options.error) {
+                    options.error = _.wrap(options.error, function(error) {
+                        afterError();
+                        return error.apply(this, _.rest(arguments));
+                    });
+                }
                 this.trigger("displayLoading");
-                return Backbone.Model.prototype.destroy.call(this, attributes, options);
+                if (this.isNew()) {
+                    console.error("Unable to delete new document");
+                    if (options.error) {
+                        options.error();
+                    }
+                    return false;
+                }
+                return this.sync('delete', this, options);
             }
             return false;
         }
