@@ -25,7 +25,6 @@ function jasmine(Action & $action)
     $require = $render->getRequireReference();
 
     $testWidgetLoader = array();
-
     if (!$restrict) {
         $testWidgetLoader = rsearch("DOCUMENT/IHM/widgets/");
     } else {
@@ -51,7 +50,7 @@ function jasmine(Action & $action)
         }
     }
 
-    if (empty($testDocumentLoader)) {
+    if (empty($testDocumentLoader) && empty($testWidgetLoader)) {
         throw new Exception("No tests, too much restriction ?");
     }
 
