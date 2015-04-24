@@ -15,12 +15,11 @@
            value="{{attributeValue.value}}"/>
     {{#hadButtons}}
     <span class="dcpAttribute__content__buttons input-group-addon">
-        {{#renderOptions.buttons}}
-        <button type="button" title="{{title}}" data-index="{{index}}"
-                class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
-        {{/renderOptions.buttons}}
-        {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+        {{#renderOptions.buttons}}<!-- avoid white spaces
+        --><button type="button" title="{{title}}" data-index="{{index}}"
+                class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button><!--
+        -->{{/renderOptions.buttons}}{{#deleteButton}}<!--
+        --><button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
                 class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i>
         </button>
         {{/deleteButton}}
