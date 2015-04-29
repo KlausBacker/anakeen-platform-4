@@ -141,7 +141,6 @@ define([
                     });
                 }
             }
-
             return {data: source, index: selectedIndex};
         },
 
@@ -392,9 +391,10 @@ define([
 
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
+
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
             if (!this.options.renderOptions.useFirstChoice) {
-                kddl.ul.find("li:first-child").addClass("placeholder");
+                kddl.list.find(".k-list-optionlabel").addClass("placeholder");
             }
         },
         multipleSelect: function wEnumMultipleSelect() {
