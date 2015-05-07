@@ -133,14 +133,14 @@ function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
             if ($formatValue) {
                 $first = current($formatValue);
                 if (isset($first) && is_array($first)) {
-                    $rawValue=array();
+                    $rawValue = array();
                     foreach ($formatValue as $fmtValue) {
                         if (!isset($fmtValue["value"])) {
-                            $secondValue=array();
+                            $secondValue = array();
                             foreach ($fmtValue as $fmtValue2) {
-                                $secondValue[]=$fmtValue2["value"];
+                                $secondValue[] = $fmtValue2["value"];
                             }
-                            $rawValue[]=$secondValue;
+                            $rawValue[] = $secondValue;
                         } else {
                             $rawValue[] = $fmtValue["value"];
                         }
@@ -155,12 +155,12 @@ function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
     }
     
     if (is_array($filters)) {
-        if (!empty($filters["filters"][0]["value"])) {
-            $ct=$filters["filters"][0]["value"];
-            dduiSetHttpVar("_ct",$ct );
+        if (isset($filters["filters"][0]["value"])) {
+            $ct = $filters["filters"][0]["value"];
+            dduiSetHttpVar("_ct", $ct);
             if ($index >= 0) {
-                $current=getHttpVars("_$currentAid");
-                $current[$index]=$ct;
+                $current = getHttpVars("_$currentAid");
+                $current[$index] = $ct;
                 dduiSetHttpVar("_$currentAid", $current);
             } else {
                 dduiSetHttpVar("_$currentAid", $ct);
@@ -171,5 +171,5 @@ function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
 function dduiSetHttpVar($name, $def)
 {
     global $ZONE_ARGS;
-     $ZONE_ARGS[$name] = $def;
+    $ZONE_ARGS[$name] = $def;
 }
