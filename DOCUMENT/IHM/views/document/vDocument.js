@@ -492,7 +492,7 @@ define([
             this.propertiesWidget = $target.dcpDocumentProperties({
                 documentId: this.model.get("properties").get("initid"),
                 window: {
-                    width: "400px",
+                    width: "auto",
                     height: "auto",
                     title: i18n.___("Document properties", "propertyUi")
                 },
