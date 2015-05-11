@@ -751,6 +751,14 @@ define([
             if (!_.isObject(values)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
+
+            if (! values.initid) {
+                throw new Error('initid argument is mandatory}');
+            }
+
+            // Use default values when fetch another document
+            _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
+
             _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
             {
                 currentWidget.options[key] = value;

@@ -89,6 +89,12 @@ define([
                         }
                     }
                 },
+                filtering: function(e) {
+                    // space search is used to force new search
+                    if (e.filter.value === " ") {
+                        e.filter.value='';
+                    }
+                },
                 select: function kendoAutocompleteSelect(event)
                 {
                     var valueIndex = currentWidget._getIndex();
@@ -105,7 +111,7 @@ define([
             this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function (event)
             {
                 event.preventDefault();
-                inputValue.data("kendoAutoComplete").search(' ');
+                inputValue.data("kendoAutoComplete").search(' '); // use space search
             });
             this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip({
                 html: true
