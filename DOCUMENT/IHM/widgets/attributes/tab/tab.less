@@ -29,3 +29,24 @@
 .k-tabstrip:focus {
   box-shadow: none;
 }
+
+/**
+ For left tabs placement
+ */
+.k-tabstrip-left  .k-content.dcpTab__content {
+  width: ~"calc(100% - 140px)";
+  margin-left: 1px!important;
+  float: left;
+  margin-top:0;
+  margin-bottom:0;
+  margin-right:0;
+}
+.k-tabstrip-left .k-tabstrip-items {
+  width:108px;
+}
+.k-tabstrip-left .k-tabstrip-items .k-link {
+  text-align: left;
+}
+.k-tabstrip-left .k-tabstrip-items .k-complete {
+  display:none
+}

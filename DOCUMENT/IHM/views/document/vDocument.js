@@ -84,6 +84,7 @@ define([
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
+            var tabPlacement="top";
 
             this.template = this.getTemplates("body").trim();
             this.partials = this.getTemplates("sections");
@@ -191,10 +192,15 @@ define([
                             }
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
                             tabItems = $el.find(".dcpDocument__tabs__list").find('li');
-                            if (tabItems.length > 1) {
-                                tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%');
+
+                            if (tabModel.getOption("tabPlacement") !== "left") {
+                                if (tabItems.length > 1) {
+                                      tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%');
+                                } else {
+                                      tabItems.css("width", "80%");
+                                }
                             } else {
-                                tabItems.css("width", "80%");
+                                tabPlacement = "left";
                             }
 
                             $el.find(".dcpDocument__tabs").append(tabContent);
@@ -211,6 +217,7 @@ define([
                 });
 
                 this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+                    tabPosition: tabPlacement,
                     animation: {
                         open: {
                             duration: 100,
@@ -235,6 +242,10 @@ define([
                         });
                     }
                 });
+
+                if (tabPlacement === "left") {
+                    this.$(".dcpTab__content").css("min-height", this.$(".dcpDocument__tabs__list").height()+"px");
+                }
 
                 if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
                     var selectTab = 'li[data-attrid=' + this.selectedTab + ']';

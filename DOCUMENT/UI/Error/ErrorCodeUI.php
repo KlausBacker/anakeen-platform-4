@@ -88,6 +88,11 @@ namespace {
          */
         const UI0106 = 'setNeeded : Attribute "%s" cannot be needed (must not be in an array)  for "%s" document';
         /**
+         * @errorCode Tab can be set only on top or right
+         * @see \Dcp\Ui\TabRenderOptions::setTabPlacement
+         */
+        const UI0107 = 'setTabPlacement : Placement "%s" is not valid,  allowed placement are "%s" document';
+        /**
          * @errorCode the menu item not exist
          */
         const UI0200 = 'Value "%s" for Enum option "display" is invalid : allowed are : %s';

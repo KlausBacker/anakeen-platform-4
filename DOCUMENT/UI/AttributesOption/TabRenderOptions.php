@@ -12,6 +12,9 @@ class TabRenderOptions extends CommonRenderOptions
     
     const type = "tab";
     const openFirstOption = "openFirst";
+    const tabPlacementOption = "tabPlacement";
+    const tabLeftPlacement = "left";
+    const tabTopPlacement = "top";
     /**
      * Open this tab on render first
      *
@@ -22,5 +25,26 @@ class TabRenderOptions extends CommonRenderOptions
     public function setOpenFirst($openIt = true)
     {
         return $this->setOption(self::openFirstOption, (bool)$openIt);
+    }
+    /**
+     * Placement of tab labels
+     *
+     * @note The value cannot be apply to a particular tab but for all tabs
+     *
+     * @param string $tabPlacement top (default) or right
+     *
+     * @throws Exception UI0107
+     * @return $this
+     */
+    public function setTabPlacement($tabPlacement)
+    {
+        $allowPlacement = array(
+            self::tabLeftPlacement,
+            self::tabTopPlacement
+        );
+        if (!in_array($tabPlacement, $allowPlacement)) {
+            throw new Exception("UI0107", $tabPlacement, implode(', ', $allowPlacement));
+        }
+        return $this->setOption(self::tabPlacementOption, $tabPlacement);
     }
 }
