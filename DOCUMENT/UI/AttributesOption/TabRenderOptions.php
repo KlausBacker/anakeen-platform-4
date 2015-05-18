@@ -15,6 +15,8 @@ class TabRenderOptions extends CommonRenderOptions
     const tabPlacementOption = "tabPlacement";
     const tabLeftPlacement = "left";
     const tabTopPlacement = "top";
+    const tabTopFixPlacement = "topFix"; // fix width and display
+    
     /**
      * Open this tab on render first
      *
@@ -40,7 +42,8 @@ class TabRenderOptions extends CommonRenderOptions
     {
         $allowPlacement = array(
             self::tabLeftPlacement,
-            self::tabTopPlacement
+            self::tabTopPlacement,
+            self::tabTopFixPlacement
         );
         if (!in_array($tabPlacement, $allowPlacement)) {
             throw new Exception("UI0107", $tabPlacement, implode(', ', $allowPlacement));
