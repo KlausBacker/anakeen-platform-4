@@ -84,7 +84,7 @@ define([
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
-            var tabPlacement = "top";
+            var tabPlacement = "topFix";
 
             this.template = this.getTemplates("body").trim();
             this.partials = this.getTemplates("sections");
@@ -194,8 +194,6 @@ define([
 
 
                             if (tabModel.getOption("tabPlacement")) {
-
-
                                 tabPlacement = tabModel.getOption("tabPlacement");
                             }
 
@@ -239,7 +237,7 @@ define([
                         });
                     }
                 });
-                if (tabPlacement === "top") {
+                if (tabPlacement === "topProportional") {
                     var tabItems = $el.find(".dcpDocument__tabs__list li");
                     if (tabItems.length > 1) {
                         tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%');

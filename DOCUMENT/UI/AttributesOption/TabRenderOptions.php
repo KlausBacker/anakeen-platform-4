@@ -14,7 +14,7 @@ class TabRenderOptions extends CommonRenderOptions
     const openFirstOption = "openFirst";
     const tabPlacementOption = "tabPlacement";
     const tabLeftPlacement = "left";
-    const tabTopPlacement = "top";
+    const tabTopProportionalPlacement = "topProportional";
     const tabTopFixPlacement = "topFix"; // fix width and display
     
     /**
@@ -42,7 +42,7 @@ class TabRenderOptions extends CommonRenderOptions
     {
         $allowPlacement = array(
             self::tabLeftPlacement,
-            self::tabTopPlacement,
+            self::tabTopProportionalPlacement,
             self::tabTopFixPlacement
         );
         if (!in_array($tabPlacement, $allowPlacement)) {
