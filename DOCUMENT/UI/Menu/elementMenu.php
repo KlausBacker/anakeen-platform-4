@@ -52,6 +52,10 @@ class ElementMenu implements \JsonSerializable
      */
     protected $beforeLabelHtmlText = '';
     /**
+     * @var bool if an important menu
+     */
+    protected $isImportant = false;
+    /**
      * @var int
      */
     protected $iconSize = 12;
@@ -150,6 +154,16 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->beforeLabelHtmlText;
     }
+    /**
+     * Set important status
+     * Means that menu will not hide when window size is tiny
+     * @param bool $isImportant
+     */
+    public function setImportant($isImportant)
+    {
+        $this->isImportant = (bool)$isImportant;
+    }
+    
     protected function getIconUrl()
     {
         if ($this->iconPath) {
@@ -177,6 +191,7 @@ class ElementMenu implements \JsonSerializable
             "htmlAttributes" => $this->htmlAttributes,
             "visibility" => $this->visibility,
             "beforeContent" => $this->beforeLabelHtmlText,
+            "important" => $this->isImportant,
             "iconUrl" => $this->getIconUrl()
         );
     }
