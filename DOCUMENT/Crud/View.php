@@ -637,6 +637,7 @@ class View extends Crud
         }
         // Necessary only when use family.structure
         $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return join(" ", $result);
     }
     
