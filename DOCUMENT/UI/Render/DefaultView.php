@@ -347,7 +347,7 @@ class DefaultView extends RenderDefault
         $advMenu = $menu->getElement("advanced");
         foreach ($links as $idLink => $link) {
             if (isset($link["visibility"])) {
-                $menuItem = new ItemMenu($idLink, $link["descr"]);
+                $menuItem = new ItemMenu($idLink, htmlspecialchars_decode($link["descr"], ENT_QUOTES));
                 if (!empty($link["target"])) {
                     if (preg_match("/[0-9]+$/", $link["target"])) {
                         
