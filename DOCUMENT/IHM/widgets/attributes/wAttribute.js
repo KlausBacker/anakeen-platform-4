@@ -476,7 +476,8 @@ define([
             });
             this.element.find(".dcpAttribute__content__buttons button").tooltip({
                 placement: "top",
-                trigger: "hover"
+                trigger: "hover",
+                container: "body"
             });
             return this;
         },

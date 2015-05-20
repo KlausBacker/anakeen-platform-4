@@ -84,6 +84,7 @@ define([
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
+            var tabPlacement = "topFix";
 
             this.template = this.getTemplates("body").trim();
             this.partials = this.getTemplates("sections");
@@ -154,7 +155,7 @@ define([
             if ($body.length > 0) {
                 this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr)
                 {
-                    var view, viewTabLabel, viewTabContent, tabItems;
+                    var view, viewTabLabel, viewTabContent;
                     if (!currentAttr.isDisplayable()) {
                         currentView.trigger("partRender");
                         return;
@@ -190,11 +191,10 @@ define([
                                 currentView.selectedTab = currentAttr.id;
                             }
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
-                            tabItems = $el.find(".dcpDocument__tabs__list").find('li');
-                            if (tabItems.length > 1) {
-                                tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%');
-                            } else {
-                                tabItems.css("width", "80%");
+
+
+                            if (tabModel.getOption("tabPlacement")) {
+                                tabPlacement = tabModel.getOption("tabPlacement");
                             }
 
                             $el.find(".dcpDocument__tabs").append(tabContent);
@@ -210,7 +210,9 @@ define([
                     currentView.trigger("partRender");
                 });
 
+
                 this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
+                    tabPosition: tabPlacement,
                     animation: {
                         open: {
                             duration: 100,
@@ -235,6 +237,32 @@ define([
                         });
                     }
                 });
+                if (tabPlacement === "topProportional") {
+                    var tabItems = $el.find(".dcpDocument__tabs__list li");
+                    if (tabItems.length > 1) {
+                        tabItems.css("width", Math.floor(100 / tabItems.length) - 0.5 + '%');
+                    } else {
+                        tabItems.css("width", "80%");
+                    }
+                }
+                if (tabPlacement === "left") {
+                    this.$(".dcpTab__content").css("min-height", this.$(".dcpDocument__tabs__list").height() + "px");
+                    this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--left");
+                }
+
+                if (tabPlacement === "topFix") {
+                    this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
+
+                    // Use an overflow to hide resize effects, it is delete at the end of tab resize
+                    var tabList = this.$(".dcpDocument__tabs .dcpDocument__tabs__list");
+                    tabList.css("overflow", "hidden");
+                    $(window).on("resize." + this.model.cid, function ()
+                    {
+                        tabList.css("overflow", "hidden");
+                    });
+                    $(window).on("resize." + this.model.cid, _.debounce(_.bind(this.tabFixMenu, this), 100, false));
+
+                }
 
                 if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
                     var selectTab = 'li[data-attrid=' + this.selectedTab + ']';
@@ -258,6 +286,12 @@ define([
             console.timeEnd("render document view");
             this.trigger("renderDone");
             this.$el.show();
+            if (tabPlacement === "topFix") {
+                _.defer(_.bind(this.tabFixMenu, this)); // need to call here to have good dimensions
+            }
+            if (tabPlacement === "left") {
+                this.$(".dcpTab__content").css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
+            }
             return this;
         },
 
@@ -273,6 +307,156 @@ define([
             }
         },
 
+        /**
+         * Add menu if needed in topFix placement tab
+         */
+        tabFixMenu: function vDocumentTabFixMenu()
+        {
+            var $tabLabel = this.$(".dcpDocument__tabs__list li");
+
+            var documentWidth = this.$(".dcpDocument__tabs").width() - 12;
+            var currentWidth = 0;
+            var hiddens = [];
+            var lastShow = null;
+            var $dropSelect = null;
+            var $kendoTabs = this.kendoTabs.data("kendoTabStrip");
+            var liIndex = 0;
+            var $tabs = this.$(".dcpDocument__tabs");
+            var $selectedTabId = this.selectedTab;
+            var currentHeight;
+            var hiddenSelected = false;
+            console.time("tab size ");
+
+
+            $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden");
+            // Restore initial tabs
+            $tabLabel.show();
+
+            $tabLabel.each(function vDocumentHideTabWidth()
+            {
+                currentWidth += $(this).width();
+                if (currentWidth > documentWidth) {
+                    $(this).hide();
+                    if (hiddens.length === 0) {
+                        hiddens.push({
+                            label: $(lastShow).find(".k-link").text(),
+                            id: $(lastShow).data("attrid"),
+                            index: liIndex - 1
+                        });
+                    }
+                    hiddens.push({
+                        label: $(this).find(".k-link").text(),
+                        id: $(this).data("attrid"),
+                        index: liIndex
+                    });
+                } else {
+                    //$(this).show().find(".k-link").show();
+
+                    $kendoTabs.enable($(this));
+                    lastShow = this;
+                }
+
+                liIndex++;
+            });
+
+            if ($tabs.data("hiddenTabsLength") === hiddens.length) {
+                // Optimization if nothing to do
+                if (hiddens.length > 0) {
+                    $kendoTabs.disable($(lastShow));
+                }
+
+                $tabs.find(".dcpDocument__tabs__list").css("overflow", "");
+                console.timeEnd("tab size ");
+                return;
+            }
+
+            $tabLabel.css("height", '');
+            $tabs.data("hiddenTabsLength", hiddens.length);
+            $tabLabel.find(".k-link").show();
+            $tabs.find(".dcpTab__label__select").remove();
+            $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active").tooltip("enable");
+            $tabs.find(".dcpLabel[data-attrid=" + $selectedTabId + "]").addClass("k-state-active");
+
+
+            if (hiddens.length > 0) {
+                $dropSelect = $('<input class="dcpTab__label__select" />');
+
+
+                // Need to disable tab to use own events managing
+                $kendoTabs.disable($(lastShow));
+                currentHeight = $(lastShow).height();
+                // Hide original link
+                $(lastShow).find(".k-link").hide();
+                // Replace it to a dropdown selector
+                $(lastShow).append($dropSelect).addClass("dcpLabel--select");
+                hiddenSelected = _.some(hiddens, function (item)
+                {
+                    return (item.id === $selectedTabId);
+                });
+
+                if (hiddenSelected) {
+                    $(lastShow).addClass("k-state-active");
+                } else {
+                    if ($(lastShow).data("attrid") !== $selectedTabId) {
+                        $(lastShow).removeClass("k-state-active");
+                    }
+                }
+                $(lastShow).tooltip("disable");
+                $(lastShow).height(currentHeight - 5);
+                $dropSelect.kendoComboBox({
+                    value: hiddenSelected ? $selectedTabId : hiddens[0].id,
+                    dataSource: hiddens,
+                    dataTextField: "label",
+                    dataValueField: "id",
+                    select: function (event)
+                    {
+
+                        var dataItem = this.dataSource.at(event.item.index());
+                        var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
+                        // Need to reset class and enable to really trigger show events
+                        $(lastShow).removeClass("k-state-active");
+                        $kendoTabs.enable($(lastShow));
+                        $kendoTabs.select(liItem);
+                        $kendoTabs.disable($(lastShow));
+                        $(lastShow).addClass("k-state-active");
+                        $(lastShow).find(".k-input").blur(); // Because input is read only
+                    }
+                });
+                $dropSelect.data("kendoComboBox").ul.addClass("dcpLabel__select-hide");
+                // No use input selector
+                $(lastShow).find("input").attr("aria-readonly", "true").prop("readonly", true);
+                $(lastShow).find(".k-select").prepend($("<span/>").addClass("dcpLabel__count").text(hiddens.length));
+                if (!$tabs.data("selectFixOn")) {
+                    // Add callback only one time
+                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function ()
+                    {
+                        var selectedTab = $kendoTabs.select().data("attrid");
+                        var selectedItem = $tabs.data("selectFixOn").data("kendoComboBox").value();
+                        var liItem = $tabs.find("li[data-attrid=" + selectedItem + "]");
+                        var myTab = $(this).closest("li");
+
+                        if (selectedItem !== selectedTab) {
+                            myTab.removeClass("k-state-active");
+                            $kendoTabs.enable(myTab);
+                            $kendoTabs.select(liItem);
+                            $kendoTabs.disable(myTab);
+                            myTab.addClass("k-state-active");
+
+                        }
+                    });
+
+                    $tabs.on("focus", ".dcpLabel--select .k-dropdown-wrap .k-input", function ()
+                    {
+                        $(this).blur();
+                    });
+                }
+
+                // Memorize dropdown to reuse it in callback and to listen only one
+                $tabs.data("selectFixOn", $dropSelect);
+            }
+            $tabs.find(".dcpDocument__tabs__list").css("overflow", "");
+            console.timeEnd("tab size ");
+        },
 
         /**
          *

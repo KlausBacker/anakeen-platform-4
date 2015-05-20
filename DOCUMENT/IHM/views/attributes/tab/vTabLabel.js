@@ -34,8 +34,10 @@ define([
             //console.time("render tab " + this.model.id);
             var label = this.model.get("label");
             this.$el.empty();
+
             if (this.displayLabel !== false) {
                 this.$el.text(label);
+
                 this.$el.tooltip({
                     placement: "top",
                     container: "body",

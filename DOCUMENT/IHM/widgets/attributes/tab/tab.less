@@ -1,31 +1,159 @@
+@tabstrip-tabs-color: #428bca;
+
 .dcpDocument__tabs .dcpDocument__tabs__list > li {
   max-width: 200px;
 }
 
-.dcpDocument__tabs .dcpTab__label  .k-link {
+.dcpDocument__tabs .dcpTab__label .k-link {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   padding: 10px 5% 5px 5%;
   text-align: center;
-  width:100%;
+  width: 100%;
   box-sizing: border-box;
 }
 
-
-.k-tabstrip-items .dcpTab__label  .k-state-active {
+.k-tabstrip-items .dcpTab__label .k-state-active {
   background-color: transparent;
 }
 
 .dcpTab__content * {
   box-sizing: border-box;
 }
+
 .dcpTab__content .k-picker-wrap,
-.dcpTab__content .k-numeric-wrap
-{
+.dcpTab__content .k-numeric-wrap {
   box-sizing: content-box;
 }
 
 .k-tabstrip:focus {
   box-shadow: none;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label {
+  width: 10em;
+}
+
+.dcpDocument__tabs--fixed .dcpDocument__tabs__list {
+  max-height: 2.6em;
+
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
+  //width: 2em;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-combobox {
+  width: 100%;
+  margin-top: 0;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-select {
+  border-style: solid;
+  border-color: @nav-tabs-border-color  @nav-tabs-border-color transparent @nav-tabs-border-color;
+  border-radius: 0 @border-radius-base 0 0;
+  border-width: 1px;
+  margin-right: -4px;
+  height: ~"calc(100% + 6px)";
+  margin-top: -4px;
+  box-sizing: border-box;
+  padding: 8px 4px 4px 4px;
+  width: 2.2em;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active .k-select {
+
+  border-color: transparent transparent transparent @nav-tabs-border-color;
+  //border-radius: 0 @border-radius-base;
+}
+
+.dcpLabel__count {
+
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-select:hover {
+  background-color: lighten(@nav-link-hover-bg, 10%);
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-disabled {
+  opacity: 1;
+  border-color: transparent;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-disabled .k-icon {
+  cursor: pointer !important; // need to be important because kendo rule is also important
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active.k-state-disabled {
+  //color:@text-color;
+  border-color: @nav-tabs-border-color;
+
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-select .k-icon {
+  margin-top: 2px;
+
+}
+
+.dcpLabel__select-hide li {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select:hover {
+  background-color: @nav-link-hover-bg;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-combobox .k-input {
+  cursor: pointer;
+  color: @tabstrip-tabs-color;
+  box-shadow: none;
+  background-color: transparent;
+  text-overflow: ellipsis;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active .k-combobox .k-input {
+  color: @text-color;
+}
+
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-combobox .k-dropdown-wrap {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+
+}
+
+.dcpTab__label__select {
+  text-align: center;
+  height: 1.6em;
+  margin-top: 3px;
+}
+
+/**
+ For left tabs placement
+ */
+.k-tabstrip-left .k-content.dcpTab__content {
+
+  margin-left: 1px !important;
+  float: left;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 0;
+}
+
+.dcpDocument__tabs--left .dcpDocument__tabs__list {
+  width: 10em;
+}
+
+.k-tabstrip-left .k-tabstrip-items .k-link {
+  text-align: left;
+}
+
+.k-tabstrip-left .k-tabstrip-items .k-complete {
+  display: none
 }

@@ -104,11 +104,13 @@ define([
                     if (this.options.mode === "write") {
                         this.element.find('.dcpArray__tools').tooltip({
                             selector: ".dcpArray__button",
-                            placement: "top"
+                            placement: "top",
+                            container: "body"
                         });
                         this.element.tooltip({
                             selector: ".dcpArray__content__toolCell span",
-                            placement: "top"
+                            placement: "top",
+                            container: "body"
                         });
                     }
                 }
