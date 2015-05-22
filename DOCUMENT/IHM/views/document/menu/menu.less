@@ -79,10 +79,15 @@ body {
   padding-right: 15px;
 }
 
+.menu--count {
+  padding-left:0.2em;
+}
 .k-tooltip.k-state-border-up {
   /*margin-top: 6px;*/
 }
-
+.k-menu .k-item.menu_element--hamburger {
+  float: right;
+}
 .k-menu .k-item.menu--right {
   float: right;
     border-left-width: 1px;
@@ -107,11 +112,11 @@ div[data-role=draggable] .k-window-title {
   padding: 2em 5em;
 }
 
-.menu--right.k-last .k-animation-container{
+.menu--right.k-item > .k-animation-container{
   right:0;
   left:auto! important; /* need to correct kendo bug when scrollbar is visible */
 }
-.menu--right.k-last .k-animation-container ul{
+.menu--right.k-item > .k-animation-container ul{
   right: 0;
 }
 

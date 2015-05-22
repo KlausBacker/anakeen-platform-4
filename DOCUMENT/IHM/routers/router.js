@@ -24,8 +24,13 @@ define([
                         "mode" :     currentRouter.document.get("renderMode"),
                         "viewId" :   undefined
                     };
+                var docProperties=currentRouter.document.getProperties();
                 if (!_.isUndefined(viewId) && viewId !== "!defaultConsultation" && viewId !== "!defaultEdition") {
                     options.viewId = viewId;
+                }
+                if (docProperties && docProperties.status === "alive") {
+                    // No write revision if not a fixed one
+                    options.revision=-1;
                 }
                 if (window.dcp && window.dcp.viewData && window.dcp.viewData.documentIdentifier === options.initid &&
                     window.dcp.viewData.revision === options.revision &&

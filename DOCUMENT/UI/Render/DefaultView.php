@@ -96,7 +96,7 @@ class DefaultView extends RenderDefault
         $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "#event/document:edit");
         $item->setTooltipLabel(___("Display document form", "UiMenu"));
         $item->setBeforeContent('<div class="fa fa-pencil" />');
-        
+        $item->setImportant(true);
         $menu->appendElement($item);
         
         $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#event/document:delete");
@@ -167,6 +167,7 @@ class DefaultView extends RenderDefault
                 $workflowMenu->setBeforeContent(sprintf('<div class="fa fa-sitemap" />', $document->getStateColor("transparent")));
                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
                 $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu") , "left");
+                $workflowMenu->setImportant(true);
                 $menu->appendElement($workflowMenu);
             } else {
                 $workflowMenu = new SeparatorMenu("workflow", _($document->getState()));

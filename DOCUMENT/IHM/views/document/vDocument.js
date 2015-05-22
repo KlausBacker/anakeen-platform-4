@@ -233,6 +233,7 @@ define([
                             var tab = currentView.model.get("attributes").get(tabId);
                             if (tab) {
                                 tab.trigger("showTab");
+                                viewMenu.refresh();
                             }
                         });
                     }
@@ -260,7 +261,7 @@ define([
                     {
                         tabList.css("overflow", "hidden");
                     });
-                    $(window).on("resize." + this.model.cid, _.debounce(_.bind(this.tabFixMenu, this), 100, false));
+                    $(window).on("resize." + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
 
                 }
 
@@ -287,7 +288,7 @@ define([
             this.trigger("renderDone");
             this.$el.show();
             if (tabPlacement === "topFix") {
-                _.defer(_.bind(this.tabFixMenu, this)); // need to call here to have good dimensions
+                _.defer(_.bind(this.responsiveTabMenu, this)); // need to call here to have good dimensions
             }
             if (tabPlacement === "left") {
                 this.$(".dcpTab__content").css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
@@ -310,7 +311,7 @@ define([
         /**
          * Add menu if needed in topFix placement tab
          */
-        tabFixMenu: function vDocumentTabFixMenu()
+        responsiveTabMenu: function vDocumentTabFixMenu()
         {
             var $tabLabel = this.$(".dcpDocument__tabs__list li");
 
@@ -318,13 +319,15 @@ define([
             var currentWidth = 0;
             var hiddens = [];
             var lastShow = null;
-            var $dropSelect = null;
+            var $dropSelect;
+            var $dropTopSelect;
             var $kendoTabs = this.kendoTabs.data("kendoTabStrip");
             var liIndex = 0;
             var $tabs = this.$(".dcpDocument__tabs");
             var $selectedTabId = this.selectedTab;
             var currentHeight;
             var hiddenSelected = false;
+            var dataSource = null;
             console.time("tab size ");
 
 
@@ -334,7 +337,7 @@ define([
 
             $tabLabel.each(function vDocumentHideTabWidth()
             {
-                currentWidth += $(this).width();
+                currentWidth += $(this).outerWidth();
                 if (currentWidth > documentWidth) {
                     $(this).hide();
                     if (hiddens.length === 0) {
@@ -350,8 +353,6 @@ define([
                         index: liIndex
                     });
                 } else {
-                    //$(this).show().find(".k-link").show();
-
                     $kendoTabs.enable($(this));
                     lastShow = this;
                 }
@@ -360,7 +361,7 @@ define([
             });
 
             if ($tabs.data("hiddenTabsLength") === hiddens.length) {
-                // Optimization if nothing to do
+                // Optimization if no new tabs to hide
                 if (hiddens.length > 0) {
                     $kendoTabs.disable($(lastShow));
                 }
@@ -370,25 +371,27 @@ define([
                 return;
             }
 
+            // Delete fixed height
             $tabLabel.css("height", '');
+            // Record hidden count to optimization
             $tabs.data("hiddenTabsLength", hiddens.length);
-            $tabLabel.find(".k-link").show();
-            $tabs.find(".dcpTab__label__select").remove();
+            $tabLabel.find(".k-link").show(); // Restore original link (tab label)
+
+            $dropTopSelect = $tabs.find(".dcpTab__label__select.k-combobox").hide();
+
             $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active").tooltip("enable");
             $tabs.find(".dcpLabel[data-attrid=" + $selectedTabId + "]").addClass("k-state-active");
 
 
             if (hiddens.length > 0) {
-                $dropSelect = $('<input class="dcpTab__label__select" />');
-
 
                 // Need to disable tab to use own events managing
                 $kendoTabs.disable($(lastShow));
+                // Need to force same heigth as other tabs
                 currentHeight = $(lastShow).height();
                 // Hide original link
                 $(lastShow).find(".k-link").hide();
                 // Replace it to a dropdown selector
-                $(lastShow).append($dropSelect).addClass("dcpLabel--select");
                 hiddenSelected = _.some(hiddens, function (item)
                 {
                     return (item.id === $selectedTabId);
@@ -401,31 +404,52 @@ define([
                         $(lastShow).removeClass("k-state-active");
                     }
                 }
-                $(lastShow).tooltip("disable");
-                $(lastShow).height(currentHeight - 5);
-                $dropSelect.kendoComboBox({
-                    value: hiddenSelected ? $selectedTabId : hiddens[0].id,
-                    dataSource: hiddens,
-                    dataTextField: "label",
-                    dataValueField: "id",
-                    select: function (event)
-                    {
 
-                        var dataItem = this.dataSource.at(event.item.index());
-                        var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
-                        // Need to reset class and enable to really trigger show events
-                        $(lastShow).removeClass("k-state-active");
-                        $kendoTabs.enable($(lastShow));
-                        $kendoTabs.select(liItem);
-                        $kendoTabs.disable($(lastShow));
-                        $(lastShow).addClass("k-state-active");
-                        $(lastShow).find(".k-input").blur(); // Because input is read only
-                    }
-                });
-                $dropSelect.data("kendoComboBox").ul.addClass("dcpLabel__select-hide");
-                // No use input selector
-                $(lastShow).find("input").attr("aria-readonly", "true").prop("readonly", true);
-                $(lastShow).find(".k-select").prepend($("<span/>").addClass("dcpLabel__count").text(hiddens.length));
+                $(lastShow).addClass("dcpLabel--select");
+                $(lastShow).height(currentHeight - 5);
+                if ($dropTopSelect.length === 0) {
+                    $dropSelect = $('<input class="dcpTab__label__select" />');
+                    $(lastShow).append($dropSelect);
+                    $dropSelect.kendoComboBox({
+                        value: hiddenSelected ? $selectedTabId : hiddens[0].id,
+                        dataSource: hiddens,
+                        dataTextField: "label",
+                        dataValueField: "id",
+                        select: function (event)
+                        {
+                            var dataItem = this.dataSource.at(event.item.index());
+                            var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
+                            var myTab = $(this).closest("li");
+                            // Need to reset class and enable to really trigger show events
+                            myTab.removeClass("k-state-active");
+                            $kendoTabs.enable(myTab);
+                            $kendoTabs.select(liItem);
+                            $kendoTabs.disable(myTab);
+                            myTab.addClass("k-state-active");
+                            myTab.find(".k-input").blur(); // Because input is read only
+                        }
+                    });
+                    $(lastShow).tooltip("disable");
+
+                    $dropSelect.data("kendoComboBox").ul.addClass("dcpLabel__select-hide");
+                    // No use input selector
+                    $(lastShow).find("input").attr("aria-readonly", "true").prop("readonly", true);
+                    $(lastShow).find(".k-select").prepend($("<span/>").addClass("dcpLabel__count"));
+                } else {
+                    // Reuse dropDown created previously
+                    $dropTopSelect.show();
+                    $dropSelect = $tabs.find("input.dcpTab__label__select[data-role=combobox]");
+                    $(lastShow).append($dropTopSelect); // Move to new lastShow
+                    $dropSelect.data("kendoComboBox").value(hiddenSelected ? $selectedTabId : hiddens[0].id);
+                    dataSource = new kendo.data.DataSource({
+                        data: hiddens
+                    });
+                    $dropSelect.data("kendoComboBox").setDataSource(dataSource);
+                }
+
+                // Add count in select button
+                $(lastShow).find(".dcpLabel__count").text(hiddens.length);
+
                 if (!$tabs.data("selectFixOn")) {
                     // Add callback only one time
                     $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function ()
@@ -441,7 +465,6 @@ define([
                             $kendoTabs.select(liItem);
                             $kendoTabs.disable(myTab);
                             myTab.addClass("k-state-active");
-
                         }
                     });
 
