@@ -64,6 +64,13 @@ define([
             return _.find(_.keys($element.data()), function (currentKey) {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
+        },
+
+        /**
+         * Recompute responsive in case of scrollbar can appear
+         */
+        refresh:function vMenu_refresh() {
+            this.$el.dcpMenu("updateResponsiveMenu");
         }
 
     });

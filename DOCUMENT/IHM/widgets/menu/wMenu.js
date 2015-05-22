@@ -178,18 +178,63 @@ define([
             this.kendoMenuWidget.append([
                 {
                     text: '<span class="menu__before-content k-image"><div class="fa fa-bars"></div></span><span class="menu--count" />',
-                    cssClass: "menu__element menu--important menu--right menu_element--hamburger ",
+                    cssClass: "menu__element  menu--right menu_element--hamburger ",
                     encoded: false,                              // Allows use of HTML for item text
                     items: []                              // List items
                 }]);
-            $(window).on("resize.dcpMenu", function ()
-            {
-                // First resize to avoid menu moves
-                scopeWidget.element.css("max-height", $content.find("li").height() + 2).css("overflow", "hidden");
-            });
+            $(window).on("resize.dcpMenu", _.bind(this.inhibitBarMenu, this));
             $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
-            this.updateResponsiveMenu();
+            _.delay(_.bind(this.updateResponsiveMenu, this), 100);
 
+
+        },
+
+        inhibitBarMenu: function ()
+        {
+            var widgetMenu = this;
+            if (this.element.css("overflow") !== "hidden") {
+                this.element.css("max-height", this.element.find(".menu__content li").height() + 2).css("overflow", "hidden");
+                this.element.find("li.k-state-border-down").each(function ()
+                {
+                    widgetMenu.kendoMenuWidget.close($(this));
+                });
+            }
+        },
+
+        /**
+         * Get scrollbar width by adding a element
+         * @returns {number|*}
+         */
+        getScrollBarWidth: function wMenugetScrollBarWidth()
+        {
+            if (!this.scrollBarWidth) {
+                var inner = document.createElement('p');
+                inner.style.width = "100%";
+                inner.style.height = "200px";
+
+                var outer = document.createElement('div');
+                outer.style.position = "absolute";
+                outer.style.top = "0px";
+                outer.style.left = "0px";
+                outer.style.visibility = "hidden";
+                outer.style.width = "200px";
+                outer.style.height = "150px";
+                outer.style.overflow = "hidden";
+                outer.appendChild(inner);
+
+                document.body.appendChild(outer);
+                var w1 = inner.offsetWidth;
+                outer.style.overflow = 'scroll';
+                var w2 = inner.offsetWidth;
+                if (w1 === w2) {
+                    w2 = outer.clientWidth;
+                }
+
+                document.body.removeChild(outer);
+                this.scrollBarWidth = (w1 - w2);
+            }
+
+            return this.scrollBarWidth;
         },
 
         /**
@@ -198,43 +243,66 @@ define([
         updateResponsiveMenu: function wMenuHideResponsiveMenu()
         {
             var barMenu = this.element;
-            var $itemMenu = barMenu.find("ul.k-menu > .menu__element");
-            var hiddens = [];
+            var $itemMenu = barMenu.find("ul.k-menu > .menu__element:not(.menu--important,.menu_element--hamburger)");
+            var $importantItemMenu = barMenu.find("ul.k-menu > .menu__element.menu--important");
+            var newHiddens = [];
             var currentWidth = 0;
             var visibleWidth = 0;
             var freeWidth = 0;
-            var barmenuWidth = barMenu.width() - 12;
+            var barmenuWidth = barMenu.width() - 2;
             var kendoMenu = this.kendoMenuWidget;
             var $hamburger = $(".menu_element--hamburger");
             var hiddenItemsCount;
+            var visibleItemCount;
+            var $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");
+            var hiddenLeft = $hiddenItems.length;
             console.time("menu responsive");
 
 
-            $itemMenu.each(function wMenuComputeBarmenuWidth ()
+            this.inhibitBarMenu();
+            $importantItemMenu.each(function wMenuComputeBarmenuWidth()
             {
-                if ($(this).hasClass("menu--important")) {
-                    barmenuWidth -= $(this).width();
-                }
-            });
-            barMenu.find(".k-state-border-down").removeClass("k-state-border-down");
 
+
+                barmenuWidth -= $(this).width() + 1;
+
+
+            });
+
+            barmenuWidth -= $hamburger.outerWidth();
+
+            // When no scrollbar need to add hypothetic scrollbar width because no event to refresh when scrollbar appear
+            if (window.document.documentElement.scrollHeight <= window.document.documentElement.clientHeight) {
+                barmenuWidth -= this.getScrollBarWidth(); // Supposed that scrollbar width is max 20px
+            }
+
+            visibleItemCount = $itemMenu.length;
             // Detect free menu width available and record menu which not contains
             $itemMenu.each(function wMenuComputeWidth()
             {
-                if (!$(this).hasClass("menu--important")) {
-                    currentWidth += $(this).width();
-                    if (currentWidth > barmenuWidth) {
-                        hiddens.push(this);
-                    } else {
-                        visibleWidth += $(this).width();
-                    }
+                currentWidth += ($(this).outerWidth());
+                if (currentWidth > barmenuWidth) {
+                    $(this).data("original-width", $(this).outerWidth());
+                    newHiddens.push(this);
+                } else {
+                    visibleWidth += $(this).outerWidth();
                 }
+                visibleItemCount--;
+
             });
+
             freeWidth = barmenuWidth - visibleWidth;
+
+            if (hiddenLeft === 0 && newHiddens.length === 1) {
+                // Special case for the last hidden may visible if hamburger is hide
+                if ($(newHiddens[0]).outerWidth() < (freeWidth + $hamburger.outerWidth())) {
+                    newHiddens = [];
+                }
+            }
 
 
             // Move each new hidden menu to hamburger
-            _.each(hiddens.reverse(), function wMenuItemToHamburger(item)
+            _.each(newHiddens.reverse(), function wMenuItemToHamburger(item)
             {
                 // Prepend new menu to hamburger
                 if ($hamburger.find("li.k-item").length === 0) {
@@ -243,28 +311,26 @@ define([
                     kendoMenu.insertBefore($(item), $($hamburger.find("li.k-item").get(0)));
                 }
             });
-
             // No new hidden menu so ...
-            if (hiddens.length === 0) {
+            if (newHiddens.length === 0) {
                 // May be show hidden menu
-                $($hamburger.find("ul").get(0)).find("> li.k-item").each(function wMenuItemFromHamburger()
+                $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");
+                hiddenLeft = $hiddenItems.length;
+                $hiddenItems.each(function wMenuItemFromHamburger()
                 {
-                    // Tips to get width of hidden menu
-                    $(this).closest("ul").css("visibility", "hidden").show();
-                    currentWidth = $(this).width();
-                    if (currentWidth === 0) {
-                        $(this).closest(".k-animation-container").css("visibility", "hidden").show();
-                        currentWidth = $(this).width();
-                        $(this).closest(".k-animation-container").css("visibility", "").hide();
-                    }
-                    $(this).closest("ul").hide().css("visibility", "");
+                    if (freeWidth > 0) {
+                        if (hiddenLeft === 1) {
+                            freeWidth += $hamburger.width();
+                        }
+                        currentWidth = $(this).data("original-width");
 
-                    // If available width show move at initial place (right of the hamburger)
-                    if (currentWidth < freeWidth) {
-                        kendoMenu.insertBefore($(this), $hamburger);
-                        freeWidth -= $(this).width();
-                    } else {
-                        freeWidth = -1; // stop test
+                        // If available width show move at initial place (right of the hamburger)
+                        if (currentWidth < freeWidth) {
+                            kendoMenu.insertBefore($(this), $hamburger);
+                            freeWidth -= $(this).outerWidth();
+                        } else {
+                            freeWidth = -1; // stop test
+                        }
                     }
                 });
             }
@@ -281,7 +347,7 @@ define([
             // $hamburger.find(".menu--count").text(hiddenItemsCount);
 
             // View hamburger if not empty
-            if (hiddens.length > 0) {
+            if (newHiddens.length > 0) {
                 $hamburger.show();
             }
 
@@ -387,7 +453,7 @@ define([
             if (kendoWidget) {
                 kendoWidget.destroy();
             }
-            $(window).off("resize.dcpMenu");
+            $(window).off(".dcpMenu");
             _.each(this.popupWindows, function (pWindow)
             {
                 pWindow.destroy();

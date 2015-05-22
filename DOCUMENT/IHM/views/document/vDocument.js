@@ -233,6 +233,7 @@ define([
                             var tab = currentView.model.get("attributes").get(tabId);
                             if (tab) {
                                 tab.trigger("showTab");
+                                viewMenu.refresh();
                             }
                         });
                     }
