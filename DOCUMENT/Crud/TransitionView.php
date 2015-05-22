@@ -60,8 +60,8 @@ class TransitionView extends \Dcp\HttpApi\V1\Crud\WorkflowState
         $render->setWorkflow($this->workflow);
         $info["transition"] = array(
             "id" => ($transitionId !== null) ? $transitionId : null,
-            "currentState" => $this->getStateInfo($this->_document->state) ,
-            "nextState" => $this->getStateInfo($this->state) ,
+            "beginState" => $this->getStateInfo($this->_document->state) ,
+            "endState" => $this->getStateInfo($this->state) ,
             "label" => isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui") ,
             "askComment" => empty($transition["nr"]) ,
             "askAttributes" => $render->getTransitionParameters($transitionId)
