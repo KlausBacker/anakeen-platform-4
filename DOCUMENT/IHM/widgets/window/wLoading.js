@@ -95,10 +95,12 @@ define([
             var $initbar = this.initBar.find(".progress-bar");
             var rpc = Math.round(pc);
             this.pc = pc;
-            window.requestAnimationFrame(function ()
-            {
-                $initbar.css("width", rpc + '%');
-            });
+            if (window.requestAnimationFrame) {
+                window.requestAnimationFrame(function ()
+                {
+                    $initbar.css("width", rpc + '%');
+                });
+            }
 
         },
 
