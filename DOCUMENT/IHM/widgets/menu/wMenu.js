@@ -262,11 +262,7 @@ define([
             this.inhibitBarMenu();
             $importantItemMenu.each(function wMenuComputeBarmenuWidth()
             {
-
-
-                barmenuWidth -= $(this).width() + 1;
-
-
+                barmenuWidth -= $(this).outerWidth();
             });
 
             barmenuWidth -= $hamburger.outerWidth();
