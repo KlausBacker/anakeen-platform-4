@@ -256,10 +256,10 @@ define([
 
                     // Use an overflow to hide resize effects, it is delete at the end of tab resize
                     var tabList = this.$(".dcpDocument__tabs .dcpDocument__tabs__list");
-                    tabList.css("overflow", "hidden");
+                    tabList.css("overflow", "hidden").css("max-height", "2.7em");
                     $(window).on("resize." + this.model.cid, function ()
                     {
-                        tabList.css("overflow", "hidden");
+                        tabList.css("overflow", "hidden").css("max-height", "2.7em");
                     });
                     $(window).on("resize." + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
 
@@ -331,7 +331,7 @@ define([
             console.time("tab size ");
 
 
-            $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden");
+            $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
             // Restore initial tabs
             $tabLabel.show();
 
@@ -360,13 +360,28 @@ define([
                 liIndex++;
             });
 
+
+            /**
+             * Need to recompute container width
+             */
+            $(".dcpLabel__select-hide:visible").each(function ()
+            {
+                var $container = $(this).closest(".k-list-container");
+                var x = $container.offset().left;
+                var maxWidth = ($('body').width() - x - 20) + "px";
+
+                $container.css("max-width", maxWidth);
+                $container.closest(".k-animation-container").css("max-width", maxWidth);
+                $(this).css("max-width", "");
+            });
+
             if ($tabs.data("hiddenTabsLength") === hiddens.length) {
                 // Optimization if no new tabs to hide
                 if (hiddens.length > 0) {
                     $kendoTabs.disable($(lastShow));
                 }
 
-                $tabs.find(".dcpDocument__tabs__list").css("overflow", "");
+                $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
                 console.timeEnd("tab size ");
                 return;
             }
@@ -378,8 +393,13 @@ define([
             $tabLabel.find(".k-link").show(); // Restore original link (tab label)
 
             $dropTopSelect = $tabs.find(".dcpTab__label__select.k-combobox").hide();
+            $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function ()
+            {
+                $(this).data("kendoComboBox").close();
+            });
 
-            $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active").tooltip("enable");
+
+            $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active");
             $tabs.find(".dcpLabel[data-attrid=" + $selectedTabId + "]").addClass("k-state-active");
 
 
@@ -427,14 +447,40 @@ define([
                             $kendoTabs.disable(myTab);
                             myTab.addClass("k-state-active");
                             myTab.find(".k-input").blur(); // Because input is read only
+                        },
+                        open: function ()
+                        {
+                            // Need to compute width of container to see elements
+                            // Set max-width to not be out of body
+                            var $ul = $(this.ul);
+                            var x = $(this.element).closest("li").offset().left;
+                            var bodyWidth = $('body').width();
+                            $ul.css("max-width", (bodyWidth - x - 20) + "px");
+                            _.defer(function ()
+                            {
+                                $ul.closest(".k-animation-container").addClass("menu__select_container");
+                            });
                         }
                     });
-                    $(lastShow).tooltip("disable");
+
 
                     $dropSelect.data("kendoComboBox").ul.addClass("dcpLabel__select-hide");
+                    // The container width is computed by open event
+                    $dropSelect.data("kendoComboBox").list.width("auto");
                     // No use input selector
                     $(lastShow).find("input").attr("aria-readonly", "true").prop("readonly", true);
                     $(lastShow).find(".k-select").prepend($("<span/>").addClass("dcpLabel__count"));
+
+                    $dropSelect.data("kendoComboBox").ul.tooltip({
+                        selector: "li.k-item",
+                        placement: "left",
+                        container: "body",
+                        title: function ()
+                        {
+                            return $(this).text();
+                        }
+                    });
+
                 } else {
                     // Reuse dropDown created previously
                     $dropTopSelect.show();
@@ -446,6 +492,7 @@ define([
                     });
                     $dropSelect.data("kendoComboBox").setDataSource(dataSource);
                 }
+
 
                 // Add count in select button
                 $(lastShow).find(".dcpLabel__count").text(hiddens.length);
@@ -477,7 +524,7 @@ define([
                 // Memorize dropdown to reuse it in callback and to listen only one
                 $tabs.data("selectFixOn", $dropSelect);
             }
-            $tabs.find(".dcpDocument__tabs__list").css("overflow", "");
+            $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
             console.timeEnd("tab size ");
         },
 

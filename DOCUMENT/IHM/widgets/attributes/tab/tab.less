@@ -36,7 +36,7 @@
 }
 
 .dcpDocument__tabs--fixed .dcpDocument__tabs__list {
-  max-height: 2.6em;
+ // max-height: 2.7em; // To avoid overflow during resizing
 
 }
 
@@ -97,12 +97,26 @@
   margin-top: 2px;
 
 }
+.menu__select_container {
+  // select list container for select tab
+}
+
+.menu__select_container .k-list-container{
+
+}
+
+.dcpLabel__select-hide {
+ // ul of select list container for select tab
+}
 
 .dcpLabel__select-hide li {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  max-width:18em;
 }
+
+
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select:hover {
   background-color: @nav-link-hover-bg;
