@@ -256,10 +256,10 @@ define([
 
                     // Use an overflow to hide resize effects, it is delete at the end of tab resize
                     var tabList = this.$(".dcpDocument__tabs .dcpDocument__tabs__list");
-                    tabList.css("overflow", "hidden");
+                    tabList.css("overflow", "hidden").css("max-height", "2.7em");
                     $(window).on("resize." + this.model.cid, function ()
                     {
-                        tabList.css("overflow", "hidden");
+                        tabList.css("overflow", "hidden").css("max-height", "2.7em");
                     });
                     $(window).on("resize." + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
 
@@ -331,7 +331,7 @@ define([
             console.time("tab size ");
 
 
-            $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden");
+            $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
             // Restore initial tabs
             $tabLabel.show();
 
@@ -381,7 +381,7 @@ define([
                     $kendoTabs.disable($(lastShow));
                 }
 
-                $tabs.find(".dcpDocument__tabs__list").css("overflow", "");
+                $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
                 console.timeEnd("tab size ");
                 return;
             }
@@ -524,7 +524,7 @@ define([
                 // Memorize dropdown to reuse it in callback and to listen only one
                 $tabs.data("selectFixOn", $dropSelect);
             }
-            $tabs.find(".dcpDocument__tabs__list").css("overflow", "");
+            $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
             console.timeEnd("tab size ");
         },
 
