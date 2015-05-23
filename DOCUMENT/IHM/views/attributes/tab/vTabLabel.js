@@ -43,7 +43,11 @@ define([
                     container: "body",
                     title: function vDocumentTooltipTitle()
                     {
-                        return label; // set the element text as content of the tooltip
+                        if ($(this).find(".k-input.dcpTab__label__select").length > 0) {
+                            // It is a selected Tab
+                            return $(this).find(".k-input").val();
+                        }
+                        return $(this).text(); // set the element text as content of the tooltip
                     }
                 });
             }
