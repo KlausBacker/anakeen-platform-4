@@ -95,8 +95,42 @@ define([
                 "revision": -1,
                 "viewId": "!defaultConsultation"
             }).fetch();
+        },
+
+        /**
+         * Hide all items of the column
+         */
+        hide: function vColumnHide()
+        {
+            this.getDOMElements().each(function ()
+            {
+                var $cell = $(this);
+                var tagName = $cell.prop("tagName").toLowerCase();
+
+                if (tagName !== "td" && tagName !== "th") {
+                    $cell = $cell.closest("td.dcpArray__cell, th.dcpArray__head");
+                }
+                $cell.hide();
+            });
+        },
+        /**
+         * Show all hidden items of the column
+         */
+        show: function vColumnShow()
+        {
+            this.getDOMElements().each(function ()
+            {
+                var $cell = $(this);
+                var tagName = $cell.prop("tagName").toLowerCase();
+
+                if (tagName !== "td" && tagName !== "th") {
+                    $cell = $cell.closest("td.dcpArray__cell, th.dcpArray__head");
+                }
+                $cell.show();
+            });
         }
 
     });
+
 
 });
