@@ -444,7 +444,7 @@ define([
                         {
                             var dataItem = this.dataSource.at(event.item.index());
                             var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
-                            var myTab = $(this).closest("li");
+                            var myTab = $(this.element).closest("li");
                             // Need to reset class and enable to really trigger show events
                             myTab.removeClass("k-state-active");
                             $kendoTabs.enable(myTab);
