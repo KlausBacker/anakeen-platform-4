@@ -251,7 +251,7 @@ define([
                     this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--left");
                 }
 
-                if (tabPlacement === "topFix") {
+                if (tabPlacement === "topFix" && this.kendoTabs) {
                     this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
 
                     // Use an overflow to hide resize effects, it is delete at the end of tab resize
@@ -292,7 +292,7 @@ define([
             console.timeEnd("render document view");
             this.trigger("renderDone");
             this.$el.show();
-            if (tabPlacement === "topFix") {
+            if (tabPlacement === "topFix" && this.kendoTabs) {
                 _.defer(_.bind(this.responsiveTabMenu, this)); // need to call here to have good dimensions
             }
             if (tabPlacement === "left") {
