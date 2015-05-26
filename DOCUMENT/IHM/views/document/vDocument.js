@@ -281,6 +281,11 @@ define([
             {
                 documentView.model.redrawErrorMessages();
             });
+            $(window).on("resize." + this.model.cid, _.debounce(function () {
+                documentView.model.redrawErrorMessages();
+            }, 100, false));
+
+
             this.$el.addClass("dcpDocument--show");
 
             this.resizeForFooter();

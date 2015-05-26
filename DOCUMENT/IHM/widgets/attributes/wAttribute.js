@@ -104,7 +104,6 @@ define([
                 }
                 _.each(messages, function (indexMessage)
                 {
-
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
                         scope.element.addClass("has-error");
@@ -124,6 +123,10 @@ define([
                         });
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
+                        // Need to refresh to update position after possible change on element value
+                        _.delay(function () {
+                            scope.element.find(".input-group").tooltip("hide").tooltip("show");
+                        }, 100);
                     }
                 });
             } else {
@@ -134,8 +137,8 @@ define([
                     kt.tooltip("hide").data("bs.tooltip", null);
                     this.element.data("hasErrorTooltip", false);
                 }
-
             }
+
         },
 
         /**
