@@ -485,11 +485,18 @@ define([
 
                 if (!currentAttribute.checkConstraint({clearError: false})) {
                     success = false;
-                    templateMessage = _.template("<%- parentLabel %> / <%- label %> <%- errorMessage %>");
+                    if (_.isArray(currentAttribute.get("errorMessage"))) {
+                        templateMessage =  _.template("<%- parentLabel %> / <%- label %> "+
+                        "<% for(var msg in errorMessage) { %>"+
+                           "\n<%- rowText %> <%- errorMessage[msg].index + 1 %> : <%- errorMessage[msg].message %>\n <% } %> ");
+                    } else {
+                        templateMessage = _.template("<%- parentLabel %> / <%- label %> <%- errorMessage %>");
+                    }
                     errorMessage.push(templateMessage({
                         parentLabel: parentAttribute.get('label'),
                         label: currentAttribute.get("label"),
-                        errorMessage: currentAttribute.get("errorMessage")
+                        rowText: i18n.___("Row #", "ddui"),
+                        errorMessage:  currentAttribute.get("errorMessage")
                     }));
                 }
             });

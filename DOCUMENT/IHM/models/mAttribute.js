@@ -211,7 +211,6 @@ define([
                 _.reject(errorMessage, function (indexMessage) {
                     return indexMessage.index === index;
                 });
-
                 this.set('errorMessage', [{message : message, index : index}].concat(errorMessage));
             } else {
                 this.set('errorMessage', message);

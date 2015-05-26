@@ -281,6 +281,11 @@ define([
             {
                 documentView.model.redrawErrorMessages();
             });
+            $(window).on("resize." + this.model.cid, _.debounce(function () {
+                documentView.model.redrawErrorMessages();
+            }, 100, false));
+
+
             this.$el.addClass("dcpDocument--show");
 
             this.resizeForFooter();
@@ -439,7 +444,7 @@ define([
                         {
                             var dataItem = this.dataSource.at(event.item.index());
                             var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
-                            var myTab = $(this).closest("li");
+                            var myTab = $(this.element).closest("li");
                             // Need to reset class and enable to really trigger show events
                             myTab.removeClass("k-state-active");
                             $kendoTabs.enable(myTab);
