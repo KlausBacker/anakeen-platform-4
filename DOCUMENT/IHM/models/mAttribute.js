@@ -75,6 +75,11 @@ define([
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
 
+
+        isDoubleMultiple : function mAttributehasMultipleOption() {
+            return (this.hasMultipleOption() && this.getParent().get("type") === "array");
+        },
+
         getParent : function mAttributegetParent() {
             if (this.attributes.parent) {
                 return this.getDocumentModel().get('attributes').get(this.attributes.parent);
