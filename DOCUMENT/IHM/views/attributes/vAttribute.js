@@ -167,19 +167,22 @@ define([
             this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
         },
 
+
+
+
         /**
          * Autorefresh value when model change
          */
         refreshValue: function vAttributeRefreshValue(model, values, options)
         {
             var scope = this, allWrapper, arrayWrapper;
-            if (options.updateArray) {
+            if (options.notUpdateArray) {
                 return this;
             }
             if (this.model.isInArray()) {
                 // adjust line number to column length
                 arrayWrapper = this.$el;
-                arrayWrapper.dcpArray("setLines", values.length);
+                arrayWrapper.dcpArray("setLines", values.length, options);
             }
 
             allWrapper = this.getDOMElements().find(".dcpAttribute__content--widget")

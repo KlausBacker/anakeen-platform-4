@@ -109,7 +109,7 @@ define([
          * Init the model and bind the events
          *
          * @param initialValue
-         * @returns {DocumentModel}
+         * @returns DocumentModel
          * @private
          */
         _initModel: function documentController_initModel(initialValue)
@@ -752,7 +752,7 @@ define([
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
 
-            if (! values.initid) {
+            if (!values.initid) {
                 throw new Error('initid argument is mandatory}');
             }
 
@@ -811,7 +811,7 @@ define([
          * Get the attribute interface object
          *
          * @param attributeId
-         * @returns {AttributeInterface}
+         * @returns AttributeInterface
          */
         getAttribute: function documentControllerGetAttribute(attributeId)
         {
@@ -865,8 +865,28 @@ define([
          */
         setValue: function documentControllerSetValue(attributeId, value)
         {
-            var attribute = new AttributeInterface(this._getAttributeModel(attributeId));
-            return attribute.setValue(value);
+            var iAttribute = new AttributeInterface(this._getAttributeModel(attributeId));
+            var mAttribute = this._getAttributeModel(attributeId);
+            var index;
+            var currentValueLength;
+            var i;
+
+            if (mAttribute.getParent().get("type") === "array") {
+                iAttribute.setValue(value, true); // Just verify value conditions
+                if (!_.isArray(value)) {
+                    index = value.index;
+                } else {
+                    index = value.length - 1;
+                }
+                currentValueLength = iAttribute.getValue().length;
+
+                // Add new necessary rows before set value
+                for (i = currentValueLength; i <= index; i++) {
+                    this.appendArrayRow(mAttribute.getParent(), {});
+                }
+
+            }
+            return iAttribute.setValue(value);
         },
 
         /**
@@ -878,6 +898,7 @@ define([
         appendArrayRow: function documentControllerAddArrayRow(attributeId, values)
         {
             var attribute = this._getAttributeModel(attributeId);
+
             if (attribute.get("type") !== "array") {
                 throw new Error("Attribute " + attributeId + " must be an attribute of type array");
             }
@@ -886,13 +907,18 @@ define([
             }
             attribute.get("content").each(function documentController_addACell(currentAttribute)
             {
-                var currentValue = values[currentAttribute.id];
-                if (_.isUndefined(currentValue)) {
-                    return;
+                var newValue = values[currentAttribute.id];
+                var currentValue = currentAttribute.getValue();
+                if (_.isUndefined(newValue)) {
+                    // Set default value if no value defined
+                    currentAttribute.createIndexedValue(currentValue.length, false, ( _.isEmpty(values)));
+                } else {
+                    newValue = _.defaults(newValue, {value: "", displayValue: newValue.value});
+                    currentAttribute.addValue(newValue);
                 }
-                currentValue = _.defaults(currentValue, {value: "", displayValue: ""});
-                currentAttribute.addValue(currentValue);
             });
+
+
         },
 
         /**

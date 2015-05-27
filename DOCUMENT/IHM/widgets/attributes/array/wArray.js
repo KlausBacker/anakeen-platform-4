@@ -294,18 +294,18 @@ define([
                 }))).html()
             );
         },
-        setLines: function wArraySetLines(lineNumber)
+        setLines: function wArraySetLines(lineNumber, options)
         {
             var currentLineNumber = this.options.nbLines;
             var i;
             if (lineNumber > currentLineNumber) {
                 for (i = 0; i < (lineNumber - currentLineNumber); i += 1) {
-                    this.addLine(currentLineNumber + i);
+                    this.addLine(currentLineNumber + i, options);
                 }
             } else
                 if (lineNumber < currentLineNumber) {
                     for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
-                        this.removeLine(this.options.nbLines - 1);
+                        this.removeLine(this.options.nbLines - 1, options);
                     }
                 }
         },

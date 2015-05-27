@@ -20,6 +20,10 @@ define([
             AttributeModel.prototype.initialize.apply(this, arguments);
         },
 
+        getValue: function mAttributegetValue()
+        {
+            return this.get("attributeValue");
+        },
         setValue: function mAttributesetValue(value, index)
         {
             var currentValue;
@@ -28,6 +32,8 @@ define([
             }
             if (this.get("multiple") && index >= 0) {
                 currentValue = _.clone(this.get("attributeValue"));
+
+
                 currentValue[index] = value;
                 this.set("attributeValue", currentValue);
             } else {
@@ -35,7 +41,7 @@ define([
             }
         },
 
-        addValue: function mAttributeaddValue(value, index)
+        addValue: function mAttributeaddValue(value, index, options)
         {
             var currentValue;
             if (this.hasMultipleOption() && !_.isNumber(index)) {
@@ -50,10 +56,10 @@ define([
                     currentValue[index] = [];
                 }
                 currentValue[index].push(value);
-                this.set("attributeValue", currentValue);
+                this.set("attributeValue", currentValue, options);
             } else {
                 currentValue.push(value);
-                this.set("attributeValue", currentValue);
+                this.set("attributeValue", currentValue, options);
             }
         },
 
@@ -80,7 +86,7 @@ define([
             {
                 return !_.isUndefined(currentValue);
             });
-            this.set("attributeValue", currentValue, {updateArray: true});
+            this.set("attributeValue", currentValue, {notUpdateArray: true});
         },
 
         /**
@@ -89,8 +95,9 @@ define([
          *
          * @param index
          * @param copy
+         * @param updateArray set to true to resize array widget
          */
-        createIndexedValue: function mAttributeCreateIndexedValue(index, copy)
+        createIndexedValue: function mAttributeCreateIndexedValue(index, copy, updateArray)
         {
             var currentValue, defaultValue;
             var newValue;
@@ -116,7 +123,7 @@ define([
             } else {
                 currentValue.splice(index, 0, newValue);
             }
-            this.set("attributeValue", currentValue, {updateArray: true});
+            this.set("attributeValue", currentValue, {notUpdateArray: !updateArray});
         },
 
         /**

@@ -73,13 +73,44 @@ define([
         throw new Error("Unknown type of getValue (current, previous, initial, all");
     };
 
-    AttributPrototype.prototype.setValue = function AttributeInterfaceSetValue(value)
+    AttributPrototype.prototype.setValue = function AttributeInterfaceSetValue(value, dryRun)
     {
-        if (!_.isObject(value) || _.isUndefined(value.value)) {
-            throw new Error("Value must be an object with value and displayValue properties");
+        var index;
+        var currentValue;
+        if (this._attributeModel.get("multiple")) {
+            if (_.isArray(value)) {
+                _.each(value, function (singleValue)
+                {
+                    if (!_.isObject(singleValue) || _.isUndefined(singleValue.value)) {
+                        throw new Error("Each values must be an object with at least value properties");
+                    }
+                });
+            } else {
+                if (!_.isObject(value) || _.isUndefined(value.value) || _.isUndefined(value.index) || value.index === null) {
+                    throw new Error("Value must be an object with at least value and index properties");
+                }
+
+                value = _.defaults(value, {displayValue: value.value});
+                index = parseInt(value.index);
+                if (index < 0) {
+                    throw new Error("Index value must be positive or null");
+                }
+
+                currentValue = this._attributeModel.get("attributeValue").slice();
+                currentValue[index] = _.clone(value);
+                value = currentValue;
+            }
+
+        } else {
+            if (!_.isObject(value) || _.isUndefined(value.value)) {
+                throw new Error("Value must be an object with at least value properties");
+            }
+
+            value = _.defaults(value, {displayValue: value.value});
         }
-        value = _.defaults(value, {value: "", displayValue: ""});
-        this._attributeModel.set("attributeValue", value);
+        if (! dryRun) {
+            this._attributeModel.set("attributeValue", value);
+        }
     };
 
     AttributPrototype.prototype.toJSON = function AttributeInterfacetoJSON()
