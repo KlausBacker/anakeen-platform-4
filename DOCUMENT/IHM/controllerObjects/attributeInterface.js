@@ -90,11 +90,21 @@ define([
                     throw new Error("Value must be an object with at least value and index properties");
                 }
 
-                value = _.defaults(value, {displayValue: value.value});
+
                 index = parseInt(value.index);
                 if (index < 0) {
                     throw new Error("Index value must be positive or null");
                 }
+
+                if (this._attributeModel.isDoubleMultiple()) {
+                    if (!_.isArray(value.value)) {
+                        throw new Error("Value must be an array for multiple in arrays");
+                    }
+                    value = value.value;
+                } else {
+                    value = _.defaults(value, {displayValue: value.value});
+                }
+
 
                 currentValue = this._attributeModel.get("attributeValue").slice();
                 currentValue[index] = _.clone(value);
@@ -108,7 +118,7 @@ define([
 
             value = _.defaults(value, {displayValue: value.value});
         }
-        if (! dryRun) {
+        if (!dryRun) {
             this._attributeModel.set("attributeValue", value);
         }
     };
