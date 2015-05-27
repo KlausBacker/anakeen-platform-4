@@ -254,10 +254,10 @@ define([
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     if (selectedLine === null) {
                         currentWidget.options.nbLines += 1;
-                        currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue: true});
+                        currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue: true, useSelectedLine:true});
                     } else {
                         currentWidget.options.nbLines += 1;
-                        currentWidget.addLine(selectedLine, {needAddValue: true});
+                        currentWidget.addLine(selectedLine, {needAddValue: true, useSelectedLine:true});
                     }
                 }
             });
@@ -266,12 +266,13 @@ define([
                 var selectedLine = currentWidget.selectedLineIndex();
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     currentWidget.options.nbLines += 1;
-                    currentWidget.copyLine(selectedLine, {needAddValue: true});
+                    currentWidget.copyLine(selectedLine, {needAddValue: true, useSelectedLine:true});
                 }
 
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete button", function deleteLineEvent()
             {
+                currentWidget.element.find(".dcpArray__content__toolCell span").tooltip("hide");
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__label", function ()
@@ -294,18 +295,18 @@ define([
                 }))).html()
             );
         },
-        setLines: function wArraySetLines(lineNumber)
+        setLines: function wArraySetLines(lineNumber, options)
         {
             var currentLineNumber = this.options.nbLines;
             var i;
             if (lineNumber > currentLineNumber) {
                 for (i = 0; i < (lineNumber - currentLineNumber); i += 1) {
-                    this.addLine(currentLineNumber + i);
+                    this.addLine(currentLineNumber + i, options);
                 }
             } else
                 if (lineNumber < currentLineNumber) {
                     for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
-                        this.removeLine(this.options.nbLines - 1);
+                        this.removeLine(this.options.nbLines - 1, options);
                     }
                 }
         },
@@ -352,14 +353,18 @@ define([
             return $content;
         },
 
-        _addNewLine: function dcpArray_addNewLine(lineNumber)
+        _addNewLine: function dcpArray_addNewLine(lineNumber, options)
         {
             if (!_.isNumber(lineNumber)) {
                 throw new Error("You need to indicate the line number");
             }
 
             var $content = this._getLineContent(lineNumber);
-            var selectedLine = this.getSelectedLineElement();
+            var selectedLine = [];
+
+            if (options && options.useSelectedLine) {
+                selectedLine = this.getSelectedLineElement();
+            }
 
             if (selectedLine.length === 1) {
                 $content.insertBefore(selectedLine);
@@ -434,7 +439,7 @@ define([
 
         addLine: function dcpArrayaddLine(lineNumber, options)
         {
-            var $content = this._addNewLine(lineNumber);
+            var $content = this._addNewLine(lineNumber, options);
             if ($content) {
                 options = _.defaults(options || {}, {"silent": false, "needAddValue": false});
                 if (options.silent !== true) {
@@ -447,9 +452,9 @@ define([
             }
         },
 
-        copyLine: function dcpArraycopyLine(lineNumber)
+        copyLine: function dcpArraycopyLine(lineNumber, options)
         {
-            var $content = this._addNewLine(lineNumber);
+            var $content = this._addNewLine(lineNumber, options);
             if ($content) {
                 this._trigger("lineAdded", {}, {line: lineNumber, element: $content, copyValue: true});
             }
