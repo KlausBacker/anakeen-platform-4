@@ -945,7 +945,12 @@ define([
             {
                 var currentValue = values[currentAttribute.id];
                 if (!_.isUndefined(currentValue)) {
-                    currentValue = _.defaults(currentValue, {value: "", displayValue: ""});
+                    currentValue = _.defaults(currentValue, {value: "", displayValue: currentValue.value});
+                } else {
+                    currentValue = currentAttribute.attributes.defaultValue;
+                    if (!currentValue) {
+                        currentValue = {value: "", displayValue: ""};
+                    }
                 }
                 currentAttribute.addIndexedValue(currentValue, index);
             });
