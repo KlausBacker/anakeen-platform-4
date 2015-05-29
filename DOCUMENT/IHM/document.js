@@ -60,29 +60,35 @@ define([
          */
         _render: function dcpDocument_render()
         {
-            var $iframe, currentWidget = this;
+            var $iframe, currentWidget = this, documentWindow;
             //inject the iframe
             this.element.empty().append(this._template({options: this.options}));
             //bind the internal controller to the documentWidget
             $iframe = this.element.find(".dcpDocumentWrapper");
             //Listen the load to the iframe (initial JS added and page loaded)
-            $iframe.on("load", function dcpDocument_setReadyEvent()
-            {
-                if (!$iframe[0].contentWindow) {
-                    return;
-                }
-                //Inject in the iframe window a callback function used by the internalController
-                $iframe[0].contentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode)
+
+
+            if ($iframe.length > 0) {
+                documentWindow = $iframe[0].contentWindow;
+
+
+                // This event is used when use a hard link (aka href anchor) to change document
+                // It is load also the first time
+                $iframe.on("load", function dcpDocument_setReadyEvent()
                 {
-                    //Bind the internalController function to the current widget
-                    currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"));
-                };
-                $iframe[0].contentWindow.documentUnloaded = function dcpDocument_unloadedCallback()
-                {
-                    currentWidget._trigger("unloaded");
-                };
-                currentWidget._unbindInternalWidget();
-            }).trigger("load");
+                    documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode)
+                    {
+                        //Re Bind the internalController function to the current widget
+                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"));
+                    };
+
+                    $(documentWindow).on("unload", function dcpDocument_setUnloadEvent()
+                    {
+                        currentWidget._unbindInternalWidget.call(currentWidget);
+                    });
+                });
+
+            }
             this._resize();
         },
 
@@ -104,19 +110,21 @@ define([
          */
         _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController)
         {
-            this.element.data("internalWidget", internalController);
-            //Rebind event
-            _.each(this.options.eventList, function dcpDocument_bindEvent(currentEvent)
-            {
-                internalController.addEvent(currentEvent);
-            });
-            //Rebind constraint
-            _.each(this.options.constraintList, function dcpDocument_bindEvent(currentConstaint)
-            {
-                internalController.addConstraint(currentConstaint);
-            });
-            this.element.data("internalWidgetInitialised", true);
-            this._trigger("loaded");
+            if (!this.element.data("internalWidgetInitialised")) {
+                this.element.data("internalWidget", internalController);
+                //Rebind event
+                _.each(this.options.eventList, function dcpDocument_bindEvent(currentEvent)
+                {
+                    internalController.addEvent(currentEvent);
+                });
+                //Rebind constraint
+                _.each(this.options.constraintList, function dcpDocument_bindEvent(currentConstaint)
+                {
+                    internalController.addConstraint(currentConstaint);
+                });
+                this.element.data("internalWidgetInitialised", true);
+                this._trigger("loaded");
+            }
         },
 
         /**

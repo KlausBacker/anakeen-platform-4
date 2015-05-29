@@ -6,23 +6,27 @@ require([
     'underscore',
     'jquery',
     'dcpDocument/widgets/documentController/documentController'
-], function (_, $) {
+], function (_, $)
+{
     'use strict';
     console.timeEnd("js loading");
 
     var $document = $(".document");
 
     $document.documentController({
-        "initid" :   window.dcp.viewData.documentIdentifier,
-        "viewId" :   window.dcp.viewData.vid,
-        "revision" : window.dcp.viewData.revision
+        "initid": window.dcp.viewData.documentIdentifier,
+        "viewId": window.dcp.viewData.vid,
+        "revision": window.dcp.viewData.revision
+    });
+
+    $document.one("documentready", function ()
+    {
+        // Init bind events in case of use extern document controller
+        if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
+            window.documentLoaded($document);
+        }
     });
 
     window.dcp.document = $document;
-    if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
-        window.documentLoaded($document);
-    }
-    if (window.documentUnloaded && _.isFunction(window.documentUnloaded)) {
-        window.addEventListener('unload', window.documentUnloaded);
-    }
+
 });
