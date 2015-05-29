@@ -290,7 +290,7 @@ define([
 
             } else
                 if (this.getMode() === "read") {
-                    this.element.find(".dcpAttribute__value").text(value.displayValue);
+                    this.redraw();
                 } else {
                     throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
                 }

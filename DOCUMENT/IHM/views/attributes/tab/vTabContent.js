@@ -5,8 +5,9 @@ define([
     'backbone',
     'mustache',
     'dcpDocument/views/attributes/frame/vFrame',
-    'dcpDocument/views/document/attributeTemplate'
-], function ($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate)
+    'dcpDocument/views/document/attributeTemplate',
+    'dcpDocument/i18n'
+], function ($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate, i18n)
 {
     'use strict';
 
@@ -42,7 +43,8 @@ define([
         render: function vTabContentRender()
         {
             var hasOneContent;
-            this.$el.empty();
+            this.$el.empty().append($('<div class="dcpTab__content--loading"><i class="fa fa-spinner fa-spin"></i>'+
+            i18n.___("Displaying","ddui")+'</div>'));
             this.$el.attr("id", this.model.id);
             this.$el.attr("data-attrid", this.model.id);
 
@@ -56,8 +58,10 @@ define([
             } else {
                 this.renderContent();
             }
+            this.$el.removeClass("dcpTab__content--loading");
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             this.propageShowTab();
+
             return this;
         },
 

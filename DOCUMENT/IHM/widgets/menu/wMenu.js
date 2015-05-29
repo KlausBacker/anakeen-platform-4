@@ -155,7 +155,8 @@ define([
             /**
              * Fix menu when no see header
              */
-            $(window).scroll(function wMenuScroll()
+            $(window).off("scroll.ddui"); // reset
+            $(window).on("scroll.ddui", function wMenuScroll()
             {
                 if ($(window).scrollTop() > $mainElement.position().top) {
                     if (!$mainElement.data("isFixed")) {
