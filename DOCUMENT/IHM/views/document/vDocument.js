@@ -99,7 +99,7 @@ define([
             if (!locale) {
                 locale = "fr-FR";
             }
-            $(window).off("."+this.model.cid);
+            $(window).off("." + this.model.cid);
 
             $(window).on("resize." + this.model.cid, _.bind(this.resizeForFooter, this));
             kendo.culture(locale);
@@ -273,7 +273,7 @@ define([
                     }
                 }
             }
-            $(window.document).on("drop."+this.model.cid+" dragover." + this.model.cid, function vDocumentPreventDragDrop(e)
+            $(window.document).on("drop." + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e)
             {
                 e.preventDefault();
             }).on("redrawErrorMessages." + this.model.cid, function vDocumentRedrawErrorMessages()
@@ -333,7 +333,7 @@ define([
             var currentHeight;
             var hiddenSelected = false;
             var dataSource = null;
-            var iosSafari = /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) && !navigator.userAgent.match(/CriOS/i);
+            var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
             console.time("tab size ");
 
@@ -531,7 +531,7 @@ define([
                 // Memorize dropdown to reuse it in callback and to listen only one
                 $tabs.data("selectFixOn", $dropSelect);
             }
-            if ('ontouchstart' in document.documentElement && iosSafari) {
+            if ('ontouchstart' in document.documentElement && iOS) {
                 $("body").off('show.bs.tooltip').on('show.bs.tooltip', "[data-original-title]", function (e)
                 {
                     // prevent ios double tap
@@ -544,7 +544,8 @@ define([
                             {
                                 $tooltip.tooltip("show");
                                 $tooltip.data("showios", false);
-                                _.delay(function () {
+                                _.delay(function ()
+                                {
                                     $tooltip.tooltip("hide");
                                 }, 2000);
                             }, 500);
@@ -1097,8 +1098,8 @@ define([
                     console.error(e);
                 }
             }
-            $(window).off("."+this.model.cid);
-            $(window.document).off("."+this.model.cid);
+            $(window).off("." + this.model.cid);
+            $(window.document).off("." + this.model.cid);
 
 
             return Backbone.View.prototype.remove.call(this);
