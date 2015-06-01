@@ -40,8 +40,6 @@ define([
             this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
-
-            $(window).on("resize." + this.model.cid, _.bind(this.resizeForFooter, this));
         },
 
         /**
@@ -101,7 +99,9 @@ define([
             if (!locale) {
                 locale = "fr-FR";
             }
+            $(window).off("." + this.model.cid);
 
+            $(window).on("resize." + this.model.cid, _.bind(this.resizeForFooter, this));
             kendo.culture(locale);
             //add document base
             try {
@@ -186,7 +186,6 @@ define([
                                 model: tabModel
                             });
                             tabContent = viewTabContent.render().$el;
-
                             if (tabModel.getOption("openFirst")) {
                                 currentView.selectedTab = currentAttr.id;
                             }
@@ -274,14 +273,15 @@ define([
                     }
                 }
             }
-            $(window.document).on('drop.ddui dragover.ddui', function vDocumentPreventDragDrop(e)
+            $(window.document).on("drop." + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e)
             {
                 e.preventDefault();
-            }).on('redrawErrorMessages.ddui', function vDocumentRedrawErrorMessages()
+            }).on("redrawErrorMessages." + this.model.cid, function vDocumentRedrawErrorMessages()
             {
                 documentView.model.redrawErrorMessages();
             });
-            $(window).on("resize." + this.model.cid, _.debounce(function () {
+            $(window).on("resize." + this.model.cid, _.debounce(function ()
+            {
                 documentView.model.redrawErrorMessages();
             }, 100, false));
 
@@ -333,6 +333,8 @@ define([
             var currentHeight;
             var hiddenSelected = false;
             var dataSource = null;
+            var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+
             console.time("tab size ");
 
 
@@ -529,6 +531,30 @@ define([
                 // Memorize dropdown to reuse it in callback and to listen only one
                 $tabs.data("selectFixOn", $dropSelect);
             }
+            if ('ontouchstart' in document.documentElement && iOS) {
+                $("body").off('show.bs.tooltip').on('show.bs.tooltip', "[data-original-title]", function (e)
+                {
+                    // prevent ios double tap
+                    var $tooltip = $(this);
+                    if ('ontouchstart' in document.documentElement) {
+                        if (!$tooltip.data("showios")) {
+                            e.preventDefault();
+                            $tooltip.data("showios", true);
+                            _.delay(function ()
+                            {
+                                $tooltip.tooltip("show");
+                                $tooltip.data("showios", false);
+                                _.delay(function ()
+                                {
+                                    $tooltip.tooltip("hide");
+                                }, 2000);
+                            }, 500);
+                        }
+                    }
+                });
+            }
+
+
             $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
             console.timeEnd("tab size ");
         },
@@ -1072,7 +1098,9 @@ define([
                     console.error(e);
                 }
             }
-            this.$el.off(".ddui");
+            $(window).off("." + this.model.cid);
+            $(window.document).off("." + this.model.cid);
+
 
             return Backbone.View.prototype.remove.call(this);
         }

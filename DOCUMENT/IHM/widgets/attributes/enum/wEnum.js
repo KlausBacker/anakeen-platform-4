@@ -518,9 +518,10 @@ define([
                             } else {
                                 kddl.span.removeClass("placeholder");
                             }
-                            if (!_.isEqual(kddl.value(), value.value)) {
+                            if (!_.isEqual(kddl.value(), (value.value || ""))) {
                                 this.flashElement();
-                                kddl.value(value.value);
+                                // kendo need empty string (not null) to clear input
+                                kddl.value(value.value || "");
                             }
                             break;
                         case "bool":
@@ -655,7 +656,6 @@ define([
                     index: source.index,
                     autoBind: false,
                     change: function (event) {
-
                         if (this.value() && this.selectedIndex === -1) {
                             scope.setError(scope.options.labels.invalidEntry);
                             scope._getFocusInput().each(function () {

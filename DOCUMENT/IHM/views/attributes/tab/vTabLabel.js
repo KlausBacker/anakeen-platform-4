@@ -50,6 +50,9 @@ define([
                         return $(this).text(); // set the element text as content of the tooltip
                     }
                 });
+
+
+
             }
 
             this.$el.attr("data-attrid", this.model.id);
