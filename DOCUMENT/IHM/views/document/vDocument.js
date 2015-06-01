@@ -298,6 +298,11 @@ define([
             if (tabPlacement === "left") {
                 this.$(".dcpTab__content").css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
             }
+
+            _.delay(function () {
+                $(".dcpLoading--init").removeClass("dcpLoading--init");
+            }, 500);
+
             return this;
         },
 
