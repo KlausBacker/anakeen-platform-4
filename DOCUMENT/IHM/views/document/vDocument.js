@@ -186,7 +186,6 @@ define([
                                 model: tabModel
                             });
                             tabContent = viewTabContent.render().$el;
-
                             if (tabModel.getOption("openFirst")) {
                                 currentView.selectedTab = currentAttr.id;
                             }
@@ -1099,6 +1098,7 @@ define([
                 }
             }
             $(window).off("."+this.model.cid);
+            $(window.document).off("."+this.model.cid);
 
 
             return Backbone.View.prototype.remove.call(this);
