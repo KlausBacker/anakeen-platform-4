@@ -225,7 +225,7 @@ define([
                     {
                         // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
                         scopeWidget.element.data("menu-opening", false);
-                    }, 200);
+                    }, 2000);
                 }
             });
 
@@ -516,7 +516,7 @@ define([
                     currentWidget._tooltips.push($currentMenu.tooltip(
                         {
                             trigger: "hover",
-                            html: true,
+                            html: currentMenu.tooltipHtml,
                             placement: currentMenu.tooltipPlacement ? currentMenu.tooltipPlacement : "bottom",
                             container: ".dcpDocument__menu"
                         }));

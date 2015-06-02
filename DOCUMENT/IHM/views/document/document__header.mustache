@@ -2,7 +2,7 @@
     <img class="dcpDocument__header__icon" src="{{document.properties.icon}}" alt="Document icon"/>
     <a class="dcpDocument__header__title" href="{{#document.properties.initid}}?app=DOCUMENT&id={{document.properties.id}}{{/document.properties.initid}}{{^document.properties.initid}}?app=DOCUMENT&id={{document.properties.family.name}}&mode=create{{/document.properties.initid}}">{{document.properties.title}}</a>
     <i style="display:none" title="[[#i18n]]ddui:Editing form[[/i18n]]" class="dcpDocument__header__modified fa fa-asterisk"></i>
-   {{#document.properties.security.lock.lockedBy.id}} <i title="[[#i18n]]ddui:Locked by[[/i18n]] <b>{{document.properties.security.lock.lockedBy.title}}</b>" class="dcpDocument__header__lock {{#document.properties.security.lock.temporary}} dcpDocument__header__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></i>{{/document.properties.security.lock.lockedBy.id}}
+
 
     <div class="dcpDocument__header__family">{{document.properties.family.title}}</div>
 </header>
