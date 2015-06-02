@@ -299,7 +299,8 @@ define([
                 this.$(".dcpTab__content").css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
             }
 
-            _.delay(function () {
+            _.delay(function ()
+            {
                 $(".dcpLoading--init").removeClass("dcpLoading--init");
             }, 500);
 
@@ -340,8 +341,6 @@ define([
             var dataSource = null;
             var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
-            console.time("tab size ");
-
 
             $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
             // Restore initial tabs
@@ -354,12 +353,14 @@ define([
                     $(this).hide();
                     if (hiddens.length === 0) {
                         hiddens.push({
+                            tooltipLabel: $(lastShow).data("tooltipLabel"),
                             label: $(lastShow).find(".k-link").text(),
                             id: $(lastShow).data("attrid"),
                             index: liIndex - 1
                         });
                     }
                     hiddens.push({
+                        tooltipLabel: $(this).data("tooltipLabel"),
                         label: $(this).find(".k-link").text(),
                         id: $(this).data("attrid"),
                         index: liIndex
@@ -371,7 +372,6 @@ define([
 
                 liIndex++;
             });
-
 
             /**
              * Need to recompute container width
@@ -394,7 +394,6 @@ define([
                 }
 
                 $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
-                console.timeEnd("tab size ");
                 return;
             }
 
@@ -447,11 +446,19 @@ define([
                         dataSource: hiddens,
                         dataTextField: "label",
                         dataValueField: "id",
+                        dataBound: function (event)
+                        {
+                            var myTab = $(this.element).closest("li");
+                            var liItem = $tabs.find("li[data-attrid=" + this.value() + "]");
+                            myTab.data("tooltipLabelSelect", liItem.data("tooltipLabel"));
+                        },
                         select: function (event)
                         {
                             var dataItem = this.dataSource.at(event.item.index());
                             var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
                             var myTab = $(this.element).closest("li");
+
+                            myTab.data("tooltipLabelSelect", dataItem.tooltipLabel);
                             // Need to reset class and enable to really trigger show events
                             myTab.removeClass("k-state-active");
                             $kendoTabs.enable(myTab);
@@ -472,6 +479,14 @@ define([
                             {
                                 $ul.closest(".k-animation-container").addClass("menu__select_container");
                             });
+                        },
+
+                        template: function (event)
+                        {
+                            if (event.tooltipLabel) {
+                                return Mustache.render('<span class="dcpLabel__select--tooltip" data-tooltipLabel="{{tooltipLabel}}">{{label}}</span>', event);
+                            }
+                            return event.label;
                         }
                     });
 
@@ -484,12 +499,13 @@ define([
                     $(lastShow).find(".k-select").prepend($("<span/>").addClass("dcpLabel__count"));
 
                     $dropSelect.data("kendoComboBox").ul.tooltip({
-                        selector: "li.k-item",
+                        selector: "li.k-item ",
                         placement: "left",
                         container: "body",
+                        html: true,
                         title: function ()
                         {
-                            return $(this).text();
+                            return $(this).find(".dcpLabel__select--tooltip").attr("data-tooltipLabel");
                         }
                     });
 
@@ -561,7 +577,7 @@ define([
 
 
             $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
-            console.timeEnd("tab size ");
+
         },
 
         /**

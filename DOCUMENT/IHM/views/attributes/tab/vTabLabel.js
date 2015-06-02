@@ -1,8 +1,9 @@
 /*global define*/
 define([
     'underscore',
-    'backbone'
-], function (_, Backbone)
+    'backbone',
+    'mustache'
+], function (_, Backbone, Mustache)
 {
     'use strict';
 
@@ -33,23 +34,34 @@ define([
         {
             //console.time("render tab " + this.model.id);
             var label = this.model.get("label");
-            this.$el.empty();
+            var tooltipLabel=this.model.getOption("tooltipLabel");
+            var attrData=this.model.attributes;
 
+            this.$el.empty();
             if (this.displayLabel !== false) {
                 this.$el.text(label);
 
-                this.$el.tooltip({
-                    placement: "top",
-                    container: "body",
-                    title: function vDocumentTooltipTitle()
-                    {
-                        if ($(this).find(".k-input.dcpTab__label__select").length > 0) {
-                            // It is a selected Tab
-                            return $(this).find(".k-input").val();
-                        }
-                        return $(this).text(); // set the element text as content of the tooltip
+                if (tooltipLabel) {
+                    tooltipLabel=Mustache.render(tooltipLabel, attrData);
+                    if (!this.model.getOption("tooltipHtml")) {
+                        // Need encode itself becauseq the dropselect tooltip also need
+                        tooltipLabel=$('<div/>').text(tooltipLabel).html();
                     }
-                });
+                    this.$el.data("tooltipLabel",  Mustache.render(tooltipLabel, attrData));
+                    this.$el.tooltip({
+                        placement: "top",
+                        container: "body",
+                        html:true,
+                        title: function vDocumentTooltipTitle()
+                        {
+                            if ($(this).find(".k-input.dcpTab__label__select").length > 0) {
+                                // It is a selected Tab
+                                return $(this).data("tooltipLabelSelect");
+                            }
+                            return $(this).data("tooltipLabel"); // set the element text as content of the tooltip
+                        }
+                    });
+                }
 
 
 
