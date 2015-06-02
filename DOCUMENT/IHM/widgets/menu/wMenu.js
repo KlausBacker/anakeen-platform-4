@@ -40,40 +40,8 @@ define([
                     var menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
                         confirmDcpWindow, target, targetOptions, dcpWindow, bodyDiv;
 
-                    if (!menuElement.hasClass("menu__element--item")) {
-                        var menuUrl = menuElement.data("menu-url");
-                        if (menuUrl) {
-                            menuElement.find(".listmenu__content").html('<div class="menu--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> Loading menu.</div>');
 
-                            //get subMenu
-                            $.get(menuUrl, function wMenuDone(data)
-                            {
-                                menuElement.find(".listmenu__content").html('');
-                                scopeWidget._insertMenuContent(
-                                    data.content,
-                                    menuElement.find(".listmenu__content"),
-                                    scopeWidget, menuElement);
-                                menuElement.kendoMenu({
-                                    openOnClick: true,
-                                    closeOnClick: false
-                                });
-                            }).fail(function wMenuFail(data)
-                            {
-                                try {
-                                    console.error(data);
-                                    throw new Error("Sub menu");
-                                } catch (e) {
-                                    if (window.dcp.logger) {
-                                        window.dcp.logger(e);
-                                    } else {
-                                        console.error(e);
-                                    }
-                                }
-                            });
-                        }
-                        return;
-                    }
-
+                    // Use specific select only for terminal items
                     if (!menuElement.hasClass("menu__element--item")) {
                         return;
                     }
@@ -149,6 +117,115 @@ define([
                             }
                         }
                     }
+                },
+                deactivate: function wMenuDeactivate(event)
+                {
+                    var menuElement = $(event.item);
+
+                    // Use for reopen for Dynamic menu
+                    if (menuElement.data("menu-openAgain")) {
+                        menuElement.data("menu-openAgain", false);
+                        menuElement.data("menu-noQuery", true);
+                        $content.data("kendoMenu").open(menuElement);
+                    }
+                },
+                open: function wMenuOpen(event)
+                {
+
+                    var menuElement = $(event.item);
+
+                    // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
+                    scopeWidget.element.data("menu-opening", true);
+                    menuElement.data("bodyWidth", $('body').width());
+
+                    if (!menuElement.hasClass("menu__element--item")) {
+                        var menuUrl = menuElement.data("menu-url");
+                        if (menuUrl) {
+                            // Open Dynamic menu : request server to get menu contents
+                            if (!menuElement.data("menu-noQuery")) {
+                                var loading = menuElement.find(".menu__loading");
+
+                                if (loading.length > 0) {
+                                    // record initial loading item
+                                    menuElement.data("menu-loading", loading);
+                                }
+
+                                // Display loading first
+                                if (loading.length === 0 && menuElement.data("menu-loading")) {
+                                    menuElement.find(".listmenu__content").html('').append(menuElement.data("menu-loading"));
+                                }
+
+
+                                // Get subMenu
+                                $.get(menuUrl, function wMenuDone(data)
+                                {
+                                    menuElement.find(".listmenu__content").html('');
+
+                                    scopeWidget._insertMenuContent(
+                                        data.content,
+                                        menuElement.find(".listmenu__content"),
+                                        scopeWidget, menuElement);
+                                    menuElement.kendoMenu({
+                                        openOnClick: true,
+                                        closeOnClick: false
+                                    });
+
+
+                                    if (parseInt(menuElement.find(".k-animation-container").css("left")) !== 0 &&
+                                        parseInt(menuElement.find(".k-animation-container").css("right")) !== 0
+                                    ) {
+                                        // Need to close and reopen to adjust position menu because content has changed
+                                        menuElement.data("menu-openAgain", true);
+                                        $content.data("kendoMenu").close(menuElement);
+                                    }
+
+
+                                }).fail(function wMenuFail(data)
+                                {
+                                    try {
+                                        console.error(data);
+                                        throw new Error("Sub menu");
+                                    } catch (e) {
+                                        if (window.dcp.logger) {
+                                            window.dcp.logger(e);
+                                        } else {
+                                            console.error(e);
+                                        }
+                                    }
+                                });
+                            }
+                            menuElement.data("menu-noQuery", false);
+                        }
+                    }
+                },
+                activate: function wMenuActivate(event)
+                {
+                    // Correct Kendo position list when scrollbar is displayed
+                    var $menuElement = $(event.item);
+                    var $container = $menuElement.find(".k-animation-container");
+
+                    var bodyWidth = $menuElement.data("bodyWidth");
+                    var menuWidth = $menuElement.outerWidth();
+                    var menuLeft = $menuElement.offset().left;
+                    var listWidth = $container.outerWidth();
+                    var listLeft = $container.offset().left;
+
+
+                    // The first condition is for iOS because no scroll window exists
+                    if (($("body").width() > bodyWidth  ) || (window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight)) {
+
+                        // If the list menu is out of the body box, need to move it to the right
+                        if ((listLeft + listWidth) > bodyWidth) {
+                            $container.css("left", "auto").css("right", (menuLeft - bodyWidth + menuWidth  ) + "px");
+                        }
+
+                    }
+
+                    _.delay(function ()
+                    {
+                        // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
+                        scopeWidget.element.data("menu-opening", false);
+                    }, 200);
                 }
             });
 
@@ -179,9 +256,9 @@ define([
             this.kendoMenuWidget.append([
                 {
                     text: '<span class="menu__before-content k-image"><div class="fa fa-bars"></div></span><span class="menu--count" />',
-                    cssClass: "menu__element  menu--right menu_element--hamburger ",
-                    encoded: false,                              // Allows use of HTML for item text
-                    items: []                              // List items
+                    cssClass: "menu__element  menu_element--hamburger ",
+                    encoded: false,   // Allows use of HTML for item text
+                    items: []         // List items
                 }]);
             $(window).on("resize.dcpMenu", _.bind(this.inhibitBarMenu, this));
             $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
@@ -193,7 +270,7 @@ define([
         inhibitBarMenu: function ()
         {
             var widgetMenu = this;
-            if (this.element.css("overflow") !== "hidden") {
+            if (!widgetMenu.element.data("menu-opening") && this.element.css("overflow") !== "hidden") {
                 this.element.css("max-height", this.element.find(".menu__content li").height() + 2).css("overflow", "hidden");
                 this.element.find("li.k-state-border-down").each(function ()
                 {
@@ -260,6 +337,9 @@ define([
             console.time("menu responsive");
 
 
+            if (barMenu.data("menu-opening")) {
+                return;
+            }
             this.inhibitBarMenu();
             $importantItemMenu.each(function wMenuComputeBarmenuWidth()
             {
@@ -274,7 +354,7 @@ define([
             }
 
             visibleItemCount = $itemMenu.length;
-            // Detect free menu width available and record menu which not contains
+            // Detect free menu available width  and record menu items which not contains to bar menu
             $itemMenu.each(function wMenuComputeWidth()
             {
                 currentWidth += ($(this).outerWidth());
@@ -340,7 +420,7 @@ define([
                 $hamburger.hide();
             }
 
-            // see sub-menu count
+            // See sub-menu count
             // $hamburger.find(".menu--count").text(hiddenItemsCount);
 
             // View hamburger if not empty
@@ -393,6 +473,18 @@ define([
                     } else {
                         currentMenu.htmlAttr.push({"attrId": attrId, "attrValue": attrValue});
                     }
+                    if (currentMenu.htmlLabel) {
+                        // reRender for variable labels
+                        currentMenu.htmlLabel = Mustache.render(currentMenu.htmlLabel, {document: currentWidget.options.document});
+                    }
+                    if (currentMenu.label) {
+                        // reRender for variable labels
+                        currentMenu.label = Mustache.render(currentMenu.label, {document: currentWidget.options.document});
+                    }
+                    if (currentMenu.tooltipLabel) {
+                        // reRender for variable labels
+                        currentMenu.tooltipLabel = Mustache.render(currentMenu.tooltipLabel, {document: currentWidget.options.document});
+                    }
                 });
 
                 currentMenu.disabled = (currentMenu.visibility === 'disabled');
@@ -401,7 +493,7 @@ define([
 
                     $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu), currentMenu));
                     currentWidget._insertMenuContent(currentMenu.content, $currentMenu.find(".listmenu__content"), currentWidget, currentMenu);
-                } else
+                } else {
                     if (currentMenu.type === "dynamicMenu") {
                         subMenu = "dynamicMenu";
                         if (currentMenu.url) {
@@ -416,11 +508,15 @@ define([
                             currentMenu.url = Mustache.render(currentMenu.url, currentMenu);
                         }
                         $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type), currentMenu));
+
+
                     }
+                }
                 if (currentMenu.tooltipLabel) {
                     currentWidget._tooltips.push($currentMenu.tooltip(
                         {
                             trigger: "hover",
+                            html: true,
                             placement: currentMenu.tooltipPlacement ? currentMenu.tooltipPlacement : "bottom",
                             container: ".dcpDocument__menu"
                         }));

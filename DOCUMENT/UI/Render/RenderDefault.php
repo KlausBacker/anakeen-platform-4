@@ -368,4 +368,25 @@ class RenderDefault implements IRenderConfig
     {
         return new DocumentTemplateContext($document);
     }
+
+    protected function setEmblemMenu(\Doc $document, BarMenu $menu) {
+
+        $item = new SeparatorMenu("Emblem1","");
+        $item->setHtmlAttribute("class", "menu--right");
+        $item->setHtmlLabel(sprintf('{{#document.properties.security.lock.lockedBy.id}} <i class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></i>{{/document.properties.security.lock.lockedBy.id}}', htmlspecialchars(___("Locked by","ddui"), ENT_QUOTES)));
+
+
+        $item->setTooltipLabel(sprintf('%s <b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by","ddui"), ENT_QUOTES)));
+
+        $item->setImportant(true);
+        $menu->appendElement($item);
+
+        $item = new SeparatorMenu("Emblem2","");
+        $item->setHtmlAttribute("class", "menu--right");
+        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<i class="fa fa-ban"></i>{{/document.properties.security.readOnly}}');
+        $item->setImportant(true);
+
+        $menu->appendElement($item);
+
+    }
 }

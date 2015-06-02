@@ -41,10 +41,10 @@ class View extends Crud
     protected $revision = - 1;
     
     protected $fields = array(
+        self::fieldRenderOptions,
         self::fieldRenderLabel,
         self::fieldMenu,
         self::fieldTemplate,
-        self::fieldRenderOptions,
         self::fieldDocumentData,
         self::fieldLocale,
         self::fieldStyle,

@@ -156,6 +156,9 @@ class DefaultView extends RenderDefault
         $securitySubMenu->appendElement($item);
         
         $menu->getElement("advanced")->appendElement($securitySubMenu);
+
+
+
         if ($document->wid > 0) {
             if ($document->locked != - 1) {
                 $workflowMenu = new DynamicMenu("workflow");
@@ -177,7 +180,9 @@ class DefaultView extends RenderDefault
                 $menu->appendElement($workflowMenu);
             }
         }
-        
+
+        $this->setEmblemMenu($document, $menu);
+
         $this->addCvMenu($document, $menu);
         $this->addFamilyMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);

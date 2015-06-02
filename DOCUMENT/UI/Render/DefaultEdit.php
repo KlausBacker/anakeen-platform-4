@@ -93,7 +93,8 @@ class DefaultEdit extends RenderDefault
             
             $menu->appendElement($workflowMenu);
         }
-        
+
+        $this->setEmblemMenu($document, $menu);
         return $menu;
     }
 }
