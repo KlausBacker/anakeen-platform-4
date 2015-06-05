@@ -38,49 +38,38 @@ class DefaultView extends RenderDefault
             }
             $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityHidden);
             $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
-            $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
-            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityVisible);
         } else {
             if ($document->locked == - 1) {
                 // Fixed document
                 $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityHidden);
-                $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
-                $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
                 
                 $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
                 $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
                 $menu->getElement("security")->setVisibility(ElementMenu::VisibilityHidden);
                 
                 $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "?app=DOCUMENT&id={{document.properties.id}}");
-                $item->setTooltipLabel(___("Display latest document revision", "UiMenu"));
+                if ($this->displayDefaultMenuTooltip) {
+                    $item->setTooltipLabel(___("Display latest document revision", "UiMenu"));
+                }
                 $item->setBeforeContent('<div class="fa fa-share" />');
                 
                 $menu->insertBefore("modify", $item);
             } else {
                 
                 if ($editErr = $document->CanEdit()) {
-                    $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($editErr);
-                    $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
+                    $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityDisabled);
+                    if ($this->displayDefaultMenuTooltip) {
+                        $menu->getElement("modify")->setTooltipLabel($editErr);
+                    }
                 }
                 $deleteErr = $document->control("delete");
                 if ($deleteErr) {
-                    $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($deleteErr);
+                    $menu->getElement("delete")->setVisibility(ElementMenu::VisibilityDisabled);
+                    if ($this->displayDefaultMenuTooltip) {
+                        $menu->getElement("delete")->setTooltipLabel($deleteErr);
+                    }
                 }
                 $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
-                // Alive document
-                if ($document->isLocked()) {
-                    $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
-                    $errcuf = $document->CanUnLockFile();
-                    if ($errcuf) {
-                        if ($document->locked == - 1) {
-                            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
-                        } else {
-                            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($errcuf);
-                        }
-                    }
-                } else {
-                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
-                }
             }
         }
         return $menu;
@@ -94,13 +83,17 @@ class DefaultView extends RenderDefault
         $menu = new BarMenu();
         
         $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "#event/document:edit");
-        $item->setTooltipLabel(___("Display document form", "UiMenu"));
+        if ($this->displayDefaultMenuTooltip) {
+            $item->setTooltipLabel(___("Display document form", "UiMenu"));
+        }
         $item->setBeforeContent('<div class="fa fa-pencil" />');
         $item->setImportant(true);
         $menu->appendElement($item);
         
         $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#event/document:delete");
-        $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
+        if ($this->displayDefaultMenuTooltip) {
+            $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
+        }
         $confirmOption = new MenuConfirmOptions();
         $confirmOption->title = ___("Confirm deletion of {{{document.properties.title}}}");
         $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
@@ -111,7 +104,9 @@ class DefaultView extends RenderDefault
         $menu->appendElement($item);
         
         $item = new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
-        $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
+        if ($this->displayDefaultMenuTooltip) {
+            $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
+        }
         $menu->appendElement($item);
         
         $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#event/document:history");
@@ -122,40 +117,21 @@ class DefaultView extends RenderDefault
         $item->setTarget("_dialog", $targetOption);*/
         $menu->appendElement($item);
         
-        $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
-        
         $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
-        $menu->getElement("advanced")->appendElement($item);
-        
+        $item->setBeforeContent('<div class="fa fa-info" />');
+        $menu->appendElement($item);
+
+        /*
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG") !== "FALSE") {
-            $item = new ItemMenu("propertiesOld", ___("Old Properties", "UiMenu") , "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
+            $item = new ItemMenu("propertiesOld", "", "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
+            $item->setBeforeContent('<div class="fa fa-gear" />');
             $targetOption = new MenuTargetOptions();
             $targetOption->windowHeight = "400px";
             $targetOption->windowWidth = "400px";
             $item->setTarget("_dialog", $targetOption);
-        }
+            $menu->appendElement($item);
+        }*/
         
-        $menu->getElement("advanced")->appendElement($item);
-        
-        $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
-        /* $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
-        $targetOption = new MenuTargetOptions();
-        $targetOption->windowHeight = "400px";
-        $targetOption->windowWidth = "600px";
-        $item->setTarget("_dialog", $targetOption);
-        $securitySubMenu->appendElement($item);*/
-        $item = new ItemMenu("lock", ___("Lock", "UiMenu") , "#event/document:lock");
-        
-        $item->setTooltipLabel(___("Lock document", "ddui"));
-        $securitySubMenu->appendElement($item);
-        
-        $item = new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#event/document:unlock");
-        
-        $item->setTooltipLabel(___("Unlock document", "ddui"));
-        $securitySubMenu->appendElement($item);
-        $securitySubMenu->appendElement($item);
-        
-        $menu->getElement("advanced")->appendElement($securitySubMenu);
         if ($document->wid > 0) {
             if ($document->locked != - 1) {
                 $workflowMenu = new DynamicMenu("workflow");
@@ -166,7 +142,9 @@ class DefaultView extends RenderDefault
                 });
                 $workflowMenu->setBeforeContent(sprintf('<div class="fa fa-sitemap" />', $document->getStateColor("transparent")));
                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
-                $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu") , "left");
+                if ($this->displayDefaultMenuTooltip) {
+                    $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu") , "left");
+                }
                 $workflowMenu->setImportant(true);
                 $menu->appendElement($workflowMenu);
             } else {
@@ -177,6 +155,8 @@ class DefaultView extends RenderDefault
                 $menu->appendElement($workflowMenu);
             }
         }
+        
+        $this->setEmblemMenu($document, $menu);
         
         $this->addCvMenu($document, $menu);
         $this->addFamilyMenu($document, $menu);
@@ -232,15 +212,16 @@ class DefaultView extends RenderDefault
                 } else {
                     $itemMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square menu--transition" />', $wdoc->getColor($v)));
                 }
+                $m0error = '';
                 if ($tr && (!empty($tr["m0"]))) {
                     // verify m0
-                    $err = call_user_func(array(
+                    $m0error = call_user_func(array(
                         $wdoc,
                         $tr["m0"],
                     ) , $v, $wdoc->doc->state);
-                    if ($err) {
+                    if ($m0error) {
                         $visibility = $itemMenu::VisibilityDisabled;
-                        $tooltip = $err;
+                        $tooltip = $m0error;
                         $icon = ""; // no image "Images/nowaccess.png";
                         
                     }
@@ -250,14 +231,11 @@ class DefaultView extends RenderDefault
                     $itemMenu->setIcon($icon);
                 }
                 if ($tooltip) {
-                    $itemMenu->setTooltipLabel($tooltip, "left");
+                    if ($m0error || $this->displayDefaultMenuTooltip) {
+                        $itemMenu->setTooltipLabel($tooltip, "left");
+                    }
                 }
                 
-                $color = $wdoc->getColor($v);
-                if ($color) {
-                    //$itemMenu->setHtmlAttribute("style", "border-right:solid 10px $color");
-                    
-                }
                 $itemMenu->setVisibility($visibility);
                 
                 $menu->appendElement($itemMenu);
@@ -324,11 +302,11 @@ class DefaultView extends RenderDefault
                     if (!$lmenu) {
                         // Create new list menu
                         $lmenu = new listMenu($idListMenu, $cv->getLocaleViewMenu($vid));
-                        $menu->insertBefore("advanced", $lmenu);
+                        $menu->insertBefore("delete", $lmenu);
                     }
                     $lmenu->appendElement($menuItem);
                 } else {
-                    $menu->insertBefore("advanced", $menuItem);
+                    $menu->insertBefore("delete", $menuItem);
                 }
             }
             $defaultview = $doc->getDefaultView(true);
@@ -376,13 +354,17 @@ class DefaultView extends RenderDefault
                         if (!$lmenu) {
                             // Create new list menu
                             $lmenu = new listMenu($link["submenu"], $link["submenu"]);
-                            $menu->insertBefore("advanced", $lmenu);
+                            $menu->insertBefore("historic", $lmenu);
                         }
                         $lmenu->appendElement($menuItem);
                     }
                 } elseif ($link["visibility"] === POPUP_ACTIVE) {
-                    $menu->insertBefore("advanced", $menuItem);
+                    $menu->insertBefore("historic", $menuItem);
                 } elseif ($link["visibility"] === POPUP_CTRLACTIVE) {
+                    if (!$advMenu) {
+                        $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
+                        $advMenu = $menu->getElement("advanced");
+                    }
                     $advMenu->appendElement($menuItem);
                 }
             }

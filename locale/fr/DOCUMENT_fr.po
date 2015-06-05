@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-28 18:48+0200\n"
-"PO-Revision-Date: 2015-03-30 09:24+0200\n"
+"POT-Creation-Date: 2015-06-05 09:21+0200\n"
+"PO-Revision-Date: 2015-06-05 09:32+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -229,13 +229,9 @@ msgctxt "ddui"
 msgid "Invalid transition"
 msgstr "Transition invalide"
 
-msgctxt "UiMenu"
-msgid "Lock"
-msgstr "Verrouiller"
-
 msgctxt "ddui"
-msgid "Lock document"
-msgstr "Verrouiller le document"
+msgid "Locked by"
+msgstr "Verrouillé par"
 
 #, php-format
 msgctxt "ddui"
@@ -255,10 +251,6 @@ msgid "No result found"
 msgstr "Pas de résultat"
 
 msgctxt "UiMenu"
-msgid "Old Properties"
-msgstr "Anciennes propriétés"
-
-msgctxt "UiMenu"
 msgid "Profil access"
 msgstr "Accès au profil"
 
@@ -269,6 +261,10 @@ msgstr "Propriétés"
 msgctxt "UiMenu"
 msgid "Put document to the trash"
 msgstr "Mettre le document à la poubelle"
+
+msgctxt "ddui"
+msgid "Read only document"
+msgstr "Document en lecture seule"
 
 msgctxt "UiMenu"
 msgid "Record document to server"
@@ -343,14 +339,6 @@ msgstr "Commentaire de transition"
 msgctxt "ddui"
 msgid "Transition success"
 msgstr "Transition réussie"
-
-msgctxt "UiMenu"
-msgid "Unlock"
-msgstr "Déverrouiller"
-
-msgctxt "ddui"
-msgid "Unlock document"
-msgstr "Déverrouiller le document"
 
 msgctxt "ddui-enum"
 msgid "Unselect"
@@ -432,12 +420,6 @@ msgstr "Action de sous-menu"
 msgid "ddui:Get some template"
 msgstr "Récupération unitaire de template"
 
-msgid "ddui:Locked by"
-msgstr "Verrouillé par"
-
-msgid "ddui:Read only"
-msgstr "Lecture seule"
-
 msgid "ddui:Render a document"
 msgstr "Visualiser un document"
 
@@ -471,3 +453,29 @@ msgid ""
 msgstr ""
 "Erreur de retour lors de l'appel à %s\n"
 "%s"
+
+#~ msgctxt "UiMenu"
+#~ msgid "Lock"
+#~ msgstr "Verrouiller"
+
+#~ msgctxt "ddui"
+#~ msgid "Lock document"
+#~ msgstr "Verrouiller le document"
+
+#~ msgctxt "UiMenu"
+#~ msgid "Old Properties"
+#~ msgstr "Anciennes propriétés"
+
+#~ msgctxt "UiMenu"
+#~ msgid "Unlock"
+#~ msgstr "Déverrouiller"
+
+#~ msgctxt "ddui"
+#~ msgid "Unlock document"
+#~ msgstr "Déverrouiller le document"
+
+#~ msgid "ddui:Locked by"
+#~ msgstr "Verrouillé par"
+
+#~ msgid "ddui:Read only"
+#~ msgstr "Lecture seule"

@@ -12,6 +12,8 @@ class TabRenderOptions extends CommonRenderOptions
     
     const type = "tab";
     const openFirstOption = "openFirst";
+    const tabTooltipLabel = "tooltipLabel";
+    const tabTooltipHtml = "tooltipHtml";
     const tabPlacementOption = "tabPlacement";
     const tabLeftPlacement = "left";
     const tabTopProportionalPlacement = "topProportional";
@@ -49,5 +51,18 @@ class TabRenderOptions extends CommonRenderOptions
             throw new Exception("UI0107", $tabPlacement, implode(', ', $allowPlacement));
         }
         return $this->setOption(self::tabPlacementOption, $tabPlacement);
+    }
+
+    /**
+     * Set tooltip on a tab
+     * @param string $label tooltip text
+     * @param bool $html set to true if it is a html fragment
+     *
+     * @return $this
+     */
+    public function setTooltipLabel($label,$html=false)
+    {
+         $this->setOption(self::tabTooltipLabel, $label);
+        return $this->setOption(self::tabTooltipHtml, (bool)$html);
     }
 }
