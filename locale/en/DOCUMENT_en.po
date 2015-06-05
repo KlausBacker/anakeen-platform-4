@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-28 18:48+0200\n"
+"POT-Creation-Date: 2015-06-05 09:21+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -224,12 +224,8 @@ msgctxt "ddui"
 msgid "Invalid transition"
 msgstr ""
 
-msgctxt "UiMenu"
-msgid "Lock"
-msgstr ""
-
 msgctxt "ddui"
-msgid "Lock document"
+msgid "Locked by"
 msgstr ""
 
 #, php-format
@@ -250,10 +246,6 @@ msgid "No result found"
 msgstr ""
 
 msgctxt "UiMenu"
-msgid "Old Properties"
-msgstr ""
-
-msgctxt "UiMenu"
 msgid "Profil access"
 msgstr ""
 
@@ -263,6 +255,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Put document to the trash"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Read only document"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -337,14 +333,6 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Transition success"
-msgstr ""
-
-msgctxt "UiMenu"
-msgid "Unlock"
-msgstr ""
-
-msgctxt "ddui"
-msgid "Unlock document"
 msgstr ""
 
 msgctxt "ddui-enum"
@@ -425,12 +413,6 @@ msgid "ddui:Get dynamic sub menu"
 msgstr ""
 
 msgid "ddui:Get some template"
-msgstr ""
-
-msgid "ddui:Locked by"
-msgstr ""
-
-msgid "ddui:Read only"
 msgstr ""
 
 msgid "ddui:Render a document"

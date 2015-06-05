@@ -2,10 +2,11 @@ define([
     "jquery",
     'underscore',
     'mustache',
+    'dcpDocument/i18n',
     "kendo/kendo.menu",
     "kendo/kendo.window",
     'dcpDocument/widgets/widget'
-], function ($, _, Mustache)
+], function ($, _, Mustache, i18n)
 {
     'use strict';
 
@@ -255,7 +256,7 @@ define([
             this.kendoMenuWidget = $content.data("kendoMenu");
             this.kendoMenuWidget.append([
                 {
-                    text: '<span class="menu__before-content k-image"><div class="fa fa-bars"></div></span><span class="menu--count" />',
+                    text: i18n.___("Other", "UImenu")+'<span class="menu--count" />',
                     cssClass: "menu__element  menu_element--hamburger ",
                     encoded: false,   // Allows use of HTML for item text
                     items: []         // List items
