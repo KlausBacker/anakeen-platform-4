@@ -6,7 +6,8 @@ define([
     'kendo/kendo.multiselect',
     'kendo/kendo.combobox',
     'kendo/kendo.dropdownlist'
-], function (_, Mustache) {
+], function (_, Mustache)
+{
     'use strict';
 
     $.widget("dcp.dcpEnum", $.dcp.dcpAttribute, {
@@ -40,7 +41,8 @@ define([
                 useSourceUri: false
             }
         },
-        _initDom: function wEnumInitDom() {
+        _initDom: function wEnumInitDom()
+        {
             if (this._isMultiple()) {
                 this.options.isMultiple = true;
             }
@@ -100,7 +102,8 @@ define([
 
             this.noButtonDisplay();
         },
-        getSingleEnumData: function wEnumGetSingleEnumData() {
+        getSingleEnumData: function wEnumGetSingleEnumData()
+        {
             var source = [];
             var scope = this;
             var selectedIndex = -1;
@@ -111,7 +114,8 @@ define([
                 selectedIndex = this.options.attributeValue.value;
             } else {
 
-                _.each(this.options.sourceValues, function (enumItem) {
+                _.each(this.options.sourceValues, function (enumItem)
+                {
                     if (enumItem.key !== '' && enumItem.key !== ' ') {
                         item = {};
 
@@ -144,7 +148,8 @@ define([
             return {data: source, index: selectedIndex};
         },
 
-        getMultipleEnumData: function wEnumGetMultipleEnumData() {
+        getMultipleEnumData: function wEnumGetMultipleEnumData()
+        {
             var source = [];
             var selectedValues = [];
             var isIn = false;
@@ -156,12 +161,14 @@ define([
                 source = values;
                 selectedValues = values;
             } else {
-                _.each(this.options.sourceValues, function (enumItem) {
+                _.each(this.options.sourceValues, function (enumItem)
+                {
                     item = {};
                     item.value = enumItem.key;
                     item.displayValue = enumItem.label;
                     item.selected = false;
-                    isIn = _.some(values, function (aValue) {
+                    isIn = _.some(values, function (aValue)
+                    {
                         //noinspection JSHint
                         return (aValue.value == enumItem.key);
                     });
@@ -182,18 +189,21 @@ define([
             return {data: source, selectedValues: selectedValues};
         },
 
-        retrieveItems: function wEnumretrieveItemse(done) {
+        retrieveItems: function wEnumretrieveItemse(done)
+        {
             var scope = this;
             // Get enums data and defer render
             $.ajax({
                 type: "GET",
                 url: this.options.sourceUri,
                 dataType: "json"
-            }).done(function (result) {
+            }).done(function (result)
+            {
                 scope.options.sourceValues = result.data.enumItems;
                 scope.options.renderOptions.useSourceUri = false;
                 done(scope);
-            }).fail(function (response) {
+            }).fail(function (response)
+            {
                 $('body').trigger("notification", {
                     htmlMessage: "Enumerate " + scope.options.id,
                     message: response.statusText,
@@ -203,7 +213,8 @@ define([
         },
 
 
-        noButtonDisplay: function wEnumNoDisplayButton() {
+        noButtonDisplay: function wEnumNoDisplayButton()
+        {
             if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
                 this.element.find(".dcpAttribute__value--enumbuttons").
                     addClass("dcpAttribute__content__nobutton");
@@ -211,14 +222,16 @@ define([
             }
         },
 
-        boolButtons: function wEnumBoolButtons() {
+        boolButtons: function wEnumBoolButtons()
+        {
             var enumData;
             var tplOption = this.options;
             var labels;
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
-                this.retrieveItems(function (theWidget) {
+                this.retrieveItems(function (theWidget)
+                {
                     theWidget.boolButtons();
                 });
                 return;
@@ -239,7 +252,8 @@ define([
                 this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
             }
 
-            this.element.find(".dcpAttribute__value--enumlabel").each(function (kItem) {
+            this.element.find(".dcpAttribute__value--enumlabel").each(function (kItem)
+            {
                 if (tplOption.enumValues[kItem]) {
                     $(this).tooltip({
                         title: Mustache.render(scope.options.labels.invertSelection,
@@ -251,10 +265,12 @@ define([
 
             this.noButtonDisplay();
 
-            labels.on("click" + this.eventNamespace, "input", function (event) {
+            labels.on("click" + this.eventNamespace, "input", function (event)
+            {
                 event.preventDefault();
                 // Invert selection
-                _.some(tplOption.enumValues, function (item, kItem) {
+                _.some(tplOption.enumValues, function (item, kItem)
+                {
                     if (scope.options.attributeValue.value === null || item.value !== scope.options.attributeValue.value) {
                         scope.setValue(item, event);
                         return true;
@@ -264,7 +280,8 @@ define([
             });
 
 
-            this.getContentElements().each(function () {
+            this.getContentElements().each(function ()
+            {
                 $(this).closest("label").addClass("k-button");
 
             });
@@ -279,14 +296,16 @@ define([
         },
 
 
-        radioButtons: function wEnumRadioButtons() {
+        radioButtons: function wEnumRadioButtons()
+        {
             var enumData;
             var tplOption = this.options;
             var labels;
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
-                this.retrieveItems(function (theWidget) {
+                this.retrieveItems(function (theWidget)
+                {
                     theWidget.radioButtons();
                 });
                 return;
@@ -301,7 +320,8 @@ define([
 
 
             this.noButtonDisplay();
-            labels.on("change" + this.eventNamespace, "input", function (event) {
+            labels.on("change" + this.eventNamespace, "input", function (event)
+            {
                 var newValue = {};
                 newValue.value = $(this).val();
                 newValue.displayValue = $(this).closest('label').text().trim();
@@ -309,7 +329,8 @@ define([
             });
 
 
-            this.getContentElements().each(function () {
+            this.getContentElements().each(function ()
+            {
                 $(this).closest("label").addClass("k-button");
 
             });
@@ -323,7 +344,8 @@ define([
 
             this.element.tooltip({
                 selector: '.dcpAttribute__value--enumlabel--text',
-                title: function (a) {
+                title: function (a)
+                {
                     if ($(this).closest("label").find("input").prop("checked")) {
                         return null;
                     } else {
@@ -333,14 +355,16 @@ define([
             });
 
         },
-        checkboxButtons: function wEnumRadioButtons() {
+        checkboxButtons: function wEnumRadioButtons()
+        {
             var enumData;
             var tplOption = this.options;
             var labels;
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
-                this.retrieveItems(function (theWidget) {
+                this.retrieveItems(function (theWidget)
+                {
                     theWidget.checkboxButtons();
                 });
                 return;
@@ -352,11 +376,13 @@ define([
             labels = this.element.find("label");
 
             this.noButtonDisplay();
-            labels.on("change" + this.eventNamespace, "input", function (event) {
+            labels.on("change" + this.eventNamespace, "input", function (event)
+            {
 
                 var newValue = [];
 
-                scope.getContentElements().each(function () {
+                scope.getContentElements().each(function ()
+                {
                     if ($(this).prop("checked")) {
                         var itemValue = {};
                         itemValue.value = $(this).val();
@@ -368,13 +394,15 @@ define([
                 scope.setValue(newValue, event);
             });
 
-            this.getContentElements().each(function () {
+            this.getContentElements().each(function ()
+            {
                 $(this).closest("label").addClass("k-button");
             });
 
             this.element.tooltip({
                 selector: '.dcpAttribute__value--enumlabel--text',
-                title: function (a) {
+                title: function (a)
+                {
                     if ($(this).closest("label").find("input").prop("checked")) {
                         return scope.options.labels.unselectMessage + ' "' + $(this).text() + '"';
                     } else {
@@ -385,7 +413,8 @@ define([
 
         },
 
-        singleDropdown: function wEnumSingleDropdown() {
+        singleDropdown: function wEnumSingleDropdown()
+        {
             var kendoOptions = this.getKendoOptions();
             var kddl;
 
@@ -396,9 +425,10 @@ define([
             if (!this.options.renderOptions.useFirstChoice) {
                 kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
             }
-            
+
         },
-        multipleSelect: function wEnumMultipleSelect() {
+        multipleSelect: function wEnumMultipleSelect()
+        {
             var kendoOptions = this.getKendoOptions();
             this.element.append(Mustache.render(this._getTemplate('write'), this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
@@ -406,7 +436,8 @@ define([
         },
 
 
-        singleCombobox: function wEnumSingleCombobox() {
+        singleCombobox: function wEnumSingleCombobox()
+        {
             var kendoOptions = this.getKendoOptions();
             var kddl;
 
@@ -436,7 +467,8 @@ define([
          * @param value value {value:...., displayValue} or array of {value:...., displayValue}
          * @param event
          */
-        setValue: function wEnumSetValue(value, event) {
+        setValue: function wEnumSetValue(value, event)
+        {
             var kddl, newValues;
             if (this.options.renderOptions.editDisplay === "bool") {
                 // This display has only 2 values and cannot be set to null
@@ -452,7 +484,8 @@ define([
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
                         case "list":
-                            newValues = _.map(value, function (val) {
+                            newValues = _.map(value, function (val)
+                            {
                                 return val.value;
                             });
                             kddl = this.kendoWidget.data("kendoMultiSelect");
@@ -470,10 +503,12 @@ define([
 
                         case "horizontal":
                         case "vertical":
-                            this.getContentElements().each(function () {
+                            this.getContentElements().each(function ()
+                            {
                                 var inputValue = $(this).val();
 
-                                var isIn = _.some(value, function (x) {
+                                var isIn = _.some(value, function (x)
+                                {
                                     //noinspection JSHint
                                     return (x.value == inputValue);
                                 });
@@ -522,7 +557,8 @@ define([
                             }
                             break;
                         case "bool":
-                            this.getContentElements().each(function (kItem) {
+                            this.getContentElements().each(function (kItem)
+                            {
                                 //noinspection JSHint
                                 if ($(this).val() == value.value) {
                                     if (kItem > 0) {
@@ -541,7 +577,8 @@ define([
                             break;
                         case "horizontal":
                         case "vertical":
-                            this.getContentElements().each(function () {
+                            this.getContentElements().each(function ()
+                            {
                                 //noinspection JSHint
                                 if ($(this).val() == value.value) {
                                     $(this).prop("checked", true);
@@ -567,7 +604,8 @@ define([
          * method use for transport multiselect widget
          * @param options
          */
-        autocompleteRequestEnum: function wEnumAutocompleteRequestEnum(options) {
+        autocompleteRequestEnum: function wEnumAutocompleteRequestEnum(options)
+        {
             var filter = {};
 
             if (options.data.filter && options.data.filter.filters && options.data.filter.filters.length > 0) {
@@ -586,9 +624,11 @@ define([
                 url: this.options.sourceUri,
                 data: filter,
                 dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                success: function (result) {
+                success: function (result)
+                {
                     var info = [];
-                    _.each(result.data.enumItems, function (enumItem) {
+                    _.each(result.data.enumItems, function (enumItem)
+                    {
                         info.push({
                             value: enumItem.key,
                             displayValue: enumItem.label
@@ -597,7 +637,8 @@ define([
                     // notify the data source that the request succeeded
                     options.success(info);
                 },
-                error: function (result) {
+                error: function (result)
+                {
                     // notify the data source that the request failed
                     options.error(result);
                 }
@@ -607,7 +648,8 @@ define([
          * Get kendo option from normal options and from renderOptions.kendoNumeric
          * @returns {*}
          */
-        getKendoOptions: function wEnumGetKendoOptions() {
+        getKendoOptions: function wEnumGetKendoOptions()
+        {
             var scope = this,
                 source = null,
                 kendoOptions = {},
@@ -623,13 +665,15 @@ define([
                     placeholder: this.options.labels.chooseMessage,
                     value: source.selectedValues,
 
-                    change: function (event) {
+                    change: function (event)
+                    {
                         event.preventDefault(); // no fire change event
                         // set in case of delete item
 
                         var kdData = _.toArray(scope.kendoWidget.data("kendoMultiSelect").dataItems());
                         var newValues = [];
-                        _.each(kdData, function (val) {
+                        _.each(kdData, function (val)
+                        {
                             newValues.push({value: val.value, displayValue: val.displayValue});
                         });
                         scope.setValue(newValues, event);
@@ -648,18 +692,20 @@ define([
                     /*valuePrimitive: true,*/
                     optionLabel: {
                         displayValue: this.options.labels.chooseMessage + ' ',
-                        value:''
+                        value: ''
                     },
-                    optionLabelTemplate : '<span class="placeholder">#: displayValue #</span>',
-                    dataTextField:"displayValue",
+                    optionLabelTemplate: '<span class="placeholder">#: displayValue #</span>',
+                    dataTextField: "displayValue",
                     dataValueField: "value",
                     dataSource: source.data,
-                    index: (source.index < 0)?undefined:source.index,
+                    index: (source.index < 0) ? undefined : source.index,
                     autoBind: false,
-                    change: function (event) {
+                    change: function (event)
+                    {
                         if (this.value() && this.selectedIndex === -1) {
                             scope.setError(scope.options.labels.invalidEntry);
-                            scope._getFocusInput().each(function () {
+                            scope._getFocusInput().each(function ()
+                            {
                                 this.focus();
                             });
                         } else {
@@ -669,7 +715,8 @@ define([
                             scope.setValue(newValue, event);
                         }
                     },
-                    dataBound: function (e) {
+                    dataBound: function (e)
+                    {
                         if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                             // Set to first enum item if empty
                             var firstItem = this.dataSource.at(0);
@@ -713,11 +760,13 @@ define([
             return _.extend(defaultOptions, kendoOptions);
         },
 
-        getType: function () {
+        getType: function ()
+        {
             return "enum";
         },
 
-        _destroy: function _destroy() {
+        _destroy: function _destroy()
+        {
             if (this.kendoWidget && this.kendoWidget.data("kendoDropDownList")) {
                 this.kendoWidget.data("kendoDropDownList").destroy();
             }
