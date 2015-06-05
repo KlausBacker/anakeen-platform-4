@@ -99,9 +99,9 @@ define([
             if (!locale) {
                 locale = "fr-FR";
             }
-            $(window).off("." + this.model.cid);
+            $(window).off(".v" + this.model.cid);
 
-            $(window).on("resize." + this.model.cid, _.bind(this.resizeForFooter, this));
+            $(window).on("resize.v" + this.model.cid, _.bind(this.resizeForFooter, this));
             kendo.culture(locale);
             //add document base
             try {
@@ -256,11 +256,11 @@ define([
                     // Use an overflow to hide resize effects, it is delete at the end of tab resize
                     var tabList = this.$(".dcpDocument__tabs .dcpDocument__tabs__list");
                     tabList.css("overflow", "hidden").css("max-height", "2.7em");
-                    $(window).on("resize." + this.model.cid, function ()
+                    $(window).on("resize.v" + this.model.cid, function ()
                     {
                         tabList.css("overflow", "hidden").css("max-height", "2.7em");
                     });
-                    $(window).on("resize." + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
+                    $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
 
                 }
 
@@ -273,14 +273,14 @@ define([
                     }
                 }
             }
-            $(window.document).on("drop." + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e)
+            $(window.document).on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e)
             {
                 e.preventDefault();
-            }).on("redrawErrorMessages." + this.model.cid, function vDocumentRedrawErrorMessages()
+            }).on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages()
             {
                 documentView.model.redrawErrorMessages();
             });
-            $(window).on("resize." + this.model.cid, _.debounce(function ()
+            $(window).on("resize.v" + this.model.cid, _.debounce(function ()
             {
                 documentView.model.redrawErrorMessages();
             }, 100, false));

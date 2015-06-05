@@ -598,6 +598,7 @@ class View extends Crud
      */
     public function getEtagInfo()
     {
+        return null;
         if (isset($this->urlParameters["identifier"])) {
             $id = $this->urlParameters["identifier"];
             $id = DocManager::getIdentifier($id, true);
