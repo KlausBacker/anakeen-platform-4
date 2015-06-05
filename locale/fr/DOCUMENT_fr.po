@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-05 09:21+0200\n"
-"PO-Revision-Date: 2015-03-30 09:24+0200\n"
+"PO-Revision-Date: 2015-06-05 09:32+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -231,7 +231,7 @@ msgstr "Transition invalide"
 
 msgctxt "ddui"
 msgid "Locked by"
-msgstr ""
+msgstr "Verrouillé par"
 
 #, php-format
 msgctxt "ddui"
@@ -264,7 +264,7 @@ msgstr "Mettre le document à la poubelle"
 
 msgctxt "ddui"
 msgid "Read only document"
-msgstr ""
+msgstr "Document en lecture seule"
 
 msgctxt "UiMenu"
 msgid "Record document to server"
