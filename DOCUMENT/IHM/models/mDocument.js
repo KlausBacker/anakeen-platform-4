@@ -86,22 +86,30 @@ define([
         initialize: function mDocumentinitialize()
         {
             var theModel = this;
+
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
             this.listenTo(this, "destroy", this.unbindLoadEvent);
-
-            $(window).on("unload." + this.cid, function mDocumentUnload()
-            {
+            this.listenTo(this, "change:initid", function mDocumentUnLockOnChange(event) {
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
+                var previousInitid=event.previous("initid");
+
+                // Initid is the first value to be changed so "renderMode" is the previous at this time
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-                    var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
+                    var lockModel = new DocumentLock({"initid": previousInitid, "type": "temporary"});
                     lockModel.destroy();
                 }
             });
+
             $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
+                var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 if (theModel.hasAttributesChanged()) {
                     return i18n.___("The form has been modified and is is not saved", "ddui");
+                }
+                if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
+                    var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
+                    lockModel.destroy();
                 }
             });
         },
