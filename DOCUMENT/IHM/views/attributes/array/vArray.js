@@ -74,6 +74,7 @@ define([
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
                 if (!this.customView || this.customRowView) {
+                    this.columnViews=[];
                     this.model.get("content").each(function vArray_analyzeContent(currentAttr)
                     {
                         if (!currentAttr.isDisplayable()) {
