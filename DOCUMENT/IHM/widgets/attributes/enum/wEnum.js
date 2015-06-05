@@ -394,8 +394,9 @@ define([
 
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
             if (!this.options.renderOptions.useFirstChoice) {
-                kddl.list.find(".k-list-optionlabel").addClass("placeholder");
+                kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
             }
+            
         },
         multipleSelect: function wEnumMultipleSelect() {
             var kendoOptions = this.getKendoOptions();
@@ -513,11 +514,7 @@ define([
                             break;
                         case "list":
                             kddl = this.kendoWidget.data("kendoDropDownList");
-                            if (value.value === '' || value.value === null) {
-                                kddl.span.addClass("placeholder");
-                            } else {
-                                kddl.span.removeClass("placeholder");
-                            }
+
                             if (!_.isEqual(kddl.value(), (value.value || ""))) {
                                 this.flashElement();
                                 // kendo need empty string (not null) to clear input
@@ -649,11 +646,15 @@ define([
 
                 defaultOptions = {
                     /*valuePrimitive: true,*/
-                    optionLabel: this.options.labels.chooseMessage + ' ',
-                    dataTextField: "displayValue",
+                    optionLabel: {
+                        displayValue: this.options.labels.chooseMessage + ' ',
+                        value:''
+                    },
+                    optionLabelTemplate : '<span class="placeholder">#: displayValue #</span>',
+                    dataTextField:"displayValue",
                     dataValueField: "value",
                     dataSource: source.data,
-                    index: source.index,
+                    index: (source.index < 0)?undefined:source.index,
                     autoBind: false,
                     change: function (event) {
                         if (this.value() && this.selectedIndex === -1) {
