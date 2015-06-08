@@ -19,7 +19,7 @@ define([
                 width: "500px",
                 title: "-"
             },
-            maximizeWidth:480 // Limit in px to open with maximize
+            maximizeWidth:768 // Limit in px to open with maximize
         },
 
         dialogWindow: null,
