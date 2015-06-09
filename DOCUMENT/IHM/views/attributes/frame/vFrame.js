@@ -110,6 +110,10 @@ define([
                     });
                 }
             }
+
+            if (this.model.getOption("collapse") === true) {
+                this.toggle(null, true);
+            }
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             //console.timeEnd("render frame " + this.model.id);
             return this;
@@ -143,7 +147,7 @@ define([
             this.$el.find(".dcpFrame__label").text(this.model.get("label"));
         },
 
-        toggle: function vFrame_toggle()
+        toggle: function vFrame_toggle(event, hideNow)
         {
             var $contentElement = this.$(".dcpCustomTemplate");
             if ($contentElement.length === 0) {
@@ -151,7 +155,11 @@ define([
             }
             this.$(".dcp__frame__caret").toggleClass("fa-caret-right fa-caret-down");
             $contentElement.toggleClass("dcpFrame__content--open dcpFrame__content--close");
-            $contentElement.slideToggle(200);
+            if (hideNow) {
+                $contentElement.hide();
+            } else {
+                $contentElement.slideToggle(200);
+            }
         },
 
         hide: function vFrame_hide()

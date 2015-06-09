@@ -14,6 +14,36 @@
   box-sizing: border-box;
 }
 
+
+.dcpDocument__tabs.k-tabstrip > .k-content {
+  padding: @dcp-set-padding;
+}
+
+.dcpDocument__tabs .dcpFrame {
+  margin-bottom:@dcp-set-padding;
+}
+.dcpDocument__tabs .dcpFrame .dcpArray {
+  margin-bottom:@dcp-set-padding;
+  margin-left:0;
+  margin-right: 0;
+}
+.dcpDocument__tabs .dcpFrame__content
+{
+  padding:@dcp-set-padding;
+}
+.dcpDocument__tabs .dcpFrame__content .dcpArray__content
+{
+  padding:0;
+}
+
+.dcpDocument__tabs .dcpFrame:last-child,
+.dcpDocument__tabs .dcpFrame .dcpArray:last-child,
+{
+  margin-bottom:0;
+}
+.dcpDocument__tabs .dcpFrame .dcpArray__content > table {
+  margin:0;
+}
 .k-tabstrip-items .dcpTab__label .k-state-active {
   background-color: transparent;
 }

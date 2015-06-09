@@ -214,7 +214,7 @@ define([
             });
 
             // Generate CSS string
-            cssString = "<style>@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) { ";
+            cssString = "<style>@media only screen and (max-width: 760px), (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) { ";
 
             cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 

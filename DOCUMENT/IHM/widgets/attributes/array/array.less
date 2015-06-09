@@ -116,7 +116,68 @@ table.responsive {
 .dcpArray__content {
   overflow-x: auto;
 }
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+
+
+.dcpArray__label.dcpAttribute__left {
+  .make-lg-column(2);
+  padding-left:@font-size-base/2;
+  @media (min-width: @screen-lg-min) {
+    background-color: inherit;
+    border: none;
+    text-align: right;
+    clear: both;
+    &:after {
+      content: ":";
+      padding-left: 0.6em;
+    }
+  }
+}
+
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left {
+  .make-xs-column(3);
+  background-color: inherit;
+  border: none;
+  text-align: right;
+  clear: both;
+  &:after {
+    content: ":";
+    padding-left: 0.6em;
+  }
+}
+
+.dcpArray--left.dcpAttribute__labelPosition--left {
+  border: none;
+}
+
+.dcpArray__content.dcpAttribute__right.dcpAttribute__labelPosition--left {
+  .make-xs-column(10);
+}
+
+.dcpArray__content.dcpAttribute__right {
+  .make-lg-column(10);
+}
+
+.dcpArray--left {
+  @media (min-width: @screen-lg-min) {
+    border: none;
+  }
+}
+.dcpArray__tools {
+    margin:(@dcp-set-padding / 2);
+}
+@media (max-width: @screen-lg-min) {
+  .dcpArray__content > .table-bordered {
+    border-style: none;
+  }
+  .dcpDocument--edit  .dcpArray__content > .table-bordered {
+    border-bottom-style: solid ;
+  }
+
+}
+
+@media only screen and (max-width: 760px),
+ (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)
+{
   table.responsive {
     width: 100%;
   }
