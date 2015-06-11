@@ -37,7 +37,7 @@ define([
             viewId: undefined,
             revision: undefined,
             constraintList: [],
-            eventList: []
+            eventListener: []
         },
 
         /**
@@ -51,9 +51,9 @@ define([
             }
             this.initialLoaded = false;
             this.options.constraintList = {};
-            this.options.eventList = {};
+            this.options.eventListener = {};
             this.activatedConstraint = [];
-            this.activatedEvent = [];
+            this.activatedEventListener = [];
             this._initExternalElements();
             this._initModel(this._getModelValue());
             this._initView();
@@ -72,9 +72,9 @@ define([
         {
             this._triggerControllerEvent("destroy", this._model.getProperties(true));
             this.options.constraintList = {};
-            this.options.eventList = {};
+            this.options.eventListener = {};
             this.activatedConstraint = [];
-            this.activatedEvent = [];
+            this.activatedEventListener = [];
             this.element.removeData("document");
             this._model.trigger("destroy");
             this._trigger("destroy");
@@ -190,7 +190,7 @@ define([
                 currentWidget.options.revision = currentWidget._model.get("revision");
                 currentWidget.element.data("document", currentWidget._getModelValue());
                 currentWidget._initActivatedConstraint();
-                currentWidget._initActivatedEvents({launchReady: false});
+                currentWidget._initActivatedEventListeners({launchReady: false});
             });
             this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event)
             {
@@ -555,11 +555,11 @@ define([
          * Activate events on the current document
          * Used on the fetch of a new document
          */
-        _initActivatedEvents: function documentController_initActivatedEvents(options)
+        _initActivatedEventListeners: function documentController_initActivatedEvents(options)
         {
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this;
             options = options || {};
-            this.activatedEvent = _.filter(this.options.eventList, function documentController_getActivatedEvent(currentEvent)
+            this.activatedEventListener = _.filter(this.options.eventListener, function documentController_getActivatedEvent(currentEvent)
             {
                 if (!_.isFunction(currentEvent.documentCheck)) {
                     return true;
@@ -590,10 +590,10 @@ define([
         {
             var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event, uniqueName;
             uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
-            this.options.eventList[uniqueName] = newEvent;
+            this.options.eventListener[uniqueName] = newEvent;
             // Check if the event is for the current document
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
-                this.activatedEvent.push(newEvent);
+                this.activatedEventListener.push(newEvent);
                 // Check if we need to manually trigger this callback (late registered : only for ready events)
                 if (this.initialLoaded !== false) {
                     if (newEvent.eventType === "ready") {
@@ -645,7 +645,7 @@ define([
             event.target = currentWidget.element;
             // internal event trigger
             args.unshift(event);
-            _.chain(this.activatedEvent).filter(function documentController__filterUsableEvents(currentEvent)
+            _.chain(this.activatedEventListener).filter(function documentController__filterUsableEvents(currentEvent)
             {
                 // Check by eventType (only call callback with good eventType)
                 if (currentEvent.eventType === eventName) {
@@ -687,7 +687,7 @@ define([
             event.target = currentWidget.element;
             // internal event trigger
             args.unshift(event);
-            _.chain(this.activatedEvent).filter(function documentController_getEventName(currentEvent)
+            _.chain(this.activatedEventListener).filter(function documentController_getEventName(currentEvent)
             {
                 return currentEvent.eventType === eventName;
             }).each(function documentController_triggerAnEvent(currentEvent)
@@ -1083,7 +1083,7 @@ define([
          * @param callback function callback called when the event is triggered
          * @returns {*|Window.options.name}
          */
-        addEvent: function documentControllerAddEvent(eventType, options, callback)
+        addEventListener: function documentControllerAddEvent(eventType, options, callback)
         {
             var currentEvent, currentWidget = this;
             //options is facultative and the callback can be the second parameters
@@ -1121,7 +1121,7 @@ define([
             if (currentEvent.once === true) {
                 currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function documentController_onceWrapper(callback)
                 {
-                    currentWidget.removeEvent(currentEvent.name, currentEvent.externalEvent);
+                    currentWidget.removeEventListener(currentEvent.name, currentEvent.externalEvent);
                     try {
                         callback.apply(this, _.rest(arguments));
                     } catch (e) {
@@ -1139,9 +1139,9 @@ define([
          *
          * @returns {*}
          */
-        listEvents: function documentControllerListEvents()
+        listEventListeners: function documentControllerListEvents()
         {
-            return this.options.eventList;
+            return this.options.eventListener;
         },
 
         /**
@@ -1151,12 +1151,12 @@ define([
          * @param allKind remove internal/external events
          * @returns {*}
          */
-        removeEvent: function documentControllerRemoveEvent(eventName, allKind)
+        removeEventListener: function documentControllerRemoveEvent(eventName, allKind)
         {
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
             allKind = !!allKind;
-            newList = _.filter(this.options.eventList, function documentController_removeCurrentEvent(currentEvent)
+            newList = _.filter(this.options.eventListener, function documentController_removeCurrentEvent(currentEvent)
             {
                 if ((allKind || !currentEvent.externalEvent) && (currentEvent.name === eventName || testRegExp.test(currentEvent.name))) {
                     removed.push(currentEvent);
@@ -1170,8 +1170,8 @@ define([
                 var uniqueName = (currentEvent.externalEvent ? "external_" : "internal_") + currentEvent.name;
                 eventList[uniqueName] = currentEvent;
             });
-            this.options.eventList = eventList;
-            this._initActivatedEvents({"launchReady": false});
+            this.options.eventListener = eventList;
+            this._initActivatedEventListeners({"launchReady": false});
             return removed;
         },
 
