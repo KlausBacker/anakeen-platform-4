@@ -727,6 +727,24 @@ define([
             currentWidget._trigger.apply(currentWidget, args);
         },
 
+        /**
+         * Check if event name is valid
+         *
+         * @param eventName string
+         * @private
+         */
+        _checkEventName: function documentController_checkEventName(eventName)
+        {
+            if (_.isString(eventName) &&
+                (eventName.indexOf("custom:") === 0 ||
+                _.find(eventList, function documentController_CheckEventType(currentEventType)
+                    { return currentEventType === eventName;})
+            )) {
+                return true;
+            }
+            throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.join(" ,"));
+        },
+
         /***************************************************************************************************************
          * External function
          **************************************************************************************************************/
@@ -917,8 +935,6 @@ define([
                     currentAttribute.addValue(newValue);
                 }
             });
-
-
         },
 
         /**
@@ -1107,12 +1123,7 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(currentEvent.eventType) || !_.find(eventList, function documentController_CheckEventType(currentEventType)
-                {
-                    return currentEventType === currentEvent.eventType;
-                })) {
-                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(" ,"));
-            }
+            this._checkEventName(currentEvent.eventType);
             // callback is mandatory and must be a function
             if (!_.isFunction(currentEvent.eventCallback)) {
                 throw new Error("An event needs a callback that is a function");
@@ -1173,6 +1184,11 @@ define([
             this.options.eventListener = eventList;
             this._initActivatedEventListeners({"launchReady": false});
             return removed;
+        },
+
+        triggerEvent : function documentController_triggerEvent(eventName) {
+            this._checkEventName(eventName);
+            this._triggerControllerEvent.apply(this, arguments);
         },
 
         /**

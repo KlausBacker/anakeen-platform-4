@@ -176,6 +176,26 @@ define([
         },
 
         /**
+         * Check if event name is valid
+         *
+         * @param eventName string
+         * @private
+         */
+        _checkEventName: function documentController_checkEventName(eventName)
+        {
+            if (_.isString(eventName) &&
+                (eventName.indexOf("custom:") === 0 ||
+                _.find(eventList, function documentController_CheckEventType(currentEventType)
+                {
+                    return currentEventType === eventName;
+                })
+                )) {
+                return true;
+            }
+            throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.join(" ,"));
+        },
+
+        /**
          * Update options
          */
         options: function dcpDocument_options()
@@ -246,12 +266,7 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(currentEvent.eventType) || !_.find(eventList, function dcpDocument_CheckEventType(currentEventType)
-                {
-                    return currentEventType === currentEvent.eventType;
-                })) {
-                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(", "));
-            }
+            this._checkEventName(currentEvent.eventType);
             if (currentEvent.once === true) {
                 currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function dcpDocument_onceWrapper(callback)
                 {
