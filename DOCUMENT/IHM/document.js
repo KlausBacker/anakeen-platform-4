@@ -49,7 +49,7 @@ define([
                 throw new Error("Unable to create a document without initid");
             }
             this.options = _.extend({}, this.defaults, this.options);
-            this.options.eventList = {};
+            this.options.eventListener = {};
             this.options.constraintList = {};
             this._render();
             this._bindEvents();
@@ -113,9 +113,9 @@ define([
             if (!this.element.data("internalWidgetInitialised")) {
                 this.element.data("internalWidget", internalController);
                 //Rebind event
-                _.each(this.options.eventList, function dcpDocument_bindEvent(currentEvent)
+                _.each(this.options.eventListener, function dcpDocument_bindEvent(currentEvent)
                 {
-                    internalController.addEvent(currentEvent);
+                    internalController.addEventListener(currentEvent);
                 });
                 //Rebind constraint
                 _.each(this.options.constraintList, function dcpDocument_bindEvent(currentConstaint)
@@ -176,6 +176,26 @@ define([
         },
 
         /**
+         * Check if event name is valid
+         *
+         * @param eventName string
+         * @private
+         */
+        _checkEventName: function documentController_checkEventName(eventName)
+        {
+            if (_.isString(eventName) &&
+                (eventName.indexOf("custom:") === 0 ||
+                _.find(eventList, function documentController_CheckEventType(currentEventType)
+                {
+                    return currentEventType === eventName;
+                })
+                )) {
+                return true;
+            }
+            throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.join(" ,"));
+        },
+
+        /**
          * Update options
          */
         options: function dcpDocument_options()
@@ -223,7 +243,7 @@ define([
          * @param callback function callback
          * @returns {*}
          */
-        addEvent: function dcpDocument_addEvent(eventType, options, callback)
+        addEventListener : function dcpDocument_addEventListener(eventType, options, callback)
         {
             var currentEvent, currentWidget = this;
             if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -246,12 +266,7 @@ define([
                 });
             }
             // the eventType must be one the list
-            if (!_.isString(currentEvent.eventType) || !_.find(eventList, function dcpDocument_CheckEventType(currentEventType)
-                {
-                    return currentEventType === currentEvent.eventType;
-                })) {
-                throw new Error("The event type " + currentEvent.eventType + " is not known. It must be one of " + eventList.join(", "));
-            }
+            this._checkEventName(currentEvent.eventType);
             if (currentEvent.once === true) {
                 currentEvent.eventCallback = _.wrap(currentEvent.eventCallback, function dcpDocument_onceWrapper(callback)
                 {
@@ -260,14 +275,14 @@ define([
                     } catch (e) {
                         console.error(e);
                     }
-                    currentWidget.removeEvent(currentEvent.name);
+                    currentWidget.removeEventListener(currentEvent.name);
                 });
             }
             //Remove once property because already wrapped
             currentEvent.once = false;
-            this.options.eventList[currentEvent.name] = currentEvent;
+            this.options.eventListener[currentEvent.name] = currentEvent;
             if (this.element.data("internalWidgetInitialised")) {
-                this.element.data("internalWidget").addEvent(currentEvent);
+                this.element.data("internalWidget").addEventListener(currentEvent);
             }
             return currentEvent.name;
         },
@@ -277,12 +292,12 @@ define([
          *
          * @returns {*}
          */
-        listEvents: function documentControllerListEvents()
+        listEventListeners: function documentControllerListEvents()
         {
             if (this.element.data("internalWidgetInitialised")) {
-                return this.element.data("internalWidget").listEvents();
+                return this.element.data("internalWidget").listEventListeners();
             } else {
-                return this.options.eventList;
+                return this.options.eventListener;
             }
         },
 
@@ -292,11 +307,11 @@ define([
          * @param eventName
          * @returns {Array}
          */
-        removeEvent: function dcpDocument_removeEvent(eventName)
+        removeEventListener: function dcpDocument_removeEventListener(eventName)
         {
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
-            newList = _.filter(this.options.eventList, function dcpDocument_removeCurrentEvent(currentEvent)
+            newList = _.filter(this.options.eventListener, function dcpDocument_removeCurrentEvent(currentEvent)
             {
                 if (currentEvent.name === eventName || testRegExp.test(currentEvent.name)) {
                     removed.push(currentEvent);
@@ -309,9 +324,9 @@ define([
             {
                 eventList[currentEvent.name] = currentEvent;
             });
-            this.options.eventList = eventList;
+            this.options.eventListener = eventList;
             if (this.element.data("internalWidgetInitialised")) {
-                this.element.data("internalWidget").removeEvent(eventName, true);
+                this.element.data("internalWidget").removeEventListener(eventName, true);
             }
             return removed;
         },
