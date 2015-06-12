@@ -1188,7 +1188,7 @@ define([
 
         triggerEvent : function documentController_triggerEvent(eventName) {
             this._checkEventName(eventName);
-            this._triggerControllerEvent.apply(this, arguments);
+            return this._triggerControllerEvent.apply(this, arguments);
         },
 
         /**
