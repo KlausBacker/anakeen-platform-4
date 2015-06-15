@@ -48,4 +48,12 @@ class ErrorCodeCrudUI
      * @errorCode Cannot access user lock
      */
     const CRUDUI0010 = 'Cannot access user lock : %s';
+    /**
+     * @errorCode Cannot create view lock
+     */
+    const CRUDUI0011 = 'Cannot lock a special view "%s" : no render control is associated)';
+    /**
+     * @errorCode Cannot create view lock
+     */
+    const CRUDUI0012 = 'Cannot lock a special view "%s" : view not defined in "%s" render control)';
 }

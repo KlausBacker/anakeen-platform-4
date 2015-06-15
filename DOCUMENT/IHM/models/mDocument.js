@@ -90,16 +90,6 @@ define([
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
             this.listenTo(this, "destroy", this.unbindLoadEvent);
-            this.listenTo(this, "change:initid", function mDocumentUnLockOnChange(event) {
-                var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
-                var previousInitid=event.previous("initid");
-
-                // Initid is the first value to be changed so "renderMode" is the previous at this time
-                if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-                    var lockModel = new DocumentLock({"initid": previousInitid, "type": "temporary"});
-                    lockModel.destroy();
-                }
-            });
 
             $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
@@ -107,11 +97,38 @@ define([
                 if (theModel.hasAttributesChanged()) {
                     return i18n.___("The form has been modified and is is not saved", "ddui");
                 }
+
+
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-                    var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
-                    lockModel.destroy();
+                    //var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
+                    //lockModel.destroy({wait: false});
+                    // No use model destroy : page is destroyed before request is some case
+                    $.ajax({
+                        url: "api/v1/documents/" + theModel.get("initid") + "/locks/temporary",
+                        type: "DELETE",
+                        async: false
+                    });
+                    theModel.set("unlocking", true);
                 }
             });
+
+
+            $(window).on("pagehide." + this.cid, function mDocumentPageHide(event)
+            {
+                var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
+                var unlocking = theModel.get("unlocking");
+
+                if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
+                    $.ajax({
+                        url: "api/v1/documents/" + theModel.get("initid") + "/locks/temporary",
+                        type: "DELETE",
+                        async: false
+                    });
+                }
+
+            });
+
+
         },
 
         /**
@@ -494,9 +511,9 @@ define([
                 if (!currentAttribute.checkConstraint({clearError: false})) {
                     success = false;
                     if (_.isArray(currentAttribute.get("errorMessage"))) {
-                        templateMessage =  _.template("<%- parentLabel %> / <%- label %> "+
-                        "<% for(var msg in errorMessage) { %>"+
-                           "\n<%- rowText %> <%- errorMessage[msg].index + 1 %> : <%- errorMessage[msg].message %>\n <% } %> ");
+                        templateMessage = _.template("<%- parentLabel %> / <%- label %> " +
+                        "<% for(var msg in errorMessage) { %>" +
+                        "\n<%- rowText %> <%- errorMessage[msg].index + 1 %> : <%- errorMessage[msg].message %>\n <% } %> ");
                     } else {
                         templateMessage = _.template("<%- parentLabel %> / <%- label %> <%- errorMessage %>");
                     }
@@ -504,7 +521,7 @@ define([
                         parentLabel: parentAttribute.get('label'),
                         label: currentAttribute.get("label"),
                         rowText: i18n.___("Row #", "ddui"),
-                        errorMessage:  currentAttribute.get("errorMessage")
+                        errorMessage: currentAttribute.get("errorMessage")
                     }));
                 }
             });
@@ -599,7 +616,7 @@ define([
                 properties: view.documentData.document.properties,
                 menus: view.menu,
                 viewId: response.data.properties.requestIdentifier,
-                revision : view.documentData.document.properties.revision,
+                revision: view.documentData.document.properties.revision,
                 locale: view.locale.culture,
                 renderMode: renderMode || "view",
                 attributes: attributes,
@@ -713,9 +730,9 @@ define([
             return Backbone.Model.prototype.set.call(this, attributes, options);
         },
 
-        unbindLoadEvent : function mDocumentUnbindLoadEvent()
+        unbindLoadEvent: function mDocumentUnbindLoadEvent()
         {
-            $(window).off("."+this.cid);
+            $(window).off("." + this.cid);
         },
 
         /**
@@ -749,6 +766,24 @@ define([
             };
         },
 
+
+        /**
+         * Unlock document if previous mode is edition
+         */
+        clear: function (options)
+        {
+            var security = this.get("properties") ? (this.get("properties").get("security")) : null;
+            var previousMode = this.get("renderMode");
+
+            if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
+                this.needUnlock = {
+                    initid: this.get("initid")
+                };
+
+            }
+            return Backbone.Model.prototype.clear.call(this, options);
+        },
+
         fetch: function mDocumentFetch(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true), lockModel,
@@ -756,7 +791,9 @@ define([
                 {
                     currentModel.trigger("close", currentProperties);
                 };
-            var security = this.get("properties") ? (this.get("properties").get("security")) : null;
+            var nextView = this.get("viewId");
+
+
             options = options || {};
             this.trigger("beforeClose", event);
             if (event.prevent === false) {
@@ -770,21 +807,60 @@ define([
                     options.success = afterDone;
                 }
                 this.trigger("displayLoading");
-                if (this.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-                    lockModel = new DocumentLock({"initid": this.get("initid"), "type": "temporary"});
-                    lockModel.destroy({
+
+                if (!nextView) {
+                    nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
+                }
+                if (nextView !== "!defaultConsultation") {
+                    lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
+                    lockModel.save({}, {
                         success: function ()
                         {
-                            Backbone.Model.prototype.fetch.call(currentModel);
+                            Backbone.Model.prototype.fetch.call(currentModel, options);
                         },
-                        error: function ()
+                        error: function (theModel, HttpResponse)
                         {
-                            Backbone.Model.prototype.fetch.call(currentModel);
+                            var response = JSON.parse(HttpResponse.responseText);
+
+                            currentModel.trigger("showError", {
+                                title: response.exceptionMessage
+                            });
                         }
                     });
                 } else {
-                    return Backbone.Model.prototype.fetch.call(this, options);
+                    if (this.needUnlock) {
+                        if (this.needUnlock.initid === this.get("initid")) {
+                            // If same document "get" must be perform after unlock
+                            lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
+                            lockModel.destroy({
+                                success: function ()
+                                {
+                                    Backbone.Model.prototype.fetch.call(currentModel, options);
+                                },
+                                error: function (theModel, HttpResponse)
+                                {
+                                    var response = JSON.parse(HttpResponse.responseText);
+
+                                    currentModel.trigger("showError", {
+                                        title: response.exceptionMessage
+                                    });
+                                }
+                            });
+                        } else {
+                            lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
+                            lockModel.destroy();
+
+                            this.needUnlock = null;
+                            return Backbone.Model.prototype.fetch.call(this, options);
+                        }
+
+                        this.needUnlock = null;
+                    } else {
+                        return Backbone.Model.prototype.fetch.call(this, options);
+                    }
                 }
+
+
             } else {
                 //cancelled : re-set initial properties
                 this.set(_.pick(currentProperties, "initid", "viewId", "renderMode"));
@@ -818,10 +894,11 @@ define([
             return false;
         },
 
-        deleteDocument : function mDocumentDelete(options)
+        deleteDocument: function mDocumentDelete(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
-                afterError = function afterError(resp) {
+                afterError = function afterError(resp)
+                {
                     currentModel.trigger('error', currentModel, resp);
                 },
                 afterDone = function afterDone(resp)
@@ -846,7 +923,8 @@ define([
                     options.success = afterDone;
                 }
                 if (options.error) {
-                    options.error = _.wrap(options.error, function(error) {
+                    options.error = _.wrap(options.error, function (error)
+                    {
                         afterError();
                         return error.apply(this, _.rest(arguments));
                     });
