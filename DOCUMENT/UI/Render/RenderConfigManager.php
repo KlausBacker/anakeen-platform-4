@@ -80,7 +80,7 @@ class RenderConfigManager
             }
         }
         
-        $renderClass = isset($vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderclass]) ? $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderclass] : null;
+        $renderClass = isset($vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderconfigclass]) ? $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderconfigclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
             if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {
@@ -171,6 +171,21 @@ class RenderConfigManager
     {
         $cv->set($document);
         
+        $renderAccessClass = $cv->getRawValue(\Dcp\AttributeIdentifiers\Cvrender::cv_renderaccessclass);
+        if ($renderAccessClass) {
+            if ($renderAccessClass[0] !== '\\') {
+                $renderAccessClass = '\\' . $renderAccessClass;
+            }
+            /**
+             * @var $access \Dcp\Ui\IRenderConfigAccess
+             */
+            $access = new $renderAccessClass();
+            $config = $access->getRenderConfig($mode);
+            if ($config) {
+                return $config;
+            }
+        }
+        
         $vidInfo = $document->getDefaultView(($mode === "edit") , "all");
         if ($vidInfo) {
             // vid already controlled by cv class
@@ -198,6 +213,5 @@ class RenderConfigManager
             }
         }
         return self::getDefaultFamilyRenderConfig($mode, $document);
-
     }
 }
