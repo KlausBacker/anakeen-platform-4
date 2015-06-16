@@ -781,6 +781,8 @@ define([
             {
                 currentWidget.options[key] = value;
             });
+
+            this._model.clear();
             this._model.set(this._getModelValue()).fetch(options);
         },
 

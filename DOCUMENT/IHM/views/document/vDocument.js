@@ -904,6 +904,7 @@ define([
         {
             var confirmWindow;
             var documentView = this;
+            var initid = this.model.get("initid");
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -925,14 +926,18 @@ define([
                     },
                     confirm: function wMenuConfirm()
                     {
+                        documentView.model.clear();
                         documentView.model.set("viewId", viewId);
+                        documentView.model.set("initid", initid);
                         documentView.model.fetch();
                     },
                     templateData: {templates: this.model.get("templates")}
                 });
                 confirmWindow.data('dcpWindow').open();
             } else {
+                this.model.clear();
                 this.model.set("viewId", viewId);
+                this.model.set("initid", initid);
                 this.model.fetch();
             }
         },
@@ -965,6 +970,10 @@ define([
             if (save && save.done) {
                 save.done(function vDocumentSaveAndCloseSuccess()
                 {
+                    var initid = currentView.model.get("initid");
+
+                    currentView.model.clear();
+                    currentView.model.set("initid", initid);
                     currentView.model.set("viewId", "!defaultConsultation");
                     currentView.model.fetch();
                 });
@@ -996,6 +1005,10 @@ define([
             if (save && save.done) {
                 save.done(function vDocumentCreateAndCloseSuccess()
                 {
+                    var initid = currentView.model.get("initid");
+
+                    currentView.model.clear();
+                    currentView.model.set("initid", initid);
                     currentView.model.set("viewId", "!defaultConsultation");
                     currentView.model.fetch();
                 });

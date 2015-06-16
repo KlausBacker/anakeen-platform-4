@@ -287,14 +287,6 @@ class View extends Crud
                     $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($document)->jsonSerialize();
                     
-                    if ($document->id > 0 && $viewInfo[self::fieldRenderOptions]["mode"] === "edit") {
-                        $err = $document->lock(true);
-                        if ($err) {
-                            $exception = new Exception("CRUDUI0010", $err);
-                            $exception->setHttpStatus("403", "Forbidden");
-                            throw $exception;
-                        }
-                    }
                     break;
 
                 case self::fieldRenderLabel:
@@ -598,7 +590,6 @@ class View extends Crud
      */
     public function getEtagInfo()
     {
-        return null;
         if (isset($this->urlParameters["identifier"])) {
             $id = $this->urlParameters["identifier"];
             $id = DocManager::getIdentifier($id, true);
@@ -619,6 +610,7 @@ class View extends Crud
         $result = array();
         $sql = sprintf("select id, revdate, cvid, views, fromid, locked from docread where id = %d", $id);
         simpleQuery(getDbAccess() , $sql, $result, false, true);
+        
         $user = getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;
