@@ -614,6 +614,11 @@ class View extends Crud
     protected function extractEtagDocument($id)
     {
         $this->getDocument($id);
+        $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "disableEtag");
+        
+        if ($disableEtag) {
+            return null;
+        }
         $refreshMsg = $this->setRefresh();
         
         $result = array();
