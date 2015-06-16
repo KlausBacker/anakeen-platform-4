@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-05 09:21+0200\n"
+"POT-Creation-Date: 2015-06-16 14:54+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -60,6 +60,14 @@ msgstr ""
 
 msgctxt "ddui-image"
 msgid "Choose image"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" not implement %s"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" problem : %s"
 msgstr ""
 
 msgctxt "ddui-enum"
@@ -382,6 +390,9 @@ msgstr ""
 msgid "ddui:Add new line"
 msgstr ""
 
+msgid "ddui:Admin"
+msgstr ""
+
 msgid "ddui:Autocomplete attributes"
 msgstr ""
 
@@ -415,6 +426,9 @@ msgstr ""
 msgid "ddui:Get some template"
 msgstr ""
 
+msgid "ddui:INIT_RENDERPARAMETERS"
+msgstr ""
+
 msgid "ddui:Render a document"
 msgstr ""
 
@@ -434,6 +448,9 @@ msgid "ddui:debug mode"
 msgstr ""
 
 msgid "ddui:logging class"
+msgstr ""
+
+msgid "ddui:render parameters"
 msgstr ""
 
 msgctxt "ddui-file"

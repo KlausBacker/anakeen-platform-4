@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-05 09:21+0200\n"
-"PO-Revision-Date: 2015-06-05 09:32+0200\n"
+"POT-Creation-Date: 2015-06-16 14:54+0200\n"
+"PO-Revision-Date: 2015-06-16 14:54+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -64,6 +64,14 @@ msgstr "Choisissez un fichier"
 msgctxt "ddui-image"
 msgid "Choose image"
 msgstr "Choisissez une image"
+
+#, php-format
+msgid "Class \"%s\" not implement %s"
+msgstr "Classe \"%s\" n'implémente pas %s"
+
+#, php-format
+msgid "Class \"%s\" problem : %s"
+msgstr "Classe \"%s\", problème détecté : %s"
 
 msgctxt "ddui-enum"
 msgid "Click to answer \"{{displayValue}}\""
@@ -387,6 +395,9 @@ msgstr "Créée le"
 msgid "ddui:Add new line"
 msgstr "Ajouter une nouvelle ligne"
 
+msgid "ddui:Admin"
+msgstr "Administration"
+
 msgid "ddui:Autocomplete attributes"
 msgstr "Attribut autocomplete"
 
@@ -420,6 +431,9 @@ msgstr "Action de sous-menu"
 msgid "ddui:Get some template"
 msgstr "Récupération unitaire de template"
 
+msgid "ddui:INIT_RENDERPARAMETERS"
+msgstr "Paramètres des rendus"
+
 msgid "ddui:Render a document"
 msgstr "Visualiser un document"
 
@@ -440,6 +454,9 @@ msgstr "Mode debug"
 
 msgid "ddui:logging class"
 msgstr "Classes de log"
+
+msgid "ddui:render parameters"
+msgstr "Paramétrages des rendus"
 
 msgctxt "ddui-file"
 msgid "kB"

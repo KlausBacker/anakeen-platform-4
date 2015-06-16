@@ -52,6 +52,10 @@ class View extends Crud
     );
     protected $needSendFamilyStructure = true;
     /**
+     * @var \Doc current document
+     */
+    protected $document = null;
+    /**
      * Create new ressource
      * @throws Exception
      * @return mixed
@@ -72,10 +76,10 @@ class View extends Crud
     {
         $refreshMsg = '';
         if ($this->viewIdentifier === self::coreViewCreationId) {
-            $document = $this->createDocument($resourceId);
+            $this->createDocument($resourceId);
         } else {
-            $document = $this->getDocument($resourceId);
-            $refreshMsg = $document->refresh();
+            $this->getDocument($resourceId);
+            $refreshMsg = $this->setRefresh();
         }
         
         if (!in_array($this->viewIdentifier, array(
@@ -84,26 +88,26 @@ class View extends Crud
             self::defaultViewEditionId,
             self::coreViewConsultationId,
             self::coreViewEditionId
-        )) && !$document->cvid) {
+        )) && !$this->document->cvid) {
             $exception = new Exception("CRUDUI0001", $this->viewIdentifier, $resourceId);
             $exception->setHttpStatus("404", "View not found");
             throw $exception;
         }
         
         $info = array(
-            "uri" => $this->getUri($document, $this->viewIdentifier)
+            "uri" => $this->getUri($this->document, $this->viewIdentifier)
         );
         /**
          * @var \Cvdoc $controlView
          */
-        $controlView = DocManager::getDocument($document->cvid);
+        $controlView = DocManager::getDocument($this->document->cvid);
         
         $vid = $this->viewIdentifier;
         
-        $info["view"] = $this->getViewInformation($document, $vid);
+        $info["view"] = $this->getViewInformation($this->document, $vid);
         
         if ($vid === "") {
-            $coreViews = $this->getCoreViews($document);
+            $coreViews = $this->getCoreViews($this->document);
             if ($this->viewIdentifier === self::defaultViewConsultationId) {
                 $info["properties"] = $coreViews[self::coreViewConsultationId];
             } elseif ($this->viewIdentifier === self::defaultViewEditionId) {
@@ -409,33 +413,35 @@ class View extends Crud
      */
     protected function getDocument($resourceId)
     {
-        if ($this->revision === - 1) {
-            $document = DocManager::getDocument($resourceId);
-            DocManager::cache()->addDocument($document);
-        } else {
-            $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
-            $document = DocManager::getDocument($revId, false);
+        if ($this->document === null) {
+            // Do not twice
+            if ($this->revision === - 1) {
+                $this->document = DocManager::getDocument($resourceId);
+                DocManager::cache()->addDocument($this->document);
+            } else {
+                $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
+                $this->document = DocManager::getDocument($revId, false);
+            }
+            if ($this->document === null) {
+                $exception = new Exception("CRUD0200", $resourceId);
+                $exception->setHttpStatus("404", "Document not found");
+                throw $exception;
+            }
         }
-        if ($document === null) {
-            $exception = new Exception("CRUD0200", $resourceId);
-            $exception->setHttpStatus("404", "Document not found");
-            throw $exception;
-        }
-        
-        return $document;
+        return $this->document;
     }
     
     protected function createDocument($resourceId)
     {
-        $document = DocManager::createDocument($resourceId);
+        $this->document = DocManager::createDocument($resourceId);
         
-        if ($document === null) {
+        if ($this->document === null) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
-        $document->title = sprintf(___("%s Creation", "ddui") , $document->getFamilyDocument()->getTitle());
-        return $document;
+        $this->document->title = sprintf(___("%s Creation", "ddui") , $this->document->getFamilyDocument()->getTitle());
+        return $this->document;
     }
     /**
      * @param \Dcp\Ui\IRenderConfig $config
@@ -607,6 +613,14 @@ class View extends Crud
      */
     protected function extractEtagDocument($id)
     {
+        $this->getDocument($id);
+        $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "disableEtag");
+        
+        if ($disableEtag) {
+            return null;
+        }
+        $refreshMsg = $this->setRefresh();
+        
         $result = array();
         $sql = sprintf("select id, revdate, cvid, views, fromid, locked from docread where id = %d", $id);
         simpleQuery(getDbAccess() , $sql, $result, false, true);
@@ -629,9 +643,28 @@ class View extends Crud
             $result[] = $cvDate;
         }
         // Necessary only when use family.structure
+        $result[] = $refreshMsg;
         $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return join(" ", $result);
+    }
+    /**
+     * Apply refresh if application manager indicate applyRefresh for family
+     * @return string refresh message
+     */
+    protected function setRefresh()
+    {
+        static $onlyOne = false;
+        static $refreshMsg = '';
+        
+        if (!$onlyOne) {
+            $applyRefresh = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "applyRefresh");
+            if ($applyRefresh) {
+                $refreshMsg = $this->document->refresh();
+            }
+            $onlyOne = true;
+        }
+        return $refreshMsg;
     }
     
     public function analyseJSON($jsonString)

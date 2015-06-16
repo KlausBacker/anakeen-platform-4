@@ -12,6 +12,10 @@ $app_acl = array(
     array(
         "name" => "VIEW_RENDER",
         "description" => N_("ddui:View documents")
+    ),
+    array(
+        "name" => "ADMIN",
+        "description" => N_("ddui:Admin")
     )
 );
 
@@ -51,6 +55,13 @@ $action_desc = array(
         "script" => "action.wrap_kendo.php",
         "function" => "wrap_kendo",
         "layout" => "loaderKendo.js"
+    ),
+     array(
+        "name" => "LOAD_RENDERPARAMETERS",
+        "short_name" => N_("ddui:INIT_RENDERPARAMETERS"),
+        "script" => "action.load_renderparameters.php",
+        "function" => "load_renderparameters",
+        "acl" => "ADMIN"
     ),
     //region full
     array(
