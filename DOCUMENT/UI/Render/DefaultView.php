@@ -45,7 +45,6 @@ class DefaultView extends RenderDefault
                 
                 $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
                 $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
-                $menu->getElement("security")->setVisibility(ElementMenu::VisibilityHidden);
                 
                 $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "?app=DOCUMENT&id={{document.properties.id}}");
                 if ($this->displayDefaultMenuTooltip) {
@@ -120,7 +119,6 @@ class DefaultView extends RenderDefault
         $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
         $item->setBeforeContent('<div class="fa fa-info" />');
         $menu->appendElement($item);
-
         /*
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG") !== "FALSE") {
             $item = new ItemMenu("propertiesOld", "", "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");

@@ -138,13 +138,23 @@ class RenderConfigManager
      */
     public static function getRenderParameterAccess($familyName)
     {
+        return self::getRenderParameter($familyName, "renderAccessClass");
+    }
+    /**
+     * Return render class name defined in RENDER_PARAMETERS application parameter
+     * @param string $familyName family name
+     *
+     * @return string|null
+     */
+    public static function getRenderParameter($familyName, $key)
+    {
         static $renderParameters = null;
         if ($renderParameters === null) {
             $renderParameters = \ApplicationParameterManager::getParameterValue("DOCUMENT", "RENDER_PARAMETERS");
             $renderParameters = json_decode($renderParameters, true);
         }
-        if (isset($renderParameters["families"][$familyName]["renderAccessClass"])) {
-            return $renderParameters["families"][$familyName]["renderAccessClass"];
+        if (isset($renderParameters["families"][$familyName][$key])) {
+            return $renderParameters["families"][$familyName][$key];
         }
         return null;
     }
