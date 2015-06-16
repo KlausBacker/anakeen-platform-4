@@ -104,11 +104,49 @@ class RenderConfigManager
      */
     public static function getDocumentRenderConfig($mode, \Doc $document, &$vid = '')
     {
+        $parameterRender = self::getParameterRenderConfig($mode, $document);
+        if ($parameterRender) {
+            return $parameterRender;
+        }
         if ($document->cvid > 0) {
             return self::getRenderConfigCv($mode, DocManager::getDocument($document->cvid) , $document, $vid);
         }
         
         return self::getDefaultFamilyRenderConfig($mode, $document);
+    }
+    
+    public static function getParameterRenderConfig($mode, \Doc $document)
+    {
+        $renderAccessClass = self::getRenderParameterAccess($document->fromname);
+        if ($renderAccessClass) {
+            /**
+             * @var $access \Dcp\Ui\IRenderConfigAccess
+             */
+            $access = new $renderAccessClass();
+            $config = $access->getRenderConfig($mode, $document);
+            if ($config) {
+                return $config;
+            }
+        }
+        return null;
+    }
+    /**
+     * Return render class name defined in RENDER_PARAMETERS application parameter
+     * @param string $familyName family name
+     *
+     * @return string|null
+     */
+    public static function getRenderParameterAccess($familyName)
+    {
+        static $renderParameters = null;
+        if ($renderParameters === null) {
+            $renderParameters = \ApplicationParameterManager::getParameterValue("DOCUMENT", "RENDER_PARAMETERS");
+            $renderParameters = json_decode($renderParameters, true);
+        }
+        if (isset($renderParameters["families"][$familyName]["renderAccessClass"])) {
+            return $renderParameters["families"][$familyName]["renderAccessClass"];
+        }
+        return null;
     }
     /**
      * Get render designed by document class
@@ -119,11 +157,15 @@ class RenderConfigManager
      */
     public static function getDefaultFamilyRenderConfig($mode, \Doc $document)
     {
+        $parameterRender = self::getParameterRenderConfig($mode, $document);
+        if ($parameterRender) {
+            return $parameterRender;
+        }
         if (is_a($document, "Dcp\\Ui\\IRenderConfigAccess")) {
             /**
              * @var IRenderConfigAccess $document
              */
-            $renderConfig = $document->getRenderConfig($mode);
+            $renderConfig = $document->getRenderConfig($mode, $document);
             if ($renderConfig) {
                 return $renderConfig;
             }
@@ -180,7 +222,7 @@ class RenderConfigManager
              * @var $access \Dcp\Ui\IRenderConfigAccess
              */
             $access = new $renderAccessClass();
-            $config = $access->getRenderConfig($mode);
+            $config = $access->getRenderConfig($mode, $document);
             if ($config) {
                 return $config;
             }

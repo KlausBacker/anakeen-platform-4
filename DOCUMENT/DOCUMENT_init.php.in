@@ -26,7 +26,12 @@ $app_const = array(
         "val" => "FALSE",
         "descr" => N_("ddui:debug mode"),
         "kind" => "enum(FALSE|TRUE)"
+    ),
+    "RENDER_PARAMETERS" => array(
+        "val" => "{}",
+        "descr" => N_("ddui:render parameters")
     )
+
     //endregion full
 );
 ?>
