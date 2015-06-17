@@ -23,6 +23,7 @@ class View extends Crud
     const coreViewCreationId = "!coreCreation";
     const fieldTemplate = "templates";
     const fieldRenderOptions = "renderOptions";
+    const fieldCustomData = "customData";
     const fieldDocumentData = "documentData";
     const fieldLocale = "locale";
     const fieldStyle = "style";
@@ -43,6 +44,7 @@ class View extends Crud
     protected $fields = array(
         self::fieldRenderOptions,
         self::fieldRenderLabel,
+        self::fieldCustomData,
         self::fieldMenu,
         self::fieldTemplate,
         self::fieldDocumentData,
@@ -319,6 +321,10 @@ class View extends Crud
 
                 case self::fieldScript:
                     $viewInfo[self::fieldScript] = $this->getScriptData($config, $document);
+                    break;
+
+                case self::fieldCustomData:
+                    $viewInfo[self::fieldCustomData] = $config->getCustomData($document);
                     break;
             }
         }

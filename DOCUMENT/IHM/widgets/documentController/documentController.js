@@ -876,6 +876,13 @@ define([
         },
 
         /**
+         * Get customData from render view model
+         * @returns {*}
+         */
+        getCustomData: function documentControllerGetCustomData() {
+            return this._model.get("customData");
+        },
+        /**
          * Set a value
          * Trigger a change event
          *

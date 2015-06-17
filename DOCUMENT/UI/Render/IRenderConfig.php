@@ -11,7 +11,6 @@ interface IRenderConfig {
     
     const editType = "edit";
     const viewType = "view";
-
     /**
      * @param \Doc $document
      * Get the label of this view
@@ -63,4 +62,10 @@ interface IRenderConfig {
      * @return BarMenu Menu configuration
      */
     public function getMenu(\Doc $document);
+    /**
+     * Get custom data to transmit to client document controller
+     * @param \Doc $document Document object instance
+     * @return mixed
+     */
+    public function getCustomData(\Doc $document);
 }

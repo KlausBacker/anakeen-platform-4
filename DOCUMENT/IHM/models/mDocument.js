@@ -624,6 +624,7 @@ define([
                 renderOptions: view.renderOptions,
                 customCSS: view.style.css,
                 customJS: view.script.js,
+                customData: view.customData,
                 messages: response.messages
             };
             if (response.data.properties.creationView === true) {

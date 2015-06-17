@@ -348,4 +348,15 @@ class RenderDefault implements IRenderConfig
         
         $menu->appendElement($item);
     }
+    /**
+     * Get custom data to transmit to client document controller
+     *
+     * @param \Doc $document Document object instance
+     *
+     * @return mixed
+     */
+    public function getCustomData(\Doc $document)
+    {
+        return null;
+    }
 }
