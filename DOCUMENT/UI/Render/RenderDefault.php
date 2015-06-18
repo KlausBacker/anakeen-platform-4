@@ -372,7 +372,6 @@ class RenderDefault implements IRenderConfig
      */
     public function setCustomClientData(\Doc $document, $data)
     {
-        error_log("get custom" . print_r($data, true));
         $this->clientCustomData = $data;
     }
 }
