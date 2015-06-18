@@ -23,7 +23,8 @@ class View extends Crud
     const coreViewCreationId = "!coreCreation";
     const fieldTemplate = "templates";
     const fieldRenderOptions = "renderOptions";
-    const fieldCustomData = "customData";
+    const fieldCustomServerData = "customServerData";
+    const fieldCustomClientData = "customClientData";
     const fieldDocumentData = "documentData";
     const fieldLocale = "locale";
     const fieldStyle = "style";
@@ -42,9 +43,10 @@ class View extends Crud
     protected $revision = - 1;
     
     protected $fields = array(
+        self::fieldCustomClientData,
         self::fieldRenderOptions,
         self::fieldRenderLabel,
-        self::fieldCustomData,
+        self::fieldCustomServerData,
         self::fieldMenu,
         self::fieldTemplate,
         self::fieldDocumentData,
@@ -57,6 +59,7 @@ class View extends Crud
      * @var \Doc current document
      */
     protected $document = null;
+    protected $customClientData = null;
     /**
      * Create new ressource
      * @throws Exception
@@ -144,7 +147,6 @@ class View extends Crud
      */
     public function update($resourceId)
     {
-        
         if ($this->viewIdentifier != self::coreViewEditionId) {
             $document = $this->getDocument($resourceId);
             // apply specified mask
@@ -177,6 +179,7 @@ class View extends Crud
         $documentData = new DocumentCrud();
         $documentData->setContentParameters($this->contentParameters);
         $documentData->update($resourceId);
+        $this->document = null;
         return $this->read($resourceId);
     }
     /**
@@ -189,6 +192,7 @@ class View extends Crud
     {
         $documentData = new DocumentCrud();
         $documentData->delete($resourceId);
+        $this->document=null;
         return $this->read($resourceId);
     }
     /**
@@ -323,8 +327,12 @@ class View extends Crud
                     $viewInfo[self::fieldScript] = $this->getScriptData($config, $document);
                     break;
 
-                case self::fieldCustomData:
-                    $viewInfo[self::fieldCustomData] = $config->getCustomData($document);
+                case self::fieldCustomServerData:
+                    $viewInfo[self::fieldCustomServerData] = $config->getCustomServerData($document);
+                    break;
+
+                case self::fieldCustomClientData:
+                    $config->setCustomClientData($document, $this->getCustomClientData());
                     break;
             }
         }
@@ -673,8 +681,22 @@ class View extends Crud
         return $refreshMsg;
     }
     
+    protected function getCustomClientData()
+    {
+        if ($this->customClientData) {
+            return $this->customClientData;
+        }
+        if (isset($this->contentParameters[self::fieldCustomClientData])) {
+            $this->customClientData = json_decode($this->contentParameters[self::fieldCustomClientData], true);
+            return $this->customClientData;
+        }
+        return null;
+    }
+    
     public function analyseJSON($jsonString)
     {
+        $dataDocument = json_decode($jsonString, true);
+        $this->customClientData = isset($dataDocument[self::fieldCustomClientData]) ? $dataDocument[self::fieldCustomClientData] : null;
         $values = DocumentUtils::analyzeDocumentJSON($jsonString);
         return $values;
     }

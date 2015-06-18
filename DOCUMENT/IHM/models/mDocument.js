@@ -46,6 +46,8 @@ define([
             menus: undefined,
             attributes: undefined
         },
+        // Record custom data in model directly - not in model property because must not be reset by clear method
+        _customClientData: null,
 
         /**
          * Compute the REST URL for the current document
@@ -57,6 +59,9 @@ define([
         url: function mDocumenturl()
         {
             var urlData = "api/v1/", viewId = this.get("viewId");
+            var customClienData = this._customClientData;
+            var currentMethod = this.get("currentHttpMethod");
+
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
             } else {
@@ -76,9 +81,25 @@ define([
                 }
                 urlData += "/views/" + encodeURIComponent(viewId);
             }
+
+            if (customClienData && (currentMethod === "read" || currentMethod === "delete" )) {
+                urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClienData));
+            }
             return urlData;
         },
 
+        /**
+         * overhide Backbone sync to record method
+         * @param method
+         * @param model
+         * @param options
+         * @returns {*}
+         */
+        sync: function mDocumentSync(method, model, options)
+        {
+            this.set("currentHttpMethod", method); // record for url method
+            return Backbone.Model.prototype.sync.apply(this, arguments);
+        },
         /**
          * Initialize event handling
          *
@@ -624,9 +645,10 @@ define([
                 renderOptions: view.renderOptions,
                 customCSS: view.style.css,
                 customJS: view.script.js,
-                customData: view.customData,
+                customServerData: view.customServerData,
                 messages: response.messages
             };
+            this._customClientData = null;
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
             } else {
@@ -763,7 +785,8 @@ define([
                 document: {
                     properties: this.getProperties(),
                     attributes: this.getValues()
-                }
+                },
+                customClientData: this._customClientData
             };
         },
 
@@ -782,7 +805,7 @@ define([
                 };
 
             }
-            return Backbone.Model.prototype.clear.call(this, options);
+            return Backbone.Model.prototype.clear.apply(this, arguments);
         },
 
         fetch: function mDocumentFetch(options)

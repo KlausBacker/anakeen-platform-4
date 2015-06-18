@@ -10,21 +10,20 @@ namespace Dcp\Ui;
 class Utils
 {
     /**
-     * @param $renderId
-     * @return \Dcp\Ui\IRenderConfig
+     * Return custom client date send by client browser
+     * @return mixed
      */
-    public static function getRenderConfigObject($renderId)
+    public static function getCustomClientData()
     {
-        // TODO waiting real family render
-        switch ($renderId) {
-            case "defaultView":
-                return new \Dcp\Ui\DefaultView();
-            case "defaultEdit":
-                return new \Dcp\Ui\DefaultEdit();
-            case "myCustom":
-                return new \Dcp\Test\RenderConfigCustom();
-            case "myCustomEdit":
-                return new \Dcp\Test\RenderConfigCustomEdit();
+        if (isset($_GET["customClientData"])) {
+            return json_decode($_GET["customClientData"], true);
         }
+        if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "PUT") {
+            $post = json_decode(file_get_contents("php://input") , true);
+            if (isset($post["customClientData"])) {
+                return $post["customClientData"];
+            }
+        }
+        return null;
     }
 }

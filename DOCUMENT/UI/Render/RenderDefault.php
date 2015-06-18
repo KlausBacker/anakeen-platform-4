@@ -13,6 +13,9 @@ class RenderDefault implements IRenderConfig
      * @var bool display or not default system menu
      */
     protected $displayDefaultMenuTooltip = false;
+    
+    protected $clientCustomData = null;
+    
     public function getLabel(\Doc $document = null)
     {
         return ___("Abstract view", "ddui");
@@ -355,8 +358,21 @@ class RenderDefault implements IRenderConfig
      *
      * @return mixed
      */
-    public function getCustomData(\Doc $document)
+    public function getCustomServerData(\Doc $document)
     {
         return null;
+    }
+    /**
+     * Retrieve some custom data
+     *
+     * @param \Doc $document Document object instance
+     * @param mixed $data data provided by client
+     *
+     * @return mixed
+     */
+    public function setCustomClientData(\Doc $document, $data)
+    {
+        error_log("get custom" . print_r($data, true));
+        $this->clientCustomData = $data;
     }
 }
