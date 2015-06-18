@@ -876,6 +876,27 @@ define([
         },
 
         /**
+         * Get customData from render view model
+         * @returns {*}
+         */
+        getCustomServerData: function documentControllerGetServerCustomData() {
+            return this._model.get("customServerData");
+        },
+        /**
+         * Get customData from render view model
+         * @returns {*}
+         */
+        setCustomClientData: function documentControllerSetClientCustomData(data) {
+             this._model._customClientData= data;
+        },
+        /**
+         * Get customData from render view model
+         * @returns {*}
+         */
+        getCustomClientData: function documentControllerSetClientCustomData() {
+            return this._model._customClientData;
+        },
+        /**
          * Set a value
          * Trigger a change event
          *

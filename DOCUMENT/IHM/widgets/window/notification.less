@@ -36,19 +36,22 @@
   line-height: @dcpNotifierHeight;
   cursor:pointer;
 }
-
+.dcpNotification--message {
+  max-height: @dcpNotifierHeight;
+  overflow:auto;
+}
 .dcpNotifications {
   position:fixed;
   top:6em;
   right:40px;
-  width:(@dcpNotifierWidth + 30);
+  width:(@dcpNotifierWidth + 1);
   max-height: 80%;
   overflow: auto;
   z-index: 2;
   @media (max-width: @screen-sm-min) {
     right: 0;
   }
-  @media (max-width: (@dcpNotifierWidth + 30)) {
+  @media (max-width: (@dcpNotifierWidth + 1)) {
     width: 100%;
   }
 }
@@ -67,7 +70,7 @@
 
 .dcpNotification--message {
   display: inline-block;
-  width:(@dcpNotifierWidth - @dcpNotifierSymbolWidth - 10px);
+  width:(@dcpNotifierWidth - @dcpNotifierSymbolWidth );
   line-height: normal;
   vertical-align: middle;
 }

@@ -229,10 +229,12 @@ define([
                         }
                         _.defer(function selectOneTab()
                         {
-                            var tab = currentView.model.get("attributes").get(tabId);
-                            if (tab) {
-                                tab.trigger("showTab");
-                                viewMenu.refresh();
+                            if (currentView && currentView.model && currentView.model.get("attributes") ) {
+                                var tab = currentView.model.get("attributes").get(tabId);
+                                if (tab) {
+                                    tab.trigger("showTab");
+                                    viewMenu.refresh();
+                                }
                             }
                         });
                     }
