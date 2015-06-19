@@ -1,18 +1,20 @@
-/*global define ,describe, define, beforeEach, setFixtures, expect, it, sandbox, spyOn, jasmine, afterEach*/
+/*global define ,describe, define, beforeEach, expect, it, spyOn, afterEach*/
 define([
     'underscore',
     'jquery',
     'backbone',
+    'dcpDocument/models/mDocument',
+    'dcpDocument/models/mFamilyStructure',
+    'dcpDocument/models/mDocumentLock',
     'dcpDocument/test/UnitTestUtilities',
     'dcpDocument/test/valuesDocuments',
-    'dcpDocument/widgets/documentController/documentController'], function initDCTest(_, $, Backbone, unitTestUtils, values)
+    'dcpDocument/widgets/documentController/documentController'], function initDCTest(_, $, Backbone, mDocument, mFamilyStructure, mLock, unitTestUtils, values)
 {
 
     "use strict";
 
-    var documentControllerTest = function (config, documentOptions)
+    return function (config, documentOptions)
     {
-
         var currentSandbox, synchro, currentValues, getSandbox = function ()
         {
             return currentSandbox;
@@ -20,8 +22,8 @@ define([
         {
             config = config || {};
             _.defaults(config, {
-                "initid": "1081",
-                "viewId": "!coreConsultation",
+                "initid": "53681",
+                "viewId": "!defaultConsultation",
                 "noRouter": true
             });
             return config;
@@ -49,31 +51,58 @@ define([
                 synchro = Backbone.sync;
                 Backbone.sync = function mockSynch(method, model, options)
                 {
+                    var documentIdentifier="no compatible model class";
+                    if (model instanceof mDocument) {
+                         documentIdentifier = model.id + model.get("viewId");
 
-                    var documentIdentifier = model.id + model.get("viewId");
+                        if (documentIdentifier === "1081!defaultConsultation") {
+                            documentIdentifier = "1081!coreConsultation";
+                        }
 
-                    if (documentIdentifier === "1081!defaultConsultation") {
-                        documentIdentifier = "1081!coreConsultation";
+                        if (documentIdentifier === "53681!defaultConsultation") {
+                            documentIdentifier = "53681!coreConsultation";
+                        }
+
+
+                        if (method === "read" && !_.isUndefined(values[documentIdentifier])) {
+                            currentValues = values[documentIdentifier];
+                            options.success(values[documentIdentifier]);
+                            return true;
+                        }
+
+                        if (method === "update" && !_.isUndefined(values[documentIdentifier])) {
+                            currentValues = values[documentIdentifier];
+                            options.success(values[documentIdentifier]);
+                            return true;
+                        }
+
+                        if (method === "delete" && !_.isUndefined(values[documentIdentifier])) {
+                            currentValues = values[documentIdentifier];
+                            options.success(values[documentIdentifier]);
+                            return true;
+                        }
                     }
 
-                    if (method === "read" && !_.isUndefined(values[documentIdentifier])) {
-                        currentValues = values[documentIdentifier];
-                        options.success(values[documentIdentifier]);
-                        return true;
-                    }
+                     if (model instanceof mFamilyStructure) {
+                         documentIdentifier = model.id + "!structure";
+                         if (method === "read" && !_.isUndefined(values[documentIdentifier])) {
+                             // Defer because document Model is not initialized yet
+                             _.defer(function () {
+                                 options.success(values[documentIdentifier]);
+                             });
 
-                    if (method === "update" && !_.isUndefined(values[documentIdentifier])) {
-                        currentValues = values[documentIdentifier];
-                        options.success(values[documentIdentifier]);
-                        return true;
-                    }
+                            return true;
+                        }
+                     }
+                    if (model instanceof mLock) {
+                        documentIdentifier = model.id + "!lock";
 
-                    if (method === "delete" && !_.isUndefined(values[documentIdentifier])) {
-                        currentValues = values[documentIdentifier];
-                        options.success(values[documentIdentifier]);
-                        return true;
+                        if (method === "update" && !_.isUndefined(values[documentIdentifier])) {
+                            options.success(values[documentIdentifier]);
+                            return true;
+                        }
                     }
-                    throw new Error("Unable to sync");
+                    throw new Error("Unable to sync", documentIdentifier);
                 };
             });
 
@@ -647,6 +676,5 @@ define([
         });
     };
 
-    return documentControllerTest;
 
 });

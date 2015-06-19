@@ -76,4 +76,13 @@ interface IRenderConfig {
      * @return mixed
      */
     public function setCustomClientData(\Doc $document, $data);
+    /**
+     * Defined special render etag
+     * Return empty string if no special tag, null for always invalid tag
+     * Else return a string
+     * @param \Doc $document Document instance
+     *
+     * @return string|null
+     */
+    public function getEtag(\Doc $document);
 }

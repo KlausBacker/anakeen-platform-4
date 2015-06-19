@@ -19,7 +19,7 @@ define([
 
         generateModelDocument : function generateModelDocument(options, title, attributes, renderOptions) {
             var localId = _.uniqueId("Document");
-            return new ModelDocument(
+            var mDoc= new ModelDocument(
                 {
                     properties: {
                         id: localId,
@@ -32,10 +32,12 @@ define([
                     menus: [],
                     locale: options.locale || "fr_FR",
                     renderMode: options.renderMode || "view",
-                    attributes: attributes,
+                   // attributes: attributes,
                     renderOptions: renderOptions || {}
                 }
             );
+            mDoc.set("attributes", attributes);
+            return mDoc;
         },
 
         generateFamilyStructure: function generateFamilyStructure(attrDef, renderMode, value)

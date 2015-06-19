@@ -374,4 +374,9 @@ class RenderDefault implements IRenderConfig
     {
         $this->clientCustomData = $data;
     }
+    
+    public function getEtag(\Doc $document)
+    {
+        return '';
+    }
 }
