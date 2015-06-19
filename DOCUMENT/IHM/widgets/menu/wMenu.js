@@ -335,7 +335,6 @@ define([
             var visibleItemCount;
             var $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");
             var hiddenLeft = $hiddenItems.length;
-            console.time("menu responsive");
 
 
             if (barMenu.data("menu-opening")) {
@@ -431,7 +430,6 @@ define([
 
             // Restore css set by other resize callback
             barMenu.css("overflow", "").css("max-height", "");
-            console.timeEnd("menu responsive");
         },
 
         _insertMenuContent: function wMenuInsertMenuContent(menus, $content, currentWidget, scopeMenu)

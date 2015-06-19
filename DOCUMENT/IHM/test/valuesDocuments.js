@@ -6239,6 +6239,7771 @@ define([], function ()
                     "mask": {"id": 0, "title": ""}
                 }
             }
+        },
+
+        "53681!coreConsultation":{
+            "success": true,
+            "messages": [],
+            "data": {
+                "uri": "/tmp32/api/v1/documents/53681/views/!defaultConsultation",
+                "view": {
+                    "renderOptions": {
+                        "common": {
+                            "showEmptyContent": null,
+                            "labelPosition": "auto",
+                            "autoCompleteHtmlLabel": "",
+                            "inputHtmlTooltip": "",
+                            "htmlLink": {
+                                "target": "_self",
+                                "windowWidth": "300px",
+                                "windowHeight": "200px",
+                                "windowTitle": "",
+                                "title": "",
+                                "url": ""
+                            },
+                            "labels": {
+                                "closeErrorMessage": "Fermer le message"
+                            }
+                        },
+                        "types": {
+                            "account": {
+                                "noAccessText": "Accès interdit au compte",
+                                "htmlLink": {
+                                    "target": "_render",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Voir {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            },
+                            "date": {
+                                "labels": {
+                                    "invalidDate": "Date invalide"
+                                },
+                                "htmlLink": {
+                                    "target": "_blank",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Date {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            },
+                            "docid": {
+                                "noAccessText": "Information non accessible",
+                                "htmlLink": {
+                                    "target": "_render",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Voir {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            },
+                            "enum": {
+                                "boolColor": "",
+                                "editDisplay": "list",
+                                "useFirstChoice": false,
+                                "useSourceUri": false,
+                                "labels": {
+                                    "chooseMessage": "Choisissez",
+                                    "invalidEntry": "Entrée invalide",
+                                    "invertSelection": "Cliquer pour répondre \"{{displayValue}}\"",
+                                    "selectMessage": "Sélectionner",
+                                    "unselectMessage": "Désélectionner"
+                                }
+                            },
+                            "file": {
+                                "downloadInline": false,
+                                "labels": {
+                                    "dropFileHere": "Déposer le fichier ici",
+                                    "placeHolder": "Cliquez pour choisir un fichier",
+                                    "tooltipLabel": "Choisissez un fichier",
+                                    "downloadLabel": "Télécharger le fichier",
+                                    "kiloByte": "ko",
+                                    "byte": "octets",
+                                    "recording": "Enregistrement",
+                                    "transferring": "Téléversement de"
+                                }
+                            },
+                            "image": {
+                                "htmlLink": {
+                                    "target": "_dialog",
+                                    "windowWidth": "400px",
+                                    "windowHeight": "300px",
+                                    "windowTitle": "",
+                                    "title": "",
+                                    "url": ""
+                                },
+                                "downloadInline": true,
+                                "thumbnailWidth": 48,
+                                "labels": {
+                                    "dropFileHere": "Déposer l'image ici",
+                                    "placeHolder": "Cliquez pour choisir une image",
+                                    "tooltipLabel": "Choisissez une image",
+                                    "downloadLabel": "Télécharger l'image",
+                                    "kiloByte": "ko",
+                                    "recording": "Enregistrement",
+                                    "transferring": "Téléversement de"
+                                }
+                            },
+                            "htmltext": {
+                                "toolbar": "Simple",
+                                "toolbarStartupExpanded": true,
+                                "height": "120px"
+                            },
+                            "longtext": {
+                                "displayedLineNumber": 0
+                            },
+                            "int": {
+                                "max": 2147483647,
+                                "min": -2147483647
+                            },
+                            "double": {
+                                "max": null,
+                                "min": null,
+                                "decimalPrecision": null
+                            },
+                            "money": {
+                                "max": null,
+                                "min": null,
+                                "decimalPrecision": 2,
+                                "currency": "€"
+                            },
+                            "text": {
+                                "maxLength": null,
+                                "format": "{{displayValue}}"
+                            },
+                            "array": {
+                                "rowCountThreshold": -1,
+                                "labels": {
+                                    "limitMaxMessage": "Le nombre maximum de rangée est de {{limit}}",
+                                    "limitMinMessage": "Le nombre de rangées minimum est de {{limit}}"
+                                }
+                            },
+                            "time": [],
+                            "timestamp": [],
+                            "thesaurus": {
+                                "htmlLink": {
+                                    "target": "_render",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Voir {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            },
+                            "tab": {
+                                "tooltipLabel": "<i> {{id}}</i> <br/><b>{{label}}</b>",
+                                "tooltipHtml": true
+                            }
+                        },
+                        "mode": "view",
+                        "attributes": {
+                            "zoo_docid_array": {
+                                "htmlLink": {
+                                    "target": "_self",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "",
+                                    "url": "?sole=Y&app=DOCUMENT&id=53681%5Cn53682%5Cn53681%5Cn76843"
+                                }
+                            },
+                            "zoo_t_tab": {
+                                "openFirst": true
+                            },
+                            "zoo_fr_date": {
+                                "collapse": true
+                            },
+                            "zoo_fr_number": {
+                                "collapse": true
+                            },
+                            "zoo_fr_misc": {
+                                "collapse": true
+                            },
+                            "zoo_fr_file": {
+                                "collapse": true
+                            },
+                            "zoo_fr_text": {
+                                "collapse": true
+                            }
+                        },
+                        "visibilities": {
+                            "zoo_frame_relation": "W",
+                            "zoo_t_tab_numbers": "W",
+                            "zoo_t_tab_relations": "W",
+                            "zoo_frame_date": "W",
+                            "zoo_t_tab_date": "W",
+                            "zoo_frame_numbers": "W",
+                            "zoo_t_tab_misc": "W",
+                            "zoo_t_tab_texts": "W",
+                            "zoo_frame_texts": "W",
+                            "zoo_frame_files": "W",
+                            "zoo_t_tab_files": "W",
+                            "zoo_fr_enumservermultiple": "W",
+                            "zoo_frame_misc": "W",
+                            "zoo_fr_date": "W",
+                            "zoo_fr_number": "W",
+                            "zoo_fr_rels": "W",
+                            "zoo_t_tab": "W",
+                            "zoo_f_title": "W",
+                            "zoo_fr_enummultiple": "W",
+                            "zoo_fr_misc": "W",
+                            "zoo_fr_enumsimple": "W",
+                            "zoo_fr_enumserversimple": "W",
+                            "zoo_fr_enums": "W",
+                            "zoo_t_tab_enums": "W",
+                            "zoo_fr_text": "W",
+                            "zoo_fr_file": "W",
+                            "zoo_title": "W",
+                            "zoo_account": "W",
+                            "zoo_account_multiple": "W",
+                            "zoo_docid": "W",
+                            "zoo_docid_multiple": "W",
+                            "zoo_date": "W",
+                            "zoo_time": "W",
+                            "zoo_timestamp": "W",
+                            "zoo_integer": "W",
+                            "zoo_double": "W",
+                            "zoo_money": "W",
+                            "zoo_password": "W",
+                            "zoo_color": "W",
+                            "zoo_file": "W",
+                            "zoo_image": "W",
+                            "zoo_htmltext": "W",
+                            "zoo_longtext": "W",
+                            "zoo_text": "W",
+                            "zoo_enumlist": "W",
+                            "zoo_enumauto": "W",
+                            "zoo_enumvertical": "W",
+                            "zoo_enumhorizontal": "W",
+                            "zoo_enumbool": "W",
+                            "zoo_enumserverlist": "W",
+                            "zoo_enumserverauto": "W",
+                            "zoo_enumserververtical": "W",
+                            "zoo_enumserverhorizontal": "W",
+                            "zoo_enumserverbool": "W",
+                            "zoo_enumslist": "W",
+                            "zoo_enumsauto": "W",
+                            "zoo_enumsvertical": "W",
+                            "zoo_enumshorizontal": "W",
+                            "zoo_enums": "W",
+                            "zoo_enumsserverlist": "W",
+                            "zoo_enumsserverauto": "W",
+                            "zoo_enumsserververtical": "W",
+                            "zoo_enumsserverhorizontal": "W",
+                            "zoo_array_dates": "W",
+                            "zoo_date_array": "W",
+                            "zoo_time_array": "W",
+                            "zoo_timestamp_array": "W",
+                            "zoo_array_docid": "W",
+                            "zoo_docid_array": "W",
+                            "zoo_docid_multiple_array": "W",
+                            "zoo_array_account": "W",
+                            "zoo_account_array": "W",
+                            "zoo_account_multiple_array": "W",
+                            "zoo_array_numbers": "W",
+                            "zoo_double_array": "W",
+                            "zoo_integer_array": "W",
+                            "zoo_money_array": "W",
+                            "zoo_array_misc": "W",
+                            "zoo_enum_array": "W",
+                            "zoo_enums_array": "W",
+                            "zoo_color_array": "W",
+                            "zoo_password_array": "W",
+                            "zoo_array_files": "W",
+                            "zoo_file_array": "W",
+                            "zoo_image_array": "W",
+                            "zoo_array_texts": "W",
+                            "zoo_text_array": "W",
+                            "zoo_longtext_array": "W",
+                            "zoo_array_html": "W",
+                            "zoo_htmltext_array": "W"
+                        },
+                        "needed": []
+                    },
+                    "renderLabel": "All View",
+                    "customServerData": {
+                        "color": "#a7f492"
+                    },
+                    "menu": [
+                        {
+                            "id": "modify",
+                            "type": "itemMenu",
+                            "label": "Modifier",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-pencil\" />",
+                            "important": true,
+                            "iconUrl": "",
+                            "url": "#event/document:edit",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "delete",
+                            "type": "itemMenu",
+                            "label": "Supprimer",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-trash-o\" />",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:delete",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": "Êtes-vous sûr de vouloir supprimer \"Document bien rempli\" ?",
+                            "confirmationOptions": {
+                                "confirmButton": "Confirmer la suppression",
+                                "cancelButton": "Annuler",
+                                "title": "Confirmer la suppression de \"{{{document.properties.title}}}\"",
+                                "windowWidth": "350px",
+                                "windowHeight": "150px",
+                                "modal": false
+                            }
+                        },
+                        {
+                            "id": "restore",
+                            "type": "itemMenu",
+                            "label": "Restaurer",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "hidden",
+                            "beforeContent": "",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#restore/{{document.properties.id}}",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "historic",
+                            "type": "itemMenu",
+                            "label": "Historique",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-history\" />",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:history",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "properties",
+                            "type": "itemMenu",
+                            "label": "Propriétés",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-info\" />",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:properties",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "Emblem1",
+                            "type": "separatorMenu",
+                            "label": "",
+                            "htmlLabel": "{{#document.properties.security.lock.lockedBy.id}} <i class=\"dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock\"></i>{{/document.properties.security.lock.lockedBy.id}}",
+                            "tooltipLabel": "Verrouillé par \"<b>{{document.properties.security.lock.lockedBy.title}}</b>\" ",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": true,
+                            "htmlAttributes": {
+                                "class": "menu--right"
+                            },
+                            "visibility": "visible",
+                            "beforeContent": "",
+                            "important": true,
+                            "iconUrl": ""
+                        },
+                        {
+                            "id": "Emblem2",
+                            "type": "separatorMenu",
+                            "label": "",
+                            "htmlLabel": "{{#document.properties.security.readOnly}}<i  class=\"fa fa-ban\"></i>{{/document.properties.security.readOnly}}",
+                            "tooltipLabel": "Document en lecture seule",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": {
+                                "class": "menu--right"
+                            },
+                            "visibility": "visible",
+                            "beforeContent": "",
+                            "important": true,
+                            "iconUrl": ""
+                        },
+                        {
+                            "id": "lastContacts",
+                            "type": "dynamicMenu",
+                            "label": "Derniers contacts",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "?app=DOCUMENT&action=SUBMENU&id={{document.properties.id}}&render={{document.properties.renderMode}}&vid={{document.properties.viewId}}&menu=lastContacts"
+                        }
+                    ],
+                    "templates": {
+                        "body": "{{> header}}\n\n{{> menu}}\n\n{{> content}}\n\n{{> footer}}\n",
+                        "sections": {
+                            "header": "<header class=\"dcpDocument__header {{#document.properties.security.readOnly}} dcpDocument__header--readonly {{/document.properties.security.readOnly}}\">\n    <img class=\"dcpDocument__header__icon\" src=\"{{document.properties.icon}}\" alt=\"Document icon\"/>\n    <a class=\"dcpDocument__header__title\" href=\"{{#document.properties.initid}}?app=DOCUMENT&id={{document.properties.id}}{{/document.properties.initid}}{{^document.properties.initid}}?app=DOCUMENT&id={{document.properties.family.name}}&mode=create{{/document.properties.initid}}\">{{document.properties.title}}</a>\n    <i style=\"display:none\" title=\"Formulaire en cours de modification\" class=\"dcpDocument__header__modified fa fa-asterisk\"></i>\n\n\n    <div class=\"dcpDocument__header__family\">{{document.properties.family.title}}</div>\n</header>\n",
+                            "menu": "<nav class=\"dcpDocument__menu\"></nav>",
+                            "content": "<section class=\"dcpDocument__body\"/>",
+                            "footer": "<footer class=\"dcpDocument__footer\"/>"
+                        },
+                        "menu": {
+                            "menu": "<div class=\"menu__content container-fluid\">\n   <div class=\"menu__header navbar-header\">\n\n    </div>\n    <div class=\"\" id=\"menu_{{uuid}}\">\n        <ul class=\"menu__content\">\n\n        </ul>\n    </div>\n</div>",
+                            "itemMenu": "<li data-menu-id=\"{{id}}\"{{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    class=\"menu__element menu__element--item {{cssClass}}\"\n    {{# disabled}}disabled=\"disabled\"{{/ disabled}}\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}}\n    >\n    <a {{# confirmationText}}class=\"menu--confirm\" data-confirm-message=\"{{confirmationText}}\"{{/ confirmationText}}\n       {{# target}}target=\"{{target}}\"{{/ target}}\n       data-url=\"{{url}}\" >\n        {{#iconUrl}}\n            <img src=\"{{iconUrl}}\" class=\"k-image\" />\n        {{/iconUrl}}\n        {{#beforeContent}}\n            <span class=\"menu__before-content k-image\">\n                {{{beforeContent}}}\n            </span>\n        {{/beforeContent}}\n        {{{htmlLabel}}}{{label}}\n    </a>\n</li>\n",
+                            "listMenu": "<li data-menu-id=\"{{id}}\"\n    class=\"menu__element menu__element--list {{cssClass}}\"\n    {{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}}\n    {{# disabled}}disabled=\"disabled\"{{/ disabled}} >\n    {{#iconUrl}}\n    <img src=\"{{iconUrl}}\" class=\"k-image\" />\n    {{/iconUrl}}\n    {{#beforeContent}}\n    <span class=\"menu__before-content k-image\">\n        {{{beforeContent}}}\n    </span>\n    {{/beforeContent}}\n    {{{htmlLabel}}}{{label}}\n    <ul class=\"listmenu__content\">\n    </ul>\n</li>",
+                            "dynamicMenu": "<li data-menu-id=\"{{id}}\" data-menu-url=\"{{url}}\"\n    {{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    {{# disabled}}disabled=\"disabled\"{{/ disabled}}\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}}\n    class=\"menu__element menu__element--dynamic {{cssClass}}\">\n    {{#iconUrl}}\n    <img src=\"{{iconUrl}}\" class=\"k-image\" />\n    {{/iconUrl}}\n    {{#beforeContent}}\n    <span class=\"menu__before-content k-image\">\n        {{{beforeContent}}}\n    </span>\n    {{/beforeContent}}\n    {{{htmlLabel}}}{{label}}\n    <ul class=\"listmenu__content\">\n       <li class=\"menu__loading\">Loading...</li>\n    </ul>\n</li>",
+                            "separatorMenu": "<li data-menu-id=\"{{id}}\" {{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    class=\"menu__element menu--separator {{cssClass}}\"\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}} >\n    {{#iconUrl}}\n    <img src=\"{{iconUrl}}\" class=\"k-image\" />\n    {{/iconUrl}}\n    {{#beforeContent}}\n    <span class=\"menu__before-content k-image\">\n        {{{beforeContent}}}\n    </span>\n    {{/beforeContent}}\n    {{{htmlLabel}}}\n    {{label}}\n    {{^label}}\n        {{^htmlLabel}}\n        <div class=\"menu__empty_separator\"></div>\n        {{/htmlLabel}}\n    {{/label}}\n</li>"
+                        },
+                        "attribute": {
+                            "simpleWrapper": "<label class=\"dcpAttribute__left control-label dcpAttribute__label dcpAttribute__label--{{type}}\" data-attrid=\"{{id}}\" for=\"{{viewCid}}\"/>\n<div class=\"dcpAttribute__right dcpAttribute__content dcpAttribute__content--{{type}}\" data-attrid=\"{{id}}\"/>\n",
+                            "default": {
+                                "write": "<div class=\"{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm\">\n    {{#hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n                {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <input type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# renderOptions.maxLength}}maxlength=\"{{renderOptions.maxLength}}\"{{/ renderOptions.maxLength}}\n           {{# renderOptions.placeHolder}}placeHolder=\"{{renderOptions.placeHolder}}\"{{/ renderOptions.placeHolder}}\n           class=\"{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit\"\n           value=\"{{attributeValue.value}}\"/>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}<!-- avoid white spaces\n        --><button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button><!--\n        -->{{/renderOptions.buttons}}{{#deleteButton}}<!--\n        --><button type=\"button\" title=\"Suppression de : \"\n                class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" data-attrid=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{attributeValue.displayValue}}{{/attributeValue.formatValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "label": "{{label}}",
+                            "longtext": {
+                                "write": "<div class=\"input-group margin-bottom-sm\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n              {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <textarea type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# renderOptions.maxLength}}maxlength=\"{{renderOptions.maxLength}}\"{{/ renderOptions.maxLength}}\n           {{# renderOptions.placeHolder}}placeHolder=\"{{renderOptions.placeHolder}}\"{{/ renderOptions.placeHolder}}\n          class=\"form-control dcpAttribute__value dcpAttribute__value--edit k-textbox\">{{attributeValue.value}}</textarea>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n            class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" data-attrid=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{attributeValue.displayValue}}{{/attributeValue.formatValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "file": {
+                                "write": "<div class=\"input-group margin-bottom-sm dcpAttribute__dragTarget\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n                {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <input type=\"file\" name=\"{{id}}\" id=\"{{viewCid}}\" style=\"display:none;\"\n           class=\"dcpAttribute__value--file\"\n           value=\"{{attributeValue.value}}\"/>\n\n    <input {{#attributeValue.icon}}style=\"background-image:url({{attributeValue.icon}}){{/attributeValue.icon}}\"\n           type=\"text\"\n           class=\"form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.icon}}dcpAttribute__value--fileicon{{/attributeValue.icon}}\"\n           value=\"{{attributeValue.displayValue}}\"/>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        <button type=\"button\"  data-index=\"{{index}}\"\n                class=\"dcpAttribute__content__button--file btn btn-default btn-xs\">\n            <span class=\"fa fa-download fa-fw\"></span>\n        </button>\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n                class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" name=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}\n        title=\"{{renderOptions.htmlLink.title}}\"\n        {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n    {{#attributeValue.icon}}\n        <img src=\"{{attributeValue.icon}}\"/>\n    {{/attributeValue.icon}}\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "enum": {
+                                "write": "<div class=\"{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm\">\n    <input type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# options.size}}style=\"width : {{options.size}}em;\"{{/ options.size}}\n           class=\"{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit\"\n           value=\"{{attributeValue.value}}\"/>\n    {{#hadButtons}}\n        <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n            <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                    class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n            {{#deleteButton}}\n                <button type=\"button\" title=\"Suppression de : \"\n                        class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n                </button>\n            {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "writeRadio": "<div class=\"{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm\">\n    <div class=\"input-group k-textbox dcpAttribute__value--enumbuttons orientation-{{renderOptions.editDisplay}}\">\n    {{#enumValues}}\n        <label class=\"dcpAttribute__value--enumlabel{{#selected}} selected{{/selected}}\">\n            <input name=\"{{id}}\"\n                   {{^isMultiple}}type=\"radio\"{{/isMultiple}}{{#isMultiple}}type=\"checkbox\"{{/isMultiple}}\n                   class=\"{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit\"\n                   value=\"{{value}}\" {{#selected}}checked=\"checked\"{{/selected}}/>\n            <div class=\"dcpAttribute__value--enumlabel--text\">{{displayValue}}</div>\n        </label>\n    {{/enumValues}}\n    </div>\n    {{#hadButtons}}\n        <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n            <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                    class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n            {{#deleteButton}}\n                <button type=\"button\" title=\"Suppression de : \"\n                        class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n                </button>\n            {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}\"\n      name=\"{{id}}\">\n    {{#attributeValues}}\n        {{#renderOptions.htmlLink.url}}\n        <a  class=\"dcpAttribute__content__link\"\n            target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n            href=\"{{renderOptions.htmlLink.url}}\">\n        {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderOptions.htmlLink.url}}\n        </a>\n        {{/renderOptions.htmlLink.url}}\n    {{/attributeValues}}\n    {{{emptyValue}}}\n</span>\n\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "htmltext": {
+                                "write": "<div class=\"input-group margin-bottom-sm\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n              {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <textarea type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# renderOptions.maxLength}}maxlength=\"{{renderOptions.maxLength}}\"{{/ renderOptions.maxLength}}\n           {{# renderOptions.placeHolder}}placeHolder=\"{{renderOptions.placeHolder}}\"{{/ renderOptions.placeHolder}}\n          class=\"form-control dcpAttribute__value dcpAttribute__value--edit k-textbox\">{{attributeValue.value}}</textarea>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n            class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" name=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{{attributeValue.displayValue}}}{{/attributeValue.formatValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "docid": {
+                                "write": "<div class=\"input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}\">\n    <span class=\"input-group-addon\">\n        <button\n            {{#renderOptions.autoCompleteHtmlLabel}}\n            title=\"{{renderOptions.autoCompleteHtmlLabel}}\"\n            {{/renderOptions.autoCompleteHtmlLabel}}\n            class=\"dcpAttribute__value--docid--button btn btn-default btn-xs\">\n                {{^isMultiple}}\n                <i class=\"fa fa-chevron-down fa-fw\"></i>\n                {{/isMultiple}}\n                {{#isMultiple}}\n                <i class=\"fa fa-plus fa-fw\"></i>\n                {{/isMultiple}}\n        </button>\n    </span>\n    <select name=\"{{id}}\" id=\"{{viewCid}}\"\n            class=\"form-control dcpAttribute__value dcpAttribute__value--docid\"\n            >\n    </select>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" data-index=\"{{index}}\" title=\"{{title}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">\n         {{{htmlContent}}}\n        </button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \" class=\"dcpAttribute__content__button--delete btn btn-default btn-xs\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid\" name=\"{{id}}\">\n    {{#attributeValue.value}}\n        {{#renderOptions.htmlLink.renderUrl}}\n        <a class=\"dcpAttribute__content__link\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                        target=\"{{renderOptions.htmlLink.target}}\"\n                        href=\"{{renderOptions.htmlLink.renderUrl}}\">\n        {{/renderOptions.htmlLink.renderUrl}}\n        <img class=\"dcpAttribute__value--icon\" src=\"{{attributeValue.icon}}\" />\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n        {{#renderOptions.htmlLink.renderUrl}}\n        </a>\n        {{/renderOptions.htmlLink.renderUrl}}\n    {{/attributeValue.value}}\n    {{{emptyValue}}}\n    {{#attributeValues}}\n        {{#renderUrl}}\n        <a class=\"dcpAttribute__content__link dcpAttribute__value--multiple\" data-index=\"{{index}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                  target=\"{{renderOptions.htmlLink.target}}\"\n                   href=\"{{renderUrl}}\">\n            {{/renderUrl}}\n            <img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\" />\n            <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderUrl}}\n        </a>\n        {{/renderUrl}}\n    {{/attributeValues}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "account": {
+                                "write": "<div class=\"input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}\">\n    <span class=\"input-group-addon\">\n        <button\n            {{#renderOptions.autoCompleteHtmlLabel}}\n            title=\"{{renderOptions.autoCompleteHtmlLabel}}\"\n            {{/renderOptions.autoCompleteHtmlLabel}}\n            class=\"dcpAttribute__value--docid--button btn btn-default btn-xs\">\n                {{^isMultiple}}\n                <i class=\"fa fa-chevron-down fa-fw\"></i>\n                {{/isMultiple}}\n                {{#isMultiple}}\n                <i class=\"fa fa-plus fa-fw\"></i>\n                {{/isMultiple}}\n        </button>\n    </span>\n    <select name=\"{{id}}\" id=\"{{viewCid}}\"\n            class=\"form-control dcpAttribute__value dcpAttribute__value--docid\"\n            >\n    </select>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" data-index=\"{{index}}\" title=\"{{title}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">\n         {{{htmlContent}}}\n        </button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \" class=\"dcpAttribute__content__button--delete btn btn-default btn-xs\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid\" name=\"{{id}}\">\n    {{#attributeValue.value}}\n        {{#renderOptions.htmlLink.renderUrl}}\n        <a class=\"dcpAttribute__content__link\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                        target=\"{{renderOptions.htmlLink.target}}\"\n                        href=\"{{renderOptions.htmlLink.renderUrl}}\">\n        {{/renderOptions.htmlLink.renderUrl}}\n        <img class=\"dcpAttribute__value--icon\" src=\"{{attributeValue.icon}}\" />\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n        {{#renderOptions.htmlLink.renderUrl}}\n        </a>\n        {{/renderOptions.htmlLink.renderUrl}}\n    {{/attributeValue.value}}\n    {{{emptyValue}}}\n    {{#attributeValues}}\n        {{#renderUrl}}\n        <a class=\"dcpAttribute__content__link dcpAttribute__value--multiple\" data-index=\"{{index}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                  target=\"{{renderOptions.htmlLink.target}}\"\n                   href=\"{{renderUrl}}\">\n            {{/renderUrl}}\n            <img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\" />\n            <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderUrl}}\n        </a>\n        {{/renderUrl}}\n    {{/attributeValues}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "thesaurus": {
+                                "write": "<div class=\"input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}\">\n    <span class=\"input-group-addon\">\n        <button\n            {{#renderOptions.autoCompleteHtmlLabel}}\n            title=\"{{renderOptions.autoCompleteHtmlLabel}}\"\n            {{/renderOptions.autoCompleteHtmlLabel}}\n            class=\"dcpAttribute__value--docid--button btn btn-default btn-xs\">\n                {{^isMultiple}}\n                <i class=\"fa fa-chevron-down fa-fw\"></i>\n                {{/isMultiple}}\n                {{#isMultiple}}\n                <i class=\"fa fa-plus fa-fw\"></i>\n                {{/isMultiple}}\n        </button>\n    </span>\n    <select name=\"{{id}}\" id=\"{{viewCid}}\"\n            class=\"form-control dcpAttribute__value dcpAttribute__value--docid\"\n            >\n    </select>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" data-index=\"{{index}}\" title=\"{{title}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">\n         {{{htmlContent}}}\n        </button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \" class=\"dcpAttribute__content__button--delete btn btn-default btn-xs\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid\" name=\"{{id}}\">\n    {{#attributeValue.value}}\n        {{#renderOptions.htmlLink.renderUrl}}\n        <a class=\"dcpAttribute__content__link\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                        target=\"{{renderOptions.htmlLink.target}}\"\n                        href=\"{{renderOptions.htmlLink.renderUrl}}\">\n        {{/renderOptions.htmlLink.renderUrl}}\n        <img class=\"dcpAttribute__value--icon\" src=\"{{attributeValue.icon}}\" />\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n        {{#renderOptions.htmlLink.renderUrl}}\n        </a>\n        {{/renderOptions.htmlLink.renderUrl}}\n    {{/attributeValue.value}}\n    {{{emptyValue}}}\n    {{#attributeValues}}\n        {{#renderUrl}}\n        <a class=\"dcpAttribute__content__link dcpAttribute__value--multiple\" data-index=\"{{index}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                  target=\"{{renderOptions.htmlLink.target}}\"\n                   href=\"{{renderUrl}}\">\n            {{/renderUrl}}\n            <img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\" />\n            <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderUrl}}\n        </a>\n        {{/renderUrl}}\n    {{/attributeValues}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "image": {
+                                "write": "<div class=\"input-group margin-bottom-sm dcpAttribute__dragTarget\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n              {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <input type=\"file\" name=\"{{id}}\" id=\"{{viewCid}}\" style=\"display:none\" accept=\"image/*\"\n           class=\"dcpAttribute__value--file\"\n          value=\"{{attributeValue.value}}\"/>\n    <input {{#attributeValue.thumbnail}}style=\"background-image:url({{attributeValue.thumbnail}}){{/attributeValue.thumbnail}}\"  type=\"text\"\n           class=\"form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.thumbnail}}dcpAttribute__value--filethumb{{/attributeValue.thumbnail}}\"\n           value=\"{{attributeValue.displayValue}}\"/>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        <button type=\"button\"  data-index=\"{{index}}\" class=\"dcpAttribute__content__button--file btn btn-default btn-xs\">\n            <span class=\"fa fa-download fa-fw\"></span>\n        </button>\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n                class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" name=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n    {{^attributeValue.thumbnail}}\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n    {{/attributeValue.thumbnail}}\n    {{#attributeValue.thumbnail}}\n        <img src=\"{{attributeValue.thumbnail}}\"/>\n    {{/attributeValue.thumbnail}}\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "frame": {
+                                "label": "<div class=\"panel-heading css-frame-head dcpFrame__label dcp__frame--open dcpLabel\" data-id=\"{{id}}\">\n    <span class=\"dcp__frame__caret fa fa-caret-down fa-lg\"></span>\n    {{label}}\n</div>",
+                                "content": "<div class=\"panel-body dcpFrame__content dcpFrame__content--open\" data-attrid=\"{{id}}\">\n</div>"
+                            },
+                            "array": {
+                                "label": "<div class=\"panel-heading dcpArray__label dcpLabel\" data-attrid=\"{{id}}\">\n    <span class=\"dcp__array__caret fa fa-caret-down fa-lg\"></span>\n    {{label}}\n    {{#displayCount}}<span class=\"dcpArray__label--count\">{{nbLines}}</span>{{/displayCount}}\n</div>",
+                                "content": "<div class=\"panel-body dcpArray__content dcpArray__content--open\" data-attrid=\"{{id}}\">\n    <table class=\"table table-condensed table-hover table-bordered responsive\">\n        <thead data-attrid=\"{{id}}\">\n        <tr class=\"dcpArray__head\">\n            {{#tools}}\n                <th class=\"dcpArray__head__toolCell\"></th>\n            {{/tools}}\n            {{#content}}\n                <th class=\"dcpArray__head__cell dcpLabel dcpArray__head__cell--{{type}} {{#needed}}dcpAttribute--needed{{/needed}}\" data-attrid=\"{{id}}\">{{label}}</th>\n            {{/content}}\n        </tr>\n        </thead>\n        <tbody class=\"dcpArray__body\" data-attrid=\"{{id}}\">\n\n        </tbody>\n    </table>\n    <div class=\"dcpArray__tools\">\n        {{#tools}}\n        <div class=\"dcpArray__button dcpArray__button--add\" title=\"Ajouter une nouvelle ligne\">\n        <button type=\"button\" class=\"btn btn-default dcpArray__add\">\n            <span class=\"glyphicon glyphicon-plus-sign\"></span>\n        </button></div>\n        <div class=\"dcpArray__button dcpArray__button--copy\" title=\"Dupliquer la ligne sélectionnée\">\n        <button disabled=\"disabled\" type=\"button\"\n                class=\"btn btn-default dcpArray__copy\">\n            <span class=\"glyphicon glyphicon-sound-dolby\"></span>\n        </button></div>\n        {{/tools}}\n    </div>\n</div>",
+                                "line": "<tr class=\"dcpArray__content__line\" data-attrid=\"{{id}}\" data-line=\"{{lineNumber}}\">\n    {{#tools}}\n    <td class=\"dcpArray__content__toolCell\">\n        <span title=\"Cliquer pour déplacer la ligne\" class=\"dcpArray__content__toolCell__dragDrop\">\n            <button class=\"btn btn-default btn-xs\"><span class=\"fa fa-ellipsis-v\"></span></button>\n        </span>\n        <span title=\"Sélectionner la ligne\" class=\"dcpArray__content__toolCell__check\">\n            <input name=\"check_{{id}}\" type=\"radio\" />\n\n        </span>\n        <span title=\"Supprimer la ligne\" class=\"dcpArray__content__toolCell__delete\">\n            <button class=\"btn btn-default btn-xs\">\n                <span class=\"fa fa-trash-o\"></span>\n            </button>\n        </span>\n    </td>\n    {{/tools}}\n{{#content}}\n    <td class=\"dcpArray__cell\"><div class=\"dcpAttribute__content dcpAttribute__content--{{type}} dcpArray__content__cell dcpArray__content__cell--{{type}}\" data-attrid=\"{{id}}\"/></td>\n{{/content}}\n</tr>"
+                            }
+                        },
+                        "window": {
+                            "confirm": "<div class=\"confirm--body\">\n    <div class=\"confirm--content\">\n        <div>{{messages.textMessage}}</div>\n        <div>{{{messages.htmlMessage}}}</div>\n\n    </div>\n    <div class=\"confirm--buttons\">\n        <button class=\"button--cancel\" type=\"button\">{{messages.cancelMessage}}</button>\n        <button class=\"button--ok k-primary\" type=\"button\">{{messages.okMessage}}</button>\n    </div>\n</div>\n\n"
+                        }
+                    },
+                    "documentData": {
+                        "document": {
+                            "properties": {
+                                "id": 53681,
+                                "title": "Document bien rempli",
+                                "family": {
+                                    "title": "Test tout type",
+                                    "name": "ZOO_ALLTYPE",
+                                    "id": 53679,
+                                    "icon": "resizeimg.php?img=Images%2Fzooall.png&size=24"
+                                },
+                                "icon": "resizeimg.php?img=Images%2Fzooall.png&size=24",
+                                "revision": 0,
+                                "security": {
+                                    "lock": {
+                                        "id": 0
+                                    },
+                                    "readOnly": false,
+                                    "fixed": false,
+                                    "profil": {
+                                        "id": 0,
+                                        "title": ""
+                                    },
+                                    "confidentiality": "public"
+                                },
+                                "status": "alive",
+                                "initid": 53681
+                            },
+                            "attributes": {
+                                "zoo_title": {
+                                    "value": "Document bien rempli",
+                                    "displayValue": "Document bien rempli"
+                                },
+                                "zoo_account": {
+                                    "familyRelation": "",
+                                    "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                    "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                    "value": "1082",
+                                    "displayValue": "Dogue Robert"
+                                },
+                                "zoo_account_multiple": [
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=19&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fintercalaired.gif&size=14",
+                                        "value": "19",
+                                        "displayValue": "intercalaire dynamique"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=20&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fworkflow.png&size=14",
+                                        "value": "20",
+                                        "displayValue": "cycle de vie"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=21&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fmasque.gif&size=14",
+                                        "value": "21",
+                                        "displayValue": "masque de saisie"
+                                    }
+                                ],
+                                "zoo_docid": {
+                                    "familyRelation": "ZOO_ALLTYPE",
+                                    "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                    "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                    "value": "53681",
+                                    "displayValue": "Document bien rempli"
+                                },
+                                "zoo_docid_multiple": [
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53682",
+                                        "displayValue": "2ème essai"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53681",
+                                        "displayValue": "Document bien rempli"
+                                    }
+                                ],
+                                "zoo_date": {
+                                    "value": "2015-02-20",
+                                    "displayValue": "20/02/2015"
+                                },
+                                "zoo_time": {
+                                    "value": "02:00:00",
+                                    "displayValue": "02:00:00"
+                                },
+                                "zoo_timestamp": {
+                                    "value": "2015-02-19 00:00:00",
+                                    "displayValue": "19/02/2015 00:00"
+                                },
+                                "zoo_integer": {
+                                    "value": 123,
+                                    "displayValue": "123"
+                                },
+                                "zoo_double": {
+                                    "value": 12.45,
+                                    "displayValue": "12.45"
+                                },
+                                "zoo_money": {
+                                    "value": 23,
+                                    "displayValue": "23"
+                                },
+                                "zoo_password": {
+                                    "value": "jhjkhjkhlhhl",
+                                    "displayValue": "jhjkhjkhlhhl"
+                                },
+                                "zoo_color": {
+                                    "value": "#a7f492",
+                                    "displayValue": "#a7f492"
+                                },
+                                "zoo_file": {
+                                    "size": "8162974",
+                                    "creationDate": "2015-05-29 13:53:43",
+                                    "fileName": "AFNOR spécifications 2.docx",
+                                    "url": "file/53681/4743/zoo_file/-1/AFNOR%20sp%C3%A9cifications%202.docx?cache=no&inline=yes",
+                                    "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                    "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-wordprocessing.png&size=20",
+                                    "value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document|4743|AFNOR spécifications 2.docx",
+                                    "displayValue": "AFNOR spécifications 2.docx"
+                                },
+                                "zoo_image": {
+                                    "thumbnail": "file/53681/3912/zoo_image/-1/accessories-dictionary.png?cache=no&inline=yes&width=48",
+                                    "size": "979",
+                                    "creationDate": "2015-02-02 10:34:32",
+                                    "fileName": "accessories-dictionary.png",
+                                    "url": "file/53681/3912/zoo_image/-1/accessories-dictionary.png?cache=no&inline=yes",
+                                    "mime": "image/png",
+                                    "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image2.png&size=24",
+                                    "value": "image/png|3912|accessories-dictionary.png",
+                                    "displayValue": "accessories-dictionary.png"
+                                },
+                                "zoo_htmltext": {
+                                    "value": "<p><strong>HELLO233</strong></p>\r\n\r\n<p>23</p>",
+                                    "displayValue": "<p><strong>HELLO233</strong></p>\r\n\r\n<p>23</p>"
+                                },
+                                "zoo_longtext": {
+                                    "value": "Un\r\nDeux",
+                                    "displayValue": "Un\r\nDeux"
+                                },
+                                "zoo_text": {
+                                    "value": "Trois",
+                                    "displayValue": "Trois"
+                                },
+                                "zoo_enumlist": {
+                                    "value": "AI",
+                                    "displayValue": "Anguilla"
+                                },
+                                "zoo_enumauto": {
+                                    "value": "AG",
+                                    "displayValue": "Antigua et Barbade"
+                                },
+                                "zoo_enumvertical": {
+                                    "value": "30",
+                                    "displayValue": "30 %"
+                                },
+                                "zoo_enumhorizontal": {
+                                    "value": "navyblue",
+                                    "displayValue": "Bleu/Bleu marine"
+                                },
+                                "zoo_enumbool": {
+                                    "value": "C",
+                                    "displayValue": "Critique"
+                                },
+                                "zoo_enumserverlist": {
+                                    "value": "AS",
+                                    "displayValue": "Samoa américain"
+                                },
+                                "zoo_enumserverauto": {
+                                    "value": "SE",
+                                    "displayValue": "Suède"
+                                },
+                                "zoo_enumserververtical": {
+                                    "value": "green",
+                                    "displayValue": "Vert"
+                                },
+                                "zoo_enumserverhorizontal": {
+                                    "value": "blue",
+                                    "displayValue": "blue"
+                                },
+                                "zoo_enumserverbool": {
+                                    "value": "N",
+                                    "displayValue": "Normal"
+                                },
+                                "zoo_enumslist": [],
+                                "zoo_enumsauto": [],
+                                "zoo_enumsvertical": [
+                                    {
+                                        "value": "30",
+                                        "displayValue": "30 %"
+                                    },
+                                    {
+                                        "value": "70",
+                                        "displayValue": "70 %"
+                                    }
+                                ],
+                                "zoo_enumshorizontal": [],
+                                "zoo_enums": [],
+                                "zoo_enumsserverlist": [
+                                    {
+                                        "value": "AL",
+                                        "displayValue": "Albanie"
+                                    }
+                                ],
+                                "zoo_enumsserverauto": [
+                                    {
+                                        "value": "AN",
+                                        "displayValue": "Antilles néerlandaises"
+                                    },
+                                    {
+                                        "value": "ZR",
+                                        "displayValue": "Zaïre (République Démocratique du Congo)"
+                                    }
+                                ],
+                                "zoo_enumsserververtical": [],
+                                "zoo_enumsserverhorizontal": [],
+                                "zoo_date_array": [
+                                    {
+                                        "value": "2015-02-24",
+                                        "displayValue": "24/02/2015"
+                                    },
+                                    {
+                                        "value": "1999-11-30",
+                                        "displayValue": "30/11/1999"
+                                    },
+                                    {
+                                        "value": "2015-02-20",
+                                        "displayValue": "20/02/2015"
+                                    },
+                                    {
+                                        "value": "2015-02-01",
+                                        "displayValue": "01/02/2015"
+                                    },
+                                    {
+                                        "value": "1999-11-30",
+                                        "displayValue": "30/11/1999"
+                                    },
+                                    {
+                                        "value": "1968-10-30",
+                                        "displayValue": "30/10/1968"
+                                    }
+                                ],
+                                "zoo_time_array": [
+                                    {
+                                        "value": "00:30",
+                                        "displayValue": "00:30"
+                                    },
+                                    {
+                                        "value": "01:30",
+                                        "displayValue": "01:30"
+                                    },
+                                    {
+                                        "value": "09:00",
+                                        "displayValue": "09:00"
+                                    },
+                                    {
+                                        "value": "12:34",
+                                        "displayValue": "12:34"
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_timestamp_array": [
+                                    {
+                                        "value": "2015-02-05 00:00",
+                                        "displayValue": "05/02/2015 00:00"
+                                    },
+                                    {
+                                        "value": "2015-02-25 03:00",
+                                        "displayValue": "25/02/2015 03:00"
+                                    },
+                                    {
+                                        "value": "2015-02-26 03:00",
+                                        "displayValue": "26/02/2015 03:00"
+                                    },
+                                    {
+                                        "value": "2015-02-05 18:10",
+                                        "displayValue": "05/02/2015 18:10"
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_docid_array": [
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53681",
+                                        "displayValue": "Document bien rempli"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53682",
+                                        "displayValue": "2ème essai"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53681",
+                                        "displayValue": "Document bien rempli"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=76843&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "76843",
+                                        "displayValue": "Test tout type sans titre 76843"
+                                    }
+                                ],
+                                "zoo_docid_multiple_array": [
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53682",
+                                            "displayValue": "2ème essai"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53682",
+                                            "displayValue": "2ème essai"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53682",
+                                            "displayValue": "2ème essai"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=61097&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "61097",
+                                            "displayValue": "Un"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        }
+                                    ]
+                                ],
+                                "zoo_account_array": [
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=14833&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                        "value": "14833",
+                                        "displayValue": "User Three"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=14833&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                        "value": "14833",
+                                        "displayValue": "User Three"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                        "value": "1085",
+                                        "displayValue": "Kaice Igor"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    }
+                                ],
+                                "zoo_account_multiple_array": [
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=16266&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "16266",
+                                            "displayValue": "User Four"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=17423&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "17423",
+                                            "displayValue": "User One"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=17424&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "17424",
+                                            "displayValue": "User Two"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=17423&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "17423",
+                                            "displayValue": "User One"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                            "value": "1083",
+                                            "displayValue": "Santé Isabelle"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ]
+                                ],
+                                "zoo_double_array": [
+                                    {
+                                        "value": 1.1,
+                                        "displayValue": "1.1"
+                                    },
+                                    {
+                                        "value": 2.2,
+                                        "displayValue": "2.2"
+                                    },
+                                    {
+                                        "value": 3.3,
+                                        "displayValue": "3.3"
+                                    }
+                                ],
+                                "zoo_integer_array": [
+                                    {
+                                        "value": 1,
+                                        "displayValue": "1"
+                                    },
+                                    {
+                                        "value": 2,
+                                        "displayValue": "2"
+                                    },
+                                    {
+                                        "value": 3,
+                                        "displayValue": "3"
+                                    }
+                                ],
+                                "zoo_money_array": [
+                                    {
+                                        "value": 187.5,
+                                        "displayValue": "187.5"
+                                    },
+                                    {
+                                        "value": 209.56,
+                                        "displayValue": "209.56"
+                                    },
+                                    {
+                                        "value": -12.5,
+                                        "displayValue": "-12.5"
+                                    }
+                                ],
+                                "zoo_enum_array": [
+                                    {
+                                        "value": "30",
+                                        "displayValue": "30 %"
+                                    },
+                                    {
+                                        "value": "100",
+                                        "displayValue": "100 %"
+                                    },
+                                    {
+                                        "value": "70",
+                                        "displayValue": "70 %"
+                                    }
+                                ],
+                                "zoo_enums_array": [
+                                    [
+                                        {
+                                            "value": "30",
+                                            "displayValue": "30 %"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "value": "70",
+                                            "displayValue": "70 %"
+                                        }
+                                    ],
+                                    []
+                                ],
+                                "zoo_color_array": [
+                                    {
+                                        "value": "#A2AC54",
+                                        "displayValue": "#A2AC54"
+                                    },
+                                    {
+                                        "value": "#622f2f",
+                                        "displayValue": "#622f2f"
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_password_array": [
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_file_array": [
+                                    {
+                                        "size": "459285",
+                                        "creationDate": "2015-03-19 10:42:38",
+                                        "fileName": "web REST api.pdf",
+                                        "url": "file/53681/4039/zoo_file_array/0/web%20REST%20api.pdf?cache=no&inline=yes",
+                                        "mime": "application/pdf",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-pdf.png&size=20",
+                                        "value": "application/pdf|4039|web REST api.pdf",
+                                        "displayValue": "web REST api.pdf"
+                                    },
+                                    {
+                                        "size": "19895",
+                                        "creationDate": "2015-02-10 10:33:53",
+                                        "fileName": "accountExchange.ods",
+                                        "url": "file/53681/3917/zoo_file_array/1/accountExchange.ods?cache=no&inline=yes",
+                                        "mime": "application/vnd.oasis.opendocument.spreadsheet",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-spreadsheet.png&size=20",
+                                        "value": "application/vnd.oasis.opendocument.spreadsheet|3917|accountExchange.ods",
+                                        "displayValue": "accountExchange.ods"
+                                    },
+                                    {
+                                        "size": "1111",
+                                        "creationDate": "2015-02-02 17:06:10",
+                                        "fileName": "accessibility-directory.png",
+                                        "url": "file/53681/3913/zoo_file_array/2/accessibility-directory.png?cache=no&inline=yes",
+                                        "mime": "image/png",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image2.png&size=20",
+                                        "value": "image/png|3913|accessibility-directory.png",
+                                        "displayValue": "accessibility-directory.png"
+                                    }
+                                ],
+                                "zoo_image_array": [
+                                    {
+                                        "thumbnail": "file/53681/4032/zoo_image_array/0/test-cible.jpg?cache=no&inline=yes&width=48",
+                                        "size": "1161853",
+                                        "creationDate": "2015-03-09 10:40:22",
+                                        "fileName": "test-cible.jpg",
+                                        "url": "file/53681/4032/zoo_image_array/0/test-cible.jpg?cache=no&inline=yes",
+                                        "mime": "image/jpeg",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image.png&size=24",
+                                        "value": "image/jpeg|4032|test-cible.jpg",
+                                        "displayValue": "test-cible.jpg"
+                                    },
+                                    {
+                                        "thumbnail": "file/53681/3919/zoo_image_array/1/linux%20world.jpeg?cache=no&inline=yes&width=48",
+                                        "size": "193148",
+                                        "creationDate": "2015-02-10 11:45:18",
+                                        "fileName": "linux world.jpeg",
+                                        "url": "file/53681/3919/zoo_image_array/1/linux%20world.jpeg?cache=no&inline=yes",
+                                        "mime": "image/jpeg",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image.png&size=24",
+                                        "value": "image/jpeg|3919|linux world.jpeg",
+                                        "displayValue": "linux world.jpeg"
+                                    },
+                                    {
+                                        "thumbnail": "file/53681/3914/zoo_image_array/2/acroread.png?cache=no&inline=yes&width=48",
+                                        "size": "1067",
+                                        "creationDate": "2015-02-02 17:06:13",
+                                        "fileName": "acroread.png",
+                                        "url": "file/53681/3914/zoo_image_array/2/acroread.png?cache=no&inline=yes",
+                                        "mime": "image/png",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image2.png&size=24",
+                                        "value": "image/png|3914|acroread.png",
+                                        "displayValue": "acroread.png"
+                                    }
+                                ],
+                                "zoo_text_array": [
+                                    {
+                                        "value": "Kjnjkkjjkl jkh k",
+                                        "displayValue": "Kjnjkkjjkl jkh k"
+                                    },
+                                    {
+                                        "value": "mmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+                                        "displayValue": "mmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+                                    }
+                                ],
+                                "zoo_longtext_array": [
+                                    {
+                                        "value": "Il était une fois \nDans la forêt",
+                                        "displayValue": "Il était une fois \nDans la forêt"
+                                    },
+                                    {
+                                        "value": "YMMMMMMMMMMMMMMMMMMMM\nMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+                                        "displayValue": "YMMMMMMMMMMMMMMMMMMMM\nMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+                                    }
+                                ],
+                                "zoo_htmltext_array": [
+                                    {
+                                        "value": "<p>Yo234rt</p>",
+                                        "displayValue": "<p>Yo234rt</p>"
+                                    },
+                                    {
+                                        "value": "<p>EZ4</p>",
+                                        "displayValue": "<p>EZ4</p>"
+                                    }
+                                ]
+                            },
+                            "uri": "/tmp32/api/v1/documents/53681.json"
+                        }
+                    },
+                    "locale": {
+                        "label": "Français",
+                        "localeLabel": "Français",
+                        "flag": "",
+                        "locale": "fr",
+                        "culture": "fr-FR",
+                        "dateFormat": "%d/%m/%Y",
+                        "dateTimeFormat": "%d/%m/%Y %H:%M",
+                        "timeFormat": "%H:%M:%S"
+                    },
+                    "style": {
+                        "css": [
+                            {
+                                "path": "css/dcp/document/bootstrap.css?ws=3583",
+                                "key": "bootstrap"
+                            },
+                            {
+                                "path": "css/dcp/document/kendo.css?ws=3583",
+                                "key": "kendo"
+                            },
+                            {
+                                "path": "css/dcp/document/document.css?ws=3583",
+                                "key": "document"
+                            },
+                            {
+                                "path": "lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap.css?ws=3583",
+                                "key": "datatable"
+                            }
+                        ]
+                    },
+                    "script": {
+                        "js": [
+                        ]
+                    }
+                },
+                "properties": {
+                    "requestIdentifier": "!defaultConsultation",
+                    "uri": "/tmp32/api/v1/documents/53681/views/!coreConsultation",
+                    "identifier": "!coreConsultation",
+                    "mode": "consultation",
+                    "label": "Vue de consultation core",
+                    "isDisplayable": false,
+                    "order": 0,
+                    "menu": "",
+                    "mask": {
+                        "id": 0,
+                        "title": ""
+                    }
+                }
+            }
+        },
+        "53681!defaultEdition":{
+            "success": true,
+            "messages": [
+                {
+                    "type": "notice",
+                    "contentText": "| Include                        |   0.02 ms |       1 ko |\n| Init                           |   1.02 ms |      26 ko |\n| Auth                           |   3.02 ms |     343 ko |\n| Init action                    |   3.02 ms |     247 ko |\n| --Etag/etag                    |   0.02 ms |       1 ko |\n| --Etag/getDocument             |   2.02 ms |    1286 ko |\n| --Etag/refresh                 |   0.02 ms |       9 ko |\n| --Etag/eTag test               |   0.02 ms |       0 ko |\n| --Etag/get Sql                 |   0.02 ms |      50 ko |\n| --Etag/getParam                |   0.02 ms |       0 ko |\n| Etag                           |   3.02 ms |    1348 ko |\n| --View Info/customClientData   |   0.02 ms |       2 ko |\n| --View Info/renderOptions      |   1.02 ms |     294 ko |\n| --View Info/renderLabel        |   0.02 ms |       1 ko |\n| --View Info/customServerData   |   0.02 ms |       0 ko |\n| --View Info/menu               |   0.02 ms |      47 ko |\n| --View Info/templates          |   1.02 ms |     155 ko |\n| --Data/Properties              |   0.02 ms |      88 ko |\n| --Data/Attributes              |  67.02 ms |    2181 ko |\n| --Data/Structure               |   0.02 ms |       0 ko |\n| Data                           |  67.02 ms |    2270 ko |\n| --View Info/documentData       |   0.02 ms |      -2 ko |\n| --View Info/locale             |   0.02 ms |       2 ko |\n| --View Info/style              |   0.02 ms |       3 ko |\n| --View Info/script             |   0.02 ms |       1 ko |\n| View Info                      |  71.02 ms |    2795 ko |\n| complete                       |   1.02 ms |       0 ko |\n| total                          |  89.02 ms |    4887 ko |\n"
+                }
+            ],
+            "data": {
+                "uri": "/tmp32/api/v1/documents/53681/views/!defaultEdition",
+                "view": {
+                    "renderOptions": {
+                        "common": {
+                            "showEmptyContent": null,
+                            "labelPosition": "auto",
+                            "autoCompleteHtmlLabel": "",
+                            "inputHtmlTooltip": "",
+                            "htmlLink": {
+                                "target": "_self",
+                                "windowWidth": "300px",
+                                "windowHeight": "200px",
+                                "windowTitle": "",
+                                "title": "",
+                                "url": ""
+                            },
+                            "labels": {
+                                "closeErrorMessage": "Fermer le message"
+                            }
+                        },
+                        "types": {
+                            "account": {
+                                "noAccessText": "Accès interdit au compte",
+                                "htmlLink": {
+                                    "target": "_render",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Voir {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            },
+                            "date": {
+                                "labels": {
+                                    "invalidDate": "Date invalide"
+                                }
+                            },
+                            "docid": {
+                                "noAccessText": "Information non accessible",
+                                "htmlLink": {
+                                    "target": "_render",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Voir {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            },
+                            "enum": {
+                                "boolColor": "",
+                                "editDisplay": "list",
+                                "useFirstChoice": false,
+                                "useSourceUri": false,
+                                "labels": {
+                                    "chooseMessage": "Choisissez",
+                                    "invalidEntry": "Entrée invalide",
+                                    "invertSelection": "Cliquer pour répondre \"{{displayValue}}\"",
+                                    "selectMessage": "Sélectionner",
+                                    "unselectMessage": "Désélectionner"
+                                }
+                            },
+                            "file": {
+                                "downloadInline": false,
+                                "labels": {
+                                    "dropFileHere": "Déposer le fichier ici",
+                                    "placeHolder": "Cliquez pour choisir un fichier",
+                                    "tooltipLabel": "Choisissez un fichier",
+                                    "downloadLabel": "Télécharger le fichier",
+                                    "kiloByte": "ko",
+                                    "byte": "octets",
+                                    "recording": "Enregistrement",
+                                    "transferring": "Téléversement de"
+                                }
+                            },
+                            "image": {
+                                "htmlLink": {
+                                    "target": "_dialog",
+                                    "windowWidth": "400px",
+                                    "windowHeight": "300px",
+                                    "windowTitle": "",
+                                    "title": "",
+                                    "url": ""
+                                },
+                                "downloadInline": true,
+                                "thumbnailWidth": 48,
+                                "labels": {
+                                    "dropFileHere": "Déposer l'image ici",
+                                    "placeHolder": "Cliquez pour choisir une image",
+                                    "tooltipLabel": "Choisissez une image",
+                                    "downloadLabel": "Télécharger l'image",
+                                    "kiloByte": "ko",
+                                    "recording": "Enregistrement",
+                                    "transferring": "Téléversement de"
+                                }
+                            },
+                            "htmltext": {
+                                "toolbar": "Simple",
+                                "toolbarStartupExpanded": true,
+                                "height": "120px"
+                            },
+                            "longtext": {
+                                "displayedLineNumber": 0
+                            },
+                            "int": {
+                                "max": 2147483647,
+                                "min": -2147483647
+                            },
+                            "double": {
+                                "max": null,
+                                "min": null,
+                                "decimalPrecision": null
+                            },
+                            "money": {
+                                "max": null,
+                                "min": null,
+                                "decimalPrecision": 2,
+                                "currency": "€"
+                            },
+                            "text": {
+                                "maxLength": null,
+                                "format": "{{displayValue}}"
+                            },
+                            "array": {
+                                "rowCountThreshold": 0,
+                                "labels": {
+                                    "limitMaxMessage": "Le nombre maximum de rangée est de {{limit}}",
+                                    "limitMinMessage": "Le nombre de rangées minimum est de {{limit}}"
+                                }
+                            },
+                            "time": [],
+                            "timestamp": [],
+                            "thesaurus": {
+                                "htmlLink": {
+                                    "target": "_render",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "Voir {{{displayValue}}}",
+                                    "url": "?app=DOCUMENT&id={{value}}"
+                                }
+                            }
+                        },
+                        "mode": "edit",
+                        "attributes": {
+                            "zoo_docid_array": {
+                                "htmlLink": {
+                                    "target": "_self",
+                                    "windowWidth": "300px",
+                                    "windowHeight": "200px",
+                                    "windowTitle": "",
+                                    "title": "",
+                                    "url": "?sole=Y&app=DOCUMENT&id=53681%5Cn53682%5Cn53681%5Cn76843"
+                                }
+                            },
+                            "zoo_t_tab": {
+                                "openFirst": true
+                            },
+                            "zoo_enumlist": {
+                                "editDisplay": "list"
+                            },
+                            "zoo_enumauto": {
+                                "editDisplay": "autoCompletion"
+                            },
+                            "zoo_enumvertical": {
+                                "editDisplay": "vertical"
+                            },
+                            "zoo_enumhorizontal": {
+                                "editDisplay": "horizontal"
+                            },
+                            "zoo_enumbool": {
+                                "editDisplay": "bool"
+                            },
+                            "zoo_enumserverlist": {
+                                "editDisplay": "list",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumserverauto": {
+                                "editDisplay": "autoCompletion",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumserververtical": {
+                                "editDisplay": "vertical",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumserverhorizontal": {
+                                "editDisplay": "horizontal",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumserverbool": {
+                                "editDisplay": "bool",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumslist": {
+                                "editDisplay": "list"
+                            },
+                            "zoo_enumsauto": {
+                                "editDisplay": "autoCompletion"
+                            },
+                            "zoo_enumsvertical": {
+                                "editDisplay": "vertical"
+                            },
+                            "zoo_enumshorizontal": {
+                                "editDisplay": "horizontal"
+                            },
+                            "zoo_enumsserverlist": {
+                                "editDisplay": "list",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumsserverauto": {
+                                "editDisplay": "autoCompletion",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumsserververtical": {
+                                "editDisplay": "vertical",
+                                "useSourceUri": false
+                            },
+                            "zoo_enumsserverhorizontal": {
+                                "editDisplay": "horizontal",
+                                "useSourceUri": false
+                            },
+                            "zoo_array_account": {
+                                "rowMaxLimit": 10,
+                                "rowMinLimit": 7
+                            },
+                            "zoo_array_docid": {
+                                "rowMaxLimit": 7,
+                                "rowMinLimit": 4
+                            }
+                        },
+                        "visibilities": {
+                            "zoo_frame_relation": "W",
+                            "zoo_t_tab_numbers": "W",
+                            "zoo_t_tab_relations": "W",
+                            "zoo_frame_date": "W",
+                            "zoo_t_tab_date": "W",
+                            "zoo_frame_numbers": "W",
+                            "zoo_t_tab_misc": "W",
+                            "zoo_t_tab_texts": "W",
+                            "zoo_frame_texts": "W",
+                            "zoo_frame_files": "W",
+                            "zoo_t_tab_files": "W",
+                            "zoo_fr_enumservermultiple": "W",
+                            "zoo_frame_misc": "W",
+                            "zoo_fr_date": "W",
+                            "zoo_fr_number": "W",
+                            "zoo_fr_rels": "W",
+                            "zoo_t_tab": "W",
+                            "zoo_f_title": "W",
+                            "zoo_fr_enummultiple": "W",
+                            "zoo_fr_misc": "W",
+                            "zoo_fr_enumsimple": "W",
+                            "zoo_fr_enumserversimple": "W",
+                            "zoo_fr_enums": "W",
+                            "zoo_t_tab_enums": "W",
+                            "zoo_fr_text": "W",
+                            "zoo_fr_file": "W",
+                            "zoo_title": "W",
+                            "zoo_account": "W",
+                            "zoo_account_multiple": "W",
+                            "zoo_docid": "W",
+                            "zoo_docid_multiple": "W",
+                            "zoo_date": "W",
+                            "zoo_time": "W",
+                            "zoo_timestamp": "W",
+                            "zoo_integer": "W",
+                            "zoo_double": "W",
+                            "zoo_money": "W",
+                            "zoo_password": "W",
+                            "zoo_color": "W",
+                            "zoo_file": "W",
+                            "zoo_image": "W",
+                            "zoo_htmltext": "W",
+                            "zoo_longtext": "W",
+                            "zoo_text": "W",
+                            "zoo_enumlist": "W",
+                            "zoo_enumauto": "W",
+                            "zoo_enumvertical": "W",
+                            "zoo_enumhorizontal": "W",
+                            "zoo_enumbool": "W",
+                            "zoo_enumserverlist": "W",
+                            "zoo_enumserverauto": "W",
+                            "zoo_enumserververtical": "W",
+                            "zoo_enumserverhorizontal": "W",
+                            "zoo_enumserverbool": "W",
+                            "zoo_enumslist": "W",
+                            "zoo_enumsauto": "W",
+                            "zoo_enumsvertical": "W",
+                            "zoo_enumshorizontal": "W",
+                            "zoo_enums": "W",
+                            "zoo_enumsserverlist": "W",
+                            "zoo_enumsserverauto": "W",
+                            "zoo_enumsserververtical": "W",
+                            "zoo_enumsserverhorizontal": "W",
+                            "zoo_array_dates": "W",
+                            "zoo_date_array": "W",
+                            "zoo_time_array": "W",
+                            "zoo_timestamp_array": "W",
+                            "zoo_array_docid": "W",
+                            "zoo_docid_array": "W",
+                            "zoo_docid_multiple_array": "W",
+                            "zoo_array_account": "W",
+                            "zoo_account_array": "W",
+                            "zoo_account_multiple_array": "W",
+                            "zoo_array_numbers": "W",
+                            "zoo_double_array": "W",
+                            "zoo_integer_array": "W",
+                            "zoo_money_array": "W",
+                            "zoo_array_misc": "W",
+                            "zoo_enum_array": "W",
+                            "zoo_enums_array": "W",
+                            "zoo_color_array": "W",
+                            "zoo_password_array": "W",
+                            "zoo_array_files": "W",
+                            "zoo_file_array": "W",
+                            "zoo_image_array": "W",
+                            "zoo_array_texts": "W",
+                            "zoo_text_array": "W",
+                            "zoo_longtext_array": "W",
+                            "zoo_array_html": "W",
+                            "zoo_htmltext_array": "W"
+                        },
+                        "needed": []
+                    },
+                    "renderLabel": "All Edit",
+                    "customServerData": null,
+                    "menu": [
+                        {
+                            "id": "saveAndClose",
+                            "type": "itemMenu",
+                            "label": "Enregistrer et fermer",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-save\" />",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:saveAndClose",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "save",
+                            "type": "itemMenu",
+                            "label": "Enregistrer",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-save\" />",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:save",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "save!",
+                            "type": "itemMenu",
+                            "label": "Enregistrer !",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "hidden",
+                            "beforeContent": "",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:save:force",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "close",
+                            "type": "itemMenu",
+                            "label": "Fermer",
+                            "htmlLabel": "",
+                            "tooltipLabel": "",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": "",
+                            "visibility": "visible",
+                            "beforeContent": "<div class=\"fa fa-times\" />",
+                            "important": false,
+                            "iconUrl": "",
+                            "url": "#event/document:close:!defaultConsultation:unlock",
+                            "target": "_self",
+                            "targetOptions": null,
+                            "confirmationText": null,
+                            "confirmationOptions": null
+                        },
+                        {
+                            "id": "Emblem1",
+                            "type": "separatorMenu",
+                            "label": "",
+                            "htmlLabel": "{{#document.properties.security.lock.lockedBy.id}} <i class=\"dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock\"></i>{{/document.properties.security.lock.lockedBy.id}}",
+                            "tooltipLabel": "Verrouillé par \"<b>{{document.properties.security.lock.lockedBy.title}}</b>\" ",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": true,
+                            "htmlAttributes": {
+                                "class": "menu--right"
+                            },
+                            "visibility": "visible",
+                            "beforeContent": "",
+                            "important": true,
+                            "iconUrl": ""
+                        },
+                        {
+                            "id": "Emblem2",
+                            "type": "separatorMenu",
+                            "label": "",
+                            "htmlLabel": "{{#document.properties.security.readOnly}}<i  class=\"fa fa-ban\"></i>{{/document.properties.security.readOnly}}",
+                            "tooltipLabel": "Document en lecture seule",
+                            "tooltipPlacement": "",
+                            "tooltipHtml": false,
+                            "htmlAttributes": {
+                                "class": "menu--right"
+                            },
+                            "visibility": "visible",
+                            "beforeContent": "",
+                            "important": true,
+                            "iconUrl": ""
+                        }
+                    ],
+                    "templates": {
+                        "body": "{{> header}}\n\n{{> menu}}\n\n{{> content}}\n\n{{> footer}}\n",
+                        "sections": {
+                            "header": "<header class=\"dcpDocument__header {{#document.properties.security.readOnly}} dcpDocument__header--readonly {{/document.properties.security.readOnly}}\">\n    <img class=\"dcpDocument__header__icon\" src=\"{{document.properties.icon}}\" alt=\"Document icon\"/>\n    <a class=\"dcpDocument__header__title\" href=\"{{#document.properties.initid}}?app=DOCUMENT&id={{document.properties.id}}{{/document.properties.initid}}{{^document.properties.initid}}?app=DOCUMENT&id={{document.properties.family.name}}&mode=create{{/document.properties.initid}}\">{{document.properties.title}}</a>\n    <i style=\"display:none\" title=\"Formulaire en cours de modification\" class=\"dcpDocument__header__modified fa fa-asterisk\"></i>\n\n\n    <div class=\"dcpDocument__header__family\">{{document.properties.family.title}}</div>\n</header>\n",
+                            "menu": "<nav class=\"dcpDocument__menu\"></nav>",
+                            "content": "<section class=\"dcpDocument__body\"/>",
+                            "footer": "<footer class=\"dcpDocument__footer\"/>"
+                        },
+                        "menu": {
+                            "menu": "<div class=\"menu__content container-fluid\">\n   <div class=\"menu__header navbar-header\">\n\n    </div>\n    <div class=\"\" id=\"menu_{{uuid}}\">\n        <ul class=\"menu__content\">\n\n        </ul>\n    </div>\n</div>",
+                            "itemMenu": "<li data-menu-id=\"{{id}}\"{{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    class=\"menu__element menu__element--item {{cssClass}}\"\n    {{# disabled}}disabled=\"disabled\"{{/ disabled}}\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}}\n    >\n    <a {{# confirmationText}}class=\"menu--confirm\" data-confirm-message=\"{{confirmationText}}\"{{/ confirmationText}}\n       {{# target}}target=\"{{target}}\"{{/ target}}\n       data-url=\"{{url}}\" >\n        {{#iconUrl}}\n            <img src=\"{{iconUrl}}\" class=\"k-image\" />\n        {{/iconUrl}}\n        {{#beforeContent}}\n            <span class=\"menu__before-content k-image\">\n                {{{beforeContent}}}\n            </span>\n        {{/beforeContent}}\n        {{{htmlLabel}}}{{label}}\n    </a>\n</li>\n",
+                            "listMenu": "<li data-menu-id=\"{{id}}\"\n    class=\"menu__element menu__element--list {{cssClass}}\"\n    {{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}}\n    {{# disabled}}disabled=\"disabled\"{{/ disabled}} >\n    {{#iconUrl}}\n    <img src=\"{{iconUrl}}\" class=\"k-image\" />\n    {{/iconUrl}}\n    {{#beforeContent}}\n    <span class=\"menu__before-content k-image\">\n        {{{beforeContent}}}\n    </span>\n    {{/beforeContent}}\n    {{{htmlLabel}}}{{label}}\n    <ul class=\"listmenu__content\">\n    </ul>\n</li>",
+                            "dynamicMenu": "<li data-menu-id=\"{{id}}\" data-menu-url=\"{{url}}\"\n    {{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    {{# disabled}}disabled=\"disabled\"{{/ disabled}}\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}}\n    class=\"menu__element menu__element--dynamic {{cssClass}}\">\n    {{#iconUrl}}\n    <img src=\"{{iconUrl}}\" class=\"k-image\" />\n    {{/iconUrl}}\n    {{#beforeContent}}\n    <span class=\"menu__before-content k-image\">\n        {{{beforeContent}}}\n    </span>\n    {{/beforeContent}}\n    {{{htmlLabel}}}{{label}}\n    <ul class=\"listmenu__content\">\n       <li class=\"menu__loading\">Loading...</li>\n    </ul>\n</li>",
+                            "separatorMenu": "<li data-menu-id=\"{{id}}\" {{# htmlAttr}}{{attrId}}=\"{{attrValue}}\"{{/ htmlAttr}}\n    class=\"menu__element menu--separator {{cssClass}}\"\n    {{# tooltipLabel}}title=\"{{tooltipLabel}}\"{{/tooltipLabel}} >\n    {{#iconUrl}}\n    <img src=\"{{iconUrl}}\" class=\"k-image\" />\n    {{/iconUrl}}\n    {{#beforeContent}}\n    <span class=\"menu__before-content k-image\">\n        {{{beforeContent}}}\n    </span>\n    {{/beforeContent}}\n    {{{htmlLabel}}}\n    {{label}}\n    {{^label}}\n        {{^htmlLabel}}\n        <div class=\"menu__empty_separator\"></div>\n        {{/htmlLabel}}\n    {{/label}}\n</li>"
+                        },
+                        "attribute": {
+                            "simpleWrapper": "<label class=\"dcpAttribute__left control-label dcpAttribute__label dcpAttribute__label--{{type}}\" data-attrid=\"{{id}}\" for=\"{{viewCid}}\"/>\n<div class=\"dcpAttribute__right dcpAttribute__content dcpAttribute__content--{{type}}\" data-attrid=\"{{id}}\"/>\n",
+                            "default": {
+                                "write": "<div class=\"{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm\">\n    {{#hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n                {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <input type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# renderOptions.maxLength}}maxlength=\"{{renderOptions.maxLength}}\"{{/ renderOptions.maxLength}}\n           {{# renderOptions.placeHolder}}placeHolder=\"{{renderOptions.placeHolder}}\"{{/ renderOptions.placeHolder}}\n           class=\"{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit\"\n           value=\"{{attributeValue.value}}\"/>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}<!-- avoid white spaces\n        --><button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button><!--\n        -->{{/renderOptions.buttons}}{{#deleteButton}}<!--\n        --><button type=\"button\" title=\"Suppression de : \"\n                class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" data-attrid=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{attributeValue.displayValue}}{{/attributeValue.formatValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "label": "{{label}}",
+                            "longtext": {
+                                "write": "<div class=\"input-group margin-bottom-sm\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n              {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <textarea type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# renderOptions.maxLength}}maxlength=\"{{renderOptions.maxLength}}\"{{/ renderOptions.maxLength}}\n           {{# renderOptions.placeHolder}}placeHolder=\"{{renderOptions.placeHolder}}\"{{/ renderOptions.placeHolder}}\n          class=\"form-control dcpAttribute__value dcpAttribute__value--edit k-textbox\">{{attributeValue.value}}</textarea>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n            class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" data-attrid=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{attributeValue.displayValue}}{{/attributeValue.formatValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "file": {
+                                "write": "<div class=\"input-group margin-bottom-sm dcpAttribute__dragTarget\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n                {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <input type=\"file\" name=\"{{id}}\" id=\"{{viewCid}}\" style=\"display:none;\"\n           class=\"dcpAttribute__value--file\"\n           value=\"{{attributeValue.value}}\"/>\n\n    <input {{#attributeValue.icon}}style=\"background-image:url({{attributeValue.icon}}){{/attributeValue.icon}}\"\n           type=\"text\"\n           class=\"form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.icon}}dcpAttribute__value--fileicon{{/attributeValue.icon}}\"\n           value=\"{{attributeValue.displayValue}}\"/>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        <button type=\"button\"  data-index=\"{{index}}\"\n                class=\"dcpAttribute__content__button--file btn btn-default btn-xs\">\n            <span class=\"fa fa-download fa-fw\"></span>\n        </button>\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n                class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" name=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}\n        title=\"{{renderOptions.htmlLink.title}}\"\n        {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n    {{#attributeValue.icon}}\n        <img src=\"{{attributeValue.icon}}\"/>\n    {{/attributeValue.icon}}\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "enum": {
+                                "write": "<div class=\"{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm\">\n    <input type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# options.size}}style=\"width : {{options.size}}em;\"{{/ options.size}}\n           class=\"{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit\"\n           value=\"{{attributeValue.value}}\"/>\n    {{#hadButtons}}\n        <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n            <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                    class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n            {{#deleteButton}}\n                <button type=\"button\" title=\"Suppression de : \"\n                        class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n                </button>\n            {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "writeRadio": "<div class=\"{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm\">\n    <div class=\"input-group k-textbox dcpAttribute__value--enumbuttons orientation-{{renderOptions.editDisplay}}\">\n    {{#enumValues}}\n        <label class=\"dcpAttribute__value--enumlabel{{#selected}} selected{{/selected}}\">\n            <input name=\"{{id}}\"\n                   {{^isMultiple}}type=\"radio\"{{/isMultiple}}{{#isMultiple}}type=\"checkbox\"{{/isMultiple}}\n                   class=\"{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit\"\n                   value=\"{{value}}\" {{#selected}}checked=\"checked\"{{/selected}}/>\n            <div class=\"dcpAttribute__value--enumlabel--text\">{{displayValue}}</div>\n        </label>\n    {{/enumValues}}\n    </div>\n    {{#hadButtons}}\n        <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n            <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n                    class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n            {{#deleteButton}}\n                <button type=\"button\" title=\"Suppression de : \"\n                        class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\"><i class=\"fa fa-times fa-fw\"></i>\n                </button>\n            {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}\"\n      name=\"{{id}}\">\n    {{#attributeValues}}\n        {{#renderOptions.htmlLink.url}}\n        <a  class=\"dcpAttribute__content__link\"\n            target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n            href=\"{{renderOptions.htmlLink.url}}\">\n        {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderOptions.htmlLink.url}}\n        </a>\n        {{/renderOptions.htmlLink.url}}\n    {{/attributeValues}}\n    {{{emptyValue}}}\n</span>\n\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "htmltext": {
+                                "write": "<div class=\"input-group margin-bottom-sm\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n              {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <textarea type=\"text\" name=\"{{id}}\" id=\"{{viewCid}}\"\n           {{# renderOptions.maxLength}}maxlength=\"{{renderOptions.maxLength}}\"{{/ renderOptions.maxLength}}\n           {{# renderOptions.placeHolder}}placeHolder=\"{{renderOptions.placeHolder}}\"{{/ renderOptions.placeHolder}}\n          class=\"form-control dcpAttribute__value dcpAttribute__value--edit k-textbox\">{{attributeValue.value}}</textarea>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n            class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" name=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n        <span class=\"dcpAttribute__content__value\">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{{attributeValue.displayValue}}}{{/attributeValue.formatValue}}</span>\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "docid": {
+                                "write": "<div class=\"input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}\">\n    <span class=\"input-group-addon\">\n        <button\n            {{#renderOptions.autoCompleteHtmlLabel}}\n            title=\"{{renderOptions.autoCompleteHtmlLabel}}\"\n            {{/renderOptions.autoCompleteHtmlLabel}}\n            class=\"dcpAttribute__value--docid--button btn btn-default btn-xs\">\n                {{^isMultiple}}\n                <i class=\"fa fa-chevron-down fa-fw\"></i>\n                {{/isMultiple}}\n                {{#isMultiple}}\n                <i class=\"fa fa-plus fa-fw\"></i>\n                {{/isMultiple}}\n        </button>\n    </span>\n    <select name=\"{{id}}\" id=\"{{viewCid}}\"\n            class=\"form-control dcpAttribute__value dcpAttribute__value--docid\"\n            >\n    </select>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" data-index=\"{{index}}\" title=\"{{title}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">\n         {{{htmlContent}}}\n        </button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \" class=\"dcpAttribute__content__button--delete btn btn-default btn-xs\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid\" name=\"{{id}}\">\n    {{#attributeValue.value}}\n        {{#renderOptions.htmlLink.renderUrl}}\n        <a class=\"dcpAttribute__content__link\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                        target=\"{{renderOptions.htmlLink.target}}\"\n                        href=\"{{renderOptions.htmlLink.renderUrl}}\">\n        {{/renderOptions.htmlLink.renderUrl}}\n        <img class=\"dcpAttribute__value--icon\" src=\"{{attributeValue.icon}}\" />\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n        {{#renderOptions.htmlLink.renderUrl}}\n        </a>\n        {{/renderOptions.htmlLink.renderUrl}}\n    {{/attributeValue.value}}\n    {{{emptyValue}}}\n    {{#attributeValues}}\n        {{#renderUrl}}\n        <a class=\"dcpAttribute__content__link dcpAttribute__value--multiple\" data-index=\"{{index}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                  target=\"{{renderOptions.htmlLink.target}}\"\n                   href=\"{{renderUrl}}\">\n            {{/renderUrl}}\n            <img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\" />\n            <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderUrl}}\n        </a>\n        {{/renderUrl}}\n    {{/attributeValues}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "account": {
+                                "write": "<div class=\"input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}\">\n    <span class=\"input-group-addon\">\n        <button\n            {{#renderOptions.autoCompleteHtmlLabel}}\n            title=\"{{renderOptions.autoCompleteHtmlLabel}}\"\n            {{/renderOptions.autoCompleteHtmlLabel}}\n            class=\"dcpAttribute__value--docid--button btn btn-default btn-xs\">\n                {{^isMultiple}}\n                <i class=\"fa fa-chevron-down fa-fw\"></i>\n                {{/isMultiple}}\n                {{#isMultiple}}\n                <i class=\"fa fa-plus fa-fw\"></i>\n                {{/isMultiple}}\n        </button>\n    </span>\n    <select name=\"{{id}}\" id=\"{{viewCid}}\"\n            class=\"form-control dcpAttribute__value dcpAttribute__value--docid\"\n            >\n    </select>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" data-index=\"{{index}}\" title=\"{{title}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">\n         {{{htmlContent}}}\n        </button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \" class=\"dcpAttribute__content__button--delete btn btn-default btn-xs\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid\" name=\"{{id}}\">\n    {{#attributeValue.value}}\n        {{#renderOptions.htmlLink.renderUrl}}\n        <a class=\"dcpAttribute__content__link\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                        target=\"{{renderOptions.htmlLink.target}}\"\n                        href=\"{{renderOptions.htmlLink.renderUrl}}\">\n        {{/renderOptions.htmlLink.renderUrl}}\n        <img class=\"dcpAttribute__value--icon\" src=\"{{attributeValue.icon}}\" />\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n        {{#renderOptions.htmlLink.renderUrl}}\n        </a>\n        {{/renderOptions.htmlLink.renderUrl}}\n    {{/attributeValue.value}}\n    {{{emptyValue}}}\n    {{#attributeValues}}\n        {{#renderUrl}}\n        <a class=\"dcpAttribute__content__link dcpAttribute__value--multiple\" data-index=\"{{index}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                  target=\"{{renderOptions.htmlLink.target}}\"\n                   href=\"{{renderUrl}}\">\n            {{/renderUrl}}\n            <img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\" />\n            <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderUrl}}\n        </a>\n        {{/renderUrl}}\n    {{/attributeValues}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "thesaurus": {
+                                "write": "<div class=\"input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}\">\n    <span class=\"input-group-addon\">\n        <button\n            {{#renderOptions.autoCompleteHtmlLabel}}\n            title=\"{{renderOptions.autoCompleteHtmlLabel}}\"\n            {{/renderOptions.autoCompleteHtmlLabel}}\n            class=\"dcpAttribute__value--docid--button btn btn-default btn-xs\">\n                {{^isMultiple}}\n                <i class=\"fa fa-chevron-down fa-fw\"></i>\n                {{/isMultiple}}\n                {{#isMultiple}}\n                <i class=\"fa fa-plus fa-fw\"></i>\n                {{/isMultiple}}\n        </button>\n    </span>\n    <select name=\"{{id}}\" id=\"{{viewCid}}\"\n            class=\"form-control dcpAttribute__value dcpAttribute__value--docid\"\n            >\n    </select>\n    {{#hadButtons}}\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        {{#renderOptions.buttons}}\n        <button type=\"button\" data-index=\"{{index}}\" title=\"{{title}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">\n         {{{htmlContent}}}\n        </button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \" class=\"dcpAttribute__content__button--delete btn btn-default btn-xs\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n    {{/hadButtons}}\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid\" name=\"{{id}}\">\n    {{#attributeValue.value}}\n        {{#renderOptions.htmlLink.renderUrl}}\n        <a class=\"dcpAttribute__content__link\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                        target=\"{{renderOptions.htmlLink.target}}\"\n                        href=\"{{renderOptions.htmlLink.renderUrl}}\">\n        {{/renderOptions.htmlLink.renderUrl}}\n        <img class=\"dcpAttribute__value--icon\" src=\"{{attributeValue.icon}}\" />\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n        {{#renderOptions.htmlLink.renderUrl}}\n        </a>\n        {{/renderOptions.htmlLink.renderUrl}}\n    {{/attributeValue.value}}\n    {{{emptyValue}}}\n    {{#attributeValues}}\n        {{#renderUrl}}\n        <a class=\"dcpAttribute__content__link dcpAttribute__value--multiple\" data-index=\"{{index}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderTitle}}\" {{/renderOptions.htmlLink.title}}\n                  target=\"{{renderOptions.htmlLink.target}}\"\n                   href=\"{{renderUrl}}\">\n            {{/renderUrl}}\n            <img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\" />\n            <span class=\"dcpAttribute__content__value\">{{displayValue}}</span>\n        {{#renderUrl}}\n        </a>\n        {{/renderUrl}}\n    {{/attributeValues}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "image": {
+                                "write": "<div class=\"input-group margin-bottom-sm dcpAttribute__dragTarget\">\n    {{# hasAutocomplete}}\n    <span class=\"input-group-addon\">\n        <button\n              {{#renderOptions.autoCompleteHtmlLabel}}title=\"{{renderOptions.autoCompleteHtmlLabel}}\"{{/renderOptions.autoCompleteHtmlLabel}}\n                class=\"dcpAttribute__value--autocomplete--button btn btn-default btn-xs\">\n            <i class=\"fa fa-chevron-down fa-fw\"></i>\n        </button>\n    </span>\n    {{/hasAutocomplete}}\n    <input type=\"file\" name=\"{{id}}\" id=\"{{viewCid}}\" style=\"display:none\" accept=\"image/*\"\n           class=\"dcpAttribute__value--file\"\n          value=\"{{attributeValue.value}}\"/>\n    <input {{#attributeValue.thumbnail}}style=\"background-image:url({{attributeValue.thumbnail}}){{/attributeValue.thumbnail}}\"  type=\"text\"\n           class=\"form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.thumbnail}}dcpAttribute__value--filethumb{{/attributeValue.thumbnail}}\"\n           value=\"{{attributeValue.displayValue}}\"/>\n    <span class=\"dcpAttribute__content__buttons input-group-addon\">\n        <button type=\"button\"  data-index=\"{{index}}\" class=\"dcpAttribute__content__button--file btn btn-default btn-xs\">\n            <span class=\"fa fa-download fa-fw\"></span>\n        </button>\n        {{#renderOptions.buttons}}\n        <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\" class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n        {{/renderOptions.buttons}}\n        {{#deleteButton}}\n        <button type=\"button\" title=\"Suppression de : \"\n                class=\"btn btn-default btn-xs dcpAttribute__content__button--delete\">\n            <i class=\"fa fa-times fa-fw\"></i>\n        </button>\n        {{/deleteButton}}\n    </span>\n</div>",
+                                "read": "<span class=\"dcpAttribute__value dcpAttribute__value--read\" name=\"{{id}}\">\n    {{#renderOptions.htmlLink.url}}\n    <a  class=\"dcpAttribute__content__link\"\n        target=\"{{renderOptions.htmlLink.target}}\"\n        {{#renderOptions.htmlLink.title}}title=\"{{renderOptions.htmlLink.title}}\" {{/renderOptions.htmlLink.title}}\n        href=\"{{renderOptions.htmlLink.url}}\">\n    {{/renderOptions.htmlLink.url}}\n    {{^attributeValue.thumbnail}}\n        <span class=\"dcpAttribute__content__value\">{{attributeValue.displayValue}}</span>\n    {{/attributeValue.thumbnail}}\n    {{#attributeValue.thumbnail}}\n        <img src=\"{{attributeValue.thumbnail}}\"/>\n    {{/attributeValue.thumbnail}}\n    {{#renderOptions.htmlLink.url}}\n    </a>\n    {{/renderOptions.htmlLink.url}}\n    {{{emptyValue}}}\n</span>\n{{#hadButtons}}\n<span class=\"dcpAttribute__content__buttons\">\n    {{#renderOptions.buttons}}\n    <button type=\"button\" title=\"{{title}}\" data-index=\"{{index}}\"\n            class=\"dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}\">{{{htmlContent}}}</button>\n    {{/renderOptions.buttons}}\n</span>\n{{/hadButtons}}"
+                            },
+                            "frame": {
+                                "label": "<div class=\"panel-heading css-frame-head dcpFrame__label dcp__frame--open dcpLabel\" data-id=\"{{id}}\">\n    <span class=\"dcp__frame__caret fa fa-caret-down fa-lg\"></span>\n    {{label}}\n</div>",
+                                "content": "<div class=\"panel-body dcpFrame__content dcpFrame__content--open\" data-attrid=\"{{id}}\">\n</div>"
+                            },
+                            "array": {
+                                "label": "<div class=\"panel-heading dcpArray__label dcpLabel\" data-attrid=\"{{id}}\">\n    <span class=\"dcp__array__caret fa fa-caret-down fa-lg\"></span>\n    {{label}}\n    {{#displayCount}}<span class=\"dcpArray__label--count\">{{nbLines}}</span>{{/displayCount}}\n</div>",
+                                "content": "<div class=\"panel-body dcpArray__content dcpArray__content--open\" data-attrid=\"{{id}}\">\n    <table class=\"table table-condensed table-hover table-bordered responsive\">\n        <thead data-attrid=\"{{id}}\">\n        <tr class=\"dcpArray__head\">\n            {{#tools}}\n                <th class=\"dcpArray__head__toolCell\"></th>\n            {{/tools}}\n            {{#content}}\n                <th class=\"dcpArray__head__cell dcpLabel dcpArray__head__cell--{{type}} {{#needed}}dcpAttribute--needed{{/needed}}\" data-attrid=\"{{id}}\">{{label}}</th>\n            {{/content}}\n        </tr>\n        </thead>\n        <tbody class=\"dcpArray__body\" data-attrid=\"{{id}}\">\n\n        </tbody>\n    </table>\n    <div class=\"dcpArray__tools\">\n        {{#tools}}\n        <div class=\"dcpArray__button dcpArray__button--add\" title=\"Ajouter une nouvelle ligne\">\n        <button type=\"button\" class=\"btn btn-default dcpArray__add\">\n            <span class=\"glyphicon glyphicon-plus-sign\"></span>\n        </button></div>\n        <div class=\"dcpArray__button dcpArray__button--copy\" title=\"Dupliquer la ligne sélectionnée\">\n        <button disabled=\"disabled\" type=\"button\"\n                class=\"btn btn-default dcpArray__copy\">\n            <span class=\"glyphicon glyphicon-sound-dolby\"></span>\n        </button></div>\n        {{/tools}}\n    </div>\n</div>",
+                                "line": "<tr class=\"dcpArray__content__line\" data-attrid=\"{{id}}\" data-line=\"{{lineNumber}}\">\n    {{#tools}}\n    <td class=\"dcpArray__content__toolCell\">\n        <span title=\"Cliquer pour déplacer la ligne\" class=\"dcpArray__content__toolCell__dragDrop\">\n            <button class=\"btn btn-default btn-xs\"><span class=\"fa fa-ellipsis-v\"></span></button>\n        </span>\n        <span title=\"Sélectionner la ligne\" class=\"dcpArray__content__toolCell__check\">\n            <input name=\"check_{{id}}\" type=\"radio\" />\n\n        </span>\n        <span title=\"Supprimer la ligne\" class=\"dcpArray__content__toolCell__delete\">\n            <button class=\"btn btn-default btn-xs\">\n                <span class=\"fa fa-trash-o\"></span>\n            </button>\n        </span>\n    </td>\n    {{/tools}}\n{{#content}}\n    <td class=\"dcpArray__cell\"><div class=\"dcpAttribute__content dcpAttribute__content--{{type}} dcpArray__content__cell dcpArray__content__cell--{{type}}\" data-attrid=\"{{id}}\"/></td>\n{{/content}}\n</tr>"
+                            }
+                        },
+                        "window": {
+                            "confirm": "<div class=\"confirm--body\">\n    <div class=\"confirm--content\">\n        <div>{{messages.textMessage}}</div>\n        <div>{{{messages.htmlMessage}}}</div>\n\n    </div>\n    <div class=\"confirm--buttons\">\n        <button class=\"button--cancel\" type=\"button\">{{messages.cancelMessage}}</button>\n        <button class=\"button--ok k-primary\" type=\"button\">{{messages.okMessage}}</button>\n    </div>\n</div>\n\n"
+                        }
+                    },
+                    "documentData": {
+                        "document": {
+                            "properties": {
+                                "id": 53681,
+                                "title": "Document bien rempli",
+                                "family": {
+                                    "title": "Test tout type",
+                                    "name": "ZOO_ALLTYPE",
+                                    "id": 53679,
+                                    "icon": "resizeimg.php?img=Images%2Fzooall.png&size=24"
+                                },
+                                "icon": "resizeimg.php?img=Images%2Fzooall.png&size=24",
+                                "revision": 0,
+                                "security": {
+                                    "lock": {
+                                        "id": 0
+                                    },
+                                    "readOnly": false,
+                                    "fixed": false,
+                                    "profil": {
+                                        "id": 0,
+                                        "title": ""
+                                    },
+                                    "confidentiality": "public"
+                                },
+                                "status": "alive",
+                                "initid": 53681
+                            },
+                            "attributes": {
+                                "zoo_title": {
+                                    "value": "Document bien rempli",
+                                    "displayValue": "Document bien rempli"
+                                },
+                                "zoo_account": {
+                                    "familyRelation": "",
+                                    "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                    "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                    "value": "1082",
+                                    "displayValue": "Dogue Robert"
+                                },
+                                "zoo_account_multiple": [
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=19&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fintercalaired.gif&size=14",
+                                        "value": "19",
+                                        "displayValue": "intercalaire dynamique"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=20&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fworkflow.png&size=14",
+                                        "value": "20",
+                                        "displayValue": "cycle de vie"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=21&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fmasque.gif&size=14",
+                                        "value": "21",
+                                        "displayValue": "masque de saisie"
+                                    }
+                                ],
+                                "zoo_docid": {
+                                    "familyRelation": "ZOO_ALLTYPE",
+                                    "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                    "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                    "value": "53681",
+                                    "displayValue": "Document bien rempli"
+                                },
+                                "zoo_docid_multiple": [
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53682",
+                                        "displayValue": "2ème essai"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53681",
+                                        "displayValue": "Document bien rempli"
+                                    }
+                                ],
+                                "zoo_date": {
+                                    "value": "2015-02-20",
+                                    "displayValue": "20/02/2015"
+                                },
+                                "zoo_time": {
+                                    "value": "02:00:00",
+                                    "displayValue": "02:00:00"
+                                },
+                                "zoo_timestamp": {
+                                    "value": "2015-02-19 00:00:00",
+                                    "displayValue": "19/02/2015 00:00"
+                                },
+                                "zoo_integer": {
+                                    "value": 123,
+                                    "displayValue": "123"
+                                },
+                                "zoo_double": {
+                                    "value": 12.45,
+                                    "displayValue": "12.45"
+                                },
+                                "zoo_money": {
+                                    "value": 23,
+                                    "displayValue": "23"
+                                },
+                                "zoo_password": {
+                                    "value": "jhjkhjkhlhhl",
+                                    "displayValue": "jhjkhjkhlhhl"
+                                },
+                                "zoo_color": {
+                                    "value": "#a7f492",
+                                    "displayValue": "#a7f492"
+                                },
+                                "zoo_file": {
+                                    "size": "8162974",
+                                    "creationDate": "2015-05-29 13:53:43",
+                                    "fileName": "AFNOR spécifications 2.docx",
+                                    "url": "file/53681/4743/zoo_file/-1/AFNOR%20sp%C3%A9cifications%202.docx?cache=no&inline=yes",
+                                    "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                    "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-wordprocessing.png&size=20",
+                                    "value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document|4743|AFNOR spécifications 2.docx",
+                                    "displayValue": "AFNOR spécifications 2.docx"
+                                },
+                                "zoo_image": {
+                                    "thumbnail": "file/53681/3912/zoo_image/-1/accessories-dictionary.png?cache=no&inline=yes&width=48",
+                                    "size": "979",
+                                    "creationDate": "2015-02-02 10:34:32",
+                                    "fileName": "accessories-dictionary.png",
+                                    "url": "file/53681/3912/zoo_image/-1/accessories-dictionary.png?cache=no&inline=yes",
+                                    "mime": "image/png",
+                                    "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image2.png&size=24",
+                                    "value": "image/png|3912|accessories-dictionary.png",
+                                    "displayValue": "accessories-dictionary.png"
+                                },
+                                "zoo_htmltext": {
+                                    "value": "<p><strong>HELLO233</strong></p>\r\n\r\n<p>23</p>",
+                                    "displayValue": "<p><strong>HELLO233</strong></p>\r\n\r\n<p>23</p>"
+                                },
+                                "zoo_longtext": {
+                                    "value": "Un\r\nDeux",
+                                    "displayValue": "Un\r\nDeux"
+                                },
+                                "zoo_text": {
+                                    "value": "Trois",
+                                    "displayValue": "Trois"
+                                },
+                                "zoo_enumlist": {
+                                    "value": "AI",
+                                    "displayValue": "Anguilla"
+                                },
+                                "zoo_enumauto": {
+                                    "value": "AG",
+                                    "displayValue": "Antigua et Barbade"
+                                },
+                                "zoo_enumvertical": {
+                                    "value": "30",
+                                    "displayValue": "30 %"
+                                },
+                                "zoo_enumhorizontal": {
+                                    "value": "navyblue",
+                                    "displayValue": "Bleu/Bleu marine"
+                                },
+                                "zoo_enumbool": {
+                                    "value": "C",
+                                    "displayValue": "Critique"
+                                },
+                                "zoo_enumserverlist": {
+                                    "value": "AS",
+                                    "displayValue": "Samoa américain"
+                                },
+                                "zoo_enumserverauto": {
+                                    "value": "SE",
+                                    "displayValue": "Suède"
+                                },
+                                "zoo_enumserververtical": {
+                                    "value": "green",
+                                    "displayValue": "Vert"
+                                },
+                                "zoo_enumserverhorizontal": {
+                                    "value": "blue",
+                                    "displayValue": "blue"
+                                },
+                                "zoo_enumserverbool": {
+                                    "value": "N",
+                                    "displayValue": "Normal"
+                                },
+                                "zoo_enumslist": [],
+                                "zoo_enumsauto": [],
+                                "zoo_enumsvertical": [
+                                    {
+                                        "value": "30",
+                                        "displayValue": "30 %"
+                                    },
+                                    {
+                                        "value": "70",
+                                        "displayValue": "70 %"
+                                    }
+                                ],
+                                "zoo_enumshorizontal": [],
+                                "zoo_enums": [],
+                                "zoo_enumsserverlist": [
+                                    {
+                                        "value": "AL",
+                                        "displayValue": "Albanie"
+                                    }
+                                ],
+                                "zoo_enumsserverauto": [
+                                    {
+                                        "value": "AN",
+                                        "displayValue": "Antilles néerlandaises"
+                                    },
+                                    {
+                                        "value": "ZR",
+                                        "displayValue": "Zaïre (République Démocratique du Congo)"
+                                    }
+                                ],
+                                "zoo_enumsserververtical": [],
+                                "zoo_enumsserverhorizontal": [],
+                                "zoo_date_array": [
+                                    {
+                                        "value": "2015-02-24",
+                                        "displayValue": "24/02/2015"
+                                    },
+                                    {
+                                        "value": "1999-11-30",
+                                        "displayValue": "30/11/1999"
+                                    },
+                                    {
+                                        "value": "2015-02-20",
+                                        "displayValue": "20/02/2015"
+                                    },
+                                    {
+                                        "value": "2015-02-01",
+                                        "displayValue": "01/02/2015"
+                                    },
+                                    {
+                                        "value": "1999-11-30",
+                                        "displayValue": "30/11/1999"
+                                    },
+                                    {
+                                        "value": "1968-10-30",
+                                        "displayValue": "30/10/1968"
+                                    }
+                                ],
+                                "zoo_time_array": [
+                                    {
+                                        "value": "00:30",
+                                        "displayValue": "00:30"
+                                    },
+                                    {
+                                        "value": "01:30",
+                                        "displayValue": "01:30"
+                                    },
+                                    {
+                                        "value": "09:00",
+                                        "displayValue": "09:00"
+                                    },
+                                    {
+                                        "value": "12:34",
+                                        "displayValue": "12:34"
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_timestamp_array": [
+                                    {
+                                        "value": "2015-02-05 00:00",
+                                        "displayValue": "05/02/2015 00:00"
+                                    },
+                                    {
+                                        "value": "2015-02-25 03:00",
+                                        "displayValue": "25/02/2015 03:00"
+                                    },
+                                    {
+                                        "value": "2015-02-26 03:00",
+                                        "displayValue": "26/02/2015 03:00"
+                                    },
+                                    {
+                                        "value": "2015-02-05 18:10",
+                                        "displayValue": "05/02/2015 18:10"
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_docid_array": [
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53681",
+                                        "displayValue": "Document bien rempli"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53682",
+                                        "displayValue": "2ème essai"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "53681",
+                                        "displayValue": "Document bien rempli"
+                                    },
+                                    {
+                                        "familyRelation": "ZOO_ALLTYPE",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=76843&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                        "value": "76843",
+                                        "displayValue": "Test tout type sans titre 76843"
+                                    }
+                                ],
+                                "zoo_docid_multiple_array": [
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53682",
+                                            "displayValue": "2ème essai"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53682",
+                                            "displayValue": "2ème essai"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53682&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53682",
+                                            "displayValue": "2ème essai"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        },
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=61097&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "61097",
+                                            "displayValue": "Un"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "ZOO_ALLTYPE",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=53681&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fzooall.png&size=14",
+                                            "value": "53681",
+                                            "displayValue": "Document bien rempli"
+                                        }
+                                    ]
+                                ],
+                                "zoo_account_array": [
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=14833&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                        "value": "14833",
+                                        "displayValue": "User Three"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=14833&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                        "value": "14833",
+                                        "displayValue": "User Three"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                        "value": "1085",
+                                        "displayValue": "Kaice Igor"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    },
+                                    {
+                                        "familyRelation": "",
+                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                        "value": "1083",
+                                        "displayValue": "Santé Isabelle"
+                                    }
+                                ],
+                                "zoo_account_multiple_array": [
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=16266&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "16266",
+                                            "displayValue": "User Four"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=17423&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "17423",
+                                            "displayValue": "User One"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=17424&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "17424",
+                                            "displayValue": "User Two"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=17423&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "17423",
+                                            "displayValue": "User One"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                            "value": "1083",
+                                            "displayValue": "Santé Isabelle"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                            "value": "1085",
+                                            "displayValue": "Kaice Igor"
+                                        },
+                                        {
+                                            "familyRelation": "",
+                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                            "value": "1082",
+                                            "displayValue": "Dogue Robert"
+                                        }
+                                    ]
+                                ],
+                                "zoo_double_array": [
+                                    {
+                                        "value": 1.1,
+                                        "displayValue": "1.1"
+                                    },
+                                    {
+                                        "value": 2.2,
+                                        "displayValue": "2.2"
+                                    },
+                                    {
+                                        "value": 3.3,
+                                        "displayValue": "3.3"
+                                    }
+                                ],
+                                "zoo_integer_array": [
+                                    {
+                                        "value": 1,
+                                        "displayValue": "1"
+                                    },
+                                    {
+                                        "value": 2,
+                                        "displayValue": "2"
+                                    },
+                                    {
+                                        "value": 3,
+                                        "displayValue": "3"
+                                    }
+                                ],
+                                "zoo_money_array": [
+                                    {
+                                        "value": 187.5,
+                                        "displayValue": "187.5"
+                                    },
+                                    {
+                                        "value": 209.56,
+                                        "displayValue": "209.56"
+                                    },
+                                    {
+                                        "value": -12.5,
+                                        "displayValue": "-12.5"
+                                    }
+                                ],
+                                "zoo_enum_array": [
+                                    {
+                                        "value": "30",
+                                        "displayValue": "30 %"
+                                    },
+                                    {
+                                        "value": "100",
+                                        "displayValue": "100 %"
+                                    },
+                                    {
+                                        "value": "70",
+                                        "displayValue": "70 %"
+                                    }
+                                ],
+                                "zoo_enums_array": [
+                                    [
+                                        {
+                                            "value": "30",
+                                            "displayValue": "30 %"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "value": "70",
+                                            "displayValue": "70 %"
+                                        }
+                                    ],
+                                    []
+                                ],
+                                "zoo_color_array": [
+                                    {
+                                        "value": "#A2AC54",
+                                        "displayValue": "#A2AC54"
+                                    },
+                                    {
+                                        "value": "#622f2f",
+                                        "displayValue": "#622f2f"
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_password_array": [
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    },
+                                    {
+                                        "value": null,
+                                        "displayValue": ""
+                                    }
+                                ],
+                                "zoo_file_array": [
+                                    {
+                                        "size": "459285",
+                                        "creationDate": "2015-03-19 10:42:38",
+                                        "fileName": "web REST api.pdf",
+                                        "url": "file/53681/4039/zoo_file_array/0/web%20REST%20api.pdf?cache=no&inline=yes",
+                                        "mime": "application/pdf",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-pdf.png&size=20",
+                                        "value": "application/pdf|4039|web REST api.pdf",
+                                        "displayValue": "web REST api.pdf"
+                                    },
+                                    {
+                                        "size": "19895",
+                                        "creationDate": "2015-02-10 10:33:53",
+                                        "fileName": "accountExchange.ods",
+                                        "url": "file/53681/3917/zoo_file_array/1/accountExchange.ods?cache=no&inline=yes",
+                                        "mime": "application/vnd.oasis.opendocument.spreadsheet",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-spreadsheet.png&size=20",
+                                        "value": "application/vnd.oasis.opendocument.spreadsheet|3917|accountExchange.ods",
+                                        "displayValue": "accountExchange.ods"
+                                    },
+                                    {
+                                        "size": "1111",
+                                        "creationDate": "2015-02-02 17:06:10",
+                                        "fileName": "accessibility-directory.png",
+                                        "url": "file/53681/3913/zoo_file_array/2/accessibility-directory.png?cache=no&inline=yes",
+                                        "mime": "image/png",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image2.png&size=20",
+                                        "value": "image/png|3913|accessibility-directory.png",
+                                        "displayValue": "accessibility-directory.png"
+                                    }
+                                ],
+                                "zoo_image_array": [
+                                    {
+                                        "thumbnail": "file/53681/4032/zoo_image_array/0/test-cible.jpg?cache=no&inline=yes&width=48",
+                                        "size": "1161853",
+                                        "creationDate": "2015-03-09 10:40:22",
+                                        "fileName": "test-cible.jpg",
+                                        "url": "file/53681/4032/zoo_image_array/0/test-cible.jpg?cache=no&inline=yes",
+                                        "mime": "image/jpeg",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image.png&size=24",
+                                        "value": "image/jpeg|4032|test-cible.jpg",
+                                        "displayValue": "test-cible.jpg"
+                                    },
+                                    {
+                                        "thumbnail": "file/53681/3919/zoo_image_array/1/linux%20world.jpeg?cache=no&inline=yes&width=48",
+                                        "size": "193148",
+                                        "creationDate": "2015-02-10 11:45:18",
+                                        "fileName": "linux world.jpeg",
+                                        "url": "file/53681/3919/zoo_image_array/1/linux%20world.jpeg?cache=no&inline=yes",
+                                        "mime": "image/jpeg",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image.png&size=24",
+                                        "value": "image/jpeg|3919|linux world.jpeg",
+                                        "displayValue": "linux world.jpeg"
+                                    },
+                                    {
+                                        "thumbnail": "file/53681/3914/zoo_image_array/2/acroread.png?cache=no&inline=yes&width=48",
+                                        "size": "1067",
+                                        "creationDate": "2015-02-02 17:06:13",
+                                        "fileName": "acroread.png",
+                                        "url": "file/53681/3914/zoo_image_array/2/acroread.png?cache=no&inline=yes",
+                                        "mime": "image/png",
+                                        "icon": "resizeimg.php?img=CORE%2FImages%2Fmime-image2.png&size=24",
+                                        "value": "image/png|3914|acroread.png",
+                                        "displayValue": "acroread.png"
+                                    }
+                                ],
+                                "zoo_text_array": [
+                                    {
+                                        "value": "Kjnjkkjjkl jkh k",
+                                        "displayValue": "Kjnjkkjjkl jkh k"
+                                    },
+                                    {
+                                        "value": "mmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+                                        "displayValue": "mmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+                                    }
+                                ],
+                                "zoo_longtext_array": [
+                                    {
+                                        "value": "Il était une fois \nDans la forêt",
+                                        "displayValue": "Il était une fois \nDans la forêt"
+                                    },
+                                    {
+                                        "value": "YMMMMMMMMMMMMMMMMMMMM\nMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
+                                        "displayValue": "YMMMMMMMMMMMMMMMMMMMM\nMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+                                    }
+                                ],
+                                "zoo_htmltext_array": [
+                                    {
+                                        "value": "<p>Yo234rt</p>",
+                                        "displayValue": "<p>Yo234rt</p>"
+                                    },
+                                    {
+                                        "value": "<p>EZ4</p>",
+                                        "displayValue": "<p>EZ4</p>"
+                                    }
+                                ]
+                            },
+                            "uri": "/tmp32/api/v1/documents/53681.json"
+                        }
+                    },
+                    "locale": {
+                        "label": "Français",
+                        "localeLabel": "Français",
+                        "flag": "",
+                        "locale": "fr",
+                        "culture": "fr-FR",
+                        "dateFormat": "%d/%m/%Y",
+                        "dateTimeFormat": "%d/%m/%Y %H:%M",
+                        "timeFormat": "%H:%M:%S"
+                    },
+                    "style": {
+                        "css": [
+                            {
+                                "path": "css/dcp/document/bootstrap.css?ws=3583",
+                                "key": "bootstrap"
+                            },
+                            {
+                                "path": "css/dcp/document/kendo.css?ws=3583",
+                                "key": "kendo"
+                            },
+                            {
+                                "path": "css/dcp/document/document.css?ws=3583",
+                                "key": "document"
+                            },
+                            {
+                                "path": "lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap.css?ws=3583",
+                                "key": "datatable"
+                            }
+                        ]
+                    },
+                    "script": {
+                        "js": []
+                    }
+                },
+                "properties": {
+                    "requestIdentifier": "!defaultEdition",
+                    "uri": "/tmp32/api/v1/documents/53681/views/!coreEdition",
+                    "identifier": "!coreEdition",
+                    "mode": "edition",
+                    "label": "Vue de consultation core",
+                    "isDisplayable": false,
+                    "order": 0,
+                    "menu": "",
+                    "mask": {
+                        "id": 0,
+                        "title": ""
+                    }
+                }
+            }
+        },
+        "53679!structure" : {
+            "success": true,
+            "messages": [],
+            "data": {
+                "document": {
+                    "uri": "/tmp32/api/v1/families/ZOO_ALLTYPE.json"
+                },
+                "family": {
+                    "structure": {
+                        "zoo_f_title": {
+                            "id": "zoo_f_title",
+                            "visibility": "W",
+                            "label": "Titre",
+                            "type": "frame",
+                            "logicalOrder": 0,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_title": {
+                                    "id": "zoo_title",
+                                    "visibility": "W",
+                                    "label": "Le titre",
+                                    "type": "text",
+                                    "logicalOrder": 1,
+                                    "multiple": false,
+                                    "options": [],
+                                    "needed": false
+                                }
+                            }
+                        },
+                        "zoo_t_tab": {
+                            "id": "zoo_t_tab",
+                            "visibility": "W",
+                            "label": "Basiques",
+                            "type": "tab",
+                            "logicalOrder": 2,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_fr_rels": {
+                                    "id": "zoo_fr_rels",
+                                    "visibility": "W",
+                                    "label": "Relations",
+                                    "type": "frame",
+                                    "logicalOrder": 3,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_account": {
+                                            "id": "zoo_account",
+                                            "visibility": "W",
+                                            "label": "Un compte",
+                                            "type": "account",
+                                            "logicalOrder": 4,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "helpOutputs": [
+                                                "zoo_account"
+                                            ]
+                                        },
+                                        "zoo_account_multiple": {
+                                            "id": "zoo_account_multiple",
+                                            "visibility": "W",
+                                            "label": "Des comptes",
+                                            "type": "account",
+                                            "logicalOrder": 5,
+                                            "multiple": true,
+                                            "options": {
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "helpOutputs": [
+                                                "zoo_account_multiple"
+                                            ]
+                                        },
+                                        "zoo_docid": {
+                                            "id": "zoo_docid",
+                                            "visibility": "W",
+                                            "label": "Un document",
+                                            "type": "docid",
+                                            "logicalOrder": 6,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_docid_multiple": {
+                                            "id": "zoo_docid_multiple",
+                                            "visibility": "W",
+                                            "label": "Des documents",
+                                            "type": "docid",
+                                            "logicalOrder": 7,
+                                            "multiple": true,
+                                            "options": {
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false
+                                        }
+                                    }
+                                },
+                                "zoo_fr_date": {
+                                    "id": "zoo_fr_date",
+                                    "visibility": "W",
+                                    "label": "Le temps",
+                                    "type": "frame",
+                                    "logicalOrder": 8,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_date": {
+                                            "id": "zoo_date",
+                                            "visibility": "W",
+                                            "label": "Une date",
+                                            "type": "date",
+                                            "logicalOrder": 9,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_time": {
+                                            "id": "zoo_time",
+                                            "visibility": "W",
+                                            "label": "Une heure",
+                                            "type": "time",
+                                            "logicalOrder": 10,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_timestamp": {
+                                            "id": "zoo_timestamp",
+                                            "visibility": "W",
+                                            "label": "Une date avec  une heure",
+                                            "type": "timestamp",
+                                            "logicalOrder": 11,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        }
+                                    }
+                                },
+                                "zoo_fr_number": {
+                                    "id": "zoo_fr_number",
+                                    "visibility": "W",
+                                    "label": "Les nombres",
+                                    "type": "frame",
+                                    "logicalOrder": 12,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_integer": {
+                                            "id": "zoo_integer",
+                                            "visibility": "W",
+                                            "label": "Un entier",
+                                            "type": "int",
+                                            "logicalOrder": 13,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_double": {
+                                            "id": "zoo_double",
+                                            "visibility": "W",
+                                            "label": "Un décimal",
+                                            "type": "double",
+                                            "logicalOrder": 14,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_money": {
+                                            "id": "zoo_money",
+                                            "visibility": "W",
+                                            "label": "Un sous",
+                                            "type": "money",
+                                            "logicalOrder": 15,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        }
+                                    }
+                                },
+                                "zoo_fr_misc": {
+                                    "id": "zoo_fr_misc",
+                                    "visibility": "W",
+                                    "label": "Divers",
+                                    "type": "frame",
+                                    "logicalOrder": 16,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_password": {
+                                            "id": "zoo_password",
+                                            "visibility": "W",
+                                            "label": "Un mot de passe",
+                                            "type": "password",
+                                            "logicalOrder": 17,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_color": {
+                                            "id": "zoo_color",
+                                            "visibility": "W",
+                                            "label": "Une couleur",
+                                            "type": "color",
+                                            "logicalOrder": 18,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        }
+                                    }
+                                },
+                                "zoo_fr_file": {
+                                    "id": "zoo_fr_file",
+                                    "visibility": "W",
+                                    "label": "Fichiers & images",
+                                    "type": "frame",
+                                    "logicalOrder": 19,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_file": {
+                                            "id": "zoo_file",
+                                            "visibility": "W",
+                                            "label": "Un fichier",
+                                            "type": "file",
+                                            "logicalOrder": 20,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_image": {
+                                            "id": "zoo_image",
+                                            "visibility": "W",
+                                            "label": "Une image",
+                                            "type": "image",
+                                            "logicalOrder": 21,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        }
+                                    }
+                                },
+                                "zoo_fr_text": {
+                                    "id": "zoo_fr_text",
+                                    "visibility": "W",
+                                    "label": "Les textes",
+                                    "type": "frame",
+                                    "logicalOrder": 22,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_htmltext": {
+                                            "id": "zoo_htmltext",
+                                            "visibility": "W",
+                                            "label": "Un texte formarté",
+                                            "type": "htmltext",
+                                            "logicalOrder": 23,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_longtext": {
+                                            "id": "zoo_longtext",
+                                            "visibility": "W",
+                                            "label": "Un texte multiligne",
+                                            "type": "longtext",
+                                            "logicalOrder": 24,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        },
+                                        "zoo_text": {
+                                            "id": "zoo_text",
+                                            "visibility": "W",
+                                            "label": "Un texte simple",
+                                            "type": "text",
+                                            "logicalOrder": 25,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false
+                                        }
+                                    }
+                                },
+                                "zoo_fr_enums": {
+                                    "id": "zoo_fr_enums",
+                                    "visibility": "W",
+                                    "label": "Énumérés",
+                                    "type": "frame",
+                                    "logicalOrder": 44,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_enums": {
+                                            "id": "zoo_enums",
+                                            "visibility": "W",
+                                            "label": "Des énumérés",
+                                            "type": "enum",
+                                            "logicalOrder": 45,
+                                            "multiple": true,
+                                            "options": {
+                                                "multiple": "yes",
+                                                "bmenu": "no"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enums"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_enums": {
+                            "id": "zoo_t_tab_enums",
+                            "visibility": "W",
+                            "label": "Les énumérés",
+                            "type": "tab",
+                            "logicalOrder": 26,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_fr_enumsimple": {
+                                    "id": "zoo_fr_enumsimple",
+                                    "visibility": "W",
+                                    "label": "Énumérés directs simple",
+                                    "type": "frame",
+                                    "logicalOrder": 27,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_enumlist": {
+                                            "id": "zoo_enumlist",
+                                            "visibility": "W",
+                                            "label": "Un énuméré liste",
+                                            "type": "enum",
+                                            "logicalOrder": 28,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "AD",
+                                                    "label": "Andorre"
+                                                },
+                                                {
+                                                    "key": "AE",
+                                                    "label": "Emirats Arabes unis"
+                                                },
+                                                {
+                                                    "key": "AF",
+                                                    "label": "Afghanistan"
+                                                },
+                                                {
+                                                    "key": "AG",
+                                                    "label": "Antigua et Barbade"
+                                                },
+                                                {
+                                                    "key": "AI",
+                                                    "label": "Anguilla"
+                                                },
+                                                {
+                                                    "key": "AL",
+                                                    "label": "Albanie"
+                                                },
+                                                {
+                                                    "key": "AM",
+                                                    "label": "Arménie"
+                                                },
+                                                {
+                                                    "key": "AN",
+                                                    "label": "Antilles néerlandaises"
+                                                },
+                                                {
+                                                    "key": "AO",
+                                                    "label": "Angola"
+                                                },
+                                                {
+                                                    "key": "AR",
+                                                    "label": "Argentine"
+                                                },
+                                                {
+                                                    "key": "AS",
+                                                    "label": "Samoa américain"
+                                                },
+                                                {
+                                                    "key": "AT",
+                                                    "label": "Autriche"
+                                                },
+                                                {
+                                                    "key": "AU",
+                                                    "label": "Australie"
+                                                },
+                                                {
+                                                    "key": "AW",
+                                                    "label": "Aruba"
+                                                },
+                                                {
+                                                    "key": "AZ",
+                                                    "label": "Azerbaïdjan"
+                                                },
+                                                {
+                                                    "key": "BB",
+                                                    "label": "Barbade"
+                                                },
+                                                {
+                                                    "key": "BD",
+                                                    "label": "Bangladesh"
+                                                },
+                                                {
+                                                    "key": "BE",
+                                                    "label": "Belgique"
+                                                },
+                                                {
+                                                    "key": "BF",
+                                                    "label": "Burkina Faso"
+                                                },
+                                                {
+                                                    "key": "BG",
+                                                    "label": "Bulgarie"
+                                                },
+                                                {
+                                                    "key": "BH",
+                                                    "label": "Bahrein"
+                                                },
+                                                {
+                                                    "key": "BI",
+                                                    "label": "Burundi"
+                                                },
+                                                {
+                                                    "key": "BJ",
+                                                    "label": "Bénin"
+                                                },
+                                                {
+                                                    "key": "BM",
+                                                    "label": "Bermudes"
+                                                },
+                                                {
+                                                    "key": "BN",
+                                                    "label": "Brunei Darussalam"
+                                                },
+                                                {
+                                                    "key": "BO",
+                                                    "label": "Bolivie"
+                                                },
+                                                {
+                                                    "key": "BR",
+                                                    "label": "Brésil"
+                                                },
+                                                {
+                                                    "key": "BS",
+                                                    "label": "Bahamas"
+                                                },
+                                                {
+                                                    "key": "BT",
+                                                    "label": "Bhoutan"
+                                                },
+                                                {
+                                                    "key": "BV",
+                                                    "label": "Iles Bouvet"
+                                                },
+                                                {
+                                                    "key": "BW",
+                                                    "label": "Botswana"
+                                                },
+                                                {
+                                                    "key": "BY",
+                                                    "label": "Biélorussie"
+                                                },
+                                                {
+                                                    "key": "BZ",
+                                                    "label": "Belize"
+                                                },
+                                                {
+                                                    "key": "CA",
+                                                    "label": "Canada"
+                                                },
+                                                {
+                                                    "key": "CC",
+                                                    "label": "Iles Cocos"
+                                                },
+                                                {
+                                                    "key": "CF",
+                                                    "label": "Centre-Afrique"
+                                                },
+                                                {
+                                                    "key": "CG",
+                                                    "label": "Congo"
+                                                },
+                                                {
+                                                    "key": "CH",
+                                                    "label": "Suisse"
+                                                },
+                                                {
+                                                    "key": "CI",
+                                                    "label": "Côte d'Ivoire"
+                                                },
+                                                {
+                                                    "key": "CK",
+                                                    "label": "Iles Cook"
+                                                },
+                                                {
+                                                    "key": "CL",
+                                                    "label": "Chili"
+                                                },
+                                                {
+                                                    "key": "CM",
+                                                    "label": "Cameroun"
+                                                },
+                                                {
+                                                    "key": "CN",
+                                                    "label": "Chine"
+                                                },
+                                                {
+                                                    "key": "CO",
+                                                    "label": "Colombie"
+                                                },
+                                                {
+                                                    "key": "CR",
+                                                    "label": "Costa Rica"
+                                                },
+                                                {
+                                                    "key": "CU",
+                                                    "label": "Cuba"
+                                                },
+                                                {
+                                                    "key": "CV",
+                                                    "label": "Cap Vert"
+                                                },
+                                                {
+                                                    "key": "CX",
+                                                    "label": "Ile Christmas"
+                                                },
+                                                {
+                                                    "key": "CY",
+                                                    "label": "Chypre"
+                                                },
+                                                {
+                                                    "key": "CZ",
+                                                    "label": "Tchéquie"
+                                                },
+                                                {
+                                                    "key": "DE",
+                                                    "label": "Allemagne"
+                                                },
+                                                {
+                                                    "key": "DJ",
+                                                    "label": "Djibouti"
+                                                },
+                                                {
+                                                    "key": "DK",
+                                                    "label": "Danemark"
+                                                },
+                                                {
+                                                    "key": "DM",
+                                                    "label": "Dominique"
+                                                },
+                                                {
+                                                    "key": "DO",
+                                                    "label": "République dominicaine"
+                                                },
+                                                {
+                                                    "key": "DZ",
+                                                    "label": "Algérie"
+                                                },
+                                                {
+                                                    "key": "EC",
+                                                    "label": "Equateur"
+                                                },
+                                                {
+                                                    "key": "EE",
+                                                    "label": "Estonie"
+                                                },
+                                                {
+                                                    "key": "EG",
+                                                    "label": "Egypte"
+                                                },
+                                                {
+                                                    "key": "EH",
+                                                    "label": "Sahara occidental"
+                                                },
+                                                {
+                                                    "key": "ER",
+                                                    "label": "Erythrée"
+                                                },
+                                                {
+                                                    "key": "ES",
+                                                    "label": "Espagne"
+                                                },
+                                                {
+                                                    "key": "ET",
+                                                    "label": "Ethiopie"
+                                                },
+                                                {
+                                                    "key": "EU",
+                                                    "label": "Union Européenne"
+                                                },
+                                                {
+                                                    "key": "FI",
+                                                    "label": "Finlande"
+                                                },
+                                                {
+                                                    "key": "FJ",
+                                                    "label": "Fidji"
+                                                },
+                                                {
+                                                    "key": "FK",
+                                                    "label": "Falkland"
+                                                },
+                                                {
+                                                    "key": "FM",
+                                                    "label": "Micronésie"
+                                                },
+                                                {
+                                                    "key": "FO",
+                                                    "label": "Féroé"
+                                                },
+                                                {
+                                                    "key": "FR",
+                                                    "label": "France"
+                                                },
+                                                {
+                                                    "key": "GA",
+                                                    "label": "Gabon"
+                                                },
+                                                {
+                                                    "key": "GD",
+                                                    "label": "Grenade"
+                                                },
+                                                {
+                                                    "key": "GE",
+                                                    "label": "Géorgie"
+                                                },
+                                                {
+                                                    "key": "GF",
+                                                    "label": "Guyane française"
+                                                },
+                                                {
+                                                    "key": "GH",
+                                                    "label": "Ghana"
+                                                },
+                                                {
+                                                    "key": "GI",
+                                                    "label": "Gibraltar"
+                                                },
+                                                {
+                                                    "key": "GL",
+                                                    "label": "Groenland"
+                                                },
+                                                {
+                                                    "key": "GM",
+                                                    "label": "Gambie"
+                                                },
+                                                {
+                                                    "key": "GN",
+                                                    "label": "Guinée"
+                                                },
+                                                {
+                                                    "key": "GP",
+                                                    "label": "Guadeloupe"
+                                                },
+                                                {
+                                                    "key": "GR",
+                                                    "label": "Grèce"
+                                                },
+                                                {
+                                                    "key": "GT",
+                                                    "label": "Guatemala"
+                                                },
+                                                {
+                                                    "key": "GU",
+                                                    "label": "Guam (USA)"
+                                                },
+                                                {
+                                                    "key": "GW",
+                                                    "label": "Guinée Bissau"
+                                                },
+                                                {
+                                                    "key": "GY",
+                                                    "label": "Guyane"
+                                                },
+                                                {
+                                                    "key": "HK",
+                                                    "label": "Hong Kong"
+                                                },
+                                                {
+                                                    "key": "HM",
+                                                    "label": "Iles Heard et Mac Donald"
+                                                },
+                                                {
+                                                    "key": "HN",
+                                                    "label": "Honduras"
+                                                },
+                                                {
+                                                    "key": "HR",
+                                                    "label": "Croatie"
+                                                },
+                                                {
+                                                    "key": "HT",
+                                                    "label": "Haïti"
+                                                },
+                                                {
+                                                    "key": "HU",
+                                                    "label": "Hongrie"
+                                                },
+                                                {
+                                                    "key": "ID",
+                                                    "label": "Indonésie"
+                                                },
+                                                {
+                                                    "key": "IE",
+                                                    "label": "Irlande"
+                                                },
+                                                {
+                                                    "key": "IL",
+                                                    "label": "Israël"
+                                                },
+                                                {
+                                                    "key": "IN",
+                                                    "label": "Inde"
+                                                },
+                                                {
+                                                    "key": "IO",
+                                                    "label": "Territoires britanniques de l'océan indien"
+                                                },
+                                                {
+                                                    "key": "IQ",
+                                                    "label": "Irak"
+                                                },
+                                                {
+                                                    "key": "IR",
+                                                    "label": "Iran"
+                                                },
+                                                {
+                                                    "key": "IS",
+                                                    "label": "Islande"
+                                                },
+                                                {
+                                                    "key": "IT",
+                                                    "label": "Italie"
+                                                },
+                                                {
+                                                    "key": "JM",
+                                                    "label": "Jamaïque"
+                                                },
+                                                {
+                                                    "key": "JO",
+                                                    "label": "Jordanie"
+                                                },
+                                                {
+                                                    "key": "JP",
+                                                    "label": "Japon"
+                                                },
+                                                {
+                                                    "key": "KE",
+                                                    "label": "Kenya"
+                                                },
+                                                {
+                                                    "key": "KG",
+                                                    "label": "Kirghizistan"
+                                                },
+                                                {
+                                                    "key": "KH",
+                                                    "label": "Cambodge"
+                                                },
+                                                {
+                                                    "key": "KI",
+                                                    "label": "Kiribati"
+                                                },
+                                                {
+                                                    "key": "KM",
+                                                    "label": "Comores"
+                                                },
+                                                {
+                                                    "key": "KN",
+                                                    "label": "Saint Kitts et Nevis"
+                                                },
+                                                {
+                                                    "key": "KP",
+                                                    "label": "Corée du Nord"
+                                                },
+                                                {
+                                                    "key": "KR",
+                                                    "label": "Corée du Sud"
+                                                },
+                                                {
+                                                    "key": "KW",
+                                                    "label": "Koweït"
+                                                },
+                                                {
+                                                    "key": "KY",
+                                                    "label": "Cayman"
+                                                },
+                                                {
+                                                    "key": "KZ",
+                                                    "label": "Kazakhstan"
+                                                },
+                                                {
+                                                    "key": "LA",
+                                                    "label": "Laos"
+                                                },
+                                                {
+                                                    "key": "LB",
+                                                    "label": "Liban"
+                                                },
+                                                {
+                                                    "key": "LC",
+                                                    "label": "Sainte Lucie"
+                                                },
+                                                {
+                                                    "key": "LI",
+                                                    "label": "Liechtenstein"
+                                                },
+                                                {
+                                                    "key": "LK",
+                                                    "label": "Sri Lanka"
+                                                },
+                                                {
+                                                    "key": "LR",
+                                                    "label": "Libéria"
+                                                },
+                                                {
+                                                    "key": "LS",
+                                                    "label": "Lesotho"
+                                                },
+                                                {
+                                                    "key": "LT",
+                                                    "label": "Lituanie"
+                                                },
+                                                {
+                                                    "key": "LU",
+                                                    "label": "Luxembourg"
+                                                },
+                                                {
+                                                    "key": "LV",
+                                                    "label": "Lettonie"
+                                                },
+                                                {
+                                                    "key": "LY",
+                                                    "label": "Libye"
+                                                },
+                                                {
+                                                    "key": "MA",
+                                                    "label": "Maroc"
+                                                },
+                                                {
+                                                    "key": "MC",
+                                                    "label": "Monaco"
+                                                },
+                                                {
+                                                    "key": "MD",
+                                                    "label": "Moldavie"
+                                                },
+                                                {
+                                                    "key": "MG",
+                                                    "label": "Madagascar"
+                                                },
+                                                {
+                                                    "key": "MK",
+                                                    "label": "République de Macédoine"
+                                                },
+                                                {
+                                                    "key": "MM",
+                                                    "label": "Birmanie"
+                                                },
+                                                {
+                                                    "key": "MN",
+                                                    "label": "Mongolie"
+                                                },
+                                                {
+                                                    "key": "MO",
+                                                    "label": "Macao"
+                                                },
+                                                {
+                                                    "key": "MQ",
+                                                    "label": "Martinique"
+                                                },
+                                                {
+                                                    "key": "MR",
+                                                    "label": "Mauritanie"
+                                                },
+                                                {
+                                                    "key": "MS",
+                                                    "label": "Montserrat"
+                                                },
+                                                {
+                                                    "key": "MT",
+                                                    "label": "Malte"
+                                                },
+                                                {
+                                                    "key": "MU",
+                                                    "label": "Ile Maurice"
+                                                },
+                                                {
+                                                    "key": "MV",
+                                                    "label": "Maldives"
+                                                },
+                                                {
+                                                    "key": "MW",
+                                                    "label": "Malawi"
+                                                },
+                                                {
+                                                    "key": "MX",
+                                                    "label": "Mexice"
+                                                },
+                                                {
+                                                    "key": "MY",
+                                                    "label": "Malaisie"
+                                                },
+                                                {
+                                                    "key": "MZ",
+                                                    "label": "Mozambique"
+                                                },
+                                                {
+                                                    "key": "NA",
+                                                    "label": "Namibie"
+                                                },
+                                                {
+                                                    "key": "NC",
+                                                    "label": "Nouvelle Calédonie"
+                                                },
+                                                {
+                                                    "key": "NE",
+                                                    "label": "Niger"
+                                                },
+                                                {
+                                                    "key": "NF",
+                                                    "label": "Norfolk"
+                                                },
+                                                {
+                                                    "key": "NG",
+                                                    "label": "Nigéria"
+                                                },
+                                                {
+                                                    "key": "NI",
+                                                    "label": "Nicaragua"
+                                                },
+                                                {
+                                                    "key": "NL",
+                                                    "label": "Pays-Bas"
+                                                },
+                                                {
+                                                    "key": "NO",
+                                                    "label": "Norvège"
+                                                },
+                                                {
+                                                    "key": "NP",
+                                                    "label": "Népal"
+                                                },
+                                                {
+                                                    "key": "NR",
+                                                    "label": "Nauru"
+                                                },
+                                                {
+                                                    "key": "NU",
+                                                    "label": "Niue"
+                                                },
+                                                {
+                                                    "key": "NZ",
+                                                    "label": "Nouvelle Zélande"
+                                                },
+                                                {
+                                                    "key": "OM",
+                                                    "label": "Oman"
+                                                },
+                                                {
+                                                    "key": "PA",
+                                                    "label": "Panama"
+                                                },
+                                                {
+                                                    "key": "PE",
+                                                    "label": "Pérou"
+                                                },
+                                                {
+                                                    "key": "PF",
+                                                    "label": "Polynésie française"
+                                                },
+                                                {
+                                                    "key": "PG",
+                                                    "label": "Papouasie Nouvelle Guinée"
+                                                },
+                                                {
+                                                    "key": "PH",
+                                                    "label": "Philippines"
+                                                },
+                                                {
+                                                    "key": "PK",
+                                                    "label": "Pakistan"
+                                                },
+                                                {
+                                                    "key": "PL",
+                                                    "label": "Plogne"
+                                                },
+                                                {
+                                                    "key": "PM",
+                                                    "label": "Saint Pierre et Miquelon"
+                                                },
+                                                {
+                                                    "key": "PN",
+                                                    "label": "Pitcairn"
+                                                },
+                                                {
+                                                    "key": "PR",
+                                                    "label": "Porto-Rico"
+                                                },
+                                                {
+                                                    "key": "PT",
+                                                    "label": "Portugal"
+                                                },
+                                                {
+                                                    "key": "PW",
+                                                    "label": "Palau"
+                                                },
+                                                {
+                                                    "key": "PY",
+                                                    "label": "Paraguay"
+                                                },
+                                                {
+                                                    "key": "QA",
+                                                    "label": "Qatar"
+                                                },
+                                                {
+                                                    "key": "RE",
+                                                    "label": "Réunion"
+                                                },
+                                                {
+                                                    "key": "RO",
+                                                    "label": "Roumanie"
+                                                },
+                                                {
+                                                    "key": "RU",
+                                                    "label": "Russie"
+                                                },
+                                                {
+                                                    "key": "RW",
+                                                    "label": "Rwanda"
+                                                },
+                                                {
+                                                    "key": "SA",
+                                                    "label": "Arabie Saoudite"
+                                                },
+                                                {
+                                                    "key": "SB",
+                                                    "label": "Iles Salomon"
+                                                },
+                                                {
+                                                    "key": "SC",
+                                                    "label": "Seychelles"
+                                                },
+                                                {
+                                                    "key": "SD",
+                                                    "label": "Soudan"
+                                                },
+                                                {
+                                                    "key": "SE",
+                                                    "label": "Suède"
+                                                },
+                                                {
+                                                    "key": "SG",
+                                                    "label": "Singapour"
+                                                },
+                                                {
+                                                    "key": "SH",
+                                                    "label": "Sainte Hélène"
+                                                },
+                                                {
+                                                    "key": "SI",
+                                                    "label": "Slovénie"
+                                                },
+                                                {
+                                                    "key": "SJ",
+                                                    "label": "Iles Svalbaard et Jan Mayen"
+                                                },
+                                                {
+                                                    "key": "SK",
+                                                    "label": "République Slovaque"
+                                                },
+                                                {
+                                                    "key": "SL",
+                                                    "label": "Sierra Leone"
+                                                },
+                                                {
+                                                    "key": "SM",
+                                                    "label": "San Marin"
+                                                },
+                                                {
+                                                    "key": "SN",
+                                                    "label": "Sénégal"
+                                                },
+                                                {
+                                                    "key": "SO",
+                                                    "label": "Somalie"
+                                                },
+                                                {
+                                                    "key": "SR",
+                                                    "label": "Surinam"
+                                                },
+                                                {
+                                                    "key": "ST",
+                                                    "label": "Saint Tomé et Principe"
+                                                },
+                                                {
+                                                    "key": "SV",
+                                                    "label": "El Salvador"
+                                                },
+                                                {
+                                                    "key": "SY",
+                                                    "label": "Syrie"
+                                                },
+                                                {
+                                                    "key": "SZ",
+                                                    "label": "Swaziland"
+                                                },
+                                                {
+                                                    "key": "TC",
+                                                    "label": "Iles Turques et Caïques"
+                                                },
+                                                {
+                                                    "key": "TD",
+                                                    "label": "Tchad"
+                                                },
+                                                {
+                                                    "key": "TF",
+                                                    "label": "Territoire austral français"
+                                                },
+                                                {
+                                                    "key": "TG",
+                                                    "label": "Togo"
+                                                },
+                                                {
+                                                    "key": "TH",
+                                                    "label": "Thaïlande"
+                                                },
+                                                {
+                                                    "key": "TJ",
+                                                    "label": "Tadjikistan"
+                                                },
+                                                {
+                                                    "key": "TK",
+                                                    "label": "Tokelau"
+                                                },
+                                                {
+                                                    "key": "TM",
+                                                    "label": "Turkménistan"
+                                                },
+                                                {
+                                                    "key": "TN",
+                                                    "label": "Tunisie"
+                                                },
+                                                {
+                                                    "key": "TO",
+                                                    "label": "Tonga"
+                                                },
+                                                {
+                                                    "key": "TP",
+                                                    "label": "Timor oriental"
+                                                },
+                                                {
+                                                    "key": "TR",
+                                                    "label": "Turquie"
+                                                },
+                                                {
+                                                    "key": "TT",
+                                                    "label": "Trinité et Tobago"
+                                                },
+                                                {
+                                                    "key": "TV",
+                                                    "label": "Tuvalu"
+                                                },
+                                                {
+                                                    "key": "TW",
+                                                    "label": "Taïwan"
+                                                },
+                                                {
+                                                    "key": "TZ",
+                                                    "label": "Tanzanie"
+                                                },
+                                                {
+                                                    "key": "UA",
+                                                    "label": "Ukraine"
+                                                },
+                                                {
+                                                    "key": "UK",
+                                                    "label": "Grande-Bretagne"
+                                                },
+                                                {
+                                                    "key": "UM",
+                                                    "label": "diverses îles des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "US",
+                                                    "label": "Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "UY",
+                                                    "label": "Uruguay"
+                                                },
+                                                {
+                                                    "key": "UZ",
+                                                    "label": "Ouzbékistan"
+                                                },
+                                                {
+                                                    "key": "VA",
+                                                    "label": "Vatican"
+                                                },
+                                                {
+                                                    "key": "VC",
+                                                    "label": "Saint Vincent et Grenadines"
+                                                },
+                                                {
+                                                    "key": "VE",
+                                                    "label": "Vénézuela"
+                                                },
+                                                {
+                                                    "key": "VG",
+                                                    "label": "Iles Vierges britanniques"
+                                                },
+                                                {
+                                                    "key": "VI",
+                                                    "label": "Iles Vierges des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "VN",
+                                                    "label": "Vietnam"
+                                                },
+                                                {
+                                                    "key": "VU",
+                                                    "label": "Vanuatu"
+                                                },
+                                                {
+                                                    "key": "WF",
+                                                    "label": "Wallis et Futuna"
+                                                },
+                                                {
+                                                    "key": "WS",
+                                                    "label": "Samoa occidental"
+                                                },
+                                                {
+                                                    "key": "YE",
+                                                    "label": "Yemen"
+                                                },
+                                                {
+                                                    "key": "YT",
+                                                    "label": "Mayotte"
+                                                },
+                                                {
+                                                    "key": "YU",
+                                                    "label": "ex-Yougoslavie"
+                                                },
+                                                {
+                                                    "key": "ZA",
+                                                    "label": "Afrique du Sud"
+                                                },
+                                                {
+                                                    "key": "ZM",
+                                                    "label": "Zambie"
+                                                },
+                                                {
+                                                    "key": "ZR",
+                                                    "label": "Zaïre (République Démocratique du Congo)"
+                                                },
+                                                {
+                                                    "key": "ZW",
+                                                    "label": "Zimbabwe"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumlist"
+                                        },
+                                        "zoo_enumauto": {
+                                            "id": "zoo_enumauto",
+                                            "visibility": "W",
+                                            "label": "Un énuméré auto",
+                                            "type": "enum",
+                                            "logicalOrder": 29,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "AD",
+                                                    "label": "Andorre"
+                                                },
+                                                {
+                                                    "key": "AE",
+                                                    "label": "Emirats Arabes unis"
+                                                },
+                                                {
+                                                    "key": "AF",
+                                                    "label": "Afghanistan"
+                                                },
+                                                {
+                                                    "key": "AG",
+                                                    "label": "Antigua et Barbade"
+                                                },
+                                                {
+                                                    "key": "AI",
+                                                    "label": "Anguilla"
+                                                },
+                                                {
+                                                    "key": "AL",
+                                                    "label": "Albanie"
+                                                },
+                                                {
+                                                    "key": "AM",
+                                                    "label": "Arménie"
+                                                },
+                                                {
+                                                    "key": "AN",
+                                                    "label": "Antilles néerlandaises"
+                                                },
+                                                {
+                                                    "key": "AO",
+                                                    "label": "Angola"
+                                                },
+                                                {
+                                                    "key": "AR",
+                                                    "label": "Argentine"
+                                                },
+                                                {
+                                                    "key": "AS",
+                                                    "label": "Samoa américain"
+                                                },
+                                                {
+                                                    "key": "AT",
+                                                    "label": "Autriche"
+                                                },
+                                                {
+                                                    "key": "AU",
+                                                    "label": "Australie"
+                                                },
+                                                {
+                                                    "key": "AW",
+                                                    "label": "Aruba"
+                                                },
+                                                {
+                                                    "key": "AZ",
+                                                    "label": "Azerbaïdjan"
+                                                },
+                                                {
+                                                    "key": "BB",
+                                                    "label": "Barbade"
+                                                },
+                                                {
+                                                    "key": "BD",
+                                                    "label": "Bangladesh"
+                                                },
+                                                {
+                                                    "key": "BE",
+                                                    "label": "Belgique"
+                                                },
+                                                {
+                                                    "key": "BF",
+                                                    "label": "Burkina Faso"
+                                                },
+                                                {
+                                                    "key": "BG",
+                                                    "label": "Bulgarie"
+                                                },
+                                                {
+                                                    "key": "BH",
+                                                    "label": "Bahrein"
+                                                },
+                                                {
+                                                    "key": "BI",
+                                                    "label": "Burundi"
+                                                },
+                                                {
+                                                    "key": "BJ",
+                                                    "label": "Bénin"
+                                                },
+                                                {
+                                                    "key": "BM",
+                                                    "label": "Bermudes"
+                                                },
+                                                {
+                                                    "key": "BN",
+                                                    "label": "Brunei Darussalam"
+                                                },
+                                                {
+                                                    "key": "BO",
+                                                    "label": "Bolivie"
+                                                },
+                                                {
+                                                    "key": "BR",
+                                                    "label": "Brésil"
+                                                },
+                                                {
+                                                    "key": "BS",
+                                                    "label": "Bahamas"
+                                                },
+                                                {
+                                                    "key": "BT",
+                                                    "label": "Bhoutan"
+                                                },
+                                                {
+                                                    "key": "BV",
+                                                    "label": "Iles Bouvet"
+                                                },
+                                                {
+                                                    "key": "BW",
+                                                    "label": "Botswana"
+                                                },
+                                                {
+                                                    "key": "BY",
+                                                    "label": "Biélorussie"
+                                                },
+                                                {
+                                                    "key": "BZ",
+                                                    "label": "Belize"
+                                                },
+                                                {
+                                                    "key": "CA",
+                                                    "label": "Canada"
+                                                },
+                                                {
+                                                    "key": "CC",
+                                                    "label": "Iles Cocos"
+                                                },
+                                                {
+                                                    "key": "CF",
+                                                    "label": "Centre-Afrique"
+                                                },
+                                                {
+                                                    "key": "CG",
+                                                    "label": "Congo"
+                                                },
+                                                {
+                                                    "key": "CH",
+                                                    "label": "Suisse"
+                                                },
+                                                {
+                                                    "key": "CI",
+                                                    "label": "Côte d'Ivoire"
+                                                },
+                                                {
+                                                    "key": "CK",
+                                                    "label": "Iles Cook"
+                                                },
+                                                {
+                                                    "key": "CL",
+                                                    "label": "Chili"
+                                                },
+                                                {
+                                                    "key": "CM",
+                                                    "label": "Cameroun"
+                                                },
+                                                {
+                                                    "key": "CN",
+                                                    "label": "Chine"
+                                                },
+                                                {
+                                                    "key": "CO",
+                                                    "label": "Colombie"
+                                                },
+                                                {
+                                                    "key": "CR",
+                                                    "label": "Costa Rica"
+                                                },
+                                                {
+                                                    "key": "CU",
+                                                    "label": "Cuba"
+                                                },
+                                                {
+                                                    "key": "CV",
+                                                    "label": "Cap Vert"
+                                                },
+                                                {
+                                                    "key": "CX",
+                                                    "label": "Ile Christmas"
+                                                },
+                                                {
+                                                    "key": "CY",
+                                                    "label": "Chypre"
+                                                },
+                                                {
+                                                    "key": "CZ",
+                                                    "label": "Tchéquie"
+                                                },
+                                                {
+                                                    "key": "DE",
+                                                    "label": "Allemagne"
+                                                },
+                                                {
+                                                    "key": "DJ",
+                                                    "label": "Djibouti"
+                                                },
+                                                {
+                                                    "key": "DK",
+                                                    "label": "Danemark"
+                                                },
+                                                {
+                                                    "key": "DM",
+                                                    "label": "Dominique"
+                                                },
+                                                {
+                                                    "key": "DO",
+                                                    "label": "République dominicaine"
+                                                },
+                                                {
+                                                    "key": "DZ",
+                                                    "label": "Algérie"
+                                                },
+                                                {
+                                                    "key": "EC",
+                                                    "label": "Equateur"
+                                                },
+                                                {
+                                                    "key": "EE",
+                                                    "label": "Estonie"
+                                                },
+                                                {
+                                                    "key": "EG",
+                                                    "label": "Egypte"
+                                                },
+                                                {
+                                                    "key": "EH",
+                                                    "label": "Sahara occidental"
+                                                },
+                                                {
+                                                    "key": "ER",
+                                                    "label": "Erythrée"
+                                                },
+                                                {
+                                                    "key": "ES",
+                                                    "label": "Espagne"
+                                                },
+                                                {
+                                                    "key": "ET",
+                                                    "label": "Ethiopie"
+                                                },
+                                                {
+                                                    "key": "EU",
+                                                    "label": "Union Européenne"
+                                                },
+                                                {
+                                                    "key": "FI",
+                                                    "label": "Finlande"
+                                                },
+                                                {
+                                                    "key": "FJ",
+                                                    "label": "Fidji"
+                                                },
+                                                {
+                                                    "key": "FK",
+                                                    "label": "Falkland"
+                                                },
+                                                {
+                                                    "key": "FM",
+                                                    "label": "Micronésie"
+                                                },
+                                                {
+                                                    "key": "FO",
+                                                    "label": "Féroé"
+                                                },
+                                                {
+                                                    "key": "FR",
+                                                    "label": "France"
+                                                },
+                                                {
+                                                    "key": "GA",
+                                                    "label": "Gabon"
+                                                },
+                                                {
+                                                    "key": "GD",
+                                                    "label": "Grenade"
+                                                },
+                                                {
+                                                    "key": "GE",
+                                                    "label": "Géorgie"
+                                                },
+                                                {
+                                                    "key": "GF",
+                                                    "label": "Guyane française"
+                                                },
+                                                {
+                                                    "key": "GH",
+                                                    "label": "Ghana"
+                                                },
+                                                {
+                                                    "key": "GI",
+                                                    "label": "Gibraltar"
+                                                },
+                                                {
+                                                    "key": "GL",
+                                                    "label": "Groenland"
+                                                },
+                                                {
+                                                    "key": "GM",
+                                                    "label": "Gambie"
+                                                },
+                                                {
+                                                    "key": "GN",
+                                                    "label": "Guinée"
+                                                },
+                                                {
+                                                    "key": "GP",
+                                                    "label": "Guadeloupe"
+                                                },
+                                                {
+                                                    "key": "GR",
+                                                    "label": "Grèce"
+                                                },
+                                                {
+                                                    "key": "GT",
+                                                    "label": "Guatemala"
+                                                },
+                                                {
+                                                    "key": "GU",
+                                                    "label": "Guam (USA)"
+                                                },
+                                                {
+                                                    "key": "GW",
+                                                    "label": "Guinée Bissau"
+                                                },
+                                                {
+                                                    "key": "GY",
+                                                    "label": "Guyane"
+                                                },
+                                                {
+                                                    "key": "HK",
+                                                    "label": "Hong Kong"
+                                                },
+                                                {
+                                                    "key": "HM",
+                                                    "label": "Iles Heard et Mac Donald"
+                                                },
+                                                {
+                                                    "key": "HN",
+                                                    "label": "Honduras"
+                                                },
+                                                {
+                                                    "key": "HR",
+                                                    "label": "Croatie"
+                                                },
+                                                {
+                                                    "key": "HT",
+                                                    "label": "Haïti"
+                                                },
+                                                {
+                                                    "key": "HU",
+                                                    "label": "Hongrie"
+                                                },
+                                                {
+                                                    "key": "ID",
+                                                    "label": "Indonésie"
+                                                },
+                                                {
+                                                    "key": "IE",
+                                                    "label": "Irlande"
+                                                },
+                                                {
+                                                    "key": "IL",
+                                                    "label": "Israël"
+                                                },
+                                                {
+                                                    "key": "IN",
+                                                    "label": "Inde"
+                                                },
+                                                {
+                                                    "key": "IO",
+                                                    "label": "Territoires britanniques de l'océan indien"
+                                                },
+                                                {
+                                                    "key": "IQ",
+                                                    "label": "Irak"
+                                                },
+                                                {
+                                                    "key": "IR",
+                                                    "label": "Iran"
+                                                },
+                                                {
+                                                    "key": "IS",
+                                                    "label": "Islande"
+                                                },
+                                                {
+                                                    "key": "IT",
+                                                    "label": "Italie"
+                                                },
+                                                {
+                                                    "key": "JM",
+                                                    "label": "Jamaïque"
+                                                },
+                                                {
+                                                    "key": "JO",
+                                                    "label": "Jordanie"
+                                                },
+                                                {
+                                                    "key": "JP",
+                                                    "label": "Japon"
+                                                },
+                                                {
+                                                    "key": "KE",
+                                                    "label": "Kenya"
+                                                },
+                                                {
+                                                    "key": "KG",
+                                                    "label": "Kirghizistan"
+                                                },
+                                                {
+                                                    "key": "KH",
+                                                    "label": "Cambodge"
+                                                },
+                                                {
+                                                    "key": "KI",
+                                                    "label": "Kiribati"
+                                                },
+                                                {
+                                                    "key": "KM",
+                                                    "label": "Comores"
+                                                },
+                                                {
+                                                    "key": "KN",
+                                                    "label": "Saint Kitts et Nevis"
+                                                },
+                                                {
+                                                    "key": "KP",
+                                                    "label": "Corée du Nord"
+                                                },
+                                                {
+                                                    "key": "KR",
+                                                    "label": "Corée du Sud"
+                                                },
+                                                {
+                                                    "key": "KW",
+                                                    "label": "Koweït"
+                                                },
+                                                {
+                                                    "key": "KY",
+                                                    "label": "Cayman"
+                                                },
+                                                {
+                                                    "key": "KZ",
+                                                    "label": "Kazakhstan"
+                                                },
+                                                {
+                                                    "key": "LA",
+                                                    "label": "Laos"
+                                                },
+                                                {
+                                                    "key": "LB",
+                                                    "label": "Liban"
+                                                },
+                                                {
+                                                    "key": "LC",
+                                                    "label": "Sainte Lucie"
+                                                },
+                                                {
+                                                    "key": "LI",
+                                                    "label": "Liechtenstein"
+                                                },
+                                                {
+                                                    "key": "LK",
+                                                    "label": "Sri Lanka"
+                                                },
+                                                {
+                                                    "key": "LR",
+                                                    "label": "Libéria"
+                                                },
+                                                {
+                                                    "key": "LS",
+                                                    "label": "Lesotho"
+                                                },
+                                                {
+                                                    "key": "LT",
+                                                    "label": "Lituanie"
+                                                },
+                                                {
+                                                    "key": "LU",
+                                                    "label": "Luxembourg"
+                                                },
+                                                {
+                                                    "key": "LV",
+                                                    "label": "Lettonie"
+                                                },
+                                                {
+                                                    "key": "LY",
+                                                    "label": "Libye"
+                                                },
+                                                {
+                                                    "key": "MA",
+                                                    "label": "Maroc"
+                                                },
+                                                {
+                                                    "key": "MC",
+                                                    "label": "Monaco"
+                                                },
+                                                {
+                                                    "key": "MD",
+                                                    "label": "Moldavie"
+                                                },
+                                                {
+                                                    "key": "MG",
+                                                    "label": "Madagascar"
+                                                },
+                                                {
+                                                    "key": "MK",
+                                                    "label": "République de Macédoine"
+                                                },
+                                                {
+                                                    "key": "MM",
+                                                    "label": "Birmanie"
+                                                },
+                                                {
+                                                    "key": "MN",
+                                                    "label": "Mongolie"
+                                                },
+                                                {
+                                                    "key": "MO",
+                                                    "label": "Macao"
+                                                },
+                                                {
+                                                    "key": "MQ",
+                                                    "label": "Martinique"
+                                                },
+                                                {
+                                                    "key": "MR",
+                                                    "label": "Mauritanie"
+                                                },
+                                                {
+                                                    "key": "MS",
+                                                    "label": "Montserrat"
+                                                },
+                                                {
+                                                    "key": "MT",
+                                                    "label": "Malte"
+                                                },
+                                                {
+                                                    "key": "MU",
+                                                    "label": "Ile Maurice"
+                                                },
+                                                {
+                                                    "key": "MV",
+                                                    "label": "Maldives"
+                                                },
+                                                {
+                                                    "key": "MW",
+                                                    "label": "Malawi"
+                                                },
+                                                {
+                                                    "key": "MX",
+                                                    "label": "Mexice"
+                                                },
+                                                {
+                                                    "key": "MY",
+                                                    "label": "Malaisie"
+                                                },
+                                                {
+                                                    "key": "MZ",
+                                                    "label": "Mozambique"
+                                                },
+                                                {
+                                                    "key": "NA",
+                                                    "label": "Namibie"
+                                                },
+                                                {
+                                                    "key": "NC",
+                                                    "label": "Nouvelle Calédonie"
+                                                },
+                                                {
+                                                    "key": "NE",
+                                                    "label": "Niger"
+                                                },
+                                                {
+                                                    "key": "NF",
+                                                    "label": "Norfolk"
+                                                },
+                                                {
+                                                    "key": "NG",
+                                                    "label": "Nigéria"
+                                                },
+                                                {
+                                                    "key": "NI",
+                                                    "label": "Nicaragua"
+                                                },
+                                                {
+                                                    "key": "NL",
+                                                    "label": "Pays-Bas"
+                                                },
+                                                {
+                                                    "key": "NO",
+                                                    "label": "Norvège"
+                                                },
+                                                {
+                                                    "key": "NP",
+                                                    "label": "Népal"
+                                                },
+                                                {
+                                                    "key": "NR",
+                                                    "label": "Nauru"
+                                                },
+                                                {
+                                                    "key": "NU",
+                                                    "label": "Niue"
+                                                },
+                                                {
+                                                    "key": "NZ",
+                                                    "label": "Nouvelle Zélande"
+                                                },
+                                                {
+                                                    "key": "OM",
+                                                    "label": "Oman"
+                                                },
+                                                {
+                                                    "key": "PA",
+                                                    "label": "Panama"
+                                                },
+                                                {
+                                                    "key": "PE",
+                                                    "label": "Pérou"
+                                                },
+                                                {
+                                                    "key": "PF",
+                                                    "label": "Polynésie française"
+                                                },
+                                                {
+                                                    "key": "PG",
+                                                    "label": "Papouasie Nouvelle Guinée"
+                                                },
+                                                {
+                                                    "key": "PH",
+                                                    "label": "Philippines"
+                                                },
+                                                {
+                                                    "key": "PK",
+                                                    "label": "Pakistan"
+                                                },
+                                                {
+                                                    "key": "PL",
+                                                    "label": "Plogne"
+                                                },
+                                                {
+                                                    "key": "PM",
+                                                    "label": "Saint Pierre et Miquelon"
+                                                },
+                                                {
+                                                    "key": "PN",
+                                                    "label": "Pitcairn"
+                                                },
+                                                {
+                                                    "key": "PR",
+                                                    "label": "Porto-Rico"
+                                                },
+                                                {
+                                                    "key": "PT",
+                                                    "label": "Portugal"
+                                                },
+                                                {
+                                                    "key": "PW",
+                                                    "label": "Palau"
+                                                },
+                                                {
+                                                    "key": "PY",
+                                                    "label": "Paraguay"
+                                                },
+                                                {
+                                                    "key": "QA",
+                                                    "label": "Qatar"
+                                                },
+                                                {
+                                                    "key": "RE",
+                                                    "label": "Réunion"
+                                                },
+                                                {
+                                                    "key": "RO",
+                                                    "label": "Roumanie"
+                                                },
+                                                {
+                                                    "key": "RU",
+                                                    "label": "Russie"
+                                                },
+                                                {
+                                                    "key": "RW",
+                                                    "label": "Rwanda"
+                                                },
+                                                {
+                                                    "key": "SA",
+                                                    "label": "Arabie Saoudite"
+                                                },
+                                                {
+                                                    "key": "SB",
+                                                    "label": "Iles Salomon"
+                                                },
+                                                {
+                                                    "key": "SC",
+                                                    "label": "Seychelles"
+                                                },
+                                                {
+                                                    "key": "SD",
+                                                    "label": "Soudan"
+                                                },
+                                                {
+                                                    "key": "SE",
+                                                    "label": "Suède"
+                                                },
+                                                {
+                                                    "key": "SG",
+                                                    "label": "Singapour"
+                                                },
+                                                {
+                                                    "key": "SH",
+                                                    "label": "Sainte Hélène"
+                                                },
+                                                {
+                                                    "key": "SI",
+                                                    "label": "Slovénie"
+                                                },
+                                                {
+                                                    "key": "SJ",
+                                                    "label": "Iles Svalbaard et Jan Mayen"
+                                                },
+                                                {
+                                                    "key": "SK",
+                                                    "label": "République Slovaque"
+                                                },
+                                                {
+                                                    "key": "SL",
+                                                    "label": "Sierra Leone"
+                                                },
+                                                {
+                                                    "key": "SM",
+                                                    "label": "San Marin"
+                                                },
+                                                {
+                                                    "key": "SN",
+                                                    "label": "Sénégal"
+                                                },
+                                                {
+                                                    "key": "SO",
+                                                    "label": "Somalie"
+                                                },
+                                                {
+                                                    "key": "SR",
+                                                    "label": "Surinam"
+                                                },
+                                                {
+                                                    "key": "ST",
+                                                    "label": "Saint Tomé et Principe"
+                                                },
+                                                {
+                                                    "key": "SV",
+                                                    "label": "El Salvador"
+                                                },
+                                                {
+                                                    "key": "SY",
+                                                    "label": "Syrie"
+                                                },
+                                                {
+                                                    "key": "SZ",
+                                                    "label": "Swaziland"
+                                                },
+                                                {
+                                                    "key": "TC",
+                                                    "label": "Iles Turques et Caïques"
+                                                },
+                                                {
+                                                    "key": "TD",
+                                                    "label": "Tchad"
+                                                },
+                                                {
+                                                    "key": "TF",
+                                                    "label": "Territoire austral français"
+                                                },
+                                                {
+                                                    "key": "TG",
+                                                    "label": "Togo"
+                                                },
+                                                {
+                                                    "key": "TH",
+                                                    "label": "Thaïlande"
+                                                },
+                                                {
+                                                    "key": "TJ",
+                                                    "label": "Tadjikistan"
+                                                },
+                                                {
+                                                    "key": "TK",
+                                                    "label": "Tokelau"
+                                                },
+                                                {
+                                                    "key": "TM",
+                                                    "label": "Turkménistan"
+                                                },
+                                                {
+                                                    "key": "TN",
+                                                    "label": "Tunisie"
+                                                },
+                                                {
+                                                    "key": "TO",
+                                                    "label": "Tonga"
+                                                },
+                                                {
+                                                    "key": "TP",
+                                                    "label": "Timor oriental"
+                                                },
+                                                {
+                                                    "key": "TR",
+                                                    "label": "Turquie"
+                                                },
+                                                {
+                                                    "key": "TT",
+                                                    "label": "Trinité et Tobago"
+                                                },
+                                                {
+                                                    "key": "TV",
+                                                    "label": "Tuvalu"
+                                                },
+                                                {
+                                                    "key": "TW",
+                                                    "label": "Taïwan"
+                                                },
+                                                {
+                                                    "key": "TZ",
+                                                    "label": "Tanzanie"
+                                                },
+                                                {
+                                                    "key": "UA",
+                                                    "label": "Ukraine"
+                                                },
+                                                {
+                                                    "key": "UK",
+                                                    "label": "Grande-Bretagne"
+                                                },
+                                                {
+                                                    "key": "UM",
+                                                    "label": "diverses îles des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "US",
+                                                    "label": "Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "UY",
+                                                    "label": "Uruguay"
+                                                },
+                                                {
+                                                    "key": "UZ",
+                                                    "label": "Ouzbékistan"
+                                                },
+                                                {
+                                                    "key": "VA",
+                                                    "label": "Vatican"
+                                                },
+                                                {
+                                                    "key": "VC",
+                                                    "label": "Saint Vincent et Grenadines"
+                                                },
+                                                {
+                                                    "key": "VE",
+                                                    "label": "Vénézuela"
+                                                },
+                                                {
+                                                    "key": "VG",
+                                                    "label": "Iles Vierges britanniques"
+                                                },
+                                                {
+                                                    "key": "VI",
+                                                    "label": "Iles Vierges des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "VN",
+                                                    "label": "Vietnam"
+                                                },
+                                                {
+                                                    "key": "VU",
+                                                    "label": "Vanuatu"
+                                                },
+                                                {
+                                                    "key": "WF",
+                                                    "label": "Wallis et Futuna"
+                                                },
+                                                {
+                                                    "key": "WS",
+                                                    "label": "Samoa occidental"
+                                                },
+                                                {
+                                                    "key": "YE",
+                                                    "label": "Yemen"
+                                                },
+                                                {
+                                                    "key": "YT",
+                                                    "label": "Mayotte"
+                                                },
+                                                {
+                                                    "key": "YU",
+                                                    "label": "ex-Yougoslavie"
+                                                },
+                                                {
+                                                    "key": "ZA",
+                                                    "label": "Afrique du Sud"
+                                                },
+                                                {
+                                                    "key": "ZM",
+                                                    "label": "Zambie"
+                                                },
+                                                {
+                                                    "key": "ZR",
+                                                    "label": "Zaïre (République Démocratique du Congo)"
+                                                },
+                                                {
+                                                    "key": "ZW",
+                                                    "label": "Zimbabwe"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumauto"
+                                        },
+                                        "zoo_enumvertical": {
+                                            "id": "zoo_enumvertical",
+                                            "visibility": "W",
+                                            "label": "Un énuméré vertical",
+                                            "type": "enum",
+                                            "logicalOrder": 30,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "0",
+                                                    "label": "0 %"
+                                                },
+                                                {
+                                                    "key": "30",
+                                                    "label": "30 %"
+                                                },
+                                                {
+                                                    "key": "70",
+                                                    "label": "70 %"
+                                                },
+                                                {
+                                                    "key": "100",
+                                                    "label": "100 %"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumvertical"
+                                        },
+                                        "zoo_enumhorizontal": {
+                                            "id": "zoo_enumhorizontal",
+                                            "visibility": "W",
+                                            "label": "Un énuméré horizontal",
+                                            "type": "enum",
+                                            "logicalOrder": 31,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "red",
+                                                    "label": "Rouge"
+                                                },
+                                                {
+                                                    "key": "yellow",
+                                                    "label": "Jaune"
+                                                },
+                                                {
+                                                    "key": "green",
+                                                    "label": "Vert"
+                                                },
+                                                {
+                                                    "key": "blue",
+                                                    "label": "Bleu"
+                                                },
+                                                {
+                                                    "key": "lightblue",
+                                                    "label": "Bleu/Bleu ciel"
+                                                },
+                                                {
+                                                    "key": "navyblue",
+                                                    "label": "Bleu/Bleu marine"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumhorizontal"
+                                        },
+                                        "zoo_enumbool": {
+                                            "id": "zoo_enumbool",
+                                            "visibility": "W",
+                                            "label": "Un énuméré booléen",
+                                            "type": "enum",
+                                            "logicalOrder": 32,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "bool"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "N",
+                                                    "label": "Normal"
+                                                },
+                                                {
+                                                    "key": "C",
+                                                    "label": "Critique"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumbool"
+                                        }
+                                    }
+                                },
+                                "zoo_fr_enumserversimple": {
+                                    "id": "zoo_fr_enumserversimple",
+                                    "visibility": "W",
+                                    "label": "Énumérés server simple",
+                                    "type": "frame",
+                                    "logicalOrder": 33,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_enumserverlist": {
+                                            "id": "zoo_enumserverlist",
+                                            "visibility": "W",
+                                            "label": "Un énuméré liste",
+                                            "type": "enum",
+                                            "logicalOrder": 34,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumserverlist"
+                                        },
+                                        "zoo_enumserverauto": {
+                                            "id": "zoo_enumserverauto",
+                                            "visibility": "W",
+                                            "label": "Un énuméré auto",
+                                            "type": "enum",
+                                            "logicalOrder": 35,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumserverauto"
+                                        },
+                                        "zoo_enumserververtical": {
+                                            "id": "zoo_enumserververtical",
+                                            "visibility": "W",
+                                            "label": "Un énuméré vertical",
+                                            "type": "enum",
+                                            "logicalOrder": 36,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumserververtical"
+                                        },
+                                        "zoo_enumserverhorizontal": {
+                                            "id": "zoo_enumserverhorizontal",
+                                            "visibility": "W",
+                                            "label": "Un énuméré horizontal",
+                                            "type": "enum",
+                                            "logicalOrder": 37,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumserverhorizontal"
+                                        },
+                                        "zoo_enumserverbool": {
+                                            "id": "zoo_enumserverbool",
+                                            "visibility": "W",
+                                            "label": "Un énuméré booléen",
+                                            "type": "enum",
+                                            "logicalOrder": 38,
+                                            "multiple": false,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumserverbool"
+                                        }
+                                    }
+                                },
+                                "zoo_fr_enummultiple": {
+                                    "id": "zoo_fr_enummultiple",
+                                    "visibility": "W",
+                                    "label": "Énumérés directs simple",
+                                    "type": "frame",
+                                    "logicalOrder": 39,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_enumslist": {
+                                            "id": "zoo_enumslist",
+                                            "visibility": "W",
+                                            "label": "Des énumérés liste",
+                                            "type": "enum",
+                                            "logicalOrder": 40,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "AD",
+                                                    "label": "Andorre"
+                                                },
+                                                {
+                                                    "key": "AE",
+                                                    "label": "Emirats Arabes unis"
+                                                },
+                                                {
+                                                    "key": "AF",
+                                                    "label": "Afghanistan"
+                                                },
+                                                {
+                                                    "key": "AG",
+                                                    "label": "Antigua et Barbade"
+                                                },
+                                                {
+                                                    "key": "AI",
+                                                    "label": "Anguilla"
+                                                },
+                                                {
+                                                    "key": "AL",
+                                                    "label": "Albanie"
+                                                },
+                                                {
+                                                    "key": "AM",
+                                                    "label": "Arménie"
+                                                },
+                                                {
+                                                    "key": "AN",
+                                                    "label": "Antilles néerlandaises"
+                                                },
+                                                {
+                                                    "key": "AO",
+                                                    "label": "Angola"
+                                                },
+                                                {
+                                                    "key": "AR",
+                                                    "label": "Argentine"
+                                                },
+                                                {
+                                                    "key": "AS",
+                                                    "label": "Samoa américain"
+                                                },
+                                                {
+                                                    "key": "AT",
+                                                    "label": "Autriche"
+                                                },
+                                                {
+                                                    "key": "AU",
+                                                    "label": "Australie"
+                                                },
+                                                {
+                                                    "key": "AW",
+                                                    "label": "Aruba"
+                                                },
+                                                {
+                                                    "key": "AZ",
+                                                    "label": "Azerbaïdjan"
+                                                },
+                                                {
+                                                    "key": "BB",
+                                                    "label": "Barbade"
+                                                },
+                                                {
+                                                    "key": "BD",
+                                                    "label": "Bangladesh"
+                                                },
+                                                {
+                                                    "key": "BE",
+                                                    "label": "Belgique"
+                                                },
+                                                {
+                                                    "key": "BF",
+                                                    "label": "Burkina Faso"
+                                                },
+                                                {
+                                                    "key": "BG",
+                                                    "label": "Bulgarie"
+                                                },
+                                                {
+                                                    "key": "BH",
+                                                    "label": "Bahrein"
+                                                },
+                                                {
+                                                    "key": "BI",
+                                                    "label": "Burundi"
+                                                },
+                                                {
+                                                    "key": "BJ",
+                                                    "label": "Bénin"
+                                                },
+                                                {
+                                                    "key": "BM",
+                                                    "label": "Bermudes"
+                                                },
+                                                {
+                                                    "key": "BN",
+                                                    "label": "Brunei Darussalam"
+                                                },
+                                                {
+                                                    "key": "BO",
+                                                    "label": "Bolivie"
+                                                },
+                                                {
+                                                    "key": "BR",
+                                                    "label": "Brésil"
+                                                },
+                                                {
+                                                    "key": "BS",
+                                                    "label": "Bahamas"
+                                                },
+                                                {
+                                                    "key": "BT",
+                                                    "label": "Bhoutan"
+                                                },
+                                                {
+                                                    "key": "BV",
+                                                    "label": "Iles Bouvet"
+                                                },
+                                                {
+                                                    "key": "BW",
+                                                    "label": "Botswana"
+                                                },
+                                                {
+                                                    "key": "BY",
+                                                    "label": "Biélorussie"
+                                                },
+                                                {
+                                                    "key": "BZ",
+                                                    "label": "Belize"
+                                                },
+                                                {
+                                                    "key": "CA",
+                                                    "label": "Canada"
+                                                },
+                                                {
+                                                    "key": "CC",
+                                                    "label": "Iles Cocos"
+                                                },
+                                                {
+                                                    "key": "CF",
+                                                    "label": "Centre-Afrique"
+                                                },
+                                                {
+                                                    "key": "CG",
+                                                    "label": "Congo"
+                                                },
+                                                {
+                                                    "key": "CH",
+                                                    "label": "Suisse"
+                                                },
+                                                {
+                                                    "key": "CI",
+                                                    "label": "Côte d'Ivoire"
+                                                },
+                                                {
+                                                    "key": "CK",
+                                                    "label": "Iles Cook"
+                                                },
+                                                {
+                                                    "key": "CL",
+                                                    "label": "Chili"
+                                                },
+                                                {
+                                                    "key": "CM",
+                                                    "label": "Cameroun"
+                                                },
+                                                {
+                                                    "key": "CN",
+                                                    "label": "Chine"
+                                                },
+                                                {
+                                                    "key": "CO",
+                                                    "label": "Colombie"
+                                                },
+                                                {
+                                                    "key": "CR",
+                                                    "label": "Costa Rica"
+                                                },
+                                                {
+                                                    "key": "CU",
+                                                    "label": "Cuba"
+                                                },
+                                                {
+                                                    "key": "CV",
+                                                    "label": "Cap Vert"
+                                                },
+                                                {
+                                                    "key": "CX",
+                                                    "label": "Ile Christmas"
+                                                },
+                                                {
+                                                    "key": "CY",
+                                                    "label": "Chypre"
+                                                },
+                                                {
+                                                    "key": "CZ",
+                                                    "label": "Tchéquie"
+                                                },
+                                                {
+                                                    "key": "DE",
+                                                    "label": "Allemagne"
+                                                },
+                                                {
+                                                    "key": "DJ",
+                                                    "label": "Djibouti"
+                                                },
+                                                {
+                                                    "key": "DK",
+                                                    "label": "Danemark"
+                                                },
+                                                {
+                                                    "key": "DM",
+                                                    "label": "Dominique"
+                                                },
+                                                {
+                                                    "key": "DO",
+                                                    "label": "République dominicaine"
+                                                },
+                                                {
+                                                    "key": "DZ",
+                                                    "label": "Algérie"
+                                                },
+                                                {
+                                                    "key": "EC",
+                                                    "label": "Equateur"
+                                                },
+                                                {
+                                                    "key": "EE",
+                                                    "label": "Estonie"
+                                                },
+                                                {
+                                                    "key": "EG",
+                                                    "label": "Egypte"
+                                                },
+                                                {
+                                                    "key": "EH",
+                                                    "label": "Sahara occidental"
+                                                },
+                                                {
+                                                    "key": "ER",
+                                                    "label": "Erythrée"
+                                                },
+                                                {
+                                                    "key": "ES",
+                                                    "label": "Espagne"
+                                                },
+                                                {
+                                                    "key": "ET",
+                                                    "label": "Ethiopie"
+                                                },
+                                                {
+                                                    "key": "EU",
+                                                    "label": "Union Européenne"
+                                                },
+                                                {
+                                                    "key": "FI",
+                                                    "label": "Finlande"
+                                                },
+                                                {
+                                                    "key": "FJ",
+                                                    "label": "Fidji"
+                                                },
+                                                {
+                                                    "key": "FK",
+                                                    "label": "Falkland"
+                                                },
+                                                {
+                                                    "key": "FM",
+                                                    "label": "Micronésie"
+                                                },
+                                                {
+                                                    "key": "FO",
+                                                    "label": "Féroé"
+                                                },
+                                                {
+                                                    "key": "FR",
+                                                    "label": "France"
+                                                },
+                                                {
+                                                    "key": "GA",
+                                                    "label": "Gabon"
+                                                },
+                                                {
+                                                    "key": "GD",
+                                                    "label": "Grenade"
+                                                },
+                                                {
+                                                    "key": "GE",
+                                                    "label": "Géorgie"
+                                                },
+                                                {
+                                                    "key": "GF",
+                                                    "label": "Guyane française"
+                                                },
+                                                {
+                                                    "key": "GH",
+                                                    "label": "Ghana"
+                                                },
+                                                {
+                                                    "key": "GI",
+                                                    "label": "Gibraltar"
+                                                },
+                                                {
+                                                    "key": "GL",
+                                                    "label": "Groenland"
+                                                },
+                                                {
+                                                    "key": "GM",
+                                                    "label": "Gambie"
+                                                },
+                                                {
+                                                    "key": "GN",
+                                                    "label": "Guinée"
+                                                },
+                                                {
+                                                    "key": "GP",
+                                                    "label": "Guadeloupe"
+                                                },
+                                                {
+                                                    "key": "GR",
+                                                    "label": "Grèce"
+                                                },
+                                                {
+                                                    "key": "GT",
+                                                    "label": "Guatemala"
+                                                },
+                                                {
+                                                    "key": "GU",
+                                                    "label": "Guam (USA)"
+                                                },
+                                                {
+                                                    "key": "GW",
+                                                    "label": "Guinée Bissau"
+                                                },
+                                                {
+                                                    "key": "GY",
+                                                    "label": "Guyane"
+                                                },
+                                                {
+                                                    "key": "HK",
+                                                    "label": "Hong Kong"
+                                                },
+                                                {
+                                                    "key": "HM",
+                                                    "label": "Iles Heard et Mac Donald"
+                                                },
+                                                {
+                                                    "key": "HN",
+                                                    "label": "Honduras"
+                                                },
+                                                {
+                                                    "key": "HR",
+                                                    "label": "Croatie"
+                                                },
+                                                {
+                                                    "key": "HT",
+                                                    "label": "Haïti"
+                                                },
+                                                {
+                                                    "key": "HU",
+                                                    "label": "Hongrie"
+                                                },
+                                                {
+                                                    "key": "ID",
+                                                    "label": "Indonésie"
+                                                },
+                                                {
+                                                    "key": "IE",
+                                                    "label": "Irlande"
+                                                },
+                                                {
+                                                    "key": "IL",
+                                                    "label": "Israël"
+                                                },
+                                                {
+                                                    "key": "IN",
+                                                    "label": "Inde"
+                                                },
+                                                {
+                                                    "key": "IO",
+                                                    "label": "Territoires britanniques de l'océan indien"
+                                                },
+                                                {
+                                                    "key": "IQ",
+                                                    "label": "Irak"
+                                                },
+                                                {
+                                                    "key": "IR",
+                                                    "label": "Iran"
+                                                },
+                                                {
+                                                    "key": "IS",
+                                                    "label": "Islande"
+                                                },
+                                                {
+                                                    "key": "IT",
+                                                    "label": "Italie"
+                                                },
+                                                {
+                                                    "key": "JM",
+                                                    "label": "Jamaïque"
+                                                },
+                                                {
+                                                    "key": "JO",
+                                                    "label": "Jordanie"
+                                                },
+                                                {
+                                                    "key": "JP",
+                                                    "label": "Japon"
+                                                },
+                                                {
+                                                    "key": "KE",
+                                                    "label": "Kenya"
+                                                },
+                                                {
+                                                    "key": "KG",
+                                                    "label": "Kirghizistan"
+                                                },
+                                                {
+                                                    "key": "KH",
+                                                    "label": "Cambodge"
+                                                },
+                                                {
+                                                    "key": "KI",
+                                                    "label": "Kiribati"
+                                                },
+                                                {
+                                                    "key": "KM",
+                                                    "label": "Comores"
+                                                },
+                                                {
+                                                    "key": "KN",
+                                                    "label": "Saint Kitts et Nevis"
+                                                },
+                                                {
+                                                    "key": "KP",
+                                                    "label": "Corée du Nord"
+                                                },
+                                                {
+                                                    "key": "KR",
+                                                    "label": "Corée du Sud"
+                                                },
+                                                {
+                                                    "key": "KW",
+                                                    "label": "Koweït"
+                                                },
+                                                {
+                                                    "key": "KY",
+                                                    "label": "Cayman"
+                                                },
+                                                {
+                                                    "key": "KZ",
+                                                    "label": "Kazakhstan"
+                                                },
+                                                {
+                                                    "key": "LA",
+                                                    "label": "Laos"
+                                                },
+                                                {
+                                                    "key": "LB",
+                                                    "label": "Liban"
+                                                },
+                                                {
+                                                    "key": "LC",
+                                                    "label": "Sainte Lucie"
+                                                },
+                                                {
+                                                    "key": "LI",
+                                                    "label": "Liechtenstein"
+                                                },
+                                                {
+                                                    "key": "LK",
+                                                    "label": "Sri Lanka"
+                                                },
+                                                {
+                                                    "key": "LR",
+                                                    "label": "Libéria"
+                                                },
+                                                {
+                                                    "key": "LS",
+                                                    "label": "Lesotho"
+                                                },
+                                                {
+                                                    "key": "LT",
+                                                    "label": "Lituanie"
+                                                },
+                                                {
+                                                    "key": "LU",
+                                                    "label": "Luxembourg"
+                                                },
+                                                {
+                                                    "key": "LV",
+                                                    "label": "Lettonie"
+                                                },
+                                                {
+                                                    "key": "LY",
+                                                    "label": "Libye"
+                                                },
+                                                {
+                                                    "key": "MA",
+                                                    "label": "Maroc"
+                                                },
+                                                {
+                                                    "key": "MC",
+                                                    "label": "Monaco"
+                                                },
+                                                {
+                                                    "key": "MD",
+                                                    "label": "Moldavie"
+                                                },
+                                                {
+                                                    "key": "MG",
+                                                    "label": "Madagascar"
+                                                },
+                                                {
+                                                    "key": "MK",
+                                                    "label": "République de Macédoine"
+                                                },
+                                                {
+                                                    "key": "MM",
+                                                    "label": "Birmanie"
+                                                },
+                                                {
+                                                    "key": "MN",
+                                                    "label": "Mongolie"
+                                                },
+                                                {
+                                                    "key": "MO",
+                                                    "label": "Macao"
+                                                },
+                                                {
+                                                    "key": "MQ",
+                                                    "label": "Martinique"
+                                                },
+                                                {
+                                                    "key": "MR",
+                                                    "label": "Mauritanie"
+                                                },
+                                                {
+                                                    "key": "MS",
+                                                    "label": "Montserrat"
+                                                },
+                                                {
+                                                    "key": "MT",
+                                                    "label": "Malte"
+                                                },
+                                                {
+                                                    "key": "MU",
+                                                    "label": "Ile Maurice"
+                                                },
+                                                {
+                                                    "key": "MV",
+                                                    "label": "Maldives"
+                                                },
+                                                {
+                                                    "key": "MW",
+                                                    "label": "Malawi"
+                                                },
+                                                {
+                                                    "key": "MX",
+                                                    "label": "Mexice"
+                                                },
+                                                {
+                                                    "key": "MY",
+                                                    "label": "Malaisie"
+                                                },
+                                                {
+                                                    "key": "MZ",
+                                                    "label": "Mozambique"
+                                                },
+                                                {
+                                                    "key": "NA",
+                                                    "label": "Namibie"
+                                                },
+                                                {
+                                                    "key": "NC",
+                                                    "label": "Nouvelle Calédonie"
+                                                },
+                                                {
+                                                    "key": "NE",
+                                                    "label": "Niger"
+                                                },
+                                                {
+                                                    "key": "NF",
+                                                    "label": "Norfolk"
+                                                },
+                                                {
+                                                    "key": "NG",
+                                                    "label": "Nigéria"
+                                                },
+                                                {
+                                                    "key": "NI",
+                                                    "label": "Nicaragua"
+                                                },
+                                                {
+                                                    "key": "NL",
+                                                    "label": "Pays-Bas"
+                                                },
+                                                {
+                                                    "key": "NO",
+                                                    "label": "Norvège"
+                                                },
+                                                {
+                                                    "key": "NP",
+                                                    "label": "Népal"
+                                                },
+                                                {
+                                                    "key": "NR",
+                                                    "label": "Nauru"
+                                                },
+                                                {
+                                                    "key": "NU",
+                                                    "label": "Niue"
+                                                },
+                                                {
+                                                    "key": "NZ",
+                                                    "label": "Nouvelle Zélande"
+                                                },
+                                                {
+                                                    "key": "OM",
+                                                    "label": "Oman"
+                                                },
+                                                {
+                                                    "key": "PA",
+                                                    "label": "Panama"
+                                                },
+                                                {
+                                                    "key": "PE",
+                                                    "label": "Pérou"
+                                                },
+                                                {
+                                                    "key": "PF",
+                                                    "label": "Polynésie française"
+                                                },
+                                                {
+                                                    "key": "PG",
+                                                    "label": "Papouasie Nouvelle Guinée"
+                                                },
+                                                {
+                                                    "key": "PH",
+                                                    "label": "Philippines"
+                                                },
+                                                {
+                                                    "key": "PK",
+                                                    "label": "Pakistan"
+                                                },
+                                                {
+                                                    "key": "PL",
+                                                    "label": "Plogne"
+                                                },
+                                                {
+                                                    "key": "PM",
+                                                    "label": "Saint Pierre et Miquelon"
+                                                },
+                                                {
+                                                    "key": "PN",
+                                                    "label": "Pitcairn"
+                                                },
+                                                {
+                                                    "key": "PR",
+                                                    "label": "Porto-Rico"
+                                                },
+                                                {
+                                                    "key": "PT",
+                                                    "label": "Portugal"
+                                                },
+                                                {
+                                                    "key": "PW",
+                                                    "label": "Palau"
+                                                },
+                                                {
+                                                    "key": "PY",
+                                                    "label": "Paraguay"
+                                                },
+                                                {
+                                                    "key": "QA",
+                                                    "label": "Qatar"
+                                                },
+                                                {
+                                                    "key": "RE",
+                                                    "label": "Réunion"
+                                                },
+                                                {
+                                                    "key": "RO",
+                                                    "label": "Roumanie"
+                                                },
+                                                {
+                                                    "key": "RU",
+                                                    "label": "Russie"
+                                                },
+                                                {
+                                                    "key": "RW",
+                                                    "label": "Rwanda"
+                                                },
+                                                {
+                                                    "key": "SA",
+                                                    "label": "Arabie Saoudite"
+                                                },
+                                                {
+                                                    "key": "SB",
+                                                    "label": "Iles Salomon"
+                                                },
+                                                {
+                                                    "key": "SC",
+                                                    "label": "Seychelles"
+                                                },
+                                                {
+                                                    "key": "SD",
+                                                    "label": "Soudan"
+                                                },
+                                                {
+                                                    "key": "SE",
+                                                    "label": "Suède"
+                                                },
+                                                {
+                                                    "key": "SG",
+                                                    "label": "Singapour"
+                                                },
+                                                {
+                                                    "key": "SH",
+                                                    "label": "Sainte Hélène"
+                                                },
+                                                {
+                                                    "key": "SI",
+                                                    "label": "Slovénie"
+                                                },
+                                                {
+                                                    "key": "SJ",
+                                                    "label": "Iles Svalbaard et Jan Mayen"
+                                                },
+                                                {
+                                                    "key": "SK",
+                                                    "label": "République Slovaque"
+                                                },
+                                                {
+                                                    "key": "SL",
+                                                    "label": "Sierra Leone"
+                                                },
+                                                {
+                                                    "key": "SM",
+                                                    "label": "San Marin"
+                                                },
+                                                {
+                                                    "key": "SN",
+                                                    "label": "Sénégal"
+                                                },
+                                                {
+                                                    "key": "SO",
+                                                    "label": "Somalie"
+                                                },
+                                                {
+                                                    "key": "SR",
+                                                    "label": "Surinam"
+                                                },
+                                                {
+                                                    "key": "ST",
+                                                    "label": "Saint Tomé et Principe"
+                                                },
+                                                {
+                                                    "key": "SV",
+                                                    "label": "El Salvador"
+                                                },
+                                                {
+                                                    "key": "SY",
+                                                    "label": "Syrie"
+                                                },
+                                                {
+                                                    "key": "SZ",
+                                                    "label": "Swaziland"
+                                                },
+                                                {
+                                                    "key": "TC",
+                                                    "label": "Iles Turques et Caïques"
+                                                },
+                                                {
+                                                    "key": "TD",
+                                                    "label": "Tchad"
+                                                },
+                                                {
+                                                    "key": "TF",
+                                                    "label": "Territoire austral français"
+                                                },
+                                                {
+                                                    "key": "TG",
+                                                    "label": "Togo"
+                                                },
+                                                {
+                                                    "key": "TH",
+                                                    "label": "Thaïlande"
+                                                },
+                                                {
+                                                    "key": "TJ",
+                                                    "label": "Tadjikistan"
+                                                },
+                                                {
+                                                    "key": "TK",
+                                                    "label": "Tokelau"
+                                                },
+                                                {
+                                                    "key": "TM",
+                                                    "label": "Turkménistan"
+                                                },
+                                                {
+                                                    "key": "TN",
+                                                    "label": "Tunisie"
+                                                },
+                                                {
+                                                    "key": "TO",
+                                                    "label": "Tonga"
+                                                },
+                                                {
+                                                    "key": "TP",
+                                                    "label": "Timor oriental"
+                                                },
+                                                {
+                                                    "key": "TR",
+                                                    "label": "Turquie"
+                                                },
+                                                {
+                                                    "key": "TT",
+                                                    "label": "Trinité et Tobago"
+                                                },
+                                                {
+                                                    "key": "TV",
+                                                    "label": "Tuvalu"
+                                                },
+                                                {
+                                                    "key": "TW",
+                                                    "label": "Taïwan"
+                                                },
+                                                {
+                                                    "key": "TZ",
+                                                    "label": "Tanzanie"
+                                                },
+                                                {
+                                                    "key": "UA",
+                                                    "label": "Ukraine"
+                                                },
+                                                {
+                                                    "key": "UK",
+                                                    "label": "Grande-Bretagne"
+                                                },
+                                                {
+                                                    "key": "UM",
+                                                    "label": "diverses îles des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "US",
+                                                    "label": "Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "UY",
+                                                    "label": "Uruguay"
+                                                },
+                                                {
+                                                    "key": "UZ",
+                                                    "label": "Ouzbékistan"
+                                                },
+                                                {
+                                                    "key": "VA",
+                                                    "label": "Vatican"
+                                                },
+                                                {
+                                                    "key": "VC",
+                                                    "label": "Saint Vincent et Grenadines"
+                                                },
+                                                {
+                                                    "key": "VE",
+                                                    "label": "Vénézuela"
+                                                },
+                                                {
+                                                    "key": "VG",
+                                                    "label": "Iles Vierges britanniques"
+                                                },
+                                                {
+                                                    "key": "VI",
+                                                    "label": "Iles Vierges des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "VN",
+                                                    "label": "Vietnam"
+                                                },
+                                                {
+                                                    "key": "VU",
+                                                    "label": "Vanuatu"
+                                                },
+                                                {
+                                                    "key": "WF",
+                                                    "label": "Wallis et Futuna"
+                                                },
+                                                {
+                                                    "key": "WS",
+                                                    "label": "Samoa occidental"
+                                                },
+                                                {
+                                                    "key": "YE",
+                                                    "label": "Yemen"
+                                                },
+                                                {
+                                                    "key": "YT",
+                                                    "label": "Mayotte"
+                                                },
+                                                {
+                                                    "key": "YU",
+                                                    "label": "ex-Yougoslavie"
+                                                },
+                                                {
+                                                    "key": "ZA",
+                                                    "label": "Afrique du Sud"
+                                                },
+                                                {
+                                                    "key": "ZM",
+                                                    "label": "Zambie"
+                                                },
+                                                {
+                                                    "key": "ZR",
+                                                    "label": "Zaïre (République Démocratique du Congo)"
+                                                },
+                                                {
+                                                    "key": "ZW",
+                                                    "label": "Zimbabwe"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumslist"
+                                        },
+                                        "zoo_enumsauto": {
+                                            "id": "zoo_enumsauto",
+                                            "visibility": "W",
+                                            "label": "Des énumérés auto",
+                                            "type": "enum",
+                                            "logicalOrder": 41,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "AD",
+                                                    "label": "Andorre"
+                                                },
+                                                {
+                                                    "key": "AE",
+                                                    "label": "Emirats Arabes unis"
+                                                },
+                                                {
+                                                    "key": "AF",
+                                                    "label": "Afghanistan"
+                                                },
+                                                {
+                                                    "key": "AG",
+                                                    "label": "Antigua et Barbade"
+                                                },
+                                                {
+                                                    "key": "AI",
+                                                    "label": "Anguilla"
+                                                },
+                                                {
+                                                    "key": "AL",
+                                                    "label": "Albanie"
+                                                },
+                                                {
+                                                    "key": "AM",
+                                                    "label": "Arménie"
+                                                },
+                                                {
+                                                    "key": "AN",
+                                                    "label": "Antilles néerlandaises"
+                                                },
+                                                {
+                                                    "key": "AO",
+                                                    "label": "Angola"
+                                                },
+                                                {
+                                                    "key": "AR",
+                                                    "label": "Argentine"
+                                                },
+                                                {
+                                                    "key": "AS",
+                                                    "label": "Samoa américain"
+                                                },
+                                                {
+                                                    "key": "AT",
+                                                    "label": "Autriche"
+                                                },
+                                                {
+                                                    "key": "AU",
+                                                    "label": "Australie"
+                                                },
+                                                {
+                                                    "key": "AW",
+                                                    "label": "Aruba"
+                                                },
+                                                {
+                                                    "key": "AZ",
+                                                    "label": "Azerbaïdjan"
+                                                },
+                                                {
+                                                    "key": "BB",
+                                                    "label": "Barbade"
+                                                },
+                                                {
+                                                    "key": "BD",
+                                                    "label": "Bangladesh"
+                                                },
+                                                {
+                                                    "key": "BE",
+                                                    "label": "Belgique"
+                                                },
+                                                {
+                                                    "key": "BF",
+                                                    "label": "Burkina Faso"
+                                                },
+                                                {
+                                                    "key": "BG",
+                                                    "label": "Bulgarie"
+                                                },
+                                                {
+                                                    "key": "BH",
+                                                    "label": "Bahrein"
+                                                },
+                                                {
+                                                    "key": "BI",
+                                                    "label": "Burundi"
+                                                },
+                                                {
+                                                    "key": "BJ",
+                                                    "label": "Bénin"
+                                                },
+                                                {
+                                                    "key": "BM",
+                                                    "label": "Bermudes"
+                                                },
+                                                {
+                                                    "key": "BN",
+                                                    "label": "Brunei Darussalam"
+                                                },
+                                                {
+                                                    "key": "BO",
+                                                    "label": "Bolivie"
+                                                },
+                                                {
+                                                    "key": "BR",
+                                                    "label": "Brésil"
+                                                },
+                                                {
+                                                    "key": "BS",
+                                                    "label": "Bahamas"
+                                                },
+                                                {
+                                                    "key": "BT",
+                                                    "label": "Bhoutan"
+                                                },
+                                                {
+                                                    "key": "BV",
+                                                    "label": "Iles Bouvet"
+                                                },
+                                                {
+                                                    "key": "BW",
+                                                    "label": "Botswana"
+                                                },
+                                                {
+                                                    "key": "BY",
+                                                    "label": "Biélorussie"
+                                                },
+                                                {
+                                                    "key": "BZ",
+                                                    "label": "Belize"
+                                                },
+                                                {
+                                                    "key": "CA",
+                                                    "label": "Canada"
+                                                },
+                                                {
+                                                    "key": "CC",
+                                                    "label": "Iles Cocos"
+                                                },
+                                                {
+                                                    "key": "CF",
+                                                    "label": "Centre-Afrique"
+                                                },
+                                                {
+                                                    "key": "CG",
+                                                    "label": "Congo"
+                                                },
+                                                {
+                                                    "key": "CH",
+                                                    "label": "Suisse"
+                                                },
+                                                {
+                                                    "key": "CI",
+                                                    "label": "Côte d'Ivoire"
+                                                },
+                                                {
+                                                    "key": "CK",
+                                                    "label": "Iles Cook"
+                                                },
+                                                {
+                                                    "key": "CL",
+                                                    "label": "Chili"
+                                                },
+                                                {
+                                                    "key": "CM",
+                                                    "label": "Cameroun"
+                                                },
+                                                {
+                                                    "key": "CN",
+                                                    "label": "Chine"
+                                                },
+                                                {
+                                                    "key": "CO",
+                                                    "label": "Colombie"
+                                                },
+                                                {
+                                                    "key": "CR",
+                                                    "label": "Costa Rica"
+                                                },
+                                                {
+                                                    "key": "CU",
+                                                    "label": "Cuba"
+                                                },
+                                                {
+                                                    "key": "CV",
+                                                    "label": "Cap Vert"
+                                                },
+                                                {
+                                                    "key": "CX",
+                                                    "label": "Ile Christmas"
+                                                },
+                                                {
+                                                    "key": "CY",
+                                                    "label": "Chypre"
+                                                },
+                                                {
+                                                    "key": "CZ",
+                                                    "label": "Tchéquie"
+                                                },
+                                                {
+                                                    "key": "DE",
+                                                    "label": "Allemagne"
+                                                },
+                                                {
+                                                    "key": "DJ",
+                                                    "label": "Djibouti"
+                                                },
+                                                {
+                                                    "key": "DK",
+                                                    "label": "Danemark"
+                                                },
+                                                {
+                                                    "key": "DM",
+                                                    "label": "Dominique"
+                                                },
+                                                {
+                                                    "key": "DO",
+                                                    "label": "République dominicaine"
+                                                },
+                                                {
+                                                    "key": "DZ",
+                                                    "label": "Algérie"
+                                                },
+                                                {
+                                                    "key": "EC",
+                                                    "label": "Equateur"
+                                                },
+                                                {
+                                                    "key": "EE",
+                                                    "label": "Estonie"
+                                                },
+                                                {
+                                                    "key": "EG",
+                                                    "label": "Egypte"
+                                                },
+                                                {
+                                                    "key": "EH",
+                                                    "label": "Sahara occidental"
+                                                },
+                                                {
+                                                    "key": "ER",
+                                                    "label": "Erythrée"
+                                                },
+                                                {
+                                                    "key": "ES",
+                                                    "label": "Espagne"
+                                                },
+                                                {
+                                                    "key": "ET",
+                                                    "label": "Ethiopie"
+                                                },
+                                                {
+                                                    "key": "EU",
+                                                    "label": "Union Européenne"
+                                                },
+                                                {
+                                                    "key": "FI",
+                                                    "label": "Finlande"
+                                                },
+                                                {
+                                                    "key": "FJ",
+                                                    "label": "Fidji"
+                                                },
+                                                {
+                                                    "key": "FK",
+                                                    "label": "Falkland"
+                                                },
+                                                {
+                                                    "key": "FM",
+                                                    "label": "Micronésie"
+                                                },
+                                                {
+                                                    "key": "FO",
+                                                    "label": "Féroé"
+                                                },
+                                                {
+                                                    "key": "FR",
+                                                    "label": "France"
+                                                },
+                                                {
+                                                    "key": "GA",
+                                                    "label": "Gabon"
+                                                },
+                                                {
+                                                    "key": "GD",
+                                                    "label": "Grenade"
+                                                },
+                                                {
+                                                    "key": "GE",
+                                                    "label": "Géorgie"
+                                                },
+                                                {
+                                                    "key": "GF",
+                                                    "label": "Guyane française"
+                                                },
+                                                {
+                                                    "key": "GH",
+                                                    "label": "Ghana"
+                                                },
+                                                {
+                                                    "key": "GI",
+                                                    "label": "Gibraltar"
+                                                },
+                                                {
+                                                    "key": "GL",
+                                                    "label": "Groenland"
+                                                },
+                                                {
+                                                    "key": "GM",
+                                                    "label": "Gambie"
+                                                },
+                                                {
+                                                    "key": "GN",
+                                                    "label": "Guinée"
+                                                },
+                                                {
+                                                    "key": "GP",
+                                                    "label": "Guadeloupe"
+                                                },
+                                                {
+                                                    "key": "GR",
+                                                    "label": "Grèce"
+                                                },
+                                                {
+                                                    "key": "GT",
+                                                    "label": "Guatemala"
+                                                },
+                                                {
+                                                    "key": "GU",
+                                                    "label": "Guam (USA)"
+                                                },
+                                                {
+                                                    "key": "GW",
+                                                    "label": "Guinée Bissau"
+                                                },
+                                                {
+                                                    "key": "GY",
+                                                    "label": "Guyane"
+                                                },
+                                                {
+                                                    "key": "HK",
+                                                    "label": "Hong Kong"
+                                                },
+                                                {
+                                                    "key": "HM",
+                                                    "label": "Iles Heard et Mac Donald"
+                                                },
+                                                {
+                                                    "key": "HN",
+                                                    "label": "Honduras"
+                                                },
+                                                {
+                                                    "key": "HR",
+                                                    "label": "Croatie"
+                                                },
+                                                {
+                                                    "key": "HT",
+                                                    "label": "Haïti"
+                                                },
+                                                {
+                                                    "key": "HU",
+                                                    "label": "Hongrie"
+                                                },
+                                                {
+                                                    "key": "ID",
+                                                    "label": "Indonésie"
+                                                },
+                                                {
+                                                    "key": "IE",
+                                                    "label": "Irlande"
+                                                },
+                                                {
+                                                    "key": "IL",
+                                                    "label": "Israël"
+                                                },
+                                                {
+                                                    "key": "IN",
+                                                    "label": "Inde"
+                                                },
+                                                {
+                                                    "key": "IO",
+                                                    "label": "Territoires britanniques de l'océan indien"
+                                                },
+                                                {
+                                                    "key": "IQ",
+                                                    "label": "Irak"
+                                                },
+                                                {
+                                                    "key": "IR",
+                                                    "label": "Iran"
+                                                },
+                                                {
+                                                    "key": "IS",
+                                                    "label": "Islande"
+                                                },
+                                                {
+                                                    "key": "IT",
+                                                    "label": "Italie"
+                                                },
+                                                {
+                                                    "key": "JM",
+                                                    "label": "Jamaïque"
+                                                },
+                                                {
+                                                    "key": "JO",
+                                                    "label": "Jordanie"
+                                                },
+                                                {
+                                                    "key": "JP",
+                                                    "label": "Japon"
+                                                },
+                                                {
+                                                    "key": "KE",
+                                                    "label": "Kenya"
+                                                },
+                                                {
+                                                    "key": "KG",
+                                                    "label": "Kirghizistan"
+                                                },
+                                                {
+                                                    "key": "KH",
+                                                    "label": "Cambodge"
+                                                },
+                                                {
+                                                    "key": "KI",
+                                                    "label": "Kiribati"
+                                                },
+                                                {
+                                                    "key": "KM",
+                                                    "label": "Comores"
+                                                },
+                                                {
+                                                    "key": "KN",
+                                                    "label": "Saint Kitts et Nevis"
+                                                },
+                                                {
+                                                    "key": "KP",
+                                                    "label": "Corée du Nord"
+                                                },
+                                                {
+                                                    "key": "KR",
+                                                    "label": "Corée du Sud"
+                                                },
+                                                {
+                                                    "key": "KW",
+                                                    "label": "Koweït"
+                                                },
+                                                {
+                                                    "key": "KY",
+                                                    "label": "Cayman"
+                                                },
+                                                {
+                                                    "key": "KZ",
+                                                    "label": "Kazakhstan"
+                                                },
+                                                {
+                                                    "key": "LA",
+                                                    "label": "Laos"
+                                                },
+                                                {
+                                                    "key": "LB",
+                                                    "label": "Liban"
+                                                },
+                                                {
+                                                    "key": "LC",
+                                                    "label": "Sainte Lucie"
+                                                },
+                                                {
+                                                    "key": "LI",
+                                                    "label": "Liechtenstein"
+                                                },
+                                                {
+                                                    "key": "LK",
+                                                    "label": "Sri Lanka"
+                                                },
+                                                {
+                                                    "key": "LR",
+                                                    "label": "Libéria"
+                                                },
+                                                {
+                                                    "key": "LS",
+                                                    "label": "Lesotho"
+                                                },
+                                                {
+                                                    "key": "LT",
+                                                    "label": "Lituanie"
+                                                },
+                                                {
+                                                    "key": "LU",
+                                                    "label": "Luxembourg"
+                                                },
+                                                {
+                                                    "key": "LV",
+                                                    "label": "Lettonie"
+                                                },
+                                                {
+                                                    "key": "LY",
+                                                    "label": "Libye"
+                                                },
+                                                {
+                                                    "key": "MA",
+                                                    "label": "Maroc"
+                                                },
+                                                {
+                                                    "key": "MC",
+                                                    "label": "Monaco"
+                                                },
+                                                {
+                                                    "key": "MD",
+                                                    "label": "Moldavie"
+                                                },
+                                                {
+                                                    "key": "MG",
+                                                    "label": "Madagascar"
+                                                },
+                                                {
+                                                    "key": "MK",
+                                                    "label": "République de Macédoine"
+                                                },
+                                                {
+                                                    "key": "MM",
+                                                    "label": "Birmanie"
+                                                },
+                                                {
+                                                    "key": "MN",
+                                                    "label": "Mongolie"
+                                                },
+                                                {
+                                                    "key": "MO",
+                                                    "label": "Macao"
+                                                },
+                                                {
+                                                    "key": "MQ",
+                                                    "label": "Martinique"
+                                                },
+                                                {
+                                                    "key": "MR",
+                                                    "label": "Mauritanie"
+                                                },
+                                                {
+                                                    "key": "MS",
+                                                    "label": "Montserrat"
+                                                },
+                                                {
+                                                    "key": "MT",
+                                                    "label": "Malte"
+                                                },
+                                                {
+                                                    "key": "MU",
+                                                    "label": "Ile Maurice"
+                                                },
+                                                {
+                                                    "key": "MV",
+                                                    "label": "Maldives"
+                                                },
+                                                {
+                                                    "key": "MW",
+                                                    "label": "Malawi"
+                                                },
+                                                {
+                                                    "key": "MX",
+                                                    "label": "Mexice"
+                                                },
+                                                {
+                                                    "key": "MY",
+                                                    "label": "Malaisie"
+                                                },
+                                                {
+                                                    "key": "MZ",
+                                                    "label": "Mozambique"
+                                                },
+                                                {
+                                                    "key": "NA",
+                                                    "label": "Namibie"
+                                                },
+                                                {
+                                                    "key": "NC",
+                                                    "label": "Nouvelle Calédonie"
+                                                },
+                                                {
+                                                    "key": "NE",
+                                                    "label": "Niger"
+                                                },
+                                                {
+                                                    "key": "NF",
+                                                    "label": "Norfolk"
+                                                },
+                                                {
+                                                    "key": "NG",
+                                                    "label": "Nigéria"
+                                                },
+                                                {
+                                                    "key": "NI",
+                                                    "label": "Nicaragua"
+                                                },
+                                                {
+                                                    "key": "NL",
+                                                    "label": "Pays-Bas"
+                                                },
+                                                {
+                                                    "key": "NO",
+                                                    "label": "Norvège"
+                                                },
+                                                {
+                                                    "key": "NP",
+                                                    "label": "Népal"
+                                                },
+                                                {
+                                                    "key": "NR",
+                                                    "label": "Nauru"
+                                                },
+                                                {
+                                                    "key": "NU",
+                                                    "label": "Niue"
+                                                },
+                                                {
+                                                    "key": "NZ",
+                                                    "label": "Nouvelle Zélande"
+                                                },
+                                                {
+                                                    "key": "OM",
+                                                    "label": "Oman"
+                                                },
+                                                {
+                                                    "key": "PA",
+                                                    "label": "Panama"
+                                                },
+                                                {
+                                                    "key": "PE",
+                                                    "label": "Pérou"
+                                                },
+                                                {
+                                                    "key": "PF",
+                                                    "label": "Polynésie française"
+                                                },
+                                                {
+                                                    "key": "PG",
+                                                    "label": "Papouasie Nouvelle Guinée"
+                                                },
+                                                {
+                                                    "key": "PH",
+                                                    "label": "Philippines"
+                                                },
+                                                {
+                                                    "key": "PK",
+                                                    "label": "Pakistan"
+                                                },
+                                                {
+                                                    "key": "PL",
+                                                    "label": "Plogne"
+                                                },
+                                                {
+                                                    "key": "PM",
+                                                    "label": "Saint Pierre et Miquelon"
+                                                },
+                                                {
+                                                    "key": "PN",
+                                                    "label": "Pitcairn"
+                                                },
+                                                {
+                                                    "key": "PR",
+                                                    "label": "Porto-Rico"
+                                                },
+                                                {
+                                                    "key": "PT",
+                                                    "label": "Portugal"
+                                                },
+                                                {
+                                                    "key": "PW",
+                                                    "label": "Palau"
+                                                },
+                                                {
+                                                    "key": "PY",
+                                                    "label": "Paraguay"
+                                                },
+                                                {
+                                                    "key": "QA",
+                                                    "label": "Qatar"
+                                                },
+                                                {
+                                                    "key": "RE",
+                                                    "label": "Réunion"
+                                                },
+                                                {
+                                                    "key": "RO",
+                                                    "label": "Roumanie"
+                                                },
+                                                {
+                                                    "key": "RU",
+                                                    "label": "Russie"
+                                                },
+                                                {
+                                                    "key": "RW",
+                                                    "label": "Rwanda"
+                                                },
+                                                {
+                                                    "key": "SA",
+                                                    "label": "Arabie Saoudite"
+                                                },
+                                                {
+                                                    "key": "SB",
+                                                    "label": "Iles Salomon"
+                                                },
+                                                {
+                                                    "key": "SC",
+                                                    "label": "Seychelles"
+                                                },
+                                                {
+                                                    "key": "SD",
+                                                    "label": "Soudan"
+                                                },
+                                                {
+                                                    "key": "SE",
+                                                    "label": "Suède"
+                                                },
+                                                {
+                                                    "key": "SG",
+                                                    "label": "Singapour"
+                                                },
+                                                {
+                                                    "key": "SH",
+                                                    "label": "Sainte Hélène"
+                                                },
+                                                {
+                                                    "key": "SI",
+                                                    "label": "Slovénie"
+                                                },
+                                                {
+                                                    "key": "SJ",
+                                                    "label": "Iles Svalbaard et Jan Mayen"
+                                                },
+                                                {
+                                                    "key": "SK",
+                                                    "label": "République Slovaque"
+                                                },
+                                                {
+                                                    "key": "SL",
+                                                    "label": "Sierra Leone"
+                                                },
+                                                {
+                                                    "key": "SM",
+                                                    "label": "San Marin"
+                                                },
+                                                {
+                                                    "key": "SN",
+                                                    "label": "Sénégal"
+                                                },
+                                                {
+                                                    "key": "SO",
+                                                    "label": "Somalie"
+                                                },
+                                                {
+                                                    "key": "SR",
+                                                    "label": "Surinam"
+                                                },
+                                                {
+                                                    "key": "ST",
+                                                    "label": "Saint Tomé et Principe"
+                                                },
+                                                {
+                                                    "key": "SV",
+                                                    "label": "El Salvador"
+                                                },
+                                                {
+                                                    "key": "SY",
+                                                    "label": "Syrie"
+                                                },
+                                                {
+                                                    "key": "SZ",
+                                                    "label": "Swaziland"
+                                                },
+                                                {
+                                                    "key": "TC",
+                                                    "label": "Iles Turques et Caïques"
+                                                },
+                                                {
+                                                    "key": "TD",
+                                                    "label": "Tchad"
+                                                },
+                                                {
+                                                    "key": "TF",
+                                                    "label": "Territoire austral français"
+                                                },
+                                                {
+                                                    "key": "TG",
+                                                    "label": "Togo"
+                                                },
+                                                {
+                                                    "key": "TH",
+                                                    "label": "Thaïlande"
+                                                },
+                                                {
+                                                    "key": "TJ",
+                                                    "label": "Tadjikistan"
+                                                },
+                                                {
+                                                    "key": "TK",
+                                                    "label": "Tokelau"
+                                                },
+                                                {
+                                                    "key": "TM",
+                                                    "label": "Turkménistan"
+                                                },
+                                                {
+                                                    "key": "TN",
+                                                    "label": "Tunisie"
+                                                },
+                                                {
+                                                    "key": "TO",
+                                                    "label": "Tonga"
+                                                },
+                                                {
+                                                    "key": "TP",
+                                                    "label": "Timor oriental"
+                                                },
+                                                {
+                                                    "key": "TR",
+                                                    "label": "Turquie"
+                                                },
+                                                {
+                                                    "key": "TT",
+                                                    "label": "Trinité et Tobago"
+                                                },
+                                                {
+                                                    "key": "TV",
+                                                    "label": "Tuvalu"
+                                                },
+                                                {
+                                                    "key": "TW",
+                                                    "label": "Taïwan"
+                                                },
+                                                {
+                                                    "key": "TZ",
+                                                    "label": "Tanzanie"
+                                                },
+                                                {
+                                                    "key": "UA",
+                                                    "label": "Ukraine"
+                                                },
+                                                {
+                                                    "key": "UK",
+                                                    "label": "Grande-Bretagne"
+                                                },
+                                                {
+                                                    "key": "UM",
+                                                    "label": "diverses îles des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "US",
+                                                    "label": "Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "UY",
+                                                    "label": "Uruguay"
+                                                },
+                                                {
+                                                    "key": "UZ",
+                                                    "label": "Ouzbékistan"
+                                                },
+                                                {
+                                                    "key": "VA",
+                                                    "label": "Vatican"
+                                                },
+                                                {
+                                                    "key": "VC",
+                                                    "label": "Saint Vincent et Grenadines"
+                                                },
+                                                {
+                                                    "key": "VE",
+                                                    "label": "Vénézuela"
+                                                },
+                                                {
+                                                    "key": "VG",
+                                                    "label": "Iles Vierges britanniques"
+                                                },
+                                                {
+                                                    "key": "VI",
+                                                    "label": "Iles Vierges des Etats-Unis"
+                                                },
+                                                {
+                                                    "key": "VN",
+                                                    "label": "Vietnam"
+                                                },
+                                                {
+                                                    "key": "VU",
+                                                    "label": "Vanuatu"
+                                                },
+                                                {
+                                                    "key": "WF",
+                                                    "label": "Wallis et Futuna"
+                                                },
+                                                {
+                                                    "key": "WS",
+                                                    "label": "Samoa occidental"
+                                                },
+                                                {
+                                                    "key": "YE",
+                                                    "label": "Yemen"
+                                                },
+                                                {
+                                                    "key": "YT",
+                                                    "label": "Mayotte"
+                                                },
+                                                {
+                                                    "key": "YU",
+                                                    "label": "ex-Yougoslavie"
+                                                },
+                                                {
+                                                    "key": "ZA",
+                                                    "label": "Afrique du Sud"
+                                                },
+                                                {
+                                                    "key": "ZM",
+                                                    "label": "Zambie"
+                                                },
+                                                {
+                                                    "key": "ZR",
+                                                    "label": "Zaïre (République Démocratique du Congo)"
+                                                },
+                                                {
+                                                    "key": "ZW",
+                                                    "label": "Zimbabwe"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumsauto"
+                                        },
+                                        "zoo_enumsvertical": {
+                                            "id": "zoo_enumsvertical",
+                                            "visibility": "W",
+                                            "label": "Des énumérés vertical",
+                                            "type": "enum",
+                                            "logicalOrder": 42,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "0",
+                                                    "label": "0 %"
+                                                },
+                                                {
+                                                    "key": "30",
+                                                    "label": "30 %"
+                                                },
+                                                {
+                                                    "key": "70",
+                                                    "label": "70 %"
+                                                },
+                                                {
+                                                    "key": "100",
+                                                    "label": "100 %"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumsvertical"
+                                        },
+                                        "zoo_enumshorizontal": {
+                                            "id": "zoo_enumshorizontal",
+                                            "visibility": "W",
+                                            "label": "Des énumérés horizontal",
+                                            "type": "enum",
+                                            "logicalOrder": 43,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumItems": [
+                                                {
+                                                    "key": "red",
+                                                    "label": "Rouge"
+                                                },
+                                                {
+                                                    "key": "yellow",
+                                                    "label": "Jaune"
+                                                },
+                                                {
+                                                    "key": "green",
+                                                    "label": "Vert"
+                                                },
+                                                {
+                                                    "key": "blue",
+                                                    "label": "Bleu"
+                                                },
+                                                {
+                                                    "key": "lightblue",
+                                                    "label": "Bleu/Bleu ciel"
+                                                },
+                                                {
+                                                    "key": "navyblue",
+                                                    "label": "Bleu/Bleu marine"
+                                                }
+                                            ],
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumshorizontal"
+                                        }
+                                    }
+                                },
+                                "zoo_fr_enumservermultiple": {
+                                    "id": "zoo_fr_enumservermultiple",
+                                    "visibility": "W",
+                                    "label": "Énumérés server simple",
+                                    "type": "frame",
+                                    "logicalOrder": 46,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_enumsserverlist": {
+                                            "id": "zoo_enumsserverlist",
+                                            "visibility": "W",
+                                            "label": "Des énumérés liste",
+                                            "type": "enum",
+                                            "logicalOrder": 47,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumsserverlist"
+                                        },
+                                        "zoo_enumsserverauto": {
+                                            "id": "zoo_enumsserverauto",
+                                            "visibility": "W",
+                                            "label": "Des énumérés auto",
+                                            "type": "enum",
+                                            "logicalOrder": 48,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumsserverauto"
+                                        },
+                                        "zoo_enumsserververtical": {
+                                            "id": "zoo_enumsserververtical",
+                                            "visibility": "W",
+                                            "label": "Des énumérés vertical",
+                                            "type": "enum",
+                                            "logicalOrder": 49,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumsserververtical"
+                                        },
+                                        "zoo_enumsserverhorizontal": {
+                                            "id": "zoo_enumsserverhorizontal",
+                                            "visibility": "W",
+                                            "label": "Des énumérés horizontal",
+                                            "type": "enum",
+                                            "logicalOrder": 50,
+                                            "multiple": true,
+                                            "options": {
+                                                "bmenu": "no",
+                                                "eformat": "auto",
+                                                "multiple": "yes"
+                                            },
+                                            "needed": false,
+                                            "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enumsserverhorizontal"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_date": {
+                            "id": "zoo_t_tab_date",
+                            "visibility": "W",
+                            "label": "Les dates",
+                            "type": "tab",
+                            "logicalOrder": 51,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_frame_date": {
+                                    "id": "zoo_frame_date",
+                                    "visibility": "W",
+                                    "label": "Date, heures & date avec l'heure",
+                                    "type": "frame",
+                                    "logicalOrder": 52,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_array_dates": {
+                                            "id": "zoo_array_dates",
+                                            "visibility": "W",
+                                            "label": "Le temps",
+                                            "type": "array",
+                                            "logicalOrder": 53,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_date_array": {
+                                                    "id": "zoo_date_array",
+                                                    "visibility": "W",
+                                                    "label": "Des dates",
+                                                    "type": "date",
+                                                    "logicalOrder": 54,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "defaultValue": {
+                                                        "value": "2015-02-01",
+                                                        "displayValue": "01/02/2015"
+                                                    }
+                                                },
+                                                "zoo_time_array": {
+                                                    "id": "zoo_time_array",
+                                                    "visibility": "W",
+                                                    "label": "Des heures",
+                                                    "type": "time",
+                                                    "logicalOrder": 55,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "defaultValue": {
+                                                        "value": "12:34",
+                                                        "displayValue": "12:34"
+                                                    }
+                                                },
+                                                "zoo_timestamp_array": {
+                                                    "id": "zoo_timestamp_array",
+                                                    "visibility": "W",
+                                                    "label": "Des dates avec l'heure",
+                                                    "type": "timestamp",
+                                                    "logicalOrder": 56,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "defaultValue": {
+                                                        "value": "2015-02-04 18:10",
+                                                        "displayValue": "04/02/2015 18:10"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_relations": {
+                            "id": "zoo_t_tab_relations",
+                            "visibility": "W",
+                            "label": "Les relations",
+                            "type": "tab",
+                            "logicalOrder": 57,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_frame_relation": {
+                                    "id": "zoo_frame_relation",
+                                    "visibility": "W",
+                                    "label": "Relations à entretenir",
+                                    "type": "frame",
+                                    "logicalOrder": 58,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_array_docid": {
+                                            "id": "zoo_array_docid",
+                                            "visibility": "W",
+                                            "label": "Les documents",
+                                            "type": "array",
+                                            "logicalOrder": 59,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_docid_array": {
+                                                    "id": "zoo_docid_array",
+                                                    "visibility": "W",
+                                                    "label": "Des documents",
+                                                    "type": "docid",
+                                                    "logicalOrder": 60,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                },
+                                                "zoo_docid_multiple_array": {
+                                                    "id": "zoo_docid_multiple_array",
+                                                    "visibility": "W",
+                                                    "label": "Encore plus de documents",
+                                                    "type": "docid",
+                                                    "logicalOrder": 61,
+                                                    "multiple": true,
+                                                    "options": {
+                                                        "multiple": "yes"
+                                                    },
+                                                    "needed": false
+                                                }
+                                            }
+                                        },
+                                        "zoo_array_account": {
+                                            "id": "zoo_array_account",
+                                            "visibility": "W",
+                                            "label": "Les comptes",
+                                            "type": "array",
+                                            "logicalOrder": 62,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_account_array": {
+                                                    "id": "zoo_account_array",
+                                                    "visibility": "W",
+                                                    "label": "Des comptes",
+                                                    "type": "account",
+                                                    "logicalOrder": 63,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "helpOutputs": [
+                                                        "zoo_account_array"
+                                                    ],
+                                                    "defaultValue": {
+                                                        "familyRelation": "",
+                                                        "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1083&amp;latest=Y",
+                                                        "icon": "resizeimg.php?img=Images%2Fuveto.png&size=14",
+                                                        "value": "1083",
+                                                        "displayValue": "Santé Isabelle"
+                                                    }
+                                                },
+                                                "zoo_account_multiple_array": {
+                                                    "id": "zoo_account_multiple_array",
+                                                    "visibility": "W",
+                                                    "label": "Encore plus de comptes",
+                                                    "type": "account",
+                                                    "logicalOrder": 64,
+                                                    "multiple": true,
+                                                    "options": {
+                                                        "multiple": "yes"
+                                                    },
+                                                    "needed": false,
+                                                    "helpOutputs": [
+                                                        "zoo_account_multiple_array"
+                                                    ],
+                                                    "defaultValue": [
+                                                        {
+                                                            "familyRelation": "",
+                                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1085&amp;latest=Y",
+                                                            "icon": "resizeimg.php?img=Images%2Fdynacase-iuser.png&size=14",
+                                                            "value": "1085",
+                                                            "displayValue": "Kaice Igor"
+                                                        },
+                                                        {
+                                                            "familyRelation": "",
+                                                            "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1082&amp;latest=Y",
+                                                            "icon": "resizeimg.php?img=Images%2Fugarde.png&size=14",
+                                                            "value": "1082",
+                                                            "displayValue": "Dogue Robert"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_numbers": {
+                            "id": "zoo_t_tab_numbers",
+                            "visibility": "W",
+                            "label": "Les nombres",
+                            "type": "tab",
+                            "logicalOrder": 65,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_frame_numbers": {
+                                    "id": "zoo_frame_numbers",
+                                    "visibility": "W",
+                                    "label": "Entier, décimaux et monnaie",
+                                    "type": "frame",
+                                    "logicalOrder": 66,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_array_numbers": {
+                                            "id": "zoo_array_numbers",
+                                            "visibility": "W",
+                                            "label": "Quelques nombres",
+                                            "type": "array",
+                                            "logicalOrder": 67,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_double_array": {
+                                                    "id": "zoo_double_array",
+                                                    "visibility": "W",
+                                                    "label": "Des décimaux",
+                                                    "type": "double",
+                                                    "logicalOrder": 68,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "defaultValue": {
+                                                        "value": 3.1415926535,
+                                                        "displayValue": "3.1415926535"
+                                                    }
+                                                },
+                                                "zoo_integer_array": {
+                                                    "id": "zoo_integer_array",
+                                                    "visibility": "W",
+                                                    "label": "Des entiers",
+                                                    "type": "int",
+                                                    "logicalOrder": 69,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "defaultValue": {
+                                                        "value": 6780,
+                                                        "displayValue": "6780"
+                                                    }
+                                                },
+                                                "zoo_money_array": {
+                                                    "id": "zoo_money_array",
+                                                    "visibility": "W",
+                                                    "label": "Des sous",
+                                                    "type": "money",
+                                                    "logicalOrder": 70,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_misc": {
+                            "id": "zoo_t_tab_misc",
+                            "visibility": "W",
+                            "label": "Divers",
+                            "type": "tab",
+                            "logicalOrder": 71,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_frame_misc": {
+                                    "id": "zoo_frame_misc",
+                                    "visibility": "W",
+                                    "label": "Énuméré, couleur et mot de passe",
+                                    "type": "frame",
+                                    "logicalOrder": 72,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_array_misc": {
+                                            "id": "zoo_array_misc",
+                                            "visibility": "W",
+                                            "label": "Quelques diverses données",
+                                            "type": "array",
+                                            "logicalOrder": 73,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_enum_array": {
+                                                    "id": "zoo_enum_array",
+                                                    "visibility": "W",
+                                                    "label": "Des énumérés",
+                                                    "type": "enum",
+                                                    "logicalOrder": 74,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false,
+                                                    "enumItems": [
+                                                        {
+                                                            "key": "0",
+                                                            "label": "0 %"
+                                                        },
+                                                        {
+                                                            "key": "30",
+                                                            "label": "30 %"
+                                                        },
+                                                        {
+                                                            "key": "70",
+                                                            "label": "70 %"
+                                                        },
+                                                        {
+                                                            "key": "100",
+                                                            "label": "100 %"
+                                                        }
+                                                    ],
+                                                    "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enum_array"
+                                                },
+                                                "zoo_enums_array": {
+                                                    "id": "zoo_enums_array",
+                                                    "visibility": "W",
+                                                    "label": "Encore plus d'énumérés",
+                                                    "type": "enum",
+                                                    "logicalOrder": 75,
+                                                    "multiple": true,
+                                                    "options": {
+                                                        "multiple": "yes"
+                                                    },
+                                                    "needed": false,
+                                                    "enumItems": [
+                                                        {
+                                                            "key": "0",
+                                                            "label": "0 %"
+                                                        },
+                                                        {
+                                                            "key": "30",
+                                                            "label": "30 %"
+                                                        },
+                                                        {
+                                                            "key": "70",
+                                                            "label": "70 %"
+                                                        },
+                                                        {
+                                                            "key": "100",
+                                                            "label": "100 %"
+                                                        }
+                                                    ],
+                                                    "enumUri": "/tmp32/api/v1/families/ZOO_ALLTYPE/enumerates/zoo_enums_array"
+                                                },
+                                                "zoo_color_array": {
+                                                    "id": "zoo_color_array",
+                                                    "visibility": "W",
+                                                    "label": "Des couleurs",
+                                                    "type": "color",
+                                                    "logicalOrder": 76,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                },
+                                                "zoo_password_array": {
+                                                    "id": "zoo_password_array",
+                                                    "visibility": "W",
+                                                    "label": "Des mots de passe",
+                                                    "type": "password",
+                                                    "logicalOrder": 77,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_files": {
+                            "id": "zoo_t_tab_files",
+                            "visibility": "W",
+                            "label": "Les fichiers avec de nombreuses autres images",
+                            "type": "tab",
+                            "logicalOrder": 78,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_frame_files": {
+                                    "id": "zoo_frame_files",
+                                    "visibility": "W",
+                                    "label": "Fichiers & images",
+                                    "type": "frame",
+                                    "logicalOrder": 79,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_array_files": {
+                                            "id": "zoo_array_files",
+                                            "visibility": "W",
+                                            "label": "Quelques fichiers",
+                                            "type": "array",
+                                            "logicalOrder": 80,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_file_array": {
+                                                    "id": "zoo_file_array",
+                                                    "visibility": "W",
+                                                    "label": "Des fichiers",
+                                                    "type": "file",
+                                                    "logicalOrder": 81,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                },
+                                                "zoo_image_array": {
+                                                    "id": "zoo_image_array",
+                                                    "visibility": "W",
+                                                    "label": "Des images",
+                                                    "type": "image",
+                                                    "logicalOrder": 82,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "zoo_t_tab_texts": {
+                            "id": "zoo_t_tab_texts",
+                            "visibility": "W",
+                            "label": "Les textes",
+                            "type": "tab",
+                            "logicalOrder": 83,
+                            "multiple": false,
+                            "options": [],
+                            "content": {
+                                "zoo_frame_texts": {
+                                    "id": "zoo_frame_texts",
+                                    "visibility": "W",
+                                    "label": "Les textes non formatés",
+                                    "type": "frame",
+                                    "logicalOrder": 84,
+                                    "multiple": false,
+                                    "options": [],
+                                    "content": {
+                                        "zoo_array_texts": {
+                                            "id": "zoo_array_texts",
+                                            "visibility": "W",
+                                            "label": "Textes simples et multilignes",
+                                            "type": "array",
+                                            "logicalOrder": 85,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_text_array": {
+                                                    "id": "zoo_text_array",
+                                                    "visibility": "W",
+                                                    "label": "Des textes",
+                                                    "type": "text",
+                                                    "logicalOrder": 86,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                },
+                                                "zoo_longtext_array": {
+                                                    "id": "zoo_longtext_array",
+                                                    "visibility": "W",
+                                                    "label": "Des textes multiligne",
+                                                    "type": "longtext",
+                                                    "logicalOrder": 87,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                }
+                                            }
+                                        },
+                                        "zoo_array_html": {
+                                            "id": "zoo_array_html",
+                                            "visibility": "W",
+                                            "label": "Les textes HTML",
+                                            "type": "array",
+                                            "logicalOrder": 88,
+                                            "multiple": false,
+                                            "options": [],
+                                            "needed": false,
+                                            "content": {
+                                                "zoo_htmltext_array": {
+                                                    "id": "zoo_htmltext_array",
+                                                    "visibility": "W",
+                                                    "label": "Des textes formatés",
+                                                    "type": "htmltext",
+                                                    "logicalOrder": 89,
+                                                    "multiple": true,
+                                                    "options": [],
+                                                    "needed": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "1081!lock" : {
+            "success": true,
+            "messages": [],
+            "data": {
+                "uri": "/tmp32/api/v1/documents/1081/locks/permanent",
+                "lock": null
+            }
+        },
+        "53681!lock" : {
+            "success": true,
+            "messages": [],
+            "data": {
+                "uri": "/tmp32/api/v1/documents/1081/locks/permanent",
+                "lock": null
+            }
         }
-    }
+    };
 });

@@ -418,7 +418,9 @@ define([
             if (hiddens.length > 0) {
 
                 // Need to disable tab to use own events managing
-                $kendoTabs.disable($(lastShow));
+                if (lastShow) {
+                    $kendoTabs.disable($(lastShow));
+                }
                 // Need to force same heigth as other tabs
                 currentHeight = $(lastShow).height();
                 // Hide original link

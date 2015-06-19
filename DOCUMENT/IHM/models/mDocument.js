@@ -616,7 +616,7 @@ define([
 
             mStructure = new FamilyStructure({familyId:view.documentData.document.properties.family.id});
             mStructure.fetch({
-                success: function (model, response)
+                success: function (structureModel, response)
                 {
                     var attributes = flattenAttributes(attributes, response.data.family.structure);
                     _.each(attributes, function (currentAttributeStructure)
@@ -633,7 +633,7 @@ define([
                     documentModel.trigger("reload");
                 },
 
-                error: function (theModel, HttpResponse)
+                error: function (structureModel, HttpResponse)
                 {
                     var response = JSON.parse(HttpResponse.responseText);
 
@@ -642,8 +642,6 @@ define([
                     });
                 }
             });
-
-
 
             this.initialProperties = _.defaults({
                 "renderMode": renderMode || "view",
