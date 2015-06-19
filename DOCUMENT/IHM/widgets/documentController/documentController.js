@@ -46,21 +46,17 @@ define([
          */
         _create: function documentController_create()
         {
-            if (!this.options.initid) {
-                throw new Error("Widget cannot be initialized without an initid");
-            }
-            this.initialLoaded = false;
             this.options.constraintList = {};
             this.options.eventListener = {};
             this.activatedConstraint = [];
             this.activatedEventListener = [];
-            this._initExternalElements();
-            this._initModel(this._getModelValue());
-            this._initView();
-            this._model.fetch();
-            if (!this.options.noRouter) {
-                this._initRouter();
+            this._initializedModel = false;
+            this._initializedView = false;
+            if (!this.options.initid) {
+                console.log("Widget initialised without document");
+                return;
             }
+            this._initializeWidget();
             this._super();
         },
 
@@ -75,10 +71,45 @@ define([
             this.options.eventListener = {};
             this.activatedConstraint = [];
             this.activatedEventListener = [];
+            this._initializedModel = false;
+            this._initializedView = false;
             this.element.removeData("document");
             this._model.trigger("destroy");
             this._trigger("destroy");
             this._super();
+        },
+
+        /**
+         * Initialize the widget
+         *
+         * Create Model, initView
+         *
+         * @param options object {"success": fct, "error", fct}
+         *
+         * @private
+         */
+        _initializeWidget: function (options)
+        {
+            var currentWidget = this,
+                initializeSuccess = function() {
+                currentWidget._initializedModel = true;
+            };
+            options = options || {};
+            this._initExternalElements();
+            this._initModel(this._getModelValue());
+            this._initView();
+            if (options.success) {
+                options.success = _.wrap(options.success, function(success) {
+                    initializeSuccess.apply(this, _.rest(arguments));
+                    return success.apply(this, _.rest(arguments));
+                });
+            } else {
+                options.success = initializeSuccess;
+            }
+            this._model.fetch(options);
+            if (!this.options.noRouter) {
+                this._initRouter();
+            }
         },
 
         /**
@@ -114,9 +145,16 @@ define([
          */
         _initModel: function documentController_initModel(initialValue)
         {
-            var model = new DocumentModel(initialValue);
-            this._model = model;
-            this._initModelEvents();
+            var model;
+
+            //Don't reinit the model
+            if (!this._model) {
+                model = new DocumentModel(initialValue);
+                this._model = model;
+                this._initModelEvents();
+            } else {
+                this._reinitModel();
+            }
             return model;
         },
 
@@ -128,13 +166,15 @@ define([
          */
         _initView: function documentController_initView()
         {
-            var documentView, $document;
-            this._initDom();
-            $document = this.$document;
-            documentView = new DocumentView({model: this._model, el: $document[0]});
-            this.view = documentView;
-            this._initViewEvents();
-            return documentView;
+            var documentView;
+            ///Don't reinit view
+            if (!this.view) {
+                this._initDom();
+                documentView = new DocumentView({model: this._model, el: this.$document[0]});
+                this.view = documentView;
+                this._initViewEvents();
+            }
+            return this.view;
         },
 
         /**
@@ -194,14 +234,14 @@ define([
             });
             this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event)
             {
-                if (currentWidget.initialLoaded !== false) {
+                if (currentWidget._initializedView !== false) {
                     event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
                         currentWidget._model.getProperties(true), currentWidget._model.getProperties());
                 }
             });
             this._model.listenTo(this._model, "close", function documentController_triggerClose(oldProperties)
             {
-                if (currentWidget.initialLoaded !== false) {
+                if (currentWidget._initializedView !== false) {
                     currentWidget._triggerControllerEvent("close",
                         currentWidget._model.getProperties(true), oldProperties);
                 }
@@ -349,7 +389,7 @@ define([
                 console.timeEnd("xhr+render document view");
                 currentWidget.$loading.dcpLoading("setPercent", 100);
                 currentWidget.$loading.dcpLoading("setLabel", null);
-                currentWidget.initialLoaded = true;
+                currentWidget._initializedView = true;
                 currentWidget._triggerControllerEvent("ready", currentWidget._model.getProperties());
                 _.delay(function ()
                 {
@@ -388,6 +428,9 @@ define([
          */
         _initRouter: function documentController_initRouter()
         {
+            if (this.router) {
+                return this.router;
+            }
             try {
                 if (window.history && history.pushState) {
                     Backbone.history.start({pushState: true});
@@ -567,7 +610,7 @@ define([
                 return currentEvent.documentCheck(currentDocumentProperties);
             });
             //Trigger new added ready event
-            if (this.initialLoaded !== false && options.launchReady !== false) {
+            if (this._initializedView !== false && options.launchReady !== false) {
                 this._triggerControllerEvent("ready", currentDocumentProperties);
                 _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute)
                 {
@@ -595,7 +638,7 @@ define([
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
                 this.activatedEventListener.push(newEvent);
                 // Check if we need to manually trigger this callback (late registered : only for ready events)
-                if (this.initialLoaded !== false) {
+                if (this._initializedView !== false) {
                     if (newEvent.eventType === "ready") {
                         event = $.Event(newEvent.eventType);
                         event.target = currentWidget.element;
@@ -738,11 +781,37 @@ define([
             if (_.isString(eventName) &&
                 (eventName.indexOf("custom:") === 0 ||
                 _.find(eventList, function documentController_CheckEventType(currentEventType)
-                    { return currentEventType === eventName;})
-            )) {
+                {
+                    return currentEventType === eventName;
+                })
+                )) {
                 return true;
             }
             throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.join(" ,"));
+        },
+
+        /**
+         * Check if the view is initialized
+         *
+         * @private
+         */
+        _checkInitialisedView: function documentController_checkInitialised()
+        {
+            if (!this._initializedView) {
+                throw new Error("The widget view is not initialized, use fetchDocument to initialise it.");
+            }
+        },
+
+        /**
+         * Check if the model is initialized
+         *
+         * @private
+         */
+        _checkInitialisedModel : function documentController_checkInitialisedModel()
+        {
+            if (!this._initializedModel) {
+                throw new Error("The widget model is not initialized, use fetchDocument to initialise it.");
+            }
         },
 
         /***************************************************************************************************************
@@ -753,6 +822,7 @@ define([
          */
         reinitDocument: function documentControllerReinitDocument()
         {
+            this._checkInitialisedModel();
             this._reinitModel();
             this._model.fetch();
         },
@@ -781,8 +851,6 @@ define([
             {
                 currentWidget.options[key] = value;
             });
-
-            this._model.clear();
             this._model.set(this._getModelValue()).fetch(options);
         },
 
@@ -794,6 +862,7 @@ define([
          */
         saveDocument: function documentControllerSave(options)
         {
+            this._checkInitialisedModel();
             this._model.save(null, options);
         },
 
@@ -804,6 +873,7 @@ define([
          */
         deleteDocument: function documentControllerDelete(options)
         {
+            this._checkInitialisedModel();
             this._model.deleteDocument(options);
         },
 
@@ -815,6 +885,7 @@ define([
          */
         getProperty: function documentControllerGetDocumentProperty(property)
         {
+            this._checkInitialisedModel();
             return this._model.getProperties()[property];
         },
 
@@ -824,6 +895,7 @@ define([
          */
         getProperties: function documentControllerGetDocumentProperties()
         {
+            this._checkInitialisedModel();
             return this._model.getProperties();
         },
 
@@ -835,6 +907,7 @@ define([
          */
         getAttribute: function documentControllerGetAttribute(attributeId)
         {
+            this._checkInitialisedModel();
             return new AttributeInterface(this._getAttributeModel(attributeId));
         },
 
@@ -845,6 +918,7 @@ define([
          */
         getAttributes: function documentControllerGetAttributes()
         {
+            this._checkInitialisedModel();
             return this._model.get("attributes").map(function documentController_mapAttribute(currentAttribute)
                 {
                     return new AttributeInterface(currentAttribute);
@@ -861,6 +935,7 @@ define([
          */
         getValue: function documentControllerGetValue(attributeId, type)
         {
+            this._checkInitialisedModel();
             var attribute = new AttributeInterface(this._getAttributeModel(attributeId));
             return attribute.getValue(type);
         },
@@ -872,6 +947,7 @@ define([
          */
         getValues: function documentControllerGetValues()
         {
+            this._checkInitialisedModel();
             return this._model.getValues();
         },
 
@@ -906,6 +982,7 @@ define([
          */
         setValue: function documentControllerSetValue(attributeId, value)
         {
+            this._checkInitialisedModel();
             var iAttribute = new AttributeInterface(this._getAttributeModel(attributeId));
             var mAttribute = this._getAttributeModel(attributeId);
             var index;
@@ -938,6 +1015,7 @@ define([
          */
         appendArrayRow: function documentControllerAddArrayRow(attributeId, values)
         {
+            this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId);
 
             if (attribute.get("type") !== "array") {
@@ -969,6 +1047,7 @@ define([
          */
         insertBeforeArrayRow: function documentControllerInsertBeforeArrayRow(attributeId, values, index)
         {
+            this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId), maxValue;
             if (attribute.get("type") !== "array") {
                 throw new Error("Attribute " + attributeId + " must be an attribute of type array");
@@ -1002,6 +1081,7 @@ define([
          */
         removeArrayRow: function documentControllerRemoveArrayRow(attributeId, index)
         {
+            this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId), maxIndex;
             if (attribute.get("type") !== "array") {
                 throw Error("Attribute " + attributeId + " must be an attribute of type array");
@@ -1026,6 +1106,7 @@ define([
          */
         addConstraint: function documentControlleraddConstraint(options, callback)
         {
+            this._checkInitialisedModel();
             var currentConstraint, currentWidget = this, uniqueName;
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
@@ -1080,6 +1161,7 @@ define([
          */
         listConstraints: function documentControllerListConstraint()
         {
+            this._checkInitialisedModel();
             return this.options.constraintList;
         },
 
@@ -1092,6 +1174,7 @@ define([
          */
         removeConstraint: function documentControllerRemoveConstraint(constraintName, allKind)
         {
+            this._checkInitialisedModel();
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
             allKind = !!allKind;
@@ -1124,6 +1207,7 @@ define([
          */
         addEventListener: function documentControllerAddEvent(eventType, options, callback)
         {
+            this._checkInitialisedModel();
             var currentEvent, currentWidget = this;
             //options is facultative and the callback can be the second parameters
             if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -1175,6 +1259,7 @@ define([
          */
         listEventListeners: function documentControllerListEvents()
         {
+            this._checkInitialisedModel();
             return this.options.eventListener;
         },
 
@@ -1187,6 +1272,7 @@ define([
          */
         removeEventListener: function documentControllerRemoveEvent(eventName, allKind)
         {
+            this._checkInitialisedModel();
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
             allKind = !!allKind;
@@ -1209,9 +1295,16 @@ define([
             return removed;
         },
 
-        triggerEvent : function documentController_triggerEvent(eventName) {
+        /**
+         * Trigger an event
+         *
+         * @param eventName
+         */
+        triggerEvent: function documentController_triggerEvent(eventName)
+        {
+            this._checkInitialisedModel();
             this._checkEventName(eventName);
-            return this._triggerControllerEvent.apply(this, arguments);
+            this._triggerControllerEvent.apply(this, arguments);
         },
 
         /**
@@ -1221,6 +1314,7 @@ define([
          */
         hideAttribute: function documentControllerHideAttribute(attributeId)
         {
+            this._checkInitialisedView();
             this._getAttributeModel(attributeId).trigger("hide");
         },
         /**
@@ -1230,6 +1324,7 @@ define([
          */
         showAttribute: function documentControllerShowAttribute(attributeId)
         {
+            this._checkInitialisedView();
             this._getAttributeModel(attributeId).trigger("show");
         },
 
@@ -1240,6 +1335,7 @@ define([
          */
         showMessage: function documentControllerShowMessage(message)
         {
+            this._checkInitialisedView();
             if (_.isString(message)) {
                 message = {
                     type: "info",
@@ -1263,6 +1359,7 @@ define([
          */
         setAttributeErrorMessage: function documentControllersetAttributeErrorMessage(attributeId, message, index)
         {
+            this._checkInitialisedView();
             this._getAttributeModel(attributeId).setErrorMessage(message, index);
         },
 
@@ -1274,6 +1371,7 @@ define([
          */
         cleanAttributeErrorMessage: function documentControllercleanAttributeErrorMessage(attributeId, index)
         {
+            this._checkInitialisedView();
             this._getAttributeModel(attributeId).setErrorMessage(null, index);
         }
 

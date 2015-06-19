@@ -52,6 +52,10 @@ define([
 
                     var documentIdentifier = model.id + model.get("viewId");
 
+                    if (documentIdentifier === "1081!defaultConsultation") {
+                        documentIdentifier = "1081!coreConsultation";
+                    }
+
                     if (method === "read" && !_.isUndefined(values[documentIdentifier])) {
                         currentValues = values[documentIdentifier];
                         options.success(values[documentIdentifier]);
@@ -88,7 +92,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", function ()
+                    $sandox.documentController("addEventListener", "ready", function ()
                     {
                         expect(true).toBe(true);
                         done();
@@ -99,10 +103,10 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function ()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function ()
                     {
                         var mock = getMockFunction();
-                        $sandox.documentController("addEvent", "ready", mock.fct);
+                        $sandox.documentController("addEventListener", "ready", mock.fct);
                         $sandox.documentController("reinitDocument");
                         //2 because auto launch ready
                         expect(mock.fct.calls.count()).toEqual(2);
@@ -119,12 +123,12 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(config));
-                    $sandox.documentController("addEvent", "destroy", function ()
+                    $sandox.documentController("addEventListener", "destroy", function ()
                     {
                         expect(true).toBe(true);
                         done();
                     });
-                    $sandox.documentController("addEvent", "ready", function ()
+                    $sandox.documentController("addEventListener", "ready", function ()
                     {
                         $sandox.documentController("destroy");
                     });
@@ -139,7 +143,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once" : true}, function ()
+                    $sandox.documentController("addEventListener", "ready", {"once" : true}, function ()
                     {
                         expect(function ()
                         {
@@ -153,11 +157,11 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function ()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function ()
                     {
                         var mockReady = getMockFunction();
-                        $sandox.documentController("addEvent", "ready", mockReady.fct);
-                        $sandox.documentController("fetchDocument");
+                        $sandox.documentController("addEventListener", "ready", mockReady.fct);
+                        $sandox.documentController("fetchDocument", {"initid" : $sandox.documentController("getProperty", "initid")});
                         //2 because auto launch ready
                         expect(mockReady.fct.calls.count()).toEqual(2);
                         done();
@@ -168,14 +172,14 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_launchEvents()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
                     {
                         var mockReady = getMockFunction(), mockBeforeClose = getMockFunction(), mockClose = getMockFunction(),
                             mockSuccess = getMockFunction();
-                        $sandox.documentController("addEvent", "ready", mockReady.fct);
-                        $sandox.documentController("addEvent", "beforeClose", mockBeforeClose.fct);
-                        $sandox.documentController("addEvent", "close", mockClose.fct);
-                        $sandox.documentController("fetchDocument", {}, {success: mockSuccess.fct});
+                        $sandox.documentController("addEventListener", "ready", mockReady.fct);
+                        $sandox.documentController("addEventListener", "beforeClose", mockBeforeClose.fct);
+                        $sandox.documentController("addEventListener", "close", mockClose.fct);
+                        $sandox.documentController("fetchDocument", {"initid": $sandox.documentController("getProperty", "initid")}, {success: mockSuccess.fct});
                         //2 because auto launch ready
                         expect(mockReady.fct.calls.count()).toEqual(2);
                         expect(mockBeforeClose.fct.calls.count()).toEqual(1);
@@ -189,12 +193,12 @@ define([
                 {
                     var $sandox = getSandbox(), documentOptions = prepareDocumentController(documentOptions);
                     $sandox.documentController(documentOptions);
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function ()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function ()
                     {
                         var mock = getMockFunction(), viewId = documentOptions.viewId === "!coreConsultation" ? "!defaultEdition" : "!coreConsultation";
-                        $sandox.documentController("addEvent", "ready", mock.fct);
+                        $sandox.documentController("addEventListener", "ready", mock.fct);
 
-                        $sandox.documentController("fetchDocument", {"viewId" : viewId});
+                        $sandox.documentController("fetchDocument", {"initid": $sandox.documentController("getProperty", "initid"), "viewId" : viewId});
                         //2 because auto launch ready
                         expect(mock.fct.calls.count()).toEqual(2);
                         expect($sandox.documentController("getProperty", "viewId"), viewId);
@@ -211,15 +215,15 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_launchEvents()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
                     {
                         var mockReady = getMockFunction(), mockBeforeSave = getMockFunction(), mockClose = getMockFunction(),
                             mockAfterSave = getMockFunction(), mockSuccess = getMockFunction(), mockValidate = getMockFunction();
-                        $sandox.documentController("addEvent", "ready", mockReady.fct);
-                        $sandox.documentController("addEvent", "validate", mockValidate.fct);
-                        $sandox.documentController("addEvent", "beforeSave", mockBeforeSave.fct);
-                        $sandox.documentController("addEvent", "close", mockClose.fct);
-                        $sandox.documentController("addEvent", "afterSave", mockAfterSave.fct);
+                        $sandox.documentController("addEventListener", "ready", mockReady.fct);
+                        $sandox.documentController("addEventListener", "validate", mockValidate.fct);
+                        $sandox.documentController("addEventListener", "beforeSave", mockBeforeSave.fct);
+                        $sandox.documentController("addEventListener", "close", mockClose.fct);
+                        $sandox.documentController("addEventListener", "afterSave", mockAfterSave.fct);
                         $sandox.documentController("saveDocument", {success: mockSuccess.fct});
                         //2 because auto launch ready
                         expect(mockReady.fct.calls.count()).toEqual(2, "ready count");
@@ -242,14 +246,14 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_launchEvents()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
                     {
                         var mockReady = getMockFunction(), mockBeforeDelete = getMockFunction(), mockClose = getMockFunction(),
                             mockAfterDelete = getMockFunction(), mockSuccess = getMockFunction();
-                        $sandox.documentController("addEvent", "ready", mockReady.fct);
-                        $sandox.documentController("addEvent", "beforeDelete", mockBeforeDelete.fct);
-                        $sandox.documentController("addEvent", "close", mockClose.fct);
-                        $sandox.documentController("addEvent", "afterDelete", mockAfterDelete.fct);
+                        $sandox.documentController("addEventListener", "ready", mockReady.fct);
+                        $sandox.documentController("addEventListener", "beforeDelete", mockBeforeDelete.fct);
+                        $sandox.documentController("addEventListener", "close", mockClose.fct);
+                        $sandox.documentController("addEventListener", "afterDelete", mockAfterDelete.fct);
                         $sandox.documentController("deleteDocument", {success: mockSuccess.fct});
                         //2 because auto launch ready
                         expect(mockReady.fct.calls.count()).toEqual(2);
@@ -270,7 +274,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_property()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_property()
                     {
                         _.each(currentValues.data.view.documentData.document.properties, function (value, attrid)
                         {
@@ -286,7 +290,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_property()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_property()
                     {
                         var properties = $sandox.documentController("getProperties");
                         _.each(properties, function (value, attrid)
@@ -314,7 +318,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_attribute()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_attribute()
                     {
                         _.each(currentValues.data.view.documentData.document.attributes, function (value, attrid)
                         {
@@ -334,7 +338,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_attribute()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_attribute()
                     {
                         var attribute = $sandox.documentController("getAttribute", "zoo_f_title");
                         expect(attribute.id).toBeDefined("id");
@@ -354,7 +358,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(documentOptions));
-                    $sandox.documentController("addEvent", "ready", {"once": true}, function test_property()
+                    $sandox.documentController("addEventListener", "ready", {"once": true}, function test_property()
                     {
                         var attributes = $sandox.documentController("getAttributes");
                         _.each(attributes, function (attribute)
@@ -377,7 +381,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(config));
-                    $sandox.documentController("addEvent", "ready", function ()
+                    $sandox.documentController("addEventListener", "ready", function ()
                     {
                         _.each(currentValues.data.view.documentData.document.attributes, function (value, attrid)
                         {
@@ -393,7 +397,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(config));
-                    $sandox.documentController("addEvent", "ready", function ()
+                    $sandox.documentController("addEventListener", "ready", function ()
                     {
                         _.each(currentValues.data.view.documentData.document.attributes, function (value, attrid)
                         {
@@ -411,7 +415,7 @@ define([
                 {
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(config));
-                    $sandox.documentController("addEvent", "ready", function ()
+                    $sandox.documentController("addEventListener", "ready", function ()
                     {
                         $sandox.documentController("setValue", "zoo_date", {value: "12-05-1985"});
                         expect($sandox.documentController("getValue", "zoo_date").value).toEqual("12-05-1985");
@@ -424,8 +428,8 @@ define([
                     var $sandox = getSandbox();
                     $sandox.documentController(prepareDocumentController(config));
                     var mock = getMockFunction();
-                    $sandox.documentController("addEvent", "change", mock.fct);
-                    $sandox.documentController("addEvent", "ready", function ()
+                    $sandox.documentController("addEventListener", "change", mock.fct);
+                    $sandox.documentController("addEventListener", "ready", function ()
                     {
                         $sandox.documentController("setValue", "zoo_date", {value: "12-05-1985"});
                         expect(mock.fct.calls.count()).toEqual(1);
@@ -444,7 +448,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var appendNonArrayRow = function ()
                             {
@@ -459,7 +463,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var appendNonArrayRow = function ()
                             {
@@ -474,7 +478,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var dates, length;
                             dates = $sandox.documentController("getValue", "zoo_date_array");
@@ -494,7 +498,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var appendNonArrayRow = function ()
                             {
@@ -509,7 +513,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var appendNonArrayRow = function ()
                             {
@@ -524,7 +528,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var appendToBigIndex, appendToLowIndex, dates, length;
                             dates = $sandox.documentController("getValue", "zoo_date_array");
@@ -547,7 +551,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var dates, length;
                             dates = $sandox.documentController("getValue", "zoo_date_array");
@@ -564,7 +568,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var dates, length;
                             dates = $sandox.documentController("getValue", "zoo_date_array");
@@ -585,7 +589,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var removeNonArrayRow = function ()
                             {
@@ -600,7 +604,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var removeToBigIndex, removeToLowIndex, dates, length;
                             dates = $sandox.documentController("getValue", "zoo_date_array");
@@ -624,7 +628,7 @@ define([
                     {
                         var $sandox = getSandbox();
                         $sandox.documentController(prepareDocumentController(config));
-                        $sandox.documentController("addEvent", "ready", function ()
+                        $sandox.documentController("addEventListener", "ready", function ()
                         {
                             var dates, length;
                             dates = $sandox.documentController("getValue", "zoo_date_array");
