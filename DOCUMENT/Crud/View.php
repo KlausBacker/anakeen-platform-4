@@ -23,8 +23,6 @@ class View extends Crud
     const coreViewCreationId = "!coreCreation";
     const fieldTemplate = "templates";
     const fieldRenderOptions = "renderOptions";
-    const fieldCustomServerData = "customServerData";
-    const fieldCustomClientData = "customClientData";
     const fieldDocumentData = "documentData";
     const fieldLocale = "locale";
     const fieldStyle = "style";
@@ -43,10 +41,8 @@ class View extends Crud
     protected $revision = - 1;
     
     protected $fields = array(
-        self::fieldCustomClientData,
         self::fieldRenderOptions,
         self::fieldRenderLabel,
-        self::fieldCustomServerData,
         self::fieldMenu,
         self::fieldTemplate,
         self::fieldDocumentData,
@@ -60,6 +56,8 @@ class View extends Crud
      */
     protected $document = null;
     protected $customClientData = null;
+    protected $renderConfig = null;
+    protected $renderVid = '';
     /**
      * Create new ressource
      * @throws Exception
@@ -109,7 +107,7 @@ class View extends Crud
         
         $vid = $this->viewIdentifier;
         
-        $info["view"] = $this->getViewInformation($this->document, $vid);
+        $info["view"] = $this->getViewInformation($vid);
         
         if ($vid === "") {
             $coreViews = $this->getCoreViews($this->document);
@@ -147,6 +145,7 @@ class View extends Crud
      */
     public function update($resourceId)
     {
+        
         if ($this->viewIdentifier != self::coreViewEditionId) {
             $document = $this->getDocument($resourceId);
             // apply specified mask
@@ -192,7 +191,7 @@ class View extends Crud
     {
         $documentData = new DocumentCrud();
         $documentData->delete($resourceId);
-        $this->document=null;
+        $this->document = null;
         return $this->read($resourceId);
     }
     /**
@@ -284,18 +283,19 @@ class View extends Crud
      * @return array
      * @throws Exception
      */
-    protected function getViewInformation($document, &$viewId)
+    protected function getViewInformation(&$viewId)
     {
-        $config = $this->getRenderConfig($document, $viewId);
+        $config = $this->getRenderConfig($viewId);
         $fields = $this->getFields();
         
+        \Dcp\ConsoleTime::startPartial("View Info");
         $viewInfo = array();
         foreach ($fields as $field) {
             switch ($field) {
                 case self::fieldRenderOptions:
-                    $viewInfo[self::fieldRenderOptions] = $config->getOptions($document)->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($document)->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($document)->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions] = $config->getOptions($this->document)->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($this->document)->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($this->document)->jsonSerialize();
                     
                     break;
 
@@ -304,15 +304,15 @@ class View extends Crud
                     break;
 
                 case self::fieldMenu:
-                    $viewInfo[self::fieldMenu] = $config->getMenu($document);
+                    $viewInfo[self::fieldMenu] = $config->getMenu($this->document);
                     break;
 
                 case self::fieldTemplate:
-                    $viewInfo[self::fieldTemplate] = $this->renderTemplates($config, $document);
+                    $viewInfo[self::fieldTemplate] = $this->renderTemplates($config, $this->document);
                     break;
 
                 case self::fieldDocumentData:
-                    $viewInfo[self::fieldDocumentData] = $this->renderDocument($document);
+                    $viewInfo[self::fieldDocumentData] = $this->renderDocument($this->document);
                     break;
 
                 case self::fieldLocale:
@@ -320,22 +320,16 @@ class View extends Crud
                     break;
 
                 case self::fieldStyle:
-                    $viewInfo[self::fieldStyle] = $this->getStyleData($config, $document);
+                    $viewInfo[self::fieldStyle] = $this->getStyleData($config, $this->document);
                     break;
 
                 case self::fieldScript:
-                    $viewInfo[self::fieldScript] = $this->getScriptData($config, $document);
-                    break;
-
-                case self::fieldCustomServerData:
-                    $viewInfo[self::fieldCustomServerData] = $config->getCustomServerData($document);
-                    break;
-
-                case self::fieldCustomClientData:
-                    $config->setCustomClientData($document, $this->getCustomClientData());
+                    $viewInfo[self::fieldScript] = $this->getScriptData($config, $this->document);
                     break;
             }
+            \Dcp\ConsoleTime::step($field);
         }
+        \Dcp\ConsoleTime::stopPartial();
         return $viewInfo;
     }
     /**
@@ -418,8 +412,8 @@ class View extends Crud
         return $documentData->getInternal($document);
     }
     /**
-     * Get the current document
-     *
+     * Get the current document,
+     * record to document protected attribute
      * @param $resourceId
      * @return \Doc
      * @throws Exception
@@ -441,6 +435,8 @@ class View extends Crud
                 $exception->setHttpStatus("404", "Document not found");
                 throw $exception;
             }
+            
+            DocManager::cache()->addDocument($this->document);
         }
         return $this->document;
     }
@@ -526,64 +522,69 @@ class View extends Crud
      * @throws Exception
      * @throws \Dcp\Ui\Exception
      */
-    protected function getRenderConfig(\Doc $document, &$vid)
+    protected function getRenderConfig(&$vid)
     {
-        $renderMode = "view";
-        if ($vid == self::defaultViewConsultationId) {
-            $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
-            $vid = '';
-        } elseif ($vid == self::defaultViewEditionId) {
-            $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
-            $vid = '';
-        } elseif ($vid == self::coreViewConsultationId) {
-            $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
-            $vid = '!none';
-        } elseif ($vid == self::coreViewEditionId) {
-            $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
-            $vid = '!none';
-        } elseif ($vid == self::coreViewCreationId) {
-            $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
-            $vid = '!none';
-        }
-        if (($vid === "!none" || $document->cvid == 0) && $document->doctype !== "C") {
-            $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $document);
-            $vid = '';
-        } else {
-            $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $document, $vid);
-        }
-        switch ($config->getType()) {
-            case "view":
-                $err = $document->control("view");
-                if ($err) {
-                    $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
-                    $exception->setHttpStatus("403", "Forbidden");
-                    throw $exception;
-                }
-                break;
+        if ($this->renderConfig === null) {
+            $renderMode = "view";
+            if ($vid == self::defaultViewConsultationId) {
+                $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
+                $vid = '';
+            } elseif ($vid == self::defaultViewEditionId) {
+                $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
+                $vid = '';
+            } elseif ($vid == self::coreViewConsultationId) {
+                $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
+                $vid = '!none';
+            } elseif ($vid == self::coreViewEditionId) {
+                $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
+                $vid = '!none';
+            } elseif ($vid == self::coreViewCreationId) {
+                $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
+                $vid = '!none';
+            }
+            if (($vid === "!none" || $this->document->cvid == 0) && $this->document->doctype !== "C") {
+                $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $this->document);
+                $vid = '';
+            } else {
+                $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $this->document, $vid);
+            }
+            switch ($config->getType()) {
+                case "view":
+                    $err = $this->document->control("view");
+                    if ($err) {
+                        $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                        $exception->setHttpStatus("403", "Forbidden");
+                        throw $exception;
+                    }
+                    break;
 
-            case "edit":
-                if ($document->locked == - 1) {
-                    throw new Exception("CRUDUI0005", $vid);
-                }
-                if ($renderMode === "create") {
-                    
-                    $err = $document->control("icreate");
-                    $err.= $document->control("create");
-                    if ($err) {
-                        $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
-                        $exception->setHttpStatus("403", "Forbidden");
-                        throw $exception;
+                case "edit":
+                    if ($this->document->locked == - 1) {
+                        throw new Exception("CRUDUI0005", $vid);
                     }
-                } else {
-                    $err = $document->canEdit();
-                    if ($err) {
-                        $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
-                        $exception->setHttpStatus("403", "Forbidden");
-                        throw $exception;
+                    if ($renderMode === "create") {
+                        
+                        $err = $this->document->control("icreate");
+                        $err.= $this->document->control("create");
+                        if ($err) {
+                            $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                            $exception->setHttpStatus("403", "Forbidden");
+                            throw $exception;
+                        }
+                    } else {
+                        $err = $this->document->canEdit();
+                        if ($err) {
+                            $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                            $exception->setHttpStatus("403", "Forbidden");
+                            throw $exception;
+                        }
                     }
-                }
+            }
+            $this->renderConfig = $config;
+            $this->renderVid = $vid;
         }
-        return $config;
+        $vid = $this->renderVid;
+        return $this->renderConfig;
     }
     /**
      * Set the url parameters
@@ -627,17 +628,38 @@ class View extends Crud
      */
     protected function extractEtagDocument($id)
     {
+        
+        \Dcp\ConsoleTime::startPartial("Etag");
+        \Dcp\ConsoleTime::step("etag");
         $this->getDocument($id);
+        \Dcp\ConsoleTime::step("getDocument");
+        
+        $refreshMsg = $this->setRefresh();
+        \Dcp\ConsoleTime::step("refresh");
+        
         $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "disableEtag");
+        \Dcp\ConsoleTime::step("eTag test");
         
         if ($disableEtag) {
+            \Dcp\ConsoleTime::stopPartial();
             return null;
         }
-        $refreshMsg = $this->setRefresh();
+        $viewId = $this->viewIdentifier;
+        $config = $this->getRenderConfig($viewId);
+        $renderEtag = $config->getEtag($this->document);
+        if ($renderEtag !== "") {
+            \Dcp\ConsoleTime::stopPartial();
+            return $renderEtag;
+        }
         
-        $result = array();
-        $sql = sprintf("select id, revdate, cvid, views, fromid, locked from docread where id = %d", $id);
-        simpleQuery(getDbAccess() , $sql, $result, false, true);
+        $result = array(
+            "id" => $this->document->id,
+            "revdate" => $this->document->revdate,
+            "cvid" => $this->document->cvid,
+            "views" => $this->document->views,
+            "fromid" => $this->document->fromid,
+            "locked" => $this->document->locked,
+        );
         
         $user = getCurrentUser();
         $result[] = $user->id;
@@ -656,10 +678,17 @@ class View extends Crud
             simpleQuery(getDbAccess() , $sql, $cvDate, true, true);
             $result[] = $cvDate;
         }
+        
+        \Dcp\ConsoleTime::step("get Sql");
         // Necessary only when use family.structure
         $result[] = $refreshMsg;
         $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        
+        \Dcp\ConsoleTime::step("getParam");
+        
+        \Dcp\ConsoleTime::stopPartial();
+        
         return join(" ", $result);
     }
     /**
@@ -681,22 +710,8 @@ class View extends Crud
         return $refreshMsg;
     }
     
-    protected function getCustomClientData()
-    {
-        if ($this->customClientData) {
-            return $this->customClientData;
-        }
-        if (isset($this->contentParameters[self::fieldCustomClientData])) {
-            $this->customClientData = json_decode($this->contentParameters[self::fieldCustomClientData], true);
-            return $this->customClientData;
-        }
-        return null;
-    }
-    
     public function analyseJSON($jsonString)
     {
-        $dataDocument = json_decode($jsonString, true);
-        $this->customClientData = isset($dataDocument[self::fieldCustomClientData]) ? $dataDocument[self::fieldCustomClientData] : null;
         $values = DocumentUtils::analyzeDocumentJSON($jsonString);
         return $values;
     }
