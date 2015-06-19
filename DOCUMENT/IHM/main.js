@@ -13,19 +13,25 @@ require([
 
     var $document = $(".document");
 
-    $document.documentController({
-        "initid": window.dcp.viewData.documentIdentifier,
-        "viewId": window.dcp.viewData.vid,
-        "revision": window.dcp.viewData.revision
-    });
-
-    $document.one("documentready", function ()
-    {
-        // Init bind events in case of use extern document controller
+    if (window.dcp.viewData !== false) {
+        $document.documentController({
+            "initid": window.dcp.viewData.documentIdentifier,
+            "viewId": window.dcp.viewData.vid,
+            "revision": window.dcp.viewData.revision
+        });
+        $document.one("documentready", function ()
+        {
+            // Init bind events in case of use extern document controller
+            if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
+                window.documentLoaded($document);
+            }
+        });
+    } else {
+        $document.documentController();
         if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
             window.documentLoaded($document);
         }
-    });
+    }
 
     window.dcp.document = $document;
 
