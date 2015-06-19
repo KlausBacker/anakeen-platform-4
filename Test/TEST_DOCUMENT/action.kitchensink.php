@@ -9,7 +9,7 @@ function kitchensink(\Action &$action)
 
     $require = $render->getRequireReference();
     $js = array(
-        $require["src"],
+        $require["require"],
         $require["config"],
         'TEST_DOCUMENT/Layout/kitchensink.js?wv='.$version
     );
