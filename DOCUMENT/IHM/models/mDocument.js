@@ -5,11 +5,12 @@ define([
     'backbone',
     'dcpDocument/models/mDocumentProperties',
     'dcpDocument/models/mDocumentLock',
+    'dcpDocument/models/mFamilyStructure',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
     'dcpDocument/i18n',
     'dcpDocument/widgets/window/wNotification'
-], function ($, _, Backbone, DocumentProperties, DocumentLock, CollectionAttributes, CollectionMenus, i18n)
+], function ($, _, Backbone, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 
@@ -591,8 +592,10 @@ define([
          */
         parse: function mDocumentParse(response)
         {
-            var values, attributes = [], renderMode = "view", structureAttributes, valueAttributes, visibilityAttributes,
+            var values,  renderMode = "view",  valueAttributes, visibilityAttributes,
                 neededAttributes, view = response.data.view;
+            var documentModel=this;
+            var mStructure;
             if (response.success === false) {
                 throw new Error("Unable to get the data from documents");
             }
@@ -609,23 +612,38 @@ define([
             valueAttributes = view.documentData.document.attributes;
             visibilityAttributes = view.renderOptions.visibilities;
             neededAttributes = view.renderOptions.needed;
-            if (view.documentData.family) {
-                structureAttributes = view.documentData.family.structure;
-            } else {
-                structureAttributes = [];
-            }
 
-            attributes = flattenAttributes(attributes, structureAttributes);
-            _.each(attributes, function (currentAttributeStructure)
-            {
-                if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
-                    currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
-                    currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
-                }
-                if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
-                    currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
+
+            mStructure = new FamilyStructure({familyId:view.documentData.document.properties.family.id});
+            mStructure.fetch({
+                success: function (model, response)
+                {
+                    var attributes = flattenAttributes(attributes, response.data.family.structure);
+                    _.each(attributes, function (currentAttributeStructure)
+                    {
+                        if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
+                            currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
+                            currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
+                        }
+                        if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
+                            currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
+                        }
+                    });
+                    documentModel.set("attributes",attributes );
+                    documentModel.trigger("reload");
+                },
+
+                error: function (theModel, HttpResponse)
+                {
+                    var response = JSON.parse(HttpResponse.responseText);
+
+                    documentModel.trigger("showError", {
+                        title: response.exceptionMessage
+                    });
                 }
             });
+
+
 
             this.initialProperties = _.defaults({
                 "renderMode": renderMode || "view",
@@ -640,7 +658,7 @@ define([
                 revision: view.documentData.document.properties.revision,
                 locale: view.locale.culture,
                 renderMode: renderMode || "view",
-                attributes: attributes,
+                attributes: undefined,
                 templates: view.templates,
                 renderOptions: view.renderOptions,
                 customCSS: view.style.css,
@@ -661,10 +679,10 @@ define([
          * Generate the collection of the current model
          *
          * @param attributes
-         * @param options
+         * @param optionalSingleValue
          * @returns {*}
          */
-        "set": function mDocumentsetValues(attributes, options)
+        "set": function mDocumentsetValues(attributes, optionalSingleValue)
         {
             var currentModel = this;
             if (attributes.properties !== undefined) {
@@ -680,22 +698,22 @@ define([
                 }
                 attributes.menus = new CollectionMenus(attributes.menus);
             }
-            if (attributes.attributes !== undefined) {
+            if (attributes === "attributes") {
                 if (currentModel.get("attributes") instanceof CollectionAttributes) {
                     currentModel.get("attributes").destroy();
                 }
-                attributes.attributes = new CollectionAttributes(attributes.attributes, {
+                optionalSingleValue = new CollectionAttributes(optionalSingleValue, {
                     documentModel: currentModel,
-                    renderOptions: attributes.renderOptions,
-                    renderMode: attributes.renderMode
+                    renderOptions: currentModel.get("renderOptions"),
+                    renderMode: currentModel.get("renderMode")
                 });
                 //Set the internal content collection (for structure attributes)
-                attributes.attributes.each(function (currentAttributeModel)
+                optionalSingleValue.each(function (currentAttributeModel)
                 {
                     if (currentAttributeModel.get("isValueAttribute")) {
                         return;
                     }
-                    var childAttributes = attributes.attributes.filter(function (candidateChildModel)
+                    var childAttributes = optionalSingleValue.filter(function (candidateChildModel)
                     {
                         return candidateChildModel.get("parent") === currentAttributeModel.id;
                     });
@@ -704,24 +722,24 @@ define([
                     }
                 });
                 //Propagate the change event to the model
-                currentModel.listenTo(attributes.attributes, "change:attributeValue", function (model, value)
+                currentModel.listenTo(optionalSingleValue, "change:attributeValue", function (model, value)
                 {
                     currentModel.trigger("changeValue", {
                         attributeId: model.id
                     });
                 });
                 //Propagate the validate event to the model
-                currentModel.listenTo(attributes.attributes, "constraint", function (options)
+                currentModel.listenTo(optionalSingleValue, "constraint", function (options)
                 {
                     currentModel.trigger("constraint", options.model.id, options.response);
                 });
                 //Propagate the renderDone event of the attributes to the model
-                currentModel.listenTo(attributes.attributes, "renderDone", function (options)
+                currentModel.listenTo(optionalSingleValue, "renderDone", function (options)
                 {
                     currentModel.trigger("attributeRender", options.model.id, options.$el);
                 });
                 //Propagate the array event modified to the model
-                currentModel.listenTo(attributes.attributes, "array", function (type, model, options)
+                currentModel.listenTo(optionalSingleValue, "array", function (type, model, options)
                 {
                     currentModel.trigger("arrayModified", {
                         attributeId: model.id,
@@ -730,27 +748,27 @@ define([
                     });
                 });
                 //Propagate the event externalLinkSelected to the model
-                currentModel.listenTo(attributes.attributes, "internalLinkSelected", function (options)
+                currentModel.listenTo(optionalSingleValue, "internalLinkSelected", function (options)
                 {
                     currentModel.trigger("internalLinkSelected", {}, options);
                 });
                 //Propagate the event helperSearch to the model
-                currentModel.listenTo(attributes.attributes, "helperSearch", function (event, attrid, options)
+                currentModel.listenTo(optionalSingleValue, "helperSearch", function (event, attrid, options)
                 {
                     currentModel.trigger("helperSearch", event, attrid, options);
                 });
                 //Propagate the event helperResponse to the model
-                currentModel.listenTo(attributes.attributes, "helperResponse", function (event, attrid, options)
+                currentModel.listenTo(optionalSingleValue, "helperResponse", function (event, attrid, options)
                 {
                     currentModel.trigger("helperResponse", event, attrid, options);
                 });
                 //Propagate the event helperResponse to the model
-                currentModel.listenTo(attributes.attributes, "helperSelect", function (event, attrid, options)
+                currentModel.listenTo(optionalSingleValue, "helperSelect", function (event, attrid, options)
                 {
                     currentModel.trigger("helperSelect", event, attrid, options);
                 });
             }
-            return Backbone.Model.prototype.set.call(this, attributes, options);
+            return Backbone.Model.prototype.set.call(this, attributes, optionalSingleValue);
         },
 
         unbindLoadEvent: function mDocumentUnbindLoadEvent()

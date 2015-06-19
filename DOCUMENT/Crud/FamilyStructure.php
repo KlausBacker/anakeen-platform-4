@@ -1,0 +1,50 @@
+<?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
+
+namespace Dcp\Ui\Crud;
+
+class FamilyStructure extends \Dcp\HttpApi\V1\Crud\Document
+{
+    
+    public function __construct(\Doc $document = null)
+    {
+        parent::__construct();
+        
+        $this->defaultFields = self::GET_STRUCTURE;
+    }
+    
+    public function update($resourceId)
+    {
+        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus("405", "You cannot update structure");
+        throw $exception;
+    }
+    public function delete($resourceId)
+    {
+        $exception = new \Dcp\HttpApi\V1\Crud\Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus("405", "You cannot delete structure");
+        throw $exception;
+    }
+    /**
+     * Compute etag from an id
+     *
+     * @param $id
+     *
+     * @return string
+     * @throws \Dcp\Db\Exception
+     */
+    protected function extractEtagDataFromId($id)
+    {
+        $result = array();
+        $sql = sprintf("select revdate from docfam where id = %d", $id);
+        simpleQuery(getDbAccess() , $sql, $result, false, true);
+        // Necessary only when use family.structure
+        $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        return join(" ", $result);
+    }
+}

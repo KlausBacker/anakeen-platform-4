@@ -23,6 +23,8 @@ class View extends Crud
     const coreViewCreationId = "!coreCreation";
     const fieldTemplate = "templates";
     const fieldRenderOptions = "renderOptions";
+    const fieldCustomServerData = "customServerData";
+    const fieldCustomClientData = "customClientData";
     const fieldDocumentData = "documentData";
     const fieldLocale = "locale";
     const fieldStyle = "style";
@@ -41,8 +43,10 @@ class View extends Crud
     protected $revision = - 1;
     
     protected $fields = array(
+        self::fieldCustomClientData,
         self::fieldRenderOptions,
         self::fieldRenderLabel,
+        self::fieldCustomServerData,
         self::fieldMenu,
         self::fieldTemplate,
         self::fieldDocumentData,
@@ -50,7 +54,7 @@ class View extends Crud
         self::fieldStyle,
         self::fieldScript
     );
-    protected $needSendFamilyStructure = true;
+    protected $needSendFamilyStructure = false;
     /**
      * @var \Doc current document
      */
@@ -325,6 +329,14 @@ class View extends Crud
 
                 case self::fieldScript:
                     $viewInfo[self::fieldScript] = $this->getScriptData($config, $this->document);
+                    break;
+
+                case self::fieldCustomServerData:
+                    $viewInfo[self::fieldCustomServerData] = $config->getCustomServerData($this->document);
+                    break;
+
+                case self::fieldCustomClientData:
+                    $config->setCustomClientData($this->document, $this->getCustomClientData());
                     break;
             }
             \Dcp\ConsoleTime::step($field);
@@ -710,8 +722,22 @@ class View extends Crud
         return $refreshMsg;
     }
     
+    protected function getCustomClientData()
+    {
+        if ($this->customClientData) {
+            return $this->customClientData;
+        }
+        if (isset($this->contentParameters[self::fieldCustomClientData])) {
+            $this->customClientData = json_decode($this->contentParameters[self::fieldCustomClientData], true);
+            return $this->customClientData;
+        }
+        return null;
+    }
+    
     public function analyseJSON($jsonString)
     {
+        $dataDocument = json_decode($jsonString, true);
+        $this->customClientData = isset($dataDocument[self::fieldCustomClientData]) ? $dataDocument[self::fieldCustomClientData] : null;
         $values = DocumentUtils::analyzeDocumentJSON($jsonString);
         return $values;
     }

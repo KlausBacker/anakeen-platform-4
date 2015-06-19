@@ -27,6 +27,13 @@
         "description": "Document Lock View",
         "canonicalURL": "documents/<documentId>/views/<viewId>/locks/<lockType>"
     },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\FamilyStructure",
+    "regExp": "%^/families/(?P<identifier>[^/]+)/views/structure$%",
+    "description": "Get structure family of document",
+    "canonicalURL": "families/<familyName>/views/structure"
+  },
 
     {
         "order": 300,

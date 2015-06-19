@@ -36,7 +36,6 @@ define([
         {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'displayLoading', this.displayLoading);
-            this.listenTo(this.model, 'sync', this.cleanAndRender);
             this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
