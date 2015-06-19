@@ -332,6 +332,10 @@ define([
                                 expect(currentValues.data.view.renderOptions.mode).toEqual(value, "for " + attrid);
                                 return;
                             }
+                            if (attrid === "isModified") {
+                                expect(false).toEqual(value, "for " + attrid);
+                                return;
+                            }
                             expect(currentValues.data.view.documentData.document.properties[attrid]).toEqual(value, "for " + attrid);
                         });
                         done();

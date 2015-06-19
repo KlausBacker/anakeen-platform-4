@@ -310,6 +310,7 @@ define([
                 properties.revision = this.get("revision");
                 properties.viewId = this.get("viewId");
                 properties.renderMode = this.get("renderMode");
+                properties.isModified = this.hasAttributesChanged();
 
                 return properties;
             }
@@ -343,11 +344,13 @@ define([
          */
         hasAttributesChanged: function mDocumenthasAttributesChanged()
         {
-            return this.get("attributes").some(function (currentAttr)
+            return !!this.get("attributes").some(function (currentAttr)
             {
                 return (currentAttr.hasChanged("attributeValue") &&
-                ((currentAttr.get("attributeValue").value !== undefined && ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''))) || !_.isEqual(_.pluck(_.flatten(currentAttr._initialAttributeValue), "value"), _.pluck(_.flatten(currentAttr.get("attributeValue")), "value"))
-                )
+                            ((currentAttr.get("attributeValue").value !== undefined &&
+                                ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''))) ||
+                                  !_.isEqual(_.pluck(_.flatten(currentAttr._initialAttributeValue), "value"),
+                                                _.pluck(_.flatten(currentAttr.get("attributeValue")), "value")))
                 );
             });
         },
