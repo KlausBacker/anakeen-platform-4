@@ -258,6 +258,12 @@ define([
             });
         },
 
+        /**
+         * Modify view : triggered by wDocid
+         * @param event
+         * @param options
+         * @returns {*}
+         */
         changeDocument: function changeAttributesValueChangeDocument(event, options)
         {
             var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel();
@@ -266,6 +272,19 @@ define([
             } else {
                 initid = attributeValue[index].value;
             }
+
+            this.model.trigger("internalLinkSelected", event,  {
+                eventId:"document.load",
+                target:this.$el.get(0),
+                attrid:this.model.id,
+                options:[initid,"!defaultConsultation" ],
+                index:options.index
+            });
+
+            if (event.prevent) {
+                return this;
+            }
+
             documentModel.set({
                 "initid": initid,
                 "revision": -1,
@@ -276,7 +295,7 @@ define([
         externalLinkSelected: function changeAttributesValueExternalLinkSelected(event, options)
         {
             options.attrid = this.model.id;
-            this.model.trigger("internalLinkSelected", options);
+            this.model.trigger("internalLinkSelected", event, options);
         },
 
         /**

@@ -7,11 +7,10 @@
 
 namespace Dcp\Ui;
 
-
 class FamilyView extends RenderDefault
 {
     
-    public function getLabel(\Doc $document=null)
+    public function getLabel(\Doc $document = null)
     {
         return ___("Family View", "ddui");
     }
@@ -28,24 +27,12 @@ class FamilyView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document:history");
+        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document.history");
         $item->setBeforeContent('<div class="fa fa-history" />');
         $menu->appendElement($item);
         
-        $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
-        
-        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
-        $menu->getElement("advanced")->appendElement($item);
-        
-        $securitySubMenu = new ListMenu("security", ___("Security", "UiMenu"));
-        $item = new ItemMenu("profil", ___("Profil access", "UiMenu") , "?app=FREEDOM&action=FREEDOM_GACCESS&id={{document.properties.id}}");
-        $targetOption = new MenuTargetOptions();
-        $targetOption->windowHeight = "400px";
-        $targetOption->windowWidth = "600px";
-        $item->setTarget("_dialog", $targetOption);
-        $securitySubMenu->appendElement($item);
-        
-        $menu->getElement("advanced")->appendElement($securitySubMenu);
+        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document.properties");
+        $menu->appendElement($item);
         
         return $menu;
     }

@@ -28,7 +28,7 @@ class DefaultEdit extends RenderDefault
         $menu = new BarMenu();
         $user = getCurrentUser();
         
-        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#event/document:saveAndClose");
+        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#event/document.saveAndClose");
         $item->setBeforeContent('<div class="fa fa-save" />');
         if ($this->displayDefaultMenuTooltip) {
             $item->setTooltipLabel(___("Record to server and view document", "UiMenu"));
@@ -38,7 +38,7 @@ class DefaultEdit extends RenderDefault
         }
         $menu->appendElement($item);
         
-        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#event/document:save");
+        $item = new ItemMenu("save", ___("Save", "UiMenu") , "#event/document.save");
         $item->setBeforeContent('<div class="fa fa-save" />');
         if ($this->displayDefaultMenuTooltip) {
             $item->setTooltipLabel(___("Record document to server", "UiMenu"));
@@ -48,7 +48,7 @@ class DefaultEdit extends RenderDefault
         }
         $menu->appendElement($item);
         if ($user->id === "1") {
-            $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#event/document:save:force");
+            $item = new ItemMenu("save!", ___("Save !", "UiMenu") , "#event/document.save:force");
             $item->setVisibility($item::VisibilityHidden);
             if ($this->displayDefaultMenuTooltip) {
                 $item->setTooltipLabel(___("Record document without constraint check", "UiMenu"));
@@ -61,14 +61,14 @@ class DefaultEdit extends RenderDefault
         
         if (empty($document->id)) {
             
-            $item = new ItemMenu("createAndClose", ___("Create and close", "UiMenu") , "#event/document:createAndClose");
+            $item = new ItemMenu("createAndClose", ___("Create and close", "UiMenu") , "#event/document.createAndClose");
             $item->setBeforeContent('<div class="fa fa-save" />');
             if ($this->displayDefaultMenuTooltip) {
                 $item->setTooltipLabel(___("Create to server and view document", "UiMenu"));
             }
             $menu->appendElement($item);
             
-            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#event/document:create");
+            $item = new ItemMenu("create", ___("Create", "UiMenu") , "#event/document.create");
             $item->setBeforeContent('<div class="fa fa-save" />');
             if ($this->displayDefaultMenuTooltip) {
                 $item->setTooltipLabel(___("Create new document to server", "UiMenu"));
@@ -86,7 +86,7 @@ class DefaultEdit extends RenderDefault
         }
         
         if ($document->id > 0) {
-            $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document:close:!defaultConsultation:unlock");
+            $item = new ItemMenu("close", ___("Close", "UiMenu") , "#event/document.close:!defaultConsultation:unlock");
             $item->setBeforeContent('<div class="fa fa-times" />');
             if ($this->displayDefaultMenuTooltip) {
                 $item->setTooltipLabel(___("Close form", "UiMenu"));
