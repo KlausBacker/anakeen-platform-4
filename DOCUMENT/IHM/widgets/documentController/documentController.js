@@ -88,10 +88,10 @@ define([
          *
          * @private
          */
-        _initializeWidget: function (options)
+        _initializeWidget: function documentController_initializeWidget(options)
         {
             var currentWidget = this,
-                initializeSuccess = function() {
+                initializeSuccess = function documentController_initializeSuccess() {
                 currentWidget._initializedModel = true;
             };
             options = options || {};
@@ -99,7 +99,7 @@ define([
             this._initModel(this._getModelValue());
             this._initView();
             if (options.success) {
-                options.success = _.wrap(options.success, function(success) {
+                options.success = _.wrap(options.success, function documentController_initializeSuccess (success) {
                     initializeSuccess.apply(this, _.rest(arguments));
                     return success.apply(this, _.rest(arguments));
                 });
@@ -391,7 +391,7 @@ define([
                 currentWidget.$loading.dcpLoading("setLabel", null);
                 currentWidget._initializedView = true;
                 currentWidget._triggerControllerEvent("ready", currentWidget._model.getProperties());
-                _.delay(function ()
+                _.delay(function documentController_endRender()
                 {
                     currentWidget.$loading.dcpLoading("hide");
                     console.timeEnd('main');
@@ -841,7 +841,7 @@ define([
             }
 
             if (!values.initid) {
-                throw new Error('initid argument is mandatory}');
+                throw new Error('initid argument is mandatory');
             }
 
             // Use default values when fetch another document
@@ -851,7 +851,12 @@ define([
             {
                 currentWidget.options[key] = value;
             });
-            this._model.set(this._getModelValue()).fetch(options);
+            if (!this._model) {
+                this._initializeWidget(options);
+            } else {
+                this._model.set(this._getModelValue()).fetch(options);
+            }
+
         },
 
         /**

@@ -29,7 +29,7 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper"  style="border : 0;" src="?app=DOCUMENT&id=<%= options.initid %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" src="?app=DOCUMENT<% if (options.viewId) { %>&id=<%= options.initid %><% } %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -45,9 +45,6 @@ define([
          */
         _create: function dcpDocument_create()
         {
-            if (!this.options.initid) {
-                throw new Error("Unable to create a document without initid");
-            }
             this.options = _.extend({}, this.defaults, this.options);
             this.options.eventListener = {};
             this.options.constraintList = {};
@@ -67,19 +64,17 @@ define([
             $iframe = this.element.find(".dcpDocumentWrapper");
             //Listen the load to the iframe (initial JS added and page loaded)
 
-
             if ($iframe.length > 0) {
                 documentWindow = $iframe[0].contentWindow;
-
-
                 // This event is used when use a hard link (aka href anchor) to change document
                 // It is load also the first time
                 $iframe.on("load", function dcpDocument_setReadyEvent()
                 {
-                    documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode)
+                    documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode, voidLoaded)
                     {
                         //Re Bind the internalController function to the current widget
                         currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"));
+                        currentWidget.element.data("voidLoaded", !!voidLoaded);
                     };
 
                     $(documentWindow).on("unload", function dcpDocument_setUnloadEvent()
@@ -102,16 +97,11 @@ define([
             this._trigger("internalWidgetUnloaded");
         },
 
-        /**
-         * Bind the internal controller to the current widget
-         * Reinit the constraint and the event
-         *
-         * @param internalController
-         */
-        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController)
+        rebindEvents: function ()
         {
-            if (!this.element.data("internalWidgetInitialised")) {
-                this.element.data("internalWidget", internalController);
+            var internalController = this.element.data("internalWidget");
+            if (internalController) {
+
                 //Rebind event
                 _.each(this.options.eventListener, function dcpDocument_bindEvent(currentEvent)
                 {
@@ -122,9 +112,19 @@ define([
                 {
                     internalController.addConstraint(currentConstaint);
                 });
-                this.element.data("internalWidgetInitialised", true);
-                this._trigger("loaded");
             }
+        }, /**
+         * Bind the internal controller to the current widget
+         * Reinit the constraint and the event
+         *
+         * @param internalController
+         */
+        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController)
+        {
+            this.element.data("internalWidget", internalController);
+            this.rebindEvents();
+            this.element.data("internalWidgetInitialised", true);
+            this._trigger("loaded");
         },
 
         /**
@@ -208,30 +208,50 @@ define([
          *
          * Use internal controller if ready
          * Re-render the widget if internal is not ready
+         *
+         * @param values
          * @param options
          */
-        fetchDocument: function dcpDocument_fetchDocument(options)
+        fetchDocument: function dcpDocument_fetchDocument(values, options)
         {
-            var internalWidget, currentWidget = this;
-            _.each(_.pick(options, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            var internalWidget,
+                currentWidget = this,
+                initWidget = function dpcDocument_successWidget() {
+                    currentWidget.rebindEvents.call(currentWidget);
+                currentWidget.element.data("voidLoaded", false);
+            };
+            options = options || {};
+            if (!values.initid) {
+                throw new Error("You need to set the initid to fetch the document");
+            }
+            _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
             {
                 currentWidget.options[key] = value;
             });
             if (this.element.data("internalWidgetInitialised")) {
                 internalWidget = this.element.data("internalWidget");
-                internalWidget.fetchDocument.call(internalWidget, options);
+                if (options.success) {
+                    options.success = _.wrap(options.success, function (success)
+                    {
+                        initWidget.apply(this, _.rest(arguments));
+                        return success.apply(this, _.rest(arguments));
+                    });
+                } else {
+                    options.success = initWidget;
+                }
+                if (options.fail) {
+                    options.fail = _.wrap(options.fail, function (fail)
+                    {
+                        initWidget.apply(this, _.rest(arguments));
+                        return fail.apply(this, _.rest(arguments));
+                    });
+                } else {
+                    options.fail = initWidget;
+                }
+                internalWidget.fetchDocument.call(internalWidget, values, options);
             } else {
                 this._render();
             }
-        },
-
-        /**
-         * Reinit the document
-         *
-         */
-        reinitDocument: function dcpDocument_reinitDocument()
-        {
-            this.fetchDocument();
         },
 
         /**
@@ -281,7 +301,7 @@ define([
             //Remove once property because already wrapped
             currentEvent.once = false;
             this.options.eventListener[currentEvent.name] = currentEvent;
-            if (this.element.data("internalWidgetInitialised")) {
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
                 this.element.data("internalWidget").addEventListener(currentEvent);
             }
             return currentEvent.name;
@@ -294,7 +314,7 @@ define([
          */
         listEventListeners: function documentControllerListEvents()
         {
-            if (this.element.data("internalWidgetInitialised")) {
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
                 return this.element.data("internalWidget").listEventListeners();
             } else {
                 return this.options.eventListener;
@@ -325,7 +345,7 @@ define([
                 eventList[currentEvent.name] = currentEvent;
             });
             this.options.eventListener = eventList;
-            if (this.element.data("internalWidgetInitialised")) {
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
                 this.element.data("internalWidget").removeEventListener(eventName, true);
             }
             return removed;
@@ -381,7 +401,7 @@ define([
                 });
             }
             this.options.constraintList[parameters.name] = parameters;
-            if (this.element.data("internalWidgetInitialised")) {
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
                 this.element.data("internalWidget").addConstraint(parameters);
             }
             return parameters.name;
@@ -393,7 +413,7 @@ define([
          */
         listConstraints: function documentControllerListConstraint()
         {
-            if (this.element.data("internalWidgetInitialised")) {
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
                 return this.element.data("internalWidget").listConstraints();
             } else {
                 return this.options.constraintList;
@@ -423,7 +443,7 @@ define([
                 constraintList[currentConstraint.name] = currentConstraint;
             });
             this.options.constraintList = constraintList;
-            if (this.element.data("internalWidgetInitialised")) {
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
                 this.element.data("internalWidget").removeConstraint(constraintName, true);
             }
             return removed;
