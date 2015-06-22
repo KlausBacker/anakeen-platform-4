@@ -112,6 +112,7 @@ define([
             this.listenTo(this, "error", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
             this.listenTo(this, "destroy", this.unbindLoadEvent);
+            this.listenTo(this, "sync", this.completeStructure);
 
             $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
@@ -592,10 +593,9 @@ define([
          */
         parse: function mDocumentParse(response)
         {
-            var values,  renderMode = "view",  valueAttributes, visibilityAttributes,
-                neededAttributes, view = response.data.view;
-            var documentModel=this;
-            var mStructure;
+            var values, renderMode = "view", view = response.data.view;
+
+
             if (response.success === false) {
                 throw new Error("Unable to get the data from documents");
             }
@@ -609,39 +609,7 @@ define([
                         throw new Error("Unkown render mode " + view.renderOptions.mode);
                     }
             }
-            valueAttributes = view.documentData.document.attributes;
-            visibilityAttributes = view.renderOptions.visibilities;
-            neededAttributes = view.renderOptions.needed;
 
-
-            mStructure = new FamilyStructure({familyId:view.documentData.document.properties.family.id});
-            mStructure.fetch({
-                success: function (structureModel, response)
-                {
-                    var attributes = flattenAttributes(attributes, response.data.family.structure);
-                    _.each(attributes, function (currentAttributeStructure)
-                    {
-                        if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
-                            currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
-                            currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
-                        }
-                        if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
-                            currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
-                        }
-                    });
-                    documentModel.set("attributes",attributes );
-                    documentModel.trigger("reload");
-                },
-
-                error: function (structureModel, HttpResponse)
-                {
-                    var response = JSON.parse(HttpResponse.responseText);
-
-                    documentModel.trigger("showError", {
-                        title: response.exceptionMessage
-                    });
-                }
-            });
 
             this.initialProperties = _.defaults({
                 "renderMode": renderMode || "view",
@@ -662,7 +630,8 @@ define([
                 customCSS: view.style.css,
                 customJS: view.script.js,
                 customServerData: view.customServerData,
-                messages: response.messages
+                messages: response.messages,
+                originalValues: view.documentData.document.attributes
             };
             this._customClientData = null;
             if (response.data.properties.creationView === true) {
@@ -934,6 +903,59 @@ define([
             return false;
         },
 
+        /**
+         * Get complementary data : family structure
+         */
+        completeStructure: function mDocumentCompleteStructure()
+        {
+            var mStructure, documentModel = this;
+
+            var neededAttributes = this.get("renderOptions").needed;
+            var visibilityAttributes = this.get("renderOptions").visibilities;
+            var valueAttributes = this.get("originalValues");
+
+            mStructure = new FamilyStructure({
+                familyId: this.get("properties").get("family").name,
+                referencedocument: {
+                    initid: this.get("initid"),
+                    viewId: this.get("viewId"),
+                    revision: this.get("revision")
+                }
+            });
+            mStructure.fetch({
+                success: function (structureModel, response)
+                {
+                    if (_.isEqual(structureModel.get("referencedocument"), {
+                            initid: documentModel.get("initid"),
+                            viewId: documentModel.get("viewId"),
+                            revision: documentModel.get("revision")
+                        })) {
+                        var attributes = flattenAttributes(attributes, response.data.family.structure);
+                        _.each(attributes, function (currentAttributeStructure)
+                        {
+                            if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
+                                currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
+                                currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
+                            }
+                            if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
+                                currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
+                            }
+                        });
+                        documentModel.set("attributes", attributes);
+                        documentModel.trigger("reload"); // trigger event to render document
+                    }
+                },
+
+                error: function (structureModel, HttpResponse)
+                {
+                    var response = JSON.parse(HttpResponse.responseText);
+
+                    documentModel.trigger("showError", {
+                        title: response.exceptionMessage
+                    });
+                }
+            });
+        },
         deleteDocument: function mDocumentDelete(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
