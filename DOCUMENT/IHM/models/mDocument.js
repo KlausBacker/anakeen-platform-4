@@ -344,6 +344,9 @@ define([
          */
         hasAttributesChanged: function mDocumenthasAttributesChanged()
         {
+            if (!this.get("attributes")) {
+                return false;
+            }
             return !!this.get("attributes").some(function (currentAttr)
             {
                 return (currentAttr.hasChanged("attributeValue") &&

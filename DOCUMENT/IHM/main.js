@@ -23,13 +23,13 @@ require([
         {
             // Init bind events in case of use extern document controller
             if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
-                window.documentLoaded($document);
+                window.documentLoaded($document, false);
             }
         });
     } else {
         $document.documentController();
         if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
-            window.documentLoaded($document);
+            window.documentLoaded($document, true);
         }
     }
 
