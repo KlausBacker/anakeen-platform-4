@@ -1116,7 +1116,6 @@ define([
          */
         addConstraint: function documentControlleraddConstraint(options, callback)
         {
-            this._checkInitialisedModel();
             var currentConstraint, currentWidget = this, uniqueName;
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
@@ -1171,7 +1170,6 @@ define([
          */
         listConstraints: function documentControllerListConstraint()
         {
-            this._checkInitialisedModel();
             return this.options.constraintList;
         },
 
@@ -1184,7 +1182,6 @@ define([
          */
         removeConstraint: function documentControllerRemoveConstraint(constraintName, allKind)
         {
-            this._checkInitialisedModel();
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
             allKind = !!allKind;
@@ -1217,7 +1214,6 @@ define([
          */
         addEventListener: function documentControllerAddEvent(eventType, options, callback)
         {
-            this._checkInitialisedModel();
             var currentEvent, currentWidget = this;
             //options is facultative and the callback can be the second parameters
             if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -1269,7 +1265,6 @@ define([
          */
         listEventListeners: function documentControllerListEvents()
         {
-            this._checkInitialisedModel();
             return this.options.eventListener;
         },
 
@@ -1282,7 +1277,6 @@ define([
          */
         removeEventListener: function documentControllerRemoveEvent(eventName, allKind)
         {
-            this._checkInitialisedModel();
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
             allKind = !!allKind;
