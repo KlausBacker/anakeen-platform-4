@@ -9,7 +9,7 @@ namespace Dcp\Ui;
 
 class RenderOptions implements \JsonSerializable
 {
-    
+
     protected $options = array();
     protected $textOptions = null;
     protected $arrayOptions = null;
@@ -33,90 +33,103 @@ class RenderOptions implements \JsonSerializable
     protected $timestampOptions = null;
     protected $commonOptions = null;
     protected $labels = array();
-    
+
     public function __construct()
     {
         $imageLinkOption = new HtmlLinkOptions();
         $imageLinkOption->target = "_dialog";
         $imageLinkOption->windowHeight = "300px";
         $imageLinkOption->windowWidth = "400px";
-        $this->setCustomOption(CommonRenderOptions::type, array(
+        $this->setCustomOption(
+            CommonRenderOptions::type, array(
             CommonRenderOptions::showEmptyContentOption => null,
             CommonRenderOptions::labelPositionOption => CommonRenderOptions::autoPosition,
             CommonRenderOptions::autoCompleteHtmlLabelOption => "",
             CommonRenderOptions::inputHtmlTooltip => "",
             CommonRenderOptions::htmlLinkOption => new HtmlLinkOptions()
-        ));
-        $this->setCustomOption("types", array(
+        )
+        );
+        $this->setCustomOption(
+            "types", array(
             "account" => array(
                 "noAccessText" => ___("Account access deny", 'ddui')
-            ) ,
-            "date" => array() ,
+            ),
+            "date" => array(),
             "docid" => array(
                 "noAccessText" => ___("Information access deny", 'ddui')
-            ) ,
+            ),
             EnumRenderOptions::type => array(
                 "boolColor" => "",
                 EnumRenderOptions::displayOption => EnumRenderOptions::listDisplay,
                 EnumRenderOptions::useFirstChoiceOption => false,
                 EnumRenderOptions::useSourceUriOption => false
-            ) ,
+            ),
             FileRenderOptions::type => array(
                 FileRenderOptions::downloadInlineOption => false
-            ) ,
-            
+            ),
+
             ImageRenderOptions::type => array(
                 ImageRenderOptions::htmlLinkOption => $imageLinkOption,
                 ImageRenderOptions::downloadInlineOption => true,
                 ImageRenderOptions::thumbnailWidthOption => 48,
                 ImageRenderOptions::downloadInlineOption => true
-            ) ,
+            ),
             HtmltextRenderOptions::type => array(
                 HtmltextRenderOptions::toolbarOption => "Simple",
                 HtmltextRenderOptions::toolbarStartupExpandedOption => true,
                 HtmltextRenderOptions::heightOption => "120px"
-            ) ,
+            ),
             LongtextRenderOptions::type => array(
                 LongtextRenderOptions::displayedLineNumberOption => 0
-            ) ,
+            ),
             IntRenderOptions::type => array(
                 IntRenderOptions::maxOption => 2147483647,
-                IntRenderOptions::minOption => - 2147483647,
-            ) ,
+                IntRenderOptions::minOption => -2147483647,
+            ),
             DoubleRenderOptions::type => array(
                 DoubleRenderOptions::maxOption => null,
                 DoubleRenderOptions::minOption => null,
                 DoubleRenderOptions::decimalPrecisionOption => null
-            ) ,
+            ),
             MoneyRenderOptions::type => array(
                 MoneyRenderOptions::maxOption => null,
                 MoneyRenderOptions::minOption => null,
                 MoneyRenderOptions::decimalPrecisionOption => 2,
                 MoneyRenderOptions::currencyOption => '€'
-            ) ,
+            ),
             TextRenderOptions::type => array(
                 TextRenderOptions::maxLengthOption => null,
                 TextRenderOptions::formatOption => "{{displayValue}}"
-            ) ,
+            ),
             ArrayRenderOptions::type => array(
-                ArrayRenderOptions::rowCountThresholdOption => - 1
-            ) ,
-            "time" => array() ,
+                ArrayRenderOptions::rowCountThresholdOption => -1,
+                ArrayRenderOptions::arrayBreakPointsOption => array(
+                    "transpositionRule" => ArrayRenderOptions::transpositionRule,
+                    "upRule" => ArrayRenderOptions::upRule
+                )
+            ),
+            "time" => array(),
             "timestamp" => array()
-        ));
+        )
+        );
     }
+
     /**
      * Set custom option
+     *
      * @param string $optName
-     * @param mixed $optValue
+     * @param mixed  $optValue
      */
     public function setCustomOption($optName, $optValue)
     {
         $this->options[$optName] = $optValue;
     }
+
     /**
      * Set common option
+     *
      * @param string $attrid attribute identifier
+     *
      * @return CommonRenderOptions
      */
     public function commonOption($attrid = '')
@@ -127,8 +140,10 @@ class RenderOptions implements \JsonSerializable
         $this->commonOptions->setScope($attrid);
         return $this->commonOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return TextRenderOptions
      */
     public function text($attrid = '')
@@ -139,8 +154,10 @@ class RenderOptions implements \JsonSerializable
         $this->textOptions->setScope($attrid);
         return $this->textOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return ImageRenderOptions
      */
     public function image($attrid = '')
@@ -151,8 +168,10 @@ class RenderOptions implements \JsonSerializable
         $this->imageOptions->setScope($attrid);
         return $this->imageOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return FileRenderOptions
      */
     public function file($attrid = '')
@@ -163,8 +182,10 @@ class RenderOptions implements \JsonSerializable
         $this->fileOptions->setScope($attrid);
         return $this->fileOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return dateRenderOptions
      */
     public function date($attrid = '')
@@ -175,8 +196,10 @@ class RenderOptions implements \JsonSerializable
         $this->dateOptions->setScope($attrid);
         return $this->dateOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return TimeRenderOptions
      */
     public function time($attrid = '')
@@ -187,8 +210,10 @@ class RenderOptions implements \JsonSerializable
         $this->timeOptions->setScope($attrid);
         return $this->timeOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return TabRenderOptions
      */
     public function tab($attrid = '')
@@ -199,8 +224,10 @@ class RenderOptions implements \JsonSerializable
         $this->tabOptions->setScope($attrid);
         return $this->tabOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return FrameRenderOptions
      */
     public function frame($attrid = '')
@@ -211,8 +238,10 @@ class RenderOptions implements \JsonSerializable
         $this->frameOptions->setScope($attrid);
         return $this->frameOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return TimestampRenderOptions
      */
     public function timestamp($attrid = '')
@@ -223,8 +252,10 @@ class RenderOptions implements \JsonSerializable
         $this->timestampOptions->setScope($attrid);
         return $this->timestampOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return HtmltextRenderOptions
      */
     public function htmltext($attrid = '')
@@ -235,8 +266,10 @@ class RenderOptions implements \JsonSerializable
         $this->htmltextOptions->setScope($attrid);
         return $this->htmltextOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return IntRenderOptions
      */
     public function int($attrid = '')
@@ -247,8 +280,10 @@ class RenderOptions implements \JsonSerializable
         $this->intOptions->setScope($attrid);
         return $this->intOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return DoubleRenderOptions
      */
     public function double($attrid = '')
@@ -259,8 +294,10 @@ class RenderOptions implements \JsonSerializable
         $this->doubleOptions->setScope($attrid);
         return $this->doubleOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return MoneyRenderOptions
      */
     public function money($attrid = '')
@@ -271,8 +308,10 @@ class RenderOptions implements \JsonSerializable
         $this->moneyOptions->setScope($attrid);
         return $this->moneyOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return ArrayRenderOptions
      */
     public function arrayAttribute($attrid = '')
@@ -283,8 +322,10 @@ class RenderOptions implements \JsonSerializable
         $this->arrayOptions->setScope($attrid);
         return $this->arrayOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return DocidRenderOptions
      */
     public function docid($attrid = '')
@@ -295,8 +336,10 @@ class RenderOptions implements \JsonSerializable
         $this->docidOptions->setScope($attrid);
         return $this->docidOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return LongtextRenderOptions
      */
     public function longtext($attrid = '')
@@ -307,8 +350,10 @@ class RenderOptions implements \JsonSerializable
         $this->longtextOptions->setScope($attrid);
         return $this->longtextOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return PasswordRenderOptions
      */
     public function password($attrid = '')
@@ -319,8 +364,10 @@ class RenderOptions implements \JsonSerializable
         $this->passwordOptions->setScope($attrid);
         return $this->passwordOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return AccountRenderOptions
      */
     public function account($attrid = '')
@@ -331,8 +378,10 @@ class RenderOptions implements \JsonSerializable
         $this->accountOptions->setScope($attrid);
         return $this->accountOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return ColorRenderOptions
      */
     public function color($attrid = '')
@@ -343,8 +392,10 @@ class RenderOptions implements \JsonSerializable
         $this->colorOptions->setScope($attrid);
         return $this->colorOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return ThesaurusRenderOptions
      */
     public function thesaurus($attrid = '')
@@ -355,8 +406,10 @@ class RenderOptions implements \JsonSerializable
         $this->thesaurusOptions->setScope($attrid);
         return $this->thesaurusOptions;
     }
+
     /**
      * @param string $attrid attribute identifier
+     *
      * @return EnumRenderOptions
      */
     public function enum($attrid = '')
@@ -367,10 +420,12 @@ class RenderOptions implements \JsonSerializable
         $this->enumOptions->setScope($attrid);
         return $this->enumOptions;
     }
+
     /**
      * Add an option for an attribute type
+     *
      * @param string $attrType attribute type
-     * @param string $optName option name
+     * @param string $optName  option name
      * @param string $optValue option value
      */
     public function setAttributeTypeOption($attrType, $optName, $optValue)
@@ -381,10 +436,13 @@ class RenderOptions implements \JsonSerializable
             $this->options["types"][$attrType][$optName] = $optValue;
         }
     }
+
     /**
      * Add an option for an attribute type
+     *
      * @param string $attrType attribute type
-     * @param string $optName option name
+     * @param string $optName  option name
+     *
      * @return mixed
      */
     public function getAttributeTypeOption($attrType, $optName)
@@ -400,20 +458,25 @@ class RenderOptions implements \JsonSerializable
         }
         return null;
     }
+
     /**
      * Apply option to a specific attribute
-     * @param string $attrid attribute identifier attribute identifier
-     * @param string $optName option name
+     *
+     * @param string $attrid   attribute identifier attribute identifier
+     * @param string $optName  option name
      * @param string $optValue option value
      */
     public function setAttributeScopeOption($attrId, $optName, $optValue)
     {
         $this->options["attributes"][$attrId][$optName] = $optValue;;
     }
+
     /**
      * Get option to a specific attribute
-     * @param string $attrid attribute identifier attribute identifier
+     *
+     * @param string $attrid  attribute identifier attribute identifier
      * @param string $optName option name
+     *
      * @return mixed
      */
     public function getAttributeScopeOption($attrId, $optName)
@@ -423,20 +486,30 @@ class RenderOptions implements \JsonSerializable
         }
         return null;
     }
+
     /**
      * Add new option
+     *
      * @param CommonRenderOptions $opt
      */
     public function setOption(CommonRenderOptions $opt)
     {
         if ($opt->getScope()) {
-            $this->setAttributeScopeOption($opt->getScope() , $opt->getLocalOptionName() , $opt->getLocalOptionValue());
+            $this->setAttributeScopeOption(
+                $opt->getScope(), $opt->getLocalOptionName(),
+                $opt->getLocalOptionValue()
+            );
         } else {
-            $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName() , $opt->getLocalOptionValue());
+            $this->setAttributeTypeOption(
+                $opt::type, $opt->getLocalOptionName(),
+                $opt->getLocalOptionValue()
+            );
         }
     }
+
     /**
      * @param $attrId
+     *
      * @return array|null
      */
     public function getAttributeOptions($attrId)
@@ -446,11 +519,13 @@ class RenderOptions implements \JsonSerializable
         }
         return null;
     }
+
     /**
      * Specify data which should be serialized to JSON
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     *       which is a value of any type other than a resource.
      */
     public function jsonSerialize()
     {
