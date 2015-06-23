@@ -65,7 +65,7 @@ define([
             if (!_.isUndefined(searchObject.mode)) {
                 newValues.renderMode = searchObject.mode;
             }
-            this.document.clear().set(newValues).fetch();
+            this.document.fetchDocument(newValues);
         }
 
     });

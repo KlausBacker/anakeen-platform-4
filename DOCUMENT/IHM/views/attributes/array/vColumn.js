@@ -96,18 +96,19 @@ define([
                 target: event.target,
                 attrid: this.model.id,
                 options: [initid, "!defaultConsultation"],
-                index: options.index
+                index: options.index,
+                row:tableLine
             });
 
             if (event.prevent) {
                 return this;
             }
 
-            documentModel.clear().set({
+            documentModel.fetchDocument({
                 "initid": initid,
                 "revision": -1,
                 "viewId": "!defaultConsultation"
-            }).fetch();
+            });
         },
 
         /**

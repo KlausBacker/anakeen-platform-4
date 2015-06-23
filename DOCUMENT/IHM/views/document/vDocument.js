@@ -723,9 +723,10 @@ define([
             this.historyWidget.open();
             this.historyWidget.element.on("viewRevision", function vDocumentViewRevision(event, data)
             {
-                scope.model.clear();
-                scope.model.set({initid: data.initid, revision: data.revision});
-                scope.model.fetch();
+                scope.model.fetchDocument({
+                    initid: data.initid,
+                    revision: data.revision
+                });
             });
         },
 
@@ -833,9 +834,7 @@ define([
             this.propertiesWidget.open();
             this.propertiesWidget.element.on("viewDocument", function vDocumentViewDocument(event, data)
             {
-                scope.model.clear();
-                scope.model.set("initid", data);
-                scope.model.fetch();
+                scope.model.fetchDocument({initid: data});
             });
         },
 
@@ -929,19 +928,20 @@ define([
                     },
                     confirm: function wMenuConfirm()
                     {
-                        documentView.model.clear();
-                        documentView.model.set("viewId", viewId);
-                        documentView.model.set("initid", initid);
-                        documentView.model.fetch();
+                         documentView.model.fetchDocument({
+                             initid:initid,
+                             viewId:viewId
+                         });
+
                     },
                     templateData: {templates: this.model.get("templates")}
                 });
                 confirmWindow.data('dcpWindow').open();
             } else {
-                this.model.clear();
-                this.model.set("viewId", viewId);
-                this.model.set("initid", initid);
-                this.model.fetch();
+                this.model.fetchDocument({
+                    initid:initid,
+                    viewId:viewId
+                });
             }
         },
 
@@ -975,10 +975,10 @@ define([
                 {
                     var initid = currentView.model.get("initid");
 
-                    currentView.model.clear();
-                    currentView.model.set("initid", initid);
-                    currentView.model.set("viewId", "!defaultConsultation");
-                    currentView.model.fetch();
+                    currentView.model.fetchDocument({
+                        initid:initid
+                    });
+
                 });
             }
         },
@@ -1010,10 +1010,10 @@ define([
                 {
                     var initid = currentView.model.get("initid");
 
-                    currentView.model.clear();
-                    currentView.model.set("initid", initid);
-                    currentView.model.set("viewId", "!defaultConsultation");
-                    currentView.model.fetch();
+currentView.fetchDocument({
+    initid:initid
+});
+
                 });
             }
         },
@@ -1023,12 +1023,10 @@ define([
          */
         loadDocument: function vDocumentLoadDocument(docid, viewId)
         {
-            this.model.clear();
-            this.model.set({initid: docid});
-            if (viewId) {
-                this.model.set({viewId: viewId});
-            }
-            this.model.fetch();
+            this.model.fetchDocument({
+                initid:docid,
+                viewId:viewId
+            });
         },
 
         /**

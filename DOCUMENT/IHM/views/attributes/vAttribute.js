@@ -283,11 +283,11 @@ define([
                 return this;
             }
 
-            documentModel.set({
+            documentModel.fetchDocument({
                 "initid": initid,
                 "revision": -1,
                 "viewId": "!defaultConsultation"
-            }).fetch();
+            });
         },
 
         externalLinkSelected: function changeAttributesValueExternalLinkSelected(event, options)
