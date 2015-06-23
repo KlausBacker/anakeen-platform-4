@@ -19,7 +19,7 @@ define([
 
     var eventList = ["ready", "change", "message", "error", "validate", "attributeReady",
         "helperSearch", "helperResponse", "helperSelect",
-        "arrayModified", "documentLinkSelected",
+        "arrayModified", "actionClick",
         "beforeClose", "close",
         "beforeSave", "afterSave",
         "beforeDelete", "afterDelete",
@@ -300,7 +300,7 @@ define([
             });
             this._model.listenTo(this._model, "internalLinkSelected", function documentController_triggerInternalLinkSelected(event, options)
             {
-                event.prevent = !currentWidget._triggerControllerEvent("documentLinkSelected",
+                event.prevent = !currentWidget._triggerControllerEvent("actionClick",
                     currentWidget._model.getProperties(),
                     options
                 );
