@@ -1,7 +1,7 @@
 /**
  * Main bootstraper
  */
-/*global require*/
+/*global require, console*/
 require([
     'underscore',
     'jquery',
@@ -13,24 +13,32 @@ require([
 
     var $document = $(".document");
 
+    window.dcp = window.dcp || {};
+
+    window.dcp.documentReady = false;
+
+    window.dcp.triggerReload = function triggerReload()
+    {
+        // Init bind events in case of use extern document controller
+        if (window.documentLoaded && _.isFunction(window.documentLoaded) && !window.dcp.documentReady) {
+            window.documentLoaded($document, !window.dcp.viewData);
+            window.dcp.documentReady = true;
+        }
+    };
+
     if (window.dcp.viewData !== false) {
         $document.documentController({
             "initid": window.dcp.viewData.documentIdentifier,
             "viewId": window.dcp.viewData.vid,
             "revision": window.dcp.viewData.revision
         });
-        $document.one("documentready", function ()
+        $document.one("documentready", function launchReady()
         {
-            // Init bind events in case of use extern document controller
-            if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
-                window.documentLoaded($document, false);
-            }
+            window.dcp.triggerReload();
         });
     } else {
         $document.documentController();
-        if (window.documentLoaded && _.isFunction(window.documentLoaded)) {
-            window.documentLoaded($document, true);
-        }
+        window.dcp.triggerReload();
     }
 
     window.dcp.document = $document;

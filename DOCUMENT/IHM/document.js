@@ -82,6 +82,9 @@ define([
                     {
                         currentWidget._unbindInternalWidget.call(currentWidget);
                     });
+                    if (documentWindow.dcp && documentWindow.dcp.triggerReload && documentWindow.dcp.documentReady === false) {
+                        documentWindow.dcp.triggerReload();
+                    }
                 });
 
             }
@@ -240,14 +243,14 @@ define([
                 } else {
                     options.success = initWidget;
                 }
-                if (options.fail) {
-                    options.fail = _.wrap(options.fail, function (fail)
+                if (options.error) {
+                    options.error = _.wrap(options.error, function (error)
                     {
                         initWidget.apply(this, _.rest(arguments));
-                        return fail.apply(this, _.rest(arguments));
+                        return error.apply(this, _.rest(arguments));
                     });
                 } else {
-                    options.fail = initWidget;
+                    options.error = initWidget;
                 }
                 internalWidget.fetchDocument.call(internalWidget, values, options);
             } else {
