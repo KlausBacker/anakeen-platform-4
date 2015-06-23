@@ -27,11 +27,11 @@ class FamilyView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#event/document.history");
+        $item = new ItemMenu("histo", ___("Historic", "UiMenu") , "#action/document.history");
         $item->setBeforeContent('<div class="fa fa-history" />');
         $menu->appendElement($item);
         
-        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document.properties");
+        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#action/document.properties");
         $menu->appendElement($item);
         
         return $menu;

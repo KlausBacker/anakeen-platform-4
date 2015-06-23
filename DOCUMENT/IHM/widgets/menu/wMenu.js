@@ -80,8 +80,8 @@ define([
                             confirmDcpWindow.data('dcpWindow').open();
                         } else {
                             //if href is event kind propagate event instead of default behaviour
-                            if (href.substring(0, 7) === "#event/") {
-                                eventContent = href.substring(7).split(":");
+                            if (href.substring(0, 8) === "#action/") {
+                                eventContent = href.substring(8).split(":");
                                 scopeWidget._trigger("selected", event, {
                                     eventId: eventContent.shift(),
                                     options: eventContent

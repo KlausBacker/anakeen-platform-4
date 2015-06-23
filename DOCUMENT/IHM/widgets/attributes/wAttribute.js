@@ -552,9 +552,9 @@ define([
 
                     var renderTitle, index, dialogDiv, dpcWindow, href = $(this).attr("href"), eventContent;
 
-                    if (href.substring(0, 7) === "#event/") {
+                    if (href.substring(0, 8) === "#action/") {
                         event.preventDefault();
-                        eventContent = href.substring(7).split(":");
+                        eventContent = href.substring(8).split(":");
                         scopeWidget._trigger("externalLinkSelected", event, {
                             target: event.target,
                             eventId: eventContent.shift(),
