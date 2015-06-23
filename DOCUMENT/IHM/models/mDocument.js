@@ -782,26 +782,37 @@ define([
         },
 
 
-        /**
-         * Unlock document if previous mode is edition
-         */
-        clear: function (options)
+        fetchDocument: function mDocumentFetch(values, options)
         {
-            var security = this.get("properties") ? (this.get("properties").get("security")) : null;
-            var previousMode = this.get("renderMode");
+            var docModel = this, event = {prevent: false};
+            var currentInitid = this.get("initid");
 
-            if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
-                this.needUnlock = {
-                    initid: this.get("initid")
-                };
+            _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
 
+            this.trigger("beforeClose", event, values);
+            if (event.prevent === false) {
+                // Verify if current document need to be unlocked before fetch another
+                var security = this.get("properties") ? (this.get("properties").get("security")) : null;
+                var previousMode = this.get("renderMode");
+
+                if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
+                    this.needUnlock = {
+                        initid: currentInitid
+                    };
+
+                }
+                _.each(_.pick(values, "initid", "revision", "viewId"), function mDocumentsetNewOptions(value, key)
+                {
+                    docModel.set(key, value);
+                });
+                return this.fetch(options);
             }
-            return Backbone.Model.prototype.clear.apply(this, arguments);
+            return false;
         },
 
         fetch: function mDocumentFetch(options)
         {
-            var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true), lockModel,
+            var currentModel = this, currentProperties = this.getProperties(true), lockModel,
                 afterDone = function afterDone()
                 {
                     currentModel.trigger("close", currentProperties);
@@ -810,77 +821,72 @@ define([
 
 
             options = options || {};
-            this.trigger("beforeClose", event);
-            if (event.prevent === false) {
-                if (options.success) {
-                    options.success = _.wrap(options.success, function (success)
+
+
+            if (options.success) {
+                options.success = _.wrap(options.success, function (success)
+                {
+                    afterDone();
+                    return success.apply(this, _.rest(arguments));
+                });
+            } else {
+                options.success = afterDone;
+            }
+            this.trigger("displayLoading");
+
+            if (!nextView) {
+                nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
+            }
+            if (nextView !== "!defaultConsultation") {
+                lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
+                lockModel.save({}, {
+                    success: function ()
                     {
-                        afterDone();
-                        return success.apply(this, _.rest(arguments));
-                    });
-                } else {
-                    options.success = afterDone;
-                }
-                this.trigger("displayLoading");
+                        Backbone.Model.prototype.fetch.call(currentModel, options);
+                    },
+                    error: function (theModel, HttpResponse)
+                    {
+                        var response = JSON.parse(HttpResponse.responseText);
 
-                if (!nextView) {
-                    nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
-                }
-                if (nextView !== "!defaultConsultation") {
-                    lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
-                    lockModel.save({}, {
-                        success: function ()
-                        {
-                            Backbone.Model.prototype.fetch.call(currentModel, options);
-                        },
-                        error: function (theModel, HttpResponse)
-                        {
-                            var response = JSON.parse(HttpResponse.responseText);
+                        currentModel.trigger("showError", {
+                            title: response.exceptionMessage
+                        });
+                    }
+                });
+            } else {
+                if (this.needUnlock) {
+                    if (this.needUnlock.initid === this.get("initid")) {
+                        // If same document "get" must be perform after unlock
+                        lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
+                        lockModel.destroy({
+                            success: function ()
+                            {
+                                Backbone.Model.prototype.fetch.call(currentModel, options);
+                            },
+                            error: function (theModel, HttpResponse)
+                            {
+                                var response = JSON.parse(HttpResponse.responseText);
 
-                            currentModel.trigger("showError", {
-                                title: response.exceptionMessage
-                            });
-                        }
-                    });
-                } else {
-                    if (this.needUnlock) {
-                        if (this.needUnlock.initid === this.get("initid")) {
-                            // If same document "get" must be perform after unlock
-                            lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
-                            lockModel.destroy({
-                                success: function ()
-                                {
-                                    Backbone.Model.prototype.fetch.call(currentModel, options);
-                                },
-                                error: function (theModel, HttpResponse)
-                                {
-                                    var response = JSON.parse(HttpResponse.responseText);
-
-                                    currentModel.trigger("showError", {
-                                        title: response.exceptionMessage
-                                    });
-                                }
-                            });
-                        } else {
-                            lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
-                            lockModel.destroy();
-
-                            this.needUnlock = null;
-                            return Backbone.Model.prototype.fetch.call(this, options);
-                        }
+                                currentModel.trigger("showError", {
+                                    title: response.exceptionMessage
+                                });
+                            }
+                        });
+                    } else {
+                        lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
+                        lockModel.destroy();
 
                         this.needUnlock = null;
-                    } else {
                         return Backbone.Model.prototype.fetch.call(this, options);
                     }
+
+                    this.needUnlock = null;
+                } else {
+                    return Backbone.Model.prototype.fetch.call(this, options);
                 }
-
-
-            } else {
-                //cancelled : re-set initial properties
-                this.set(_.pick(currentProperties, "initid", "viewId", "renderMode"));
-                return false;
             }
+
+
         },
 
         save: function mDocumentSave(attributes, options)

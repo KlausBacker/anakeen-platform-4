@@ -91,15 +91,17 @@ define([
         _initializeWidget: function documentController_initializeWidget(options)
         {
             var currentWidget = this,
-                initializeSuccess = function documentController_initializeSuccess() {
-                currentWidget._initializedModel = true;
-            };
+                initializeSuccess = function documentController_initializeSuccess()
+                {
+                    currentWidget._initializedModel = true;
+                };
             options = options || {};
             this._initExternalElements();
             this._initModel(this._getModelValue());
             this._initView();
             if (options.success) {
-                options.success = _.wrap(options.success, function documentController_initializeSuccess (success) {
+                options.success = _.wrap(options.success, function documentController_fetchSuccess(success)
+                {
                     initializeSuccess.apply(this, _.rest(arguments));
                     return success.apply(this, _.rest(arguments));
                 });
@@ -232,11 +234,11 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEventListeners({launchReady: false});
             });
-            this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event)
+            this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event, nextDocument)
             {
                 if (currentWidget._initializedView !== false) {
                     event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
-                        currentWidget._model.getProperties(true), currentWidget._model.getProperties());
+                        currentWidget._model.getProperties(), nextDocument);
                 }
             });
             this._model.listenTo(this._model, "close", function documentController_triggerClose(oldProperties)
@@ -485,26 +487,26 @@ define([
             });
 
             //Propagate the beforeChangeState
-            transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBefore(event)
+            transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBeforeChangeState(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeChangeState",
                     currentWidget._model.getProperties(), changeStateInterface);
             });
 
             //Propagate the beforeChangeStateClose
-            transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateBeforeClose(event)
+            transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateChangeStateClose(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeChangeStateClose",
                     currentWidget._model.getProperties(), changeStateInterface);
             });
 
-            transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateBeforeClose(error)
+            transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateTransitionError(error)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("failChangeState",
                     currentWidget._model.getProperties(), changeStateInterface, error);
             });
 
-            transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionReload(messages)
+            transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionSuccess(messages)
             {
                 transitionElements.view.$el.hide();
                 //delete the pop up when the render of the pop up is done
@@ -807,7 +809,7 @@ define([
          *
          * @private
          */
-        _checkInitialisedModel : function documentController_checkInitialisedModel()
+        _checkInitialisedModel: function documentController_checkInitialisedModel()
         {
             if (!this._initializedModel) {
                 throw new Error("The widget model is not initialized, use fetchDocument to initialise it.");
@@ -841,7 +843,7 @@ define([
             }
 
             if (!values.initid) {
-                throw new Error('initid argument is mandatory');
+                throw new Error('initid argument is mandatory}');
             }
 
             // Use default values when fetch another document
@@ -854,7 +856,7 @@ define([
             if (!this._model) {
                 this._initializeWidget(options);
             } else {
-                this._model.set(this._getModelValue()).fetch(options);
+                this._model.fetchDocument(this._getModelValue(), options);
             }
 
         },
@@ -960,21 +962,24 @@ define([
          * Get customData from render view model
          * @returns {*}
          */
-        getCustomServerData: function documentControllerGetServerCustomData() {
+        getCustomServerData: function documentControllerGetServerCustomData()
+        {
             return this._model.get("customServerData");
         },
         /**
          * Get customData from render view model
          * @returns {*}
          */
-        setCustomClientData: function documentControllerSetClientCustomData(data) {
-             this._model._customClientData= data;
+        setCustomClientData: function documentControllerSetClientCustomData(data)
+        {
+            this._model._customClientData = data;
         },
         /**
          * Get customData from render view model
          * @returns {*}
          */
-        getCustomClientData: function documentControllerSetClientCustomData() {
+        getCustomClientData: function documentControllerSetClientCustomData()
+        {
             return this._model._customClientData;
         },
         /**
