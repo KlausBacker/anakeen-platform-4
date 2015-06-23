@@ -99,7 +99,7 @@ define([
                     var $this = $(this);
                     if (htmlLink.target === "_render") {
                         event.preventDefault();
-                        currentWidget._trigger("changedocument", event, {
+                        currentWidget._trigger("fetchdocument", event, {
                             "index": $this.data("index"),
                             "tableLine": $this.closest(".dcpArray__content__line").data("line")
                         });

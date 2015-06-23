@@ -657,11 +657,13 @@ class View extends Crud
             return null;
         }
         $viewId = $this->viewIdentifier;
-        $config = $this->getRenderConfig($viewId);
-        $renderEtag = $config->getEtag($this->document);
-        if ($renderEtag !== "") {
-            \Dcp\ConsoleTime::stopPartial();
-            return $renderEtag;
+        if ($viewId !== self::coreViewCreationId && $this->document->doctype !== "C") {
+            $config = $this->getRenderConfig($viewId);
+            $renderEtag = $config->getEtag($this->document);
+            if ($renderEtag !== "") {
+                \Dcp\ConsoleTime::stopPartial();
+                return $renderEtag;
+            }
         }
         
         $result = array(

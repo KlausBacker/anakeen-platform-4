@@ -721,9 +721,9 @@ define([
                     });
                 });
                 //Propagate the event externalLinkSelected to the model
-                currentModel.listenTo(optionalSingleValue, "internalLinkSelected", function (options)
+                currentModel.listenTo(optionalSingleValue, "internalLinkSelected", function (event, options)
                 {
-                    currentModel.trigger("internalLinkSelected", {}, options);
+                    currentModel.trigger("internalLinkSelected", event, options);
                 });
                 //Propagate the event helperSearch to the model
                 currentModel.listenTo(optionalSingleValue, "helperSearch", function (event, attrid, options)

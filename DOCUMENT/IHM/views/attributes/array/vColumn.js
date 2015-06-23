@@ -20,7 +20,7 @@ define([
             };
             this._addEvent(absEvents, "changeattrsvalue", "changeAttributesValue");
             this._addEvent(absEvents, "delete", "deleteValue");
-            this._addEvent(absEvents, "changedocument", "changeDocument");
+            this._addEvent(absEvents, "fetchdocument", "loadDocument");
             return absEvents;
         },
 
@@ -78,7 +78,7 @@ define([
          * @param event
          * @param options
          */
-        changeDocument: function vColumnChangeDocument(event, options)
+        loadDocument: function vColumnLoadDocument(event, options)
         {
             var tableLine = options.tableLine,
                 index = options.index,
@@ -90,6 +90,19 @@ define([
             } else {
                 initid = valueLine[index].value;
             }
+
+            this.model.trigger("internalLinkSelected", event, {
+                eventId: "document.load",
+                target: event.target,
+                attrid: this.model.id,
+                options: [initid, "!defaultConsultation"],
+                index: options.index
+            });
+
+            if (event.prevent) {
+                return this;
+            }
+
             documentModel.clear().set({
                 "initid": initid,
                 "revision": -1,

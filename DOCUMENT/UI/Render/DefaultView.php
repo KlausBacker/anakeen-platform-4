@@ -81,7 +81,7 @@ class DefaultView extends RenderDefault
     {
         $menu = new BarMenu();
         
-        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "#event/document:edit");
+        $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "#action/document.edit");
         if ($this->displayDefaultMenuTooltip) {
             $item->setTooltipLabel(___("Display document form", "UiMenu"));
         }
@@ -89,7 +89,7 @@ class DefaultView extends RenderDefault
         $item->setImportant(true);
         $menu->appendElement($item);
         
-        $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#event/document:delete");
+        $item = new ItemMenu("delete", ___("Delete", "UiMenu") , "#action/document.delete");
         if ($this->displayDefaultMenuTooltip) {
             $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
         }
@@ -108,7 +108,7 @@ class DefaultView extends RenderDefault
         }
         $menu->appendElement($item);
         
-        $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#event/document:history");
+        $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#action/document.history");
         $item->setBeforeContent('<div class="fa fa-history" />');
         /*$targetOption = new MenuTargetOptions();
         $targetOption->windowHeight = "400px";
@@ -116,7 +116,7 @@ class DefaultView extends RenderDefault
         $item->setTarget("_dialog", $targetOption);*/
         $menu->appendElement($item);
         
-        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#event/document:properties");
+        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#action/document.properties");
         $item->setBeforeContent('<div class="fa fa-info" />');
         $menu->appendElement($item);
         /*
@@ -195,7 +195,7 @@ class DefaultView extends RenderDefault
                 $label = $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v)));
                 $itemMenu = new ItemMenu($v, $label);
                 
-                $itemMenu->setUrl(sprintf("#event/document:transition:%s:%s", urlencode($tr['id']) , urlencode($v)));
+                $itemMenu->setUrl(sprintf("#action/document.transition:%s:%s", urlencode($tr['id']) , urlencode($v)));
                 $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
                 $tooltip = $wdoc->getActivity($v, mb_ucfirst(_($v)));
@@ -243,7 +243,7 @@ class DefaultView extends RenderDefault
             $menu->appendElement($sep);
             
             $itemMenu = new ItemMenu('workflowDraw', ___("View transition graph", "UiMenu"));
-            $itemMenu->setUrl(sprintf("#event/document:transitionGraph"));
+            $itemMenu->setUrl(sprintf("#action/document.transitionGraph"));
             $menu->appendElement($itemMenu);
             
             $itemMenu = new ItemMenu('workflowGraph', ___("View workflow graph", "UiMenu"));
@@ -293,7 +293,7 @@ class DefaultView extends RenderDefault
                 $idMenu = "vid-" . $vid;
                 $cvMenu = $view["cv_menu"];
                 $menuItem = new ItemMenu($idMenu, $label);
-                $menuItem->setUrl(sprintf("#event/document:load:%d:%s", $doc->initid, $vid));
+                $menuItem->setUrl(sprintf("#action/document.load:%d:%s", $doc->initid, $vid));
                 if ($cvMenu) {
                     $idListMenu = $cvMenu;
                     $lmenu = $menu->getElement($idListMenu);

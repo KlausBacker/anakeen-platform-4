@@ -228,7 +228,7 @@ define([
                         }
                         _.defer(function selectOneTab()
                         {
-                            if (currentView && currentView.model && currentView.model.get("attributes") ) {
+                            if (currentView && currentView.model && currentView.model.get("attributes")) {
                                 var tab = currentView.model.get("attributes").get(tabId);
                                 if (tab) {
                                     tab.trigger("showTab");
@@ -1040,55 +1040,57 @@ define([
         actionDocument: function vDocumentActionDocument(options)
         {
             var event = {prevent: false};
+            var eventArgs = options.options;
+
             this.model.trigger("internalLinkSelected", event, options);
             if (event.prevent) {
                 return this;
             }
-            options = options.options;
-            if (options[0] === "save") {
+
+            if (options.eventId === "document.save") {
                 return this.saveDocument();
             }
 
-            if (options[0] === "saveAndClose") {
+            if (options.eventId === "document.saveAndClose") {
                 return this.saveAndCloseDocument();
             }
 
-            if (options[0] === "history") {
+            if (options.eventId === "document.history") {
                 return this.showHistory();
             }
-            if (options[0] === "transition") {
-                return this.showtransition(options[1], options[2]);
+            if (options.eventId === "document.transition") {
+                return this.showtransition(eventArgs[0], eventArgs[1]);
             }
-            if (options[0] === "transitionGraph") {
+            if (options.eventId === "document.transitionGraph") {
                 return this.showTransitionGraph();
             }
-            if (options[0] === "properties") {
+            if (options.eventId === "document.properties") {
                 return this.showProperties();
             }
-            if (options[0] === "delete") {
+            if (options.eventId === "document.delete") {
                 return this.deleteDocument();
             }
-            if (options[0] === "close") {
-                return this.closeDocument(options[1]);
+            if (options.eventId === "document.close") {
+                return this.closeDocument(eventArgs[0]);
             }
-            if (options[0] === "edit") {
+            if (options.eventId === "document.edit") {
                 return this.closeDocument("!defaultEdition");
             }
-            if (options[0] === "create") {
+            if (options.eventId === "document.create") {
                 return this.createDocument();
             }
 
-            if (options[0] === "createAndClose") {
+            if (options.eventId === "document.createAndClose") {
                 return this.createAndCloseDocument();
             }
 
-            if (options[0] === "load") {
-                return this.loadDocument(options[1], options[2]);
+            if (options.eventId === "document.load") {
+                return this.loadDocument(eventArgs[0], eventArgs[1]);
             }
-            if (options[0] === "lock") {
+            if (options.eventId === "document.lock") {
                 return this.lockDocument();
             }
-            if (options[0] === "unlock") {
+            if (options.eventId === "document.unlock") {
                 return this.unlockDocument();
             }
         },

@@ -37,7 +37,7 @@ define([
                     "dcpattributedelete .dcpAttribute__content": "deleteValue",
                     "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
                     "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
-                    "dcpattributechangedocument .dcpAttribute__content": "changeDocument",
+                    "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
                     "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
                     "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
                 };
@@ -168,8 +168,6 @@ define([
         },
 
 
-
-
         /**
          * Autorefresh value when model change
          */
@@ -258,7 +256,13 @@ define([
             });
         },
 
-        changeDocument: function changeAttributesValueChangeDocument(event, options)
+        /**
+         * Modify view : triggered by wDocid
+         * @param event
+         * @param options
+         * @returns {*}
+         */
+        loadDocument: function changeAttributesValueLoadDocument(event, options)
         {
             var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel();
             if (_.isUndefined(index)) {
@@ -266,6 +270,19 @@ define([
             } else {
                 initid = attributeValue[index].value;
             }
+
+            this.model.trigger("internalLinkSelected", event, {
+                eventId: "document.load",
+                target: event.target,
+                attrid: this.model.id,
+                options: [initid, "!defaultConsultation"],
+                index: options.index
+            });
+
+            if (event.prevent) {
+                return this;
+            }
+
             documentModel.set({
                 "initid": initid,
                 "revision": -1,
@@ -276,7 +293,7 @@ define([
         externalLinkSelected: function changeAttributesValueExternalLinkSelected(event, options)
         {
             options.attrid = this.model.id;
-            this.model.trigger("internalLinkSelected", options);
+            this.model.trigger("internalLinkSelected", event, options);
         },
 
         /**
@@ -537,12 +554,14 @@ define([
             }
         },
 
-        setWidgetReady : function Vattribute_setWidgetReady() {
+        setWidgetReady: function Vattribute_setWidgetReady()
+        {
             this.widgetReady = true;
             this.triggerRenderDone();
         },
 
-        triggerRenderDone : function vAttribute_triggerRenderDone() {
+        triggerRenderDone: function vAttribute_triggerRenderDone()
+        {
             if (this.noRenderEvent !== false && this.renderDone && this.widgetReady && !this.triggerRender) {
                 this.model.trigger("renderDone", {model: this.model, $el: this.$el});
                 this.triggerRender = true;
