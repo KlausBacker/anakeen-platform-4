@@ -35,7 +35,8 @@ define([
             "resizeMarginHeight": 3,
             "resizeMarginWidth": 0,
             "resizeDebounceTime": 50,
-            "withoutResize": false
+            "withoutResize": false,
+            eventPrefix : "document"
         },
 
         /**
