@@ -1,6 +1,9 @@
 include $(utildir)/PubRule
 
-publish:
+$(pubdir)/$(appname)/karma: karma $(pubdir)/$(appname)
+	cp -pR $< $@
+
+publish: $(pubdir)/$(appname)/karma
 	mkdir -p $(pubdir)/$(appname)
 	rsync -rupE --exclude Makefile $(appname) $(pubdir)
 
