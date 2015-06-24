@@ -102,7 +102,8 @@ define([
                             return true;
                         }
                     }
-                    throw new Error("Unable to sync", documentIdentifier);
+
+                    throw new Error("Unable to sync :"+documentIdentifier);
                 };
             });
 
