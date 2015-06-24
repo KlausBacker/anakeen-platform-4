@@ -836,7 +836,7 @@ define([
             if (!nextView) {
                 nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
             }
-            if (nextView !== "!defaultConsultation") {
+            if (nextView !== "!defaultConsultation" && nextView !== "!coreCreation" && this.get("renderMode") !== "create") {
                 lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
                 lockModel.save({}, {
                     success: function ()
