@@ -102,7 +102,6 @@ define([
                     this.element.find(".dcpCustomTemplate tbody").addClass("dcpArray__body");
 
                 } else {
-                    console.log("array data", this.options);
                     this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
 

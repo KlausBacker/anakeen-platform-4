@@ -121,7 +121,7 @@ define([
 
 
                         item.value = enumItem.key;
-                        item.displayValue = enumItem.label;
+                        item.displayValue = enumItem.label || '';
 
 
                         // : no === because json encode use numeric cast when index is numeric
@@ -140,7 +140,7 @@ define([
                     selectedIndex = source.length;
                     source.push({
                         value: this.options.attributeValue.value,
-                        displayValue: this.options.attributeValue.displayValue,
+                        displayValue: this.options.attributeValue.displayValue || '',
                         selected: true
                     });
                 }
@@ -165,7 +165,7 @@ define([
                 {
                     item = {};
                     item.value = enumItem.key;
-                    item.displayValue = enumItem.label;
+                    item.displayValue = enumItem.label || '';
                     item.selected = false;
                     isIn = _.some(values, function (aValue)
                     {
@@ -256,6 +256,7 @@ define([
             {
                 if (tplOption.enumValues[kItem]) {
                     $(this).tooltip({
+                        container:"body",
                         title: Mustache.render(scope.options.labels.invertSelection,
                             tplOption.enumValues[(kItem + 1) % 2])
                     });
@@ -343,6 +344,7 @@ define([
             }
 
             this.element.tooltip({
+                container:"body",
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
@@ -400,6 +402,7 @@ define([
             });
 
             this.element.tooltip({
+                container:"body",
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
@@ -422,9 +425,9 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
-            if (!this.options.renderOptions.useFirstChoice) {
-                kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
-            }
+
+            kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
+
 
         },
         multipleSelect: function wEnumMultipleSelect()
@@ -631,7 +634,7 @@ define([
                     {
                         info.push({
                             value: enumItem.key,
-                            displayValue: enumItem.label
+                            displayValue: enumItem.label || ''
                         });
                     });
                     // notify the data source that the request succeeded
@@ -687,7 +690,6 @@ define([
             } else {
                 source = this.getSingleEnumData();
 
-
                 defaultOptions = {
                     /*valuePrimitive: true,*/
                     optionLabel: {
@@ -719,6 +721,8 @@ define([
                     {
                         if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                             // Set to first enum item if empty
+
+
                             var firstItem = this.dataSource.at(0);
                             if (firstItem) {
                                 scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
