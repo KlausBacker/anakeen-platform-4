@@ -62,17 +62,18 @@
 
     .dcpArray__content[data-attrid={{id}}] table.responsive tr {
         border-color: #eeeeee;
-        border-width: 1px;
+        border-width: 0;
         border-style: none solid solid solid;
     }
 
     .dcpArray__content[data-attrid={{id}}] table.responsive tr:nth-of-type(even) {
-        background-color: #eeeeee;
+        background-color: #fafafa;
     }
 
     .dcpArray__content[data-attrid={{id}}] table.responsive > tbody > tr > td {
         /* Behave  like a "row" */
         border-bottom: 1px solid #eee;
+        border-top: none;
         position: relative;
         padding-left: 50%;
         min-height: 3em;

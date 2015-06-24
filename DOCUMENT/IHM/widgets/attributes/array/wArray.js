@@ -18,7 +18,11 @@ define([
                 rowDelDisable: false,
                 rowMoveDisable: false,
                 rowMinLimit: -1,
-                rowMaxLimit: -1
+                rowMaxLimit: -1,
+                arrayBreakPoints : {
+                    transpositionRule:"@media (max-width: 768px)",
+                        upRule:"@media (max-width: 1200px)"
+                }
             },
             displayLabel: true,
             customTemplate: false,
@@ -121,17 +125,14 @@ define([
                         this.element.find(".dcpArray__label").addClass("dcpAttribute__left");
                         this.element.find(".dcpArray__content").addClass("dcpAttribute__right");
                         this.element.addClass("dcpArray--left");
-                        if (labelPosition === "left") {
-                            this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
-                            this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
-                            this.element.addClass("dcpAttribute__labelPosition--left");
-                        }
-                        if (labelPosition === "auto") {
-                            this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
-                            this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
-                            this.element.addClass("dcpAttribute__labelPosition--auto");
-                        }
+
+
+
                     }
+
+                    this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--"+labelPosition);
+                    this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--"+labelPosition);
+                    this.element.addClass("dcpAttribute__labelPosition--"+labelPosition);
                 }
 
                 if (this.options.renderOptions.rowAddDisable === true) {

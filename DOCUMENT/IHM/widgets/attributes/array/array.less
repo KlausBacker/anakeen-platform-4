@@ -164,27 +164,45 @@ table.responsive {
   margin: (@dcp-set-padding / 2);
 }
 
-@media (min-width: @screen-lg-min) {
-  // Position left : width > 1200px
-  .dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto {
 
-    background-color: inherit;
-    border: none;
-    text-align: right;
-    clear: both;
+
+
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto {
+  background-color: inherit;
+  border-style: none;
+  text-align: right;
+  clear: both;
+  &:after {
+    content: ":";
+    padding-left: 0.6em;
+  }
+}
+
+.dcpArray--left.dcpAttribute__labelPosition--auto {
+  border-style: none;
+}
+
+.dcpArray.dcpAttribute__labelPosition--up .dcpArray__content > .table-bordered {
+  border-style: none;
+}
+@media (max-width: @screen-lg-min) {
+  // position Up : width < 1200px
+
+  .dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto {
+    background-color:  @panel-default-heading-bg;
+    border-bottom-style: solid;
+    text-align: left;
+    clear: none;
     &:after {
-      content: ":";
-      padding-left: 0.6em;
+      content: "";
+      padding-left: 0;
     }
   }
 
   .dcpArray--left.dcpAttribute__labelPosition--auto {
-    border: none;
+    border-style: solid;
   }
-}
 
-@media (max-width: @screen-lg-min) {
-  // position Up : width < 1200px
   .dcpArray__content.dcpAttribute__labelPosition--auto > .table-bordered {
     border-style: none;
   }
