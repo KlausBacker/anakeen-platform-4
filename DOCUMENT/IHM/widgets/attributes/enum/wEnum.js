@@ -422,9 +422,9 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
-            if (!this.options.renderOptions.useFirstChoice) {
-                kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
-            }
+
+            kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
+
 
         },
         multipleSelect: function wEnumMultipleSelect()
@@ -687,7 +687,6 @@ define([
             } else {
                 source = this.getSingleEnumData();
 
-
                 defaultOptions = {
                     /*valuePrimitive: true,*/
                     optionLabel: {
@@ -719,6 +718,8 @@ define([
                     {
                         if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                             // Set to first enum item if empty
+
+
                             var firstItem = this.dataSource.at(0);
                             if (firstItem) {
                                 scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
