@@ -18,7 +18,11 @@ define([
                 rowDelDisable: false,
                 rowMoveDisable: false,
                 rowMinLimit: -1,
-                rowMaxLimit: -1
+                rowMaxLimit: -1,
+                arrayBreakPoints : {
+                    transpositionRule:"@media (max-width: 768px)",
+                        upRule:"@media (max-width: 1200px)"
+                }
             },
             displayLabel: true,
             customTemplate: false,
@@ -98,6 +102,7 @@ define([
                     this.element.find(".dcpCustomTemplate tbody").addClass("dcpArray__body");
 
                 } else {
+                    console.log("array data", this.options);
                     this.element.append(Mustache.render(this._getTemplate("content"), this.options));
 
 
@@ -120,12 +125,14 @@ define([
                         this.element.find(".dcpArray__label").addClass("dcpAttribute__left");
                         this.element.find(".dcpArray__content").addClass("dcpAttribute__right");
                         this.element.addClass("dcpArray--left");
-                        if (labelPosition === "left") {
-                            this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
-                            this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
-                            this.element.addClass("dcpAttribute__labelPosition--left");
-                        }
+
+
+
                     }
+
+                    this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--"+labelPosition);
+                    this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--"+labelPosition);
+                    this.element.addClass("dcpAttribute__labelPosition--"+labelPosition);
                 }
 
                 if (this.options.renderOptions.rowAddDisable === true) {
@@ -214,7 +221,7 @@ define([
             });
 
             // Generate CSS string
-            cssString = "<style>@media only screen and (max-width: 760px), (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) { ";
+            cssString = "<style>"+this.options.renderOptions.arrayBreakPoints.transpositionRule+" { ";
 
             cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 

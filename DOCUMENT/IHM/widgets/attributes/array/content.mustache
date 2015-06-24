@@ -28,3 +28,108 @@
         {{/tools}}
     </div>
 </div>
+<style>
+{{renderOptions.arrayBreakPoints.transpositionRule}}  {
+    .dcpArray__content[data-attrid={{id}}] .dcpArray__content[data-attrid={{id}}] table.responsive {
+        width: 100%;
+    }
+
+    /* Force table to not be like tables anymore */
+    .dcpArray__content[data-attrid={{id}}] table.responsive,
+    .dcpArray__content[data-attrid={{id}}] table.responsive tbody,
+    .dcpArray__content[data-attrid={{id}}] table.responsive th,
+    .dcpArray__content[data-attrid={{id}}] table.responsive td,
+    .dcpArray__content[data-attrid={{id}}] table.responsive tr {
+        display: block;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive thead {
+        display: none;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] .dcpArray__content__toolCell__delete {
+        float: left;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .dcpArray__content[data-attrid={{id}}] table.responsive th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive tr {
+        border-color: #eeeeee;
+        border-width: 0;
+        border-style: none solid solid solid;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive tr:nth-of-type(even) {
+        background-color: #fafafa;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive > tbody > tr > td {
+        /* Behave  like a "row" */
+        border-bottom: 1px solid #eee;
+        border-top: none;
+        position: relative;
+        padding-left: 50%;
+        min-height: 3em;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive > tbody > tr > td:before,
+    .dcpArray__content[data-attrid={{id}}] table.responsive > tbody > tr > td:after {
+        content: " ";
+        display: table;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive > tbody > tr > td:after {
+        clear: both;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] table.responsive .dcpAttribute__content:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        word-break: break-word;
+    }
+
+    .dcpArray__content[data-attrid={{id}}] .dcpArray__content__toolCell,
+    .dcpArray__content[data-attrid={{id}}] table.responsive > tbody > tr > td.dcpArray__content__toolCell {
+        width: 100%;
+        border-top: 0;
+        padding-left: 5px;
+    }
+}
+{{renderOptions.arrayBreakPoints.upRule}} {
+    .dcpArray__label[data-attrid={{id}}].dcpAttribute__left.dcpAttribute__labelPosition--auto {
+        background-color: #eee;
+        border-bottom-style: solid;
+        text-align: left;
+        width: 100%;
+        clear: none;
+    }
+    .dcpArray__label[data-attrid={{id}}].dcpAttribute__left.dcpAttribute__labelPosition--auto:after {
+         content: "";
+         padding-left: 0;
+    }
+    .dcpArray--left[data-attrid={{id}}].dcpAttribute__labelPosition--auto {
+        border-style: solid;
+      }
+    .dcpArray__content[data-attrid={{id}}].dcpAttribute__labelPosition--auto > .table-bordered {
+        border-style: none;
+    }
+    .dcpDocument--edit .dcpArray__content[data-attrid={{id}}].dcpAttribute__labelPosition--auto > .table-bordered {
+        border-bottom-style: solid;
+    }
+    .dcpArray__content[data-attrid={{id}}].dcpAttribute__right.dcpAttribute__labelPosition--auto {
+        padding-left: 0;
+        padding-right: 0;
+        clear:both;
+    }
+}
+</style>

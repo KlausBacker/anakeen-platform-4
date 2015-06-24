@@ -9052,7 +9052,7 @@ define([], function ()
                 }
             }
         },
-        "53679!structure" : {
+        "ZOO_ALLTYPE!structure" : {
             "success": true,
             "messages": [],
             "data": {

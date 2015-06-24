@@ -520,8 +520,12 @@ define([
                         currentWidget.view.trigger("showMessage", message);
                     });
                 });
-                //Reinit the main model after the change of view
-                currentWidget.reinitDocument();
+                //Reinit the main model with last revision
+                currentWidget._model.fetchDocument({
+                    initid:  currentWidget._model.get("initid"),
+                    viewId:  currentWidget._model.get("viewId")
+                });
+
             });
 
             transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose()

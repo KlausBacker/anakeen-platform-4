@@ -1010,9 +1010,9 @@ define([
                 {
                     var initid = currentView.model.get("initid");
 
-currentView.fetchDocument({
-    initid:initid
-});
+                    currentView.model.fetchDocument({
+                        initid: initid
+                    });
 
                 });
             }

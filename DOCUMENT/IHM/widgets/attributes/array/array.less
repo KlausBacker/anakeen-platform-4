@@ -12,7 +12,7 @@
 
 .dcpArray__content__cell {
   overflow-x: auto;
- // height: 100%;
+  // height: 100%;
   overflow-y: hidden;
 }
 
@@ -83,16 +83,17 @@
 }
 
 .dcpDocument--view .dcpArray__tools {
-  display:none;
+  display: none;
 }
 
 .dcpFrame .dcpArray__content > table {
-  margin:0;
+  margin: 0;
 }
-.dcpFrame__content .dcpArray__content
-{
-  padding:0;
+
+.dcpFrame__content .dcpArray__content {
+  padding: 0;
 }
+
 .dcpArray--error {
   outline: solid 1px @brand-danger;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px fadein(@brand-danger, 60%);
@@ -124,28 +125,16 @@
 table.responsive {
   border-collapse: collapse;
 }
+
 .dcpArray__content {
   overflow-x: auto;
 }
 
-
 .dcpArray__label.dcpAttribute__left {
-  .make-lg-column(2);
-  padding-left:@font-size-base/2;
-  @media (min-width: @screen-lg-min) {
-    background-color: inherit;
-    border: none;
-    text-align: right;
-    clear: both;
-    &:after {
-      content: ":";
-      padding-left: 0.6em;
-    }
-  }
+  padding-left: @font-size-base/2;
 }
 
 .dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left {
-  .make-xs-column(3);
   background-color: inherit;
   border: none;
   text-align: right;
@@ -156,110 +145,38 @@ table.responsive {
   }
 }
 
+
+
+.dcpArray__tools {
+  margin: (@dcp-set-padding / 2);
+}
+
+
 .dcpArray--left.dcpAttribute__labelPosition--left {
   border: none;
 }
 
-.dcpArray__content.dcpAttribute__right.dcpAttribute__labelPosition--left {
-  .make-xs-column(10);
-}
 
-.dcpArray__content.dcpAttribute__right {
-  .make-lg-column(10);
-}
-
-.dcpArray--left {
-  @media (min-width: @screen-lg-min) {
-    border: none;
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto {
+  background-color: inherit;
+  border-style: none;
+  text-align: right;
+  clear: both;
+  &:after {
+    content: ":";
+    padding-left: 0.6em;
   }
 }
 
-
-.dcpArray__tools {
-    margin:(@dcp-set-padding / 2);
-}
-@media (max-width: @screen-lg-min) {
-  .dcpArray__content > .table-bordered {
-    border-style: none;
-  }
-  .dcpDocument--edit  .dcpArray__content > .table-bordered {
-    border-bottom-style: solid ;
-  }
-  .dcpArray__content.dcpAttribute__right {
-    padding-left:0;
-    padding-right: 0;
-  }
+.dcpArray--left.dcpAttribute__labelPosition--auto {
+  border-style: none;
 }
 
-@media only screen and (max-width: 760px),
- (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)
-{
-  table.responsive {
-    width: 100%;
-  }
-
-  /* Force table to not be like tables anymore */
-  table.responsive, table.responsive tbody, table.responsive th, table.responsive td, table.responsive tr {
-    display: block;
-  }
-
-  table.responsive thead {
-    display: none;
-  }
-
-  .dcpArray__content__toolCell__delete {
-    float: left;
-  }
-
-  /* Hide table headers (but not display: none;, for accessibility) */
-  table.responsive th {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
-  table.responsive tr {
-    border-color: @gray-lighter;
-    border-width: 1px;
-    border-style: none solid solid solid;
-  }
-
-  table.responsive tr:nth-of-type(even) {
-    background-color: @gray-lighter;
-  }
-
-  table.responsive > tbody > tr > td {
-    /* Behave  like a "row" */
-    border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
-    min-height: 3em;
-    &:before,
-    &:after {
-      content: " ";
-      display: table;
-    }
-    &:after {
-      clear: both;
-    }
-  }
-
-  table.responsive .dcpAttribute__content:before {
-    /* Now like a table header */
-    position: absolute;
-    /* Top/left values mimic padding */
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    word-break: break-word;
-  }
-
-  .dcpArray__content__toolCell, table.responsive > tbody > tr > td.dcpArray__content__toolCell {
-    width: 100%;
-    border-top: 0;
-    padding-left: 5px;
-  }
-
-
+.dcpArray.dcpAttribute__labelPosition--up .dcpArray__content > .table-bordered {
+  border-style: none;
 }
+.dcpArray .dcpArray__content > .table-bordered > thead > tr > th {
+  border-bottom-width: 1px;
+}
+
+

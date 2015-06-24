@@ -415,7 +415,8 @@ class View extends Crud
             "document.properties.status",
             "document.properties.revision",
             "document.properties.security",
-            "document.properties.state"
+            "document.properties.state",
+            "document.properties.type"
         );
         if ($this->needSendFamilyStructure && $document->doctype !== "C") {
             $fields[] = "family.structure";

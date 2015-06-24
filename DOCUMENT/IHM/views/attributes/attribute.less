@@ -31,9 +31,12 @@
 /**
  * Manage labelPosition options
  */
-.dcpAttribute__label.dcpAttribute__left {
-  .make-sm-column(2);
+.dcpAttribute__label.dcpAttribute__left,
+.dcpArray__label.dcpAttribute__left
+{
   .make-md-column(3);
+  .make-sm-column(2);
+  .make-xs-column(3);
   // Calculate width based on number of columns available
   @media (min-width: @grid-float-breakpoint) {
     float: left;
@@ -44,9 +47,12 @@
   }
 }
 
-.dcpAttribute__content.dcpAttribute__right {
-  .make-sm-column(10);
+.dcpAttribute__content.dcpAttribute__right,
+.dcpArray__content.dcpAttribute__left
+{
   .make-md-column(9);
+  .make-sm-column(10);
+  .make-xs-column(9);
   @media (max-width: @grid-float-breakpoint) {
     padding-left: 2em;
   }
@@ -73,12 +79,4 @@
 .dcpAttribute__left.dcpAttribute__labelPosition--up {
   .make-xs-column(12);
   text-align: left;
-}
-
-.dcpAttribute__right.dcpAttribute__labelPosition--left {
-  .make-xs-column(10);
-}
-
-.dcpAttribute__left.dcpAttribute__labelPosition--left {
-  .make-xs-column(3);
 }

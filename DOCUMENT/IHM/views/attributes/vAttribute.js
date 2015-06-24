@@ -150,6 +150,10 @@ define([
                     this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--up");
                     this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--up");
                 }
+                if (this.model.getOption("labelPosition") === "auto") {
+                    this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
+                    this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
+                }
                 this.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 

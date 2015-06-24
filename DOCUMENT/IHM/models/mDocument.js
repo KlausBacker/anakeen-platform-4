@@ -351,10 +351,9 @@ define([
             return !!this.get("attributes").some(function (currentAttr)
             {
                 return (currentAttr.hasChanged("attributeValue") &&
-                            ((currentAttr.get("attributeValue").value !== undefined &&
-                                ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''))) ||
-                                  !_.isEqual(_.pluck(_.flatten(currentAttr._initialAttributeValue), "value"),
-                                                _.pluck(_.flatten(currentAttr.get("attributeValue")), "value")))
+                ((currentAttr.get("attributeValue").value !== undefined &&
+                ((currentAttr._initialAttributeValue.value || '') !== (currentAttr.get("attributeValue").value || ''))) || !_.isEqual(_.pluck(_.flatten(currentAttr._initialAttributeValue), "value"),
+                    _.pluck(_.flatten(currentAttr.get("attributeValue")), "value")))
                 );
             });
         },
@@ -837,7 +836,7 @@ define([
             if (!nextView) {
                 nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
             }
-            if (nextView !== "!defaultConsultation") {
+            if (nextView !== "!defaultConsultation" && nextView !== "!coreCreation" && this.get("renderMode") !== "create") {
                 lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
                 lockModel.save({}, {
                     success: function ()
@@ -926,6 +925,19 @@ define([
             var visibilityAttributes = this.get("renderOptions").visibilities;
             var valueAttributes = this.get("originalValues");
 
+            if (this.get("properties").get("type") === "family") {
+                // Family has no attributes
+                this.set("attributes", []);
+                this.trigger("reload"); // trigger event to render document
+                return;
+            }
+
+            if (!_.isUndefined(this.get("attributes"))) {
+                this.set("attributes",this.get("attributes")); // to convert attributes to models
+                this.trigger("reload"); // trigger event to render document
+                return;
+            }
+
             mStructure = new FamilyStructure({
                 familyId: this.get("properties").get("family").name,
                 referencedocument: {
@@ -934,6 +946,7 @@ define([
                     revision: this.get("revision")
                 }
             });
+
             mStructure.fetch({
                 success: function (structureModel, response)
                 {

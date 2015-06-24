@@ -213,7 +213,7 @@ define([
             if (!this.transitionWindow) {
                 this.transitionWindow = this.$el.dcpDialog({
                     window: {
-                        maxWidth: "600px",
+                       // maxWidth: "600px",
                         height: "auto",
                         close: function registerCloseEvent(e)
                         {
