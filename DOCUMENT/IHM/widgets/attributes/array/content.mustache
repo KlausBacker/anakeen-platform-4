@@ -29,9 +29,7 @@
     </div>
 </div>
 <style>
-{{renderOptions.arrayBreakPoints.transpositionRule}}
-
-{
+{{renderOptions.arrayBreakPoints.transpositionRule}}  {
     .dcpArray__content[data-attrid={{id}}] .dcpArray__content[data-attrid={{id}}] table.responsive {
         width: 100%;
     }
@@ -106,6 +104,32 @@
         border-top: 0;
         padding-left: 5px;
     }
-
+}
+{{renderOptions.arrayBreakPoints.upRule}} {
+    .dcpArray__label[data-attrid={{id}}].dcpAttribute__left.dcpAttribute__labelPosition--auto {
+        background-color: #eee;
+        border-bottom-style: solid;
+        text-align: left;
+        width: 100%;
+        clear: none;
+    }
+    .dcpArray__label[data-attrid={{id}}].dcpAttribute__left.dcpAttribute__labelPosition--auto:after {
+         content: "";
+         padding-left: 0;
+    }
+    .dcpArray--left[data-attrid={{id}}].dcpAttribute__labelPosition--auto {
+        border-style: solid;
+      }
+    .dcpArray__content[data-attrid={{id}}].dcpAttribute__labelPosition--auto > .table-bordered {
+        border-style: none;
+    }
+    .dcpDocument--edit .dcpArray__content[data-attrid={{id}}].dcpAttribute__labelPosition--auto > .table-bordered {
+        border-bottom-style: solid;
+    }
+    .dcpArray__content[data-attrid={{id}}].dcpAttribute__right.dcpAttribute__labelPosition--auto {
+        padding-left: 0;
+        padding-right: 0;
+        clear:both;
+    }
 }
 </style>
