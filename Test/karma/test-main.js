@@ -146,7 +146,7 @@ require.config({ // jshint ignore:line
         "jasmine-jquery": '../../lib/jasmine/jasmine-jquery',
         "test-css": '../../../base/test-css',
         "datatables": "../../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-        "datatables-bootstrap": "../../lib/jquery-dataTables/1.10/bootstrap/3"
+        "datatables-bootstrap": "../../lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap"
     },
     // dynamically load all test files
     deps: allTestFiles,

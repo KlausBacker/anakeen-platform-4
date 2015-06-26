@@ -7,7 +7,7 @@ define([
     'kendo/kendo.window',
     'dcpDocument/widgets/window/wDialog',
     'datatables',
-    "datatables-bootstrap/dataTables.bootstrap"
+    "datatables-bootstrap"
 ], function ($, _, kendo)
 {
     'use strict';

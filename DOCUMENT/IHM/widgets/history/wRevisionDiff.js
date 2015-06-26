@@ -5,7 +5,7 @@ define([
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wDialog',
     'datatables',
-    "datatables-bootstrap/dataTables.bootstrap"
+    "datatables-bootstrap"
 ], function (_, Mustache) {
     'use strict';
 
