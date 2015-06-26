@@ -31,7 +31,7 @@
             "ckeditor": "../lib/ckeditor/4/ckeditor",
             "ckeditor-jquery": "../lib/ckeditor/4/adapters/jquery",
             "datatables": "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-            "datatables-bootstrap": "../lib/jquery-dataTables/1.10/bootstrap/3"
+            "datatables-bootstrap": "../lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap"
         },
         "waitSeconds": 60
     };
