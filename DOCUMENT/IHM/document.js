@@ -99,6 +99,7 @@ define([
             this.element.data("internalWidgetInitialised", false);
             this.element.data("internalWidget", false);
             this._trigger("internalWidgetUnloaded");
+            this._trigger("unloaded");
         },
 
         rebindEvents: function ()
