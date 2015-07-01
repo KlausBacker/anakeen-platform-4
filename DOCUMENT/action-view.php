@@ -6,6 +6,7 @@
 */
 
 use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\HttpApi\V1\Etag\Manager as EtagManager;
 
 function view(Action & $action)
 {
@@ -61,7 +62,30 @@ function view(Action & $action)
     $usage->setStrictMode(true);
     $usage->verify();
 
-    if ($documentId !== false) {
+    if ($documentId === false) {
+        $etag = md5(
+            sprintf(
+                "%s : %s",
+                \ApplicationParameterManager::getParameterValue(
+                    "CORE", "WVERSION"
+                ),
+                \ApplicationParameterManager::getScopedParameterValue(
+                    "CORE_LANG"
+                )
+            )
+        );
+        $etagManager = new EtagManager();
+        if ($etagManager->verifyCache($etag)) {
+            $etagManager->generateNotModifiedResponse($etag);
+            $action->lay->template = "";
+            $action->lay->noparse = true;
+            return;
+        }
+        $action->lay->set(
+            "viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(false)
+        );
+        $etagManager->generateResponseHeader($etag);
+    } else {
         if ($renderMode === "create") {
             $doc = DocManager::createDocument($documentId);
             $doc->title = sprintf(
@@ -128,16 +152,12 @@ function view(Action & $action)
 
         $action->lay->set(
             "viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(
-                array(
-                    "documentIdentifier" => intval($docId),
-                    "revision" => intval($revision),
-                    "vid" => $vId
-                )
+            array(
+                "documentIdentifier" => intval($docId),
+                "revision" => intval($revision),
+                "vid" => $vId
             )
-        );
-    } else {
-        $action->lay->set(
-            "viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(false)
+        )
         );
     }
 
