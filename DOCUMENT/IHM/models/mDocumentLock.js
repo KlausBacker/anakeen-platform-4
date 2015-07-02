@@ -8,7 +8,7 @@ define([
     var urlView = _.template("api/v1/documents/<%- initid %>/views/<%- viewId %>/locks/<%- type %>");
 
     return Backbone.Model.extend({
-
+        typeModel:"ddui:lock",
         idAttribute: "initid",
         viewId:"",
 

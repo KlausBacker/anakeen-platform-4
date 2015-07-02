@@ -8,6 +8,7 @@ define([
 
     return Backbone.Model.extend({
 
+        typeModel:"ddui:familyStructure",
         idAttribute: "familyId",
 
         url: function mFamilyStructure_url()

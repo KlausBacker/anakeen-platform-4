@@ -7,6 +7,7 @@ define([
     'use strict';
 
     return AttributeModel.extend({
+        typeModel:"ddui:attributeData",
         defaults: {
             isValueAttribute: true,
             multiple: false,

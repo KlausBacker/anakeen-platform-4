@@ -35,7 +35,7 @@ define([
     };
 
     return Backbone.Model.extend({
-
+        typeModel:"ddui:document",
         idAttribute: "initid",
 
         defaults: {

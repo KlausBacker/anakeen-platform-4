@@ -7,6 +7,7 @@ define([
 
     return Backbone.Model.extend({
 
+        typeModel:"ddui:properties"
     });
 
 });

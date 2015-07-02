@@ -6,6 +6,7 @@ define([
     'use strict';
 
     return AttributeModel.extend({
+        typeModel:"ddui:structureAttribute",
         defaults : {
             content :      []
         },
