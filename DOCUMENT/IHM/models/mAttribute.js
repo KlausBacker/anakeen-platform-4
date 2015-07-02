@@ -8,6 +8,7 @@ define([
 
     return Backbone.Model.extend({
 
+        typeModel:"ddui:attribute",
         defaults : {
             title :            null,
             isValueAttribute : false,

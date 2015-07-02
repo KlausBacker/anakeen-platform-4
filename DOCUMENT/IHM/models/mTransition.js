@@ -8,6 +8,7 @@ define([
 
     return mDocument.extend({
 
+        typeModel:"ddui:transition",
         defaults: {
             documentId: undefined,
             documentModel: undefined,

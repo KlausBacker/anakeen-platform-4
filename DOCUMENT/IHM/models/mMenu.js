@@ -6,6 +6,7 @@ define([
     'use strict';
 
     return Backbone.Model.extend({
+        typeModel:"ddui:menu",
         /**
          * Menu model are not linked to REST element so always new
          * @returns {boolean}

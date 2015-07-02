@@ -8,6 +8,7 @@ define([
 
     return Backbone.Model.extend({
 
+        typeModel:"ddui:transitionGraph",
         defaults: {
             documentId: undefined,
             state: undefined

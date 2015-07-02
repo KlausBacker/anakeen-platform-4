@@ -8,6 +8,7 @@ define([
 
     return Backbone.Model.extend({
 
+        typeModel:"ddui:attributeTab",
         idAttribute : "initid",
 
         url : function mDocumentTag_url() {
