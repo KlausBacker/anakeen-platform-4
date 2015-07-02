@@ -12,7 +12,8 @@ define([
     'dcpDocument/views/workflow/vTransition',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wConfirm',
-    'dcpDocument/widgets/window/wLoading'
+    'dcpDocument/widgets/window/wLoading',
+    'dcpDocument/widgets/window/wNotification'
 ], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, ChangeStateInterface, DocumentView, TransitionModel, TransitionView)
 {
     'use strict';

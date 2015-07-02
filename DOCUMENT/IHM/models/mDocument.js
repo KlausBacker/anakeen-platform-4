@@ -8,8 +8,7 @@ define([
     'dcpDocument/models/mFamilyStructure',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
-    'dcpDocument/i18n',
-    'dcpDocument/widgets/window/wNotification'
+    'dcpDocument/i18n'
 ], function ($, _, Backbone, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
