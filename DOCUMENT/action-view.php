@@ -79,6 +79,7 @@ function view(Action & $action)
             $etagManager->generateNotModifiedResponse($etag);
             $action->lay->template = "";
             $action->lay->noparse = true;
+            header("Cache-Control:");
             return;
         }
         $action->lay->set(
