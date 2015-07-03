@@ -923,13 +923,13 @@ define([
             if (this.get("properties").get("type") === "family") {
                 // Family has no attributes
                 this.set("attributes", []);
-                this.trigger("reload"); // trigger event to render document
+                this.injectJS(); // inject JS before reload the document
                 return;
             }
 
             if (!_.isUndefined(this.get("attributes"))) {
                 this.set("attributes",this.get("attributes")); // to convert attributes to models
-                this.trigger("reload"); // trigger event to render document
+                this.injectJS(); // trigger event to render document
                 return;
             }
 
@@ -962,7 +962,7 @@ define([
                             }
                         });
                         documentModel.set("attributes", attributes);
-                        documentModel.trigger("reload"); // trigger event to render document
+                        documentModel.injectJS(); // trigger event to render document
                     }
                 },
 
@@ -976,6 +976,43 @@ define([
                 }
             });
         },
+
+        /**
+         * Inject JS in the main page before render view
+         * To launch beforeRender and beforeRenderAttribute
+         */
+        injectJS : function mDocumentInjectJs()
+        {
+            var documentModel = this,
+                customJS = this.get("customJS"),
+                insertJs = function mDocumentInsertJs(path, key)
+                {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.setAttribute("data-id", key);
+                    script.src = path;
+                    script.onload = isReady;
+                    document.getElementsByTagName('head')[0].appendChild(script);
+                }, isReady = _.after(customJS.length, function mDocumentTriggerReload() {
+                    documentModel.trigger("reload");
+                });
+
+            _.each(customJS, function mDocumentHandleJS(jsItem)
+            {
+                var $existsLink = $('script[data-id=' + jsItem.key + ']');
+                if ($existsLink.length === 0) {
+                    insertJs(jsItem.path, jsItem.key);
+                } else {
+                    isReady();
+                }
+            });
+            //Launch the isReady is length is 0
+            if (customJS.length === 0) {
+                isReady();
+            }
+        },
+
+
         deleteDocument: function mDocumentDelete(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
