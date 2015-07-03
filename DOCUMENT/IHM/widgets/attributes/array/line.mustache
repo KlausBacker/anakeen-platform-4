@@ -1,18 +1,19 @@
 <tr class="dcpArray__content__line" data-attrid="{{id}}" data-line="{{lineNumber}}">
     {{#tools}}
-    <td class="dcpArray__content__toolCell">
-        <span title="[[#i18n]]ddui:Drag to move line[[/i18n]]" class="dcpArray__content__toolCell__dragDrop">
-            <button class="btn btn-default btn-xs"><span class="fa fa-ellipsis-v"></span></button>
-        </span>
-        <span title="[[#i18n]]ddui:Select line[[/i18n]]" class="dcpArray__content__toolCell__check">
-            <input name="check_{{id}}" type="radio" />
-
-        </span>
-        <span title="[[#i18n]]ddui:Delete line[[/i18n]]" class="dcpArray__content__toolCell__delete">
-            <button class="btn btn-default btn-xs">
-                <span class="fa fa-trash-o"></span>
-            </button>
-        </span>
+    <td class="dcpArray__toolCell">
+        <div class="dcpArray__content__toolCell">
+            <span title="[[#i18n]]ddui:Drag to move line[[/i18n]]" class="dcpArray__content__toolCell__dragDrop">
+                <button class="btn btn-default btn-xs"><span class="fa fa-ellipsis-v"></span></button>
+            </span>
+            <span title="[[#i18n]]ddui:Select line[[/i18n]]" class="dcpArray__content__toolCell__check">
+                <input name="check_{{id}}" type="radio" />
+            </span>
+            <span title="[[#i18n]]ddui:Delete line[[/i18n]]" class="dcpArray__content__toolCell__delete">
+                <button class="btn btn-default btn-xs">
+                    <span class="fa fa-trash-o"></span>
+                </button>
+            </span>
+        </div>
     </td>
     {{/tools}}
 {{#content}}
