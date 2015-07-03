@@ -88,30 +88,9 @@ define([
             var data;
 
             //Made to JSON for all the values, or to data for value indexed (in cas of multiple)
-            if (typeof index === "undefined" || index === null) {
-                data = this.model.toJSON();
-            } else {
-                data = this.model.toData(index);
-            }
+            data = this.model.toData(index, true);
             data.viewCid = this.cid + '-' + this.model.id;
-            data.renderOptions = this.model.getOptions();
-            data.labels = data.labels || {};
             data.labels.deleteAttributeNames = this.getDeleteLabels();
-            data.locale = this.model.getDocumentModel().get("locale");
-            data.templates = {};
-            if (this.model.getTemplates().attribute) {
-                if (this.model.getTemplates().attribute[this.model.get("type")]) {
-                    data.templates = this.model.getTemplates().attribute[this.model.get("type")];
-                } else {
-                    // fallback in case of no specific templates
-                    data.templates = this.model.getTemplates().attribute["default"];
-                }
-            }
-            data.deleteButton = true;
-
-            data.sourceValues = this.model.get("enumItems");
-            data.sourceUri = this.model.get("enumUri");
-            data.templates.label = this.model.getTemplates().attribute.label;
             // autoComplete detected
             data.autocompleteRequest = _.bind(this.autocompleteRequestRead, this);
 

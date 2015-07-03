@@ -26,9 +26,9 @@ define([
             this.set("errorMessage", null);
         },
 
-        toData : function mAttributetoData(index) {
+        toData : function mAttributetoData(index, extended) {
             var content = this.toJSON();
-            if (index && this.get("multiple") === false) {
+            if ((typeof index !== "undefined" && index !== null) && this.get("multiple") === false) {
                 throw new Error("You need to be multiple");
             }
             if (_.isNumber(index)) {
@@ -39,6 +39,24 @@ define([
             content.content = [];
             if (this.get("content")) {
                 content.content = this.get("content").toData();
+            }
+            if (extended) {
+                content.renderOptions = this.getOptions();
+                content.labels = content.labels || {};
+                content.locale = this.getDocumentModel().get("locale");
+                content.templates = {};
+                if (this.getTemplates().attribute) {
+                    if (this.getTemplates().attribute[this.get("type")]) {
+                        content.templates = this.getTemplates().attribute[this.get("type")];
+                    } else {
+                        // fallback in case of no specific templates
+                        content.templates = this.getTemplates().attribute["default"];
+                    }
+                }
+                content.deleteButton = true;
+                content.sourceValues = this.get("enumItems");
+                content.sourceUri = this.get("enumUri");
+                content.templates.label = this.getTemplates().attribute.label;
             }
             return content;
         },

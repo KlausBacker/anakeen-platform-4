@@ -21,6 +21,16 @@ define([
     };
 
     /**
+     * Get the data to build a widget
+     *
+     * @returns {*}
+     */
+    AttributPrototype.prototype.getWidgetData = function AttributeInterfaceGetWidgetData(index)
+    {
+        return _.clone(this._attributeModel.toData(index, true));
+    };
+
+    /**
      * Get the options of the current attribute
      * @returns {*}
      */
