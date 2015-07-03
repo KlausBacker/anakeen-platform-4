@@ -198,6 +198,9 @@ class RenderDefault implements IRenderConfig
                     ) ,
                     "line" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/array/line.mustache"
+                    ) ,
+                    "responsive" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/array/responsive.mustache"
                     )
                 )
             ) ,
