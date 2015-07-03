@@ -217,10 +217,12 @@ define([
 
         _initCSSResponsive: function _initCSSResponsive()
         {
-            var cssString, cssTemplate, headers = _.map(this.element.find(".dcpArray__head__cell"), function (currentElement)
+            var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th"), function (currentElement, index)
             {
                 var $currentElement = $(currentElement);
+                $currentElement.attr("data-responsiveKey", "rk"+index);
                 return {
+                    "key" : $currentElement.attr("data-responsiveKey"),
                     "attrid": $currentElement.data("attrid"),
                     "label": $currentElement.text().trim()
                 };
@@ -229,7 +231,7 @@ define([
             // Generate CSS string
             cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
 
-            cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
+            cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-responsiveKey=<%= key %>]:before { content: "<%= label %>"; }');
 
             _.each(headers, function initCssHeader(currentHeader)
             {
@@ -358,6 +360,7 @@ define([
             } else {
                 $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: index}, this.options)));
             }
+            $content.find(".dcpArray__content__toolCell").closest('td').addClass("dcpArray__toolCell");
 
             if (this.options.renderOptions.rowDelDisable === true) {
                 $content.find(".dcpArray__content__toolCell__delete").hide();
@@ -365,6 +368,11 @@ define([
             if (this.options.renderOptions.rowMoveDisable === true) {
                 $content.find(".dcpArray__content__toolCell__dragDrop").hide();
             }
+
+
+            _.each($content.find(">td"), function (currentCell, index) {
+                    $(currentCell).find(".dcpArray__content__cell").attr("data-responsiveKey", "rk"+(index)).closest('td').addClass("dcpArray__cell");
+            });
             return $content;
         },
 

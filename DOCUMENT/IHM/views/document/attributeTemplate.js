@@ -79,7 +79,6 @@ define(function (require, exports, module)
                     }
                     templateInfo = this._deepExtend(templateInfo, copyextraKeys);
                 }
-                console.log("custom", templateInfo);
                 return templateInfo;
             },
 
@@ -330,9 +329,7 @@ define(function (require, exports, module)
                 var templates = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var tool = '';
                 if (templates && templates.line) {
-                    tool = '<div class="dcpArray__content__toolCell">' +
-                    $(Mustache.render(templates.line, {tools: true})).find(".dcpArray__content__toolCell").html() + "</div>";
-
+                    tool = $(Mustache.render(templates.line, {tools: true})).find(".dcpArray__toolCell").html() ;
                 }
                 return tool;
             },
