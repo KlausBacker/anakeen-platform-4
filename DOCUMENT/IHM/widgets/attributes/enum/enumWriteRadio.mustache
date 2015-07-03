@@ -2,7 +2,7 @@
     <div class="input-group k-textbox dcpAttribute__value--enumbuttons orientation-{{renderOptions.editDisplay}}">
     {{#enumValues}}
         <label class="dcpAttribute__value--enumlabel{{#selected}} selected{{/selected}}">
-            <input name="{{id}}"
+            <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}"
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
                    class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
                    value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
