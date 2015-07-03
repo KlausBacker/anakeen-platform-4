@@ -47,6 +47,11 @@ define(function (require, exports, module)
                     templateInfo.attributes[attributeId].isWriteMode = (currentAttributeModel.get("mode") === "write");
 
                     if (currentAttributeModel.get("type") === "array") {
+                        templateInfo.attributes[attributeId].toolsEnabled = templateInfo.attributes[attributeId].isWriteMode &&
+                            (currentAttributeModel.get("visibility") !== "U") &&
+                        (currentAttributeModel.getOption("rowAddDisable") !== true ||
+                         currentAttributeModel.getOption("rowDelDisable") !== true||
+                         currentAttributeModel.getOption("rowMoveDisable") !== true);
                         templateInfo.attributes[attributeId].rows = _.bind(currentTemplate.getArrayRowInfo, currentTemplate, currentAttributeModel);
                         templateInfo.attributes[attributeId].tableTools = _.bind(currentTemplate.getArrayTools, currentTemplate, currentAttributeModel);
                     }
@@ -74,6 +79,7 @@ define(function (require, exports, module)
                     }
                     templateInfo = this._deepExtend(templateInfo, copyextraKeys);
                 }
+                console.log("custom", templateInfo);
                 return templateInfo;
             },
 
