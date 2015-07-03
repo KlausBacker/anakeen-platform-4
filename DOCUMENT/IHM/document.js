@@ -7,7 +7,8 @@ define([
 {
     'use strict';
 
-    var eventList = ["ready", "change", "message", "error", "validate", "attributeReady",
+    var eventList = ["beforeRender","ready", "change", "message", "error", "validate", "beforeAttributeRender",
+        "attributeReady",
         "helperSearch", "helperResponse", "helperSelect",
         "arrayModified", "actionClick",
         "beforeClose", "close",

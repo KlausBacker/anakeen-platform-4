@@ -18,7 +18,7 @@ define([
 {
     'use strict';
 
-    var eventList = ["ready", "change", "message", "error", "validate", "attributeReady",
+    var eventList = ["beforeRender", "ready", "change", "message", "error", "validate", "beforeAttributeRender", "attributeReady",
         "helperSearch", "helperResponse", "helperSelect",
         "arrayModified", "actionClick",
         "beforeClose", "close",
@@ -235,6 +235,11 @@ define([
                 currentWidget._initActivatedConstraint();
                 currentWidget._initActivatedEventListeners({launchReady: false});
             });
+            this._model.listenTo(this._model, "beforeRender", function documentController_triggerBeforeRender(event)
+            {
+                event.prevent = !currentWidget._triggerControllerEvent("beforeRender",
+                    currentWidget._model.getProperties(true), currentWidget._model.getProperties());
+            });
             this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event, nextDocument)
             {
                 if (currentWidget._initializedView !== false) {
@@ -280,6 +285,15 @@ define([
                     currentWidget._model.getProperties(),
                     currentAttribute,
                     currentAttribute.getValue("all")
+                );
+            });
+            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el)
+            {
+                var currentAttribute = currentWidget.getAttribute(attributeId);
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("beforeAttributeRender", currentAttribute,
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
+                    $el
                 );
             });
             this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el)
