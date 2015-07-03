@@ -19,9 +19,9 @@ define([
                 rowMoveDisable: false,
                 rowMinLimit: -1,
                 rowMaxLimit: -1,
-                arrayBreakPoints : {
-                    transpositionRule:"@media (max-width: 768px)",
-                        upRule:"@media (max-width: 1200px)"
+                arrayBreakPoints: {
+                    transpositionRule: "@media (max-width: 768px)",
+                    upRule: "@media (max-width: 1200px)"
                 }
             },
             displayLabel: true,
@@ -68,7 +68,7 @@ define([
 
         _initDom: function dcpArray_initDom()
         {
-            var scope = this;
+            var scope = this, $table;
             if (this.options.mode === "read" && this.options.nbLines === 0) {
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
@@ -127,22 +127,24 @@ define([
                         this.element.addClass("dcpArray--left");
 
 
-
                     }
 
-                    this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--"+labelPosition);
-                    this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--"+labelPosition);
-                    this.element.addClass("dcpAttribute__labelPosition--"+labelPosition);
+                    this.element.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--" + labelPosition);
+                    this.element.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--" + labelPosition);
+                    this.element.addClass("dcpAttribute__labelPosition--" + labelPosition);
                 }
 
                 if (this.options.renderOptions.rowAddDisable === true) {
                     this.element.find(".dcpArray__button--add, .dcpArray__button--copy").hide();
                 }
 
-                this.element.find("table.dcpArray__table").addClass("table table-condensed table-hover table-bordered responsive");
-                this.element.find("table.dcpArray__table > tbody").addClass("dcpArray__body").attr("data-attrid",this.options.id);
-                this.element.find("table.dcpArray__table > thead tr").addClass("dcpArray__head").attr("data-attrid",this.options.id);
-                this.element.find("table.dcpArray__table > thead").attr("data-attrid",this.options.id);
+                // Set system css classes
+                $table = this.element.find("table.dcpArray__table");
+                $table.addClass("table table-condensed table-hover table-bordered responsive");
+                $table.find("> tbody").addClass("dcpArray__body").attr("data-attrid", this.options.id);
+                $table.find("> thead").attr("data-attrid", this.options.id).
+                    find("tr").addClass("dcpArray__head").attr("data-attrid", this.options.id);
+
                 this.addAllLines(this.options.nbLines);
 
 
@@ -225,7 +227,7 @@ define([
             });
 
             // Generate CSS string
-            cssString = "<style>"+this.options.renderOptions.arrayBreakPoints.transpositionRule+" { ";
+            cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
 
             cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-attrid=<%= attrid %>]:before { content: "<%= label %>"; }');
 
@@ -265,10 +267,13 @@ define([
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     if (selectedLine === null) {
                         currentWidget.options.nbLines += 1;
-                        currentWidget.addLine(currentWidget.options.nbLines - 1, {needAddValue: true, useSelectedLine:true});
+                        currentWidget.addLine(currentWidget.options.nbLines - 1, {
+                            needAddValue: true,
+                            useSelectedLine: true
+                        });
                     } else {
                         currentWidget.options.nbLines += 1;
-                        currentWidget.addLine(selectedLine, {needAddValue: true, useSelectedLine:true});
+                        currentWidget.addLine(selectedLine, {needAddValue: true, useSelectedLine: true});
                     }
                 }
             });
@@ -277,7 +282,7 @@ define([
                 var selectedLine = currentWidget.selectedLineIndex();
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     currentWidget.options.nbLines += 1;
-                    currentWidget.copyLine(selectedLine, {needAddValue: true, useSelectedLine:true});
+                    currentWidget.copyLine(selectedLine, {needAddValue: true, useSelectedLine: true});
                 }
 
             });
@@ -331,14 +336,14 @@ define([
                 this.addLine(i);
             }
 
-             if (this.options.renderOptions.rowMinLimit >= 0) {
-                 if (this.options.nbLines < this.options.renderOptions.rowMinLimit) {
-                     for (i = this.options.nbLines; i < this.options.renderOptions.rowMinLimit; i += 1) {
+            if (this.options.renderOptions.rowMinLimit >= 0) {
+                if (this.options.nbLines < this.options.renderOptions.rowMinLimit) {
+                    for (i = this.options.nbLines; i < this.options.renderOptions.rowMinLimit; i += 1) {
 
-                         this.addLine(i, {needAddValue: true});
-                     }
-                 }
-             }
+                        this.addLine(i, {needAddValue: true});
+                    }
+                }
+            }
             this._trigger("linesGenerated");
         },
 
@@ -352,14 +357,13 @@ define([
                 $content.attr("data-attrid", this.options.id);
             } else {
                 $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: index}, this.options)));
+            }
 
-                if (this.options.renderOptions.rowDelDisable === true) {
-                    $content.find(".dcpArray__content__toolCell__delete").hide();
-                }
-                if (this.options.renderOptions.rowMoveDisable === true) {
-                    $content.find(".dcpArray__content__toolCell__dragDrop").hide();
-                }
-
+            if (this.options.renderOptions.rowDelDisable === true) {
+                $content.find(".dcpArray__content__toolCell__delete").hide();
+            }
+            if (this.options.renderOptions.rowMoveDisable === true) {
+                $content.find(".dcpArray__content__toolCell__dragDrop").hide();
             }
             return $content;
         },

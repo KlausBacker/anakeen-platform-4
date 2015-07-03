@@ -14,6 +14,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
     const ReadOnlyVisibility = "R";
     const ReadWriteVisibility = "W";
     const WriteOnlyVisibility = "O";
+    const ArrayStaticVisibility = "U";
     const StaticWriteVisibility = "S";
     /**
      * @var \Doc
@@ -52,7 +53,8 @@ class RenderAttributeVisibilities implements \JsonSerializable
             self::ReadOnlyVisibility,
             self::ReadWriteVisibility,
             self::WriteOnlyVisibility,
-            self::StaticWriteVisibility
+            self::StaticWriteVisibility,
+            self::ArrayStaticVisibility
         );
         if (!in_array($visibility, $allowVis)) {
             throw new Exception("UI0103", $visibility, implode(', ', $allowVis));
