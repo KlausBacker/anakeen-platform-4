@@ -26,7 +26,7 @@ class EnumRenderOptions extends CommonRenderOptions
      * @return $this
      * @throws Exception
      */
-    public function display($display)
+    public function setDisplay($display)
     {
         $allow = array(
             self::verticalDisplay,
