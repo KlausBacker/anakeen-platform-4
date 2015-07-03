@@ -63,6 +63,20 @@ define([
                 if (this.options.options && this.options.options.eformat === "auto") {
                     this.options.renderOptions.useSourceUri = true;
                 }
+                if (this.options.index >= 0) {
+                    var enumIndex = this.element.closest("table").data("enumIndex");
+
+                    if (!enumIndex) {
+                        enumIndex = {};
+                    }
+                    if (!enumIndex[this.options.id]) {
+                        enumIndex[this.options.id] = 0;
+                    }
+                    this.options.inArray = true;
+                    this.options.enumIndex = enumIndex[this.options.id];
+                    enumIndex[this.options.id]++;
+                    this.element.closest("table").data("enumIndex", enumIndex);
+                }
                 this._initMainElementClass();
                 if (this._isMultiple()) {
                     switch (this.options.renderOptions.editDisplay) {
@@ -98,6 +112,7 @@ define([
                             this.singleDropdown();
                     }
                 }
+
             }
 
             this.noButtonDisplay();
@@ -256,7 +271,7 @@ define([
             {
                 if (tplOption.enumValues[kItem]) {
                     $(this).tooltip({
-                        container:"body",
+                        container: "body",
                         title: Mustache.render(scope.options.labels.invertSelection,
                             tplOption.enumValues[(kItem + 1) % 2])
                     });
@@ -295,7 +310,22 @@ define([
             }
 
         },
+        /**
+         * Identify the input where is the raw value
+         * @returns {*}
+         */
+        getContentElements: function ()
+        {
+            if (this.options.inArray && (
+                this.options.renderOptions.editDisplay === "horizontal" ||
+                this.options.renderOptions.editDisplay === "vertical" ||
+                this.options.renderOptions.editDisplay === "bool")) {
 
+                return this.element.find('.dcpAttribute__value[name="' + this.options.id + '[' + this.options.enumIndex + ']"]');
+            } else {
+                return this._super();
+            }
+        },
 
         radioButtons: function wEnumRadioButtons()
         {
@@ -314,7 +344,6 @@ define([
 
             enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
-
 
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
@@ -344,7 +373,7 @@ define([
             }
 
             this.element.tooltip({
-                container:"body",
+                container: "body",
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
@@ -374,6 +403,7 @@ define([
             enumData = this.getMultipleEnumData();
             tplOption.enumValues = enumData.data;
 
+
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
 
@@ -402,7 +432,7 @@ define([
             });
 
             this.element.tooltip({
-                container:"body",
+                container: "body",
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
