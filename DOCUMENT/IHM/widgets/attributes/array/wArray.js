@@ -95,14 +95,15 @@ define([
                 if (this.options.customTemplate) {
                     // The template is already composed on view
                     this.element.append(this.options.customTemplate);
-                    this.element.find(".dcpCustomTemplate tbody tr").addClass("dcpArray__content__line");
+                    this.element.append(Mustache.render(this._getTemplate("responsive"), this.options));
+                    this.element.find(".dcpCustomTemplate table.dcpArray__table tbody tr").addClass("dcpArray__content__line");
                     this._indexLine();
                     this.element.find(".dcpArray__content__line").attr("data-attrid", this.options.id);
                     this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
-                    this.element.find(".dcpCustomTemplate tbody").addClass("dcpArray__body");
 
                 } else {
                     this.element.append(Mustache.render(this._getTemplate("content"), this.options));
+                    this.element.append(Mustache.render(this._getTemplate("responsive"), this.options));
 
 
                     if (this.options.mode === "write") {
@@ -138,6 +139,10 @@ define([
                     this.element.find(".dcpArray__button--add, .dcpArray__button--copy").hide();
                 }
 
+                this.element.find("table.dcpArray__table").addClass("table table-condensed table-hover table-bordered responsive");
+                this.element.find("table.dcpArray__table > tbody").addClass("dcpArray__body").attr("data-attrid",this.options.id);
+                this.element.find("table.dcpArray__table > thead tr").addClass("dcpArray__head").attr("data-attrid",this.options.id);
+                this.element.find("table.dcpArray__table > thead").attr("data-attrid",this.options.id);
                 this.addAllLines(this.options.nbLines);
 
 
