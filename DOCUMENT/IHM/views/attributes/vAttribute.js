@@ -478,14 +478,14 @@ define([
         widgetInit: function vAttributeWidgetInit($element, data)
         {
             $element.addClass("dcpAttribute__content--widget");
-            return this.getWidgetClass().call($element, data);
+            return this.getWidgetClass($element).call($element, data);
         },
 
         widgetApply: function vAttributeWidgetApply($element, method, argument)
         {
             try {
                 if (_.isString(method) && $element && this._findWidgetName($element)) {
-                    this.getWidgetClass().call($element, method, argument);
+                    this.getWidgetClass($element).call($element, method, argument);
                 }
             } catch (e) {
                 if (window.dcp.logger) {
@@ -497,12 +497,13 @@ define([
             return this;
         },
 
-        getWidgetClass: function vAttributeGetWidgetClass()
+        getWidgetClass: function vAttributeGetWidgetClass($element)
         {
-            if (!this.$el.data("currentWidgetClass")) {
-                this.$el.data("currentWidgetClass", this.getTypedWidgetClass(this.model.get("type")));
+            $element = $element || this.$el;
+            if (!$element.data("currentWidgetClass")) {
+                $element.data("currentWidgetClass", this.getTypedWidgetClass(this.model.get("type")));
             }
-            return this.$el.data("currentWidgetClass");
+            return $element.data("currentWidgetClass");
         },
 
         getTypedWidgetClass: function vAttributeGetTypedWidgetClass(type)
