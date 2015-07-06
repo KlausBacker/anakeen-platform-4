@@ -220,7 +220,7 @@ define([
 
                 this._trigger("change", event, {
                     id: this.options.id,
-                    value: value,
+                    value: this.getValue(),
                     index: this._getIndex()
                 });
             }

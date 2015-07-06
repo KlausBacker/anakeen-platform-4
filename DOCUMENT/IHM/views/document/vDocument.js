@@ -82,6 +82,13 @@ define([
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
             var tabPlacement = "topFix";
+            var event = {prevent: false};
+
+            this.model.trigger("beforeRender", event);
+
+            if (event.prevent) {
+                return this;
+            }
 
             this.template = this.getTemplates("body").trim();
             this.partials = this.getTemplates("sections");
@@ -89,7 +96,6 @@ define([
             this.$el.empty();
 
             this.renderCss();
-            this.renderJS();
             this.publishMessages();
 
             this.updateTitle();
@@ -644,30 +650,6 @@ define([
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
                 if ($existsLink.length === 0) {
                     $head.append(cssLinkTemplate(cssItem));
-                }
-            });
-        },
-        /**
-         * Inject new JS script in the dom
-         * Use the facebook style injection
-         */
-        renderJS: function vDocumentRenderJS()
-        {
-            var insertJs = function vDocumentInsertJs(path, key)
-            {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.setAttribute("data-id", key);
-                script.async = true;
-                script.src = path;
-                document.getElementsByTagName('head')[0].appendChild(script);
-            };
-
-            _.each(this.model.get("customJS"), function vDocumentHandleJS(jsItem)
-            {
-                var $existsLink = $('script[data-id=' + jsItem.key + ']');
-                if ($existsLink.length === 0) {
-                    insertJs(jsItem.path, jsItem.key);
                 }
             });
         },

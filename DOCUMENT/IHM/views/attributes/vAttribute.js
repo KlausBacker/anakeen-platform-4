@@ -100,7 +100,8 @@ define([
         render: function vAttributeRender()
         {
             //console.time("render attribute " + this.model.id);
-            var data = this.getData();
+            var data = this.getData(), event = {prevent: false};
+
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
             this.$el.attr("data-attrid", this.model.get("id"));
@@ -110,6 +111,10 @@ define([
 
             this.$el.append($(Mustache.render(this.templateWrapper, data)));
 
+            this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
+            if (event.prevent) {
+                return this;
+            }
             if (this.customView) {
                 this.$el.find(".dcpAttribute__content").append(this.customView);
             } else {
@@ -492,9 +497,12 @@ define([
             return this;
         },
 
-        getWidgetClass: function vAttributeGetTypedWidgetClass()
+        getWidgetClass: function vAttributeGetWidgetClass()
         {
-            return this.getTypedWidgetClass(this.model.get("type"));
+            if (!this.$el.data("currentWidgetClass")) {
+                this.$el.data("currentWidgetClass", this.getTypedWidgetClass(this.model.get("type")));
+            }
+            return this.$el.data("currentWidgetClass");
         },
 
         getTypedWidgetClass: function vAttributeGetTypedWidgetClass(type)

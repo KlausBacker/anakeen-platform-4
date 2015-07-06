@@ -1,10 +1,11 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'mustache',
     'dcpDocument/views/attributes/vAttribute'
-], function (_, Backbone, Mustache, ViewAttribute)
+], function ($, _, Backbone, Mustache, ViewAttribute)
 {
     'use strict';
 
