@@ -1,4 +1,6 @@
 <style>
+
+    {{#useTransposition}}
 {{renderOptions.arrayBreakPoints.transpositionRule}}  {
     .dcpArray__content[data-attrid={{id}}] .dcpArray__content[data-attrid={{id}}] table.responsive {
         width: 100%;
@@ -11,6 +13,7 @@
     .dcpArray__content[data-attrid={{id}}] table.responsive td,
     .dcpArray__content[data-attrid={{id}}] table.responsive tr {
         display: block;
+        width:auto;
     }
 
     .dcpArray__content[data-attrid={{id}}] table.responsive thead {
@@ -75,6 +78,7 @@
         padding-left: 5px;
     }
 }
+    {{/useTransposition}}
 {{renderOptions.arrayBreakPoints.upRule}} {
     .dcpArray__label[data-attrid={{id}}].dcpAttribute__left.dcpAttribute__labelPosition--auto {
         background-color: #eee;
