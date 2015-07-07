@@ -65,7 +65,7 @@ define([
                 visibleInput.tooltip({
                     trigger: "hover",
                     placement: "bottom",
-                    container:"body"
+                    container: "body"
                 });
 
             }
@@ -103,7 +103,7 @@ define([
                 this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
             }
 
-            if (false && !_.isUndefined(window.FormData)) {
+            if (!_.isUndefined(window.FormData)) {
                 this.element.on("dragenter" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDragEnter(event)
                 {
                     inputText.val(scope.options.attributeValue.displayValue);
@@ -156,7 +156,7 @@ define([
 
                 this.element.on("change" + this.eventNamespace, "input[type=file]", function (event)
                 {
-                        scope.uploadFileForm();
+                    scope.uploadFileForm();
                 });
 
             }
@@ -176,12 +176,11 @@ define([
             var fileTarget = "fileupload" + inputId + '-' + this.options.index;
             var originalText = inputText.val();
             var scope = this;
-            var formHtml = '<form id="form{{id}}" target="{{target}}" method="POST" enctype="multipart/form-data" action="api/v1/temporaryFiles/">' +
-                '<input type="hidden" name="accept" value="text/html"/>' +
+            var formHtml = '<form id="form{{id}}" target="{{target}}" method="POST" enctype="multipart/form-data" action="api/v1/temporaryFiles/?alt=html">' +
                 '</form><iframe style="display:none" name="{{target}}"></iframe>';
             $(Mustache.render(formHtml, {id: inputId, target: fileTarget})).insertAfter(inputFile);
 
-            var container='<div class="dcpFile__form"/>';
+            var container = '<div class="dcpFile__form"/>';
 
             $(container).insertAfter(inputText).append(inputText);
 
@@ -192,12 +191,11 @@ define([
             inputFile.show();
             this.element.addClass("dcpFile--old-browser");
 
-            inputText.prop("readonly",true);
             inputFile.attr("title", inputText.attr("data-original-title"));
             inputFile.tooltip({
                 trigger: "hover",
                 placement: "bottom",
-                container:"body"
+                container: "body"
             });
             this.element.find("iframe").on("load", function ()
             {
@@ -206,19 +204,36 @@ define([
                     return;
                 }
                 var response = JSON.parse($(this).contents().find("textarea").val());
-                var dataFile = response.data.file;
+
+                if (response.exceptionMessage) {
+                    _.each(response.messages, function (errorMessage)
+                    {
+
+                        $('body').trigger("notification", {
+                            htmlMessage: errorMessage.contentHtml,
+                            message: errorMessage.contentText,
+
+                            type: errorMessage.type
+                        });
+
+                    });
+                } else {
+                    var dataFile = response.data.file;
+                    scope.setValue({
+                        value: dataFile.reference,
+                        size: dataFile.size,
+                        fileName: dataFile.fileName,
+                        displayValue: dataFile.fileName,
+                        creationDate: dataFile.cdate,
+                        thumbnail: dataFile.thumbnailUrl,
+                        url: dataFile.downloadUrl,
+                        icon: dataFile.iconUrl
+                    });
+                }
+
                 inputText.val(originalText);
                 inputText.removeClass("dcpAttribute__value--transferring");
-                scope.setValue({
-                    value: dataFile.reference,
-                    size: dataFile.size,
-                    fileName: dataFile.fileName,
-                    displayValue: dataFile.fileName,
-                    creationDate: dataFile.cdate,
-                    thumbnail: dataFile.thumbnailUrl,
-                    url: dataFile.downloadUrl,
-                    icon: dataFile.iconUrl
-                });
+                scope.setVisibilitySavingMenu("visible");
             });
 
         },
@@ -234,6 +249,13 @@ define([
 
         uploadFileForm: function wFileUploadFileForm()
         {
+            var inputText = this.element.find(".dcpAttribute__value");
+
+            var inputFile = this.element.find("input[type=file]");
+            this.setVisibilitySavingMenu("disabled");
+
+            inputText.addClass("dcpAttribute__value--transferring");
+            inputText.val(this.options.labels.transferring + ' ' + inputFile.val().split(/[\\/]/).pop());
             this.element.find("form").submit();
         },
 
@@ -251,6 +273,8 @@ define([
                 return;
             }
 
+
+            this.setVisibilitySavingMenu("disabled");
             fd.append('dcpFile', firstFile);
 
             inputText.addClass("dcpAttribute__value--transferring");
@@ -314,6 +338,9 @@ define([
                     icon: dataFile.iconUrl
                 });
 
+
+                scope.setVisibilitySavingMenu("visible");
+
             }).fail(function (data)
             {
 
@@ -342,6 +369,9 @@ define([
                         type: "error"
                     });
                 }
+
+
+                scope.setVisibilitySavingMenu("visible");
             });
 
         },

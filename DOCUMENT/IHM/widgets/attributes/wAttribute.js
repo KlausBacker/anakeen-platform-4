@@ -719,6 +719,25 @@ define([
          */
         _triggerReady : function wAttributeReady() {
             this._trigger("widgetReady");
+        },
+
+        setVisibilitySavingMenu: function wAttributeDisableSavingMenu(visibility) {
+             this._trigger("changeattrmenuvisibility", event, {
+                id: "save",
+                visibility: visibility
+            });
+            this._trigger("changeattrmenuvisibility", event, {
+                id: "saveAndClose",
+                visibility: visibility
+            });
+            this._trigger("changeattrmenuvisibility", event, {
+                id: "createAndClose",
+                visibility: visibility
+            });
+            this._trigger("changeattrmenuvisibility", event, {
+                id: "create",
+                visibility: visibility
+            });
         }
 
     });
