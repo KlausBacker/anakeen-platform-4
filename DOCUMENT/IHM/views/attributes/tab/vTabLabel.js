@@ -1,9 +1,10 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'backbone',
     'mustache'
-], function (_, Backbone, Mustache)
+], function ($, _, Backbone, Mustache)
 {
     'use strict';
 
@@ -44,7 +45,7 @@ define([
                 if (tooltipLabel) {
                     tooltipLabel=Mustache.render(tooltipLabel, attrData);
                     if (!this.model.getOption("tooltipHtml")) {
-                        // Need encode itself becauseq the dropselect tooltip also need
+                        // Need encode itself because the dropselect tooltip also need
                         tooltipLabel=$('<div/>').text(tooltipLabel).html();
                     }
                     this.$el.data("tooltipLabel",  Mustache.render(tooltipLabel, attrData));

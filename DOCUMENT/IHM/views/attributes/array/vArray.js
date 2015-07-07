@@ -58,6 +58,11 @@ define([
             // console.time("render array " + this.model.id);
             var data = this.model.toData();
             var scope = this;
+
+            this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
+            if (event.prevent) {
+                return this;
+            }
             data.content = _.filter(data.content, function vArray_filterCurrentElement(currentContent)
             {
                 return currentContent.isDisplayable;
