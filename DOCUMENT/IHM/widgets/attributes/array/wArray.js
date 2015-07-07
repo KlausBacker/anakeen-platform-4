@@ -95,7 +95,6 @@ define([
                 if (this.options.customTemplate) {
                     // The template is already composed on view
                     this.element.append(this.options.customTemplate);
-                    this.element.append(Mustache.render(this._getTemplate("responsive"), this.options));
                     this.element.find(".dcpCustomTemplate table.dcpArray__table tbody tr").addClass("dcpArray__content__line");
                     this._indexLine();
                     this.element.find(".dcpArray__content__line").attr("data-attrid", this.options.id);
@@ -103,7 +102,6 @@ define([
 
                 } else {
                     this.element.append(Mustache.render(this._getTemplate("content"), this.options));
-                    this.element.append(Mustache.render(this._getTemplate("responsive"), this.options));
 
 
                     if (this.options.mode === "write") {
@@ -211,36 +209,44 @@ define([
                     scope.element.find(".dcpArray__content table.table").tooltip("destroy");
                 });
             }
-            this._initCSSResponsive();
+            _.delay(_.bind(this._initCSSResponsive, this),10);
         },
 
 
         _initCSSResponsive: function _initCSSResponsive()
         {
-            var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th"), function (currentElement, index)
-            {
-                var $currentElement = $(currentElement);
-                $currentElement.attr("data-responsiveKey", "rk"+index);
-                return {
-                    "key" : $currentElement.attr("data-responsiveKey"),
-                    "attrid": $currentElement.data("attrid"),
-                    "label": $currentElement.text().trim()
-                };
-            });
+            // I9 not support transposition table
+            var useTransposition= ($("html.k-ie9").length === 0);
 
-            // Generate CSS string
-            cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
+            this.element.append(Mustache.render(this._getTemplate("responsive"), _.extend(this.options, {useTransposition:useTransposition})));
 
-            cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-responsiveKey=<%= key %>]:before { content: "<%= label %>"; }');
+            if (useTransposition) {
+                this.element.find("table.dcpArray__table").addClass("responsive");
+                var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th"), function (currentElement, index)
+                {
+                    var $currentElement = $(currentElement);
+                    $currentElement.attr("data-responsiveKey", "rk" + index);
+                    return {
+                        "key": $currentElement.attr("data-responsiveKey"),
+                        "attrid": $currentElement.data("attrid"),
+                        "label": $currentElement.text().trim()
+                    };
+                });
 
-            _.each(headers, function initCssHeader(currentHeader)
-            {
-                currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
-                cssString += cssTemplate(currentHeader);
-            });
-            cssString += " }</style>";
+                // Generate CSS string
+                cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
 
-            this.element.append(cssString);
+                cssTemplate = _.template('.dcpArray__content[data-attrid=' + this.options.id + '] .dcpAttribute__content[data-responsiveKey=<%= key %>]:before { content: "<%= label %>"; }');
+
+                _.each(headers, function initCssHeader(currentHeader)
+                {
+                    currentHeader.label = currentHeader.label.replace(/([\\"])/g, "\\$1").replace(/\n/g, " ");
+                    cssString += cssTemplate(currentHeader);
+                });
+                cssString += " }</style>";
+
+                this.element.append(cssString);
+            }
         },
 
         _bindEvents: function dcpArray_bindEvents()
