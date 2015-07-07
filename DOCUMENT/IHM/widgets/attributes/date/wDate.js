@@ -137,18 +137,14 @@ define([
                     scope.setError(null); // clear Error before
                     scope.invalidDate=false;
                 }
-                scope._trigger("changeattrmenuvisibility", event, {
-                    id: "save",
-                    visibility: "visible"
-                });
+
+                scope.setVisibilitySavingMenu("visible");
 
                 if (dateValue) {
                     if (!scope.parseDate(dateValue)) {
                         scope.setValue({value: inputValue.val()});
-                        scope._trigger("changeattrmenuvisibility", event, {
-                            id: "save",
-                            visibility: "disabled"
-                        });
+
+                        scope.setVisibilitySavingMenu("disabled");
                         _.defer(function () {
                             scope._getFocusInput().focus();
                         });
