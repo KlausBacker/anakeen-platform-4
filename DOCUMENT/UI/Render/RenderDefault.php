@@ -272,7 +272,7 @@ class RenderDefault implements IRenderConfig
     {
         
         $linkOption = new htmlLinkOptions();
-        $linkOption->title = ___("View {{{displayValue}}}", "ddui");
+        //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
         $linkOption->url = "?app=DOCUMENT&id={{value}}";
         $opt->docid()->setLink($linkOption);
