@@ -40,7 +40,7 @@ define([
                     scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]').hide();
                 });
             }
-            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
+            this.model.trigger("renderColumnDone", {model: this.model, $el: this.$el});
             return this;
         },
 
@@ -52,16 +52,22 @@ define([
         addNewWidget: function vColumnAddNewWidget(index, customView)
         {
             if (this.options) {
-                var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]');
-                var data = this.getData(index);
+                var cells = this.options.parentElement.find('.dcpArray__content__cell[data-attrid="' + this.model.id + '"]'),
+                    $el, data = this.getData(index), event = {prevent: false};
 
                 if (cells[index]) {
                     try {
-                        if (customView) {
-                            $(cells[index]).append(customView);
-                        } else {
-                            this.widgetInit($(cells[index]), data);
+                        $el = $(cells[index]);
+                        this.model.trigger("beforeRender", event, {model : this.model, $el : $el});
+                        if (event.prevent) {
+                            return this;
                         }
+                        if (customView) {
+                            $el.append(customView);
+                        } else {
+                            this.widgetInit($el, data);
+                        }
+                        this.model.trigger("renderDone", {model: this.model, $el: $el});
                         this.moveValueIndex({});
                     } catch (error) {
                         if (window.dcp.logger) {

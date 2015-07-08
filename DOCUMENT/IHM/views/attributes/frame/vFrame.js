@@ -52,6 +52,11 @@ define([
             var contentElement = '';
             var customView = null;
 
+            this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
+            if (event.prevent) {
+                return this;
+            }
+
             this.templateLabel = this.model.getTemplates().attribute.frame.label;
             labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
 

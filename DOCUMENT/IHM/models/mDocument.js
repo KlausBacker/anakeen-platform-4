@@ -1,4 +1,4 @@
-/*global define, console*/
+/*global define, console, require*/
 define([
     'jquery',
     'underscore',
@@ -989,32 +989,10 @@ define([
         injectJS : function mDocumentInjectJs()
         {
             var documentModel = this,
-                customJS = this.get("customJS"),
-                insertJs = function mDocumentInsertJs(path, key)
-                {
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.setAttribute("data-id", key);
-                    script.src = path;
-                    script.onload = isReady;
-                    document.getElementsByTagName('head')[0].appendChild(script);
-                }, isReady = _.after(customJS.length, function mDocumentTriggerReload() {
+                customJS = _.pluck(this.get("customJS"), "path");
+                require(customJS, function initView() {
                     documentModel.trigger("reload");
                 });
-
-            _.each(customJS, function mDocumentHandleJS(jsItem)
-            {
-                var $existsLink = $('script[data-id=' + jsItem.key + ']');
-                if ($existsLink.length === 0) {
-                    insertJs(jsItem.path, jsItem.key);
-                } else {
-                    isReady();
-                }
-            });
-            //Launch the isReady is length is 0
-            if (customJS.length === 0) {
-                isReady();
-            }
         },
 
 
