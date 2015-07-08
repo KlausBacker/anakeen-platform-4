@@ -56,8 +56,7 @@ define([
         render: function vArray_render()
         {
             // console.time("render array " + this.model.id);
-            var data = this.model.toData();
-            var scope = this;
+            var data = this.model.toData(), scope = this, event = {prevent : false};
 
             this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
             if (event.prevent) {

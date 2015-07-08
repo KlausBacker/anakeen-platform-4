@@ -47,10 +47,7 @@ define([
 
         render: function vFrame_render()
         {
-            var $content;
-            var labelElement;
-            var contentElement = '';
-            var customView = null;
+            var $content, labelElement, contentElement = '', customView = null, event = {prevent: false};
 
             this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
             if (event.prevent) {
