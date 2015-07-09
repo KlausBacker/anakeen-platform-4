@@ -1336,7 +1336,7 @@ define([
         {
             this._checkInitialisedModel();
             this._checkEventName(eventName);
-            this._triggerControllerEvent.apply(this, arguments);
+            return this._triggerControllerEvent.apply(this, arguments);
         },
 
         /**
