@@ -14,6 +14,7 @@ class DOMDocumentCacheFactory
      * @param $filename
      * @param int $options
      * @return bool|DOMDocumentCache
+     * @throws Exception
      */
     public static function load($filename, $options = 0)
     {
@@ -53,7 +54,7 @@ class DOMDocumentCacheFactory
         }
         return false;
     }
-    private function lastXMLError()
+    private static function lastXMLError()
     {
         if (($err = libxml_get_last_error()) === false) {
             return '';
