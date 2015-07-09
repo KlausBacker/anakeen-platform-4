@@ -108,7 +108,13 @@ define([
             if (fileUrl) {
                 this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--file", function wFileOnButtonClickr(event)
                 {
-                    window.location.href = fileUrl + "&inline=no";
+                    scope._trigger("downloadfile", event, {
+                        target: event.currentTarget,
+                        index:scope._getIndex()
+                    });
+                    if (!event.isDefaultPrevented()) {
+                        window.location.href = fileUrl + "&inline=no";
+                    }
                 });
             } else {
                 this.element.find(".dcpAttribute__content__button--file").attr("disabled", "disabled");
