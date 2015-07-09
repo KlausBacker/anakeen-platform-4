@@ -724,6 +724,11 @@ define([
                 {
                     currentModel.trigger("internalLinkSelected", event, options);
                 });
+                //Propagate the event downloadFile to the model
+                currentModel.listenTo(value, "downloadFile", function (event, attrid, options)
+                {
+                    currentModel.trigger("downloadFile", event, attrid, options);
+                });
                 //Propagate the event helperSearch to the model
                 currentModel.listenTo(value, "helperSearch", function (event, attrid, options)
                 {

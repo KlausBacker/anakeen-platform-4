@@ -73,9 +73,20 @@ define([
 
         _initEvent: function wFileInitEvent()
         {
+            var scope=this;
             if (this.getMode() === "write") {
                 this._initUploadEvent();
             }
+
+            // Add trigger when try to download file
+            this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event)
+                {
+                    scope._trigger("downloadfile", event, {
+                        target: event.currentTarget,
+                        index:scope._getIndex()
+                    });
+                });
+
             this._super();
         },
 

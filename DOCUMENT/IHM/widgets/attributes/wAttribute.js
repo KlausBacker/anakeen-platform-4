@@ -545,6 +545,7 @@ define([
         {
             var htmlLink = this.getLink();
             var scopeWidget = this;
+
             if (htmlLink) {
 
                 this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event)
@@ -722,6 +723,7 @@ define([
         },
 
         setVisibilitySavingMenu: function wAttributeDisableSavingMenu(visibility) {
+            var event = {prevent: false};
              this._trigger("changeattrmenuvisibility", event, {
                 id: "save",
                 visibility: visibility
