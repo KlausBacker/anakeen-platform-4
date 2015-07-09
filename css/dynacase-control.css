@@ -252,7 +252,7 @@
 .welcome {
     padding:50px;
     color: #888;
-    font-family: Helvetica, Arial, sans;
+    font-family: Helvetica, Arial, sans-serif;
 }
 .welcome .content {
     margin-left: 7em;
@@ -277,7 +277,7 @@
 }
 
 .welcome pre.code {
-    font-family: courier;
+    font-family: courier, monospace;
     font-size: 80%;
     height: 200px;
     overflow-y: auto;
@@ -286,4 +286,9 @@
     margin-top:1em;
 }
 
-  
+table.altern tr:nth-child(even) {
+    background: #dddddd;
+}
+table.altern tr:nth-child(odd) {
+    background: #ffffff;
+}

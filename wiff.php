@@ -1139,15 +1139,30 @@ if (isset($_REQUEST['getConfiguration']) && isset($_REQUEST['context'])) {
     
     $sc = new StatCollector($wiff, $context);
     $sc->collect();
-    $xml = $sc->getXML();
-    if ($xml === false) {
+    if (isset($_REQUEST['format'])) {
+        switch ($_REQUEST['format']) {
+            case 'html':
+                $stats = $sc->getHTML();
+                break;
+
+            case 'zip':
+                $sc->downloadZip();
+                break;
+
+            default:
+                $stats = $sc->getXML();
+        }
+    } else {
+        $stats = $sc->getXML();
+    }
+    if ($stats === false) {
         $answer = new JSONAnswer(null, sprintf("Error getting XML statistics."));
         echo $answer->encode();
         exit(1);
     }
     
     $answer = new JSONAnswer(array(
-        'stats' => $xml
+        'stats' => $stats
     ));
     echo $answer->encode();
     exit(0);

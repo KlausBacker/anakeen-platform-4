@@ -353,7 +353,8 @@ function registrationClient() {
 			url : 'wiff.php',
 			params : {
 				getConfiguration : true,
-				context : currentContext
+				context : currentContext,
+				format: 'html'
 			},
 			success : function(responseObject) {
 				return this.showConfigurationSuccess(responseObject);
@@ -376,21 +377,24 @@ function registrationClient() {
 		}
 
 
-		var statsText = Ext.util.Format.htmlEncode(response.data.stats);
-
-		var headerPanel = new Ext.Panel({
-					bodyStyle : 'padding-bottom:10px;',
-					html : "<p>Configuration sent for context '" + currentContext + "' with mid/ctrlid:</p><pre>" + this.ctx.mid + "/" + this.ctx.ctrlid + "</pre>"
-				});
+		var statsText = response.data.stats;
 
 		var statsPanel = new Ext.Panel({
 			border : false,
 			bodyStyle : 'padding-bottom:10px;',
+			// overflowY: 'scroll',
 			autoScroll : true,
+			/*
+			scrollable: {
+				direction: 'both'
+			},
+			*/
 			flex : 1,
 			items : [new Ext.Panel({
-						html : '<pre style="color: black; background-color: white; white-space: pre-wrap">'
-								+ statsText + '</pre>'
+						html : statsText
+						/*scrollable: {
+							direction: 'both'
+						}*/
 					})]
 		});
 
@@ -401,10 +405,11 @@ function registrationClient() {
 					bodyStyle : 'padding:15px;',
 					monitorValid : true,
 					layout : 'vbox',
-					items : [headerPanel, statsPanel]
+					items : [statsPanel]
 				});
 
 		var configWin = new Ext.Window({
+					title : 'Configuration',
 					id : 'configuration-window',
 					items : [configFormPanel],
 					height : 400,
@@ -1932,9 +1937,9 @@ function updateContextList_success(responseObject, select) {
 					refresh : function() {
 						var repositoryHtml = '<ul>';
 						var registerHtml = (this.context.register == 'registered') ?
-								'<img src="images/icons/tag_green.png" style="vertical-align: middle;" />&nbsp;<span style="">Registered</span> (&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;|&nbsp;<a href="javascript:forceSendContextConfiguration();">Send configuration</a>&nbsp;)'
+								'<img src="images/icons/tag_green.png" style="vertical-align: middle;" />&nbsp;<span style="">Registered</span>&nbsp;(&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;|&nbsp;<a href="wiff.php?getConfiguration&format=zip&context=' + window.encodeURIComponent(this.context.name) + '" target="_blank">Download configuration</a>&nbsp;|&nbsp;<a href="javascript:forceSendContextConfiguration();">Send configuration</a>&nbsp;)'
 								:
-								'<img src="images/icons/stop.png" style="vertical-align: middle;" />&nbsp;<span style="">Unregistered</span>(&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;)';
+								'<img src="images/icons/stop.png" style="vertical-align: middle;" />&nbsp;<span style="">Unregistered</span>&nbsp;(&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;|&nbsp;<a href="javascript:downloadContextConfiguration();">Download configuration</a>&nbsp;)';
 
 						var needRepoValidationList = new Array();
 						var lenghtRepo = 0;
