@@ -34,10 +34,15 @@ define([
                 var urlSep = '?';
                 if (this.options.attributeValue.url) {
                     if (!this.options.renderOptions.htmlLink.url) {
-                        if (this.options.attributeValue.url && this.options.renderOptions.downloadInline) {
+                        if (this.options.attributeValue.url) {
                             urlSep = (this.options.attributeValue.url.indexOf('?') >= 0) ? "&" : "?";
-                            this.options.attributeValue.url = this.options.attributeValue.url.replace('&inline=no', '');
-                            this.options.attributeValue.url += urlSep + 'inline=yes';
+                            if (this.options.renderOptions.downloadInline) {
+                                this.options.attributeValue.url = this.options.attributeValue.url.replace('&inline=no', '');
+                                this.options.attributeValue.url += urlSep + 'inline=yes';
+                            } else {
+                                this.options.attributeValue.url = this.options.attributeValue.url.replace('&inline=yes', '');
+                                this.options.attributeValue.url += urlSep + 'inline=no';
+                            }
                         }
                         this.options.renderOptions.htmlLink.url = this.options.attributeValue.url;
 
