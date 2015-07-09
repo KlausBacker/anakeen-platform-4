@@ -22,7 +22,7 @@ define([
         "helperSearch", "helperResponse", "helperSelect",
         "arrayModified", "actionClick",
         "beforeClose", "close",
-        "beforeSave", "afterSave",
+        "beforeSave", "afterSave","downloadFile",
         "beforeDelete", "afterDelete",
         "failChangeState", "successChangeState",
         "beforeDisplayChangeState", "afterDisplayChangeState",
@@ -319,6 +319,15 @@ define([
             {
                 event.prevent = !currentWidget._triggerControllerEvent("actionClick",
                     currentWidget._model.getProperties(),
+                    options
+                );
+            });
+            this._model.listenTo(this._model, "downloadFile", function documentController_triggerDownloadFile(event, attrid, options)
+            {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+                event.prevent = !currentWidget._triggerControllerEvent("downloadFile",
+                    currentWidget._model.getProperties(),
+                    currentAttribute,
                     options
                 );
             });

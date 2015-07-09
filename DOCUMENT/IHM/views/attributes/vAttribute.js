@@ -39,6 +39,7 @@ define([
                     "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
                     "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
                     "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
+                    "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
                     "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
                 };
             } else {
@@ -278,10 +279,19 @@ define([
             });
         },
 
-        externalLinkSelected: function changeAttributesValueExternalLinkSelected(event, options)
+        externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
         {
             options.attrid = this.model.id;
             this.model.trigger("internalLinkSelected", event, options);
+        },
+        downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options)
+        {
+            var event = {prevent: false};
+
+            this.model.trigger("downloadFile", event,this.model.id, options);
+            if (event.prevent) {
+                widgetEvent.preventDefault();
+            }
         },
 
         /**

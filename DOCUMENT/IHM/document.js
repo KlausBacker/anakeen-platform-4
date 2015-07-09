@@ -10,7 +10,7 @@ define([
     var eventList = ["beforeRender","ready", "change", "message", "error", "validate", "beforeAttributeRender",
         "attributeReady",
         "helperSearch", "helperResponse", "helperSelect",
-        "arrayModified", "actionClick",
+        "arrayModified", "actionClick","downloadFile",
         "beforeClose", "close",
         "beforeSave", "afterSave",
         "beforeDelete", "afterDelete",
