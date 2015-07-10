@@ -729,6 +729,12 @@ define([
                 {
                     currentModel.trigger("downloadFile", event, attrid, options);
                 });
+
+                //Propagate the event uploadFile to the model
+                currentModel.listenTo(value, "uploadFile", function (event, attrid, options)
+                {
+                    currentModel.trigger("uploadFile", event, attrid, options);
+                });
                 //Propagate the event helperSearch to the model
                 currentModel.listenTo(value, "helperSearch", function (event, attrid, options)
                 {

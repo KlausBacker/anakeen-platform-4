@@ -23,6 +23,7 @@ define([
             this._addEvent(absEvents, "delete", "deleteValue");
             this._addEvent(absEvents, "fetchdocument", "loadDocument");
             this._addEvent(absEvents, "downloadfile", "downloadFileSelect");
+            this._addEvent(absEvents, "uploadfile", "uploadFileSelect");
             return absEvents;
         },
 

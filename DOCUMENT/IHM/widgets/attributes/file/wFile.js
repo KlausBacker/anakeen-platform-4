@@ -113,11 +113,11 @@ define([
             if (fileUrl) {
                 this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--file", function wFileOnButtonClickr(event)
                 {
-                    scope._trigger("downloadfile", event, {
+                    var isNotPrevented=scope._trigger("downloadfile", event, {
                         target: event.currentTarget,
                         index:scope._getIndex()
                     });
-                    if (!event.isDefaultPrevented()) {
+                    if (isNotPrevented) {
                         window.location.href = fileUrl + "&inline=no";
                     }
                 });
@@ -295,6 +295,15 @@ define([
                 return;
             }
 
+
+            var isNotPrevented=scope._trigger("uploadfile", event, {
+                target: event.currentTarget,
+                index:scope._getIndex(),
+                file:firstFile
+            });
+            if (!isNotPrevented) {
+                return;
+            }
 
             this.setVisibilitySavingMenu("disabled");
             fd.append('dcpFile', firstFile);

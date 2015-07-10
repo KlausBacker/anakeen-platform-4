@@ -40,6 +40,7 @@ define([
                     "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
                     "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
                     "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
+                    "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
                     "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
                 };
             } else {
@@ -289,6 +290,15 @@ define([
             var event = {prevent: false};
 
             this.model.trigger("downloadFile", event,this.model.id, options);
+            if (event.prevent) {
+                widgetEvent.preventDefault();
+            }
+        },
+        uploadFileSelect: function vAttributeuploadFileSelect(widgetEvent, options)
+        {
+            var event = {prevent: false};
+
+            this.model.trigger("uploadFile", event,this.model.id, options);
             if (event.prevent) {
                 widgetEvent.preventDefault();
             }
