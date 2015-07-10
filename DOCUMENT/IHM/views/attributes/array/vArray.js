@@ -44,7 +44,7 @@ define([
             if (options.originalView !== true) {
                 if (this.model.getOption("template")) {
                     this.customView = attributeTemplate.customView(this.model);
-                    if (this.model.getOption("template").match('{{#attribute.*\\.rows}}')) {
+                    if (this.model.getOption("template").match('dcpArray__table')) {
                         // Two case of custom : custom line or global custom array
                         this.customRowView = true;
                     }
