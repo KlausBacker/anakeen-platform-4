@@ -59,7 +59,7 @@ define([
 
             if (this.customView) {
                 contentElement = this.customView;
-                contentElement.addClass("dcpFrame__content--open");
+                contentElement.addClass("dcpFrame__content dcpFrame__content--open");
             } else {
                 this.templateContent = this.model.getTemplates().attribute.frame.content;
                 contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
@@ -151,10 +151,7 @@ define([
 
         toggle: function vFrame_toggle(event, hideNow)
         {
-            var $contentElement = this.$(".dcpCustomTemplate");
-            if ($contentElement.length === 0) {
-                $contentElement = this.$(".dcpFrame__content");
-            }
+            var $contentElement = this.$(".dcpFrame__content");
             this.$(".dcp__frame__caret").toggleClass("fa-caret-right fa-caret-down");
             $contentElement.toggleClass("dcpFrame__content--open dcpFrame__content--close");
             if (hideNow) {
