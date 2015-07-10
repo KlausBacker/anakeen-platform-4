@@ -290,6 +290,7 @@ define([
             var originalText = inputText.val();
             var originalBgColor = inputText.css("background-color");
             var scope = this;
+            var event={prevent:false};
 
             if (!this.uploadCondition(firstFile)) {
                 return;
