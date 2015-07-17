@@ -370,11 +370,12 @@ define([
             this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, response)
             {
                 var currentAttribute = currentWidget.getAttribute(attribute),
-                    currentModel = currentWidget._model.getProperties();
+                    currentModel = currentWidget._model.getProperties(),
+                    $element = $(currentWidget.element);
                 _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                 {
-                    if (currentConstraint.attributeCheck.apply(currentWidget.element, [currentModel, currentAttribute])) {
-                        currentConstraint.constraintCheck.apply(currentWidget.element, [
+                    if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
+                        currentConstraint.constraintCheck.apply($element, [
                                 response,
                                 currentModel,
                                 currentAttribute,
@@ -626,10 +627,10 @@ define([
          */
         _initActivatedConstraint: function documentController_initActivatedConstraint()
         {
-            var currentDocumentProperties = this._model.getProperties();
+            var currentDocumentProperties = this._model.getProperties(), currentWidget = this;
             this.activatedConstraint = _.filter(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint)
             {
-                return currentConstraint.documentCheck(currentDocumentProperties);
+                return currentConstraint.documentCheck.call($(currentWidget.element), currentDocumentProperties);
             });
         },
 
@@ -646,7 +647,7 @@ define([
                 if (!_.isFunction(currentEvent.documentCheck)) {
                     return true;
                 }
-                return currentEvent.documentCheck(currentDocumentProperties);
+                return currentEvent.documentCheck.call($(currentWidget.element), currentDocumentProperties);
             });
             //Trigger new added ready event
             if (this._initializedView !== false && options.launchReady !== false) {
@@ -670,11 +671,11 @@ define([
          */
         _addAndInitNewEvents: function documentController_addAndInitNewEvents(newEvent)
         {
-            var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event, uniqueName;
+            var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event, uniqueName, $element = $(currentWidget.element);
             uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
             this.options.eventListener[uniqueName] = newEvent;
             // Check if the event is for the current document
-            if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck(currentDocumentProperties)) {
+            if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck.call($element, currentDocumentProperties)) {
                 this.activatedEventListener.push(newEvent);
                 // Check if we need to manually trigger this callback (late registered : only for ready events)
                 if (this._initializedView !== false) {
@@ -683,7 +684,7 @@ define([
                         event.target = currentWidget.element;
                         try {
                             // add element as function context
-                            newEvent.eventCallback.call(currentWidget.element, event, currentDocumentProperties);
+                            newEvent.eventCallback.call($element, event, currentDocumentProperties);
                         } catch (e) {
                             console.error(e);
                         }
@@ -694,10 +695,10 @@ define([
                         _.each(this._getRenderedAttributes(), function documentController_triggerRenderedAttributes(currentAttribute)
                         {
                             var objectAttribute = currentWidget.getAttribute(currentAttribute.id);
-                            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck.apply(currentWidget.element, [objectAttribute])) {
+                            if (!_.isFunction(newEvent.attributeCheck) || newEvent.attributeCheck.apply($element, [objectAttribute])) {
                                 try {
                                     // add element as function context
-                                    newEvent.eventCallback.call(currentWidget.element,
+                                    newEvent.eventCallback.call($element,
                                         event,
                                         currentDocumentProperties,
                                         objectAttribute,
@@ -723,7 +724,8 @@ define([
          */
         _triggerAttributeControllerEvent: function documentController_triggerAttributeControllerEvent(eventName, attributeInternalElement)
         {
-            var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName), externalEventArgument;
+            var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName), externalEventArgument,
+                $element = $(currentWidget.element);
             event.target = currentWidget.element;
             // internal event trigger
             args.unshift(event);
@@ -735,13 +737,13 @@ define([
                     if (!_.isFunction(currentEvent.attributeCheck)) {
                         return true;
                     }
-                    return currentEvent.attributeCheck.apply(currentWidget.element, [attributeInternalElement]);
+                    return currentEvent.attributeCheck.apply($element, [attributeInternalElement]);
                 }
                 return false;
             }).each(function documentController_applyCallBack(currentEvent)
             {
                 try {
-                    currentEvent.eventCallback.apply(currentWidget.element, args);
+                    currentEvent.eventCallback.apply($element, args);
                 } catch (e) {
                     if (window.dcp.logger) {
                         window.dcp.logger(e);
@@ -775,7 +777,7 @@ define([
             }).each(function documentController_triggerAnEvent(currentEvent)
             {
                 try {
-                    currentEvent.eventCallback.apply(currentWidget.element, args);
+                    currentEvent.eventCallback.apply($(currentWidget.element), args);
                 } catch (e) {
                     if (window.dcp.logger) {
                         window.dcp.logger(e);
