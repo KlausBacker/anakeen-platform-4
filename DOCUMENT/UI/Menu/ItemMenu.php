@@ -11,6 +11,7 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
 {
     protected $url = '';
     protected $target = '_self';
+    
     protected $confirmationText = null;
     protected $confirmationOptions = null;
     protected $targetOptions = null;
@@ -57,6 +58,41 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
         }
         $this->confirmationOptions = $options;
         return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * @return string
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+    /**
+     * @return null
+     */
+    public function getConfirmationText()
+    {
+        return $this->confirmationText;
+    }
+    /**
+     * @return null
+     */
+    public function getConfirmationOptions()
+    {
+        return $this->confirmationOptions;
+    }
+    /**
+     * @return null
+     */
+    public function getTargetOptions()
+    {
+        return $this->targetOptions;
     }
     /**
      * Specify data which should be serialized to JSON

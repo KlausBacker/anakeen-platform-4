@@ -486,6 +486,7 @@ define([
                     }
                 });
 
+                currentMenu.contentLabel=(currentMenu.htmlLabel || currentMenu.label);
                 currentMenu.disabled = (currentMenu.visibility === 'disabled');
                 if (currentMenu.type === "listMenu") {
                     subMenu = "listMenu";

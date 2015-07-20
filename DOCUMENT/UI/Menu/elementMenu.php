@@ -39,9 +39,9 @@ class ElementMenu implements \JsonSerializable
      */
     protected $tooltipHtml = false;
     /**
-     * @var string
+     * @var array
      */
-    protected $htmlAttributes = '';
+    protected $htmlAttributes = array();
     /**
      * @var string
      */
@@ -95,6 +95,13 @@ class ElementMenu implements \JsonSerializable
     {
         $this->htmlLabel = $label;
         return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getHtmlLabel()
+    {
+        return $this->htmlLabel;
     }
     /**
      * Set tooltip for the menu
@@ -162,6 +169,76 @@ class ElementMenu implements \JsonSerializable
         return $this->beforeLabelHtmlText;
     }
     /**
+     * @return string
+     */
+    public function getTextLabel()
+    {
+        return $this->textLabel;
+    }
+    /**
+     * @return string
+     */
+    public function getTooltipLabel()
+    {
+        return $this->tooltipLabel;
+    }
+    /**
+     * @return string
+     */
+    public function getTooltipPlacement()
+    {
+        return $this->tooltipPlacement;
+    }
+    /**
+     * @return boolean
+     */
+    public function isTooltipHtml()
+    {
+        return $this->tooltipHtml;
+    }
+    /**
+     * @return array
+     */
+    public function getHtmlAttributes()
+    {
+        return $this->htmlAttributes;
+    }
+    /**
+     * @return string
+     */
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+    /**
+     * @return string
+     */
+    public function getIconPath()
+    {
+        return $this->iconPath;
+    }
+    /**
+     * @return string
+     */
+    public function getBeforeLabelHtmlText()
+    {
+        return $this->beforeLabelHtmlText;
+    }
+    /**
+     * @return boolean
+     */
+    public function isIsImportant()
+    {
+        return $this->isImportant;
+    }
+    /**
+     * @return int
+     */
+    public function getIconSize()
+    {
+        return $this->iconSize;
+    }
+    /**
      * Set important status
      * Means that menu will not hide when window size is tiny
      * @param bool $isImportant
@@ -196,7 +273,7 @@ class ElementMenu implements \JsonSerializable
             "tooltipLabel" => $this->tooltipLabel,
             "tooltipPlacement" => $this->tooltipPlacement,
             "tooltipHtml" => $this->tooltipHtml,
-            "htmlAttributes" => $this->htmlAttributes,
+            "htmlAttributes" => empty($this->htmlAttributes) ? null : $this->htmlAttributes,
             "visibility" => $this->visibility,
             "beforeContent" => $this->beforeLabelHtmlText,
             "important" => $this->isImportant,

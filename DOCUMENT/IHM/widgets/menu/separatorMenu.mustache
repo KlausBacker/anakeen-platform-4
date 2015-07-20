@@ -9,8 +9,7 @@
         {{{beforeContent}}}
     </span>
     {{/beforeContent}}
-    {{{htmlLabel}}}
-    {{label}}
+    {{#contentLabel}}<span class="menu__content">{{{htmlLabel}}}{{label}}</span>{{/contentLabel}}
     {{^label}}
         {{^htmlLabel}}
         <div class="menu__empty_separator"></div>
