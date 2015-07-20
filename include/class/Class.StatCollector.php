@@ -99,6 +99,190 @@ class StatCollector
         
         return $this->dom->saveXML();
     }
+    /**
+     * Get the statistics as a HTML table.
+     *
+     * @return DOMDOcument containing a XML <stat></stat> document
+     */
+    public function getHTML()
+    {
+        if ($this->dom === null) {
+            $this->last_error = "No stat has been collected yet.";
+            return false;
+        }
+        
+        $tables = array(
+            'General' => array() ,
+            'Modules' => array() ,
+            'System' => array()
+        );
+        /**
+         * @var DOMElement $node
+         */
+        $xp = new DOMXPath($this->dom);
+        /*
+         * General table
+        */
+        $nodeList = $xp->query('/stats/date');
+        foreach ($nodeList as $node) {
+            $tables['General'][] = array(
+                "Date",
+                htmlspecialchars($node->getAttribute('value'))
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/users');
+        foreach ($nodeList as $node) {
+            $tables['General'][] = array(
+                "Number of users",
+                htmlspecialchars($node->getAttribute('number'))
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/wiff');
+        foreach ($nodeList as $node) {
+            $tables['General'][] = array(
+                "dynacase-control version",
+                htmlspecialchars($node->getAttribute('version'))
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/php');
+        foreach ($nodeList as $node) {
+            $tables['General'][] = array(
+                "PHP version",
+                htmlspecialchars($node->getAttribute('version'))
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/postgresql');
+        foreach ($nodeList as $node) {
+            $tables['General'][] = array(
+                "PostgreSQL version",
+                htmlspecialchars($node->getAttribute('version'))
+            );
+        }
+        /*
+         * System table
+        */
+        $nodeList = $xp->query('/stats/system/uname');
+        foreach ($nodeList as $node) {
+            $tables['System'][] = array(
+                "uname",
+                htmlspecialchars($node->textContent)
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/system/memory');
+        foreach ($nodeList as $node) {
+            $tables['System'][] = array(
+                "memory",
+                htmlspecialchars($node->textContent)
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/system/processors');
+        foreach ($nodeList as $node) {
+            $tables['System'][] = array(
+                "processors count",
+                htmlspecialchars($node->getAttribute('count'))
+            );
+        }
+        
+        $nodeList = $xp->query('/stats/system/processors/processor');
+        foreach ($nodeList as $i => $node) {
+            $tables['System'][] = array(
+                sprintf("processor #%d", $i) ,
+                '<pre style="white-space: pre-wrap">' . htmlspecialchars($node->textContent) . '</pre>'
+            );
+        }
+        /*
+         * Module table
+        */
+        $nodeList = $xp->query('/stats/modules/module');
+        foreach ($nodeList as $node) {
+            $vendor = $node->getAttribute('vendor');
+            if ($vendor == '') {
+                $vendor = 'unknown';
+            }
+            $tables['Modules'][] = array(
+                htmlspecialchars($node->getAttribute('name')) ,
+                htmlspecialchars(sprintf("%s-%s (%s)", $node->getAttribute('version') , $node->getAttribute('release') , $vendor))
+            );
+        }
+        usort($tables['Modules'], function ($a, $b)
+        {
+            return strcasecmp($a[0], $b[0]);
+        });
+        /*
+         * Generate HTML tables
+        */
+        $html = "";
+        foreach ($tables as $tableName => $rows) {
+            $html.= sprintf("<h1 style=\"text-decoration: underline; margin-top: 1em;\">%s</h1>\n", $tableName);
+            $html.= "<table class=\"altern\">\n";
+            foreach ($rows as $row) {
+                $html.= sprintf("<tr><td>%s</td><td>%s</td></tr>", $row[0], $row[1]);
+            }
+            $html.= "</table>\n";
+        }
+        
+        return $html;
+    }
+    public function zipConfiguration()
+    {
+        require_once ('lib/Lib.System.php');
+        $xml = $this->getXML();
+        if ($xml === false) {
+            $this->last_error = sprintf("Error getting context's configuration: %s", $this->last_error);
+            return false;
+        }
+        $tmpZIP = WiffLibSystem::tempnam(null, 'downloadZip');
+        if ($tmpZIP === false) {
+            $this->last_error = sprintf("Error creating temporary file.");
+            return false;
+        }
+        unlink($tmpZIP);
+        $tmpZIP = sprintf("%s.zip", $tmpZIP);
+        $zip = new ZipArchiveCmd();
+        if ($zip->open($tmpZIP, ZipArchiveCmd::CREATE) === false) {
+            $this->last_error = sprintf("Error opening zip file '%s' for creation: %s", $tmpZIP, $zip->getStatusString());
+            unlink($tmpZIP);
+            return false;
+        }
+        if ($zip->addFromString('configuration.xml', $xml) === false) {
+            $this->last_error = sprintf("Error adding 'configuration.xml' to temporary ZIP file '%s': %s", $tmpZIP, $zip->getStatusString());
+            unlink($tmpZIP);
+            return false;
+        }
+        $zip->close();
+        return $tmpZIP;
+    }
+    public function downloadZip()
+    {
+        $zipFile = $this->zipConfiguration();
+        if ($zipFile === false) {
+            $this->downloadError(sprintf("Error generating configuration archive: %s", $this->last_error));
+        }
+        $filename = sprintf("dynacase-context-%s-%s.zip", $this->context->name, date('c'));
+        header("Content-Type: application/zip");
+        header(sprintf("Content-Disposition: filename=%s", $filename));
+        header("Cache-Control: no-cache");
+        header("Pragma: no-cache");
+        header(sprintf("Content-Length: %d", filesize($zipFile)));
+        readfile($zipFile);
+        unlink($zipFile);
+        exit(0);
+    }
+    
+    private function downloadError($msg)
+    {
+        $this->context->log(LOG_ERR, $msg);
+        header("HTTP/1.0 500 Error");
+        header("Content-Type: text/plain");
+        print $msg;
+        exit(1);
+    }
     
     private function _collect_date()
     {

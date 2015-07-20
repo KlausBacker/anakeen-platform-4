@@ -330,6 +330,13 @@ function wiff_context(&$argv)
             return $ret;
             break;
 
+        case 'download-configuration':
+            wiff_lock();
+            $ret = wiff_context_download_configuration($context, $argv);
+            wiff_unlock();
+            return $ret;
+            break;
+
         case 'help':
             return wiff_context_help($context, $argv);
             break;
@@ -358,6 +365,7 @@ function wiff_context_help(&$context, &$argv)
     echo "  wiff context <context-name> exec /bin/bash --login\n";
     echo "  wiff context <context-name> register\n";
     echo "  wiff context <context-name> archive <archive-name> [--without-vault] [--description=<description>]\n";
+    echo "  wiff context <context-name> download-configuration [--file=<configuration-file.zip>]\n";
     echo "\n";
     echo "Sub-commands help\n";
     echo "-----------------\n";
@@ -2391,6 +2399,46 @@ function wiff_context_register(&$context, &$argv) {
         printerr(sprintf("Error: could not register context: %s\n", $context->errorMessage));
         return 1;
     }
+    return 0;
+}
+
+/**
+ * @param Context $context
+ * @param $argv
+ */
+function wiff_context_download_configuration(&$context, &$argv) {
+    $options = parse_argv_options($argv);
+    /*
+     * Compose absolute path to output file
+     */
+    if (!isset($options['file'])) {
+        $options['file'] = sprintf("dynacase-context-%s-%s.zip", $context->name, date('c'));
+    }
+    $fileName = basename($options['file']);
+    $outputDir = dirname($options['file']);
+    $realDir = realpath($outputDir);
+    if ($realDir === false) {
+        printerr(sprintf("Error: could not get directory from '%s'.\n", $outputDir));
+        return 1;
+    }
+    $options['file'] = $realDir . DIRECTORY_SEPARATOR . $fileName;
+    /*
+     * Generate configuration zip
+     */
+    $wiff = WIFF::getInstance();
+    $sc = new StatCollector($wiff, $context);
+    $sc->collect();
+    $zipFile = $sc->zipConfiguration();
+    if ($zipFile === false) {
+        printerr(sprintf("Error: could not generate configuration ZIP: %s\n", $sc->last_error));
+        return 1;
+    }
+    if (rename($zipFile, $options['file']) === false) {
+        printerr(sprintf("Error: could not save configuration ZIP to '%s'.\n", $options['file']));
+        unlink($zipFile);
+        return 1;
+    }
+    printf("Configuration ZIP saved to: %s\n", $options['file']);
     return 0;
 }
 
