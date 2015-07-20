@@ -141,56 +141,45 @@ class UserAgent extends \WiffCommon
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_username);
             }
         }
-        /* Setup timeout/retries with same/similar defaults as wget */
-        if (isset($opts['timeout'])) {
-            /*
-             * With wget, each timeout (connect and read) can be set to a
-             * specific value, but curl only support a connect timeout and
-             * a "general" timeout that includes the time taken by the connect
-             * + the time of the read.
-            */
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($opts['timeout']));
-            curl_setopt($ch, CURLOPT_TIMEOUT, 2 * intval($opts['timeout']));
+        $connectTimeout = $wiff->getParam('connect-timeout');
+        if ($connectTimeout === false) {
+            $connectTimeout = 3;
+        } else {
+            $connectTimeout = intval($connectTimeout);
         }
-        $retry = 20;
-        $waitretry = 10;
+        if (isset($opts['connect-timeout'])) {
+            $connectTimeout = intval($opts['connect-timeout']);
+        }
+        if ($connectTimeout > 0) {
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connectTimeout);
+        }
+        $tries = 1;
         if (isset($opts['tries']) && $opts['tries'] > 0) {
-            $retry = $opts['tries'];
-        }
-        if (isset($opts['waitretry']) && $opts['waitretry'] > 0) {
-            $waitretry = $opts['waitretry'];
+            $tries = $opts['tries'];
         }
         /* Fetch the URL */
-        $wait = 0;
-        while ($retry >= 0) {
+        while ($tries > 0) {
             ftruncate($ftmp, 0);
             rewind($ftmp);
             curl_exec($ch);
             $errno = curl_errno($ch);
             if ($errno) {
                 $error = curl_error($ch);
-                if ($retry > 0) {
-                    $retry--;
-                    $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
-                    $this->log(LOG_INFO, __METHOD__ . " " . sprintf("Notice: got error (%s) '%s' while fetching '%s'. Retrying %s in %s second(s)...", $errno, $error, $this->anonymizeUrl($url) , $retry, $wait));
-                    sleep($wait);
+                $tries--;
+                if ($tries > 0) {
+                    $this->log(LOG_INFO, __METHOD__ . " " . sprintf("Notice: got error (%s) '%s' while fetching '%s'. Retrying %s...", $errno, $error, $this->anonymizeUrl($url) , $tries));
+                    sleep(1);
                     continue;
                 }
                 curl_close($ch);
                 fclose($ftmp);
                 unlink($tmpfile);
                 $this->errorMessage = sprintf("Error fetching '%s': %s", \WIFF::anonymizeUrl($url) , $error);
+                $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
             $code = 0;
             if (!$this->isCurlHttpCodeOk($ch, $code)) {
-                if ($code != 404 && $retry > 0) {
-                    $retry--;
-                    $wait = ($wait + 1 > $waitretry) ? $wait : $wait + 1;
-                    $this->log(LOG_INFO, __METHOD__ . " " . sprintf("Notice: got HTTP status code '%s' fetching '%s'. Retrying %s in %s second(s)...", $code, $this->anonymizeUrl($url) , $retry, $wait));
-                    sleep($wait);
-                    continue;
-                }
                 curl_close($ch);
                 fclose($ftmp);
                 $content = file_get_contents($tmpfile);
@@ -198,8 +187,8 @@ class UserAgent extends \WiffCommon
                     $content = '<Could not get content>';
                 }
                 unlink($tmpfile);
-                $this->errorMessage = sprintf("HTTP Error fetching '%s': HTTP status = '%s' / Content = '%s'", \WIFF::anonymizeUrl($url) , $code, $content);
-                
+                $this->errorMessage = sprintf("HTTP Error fetching '%s': HTTP status = '%s' / Content = '%s'", $this->anonymizeUrl($url) , $code, $content);
+                $this->log(LOG_ERR, $this->errorMessage);
                 return false;
             }
             break;

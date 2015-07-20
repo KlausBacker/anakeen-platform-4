@@ -24,25 +24,31 @@ if ($xml === false) {
 }
 $x = new DOMXPath($xml);
 /*
- * Rename 'debug' to 'local-log' and set mode='hidden'
- * or add the new 'local-log' parameter.
+ * Add new local-log hidden parameter if not exists
  */
-$params = $x->query("/wiff/parameters/param[@name='debug']");
-if ($params->length > 0) {
-  /**
-   * @var DOMElement $param
+$exists = $x->query("/wiff/parameters/param[@name='local-log']");
+if ($exists->length <= 0) {
+  /*
+   * Rename 'debug' to 'local-log' and set mode='hidden'
+   * or add the new 'local-log' parameter.
    */
-  $param = $params->item(0);
-  $param->setAttribute('name', 'local-log');
-  $param->setAttribute('mode', 'hidden');
-} else {
-  $parameters = $x->query("/wiff/parameters");
-  if ($parameters->length > 0) {
-    $param = $xml->createElement('param');
+  $params = $x->query("/wiff/parameters/param[@name='debug']");
+  if ($params->length > 0) {
+    /**
+     * @var DOMElement $param
+     */
+    $param = $params->item(0);
     $param->setAttribute('name', 'local-log');
     $param->setAttribute('mode', 'hidden');
-    $param->setAttribute('value', 'no');
-    $parameters->item(0)->appendChild($param);
+  } else {
+    $parameters = $x->query("/wiff/parameters");
+    if ($parameters->length > 0) {
+      $param = $xml->createElement('param');
+      $param->setAttribute('name', 'local-log');
+      $param->setAttribute('mode', 'hidden');
+      $param->setAttribute('value', 'no');
+      $parameters->item(0)->appendChild($param);
+    }
   }
 }
 /*

@@ -1182,6 +1182,25 @@ if (isset($_REQUEST['locallog'])) {
     answer("", "");
 }
 
+if (isset($_REQUEST['deactivateAllRepo']) && isset($_REQUEST['context'])) {
+    $contextName = $_REQUEST['context'];
+
+    $context = $wiff->getContext($contextName);
+    if ($context === false) {
+        answer(null, $wiff->errorMessage);
+        exit(1);
+    }
+
+    $repoList = $context->deactivateAllRepo();
+    if ($repoList === false) {
+        $answer = new JSONAnswer(null, $context->errorMessage);
+        answer(null, $wiff->errorMessage);
+        exit(1);
+    }
+
+    answer(true);
+}
+
 // Call to get a param value
 if (isset($argv)) {
     $paramName = "";
