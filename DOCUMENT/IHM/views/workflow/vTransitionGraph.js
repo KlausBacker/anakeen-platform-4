@@ -3,7 +3,7 @@ define([
     'jquery',
     'backbone',
     'mustache',
-    'dcpDocument/i18n',
+    'dcpDocument/documentCatalog',
     'dcpDocument/widgets/window/wDialog'
 ], function (_, $, Backbone, Mustache, i18n)
 {

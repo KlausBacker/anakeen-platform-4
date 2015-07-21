@@ -10,6 +10,7 @@
         "dcpDocument": "IHM",
         //use empty: to indicate deps that cannot/should not be concatened/minified
         "dcpDocument/i18n": "empty:",
+        "dcpDocument/documentCatalog": "empty:",
         "jquery": "empty:",
         "underscore": "empty:",
         "backbone": "empty:",
