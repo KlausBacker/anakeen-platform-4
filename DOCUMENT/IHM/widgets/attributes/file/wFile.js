@@ -70,7 +70,7 @@ define([
                 visibleInput.tooltip({
                     trigger: "hover",
                     placement: "bottom",
-                    container: "body"
+                    container: ".document"
                 });
 
             }
@@ -217,7 +217,7 @@ define([
             inputFile.tooltip({
                 trigger: "hover",
                 placement: "bottom",
-                container: "body"
+                container: ".document"
             });
             this.element.find("iframe").on("load", function ()
             {
