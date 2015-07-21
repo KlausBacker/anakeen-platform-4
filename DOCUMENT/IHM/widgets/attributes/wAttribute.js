@@ -480,7 +480,7 @@ define([
             this.element.find(".dcpAttribute__content__buttons button").tooltip({
                 placement: "top",
                 trigger: "hover",
-                container: "body"
+                container: ".document"
             });
             return this;
         },

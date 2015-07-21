@@ -510,7 +510,7 @@ define([
                     $dropSelect.data("kendoComboBox").ul.tooltip({
                         selector: "li.k-item ",
                         placement: "left",
-                        container: "body",
+                        container: ".document",
                         html: true,
                         title: function ()
                         {
