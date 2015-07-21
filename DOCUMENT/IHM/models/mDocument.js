@@ -362,7 +362,7 @@ define([
          */
         propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr, options)
         {
-            var attrModel, currentModel = this, parsedReturn, errorCode = null;
+            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "";
             //Analyze XHR
             var messages = [];
             try {
@@ -387,12 +387,15 @@ define([
             if (parsedReturn.messages.length === 0) {
                 //Status 0 indicate offline browser
                 if (xhr.status === 0) {
-                    parsedReturn.responseText = "Your navigator seems offline, try later";
+                    parsedReturn.responseText = i18n.___("Your navigator seems offline, try later", "ddui");
                     errorCode = "offline";
+                }
+                if (currentModel.get("properties")) {
+                    title = currentModel.get("properties").get("title");
                 }
                 currentModel.trigger("showError", {
                     "errorCode": errorCode,
-                    "title": "Unable to synchronise " + currentModel.get("properties").get("title"),
+                    "title": "Unable to synchronise " + title,
                     "message": parsedReturn.responseText
                 });
             }
@@ -984,11 +987,23 @@ define([
 
                 error: function (structureModel, HttpResponse)
                 {
-                    var response = JSON.parse(HttpResponse.responseText);
+                    if (HttpResponse && HttpResponse.status === 0) {
+                        documentModel.trigger("showError", {
+                            title: i18n.___("Your navigator seems offline, try later", "ddui")
+                        });
+                        return;
+                    }
+                    try {
+                        var response = JSON.parse(HttpResponse.responseText);
+                        documentModel.trigger("showError", {
+                            title: response.exceptionMessage
+                        });
+                    } catch(exception) {
+                        documentModel.trigger("showError", {
+                            title: exception.message
+                        });
+                    }
 
-                    documentModel.trigger("showError", {
-                        title: response.exceptionMessage
-                    });
                 }
             });
         },
