@@ -6,7 +6,7 @@ define([
     'mustache',
     'dcpDocument/views/attributes/frame/vFrame',
     'dcpDocument/views/document/attributeTemplate',
-    'dcpDocument/i18n'
+    'dcpDocument/documentCatalog'
 ], function ($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate, i18n)
 {
     'use strict';

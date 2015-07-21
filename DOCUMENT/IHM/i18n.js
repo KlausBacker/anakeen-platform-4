@@ -1,11 +1,9 @@
 /*global define*/
 // use "text!'text!dcpContextRoot/'/api/v1/i18n/DOCUMENT" to get only DDUI translation
-
-(function() {
-
+define([], function i18n()
+{
     "use strict";
-
-    var i18n = function i18n(translation)
+    return function catalog(translation)
     {
         try {
             translation = JSON.parse(translation);
@@ -48,11 +46,6 @@
             }
         };
     };
+});
 
-    if (!window.__karma__) {
-        define(["text!dcpContextRoot/api/v1/i18n/_all"], i18n);
-    } else {
-        define([], i18n);
-    }
 
-})();
