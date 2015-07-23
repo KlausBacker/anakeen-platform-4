@@ -108,12 +108,12 @@ define([
                         this.element.find('.dcpArray__tools').tooltip({
                             selector: ".dcpArray__button",
                             placement: "top",
-                            container: ".document"
+                            container: ".dcpDocument"
                         });
                         this.element.tooltip({
                             selector: ".dcpArray__content__toolCell span",
                             placement: "top",
-                            container: ".document"
+                            container: ".dcpDocument"
                         });
                     }
                 }

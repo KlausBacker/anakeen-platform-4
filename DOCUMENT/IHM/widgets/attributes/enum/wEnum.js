@@ -271,7 +271,7 @@ define([
             {
                 if (tplOption.enumValues[kItem]) {
                     $(this).tooltip({
-                        container: ".document",
+                        container: ".dcpDocument",
                         title: Mustache.render(scope.options.labels.invertSelection,
                             tplOption.enumValues[(kItem + 1) % 2])
                     });
@@ -373,7 +373,7 @@ define([
             }
 
             this.element.tooltip({
-                container: ".document",
+                container: ".dcpDocument",
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
@@ -432,7 +432,7 @@ define([
             });
 
             this.element.tooltip({
-                container: ".document",
+                container: ".dcpDocument",
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
