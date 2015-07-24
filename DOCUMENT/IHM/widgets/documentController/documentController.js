@@ -22,7 +22,7 @@ define([
         "helperSearch", "helperResponse", "helperSelect",
         "arrayModified", "actionClick",
         "beforeClose", "close",
-        "beforeSave", "afterSave","downloadFile","uploadFile",
+        "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",
         "failChangeState", "successChangeState",
         "beforeDisplayChangeState", "afterDisplayChangeState",
@@ -89,7 +89,7 @@ define([
          *
          * @private
          */
-        _initializeWidget: function documentController_initializeWidget(options)
+        _initializeWidget: function documentController_initializeWidget(options, customClientData)
         {
             var currentWidget = this,
                 initializeSuccess = function documentController_initializeSuccess()
@@ -108,6 +108,9 @@ define([
                 });
             } else {
                 options.success = initializeSuccess;
+            }
+            if (customClientData) {
+                this.setCustomClientData(customClientData);
             }
             this._model.fetch(options);
             if (!this.options.noRouter) {
@@ -231,7 +234,7 @@ define([
                 var result = currentWidget._triggerControllerEvent("message",
                     currentWidget._model.getProperties(), msg);
                 if (result) {
-                    currentWidget.$notification.dcpNotification("show",msg.type,  msg);
+                    currentWidget.$notification.dcpNotification("show", msg.type, msg);
                 }
             });
             this._model.listenTo(this._model, "sync", function documentController_triggerSync()
@@ -564,8 +567,8 @@ define([
                 });
                 //Reinit the main model with last revision
                 currentWidget._model.fetchDocument({
-                    initid:  currentWidget._model.get("initid"),
-                    viewId:  currentWidget._model.get("viewId")
+                    initid: currentWidget._model.get("initid"),
+                    viewId: currentWidget._model.get("viewId")
                 });
 
             });
@@ -829,10 +832,10 @@ define([
         {
             if (_.isString(eventName) &&
                 (eventName.indexOf("custom:") === 0 ||
-                _.find(eventList, function documentController_CheckEventType(currentEventType)
-                {
-                    return currentEventType === eventName;
-                })
+                    _.find(eventList, function documentController_CheckEventType(currentEventType)
+                    {
+                        return currentEventType === eventName;
+                    })
                 )) {
                 return true;
             }
@@ -878,7 +881,7 @@ define([
 
         /**
          * Fetch a new document
-         * @param values object {"initid" : int, "revision" : int, "viewId" : string}
+         * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
          * @param options object {"success": fct, "error", fct}
          */
         fetchDocument: function documentControllerFetchDocument(values, options)
@@ -901,8 +904,11 @@ define([
                 currentWidget.options[key] = value;
             });
             if (!this._model) {
-                this._initializeWidget(options);
+                this._initializeWidget(options, values.customClientData);
             } else {
+                if (values.customClientData) {
+                    this.setCustomClientData(values.customClientData);
+                }
                 this._model.fetchDocument(this._getModelValue(), options);
             }
 

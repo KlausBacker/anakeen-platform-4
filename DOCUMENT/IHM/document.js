@@ -230,10 +230,11 @@ define([
             if (!values.initid) {
                 throw new Error("You need to set the initid to fetch the document");
             }
-            _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            _.each(_.pick(values, "initid", "revision", "viewId","customClientData"), function dcpDocument_setNewOptions(value, key)
             {
                 currentWidget.options[key] = value;
             });
+
             if (this.element.data("internalWidgetInitialised")) {
                 internalWidget = this.element.data("internalWidget");
                 if (options.success) {
@@ -462,6 +463,7 @@ define([
 
     });
 
+    //noinspection JSValidateJSDoc
     /**
      * Wrap the brigde that find the function to be executed
      * Search in the current widget if the function is here
