@@ -51,7 +51,7 @@ define([
                     this.$el.data("tooltipLabel",  Mustache.render(tooltipLabel, attrData));
                     this.$el.tooltip({
                         placement: "top",
-                        container: ".document",
+                        container: ".dcpDocument",
                         html:true,
                         title: function vDocumentTooltipTitle()
                         {

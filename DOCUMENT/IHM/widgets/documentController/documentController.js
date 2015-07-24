@@ -226,6 +226,14 @@ define([
                     currentWidget.$notification.dcpNotification("showError", error);
                 }
             });
+            this._model.listenTo(this._model, "showMessage", function documentController_triggerShowMessage(msg)
+            {
+                var result = currentWidget._triggerControllerEvent("message",
+                    currentWidget._model.getProperties(), msg);
+                if (result) {
+                    currentWidget.$notification.dcpNotification("show",msg.type,  msg);
+                }
+            });
             this._model.listenTo(this._model, "sync", function documentController_triggerSync()
             {
                 currentWidget.options.initid = currentWidget._model.id;

@@ -34,8 +34,9 @@ define([
         return currentAttributes;
     };
 
+    //noinspection JSValidateJSDoc
     return Backbone.Model.extend({
-        typeModel:"ddui:document",
+        typeModel: "ddui:document",
         idAttribute: "initid",
 
         defaults: {
@@ -411,14 +412,14 @@ define([
                                     title: message.contentText,
                                     htmlMessage: message.contentHtml,
                                     message: attrModel.attributes.label + ' : ' + message.data.err,
-                                    "errorCode": message.code
+                                    errorCode: message.code
                                 });
                             } else {
                                 currentModel.trigger("showError", {
                                     title: message.contentText,
                                     htmlMessage: message.contentHtml,
                                     message: message.data.err,
-                                    "errorCode": message.code
+                                    errorCode: message.code
                                 });
                             }
                         }
@@ -451,7 +452,7 @@ define([
                                 title: message.contentText,
                                 htmlMessage: message.contentHtml,
                                 message: message.data.preStore,
-                                "errorCode": message.code
+                                errorCode: message.code
                             });
                         }
                         break;
@@ -461,10 +462,19 @@ define([
                             currentModel.trigger("showError", {
                                 title: message.contentText,
                                 htmlMessage: message.contentHtml,
-                                "errorCode": message.code
+                                errorCode: message.code
                             });
                         } else {
-                            console.error("Error", message);
+                            if (message.type && message.contentText) {
+                                currentModel.trigger("showMessage", {
+                                    title: message.contentText,
+                                    type: message.type,
+                                    htmlMessage: message.contentHtml,
+                                    errorCode: message.code
+                                });
+                            } else {
+                                console.error("Error", message);
+                            }
                         }
                 }
             });
@@ -538,8 +548,8 @@ define([
                     success = false;
                     if (_.isArray(currentAttribute.get("errorMessage"))) {
                         templateMessage = _.template("<%- parentLabel %> / <%- label %> " +
-                        "<% for(var msg in errorMessage) { %>" +
-                        "\n<%- rowText %> <%- errorMessage[msg].index + 1 %> : <%- errorMessage[msg].message %>\n <% } %> ");
+                            "<% for(var msg in errorMessage) { %>" +
+                            "\n<%- rowText %> <%- errorMessage[msg].index + 1 %> : <%- errorMessage[msg].message %>\n <% } %> ");
                     } else {
                         templateMessage = _.template("<%- parentLabel %> / <%- label %> <%- errorMessage %>");
                     }
@@ -947,7 +957,7 @@ define([
             }
 
             if (!_.isUndefined(this.get("attributes"))) {
-                this.set("attributes",this.get("attributes")); // to convert attributes to models
+                this.set("attributes", this.get("attributes")); // to convert attributes to models
                 this.injectJS(); // trigger event to render document
                 return;
             }
@@ -998,7 +1008,7 @@ define([
                         documentModel.trigger("showError", {
                             title: response.exceptionMessage
                         });
-                    } catch(exception) {
+                    } catch (exception) {
                         documentModel.trigger("showError", {
                             title: exception.message
                         });
@@ -1012,13 +1022,14 @@ define([
          * Inject JS in the main page before render view
          * To launch beforeRender and beforeRenderAttribute
          */
-        injectJS : function mDocumentInjectJs()
+        injectJS: function mDocumentInjectJs()
         {
             var documentModel = this,
                 customJS = _.pluck(this.get("customJS"), "path");
-                require(customJS, function initView() {
-                    documentModel.trigger("reload");
-                });
+            require(customJS, function initView()
+            {
+                documentModel.trigger("reload");
+            });
         },
 
 
