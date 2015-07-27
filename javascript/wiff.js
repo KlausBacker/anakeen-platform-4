@@ -1939,7 +1939,7 @@ function updateContextList_success(responseObject, select) {
 						var registerHtml = (this.context.register == 'registered') ?
 								'<img src="images/icons/tag_green.png" style="vertical-align: middle;" />&nbsp;<span style="">Registered</span>&nbsp;(&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;|&nbsp;<a href="wiff.php?getConfiguration&format=zip&context=' + window.encodeURIComponent(this.context.name) + '" target="_blank">Download configuration</a>&nbsp;|&nbsp;<a href="javascript:forceSendContextConfiguration();">Send configuration</a>&nbsp;)'
 								:
-								'<img src="images/icons/stop.png" style="vertical-align: middle;" />&nbsp;<span style="">Unregistered</span>&nbsp;(&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;|&nbsp;<a href="javascript:downloadContextConfiguration();">Download configuration</a>&nbsp;)';
+								'<img src="images/icons/stop.png" style="vertical-align: middle;" />&nbsp;<span style="">Unregistered</span>&nbsp;(&nbsp;<a href="javascript:registrationClient.showConfiguration(currentContext)">Show configuration</a>&nbsp;|&nbsp;<a href="wiff.php?getConfiguration&format=zip&context=' + window.encodeURIComponent(this.context.name) + '" target="_blank">Download configuration</a>&nbsp;)';
 
 						var needRepoValidationList = new Array();
 						var lenghtRepo = 0;
