@@ -12,6 +12,8 @@
 
 class RegistrationClient
 {
+    const PROTOCOL_VERSION = 1;
+    
     private $registration_url = 'https://eec.anakeen.com/registration';
     
     private $ua_string = null;
@@ -27,7 +29,8 @@ class RegistrationClient
      */
     public function __construct()
     {
-        $this->ua_string = sprintf("RegistrationClient/%s", PHP_VERSION);
+        $wiff = \WIFF::getInstance();
+        $this->ua_string = sprintf("RegistrationClient/%s dynacase-control/%s Protocol/%s", PHP_VERSION, $wiff->getVersion() , self::PROTOCOL_VERSION);
         return $this;
     }
     /**
@@ -289,12 +292,31 @@ class RegistrationClient
      *
      * @param string $mid the machine ID
      * @param string $ctrlid the control ID
-     * @param $contextid
+     * @param string $contextid context ID
+     * @param string $login EEC login
      * @param DOMDocument $stats the DOMDocument from StatCollector::getXML()
-     *
      * @return array|bool boolean false on error of an array() on success (see ::register())
      */
-    public function add_context($mid, $ctrlid, $contextid, &$stats)
+    public function add_context($mid, $ctrlid, $contextid, $login, &$stats)
+    {
+        $xml = $this->_get_context_xml_configuration($mid, $ctrlid, $contextid, $login, $stats);
+        
+        $ret = $this->post($this->registration_url, $xml);
+        if ($ret === false) {
+            return false;
+        }
+        
+        $msg = $this->_getResponse($ret);
+        if ($msg === false) {
+            return false;
+        }
+        
+        return array(
+            'code' => $ret['code'],
+            'response' => $msg
+        );
+    }
+    public function _get_context_xml_configuration($mid, $ctrlid, $contextid, $login, &$stats)
     {
         $dom = new DOMDocument('1.0', 'utf-8');
         $dom->preserveWhiteSpace = false;
@@ -306,7 +328,8 @@ class RegistrationClient
         foreach (array(
             'mid' => $mid,
             'ctrlid' => $ctrlid,
-            'contextid' => $contextid
+            'contextid' => $contextid,
+            'login' => $login
         ) as $key => $value) {
             $node = $dom->createElement($key);
             $text = $dom->createTextNode($value);
@@ -327,22 +350,7 @@ class RegistrationClient
         $importedStats = $dom->importNode($stats, true);
         $rootNode->appendChild($importedStats);
         
-        $xml = $dom->saveXML();
-        
-        $ret = $this->post($this->registration_url, $xml);
-        if ($ret === false) {
-            return false;
-        }
-        
-        $msg = $this->_getResponse($ret);
-        if ($msg === false) {
-            return false;
-        }
-        
-        return array(
-            'code' => $ret['code'],
-            'response' => $msg
-        );
+        return $dom->saveXML();
     }
     /**
      * Delete the statistics of a context

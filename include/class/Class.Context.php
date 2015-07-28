@@ -2624,7 +2624,7 @@ class Context extends WiffCommon
         
         $rc = $wiff->getRegistrationClient();
         
-        $res = $rc->add_context($info['mid'], $info['ctrlid'], $this->name, $stats);
+        $res = $rc->add_context($info['mid'], $info['ctrlid'], $this->name, $info['login'], $stats);
         if ($res === false) {
             $this->errorMessage = sprintf("Error add_context request: %s", $rc->last_error);
             return false;
@@ -2636,6 +2636,82 @@ class Context extends WiffCommon
         
         $this->errorMessage = sprintf("Unknwon response with code '%s': %s", $res['code'], $res['response']);
         return false;
+    }
+    /**
+     * Zip context's configuration
+     * @return bool
+     */
+    public function zipEECConfiguration() {
+        require_once ('class/Class.StatCollector.php');
+        require_once ('lib/Lib.System.php');
+
+        if ($this->register != 'registered') {
+            $this->log(LOG_WARNING, __METHOD__ . " " . $this->errorMessage);
+        }
+
+        $wiff = WIFF::getInstance();
+        $info = $wiff->getRegistrationInfo();
+        if ($info === false) {
+            $this->errorMessage = sprintf("Could not get WIFF registration info.");
+            return false;
+        }
+
+        $sc = new StatCollector($wiff, $this);
+        $sc->collect();
+        $stats = $sc->getXML();
+
+        $rc = $wiff->getRegistrationClient();
+        $xml = $rc->_get_context_xml_configuration($info['mid'], $info['ctrlid'], $this->name, $info['login'], $stats);
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error _get_context_xml_configuration request: %s", $rc->last_error);
+            return false;
+        }
+
+        $tmpZIP = WiffLibSystem::tempnam(null, 'downloadZip');
+        if ($tmpZIP === false) {
+            $this->errorMessage = sprintf("Error creating temporary file.");
+            return false;
+        }
+        unlink($tmpZIP);
+        $tmpZIP = sprintf("%s.zip", $tmpZIP);
+        $zip = new ZipArchiveCmd();
+        if ($zip->open($tmpZIP, ZipArchiveCmd::CREATE) === false) {
+            $this->errorMessage = sprintf("Error opening zip file '%s' for creation: %s", $tmpZIP, $zip->getStatusString());
+            unlink($tmpZIP);
+            return false;
+        }
+        if ($zip->addFromString('configuration.xml', $xml) === false) {
+            $this->errorMessage = sprintf("Error adding 'configuration.xml' to temporary ZIP file '%s': %s", $tmpZIP, $zip->getStatusString());
+            unlink($tmpZIP);
+            return false;
+        }
+        $zip->close();
+        return $tmpZIP;
+    }
+    public function downloadZipEECConfiguration()
+    {
+        $zipFile = $this->zipEECConfiguration();
+        if ($zipFile === false) {
+            $this->downloadZipEECConfigurationError(sprintf("Error generating configuration archive: %s", $this->errorMessage));
+        }
+        $filename = sprintf("dynacase-context-%s-%s.zip", $this->name, date('c'));
+        header("Content-Type: application/zip");
+        header(sprintf("Content-Disposition: filename=%s", $filename));
+        header("Cache-Control: no-cache");
+        header("Pragma: no-cache");
+        header(sprintf("Content-Length: %d", filesize($zipFile)));
+        readfile($zipFile);
+        unlink($zipFile);
+        exit(0);
+    }
+    private function downloadZipEECConfigurationError($msg)
+    {
+        $this->log(LOG_ERR, $msg);
+        header("HTTP/1.1 500 Error");
+        header("Content-Type: text/plain");
+        header(sprintf("Content-Length: %d", strlen($msg)));
+        print $msg;
+        exit(1);
     }
     /**
      * Delete context's registration configuration

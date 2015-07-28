@@ -1136,17 +1136,19 @@ if (isset($_REQUEST['getConfiguration']) && isset($_REQUEST['context'])) {
         echo $answer->encode();
         exit(1);
     }
+
+    $stats = false;
     
-    $sc = new StatCollector($wiff, $context);
-    $sc->collect();
     if (isset($_REQUEST['format'])) {
         switch ($_REQUEST['format']) {
             case 'html':
+                $sc = new StatCollector($wiff, $context);
+                $sc->collect();
                 $stats = $sc->getHTML();
                 break;
 
             case 'zip':
-                $sc->downloadZip();
+                $context->downloadZipEECConfiguration();
                 break;
 
             default:
