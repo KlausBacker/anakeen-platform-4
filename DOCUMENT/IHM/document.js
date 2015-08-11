@@ -75,7 +75,7 @@ define([
                     documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode, voidLoaded)
                     {
                         //Re Bind the internalController function to the current widget
-                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"));
+                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"), voidLoaded);
                         currentWidget.element.data("voidLoaded", !!voidLoaded);
                     };
 
@@ -124,11 +124,14 @@ define([
          * Reinit the constraint and the event
          *
          * @param internalController
+         * @param voidLoaded
          */
-        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController)
+        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController, voidLoaded)
         {
             this.element.data("internalWidget", internalController);
-            this.rebindEvents();
+            if (!voidLoaded) {
+                this.rebindEvents();
+            }
             this.element.data("internalWidgetInitialised", true);
             this._trigger("loaded");
         },
