@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-16 14:54+0200\n"
+"POT-Creation-Date: 2015-08-11 16:21+0200\n"
 "PO-Revision-Date: 2015-06-16 14:54+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -259,10 +259,6 @@ msgid "No result found"
 msgstr "Pas de résultat"
 
 msgctxt "UiMenu"
-msgid "Profil access"
-msgstr "Accès au profil"
-
-msgctxt "UiMenu"
 msgid "Properties"
 msgstr "Propriétés"
 
@@ -323,10 +319,6 @@ msgctxt "UiMenu"
 msgid "Save and close"
 msgstr "Enregistrer et fermer"
 
-msgctxt "UiMenu"
-msgid "Security"
-msgstr "Sécurité"
-
 msgctxt "ddui-enum"
 msgid "Select"
 msgstr "Sélectionner"
@@ -364,10 +356,6 @@ msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr "Graphique complet du processus"
 
-msgctxt "ddui"
-msgid "View {{{displayValue}}}"
-msgstr "Voir {{{displayValue}}}"
-
 #, php-format
 msgctxt "ddui"
 msgid "Workflow Parameters : %s"
@@ -404,6 +392,9 @@ msgstr "Attribut autocomplete"
 msgid "ddui:COLLECT_ERROR"
 msgstr "Récupération des erreurs clients"
 
+msgid "ddui:Click to reload the document"
+msgstr "Cliquez pour recharger le document"
+
 msgid "ddui:Delete line"
 msgstr "Supprimer la ligne"
 
@@ -439,6 +430,9 @@ msgstr "Visualiser un document"
 
 msgid "ddui:Select line"
 msgstr "Sélectionner la ligne"
+
+msgid "ddui:Unable to load try again"
+msgstr "Impossible de charger le document. Veuillez essayer à nouveau"
 
 msgid "ddui:View documents"
 msgstr "Action vue de document"
@@ -484,12 +478,24 @@ msgstr ""
 #~ msgstr "Anciennes propriétés"
 
 #~ msgctxt "UiMenu"
+#~ msgid "Profil access"
+#~ msgstr "Accès au profil"
+
+#~ msgctxt "UiMenu"
+#~ msgid "Security"
+#~ msgstr "Sécurité"
+
+#~ msgctxt "UiMenu"
 #~ msgid "Unlock"
 #~ msgstr "Déverrouiller"
 
 #~ msgctxt "ddui"
 #~ msgid "Unlock document"
 #~ msgstr "Déverrouiller le document"
+
+#~ msgctxt "ddui"
+#~ msgid "View {{{displayValue}}}"
+#~ msgstr "Voir {{{displayValue}}}"
 
 #~ msgid "ddui:Locked by"
 #~ msgstr "Verrouillé par"

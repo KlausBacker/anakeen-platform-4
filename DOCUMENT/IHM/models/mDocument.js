@@ -1001,6 +1001,8 @@ define([
                         documentModel.trigger("showError", {
                             title: i18n.___("Your navigator seems offline, try later", "ddui")
                         });
+                        $(".document").hide();
+                        $(".dcpStaticErrorMessage").show();
                         return;
                     }
                     try {

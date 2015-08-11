@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-16 14:54+0200\n"
+"POT-Creation-Date: 2015-08-11 16:21+0200\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -254,10 +254,6 @@ msgid "No result found"
 msgstr ""
 
 msgctxt "UiMenu"
-msgid "Profil access"
-msgstr ""
-
-msgctxt "UiMenu"
 msgid "Properties"
 msgstr ""
 
@@ -318,10 +314,6 @@ msgctxt "UiMenu"
 msgid "Save and close"
 msgstr ""
 
-msgctxt "UiMenu"
-msgid "Security"
-msgstr ""
-
 msgctxt "ddui-enum"
 msgid "Select"
 msgstr ""
@@ -357,10 +349,6 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "View workflow graph"
-msgstr ""
-
-msgctxt "ddui"
-msgid "View {{{displayValue}}}"
 msgstr ""
 
 #, php-format
@@ -399,6 +387,9 @@ msgstr ""
 msgid "ddui:COLLECT_ERROR"
 msgstr ""
 
+msgid "ddui:Click to reload the document"
+msgstr ""
+
 msgid "ddui:Delete line"
 msgstr ""
 
@@ -433,6 +424,9 @@ msgid "ddui:Render a document"
 msgstr ""
 
 msgid "ddui:Select line"
+msgstr ""
+
+msgid "ddui:Unable to load try again"
 msgstr ""
 
 msgid "ddui:View documents"
