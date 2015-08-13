@@ -30,7 +30,7 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" src="?app=DOCUMENT<% if (options.viewId) { %>&id=<%= options.initid %><% } %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.viewId) { %>&id=<%= options.initid %><% } %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -68,6 +68,8 @@ define([
 
             if ($iframe.length > 0) {
                 documentWindow = $iframe[0].contentWindow;
+                //Use this way to set url for firefox (when the document is in iframe in another document)
+                documentWindow.location.href = $iframe.data("src");
                 // This event is used when use a hard link (aka href anchor) to change document
                 // It is load also the first time
                 $iframe.on("load", function dcpDocument_setReadyEvent()
