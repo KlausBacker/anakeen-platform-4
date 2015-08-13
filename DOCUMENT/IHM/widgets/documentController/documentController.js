@@ -86,6 +86,7 @@ define([
          * Create Model, initView
          *
          * @param options object {"success": fct, "error", fct}
+         * @param customClientData object
          *
          * @private
          */
@@ -870,13 +871,24 @@ define([
          * External function
          **************************************************************************************************************/
         /**
-         * Reinit the current document (close it and re-open it)
+         * Reinit the current document (close it and re-open it) : keep the same view, revision, etc...
+         *
+         * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
+         * @param options object {"success": fct, "error", fct}
          */
-        reinitDocument: function documentControllerReinitDocument()
+        reinitDocument: function documentControllerReinitDocument(values, options)
         {
+            var currentWidget = this;
             this._checkInitialisedModel();
             this._reinitModel();
-            this._model.fetch();
+            _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+            {
+                currentWidget.options[key] = value;
+            });
+            if (values.customClientData) {
+                this.setCustomClientData(values.customClientData);
+            }
+            this._model.fetchDocument(this._getModelValue(), options);
         },
 
         /**
@@ -893,7 +905,7 @@ define([
             }
 
             if (!values.initid) {
-                throw new Error('initid argument is mandatory}');
+                throw new Error('initid argument is mandatory');
             }
 
             // Use default values when fetch another document
