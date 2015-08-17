@@ -218,7 +218,7 @@ class ZipArchiveCmd
         rmdir($tmpname);
         chdir($cwd);
         if ($ret === false) {
-            $this->last_error = sprintf("Could not add file '%s/%s'.", $tmpname, $filename);
+            $this->last_error = sprintf("Could not add file '%s/%s': %s", $tmpname, $filename, $this->last_error);
             return false;
         }
         
