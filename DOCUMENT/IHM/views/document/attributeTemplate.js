@@ -228,7 +228,7 @@ define(function (require, exports, module)
                         displayValue: ""
                     };
                     templateInfo.content[attributeId].label = attributeLabel;
-                    templateInfo.content[attributeId].htmlContent = '<div class="dcpCustomTemplate--row dcpArray__content__cell" data-displaylabel="false" data-attrid="' + attributeId + '"/>';
+                    templateInfo.content[attributeId].htmlContent = '<div class="dcpCustomTemplate--row dcpArray__content__cell dcpAttribute__content" data-displaylabel="false" data-attrid="' + attributeId + '"/>';
 
                 });
 
@@ -366,7 +366,7 @@ define(function (require, exports, module)
                         rows[index].content[attributeId] = {
                             label: attributeLabel,
                             attributeValue: singleValue,
-                            htmlContent: '<div class="dcpCustomTemplate--row dcpArray__content__cell"  data-attrid="' + currentAttribute.id + '"/>'
+                            htmlContent: '<div class="dcpCustomTemplate--row dcpArray__content__cell dcpAttribute__content"  data-attrid="' + currentAttribute.id + '"/>'
                         };
 
                         rows[index].rowTools = line;
