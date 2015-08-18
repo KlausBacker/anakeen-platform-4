@@ -135,7 +135,12 @@ define([
                 this.rebindEvents();
             }
             this.element.data("internalWidgetInitialised", true);
+            if (voidLoaded) {
+                this._trigger("loaded",{}, {"isEmpty" : true});
+                return this;
+            }
             this._trigger("loaded");
+            return this;
         },
 
         /**
