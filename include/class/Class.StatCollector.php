@@ -229,61 +229,6 @@ class StatCollector
         
         return $html;
     }
-    public function zipConfiguration()
-    {
-        require_once ('lib/Lib.System.php');
-        $xml = $this->getXML();
-        if ($xml === false) {
-            $this->last_error = sprintf("Error getting context's configuration: %s", $this->last_error);
-            return false;
-        }
-        $tmpZIP = WiffLibSystem::tempnam(null, 'downloadZip');
-        if ($tmpZIP === false) {
-            $this->last_error = sprintf("Error creating temporary file.");
-            return false;
-        }
-        unlink($tmpZIP);
-        $tmpZIP = sprintf("%s.zip", $tmpZIP);
-        $zip = new ZipArchiveCmd();
-        if ($zip->open($tmpZIP, ZipArchiveCmd::CREATE) === false) {
-            $this->last_error = sprintf("Error opening zip file '%s' for creation: %s", $tmpZIP, $zip->getStatusString());
-            unlink($tmpZIP);
-            return false;
-        }
-        if ($zip->addFromString('configuration.xml', $xml) === false) {
-            $this->last_error = sprintf("Error adding 'configuration.xml' to temporary ZIP file '%s': %s", $tmpZIP, $zip->getStatusString());
-            unlink($tmpZIP);
-            return false;
-        }
-        $zip->close();
-        return $tmpZIP;
-    }
-    public function downloadZip()
-    {
-        $zipFile = $this->zipConfiguration();
-        if ($zipFile === false) {
-            $this->downloadError(sprintf("Error generating configuration archive: %s", $this->last_error));
-        }
-        $filename = sprintf("dynacase-context-%s-%s.zip", $this->context->name, date('c'));
-        header("Content-Type: application/zip");
-        header(sprintf("Content-Disposition: filename=%s", $filename));
-        header("Cache-Control: no-cache");
-        header("Pragma: no-cache");
-        header(sprintf("Content-Length: %d", filesize($zipFile)));
-        readfile($zipFile);
-        unlink($zipFile);
-        exit(0);
-    }
-    
-    private function downloadError($msg)
-    {
-        $this->context->log(LOG_ERR, $msg);
-        header("HTTP/1.0 500 Error");
-        header("Content-Type: text/plain");
-        print $msg;
-        exit(1);
-    }
-    
     private function _collect_date()
     {
         $dateNode = $this->dom->createElement('date');

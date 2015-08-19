@@ -2425,12 +2425,9 @@ function wiff_context_download_configuration(&$context, &$argv) {
     /*
      * Generate configuration zip
      */
-    $wiff = WIFF::getInstance();
-    $sc = new StatCollector($wiff, $context);
-    $sc->collect();
-    $zipFile = $sc->zipConfiguration();
+    $zipFile = $context->zipEECConfiguration();
     if ($zipFile === false) {
-        printerr(sprintf("Error: could not generate configuration ZIP: %s\n", $sc->last_error));
+        printerr(sprintf("Error: could not generate configuration ZIP: %s\n", $context->errorMessage));
         return 1;
     }
     if (rename($zipFile, $options['file']) === false) {
