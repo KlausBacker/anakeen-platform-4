@@ -1,8 +1,9 @@
 define([
+    'jquery',
     'underscore',
     'dcpDocument/widgets/widget',
     'kendo/kendo.window'
-], function (_)
+], function ($, _)
 {
     'use strict';
 
@@ -17,6 +18,7 @@ define([
 
         _create: function dcpLoading_create()
         {
+            this.stack = 0;
             this.initBar = this.element.find(".progress");
             this.$title = this.element.find(".dcpLoading--title");
             this.$header = this.element.find(".dcpLoading--header");
@@ -33,31 +35,17 @@ define([
             this.element.find('.dcpLoading--title').html(val);
         },
 
-        modalMode: function dcpLoadingmodalMode()
-        {
-            var scopeElement = this.element;
-            this.element.kendoWindow({
-                modal: true,
-                actions: [],
-                visible: false,
-                draggable: false,
-                title: false,
-                width: "400px",
-                height: "100px"
-            });
-            this.element.show();
-            this.element.data('kendoWindow').center();
-            this.element.data('kendoWindow').open();
-            _.defer(function ()
-            {
-                scopeElement.show();
-            });
-
+        isDisplayed : function dcpLoadingIsDisplayed() {
+            return this.stack >= 0;
         },
 
-        hide: function dcpLoadinghide()
+        hide: function dcpLoadinghide(force)
         {
-
+            this.stack -= 1;
+            if (!force && this.stack > 0) {
+                return this;
+            }
+            this.stack = 0;
             this.element.hide();
             this.element.removeClass("dcpLoading--hide");
             if (this.element.data('kendoWindow')) {
@@ -68,18 +56,16 @@ define([
 
         show: function dcpLoadingshow(text, pc)
         {
-
+            this.stack += 1;
             if (text) {
                 this.setLabel(text);
             }
             if (pc) {
                 this.setPercent(pc);
             }
-
             this.element.show();
             this.$header.show().removeClass("dcpLoading--hide");
         },
-
 
         setLabel: function dcpLoadingsetLabel(text)
         {
@@ -101,7 +87,6 @@ define([
                     $initbar.css("width", rpc + '%');
                 });
             }
-
         },
 
         setNbItem: function dcpLoadingSetNbItem(restItem)
@@ -121,10 +106,6 @@ define([
 
         _destroy: function dcpLoading_destroy()
         {
-            if (this.element.data('kendoWindow')) {
-                this.element.data('kendoWindow').destroy();
-            }
-
             this._trigger("destroy");
             this._super();
         }

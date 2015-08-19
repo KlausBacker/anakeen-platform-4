@@ -422,7 +422,9 @@ define([
             this.view.on('loaderShow', function documentController_triggerLoaderShow(text, pc)
             {
                 console.time("xhr+render document view");
-                currentWidget.$loading.dcpLoading('show', text, pc);
+                if (!currentWidget.$loading.dcpLoading("isDisplayed")) {
+                    currentWidget.$loading.dcpLoading('show', text, pc);
+                }
             });
             this.view.on('loaderHide', function documentController_triggerHide()
             {
@@ -1417,6 +1419,29 @@ define([
                 });
             }
             this.$notification.dcpNotification("show", message.type, message);
+        },
+
+        /**
+         * Display loading bar
+         *
+         * @param message
+         * @param px
+         */
+        maskDocument : function documentController(message, px) {
+            this.$loading.dcpLoading('show');
+            if (message) {
+                this.$loading.dcpLoading('setTitle', message);
+            }
+            if (px) {
+                this.$loading.dcpLoading('setPercent', px);
+            }
+        },
+
+        /**
+         * Hide loading bar
+         */
+        unmaskDocument : function documentController_unmaskDocument(force) {
+            this.$loading.dcpLoading('hide', force);
         },
 
         /**
