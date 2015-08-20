@@ -445,7 +445,7 @@ define([
                 {
                     currentWidget.$loading.dcpLoading("hide");
                     console.timeEnd('main');
-                }, 850);
+                });
             });
             this.view.on("showMessage", function documentController_triggerShowMessage(message)
             {
