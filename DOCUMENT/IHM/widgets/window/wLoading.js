@@ -36,7 +36,7 @@ define([
         },
 
         isDisplayed : function dcpLoadingIsDisplayed() {
-            return this.stack >= 0;
+            return this.stack > 0;
         },
 
         hide: function dcpLoadinghide(force)
@@ -48,9 +48,6 @@ define([
             this.stack = 0;
             this.element.hide();
             this.element.removeClass("dcpLoading--hide");
-            if (this.element.data('kendoWindow')) {
-                this.element.data('kendoWindow').close();
-            }
             this.setPercent(0);
         },
 
