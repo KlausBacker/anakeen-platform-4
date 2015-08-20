@@ -69,7 +69,7 @@ define([
         _initDom: function dcpArray_initDom()
         {
             var scope = this, $table;
-            if (this.options.mode === "read" && this.options.nbLines === 0) {
+            if (this.options.mode === "read" && this.options.nbLines === 0 && this.options.showEmpty !== true) {
                 if (this.options.showEmpty) {
                     this.element.addClass("panel panel-default");
                     // showEmptyCOntent option

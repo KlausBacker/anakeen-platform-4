@@ -1,11 +1,12 @@
 /*global define, _super*/
 define([
+    'jquery',
     'underscore',
     'mustache',
     'kendo/kendo.datepicker',
     'dcpDocument/widgets/attributes/text/wText',
     "kendo-culture-fr"
-], function (_, Mustache, kendo) {
+], function ($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpDate", $.dcp.dcpText, {

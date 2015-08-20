@@ -639,9 +639,8 @@ define([
         _getEmptyValue: function _getEmptyValue()
         {
             if (_.isEmpty(this.options.attributeValue) || this.options.attributeValue.value === null) {
-
                 if (this.options.renderOptions && this.options.renderOptions.showEmptyContent) {
-                    return this.options.renderOptions.showEmptyContent;
+                    return this.options.renderOptions.showEmptyContent === true ? " " : this.options.renderOptions.showEmptyContent;
                 }
                 return "";
             }
