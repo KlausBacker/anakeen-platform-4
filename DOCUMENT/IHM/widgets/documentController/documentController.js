@@ -883,12 +883,14 @@ define([
             var currentWidget = this;
             this._checkInitialisedModel();
             this._reinitModel();
-            _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
-            {
-                currentWidget.options[key] = value;
-            });
-            if (values.customClientData) {
-                this.setCustomClientData(values.customClientData);
+            if (values) {
+                _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+                {
+                    currentWidget.options[key] = value;
+                });
+                if (values.customClientData) {
+                    this.setCustomClientData(values.customClientData);
+                }
             }
             this._model.fetchDocument(this._getModelValue(), options);
         },
