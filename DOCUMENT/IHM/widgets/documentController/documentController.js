@@ -86,6 +86,7 @@ define([
          * Create Model, initView
          *
          * @param options object {"success": fct, "error", fct}
+         * @param customClientData object
          *
          * @private
          */
@@ -298,22 +299,24 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el)
+            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
             {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("beforeAttributeRender", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute,
-                    $el
+                    $el,
+                    index
                 );
             });
-            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el)
+            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el, index)
             {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute,
-                    $el
+                    $el,
+                    index
                 );
             });
             this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options)
@@ -421,7 +424,9 @@ define([
             this.view.on('loaderShow', function documentController_triggerLoaderShow(text, pc)
             {
                 console.time("xhr+render document view");
-                currentWidget.$loading.dcpLoading('show', text, pc);
+                if (!currentWidget.$loading.dcpLoading("isDisplayed")) {
+                    currentWidget.$loading.dcpLoading('show', text, pc);
+                }
             });
             this.view.on('loaderHide', function documentController_triggerHide()
             {
@@ -442,7 +447,7 @@ define([
                 {
                     currentWidget.$loading.dcpLoading("hide");
                     console.timeEnd('main');
-                }, 850);
+                });
             });
             this.view.on("showMessage", function documentController_triggerShowMessage(message)
             {
@@ -870,13 +875,26 @@ define([
          * External function
          **************************************************************************************************************/
         /**
-         * Reinit the current document (close it and re-open it)
+         * Reinit the current document (close it and re-open it) : keep the same view, revision, etc...
+         *
+         * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
+         * @param options object {"success": fct, "error", fct}
          */
-        reinitDocument: function documentControllerReinitDocument()
+        reinitDocument: function documentControllerReinitDocument(values, options)
         {
+            var currentWidget = this;
             this._checkInitialisedModel();
             this._reinitModel();
-            this._model.fetch();
+            if (values) {
+                _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
+                {
+                    currentWidget.options[key] = value;
+                });
+                if (values.customClientData) {
+                    this.setCustomClientData(values.customClientData);
+                }
+            }
+            this._model.fetchDocument(this._getModelValue(), options);
         },
 
         /**
@@ -893,7 +911,7 @@ define([
             }
 
             if (!values.initid) {
-                throw new Error('initid argument is mandatory}');
+                throw new Error('initid argument is mandatory');
             }
 
             // Use default values when fetch another document
@@ -1405,6 +1423,29 @@ define([
                 });
             }
             this.$notification.dcpNotification("show", message.type, message);
+        },
+
+        /**
+         * Display loading bar
+         *
+         * @param message
+         * @param px
+         */
+        maskDocument : function documentController(message, px) {
+            this.$loading.dcpLoading('show');
+            if (message) {
+                this.$loading.dcpLoading('setTitle', message);
+            }
+            if (px) {
+                this.$loading.dcpLoading('setPercent', px);
+            }
+        },
+
+        /**
+         * Hide loading bar
+         */
+        unmaskDocument : function documentController_unmaskDocument(force) {
+            this.$loading.dcpLoading('hide', force);
         },
 
         /**

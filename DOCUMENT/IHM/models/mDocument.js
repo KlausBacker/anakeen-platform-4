@@ -716,12 +716,12 @@ define([
                 //Propagate the renderDone event of the attributes to the model
                 currentModel.listenTo(value, "renderDone", function (options)
                 {
-                    currentModel.trigger("attributeRender", options.model.id, options.$el);
+                    currentModel.trigger("attributeRender", options.model.id, options.$el, options.index);
                 });
                 //Propagate the beforeRender event of the attributes to the model
                 currentModel.listenTo(value, "beforeRender", function (event, options)
                 {
-                    currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el);
+                    currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el, options.index);
                 });
                 //Propagate the array event modified to the model
                 currentModel.listenTo(value, "array", function (type, model, options)
@@ -1001,6 +1001,8 @@ define([
                         documentModel.trigger("showError", {
                             title: i18n.___("Your navigator seems offline, try later", "ddui")
                         });
+                        $(".document").hide();
+                        $(".dcpStaticErrorMessage").show();
                         return;
                     }
                     try {

@@ -19,21 +19,27 @@
     <div class="progress active dcpLoading--progressbar">
         <div class="progress-bar progress-bar-striped" style="width: 10%"></div>
     </div>
-
     <div class="dcpLoading--header dcpLoading--init"><span class="dcpLoading--title">[TEXT:ddui::Initialisation]</span></div>
+</div>
+
+<div class="dcpStaticErrorMessage" style="display: none;">
+    <div class="alert alert-danger" role="alert" >
+        <h4>[TEXT:ddui:Unable to load try again]</h4>
+        <button class="btn btn-default" onclick="window.location.reload();">[TEXT:ddui:Click to reload the document]</button>
+    </div>
 </div>
 
 <script>
     if (!window.console) {
         window.console = {};
-        window.console.log = function (x) {};
+        window.console.log = function () {};
     }
     if (!window.console.error) {
         window.console.error = window.console.log;
     }
     if (!(window.console.time)) {
-        window.console.timeEnd = function (x) {};
-        window.console.time = function (x) { };
+        window.console.timeEnd = function () {};
+        window.console.time = function () { };
     }
      window.dcp= window.dcp || {};
      console.time("main");

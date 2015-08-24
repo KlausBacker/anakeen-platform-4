@@ -151,10 +151,11 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  bottom:0;
+  bottom: 0;
   margin: 0;
   line-height: 1px;
   z-index: 11;
+  background-color: fade(@gray, "10%");
 }
 
 .dcpLoading .progress {
@@ -186,7 +187,6 @@ body {
   min-width: 10em;
 }
 
-
 .dcpLoading--init .dcpLoading--title {
   font-size: 1.4em;
   top: 30%;
@@ -204,26 +204,28 @@ body {
 }
 
 .dcpDocument__header__modified {
-  padding-left:0.5em;
+  padding-left: 0.5em;
   font-size: x-small;
   vertical-align: super;
-  color:@brand-warning;
+  color: @brand-warning;
 }
 
-.dcpDocument__header__lock{
- // color:@brand-success;
-}
-.dcpDocument__header--readonly .dcpDocument__header__lock{
- // color:@brand-danger;
+.dcpDocument__header__lock {
+  // color:@brand-success;
 }
 
-.dcpDocument__emblem__lock--temporary{
-  color:lighten(@gray, 30%);
+.dcpDocument__header--readonly .dcpDocument__header__lock {
+  // color:@brand-danger;
+}
+
+.dcpDocument__emblem__lock--temporary {
+  color: lighten(@gray, 30%);
 }
 
 .dcpDocument__header--readonly {
   background-color: lighten(@gray, 60%);
 }
+
 .dcpDocument__header--fixed {
   background-color: lighten(@brand-warning, 20%);
 }
@@ -245,4 +247,16 @@ body {
 {
   padding-right: 2em;
   font-size: @documentHeaderHeight/2;
+}
+
+//static error message
+
+.dcpStaticErrorMessage {
+  text-align: center;
+  z-index: 10000;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

@@ -504,7 +504,7 @@ define([
         widgetApply: function vAttributeWidgetApply($element, method, argument)
         {
             try {
-                if (_.isString(method) && $element && this._findWidgetName($element)) {
+                if (_.isString(method) && $element && this.getWidgetClass($element)) {
                     this.getWidgetClass($element).call($element, method, argument);
                 }
             } catch (e) {
@@ -583,8 +583,8 @@ define([
         remove: function vAttributeRemove()
         {
             try {
-                if (this.currentDcpWidget && this._findWidgetName(this.currentDcpWidget)) {
-                    this.widgetApply(this.currentDcpWidget, "destroy");
+                if (this.currentDcpWidget && this.getWidgetClass(this.currentDcpWidget)) {
+                    this.getWidgetClass(this.currentDcpWidget).apply("destroy");
                 }
             } catch (e) {
                 if (window.dcp.logger) {

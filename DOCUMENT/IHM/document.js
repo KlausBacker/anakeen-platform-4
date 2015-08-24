@@ -30,7 +30,7 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" src="?app=DOCUMENT<% if (options.viewId) { %>&id=<%= options.initid %><% } %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.viewId) { %>&id=<%= options.initid %><% } %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -68,6 +68,8 @@ define([
 
             if ($iframe.length > 0) {
                 documentWindow = $iframe[0].contentWindow;
+                //Use this way to set url for firefox (when the document is in iframe in another document)
+                documentWindow.location.href = $iframe.data("src");
                 // This event is used when use a hard link (aka href anchor) to change document
                 // It is load also the first time
                 $iframe.on("load", function dcpDocument_setReadyEvent()
@@ -75,7 +77,7 @@ define([
                     documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode, voidLoaded)
                     {
                         //Re Bind the internalController function to the current widget
-                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"));
+                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"), voidLoaded);
                         currentWidget.element.data("voidLoaded", !!voidLoaded);
                     };
 
@@ -124,13 +126,21 @@ define([
          * Reinit the constraint and the event
          *
          * @param internalController
+         * @param voidLoaded
          */
-        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController)
+        _bindInternalWidget: function dcpDocument_bindInternalWidget(internalController, voidLoaded)
         {
             this.element.data("internalWidget", internalController);
-            this.rebindEvents();
+            if (!voidLoaded) {
+                this.rebindEvents();
+            }
             this.element.data("internalWidgetInitialised", true);
+            if (voidLoaded) {
+                this._trigger("loaded",{}, {"isEmpty" : true});
+                return this;
+            }
             this._trigger("loaded");
+            return this;
         },
 
         /**
