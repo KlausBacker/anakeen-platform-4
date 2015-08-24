@@ -60,7 +60,7 @@ define([
                 if (cells[index]) {
                     try {
                         $el = $(cells[index]);
-                        this.model.trigger("beforeRender", event, {model : this.model, $el : $el});
+                        this.model.trigger("beforeRender", event, {model : this.model, $el : $el, index : index});
                         if (event.prevent) {
                             return this;
                         }
@@ -69,7 +69,7 @@ define([
                         } else {
                             this.widgetInit($el, data);
                         }
-                        this.model.trigger("renderDone", {model: this.model, $el: $el});
+                        this.model.trigger("renderDone", {model: this.model, $el: $el, index : index});
                         this.moveValueIndex({});
                     } catch (error) {
                         if (window.dcp.logger) {

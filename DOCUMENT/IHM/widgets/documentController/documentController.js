@@ -299,22 +299,24 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el)
+            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
             {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("beforeAttributeRender", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute,
-                    $el
+                    $el,
+                    index
                 );
             });
-            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el)
+            this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el, index)
             {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
                     currentWidget._model.getProperties(),
                     currentAttribute,
-                    $el
+                    $el,
+                    index
                 );
             });
             this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options)
