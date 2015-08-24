@@ -687,9 +687,15 @@ define([
          */
         _addAndInitNewEvents: function documentController_addAndInitNewEvents(newEvent)
         {
-            var currentDocumentProperties = this._model.getProperties(), currentWidget = this, event, uniqueName, $element = $(currentWidget.element);
+            var currentDocumentProperties, currentWidget = this, event, uniqueName, $element = $(currentWidget.element);
             uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
             this.options.eventListener[uniqueName] = newEvent;
+
+            if (!this._model) {
+                //early event model is not ready (no trigger, or current register possible)
+                return this;
+            }
+            currentDocumentProperties = this._model.getProperties();
             // Check if the event is for the current document
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck.call($element, currentDocumentProperties)) {
                 this.activatedEventListener.push(newEvent);
