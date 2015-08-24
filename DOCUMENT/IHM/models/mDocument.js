@@ -178,6 +178,9 @@ define([
         getValues: function mDocumentdocumentGetValues()
         {
             var values = {};
+            if (!this.get("attributes")) {
+                return values;
+            }
             this.get("attributes").each(function (currentAttribute)
             {
                 var currentValue = currentAttribute.get("attributeValue"), i, arrayValues = [];
