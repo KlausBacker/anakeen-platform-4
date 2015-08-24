@@ -39,6 +39,7 @@ define([
             this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
+            this.listenTo(this.model, 'displayNetworkError', this.displayNetworkError);
         },
 
         /**
@@ -1073,6 +1074,12 @@ define([
             if (options.eventId === "document.unlock") {
                 return this.unlockDocument();
             }
+        },
+
+        displayNetworkError : function vDocument_displayNetworkError()
+        {
+            $(".document").hide();
+            $(".dcpStaticErrorMessage").show();
         },
 
         /**

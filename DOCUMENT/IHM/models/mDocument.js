@@ -60,18 +60,24 @@ define([
         url: function mDocumenturl()
         {
             var urlData = "api/v1/", viewId = this.get("viewId");
+            var properties;
             var customClienData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
+
+            if (currentMethod === "delete") {
+                properties = this.getProperties();
+            }
 
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
             } else {
                 urlData += "documents/" + encodeURIComponent(this.id);
-                if (this.get("revision") >= 0) {
+                //Don't add revision for delete of alive document
+                if (this.get("revision") >= 0 && (currentMethod !== "delete" && properties.status !== "alive")) {
                     urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
                 }
                 if (viewId === undefined) {
-                    if (this.get("renderMode") === "view") {
+                    if (this.get("renderMode") === "view" || currentMethod === "delete") {
                         viewId = "!defaultConsultation";
                     } else
                         if (this.get("renderMode") === "edit") {
@@ -79,6 +85,9 @@ define([
                         } else {
                             viewId = "!defaultConsultation";
                         }
+                }
+                if (currentMethod === "delete" && this.get("renderMode") === "edit") {
+                    viewId = "!defaultConsultation";
                 }
                 urlData += "/views/" + encodeURIComponent(viewId);
             }
@@ -793,6 +802,20 @@ define([
         },
 
         /**
+         * Inject JS in the main page before render view
+         * To launch beforeRender and beforeRenderAttribute
+         */
+        injectJS: function mDocumentInjectJs()
+        {
+            var documentModel = this,
+                customJS = _.pluck(this.get("customJS"), "path");
+            require(customJS, function initView()
+            {
+                documentModel.trigger("reload");
+            });
+        },
+
+        /**
          * Used by backbone for the save part
          * @returns {{document: {attributes: *, properties : *}}}
          */
@@ -807,6 +830,85 @@ define([
             };
         },
 
+        /**
+         * Get complementary data : family structure
+         */
+        completeStructure: function mDocumentCompleteStructure()
+        {
+            var mStructure, documentModel = this;
+
+            var neededAttributes = this.get("renderOptions").needed;
+            var visibilityAttributes = this.get("renderOptions").visibilities;
+            var valueAttributes = this.get("originalValues");
+
+            if (this.get("properties").get("type") === "family") {
+                // Family has no attributes
+                this.set("attributes", []);
+                this.injectJS(); // inject JS before reload the document
+                return;
+            }
+
+            if (!_.isUndefined(this.get("attributes"))) {
+                this.set("attributes", this.get("attributes")); // to convert attributes to models
+                this.injectJS(); // trigger event to render document
+                return;
+            }
+
+            mStructure = new FamilyStructure({
+                familyId: this.get("properties").get("family").name,
+                referencedocument: {
+                    initid: this.get("initid"),
+                    viewId: this.get("viewId"),
+                    revision: this.get("revision")
+                }
+            });
+
+            mStructure.fetch({
+                success: function (structureModel, response)
+                {
+                    if (_.isEqual(structureModel.get("referencedocument"), {
+                            initid: documentModel.get("initid"),
+                            viewId: documentModel.get("viewId"),
+                            revision: documentModel.get("revision")
+                        })) {
+                        var attributes = flattenAttributes(attributes, response.data.family.structure);
+                        _.each(attributes, function (currentAttributeStructure)
+                        {
+                            if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
+                                currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
+                                currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
+                            }
+                            if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
+                                currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
+                            }
+                        });
+                        documentModel.set("attributes", attributes);
+                        documentModel.injectJS(); // trigger event to render document
+                    }
+                },
+
+                error: function (structureModel, HttpResponse)
+                {
+                    if (HttpResponse && HttpResponse.status === 0) {
+                        documentModel.trigger("showError", {
+                            title: i18n.___("Your navigator seems offline, try later", "ddui")
+                        });
+                        return;
+                    }
+                    try {
+                        var response = JSON.parse(HttpResponse.responseText);
+                        documentModel.trigger("showError", {
+                            title: response.exceptionMessage
+                        });
+                    } catch (exception) {
+                        documentModel.trigger("showError", {
+                            title: exception.message
+                        });
+                    }
+                    documentModel.trigger("displayNetworkError");
+                }
+            });
+        },
 
         fetchDocument: function mDocumentFetch(values, options)
         {
@@ -845,12 +947,10 @@ define([
                 };
             var nextView = this.get("viewId");
 
-
             options = options || {};
 
-
             if (options.success) {
-                options.success = _.wrap(options.success, function (success)
+                options.success = _.wrap(options.success, function launchAfterDone(success)
                 {
                     afterDone();
                     return success.apply(this, _.rest(arguments));
@@ -941,108 +1041,12 @@ define([
             return false;
         },
 
-        /**
-         * Get complementary data : family structure
-         */
-        completeStructure: function mDocumentCompleteStructure()
-        {
-            var mStructure, documentModel = this;
-
-            var neededAttributes = this.get("renderOptions").needed;
-            var visibilityAttributes = this.get("renderOptions").visibilities;
-            var valueAttributes = this.get("originalValues");
-
-            if (this.get("properties").get("type") === "family") {
-                // Family has no attributes
-                this.set("attributes", []);
-                this.injectJS(); // inject JS before reload the document
-                return;
-            }
-
-            if (!_.isUndefined(this.get("attributes"))) {
-                this.set("attributes", this.get("attributes")); // to convert attributes to models
-                this.injectJS(); // trigger event to render document
-                return;
-            }
-
-            mStructure = new FamilyStructure({
-                familyId: this.get("properties").get("family").name,
-                referencedocument: {
-                    initid: this.get("initid"),
-                    viewId: this.get("viewId"),
-                    revision: this.get("revision")
-                }
-            });
-
-            mStructure.fetch({
-                success: function (structureModel, response)
-                {
-                    if (_.isEqual(structureModel.get("referencedocument"), {
-                            initid: documentModel.get("initid"),
-                            viewId: documentModel.get("viewId"),
-                            revision: documentModel.get("revision")
-                        })) {
-                        var attributes = flattenAttributes(attributes, response.data.family.structure);
-                        _.each(attributes, function (currentAttributeStructure)
-                        {
-                            if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
-                                currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
-                                currentAttributeStructure.needed = (neededAttributes[currentAttributeStructure.id] === true);
-                            }
-                            if (currentAttributeStructure.id && visibilityAttributes[currentAttributeStructure.id]) {
-                                currentAttributeStructure.visibility = visibilityAttributes[currentAttributeStructure.id];
-                            }
-                        });
-                        documentModel.set("attributes", attributes);
-                        documentModel.injectJS(); // trigger event to render document
-                    }
-                },
-
-                error: function (structureModel, HttpResponse)
-                {
-                    if (HttpResponse && HttpResponse.status === 0) {
-                        documentModel.trigger("showError", {
-                            title: i18n.___("Your navigator seems offline, try later", "ddui")
-                        });
-                        $(".document").hide();
-                        $(".dcpStaticErrorMessage").show();
-                        return;
-                    }
-                    try {
-                        var response = JSON.parse(HttpResponse.responseText);
-                        documentModel.trigger("showError", {
-                            title: response.exceptionMessage
-                        });
-                    } catch (exception) {
-                        documentModel.trigger("showError", {
-                            title: exception.message
-                        });
-                    }
-
-                }
-            });
-        },
-
-        /**
-         * Inject JS in the main page before render view
-         * To launch beforeRender and beforeRenderAttribute
-         */
-        injectJS: function mDocumentInjectJs()
-        {
-            var documentModel = this,
-                customJS = _.pluck(this.get("customJS"), "path");
-            require(customJS, function initView()
-            {
-                documentModel.trigger("reload");
-            });
-        },
-
-
         deleteDocument: function mDocumentDelete(options)
         {
             var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
                 afterError = function afterError(resp)
                 {
+                    currentModel.trigger("displayNetworkError");
                     currentModel.trigger('error', currentModel, resp);
                 },
                 afterDone = function afterDone(resp)
@@ -1072,6 +1076,8 @@ define([
                         afterError();
                         return error.apply(this, _.rest(arguments));
                     });
+                } else {
+                    options.error = afterError;
                 }
                 this.trigger("displayLoading");
                 if (this.isNew()) {
