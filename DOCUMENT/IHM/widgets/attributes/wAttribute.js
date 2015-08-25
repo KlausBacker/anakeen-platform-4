@@ -25,7 +25,7 @@ define([
             template: null,
             deleteButton: false,
             renderOptions: {
-                displayDeleteButton:true
+                displayDeleteButton: true
             },
             locale: "fr_FR"
         },
@@ -124,7 +124,8 @@ define([
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
                         // Need to refresh to update position after possible change on element value
-                        _.delay(function () {
+                        _.delay(function ()
+                        {
                             scope.element.find(".input-group").tooltip("hide").tooltip("show");
                         }, 100);
                     }
@@ -312,15 +313,15 @@ define([
             if (this.options.renderOptions && this.options.renderOptions.labels) {
                 this.options.labels = _.extend(this.options.labels, this.options.renderOptions.labels);
             }
-             if (this.options.renderOptions && this.options.renderOptions.displayDeleteButton === false) {
-                 this.options.deleteButton=false;
-             }
+            if (this.options.renderOptions && this.options.renderOptions.displayDeleteButton === false) {
+                this.options.deleteButton = false;
+            }
             this._initDom();
 
             if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
                 this.element.find(".dcpAttribute__content__buttons").hide();
-                    this.element.find(".dcpAttribute__value").
-                        addClass("dcpAttribute__content__nobutton");
+                this.element.find(".dcpAttribute__value").
+                    addClass("dcpAttribute__content__nobutton");
             }
 
             this._initEvent();
@@ -717,26 +718,32 @@ define([
         /**
          * Trigger a ready event when widget is render
          */
-        _triggerReady : function wAttributeReady() {
+        _triggerReady: function wAttributeReady()
+        {
             this._trigger("widgetReady");
         },
 
-        setVisibilitySavingMenu: function wAttributeDisableSavingMenu(visibility) {
+        setVisibilitySavingMenu: function wAttributeDisableSavingMenu(visibility)
+        {
             var event = {prevent: false};
-             this._trigger("changeattrmenuvisibility", event, {
+            this._trigger("changeattrmenuvisibility", event, {
                 id: "save",
+                onlyIfVisible: true,
                 visibility: visibility
             });
             this._trigger("changeattrmenuvisibility", event, {
                 id: "saveAndClose",
+                onlyIfVisible: true,
                 visibility: visibility
             });
             this._trigger("changeattrmenuvisibility", event, {
                 id: "createAndClose",
+                onlyIfVisible: true,
                 visibility: visibility
             });
             this._trigger("changeattrmenuvisibility", event, {
                 id: "create",
+                onlyIfVisible: true,
                 visibility: visibility
             });
         }
