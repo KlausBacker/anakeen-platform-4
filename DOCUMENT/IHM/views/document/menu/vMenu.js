@@ -4,24 +4,26 @@ define([
     'backbone',
     'mustache',
     'dcpDocument/widgets/menu/wMenu'
-], function (_, Backbone, Mustache, WidgetMenu) {
+], function (_, Backbone, Mustache, WidgetMenu)
+{
     'use strict';
 
     return Backbone.View.extend({
 
-        className : "dcpDocument",
+        className: "dcpDocument",
 
-        events : {
-            "dcpmenuselected" : "propagateSelected"
+        events: {
+            "dcpmenuselected": "propagateSelected"
         },
 
         /**
          * The current model is the document model
          * So menuModel reference the menu model
          */
-        menuModel : null,
+        menuModel: null,
 
-        initialize : function vMenuInitialize() {
+        initialize: function vMenuInitialize()
+        {
             this.listenTo(this.model.get("properties"), 'change', this.updateWidget);
             this.listenTo(this.model.get("menus"), 'change', this.updateWidget);
             this.listenTo(this.model.get("attributes"), 'changeMenuVisibility', this.changeVisibility);
@@ -30,38 +32,52 @@ define([
             this.menuModel = this.model.get("menus");
         },
 
-        render : function vMenuRender() {
+        render: function vMenuRender()
+        {
             this.$el.dcpMenu(this.model.toData());
             return this;
         },
 
-        propagateSelected : function vMenuPropagateSelected(event, options) {
-            this.trigger("menuselected", {target : event.item,
-                eventId : options.eventId,
-                options : options.options});
+        propagateSelected: function vMenuPropagateSelected(event, options)
+        {
+            this.trigger("menuselected", {
+                target: event.item,
+                eventId: options.eventId,
+                options: options.options
+            });
         },
 
-        changeVisibility : function vMenuchangeVisibility(event, data) {
+        changeVisibility: function vMenuchangeVisibility(event, data)
+        {
             var menuItem = this.menuModel.get(data.id);
+            var onlyIfVisible = !!data.onlyIfVisible;
+            var visibility;
             if (menuItem) {
-                menuItem.set("visibility", data.visibility);
+                visibility = menuItem.get("visibility");
+                if (!onlyIfVisible || visibility !== 'hidden') {
+                    menuItem.set("visibility", data.visibility);
+                }
             }
         },
 
-        updateWidget : function vMenuUpdateWidget() {
+        updateWidget: function vMenuUpdateWidget()
+        {
             this.$el.dcpMenu("destroy");
             return this.render();
         },
 
-        remove : function vMenuRemove() {
+        remove: function vMenuRemove()
+        {
             if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
                 this.$el.dcpMenu("destroy");
             }
             return Backbone.View.prototype.remove.call(this);
         },
 
-        _findWidgetName : function vMenu_findWidgetName($element) {
-            return _.find(_.keys($element.data()), function (currentKey) {
+        _findWidgetName: function vMenu_findWidgetName($element)
+        {
+            return _.find(_.keys($element.data()), function (currentKey)
+            {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
         },
@@ -69,7 +85,8 @@ define([
         /**
          * Recompute responsive in case of scrollbar can appear
          */
-        refresh:function vMenu_refresh() {
+        refresh: function vMenu_refresh()
+        {
             this.$el.dcpMenu("updateResponsiveMenu");
         }
 

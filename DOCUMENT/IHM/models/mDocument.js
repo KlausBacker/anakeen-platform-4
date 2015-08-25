@@ -64,13 +64,10 @@ define([
             var customClienData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
 
-            if (currentMethod === "delete") {
-                properties = this.getProperties();
-            }
-
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
             } else {
+                properties = this.getProperties();
                 urlData += "documents/" + encodeURIComponent(this.id);
                 //Don't add revision for delete of alive document
                 if (this.get("revision") >= 0 && (currentMethod !== "delete" && properties.status !== "alive")) {
