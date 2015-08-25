@@ -197,7 +197,7 @@ define([
         {
             var parentId = this.model.get('parent');
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-            this.widgetApply(this.getDOMElements().find(".dcpAttribute__content").andSelf().filter(".dcpAttribute__content"),
+            this.widgetApply(this.getDOMElements().find(".dcpAttribute__content--widget").andSelf().filter(".dcpAttribute__content--widget"),
                 "setError", this.model.get("errorMessage"));
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);
