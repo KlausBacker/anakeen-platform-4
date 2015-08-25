@@ -6,6 +6,7 @@
 */
 
 use Dcp\HttpApi\V1\DocManager\DocManager;
+
 function submenu(Action & $action)
 {
     
@@ -24,46 +25,35 @@ function submenu(Action & $action)
     $usage->verify();
     
     $doc = DocManager::getDocument($documentId);
-    
-    if (!$doc) {
-        $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
-    }
-    $err = $doc->control("view");
-    if ($err) {
-        $action->exitError($err);
-    }
-
-    if (!$vId) {
-        switch ($renderMode) {
-            case "view":
-                $vId = Dcp\Ui\Crud\View::defaultViewConsultationId;
-                break;
-
-            case "edit":
-                $vId = Dcp\Ui\Crud\View::defaultViewEditionId;
-                break;
-
-            case "create":
-                $vId = Dcp\Ui\Crud\View::coreViewCreationId;
-                $docId = $doc->fromid;
-                break;
+    try {
+        if (!$doc) {
+            throw new \Dcp\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
         }
+        $err = $doc->control("view");
+        if ($err) {
+            throw new \Dcp\Ui\Exception($err);
+        }
+        
+        if ($vId && $vId[0] === "!") {
+            $vId = '';
+        }
+        
+        $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
+        $menu = $config->getMenu($doc);
+        /**
+         * @var \Dcp\Ui\DynamicMenu $element
+         */
+        $element = $menu->getElement($menuId);
+        if (!$element) {
+            throw new \Dcp\Ui\Exception(sprintf(___("Menu id \"%s\" not found ", "ddui") , $menuId));
+        }
+        
+        $action->lay->template = json_encode($element->getContent());
     }
-
-
-
-    $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vid);
-    $menu = $config->getMenu($doc);
-    /**
-     * @var \Dcp\Ui\DynamicMenu $element
-     */
-    $element = $menu->getElement($menuId);
-    
-    if (!$element) {
-        $action->exitError(sprintf(___("Menu id \"%s\" not found ", "ddui") , $menuId));
+    catch(Exception $e) {
+        $action->lay->template = $e->getMessage();
+        header("HTTP/1.0 400 Error");
     }
-    
-    $action->lay->template = json_encode($element->getContent());
     $action->lay->noparse = true;
     header('Content-Type: application/json');
 }
