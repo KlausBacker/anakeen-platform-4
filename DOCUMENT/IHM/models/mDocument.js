@@ -67,7 +67,7 @@ define([
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
             } else {
-                properties = this.getProperties();
+                properties = this.getModelProperties();
                 urlData += "documents/" + encodeURIComponent(this.id);
                 //Don't add revision for delete of alive document
                 if (this.get("revision") >= 0 && (currentMethod !== "delete" && properties.status !== "alive")) {
@@ -170,7 +170,7 @@ define([
             var returnObject = {
                 document: {}
             };
-            returnObject.document.properties = this.getProperties();
+            returnObject.document.properties = this.getServerProperties();
             returnObject.menus = this.get("menus").toJSON();
             returnObject.templates = this.get("templates");
             return returnObject;
@@ -307,23 +307,28 @@ define([
          *
          * @returns {*}
          */
-        getProperties: function mDocumentdocumentGetProperties(initialValue)
+        getModelProperties: function mDocumentdocumentGetProperties()
         {
             var properties = {};
-            if (initialValue === true) {
-                return this.initialProperties;
-            } else {
-                if (this.get("properties")) {
-                    properties = this.get("properties").toJSON();
-                }
-                properties.initid = this.get("initid");
-                properties.revision = this.get("revision");
-                properties.viewId = this.get("viewId");
-                properties.renderMode = this.get("renderMode");
-                properties.isModified = this.hasAttributesChanged();
-
-                return properties;
+            if (this.get("properties")) {
+                properties = this.get("properties").toJSON();
             }
+            properties.initid = this.get("initid");
+            properties.revision = this.get("revision");
+            properties.viewId = this.get("viewId");
+            properties.renderMode = this.get("renderMode");
+
+            return properties;
+        },
+
+        getServerProperties: function mDocument_getCurrentProperties() {
+            var properties;
+            properties = this.initialProperties;
+            return properties;
+        },
+
+        isModified : function mDocument_isModified() {
+            return this.hasAttributesChanged();
         },
 
         /**
@@ -333,7 +338,7 @@ define([
         {
 
             var documentData = {
-                properties: this.getProperties(false),
+                properties: this.getModelProperties(),
                 attributeValues: this.getValues(),
                 attributeLabels: {},
                 createAttributeView: function ()
@@ -820,7 +825,7 @@ define([
         {
             return {
                 document: {
-                    properties: this.getProperties(),
+                    properties: this.getModelProperties(),
                     attributes: this.getValues()
                 },
                 customClientData: this._customClientData
@@ -937,7 +942,7 @@ define([
 
         fetch: function mDocumentFetch(options)
         {
-            var currentModel = this, currentProperties = this.getProperties(true), lockModel,
+            var currentModel = this, currentProperties = this.getServerProperties(), lockModel,
                 afterDone = function afterDone()
                 {
                     currentModel.trigger("close", currentProperties);
@@ -1014,7 +1019,7 @@ define([
 
         save: function mDocumentSave(attributes, options)
         {
-            var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
+            var event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
                 afterDone = function afterDone()
                 {
                     currentModel.trigger("afterSave", currentProperties);
@@ -1040,7 +1045,7 @@ define([
 
         deleteDocument: function mDocumentDelete(options)
         {
-            var event = {prevent: false}, currentModel = this, currentProperties = this.getProperties(true),
+            var event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
                 afterError = function afterError(resp)
                 {
                     currentModel.trigger("displayNetworkError");

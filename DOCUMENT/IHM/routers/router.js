@@ -24,7 +24,7 @@ define([
                         "mode" :     currentRouter.document.get("renderMode"),
                         "viewId" :   undefined
                     };
-                var docProperties=currentRouter.document.getProperties();
+                var docProperties=currentRouter.document.getServerProperties();
                 if (!_.isUndefined(viewId) && viewId !== "!defaultConsultation" && viewId !== "!defaultEdition") {
                     options.viewId = viewId;
                 }
