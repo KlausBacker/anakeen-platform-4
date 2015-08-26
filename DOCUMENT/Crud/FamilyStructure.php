@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace Dcp\Ui\Crud;
 
@@ -15,6 +15,15 @@ class FamilyStructure extends \Dcp\HttpApi\V1\Crud\Document
         parent::__construct();
         
         $this->defaultFields = self::GET_STRUCTURE;
+    }
+    
+    public function read($resourceId)
+    {
+        $this->setDocument($resourceId);
+        if ($this->_document->doctype !== "C") {
+            throw new \Dcp\Ui\Exception("CRUDUI0013", $resourceId);
+        }
+        return $this->getDocumentData();
     }
     
     public function update($resourceId)
