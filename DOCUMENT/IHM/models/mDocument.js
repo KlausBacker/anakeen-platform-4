@@ -966,6 +966,10 @@ define([
                 nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
             }
             if (nextView !== "!defaultConsultation" && nextView !== "!coreCreation" && this.get("renderMode") !== "create") {
+                if (this.needUnlock && this.needUnlock.initid !== this.get("initid")) {
+                    lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
+                    lockModel.destroy();
+                }
                 lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
                 lockModel.save({}, {
                     success: function ()
