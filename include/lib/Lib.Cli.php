@@ -2032,7 +2032,7 @@ function wiff_create_context(&$argv) {
 
     $ret = $wiff->createContext($contextName, $contextRoot, '', '');
     if ($ret === false) {
-        printerr(sprintf("Error: could not create context '%s' in '%s': %s\n", $contextName, $contextRoot));
+        printerr(sprintf("Error: could not create context '%s' in '%s': %s\n", $contextName, $contextRoot, $wiff->errorMessage));
         return 1;
     }
 

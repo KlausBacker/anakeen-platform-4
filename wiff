@@ -25,9 +25,15 @@ function __autoload($class_name) {
 }
 
 require('lib/Lib.Cli.php');
+require('lib/Lib.checkInitServer.php');
 
 $ret = setuid_wiff($_SERVER['SCRIPT_FILENAME']);
 if( $ret === false ) {
+  exit( 1 );
+}
+
+if (checkInitServer($errors) === false) {
+  printerr(join(PHP_EOL, $errors) . PHP_EOL);
   exit( 1 );
 }
 
