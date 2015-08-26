@@ -16,8 +16,15 @@ define([
      */
     AttributPrototype.prototype.getProperties = function AttributeInterfaceGetProperties()
     {
-        var properties = _.clone(this._attributeModel.attributes);
-        return _.omit(properties, "isValueAttribute", "title", "options", "attributeValue");
+        var properties = _.clone(this._attributeModel.attributes), content = properties.content;
+        properties = _.omit(properties, "isValueAttribute", "title", "options", "attributeValue", "content");
+        properties.content = [];
+        if (content && content.length) {
+            properties.content = content.map(function attributeInterface_convertChild(currentAttribute) {
+                return new AttributeInterface(currentAttribute);
+            });
+        }
+        return properties;
     };
 
     /**
@@ -114,7 +121,6 @@ define([
                 } else {
                     value = _.defaults(value, {displayValue: value.value});
                 }
-
 
                 currentValue = this._attributeModel.get("attributeValue").slice();
                 currentValue[index] = _.clone(value);
