@@ -184,8 +184,8 @@ define([
                                 }).fail(function wMenuFail(data)
                                 {
                                     try {
-                                        console.error(data);
-                                        throw new Error("Sub menu");
+                                        var errorMessage=data.responseText;
+                                        menuElement.find(".listmenu__content").html($('<div/>').text(errorMessage).addClass("menu--error"));
                                     } catch (e) {
                                         if (window.dcp.logger) {
                                             window.dcp.logger(e);

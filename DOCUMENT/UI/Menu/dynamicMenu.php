@@ -44,6 +44,16 @@ class DynamicMenu extends ElementMenu
         }
         return null;
     }
+
+
+    /**
+     * Return closure function set by setContent method
+     * @see setContent
+     * @return \Closure
+     */
+    public function getClosure() {
+        return $this->contentDefinition;
+    }
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
