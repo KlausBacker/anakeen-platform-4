@@ -85,6 +85,15 @@ define([
                             return;
                         }
                         try {
+                            if (currentAttr.getOption("attributeLabel")) {
+                                data.content = _.map(data.content, function vArray_changeLabelCurrentElement(currentContent)
+                                {
+                                    if (currentContent.id === currentAttr.id) {
+                                        currentContent.label=currentAttr.getOption("attributeLabel");
+                                    }
+                                    return currentContent;
+                                });
+                            }
                             if (currentAttr.get("isValueAttribute")) {
                                 scope.columnViews[currentAttr.id] = new ViewColumn({
                                     el: scope.el,

@@ -154,7 +154,11 @@ define([
 
         refreshLabel: function vAttributeRefreshLabel()
         {
-            this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", this.model.get("label"));
+            var label=this.model.get("label");
+            if (this.model.getOption("attributeLabel")) {
+                label=this.model.getOption("attributeLabel");
+            }
+            this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel",label);
         },
 
 

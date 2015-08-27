@@ -40,6 +40,10 @@ define([
 
             this.$el.empty();
             if (this.displayLabel !== false) {
+                if (this.model.getOption("attributeLabel")) {
+                    label=this.model.getOption("attributeLabel");
+                }
+
                 this.$el.text(label);
 
                 if (tooltipLabel) {
