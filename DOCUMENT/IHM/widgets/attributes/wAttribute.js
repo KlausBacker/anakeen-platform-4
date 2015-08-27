@@ -316,15 +316,17 @@ define([
             if (this.options.renderOptions && this.options.renderOptions.displayDeleteButton === false) {
                 this.options.deleteButton = false;
             }
-            this._initDom();
+            if (this.getMode() !== "hidden") {
+                this._initDom();
 
-            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
-                this.element.find(".dcpAttribute__content__buttons").hide();
-                this.element.find(".dcpAttribute__value").
-                    addClass("dcpAttribute__content__nobutton");
+                if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+                    this.element.find(".dcpAttribute__content__buttons").hide();
+                    this.element.find(".dcpAttribute__value").
+                        addClass("dcpAttribute__content__nobutton");
+                }
+
+                this._initEvent();
             }
-
-            this._initEvent();
 
             this._triggerReady();
         },
@@ -668,7 +670,7 @@ define([
             if (window.dcp && window.dcp.templates && window.dcp.templates["default"] && window.dcp.templates["default"][key]) {
                 return window.dcp.templates["default"][key];
             }
-            throw new Error("Unknown template  " + key + "/" + this.options.type);
+            throw new Error("Unknown template  " + key + "/" + this.options.type+" for "+this.options.id);
         },
 
         /**
