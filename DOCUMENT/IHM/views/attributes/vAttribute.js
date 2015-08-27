@@ -117,6 +117,8 @@ define([
             if (event.prevent) {
                 return this;
             }
+            //If some data are changed in the beforeRender
+            data = this.getData();
             if (this.customView) {
                 this.$el.find(".dcpAttribute__content").append(this.customView);
             } else {
@@ -154,11 +156,13 @@ define([
 
         refreshLabel: function vAttributeRefreshLabel()
         {
-            var label=this.model.get("label");
+            var label=this.model.get("label"), labelDom = this.getDOMElements().find(".dcpAttribute__label");
             if (this.model.getOption("attributeLabel")) {
                 label=this.model.getOption("attributeLabel");
             }
-            this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel",label);
+            if (labelDom.data("dcpDcpLabel")) {
+                this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel",label);
+            }
         },
 
 

@@ -67,9 +67,6 @@ define([
                         }
                     });
                 }
-
-
-
             }
 
             this.$el.attr("data-attrid", this.model.id);
