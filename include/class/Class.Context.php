@@ -1556,6 +1556,17 @@ class Context extends WiffCommon
      */
     public function archiveContext($archiveName, $archiveDesc = '', $vaultExclude = false)
     {
+        $unlink = array();
+        $archiveId = $this->__archiveContext($unlink, $archiveName, $archiveDesc, $vaultExclude);
+        foreach ($unlink as $file => $meta) {
+            if (!file_exists($file)) {
+                continue;
+            }
+            unlink($file);
+        }
+        return $archiveId;
+    }
+    private function __archiveContext(& $unlink, $archiveName, $archiveDesc = '', $vaultExclude = false) {
         $wiff = WIFF::getInstance();
         $wiff_root = $wiff->getWiffRoot();
         if ($wiff_root === false) {
@@ -1576,9 +1587,9 @@ class Context extends WiffCommon
                 return false;
             }
         }
-        
+
         $zip = new ZipArchiveCmd();
-        
+
         $archived_root = $wiff_root . WIFF::archive_filepath;
         // --- Generate archive id --- //
         $datetime = new DateTime();
@@ -1587,350 +1598,247 @@ class Context extends WiffCommon
         $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.sts';
         $status_handle = fopen($status_file, "w");
         fwrite($status_handle, $archiveName);
-        
+        $unlink[$status_file] = true;
+
         $zipfile = $archived_root . "/$archiveId.fcz";
-        if ($zip->open($zipfile, ZipArchiveCmd::CREATE) !== false) {
-            // --- Generate info.xml --- //
-            $doc = new DOMDocument();
-            $doc->formatOutput = true;
-            $doc->preserveWhiteSpace = false;
-            
-            $root = $doc->createElement('info');
-            $root = $doc->appendChild($root);
-            // --- Copy context information --- //
-            $contextsXml = $wiff->loadContextsDOMDocument();
-            if ($contextsXml === false) {
-                $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            
-            $contextsXPath = new DOMXPath($contextsXml);
-            // Get this context
-            $contextList = $contextsXPath->query("/contexts/context[@name='" . $this->name . "']");
-            if ($contextList->length != 1) {
-                // If more than one context with name
-                $this->errorMessage = "Duplicate contexts with same name";
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            /**
-             * @var DOMElement $context
-             */
-            $context = $doc->importNode($contextList->item(0) , true); // Node must be imported from contexts document.
-            if ($context->hasAttribute('register')) {
-                // Remove register status on archived contexts
-                $context->removeAttribute('register');
-            }
-            $context = $root->appendChild($context);
-            /**
-             * @var DOMElement $repositories
-             */
-            $repositories = $context->getElementsByTagName('repositories')->item(0);
-            if ($repositories) deleteNode($repositories);
-            // Identify and exclude vaults located below the context directory
-            $vaultList = $this->getVaultList();
-            if ($vaultList === false) {
-                $zip->close();
-                if (file_exists($archived_root . "/$archiveId.fcz")) {
-                    unlink($archived_root . "/$archiveId.fcz");
-                }
-                
-                unlink($status_file);
-                return false;
-            }
-            $realContextRootPath = realpath($this->root);
-            if ($realContextRootPath === false) {
-                $this->errorMessage = sprintf("Error getting real path for '%s'", $this->root);
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            $tarExcludeOpts = '';
-            $tarExcludeList = array(
-                sprintf("--exclude %s", escapeshellarg('.' . DIRECTORY_SEPARATOR . 'var'))
-            );
-            foreach ($vaultList as $vault) {
-                $r_path = $vault['r_path'];
-                if ($r_path[0] != '/') {
-                    $r_path = $this->root . DIRECTORY_SEPARATOR . $r_path;
-                }
-                $real_r_path = realpath($r_path);
-                if ($real_r_path === false) {
-                    continue;
-                }
-                if (strpos($real_r_path, $realContextRootPath) === 0) {
-                    $relative_r_path = "." . substr($real_r_path, strlen($realContextRootPath));
-                    $tarExcludeList[] = sprintf("--exclude %s", escapeshellarg($relative_r_path));
-                }
-            }
-            if (count($tarExcludeList) > 0) {
-                $tarExcludeOpts = join(' ', $tarExcludeList);
-            }
-            //error_log(__METHOD__ . " " . sprintf("tarExcludeOpts = [%s]", $tarExcludeOpts));
-            // --- Generate context tar.gz --- //
-            $script = sprintf("tar -C %s -czf %s/context.tar.gz %s . 2>&1", escapeshellarg($this->root) , escapeshellarg($tmp) , $tarExcludeOpts);
-            exec($script, $output, $retval);
-            if ($retval != 0) {
-                $this->errorMessage = "Error when making context tar :: " . join("\n", $output);
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            $err = $zip->addFileWithoutPath("$tmp/context.tar.gz");
-            if ($err === false) {
-                $this->errorMessage = sprintf("Could not add 'context.tar.gz' to archive: %s", $zip->getStatusString());
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            $this->log(LOG_INFO, 'Generated context.tar.gz');
-            // --- Generate database dump --- //
-            $pgservice_core = $this->getParamByName('core_db');
-            
-            $dump = $tmp . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
-            
-            $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
-            if ($errorFile === false) {
-                $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
-                $this->errorMessage = "Error creating temporary file for error.";
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                if (file_exists("$dump")) {
-                    unlink("$dump");
-                }
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            
-            $script = sprintf("PGSERVICE=%s pg_dump --compress=9 --no-owner 1>%s 2>%s", escapeshellarg($pgservice_core) , escapeshellarg($dump) , escapeshellarg($errorFile));
-            exec($script, $output, $retval);
-            
-            if ($retval != 0) {
-                $this->errorMessage = "Error when making database dump :: " . file_get_contents($errorFile);
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                if (file_exists("$dump")) {
-                    unlink("$dump");
-                }
-                if (file_exists("$errorFile")) {
-                    unlink("$errorFile");
-                }
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            
-            $err = $zip->addFileWithoutPath($dump);
-            if ($err === false) {
-                $this->errorMessage = sprintf("Could not add 'core_db.pg_dump.gz' to archive: %s", $zip->getStatusString());
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                if (file_exists("$dump")) {
-                    unlink("$dump");
-                }
-                $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
-                unlink($status_file);
-                return false;
-            }
-            $this->log(LOG_INFO, 'Generated core_db.pg_dump.gz');
-            
-            if ($vaultExclude != 'on') {
-                // --- Generate vaults tar.gz files --- //
-                $vaultList = $this->getVaultList();
-                if ($vaultList === false) {
-                    if (file_exists("$tmp/context.tar.gz")) {
-                        unlink("$tmp/context.tar.gz");
-                    }
-                    if (file_exists("$dump")) {
-                        unlink("$dump");
-                    }
-                    $zip->close();
-                    $this->writeArchiveError($archiveId, $archived_root);
-                    unlink($status_file);
-                }
-                
-                $vaultDirList = array();
-                foreach ($vaultList as $vault) {
-                    $id_fs = $vault['id_fs'];
-                    $r_path = $vault['r_path'];
-                    if (is_dir($r_path)) {
-                        $vaultDirList[] = array(
-                            "id_fs" => $id_fs,
-                            "r_path" => $r_path
-                        );
-                        $vaultExclude = 'Vaultexists';
-                        $script = sprintf("tar -C %s -czf  %s/vault_$id_fs.tar.gz . 2>&1", escapeshellarg($r_path) , escapeshellarg($tmp));
-                        exec($script, $output, $retval);
-                        if ($retval != 0) {
-                            $this->errorMessage = "Error when making vault tar :: " . join("\n", $output);
-                            if (file_exists("$tmp/context.tar.gz")) {
-                                unlink("$tmp/context.tar.gz");
-                            }
-                            if (file_exists("$dump")) {
-                                unlink("$dump");
-                            }
-                            /*--- Delete vault list --- */
-                            $i = 0;
-                            while ($vaultDirList[$i]) {
-                                if (file_exists($tmp . "/vault_" . $vaultDirList[$i]["id_fs"] . ".tar.gz")) {
-                                    unlink($tmp . "/vault_" . $vaultDirList[$i]["id_fs"] . ".tar.gz");
-                                }
-                                $i++;
-                            }
-                            $zip->close();
-                            $this->writeArchiveError($archiveId, $archived_root);
-                            unlink($status_file);
-                            return false;
-                        }
-                        $err = $zip->addFileWithoutPath("$tmp/vault_${id_fs}.tar.gz");
-                        if ($err === false) {
-                            $this->errorMessage = sprintf("Could not add 'vault_%s.tar.gz' to archive: %s", $id_fs, $zip->getStatusString());
-                            if (file_exists("$tmp/context.tar.gz")) {
-                                unlink("$tmp/context.tar.gz");
-                            }
-                            if (file_exists("$dump")) {
-                                unlink("$dump");
-                            }
-                            /*--- Delete vault list --- */
-                            $i = 0;
-                            while ($vaultDirList[$i]) {
-                                if (file_exists($tmp . "/vault_" . $vaultDirList[$i]["id_fs"] . ".tar.gz")) {
-                                    unlink($tmp . "/vault_" . $vaultDirList[$i]["id_fs"] . ".tar.gz");
-                                }
-                                $i++;
-                            }
-                            $zip->close();
-                            $this->writeArchiveError($archiveId, $archived_root);
-                            unlink($status_file);
-                            return false;
-                        }
-                    } elseif ($vaultExclude != 'Vaultexists') {
-                        $vaultExclude = 'on';
-                        $this->log(LOG_INFO, "No vault directory found");
-                    }
-                }
-                if ($vaultExclude != 'on') {
-                    $this->log(LOG_INFO, 'Generated vault tar gz');
-                }
-            }
-            // --- Write archive information --- //
-            $archive = $doc->createElement('archive');
-            $archive->setAttribute('id', $archiveId);
-            $archive->setAttribute('name', $archiveName);
-            $archive->setAttribute('datetime', $datetime->format('Y-m-d H:i:s'));
-            $archive->setAttribute('description', $archiveDesc);
-            
-            if ($vaultExclude == 'on') {
-                $archive->setAttribute('vault', 'No');
-            } else {
-                $archive->setAttribute('vault', 'Yes');
-            }
-            $root->appendChild($archive);
-            
-            $xml = $doc->saveXML();
-            
-            $err = $zip->addFromString('info.xml', $xml);
-            if ($err === false) {
-                $zip->close();
-                
-                unlink($status_file);
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                if (file_exists("$dump")) {
-                    unlink("$dump");
-                }
-                if (isset($vaultDirList) && empty($vaultDirList) === false && is_array($vaultDirList)) {
-                    /*--- Delete vault list --- */
-                    foreach ($vaultDirList as $value) {
-                        if (file_exists($tmp . "/vault_" . $value["id_fs"] . ".tar.gz")) {
-                            unlink($tmp . "/vault_" . $value["id_fs"] . ".tar.gz");
-                        }
-                    }
-                }
-                if (isset($id_fs) && file_exists($tmp . "/vault_$id_fs.tar.gz")) {
-                    unlink($tmp . "/vault_$id_fs.tar.gz");
-                }
-                $this->errorMessage = sprintf("Could not add 'info.xml' to archive: %s", $zip->getStatusString());
-                $this->writeArchiveError($archiveId, $archived_root);
-                return false;
-            }
-            // --- Save zip --- //
-            $zip->close();
-            
-            $ret = $wiff->verifyArchiveIntegrity($tmp);
-            if ($ret === false) {
-                $this->errorMessage = $wiff->errorMessage;
-                
-                unlink($status_file);
-                if (file_exists("$tmp/context.tar.gz")) {
-                    unlink("$tmp/context.tar.gz");
-                }
-                if (file_exists("$dump")) {
-                    unlink("$dump");
-                }
-                if (isset($vaultDirList) && empty($vaultDirList) === false && is_array($vaultDirList)) {
-                    /*--- Delete vault list --- */
-                    foreach ($vaultDirList as $value) {
-                        if (file_exists($tmp . "/vault_" . $value["id_fs"] . ".tar.gz")) {
-                            unlink($tmp . "/vault_" . $value["id_fs"] . ".tar.gz");
-                        }
-                    }
-                }
-                if (isset($id_fs) && file_exists($tmp . "/vault_$id_fs.tar.gz")) {
-                    unlink($tmp . "/vault_$id_fs.tar.gz");
-                }
-                $this->writeArchiveError($archiveId, $archived_root);
-                return false;
-            }
-            // --- Delete status file --- //
-            unlink($status_file);
-            // --- Clean tmp directory --- //
-            if (file_exists("$tmp/context.tar.gz")) {
-                unlink("$tmp/context.tar.gz");
-            }
-            if (file_exists("$dump")) {
-                unlink("$dump");
-            }
-            if (isset($vaultDirList) && empty($vaultDirList) === false && is_array($vaultDirList)) {
-                /*--- Delete vault list --- */
-                foreach ($vaultDirList as $value) {
-                    if (file_exists($tmp . "/vault_" . $value["id_fs"] . ".tar.gz")) {
-                        unlink($tmp . "/vault_" . $value["id_fs"] . ".tar.gz");
-                    }
-                }
-            }
-            
-            return $archiveId;
-        } else {
+        if ($zip->open($zipfile, ZipArchiveCmd::CREATE) === false) {
             $this->errorMessage = sprintf("Cannot create Zip archive '%s': %s", $zipfile, $zip->getStatusString());
             // --- Delete status file --- //
-            unlink($status_file);
             $this->writeArchiveError($archiveId, $archived_root);
+            return false;
         }
-        
-        return false;
+
+        // --- Generate info.xml --- //
+        $doc = new DOMDocument();
+        $doc->formatOutput = true;
+        $doc->preserveWhiteSpace = false;
+
+        $root = $doc->createElement('info');
+        $root = $doc->appendChild($root);
+        // --- Copy context information --- //
+        $contextsXml = $wiff->loadContextsDOMDocument();
+        if ($contextsXml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+
+        $contextsXPath = new DOMXPath($contextsXml);
+        // Get this context
+        $contextList = $contextsXPath->query("/contexts/context[@name='" . $this->name . "']");
+        if ($contextList->length != 1) {
+            // If more than one context with name
+            $this->errorMessage = "Duplicate contexts with same name";
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        /**
+         * @var DOMElement $context
+         */
+        $context = $doc->importNode($contextList->item(0) , true); // Node must be imported from contexts document.
+        if ($context->hasAttribute('register')) {
+            // Remove register status on archived contexts
+            $context->removeAttribute('register');
+        }
+        $context = $root->appendChild($context);
+        /**
+         * @var DOMElement $repositories
+         */
+        $repositories = $context->getElementsByTagName('repositories')->item(0);
+        if ($repositories) deleteNode($repositories);
+
+        // Identify and exclude vaults located below the context directory
+        $vaultList = $this->getVaultList();
+        if ($vaultList === false) {
+            $this->errorMessage = sprintf("Error getting vault list for context '%s'", $this->root);
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        $realContextRootPath = realpath($this->root);
+        if ($realContextRootPath === false) {
+            $this->errorMessage = sprintf("Error getting real path for '%s'", $this->root);
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        $tarExcludeOpts = '';
+        $tarExcludeList = array(
+            sprintf("--exclude %s", escapeshellarg('.' . DIRECTORY_SEPARATOR . 'var'))
+        );
+        foreach ($vaultList as $vault) {
+            $r_path = $vault['r_path'];
+            if ($r_path[0] != '/') {
+                $r_path = $this->root . DIRECTORY_SEPARATOR . $r_path;
+            }
+            $real_r_path = realpath($r_path);
+            if ($real_r_path === false) {
+                continue;
+            }
+            if (strpos($real_r_path, $realContextRootPath) === 0) {
+                $relative_r_path = "." . substr($real_r_path, strlen($realContextRootPath));
+                $tarExcludeList[] = sprintf("--exclude %s", escapeshellarg($relative_r_path));
+            }
+        }
+        if (count($tarExcludeList) > 0) {
+            $tarExcludeOpts = join(' ', $tarExcludeList);
+        }
+        //error_log(__METHOD__ . " " . sprintf("tarExcludeOpts = [%s]", $tarExcludeOpts));
+
+        // --- Generate context tar.gz --- //
+        $script = sprintf("tar -C %s -czf %s/context.tar.gz %s . 2>&1", escapeshellarg($this->root) , escapeshellarg($tmp) , $tarExcludeOpts);
+        exec($script, $output, $retval);
+        $unlink["$tmp/context.tar.gz"] = true;
+        if ($retval != 0) {
+            $this->errorMessage = "Error when making context tar :: " . join("\n", $output);
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        if ($wiff->verifyGzipIntegrity("$tmp/context.tar.gz", $err) === false) {
+            $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", "$tmp/context.tar.gz", $err);
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        $err = $zip->addFileWithoutPath("$tmp/context.tar.gz");
+        if ($err === false) {
+            $this->errorMessage = sprintf("Could not add 'context.tar.gz' to archive: %s", $zip->getStatusString());
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        $this->log(LOG_INFO, 'Generated context.tar.gz');
+        unlink("$tmp/context.tar.gz");
+        unset($unlink["$tmp/context.tar.gz"]);
+
+        // --- Generate database dump --- //
+        $pgservice_core = $this->getParamByName('core_db');
+
+        $dump = $tmp . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
+
+        $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
+        if ($errorFile === false) {
+            $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
+            $this->errorMessage = "Error creating temporary file for error.";
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+
+        $script = sprintf("PGSERVICE=%s pg_dump --compress=9 --no-owner 1>%s 2>%s", escapeshellarg($pgservice_core) , escapeshellarg($dump) , escapeshellarg($errorFile));
+        exec($script, $output, $retval);
+        $unlink[$dump] = true;
+        if ($retval != 0) {
+            $this->errorMessage = "Error when making database dump :: " . file_get_contents($errorFile);
+            if (file_exists("$errorFile")) {
+                unlink("$errorFile");
+            }
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        if ($wiff->verifyGzipIntegrity($dump, $err) === false) {
+            $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $dump, $err);
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        $err = $zip->addFileWithoutPath($dump);
+        if ($err === false) {
+            $this->errorMessage = sprintf("Could not add 'core_db.pg_dump.gz' to archive: %s", $zip->getStatusString());
+            $zip->close();
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+        $this->log(LOG_INFO, 'Generated core_db.pg_dump.gz');
+        unlink($dump);
+        unset($unlink[$dump]);
+
+        if ($vaultExclude != 'on') {
+            // --- Generate vaults tar.gz files --- //
+            $vaultList = $this->getVaultList();
+            if ($vaultList === false) {
+                $this->errorMessage = sprintf("Error getting vault list: %s", $this->errorMessage);
+                $zip->close();
+                $this->writeArchiveError($archiveId, $archived_root);
+                return false;
+            }
+
+            $vaultDirList = array();
+            foreach ($vaultList as $vault) {
+                $id_fs = $vault['id_fs'];
+                $r_path = $vault['r_path'];
+                if (is_dir($r_path)) {
+                    $vaultDirList[] = array(
+                        "id_fs" => $id_fs,
+                        "r_path" => $r_path
+                    );
+                    $vaultExclude = 'Vaultexists';
+                    $tmpVault = sprintf("%s/vault_%s.tar.gz", $tmp, $id_fs);
+                    $script = sprintf("tar -C %s -czf  %s . 2>&1", escapeshellarg($r_path) , escapeshellarg($tmpVault));
+                    exec($script, $output, $retval);
+                    $unlink[$tmpVault] = true;
+                    if ($retval != 0) {
+                        $this->errorMessage = sprintf("Error when archiving vault '%s': %s", $r_path, join("\n", $output));
+                        $zip->close();
+                        $this->writeArchiveError($archiveId, $archived_root);
+                        return false;
+                    }
+                    $err = $zip->addFileWithoutPath($tmpVault);
+                    if ($err === false) {
+                        $this->errorMessage = sprintf("Could not add 'vault_%s.tar.gz' to archive: %s", $id_fs, $zip->getStatusString());
+                        $zip->close();
+                        $this->writeArchiveError($archiveId, $archived_root);
+                        return false;
+                    }
+                    if ($wiff->verifyGzipIntegrity($tmpVault, $err) === false) {
+                        $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $tmpVault, $err);
+                        $zip->close();
+                        $this->writeArchiveError($archiveId, $archived_root);
+                        return false;
+                    }
+                    unlink($tmpVault);
+                    unset($unlink[$tmpVault]);
+                } elseif ($vaultExclude != 'Vaultexists') {
+                    $vaultExclude = 'on';
+                    $this->log(LOG_INFO, "No vault directory found");
+                }
+            }
+            if ($vaultExclude != 'on') {
+                $this->log(LOG_INFO, 'Generated vault tar gz');
+            }
+        }
+
+        // --- Write archive information --- //
+        $archive = $doc->createElement('archive');
+        $archive->setAttribute('id', $archiveId);
+        $archive->setAttribute('name', $archiveName);
+        $archive->setAttribute('datetime', $datetime->format('Y-m-d H:i:s'));
+        $archive->setAttribute('description', $archiveDesc);
+
+        if ($vaultExclude == 'on') {
+            $archive->setAttribute('vault', 'No');
+        } else {
+            $archive->setAttribute('vault', 'Yes');
+        }
+        $root->appendChild($archive);
+
+        $xml = $doc->saveXML();
+
+        $err = $zip->addFromString('info.xml', $xml);
+        if ($err === false) {
+            $zip->close();
+            $this->errorMessage = sprintf("Could not add 'info.xml' to archive: %s", $zip->getStatusString());
+            $this->writeArchiveError($archiveId, $archived_root);
+            return false;
+        }
+
+        $zip->close();
+
+        return $archiveId;
     }
     /**
      * Get vault list
