@@ -56,4 +56,8 @@ class ErrorCodeCrudUI
      * @errorCode Cannot create view lock
      */
     const CRUDUI0012 = 'Cannot lock a special view "%s" : view not defined in "%s" render control)';
+    /**
+     * @errorCode Cannot access structure of no family documents
+     */
+    const CRUDUI0013 = 'Cannot access structure : resource "%s" is not a family)';
 }
