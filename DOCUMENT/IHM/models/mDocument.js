@@ -914,7 +914,7 @@ define([
 
         fetchDocument: function mDocumentFetch(values, options)
         {
-            var docModel = this, event = {prevent: false};
+            var docModel = this, event = {prevent: false}, currentProperties = this.initialProperties;
             var currentInitid = this.get("initid");
 
             _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
@@ -936,6 +936,9 @@ define([
                     docModel.set(key, value);
                 });
                 return this.fetch(options);
+            } else {
+                //Reinit properties
+                docModel.set(currentProperties);
             }
             return false;
         },
