@@ -890,7 +890,10 @@ define([
         {
             var currentWidget = this;
             this._checkInitialisedModel();
-            this._reinitModel();
+            //Reinit model with server values
+            _.each(_.pick(this.getProperties(), "initid", "revision", "viewId"), function dcpDocument_setCurrentOptions(value, key) {
+                currentWidget.options[key] = value;
+            });
             if (values) {
                 _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
                 {
