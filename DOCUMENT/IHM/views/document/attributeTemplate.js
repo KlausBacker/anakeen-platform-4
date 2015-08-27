@@ -35,6 +35,10 @@ define(function (require, exports, module)
                 _.each(documentData.attributeLabels, function (attributeLabel, attributeId)
                 {
                     var currentAttributeModel = documentModel.get('attributes').get(attributeId);
+                    if (currentAttributeModel.getOption("attributeLabel")) {
+                        attributeLabel=currentAttributeModel.getOption("attributeLabel");
+                    }
+
                     if (templateInfo.attributes[attributeId]) {
                         templateInfo.attributes[attributeId].label = attributeLabel;
                     } else {
@@ -218,10 +222,14 @@ define(function (require, exports, module)
                 {
                     var attributeId = currentAttribute.id;
                     var attributeLabel = currentAttribute.get('label');
+
                     if (!currentAttribute.isDisplayable()) {
                         return;
                     }
 
+                    if (currentAttribute.getOption("attributeLabel")) {
+                        attributeLabel=currentAttribute.getOption("attributeLabel");
+                    }
                     templateInfo.content[attributeId] = {};
                     templateInfo.content[attributeId].attributeValue = {
                         value: null, // No value for the moment. Value will be set by array view with default values
@@ -356,6 +364,9 @@ define(function (require, exports, module)
                         return;
                     }
 
+                    if (currentAttribute.getOption("attributeLabel")) {
+                        attributeLabel=currentAttribute.getOption("attributeLabel");
+                    }
                     values = currentAttribute.get('attributeValue');
                     _.each(values, function (singleValue, index)
                     {

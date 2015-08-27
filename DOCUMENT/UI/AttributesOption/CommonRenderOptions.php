@@ -30,6 +30,7 @@ class CommonRenderOptions
     const displayDeleteButtonOption = "displayDeleteButton";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const labelsOption = "labels";
+    const attributeLabelOption = "attributeLabel";
     const autoPosition = "auto";
     const leftPosition = "left";
     const upPosition = "up";
@@ -207,6 +208,19 @@ class CommonRenderOptions
         $this->setOption(self::buttonsOption, $buttons);
         return $this;
     }
+
+    /**
+     * Modify default label attribute
+     *
+     * @param string $label
+     * @return $this
+     */
+    public function setAttributeLabel( $label)
+    {
+        $this->setOption(self::attributeLabelOption, $label);
+        return $this;
+    }
+
     /**
      * Add or modify specific labels for widget
      * @param array $labels

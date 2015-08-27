@@ -42,27 +42,33 @@ define([
                     this.customView = attributeTemplate.customView(this.model);
                 }
             }
+
+
             this.options = options;
         },
 
         render: function vFrame_render()
         {
             var $content, labelElement, contentElement = '', customView = null, event = {prevent: false};
+            var contentData;
 
             this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
             if (event.prevent) {
                 return this;
             }
-
+            contentData=this.model.toJSON();
+            if (this.model.getOption("attributeLabel")) {
+                contentData.label=this.model.getOption("attributeLabel");
+            }
             this.templateLabel = this.model.getTemplates().attribute.frame.label;
-            labelElement = $(Mustache.render(this.templateLabel, this.model.toJSON()));
+            labelElement = $(Mustache.render(this.templateLabel, contentData));
 
             if (this.customView) {
                 contentElement = this.customView;
                 contentElement.addClass("dcpFrame__content dcpFrame__content--open");
             } else {
                 this.templateContent = this.model.getTemplates().attribute.frame.content;
-                contentElement = $(Mustache.render(this.templateContent, this.model.toJSON()));
+                contentElement = $(Mustache.render(this.templateContent, contentData));
             }
             this.$el.empty();
             if (this.displayLabel === true) {

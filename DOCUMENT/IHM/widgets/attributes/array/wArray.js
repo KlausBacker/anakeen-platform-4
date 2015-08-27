@@ -61,6 +61,9 @@ define([
                 this.options.renderOptions.rowMoveDisable === true) {
                 this.options.tools = false;
             }
+            if (this.options.renderOptions.attributeLabel) {
+                this.options.label=this.options.renderOptions.attributeLabel;
+            }
 
             this._initDom();
             this._bindEvents();
@@ -89,7 +92,6 @@ define([
                     this.element.append(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
                         displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
                     })));
-
                 }
 
                 if (this.options.customTemplate) {
