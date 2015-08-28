@@ -691,7 +691,7 @@ define([
             uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
             this.options.eventListener[uniqueName] = newEvent;
 
-            if (!this._model) {
+            if (!this._initializedModel) {
                 //early event model is not ready (no trigger, or current register possible)
                 return this;
             }
