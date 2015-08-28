@@ -897,8 +897,9 @@ define([
                 {
                     if (HttpResponse && HttpResponse.status === 0) {
                         documentModel.trigger("showError", {
-                            title: i18n.___("Your navigator seems offline, try later", "ddui")
+                            title: i18n.___("Unable to get the structure your navigator seems offline, try later", "ddui")
                         });
+                        documentModel.trigger("displayNetworkError");
                         return;
                     }
                     try {
