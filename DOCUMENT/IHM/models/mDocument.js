@@ -122,11 +122,13 @@ define([
 
             $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
-                var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
+                var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null,
+                    event = {prevent: false};
                 if (theModel.hasAttributesChanged()) {
                     return i18n.___("The form has been modified and is is not saved", "ddui");
                 }
 
+                theModel.trigger("beforeClose", event, theModel.getServerProperties());
 
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     //var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
@@ -146,6 +148,8 @@ define([
             {
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 var unlocking = theModel.get("unlocking");
+
+                theModel.trigger("beforeClose", event, theModel.getServerProperties());
 
                 if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     $.ajax({
