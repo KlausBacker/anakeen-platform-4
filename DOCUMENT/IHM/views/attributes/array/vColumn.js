@@ -24,6 +24,7 @@ define([
             this._addEvent(absEvents, "fetchdocument", "loadDocument");
             this._addEvent(absEvents, "downloadfile", "downloadFileSelect");
             this._addEvent(absEvents, "uploadfile", "uploadFileSelect");
+            this.listenTo(this.model, "change:label", this.changeLabel);
             return absEvents;
         },
 
@@ -44,6 +45,13 @@ define([
             }
             this.model.trigger("renderColumnDone", {model: this.model, $el: this.$el});
             return this;
+        },
+
+        /**
+         * Change the label of the column
+         */
+        changeLabel : function vColumnChangeLabel() {
+            this.$el.find('.dcpArray__head__cell[data-attrid="' + this.model.id + '"]').text(this.model.get("label"));
         },
 
         /**

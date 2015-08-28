@@ -28,6 +28,16 @@ define([
     };
 
     /**
+     * Change the label of an attribute
+     *
+     * @returns {*}
+     */
+    AttributPrototype.prototype.setLabel = function AttributeInterfaceSetLabel(label)
+    {
+        this._attributeModel.set("label", label);
+    };
+
+    /**
      * Get the data to build a widget
      *
      * @returns {*}

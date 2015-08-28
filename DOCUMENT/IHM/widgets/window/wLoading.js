@@ -78,7 +78,7 @@ define([
             var $initbar = this.initBar.find(".progress-bar");
             var rpc = Math.round(pc);
             this.pc = pc;
-            if (window.requestAnimationFrame) {
+            if (window && window.requestAnimationFrame) {
                 window.requestAnimationFrame(function ()
                 {
                     $initbar.css("width", rpc + '%');

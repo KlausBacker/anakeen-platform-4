@@ -1,8 +1,9 @@
 define([
+    'jquery',
     'underscore',
     'mustache',
     'dcpDocument/widgets/widget'
-], function (_, Mustache) {
+], function ($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpLabel", {
