@@ -240,6 +240,7 @@ define([
             });
             this._model.listenTo(this._model, "sync", function documentController_triggerSync()
             {
+                currentWidget._initializedModel = true;
                 currentWidget.options.initid = currentWidget._model.id;
                 currentWidget.options.viewId = currentWidget._model.get("viewId");
                 currentWidget.options.revision = currentWidget._model.get("revision");
