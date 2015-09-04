@@ -36,9 +36,8 @@
 {
   .make-md-column(3);
   .make-sm-column(2);
-  .make-xs-column(3);
   // Calculate width based on number of columns available
-  @media (min-width: @grid-float-breakpoint) {
+  @media (min-width: (@grid-float-breakpoint + 1)) {
     float: left;
     width: percentage((4 / @grid-columns));
     text-align: right;
@@ -52,11 +51,10 @@
 {
   .make-md-column(9);
   .make-sm-column(10);
-  .make-xs-column(9);
   @media (max-width: @grid-float-breakpoint) {
     padding-left: 2em;
   }
-  @media (min-width: @grid-float-breakpoint) {
+  @media (min-width: (@grid-float-breakpoint + 1)) {
     float: left;
     width: percentage((8 / @grid-columns));
   }
