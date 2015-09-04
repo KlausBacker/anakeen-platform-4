@@ -1,8 +1,9 @@
 define([
+    'jquery',
     'underscore',
     'dcpDocument/widgets/widget',
     'kendo/kendo.notification'
-], function (_) {
+], function ($, _) {
     'use strict';
 
     $.widget("dcp.dcpNotification", {

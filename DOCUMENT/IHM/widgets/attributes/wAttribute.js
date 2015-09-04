@@ -670,7 +670,7 @@ define([
             if (window.dcp && window.dcp.templates && window.dcp.templates["default"] && window.dcp.templates["default"][key]) {
                 return window.dcp.templates["default"][key];
             }
-            throw new Error("Unknown template  " + key + "/" + this.options.type+" for "+this.options.id);
+            throw new Error("Unknown template  " + key + "/" + this.options.type + " for " + this.options.id);
         },
 
         /**

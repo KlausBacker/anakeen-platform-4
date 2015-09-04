@@ -1,11 +1,12 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'mustache',
     'kendo/kendo.numerictextbox',
     'dcpDocument/widgets/attributes/text/wText',
     "kendo-culture-fr"
-], function (_, Mustache, kendo) {
+], function ($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpInt", $.dcp.dcpText, {

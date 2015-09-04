@@ -1,6 +1,7 @@
 define([
+    'jquery',
     'dcpDocument/widgets/attributes/int/wInt'
-], function () {
+], function ($) {
     'use strict';
 
     $.widget("dcp.dcpDouble", $.dcp.dcpInt, {

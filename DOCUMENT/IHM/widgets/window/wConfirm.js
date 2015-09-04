@@ -1,9 +1,10 @@
 define([
+    'jquery',
     'underscore',
     'mustache',
     'dcpDocument/widgets/window/wWindow',
     'kendo/kendo.button'
-], function (_, Mustache) {
+], function ($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpConfirm", $.dcp.dcpWindow, {

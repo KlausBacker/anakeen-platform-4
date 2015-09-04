@@ -1,8 +1,9 @@
-/*global define, _super*/
+/*global define*/
 define([
+    'jquery',
     'underscore',
     'dcpDocument/widgets/attributes/text/wText'
-], function (_) {
+], function ($, _) {
     'use strict';
 
     $.widget("dcp.dcpLongtext", $.dcp.dcpText, {
