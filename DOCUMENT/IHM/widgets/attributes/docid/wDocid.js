@@ -1,10 +1,11 @@
 /*global define*/
 define([
+    'jquery',
     'underscore',
     'mustache',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect'
-], function (_, Mustache)
+], function ($, _, Mustache)
 {
     'use strict';
 

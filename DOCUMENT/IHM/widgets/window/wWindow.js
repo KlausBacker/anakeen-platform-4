@@ -1,8 +1,9 @@
 define([
     'underscore',
+    'jquery',
     'dcpDocument/widgets/widget',
     'kendo/kendo.window'
-], function (_)
+], function (_, $)
 {
     'use strict';
 

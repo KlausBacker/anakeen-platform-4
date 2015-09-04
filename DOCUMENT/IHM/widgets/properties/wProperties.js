@@ -1,10 +1,11 @@
 define([
+    'jquery',
     'underscore',
     'mustache',
     'kendo/kendo.core',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wDialog'
-], function (_, Mustache, kendo) {
+], function ($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpDocumentProperties", $.dcp.dcpDialog, {

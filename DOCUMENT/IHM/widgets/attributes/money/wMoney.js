@@ -1,6 +1,7 @@
 define([
+    'jquery',
     'dcpDocument/widgets/attributes/double/wDouble'
-], function () {
+], function ($) {
     'use strict';
 
     $.widget("dcp.dcpMoney", $.dcp.dcpDouble, {

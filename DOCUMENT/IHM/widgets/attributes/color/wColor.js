@@ -1,10 +1,11 @@
 /*global define, _super, kendoColorPicker*/
 define([
+    'jquery',
     'underscore',
     'mustache',
     'kendo/kendo.colorpicker',
     'dcpDocument/widgets/attributes/text/wText'
-], function (_, Mustache, kendo) {
+], function ($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpColor", $.dcp.dcpText, {

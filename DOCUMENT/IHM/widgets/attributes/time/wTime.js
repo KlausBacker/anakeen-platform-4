@@ -1,8 +1,9 @@
 define([
+    'jquery',
     'underscore',
     'kendo/kendo.timepicker',
     'dcpDocument/widgets/attributes/date/wDate'
-], function (_, kendo) {
+], function ($, _, kendo) {
     'use strict';
 
     $.widget("dcp.dcpTime", $.dcp.dcpDate, {

@@ -1,7 +1,8 @@
 define([
+    'jquery',
     'mustache',
     'dcpDocument/widgets/attributes/file/wFile'
-], function (Mustache) {
+], function ($, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpImage", $.dcp.dcpFile, {

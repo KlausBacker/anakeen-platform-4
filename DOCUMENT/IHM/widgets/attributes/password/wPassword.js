@@ -1,9 +1,10 @@
-/*global define, _super, kendoNumericTextBox*/
+/*global define*/
 define([
+    'jquery',
     'underscore',
     'mustache',
     'dcpDocument/widgets/attributes/text/wText'
-], function (_, Mustache) {
+], function ($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpPassword", $.dcp.dcpText, {

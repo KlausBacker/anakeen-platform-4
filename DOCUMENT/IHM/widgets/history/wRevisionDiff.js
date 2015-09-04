@@ -1,4 +1,5 @@
 define([
+    'jquery',
     'underscore',
     'mustache',
     'kendo/kendo.core',
@@ -6,7 +7,7 @@ define([
     'dcpDocument/widgets/window/wDialog',
     'datatables',
     "datatables-bootstrap"
-], function (_, Mustache) {
+], function ($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpRevisionDiff",  $.dcp.dcpDialog, {
