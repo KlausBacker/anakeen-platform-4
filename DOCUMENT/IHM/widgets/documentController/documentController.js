@@ -49,8 +49,8 @@ define([
         {
             this.options.constraintList = {};
             this.options.eventListener = {};
-            this.activatedConstraint = [];
-            this.activatedEventListener = [];
+            this.activatedConstraint = {};
+            this.activatedEventListener = {};
             this._initializedModel = false;
             this._initializedView = false;
             if (!this.options.initid) {
@@ -70,8 +70,8 @@ define([
             this._triggerControllerEvent("destroy", this.getProperties());
             this.options.constraintList = {};
             this.options.eventListener = {};
-            this.activatedConstraint = [];
-            this.activatedEventListener = [];
+            this.activatedConstraint = {};
+            this.activatedEventListener = {};
             this._initializedModel = false;
             this._initializedView = false;
             this.element.removeData("document");
@@ -645,9 +645,12 @@ define([
         _initActivatedConstraint: function documentController_initActivatedConstraint()
         {
             var currentDocumentProperties = this.getProperties(), currentWidget = this;
-            this.activatedConstraint = _.filter(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint)
+            this.activatedConstraint = {};
+            _.each(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint, index)
             {
-                return currentConstraint.documentCheck.call($(currentWidget.element), currentDocumentProperties);
+                if (currentConstraint.documentCheck.call($(currentWidget.element), currentDocumentProperties)) {
+                    currentWidget.activatedConstraint[currentConstraint.name] = currentConstraint;
+                }
             });
         },
 
@@ -659,12 +662,16 @@ define([
         {
             var currentDocumentProperties = this.getProperties(), currentWidget = this;
             options = options || {};
-            this.activatedEventListener = _.filter(this.options.eventListener, function documentController_getActivatedEvent(currentEvent)
+            this.activatedEventListener = {};
+             _.each(this.options.eventListener, function documentController_getActivatedEvent(currentEvent)
             {
                 if (!_.isFunction(currentEvent.documentCheck)) {
-                    return true;
+                    currentWidget.activatedEventListener[currentEvent.name] = currentEvent;
+                    return;
                 }
-                return currentEvent.documentCheck.call($(currentWidget.element), currentDocumentProperties);
+                if (currentEvent.documentCheck.call($(currentWidget.element), currentDocumentProperties)) {
+                    currentWidget.activatedEventListener[currentEvent.name] = currentEvent;
+                }
             });
             //Trigger new added ready event
             if (this._initializedView !== false && options.launchReady !== false) {
@@ -699,7 +706,7 @@ define([
             currentDocumentProperties = this.getProperties();
             // Check if the event is for the current document
             if (!_.isFunction(newEvent.documentCheck) || newEvent.documentCheck.call($element, currentDocumentProperties)) {
-                this.activatedEventListener.push(newEvent);
+                this.activatedEventListener[newEvent.name] = newEvent;
                 // Check if we need to manually trigger this callback (late registered : only for ready events)
                 if (this._initializedView !== false) {
                     if (newEvent.eventType === "ready") {
@@ -986,10 +993,20 @@ define([
          */
         getProperties: function documentControllerGetDocumentProperties()
         {
-            var properties;
-            this._checkInitialisedModel();
-            properties = this._model.getServerProperties();
-            properties.isModified = this._model.isModified();
+            var properties, ready = true;
+            try {
+                this._checkInitialisedModel();
+            } catch (e) {
+                ready = false;
+                properties = {
+                    "notLoaded" : true
+                };
+            }
+            if (ready) {
+                properties = this._model.getServerProperties();
+                properties.isModified = this._model.isModified();
+            }
+
             return properties;
         },
 
