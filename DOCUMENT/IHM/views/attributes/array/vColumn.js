@@ -23,6 +23,8 @@ define([
             this._addEvent(absEvents, "delete", "deleteValue");
             this._addEvent(absEvents, "fetchdocument", "loadDocument");
             this._addEvent(absEvents, "downloadfile", "downloadFileSelect");
+            this._addEvent(absEvents, "externallinkselected", "externalLinkSelected");
+            this._addEvent(absEvents, "changeattrmenuvisibility", "changeMenuVisibility");
             this._addEvent(absEvents, "uploadfile", "uploadFileSelect");
             this.listenTo(this.model, "change:label", this.changeLabel);
             return absEvents;
