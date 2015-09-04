@@ -986,10 +986,20 @@ define([
          */
         getProperties: function documentControllerGetDocumentProperties()
         {
-            var properties;
-            this._checkInitialisedModel();
-            properties = this._model.getServerProperties();
-            properties.isModified = this._model.isModified();
+            var properties, ready = true;
+            try {
+                this._checkInitialisedModel();
+            } catch (e) {
+                ready = false;
+                properties = {
+                    "notLoaded" : true
+                };
+            }
+            if (ready) {
+                properties = this._model.getServerProperties();
+                properties.isModified = this._model.isModified();
+            }
+
             return properties;
         },
 
