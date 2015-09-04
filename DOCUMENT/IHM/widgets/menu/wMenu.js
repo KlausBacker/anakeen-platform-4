@@ -35,7 +35,7 @@ define([
             //Init kendo widget
             $content.kendoMenu({
                 openOnClick: true,
-                closeOnClick: false,
+                closeOnClick: true,
                 select: function wMenuSelect(event)
                 {
                     var menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
@@ -168,7 +168,7 @@ define([
                                         scopeWidget, menuElement);
                                     menuElement.kendoMenu({
                                         openOnClick: true,
-                                        closeOnClick: false
+                                        closeOnClick: true
                                     });
 
 
