@@ -562,6 +562,7 @@ define([
                         scopeWidget._trigger("externalLinkSelected", event, {
                             target: event.target,
                             eventId: eventContent.shift(),
+                            index:  scopeWidget._getIndex(),
                             options: eventContent
                         });
                         return this;
