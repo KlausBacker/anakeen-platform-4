@@ -135,6 +135,8 @@ define([
                 $okButton.prop("disabled", false);
             }
             $cancelButton.prop("disabled", false);
+
+            this.$el.find(".dcpDocument--disabled").remove();
             $loading.hide();
         },
 
