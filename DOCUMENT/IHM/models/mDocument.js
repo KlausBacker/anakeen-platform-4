@@ -565,11 +565,11 @@ define([
                 if (!currentAttribute.checkConstraint({clearError: false})) {
                     success = false;
                     if (_.isArray(currentAttribute.get("errorMessage"))) {
-                        templateMessage = _.template("<%- parentLabel %> / <%- label %> " +
+                        templateMessage = _.template("<%= parentLabel %> / <%= label %> " +
                             "<% for(var msg in errorMessage) { %>" +
-                            "\n<%- rowText %> <%- errorMessage[msg].index + 1 %> : <%- errorMessage[msg].message %>\n <% } %> ");
+                            "\n<%- rowText %> <%= errorMessage[msg].index + 1 %> : <%= errorMessage[msg].message %>\n <% } %> ");
                     } else {
-                        templateMessage = _.template("<%- parentLabel %> / <%- label %> <%- errorMessage %>");
+                        templateMessage = _.template("<%= parentLabel %> / <%= label %> <%= errorMessage %>");
                     }
                     errorMessage.push(templateMessage({
                         parentLabel: parentAttribute.get('label'),
