@@ -266,6 +266,7 @@ define([
                     currentWidget._triggerControllerEvent("close",
                         currentWidget.getProperties(), oldProperties);
                 }
+                currentWidget._initializedView = false;
             });
             this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event)
             {
