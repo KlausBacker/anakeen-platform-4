@@ -2,7 +2,7 @@ define([
     'jquery',
     'mustache',
     'dcpDocument/widgets/attributes/file/wFile'
-], function ($, Mustache) {
+], function wImageWidget($, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpImage", $.dcp.dcpFile, {
@@ -20,7 +20,7 @@ define([
             }
         },
 
-        _initDom: function () {
+        _initDom: function wImageInitDom() {
             if (this.getMode() === "read") {
                 var urlSep = '?';
                 if (this.options.attributeValue.url) {
@@ -41,7 +41,6 @@ define([
             this._super();
         },
 
-
         _initEvent: function wFileInitEvent() {
             this._super();
             if (this.getMode() === "read") {
@@ -54,7 +53,7 @@ define([
             var scope = this;
             var htmlLink = this.getLink();
             this.element.off("click");
-            this.element.on("click" + this.eventNamespace, '.dcpAttribute__content__link', function (event) {
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__content__link', function wImageClick(event) {
 
                 if (htmlLink.target === "_dialog") {
                     event.preventDefault();
@@ -85,7 +84,6 @@ define([
             });
         },
 
-
         /**
          * Condition before upload file
          * @returns {boolean}
@@ -99,7 +97,7 @@ define([
             return true;
         },
 
-        getType: function () {
+        getType: function wImageGetType() {
             return "image";
         }
 
