@@ -4,12 +4,13 @@ define([
     'underscore',
     "mustache",
     'dcpDocument/widgets/attributes/text/wText'
-], function ($, _, Mustache)
+], function wFileWidget($, _, Mustache)
 {
     'use strict';
 
     $.widget("dcp.dcpFile", $.dcp.dcpText, {
 
+        uploadingFiles:0, // file upload in progress
         options: {
             type: "file",
             renderOptions: {
@@ -28,7 +29,7 @@ define([
             }
         },
 
-        _initDom: function ()
+        _initDom: function wFileInitDom()
         {
             var visibleInput;
             if (this.getMode() === "read") {
@@ -85,7 +86,7 @@ define([
             }
 
             // Add trigger when try to download file
-            this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event)
+            this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function wFileClickDownload(event)
                 {
                     scope._trigger("downloadfile", event, {
                         target: event.currentTarget,
@@ -167,7 +168,7 @@ define([
                     inputFile.trigger("click");
                 });
 
-                this.element.on("change" + this.eventNamespace, "input[type=file]", function (event)
+                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChange(event)
                 {
                     if (this.files && this.files.length > 0) {
                         scope.uploadFile(this.files[0]);
@@ -177,16 +178,12 @@ define([
             } else {
                 this.addOldBrowserForm();
 
-                this.element.on("change" + this.eventNamespace, "input[type=file]", function (event)
+                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChangeOld(event)
                 {
                     scope.uploadFileForm();
                 });
-
             }
-
-
         },
-
 
         /**
          * Add real form and iframe for browsers without FormData
@@ -220,7 +217,7 @@ define([
                 placement: "bottom",
                 container: ".dcpDocument"
             });
-            this.element.find("iframe").on("load", function ()
+            this.element.find("iframe").on("load", function wFileLoad()
             {
                 if ($(this).contents().find("textarea").length === 0) {
                     // fake load when insert iframe
@@ -229,7 +226,7 @@ define([
                 var response = JSON.parse($(this).contents().find("textarea").val());
 
                 if (response.exceptionMessage) {
-                    _.each(response.messages, function (errorMessage)
+                    _.each(response.messages, function wFileMessages(errorMessage)
                     {
 
                         $('body').trigger("notification", {
@@ -282,7 +279,6 @@ define([
             this.element.find("form").submit();
         },
 
-
         uploadFile: function wFileUploadFile(firstFile)
         {
             var inputText = this.element.find(".dcpAttribute__value");
@@ -297,7 +293,6 @@ define([
                 return;
             }
 
-
             var isNotPrevented=scope._trigger("uploadfile", event, {
                 target: event.currentTarget,
                 index:scope._getIndex(),
@@ -307,6 +302,7 @@ define([
                 return;
             }
 
+            scope.uploadingFiles++;
             this.setVisibilitySavingMenu("disabled");
             fd.append('dcpFile', firstFile);
 
@@ -324,7 +320,7 @@ define([
                 {
                     var xhrobj = $.ajaxSettings.xhr();
                     if (xhrobj.upload) {
-                        xhrobj.upload.addEventListener('progress', function (event)
+                        xhrobj.upload.addEventListener('progress', function wFileProgress(event)
                         {
                             var percent = 0;
                             var position = event.loaded || event.position;
@@ -353,13 +349,12 @@ define([
                     return xhrobj;
                 }
 
-
-            }).done(function (data)
+            }).done(function wFileUploadDone(data)
             {
                 var dataFile = data.data.file;
-                inputText.val(originalText);
-                inputText.css("background", "");
-                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
+
+                scope.uploadingFiles--;
+
                 scope.setValue({
                     value: dataFile.reference,
                     size: dataFile.size,
@@ -371,19 +366,15 @@ define([
                     icon: dataFile.iconUrl
                 });
 
-
                 scope.setVisibilitySavingMenu("visible");
 
-            }).fail(function (data)
+            }).fail(function wFileUploadFail(data)
             {
-
-                inputText.val(originalText);
-                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
-                inputText.css("background", "");
+                scope.uploadingFiles--;
                 inputText.css("background-image", "url(" + scope.options.attributeValue.icon + ')');
                 var result = JSON.parse(data.responseText);
                 if (result) {
-                    _.each(result.messages, function (errorMessage)
+                    _.each(result.messages, function wFileErrorMessages(errorMessage)
                     {
 
                         $('body').trigger("notification", {
@@ -403,8 +394,11 @@ define([
                     });
                 }
 
-
                 scope.setVisibilitySavingMenu("visible");
+            }).always(function wFileUploadEnd() {
+                inputText.val(originalText);
+                inputText.css("background", "");
+                inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
             });
 
         },
@@ -418,7 +412,7 @@ define([
             // call wAttribute:::setValue() :send notification
             this._super(value);
 
-            if (this.getMode() === "write") {
+            if (this.getMode() === "write" && this.uploadingFiles === 0) {
                 this.redraw();
             }
         },
@@ -427,7 +421,7 @@ define([
          * Return the url of common link
          * @returns {*}
          */
-        getLink: function getLink()
+        getLink: function wFileGetLink()
         {
             var link = this._super();
             if (this.options.attributeValue.url && (!link || !link.url)) {
@@ -437,7 +431,7 @@ define([
             return link;
         },
 
-        getType: function ()
+        getType: function wFileGetType()
         {
             return "file";
         }
