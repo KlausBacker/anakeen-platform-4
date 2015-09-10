@@ -989,11 +989,22 @@ define([
                     },
                     error: function (theModel, HttpResponse)
                     {
-                        var response = JSON.parse(HttpResponse.responseText);
-
-                        currentModel.trigger("showError", {
-                            title: response.exceptionMessage
-                        });
+                        if (HttpResponse && HttpResponse.status === 0) {
+                            currentModel.trigger("showError", {
+                                title: i18n.___("Unable to set the lock your navigator seems offline, try later", "ddui")
+                            });
+                            currentModel.trigger("displayNetworkError");
+                            return;
+                        }
+                        try {
+                            var response = JSON.parse(HttpResponse.responseText);
+                            currentModel.trigger("showError", {
+                                title: response.exceptionMessage
+                            });
+                        } catch (e) {
+                            console.error(e);
+                        }
+                        currentModel.trigger("displayNetworkError");
                     }
                 });
             } else {
