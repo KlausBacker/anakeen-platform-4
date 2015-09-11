@@ -6,7 +6,7 @@ define([
     "kendo/kendo.menu",
     "kendo/kendo.window",
     'dcpDocument/widgets/widget'
-], function ($, _, Mustache, i18n)
+], function wMenu($, _, Mustache, i18n)
 {
     'use strict';
 
@@ -38,12 +38,11 @@ define([
                 closeOnClick: true,
                 select: function wMenuSelect(event)
                 {
-                    var menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
-                        confirmDcpWindow, target, targetOptions, dcpWindow, bodyDiv;
-
+                    var $menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
+                        confirmDcpWindow, target, targetOptions, dcpWindow, $bodyDiv, wFeature = '';
 
                     // Use specific select only for terminal items
-                    if (!menuElement.hasClass("menu__element--item")) {
+                    if (!$menuElement.hasClass("menu__element--item")) {
                         return;
                     }
                     $elementA = $(event.item).find('a');
@@ -54,7 +53,7 @@ define([
                         if ($elementA.hasClass("menu--confirm")) {
                             confirmText = Mustache.render($elementA.data('confirm-message'), scopeWidget.options);
 
-                            configMenu = menuElement.data("menuConfiguration");
+                            configMenu = $menuElement.data("menuConfiguration");
                             confirmOptions = configMenu.confirmationOptions || {};
                             confirmDcpWindow = $('body').dcpConfirm({
                                 title: Mustache.render(confirmOptions.title, scopeWidget.options),
@@ -91,14 +90,13 @@ define([
 
                                 if (target === "_self") {
                                     window.location.href = href;
-                                } else
+                                } else {
+                                    configMenu = $menuElement.data("menuConfiguration");
+                                    targetOptions = configMenu.targetOptions || {};
                                     if (target === "_dialog") {
-                                        configMenu = menuElement.data("menuConfiguration");
-                                        targetOptions = configMenu.targetOptions || {};
-
-                                        bodyDiv = $('<div/>');
-                                        $('body').append(bodyDiv);
-                                        dcpWindow = bodyDiv.dcpWindow({
+                                        $bodyDiv = $('<div/>');
+                                        $('body').append($bodyDiv);
+                                        dcpWindow = $bodyDiv.dcpWindow({
                                             title: Mustache.render(targetOptions.title, window.dcp.documentData),
                                             width: targetOptions.windowWidth,
                                             height: targetOptions.windowHeight,
@@ -110,82 +108,87 @@ define([
                                         scopeWidget.popupWindows.push(dcpWindow.data('dcpWindow'));
                                         dcpWindow.data('dcpWindow').kendoWindow().center();
                                         dcpWindow.data('dcpWindow').open();
-
-
                                     } else {
-                                        window.open(href, target);
+                                        if (targetOptions && (targetOptions.windowWidth || targetOptions.windowHeight)) {
+                                            if (targetOptions.windowWidth) {
+                                                wFeature += "width=" + parseInt(targetOptions.windowWidth, 10) + ",";
+                                            }
+                                            if (targetOptions.windowHeight) {
+                                                wFeature += "height=" + parseInt(targetOptions.windowHeight, 10) + ",";
+                                            }
+                                            wFeature += "resizable=yes,scrollbars=yes";
+                                        }
+                                        window.open(href, target, wFeature);
                                     }
+                                }
                             }
                         }
                     }
                 },
                 deactivate: function wMenuDeactivate(event)
                 {
-                    var menuElement = $(event.item);
+                    var $menuElement = $(event.item);
 
                     // Use for reopen for Dynamic menu
-                    if (menuElement.data("menu-openAgain")) {
-                        menuElement.data("menu-openAgain", false);
-                        menuElement.data("menu-noQuery", true);
-                        $content.data("kendoMenu").open(menuElement);
+                    if ($menuElement.data("menu-openAgain")) {
+                        $menuElement.data("menu-openAgain", false);
+                        $menuElement.data("menu-noQuery", true);
+                        $content.data("kendoMenu").open($menuElement);
                     }
                 },
                 open: function wMenuOpen(event)
                 {
 
-                    var menuElement = $(event.item);
+                    var $menuElement = $(event.item);
 
                     // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
                     scopeWidget.element.data("menu-opening", true);
-                    menuElement.data("bodyWidth", $('body').width());
+                    $menuElement.data("bodyWidth", $('body').width());
 
-                    if (!menuElement.hasClass("menu__element--item")) {
-                        var menuUrl = menuElement.data("menu-url");
+                    if (!$menuElement.hasClass("menu__element--item")) {
+                        var menuUrl = $menuElement.data("menu-url");
                         if (menuUrl) {
                             // Open Dynamic menu : request server to get menu contents
-                            if (!menuElement.data("menu-noQuery")) {
-                                var loading = menuElement.find(".menu__loading");
+                            if (!$menuElement.data("menu-noQuery")) {
+                                var loading = $menuElement.find(".menu__loading");
 
                                 if (loading.length > 0) {
                                     // record initial loading item
-                                    menuElement.data("menu-loading", loading);
+                                    $menuElement.data("menu-loading", loading);
                                 }
 
                                 // Display loading first
-                                if (loading.length === 0 && menuElement.data("menu-loading")) {
-                                    menuElement.find(".listmenu__content").html('').append(menuElement.data("menu-loading"));
+                                if (loading.length === 0 && $menuElement.data("menu-loading")) {
+                                    $menuElement.find(".listmenu__content").html('').append($menuElement.data("menu-loading"));
                                 }
-
 
                                 // Get subMenu
                                 $.get(menuUrl, function wMenuDone(data)
                                 {
-                                    menuElement.find(".listmenu__content").html('');
+                                    $menuElement.find(".listmenu__content").html('');
 
                                     scopeWidget._insertMenuContent(
                                         data.content,
-                                        menuElement.find(".listmenu__content"),
-                                        scopeWidget, menuElement);
-                                    menuElement.kendoMenu({
+                                        $menuElement.find(".listmenu__content"),
+                                        scopeWidget, $menuElement);
+                                    $menuElement.kendoMenu({
                                         openOnClick: true,
                                         closeOnClick: true
                                     });
 
-
-                                    if (parseInt(menuElement.find(".k-animation-container").css("left")) !== 0 &&
-                                        parseInt(menuElement.find(".k-animation-container").css("right")) !== 0
+                                    if (parseInt($menuElement.find(".k-animation-container").css("left")) !== 0 &&
+                                        parseInt($menuElement.find(".k-animation-container").css("right")) !== 0
                                     ) {
                                         // Need to close and reopen to adjust position menu because content has changed
-                                        menuElement.data("menu-openAgain", true);
-                                        $content.data("kendoMenu").close(menuElement);
+                                        $menuElement.data("menu-openAgain", true);
+                                        $content.data("kendoMenu").close($menuElement);
                                     }
-
 
                                 }).fail(function wMenuFail(data)
                                 {
                                     try {
-                                        var errorMessage=data.responseText;
-                                        menuElement.find(".listmenu__content").html($('<div/>').text(errorMessage).addClass("menu--error"));
+                                        var errorMessage = data.responseText;
+                                        $menuElement.find(".listmenu__content").html($('<div/>').text(errorMessage).addClass("menu--error"));
                                     } catch (e) {
                                         if (window.dcp.logger) {
                                             window.dcp.logger(e);
@@ -195,7 +198,7 @@ define([
                                     }
                                 });
                             }
-                            menuElement.data("menu-noQuery", false);
+                            $menuElement.data("menu-noQuery", false);
                         }
                     }
                 },
@@ -211,7 +214,6 @@ define([
                     var listWidth = $container.outerWidth();
                     var listLeft = $container.offset().left;
 
-
                     // The first condition is for iOS because no scroll window exists
                     if (($("body").width() > bodyWidth  ) || (window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight)) {
 
@@ -222,7 +224,7 @@ define([
 
                     }
 
-                    _.delay(function ()
+                    _.delay(function wMenuOpenDelay()
                     {
                         // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
                         scopeWidget.element.data("menu-opening", false);
@@ -256,7 +258,7 @@ define([
             this.kendoMenuWidget = $content.data("kendoMenu");
             this.kendoMenuWidget.append([
                 {
-                    text: i18n.___("Other", "UImenu")+'<span class="menu--count" />',
+                    text: i18n.___("Other", "UImenu") + '<span class="menu--count" />',
                     cssClass: "menu__element  menu_element--hamburger ",
                     encoded: false,   // Allows use of HTML for item text
                     items: []         // List items
@@ -264,16 +266,14 @@ define([
             $(window).on("resize.dcpMenu", _.bind(this.inhibitBarMenu, this));
             $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
             _.delay(_.bind(this.updateResponsiveMenu, this), 100);
-
-
         },
 
-        inhibitBarMenu: function ()
+        inhibitBarMenu: function wMenuInhibitBarMenu()
         {
             var widgetMenu = this;
             if (!widgetMenu.element.data("menu-opening") && this.element.css("overflow") !== "hidden") {
                 this.element.css("max-height", this.element.find(".menu__content li").height() + 2).css("overflow", "hidden");
-                this.element.find("li.k-state-border-down").each(function ()
+                this.element.find("li.k-state-border-down").each(function wMenuInhibitBarMenuClose()
                 {
                     widgetMenu.kendoMenuWidget.close($(this));
                 });
@@ -336,7 +336,6 @@ define([
             var $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");
             var hiddenLeft = $hiddenItems.length;
 
-
             if (barMenu.data("menu-opening")) {
                 return;
             }
@@ -376,7 +375,6 @@ define([
                     newHiddens = [];
                 }
             }
-
 
             // Move each new hidden menu to hamburger
             _.each(newHiddens.reverse(), function wMenuItemToHamburger(item)
@@ -440,14 +438,14 @@ define([
 
             if (scopeMenu) {
                 // Add fake before content if at least one element has before content to align all items
-                _.each(menus, function (currentMenu)
+                _.each(menus, function wMenuInsertMenuContentfake(currentMenu)
                 {
                     if (currentMenu.iconUrl || currentMenu.beforeContent) {
                         hasBeforeContent = true;
                     }
                 });
                 if (hasBeforeContent) {
-                    _.each(menus, function (currentMenu)
+                    _.each(menus, function wMenuInsertMenuContentBeforeContent(currentMenu)
                     {
                         if (!currentMenu.iconUrl && !currentMenu.beforeContent) {
                             if (currentMenu.type !== "separatorMenu") {
@@ -458,14 +456,14 @@ define([
                 }
             }
 
-            _.each(menus, function (currentMenu)
+            _.each(menus, function wMenuInsertMenuContentSet(currentMenu)
             {
                 var $currentMenu;
                 if (currentMenu.visibility === "hidden") {
                     return;
                 }
                 currentMenu.htmlAttr = [];
-                _.each(currentMenu.htmlAttributes, function (attrValue, attrId)
+                _.each(currentMenu.htmlAttributes, function wMenuInsertMenuContentSetHtml(attrValue, attrId)
                 {
                     if (attrId === "class") {
                         currentMenu.cssClass = attrValue;
@@ -486,7 +484,7 @@ define([
                     }
                 });
 
-                currentMenu.contentLabel=(currentMenu.htmlLabel || currentMenu.label);
+                currentMenu.contentLabel = (currentMenu.htmlLabel || currentMenu.label);
                 currentMenu.disabled = (currentMenu.visibility === 'disabled');
                 if (currentMenu.type === "listMenu") {
                     subMenu = "listMenu";
@@ -508,7 +506,6 @@ define([
                             currentMenu.url = Mustache.render(currentMenu.url, currentMenu);
                         }
                         $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type), currentMenu));
-
 
                     }
                 }
@@ -547,12 +544,12 @@ define([
                 kendoWidget.destroy();
             }
             $(window).off(".dcpMenu");
-            _.each(this.popupWindows, function (pWindow)
+            _.each(this.popupWindows, function wMenuDestroyPopup(pWindow)
             {
                 pWindow.destroy();
             });
 
-            _.each(this._tooltips, function (currentTooltip)
+            _.each(this._tooltips, function wMenuDestroyTooltip(currentTooltip)
             {
                 currentTooltip.tooltip("destroy");
             });
