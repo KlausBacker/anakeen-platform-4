@@ -5,7 +5,7 @@ define([
     'mustache',
     'dcpDocument/widgets/widget',
     'tooltip'
-], function ($, _, Mustache)
+], function wAttributeWidget($, _, Mustache)
 {
     'use strict';
 
@@ -35,6 +35,7 @@ define([
          */
         redraw: function wAttributeRedraw()
         {
+            this.element.find("[aria-describedby*='tooltip']").tooltip("hide");
             this.element.empty();
             this._initDom();
             this.element.off(this.eventNamespace);
@@ -49,7 +50,7 @@ define([
          */
         hasLink: function hasLink()
         {
-            return !!(this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url);
+            return (this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url);
         },
         /**
          * Return the url of link
@@ -74,10 +75,10 @@ define([
                 currentElement = this.element;
             }
             currentElement.addClass('dcpAttribute__value--flash');
-            _.delay(function ()
+            _.delay(function wAttributeFlashDelay()
             {
                 currentElement.removeClass('dcpAttribute__value--flash').addClass('dcpAttribute__value--endflash');
-                _.delay(function ()
+                _.delay(function wAttributeFlashSecondDelay()
                 {
                     currentElement.removeClass('dcpAttribute__value--endflash');
                 }, 600);
@@ -102,7 +103,7 @@ define([
                 } else {
                     messages = _.toArray(message);
                 }
-                _.each(messages, function (indexMessage)
+                _.each(messages, function wAttributeSetErrorMsg(indexMessage)
                 {
                     if ((indexMessage.index === -1) ||
                         (scope.element.closest('tr').data("line") === indexMessage.index)) {
@@ -112,7 +113,7 @@ define([
                             placement: "bottom",
                             html: true,
                             animation: false,
-                            title: function ()
+                            title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
@@ -124,7 +125,7 @@ define([
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
                         // Need to refresh to update position after possible change on element value
-                        _.delay(function ()
+                        _.delay(function wAttributeSetErrorDelay()
                         {
                             scope.element.find(".input-group").tooltip("hide").tooltip("show");
                         }, 100);
@@ -170,7 +171,7 @@ define([
          *
          * @returns {*|number|.options.attributeValue}
          */
-        getValue: function getValue()
+        getValue: function wAttributegetValue()
         {
             return this.options.attributeValue;
         },
@@ -179,7 +180,7 @@ define([
          * Identify the input where is the raw value
          * @returns {*}
          */
-        getContentElements: function ()
+        getContentElements: function wAttributeGetContentElements()
         {
             return this.element.find('.dcpAttribute__value[name="' + this.options.id + '"]');
         },
@@ -263,8 +264,6 @@ define([
                         title: scope.options.renderOptions.inputHtmlTooltip,
                         placement: "bottom",
                         template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
-
                     });
                     $ktTarger.data("hasTooltip", true);
                 }
@@ -298,10 +297,9 @@ define([
                 this.options.hasAutocomplete = true;
             }
 
-
             if (this.options.renderOptions && this.options.renderOptions.buttons) {
                 // Add index for template to identify buttons
-                this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function (val, index)
+                this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function wAttributeOptionMap(val, index)
                 {
                     val.index = index;
                     return val;
@@ -359,7 +357,6 @@ define([
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
 
-
         /**
          * Init the DOM of the template
          *
@@ -403,12 +400,12 @@ define([
                 var scope = this;
 
                 var inputTargetFilter = ".dcpAttribute__value";
-                this._getFocusInput().on("focus" + this.eventNamespace, function (event)
+                this._getFocusInput().on("focus" + this.eventNamespace, function wAttributeFocus(event)
                 {
                     var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.showInputTooltip(ktTarget);
                 });
-                this._getFocusInput().on("blur." + this.eventNamespace, function (event)
+                this._getFocusInput().on("blur." + this.eventNamespace, function wAttributeBlur(event)
                 {
                     var ktTarget = $(event.currentTarget).closest(inputTargetFilter);
                     scope.hideInputTooltip(ktTarget);
@@ -444,7 +441,7 @@ define([
         _initButtonsEvent: function _initButtonsEvent()
         {
             var currentWidget = this;
-            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function (event)
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function wAttributeButtonClick(event)
             {
                 var buttonsConfig = currentWidget.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
@@ -459,10 +456,10 @@ define([
                     if (buttonConfig.target !== "_dialog") {
                         window.open(url, buttonConfig.target);
                     } else {
-                        var bdw = $('<div/>');
-                        $('body').append(bdw);
+                        var $bdw = $('<div/>');
+                        $('body').append($bdw);
                         var renderTitle = Mustache.render(buttonConfig.windowTitle, currentWidget.options.attributeValue);
-                        var dw = bdw.dcpWindow({
+                        var dw = $bdw.dcpWindow({
                             title: renderTitle,
                             width: buttonConfig.windowWidth,
                             height: buttonConfig.windowHeight,
@@ -532,7 +529,7 @@ define([
                     id: currentWidget.options.id
                 });
                 // main input is focuses after deletion
-                _.defer(function ()
+                _.defer(function wAttributeDeferDelete()
                 {
                     currentWidget.element.find("input").focus();
                 });
@@ -551,10 +548,10 @@ define([
 
             if (htmlLink) {
 
-                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event)
+                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function wAttributeAttributeClick(event)
                 {
 
-                    var renderTitle, index, dialogDiv, dpcWindow, href = $(this).attr("href"), eventContent;
+                    var renderTitle, index, $dialogDiv, dpcWindow, href = $(this).attr("href"), eventContent;
 
                     if (href.substring(0, 8) === "#action/") {
                         event.preventDefault();
@@ -562,7 +559,7 @@ define([
                         scopeWidget._trigger("externalLinkSelected", event, {
                             target: event.target,
                             eventId: eventContent.shift(),
-                            index:  scopeWidget._getIndex(),
+                            index: scopeWidget._getIndex(),
                             options: eventContent
                         });
                         return this;
@@ -578,10 +575,10 @@ define([
                             renderTitle = Mustache.render(htmlLink.windowTitle, scopeWidget.options.attributeValue);
                         }
 
-                        dialogDiv = $('<div/>');
-                        $('body').append(dialogDiv);
+                        $dialogDiv = $('<div/>');
+                        $('body').append($dialogDiv);
 
-                        dpcWindow = dialogDiv.dcpWindow({
+                        dpcWindow = $dialogDiv.dcpWindow({
                             title: renderTitle,
                             width: htmlLink.windowWidth,
                             height: htmlLink.windowHeight,
@@ -683,9 +680,11 @@ define([
         _checkValue: function wAttributeTestValue(value)
         {
             //noinspection JSHint
-            if (this._isMultiple()) {
+            if (this._isMultiple()) { // jshint ignore:line
                 // TODO : Verify each array entry
+// jscs:disable disallowEmptyBlocks
             } else {
+// jscs:enable disallowEmptyBlocks
                 if (!_.isObject(value) || !_.has(value, "value") || !_.has(value, "displayValue")) {
                     throw new Error("The value must be an object with value and displayValue properties (attrid id :" + this.options.id + ")");
                 }

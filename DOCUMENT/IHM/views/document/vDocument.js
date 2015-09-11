@@ -19,7 +19,7 @@ define([
     'kendo/kendo.tabstrip',
     'dcpDocument/widgets/history/wHistory',
     'dcpDocument/widgets/properties/wProperties'
-], function (_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
+], function vDocument(_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
              ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
              attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
 {
@@ -94,6 +94,8 @@ define([
             this.template = this.getTemplates("body").trim();
             this.partials = this.getTemplates("sections");
 
+            // Hide parasite tooltip if any
+            this.$el.find("[aria-describedby*='tooltip']").tooltip("hide");
             this.$el.empty();
 
             this.renderCss();
@@ -197,7 +199,6 @@ define([
                             }
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
 
-
                             if (tabModel.getOption("tabPlacement")) {
                                 tabPlacement = tabModel.getOption("tabPlacement");
                             }
@@ -214,7 +215,6 @@ define([
                     }
                     currentView.trigger("partRender");
                 });
-
 
                 this.kendoTabs = this.$(".dcpDocument__tabs").kendoTabStrip({
                     tabPosition: tabPlacement,
@@ -238,6 +238,8 @@ define([
                             if (currentView && currentView.model && currentView.model.get("attributes")) {
                                 var tab = currentView.model.get("attributes").get(tabId);
                                 if (tab) {
+                                    // Hide parasite tooltip if any
+                                    currentView.$el.find("[aria-describedby*='tooltip']").tooltip("hide");
                                     tab.trigger("showTab");
                                     viewMenu.refresh();
                                 }
@@ -264,7 +266,7 @@ define([
                     // Use an overflow to hide resize effects, it is delete at the end of tab resize
                     var tabList = this.$(".dcpDocument__tabs .dcpDocument__tabs__list");
                     tabList.css("overflow", "hidden").css("max-height", "2.7em");
-                    $(window).on("resize.v" + this.model.cid, function ()
+                    $(window).on("resize.v" + this.model.cid, function vDocumentResize()
                     {
                         tabList.css("overflow", "hidden").css("max-height", "2.7em");
                     });
@@ -288,11 +290,10 @@ define([
             {
                 documentView.model.redrawErrorMessages();
             });
-            $(window).on("resize.v" + this.model.cid, _.debounce(function ()
+            $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
             {
                 documentView.model.redrawErrorMessages();
             }, 100, false));
-
 
             this.$el.addClass("dcpDocument--show");
 
@@ -307,14 +308,13 @@ define([
                 this.$(".dcpTab__content").css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
             }
 
-            _.delay(function ()
+            _.delay(function vDocumentEndLoading()
             {
                 $(".dcpLoading--init").removeClass("dcpLoading--init");
             }, 500);
 
             return this;
         },
-
 
         resizeForFooter: function vDocumentresizeForFooter()
         {
@@ -348,7 +348,6 @@ define([
             var hiddenSelected = false;
             var dataSource = null;
             var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-
 
             $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
             // Restore initial tabs
@@ -384,7 +383,7 @@ define([
             /**
              * Need to recompute container width
              */
-            $(".dcpLabel__select-hide:visible").each(function ()
+            $(".dcpLabel__select-hide:visible").each(function vDocumentSelectContainer()
             {
                 var $container = $(this).closest(".k-list-container");
                 var x = $container.offset().left;
@@ -412,15 +411,13 @@ define([
             $tabLabel.find(".k-link").show(); // Restore original link (tab label)
 
             $dropTopSelect = $tabs.find(".dcpTab__label__select.k-combobox").hide();
-            $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function ()
+            $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function vDocumentSelectTabClose()
             {
                 $(this).data("kendoComboBox").close();
             });
 
-
             $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active");
             $tabs.find(".dcpLabel[data-attrid=" + $selectedTabId + "]").addClass("k-state-active");
-
 
             if (hiddens.length > 0) {
 
@@ -433,7 +430,7 @@ define([
                 // Hide original link
                 $(lastShow).find(".k-link").hide();
                 // Replace it to a dropdown selector
-                hiddenSelected = _.some(hiddens, function (item)
+                hiddenSelected = _.some(hiddens, function vDocumentSomeHiddens(item)
                 {
                     return (item.id === $selectedTabId);
                 });
@@ -456,13 +453,13 @@ define([
                         dataSource: hiddens,
                         dataTextField: "label",
                         dataValueField: "id",
-                        dataBound: function (event)
+                        dataBound: function vDocumentTabSelectDatabound(event)
                         {
                             var myTab = $(this.element).closest("li");
                             var liItem = $tabs.find("li[data-attrid=" + this.value() + "]");
                             myTab.data("tooltipLabelSelect", liItem.data("tooltipLabel"));
                         },
-                        select: function (event)
+                        select: function vDocumentTabSelectSelect(event)
                         {
                             var dataItem = this.dataSource.at(event.item.index());
                             var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
@@ -477,7 +474,7 @@ define([
                             myTab.addClass("k-state-active");
                             myTab.find(".k-input").blur(); // Because input is read only
                         },
-                        open: function ()
+                        open: function vDocumentTabSelectOpen()
                         {
                             // Need to compute width of container to see elements
                             // Set max-width to not be out of body
@@ -485,13 +482,13 @@ define([
                             var x = $(this.element).closest("li").offset().left;
                             var bodyWidth = $('body').width();
                             $ul.css("max-width", (bodyWidth - x - 20) + "px");
-                            _.defer(function ()
+                            _.defer(function vDocumentSelectTabOpen()
                             {
                                 $ul.closest(".k-animation-container").addClass("menu__select_container");
                             });
                         },
 
-                        template: function (event)
+                        template: function vDocumentTabSelectTemplate(event)
                         {
                             if (event.tooltipLabel) {
                                 return Mustache.render('<span class="dcpLabel__select--tooltip" data-tooltipLabel="{{tooltipLabel}}">{{label}}</span>', event);
@@ -499,7 +496,6 @@ define([
                             return event.label;
                         }
                     });
-
 
                     $dropSelect.data("kendoComboBox").ul.addClass("dcpLabel__select-hide");
                     // The container width is computed by open event
@@ -513,7 +509,7 @@ define([
                         placement: "left",
                         container: ".dcpDocument",
                         html: true,
-                        title: function ()
+                        title: function vDocumentTabSelectTitle()
                         {
                             return $(this).find(".dcpLabel__select--tooltip").attr("data-tooltipLabel");
                         }
@@ -531,13 +527,12 @@ define([
                     $dropSelect.data("kendoComboBox").setDataSource(dataSource);
                 }
 
-
                 // Add count in select button
                 $(lastShow).find(".dcpLabel__count").text(hiddens.length);
 
                 if (!$tabs.data("selectFixOn")) {
                     // Add callback only one time
-                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function ()
+                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick()
                     {
                         var selectedTab = $kendoTabs.select().data("attrid");
                         var selectedItem = $tabs.data("selectFixOn").data("kendoComboBox").value();
@@ -553,7 +548,7 @@ define([
                         }
                     });
 
-                    $tabs.on("focus", ".dcpLabel--select .k-dropdown-wrap .k-input", function ()
+                    $tabs.on("focus", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabFocus()
                     {
                         $(this).blur();
                     });
@@ -563,7 +558,7 @@ define([
                 $tabs.data("selectFixOn", $dropSelect);
             }
             if ('ontouchstart' in document.documentElement && iOS) {
-                $("body").off('show.bs.tooltip').on('show.bs.tooltip', "[data-original-title]", function (e)
+                $("body").off('show.bs.tooltip').on('show.bs.tooltip', "[data-original-title]", function vDocumentWorkaroundIosTouch(e)
                 {
                     // prevent ios double tap
                     var $tooltip = $(this);
@@ -571,11 +566,11 @@ define([
                         if (!$tooltip.data("showios")) {
                             e.preventDefault();
                             $tooltip.data("showios", true);
-                            _.delay(function ()
+                            _.delay(function vDocumentWorkaroundIosDelay()
                             {
                                 $tooltip.tooltip("show");
                                 $tooltip.data("showios", false);
-                                _.delay(function ()
+                                _.delay(function vDocumentWorkaroundIosSecondDelay()
                                 {
                                     $tooltip.tooltip("hide");
                                 }, 2000);
@@ -584,7 +579,6 @@ define([
                     }
                 });
             }
-
 
             $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
 
@@ -634,10 +628,9 @@ define([
                 customCss = this.model.get("customCSS");
             //Remove old CSS
 
-
             _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink)
             {
-                var findCss = function (currentCss)
+                var findCss = function vDocumentFindCss(currentCss)
                 {
                     return $(currentLink).data("id") === currentCss.key;
                 };
@@ -753,9 +746,8 @@ define([
                 state: this.model.get("properties").get("state")
             });
 
-
             transitionGraph.model.fetch({
-                success: function ()
+                success: function vDocumentTransitionSuccess()
                 {
                     //Init transition view
                     transitionGraph.view = new ViewTransitionGraph({
@@ -763,7 +755,7 @@ define([
                         el: $target
                     });
                     transitionGraph.view.render();
-                    transitionGraph.view.$el.on("viewTransition", function (event, nextState)
+                    transitionGraph.view.$el.on("viewTransition", function vDocumentTransitionView(event, nextState)
                     {
                         transitionGraph.view.remove();
                         documentView.model.trigger("showTransition", nextState);
@@ -944,7 +936,6 @@ define([
             }
         },
 
-
         /**
          * Save and close the current document
          */
@@ -1104,7 +1095,6 @@ define([
             throw new Error("Unknown template  " + key);
         },
 
-
         /**
          * Destroy the associated widget and suppress event listener before remov the dom
          *
@@ -1126,7 +1116,6 @@ define([
             }
             $(window).off("." + this.model.cid);
             $(window.document).off("." + this.model.cid);
-
 
             return Backbone.View.prototype.remove.call(this);
         }
