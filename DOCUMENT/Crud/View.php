@@ -529,7 +529,6 @@ class View extends Crud
         return $fields;
     }
     /**
-     * @param \Doc $document
      * @param string $vid
      * @return \Dcp\Ui\IRenderConfig
      * @throws Exception
@@ -663,17 +662,27 @@ class View extends Crud
             $renderEtag = $config->getEtag($this->document);
             if ($renderEtag !== "") {
                 \Dcp\ConsoleTime::stopPartial();
-                return $renderEtag;
+                return $renderEtag . $refreshMsg;
             }
         }
         
+        $etag = $this->getDefaultETag($this->document);
+        
+        $etag.= $refreshMsg;
+        \Dcp\ConsoleTime::stopPartial();
+        
+        return $etag;
+    }
+    
+    public static function getDefaultETag(\Doc $document)
+    {
         $result = array(
-            "id" => $this->document->id,
-            "revdate" => $this->document->revdate,
-            "cvid" => $this->document->cvid,
-            "views" => $this->document->views,
-            "fromid" => $this->document->fromid,
-            "locked" => $this->document->locked,
+            "id" => $document->id,
+            "revdate" => $document->revdate,
+            "cvid" => $document->cvid,
+            "views" => $document->views,
+            "fromid" => $document->fromid,
+            "locked" => $document->locked,
         );
         
         $user = getCurrentUser();
@@ -684,7 +693,7 @@ class View extends Crud
         simpleQuery(getDbAccess() , $sql, $familyRevdate, true, true);
         $result[] = $familyRevdate;
         
-        $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $id);
+        $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $document->id);
         simpleQuery(getDbAccess() , $sql, $lastTab, true, true);
         $result[] = $lastTab;
         
@@ -693,16 +702,9 @@ class View extends Crud
             simpleQuery(getDbAccess() , $sql, $cvDate, true, true);
             $result[] = $cvDate;
         }
-        
-        \Dcp\ConsoleTime::step("get Sql");
         // Necessary only when use family.structure
-        $result[] = $refreshMsg;
         $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        
-        \Dcp\ConsoleTime::step("getParam");
-        
-        \Dcp\ConsoleTime::stopPartial();
         
         return join(" ", $result);
     }
