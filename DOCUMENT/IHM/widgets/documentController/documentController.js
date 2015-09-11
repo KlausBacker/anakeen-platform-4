@@ -6,6 +6,7 @@ define([
     'dcpDocument/routers/router',
     'dcpDocument/models/mDocument',
     'dcpDocument/controllerObjects/attributeInterface',
+    'dcpDocument/controllerObjects/menuInterface',
     'dcpDocument/controllerObjects/changeStateInterface',
     'dcpDocument/views/document/vDocument',
     'dcpDocument/models/mTransition',
@@ -14,7 +15,7 @@ define([
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification'
-], function ($, _, Backbone, Router, DocumentModel, AttributeInterface, ChangeStateInterface, DocumentView, TransitionModel, TransitionView)
+], function documentController($, _, Backbone, Router, DocumentModel, AttributeInterface, MenuInterface, ChangeStateInterface, DocumentView, TransitionModel, TransitionView)
 {
     'use strict';
 
@@ -528,7 +529,6 @@ define([
                 el: $target
             });
 
-
             changeStateInterface = new ChangeStateInterface(transitionElements.model, $target, nextState, transition);
 
             //Propagate afterDisplayChange on renderDone
@@ -564,7 +564,7 @@ define([
                 //delete the pop up when the render of the pop up is done
                 currentWidget._triggerControllerEvent("successChangeState",
                     currentWidget.getProperties(), changeStateInterface);
-                currentWidget.view.once("renderDone", function ()
+                currentWidget.view.once("renderDone", function documentController_transitionRender()
                 {
                     transitionElements.view.remove();
                     _.each(messages, function documentController_parseMessage(message)
@@ -586,8 +586,6 @@ define([
             });
 
             transitionElements.model.fetch();
-
-
         },
 
         /**
@@ -664,7 +662,7 @@ define([
             var currentDocumentProperties = this.getProperties(), currentWidget = this;
             options = options || {};
             this.activatedEventListener = {};
-             _.each(this.options.eventListener, function documentController_getActivatedEvent(currentEvent)
+            _.each(this.options.eventListener, function documentController_getActivatedEvent(currentEvent)
             {
                 if (!_.isFunction(currentEvent.documentCheck)) {
                     currentWidget.activatedEventListener[currentEvent.name] = currentEvent;
@@ -900,7 +898,8 @@ define([
             var currentWidget = this;
             this._checkInitialisedModel();
             //Reinit model with server values
-            _.each(_.pick(this.getProperties(), "initid", "revision", "viewId"), function dcpDocument_setCurrentOptions(value, key) {
+            _.each(_.pick(this.getProperties(), "initid", "revision", "viewId"), function dcpDocument_setCurrentOptions(value, key)
+            {
                 currentWidget.options[key] = value;
             });
             if (values) {
@@ -1000,7 +999,7 @@ define([
             } catch (e) {
                 ready = false;
                 properties = {
-                    "notLoaded" : true
+                    "notLoaded": true
                 };
             }
             if (ready) {
@@ -1034,6 +1033,37 @@ define([
             return this._model.get("attributes").map(function documentController_mapAttribute(currentAttribute)
                 {
                     return new AttributeInterface(currentAttribute);
+                }
+            );
+        },
+
+        /**
+         * Get the menu interface object
+         *
+         * @param menuId
+         * @returns MenuInterface
+         */
+        getMenu: function documentControllerGetMenu(menuId)
+        {
+            var menu;
+            this._checkInitialisedModel();
+            menu = this._model.get("menus").get(menuId);
+
+            return new MenuInterface(this._model.get("menus").get(menuId));
+
+        },
+
+        /**
+         * Get all the menu of the current document
+         *
+         * @returns [MenuInterface]
+         */
+        getMenus: function documentControllerGetMenus()
+        {
+            this._checkInitialisedModel();
+            return this._model.get("menus").map(function documentController_mapMenu(currentMenu)
+                {
+                    return new MenuInterface(currentMenu);
                 }
             );
         },
@@ -1289,7 +1319,9 @@ define([
         {
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
+// jscs:disable disallowImplicitTypeConversion
             allKind = !!allKind;
+// jscs:enable disallowImplicitTypeConversion
             newConstraintList = _.filter(this.options.constraintList, function documentController_removeConstraint(currentConstrait)
             {
                 if ((allKind || !currentConstrait.externalConstraint) && (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name))) {
@@ -1384,7 +1416,9 @@ define([
         {
             var removed = [],
                 testRegExp = new RegExp("\\" + eventName + "$"), newList, eventList;
+// jscs:disable
             allKind = !!allKind;
+// jscs:enable
             newList = _.filter(this.options.eventListener, function documentController_removeCurrentEvent(currentEvent)
             {
                 if ((allKind || !currentEvent.externalEvent) && (currentEvent.name === eventName || testRegExp.test(currentEvent.name))) {
@@ -1465,7 +1499,8 @@ define([
          * @param message
          * @param px
          */
-        maskDocument : function documentController(message, px) {
+        maskDocument: function documentController(message, px)
+        {
             this.$loading.dcpLoading('show');
             if (message) {
                 this.$loading.dcpLoading('setTitle', message);
@@ -1478,7 +1513,8 @@ define([
         /**
          * Hide loading bar
          */
-        unmaskDocument : function documentController_unmaskDocument(force) {
+        unmaskDocument: function documentController_unmaskDocument(force)
+        {
             this.$loading.dcpLoading('hide', force);
         },
 

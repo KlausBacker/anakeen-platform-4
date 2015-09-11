@@ -1,7 +1,7 @@
 /*global define*/
 define([
     "underscore"
-], function (_)
+], function attributeInterface(_)
 {
     'use strict';
 
@@ -106,7 +106,7 @@ define([
         var currentValue;
         if (this._attributeModel.get("multiple")) {
             if (_.isArray(value)) {
-                _.each(value, function (singleValue)
+                _.each(value, function AttributeInterfaceSetValueVerify(singleValue)
                 {
                     if (!_.isObject(singleValue) || _.isUndefined(singleValue.value)) {
                         throw new Error("Each values must be an object with at least value properties");
@@ -116,7 +116,6 @@ define([
                 if (!_.isObject(value) || _.isUndefined(value.value) || _.isUndefined(value.index) || value.index === null) {
                     throw new Error("Value must be an object with at least value and index properties");
                 }
-
 
                 index = parseInt(value.index);
                 if (index < 0) {
