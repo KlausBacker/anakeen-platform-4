@@ -1045,7 +1045,7 @@ define([
 
         save: function mDocumentSave(attributes, options)
         {
-            var event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
+            var result, event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
                 afterDone = function afterDone()
                 {
                     currentModel.trigger("afterSave", currentProperties);
@@ -1067,7 +1067,11 @@ define([
                     options.success = afterDone;
                 }
                 this.trigger("displayLoading", {isSaving: true});
-                return Backbone.Model.prototype.save.call(this, attributes, options);
+                result = Backbone.Model.prototype.save.call(this, attributes, options);
+                if (result === false) {
+                    //unable to save for constraint error
+                    options.fail();
+                }
             }
             return false;
         },
