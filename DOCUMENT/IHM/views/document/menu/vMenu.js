@@ -62,7 +62,9 @@ define([
 
         updateWidget: function vMenuUpdateWidget()
         {
-            this.$el.dcpMenu("destroy");
+            if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
+                this.$el.dcpMenu("destroy");
+            }
             return this.render();
         },
 
@@ -87,7 +89,9 @@ define([
          */
         refresh: function vMenu_refresh()
         {
-            this.$el.dcpMenu("updateResponsiveMenu");
+            if (this.$el.dcpMenu && this._findWidgetName(this.$el)) {
+                this.$el.dcpMenu("updateResponsiveMenu");
+            }
         }
 
     });
