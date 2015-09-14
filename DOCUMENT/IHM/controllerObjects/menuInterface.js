@@ -16,7 +16,7 @@ define([
 
     MenuPrototope.prototype._set = function MenuPrototope_set(key, value, options)
     {
-        if (this.id || options.strict !== false) {
+        if (this.id || !options || options.strict !== false) {
             this._menuModel.set(key, value, options);
         }
     };
