@@ -1045,7 +1045,7 @@ define([
 
         save: function mDocumentSave(attributes, options)
         {
-            var result, event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
+            var result = false, event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
                 afterDone = function afterDone()
                 {
                     currentModel.trigger("afterSave", currentProperties);
@@ -1073,7 +1073,7 @@ define([
                     options.fail();
                 }
             }
-            return false;
+            return result;
         },
 
         deleteDocument: function mDocumentDelete(options)
