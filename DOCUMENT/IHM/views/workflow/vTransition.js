@@ -5,49 +5,52 @@ define([
     'mustache',
     'dcpDocument/views/document/vDocument',
     'dcpDocument/widgets/window/wDialog'
-], function (_, $, Backbone, Mustache, ViewDocument) {
+], function vTransition(_, $, Backbone, Mustache, ViewDocument)
+{
     'use strict';
 
     return ViewDocument.extend({
 
-        messages : [],
+        messages: [],
 
-        templates : {
-            htmlContent : '<div class="dcpTransition--content-activity" >' +
-                          ' <span class="dcpTransition--activity" style="border-color:{{transition.beginState.color}}">{{transition.beginState.displayValue}}</span>' +
-                          '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
-                          '<span><i class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
-                          '<span class="dcpTransition--activity" style="border-color:{{transition.endState.color}}">{{transition.endState.displayValue}}</span> ' +
+        templates: {
+            htmlContent: '<div class="dcpTransition--content-activity" >' +
+            ' <span class="dcpTransition--activity" style="border-color:{{transition.beginState.color}}">{{transition.beginState.displayValue}}</span>' +
+            '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
+            '<span><i class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
+            '<span class="dcpTransition--activity" style="border-color:{{transition.endState.color}}">{{transition.endState.displayValue}}</span> ' +
             '</div>',
 
-            htmlStateContent : '<div class="dcpTransition--content-activity">' +
-                               '<span class="dcpTransition--success" >{{labels.success}}</span>' +
+            htmlStateContent: '<div class="dcpTransition--content-activity">' +
+            '<span class="dcpTransition--success" >{{labels.success}}</span>' +
             '</div>',
 
-            htmlStateButtons : '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-default btn-sm">' +
+            htmlStateButtons: '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-default btn-sm">' +
             '{{labels.close}} </button>',
 
-            htmlLoading : '<div class="dcpTransition--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> {{labels.inprogress}}</div>',
+            htmlLoading: '<div class="dcpTransition--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> {{labels.inprogress}}</div>',
 
-            htmlButtons : '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
-                          '<button title="{{transition.label}}" ' +
-                          'class="dcpTransition-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
+            htmlButtons: '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
+            '<button title="{{transition.label}}" ' +
+            'class="dcpTransition-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
             '{{labels.confirm}}</button>{{/hasAttributes}}'
         },
 
-        events : {
-            "click .dcpTransition-button-ok " : "clickOnOk",
-            "click .dcpTransition-button-cancel" : "clickOnCancel",
-            "click .dcpTransition-button-close" : "clickOnClose"
+        events: {
+            "click .dcpTransition-button-ok ": "clickOnOk",
+            "click .dcpTransition-button-cancel": "clickOnCancel",
+            "click .dcpTransition-button-close": "clickOnClose"
         },
 
-        initialize : function vTransition_initialize(options) {
+        initialize: function vTransition_initialize(options)
+        {
             //Call parent
             ViewDocument.prototype.initialize.apply(this, arguments);
             this.listenTo(this.model, 'showError', this.displayError);
             //this.listenTo(this.model, 'invalid', this.displayError);
             this.listenTo(this.model, 'request', this.transitionDisplayLoading);
-            this.listenTo(this.model, 'hide', function vTransition_hide() {
+            this.listenTo(this.model, 'hide', function vTransition_hide()
+            {
                 this.$el.hide();
             });
             this.listenTo(this.model, 'show', function vTransition_show()
@@ -63,7 +66,8 @@ define([
             this.options = options;
         },
 
-        remove : function vTransition_remove() {
+        remove: function vTransition_remove()
+        {
             if (this.transitionWindow) {
                 this.transitionWindow.close();
             }
@@ -72,13 +76,15 @@ define([
             //Remove custom CSS
             var customCss = _.pluck(this.model.get("customCSS"), "key");
             if (customCss.length > 0) {
-                _.each(customCss, function (cssKey) {
+                _.each(customCss, function vTransition_removeLink(cssKey)
+                {
                     $('link[data-view=true][data-id="' + cssKey + '"]').remove();
                 });
             }
         },
 
-        displayError : function vTransition_displayError(error) {
+        displayError: function vTransition_displayError(error)
+        {
             var workflow = this.model.get("workflow"),
                 attributes = this.model.get("attributes"),
                 $okButton = this.$el.find(".dcpTransition-button-ok"),
@@ -102,7 +108,8 @@ define([
             }
         },
 
-        cleanAndRender : function vTransition_cleanAndRender() {
+        cleanAndRender: function vTransition_cleanAndRender()
+        {
             var workflow = this.model.get("workflow"),
                 transition = workflow.transition,
                 state = workflow.state;
@@ -116,11 +123,13 @@ define([
             }
         },
 
-        clearError : function vTransition_clearError() {
+        clearError: function vTransition_clearError()
+        {
             this.$el.find(".dcpTransition--error").remove();
         },
 
-        reactiveWidget : function vTransition_reactiveWidget() {
+        reactiveWidget: function vTransition_reactiveWidget()
+        {
 
             var workflow = this.model.get("workflow"),
                 attributes = this.model.get("attributes"),
@@ -143,7 +152,8 @@ define([
         /**
          * Display the loading widget
          */
-        transitionDisplayLoading : function vTransition_transitionDisplayLoading() {
+        transitionDisplayLoading: function vTransition_transitionDisplayLoading()
+        {
             var $loading = this.$el.find(".dcpTransition--loading"),
                 $okButton = this.$el.find(".dcpTransition-button-ok"),
                 $cancelButton = this.$el.find(".dcpTransition-button-cancel");
@@ -154,20 +164,22 @@ define([
             $cancelButton.prop("disabled", true);
         },
 
-        displayMessages : function vTransition_displayMessages(messages) {
+        displayMessages: function vTransition_displayMessages(messages)
+        {
             var currentView = this,
                 template = '<div class="dcpTransition--message dcpTransition--message--{{type}}">{{contentText}} {{{contentHtml}}}</div>',
                 $message = this.$el.find(".dcpTransition--messages");
 
             this.messages = [];
 
-            _.each(messages, function vTransition_analyzeCurrentMessage(message) {
+            _.each(messages, function vTransition_analyzeCurrentMessage(message)
+            {
                 $message.append($(Mustache.render(template, message)));
                 //noinspection JSUnresolvedVariable
                 currentView.messages.push({
-                    title :       message.contentText,
-                    type :        message.type,
-                    htmlMessage : message.contentHtml
+                    title: message.contentText,
+                    type: message.type,
+                    htmlMessage: message.contentHtml
                 });
             });
         },
@@ -176,7 +188,8 @@ define([
          * Render the document view
          * @returns {*}
          */
-        render : function vTransition_render() {
+        render: function vTransition_render()
+        {
             var currentView = this,
                 workflow = this.model.get("workflow"),
                 attributes = this.model.get("attributes"),
@@ -196,26 +209,32 @@ define([
 
                 if (attributes.length === 0) {
                     // Direct send transition without user control
-                    _.defer(function vTransition_saveForMe() {
-                        currentView.model.save();
+                    _.defer(function vTransition_saveForMe()
+                    {
+                        var event = {prevent: false};
+                        currentView.model.trigger("beforeChangeState", event);
+                        if (event.prevent === false) {
+                            currentView.model.save();
+                        }
                     });
                 }
                 this.$el.attr("data-state", state.id);
                 if (transition.id) {
                     this.$el.attr("data-transition", transition.id);
                 }
-            } else if (state) {
-                // Transition success
-                this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlStateContent, workflow));
-                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlStateButtons, workflow));
-                this.$el.find(".dcpTransition-button-close").tooltip();
+            } else
+                if (state) {
+                    // Transition success
+                    this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlStateContent, workflow));
+                    this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlStateButtons, workflow));
+                    this.$el.find(".dcpTransition-button-close").tooltip();
 
-            }
+                }
 
             if (!this.transitionWindow) {
                 this.transitionWindow = this.$el.dcpDialog({
                     window: {
-                       // maxWidth: "600px",
+                        // maxWidth: "600px",
                         height: "auto",
                         close: function registerCloseEvent(e)
                         {
@@ -233,21 +252,22 @@ define([
             this.trigger("renderTransitionWindowDone");
         },
 
-        clickOnOk : function vTransition_clickOnOk ()
+        clickOnOk: function vTransition_clickOnOk()
         {
-            var event = {prevent : false};
+            var event = {prevent: false};
             this.model.trigger("beforeChangeState", event);
             if (event.prevent === false) {
                 this.model.save();
             }
         },
 
-        clickOnCancel : function vTransition_clickOnCancel()
+        clickOnCancel: function vTransition_clickOnCancel()
         {
             this.transitionWindow.close();
         },
 
-        clickOnClose : function vTransition_clickOnClose() {
+        clickOnClose: function vTransition_clickOnClose()
+        {
             this.transitionWindow.close();
         }
 
