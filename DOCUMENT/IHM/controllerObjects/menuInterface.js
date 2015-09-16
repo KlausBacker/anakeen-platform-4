@@ -16,7 +16,7 @@ define([
 
     MenuPrototope.prototype._set = function MenuPrototope_set(key, value, options)
     {
-        if (this.id || !options || options.strict !== false) {
+        if (this.id || (options && options.strict === true)) {
             this._menuModel.set(key, value, options);
         }
     };
@@ -93,6 +93,11 @@ define([
     MenuPrototope.prototype.setUrl = function menuInterfaceSetUrl(url, options)
     {
         this._set("url", url, options);
+    };
+
+    MenuPrototope.prototype.redraw = function menuInterfaceRedraw()
+    {
+        this._menuModel.trigger("reload");
     };
 
     var MenuInterface = function menuInterface(attributeModel)

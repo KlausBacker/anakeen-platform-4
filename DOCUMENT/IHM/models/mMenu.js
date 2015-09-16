@@ -2,7 +2,7 @@
 define([
     'underscore',
     'backbone'
-], function (_, Backbone) {
+], function mMenu(_, Backbone) {
     'use strict';
 
     return Backbone.Model.extend({

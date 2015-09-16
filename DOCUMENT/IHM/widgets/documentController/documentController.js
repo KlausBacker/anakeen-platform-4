@@ -774,7 +774,7 @@ define([
                 try {
                     currentEvent.eventCallback.apply($element, args);
                 } catch (e) {
-                    if (window.dcp.logger) {
+                    if (window.dcp && window.dcp.logger) {
                         window.dcp.logger(e);
                     } else {
                         console.error(e);
