@@ -1070,7 +1070,9 @@ define([
                 result = Backbone.Model.prototype.save.call(this, attributes, options);
                 if (result === false) {
                     //unable to save for constraint error
-                    options.fail();
+                    if (options.error) {
+                        options.error();
+                    }
                 }
             }
             return result;
