@@ -20,7 +20,7 @@ define([
     'dcpDocument/widgets/attributes/file/wFile',
     'dcpDocument/widgets/attributes/double/wDouble',
     'dcpDocument/widgets/attributes/docid/wDocid'
-], function ($, _, Backbone, Mustache, attributeTemplate)
+], function vAttribute($, _, Backbone, Mustache, attributeTemplate)
 {
     'use strict';
 
@@ -29,7 +29,7 @@ define([
         className: "row dcpAttribute form-group",
         customView: false,
         displayLabel: true,
-        events: function ()
+        events: function vAttributeEvents()
         {
             if (this.customView === false) {
                 return {
@@ -164,7 +164,6 @@ define([
                 this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel",label);
             }
         },
-
 
         /**
          * Autorefresh value when model change
@@ -399,7 +398,7 @@ define([
                 documentModel = this.model.getDocumentModel(),
                 success = options.success,
                 externalOptions = {
-                    setResult: function (content)
+                    setResult: function vAttributeAutoCompleteSet(content)
                     {
                         success(content);
                     },
@@ -407,7 +406,7 @@ define([
                 },
                 event = {prevent: false};
             //Add helperResonse event (can be used to reprocess the content of the request)
-            success = _.wrap(success, function (success, content)
+            success = _.wrap(success, function vAttributeAutoCompleteSuccess(success, content)
             {
                 var options = {}, event = {prevent: false};
                 options.data = content;
@@ -616,7 +615,7 @@ define([
 
         _findWidgetName: function vAttribute_findWidgetName($element)
         {
-            return _.find(_.keys($element.data()), function (currentKey)
+            return _.find(_.keys($element.data()), function vAttribute_findWidgetNameFind(currentKey)
             {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
