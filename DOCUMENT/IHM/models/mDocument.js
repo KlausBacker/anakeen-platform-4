@@ -722,8 +722,10 @@ define([
                 //Propagate the change event to the model
                 currentModel.listenTo(value, "change:attributeValue", function (model, value)
                 {
-                    currentModel.trigger("changeValue", {
-                        attributeId: model.id
+                    _.defer(function mDocumentAttributeChangerTrigger() {
+                        currentModel.trigger("changeValue", {
+                            attributeId: model.id
+                        });
                     });
                 });
                 //Propagate the validate event to the model
@@ -760,7 +762,7 @@ define([
                 {
                     currentModel.trigger("downloadFile", event, attrid, options);
                 });
-
+                
                 //Propagate the event uploadFile to the model
                 currentModel.listenTo(value, "uploadFile", function (event, attrid, options)
                 {
