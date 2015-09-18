@@ -265,7 +265,6 @@ define([
                 }]);
             $(window).on("resize.dcpMenu", _.bind(this.inhibitBarMenu, this));
             $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
-            _.delay(_.bind(this.updateResponsiveMenu, this), 100);
         },
 
         inhibitBarMenu: function wMenuInhibitBarMenu()

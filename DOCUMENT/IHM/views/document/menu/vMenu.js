@@ -36,6 +36,7 @@ define([
         render: function vMenuRender()
         {
             this.$el.dcpMenu(this.model.toData());
+            this.refresh();
             return this;
         },
 

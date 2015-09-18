@@ -107,6 +107,8 @@ function autocomplete(Action & $action)
                     "values" => $values
                 );
             }
+        } else {
+            throw new Exception($err);
         }
         
         if (count($return["data"]) === 0) {
