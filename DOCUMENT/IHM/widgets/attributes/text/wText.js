@@ -4,7 +4,7 @@ define([
     'jquery',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.autocomplete'
-], function (_, Mustache, $)
+], function wText(_, Mustache, $)
 {
     'use strict';
 
@@ -89,7 +89,7 @@ define([
                         }
                     }
                 },
-                filtering: function(e) {
+                filtering: function wTextFiltering(e) {
                     // space search is used to force new search
                     if (e.filter.value === " ") {
                         e.filter.value='';
@@ -105,10 +105,9 @@ define([
                     }
                     event.preventDefault(); // no fire change event
                     currentWidget._trigger("changeattrsvalue", event, {dataItem: dataItem, valueIndex: valueIndex});
-
                 }
             });
-            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function (event)
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function wTextClickAutoComplete(event)
             {
                 event.preventDefault();
                 inputValue.data("kendoAutoComplete").search(' '); // use space search
