@@ -446,6 +446,7 @@ define([
                 var buttonsConfig = currentWidget.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
+                var wFeature='';
 
                 if (buttonConfig && buttonConfig.url) {
                     var originalEscape = Mustache.escape;
@@ -454,7 +455,16 @@ define([
                     Mustache.escape = originalEscape;
 
                     if (buttonConfig.target !== "_dialog") {
-                        window.open(url, buttonConfig.target);
+                        if (buttonConfig && (buttonConfig.windowWidth || buttonConfig.windowHeight)) {
+                            if (buttonConfig.windowWidth) {
+                                wFeature += "width=" + parseInt(buttonConfig.windowWidth, 10) + ",";
+                            }
+                            if (buttonConfig.windowHeight) {
+                                wFeature += "height=" + parseInt(buttonConfig.windowHeight, 10) + ",";
+                            }
+                            wFeature += "resizable=yes,scrollbars=yes";
+                        }
+                        window.open(url, buttonConfig.target, wFeature);
                     } else {
                         var $bdw = $('<div/>');
                         $('body').append($bdw);
