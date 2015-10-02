@@ -47,6 +47,7 @@ class Repository
     public function __construct(DOMElement $xml, $context = null, $opts = array())
     {
         $this->use = $xml->getAttribute('use');
+        $this->name = $this->use;
         
         if ($this->use != '') {
             
@@ -54,6 +55,7 @@ class Repository
             $xml = $wiff->loadParamsDOMDocument();
             if ($xml === false) {
                 $this->errorMessage = sprintf("Error loading XML file '%s'.", $this->contexts_filepath);
+                $this->isValid = false;
                 return false;
             }
             
@@ -63,10 +65,12 @@ class Repository
             if ($wiffRepoList->length == 0) {
                 // If there is no repository with such name
                 $this->errorMessage = "Repository " . $this->use . " does not exist.";
+                $this->isValid = false;
                 return false;
             } else if ($wiffRepoList->length > 1) {
                 // If there is more than one repository with such name
                 $this->errorMessage = "More than one repository with name " . $this->use . ".";
+                $this->isValid = false;
                 return false;
             }
             /**
