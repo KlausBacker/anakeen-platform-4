@@ -5,10 +5,11 @@ define([
     'mustache',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect'
-], function ($, _, Mustache)
+], function wDocid($, _, Mustache)
 {
     'use strict';
 
+    //noinspection JSUnusedGlobalSymbols
     $.widget("dcp.dcpDocid", $.dcp.dcpAttribute, {
 
         options: {
@@ -31,6 +32,7 @@ define([
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
+
             if (this._isMultiple()) {
                 this.options.attributeValues = _.toArray(this.options.attributeValue);
                 this.options.isMultiple = true;
@@ -61,19 +63,18 @@ define([
                 }
         },
 
-
         /**
          * Init event when a hyperlink is associated to the attribute
          *
          * @protected
          */
-        _initLinkEvent: function wAttributeInitLinkEvent()
+        _initLinkEvent: function wDocidInitLinkEvent()
         {
             this._super();
             var htmlLink = this.getLink();
             var currentWidget = this;
             if (htmlLink) {
-                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function (event)
+                this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function wDocidInitLinkOnClick(event)
                 {
                     var $this = $(this);
                     if (htmlLink.target === "_render") {
@@ -117,24 +118,26 @@ define([
         _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions)
         {
             var scope = this,
+                values = _.map(this.options.attributeValues, function wDocidSelectMap(val)
+                {
+                    var info = {};
+                    info.docTitle = val.displayValue;
+                    info.docId = val.value;
+                    return info;
+                }),
                 options = {
                     filter: "contains",
                     autoBind: false,
                     dataTextField: "docTitle",
                     dataValueField: "docId",
                     highlightFirst: true,
-                    value: _.map(this.options.attributeValues, function (val)
-                    {
-                        var info = {};
-                        info.docTitle = val.displayValue;
-                        info.docId = val.value;
-                        return info;
-                    }),
+                    //value: values,
                     dataSource: {
                         type: "json",
                         serverFiltering: true,
+                        // data:values,
                         transport: {
-                            read: function (options)
+                            read: function wDocidSelectRead(options)
                             {
                                 options.data.index = scope._getIndex();
                                 return scope.options.autocompleteRequest.call(null, options);
@@ -142,14 +145,22 @@ define([
                         },
                         schema: {
                             // Filter data to delete already recorded ids
-                            data: function (items)
+                            data: function wDocidSelectSchema(items)
                             {
                                 var attrValues = scope.getValue();
+
+                                _.each(items, function x(r)
+                                {
+                                    if (r.values && r.values[scope.options.id]) {
+                                        r.docId = r.values[scope.options.id].value;
+                                        r.docTitle = r.values[scope.options.id].displayValue;
+                                    }
+                                });
                                 if (!attrValues || !_.isArray(attrValues)) {
                                     return items;
                                 }
                                 var recordedValues = _.pluck(attrValues, "value");
-                                return _.filter(items, function (item)
+                                return _.filter(items, function wDocidSelectSchemaFilter(item)
                                 {
                                     if (!item.values) {
                                         return true;
@@ -162,14 +173,17 @@ define([
                     select: function kendoDocidSelect(event)
                     {
                         var valueIndex = scope._getIndex();
-                        var dataItem = this.dataSource.at(event.item.index());
+                        var dataItem = this.dataSource.at(event.item.index()).toJSON();
                         //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
-                        if (dataItem.toJSON) {
-                            dataItem = dataItem.toJSON();
-                        }
-                        event.preventDefault(); // no fire change event
 
-                        scope._trigger("changeattrsvalue", event, {dataItem: dataItem, valueIndex: valueIndex});
+                        _.defer(function x()
+                        {
+                            // Change others attributes designed by help returns
+                            scope._trigger("changeattrsvalue", event, {
+                                dataItem: dataItem,
+                                valueIndex: valueIndex
+                            });
+                        });
                     },
                     change: function kendoChangeSelect(event)
                     {
@@ -177,22 +191,34 @@ define([
                         var oldValues = scope.options.attributeValue;
                         var displayValue;
                         var newValues = [];
+                        var kMultiSelect = this;
 
-                        _.each(this.value(), function (val)
+                        _.each(this.value(), function wDocidSelectChange(val)
                         {
                             displayValue = _.where(oldValues, {value: val});
-                            if (displayValue.length > 0) {
-                                displayValue = displayValue[0].displayValue;
+                            if (displayValue.length === 0) {
+                                displayValue = _.where(kMultiSelect.dataSource.data(), {docId: val});
+                                if (displayValue.length > 0) {
+                                    displayValue = displayValue[0].docTitle;
+                                } else {
+                                    displayValue = "-";
+                                }
                             } else {
-                                displayValue = "-";
+                                displayValue = displayValue[0].displayValue;
                             }
+
                             newValues.push({value: val, displayValue: displayValue});
                         });
-                        if (newValues.length === 0 && !scope._isMultiple()) {
-                            newValues = {value: null, displayValue: ""};
-                        }
-                        scope.setValue(newValues, event);
 
+                        if (!scope._isMultiple()) {
+                            if (newValues.length === 0) {
+                                newValues = {value: null, displayValue: ""};
+                            } else {
+                                newValues = newValues[0];
+                            }
+                        }
+
+                        scope.setValue(newValues, event);
                     }
                 };
 
@@ -203,8 +229,21 @@ define([
             if (this.options.renderOptions.kendoMultiSelectConfiguration) {
                 options = _.extend(this.options.renderOptions.kendoMultiSelectConfiguration, options);
             }
+            //noinspection JSUnresolvedFunction
             inputValue.kendoMultiSelect(options);
-            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--docid--button', function (event)
+            inputValue.data("kendoMultiSelect").dataSource.data(values);
+
+            if (this.options.attributeValues.value !== null) {
+                // Init kendo widget with identifier array
+                inputValue.data("kendoMultiSelect").value(_.filter(_.map(values, function wDocidInitValue(item)
+                {
+                    return item.docId;
+                }), function wDocidFilterEmpty(item)
+                {
+                    return !_.isEmpty(item);
+                }));
+            }
+            this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--docid--button', function wDocidSelectClick(event)
             {
                 event.preventDefault();
                 inputValue.data("kendoMultiSelect").search("");
@@ -246,21 +285,48 @@ define([
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
-                var newValues = _.map(value, function (val)
+                var newValues = _.map(value, function wDocidMapValue(val)
                 {
                     return val.value;
+                });
+                var newStructValues = _.map(value, function wDocidMapValue(val)
+                {
+                    return {
+                        docId: val.value,
+                        docTitle: val.displayValue
+                    };
                 });
                 var kendoSelect = this.kendoWidget.data("kendoMultiSelect");
                 var originalValues = _.clone(kendoSelect.value());
                 // update values in kendo widget
 
-                _.each(value, function (val)
+                var dataOri = _.map(_.filter(kendoSelect.dataSource.data(), function wDocIdFilter(item)
+                {
+                    return !_.isEmpty(item.docId);
+                }), function wDocidFilterEmpty(e)
+                {
+                    return {
+                        docId: e.docId,
+                        docTitle: e.docTitle
+                    };
+                });
+
+                _.each(value, function wDocidEachData(val)
                 {
                     var info = {};
-                    info.docTitle = val.displayValue;
-                    info.docId = val.value;
-                    kendoSelect.dataSource.add(info);
+
+                    if (!_.some(dataOri, function wDocidEachUniq(elt)
+                        {
+                            return elt.docId === val.value;
+                        })
+                    ) {
+                        // add more static data in dataSource
+                        info.docTitle = val.displayValue;
+                        info.docId = val.value;
+                        kendoSelect.dataSource.add(info);
+                    }
                 });
+
                 kendoSelect.value(newValues);
 
                 if (!_.isEqual(newValues, originalValues)) {
