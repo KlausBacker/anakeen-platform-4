@@ -9,7 +9,7 @@ define([
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
     'dcpDocument/documentCatalog'
-], function ($, _, Backbone, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
+], function mDocument($, _, Backbone, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 
@@ -19,13 +19,13 @@ define([
             attributes = _.values(attributes);
         }
         if (parent) {
-            _.each(attributes, function (value)
+            _.each(attributes, function mDocumentEachflattenParentAttributes(value)
             {
                 value.parent = parent;
             });
         }
         currentAttributes = _.union(currentAttributes, attributes);
-        _.each(attributes, function (currentAttr)
+        _.each(attributes, function mDocumentEachflattenAttributes(currentAttr)
         {
             if (currentAttr.content) {
                 currentAttributes = _.union(currentAttributes, flattenAttributes(currentAttributes, currentAttr.content, currentAttr.id));
@@ -143,7 +143,6 @@ define([
                 }
             });
 
-
             $(window).on("pagehide." + this.cid, function mDocumentPageHide(event)
             {
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
@@ -158,10 +157,7 @@ define([
                         async: false
                     });
                 }
-
             });
-
-
         },
 
         /**
@@ -191,7 +187,7 @@ define([
             if (!this.get("attributes")) {
                 return values;
             }
-            this.get("attributes").each(function (currentAttribute)
+            this.get("attributes").each(function mDocumentGetValue(currentAttribute)
             {
                 var currentValue = currentAttribute.get("attributeValue"), i, arrayValues = [];
                 if (!currentAttribute.get("isValueAttribute")) {
@@ -219,7 +215,7 @@ define([
          */
         setValues: function mDocumentdocumentSetValues(values)
         {
-            this.get("attributes").each(function (currentAttribute)
+            this.get("attributes").each(function mDocumentSetValue(currentAttribute)
             {
                 var newValue = values[currentAttribute.id];
                 if (!currentAttribute.get("isValueAttribute")) {
@@ -237,12 +233,11 @@ define([
         setProperties: function mDocumentdocumentSetProperties(values)
         {
             var model = this;
-            _.each(values, function (value, key)
+            _.each(values, function mDocumentSetProperties(value, key)
             {
                 model.get("properties").set(key, value);
             });
         },
-
 
         lockDocument: function mDocumentLockDocument()
         {
@@ -250,7 +245,7 @@ define([
             var lockModel = new DocumentLock({"initid": this.get("initid"), "type": "permanent"});
             var security = this.get("properties").get("security");
             lockModel.save({}, {
-                    success: function (theModel, data)
+                    success: function mDocumentLockDocumentSuccess(theModel, data)
                     {
                         var menu = docModel.get("menus");
                         security.lock = data.data.lock;
@@ -261,7 +256,7 @@ define([
 
                         docModel.get("properties").trigger("change");
                     },
-                    error: function (theModel, HttpResponse)
+                    error: function mDocumentLockDocumentError(theModel, HttpResponse)
                     {
                         var response = JSON.parse(HttpResponse.responseText);
 
@@ -273,14 +268,14 @@ define([
             );
         },
 
-        unlockDocument: function mDocumentLockDocument()
+        unlockDocument: function mDocumentUnLockDocument()
         {
             var docModel = this;
             //  type = empty means Delete all locks
             var lockModel = new DocumentLock({"initid": this.get("initid"), "type": ""});
             var security = this.get("properties").get("security");
             lockModel.destroy({
-                    success: function ()
+                    success: function mDocumentUnLockDocumentSuccess()
                     {
                         var menu = docModel.get("menus");
                         security.lock = {
@@ -295,7 +290,7 @@ define([
                         docModel.get("properties").trigger("change");
 
                     },
-                    error: function (theModel, HttpResponse)
+                    error: function mDocumentUnLockDocumentError(theModel, HttpResponse)
                     {
                         var response = JSON.parse(HttpResponse.responseText);
 
@@ -347,12 +342,12 @@ define([
                 properties: this.getModelProperties(),
                 attributeValues: this.getValues(),
                 attributeLabels: {},
-                createAttributeView: function ()
+                createAttributeView: function mDocumentGetDocumentDataCreate()
                 {
                     return this.id;
                 }
             };
-            this.get("attributes").each(function (currentAttribute)
+            this.get("attributes").each(function mDocumentGetDocumentDataEach(currentAttribute)
             {
                 documentData.attributeLabels[currentAttribute.id] = currentAttribute.get("label");
             });
@@ -368,7 +363,7 @@ define([
             if (!this.get("attributes")) {
                 return false;
             }
-            return !!this.get("attributes").some(function (currentAttr)
+            return this.get("attributes").some(function mDocumenthasAttributesChangedSome(currentAttr)
             {
                 return (currentAttr.hasValueChanged());
             });
@@ -403,7 +398,6 @@ define([
                 responseText: "Unexpected error: " + xhr.status + " " + xhr.statusText
             };
 
-
             this.cleanErrorMessages();
             if (parsedReturn.messages.length === 0) {
                 //Status 0 indicate offline browser
@@ -420,7 +414,7 @@ define([
                     "message": parsedReturn.responseText
                 });
             }
-            _.each(parsedReturn.messages, function (message)
+            _.each(parsedReturn.messages, function mDocumentpropagateSynchroErrorMessages(message)
             {
                 switch (message.code) {
                     case "CRUD0211":// Syntax Error
@@ -446,7 +440,7 @@ define([
                         break;
                     case "CRUD0212": // Constraint Error
                         if (message.data && message.data.constraint) {
-                            _.each(message.data.constraint, function (constraint, aid)
+                            _.each(message.data.constraint, function mDocumentpropagateSynchroError0212(constraint, aid)
                             {
                                 attrModel = currentModel.get('attributes').get(constraint.id);
                                 if (attrModel) {
@@ -515,7 +509,7 @@ define([
                     title: "Unable to save"
                 };
             }
-            this.get("attributes").each(function (currentAttribute)
+            this.get("attributes").each(function mDocumentvalidateEach(currentAttribute)
             {
                 var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
                 currentAttribute.setErrorMessage(null);
@@ -527,7 +521,7 @@ define([
                     if (currentAttribute.get("multiple")) {
                         if (parentAttribute.get("type") === "array") {
                             // Verify each index
-                            _.each(currentValue, function (attributeValue, index)
+                            _.each(currentValue, function mDocumentvalidateArray(attributeValue, index)
                             {
                                 if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
                                     currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
@@ -597,7 +591,7 @@ define([
         redrawErrorMessages: function mDocumentredrawErrorMessages()
         {
             var attrModels = this.get('attributes') || [];
-            _.each(attrModels.models, function (attrModel)
+            _.each(attrModels.models, function mDocumentredrawErrorMessagesEach(attrModel)
             {
                 var message = attrModel.get("errorMessage");
                 // redo error after document is show
@@ -611,10 +605,10 @@ define([
         /**
          * Propagate to attributes a clear message for the error displayed
          */
-        cleanErrorMessages: function mDocumentcleanErrorMessages()
+        cleanErrorMessages: function mDocumentCleanErrorMessages()
         {
             var attrModels = this.get('attributes') || [];
-            _.each(attrModels.models, function (attrModel)
+            _.each(attrModels.models, function mDocumentCleanErrorMessagesEach(attrModel)
             {
                 attrModel.setErrorMessage(null);
             });
@@ -627,7 +621,6 @@ define([
         parse: function mDocumentParse(response)
         {
             var values, renderMode = "view", view = response.data.view;
-
 
             if (response.success === false) {
                 throw new Error("Unable to get the data from documents");
@@ -642,7 +635,6 @@ define([
                         throw new Error("Unkown render mode " + view.renderOptions.mode);
                     }
             }
-
 
             this.initialProperties = _.defaults({
                 "renderMode": renderMode || "view",
@@ -708,12 +700,12 @@ define([
                     renderMode: currentModel.get("renderMode")
                 });
                 //Set the internal content collection (for structure attributes)
-                value.each(function (currentAttributeModel)
+                value.each(function mDocumentsetValuesEachAttributes(currentAttributeModel)
                 {
                     if (currentAttributeModel.get("isValueAttribute")) {
                         return;
                     }
-                    var childAttributes = value.filter(function (candidateChildModel)
+                    var childAttributes = value.filter(function mDocumentsetValuesEachAttributesFilter(candidateChildModel)
                     {
                         return candidateChildModel.get("parent") === currentAttributeModel.id;
                     });
@@ -722,7 +714,7 @@ define([
                     }
                 });
                 //Propagate the change event to the model
-                currentModel.listenTo(value, "change:attributeValue", function (model, value)
+                currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model, value)
                 {
                     _.defer(function mDocumentAttributeChangerTrigger()
                     {
@@ -732,22 +724,22 @@ define([
                     });
                 });
                 //Propagate the validate event to the model
-                currentModel.listenTo(value, "constraint", function (options)
+                currentModel.listenTo(value, "constraint", function mDocumentsetValuesListenConstraint(options)
                 {
                     currentModel.trigger("constraint", options.model.id, options.response);
                 });
                 //Propagate the renderDone event of the attributes to the model
-                currentModel.listenTo(value, "renderDone", function (options)
+                currentModel.listenTo(value, "renderDone", function mDocumentsetValuesListenRenderDone(options)
                 {
                     currentModel.trigger("attributeRender", options.model.id, options.$el, options.index);
                 });
                 //Propagate the beforeRender event of the attributes to the model
-                currentModel.listenTo(value, "beforeRender", function (event, options)
+                currentModel.listenTo(value, "beforeRender", function mDocumentsetValuesListenBeforeRender(event, options)
                 {
                     currentModel.trigger("beforeAttributeRender", event, options.model.id, options.$el, options.index);
                 });
                 //Propagate the array event modified to the model
-                currentModel.listenTo(value, "array", function (type, model, options)
+                currentModel.listenTo(value, "array", function mDocumentsetValuesListenArray(type, model, options)
                 {
                     currentModel.trigger("arrayModified", {
                         attributeId: model.id,
@@ -756,33 +748,33 @@ define([
                     });
                 });
                 //Propagate the event externalLinkSelected to the model
-                currentModel.listenTo(value, "internalLinkSelected", function (event, options)
+                currentModel.listenTo(value, "internalLinkSelected", function mDocumentsetValuesListenLinkSelected(event, options)
                 {
                     currentModel.trigger("internalLinkSelected", event, options);
                 });
                 //Propagate the event downloadFile to the model
-                currentModel.listenTo(value, "downloadFile", function (event, attrid, options)
+                currentModel.listenTo(value, "downloadFile", function mDocumentsetValuesListenDownloadfile(event, attrid, options)
                 {
                     currentModel.trigger("downloadFile", event, attrid, options);
                 });
 
                 //Propagate the event uploadFile to the model
-                currentModel.listenTo(value, "uploadFile", function (event, attrid, options)
+                currentModel.listenTo(value, "uploadFile", function mDocumentsetValuesListenUploadfile(event, attrid, options)
                 {
                     currentModel.trigger("uploadFile", event, attrid, options);
                 });
                 //Propagate the event helperSearch to the model
-                currentModel.listenTo(value, "helperSearch", function (event, attrid, options)
+                currentModel.listenTo(value, "helperSearch", function mDocumentsetValuesListenHelperSearch(event, attrid, options)
                 {
                     currentModel.trigger("helperSearch", event, attrid, options);
                 });
                 //Propagate the event helperResponse to the model
-                currentModel.listenTo(value, "helperResponse", function (event, attrid, options)
+                currentModel.listenTo(value, "helperResponse", function mDocumentsetValuesListenHelperResponse(event, attrid, options)
                 {
                     currentModel.trigger("helperResponse", event, attrid, options);
                 });
                 //Propagate the event helperResponse to the model
-                currentModel.listenTo(value, "helperSelect", function (event, attrid, options)
+                currentModel.listenTo(value, "helperSelect", function mDocumentsetValuesListenHelperSelect(event, attrid, options)
                 {
                     currentModel.trigger("helperSelect", event, attrid, options);
                 });
@@ -889,7 +881,7 @@ define([
             });
 
             mStructure.fetch({
-                success: function (structureModel, response)
+                success: function mDocumentCompleteStructureSuccess(structureModel, response)
                 {
                     if (_.isEqual(structureModel.get("referencedocument"), {
                             initid: documentModel.get("initid"),
@@ -897,7 +889,7 @@ define([
                             revision: documentModel.get("revision")
                         })) {
                         var attributes = flattenAttributes(attributes, response.data.family.structure);
-                        _.each(attributes, function (currentAttributeStructure)
+                        _.each(attributes, function mDocumentCompleteStructureSuccessEach(currentAttributeStructure)
                         {
                             if (currentAttributeStructure.id && valueAttributes[currentAttributeStructure.id]) {
                                 currentAttributeStructure.attributeValue = valueAttributes[currentAttributeStructure.id];
@@ -912,7 +904,7 @@ define([
                     }
                 },
 
-                error: function (structureModel, HttpResponse)
+                error: function mDocumentCompleteStructureError(structureModel, HttpResponse)
                 {
                     if (HttpResponse && HttpResponse.status === 0) {
                         documentModel.trigger("showError", {
@@ -1003,11 +995,11 @@ define([
                 }
                 lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
                 lockModel.save({}, {
-                    success: function ()
+                    success: function mDocumentFetchLockSuccess()
                     {
                         Backbone.Model.prototype.fetch.call(currentModel, options);
                     },
-                    error: function (theModel, HttpResponse)
+                    error: function mDocumentFetchLockError(theModel, HttpResponse)
                     {
                         if (HttpResponse && HttpResponse.status === 0) {
                             currentModel.trigger("showError", {
@@ -1033,11 +1025,11 @@ define([
                         // If same document "get" must be perform after unlock
                         lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
                         lockModel.destroy({
-                            success: function ()
+                            success: function mDocumentFetchUnLockSuccess()
                             {
                                 Backbone.Model.prototype.fetch.call(currentModel, options);
                             },
-                            error: function (theModel, HttpResponse)
+                            error: function mDocumentFetchUnLockError(theModel, HttpResponse)
                             {
                                 var response = JSON.parse(HttpResponse.responseText);
 
@@ -1059,8 +1051,6 @@ define([
                     return Backbone.Model.prototype.fetch.call(this, options);
                 }
             }
-
-
         },
 
         save: function mDocumentSave(attributes, options)
@@ -1133,7 +1123,7 @@ define([
                     options.success = afterDone;
                 }
                 if (options.error) {
-                    options.error = _.wrap(options.error, function (error)
+                    options.error = _.wrap(options.error, function mDocumentDeleteError(error)
                     {
                         afterError();
                         return error.apply(this, _.rest(arguments));
