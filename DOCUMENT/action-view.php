@@ -10,70 +10,48 @@ use Dcp\HttpApi\V1\Etag\Manager as EtagManager;
 
 function view(Action & $action)
 {
-
+    
     $usage = new ActionUsage($action);
     $usage->setText("Display document");
-
+    
     $vId = $usage->addOptionalParameter("vid", "view identifier");
-    $renderMode = $usage->addOptionalParameter(
-        "mode", "render mode", array(
+    $renderMode = $usage->addOptionalParameter("mode", "render mode", array(
         "view",
         "edit",
         "create"
-    ), "view"
-    );
-
-    $revision = $usage->addOptionalParameter(
-        "revision", "revision number", function ($revision) {
+    ) , "view");
+    
+    $revision = $usage->addOptionalParameter("revision", "revision number", function ($revision)
+    {
         if (!is_numeric($revision)) {
-            return sprintf(
-                ___("Revision \"%s\" must be a number ", "ddui"), $revision
-            );
+            return sprintf(___("Revision \"%s\" must be a number ", "ddui") , $revision);
         }
         return '';
     }
-        , -1
-    );
-
-    $documentId = $usage->addOptionalParameter(
-        "id", "document identifier", function ($id) use ($renderMode) {
+    , -1);
+    
+    $documentId = $usage->addOptionalParameter("id", "document identifier", function ($id) use ($renderMode)
+    {
         $doc = DocManager::getDocument($id);
-
+        
         if (!$doc) {
-            return sprintf(
-                ___("Document identifier \"%s\"not found", "ddui"), $id
-            );
+            return sprintf(___("Document identifier \"%s\"not found", "ddui") , $id);
         }
         if ($renderMode === "create") {
             if (!is_a($doc, "DocFam")) {
-                return sprintf(
-                    ___(
-                        "Document identifier \"%s\" must be a family in create mode",
-                        "ddui"
-                    ), $id
-                );
+                return sprintf(___("Document identifier \"%s\" must be a family in create mode", "ddui") , $id);
             }
         }
         DocManager::cache()->addDocument($doc);
         return '';
-    }, false
-    );
+    }
+    , false);
     //$renderId = $usage->addOptionalParameter("render", "render identifier", array() , "defaultView");
     $usage->setStrictMode(true);
     $usage->verify();
-
+    
     if ($documentId === false) {
-        $etag = md5(
-            sprintf(
-                "%s : %s",
-                \ApplicationParameterManager::getParameterValue(
-                    "CORE", "WVERSION"
-                ),
-                \ApplicationParameterManager::getScopedParameterValue(
-                    "CORE_LANG"
-                )
-            )
-        );
+        $etag = md5(sprintf("%s : %s", \ApplicationParameterManager::getParameterValue("CORE", "WVERSION") , \ApplicationParameterManager::getScopedParameterValue("CORE_LANG")));
         $etagManager = new EtagManager();
         if ($etagManager->verifyCache($etag)) {
             $etagManager->generateNotModifiedResponse($etag);
@@ -82,92 +60,77 @@ function view(Action & $action)
             header("Cache-Control:");
             return;
         }
-        $action->lay->set(
-            "viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(false)
-        );
+        $action->lay->set("viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(false));
         $etagManager->generateResponseHeader($etag);
     } else {
         if ($renderMode === "create") {
             $doc = DocManager::createDocument($documentId);
-            $doc->title = sprintf(
-                ___("%s Creation", "ddui"),
-                $doc->getFamilyDocument()->getTitle()
-            );
+            $doc->title = sprintf(___("%s Creation", "ddui") , $doc->getFamilyDocument()->getTitle());
         } else {
             if ($revision >= 0) {
-                $documentId = DocManager::getRevisedDocumentId(
-                    $documentId, $revision
-                );
+                $documentId = DocManager::getRevisedDocumentId($documentId, $revision);
                 $doc = DocManager::getDocument($documentId, false);
             } else {
                 $doc = DocManager::getDocument($documentId);
             }
         }
         if (!$doc) {
-            $action->exitError(
-                sprintf(___("Document \"%s\" not found ", "ddui"), $documentId)
-            );
+            $action->exitError(sprintf(___("Document \"%s\" not found ", "ddui") , $documentId));
         }
-
+        
         switch ($renderMode) {
-        case "view":
-            $err = $doc->control("view");
-            if ($err) {
-                $action->exitForbidden($err);
-            }
-            break;
-
-        case "edit":
-            $err = $doc->canEdit();
-            if ($err) {
-                $action->exitForbidden($err);
-            }
-            break;
-
-        case "create":
-            $err = $doc->control("icreate");
-            $err .= $doc->control("create");
-            if ($err) {
-                $action->exitForbidden($err);
-            }
-            break;
-        }
-
-        $docId = $doc->initid;
-        if (!$vId) {
-            switch ($renderMode) {
             case "view":
-                $vId = Dcp\Ui\Crud\View::defaultViewConsultationId;
+                $err = $doc->control("view");
+                if ($err) {
+                    $action->exitForbidden($err);
+                }
                 break;
 
             case "edit":
-                $vId = Dcp\Ui\Crud\View::defaultViewEditionId;
+                $err = $doc->canEdit();
+                if ($err) {
+                    $action->exitForbidden($err);
+                }
                 break;
 
             case "create":
-                $vId = Dcp\Ui\Crud\View::coreViewCreationId;
-                $docId = $doc->fromid;
+                $err = $doc->control("icreate");
+                $err.= $doc->control("create");
+                if ($err) {
+                    $action->exitForbidden($err);
+                }
                 break;
+        }
+        
+        $docId = $doc->initid;
+        if (!$vId) {
+            switch ($renderMode) {
+                case "view":
+                    $vId = Dcp\Ui\Crud\View::defaultViewConsultationId;
+                    break;
+
+                case "edit":
+                    $vId = Dcp\Ui\Crud\View::defaultViewEditionId;
+                    break;
+
+                case "create":
+                    $vId = Dcp\Ui\Crud\View::defaultViewCreationId;
+                    $docId = $doc->fromid;
+                    break;
             }
         }
-
-        $action->lay->set(
-            "viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(
-            array(
-                "documentIdentifier" => intval($docId),
-                "revision" => intval($revision),
-                "vid" => $vId
-            )
-        )
-        );
+        
+        $action->lay->set("viewInformation", Dcp\Ui\JsonHandler::encodeForHTML(array(
+            "documentIdentifier" => intval($docId) ,
+            "revision" => intval($revision) ,
+            "vid" => $vId
+        )));
     }
-
+    
     $render = new \Dcp\Ui\RenderDefault();
-
-    $version = \ApplicationParameterManager::getParameterValue(
-        "CORE", "WVERSION"
-    );
-
+    
+    $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+    
     $action->lay->set("ws", $version);
     $cssRefs = $render->getCssReferences();
     $css = array();

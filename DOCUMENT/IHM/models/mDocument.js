@@ -337,7 +337,6 @@ define([
          */
         getDocumentData: function mDocumentGetDocumentData()
         {
-
             var documentData = {
                 properties: this.getModelProperties(),
                 attributeValues: this.getValues(),
@@ -374,9 +373,8 @@ define([
          *
          * @param model
          * @param xhr
-         * @param options
          */
-        propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr, options)
+        propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr)
         {
             var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "";
             //Analyze XHR
@@ -440,7 +438,7 @@ define([
                         break;
                     case "CRUD0212": // Constraint Error
                         if (message.data && message.data.constraint) {
-                            _.each(message.data.constraint, function mDocumentpropagateSynchroError0212(constraint, aid)
+                            _.each(message.data.constraint, function mDocumentpropagateSynchroError0212(constraint)
                             {
                                 attrModel = currentModel.get('attributes').get(constraint.id);
                                 if (attrModel) {
@@ -714,7 +712,7 @@ define([
                     }
                 });
                 //Propagate the change event to the model
-                currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model, value)
+                currentModel.listenTo(value, "change:attributeValue", function mDocumentsetValuesListenChange(model)
                 {
                     _.defer(function mDocumentAttributeChangerTrigger()
                     {
@@ -988,7 +986,7 @@ define([
             if (!nextView) {
                 nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
             }
-            if (nextView !== "!defaultConsultation" && nextView !== "!coreCreation" && this.get("renderMode") !== "create") {
+            if (nextView !== "!defaultConsultation" && nextView !== "!coreCreation" && nextView !== "!defaultCreation" && this.get("renderMode") !== "create") {
                 if (this.needUnlock && this.needUnlock.initid !== this.get("initid")) {
                     lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
                     lockModel.destroy();
