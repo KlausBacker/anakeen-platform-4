@@ -82,9 +82,10 @@ define([
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
-            var tabPlacement = "topFix";
+            var tabPlacement = this.model.getOption("tabPlacement") || "topFix";
             var event = {prevent: false};
 
+            this.selectedTab=this.model.getOption("openFirstTab");
             this.model.trigger("beforeRender", event);
 
             if (event.prevent) {
@@ -159,6 +160,7 @@ define([
             this.trigger("loading", 20, this.model.get("attributes").length);
             //add first level attributes
             console.time("render attributes");
+
             $content = this.$el.find(".dcpDocument__frames");
             if ($body.length > 0) {
                 this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr)
@@ -194,14 +196,8 @@ define([
                                 model: tabModel
                             });
                             tabContent = viewTabContent.render().$el;
-                            if (tabModel.getOption("openFirst")) {
-                                currentView.selectedTab = currentAttr.id;
-                            }
-                            $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
 
-                            if (tabModel.getOption("tabPlacement")) {
-                                tabPlacement = tabModel.getOption("tabPlacement");
-                            }
+                            $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
 
                             $el.find(".dcpDocument__tabs").append(tabContent);
                             $el.find(".dcpDocument__tabs").show();

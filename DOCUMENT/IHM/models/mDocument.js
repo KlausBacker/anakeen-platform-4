@@ -325,13 +325,15 @@ define([
             return properties;
         },
 
-        getServerProperties: function mDocument_getCurrentProperties() {
+        getServerProperties: function mDocument_getCurrentProperties()
+        {
             var properties;
             properties = this.initialProperties;
             return properties;
         },
 
-        isModified : function mDocument_isModified() {
+        isModified: function mDocument_isModified()
+        {
             return this.hasAttributesChanged();
         },
 
@@ -722,7 +724,8 @@ define([
                 //Propagate the change event to the model
                 currentModel.listenTo(value, "change:attributeValue", function (model, value)
                 {
-                    _.defer(function mDocumentAttributeChangerTrigger() {
+                    _.defer(function mDocumentAttributeChangerTrigger()
+                    {
                         currentModel.trigger("changeValue", {
                             attributeId: model.id
                         });
@@ -762,7 +765,7 @@ define([
                 {
                     currentModel.trigger("downloadFile", event, attrid, options);
                 });
-                
+
                 //Propagate the event uploadFile to the model
                 currentModel.listenTo(value, "uploadFile", function (event, attrid, options)
                 {
@@ -836,6 +839,20 @@ define([
                 },
                 customClientData: this._customClientData
             };
+        },
+
+        /**
+         * Get render option for document widget
+         * @param optId
+         * @returns {*}
+         */
+        getOption: function mDocumentGetOption(optId)
+        {
+            var renderOptions = this.get("renderOptions");
+            if (renderOptions && renderOptions.document) {
+                return renderOptions.document[optId];
+            }
+            return undefined;
         },
 
         /**
@@ -965,7 +982,8 @@ define([
                 options.success = _.wrap(options.success, function launchAfterDone(success)
                 {
                     afterDone();
-                    _.defer(function execFetchSuccess() {
+                    _.defer(function execFetchSuccess()
+                    {
                         success.apply(this, _.rest(arguments));
                     });
                     return this;
@@ -1060,7 +1078,8 @@ define([
                     options.success = _.wrap(options.success, function registerSaveSuccess(success)
                     {
                         afterDone();
-                        _.defer(function execSaveSuccess() {
+                        _.defer(function execSaveSuccess()
+                        {
                             success.apply(this, _.rest(arguments));
                         });
                         return this;
@@ -1104,7 +1123,8 @@ define([
                     options.success = _.wrap(options.success, function registerDeleteSuccess(success)
                     {
                         afterDone.apply(this, _.rest(arguments));
-                        _.defer(function execDeleteSuccess() {
+                        _.defer(function execDeleteSuccess()
+                        {
                             success.apply(this, _.rest(arguments));
                         });
                         return this;

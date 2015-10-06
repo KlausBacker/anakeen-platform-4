@@ -262,7 +262,7 @@ class RenderDefault implements IRenderConfig
         
         $selectedTab = $document->getUTag("lasttab");
         if ($selectedTab) {
-            $opt->tab($selectedTab->comment)->setOpenFirst(true);
+            $opt->document()->setOpenFirstTab($selectedTab->comment);
         }
         
         return $opt;
