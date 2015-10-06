@@ -1,0 +1,11 @@
+{
+  "disallowAnonymousFunctions": true,
+  "disallowEmptyBlocks": true,
+  "disallowFunctionDeclarations": true,
+  "disallowImplicitTypeConversion": ["numeric", "boolean", "binary", "string"],
+  "disallowMixedSpacesAndTabs": true,
+  "disallowMultipleLineBreaks": true,
+  "requireCommaBeforeLineBreak": true,
+  "requireDollarBeforejQueryAssignment": true,
+  "requireSemicolons": true
+}
