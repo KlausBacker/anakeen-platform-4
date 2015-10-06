@@ -7,18 +7,8 @@
 
 namespace Dcp\Ui;
 
-class CommonRenderOptions
+class CommonRenderOptions extends BaseRenderOptions
 {
-    /**
-     * @var RenderOptions
-     */
-    protected $optionObject = null;
-    
-    protected $localOptionName = null;
-    
-    protected $localOptionValue = null;
-    protected $scope = null;
-    protected $htmlLink = "";
     const type = "common";
     const showEmptyContentOption = "showEmptyContent";
     const labelPositionOption = "labelPosition";
@@ -36,73 +26,6 @@ class CommonRenderOptions
     const upPosition = "up";
     const nonePosition = "none";
     const formatOption = "format";
-    
-    public function __construct(RenderOptions & $options = null)
-    {
-        $this->optionObject = $options;
-    }
-    /**
-     * @protected internal usage
-     * @return null
-     */
-    public function getLocalOptionName()
-    {
-        return $this->localOptionName;
-    }
-    /**
-     * @protected internal usage
-     * @return null
-     */
-    public function getLocalOptionValue()
-    {
-        return $this->localOptionValue;
-    }
-    /**
-     * Use option for a specific attribute
-     * @param string $scope attribute identifier
-     * @return $this
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-        return $this;
-    }
-    public function getScope()
-    {
-        return $this->scope;
-    }
-    /**
-     * add custom option to be propagated to client
-     * @param string $optName option name
-     * @param string $optValue option value
-     * @return $this
-     */
-    public function setOption($optName, $optValue)
-    {
-        if ($this->optionObject) {
-            if ($this->scope) {
-                $this->optionObject->setAttributeScopeOption($this->scope, $optName, $optValue);
-            } else {
-                $this->optionObject->setAttributeTypeOption(static::type, $optName, $optValue);
-            }
-        } else {
-            $this->localOptionName = $optName;
-            $this->localOptionValue = $optValue;
-        }
-        return $this;
-    }
-    
-    public function getOption($optName)
-    {
-        if ($this->optionObject) {
-            if ($this->scope) {
-                return $this->optionObject->getAttributeScopeOption($this->scope, $optName);
-            } else {
-                return $this->optionObject->getAttributeTypeOption(static::type, $optName);
-            }
-        }
-        return null;
-    }
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -168,8 +91,6 @@ class CommonRenderOptions
         $this->setOption(self::inputHtmlTooltip, $htmlText);
         return $this;
     }
-
-
     /**
      * Display or not the delete button
      * @note use only in edit mode
@@ -181,7 +102,6 @@ class CommonRenderOptions
         $this->setOption(self::displayDeleteButtonOption, (bool)$display);
         return $this;
     }
-
     /**
      * Add an html tooltip on auto complete button
      * @note use only in edit mode
@@ -194,7 +114,7 @@ class CommonRenderOptions
         return $this;
     }
     /**
-     * Add a html link on value 
+     * Add a html link on value
      * @param \Dcp\Ui\ButtonOptions $options
      * @return $this
      */
@@ -208,19 +128,17 @@ class CommonRenderOptions
         $this->setOption(self::buttonsOption, $buttons);
         return $this;
     }
-
     /**
      * Modify default label attribute
      *
      * @param string $label
      * @return $this
      */
-    public function setAttributeLabel( $label)
+    public function setAttributeLabel($label)
     {
         $this->setOption(self::attributeLabelOption, $label);
         return $this;
     }
-
     /**
      * Add or modify specific labels for widget
      * @param array $labels
