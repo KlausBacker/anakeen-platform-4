@@ -65,14 +65,13 @@ class RenderOptions implements \JsonSerializable
                 EnumRenderOptions::useSourceUriOption => false
             ),
             FileRenderOptions::type => array(
-                FileRenderOptions::downloadInlineOption => false
+                FileRenderOptions::contentDispositionOption => FileRenderOptions::fileAttachmentDisposition
             ),
 
             ImageRenderOptions::type => array(
                 ImageRenderOptions::htmlLinkOption => $imageLinkOption,
-                ImageRenderOptions::downloadInlineOption => true,
+                ImageRenderOptions::contentDispositionOption => ImageRenderOptions::fileInlineDisposition,
                 ImageRenderOptions::thumbnailWidthOption => 48,
-                ImageRenderOptions::downloadInlineOption => true
             ),
             HtmltextRenderOptions::type => array(
                 HtmltextRenderOptions::toolbarOption => "Simple",

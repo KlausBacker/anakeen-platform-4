@@ -11,14 +11,16 @@ class FileRenderOptions extends CommonRenderOptions
 {
     
     const type = "file";
-    const downloadInlineOption = "downloadInline";
+    const contentDispositionOption = "contentDisposition";
+    const fileInlineDisposition='inline';
+    const fileAttachmentDisposition='attachment';
     /**
      * Define if image link show image in browser or propose download
      * @note use only in view mode
      * @param bool $inline true => show in browser, false : download it
      * @return $this
      */
-    public function setDownloadInline($inline)
+    public function setContentDispositionInline($inline)
     {
         if (!$inline) {
             $htmlLink = new HtmlLinkOptions();
@@ -26,7 +28,7 @@ class FileRenderOptions extends CommonRenderOptions
             $this->setOption(self::htmlLinkOption, $htmlLink);
         }
         
-        return $this->setOption(self::downloadInlineOption, (bool)$inline);
+        return $this->setOption(self::contentDispositionOption, $inline?self::fileInlineDisposition:self::fileAttachmentDisposition);
     }
     /**
      * Text to set into input when is empty
