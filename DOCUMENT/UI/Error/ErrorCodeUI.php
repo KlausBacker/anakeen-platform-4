@@ -111,7 +111,7 @@ namespace {
         const UI0203 = 'Max length  "%s" is not a positive number';
         /**
          * @errorCode The line number must be a positive number
-         * @see LongtextRenderOptions::setDisplayedLineNumber
+         * @see LongtextRenderOptions::setMaxDisplayedLineNumber
          */
         const UI0204 = 'Line number  "%s" is not a positive number';
         /**
