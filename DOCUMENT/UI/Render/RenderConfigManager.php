@@ -30,6 +30,9 @@ class RenderConfigManager
     {
         if (empty($vId)) {
             if ($document->doctype === "C") {
+                /**
+                 * @var \DocFam $document
+                 */
                 return self::getFamilyRenderConfig($mode, $document);
             } else {
                 return self::getDocumentRenderConfig($mode, $document, $vId);
@@ -173,7 +176,7 @@ class RenderConfigManager
         }
         if (is_a($document, "Dcp\\Ui\\IRenderConfigAccess")) {
             /**
-             * @var IRenderConfigAccess $document
+             * @var IRenderConfigAccess|\Doc $document
              */
             $renderConfig = $document->getRenderConfig($mode, $document);
             if ($renderConfig) {
@@ -237,8 +240,7 @@ class RenderConfigManager
                 return $config;
             }
         }
-        
-        $vidInfo = $document->getDefaultView(($mode === "edit") , "all");
+        $vidInfo = $document->getDefaultView(($mode === "edit" || $mode === "create") , "all");
         if ($vidInfo) {
             // vid already controlled by cv class
             $vid = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_idview];

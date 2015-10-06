@@ -18,6 +18,7 @@ class View extends Crud
     
     const defaultViewConsultationId = "!defaultConsultation";
     const defaultViewEditionId = "!defaultEdition";
+    const defaultViewCreationId = "!defaultCreation";
     const coreViewConsultationId = "!coreConsultation";
     const coreViewEditionId = "!coreEdition";
     const coreViewCreationId = "!coreCreation";
@@ -82,7 +83,7 @@ class View extends Crud
     public function read($resourceId)
     {
         $refreshMsg = '';
-        if ($this->viewIdentifier === self::coreViewCreationId) {
+        if ($this->viewIdentifier === self::coreViewCreationId || $this->viewIdentifier === self::defaultViewCreationId) {
             $this->createDocument($resourceId);
         } else {
             $this->getDocument($resourceId);
@@ -93,6 +94,7 @@ class View extends Crud
             self::coreViewCreationId,
             self::defaultViewConsultationId,
             self::defaultViewEditionId,
+            self::defaultViewCreationId,
             self::coreViewConsultationId,
             self::coreViewEditionId
         )) && !$this->document->cvid) {
@@ -124,6 +126,8 @@ class View extends Crud
             } elseif ($this->viewIdentifier === self::coreViewEditionId) {
                 $info["properties"] = $coreViews[self::coreViewEditionId];
             } elseif ($this->viewIdentifier === self::coreViewCreationId) {
+                $info["properties"] = $coreViews[self::coreViewCreationId];
+            } elseif ($this->viewIdentifier === self::defaultViewCreationId) {
                 $info["properties"] = $coreViews[self::coreViewCreationId];
             }
         } else {
@@ -282,8 +286,7 @@ class View extends Crud
         );
     }
     /**
-     * @param \Doc $document
-     * @param $viewId
+     * @param string $viewId view identifier
      * @return array
      * @throws Exception
      */
@@ -543,6 +546,9 @@ class View extends Crud
                 $vid = '';
             } elseif ($vid == self::defaultViewEditionId) {
                 $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
+                $vid = '';
+            } elseif ($vid == self::defaultViewCreationId) {
+                $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
                 $vid = '';
             } elseif ($vid == self::coreViewConsultationId) {
                 $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
