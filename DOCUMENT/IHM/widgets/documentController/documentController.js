@@ -385,7 +385,7 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, response)
+            this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, constraintController)
             {
                 var currentAttribute = currentWidget.getAttribute(attribute),
                     currentModel = currentWidget.getProperties(),
@@ -393,12 +393,17 @@ define([
                 _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                 {
                     if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
-                        currentConstraint.constraintCheck.apply($element, [
-                                response,
-                                currentModel,
-                                currentAttribute,
-                                currentAttribute.getValue("all")]
+                        var response = currentConstraint.constraintCheck.call($element,
+                            currentModel,
+                            currentAttribute,
+                            currentAttribute.getValue("all")
                         );
+                        if (_.isString(response)) {
+                            constraintController.addConstraintMessage(response);
+                        }
+                        if (_.isObject(response) && response.message && _.isNumber(response.index)) {
+                            constraintController.addConstraintMessage(response.message, response.index);
+                        }
                     }
                 });
             });
@@ -1049,9 +1054,7 @@ define([
             var menu;
             this._checkInitialisedModel();
             menu = this._model.get("menus").get(menuId);
-
             return new MenuInterface(this._model.get("menus").get(menuId));
-
         },
 
         /**

@@ -3,7 +3,7 @@ define([
     'underscore',
     'jquery',
     'backbone'
-], function (_, $, Backbone) {
+], function require_mAttribute(_, $, Backbone) {
     'use strict';
 
     return Backbone.Model.extend({
@@ -81,7 +81,7 @@ define([
             }
             if (this.getOption('showEmptyContent') === null) {
                 if (this.get("content").some) {
-                    return this.get("content").some(function (value) {
+                    return this.get("content").some(function mAttribute_checkDisplayable(value) {
                         return value.isDisplayable();
                     });
                 }
@@ -93,7 +93,6 @@ define([
         hasMultipleOption : function mAttributehasMultipleOption() {
             return (this.attributes.options && this.attributes.options.multiple === "yes");
         },
-
 
         isDoubleMultiple : function mAttributehasMultipleOption() {
             return (this.hasMultipleOption() && this.getParent().get("type") === "array");
@@ -240,7 +239,7 @@ define([
             if (this.get("multiple") && typeof index !== "undefined") {
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate
-                _.reject(errorMessage, function (indexMessage) {
+                _.reject(errorMessage, function mAttribute_reindex(indexMessage) {
                     return indexMessage.index === index;
                 });
                 this.set('errorMessage', [{message : message, index : index}].concat(errorMessage));

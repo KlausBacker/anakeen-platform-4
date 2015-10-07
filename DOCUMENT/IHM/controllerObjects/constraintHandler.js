@@ -1,15 +1,15 @@
 /*global define*/
-define([], function ()
+define(["underscore"], function require_constraintHandler(_)
 {
     'use strict';
 
     return function ConstraintHandler()
     {
         var _messages = [];
-        this.addConstraintMessage = function addConstraintMessage(message, options)
+        this.addConstraintMessage = function addConstraintMessage(message, index)
         {
-            options = options || {index: -1};
-            _messages.push({message: message, options: options});
+            index = _.isNumber(index) ? index : -1;
+            _messages.push({message: message, index: index});
         };
         this.getConstraintMessages = function getConstraintMessages()
         {
