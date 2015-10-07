@@ -501,29 +501,29 @@ define([
                 currentDocument = this,
                 errorMessage = [], event = {prevent: false},
                 templateMessage;
-try {            
-            this.trigger("validate", event);
-            if (event.prevent) {
-                return {
-                    title: "Unable to save"
-                };
-            }
-            this.get("attributes").each(function mDocumentvalidateEach(currentAttribute)
-            {
-                var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
-                currentAttribute.setErrorMessage(null);
+            try {
+                this.trigger("validate", event);
+                if (event.prevent) {
+                    return {
+                        title: "Unable to save"
+                    };
+                }
+                this.get("attributes").each(function mDocumentvalidateEach(currentAttribute)
+                {
+                    var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
+                    currentAttribute.setErrorMessage(null);
 
                     if (currentAttribute.get("needed") === true) {
                         var currentValue = currentAttribute.get("attributeValue"),
                             oneSuccess = true;
 
-                    if (currentAttribute.get("multiple")) {
-                        if (parentAttribute.get("type") === "array") {
-                            // Verify each index
-                            _.each(currentValue, function mDocumentvalidateArray(attributeValue, index)
-                            {
-                                if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
-                                    currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
+                        if (currentAttribute.get("multiple")) {
+                            if (parentAttribute.get("type") === "array") {
+                                // Verify each index
+                                _.each(currentValue, function mDocumentvalidateArray(attributeValue, index)
+                                {
+                                    if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
+                                        currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
 
                                         templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
                                         errorMessage.push(templateMessage({
@@ -581,7 +581,7 @@ try {
                         errorCode: "attributeNeeded"
                     };
                 }
-            } catch(e) {
+            } catch (e) {
                 console.error("Unable to validate");
                 console.error(e);
             }

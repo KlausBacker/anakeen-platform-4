@@ -392,19 +392,24 @@ define([
                     $element = $(currentWidget.element);
                 _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                 {
-                    if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
-                        var response = currentConstraint.constraintCheck.call($element,
-                            currentModel,
-                            currentAttribute,
-                            currentAttribute.getValue("all")
-                        );
-                        if (_.isString(response)) {
-                            constraintController.addConstraintMessage(response);
+                    try {
+                        if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
+                            var response = currentConstraint.constraintCheck.call($element,
+                                currentModel,
+                                currentAttribute,
+                                currentAttribute.getValue("all")
+                            );
+                            if (_.isString(response)) {
+                                constraintController.addConstraintMessage(response);
+                            }
+                            if (_.isObject(response) && response.message && _.isNumber(response.index)) {
+                                constraintController.addConstraintMessage(response.message, response.index);
+                            }
                         }
-                        if (_.isObject(response) && response.message && _.isNumber(response.index)) {
-                            constraintController.addConstraintMessage(response.message, response.index);
-                        }
+                    } catch(e) {
+                        console.error(e);
                     }
+
                 });
             });
             this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayTransition, this));
