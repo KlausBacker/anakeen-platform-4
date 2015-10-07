@@ -27,7 +27,7 @@ class DynamicMenu extends ElementMenu
     public function setContent(\Closure $definition)
     {
         $this->contentDefinition = $definition;
-        $this->url = sprintf("?app=DOCUMENT&action=SUBMENU&id={{document.properties.id}}&render={{document.properties.renderMode}}&vid={{document.properties.viewId}}&menu=%s", urlencode($this->id));
+        $this->url = sprintf("?app=DOCUMENT&action=SUBMENU&initid={{document.properties.id}}&render={{document.properties.renderMode}}&viewId={{document.properties.viewId}}&menu=%s", urlencode($this->id));
     }
     /**
      * Return instanciated dynamic menu

@@ -3,7 +3,7 @@ define([
     'underscore',
     'jquery',
     'dcpDocument/widgets/widget'
-], function (_, $)
+], function require_document(_, $)
 {
     'use strict';
 
@@ -30,7 +30,7 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.viewId) { %>&id=<%= options.initid %><% } %><% if (options.viewId) { %>&vid=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.viewId) { %>&initid=<%= options.initid %><% } %><% if (options.viewId) { %>&viewId=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -105,7 +105,7 @@ define([
             this._trigger("unloaded");
         },
 
-        rebindEvents: function ()
+        rebindEvents: function dcpDocument_rebindEvents()
         {
             var internalController = this.element.data("internalWidget");
             if (internalController) {
@@ -248,7 +248,7 @@ define([
             if (this.element.data("internalWidgetInitialised")) {
                 internalWidget = this.element.data("internalWidget");
                 if (options.success) {
-                    options.success = _.wrap(options.success, function (success)
+                    options.success = _.wrap(options.success, function dcpDocument_success(success)
                     {
                         initWidget.apply(this, _.rest(arguments));
                         return success.apply(this, _.rest(arguments));
@@ -257,7 +257,7 @@ define([
                     options.success = initWidget;
                 }
                 if (options.error) {
-                    options.error = _.wrap(options.error, function (error)
+                    options.error = _.wrap(options.error, function dcpDocument_error(error)
                     {
                         initWidget.apply(this, _.rest(arguments));
                         return error.apply(this, _.rest(arguments));
@@ -357,7 +357,7 @@ define([
                 return true;
             });
             eventList = {};
-            _.each(newList, function (currentEvent)
+            _.each(newList, function dcp_documentIterateEach(currentEvent)
             {
                 eventList[currentEvent.name] = currentEvent;
             });
@@ -482,7 +482,7 @@ define([
      * @type {Function|function(): Function|function(): _Chain<T>|*}
      */
         //noinspection JSUnresolvedVariable
-    $.fn.document = _.wrap($.fn.document, function (initialDocumentBridge, methodName)
+    $.fn.document = _.wrap($.fn.document, function dcpDocument_wrap(initialDocumentBridge, methodName)
     { // jshint ignore:line
         var isMethodCall, internalWidget;
         try {

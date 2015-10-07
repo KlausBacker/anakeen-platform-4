@@ -46,7 +46,7 @@ class DefaultView extends RenderDefault
                 $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
                 $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
                 
-                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "?app=DOCUMENT&id={{document.properties.id}}");
+                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "?app=DOCUMENT&initid={{document.properties.id}}");
                 if ($this->displayDefaultMenuTooltip) {
                     $item->setTooltipLabel(___("Display latest document revision", "UiMenu"));
                 }

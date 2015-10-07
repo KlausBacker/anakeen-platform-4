@@ -3,15 +3,15 @@
 define([
     'underscore',
     'backbone'
-], function (_, Backbone) {
+], function define_router(_, Backbone) {
     'use strict';
 
     return Backbone.Router.extend({
 
-        initialize : function (options) {
+        initialize : function router_initialize(options) {
             var currentRouter = this;
             this.document = options.document;
-            this.urlFragmentTemplate = _.template("<%= path %>?app=DOCUMENT&mode=<%= mode %>&id=<%= initid %><% if (revision >= 0) { %>&revision=<%= revision %><% } %><% if (viewId) { %>&vid=<%= viewId %><% } %>");
+            this.urlFragmentTemplate = _.template("<%= path %>?app=DOCUMENT&initid=<%= initid %><% if (revision >= 0) { %>&revision=<%= revision %><% } %><% if (viewId) { %>&viewId=<%= viewId %><% } %>");
 
             this.route(/[^?]*\?app=DOCUMENT([^#]+)/, "fetch");
             // Listen to document sync and update url
@@ -21,13 +21,10 @@ define([
                         "path" :     window.location.pathname,
                         "initid" :   currentRouter.document.get("initid"),
                         "revision" : currentRouter.document.get("revision") >= 0 ? currentRouter.document.get("revision") : undefined,
-                        "mode" :     currentRouter.document.get("renderMode"),
                         "viewId" :   undefined
                     };
                 var docProperties=currentRouter.document.getServerProperties();
-                if (!_.isUndefined(viewId) && viewId !== "!defaultConsultation" && viewId !== "!defaultEdition") {
-                    options.viewId = viewId;
-                }
+                options.viewId = viewId;
                 if (docProperties && docProperties.status === "alive") {
                     // No write revision if not a fixed one
                     options.revision=-1;
@@ -43,7 +40,7 @@ define([
             });
         },
 
-        fetch : function fetch(searchPart) {
+        fetch : function router_fetch(searchPart) {
             var i, split, queries = searchPart.split('&'), searchObject = {}, newValues = {};
             for (i = 0; i < queries.length; i++) {
                 split = queries[i].split('=');
@@ -52,18 +49,18 @@ define([
             if (!_.isUndefined(searchObject.id)) {
                 newValues.initid = searchObject.id;
             }
+            if (!_.isUndefined(searchObject.initid)) {
+                newValues.initid = searchObject.initid;
+            }
             if (!_.isUndefined(searchObject.revision)) {
                 newValues.revision = parseInt(searchObject.revision, 10);
             } else {
                 newValues.revision = -1;
             }
-            if (!_.isUndefined(searchObject.vid)) {
-                newValues.viewId = searchObject.vid;
+            if (!_.isUndefined(searchObject.viewId)) {
+                newValues.viewId = searchObject.viewId;
             } else {
                 newValues.viewId = undefined;
-            }
-            if (!_.isUndefined(searchObject.mode)) {
-                newValues.renderMode = searchObject.mode;
             }
             this.document.fetchDocument(newValues);
         }

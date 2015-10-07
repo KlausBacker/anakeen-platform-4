@@ -6,7 +6,7 @@ require([
     'underscore',
     'jquery',
     'dcpDocument/widgets/documentController/documentController'
-], function (_, $)
+], function require_main(_, $)
 {
     'use strict';
     console.timeEnd("js loading");
@@ -27,11 +27,7 @@ require([
     };
 
     if (window.dcp.viewData !== false) {
-        $document.documentController({
-            "initid": window.dcp.viewData.documentIdentifier,
-            "viewId": window.dcp.viewData.vid,
-            "revision": window.dcp.viewData.revision
-        });
+        $document.documentController(window.dcp.viewData);
         $document.one("documentready", function launchReady()
         {
             window.dcp.triggerReload();

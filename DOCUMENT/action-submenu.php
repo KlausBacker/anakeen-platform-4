@@ -13,9 +13,9 @@ function submenu(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setText("get submenu document");
     
-    $documentId = $usage->addRequiredParameter("id", "document identifier");
+    $documentId = $usage->addRequiredParameter("initid", "document identifier");
     $menuId = $usage->addRequiredParameter("menu", "sub menu identifier");
-    $vId = $usage->addOptionalParameter("vid", "view identifier");
+    $vId = $usage->addOptionalParameter("viewId", "view identifier");
     $renderMode = $usage->addOptionalParameter("mode", "render mode", array(
         "view",
         "edit",
