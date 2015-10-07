@@ -141,8 +141,13 @@ define([
                     console.error(e);
                 }
             }
+
+            this.$el.removeClass("dcpDocument--create");
+            if (this.model.get("creationFamid")) {
+                this.$el.addClass("dcpDocument--create");
+            }
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
-            this.$el.addClass("dcpDocument dcpFamily--" + this.model.get("properties").get("family").name);
+            this.$el.addClass("dcpFamily--" + this.model.get("properties").get("family").name);
             this.trigger("loading", 10);
             //add menu
             try {
