@@ -7,16 +7,17 @@ define([
 {
     'use strict';
 
-    var eventList = ["beforeRender","ready", "change", "message", "error", "validate", "beforeAttributeRender",
-        "attributeReady",
-        "helperSearch", "helperResponse", "helperSelect",
-        "arrayModified", "actionClick","downloadFile","uploadFile",
+    var eventList = ["beforeRender", "ready", "change", "displayMessage", "displayError", "validate",
+        "attributeBeforeRender", "attributeReady",
+        "attributeHelperSearch", "attributeHelperResponse", "attributeHelperSelect",
+        "attributeArrayChange", "actionClick",
         "beforeClose", "close",
-        "beforeSave", "afterSave",
+        "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",
-        "failChangeState", "successChangeState",
-        "beforeDisplayChangeState", "afterDisplayChangeState",
-        "beforeChangeState", "beforeChangeStateClose"
+        "failTransition", "successTransition",
+        "beforeDisplayTransition", "afterDisplayTransition",
+        "beforeTransition", "beforeTransitionClose",
+        "destroy"
     ];
 
     //Create a new kind of event
