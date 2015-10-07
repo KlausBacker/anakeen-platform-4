@@ -2,7 +2,7 @@ define([
     "underscore",
     "dcpDocument/models/mAttribute",
     'dcpDocument/controllerObjects/constraintHandler'
-], function (_, AttributeModel, ConstraintHandler)
+], function require_mAttributeData(_, AttributeModel, ConstraintHandler)
 {
     'use strict';
 
@@ -33,8 +33,6 @@ define([
             }
             if (this.get("multiple") && index >= 0) {
                 currentValue = _.clone(this.get("attributeValue"));
-
-
                 currentValue[index] = value;
                 this.set("attributeValue", currentValue);
             } else {
@@ -72,7 +70,7 @@ define([
             }
             oldValue = this.get("attributeValue");
             currentValue = _.clone(this.get("attributeValue"));
-            _.each(currentValue, function (value, currentIndex)
+            _.each(currentValue, function mAttributeRemoveIndex(value, currentIndex)
             {
                 currentIndex = parseInt(currentIndex, 10);
                 if (currentIndex === index) {
@@ -178,7 +176,7 @@ define([
             if (!this.get("multiple")) {
                 return -1;
             }
-            _.each(this.get("attributeValue"), function (value, index)
+            _.each(this.get("attributeValue"), function mAttributeGetMaxLine(value, index)
             {
                 if (index > nbLines) {
                     nbLines = index;
@@ -201,19 +199,17 @@ define([
             this.trigger("constraint", {model: this, response: response, value: this.get("attributeValue")});
             if (response.hasConstraintMessages()) {
 
-                _.each(response.getConstraintMessages(), function (currentResponse)
+                _.each(response.getConstraintMessages(), function mAttributeData_checkConstraintElement(currentResponse)
                 {
-                    responseText[currentResponse.options.index] = responseText[currentResponse.options.index] || '';
-                    responseText[currentResponse.options.index] += currentResponse.message + " ";
-
-
+                    responseText[currentResponse.index] = responseText[currentResponse.index] || '';
+                    responseText[currentResponse.index] += currentResponse.message + " ";
                 });
                 if (config.displayError) {
                     this.hasInternalError = true;
                     // Force redraw
                     scope.setErrorMessage(null); // jshint ignore:line
 
-                    _.each(responseText, function (text, index)
+                    _.each(responseText, function mAttributeData_checkErrorMessage(text, index)
                     {
                         index = parseInt(index);
                         scope.setErrorMessage(text, index);

@@ -70,7 +70,7 @@ define([
                 properties = this.getModelProperties();
                 urlData += "documents/" + encodeURIComponent(this.id);
                 //Don't add revision for delete of alive document
-                if (this.get("revision") >= 0 && (currentMethod !== "delete" && properties.status !== "alive")) {
+                if (this.get("revision") >= 0 && (currentMethod !== "delete")) {
                     urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
                 }
                 if (viewId === undefined) {
@@ -501,85 +501,91 @@ define([
                 currentDocument = this,
                 errorMessage = [], event = {prevent: false},
                 templateMessage;
-            this.trigger("validate", event);
-            if (event.prevent) {
-                return {
-                    title: "Unable to save"
-                };
-            }
-            this.get("attributes").each(function mDocumentvalidateEach(currentAttribute)
-            {
-                var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
-                currentAttribute.setErrorMessage(null);
+            try {
+                this.trigger("validate", event);
+                if (event.prevent) {
+                    return {
+                        title: "Unable to save"
+                    };
+                }
+                this.get("attributes").each(function mDocumentvalidateEach(currentAttribute)
+                {
+                    var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
+                    currentAttribute.setErrorMessage(null);
 
-                if (currentAttribute.get("needed") === true) {
-                    var currentValue = currentAttribute.get("attributeValue"),
-                        oneSuccess = true;
+                    if (currentAttribute.get("needed") === true) {
+                        var currentValue = currentAttribute.get("attributeValue"),
+                            oneSuccess = true;
 
-                    if (currentAttribute.get("multiple")) {
-                        if (parentAttribute.get("type") === "array") {
-                            // Verify each index
-                            _.each(currentValue, function mDocumentvalidateArray(attributeValue, index)
-                            {
-                                if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
-                                    currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
+                        if (currentAttribute.get("multiple")) {
+                            if (parentAttribute.get("type") === "array") {
+                                // Verify each index
+                                _.each(currentValue, function mDocumentvalidateArray(attributeValue, index)
+                                {
+                                    if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
+                                        currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
 
-                                    templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
-                                    errorMessage.push(templateMessage({
-                                        parentLabel: parentAttribute.get('label'),
-                                        label: currentAttribute.get("label"),
-                                        index: index + 1
-                                    }));
-                                    success = false;
+                                        templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
+                                        errorMessage.push(templateMessage({
+                                            parentLabel: parentAttribute.get('label'),
+                                            label: currentAttribute.get("label"),
+                                            index: index + 1
+                                        }));
+                                        success = false;
+                                    }
+                                });
+
+                            } else {
+                                if (!currentValue || currentValue.length === 0) {
+                                    oneSuccess = false;
                                 }
-                            });
-
+                            }
                         } else {
-                            if (!currentValue || currentValue.length === 0) {
+                            if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
+                                currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"));
                                 oneSuccess = false;
                             }
                         }
-                    } else {
-                        if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
-                            currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"));
-                            oneSuccess = false;
+                        if (!oneSuccess) {
+                            templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
+                            errorMessage.push(templateMessage({
+                                parentLabel: parentAttribute.get('label'),
+                                label: currentAttribute.get("label")
+                            }));
+                            currentAttribute.setErrorMessage(i18n.___("The field must not be empty", "ddui"));
+                            success = false;
                         }
                     }
-                    if (!oneSuccess) {
-                        templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
+
+                    if (!currentAttribute.checkConstraint({clearError: false})) {
+                        success = false;
+                        if (_.isArray(currentAttribute.get("errorMessage"))) {
+                            templateMessage = _.template("<%= parentLabel %> / <%= label %> " +
+                                "<% for(var msg in errorMessage) { %>" +
+                                "\n<%- rowText %> <%= errorMessage[msg].index + 1 %> : <%= errorMessage[msg].message %>\n <% } %> ");
+                        } else {
+                            templateMessage = _.template("<%= parentLabel %> / <%= label %> <%= errorMessage %>");
+                        }
                         errorMessage.push(templateMessage({
                             parentLabel: parentAttribute.get('label'),
-                            label: currentAttribute.get("label")
+                            label: currentAttribute.get("label"),
+                            rowText: i18n.___("Row #", "ddui"),
+                            errorMessage: currentAttribute.get("errorMessage")
                         }));
-                        currentAttribute.setErrorMessage(i18n.___("The field must not be empty", "ddui"));
-                        success = false;
                     }
+                });
+                if (!success) {
+                    return {
+                        title: i18n.___("Unable to save", "ddui"),
+                        message: errorMessage.join(', ' + "\n"),
+                        errorCode: "attributeNeeded"
+                    };
                 }
-
-                if (!currentAttribute.checkConstraint({clearError: false})) {
-                    success = false;
-                    if (_.isArray(currentAttribute.get("errorMessage"))) {
-                        templateMessage = _.template("<%= parentLabel %> / <%= label %> " +
-                            "<% for(var msg in errorMessage) { %>" +
-                            "\n<%- rowText %> <%= errorMessage[msg].index + 1 %> : <%= errorMessage[msg].message %>\n <% } %> ");
-                    } else {
-                        templateMessage = _.template("<%= parentLabel %> / <%= label %> <%= errorMessage %>");
-                    }
-                    errorMessage.push(templateMessage({
-                        parentLabel: parentAttribute.get('label'),
-                        label: currentAttribute.get("label"),
-                        rowText: i18n.___("Row #", "ddui"),
-                        errorMessage: currentAttribute.get("errorMessage")
-                    }));
-                }
-            });
-            if (!success) {
-                return {
-                    title: i18n.___("Unable to save", "ddui"),
-                    message: errorMessage.join(', ' + "\n"),
-                    errorCode: "attributeNeeded"
-                };
+            } catch (e) {
+                console.error("Unable to validate");
+                console.error(e);
             }
+
             return undefined;
         },
 

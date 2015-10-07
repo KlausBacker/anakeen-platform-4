@@ -25,6 +25,15 @@ define([
 {
     'use strict';
 
+    var checkTouchEvents = function checkTouchEvents() {
+        //From modernizer
+        var bool;
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+            bool = true;
+        }
+        return bool;
+    };
+
     return Backbone.View.extend({
 
         className: "dcpDocument container-fluid",
@@ -85,6 +94,11 @@ define([
             var tabPlacement = this.model.getOption("tabPlacement") || "topFix";
             var event = {prevent: false};
 
+            this.$el.removeClass("dcpTouch");
+            if (checkTouchEvents()) {
+                this.$el.addClass("dcpTouch");
+            }
+
             this.selectedTab=this.model.getOption("openFirstTab");
             this.model.trigger("beforeRender", event);
 
@@ -127,8 +141,13 @@ define([
                     console.error(e);
                 }
             }
+
+            this.$el.removeClass("dcpDocument--create");
+            if (this.model.get("creationFamid")) {
+                this.$el.addClass("dcpDocument--create");
+            }
             this.$el.addClass("dcpDocument dcpDocument--" + this.model.get("renderMode"));
-            this.$el.addClass("dcpDocument dcpFamily--" + this.model.get("properties").get("family").name);
+            this.$el.addClass("dcpFamily--" + this.model.get("properties").get("family").name);
             this.trigger("loading", 10);
             //add menu
             try {

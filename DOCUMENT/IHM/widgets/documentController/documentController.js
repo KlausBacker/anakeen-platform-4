@@ -7,7 +7,7 @@ define([
     'dcpDocument/models/mDocument',
     'dcpDocument/controllerObjects/attributeInterface',
     'dcpDocument/controllerObjects/menuInterface',
-    'dcpDocument/controllerObjects/changeStateInterface',
+    'dcpDocument/controllerObjects/transitionInterface',
     'dcpDocument/views/document/vDocument',
     'dcpDocument/models/mTransition',
     'dcpDocument/views/workflow/vTransition',
@@ -15,19 +15,20 @@ define([
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification'
-], function documentController($, _, Backbone, Router, DocumentModel, AttributeInterface, MenuInterface, ChangeStateInterface, DocumentView, TransitionModel, TransitionView)
+], function documentController($, _, Backbone, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView)
 {
     'use strict';
 
-    var eventList = ["beforeRender", "ready", "change", "message", "error", "validate", "beforeAttributeRender", "attributeReady",
-        "helperSearch", "helperResponse", "helperSelect",
-        "arrayModified", "actionClick",
+    var eventList = ["beforeRender", "ready", "change", "displayMessage", "displayError", "validate",
+        "attributeBeforeRender", "attributeReady",
+        "attributeHelperSearch", "attributeHelperResponse", "attributeHelperSelect",
+        "attributeArrayChange", "actionClick",
         "beforeClose", "close",
         "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",
-        "failChangeState", "successChangeState",
-        "beforeDisplayChangeState", "afterDisplayChangeState",
-        "beforeChangeState", "beforeChangeStateClose",
+        "failTransition", "successTransition",
+        "beforeDisplayTransition", "afterDisplayTransition",
+        "beforeTransition", "beforeTransitionClose",
         "destroy"
     ];
 
@@ -217,7 +218,7 @@ define([
             var currentWidget = this;
             this._model.listenTo(this._model, "invalid", function documentController_triggerShowInvalid(model, error)
             {
-                var result = currentWidget._triggerControllerEvent("error",
+                var result = currentWidget._triggerControllerEvent("displayError",
                     currentWidget.getProperties(), error);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showError", error);
@@ -225,7 +226,7 @@ define([
             });
             this._model.listenTo(this._model, "showError", function documentController_triggerShowError(error)
             {
-                var result = currentWidget._triggerControllerEvent("error",
+                var result = currentWidget._triggerControllerEvent("displayError",
                     currentWidget.getProperties(), error);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showError", error);
@@ -233,7 +234,7 @@ define([
             });
             this._model.listenTo(this._model, "showMessage", function documentController_triggerShowMessage(msg)
             {
-                var result = currentWidget._triggerControllerEvent("message",
+                var result = currentWidget._triggerControllerEvent("displayMessage",
                     currentWidget.getProperties(), msg);
                 if (result) {
                     currentWidget.$notification.dcpNotification("show", msg.type, msg);
@@ -302,10 +303,10 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
+            this._model.listenTo(this._model, "attributeBeforeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
             {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("beforeAttributeRender", currentAttribute,
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeBeforeRender", currentAttribute,
                     currentWidget.getProperties(),
                     currentAttribute,
                     $el,
@@ -322,10 +323,10 @@ define([
                     index
                 );
             });
-            this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options)
+            this._model.listenTo(this._model, "attributeArrayChange", function documentController_triggerArrayModified(options)
             {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
-                currentWidget._triggerAttributeControllerEvent("arrayModified", currentAttribute,
+                currentWidget._triggerAttributeControllerEvent("attributeArrayChange", currentAttribute,
                     currentWidget.getProperties(),
                     currentAttribute,
                     options.type,
@@ -357,51 +358,61 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "helperSearch", function documentController_triggerHelperSearch(event, attrid, options)
+            this._model.listenTo(this._model, "attributeHelperSearch", function documentController_triggerHelperSearch(event, attrid, options)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("helperSearch", currentAttribute,
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSearch", currentAttribute,
                     currentWidget.getProperties(),
                     currentAttribute,
                     options
                 );
             });
-            this._model.listenTo(this._model, "helperResponse", function documentController_triggerHelperResponse(event, attrid, options)
+            this._model.listenTo(this._model, "attributeHelperResponse", function documentController_triggerHelperResponse(event, attrid, options)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("helperResponse", currentAttribute,
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperResponse", currentAttribute,
                     currentWidget.getProperties(),
                     currentAttribute,
                     options
                 );
             });
-            this._model.listenTo(this._model, "helperSelect", function documentController_triggerHelperSelect(event, attrid, options)
+            this._model.listenTo(this._model, "attributeHelperSelect", function documentController_triggerHelperSelect(event, attrid, options)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("helperSelect", currentAttribute,
+                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSelect", currentAttribute,
                     currentWidget.getProperties(),
                     currentAttribute,
                     options
                 );
             });
-            this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, response)
+            this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, constraintController)
             {
                 var currentAttribute = currentWidget.getAttribute(attribute),
                     currentModel = currentWidget.getProperties(),
                     $element = $(currentWidget.element);
                 _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                 {
-                    if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
-                        currentConstraint.constraintCheck.apply($element, [
-                                response,
+                    try {
+                        if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
+                            var response = currentConstraint.constraintCheck.call($element,
                                 currentModel,
                                 currentAttribute,
-                                currentAttribute.getValue("all")]
-                        );
+                                currentAttribute.getValue("all")
+                            );
+                            if (_.isString(response)) {
+                                constraintController.addConstraintMessage(response);
+                            }
+                            if (_.isObject(response) && response.message && _.isNumber(response.index)) {
+                                constraintController.addConstraintMessage(response.message, response.index);
+                            }
+                        }
+                    } catch(e) {
+                        console.error(e);
                     }
+
                 });
             });
-            this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayChangeState, this));
+            this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayTransition, this));
         },
 
         /**
@@ -454,7 +465,7 @@ define([
             });
             this.view.on("showMessage", function documentController_triggerShowMessage(message)
             {
-                var result = currentWidget._triggerControllerEvent("message",
+                var result = currentWidget._triggerControllerEvent("displayMessage",
                     currentWidget.getProperties(), message);
                 if (result) {
                     currentWidget.$notification.dcpNotification("show", message.type, message);
@@ -462,7 +473,7 @@ define([
             });
             this.view.on("showSuccess", function documentController_triggerShowSuccess(message)
             {
-                var result = currentWidget._triggerControllerEvent("message",
+                var result = currentWidget._triggerControllerEvent("displayMessage",
                     currentWidget.getProperties(), message);
                 if (result) {
                     currentWidget.$notification.dcpNotification("showSuccess", message);
@@ -505,12 +516,12 @@ define([
          * @param nextState
          * @param transition
          */
-        _initAndDisplayChangeState: function documentController_initAndDisplayChangeState(nextState, transition)
+        _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition)
         {
             var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, changeStateInterface;
 
-            result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
-                currentWidget.getProperties(), new ChangeStateInterface(null, $target, nextState, transition));
+            result = !currentWidget._triggerControllerEvent("beforeDisplayTransition",
+                currentWidget.getProperties(), new TransitionInterface(null, $target, nextState, transition));
             if (result) {
                 return this;
             }
@@ -529,32 +540,32 @@ define([
                 el: $target
             });
 
-            changeStateInterface = new ChangeStateInterface(transitionElements.model, $target, nextState, transition);
+            changeStateInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
 
             //Propagate afterDisplayChange on renderDone
             transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter()
             {
-                currentWidget._triggerControllerEvent("afterDisplayChangeState",
+                currentWidget._triggerControllerEvent("afterDisplayTransition",
                     currentWidget.getProperties(), changeStateInterface);
             });
 
-            //Propagate the beforeChangeState
-            transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBeforeChangeState(event)
+            //Propagate the beforeTransition
+            transitionElements.model.listenTo(transitionElements.model, "beforeTransition", function documentController_propagateBeforeTransition(event)
             {
-                event.prevent = !currentWidget._triggerControllerEvent("beforeChangeState",
+                event.prevent = !currentWidget._triggerControllerEvent("beforeTransition",
                     currentWidget.getProperties(), changeStateInterface);
             });
 
-            //Propagate the beforeChangeStateClose
-            transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateChangeStateClose(event)
+            //Propagate the beforeTransitionClose
+            transitionElements.model.listenTo(transitionElements.model, "beforeTransitionClose", function documentController_propagateTransitionClose(event)
             {
-                event.prevent = !currentWidget._triggerControllerEvent("beforeChangeStateClose",
+                event.prevent = !currentWidget._triggerControllerEvent("beforeTransitionClose",
                     currentWidget.getProperties(), changeStateInterface);
             });
 
             transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateTransitionError(error)
             {
-                event.prevent = !currentWidget._triggerControllerEvent("failChangeState",
+                event.prevent = !currentWidget._triggerControllerEvent("failTransition",
                     currentWidget.getProperties(), changeStateInterface, error);
             });
 
@@ -562,7 +573,7 @@ define([
             {
                 transitionElements.view.$el.hide();
                 //delete the pop up when the render of the pop up is done
-                currentWidget._triggerControllerEvent("successChangeState",
+                currentWidget._triggerControllerEvent("successTransition",
                     currentWidget.getProperties(), changeStateInterface);
                 currentWidget.view.once("renderDone", function documentController_transitionRender()
                 {
@@ -1048,9 +1059,7 @@ define([
             var menu;
             this._checkInitialisedModel();
             menu = this._model.get("menus").get(menuId);
-
             return new MenuInterface(this._model.get("menus").get(menuId));
-
         },
 
         /**

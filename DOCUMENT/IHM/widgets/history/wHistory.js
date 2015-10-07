@@ -8,7 +8,7 @@ define([
     'dcpDocument/widgets/window/wDialog',
     'datatables',
     "datatables-bootstrap"
-], function ($, _, kendo)
+], function require_whistory($, _, kendo)
 {
     'use strict';
 
@@ -253,7 +253,7 @@ define([
                         render: function (data)
                         {
                             if (data !== '') {
-                                return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&id=' +
+                                return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&initid=' +
                                 historyWidget.options.documentId +
                                 '&revision=' + data + '"' +
                                 'data-document-id="' + historyWidget.options.documentId + '" ' +
