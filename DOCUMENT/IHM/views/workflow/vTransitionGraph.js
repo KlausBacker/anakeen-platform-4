@@ -5,14 +5,13 @@ define([
     'mustache',
     'dcpDocument/documentCatalog',
     'dcpDocument/widgets/window/wDialog'
-], function (_, $, Backbone, Mustache, i18n)
+], function vTransitionGraph(_, $, Backbone, Mustache, i18n)
 {
     'use strict';
 
     return Backbone.View.extend({
 
         messages: [],
-
 
         remove: function vTransitionGraph_remove()
         {
@@ -33,14 +32,13 @@ define([
         {
             var currentView = this;
 
-
             this.$el.append($('<div class="dcpTransitionGraph--from"/>' +
             '<div class="dcpTransitionGraph--to"/>'));
 
             this.displayCurrentState();
 
             // Init Events
-            this.$el.on("mouseover", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function ()
+            this.$el.on("mouseover", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function vTransitionGraph_renderMouseOver()
             {
                 var to = $(this).data("to");
                 if (!$(this).hasClass("dcpTransitionGraph_state--error")) {
@@ -48,13 +46,13 @@ define([
                     currentView.$el.find(".dcpTransitionGraph__arrow--" + to).addClass("dcpTransitionGraph__arrow--selected");
                 }
             });
-            this.$el.on("mouseout", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function ()
+            this.$el.on("mouseout", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function vTransitionGraph_renderMouseOut()
             {
 
                 currentView.$el.find(".dcpTransitionGraph__arrow").removeClass("dcpTransitionGraph__arrow--selected");
             });
 
-            this.$el.on("click", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function ()
+            this.$el.on("click", ".dcpTransitionGraph--to .dcpTransitionGraph_state", function vTransitionGraph_renderClick()
             {
                 var to = $(this).data("to");
 
@@ -69,14 +67,12 @@ define([
                 html: true
             });
 
-
-
             if (!this.transitionGraphWindow) {
                 this.transitionGraphWindow = this.$el.dcpDialog({
                     window: {
                         height: "auto",
                         width: "600px",
-                        close: function registerCloseEvent(e)
+                        close: function registerCloseEvent()
                         {
                             currentView.remove();
                         },
@@ -110,7 +106,6 @@ define([
             }
         },
 
-
         displayCurrentState: function vTransitionGraphdisplayCurrentState()
         {
             var tpl = '<div class="dcpTransitionGraph_state {{#transition.error}}dcpTransitionGraph_state--error{{/transition.error}}" ' +
@@ -123,9 +118,9 @@ define([
 
             this.$el.find(".dcpTransitionGraph--from").append(Mustache.render(tpl, _.extend(currentState, {title:i18n.___("Current workflow activity","ddui")})));
 
-            _.each(states, function (item)
+            _.each(states, function vTransitionGraphdisplayCurrentStateEach(item)
             {
-                if (item.transition) {
+                if (item.transition && item.transition.authorized !== false) {
                     item.title = Mustache.render(i18n.___("Next step. Apply transition {{label}}", "ddui"), {label: item.transition.label});
                     currentView.$el.find(".dcpTransitionGraph--to").append(Mustache.render(tpl, item));
                 }
@@ -146,13 +141,11 @@ define([
             this.$el.find(".dcpTransitionGraph--from").height(this.$el.height());
             _.each(states, function vTransitionGraph_connectStates(item)
             {
-                if (item.transition) {
+                if (item.transition && item.transition.authorized !== false) {
                     $to = currentView.$el.find(".dcpTransitionGraph--to .dcpTransitionGraph_state[data-to=" + item.id + "]");
                     currentView.connect($from.get(0), $to.get(0), 2, item);
                 }
             });
-
-
         },
 
         /**
@@ -168,7 +161,6 @@ define([
             return offset;
         },
 
-
         /**
          * draw a line connecting elements
          * @param div1 from div
@@ -181,7 +173,6 @@ define([
             var off1 = this.getOffset(div1);
             var off2 = this.getOffset(div2);
             var origin = this.getOffset(this.$el.get(0));
-
 
             // bottom right
             var x2 = off1.left + off1.width - origin.left;
@@ -197,7 +188,6 @@ define([
             // angle
             var angle = Math.atan2((y1 - y2), (x1 - x2)) * (180 / Math.PI);
 
-
             //
             var htmlLine = "<div class='dcpTransitionGraph__arrow dcpTransitionGraph__arrow--{{id}} {{#error}}dcpTransitionGraph__arrow--error{{/error}}' " +
                 "style=' height:{{height}}px;left:{{left}}px; top:{{top}}px; width:{{width}}px;" +
@@ -207,7 +197,6 @@ define([
                 "-ms-transform:rotate({{angle}}deg); " +
                 "transform:rotate({{angle}}deg);' ><div class='dcpTransitionGraph__arrow__label'>{{text}}</div>" +
                 "<i class='dcpTransitionGraph__arrow__end fa fa-2x fa-caret-right'></i> </div>";
-
 
             this.$el.append(Mustache.render(htmlLine, {
                 error:item.transition.error,

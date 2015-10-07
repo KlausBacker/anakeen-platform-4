@@ -244,6 +244,9 @@ class DefaultView extends RenderDefault
             
             $itemMenu = new ItemMenu('workflowDraw', ___("View transition graph", "UiMenu"));
             $itemMenu->setUrl(sprintf("#action/document.transitionGraph"));
+            if (count($fstate) === 0) {
+                $itemMenu->setVisibility($itemMenu::VisibilityDisabled);
+            }
             $menu->appendElement($itemMenu);
             
             $itemMenu = new ItemMenu('workflowGraph', ___("View workflow graph", "UiMenu"));
