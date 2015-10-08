@@ -51,10 +51,10 @@ define([
                         if (!this.options.renderOptions.htmlLink.title) {
                             this.options.renderOptions.htmlLink.title = this.options.attributeValue.displayValue;
                             if (this.options.attributeValue.size >= 1024) {
-                                this.options.renderOptions.htmlLink.title += ' (' + (Math.round(this.options.attributeValue.size / 1024)) + ' ' +
+                                this.options.renderOptions.htmlLink.title += '<br/>(' + (Math.round(this.options.attributeValue.size / 1024)) + ' ' +
                                     this.options.labels.kiloByte + ')';
                             } else {
-                                this.options.renderOptions.htmlLink.title += ' (' + this.options.attributeValue.size + ' ' +
+                                this.options.renderOptions.htmlLink.title += '<br/>(' + this.options.attributeValue.size + ' ' +
                                     this.options.labels.byte + ')';
                             }
                         }
