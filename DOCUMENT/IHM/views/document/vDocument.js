@@ -28,7 +28,7 @@ define([
     var checkTouchEvents = function checkTouchEvents() {
         //From modernizer
         var bool = false;
-        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch) {
             bool = true;
         }
         return bool;
