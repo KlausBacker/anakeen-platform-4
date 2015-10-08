@@ -222,6 +222,16 @@ define([
                 if (transition.id) {
                     this.$el.attr("data-transition", transition.id);
                 }
+
+                // No use border color if same as background
+                _.defer(function vTransition_renderWhiteOnWhite() {
+                    currentView.$el.find(".dcpTransition--activity").each(function vTransition_renderBorderColor() {
+                        if (currentView.$el.css("background-color") === $(this).css("border-color")) {
+                            $(this).css("border-color","");
+                        }
+                    });
+                });
+
             } else
                 if (state) {
                     // Transition success
