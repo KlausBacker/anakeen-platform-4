@@ -122,7 +122,23 @@ define([
                 this.model.trigger("success", this.messages);
             }
         },
-
+        /**
+         * Inject associated CSS in the DOM
+         *
+         * Inject new CSS, no remove old CSS
+         */
+        renderCss: function vTransitionRenderCss()
+        {
+            ViewDocument.prototype.renderCss.apply(this, [true]);
+        },
+        updateTitle:function vTransitionupdateTitle()
+        {
+            // No update title
+        },
+        updateIcon:function vTransitionupdateIcon()
+        {
+            // No update icon
+        },
         clearError: function vTransition_clearError()
         {
             this.$el.find(".dcpTransition--error").remove();

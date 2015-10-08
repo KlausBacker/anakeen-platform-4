@@ -48,6 +48,8 @@ class TransitionRender
         $this->workflow = $workflow;
     }
     /**
+     * @param string $key optionnal specific information
+     *
      * @return \Dcp\HttpApi\V1\Crud\Document
      */
     public function getViewWorkflow($key = null)
@@ -83,8 +85,8 @@ class TransitionRender
         $attrData = array();
         
         if (count($askes) > 0) {
-            $transitionLabel=isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui") ;
-            $askFrame = new \FieldSetAttribute(self::parameterFrameAttribute, $this->workflow->id, sprintf(___("Workflow Parameters : %s", "ddui"),$transitionLabel) , "W", "N");
+            $transitionLabel = isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui");
+            $askFrame = new \FieldSetAttribute(self::parameterFrameAttribute, $this->workflow->id, sprintf(___("Workflow Parameters : %s", "ddui") , $transitionLabel) , "W", "N");
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
             
             foreach ($askes as $ask) {
@@ -138,6 +140,9 @@ class TransitionRender
             $value = $this->workflow->getRawValue($attribute->id);
         }
         if ($attribute->isNormal) {
+            /**
+             * @var \NormalAttribute $attribute
+             */
             $aInfo->setAttributeValue($this->formatCollection->getInfo($attribute, $value, $this->workflow));
         }
         return $aInfo;

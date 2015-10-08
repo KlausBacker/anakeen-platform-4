@@ -100,10 +100,12 @@ class RenderConfigManager
         }
     }
     /**
-     * @param $mode
-     * @param \Doc $document
-     * @throws Exception
+     * @param string $mode (view, edit, create)
+     * @param \Doc   $document
+     * @param string $vid view identifier
+     *
      * @return IRenderConfig
+     * @throws Exception
      */
     public static function getDocumentRenderConfig($mode, \Doc $document, &$vid = '')
     {
@@ -112,7 +114,11 @@ class RenderConfigManager
             return $parameterRender;
         }
         if ($document->cvid > 0) {
-            return self::getRenderConfigCv($mode, DocManager::getDocument($document->cvid) , $document, $vid);
+            /**
+             * @var \CVDoc $cvDoc
+             */
+            $cvDoc = DocManager::getDocument($document->cvid);
+            return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
         }
         
         return self::getDefaultFamilyRenderConfig($mode, $document);
@@ -133,6 +139,33 @@ class RenderConfigManager
         }
         return null;
     }
+    
+    public static function getTransitionRender($transitionId, \WDoc $workflow)
+    {
+        $render = null;
+        if (is_a($workflow, 'Dcp\Ui\IRenderTransitionAccess')) {
+            /**
+             * @var \WDoc|\Dcp\Ui\IRenderTransitionAccess $workflow
+             */
+            $render = $workflow->getTransitionRender($transitionId, $workflow);
+            $render->setWorkflow($workflow);
+        } else {
+            $renderTransitionClass = self::getRenderParameter($workflow->fromname, "renderTransitionClass");
+            if ($renderTransitionClass) {
+                /**
+                 * @var $access \Dcp\Ui\IRenderTransitionAccess
+                 */
+                $access = new $renderTransitionClass();
+                $render = $access->getTransitionRender($transitionId, $workflow);
+                $render->setWorkflow($workflow);
+            } else {
+                $render = new TransitionRender();
+                $render->setWorkflow($workflow);
+            }
+        }
+        
+        return $render;
+    }
     /**
      * Return render class name defined in RENDER_PARAMETERS application parameter
      * @param string $familyName family name
@@ -145,9 +178,11 @@ class RenderConfigManager
     }
     /**
      * Return render class name defined in RENDER_PARAMETERS application parameter
-     * @param string $familyName family name
      *
-     * @return string|null
+     * @param string $familyName family name
+     * @param string $key [renderAccessClass, renderTransitionClass, disableTag, applyRefresh]
+     *
+     * @return null|string
      */
     public static function getRenderParameter($familyName, $key)
     {
@@ -197,8 +232,7 @@ class RenderConfigManager
         return new \Dcp\Ui\FamilyView();
     }
     /**
-     * @param $mode
-     * @param \Doc $document
+     * @param string $mode
      * @throws Exception
      * @return IRenderConfig
      */
@@ -218,9 +252,11 @@ class RenderConfigManager
     /**
      * @param string $mode view/edit/create
      * @param \CVDoc $cv
-     * @param \Doc $document
-     * @throws Exception
+     * @param \Doc   $document
+     * @param string $vid view identifier
+     *
      * @return IRenderConfig
+     * @throws Exception
      */
     public static function getRenderConfigCv($mode, \CVDoc $cv, \Doc $document, &$vid = '')
     {

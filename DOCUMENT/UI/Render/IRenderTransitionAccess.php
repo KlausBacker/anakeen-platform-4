@@ -10,8 +10,11 @@ namespace Dcp\Ui;
 interface IRenderTransitionAccess {
     /**
      * Get Transition Render object to configure transition render
+     *
      * @param string $transitionId transition identifier
+     * @param \WDoc  $workflow workflow document
+     *
      * @return TransitionRender
      */
-    public function getTransitionRender($transitionId);
+    public function getTransitionRender($transitionId, \WDoc $workflow);
 }

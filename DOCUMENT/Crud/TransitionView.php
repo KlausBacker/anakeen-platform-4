@@ -52,12 +52,9 @@ class TransitionView extends \Dcp\HttpApi\V1\Crud\WorkflowState
                 $transition = isset($this->workflow->transitions[$transitionId]) ? $this->workflow->transitions[$transitionId] : null;
             }
         }
-        if (is_a($this->workflow, 'Dcp\Ui\IRenderTransitionAccess')) {
-            $render = $this->workflow->getTransitionRender($transitionId);
-        } else {
-            $render = new \Dcp\Ui\TransitionRender();
-        }
-        $render->setWorkflow($this->workflow);
+        
+        $render = \Dcp\Ui\RenderConfigManager::getTransitionRender($transitionId, $this->workflow);
+        
         $info["transition"] = array(
             "id" => ($transitionId !== null) ? $transitionId : null,
             "beginState" => $this->getStateInfo($this->_document->state) ,
