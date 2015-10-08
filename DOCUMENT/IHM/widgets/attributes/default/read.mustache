@@ -2,8 +2,8 @@
     {{#renderOptions.htmlLink.url}}
     <a  class="dcpAttribute__content__link"
         target="{{renderOptions.htmlLink.target}}"
-        {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
-        href="{{renderOptions.htmlLink.url}}">
+        {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.title}}
+        href="{{renderOptions.htmlLink.renderUrl}}">
     {{/renderOptions.htmlLink.url}}
         <span class="dcpAttribute__content__value">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{attributeValue.displayValue}}{{/attributeValue.formatValue}}</span>
     {{#renderOptions.htmlLink.url}}

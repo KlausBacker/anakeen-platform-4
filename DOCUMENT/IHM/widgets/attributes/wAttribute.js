@@ -230,9 +230,9 @@ define([
 
         /**
          * Show the input tooltip
-         * @param ktTarget //TODO Eric ; préciser le type de kTarget ou passer la méthode en privé
+         * @param  ktTarget DOMElement
          *
-         * @return this
+         * @return dcp.dcpAttribute
          */
         hideInputTooltip: function wAttributeHideInputTooltip(ktTarget)
         {
@@ -245,9 +245,9 @@ define([
 
         /**
          * Show the input tooltip
-         * @param ktTarget //TODO Eric ; préciser le type de kTarget ou passer la méthode en privé
+         * @param  ktTarget DOMElement
          *
-         * @return this
+         * @return dcp.dcpAttribute
          */
         showInputTooltip: function showInputTooltip(ktTarget)
         {
@@ -353,7 +353,29 @@ define([
          */
         _initDom: function wAttributeInitDom()
         {
+            var htmlLink = this.getLink();
             this._initMainElementClass();
+            if (htmlLink) {
+                // Add render Url and title on links
+                var originalEscape = Mustache.escape;
+
+                if (this._isMultiple()) {
+                    this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
+                    {
+                        Mustache.escape = encodeURIComponent;
+                        val.renderUrl = Mustache.render(htmlLink.url, val);
+                        Mustache.escape = originalEscape;
+                        val.renderTitle = Mustache.render(htmlLink.title, val);
+                        val.index = index;
+                        return val;
+                    });
+                } else {
+                    Mustache.escape = encodeURIComponent;
+                    this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url, this.options.attributeValue);
+                    Mustache.escape = originalEscape;
+                    this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title, this.options.attributeValue);
+                }
+            }
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
 
@@ -422,7 +444,7 @@ define([
         {
             var scope = this;
             if (this.options.index !== -1) {
-                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent(event, eventData)
+                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent()
                     {
                         var domLine = scope.element.closest('tr').data('line');
                         if (!_.isUndefined(domLine)) {
@@ -446,7 +468,7 @@ define([
                 var buttonsConfig = currentWidget.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
-                var wFeature='';
+                var wFeature = '';
 
                 if (buttonConfig && buttonConfig.url) {
                     var originalEscape = Mustache.escape;
@@ -490,6 +512,7 @@ define([
             this.element.find(".dcpAttribute__content__buttons button").tooltip({
                 placement: "top",
                 trigger: "hover",
+                html: true,
                 container: ".dcpDocument"
             });
             return this;
@@ -504,7 +527,7 @@ define([
         {
             var scope = this;
             // tooltip is created in same parent
-            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(event)
+            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(/*event*/)
             {
                 if (scope.element.data("hasErrorTooltip")) {
                     scope.element.find(".input-group").tooltip("destroy");
@@ -605,6 +628,7 @@ define([
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
                     container: ".dcpDocument",
+                    html: true,
                     template: '<div class="tooltip dcpAttribute__linkvalue" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
                     trigger: "hover"
                 });
