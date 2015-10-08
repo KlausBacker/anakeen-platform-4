@@ -303,7 +303,7 @@ define([
                     currentAttribute.getValue("all")
                 );
             });
-            this._model.listenTo(this._model, "attributeBeforeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
+            this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
             {
                 var currentAttribute = currentWidget.getAttribute(attributeId);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeBeforeRender", currentAttribute,
@@ -323,7 +323,7 @@ define([
                     index
                 );
             });
-            this._model.listenTo(this._model, "attributeArrayChange", function documentController_triggerArrayModified(options)
+            this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options)
             {
                 var currentAttribute = currentWidget.getAttribute(options.attributeId);
                 currentWidget._triggerAttributeControllerEvent("attributeArrayChange", currentAttribute,
@@ -358,7 +358,7 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "attributeHelperSearch", function documentController_triggerHelperSearch(event, attrid, options)
+            this._model.listenTo(this._model, "helperSearch", function documentController_triggerHelperSearch(event, attrid, options)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSearch", currentAttribute,
@@ -367,7 +367,7 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "attributeHelperResponse", function documentController_triggerHelperResponse(event, attrid, options)
+            this._model.listenTo(this._model, "helperResponse", function documentController_triggerHelperResponse(event, attrid, options)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperResponse", currentAttribute,
@@ -376,7 +376,7 @@ define([
                     options
                 );
             });
-            this._model.listenTo(this._model, "attributeHelperSelect", function documentController_triggerHelperSelect(event, attrid, options)
+            this._model.listenTo(this._model, "helperSelect", function documentController_triggerHelperSelect(event, attrid, options)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
                 event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSelect", currentAttribute,
@@ -520,7 +520,7 @@ define([
         {
             var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, changeStateInterface;
 
-            result = !currentWidget._triggerControllerEvent("beforeDisplayTransition",
+            result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
                 currentWidget.getProperties(), new TransitionInterface(null, $target, nextState, transition));
             if (result) {
                 return this;
@@ -550,14 +550,14 @@ define([
             });
 
             //Propagate the beforeTransition
-            transitionElements.model.listenTo(transitionElements.model, "beforeTransition", function documentController_propagateBeforeTransition(event)
+            transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBeforeTransition(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeTransition",
                     currentWidget.getProperties(), changeStateInterface);
             });
 
             //Propagate the beforeTransitionClose
-            transitionElements.model.listenTo(transitionElements.model, "beforeTransitionClose", function documentController_propagateTransitionClose(event)
+            transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateTransitionClose(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeTransitionClose",
                     currentWidget.getProperties(), changeStateInterface);
