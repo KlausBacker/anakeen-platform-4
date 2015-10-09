@@ -113,7 +113,10 @@ define([
                 inputValue.data("kendoAutoComplete").search(' '); // use space search
             });
             this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip({
-                html: true
+                html: true,
+                container:this.element
+            }).each(function wTextInitLinkTooltip() {
+                $(this).data("bs.tooltip").tip().addClass("dcpAttribute__autocomplete");
             });
 
         },

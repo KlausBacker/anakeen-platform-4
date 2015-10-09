@@ -113,14 +113,15 @@ define([
                             placement: "bottom",
                             html: true,
                             animation: false,
+                            container:scope.element,
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
                             },
-                            trigger: "manual",
-                            template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
+                            trigger: "manual"
+                        }).each(function wAttributErrorLinkTooltip() {
+                            $(this).data("bs.tooltip").tip().addClass("has-error");
                         });
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
@@ -513,7 +514,7 @@ define([
                 placement: "top",
                 trigger: "hover",
                 html: true,
-                container: ".dcpDocument"
+                container: this.element
             });
             return this;
         },
@@ -627,12 +628,12 @@ define([
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    container: ".dcpDocument",
+                    container: this.element,
                     html: true,
-                    template: '<div class="tooltip dcpAttribute__linkvalue" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
                     trigger: "hover"
+                }).each(function wAttributeInitLinkTooltip() {
+                    $(this).data("bs.tooltip").tip().addClass("dcpAttribute__linkvalue");
                 });
-
             }
             return this;
         },
