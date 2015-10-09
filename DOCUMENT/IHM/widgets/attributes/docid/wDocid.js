@@ -2,10 +2,9 @@
 define([
     'jquery',
     'underscore',
-    'mustache',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect'
-], function wDocid($, _, Mustache)
+], function wDocid($, _)
 {
     'use strict';
 
@@ -149,7 +148,7 @@ define([
                             {
                                 var attrValues = scope.getValue();
 
-                                _.each(items, function x(r)
+                                _.each(items, function wDocidDataCompose(r)
                                 {
                                     if (r.values && r.values[scope.options.id]) {
                                         r.docId = r.values[scope.options.id].value;
@@ -176,7 +175,7 @@ define([
                         var dataItem = this.dataSource.at(event.item.index()).toJSON();
                         //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
 
-                        _.defer(function x()
+                        _.defer(function wDocidChangeOnSelect()
                         {
                             // Change others attributes designed by help returns
                             scope._trigger("changeattrsvalue", event, {
@@ -288,13 +287,6 @@ define([
                 var newValues = _.map(value, function wDocidMapValue(val)
                 {
                     return val.value;
-                });
-                var newStructValues = _.map(value, function wDocidMapValue(val)
-                {
-                    return {
-                        docId: val.value,
-                        docTitle: val.displayValue
-                    };
                 });
                 var kendoSelect = this.kendoWidget.data("kendoMultiSelect");
                 var originalValues = _.clone(kendoSelect.value());
