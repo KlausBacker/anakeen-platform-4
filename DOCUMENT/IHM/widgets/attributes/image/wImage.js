@@ -23,6 +23,7 @@ define([
         _initDom: function wImageInitDom() {
             if (this.getMode() === "read") {
                 var urlSep = '?';
+                console.log("opt", this.options.renderOptions);
                 if (this.options.attributeValue.url) {
                     if (!this.options.renderOptions.htmlLink.url) {
 

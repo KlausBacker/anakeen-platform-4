@@ -1,19 +1,19 @@
 <span class="dcpAttribute__value dcpAttribute__value--read" name="{{id}}">
-    {{#renderOptions.htmlLink.url}}
+    {{#renderOptions.htmlLink.renderUrl}}
     <a  class="dcpAttribute__content__link"
         target="{{renderOptions.htmlLink.target}}"
-        {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
-        href="{{renderOptions.htmlLink.url}}">
-    {{/renderOptions.htmlLink.url}}
+        {{#renderOptions.htmlLink.renderTitle}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.renderTitle}}
+        href="{{renderOptions.htmlLink.renderUrl}}">
+    {{/renderOptions.htmlLink.renderUrl}}
     {{^attributeValue.thumbnail}}
         <span class="dcpAttribute__content__value">{{attributeValue.displayValue}}</span>
     {{/attributeValue.thumbnail}}
     {{#attributeValue.thumbnail}}
         <img src="{{attributeValue.thumbnail}}"/>
     {{/attributeValue.thumbnail}}
-    {{#renderOptions.htmlLink.url}}
+    {{#renderOptions.htmlLink.renderUrl}}
     </a>
-    {{/renderOptions.htmlLink.url}}
+    {{/renderOptions.htmlLink.renderUrl}}
     {{{emptyValue}}}
 </span>
 {{#hadButtons}}
