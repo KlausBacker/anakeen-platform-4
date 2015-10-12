@@ -15,7 +15,15 @@ define([
             renderOptions: {
                 maxLength: 0, // char max length
                 placeHolder: '',
-                format: ""
+                format: "",
+                kendoAutoCompleteConfiguration: {
+                    filter: "contains",
+                    minLength: 1,
+                    template: '<span><span class="k-state-default">#= data.title#</span>' +
+                    '#if (data.error) {#' +
+                    '<span class="k-state-error">#: data.error#</span>' +
+                    '#}# </span>'
+                }
             }
         },
 
@@ -70,29 +78,25 @@ define([
         activateAutocomplete: function activateAutocomplete(inputValue)
         {
             var currentWidget = this;
-            inputValue.kendoAutoComplete({
+            var systemOption = {
                 dataTextField: "title",
-                filter: "contains",
-                minLength: 1,
-                template: '<span><span class="k-state-default">#= data.title#</span>' +
-                '#if (data.error) {#' +
-                '<span class="k-state-error">#: data.error#</span>' +
-                '#}# </span>',
                 dataSource: {
                     type: "json",
 
                     serverFiltering: true,
                     transport: {
-                        read: function mapAutoActivated(options) {
-                            options.data.index=currentWidget._getIndex();
+                        read: function mapAutoActivated(options)
+                        {
+                            options.data.index = currentWidget._getIndex();
                             return currentWidget.options.autocompleteRequest.call(null, options);
                         }
                     }
                 },
-                filtering: function wTextFiltering(e) {
+                filtering: function wTextFiltering(e)
+                {
                     // space search is used to force new search
                     if (e.filter.value === " ") {
-                        e.filter.value='';
+                        e.filter.value = '';
                     }
                 },
                 select: function kendoAutocompleteSelect(event)
@@ -106,7 +110,9 @@ define([
                     event.preventDefault(); // no fire change event
                     currentWidget._trigger("changeattrsvalue", event, {dataItem: dataItem, valueIndex: valueIndex});
                 }
-            });
+            };
+
+            inputValue.kendoAutoComplete(_.extend({}, this.options.renderOptions.kendoAutoCompleteConfiguration, systemOption));
             this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--autocomplete--button', function wTextClickAutoComplete(event)
             {
                 event.preventDefault();
@@ -114,8 +120,9 @@ define([
             });
             this.element.find('.dcpAttribute__value--autocomplete--button[title]').tooltip({
                 html: true,
-                container:this.element
-            }).each(function wTextInitLinkTooltip() {
+                container: this.element
+            }).each(function wTextInitLinkTooltip()
+            {
                 $(this).data("bs.tooltip").tip().addClass("dcpAttribute__autocomplete");
             });
 

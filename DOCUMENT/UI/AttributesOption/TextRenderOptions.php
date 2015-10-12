@@ -14,7 +14,7 @@ class TextRenderOptions extends CommonRenderOptions
     const maxLengthOption = "maxLength";
     const placeHolderOption = "placeHolder";
     const formatOption = "format";
-
+    const kendoAutoCompleteConfigurationOption = "kendoAutoCompleteConfiguration";
     /**
      * Max number of characters for the input
      * @note use only in edition mode
@@ -24,10 +24,26 @@ class TextRenderOptions extends CommonRenderOptions
      */
     public function setMaxLength($number)
     {
-        if (! is_int($number) || $number < 0) {
+        if (!is_int($number) || $number < 0) {
             throw new Exception("UI0203", $number);
         }
         return $this->setOption(self::maxLengthOption, (int)$number);
+    }
+    /**
+     * Set extra configuration for kendoAutoComplete widget
+     *
+     * @note use only in edition mode
+     * @param array $config indexed array
+     *
+     * @return $this
+     */
+    public function setKendoAutoCompleteConfiguration($config)
+    {
+        $opt = $this->getOption(self::kendoAutoCompleteConfigurationOption);
+        if (is_array($opt)) {
+            $config = array_merge($opt, $config);
+        }
+        return $this->setOption(self::kendoAutoCompleteConfigurationOption, $config);
     }
     /**
      * Text to set into input when is empty
@@ -39,5 +55,4 @@ class TextRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::placeHolderOption, $text);
     }
-
 }
