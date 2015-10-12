@@ -1,22 +1,22 @@
 <span class="dcpAttribute__value dcpAttribute__value--read" data-attrid="{{id}}">
-    {{#renderOptions.htmlLink.url}}
+    {{#renderOptions.htmlLink.renderUrl}}
     <a  class="dcpAttribute__content__link"
         target="{{renderOptions.htmlLink.target}}"
-        {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
-        href="{{renderOptions.htmlLink.url}}">
-    {{/renderOptions.htmlLink.url}}
+        {{#renderOptions.htmlLink.renderTitle}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.renderTitle}}
+        href="{{renderOptions.htmlLink.renderUrl}}">
+    {{/renderOptions.htmlLink.renderUrl}}
         <span class="dcpAttribute__content__value">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{attributeValue.displayValue}}{{/attributeValue.formatValue}}</span>
-    {{#renderOptions.htmlLink.url}}
+    {{#renderOptions.htmlLink.renderUrl}}
     </a>
-    {{/renderOptions.htmlLink.url}}
+    {{/renderOptions.htmlLink.renderUrl}}
     {{{emptyValue}}}
 </span>
 
 {{#hadButtons}}
 <span class="dcpAttribute__content__buttons">
     {{#renderOptions.buttons}}
-    <button type="button" title="{{title}}" data-index="{{index}}"
-            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+    <button type="button" data-title="{{title}}" data-index="{{index}}"
+            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
     {{/renderOptions.buttons}}
 </span>
 {{/hadButtons}}

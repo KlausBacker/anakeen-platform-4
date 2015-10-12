@@ -122,7 +122,23 @@ define([
                 this.model.trigger("success", this.messages);
             }
         },
-
+        /**
+         * Inject associated CSS in the DOM
+         *
+         * Inject new CSS, no remove old CSS
+         */
+        renderCss: function vTransitionRenderCss()
+        {
+            ViewDocument.prototype.renderCss.apply(this, [true]);
+        },
+        updateTitle:function vTransitionupdateTitle()
+        {
+            // No update title
+        },
+        updateIcon:function vTransitionupdateIcon()
+        {
+            // No update icon
+        },
         clearError: function vTransition_clearError()
         {
             this.$el.find(".dcpTransition--error").remove();
@@ -222,6 +238,16 @@ define([
                 if (transition.id) {
                     this.$el.attr("data-transition", transition.id);
                 }
+
+                // No use border color if same as background
+                _.defer(function vTransition_renderWhiteOnWhite() {
+                    currentView.$el.find(".dcpTransition--activity").each(function vTransition_renderBorderColor() {
+                        if (currentView.$el.css("background-color") === $(this).css("border-color")) {
+                            $(this).css("border-color","");
+                        }
+                    });
+                });
+
             } else
                 if (state) {
                     // Transition success

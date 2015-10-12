@@ -38,28 +38,6 @@ define([
 
             if (this.getMode() === "read") {
 
-                var htmlLink = this.getLink();
-                if (htmlLink === null) {
-                    htmlLink = {};
-                    this.options.renderOptions = this.options.renderOptions || {};
-                    this.options.renderOptions.htmlLink = htmlLink;
-                }
-                this.options.renderOptions.htmlLink.renderUrl = Mustache.render(this.options.renderOptions.htmlLink.url, this.options.attributeValue);
-                this.options.renderOptions.htmlLink.renderTitle = Mustache.render(this.options.renderOptions.htmlLink.title, this.options.attributeValue);
-
-                if (this._isMultiple()) {
-                    this.options.attributeValues = _.map(this.options.attributeValue, function (val, index)
-                    {
-                        val.rawValue = val.value;
-                        val.renderUrl = Mustache.render(htmlLink.url, val);
-                        val.renderTitle = Mustache.render(htmlLink.title, val);
-                        val.index = index;
-                        return val;
-                    });
-
-                    this.options.isMultiple = true;
-                }
-
                 //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
                 $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
 

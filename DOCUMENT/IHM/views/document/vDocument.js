@@ -28,7 +28,7 @@ define([
     var checkTouchEvents = function checkTouchEvents() {
         //From modernizer
         var bool = false;
-        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch) {
             bool = true;
         }
         return bool;
@@ -634,25 +634,28 @@ define([
          *
          * Inject new CSS, remove old CSS
          */
-        renderCss: function vDocumentRenderCss()
+        renderCss: function vDocumentRenderCss(noRemove)
         {
             // add custom css style
             var $head = $("head"),
                 cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
                 'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
                 customCss = this.model.get("customCSS");
-            //Remove old CSS
 
-            _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink)
-            {
-                var findCss = function vDocumentFindCss(currentCss)
+            if (noRemove !== true) {
+                //Remove old CSS
+
+                _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink)
                 {
-                    return $(currentLink).data("id") === currentCss.key;
-                };
-                if (_.find(customCss, findCss) === undefined) {
-                    $(currentLink).remove();
-                }
-            });
+                    var findCss = function vDocumentFindCss(currentCss)
+                    {
+                        return $(currentLink).data("id") === currentCss.key;
+                    };
+                    if (_.find(customCss, findCss) === undefined) {
+                        $(currentLink).remove();
+                    }
+                });
+            }
             // Inject new CSS
             _.each(customCss, function vDocumentInjectNewCSS(cssItem)
             {

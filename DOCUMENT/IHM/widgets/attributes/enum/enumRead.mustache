@@ -4,7 +4,7 @@
         {{#renderOptions.htmlLink.url}}
         <a  class="dcpAttribute__content__link"
             target="{{renderOptions.htmlLink.target}}"
-        {{#renderOptions.htmlLink.title}}title="{{renderOptions.htmlLink.title}}" {{/renderOptions.htmlLink.title}}
+           {{#renderOptions.htmlLink.renderTitle}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.renderTitle}}
             href="{{renderOptions.htmlLink.url}}">
         {{/renderOptions.htmlLink.url}}
         <span class="dcpAttribute__content__value">{{displayValue}}</span>
@@ -18,8 +18,8 @@
 {{#hadButtons}}
 <span class="dcpAttribute__content__buttons">
     {{#renderOptions.buttons}}
-    <button type="button" title="{{title}}" data-index="{{index}}"
-            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+    <button type="button" data-title="{{title}}" data-index="{{index}}"
+            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
     {{/renderOptions.buttons}}
 </span>
 {{/hadButtons}}

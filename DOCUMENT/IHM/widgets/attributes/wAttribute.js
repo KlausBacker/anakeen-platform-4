@@ -113,14 +113,16 @@ define([
                             placement: "bottom",
                             html: true,
                             animation: false,
+                            container: scope.element,
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
                             },
-                            trigger: "manual",
-                            template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
+                            trigger: "manual"
+                        }).each(function wAttributErrorLinkTooltip()
+                        {
+                            $(this).data("bs.tooltip").tip().addClass("has-error");
                         });
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
@@ -230,9 +232,9 @@ define([
 
         /**
          * Show the input tooltip
-         * @param ktTarget //TODO Eric ; préciser le type de kTarget ou passer la méthode en privé
+         * @param  ktTarget DOMElement
          *
-         * @return this
+         * @return dcp.dcpAttribute
          */
         hideInputTooltip: function wAttributeHideInputTooltip(ktTarget)
         {
@@ -245,9 +247,9 @@ define([
 
         /**
          * Show the input tooltip
-         * @param ktTarget //TODO Eric ; préciser le type de kTarget ou passer la méthode en privé
+         * @param  ktTarget DOMElement
          *
-         * @return this
+         * @return dcp.dcpAttribute
          */
         showInputTooltip: function showInputTooltip(ktTarget)
         {
@@ -278,6 +280,7 @@ define([
          */
         _create: function _create()
         {
+            var scope = this;
             //If no id is provided one id generated
             if (this.options.id === null) {
                 this.options.id = _.uniqueId("widget_" + this.getType());
@@ -301,11 +304,11 @@ define([
                 // Add index for template to identify buttons
                 this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function wAttributeOptionMap(val, index)
                 {
+                    val.renderHtmlContent = Mustache.render(val.htmlContent, scope.options.attributeValue);
                     val.index = index;
                     return val;
                 });
             }
-
             this.options.emptyValue = _.bind(this._getEmptyValue, this);
             this.options.hadButtons = this._hasButtons();
             if (this.options.renderOptions && this.options.renderOptions.labels) {
@@ -353,7 +356,29 @@ define([
          */
         _initDom: function wAttributeInitDom()
         {
+            var htmlLink = this.getLink();
             this._initMainElementClass();
+            if (htmlLink) {
+                // Add render Url and title on links
+                var originalEscape = Mustache.escape;
+
+                if (this._isMultiple()) {
+                    this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
+                    {
+                        Mustache.escape = encodeURIComponent;
+                        val.renderUrl = Mustache.render(htmlLink.url, val);
+                        Mustache.escape = originalEscape;
+                        val.renderTitle = Mustache.render(htmlLink.title, val);
+                        val.index = index;
+                        return val;
+                    });
+                } else {
+                    Mustache.escape = encodeURIComponent;
+                    this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url, this.options.attributeValue);
+                    Mustache.escape = originalEscape;
+                    this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title, this.options.attributeValue);
+                }
+            }
             this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
         },
 
@@ -422,7 +447,7 @@ define([
         {
             var scope = this;
             if (this.options.index !== -1) {
-                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent(event, eventData)
+                this.element.on("postMoved" + this.eventNamespace, function wAttributeinitMoveEvent()
                     {
                         var domLine = scope.element.closest('tr').data('line');
                         if (!_.isUndefined(domLine)) {
@@ -446,7 +471,7 @@ define([
                 var buttonsConfig = currentWidget.options.renderOptions.buttons;
                 var buttonIndex = $(this).data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
-                var wFeature='';
+                var wFeature = '';
 
                 if (buttonConfig && buttonConfig.url) {
                     var originalEscape = Mustache.escape;
@@ -487,11 +512,20 @@ define([
                     index: currentWidget._getIndex()
                 });
             });
-            this.element.find(".dcpAttribute__content__buttons button").tooltip({
+            this.element.tooltip({
+                selector: ".dcpAttribute__content__buttons button",
                 placement: "top",
                 trigger: "hover",
-                container: ".dcpDocument"
+                html: true,
+                title: function wAttributeGetButtonTitle()
+                {
+                    var title = $(this).data("title");
+                    var attrValue = currentWidget.getValue();
+                    return Mustache.render(title, attrValue);
+                },
+                container: this.element
             });
+
             return this;
         },
 
@@ -504,7 +538,7 @@ define([
         {
             var scope = this;
             // tooltip is created in same parent
-            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(event)
+            this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(/*event*/)
             {
                 if (scope.element.data("hasErrorTooltip")) {
                     scope.element.find(".input-group").tooltip("destroy");
@@ -604,11 +638,13 @@ define([
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    container: ".dcpDocument",
-                    template: '<div class="tooltip dcpAttribute__linkvalue" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+                    container: this.element,
+                    html: true,
                     trigger: "hover"
+                }).each(function wAttributeInitLinkTooltip()
+                {
+                    $(this).data("bs.tooltip").tip().addClass("dcpAttribute__linkvalue");
                 });
-
             }
             return this;
         },
