@@ -235,10 +235,15 @@ define([
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
-                            attrModel.addValue({
-                                value: attributeValue.value,
-                                displayValue: attributeValue.displayValue
-                            }, valueIndex);
+                            // No add same value twice
+                            if (!_.some(attrModel.getValue(), function vAttributeNoDouble(itemValue) {
+                                    return itemValue.value === attributeValue.value;
+                                })) {
+                                attrModel.addValue({
+                                    value: attributeValue.value,
+                                    displayValue: attributeValue.displayValue
+                                }, valueIndex);
+                            }
                         } else {
                             attrModel.setValue({
                                 value: attributeValue.value,

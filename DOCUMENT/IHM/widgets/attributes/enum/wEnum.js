@@ -482,7 +482,7 @@ define([
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
             if (this.options.renderOptions.useSourceUri) {
                 if (this.options.attributeValue.value === null) {
-                    kddl.dataSource.data([]);
+                    //kddl.dataSource.data([]);
                     kddl.value('');
                 } else {
                     kddl.dataSource.data([this.options.attributeValue]);
@@ -527,12 +527,12 @@ define([
                             if (!_.isEqual(kddl.value(), newValues)) {
                                 this.flashElement();
                                 if (this.options.renderOptions.useSourceUri) {
-                                    kddl.dataSource.data(value);
-                                    kddl.value(newValues);
-                                    kddl.dataSource.data([]); // Need to reset tu use server data
-                                } else {
-                                    kddl.value(newValues);
+                                    if (newValues.length > 0) {
+                                        kddl.dataSource.data(value);
+                                    }
                                 }
+                                kddl.value(newValues);
+
                             }
                             break;
 
@@ -575,7 +575,9 @@ define([
                                     kddl.value(value.value);
                                 } else {
                                     if (this.options.renderOptions.useSourceUri) {
-                                        kddl.dataSource.data([]);
+                                      //  kddl.dataSource.data([]);
+                                       // kddl.dataSource.sync();
+                                       // kddl.dataSource.filter({value:''});
                                     }
                                     kddl.value('');
                                 }
