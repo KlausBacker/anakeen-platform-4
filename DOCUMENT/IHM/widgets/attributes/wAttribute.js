@@ -113,14 +113,15 @@ define([
                             placement: "bottom",
                             html: true,
                             animation: false,
-                            container:scope.element,
+                            container: scope.element,
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<i title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</i>' + rawMessage + '</div>';
                             },
                             trigger: "manual"
-                        }).each(function wAttributErrorLinkTooltip() {
+                        }).each(function wAttributErrorLinkTooltip()
+                        {
                             $(this).data("bs.tooltip").tip().addClass("has-error");
                         });
                         scope.element.data("hasErrorTooltip", true);
@@ -279,6 +280,7 @@ define([
          */
         _create: function _create()
         {
+            var scope = this;
             //If no id is provided one id generated
             if (this.options.id === null) {
                 this.options.id = _.uniqueId("widget_" + this.getType());
@@ -302,11 +304,11 @@ define([
                 // Add index for template to identify buttons
                 this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function wAttributeOptionMap(val, index)
                 {
+                    val.renderHtmlContent = Mustache.render(val.htmlContent, scope.options.attributeValue);
                     val.index = index;
                     return val;
                 });
             }
-
             this.options.emptyValue = _.bind(this._getEmptyValue, this);
             this.options.hadButtons = this._hasButtons();
             if (this.options.renderOptions && this.options.renderOptions.labels) {
@@ -510,12 +512,20 @@ define([
                     index: currentWidget._getIndex()
                 });
             });
-            this.element.find(".dcpAttribute__content__buttons button").tooltip({
+            this.element.tooltip({
+                selector: ".dcpAttribute__content__buttons button",
                 placement: "top",
                 trigger: "hover",
                 html: true,
+                title: function wAttributeGetButtonTitle()
+                {
+                    var title = $(this).data("title");
+                    var attrValue = currentWidget.getValue();
+                    return Mustache.render(title, attrValue);
+                },
                 container: this.element
             });
+
             return this;
         },
 
@@ -631,7 +641,8 @@ define([
                     container: this.element,
                     html: true,
                     trigger: "hover"
-                }).each(function wAttributeInitLinkTooltip() {
+                }).each(function wAttributeInitLinkTooltip()
+                {
                     $(this).data("bs.tooltip").tip().addClass("dcpAttribute__linkvalue");
                 });
             }

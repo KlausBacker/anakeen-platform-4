@@ -14,7 +14,7 @@
           class="form-control dcpAttribute__value dcpAttribute__value--edit k-textbox">{{attributeValue.value}}</textarea>
     <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
-        <button type="button" title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{htmlContent}}}</button>
+        <button type="button" data-title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
         {{/renderOptions.buttons}}
         {{#deleteButton}}
         <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"

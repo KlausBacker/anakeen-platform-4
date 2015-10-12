@@ -249,6 +249,7 @@ define([
                 this.retrieveItems(function (theWidget)
                 {
                     theWidget.boolButtons();
+
                 });
                 return;
             }
@@ -373,8 +374,8 @@ define([
                 }
             }
 
-            this.element.tooltip({
-                container: ".dcpDocument",
+            this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
+                container: scope.element,
                 selector: '.dcpAttribute__value--enumlabel--text',
                 title: function (a)
                 {
