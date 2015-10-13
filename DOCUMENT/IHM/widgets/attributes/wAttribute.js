@@ -110,10 +110,10 @@ define([
                         scope.element.addClass("has-error");
                         // need to use sub element because tooltip add a div after element
                         scope.element.find(".input-group").tooltip({
-                            placement: "bottom",
+                            placement: "auto bottom",
                             html: true,
                             animation: false,
-                            container: scope.element,
+                            container: ".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
