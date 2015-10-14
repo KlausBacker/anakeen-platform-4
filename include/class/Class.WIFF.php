@@ -1095,22 +1095,34 @@ class WIFF extends WiffCommon
         return (float)($stat['blocks'] * 512);
     }
 
+    public function verifyGzipIntegrity($file, & $err = '') {
+        $cmd = sprintf("gzip -t %s 2>&1", escapeshellarg($file));
+        $output = array();
+        exec($cmd, $output, $retval);
+        $err = join("\n", $output);
+        if ($retval != 0) {
+            return false;
+        }
+        return true;
+    }
+
     public function verifyArchiveIntegrity($pathToArchive)
     {
-        if ($handle = opendir($pathToArchive)) {
-            while (false !== ($file = readdir($handle))) {
-                if (substr($file, -3) === ".gz") {
-                    $result = exec(sprintf("gzip -t %s 2>&1", escapeshellarg($pathToArchive . DIRECTORY_SEPARATOR . $file)) , $output, $retval);
-                    if ($retval != 0) {
-                        $this->errorMessage = sprintf("Archive %s is not correct: %s", $pathToArchive . DIRECTORY_SEPARATOR . $file, $result);
-                        return false;
-                    }
-                }
-            }
-            return true;
+        if (($handle = opendir($pathToArchive)) === false) {
+            $this->errorMessage = sprintf("Can't open archive directory '%s'", $pathToArchive);
+            return false;
         }
-        $this->errorMessage = "Can't open archive directory: " . $pathToArchive;
-        return false;
+        while (($file = readdir($handle)) !== false) {
+            if (substr($file, -3) !== ".gz") {
+                continue;
+            }
+            $file = $pathToArchive . DIRECTORY_SEPARATOR . $file;
+            if ($this->verifyGzipIntegrity($file, $err) === false) {
+                $this->errorMessage = sprintf("Archive '%s' is not correct: %s", $file, $err);
+                return false;
+            }
+        }
+        return true;
     }
 
     public function createContextFromArchive($archiveId, $name, $root, $desc, $url, $vault_root, $pgservice, $remove_profiles, $user_login, $user_password, $clean_tmp_directory = false)
