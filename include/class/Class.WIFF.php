@@ -1922,6 +1922,10 @@ class WIFF extends WiffCommon
     {
         require_once 'class/Class.WWWUserAgent.php';
 
+        if ($url == '') {
+            $this->errorMessage = 'Download URL must not be empty';
+            return false;
+        }
         $ua = new WWW\UserAgent(array('use-cache' => true));
         $file = $ua->downloadUrl($url, $opts);
         if ($file === false) {
