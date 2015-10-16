@@ -638,7 +638,7 @@ define([
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    container: this.element,
+                    container: this.element.parent(),
                     html: true,
                     trigger: "hover"
                 }).each(function wAttributeInitLinkTooltip()
