@@ -224,7 +224,8 @@ define([
             var externalEvent = {prevent: false},
                 currentView = this,
                 dataItem = options.dataItem,
-                valueIndex = options.valueIndex;
+                valueIndex = options.valueIndex,
+                currentValue;
             this.model.trigger("helperSelect", externalEvent, this.model.id, dataItem);
             if (externalEvent.prevent) {
                 return this;
@@ -235,8 +236,12 @@ define([
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
+                            currentValue=attrModel.getValue();
+                            if (valueIndex >= 0) {
+                                currentValue=currentValue[valueIndex];
+                            }
                             // No add same value twice
-                            if (!_.some(attrModel.getValue(), function vAttributeNoDouble(itemValue) {
+                            if (!_.some(currentValue, function vAttributeNoDouble(itemValue) {
                                     return itemValue.value === attributeValue.value;
                                 })) {
                                 attrModel.addValue({
