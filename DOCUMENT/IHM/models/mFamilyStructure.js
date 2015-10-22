@@ -1,10 +1,9 @@
 define([
     "underscore",
     "backbone"
-], function (_, Backbone)
+], function require_structure(_, Backbone)
 {
     "use strict";
-
 
     return Backbone.Model.extend({
 
