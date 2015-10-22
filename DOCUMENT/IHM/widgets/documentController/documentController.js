@@ -19,6 +19,15 @@ define([
 {
     'use strict';
 
+    var ErrorModelNonInitialized = function ErrorModelNonInitialized(message)
+    {
+        this.name = "ErrorModelNonInitialized";
+        this.message = message || "The widget model is not initialized, use fetchDocument to initialise it.";
+        this.stack = (new Error()).stack;
+    };
+    ErrorModelNonInitialized.prototype = Object.create(Error.prototype);
+    ErrorModelNonInitialized.prototype.constructor = ErrorModelNonInitialized;
+
     var eventList = ["beforeRender", "ready", "change", "displayMessage", "displayError", "validate",
         "attributeBeforeRender", "attributeReady",
         "attributeHelperSearch", "attributeHelperResponse", "attributeHelperSelect",
@@ -296,42 +305,69 @@ define([
             });
             this._model.listenTo(this._model, "changeValue", function documentController_triggerChangeValue(options)
             {
-                var currentAttribute = currentWidget.getAttribute(options.attributeId);
-                currentWidget._triggerAttributeControllerEvent("change", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    currentAttribute.getValue("all")
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(options.attributeId);
+                    currentWidget._triggerAttributeControllerEvent("change", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        currentAttribute.getValue("all")
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+
             });
             this._model.listenTo(this._model, "beforeAttributeRender", function documentController_triggerAttributeRender(event, attributeId, $el, index)
             {
-                var currentAttribute = currentWidget.getAttribute(attributeId);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeBeforeRender", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    $el,
-                    index
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attributeId);
+                    event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeBeforeRender", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        $el,
+                        index
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
             });
             this._model.listenTo(this._model, "attributeRender", function documentController_triggerAttributeRender(attributeId, $el, index)
             {
-                var currentAttribute = currentWidget.getAttribute(attributeId);
-                currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    $el,
-                    index
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attributeId);
+                    currentWidget._triggerAttributeControllerEvent("attributeReady", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        $el,
+                        index
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+
             });
             this._model.listenTo(this._model, "arrayModified", function documentController_triggerArrayModified(options)
             {
-                var currentAttribute = currentWidget.getAttribute(options.attributeId);
-                currentWidget._triggerAttributeControllerEvent("attributeArrayChange", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    options.type,
-                    options.options
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(options.attributeId);
+                    currentWidget._triggerAttributeControllerEvent("attributeArrayChange", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options.type,
+                        options.options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+
             });
             this._model.listenTo(this._model, "internalLinkSelected", function documentController_triggerInternalLinkSelected(event, options)
             {
@@ -342,75 +378,114 @@ define([
             });
             this._model.listenTo(this._model, "downloadFile", function documentController_triggerDownloadFile(event, attrid, options)
             {
-                var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerControllerEvent("downloadFile",
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    options
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerControllerEvent("downloadFile",
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+
             });
             this._model.listenTo(this._model, "uploadFile", function documentController_triggerUploadFile(event, attrid, options)
             {
-                var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerControllerEvent("uploadFile",
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    options
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerControllerEvent("uploadFile",
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
             });
             this._model.listenTo(this._model, "helperSearch", function documentController_triggerHelperSearch(event, attrid, options)
             {
-                var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSearch", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    options
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSearch", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
             });
             this._model.listenTo(this._model, "helperResponse", function documentController_triggerHelperResponse(event, attrid, options)
             {
-                var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperResponse", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    options
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperResponse", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+
             });
             this._model.listenTo(this._model, "helperSelect", function documentController_triggerHelperSelect(event, attrid, options)
             {
-                var currentAttribute = currentWidget.getAttribute(attrid);
-                event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSelect", currentAttribute,
-                    currentWidget.getProperties(),
-                    currentAttribute,
-                    options
-                );
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSelect", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
             });
             this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, constraintController)
             {
-                var currentAttribute = currentWidget.getAttribute(attribute),
-                    currentModel = currentWidget.getProperties(),
-                    $element = $(currentWidget.element);
-                _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
-                {
-                    try {
-                        if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
-                            var response = currentConstraint.constraintCheck.call($element,
-                                currentModel,
-                                currentAttribute,
-                                currentAttribute.getValue("all")
-                            );
-                            if (_.isString(response)) {
-                                constraintController.addConstraintMessage(response);
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attribute),
+                        currentModel = currentWidget.getProperties(),
+                        $element = $(currentWidget.element);
+                    _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
+                    {
+                        try {
+                            if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
+                                var response = currentConstraint.constraintCheck.call($element,
+                                    currentModel,
+                                    currentAttribute,
+                                    currentAttribute.getValue("all")
+                                );
+                                if (_.isString(response)) {
+                                    constraintController.addConstraintMessage(response);
+                                }
+                                if (_.isObject(response) && response.message && _.isNumber(response.index)) {
+                                    constraintController.addConstraintMessage(response.message, response.index);
+                                }
                             }
-                            if (_.isObject(response) && response.message && _.isNumber(response.index)) {
-                                constraintController.addConstraintMessage(response.message, response.index);
-                            }
+                        } catch (e) {
+                            console.error(e);
                         }
-                    } catch(e) {
-                        console.error(e);
-                    }
 
-                });
+                    });
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+
             });
             this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayTransition, this));
         },
@@ -879,7 +954,7 @@ define([
         _checkInitialisedView: function documentController_checkInitialised()
         {
             if (!this._initializedView) {
-                throw new Error("The widget view is not initialized, use fetchDocument to initialise it.");
+                throw new ErrorModelNonInitialized("The widget view is not initialized, use fetchDocument to initialise it.");
             }
         },
 
@@ -891,7 +966,7 @@ define([
         _checkInitialisedModel: function documentController_checkInitialisedModel()
         {
             if (!this._initializedModel) {
-                throw new Error("The widget model is not initialized, use fetchDocument to initialise it.");
+                throw new ErrorModelNonInitialized();
             }
         },
 

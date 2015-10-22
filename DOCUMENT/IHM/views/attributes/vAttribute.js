@@ -600,8 +600,8 @@ define([
         remove: function vAttributeRemove()
         {
             try {
-                if (this.currentDcpWidget && this.getWidgetClass(this.currentDcpWidget)) {
-                    this.getWidgetClass(this.currentDcpWidget).apply("destroy");
+                if (this.currentDcpWidget && this.getWidgetClass(this.currentDcpWidget) && this._findWidgetName(this.$el)) {
+                    this.getWidgetClass(this.currentDcpWidget).call(this.$el, "destroy");
                 }
             } catch (e) {
                 if (window.dcp.logger) {

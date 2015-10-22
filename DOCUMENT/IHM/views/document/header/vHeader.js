@@ -4,7 +4,7 @@ define([
     'underscore',
     'backbone',
     'mustache'
-], function ($, _, Backbone, Mustache)
+], function require_vheader($, _, Backbone, Mustache)
 {
     'use strict';
 
@@ -33,15 +33,17 @@ define([
          */
         render: function vheaderRender()
         {
-            var data = this.model.toData();
+            var data = this.model.toData(), properties = this.model.getModelProperties(), security = properties.security || false;
 
-            data.document.properties.security = data.document.properties.security || {lock: {lockedBy: null}};
+            data.document.properties = properties;
+
+            data.document.properties.security = security || {lock: {lockedBy: null}};
             data.document.properties.security.lock.isLocked = (data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0);
 
             var headerRender = $(Mustache.render(this.headerTemplate, data));
             var $header = this.$el;
             $header.empty();
-            _.each(headerRender.children(), (function (elt)
+            _.each(headerRender.children(), (function eachChildren(elt)
             {
                 $header.append(elt);
             }));

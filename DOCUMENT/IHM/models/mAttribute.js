@@ -37,7 +37,7 @@ define([
             }
             content.isDisplayable = this.isDisplayable();
             content.content = [];
-            if (this.get("content")) {
+            if (this.get("content") && _.isFunction(this.get("content").toData)) {
                 content.content = this.get("content").toData();
             }
             if (extended) {
