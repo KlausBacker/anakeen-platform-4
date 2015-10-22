@@ -19,7 +19,7 @@ define([
     'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
-], function (_, $, unitTestUtils, template, ModelDocument, ViewDocument)
+], function require_defaultTestList(_, $, unitTestUtils, template, ModelDocument, ViewDocument)
 {
     "use strict";
 
@@ -36,7 +36,7 @@ define([
     window.dcp.templates = window.dcp.templates || {};
     _.defaults(window.dcp.templates, template);
 
-    testAttribute = function (config)
+    testAttribute = function defaultSuiteAttribute(config)
     {
 
         var title = config.title,
@@ -46,18 +46,18 @@ define([
             otherValue = config.otherValue,
             familyStructure,
             launchTest,
-            modelDocument, currentSandbox, localAttrId, getSandbox = function ()
+            modelDocument, currentSandbox, localAttrId, getSandbox = function getSandbox()
             {
                 return currentSandbox;
-            }, findWidgetName = function ($element)
+            }, findWidgetName = function findWidgetName($element)
             {
-                return _.find(_.keys($element.data()), function (currentKey)
+                return _.find(_.keys($element.data()), function test(currentKey)
                 {
                     return currentKey.indexOf("dcpDcp") !== -1;
                 });
             };
 
-        beforeEach(function ()
+        beforeEach(function beforeEachTest()
         {
             familyStructure = options.attributes || unitTestUtils.generateFamilyStructure(config.attribute, options.renderMode, initialValue);
             currentSandbox = unitTestUtils.generateSandBox(config, $("#render"));
@@ -70,7 +70,7 @@ define([
             localAttrId = familyStructure.localeAttrId;
         });
 
-        afterEach(function ()
+        afterEach(function afterEachTest()
         {
             modelDocument.trigger("destroy");
         });
@@ -90,10 +90,10 @@ define([
             view.render();
         };
 
-        describe(title, function ()
+        describe(title, function describeDefaultSuite()
         {
 
-            it("dom", function (done)
+            it("dom", function testDom(done)
             {
                 var $sandBox = getSandbox(), view, executeTest;
                 view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -108,7 +108,7 @@ define([
                 launchTest(view, executeTest);
             });
 
-            it("label", function (done)
+            it("label", function testLabel(done)
             {
                 var $sandBox = getSandbox(), view, newLabel = _.uniqueId(title), executeTest;
                 var iniLabel = familyStructure[1].label;
@@ -124,10 +124,10 @@ define([
                 launchTest(view, executeTest);
             });
 
-            describe("Value", function ()
+            describe("Value", function testValue()
             {
                 /* Check the initialValue on the widget and the attribute model*/
-                it("InitialValue", function (done)
+                it("InitialValue", function testInitialValue(done)
                 {
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -139,7 +139,7 @@ define([
                         widgetValue = widget.getValue();
                         if (_.isArray(initialValue)) {
                             // verify each values
-                            _.each(initialValue, function (v, k)
+                            _.each(initialValue, function forEachInitialValue(v, k)
                             {
                                 expect(modelValue[k].value).toEqual(v.value);
                                 expect(widgetValue[k].value).toEqual(v.value);
@@ -155,7 +155,7 @@ define([
 
                 });
                 /* Check the setValue method of the attribute model*/
-                it("ModelSetValue", function (done)
+                it("ModelSetValue", function testModelSetValue(done)
                 {
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -169,7 +169,7 @@ define([
 
                         if (_.isArray(otherValue)) {
                             // verify each values
-                            _.each(otherValue, function (v, k)
+                            _.each(otherValue, function forEachValues(v, k)
                             {
                                 expect(modelValue[k].value).toEqual(v.value);
                                 expect(widgetValue[k].value).toEqual(v.value);
@@ -183,7 +183,7 @@ define([
                     launchTest(view, executeTest);
                 });
                 /* Check the setValue method of the widget*/
-                it("WidgetSetValue", function (done)
+                it("WidgetSetValue", function testWidgetSetValue(done)
                 {
                     var $sandBox = getSandbox(), view, $content, modelValue, widget, widgetValue, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -196,7 +196,7 @@ define([
                         modelValue = modelDocument.get("attributes").get(localAttrId).get("attributeValue");
                         if (_.isArray(initialValue)) {
                             // verify each values
-                            _.each(otherValue, function (v, k)
+                            _.each(otherValue, function foreachValue(v, k)
                             {
                                 expect(modelValue[k].value).toEqual(v.value);
                                 expect(widgetValue[k].value).toEqual(v.value);
@@ -211,10 +211,10 @@ define([
                 });
             });
 
-            describe("Event No Change", function ()
+            describe("Event No Change", function testEventNoChange()
             {
                 /* Check the dcpattributechange event of the widget */
-                it("WidgetEventFromSetInitialValue", function (done)
+                it("WidgetEventFromSetInitialValue", function testEventInitialValue(done)
                 {
                     var $sandBox = getSandbox(), view, $content, widget, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -232,7 +232,7 @@ define([
                     });
                     launchTest(view, executeTest);
                 });
-                it("WidgetEventFromModelSetInitial", function (done)
+                it("WidgetEventFromModelSetInitial", function testEventModelSet(done)
                 {
                     var $sandBox = getSandbox(), view, $content, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -250,7 +250,7 @@ define([
 
                 });
                 /* Check the event of the modelAttribute */
-                it("ModelEventFromWidgetSetInitialValue", function (done)
+                it("ModelEventFromWidgetSetInitialValue", function testEventFromWidgetSet(done)
                 {
                     var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -270,7 +270,7 @@ define([
 
                 });
                 /* Check the event of the modelAttribute */
-                it("ModelEventFromModelSetInitial", function (done)
+                it("ModelEventFromModelSetInitial", function testEventSetFromWidgetInitial(done)
                 {
                     var $sandBox = getSandbox(), view, modelAttribute, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -286,10 +286,10 @@ define([
                     launchTest(view, executeTest);
                 });
             });
-            describe("Event Change", function ()
+            describe("Event Change", function testEventChange()
             {
                 /* Check the dcpattributechange event of the widget */
-                it("WidgetEventFromSetValue", function (done)
+                it("WidgetEventFromSetValue", function testWidgetEventFromSetValue(done)
                 {
                     var $sandBox = getSandbox(), view, $content, widget, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -306,7 +306,7 @@ define([
                     });
                     launchTest(view, executeTest);
                 });
-                it("WidgetEventFromModelSet", function (done)
+                it("WidgetEventFromModelSet", function testWidgetEventFromModelSet(done)
                 {
                     var $sandBox = getSandbox(), view, $content, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -323,7 +323,7 @@ define([
                     launchTest(view, executeTest);
                 });
                 /* Check the event of the modelAttribute */
-                it("ModelEventFromWidgetSetValue", function (done)
+                it("ModelEventFromWidgetSetValue", function testModelEventFromWidgetSetValue(done)
                 {
                     var $sandBox = getSandbox(), view, $content, modelAttribute, widget, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});
@@ -342,7 +342,7 @@ define([
                     launchTest(view, executeTest);
                 });
                 /* Check the event of the modelAttribute */
-                it("ModelEventFromModelSet", function (done)
+                it("ModelEventFromModelSet", function testModelEventFromModelSet(done)
                 {
                     var $sandBox = getSandbox(), view, modelAttribute, change, executeTest;
                     view = new ViewDocument({model: modelDocument, el: $sandBox});

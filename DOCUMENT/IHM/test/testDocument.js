@@ -12,7 +12,7 @@ require([
     'text!dcpContextRoot/' + asset + '?app=DOCUMENT&action=TEMPLATE',
     'dcpDocument/models/mDocument',
     'dcpDocument/views/document/vDocument'
-], function (_, $, unitTestUtils, template, ModelDocument, ViewDocument) {
+], function require_testDocument(_, $, unitTestUtils, template, ModelDocument, ViewDocument) {
     "use strict";
 
     var testDocument;
@@ -29,13 +29,13 @@ require([
 
     window.dcp.templates = _.defaults(window.dcp.templates, template) || template;
 
-    testDocument = function (title, options) {
-        var modelDocument, currentSandbox, getSandbox = function () {
+    testDocument = function testDocument(title, options) {
+        var modelDocument, currentSandbox, getSandbox = function getSandbox() {
             return currentSandbox;
         };
 
-        describe(title + " Test Document", function () {
-            beforeEach(function () {
+        describe(title + " Test Document", function testDocument() {
+            beforeEach(function beforeEach() {
                 currentSandbox = unitTestUtils.generateSandBox(options, $("#render"));
                 //Generate mock model to test interaction between model, view and widget
                 modelDocument = unitTestUtils.generateModelDocument(options,
@@ -45,20 +45,20 @@ require([
                 );
             });
 
-            afterEach(function() {
+            afterEach(function afterEach() {
                 modelDocument.trigger("destroy");
             });
 
-            describe(title + " : creation", function () {
+            describe(title + " : creation", function testDocumentcreation() {
 
-                it("content", function () {
+                it("content", function testDocumentcontent() {
                     var $sandBox = getSandbox();
                     (new ViewDocument({model : modelDocument, el : $sandBox}).render());
                     expect($sandBox).toHaveClass("dcpDocument");
                     expect($sandBox).toHaveClass("dcpDocument--" + modelDocument.get("renderMode"));
                 });
 
-                it("header", function () {
+                it("header", function testDocumentheader() {
                     var $sandBox = getSandbox();
                     (new ViewDocument({model : modelDocument, el : $sandBox}).render());
                     expect($sandBox.find(".dcpDocument__header")).toExist();
@@ -70,13 +70,13 @@ require([
                     expect($sandBox.find(".dcpDocument__header__family")).toHaveText(modelDocument.get("properties").get("family").title || "");
                 });
 
-                it("menu", function () {
+                it("menu", function testDocumentmenu() {
                     var $sandBox = getSandbox();
                     (new ViewDocument({model : modelDocument, el : $sandBox}).render());
                     expect($sandBox.find(".dcpDocument__menu")).toExist();
                 });
 
-                it("content", function () {
+                it("content", function testDocumentcontent() {
                     var $sandBox = getSandbox();
                     (new ViewDocument({model : modelDocument, el : $sandBox}).render());
                     expect($sandBox.find(".dcpDocument__body")).toExist();
@@ -85,13 +85,13 @@ require([
                     expect($sandBox.find(".dcpDocument__tabs")).toExist();
                 });
 
-                it("footer", function () {
+                it("footer", function testDocumentfooter() {
                     var $sandBox = getSandbox();
                     (new ViewDocument({model : modelDocument, el : $sandBox}).render());
                     expect($sandBox.find(".dcpDocument__footer")).toExist();
                 });
 
-                it("event", function () {
+                it("event", function testDocumentevent() {
                     var $sandBox = getSandbox(), view, renderDone, elementRendered;
                     view = new ViewDocument({model : modelDocument, el : $sandBox});
                     renderDone = jasmine.createSpy("renderDone");

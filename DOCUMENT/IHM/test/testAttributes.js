@@ -1,7 +1,7 @@
 /*global require*/
 require([
     'dcpDocumentTest/suiteDefaultTestAttribute'
-], function (defaultTestSuite)
+], function require_defaultTestattribute(defaultTestSuite)
 {
     "use strict";
 

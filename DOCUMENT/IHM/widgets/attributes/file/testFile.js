@@ -3,7 +3,7 @@ require([
     'dcpDocument/widgets/attributes/file/loaderFile',
     'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/file/fileTestAttribute'
-], function (widget, defaultTestSuite, fileTestSuite) {
+], function require_initFileTest(widget, defaultTestSuite, fileTestSuite) {
     "use strict";
 
     defaultTestSuite("file : read", widget, {}, {

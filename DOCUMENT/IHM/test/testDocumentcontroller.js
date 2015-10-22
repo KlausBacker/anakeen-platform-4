@@ -2,7 +2,7 @@
 
 require([
     'dcpDocument/test/suiteDocumentController'
-], function (testDocumentController)
+], function require_testDocumentController(testDocumentController)
 {
     "use strict";
 

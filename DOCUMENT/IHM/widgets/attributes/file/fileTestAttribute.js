@@ -1,12 +1,12 @@
 /*global define, describe, beforeEach, setFixtures, expect, it, sandbox, spyOnEvent, jasmine, afterEach*/
-define(["underscore"], function (_) {
+define(["underscore"], function require_downloadInline(_) {
     "use strict";
-    return function (type, widget, options, value, expected) {
+    return function initTest(type, widget, options, value, expected) {
 
-        var currentSandbox, getSandbox = function () {
+        var currentSandbox, getSandbox = function getSandbox() {
             return currentSandbox;
-        }, findWidgetName = function ($element) {
-            return _.find(_.keys($element.data()), function (currentKey) {
+        }, findWidgetName = function findWidgetName($element) {
+            return _.find(_.keys($element.data()), function findfindWidgetName(currentKey) {
                 return currentKey.indexOf("dcpDcp") !== -1;
             });
         };
@@ -18,9 +18,9 @@ define(["underscore"], function (_) {
             throw Error("First argument must be a widget function");
         }
 
-        describe(type + " fileTest", function () {
+        describe(type + " fileTest", function testFileTest() {
 
-            beforeEach(function () {
+            beforeEach(function beforeEach() {
                 var $renderZone = $("#render");
 
                 if (window.location.hash === "#displayDom") {
@@ -35,7 +35,7 @@ define(["underscore"], function (_) {
 
             });
 
-            afterEach(function () {
+            afterEach(function afterEach() {
                 var $sandBox = getSandbox();
                 try {
                     if (window.location.hash !== "#displayDom") {
@@ -47,15 +47,12 @@ define(["underscore"], function (_) {
             });
 
             if (options.mode === "read") {
-                describe(type + " : setDownloadInline", function () {
-                    it("setDownloadInline", function () {
+                describe(type + " : setDownloadInline", function testsetDownloadInline() {
+                    it("setDownloadInline", function testsetDownloadInline() {
                         var $sandBox = getSandbox(), attrValue;
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
-
-                        expect($sandBox.find(".dcpAttribute__value a").attr("href")).toContain('&inline=' + (options.renderOptions.downloadInline ? "yes" : "no"));
-                        expect($sandBox.find(".dcpAttribute__value a").attr("href")).not.toContain('&inline=' + (options.renderOptions.downloadInline ? "no" : "yes"));
-
-
+                        expect($sandBox.find(".dcpAttribute__value a").attr("href")).toContain('&inline=' + (options.renderOptions.contentDisposition ? "yes" : "no"));
+                        expect($sandBox.find(".dcpAttribute__value a").attr("href")).not.toContain('&inline=' + (options.renderOptions.contentDisposition ? "no" : "yes"));
                     });
 
                 });

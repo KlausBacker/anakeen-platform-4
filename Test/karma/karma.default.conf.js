@@ -11,8 +11,8 @@ var config = {
     files: [
         'test-main.js',
         {pattern: 'test-css.js', watched: false, served: true, included: false},
-        {pattern: '../DOCUMENT/IHM/widgets/attributes/**/test*.js', included: false},
-        {pattern: '../DOCUMENT/IHM/test/test*.js', included: false}
+        {pattern: '../../DOCUMENT/IHM/widgets/attributes/**/test*.js', included: false},
+        {pattern: '../../DOCUMENT/IHM/test/test*.js', included: false}
     ],
 
     // list of files to exclude
@@ -28,11 +28,13 @@ var config = {
     reporters: ['progress'],
 
     proxies: {
-        '/dynacase/': 'http://localhost:8080/dynacase/',
-        '/resizeimg.php': 'http://localhost:8080/dynacase/resizeimg.php',
-        '/lib/': 'http://localhost:8080/dynacase/lib/',
-        '/css/': 'http://localhost:8080/dynacase/css/',
-        '/FDL/': 'http://localhost:8080/dynacase/FDL/'
+        '/dynacase//api/v1/' :  'http://localhost/TEST_DOCUMENT/FALSE_API/',
+        '/dynacase/': 'http://localhost/',
+        '/resizeimg.php': 'http://localhost/resizeimg.php',
+        '/lib/': 'http://localhost/lib/',
+        '/css/': 'http://localhost/css/',
+        '/FDL/': 'http://localhost/FDL/',
+        '/file/' : 'http://localhost/TEST_DOCUMENT/FALSE_API/'
     },
 
     // web server port

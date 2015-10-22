@@ -35,7 +35,7 @@ define([
     window.dcp = window.dcp || {};
     window.dcp.templates = window.dcp.templates || template;
 
-    testAttribute = function (config)
+    testAttribute = function testAttribute(config)
     {
 
         var initialValue = config.initialValue,
@@ -43,12 +43,12 @@ define([
             expectedContent = config.expectedContent,
             expectedSubContents = config.expectedSubContents || [],
             familyStructure;
-        var modelDocument, currentSandbox, localAttrId, getSandbox = function ()
+        var modelDocument, currentSandbox, localAttrId, getSandbox = function getSandbox()
         {
             return currentSandbox;
         };
 
-        beforeEach(function ()
+        beforeEach(function beforeEach()
         {
             familyStructure = unitTestUtils.generateFamilyStructure(config.attribute, options.renderMode, initialValue);
             currentSandbox = unitTestUtils.generateSandBox(config, $("#render"));
@@ -61,7 +61,7 @@ define([
             localAttrId = familyStructure.localeAttrId;
         });
 
-        afterEach(function ()
+        afterEach(function afterEach()
         {
             if (window.location.hash !== "#displayDom") {
                 modelDocument.trigger("destroy");
@@ -116,7 +116,6 @@ define([
                 });
                 view.render();
             });
-
 
         });
 

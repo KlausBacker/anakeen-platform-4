@@ -1,7 +1,7 @@
 define([
     "underscore",
     "backbone"
-], function (_, Backbone) {
+], function require_lock(_, Backbone) {
     "use strict";
 
     var urlCore = _.template("api/v1/documents/<%- initid %>/locks/<%- type %>");

@@ -6,6 +6,6 @@
   "disallowMixedSpacesAndTabs": true,
   "disallowMultipleLineBreaks": true,
   "requireCommaBeforeLineBreak": true,
-  "requireDollarBeforejQueryAssignment": true,
+  //"requireDollarBeforejQueryAssignment": true,
   "requireSemicolons": true
 }

@@ -28,7 +28,19 @@ $action_desc = array(
         "script" => "action.kitchensink.php",
         "function" => "kitchensink",
         "root" => "Y",
-        "acl" => "AUTOTEST")
+        "acl" => "AUTOTEST"),
+    array(
+        "name" => "GENERATE_DATA",
+        "short_name" => N_("DUIT:Generate test render data"),
+        "script" => "action.generate_data.php",
+        "function" => "generate_data"
+        ),
+    array(
+     "name" => "GENERATE_VOID_DATA",
+     "short_name" => N_("DUIT:Generate void data"),
+     "script" => "action.generate_void_data.php",
+     "function" => "generate_void_data"
+     )
 );
 
 

@@ -2,13 +2,13 @@
 define([
     "jquery",
     "underscore",
-    'dcpDocument/test/UnitTestUtilities'], function ($, _, unitTestUtils)
+    'dcpDocument/test/UnitTestUtilities'], function requireSuiteDefaultTestAttribute($, _, unitTestUtils)
 {
     "use strict";
-    return function (type, widget, options, value)
+    return function initTestSuite(type, widget, options, value)
     {
 
-        var currentSandbox, getSandbox = function ()
+        var currentSandbox, getSandbox = function getSandbox()
         {
             return currentSandbox;
         };
@@ -17,15 +17,15 @@ define([
             throw Error("First argument must be a widget function");
         }
 
-        describe(type + " defaultTest", function ()
+        describe(type + " defaultTest", function testDefaultTest()
         {
 
-            beforeEach(function ()
+            beforeEach(function beforeEach()
             {
                 currentSandbox = unitTestUtils.generateSandBox(options, $("#render"));
             });
 
-            afterEach(function ()
+            afterEach(function afterEach()
             {
                 var $sandBox = getSandbox();
                 $sandBox.off(".testu");
@@ -39,23 +39,23 @@ define([
                 }
             });
 
-            describe(type + " : creation", function ()
+            describe(type + " : creation", function testCreation()
             {
 
-                it("content", function (done)
+                it("content", function testcontent(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function() {
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready() {
                         expect($sandBox).not.toBeEmpty();
                         done();
                     });
                     widget.call($sandBox, options);
                 });
 
-                it("event", function (done)
+                it("event", function testevent(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         expect(true).toBe(true);
                         done();
@@ -63,20 +63,20 @@ define([
                     widget.call($sandBox, options);
                 });
 
-                it("class", function (done)
+                it("class", function testClass(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function() {
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready() {
                         expect($sandBox).toHaveClass("dcpAttribute__content");
                         done();
                     });
                     widget.call($sandBox, options);
                 });
 
-                it("data", function (done)
+                it("data", function testData(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function() {
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready() {
                         expect($sandBox).toHaveAttr("data-type", widget.call($sandBox, "getType"));
                         expect($sandBox).toHaveAttr("data-attrid", widget.call($sandBox, "option", "id"));
                         done();
@@ -86,16 +86,16 @@ define([
 
             });
 
-            describe(type + " : destroy", function ()
+            describe(type + " : destroy", function testdestroy()
             {
                 if (!options.noDestroyTesting) {
-                    it("clean", function (done)
+                    it("clean", function testClean(done)
                     {
                         var $sandBox = getSandbox();
-                        $sandBox.on("dcpattributewidgetready.testu", function() {
+                        $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready() {
                             widget.call($sandBox, "destroy");
                         });
-                        $sandBox.on("dcpattributedestroy.testu", function ()
+                        $sandBox.on("dcpattributedestroy.testu", function testdcpattributedestroy()
                         {
                             expect($sandBox).toBeEmpty();
                             expect($sandBox).toHaveAttr("class", "");
@@ -109,17 +109,17 @@ define([
                 }
             });
 
-            describe(type + " : setValue", function ()
+            describe(type + " : setValue", function testsetValue()
             {
-                beforeEach(function ()
+                beforeEach(function testsetValuebeforeEach()
                 {
                     setFixtures(sandbox());
                 });
 
-                it("equality", function (done)
+                it("equality", function testsetValue(done)
                 {
                     var $sandBox = getSandbox(), attrValue;
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         widget.call($sandBox, "setValue", value);
                         attrValue = widget.call($sandBox, "getValue");
@@ -129,10 +129,10 @@ define([
                     widget.call($sandBox, options);
                 });
 
-                it("event", function (done)
+                it("event", function testsetValueevent(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         widget.call($sandBox, "setValue", value);
                         expect('dcpattributechange').toHaveBeenTriggeredOn($sandBox);
@@ -144,13 +144,13 @@ define([
                 });
             });
 
-            describe(type + " : getValue", function ()
+            describe(type + " : getValue", function testgetValue()
             {
 
-                it("init", function (done)
+                it("init", function testgetValueinit(done)
                 {
                     var $sandBox = getSandbox(), attrValue;
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         attrValue = widget.call($sandBox, "getValue");
                         expect(value.value).toEqual(attrValue.value);
@@ -161,12 +161,12 @@ define([
                 });
             });
 
-            describe(type + " : link", function ()
+            describe(type + " : link", function testlink()
             {
-                it("hasLink", function (done)
+                it("hasLink", function testHaslink(done)
                 {
                     var $sandBox = getSandbox(), value;
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         value = widget.call($sandBox, "hasLink");
                         expect(value).toBeTruthy();
@@ -178,10 +178,10 @@ define([
                     widget.call($sandBox, _.defaults({"renderOptions": {htmlLink: {url: "http://www.anakeen.com"}}}, options));
                 });
 
-                it("getLink", function (done)
+                it("getLink", function testgetLink(done)
                 {
                     var $sandBox = getSandbox(), value;
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         value = widget.call($sandBox, "getLink");
                         expect(value.url).toEqual("http://www.anakeen.com");
@@ -194,13 +194,13 @@ define([
                 });
             });
 
-            describe(type + " : deleteButton", function ()
+            describe(type + " : deleteButton", function testdeleteButton()
             {
 
-                it("Create", function (done)
+                it("Create", function testdeleteButtonCreate(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         if (options.mode && options.mode === "write") {
                             expect($sandBox.find(".dcpAttribute__content__button--delete")).toExist();
@@ -212,10 +212,10 @@ define([
                     widget.call($sandBox, _.defaults({"deleteButton": true}, options));
                 });
 
-                it("NoRemoveButton", function (done)
+                it("NoRemoveButton", function testdeleteButtonNoRemoveButton(done)
                 {
                     var $sandBox = getSandbox();
-                    $sandBox.on("dcpattributewidgetready.testu", function ()
+                    $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                     {
                         expect($sandBox.find(".dcpAttribute__content__button--delete")).not.toExist();
                         done();
@@ -224,10 +224,10 @@ define([
                 });
 
                 if (options.mode && options.mode === "write") {
-                    it("Event", function (done)
+                    it("Event", function testdeleteEvent(done)
                     {
                         var $sandBox = getSandbox();
-                        $sandBox.on("dcpattributewidgetready.testu", function ()
+                        $sandBox.on("dcpattributewidgetready.testu", function testdcpattributewidgetready()
                         {
                             spyOnEvent($sandBox, 'dcpattributedelete');
                             $sandBox.find(".dcpAttribute__content__button--delete").trigger("click");

@@ -6,7 +6,7 @@ define([
     'kendo/kendo.numerictextbox',
     'dcpDocument/widgets/attributes/text/wText',
     "kendo-culture-fr"
-], function ($, _, Mustache, kendo) {
+], function requireWint($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpInt", $.dcp.dcpText, {
@@ -102,7 +102,13 @@ define([
         },
 
         _activateNumber : function wIntActivateNumber(inputValue) {
-            return inputValue.kendoNumericTextBox(this.getKendoNumericOptions());
+            var kendoWidget, currentCSSClass = inputValue.attr("class");
+            inputValue.removeClass(currentCSSClass);
+            //force display inline-block for work with kendo
+            inputValue.css("display", "inline-block");
+            kendoWidget = inputValue.kendoNumericTextBox(this.getKendoNumericOptions());
+            kendoWidget.closest(".k-widget").addClass(currentCSSClass);
+            return kendoWidget;
         },
 
         formatNumber : function wIntFormatNumber(value) {
@@ -133,13 +139,11 @@ define([
                     format :   scope.options.renderOptions.numberFormat,
                     max :      scope.options.renderOptions.max,
                     min :      scope.options.renderOptions.min,
-                    change :   function () {
+                    change :   function  wIntGetKendoNumericOptions_onChange() {
                         // Need to set by widget to honor decimals option
                         scope.setValue({value : this.value()});
                     }
                 };
-
-
             if (_.isObject(scope.options.renderOptions.kendoNumericConfiguration)) {
                 kendoOptions = scope.options.renderOptions.kendoNumericConfiguration;
             }

@@ -47,5 +47,3 @@ define([], function i18n()
         };
     };
 });
-
-

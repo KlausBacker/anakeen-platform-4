@@ -21,11 +21,13 @@ function genKarmaSpecificConf {
     cat <<EOF
 {
     "proxies": {
+	"/dynacase//api/v1/" :  "${CONTEXT_URL}/TEST_DOCUMENT/FALSE_API/",
 	"/dynacase/": "${CONTEXT_URL}/",
 	"/resizeimg.php": "${CONTEXT_URL}/resizeimg.php",
 	"/lib/": "${CONTEXT_URL}/lib/",
 	"/css/": "${CONTEXT_URL}/css/",
-	"/FDL/": "${CONTEXT_URL}/FDL/"
+	"/FDL/": "${CONTEXT_URL}/FDL/",
+	"/file/" : "${CONTEXT_URL}/TEST_DOCUMENT/FALSE_API/"
     },
     "files": [
 	"test-main.js",

@@ -50,7 +50,7 @@ define([
          */
         hasLink: function hasLink()
         {
-            return (this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url);
+            return Boolean(this.options.renderOptions && this.options.renderOptions.htmlLink && this.options.renderOptions.htmlLink.url);
         },
         /**
          * Return the url of link
