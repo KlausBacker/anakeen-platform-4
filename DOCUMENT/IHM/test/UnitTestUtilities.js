@@ -17,9 +17,10 @@ define([
             return value;
         },
 
-        generateModelDocument : function generateModelDocument(options, title, attributes, renderOptions) {
+        generateModelDocument: function generateModelDocument(options, title, attributes, renderOptions)
+        {
             var localId = _.uniqueId("Document");
-            var mDoc= new ModelDocument(
+            var mDoc = new ModelDocument(
                 {
                     properties: {
                         id: localId,
@@ -27,12 +28,22 @@ define([
                         fromname: localId,
                         family: {
                             title: localId
-                        }
+                        },
+                        "revision": 0,
+                        "security": {
+                            "lock": {"id": 0},
+                            "readOnly": false,
+                            "fixed": false,
+                            "profil": {"id": 0, "title": ""},
+                            "confidentiality": "public"
+                        },
+                        "status": "alive",
+                        "type": "document"
                     },
                     menus: [],
                     locale: options.locale || "fr_FR",
                     renderMode: options.renderMode || "view",
-                   // attributes: attributes,
+                    // attributes: attributes,
                     renderOptions: renderOptions || {}
                 }
             );

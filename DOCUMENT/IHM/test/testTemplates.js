@@ -3,7 +3,7 @@ require([
     'jquery',
     'underscore',
     'dcpDocumentTest/suiteTemplatesTestAttribute'
-], function ($, _, templateTestSuite)
+], function require_testTemplate($, _, templateTestSuite)
 {
     "use strict";
 

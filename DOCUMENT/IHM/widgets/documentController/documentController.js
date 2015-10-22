@@ -49,7 +49,12 @@ define([
             viewId: undefined,
             revision: undefined,
             constraintList: [],
-            eventListener: []
+            eventListener: [],
+            _model: null,
+            activatedConstraint: {},
+            activatedEventListener: {},
+            _initializedModel: false,
+            _initializedView: false
         },
 
         /**
