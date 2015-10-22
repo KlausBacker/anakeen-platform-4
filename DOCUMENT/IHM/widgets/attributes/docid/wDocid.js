@@ -321,7 +321,7 @@ define([
 
                 kendoSelect.value(newValues);
 
-                if (!_.isEqual(newValues, originalValues)) {
+                if (!_.isEqual(_.uniq(newValues), _.uniq(originalValues))) {
                     this.flashElement();
                 }
 

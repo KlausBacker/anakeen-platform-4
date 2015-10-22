@@ -8,6 +8,7 @@ define([
 {
     'use strict';
 
+    //noinspection JSUnusedLocalSymbols
     $.widget("dcp.dcpFile", $.dcp.dcpText, {
 
         uploadingFiles: 0, // file upload in progress
@@ -74,7 +75,7 @@ define([
                     placement: "bottom",
                     container: ".dcpDocument"
                 });
-
+                this.element.find("input[type=file]").attr("fileValue", this.options.attributeValue.value||null);
             }
         },
 
@@ -168,7 +169,7 @@ define([
                     inputFile.trigger("click");
                 });
 
-                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChange(event)
+                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChange(/*event*/)
                 {
                     if (this.files && this.files.length > 0) {
                         scope.uploadFile(this.files[0]);
@@ -178,11 +179,17 @@ define([
             } else {
                 this.addOldBrowserForm();
 
-                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChangeOld(event)
+                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChangeOld(/*event*/)
                 {
                     scope.uploadFileForm();
                 });
             }
+        },
+
+        getWidgetValue: function wFilegetWidgetValue()
+        {
+            var $inputFile = this.element.find("input[type=file]");
+            return $inputFile.attr("fileValue")||null;
         },
 
         /**
@@ -260,6 +267,7 @@ define([
 
         /**
          * Condition before upload file
+         * @param file
          * @returns {boolean}
          */
         uploadCondition: function wFileUploadCondition(file)
@@ -410,12 +418,15 @@ define([
          */
         setValue: function wFileSetValue(value)
         {
+            var $inputFile = this.element.find("input[type=file]");
             // call wAttribute:::setValue() :send notification
             this._super(value);
 
             if (this.getMode() === "write" && this.uploadingFiles === 0) {
                 this.redraw();
             }
+
+            $inputFile.attr("fileValue", (value)?value.value:null);
         },
 
         /**
