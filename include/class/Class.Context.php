@@ -1266,7 +1266,7 @@ class Context extends WiffCommon
                 break;
 
             case 'eq':
-                $cmp = $this->cmpVersionReleaseAsc($v, $r, $version, 0);
+                $cmp = $this->cmpVersionReleaseAsc($v, 0, $version, 0);
                 if ($cmp == 0) {
                     return true;
                 } else {
@@ -1275,7 +1275,7 @@ class Context extends WiffCommon
                 break;
 
             case 'ne':
-                $cmp = $this->cmpVersionReleaseAsc($v, $r, $version, 0);
+                $cmp = $this->cmpVersionReleaseAsc($v, 0, $version, 0);
                 if ($cmp != 0) {
                     return true;
                 } else {
