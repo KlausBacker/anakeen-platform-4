@@ -73,8 +73,6 @@ class WIFF extends WiffCommon
         $this->xsd_catalog_xml = $wiff_root . WIFF::xsd_catalog_xml;
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
         
-        $this->updateParam();
-        
         $this->update_host = $this->getParam('wiff-update-host');
         $this->update_url = $this->getParam('wiff-update-path');
         $this->update_file = $this->getParam('wiff-update-file');
@@ -396,30 +394,6 @@ class WIFF extends WiffCommon
         }
         
         return true;
-    }
-    
-    public function updateParam()
-    {
-        $update_host = $this->getParam('wiff-update-host');
-        if (!$update_host || $update_host === 'ftp://ftp.freedom-ecm.org/') {
-            $this->setParam('wiff-update-host', 'http://ftp.dynacase.org/');
-        }
-        $update_url = $this->getParam('wiff-update-path');
-        if (!$update_url) {
-            $this->setParam('wiff-update-path', 'stable/tarball/');
-        }
-        $update_file = $this->getParam('wiff-update-file');
-        if (!$update_file || $update_file === 'freedom-wiff-current.tar.gz') {
-            $this->setParam('wiff-update-file', 'dynacase-control-current.tar.gz');
-        }
-        $update_login = $this->getParam('wiff-update-login');
-        if ($update_login === false) {
-            $this->setParam('wiff-update-login', '');
-        }
-        $update_password = $this->getParam('wiff-update-password');
-        if ($update_password === false) {
-            $this->setParam('wiff-update-password', '');
-        }
     }
     /**
      * Get global repository list
