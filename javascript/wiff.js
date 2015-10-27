@@ -2770,7 +2770,15 @@ function wstop(operation) {
 			});
 }
 
+function getGlobalwinSize() {
+	return {
+		height: Ext.getBody().getHeight() - 32,
+		width: Ext.getBody().getWidth() - 175
+	};
+}
+
 function getGlobalwin(display, moduleList) {
+	var size = getGlobalwinSize();
 
 	globalwin = new Ext.Window({
 				title : 'Dynacase Control',
@@ -2778,15 +2786,15 @@ function getGlobalwin(display, moduleList) {
 				layout : 'column',
 				resizable : true,
 				// height: 400,
-				width : Ext.getCmp("context-list").getWidth(),
+				width : size.width,
 				modal : true
-			});
+		});
 
 	modulepanel = new Ext.Panel({
 				title : 'Module List',
 				columnWidth : 0.25,
                 autoScroll: true,
-				height : Ext.getCmp("context-list").getHeight(),
+				height : size.height,
 				setModuleIcon : function(name, icon) {
 					var panel = this.getComponent('module-' + name);
 					panel.setIconClass(icon);
@@ -3536,7 +3544,7 @@ function executeProcessList(module, phase, operation) {
 			var toolbar = new Ext.Toolbar({});
 
 			processpanel[module.name] = new Ext.Panel({
-						height : Ext.getCmp("context-list").getHeight(),
+						height : getGlobalwinSize().height,
 						columnWidth : 0.75,
 						bbar : toolbar,
 						bodyStyle : 'overflow:auto;'
