@@ -16,7 +16,12 @@ define([
 
     "use strict";
 
-    values = JSON.parse(values);
+    try {
+        values = JSON.parse(values);
+    } catch(e) {
+        console.error("Unable to parse generated data, check your server configuration "+values);
+        throw e;
+    }
 
     return function require_suiteDocumentController(config, documentOptions)
     {
