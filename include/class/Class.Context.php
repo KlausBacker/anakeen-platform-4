@@ -72,7 +72,7 @@ class Context extends WiffCommon
         'url',
         'description'
     );
-
+    
     public function __construct($name, $desc, $root, array $repo, $url, $register)
     {
         $this->name = $name;
@@ -204,7 +204,7 @@ class Context extends WiffCommon
             $this->errorMessage = sprintf("Error saving contexts.xml '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
             return false;
         }
-
+        
         if (!empty($module->warningMessage)) {
             $this->warningMessage = $module->warningMessage;
         }
@@ -915,7 +915,7 @@ class Context extends WiffCommon
                             if ($this->cmpModuleByVersionReleaseAsc($satisfyingMod, $currentInstalledMod) > 0) {
                                 $satisfyingMod->needphase = 'upgrade';
                             } else {
-                                $this->errorMessage = sprintf("Module %s (%s %s) required by %s is not compatible with current set of installed and available modules.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=="")?$reqModVersion:'?'), $mod->name);
+                                $this->errorMessage = sprintf("Module %s (%s %s) required by %s is not compatible with current set of installed and available modules.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion !== "") ? $reqModVersion : '?') , $mod->name);
                                 return false;
                             }
                             // Keep the satisfying module as the required module for install/upgrade
@@ -954,10 +954,10 @@ class Context extends WiffCommon
                          * Do not warn/err if an installed module has a broken
                          * dependency when archiving or restoring a context.
                         */
-                        $this->log(LOG_INFO, sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=='')?$reqModVersion:'?'), $mod->name));
+                        $this->log(LOG_INFO, sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion !== '') ? $reqModVersion : '?') , $mod->name));
                         continue;
                     }
-                    $this->errorMessage = sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion!=='')?$reqModVersion:'?'), $mod->name);
+                    $this->errorMessage = sprintf("Module '%s' (%s %s) required by '%s' could not be found in repositories.", $reqModName, $this->compSymbol($reqModComp) , (($reqModVersion !== '') ? $reqModVersion : '?') , $mod->name);
                     return false;
                 }
                 
@@ -1266,7 +1266,7 @@ class Context extends WiffCommon
                 break;
 
             case 'eq':
-                $cmp = $this->cmpVersionReleaseAsc($v, $r, $version, 0);
+                $cmp = $this->cmpVersionReleaseAsc($v, 0, $version, 0);
                 if ($cmp == 0) {
                     return true;
                 } else {
@@ -1275,7 +1275,7 @@ class Context extends WiffCommon
                 break;
 
             case 'ne':
-                $cmp = $this->cmpVersionReleaseAsc($v, $r, $version, 0);
+                $cmp = $this->cmpVersionReleaseAsc($v, 0, $version, 0);
                 if ($cmp != 0) {
                     return true;
                 } else {
@@ -1566,14 +1566,15 @@ class Context extends WiffCommon
         }
         return $archiveId;
     }
-    private function __archiveContext(& $unlink, $archiveName, $archiveDesc = '', $vaultExclude = false) {
+    private function __archiveContext(&$unlink, $archiveName, $archiveDesc = '', $vaultExclude = false)
+    {
         $wiff = WIFF::getInstance();
         $wiff_root = $wiff->getWiffRoot();
         if ($wiff_root === false) {
             $this->errorMessage = sprintf("Could not get wiff root directory.");
             return false;
         }
-
+        
         $tmp = $wiff_root . 'archived-tmp';
         // --- Create or reuse directory --- //
         if (is_dir($tmp)) {
@@ -1587,9 +1588,9 @@ class Context extends WiffCommon
                 return false;
             }
         }
-
+        
         $zip = new ZipArchiveCmd();
-
+        
         $archived_root = $wiff_root . WIFF::archive_filepath;
         // --- Generate archive id --- //
         $datetime = new DateTime();
@@ -1599,7 +1600,7 @@ class Context extends WiffCommon
         $status_handle = fopen($status_file, "w");
         fwrite($status_handle, $archiveName);
         $unlink[$status_file] = true;
-
+        
         $zipfile = $archived_root . "/$archiveId.fcz";
         if ($zip->open($zipfile, ZipArchiveCmd::CREATE) === false) {
             $this->errorMessage = sprintf("Cannot create Zip archive '%s': %s", $zipfile, $zip->getStatusString());
@@ -1607,12 +1608,11 @@ class Context extends WiffCommon
             $this->writeArchiveError($archiveId, $archived_root);
             return false;
         }
-
         // --- Generate info.xml --- //
         $doc = new DOMDocument();
         $doc->formatOutput = true;
         $doc->preserveWhiteSpace = false;
-
+        
         $root = $doc->createElement('info');
         $root = $doc->appendChild($root);
         // --- Copy context information --- //
@@ -1623,7 +1623,7 @@ class Context extends WiffCommon
             $this->writeArchiveError($archiveId, $archived_root);
             return false;
         }
-
+        
         $contextsXPath = new DOMXPath($contextsXml);
         // Get this context
         $contextList = $contextsXPath->query("/contexts/context[@name='" . $this->name . "']");
@@ -1648,7 +1648,6 @@ class Context extends WiffCommon
          */
         $repositories = $context->getElementsByTagName('repositories')->item(0);
         if ($repositories) deleteNode($repositories);
-
         // Identify and exclude vaults located below the context directory
         $vaultList = $this->getVaultList();
         if ($vaultList === false) {
@@ -1686,7 +1685,6 @@ class Context extends WiffCommon
             $tarExcludeOpts = join(' ', $tarExcludeList);
         }
         //error_log(__METHOD__ . " " . sprintf("tarExcludeOpts = [%s]", $tarExcludeOpts));
-
         // --- Generate context tar.gz --- //
         $script = sprintf("tar -C %s -czf %s/context.tar.gz %s . 2>&1", escapeshellarg($this->root) , escapeshellarg($tmp) , $tarExcludeOpts);
         exec($script, $output, $retval);
@@ -1713,12 +1711,11 @@ class Context extends WiffCommon
         $this->log(LOG_INFO, 'Generated context.tar.gz');
         unlink("$tmp/context.tar.gz");
         unset($unlink["$tmp/context.tar.gz"]);
-
         // --- Generate database dump --- //
         $pgservice_core = $this->getParamByName('core_db');
-
+        
         $dump = $tmp . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
-
+        
         $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
         if ($errorFile === false) {
             $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
@@ -1727,7 +1724,7 @@ class Context extends WiffCommon
             $this->writeArchiveError($archiveId, $archived_root);
             return false;
         }
-
+        
         $script = sprintf("PGSERVICE=%s pg_dump --compress=9 --no-owner 1>%s 2>%s", escapeshellarg($pgservice_core) , escapeshellarg($dump) , escapeshellarg($errorFile));
         exec($script, $output, $retval);
         $unlink[$dump] = true;
@@ -1756,7 +1753,7 @@ class Context extends WiffCommon
         $this->log(LOG_INFO, 'Generated core_db.pg_dump.gz');
         unlink($dump);
         unset($unlink[$dump]);
-
+        
         if ($vaultExclude != 'on') {
             // --- Generate vaults tar.gz files --- //
             $vaultList = $this->getVaultList();
@@ -1766,7 +1763,7 @@ class Context extends WiffCommon
                 $this->writeArchiveError($archiveId, $archived_root);
                 return false;
             }
-
+            
             $vaultDirList = array();
             foreach ($vaultList as $vault) {
                 $id_fs = $vault['id_fs'];
@@ -1811,23 +1808,22 @@ class Context extends WiffCommon
                 $this->log(LOG_INFO, 'Generated vault tar gz');
             }
         }
-
         // --- Write archive information --- //
         $archive = $doc->createElement('archive');
         $archive->setAttribute('id', $archiveId);
         $archive->setAttribute('name', $archiveName);
         $archive->setAttribute('datetime', $datetime->format('Y-m-d H:i:s'));
         $archive->setAttribute('description', $archiveDesc);
-
+        
         if ($vaultExclude == 'on') {
             $archive->setAttribute('vault', 'No');
         } else {
             $archive->setAttribute('vault', 'Yes');
         }
         $root->appendChild($archive);
-
+        
         $xml = $doc->saveXML();
-
+        
         $err = $zip->addFromString('info.xml', $xml);
         if ($err === false) {
             $zip->close();
@@ -1835,9 +1831,9 @@ class Context extends WiffCommon
             $this->writeArchiveError($archiveId, $archived_root);
             return false;
         }
-
+        
         $zip->close();
-
+        
         return $archiveId;
     }
     /**
@@ -2473,7 +2469,7 @@ class Context extends WiffCommon
         }
         
         $wiff = WIFF::getInstance();
-
+        
         $contextsXml = $wiff->loadContextsDOMDocument();
         if ($contextsXml === false) {
             $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
@@ -2549,32 +2545,33 @@ class Context extends WiffCommon
      * Zip context's configuration
      * @return bool
      */
-    public function zipEECConfiguration() {
+    public function zipEECConfiguration()
+    {
         require_once ('class/Class.StatCollector.php');
         require_once ('lib/Lib.System.php');
-
+        
         if ($this->register != 'registered') {
             $this->log(LOG_WARNING, __METHOD__ . " " . $this->errorMessage);
         }
-
+        
         $wiff = WIFF::getInstance();
         $info = $wiff->getRegistrationInfo();
         if ($info === false) {
             $this->errorMessage = sprintf("Could not get WIFF registration info.");
             return false;
         }
-
+        
         $sc = new StatCollector($wiff, $this);
         $sc->collect();
         $stats = $sc->getXML();
-
+        
         $rc = $wiff->getRegistrationClient();
         $xml = $rc->_get_context_xml_configuration($info['mid'], $info['ctrlid'], $this->name, $info['login'], $stats);
         if ($xml === false) {
             $this->errorMessage = sprintf("Error _get_context_xml_configuration request: %s", $rc->last_error);
             return false;
         }
-
+        
         $tmpZIP = WiffLibSystem::tempnam(null, 'downloadZip');
         if ($tmpZIP === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
@@ -2778,12 +2775,12 @@ class Context extends WiffCommon
         
         return join('', $stack);
     }
-
     /**
      * Cleanup:
      * - lingering modules in status="downloaded"
      */
-    public function cleanup() {
+    public function cleanup()
+    {
         $wiff = WIFF::getInstance();
         $xml = new DOMDocument();
         $xml->load($wiff->contexts_filepath);
@@ -2806,16 +2803,18 @@ class Context extends WiffCommon
         }
         return true;
     }
-
-    public function getAllProperties() {
+    
+    public function getAllProperties()
+    {
         $res = array();
         foreach ($this->props as $pName) {
             $res[$pName] = isset($this->$pName) ? $this->$pName : null;
         }
         return $res;
     }
-
-    public function getProperty($propName) {
+    
+    public function getProperty($propName)
+    {
         $res = array();
         foreach ($this->props as $pName) {
             if ($pName == $propName) {
@@ -2824,16 +2823,18 @@ class Context extends WiffCommon
         }
         return null;
     }
-
-    public function setProperty($propName, $propValue) {
+    
+    public function setProperty($propName, $propValue)
+    {
         if (!in_array($propName, $this->props)) {
             return false;
         }
         $this->$propName = $propValue;
         return $this->saveProperties();
     }
-
-    private function saveProperties() {
+    
+    private function saveProperties()
+    {
         $wiff = WIFF::getInstance();
         $xml = $wiff->loadContextsDOMDocument();
         $x = new DOMXPath($xml);
@@ -2847,7 +2848,7 @@ class Context extends WiffCommon
          */
         $contextNode = $result->item(0);
         $contextNode->setAttribute('url', $this->url);
-
+        
         $result = $x->query("/contexts/context[@name='" . $this->name . "']/description");
         if ($result->length > 0) {
             /**
