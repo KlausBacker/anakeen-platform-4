@@ -222,14 +222,14 @@ class RenderDefault implements IRenderConfig
         
         $opt->setCustomOption("mode", $this->getType());
         $this->setLinkOption($document, $opt);
-        $opt->commonOption()->setLabels(array(
+        $opt->commonOption()->setTranslations(array(
             "closeErrorMessage" => ___("Close message", "ddui")
         ));
-        $opt->arrayAttribute()->setLabels(array(
+        $opt->arrayAttribute()->setTranslations(array(
             "limitMaxMessage" => ___("Row count limit to {{limit}}", "ddui") ,
             "limitMinMessage" => ___("Min row limit is {{limit}}", "ddui")
         ));
-        $opt->image()->setLabels(array(
+        $opt->image()->setTranslations(array(
             "dropFileHere" => ___("Drop image here", "ddui-image") ,
             "placeHolder" => ___("Click to upload image", "ddui-image") ,
             "tooltipLabel" => ___("Choose image", "ddui-image") ,
@@ -238,7 +238,7 @@ class RenderDefault implements IRenderConfig
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
-        $opt->file()->setLabels(array(
+        $opt->file()->setTranslations(array(
             "dropFileHere" => ___("Drop file here", "ddui-file") ,
             "placeHolder" => ___("Click to upload file", "ddui-file") ,
             "tooltipLabel" => ___("Choose file", "ddui-file") ,
@@ -249,14 +249,14 @@ class RenderDefault implements IRenderConfig
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
         
-        $opt->enum()->setLabels(array(
+        $opt->enum()->setTranslations(array(
             "chooseMessage" => ___("Choose", "ddui-enum") ,
             "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
             "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
             "selectMessage" => ___("Select", "ddui-enum") ,
             "unselectMessage" => ___("Unselect", "ddui-enum")
         ));
-        $opt->date()->setLabels(array(
+        $opt->date()->setTranslations(array(
             "invalidDate" => ___("Invalid date", "ddui-enum")
         ));
         
