@@ -19,7 +19,7 @@ class CommonRenderOptions extends BaseRenderOptions
     const inputHtmlTooltip = "inputHtmlTooltip";
     const displayDeleteButtonOption = "displayDeleteButton";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
-    const labelsOption = "labels";
+    const translatedLabelsOption = "translatedLabels";
     const attributeLabelOption = "attributeLabel";
     const autoPosition = "auto";
     const leftPosition = "left";
@@ -140,17 +140,17 @@ class CommonRenderOptions extends BaseRenderOptions
         return $this;
     }
     /**
-     * Add or modify specific labels for widget
+     * Add or modify specific messages for widget
      * @param array $labels
      * @return $this
      */
-    public function setLabels(array $labels)
+    public function setTranslations(array $labels)
     {
-        $cLabels = $this->getOption(self::labelsOption);
+        $cLabels = $this->getOption(self::translatedLabelsOption);
         if (empty($cLabels)) {
             $cLabels = array();
         }
-        $this->setOption(self::labelsOption, array_merge($cLabels, $labels));
+        $this->setOption(self::translatedLabelsOption, array_merge($cLabels, $labels));
         return $this;
     }
 }

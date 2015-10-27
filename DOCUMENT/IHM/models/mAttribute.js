@@ -166,7 +166,7 @@ define([
          *
          * @returns {{}}
          */
-        getOptions :        function mAttributegetOptions() {
+        getOptions :        function mAttributegetOptions() { 
             var optionsCommon={}, optionsValue={}, optionsAttribute={}, renderOptions, labels={};
             this._options = this._options || false;
 
@@ -174,18 +174,18 @@ define([
                 renderOptions = this.collection.renderOptions;
                 if (renderOptions.common) {
                     optionsCommon = renderOptions.common || {};
-                    labels= _.clone(optionsCommon.labels) || {};
+                    labels= _.clone(optionsCommon.translatedLabels) || {};
                 }
 
                 if (renderOptions.types) {
                     optionsValue = renderOptions.types[this.get("type")] || {};
-                    labels= _.extend(labels, _.clone(optionsValue.labels));
+                    labels= _.extend(labels, _.clone(optionsValue.translatedLabels));
                 }
                 if (renderOptions.attributes) {
                     optionsAttribute = renderOptions.attributes[this.id] || {};
                 }
                 // labels must be merged
-                optionsAttribute.labels= _.extend(labels, optionsAttribute.labels);
+                optionsAttribute.labels= _.extend(labels, optionsAttribute.translatedLabels);
                 this._options = {};
             }
 
