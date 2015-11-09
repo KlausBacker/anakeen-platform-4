@@ -12,6 +12,9 @@ dnl Process this file with autoconf to produce a configure script.
 dnl
 AC_PREREQ(2.13)
 AC_INIT(./Makefile.in)
+
+LICENSE="http://docs.anakeen.com/licenses/anakeen-1.0/licence.html Licence Anakeen"
+AC_SUBST(LICENSE)
 AC_SUBST(VERSION)
 VERSION=`cat VERSION`
 AC_SUBST(RELEASE)
