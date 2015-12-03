@@ -7,7 +7,7 @@ define([
     'kendo/kendo.multiselect',
     'kendo/kendo.combobox',
     'kendo/kendo.dropdownlist'
-], function ($, _, Mustache)
+], function require_wenum($, _, Mustache)
 {
     'use strict';
 
@@ -47,7 +47,6 @@ define([
             if (this._isMultiple()) {
                 this.options.isMultiple = true;
             }
-
 
             if (this.getMode() === "read") {
                 if (this._isMultiple()) {
@@ -130,15 +129,13 @@ define([
                 selectedIndex = this.options.attributeValue.value;
             } else {
 
-                _.each(this.options.sourceValues, function (enumItem)
+                _.each(this.options.sourceValues, function wEnum_prepareValue(enumItem)
                 {
                     if (enumItem.key !== '' && enumItem.key !== ' ') {
                         item = {};
 
-
                         item.value = enumItem.key;
                         item.displayValue = enumItem.label || '';
-
 
                         // : no === because json encode use numeric cast when index is numeric
                         //noinspection JSHint
@@ -172,23 +169,21 @@ define([
             var item;
             var values = _.toArray(this.options.attributeValue);
 
-
             if (this.options.renderOptions.useSourceUri) {
                 source = values;
                 selectedValues = values;
             } else {
-                _.each(this.options.sourceValues, function (enumItem)
+                _.each(this.options.sourceValues, function wEnum_prepareMultipleValue(enumItem)
                 {
                     item = {};
                     item.value = enumItem.key;
                     item.displayValue = enumItem.label || '';
                     item.selected = false;
-                    isIn = _.some(values, function (aValue)
+                    isIn = _.some(values, function wEnum_findSelected(aValue)
                     {
                         //noinspection JSHint
                         return (aValue.value == enumItem.key);
                     });
-
 
                     // : no === because json encode use numeric cast when index is numeric
                     //noinspection JSHint
@@ -201,7 +196,6 @@ define([
                 });
             }
 
-
             return {data: source, selectedValues: selectedValues};
         },
 
@@ -213,12 +207,12 @@ define([
                 type: "GET",
                 url: this.options.sourceUri,
                 dataType: "json"
-            }).done(function (result)
+            }).done(function wEnum_retrieveDone(result)
             {
                 scope.options.sourceValues = result.data.enumItems;
                 scope.options.renderOptions.useSourceUri = false;
                 done(scope);
-            }).fail(function (response)
+            }).fail(function wEnum_retrieveFail(response)
             {
                 $('body').trigger("notification", {
                     htmlMessage: "Enumerate " + scope.options.id,
@@ -227,7 +221,6 @@ define([
                 });
             });
         },
-
 
         noButtonDisplay: function wEnumNoDisplayButton()
         {
@@ -246,10 +239,9 @@ define([
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
-                this.retrieveItems(function (theWidget)
+                this.retrieveItems(function wEnum_onRetrieveDone(theWidget)
                 {
                     theWidget.boolButtons();
-
                 });
                 return;
             }
@@ -263,13 +255,12 @@ define([
             this.options.isMultiple = false; // restore isMultiple : it never can be multiple
             labels = this.element.find("label");
 
-
             if (tplOption.enumValues[0].value === this.options.attributeValue.value) {
                 this.element.find("input[type=checkbox]").removeAttr("checked");
                 this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
             }
 
-            this.element.find(".dcpAttribute__value--enumlabel").each(function (kItem)
+            this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
             {
                 if (tplOption.enumValues[kItem]) {
                     $(this).tooltip({
@@ -280,14 +271,13 @@ define([
                 }
             });
 
-
             this.noButtonDisplay();
 
-            labels.on("click" + this.eventNamespace, "input", function (event)
+            labels.on("click" + this.eventNamespace, "input", function wEnum_booleanClick(event)
             {
                 event.preventDefault();
                 // Invert selection
-                _.some(tplOption.enumValues, function (item, kItem)
+                _.some(tplOption.enumValues, function wEnum_setValue(item, kItem)
                 {
                     if (scope.options.attributeValue.value === null || item.value !== scope.options.attributeValue.value) {
                         scope.setValue(item, event);
@@ -297,8 +287,7 @@ define([
                 });
             });
 
-
-            this.getContentElements().each(function ()
+            this.getContentElements().each(function wEnum_addKButton()
             {
                 $(this).closest("label").addClass("k-button");
 
@@ -316,7 +305,7 @@ define([
          * Identify the input where is the raw value
          * @returns {*}
          */
-        getContentElements: function ()
+        getContentElements: function wEnum_getContentElements()
         {
             if (this.options.inArray && (
                 this.options.renderOptions.editDisplay === "horizontal" ||
@@ -337,7 +326,7 @@ define([
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
-                this.retrieveItems(function (theWidget)
+                this.retrieveItems(function wEnum_retrieveDone(theWidget)
                 {
                     theWidget.radioButtons();
                 });
@@ -350,9 +339,8 @@ define([
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
 
-
             this.noButtonDisplay();
-            labels.on("change" + this.eventNamespace, "input", function (event)
+            labels.on("change" + this.eventNamespace, "input", function wEnum_onchange(event)
             {
                 var newValue = {};
                 newValue.value = $(this).val();
@@ -360,8 +348,7 @@ define([
                 scope.setValue(newValue, event);
             });
 
-
-            this.getContentElements().each(function ()
+            this.getContentElements().each(function wEnum_addKButton()
             {
                 $(this).closest("label").addClass("k-button");
 
@@ -377,7 +364,7 @@ define([
             this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
                 container: scope.element,
                 selector: '.dcpAttribute__value--enumlabel--text',
-                title: function (a)
+                title: function wEnum_titleTooltip(a)
                 {
                     if ($(this).closest("label").find("input").prop("checked")) {
                         return null;
@@ -396,7 +383,7 @@ define([
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
-                this.retrieveItems(function (theWidget)
+                this.retrieveItems(function wEnum_onDone(theWidget)
                 {
                     theWidget.checkboxButtons();
                 });
@@ -405,22 +392,22 @@ define([
             enumData = this.getMultipleEnumData();
             tplOption.enumValues = enumData.data;
 
-
             this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
             labels = this.element.find("label");
 
             this.noButtonDisplay();
-            labels.on("change" + this.eventNamespace, "input", function (event)
+            labels.on("change" + this.eventNamespace, "input", function wEnum_onChange(event)
             {
 
                 var newValue = [];
 
-                scope.getContentElements().each(function ()
+                scope.getContentElements().each(function wEnum_findChecked()
                 {
-                    if ($(this).prop("checked")) {
+                    var $this = $(this);
+                    if ($this.prop("checked")) {
                         var itemValue = {};
-                        itemValue.value = $(this).val();
-                        itemValue.displayValue = $(this).closest('label').text().trim();
+                        itemValue.value = $this.val();
+                        itemValue.displayValue = $this.closest('label').text().trim();
                         newValue.push(itemValue);
                     }
                 });
@@ -428,7 +415,7 @@ define([
                 scope.setValue(newValue, event);
             });
 
-            this.getContentElements().each(function ()
+            this.getContentElements().each(function wEnum_addKButton()
             {
                 $(this).closest("label").addClass("k-button");
             });
@@ -436,12 +423,13 @@ define([
             this.element.tooltip({
                 container: ".dcpDocument",
                 selector: '.dcpAttribute__value--enumlabel--text',
-                title: function (a)
+                title: function wEnum_titleTooltip(a)
                 {
-                    if ($(this).closest("label").find("input").prop("checked")) {
-                        return scope.options.labels.unselectMessage + ' "' + $(this).text() + '"';
+                    var $this = $(this);
+                    if ($this.closest("label").find("input").prop("checked")) {
+                        return scope.options.labels.unselectMessage + ' "' + $this.text() + '"';
                     } else {
-                        return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
+                        return scope.options.labels.selectMessage + ' "' + $this.text() + '"';
                     }
                 }
             });
@@ -460,7 +448,6 @@ define([
 
             kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
 
-
         },
         multipleSelect: function wEnumMultipleSelect()
         {
@@ -469,7 +456,6 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
         },
-
 
         singleCombobox: function wEnumSingleCombobox()
         {
@@ -493,9 +479,7 @@ define([
                     kddl.value(this.options.attributeValue.value);
                 }
             }
-
         },
-
 
         /**
          *Set new value to widget
@@ -519,7 +503,7 @@ define([
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
                         case "list":
-                            newValues = _.map(value, function (val)
+                            newValues = _.map(value, function wEnum_findValues(val)
                             {
                                 return val.value;
                             });
@@ -538,21 +522,22 @@ define([
 
                         case "horizontal":
                         case "vertical":
-                            this.getContentElements().each(function ()
+                            this.getContentElements().each(function wEnum_findValues()
                             {
-                                var inputValue = $(this).val();
+                                var $this = $(this);
+                                var inputValue = $this.val();
 
-                                var isIn = _.some(value, function (x)
+                                var isIn = _.some(value, function wEnum_isIn(x)
                                 {
                                     //noinspection JSHint
                                     return (x.value == inputValue);
                                 });
                                 if (isIn) {
-                                    $(this).prop("checked", true);
-                                    $(this).closest("label").addClass("selected");
+                                    $this.prop("checked", true);
+                                    $this.closest("label").addClass("selected");
                                 } else {
-                                    $(this).prop("checked", false);
-                                    $(this).closest("label").removeClass("selected");
+                                    $this.prop("checked", false);
+                                    $this.closest("label").removeClass("selected");
                                 }
                             });
 
@@ -574,14 +559,8 @@ define([
                                     }
                                     kddl.value(value.value);
                                 } else {
-                                    if (this.options.renderOptions.useSourceUri) {
-                                      //  kddl.dataSource.data([]);
-                                       // kddl.dataSource.sync();
-                                       // kddl.dataSource.filter({value:''});
-                                    }
                                     kddl.value('');
                                 }
-
                             }
                             break;
                         case "list":
@@ -594,35 +573,37 @@ define([
                             }
                             break;
                         case "bool":
-                            this.getContentElements().each(function (kItem)
+                            this.getContentElements().each(function wEnum_parseElements(kItem)
                             {
+                                var $this = $(this);
                                 //noinspection JSHint
-                                if ($(this).val() == value.value) {
+                                if ($this.val() == value.value) {
                                     if (kItem > 0) {
-                                        $(this).prop("checked", true);
-                                        $(this).closest("label").addClass("selected").removeClass("unselected");
+                                        $this.prop("checked", true);
+                                        $this.closest("label").addClass("selected").removeClass("unselected");
                                     } else {
-                                        $(this).prop("checked", false);
-                                        $(this).closest("label").addClass("unselected").removeClass("selected");
+                                        $this.prop("checked", false);
+                                        $this.closest("label").addClass("unselected").removeClass("selected");
                                     }
                                 } else {
-                                    $(this).prop("checked", false);
-                                    $(this).closest("label").removeClass("selected").removeClass("unselected");
+                                    $this.prop("checked", false);
+                                    $this.closest("label").removeClass("selected").removeClass("unselected");
                                 }
                             });
 
                             break;
                         case "horizontal":
                         case "vertical":
-                            this.getContentElements().each(function ()
+                            this.getContentElements().each(function wEnum_parseElements()
                             {
+                                var $this = $(this);
                                 //noinspection JSHint
-                                if ($(this).val() == value.value) {
-                                    $(this).prop("checked", true);
-                                    $(this).closest("label").addClass("selected");
+                                if ($this.val() == value.value) {
+                                    $this.prop("checked", true);
+                                    $this.closest("label").addClass("selected");
                                 } else {
-                                    $(this).prop("checked", false);
-                                    $(this).closest("label").removeClass("selected");
+                                    $this.prop("checked", false);
+                                    $this.closest("label").removeClass("selected");
                                 }
                             });
 
@@ -655,16 +636,15 @@ define([
             if (!this.options.sourceUri) {
                 throw new Error("Enum : sourceUri must be defined if renderOption useSourceUri is set to true");
             }
-            //options.data.keyword=
             $.ajax({
                 type: "GET",
                 url: this.options.sourceUri,
                 data: filter,
-                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                success: function (result)
+                dataType: "json",
+                success: function wEnum_onAutoCompleteSuccess(result)
                 {
                     var info = [];
-                    _.each(result.data.enumItems, function (enumItem)
+                    _.each(result.data.enumItems, function wEnum_analyzeResult(enumItem)
                     {
                         info.push({
                             value: enumItem.key,
@@ -674,7 +654,7 @@ define([
                     // notify the data source that the request succeeded
                     options.success(info);
                 },
-                error: function (result)
+                error: function wEnum_onAutoCompleteError(result)
                 {
                     // notify the data source that the request failed
                     options.error(result);
@@ -702,21 +682,20 @@ define([
                     placeholder: this.options.labels.chooseMessage,
                     value: source.selectedValues,
 
-                    change: function (event)
+                    change: function wEnum_onChange(event)
                     {
                         event.preventDefault(); // no fire change event
                         // set in case of delete item
 
                         var kdData = _.toArray(scope.kendoWidget.data("kendoMultiSelect").dataItems());
                         var newValues = [];
-                        _.each(kdData, function (val)
+                        _.each(kdData, function wEnum_pushNewValues(val)
                         {
                             newValues.push({value: val.value, displayValue: val.displayValue});
                         });
                         scope.setValue(newValues, event);
                     }
                 };
-
 
                 if (_.isObject(scope.options.renderOptions.kendoMultiSelectConfiguration)) {
                     kendoOptions = scope.options.renderOptions.kendoMultiSelectConfiguration;
@@ -736,11 +715,11 @@ define([
                     dataSource: source.data,
                     index: (source.index < 0) ? undefined : source.index,
                     autoBind: false,
-                    change: function (event)
+                    change: function wEnum_onChange(event)
                     {
                         if (this.value() && this.selectedIndex === -1) {
                             scope.setError(scope.options.labels.invalidEntry);
-                            scope._getFocusInput().each(function ()
+                            scope._getFocusInput().each(function wEnum_onChange()
                             {
                                 this.focus();
                             });
@@ -751,12 +730,10 @@ define([
                             scope.setValue(newValue, event);
                         }
                     },
-                    dataBound: function (e)
+                    dataBound: function wEnum_dataBound(e)
                     {
                         if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                             // Set to first enum item if empty
-
-
                             var firstItem = this.dataSource.at(0);
                             if (firstItem) {
                                 scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
@@ -789,21 +766,19 @@ define([
                     serverFiltering: true,
                     minLength: 0,
                     transport: {
-                        //read : _.bind(scope.autocompleteRequestRead, scope)
                         read: _.bind(scope.autocompleteRequestEnum, scope)
-                        //read : scope.options.autocompleteRequest
                     }
                 };
             }
             return _.extend(defaultOptions, kendoOptions);
         },
 
-        getType: function ()
+        getType: function wEnum_getType()
         {
             return "enum";
         },
 
-        _destroy: function _destroy()
+        _destroy: function wEnum_destroy()
         {
             if (this.kendoWidget && this.kendoWidget.data("kendoDropDownList")) {
                 this.kendoWidget.data("kendoDropDownList").destroy();

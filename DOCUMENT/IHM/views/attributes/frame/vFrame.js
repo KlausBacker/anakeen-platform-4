@@ -7,7 +7,7 @@ define([
     'dcpDocument/views/attributes/vAttribute',
     'dcpDocument/views/attributes/array/vArray',
     'dcpDocument/views/document/attributeTemplate'
-], function ($, _, Backbone, Mustache, ViewAttribute, ViewAttributeArray, attributeTemplate)
+], function require_vFrame($, _, Backbone, Mustache, ViewAttribute, ViewAttributeArray, attributeTemplate)
 {
     'use strict';
 
@@ -42,7 +42,6 @@ define([
                     this.customView = attributeTemplate.customView(this.model);
                 }
             }
-
 
             this.options = options;
         },
@@ -126,7 +125,6 @@ define([
             //console.timeEnd("render frame " + this.model.id);
             return this;
         },
-
 
         getAttributeModel: function vFrame_getAttributeModel(attributeId)
         {

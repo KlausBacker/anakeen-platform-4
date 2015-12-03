@@ -158,13 +158,13 @@ define([
                     scope.invalidDate = false;
                 }
 
-                scope.setVisibilitySavingMenu("visible");
+                scope._setVisibilitySavingMenu("visible");
 
                 if (dateValue) {
                     if (!scope.parseDate(dateValue)) {
                         scope.setValue({value: inputValue.val()});
 
-                        scope.setVisibilitySavingMenu("disabled");
+                        scope._setVisibilitySavingMenu("disabled");
                         _.defer(function wDateFocus()
                         {
                             scope._getFocusInput().focus();

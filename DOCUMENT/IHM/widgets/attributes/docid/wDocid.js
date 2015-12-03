@@ -4,7 +4,7 @@ define([
     'underscore',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect'
-], function wDocid($, _)
+], function require_wDocid($, _)
 {
     'use strict';
 
@@ -333,12 +333,12 @@ define([
                 }
         },
 
-        getType: function getType()
+        getType: function wDocid_getType()
         {
             return "docid";
         },
 
-        _destroy: function _destroy()
+        _destroy: function wDocid__destroy()
         {
             if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
                 this.kendoWidget.data("kendoMultiSelect").destroy();

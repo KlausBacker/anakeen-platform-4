@@ -260,7 +260,7 @@ define([
 
                 inputText.val(originalText);
                 inputText.removeClass("dcpAttribute__value--transferring");
-                scope.setVisibilitySavingMenu("visible");
+                scope._setVisibilitySavingMenu("visible");
             });
 
         },
@@ -280,7 +280,7 @@ define([
             var inputText = this.element.find(".dcpAttribute__value");
 
             var inputFile = this.element.find("input[type=file]");
-            this.setVisibilitySavingMenu("disabled");
+            this._setVisibilitySavingMenu("disabled");
 
             inputText.addClass("dcpAttribute__value--transferring");
             inputText.val(this.options.labels.transferring + ' ' + inputFile.val().split(/[\\/]/).pop());
@@ -311,7 +311,7 @@ define([
             }
 
             scope.uploadingFiles++;
-            this.setVisibilitySavingMenu("disabled");
+            this._setVisibilitySavingMenu("disabled");
             fd.append('dcpFile', firstFile);
 
             inputText.addClass("dcpAttribute__value--transferring");
@@ -374,7 +374,7 @@ define([
                     icon: dataFile.iconUrl
                 });
 
-                scope.setVisibilitySavingMenu("visible");
+                scope._setVisibilitySavingMenu("visible");
 
             }).fail(function wFileUploadFail(data)
             {
@@ -402,7 +402,7 @@ define([
                     });
                 }
 
-                scope.setVisibilitySavingMenu("visible");
+                scope._setVisibilitySavingMenu("visible");
             }).always(function wFileUploadEnd()
             {
                 inputText.val(originalText);

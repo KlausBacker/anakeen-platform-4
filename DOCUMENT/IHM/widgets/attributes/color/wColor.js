@@ -5,7 +5,7 @@ define([
     'mustache',
     'kendo/kendo.colorpicker',
     'dcpDocument/widgets/attributes/text/wText'
-], function ($, _, Mustache, kendo) {
+], function require_wColor($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpColor", $.dcp.dcpText, {
@@ -112,7 +112,7 @@ define([
             var scope = this,
                 kendoOptions = {},
                 defaultOptions = {
-                    change :   function () {
+                    change :   function wColor_onchange() {
                         // Need to set by widget to honor decimals option
                         scope.setValue({value : this.value()});
                     }
