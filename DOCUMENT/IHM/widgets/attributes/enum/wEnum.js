@@ -773,6 +773,19 @@ define([
             return _.extend(defaultOptions, kendoOptions);
         },
 
+        close : function wEnum_close() {
+            if (this.kendoWidget && this.kendoWidget.data("kendoDropDownList")) {
+                this.kendoWidget.data("kendoDropDownList").close();
+            }
+            if (this.kendoWidget && this.kendoWidget.data("kendoComboBox")) {
+                this.kendoWidget.data("kendoComboBox").close();
+            }
+            if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
+                this.kendoWidget.data("kendoMultiSelect").close();
+            }
+            return this._super();
+        },
+
         getType: function wEnum_getType()
         {
             return "enum";

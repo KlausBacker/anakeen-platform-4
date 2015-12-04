@@ -60,6 +60,7 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
+            this.listenTo(this.model, 'closeWidget', this._closeWidget);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
 
             if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
@@ -621,6 +622,20 @@ define([
         show: function vAttributeShow()
         {
             this.$el.show();
+        },
+
+        _closeWidget : function vAttribute__closeWidget() {
+            try {
+                if (this.currentDcpWidget && this.getWidgetClass(this.currentDcpWidget) && this._findWidgetName(this.currentDcpWidget)) {
+                    this.getWidgetClass(this.currentDcpWidget).call(this.currentDcpWidget, "close");
+                }
+            } catch (e) {
+                if (window.dcp.logger) {
+                    window.dcp.logger(e);
+                } else {
+                    console.error(e);
+                }
+            }
         },
 
         _findWidgetName: function vAttribute_findWidgetName($element)

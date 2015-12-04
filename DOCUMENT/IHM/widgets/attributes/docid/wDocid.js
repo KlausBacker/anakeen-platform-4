@@ -44,7 +44,6 @@ define([
 
             } else
                 if (this.getMode() === "write") {
-
                     //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
                     $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
                     this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
@@ -331,6 +330,12 @@ define([
                 } else {
                     throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
                 }
+        },
+
+        close : function wDocid_close() {
+            if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
+                this.kendoWidget.data("kendoMultiSelect").close();
+            }
         },
 
         getType: function wDocid_getType()

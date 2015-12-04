@@ -224,9 +224,15 @@ define([
             return _.extend(defaultOptions, kendoOptions);
         },
 
+        close : function wDate_close() {
+            if (this.kendoWidget.data(this.kendoWidgetClass)) {
+                this.kendoWidget.data(this.kendoWidgetClass).close();
+            }
+            return this._super();
+        },
+
         _destroy: function wDateDestroy()
         {
-            //Destroy autocomplete if activated
             if (this.kendoWidget.data(this.kendoWidgetClass)) {
                 this.kendoWidget.data(this.kendoWidgetClass).destroy();
             }

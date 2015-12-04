@@ -275,6 +275,15 @@ define([
         },
 
         /**
+         * Close the attribute if open
+         *
+         * @returns {dcp.dcpAttribute}
+         */
+        close : function wAttribute_close() {
+            return this;
+        },
+
+        /**
          * Create the widget
          * @private
          */

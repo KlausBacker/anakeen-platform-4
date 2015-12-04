@@ -34,10 +34,8 @@ define([
                 this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
             }
 
-
             //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
             $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
-
 
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
@@ -56,8 +54,6 @@ define([
                     addClass("dcpAttribute__content__nobutton");
             }
             this.element.find(".dcpAttribute__value--read").css("border-color", this.options.attributeValue.value);
-
-
         },
 
         _initChangeEvent : function wcolInitChangeEvent() {
@@ -133,6 +129,13 @@ define([
             if (!_.isNumber(value.value)) {
                 throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
             }
+        },
+
+        close : function wColor_close() {
+            if (this.kendoWidget && this.kendoWidget.data("kendoColorPicker")) {
+                this.kendoWidget.data("kendoColorPicker").close();
+            }
+            this._super();
         },
 
         _destroy : function _destroy() {
