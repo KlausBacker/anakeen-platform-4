@@ -5,7 +5,7 @@ define([
     'mustache',
     'kendo/kendo.colorpicker',
     'dcpDocument/widgets/attributes/text/wText'
-], function ($, _, Mustache, kendo) {
+], function require_wColor($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpColor", $.dcp.dcpText, {
@@ -34,10 +34,8 @@ define([
                 this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
             }
 
-
             //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
             $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
-
 
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             if (this.kendoWidget) {
@@ -56,8 +54,6 @@ define([
                     addClass("dcpAttribute__content__nobutton");
             }
             this.element.find(".dcpAttribute__value--read").css("border-color", this.options.attributeValue.value);
-
-
         },
 
         _initChangeEvent : function wcolInitChangeEvent() {
@@ -112,7 +108,7 @@ define([
             var scope = this,
                 kendoOptions = {},
                 defaultOptions = {
-                    change :   function () {
+                    change :   function wColor_onchange() {
                         // Need to set by widget to honor decimals option
                         scope.setValue({value : this.value()});
                     }
@@ -133,6 +129,13 @@ define([
             if (!_.isNumber(value.value)) {
                 throw new Error("The value must be a number for (attrid : " + this.options.id + ")");
             }
+        },
+
+        close : function wColor_close() {
+            if (this.kendoWidget && this.kendoWidget.data("kendoColorPicker")) {
+                this.kendoWidget.data("kendoColorPicker").close();
+            }
+            this._super();
         },
 
         _destroy : function _destroy() {

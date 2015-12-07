@@ -7,7 +7,7 @@ define([
     'use strict';
 
     return AttributeModel.extend({
-        typeModel:"ddui:attributeData",
+        typeModel: "ddui:attributeData",
         defaults: {
             isValueAttribute: true,
             multiple: false,
@@ -17,7 +17,7 @@ define([
         initialize: function mAttributeinitialize()
         {
             this.listenTo(this, "change:attributeValue", this.checkConstraint);
-            this._initialAttributeValue = this.get("attributeValue");
+            this._initialAttributeValue = this.get("attributeValue") || {value: null};
             AttributeModel.prototype.initialize.apply(this, arguments);
         },
 

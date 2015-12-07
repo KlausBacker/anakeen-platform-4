@@ -310,6 +310,15 @@ define([
                 documentView.model.redrawErrorMessages();
             }, 100, false));
 
+            $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
+            {
+                if (documentView.model.get("attributes")) {
+                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel) {
+                        currentAttributeModel.trigger("closeWidget");
+                    });
+                }
+            }, 100, false));
+
             this.$el.addClass("dcpDocument--show");
 
             this.resizeForFooter();

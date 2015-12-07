@@ -275,6 +275,15 @@ define([
         },
 
         /**
+         * Close the attribute if open
+         *
+         * @returns {dcp.dcpAttribute}
+         */
+        close : function wAttribute_close() {
+            return this;
+        },
+
+        /**
          * Create the widget
          * @private
          */
@@ -771,7 +780,13 @@ define([
             this._trigger("widgetReady");
         },
 
-        setVisibilitySavingMenu: function wAttributeDisableSavingMenu(visibility)
+        /**
+         * Trigger an event that should disable save menu on document
+         *
+         * @param visibility
+         * @private
+         */
+        _setVisibilitySavingMenu: function wAttribute_DisableSavingMenu(visibility)
         {
             var event = {prevent: false};
             this._trigger("changeattrmenuvisibility", event, {
