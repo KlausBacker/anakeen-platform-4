@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-11 16:21+0200\n"
+"POT-Creation-Date: 2015-12-08 11:29+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -172,11 +172,6 @@ msgstr ""
 
 #, php-format
 msgctxt "ddui"
-msgid "Document identifier \"%s\" must be a family in create mode"
-msgstr ""
-
-#, php-format
-msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr ""
 
@@ -295,7 +290,7 @@ msgstr ""
 
 #, php-format
 msgctxt "ddui"
-msgid "Revision \"%s\" must be a number "
+msgid "Revision \"%s\" must be a number or a state reference"
 msgstr ""
 
 msgctxt "ddui"

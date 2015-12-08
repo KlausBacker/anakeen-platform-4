@@ -274,7 +274,7 @@ class RenderDefault implements IRenderConfig
         $linkOption = new htmlLinkOptions();
         //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
-        $linkOption->url = "?app=DOCUMENT&initid={{value}}";
+        $linkOption->url = "?app=DOCUMENT&initid={{value}}{{#isRevision}}&revision={{revisionTarget}}{{/isRevision}}";
         $opt->docid()->setLink($linkOption);
         $opt->account()->setLink(clone $linkOption);
         $opt->thesaurus()->setLink(clone $linkOption);
@@ -284,7 +284,6 @@ class RenderDefault implements IRenderConfig
         foreach ($oas as $oa) {
             if ($oa->link) {
                 $linkOption = new htmlLinkOptions($document->urlWhatEncode($oa->link));
-                
                 $opt->text($oa->id)->setLink($linkOption);
             }
         }

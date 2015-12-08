@@ -366,6 +366,7 @@ define([
         _initDom: function wAttributeInitDom()
         {
             var htmlLink = this.getLink();
+            var scopeWidget=this;
             this._initMainElementClass();
             if (htmlLink) {
                 // Add render Url and title on links
@@ -375,6 +376,7 @@ define([
                     this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
                     {
                         Mustache.escape = encodeURIComponent;
+                        scopeWidget._completeRevisionData(val);
                         val.renderUrl = Mustache.render(htmlLink.url || "", val);
                         Mustache.escape = originalEscape;
                         val.renderTitle = Mustache.render(htmlLink.title || "", val);
@@ -383,12 +385,30 @@ define([
                     });
                 } else {
                     Mustache.escape = encodeURIComponent;
+                    this._completeRevisionData(this.options.attributeValue);
+
                     this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url || "", this.options.attributeValue);
                     Mustache.escape = originalEscape;
                     this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title || "", this.options.attributeValue);
                 }
             }
             this.element.append(Mustache.render(this._getTemplate(this.options.mode) || "", this.options));
+        },
+
+        /**
+         * Add revision extra data to render link
+         * @param data
+         * @private
+         */
+        _completeRevisionData: function wAttribute_completeRevisionData(data) {
+            data.isRevision=data.revision !== -1 && data.revision !== null && !_.isUndefined(data.revision);
+            if (data.isRevision) {
+                if (data.revision.state) {
+                    data.revisionTarget="state:"+data.revision.state;
+                } else {
+                    data.revisionTarget=data.revision;
+                }
+            }
         },
 
         /**

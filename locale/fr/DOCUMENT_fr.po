@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-11 16:21+0200\n"
-"PO-Revision-Date: 2015-06-16 14:54+0200\n"
+"POT-Creation-Date: 2015-12-08 11:29+0100\n"
+"PO-Revision-Date: 2015-12-08 11:30+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -175,13 +175,6 @@ msgstr "Document \"%s\" non trouvé"
 
 #, php-format
 msgctxt "ddui"
-msgid "Document identifier \"%s\" must be a family in create mode"
-msgstr ""
-"L'identifiant de document \"%s\" doit indiquer une famille dans le mode "
-"création"
-
-#, php-format
-msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr "Identifiant de document \"%s\" non trouvé"
 
@@ -300,8 +293,8 @@ msgstr "Confirmer"
 
 #, php-format
 msgctxt "ddui"
-msgid "Revision \"%s\" must be a number "
-msgstr "La révision \"%s\" doit être un nombre"
+msgid "Revision \"%s\" must be a number or a state reference"
+msgstr "La révision \"%s\" doit être un nombre ou une référence à un état"
 
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
@@ -465,6 +458,12 @@ msgstr ""
 "Erreur de retour lors de l'appel à %s\n"
 "%s"
 
+#~ msgctxt "ddui"
+#~ msgid "Document identifier \"%s\" must be a family in create mode"
+#~ msgstr ""
+#~ "L'identifiant de document \"%s\" doit indiquer une famille dans le mode "
+#~ "création"
+
 #~ msgctxt "UiMenu"
 #~ msgid "Lock"
 #~ msgstr "Verrouiller"
@@ -480,6 +479,10 @@ msgstr ""
 #~ msgctxt "UiMenu"
 #~ msgid "Profil access"
 #~ msgstr "Accès au profil"
+
+#~ msgctxt "ddui"
+#~ msgid "Revision \"%s\" must be a number "
+#~ msgstr "La révision \"%s\" doit être un nombre"
 
 #~ msgctxt "UiMenu"
 #~ msgid "Security"

@@ -272,11 +272,13 @@ define([
          */
         loadDocument: function changeAttributesValueLoadDocument(event, options)
         {
-            var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel();
+            var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel(), revision = -1;
             if (_.isUndefined(index)) {
                 initid = attributeValue.value;
+                revision=attributeValue.revision;
             } else {
                 initid = attributeValue[index].value;
+                revision = attributeValue[index].revision;
             }
 
             this.model.trigger("internalLinkSelected", event, {
@@ -293,7 +295,7 @@ define([
 
             documentModel.fetchDocument({
                 "initid": initid,
-                "revision": -1,
+                "revision": revision,
                 "viewId": "!defaultConsultation"
             });
         },

@@ -54,12 +54,12 @@ function autocomplete(Action & $action)
         if (!$attributeObject->phpfile) {
             // in coherence with editutil.php
             $filter = array(); //no filter by default
-            $serializedFilter = '';
             $idType = "initid"; //if there's no docrev option (or it's present but not fixed), use initid to have the latest.
-            $docrev = $attributeObject->getOption("docrev");
-            if ($docrev == "fixed") {
+            $docrev = $attributeObject->getOption("docrev", "latest");
+            if ($docrev === "fixed") {
                 $idType = "id";
-            } elseif ($docrev != "latest") {
+            } elseif ($docrev !== "latest") {
+                $idType = "id";
                 //if $docrev is neither fixed nor latest it should be state=...
                 //if not, we'll just ignore the option
                 $matches = array();
@@ -68,9 +68,8 @@ function autocomplete(Action & $action)
                 }
             }
             //make $filter safe to pass in a string for getResPhpFunc.
-            if (count($filter) == 0) {
-                $serializedFilter = serialize($filter);
-            }
+            $serializedFilter = serialize($filter);
+            
             if ($attributeObject->type === "thesaurus") {
                 $th = $doc->getRawValue("thc_thesaurus");
                 $attributeObject->phpfunc = "getThConcept(D,$th,CT):${attributeName},CT";
@@ -149,7 +148,6 @@ function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
                     }
                     dduiSetHttpVar("_$aid", $rawValue);
                 } else {
-                    if (!isset($formatValue["value"])) print_r2($formatValue);
                     dduiSetHttpVar("_$aid", $formatValue["value"]);
                 }
             }

@@ -42,7 +42,9 @@ function view(Action & $action)
     $revision = $usage->addOptionalParameter("revision", "revision number", function ($revision)
     {
         if (!is_numeric($revision)) {
-            return sprintf(___("Revision \"%s\" must be a number ", "ddui") , $revision);
+            if (!preg_match('/^state:(.+)$/', $revision, $regStates)) {
+                return sprintf(___("Revision \"%s\" must be a number or a state reference", "ddui") , $revision);
+            }
         }
         return '';
     }
@@ -73,6 +75,12 @@ function view(Action & $action)
         $viewInformation = ["initid" => $initid, "revision" => $revision, "viewId" => $viewId];
         
         $viewInformation = array_merge($viewInformation, $otherParameters);
+        
+        if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
+            $viewInformation["revision"] = array(
+                "state" => $regStates[1]
+            );
+        }
         
         $action->lay->set("viewInformation", Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
     }
