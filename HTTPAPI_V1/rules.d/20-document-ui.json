@@ -1,32 +1,39 @@
 [
-    {
-        "order": 300,
-        "class": "\\Dcp\\Ui\\Crud\\ViewCollection",
-        "regExp": "%^/documents/(?P<identifier>[^/]+)/views/$%",
-        "description": "Document View List",
-        "canonicalURL": "documents/<documentId>/views/"
-    },
-    {
-        "order": 300,
-        "class": "\\Dcp\\Ui\\Crud\\View",
-        "regExp": "%^/documents/(?P<identifier>[^\\/]+)/views/(?P<viewIdentifier>[^/]+)$%",
-        "description": "Document View",
-        "canonicalURL": "documents/<documentId>/views/<viewId>"
-    },
-    {
-        "order": 300,
-        "class": "\\Dcp\\Ui\\Crud\\View",
-        "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)/views/(?P<viewIdentifier>[^/]+)$%",
-        "description": "Document View",
-        "canonicalURL": "documents/<documentId>/revision/<revision>/views/<viewId>"
-    },
-    {
-        "order": 300,
-        "class": "\\Dcp\\Ui\\Crud\\LockView",
-        "regExp": "%^/documents/(?P<identifier>[^/]+)/views/(?P<viewIdentifier>[^/]+)/locks/(?P<lockType>(temporary|permanent))$%",
-        "description": "Document Lock View",
-        "canonicalURL": "documents/<documentId>/views/<viewId>/locks/<lockType>"
-    },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\ViewCollection",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/views/$%",
+    "description": "Document View List",
+    "canonicalURL": "documents/<documentId>/views/"
+  },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\View",
+    "regExp": "%^/documents/(?P<identifier>[^\\/]+)/views/(?P<viewIdentifier>[^/]+)$%",
+    "description": "Document View",
+    "canonicalURL": "documents/<documentId>/views/<viewId>"
+  },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\View",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)/views/(?P<viewIdentifier>[^/]+)$%",
+    "description": "Revision View",
+    "canonicalURL": "documents/<documentId>/revisions/<revision>/views/<viewId>"
+  },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\View",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>state:[^/]+)/views/(?P<viewIdentifier>[^/]+)$%",
+    "description": "Revision View by State",
+    "canonicalURL": "documents/<documentId>/revisions/state:<state>/views/<viewId>"
+  },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\LockView",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/views/(?P<viewIdentifier>[^/]+)/locks/(?P<lockType>(temporary|permanent))$%",
+    "description": "Document Lock View",
+    "canonicalURL": "documents/<documentId>/views/<viewId>/locks/<lockType>"
+  },
   {
     "order": 300,
     "class": "\\Dcp\\Ui\\Crud\\FamilyStructure",
@@ -34,26 +41,25 @@
     "description": "Get structure family of document",
     "canonicalURL": "families/<familyName>/views/structure"
   },
-
-    {
-        "order": 300,
-        "class": "\\Dcp\\Ui\\Crud\\TransitionView",
-        "regExp": "%^/documents/(?P<identifier>[^/]+)/views/states/(?P<state>[^/]+)$%",
-        "description": "Document Workflow Transition View",
-        "canonicalURL": "documents/<documentId>/views/states/<state>"
-    },
-    {
-        "order" :        400,
-        "class" :        "\\Dcp\\Ui\\Crud\\CreationView",
-        "regExp" :       "/^\\/families\\/(?P<familyId>[^\\/]+)\\/documentsViews\\/$/",
-        "description" :  "Create a document with the ddui view",
-        "canonicalURL" : "families/<familyId>/documentsViews/"
-    },
-    {
-        "order" :        400,
-        "class" :        "\\Dcp\\Ui\\Crud\\I18nCollection",
-        "regExp" :       "%^/i18n/(?P<identifier>[^\\/]+)$%",
-        "description" :  "Locale catalog",
-        "canonicalURL" : "i18n/<catalog>"
-    }
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\TransitionView",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/views/states/(?P<state>[^/]+)$%",
+    "description": "Document Workflow Transition View",
+    "canonicalURL": "documents/<documentId>/views/states/<state>"
+  },
+  {
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Crud\\CreationView",
+    "regExp": "/^\\/families\\/(?P<familyId>[^\\/]+)\\/documentsViews\\/$/",
+    "description": "Create a document with the ddui view",
+    "canonicalURL": "families/<familyId>/documentsViews/"
+  },
+  {
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Crud\\I18nCollection",
+    "regExp": "%^/i18n/(?P<identifier>[^\\/]+)$%",
+    "description": "Locale catalog",
+    "canonicalURL": "i18n/<catalog>"
+  }
 ]

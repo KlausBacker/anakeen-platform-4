@@ -63,6 +63,7 @@ define([
             var properties;
             var customClienData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
+            var revision=this.get("revision");
 
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
@@ -70,8 +71,12 @@ define([
                 properties = this.getModelProperties();
                 urlData += "documents/" + encodeURIComponent(this.id);
                 //Don't add revision for delete of alive document
-                if (this.get("revision") >= 0 && (currentMethod !== "delete")) {
-                    urlData += "/revisions/" + encodeURIComponent(this.get("revision"));
+                if (revision !== null && (currentMethod !== "delete")) {
+                    if (_.isObject(revision) && revision.state ) {
+                        urlData += "/revisions/" + encodeURIComponent("state:"+revision.state);
+                    } else if (revision >= 0) {
+                        urlData += "/revisions/" + encodeURIComponent(revision);
+                    }
                 }
                 if (viewId === undefined) {
                     if (this.get("renderMode") === "view" || currentMethod === "delete") {
