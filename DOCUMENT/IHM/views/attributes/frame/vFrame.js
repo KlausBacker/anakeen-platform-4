@@ -60,14 +60,14 @@ define([
                 contentData.label=this.model.getOption("attributeLabel");
             }
             this.templateLabel = this.model.getTemplates().attribute.frame.label;
-            labelElement = $(Mustache.render(this.templateLabel, contentData));
+            labelElement = $(Mustache.render(this.templateLabel || "", contentData));
 
             if (this.customView) {
                 contentElement = this.customView;
                 contentElement.addClass("dcpFrame__content dcpFrame__content--open");
             } else {
                 this.templateContent = this.model.getTemplates().attribute.frame.content;
-                contentElement = $(Mustache.render(this.templateContent, contentData));
+                contentElement = $(Mustache.render(this.templateContent || "", contentData));
             }
             this.$el.empty();
             if (this.displayLabel === true) {

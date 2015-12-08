@@ -116,7 +116,7 @@ define([
             var currentState = this.model.get("state");
             var currentView = this;
 
-            this.$el.find(".dcpTransitionGraph--from").append(Mustache.render(tpl, _.extend(currentState, {title:i18n.___("Current workflow activity","ddui")})));
+            this.$el.find(".dcpTransitionGraph--from").append(Mustache.render(tpl || "", _.extend(currentState, {title:i18n.___("Current workflow activity","ddui")})));
 
             _.each(states, function vTransitionGraphdisplayCurrentStateEach(item)
             {
@@ -198,7 +198,7 @@ define([
                 "transform:rotate({{angle}}deg);' ><div class='dcpTransitionGraph__arrow__label'>{{text}}</div>" +
                 "<i class='dcpTransitionGraph__arrow__end fa fa-2x fa-caret-right'></i> </div>";
 
-            this.$el.append(Mustache.render(htmlLine, {
+            this.$el.append(Mustache.render(htmlLine || "", {
                 error:item.transition.error,
                 id: item.id,
                 height: thickness,

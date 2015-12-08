@@ -28,7 +28,7 @@ define([
         {
             var $content, $mainElement, scopeWidget = this;
             //InitDom
-            $mainElement = $(Mustache.render(this._getTemplate("menu"), _.extend({uuid: this.uuid}, this.options)));
+            $mainElement = $(Mustache.render(this._getTemplate("menu") || "", _.extend({uuid: this.uuid}, this.options)));
             $content = $mainElement.find(".menu__content");
             this._insertMenuContent(this.options.menus, $content);
             this.element.append($mainElement);
@@ -51,17 +51,17 @@ define([
                     if (href != '') {
                         //Display confirm message
                         if ($elementA.hasClass("menu--confirm")) {
-                            confirmText = Mustache.render($elementA.data('confirm-message'), scopeWidget.options);
+                            confirmText = Mustache.render($elementA.data('confirm-message') || "", scopeWidget.options);
 
                             configMenu = $menuElement.data("menuConfiguration");
                             confirmOptions = configMenu.confirmationOptions || {};
                             confirmDcpWindow = $('body').dcpConfirm({
-                                title: Mustache.render(confirmOptions.title, scopeWidget.options),
+                                title: Mustache.render(confirmOptions.title || "", scopeWidget.options),
                                 width: confirmOptions.windowWidth,
                                 height: confirmOptions.windowHeight,
                                 messages: {
-                                    okMessage: Mustache.render(confirmOptions.confirmButton, scopeWidget.options),
-                                    cancelMessage: Mustache.render(confirmOptions.cancelButton, scopeWidget.options),
+                                    okMessage: Mustache.render(confirmOptions.confirmButton || "", scopeWidget.options),
+                                    cancelMessage: Mustache.render(confirmOptions.cancelButton || "", scopeWidget.options),
                                     htmlMessage: confirmText,
                                     textMessage: ''
                                 },
@@ -97,7 +97,7 @@ define([
                                         $bodyDiv = $('<div/>');
                                         $('body').append($bodyDiv);
                                         dcpWindow = $bodyDiv.dcpWindow({
-                                            title: Mustache.render(targetOptions.title, window.dcp.documentData),
+                                            title: Mustache.render(targetOptions.title || "", window.dcp.documentData),
                                             width: targetOptions.windowWidth,
                                             height: targetOptions.windowHeight,
                                             modal: targetOptions.modal,
@@ -474,15 +474,15 @@ define([
                     }
                     if (currentMenu.htmlLabel) {
                         // reRender for variable labels
-                        currentMenu.htmlLabel = Mustache.render(currentMenu.htmlLabel, {document: currentWidget.options.document});
+                        currentMenu.htmlLabel = Mustache.render(currentMenu.htmlLabel || "", {document: currentWidget.options.document});
                     }
                     if (currentMenu.label) {
                         // reRender for variable labels
-                        currentMenu.label = Mustache.render(currentMenu.label, {document: currentWidget.options.document});
+                        currentMenu.label = Mustache.render(currentMenu.label || "", {document: currentWidget.options.document});
                     }
                     if (currentMenu.tooltipLabel) {
                         // reRender for variable labels
-                        currentMenu.tooltipLabel = Mustache.render(currentMenu.tooltipLabel, {document: currentWidget.options.document});
+                        currentMenu.tooltipLabel = Mustache.render(currentMenu.tooltipLabel || "", {document: currentWidget.options.document});
                     }
                 });
 
@@ -491,23 +491,23 @@ define([
                 if (currentMenu.type === "listMenu") {
                     subMenu = "listMenu";
 
-                    $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu), currentMenu));
-                    currentWidget._insertMenuContent(currentMenu.content, $currentMenu.find(".listmenu__content"), currentWidget, currentMenu);
+                    $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu) || "", currentMenu));
+                    currentWidget._insertMenuContent(currentMenu.content || "", $currentMenu.find(".listmenu__content"), currentWidget, currentMenu);
                 } else {
                     if (currentMenu.type === "dynamicMenu") {
                         subMenu = "dynamicMenu";
                         if (currentMenu.url) {
                             currentMenu.document = currentWidget.options.document;
-                            currentMenu.url = Mustache.render(currentMenu.url, currentMenu);
+                            currentMenu.url = Mustache.render(currentMenu.url || "", currentMenu);
                         }
-                        $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu), currentMenu));
+                        $currentMenu = $(Mustache.render(currentWidget._getTemplate(subMenu) || "", currentMenu));
 
                     } else {
                         currentMenu.document = currentWidget.options.document;
                         if (currentMenu.url) {
-                            currentMenu.url = Mustache.render(currentMenu.url, currentMenu);
+                            currentMenu.url = Mustache.render(currentMenu.url || "", currentMenu);
                         }
-                        $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type), currentMenu));
+                        $currentMenu = $(Mustache.render(currentWidget._getTemplate(currentMenu.type) || "", currentMenu));
 
                     }
                 }

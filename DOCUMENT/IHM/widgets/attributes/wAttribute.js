@@ -313,7 +313,7 @@ define([
                 // Add index for template to identify buttons
                 this.options.renderOptions.buttons = _.map(this.options.renderOptions.buttons, function wAttributeOptionMap(val, index)
                 {
-                    val.renderHtmlContent = Mustache.render(val.htmlContent, scope.options.attributeValue);
+                    val.renderHtmlContent = Mustache.render(val.htmlContent || "", scope.options.attributeValue);
                     val.index = index;
                     return val;
                 });
@@ -375,20 +375,20 @@ define([
                     this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
                     {
                         Mustache.escape = encodeURIComponent;
-                        val.renderUrl = Mustache.render(htmlLink.url, val);
+                        val.renderUrl = Mustache.render(htmlLink.url || "", val);
                         Mustache.escape = originalEscape;
-                        val.renderTitle = Mustache.render(htmlLink.title, val);
+                        val.renderTitle = Mustache.render(htmlLink.title || "", val);
                         val.index = index;
                         return val;
                     });
                 } else {
                     Mustache.escape = encodeURIComponent;
-                    this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url, this.options.attributeValue);
+                    this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url || "", this.options.attributeValue);
                     Mustache.escape = originalEscape;
-                    this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title, this.options.attributeValue);
+                    this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title || "", this.options.attributeValue);
                 }
             }
-            this.element.append(Mustache.render(this._getTemplate(this.options.mode), this.options));
+            this.element.append(Mustache.render(this._getTemplate(this.options.mode) || "", this.options));
         },
 
         /**
@@ -485,7 +485,7 @@ define([
                 if (buttonConfig && buttonConfig.url) {
                     var originalEscape = Mustache.escape;
                     Mustache.escape = encodeURIComponent;
-                    var url = Mustache.render(buttonConfig.url, currentWidget.options.attributeValue);
+                    var url = Mustache.render(buttonConfig.url || "", currentWidget.options.attributeValue);
                     Mustache.escape = originalEscape;
 
                     if (buttonConfig.target !== "_dialog") {
@@ -502,7 +502,7 @@ define([
                     } else {
                         var $bdw = $('<div/>');
                         $('body').append($bdw);
-                        var renderTitle = Mustache.render(buttonConfig.windowTitle, currentWidget.options.attributeValue);
+                        var renderTitle = Mustache.render(buttonConfig.windowTitle || "", currentWidget.options.attributeValue);
                         var dw = $bdw.dcpWindow({
                             title: renderTitle,
                             width: buttonConfig.windowWidth,
@@ -530,7 +530,7 @@ define([
                 {
                     var title = $(this).data("title");
                     var attrValue = currentWidget.getValue();
-                    return Mustache.render(title, attrValue);
+                    return Mustache.render(title || "", attrValue);
                 },
                 container: this.element
             });
@@ -623,9 +623,9 @@ define([
 
                         index = $(this).data("index");
                         if (typeof index !== "undefined" && index !== null) {
-                            renderTitle = Mustache.render(htmlLink.windowTitle, scopeWidget.options.attributeValue[index]);
+                            renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue[index]);
                         } else {
-                            renderTitle = Mustache.render(htmlLink.windowTitle, scopeWidget.options.attributeValue);
+                            renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue);
                         }
 
                         $dialogDiv = $('<div/>');

@@ -47,12 +47,12 @@ define([
                 this.$el.text(label);
 
                 if (tooltipLabel) {
-                    tooltipLabel=Mustache.render(tooltipLabel, attrData);
+                    tooltipLabel=Mustache.render(tooltipLabel || "", attrData);
                     if (!this.model.getOption("tooltipHtml")) {
                         // Need encode itself because the dropselect tooltip also need
                         tooltipLabel=$('<div/>').text(tooltipLabel).html();
                     }
-                    this.$el.data("tooltipLabel",  Mustache.render(tooltipLabel, attrData));
+                    this.$el.data("tooltipLabel",  Mustache.render(tooltipLabel || "", attrData));
                     this.$el.tooltip({
                         placement: "top",
                         container: ".dcpDocument",

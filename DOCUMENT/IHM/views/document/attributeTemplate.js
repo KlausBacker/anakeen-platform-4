@@ -124,7 +124,7 @@ define(function (require, exports, module)
                 if (config && !_.isUndefined(config.index) && config.index >= 0) {
                     templateInfo.attribute.attributeValue = templateInfo.attribute.attributeValue[config.index];
                 }
-                $render = $(Mustache.render(customTemplate, templateInfo));
+                $render = $(Mustache.render(customTemplate || "", templateInfo));
                 this.completeCustomContent($render, attrModel.getDocumentModel(), callBackView, config);
                 return $render;
             },
@@ -290,9 +290,9 @@ define(function (require, exports, module)
                 var $render;
 
                 // Extract line to customLineTemplate variable
-                Mustache.render(attrModel.getOption("template"), this.extractRow(attrModel));
+                Mustache.render(attrModel.getOption("template") || "", this.extractRow(attrModel));
                 $render = $(Mustache.render(
-                    this.customLineTemplate,
+                    this.customLineTemplate || "",
                     this.getLineInfo(attrModel, index)));
 
                 return $render;
@@ -320,7 +320,7 @@ define(function (require, exports, module)
             {
                 var tpls = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 if (tpls && tpls.content) {
-                    return $(Mustache.render(tpls.content, {tools: true})).find(".dcpArray__tools").get(0).outerHTML;
+                    return $(Mustache.render(tpls.content || "", {tools: true})).find(".dcpArray__tools").get(0).outerHTML;
 
                 }
                 return 'no tools';
@@ -337,7 +337,7 @@ define(function (require, exports, module)
                 var templates = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var tool = '';
                 if (templates && templates.line) {
-                    tool = $(Mustache.render(templates.line, {tools: true})).find(".dcpArray__toolCell").html() ;
+                    tool = $(Mustache.render(templates.line || "", {tools: true})).find(".dcpArray__toolCell").html() ;
                 }
                 return tool;
             },
