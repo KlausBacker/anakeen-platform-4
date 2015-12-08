@@ -30,9 +30,16 @@
             "kendo-culture-fr": "../lib/KendoUI/2014.3/js/cultures/kendo.culture.fr-FR",
             "ckeditor": "../lib/ckeditor/4/ckeditor",
             "ckeditor-jquery": "../lib/ckeditor/4/adapters/jquery",
+            "datatables.net": "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
             "datatables": "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-            "datatables-bootstrap": "../lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap"
+            "datatables-bootstrap": "../lib/jquery-dataTables/1.10/js/dataTables.bootstrap"
         },
+        map: {
+            "datatables-bootstrap" : {
+                "datatables.net": "datatables"
+            }
+        },
+
         "waitSeconds": 60
     };
     if (window.dcp.ws) {

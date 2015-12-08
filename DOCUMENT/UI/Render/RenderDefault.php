@@ -28,7 +28,7 @@ class RenderDefault implements IRenderConfig
             "bootstrap" => "css/dcp/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/dcp/document/kendo.css?ws=" . $version,
             "document" => "css/dcp/document/document.css?ws=" . $version,
-            "datatable" => "lib/jquery-dataTables/1.10/bootstrap/3/dataTables.bootstrap.css?ws=" . $version
+            "datatable" => "lib/jquery-dataTables/1.10/css/dataTables.bootstrap.css?ws=" . $version
         );
     }
     
