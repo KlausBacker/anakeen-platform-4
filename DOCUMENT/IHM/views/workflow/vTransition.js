@@ -97,7 +97,7 @@ define([
                 } else {
                     errorMessage = '<div class="dcpTransition--error">{{title}} {{{htmlMessage}}}</div>';
                 }
-                $(Mustache.render(errorMessage, error)).insertBefore(this.$el.find(".dcpTransition--buttons"));
+                $(Mustache.render(errorMessage || "", error)).insertBefore(this.$el.find(".dcpTransition--buttons"));
             }
             if (attributes.length === 0) {
                 $okButton.hide();
@@ -190,7 +190,7 @@ define([
 
             _.each(messages, function vTransition_analyzeCurrentMessage(message)
             {
-                $message.append($(Mustache.render(template, message)));
+                $message.append($(Mustache.render(template || "", message)));
                 //noinspection JSUnresolvedVariable
                 currentView.messages.push({
                     title: message.contentText,
@@ -218,9 +218,9 @@ define([
             workflow.hasAttributes = (attributes.length > 0);
             if (transition) {
                 // Transition ask
-                this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlContent, workflow));
-                this.$el.find(".dcpTransition--messages").append(Mustache.render(this.templates.htmlLoading, workflow));
-                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlButtons, workflow));
+                this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlContent || "", workflow));
+                this.$el.find(".dcpTransition--messages").append(Mustache.render(this.templates.htmlLoading || "", workflow));
+                this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlButtons || "", workflow));
                 this.$el.find(".dcpTransition-button-ok").tooltip();
 
                 if (attributes.length === 0) {
@@ -251,8 +251,8 @@ define([
             } else
                 if (state) {
                     // Transition success
-                    this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlStateContent, workflow));
-                    this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlStateButtons, workflow));
+                    this.$el.find(".dcpTransition--header").append(Mustache.render(this.templates.htmlStateContent || "", workflow));
+                    this.$el.find(".dcpTransition--buttons").append(Mustache.render(this.templates.htmlStateButtons || "", workflow));
                     this.$el.find(".dcpTransition-button-close").tooltip();
 
                 }

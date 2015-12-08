@@ -10,7 +10,7 @@ require(window.loaders, function(_, $, Mustache) {
 
     var getDiv = function(name) {
         var $currentDiv = $('<div data-type="'+name+'"></div>');
-        $currentDiv.append(Mustache.render(template));
+        $currentDiv.append(Mustache.render(template) || "");
         $("body").append($currentDiv);
         $currentDiv.find(".labelWrapper").dcpLabel({label : name});
         return $currentDiv;

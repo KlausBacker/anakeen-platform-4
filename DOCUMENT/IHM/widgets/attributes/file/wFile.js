@@ -205,7 +205,7 @@ define([
             var scope = this;
             var formHtml = '<form id="form{{id}}" target="{{target}}" method="POST" enctype="multipart/form-data" action="api/v1/temporaryFiles/?alt=html">' +
                 '</form><iframe style="display:none" name="{{target}}"></iframe>';
-            $(Mustache.render(formHtml, {id: inputId, target: fileTarget})).insertAfter(inputFile);
+            $(Mustache.render(formHtml || "", {id: inputId, target: fileTarget})).insertAfter(inputFile);
 
             var container = '<div class="dcpFile__form"/>';
 

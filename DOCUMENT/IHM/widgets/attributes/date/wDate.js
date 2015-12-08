@@ -36,7 +36,7 @@ define([
             }
             if (this.getMode() === "read") {
                 if (this.options.renderOptions.format) {
-                    this.options.attributeValue.formatValue = Mustache.render(this.options.renderOptions.format,
+                    this.options.attributeValue.formatValue = Mustache.render(this.options.renderOptions.format || "",
                         this.options.attributeValue);
                 }
             }

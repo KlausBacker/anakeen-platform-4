@@ -234,7 +234,7 @@ define([
 
         _getDocHeader : function wRevisionDiffGetDocHeader(documentStructure) {
             var documentHeader = this.options.labels.documentHeader;
-            return Mustache.render(documentHeader, documentStructure.properties);
+            return Mustache.render(documentHeader || "", documentStructure.properties);
         },
 
         _destroy : function _destroy() {

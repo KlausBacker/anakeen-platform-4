@@ -130,7 +130,7 @@ define([
             try {
                 var renderData = this.model.toData();
                 renderData.document = attributeTemplate.getTemplateModelInfo(this.model);
-                this.$el.append($(Mustache.render(this.template, renderData, this.partials)));
+                this.$el.append($(Mustache.render(this.template || "", renderData, this.partials)));
                 attributeTemplate.completeCustomContent(this.$el, this.model, null, {initializeContent: true});
 
                 $body = this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");

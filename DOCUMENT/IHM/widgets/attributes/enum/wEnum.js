@@ -251,7 +251,7 @@ define([
 
             this.options.isMultiple = true; // Just to have checkbox
 
-            this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
+            this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
             this.options.isMultiple = false; // restore isMultiple : it never can be multiple
             labels = this.element.find("label");
 
@@ -265,7 +265,7 @@ define([
                 if (tplOption.enumValues[kItem]) {
                     $(this).tooltip({
                         container: ".dcpDocument",
-                        title: Mustache.render(scope.options.labels.invertSelection,
+                        title: Mustache.render(scope.options.labels.invertSelection || "",
                             tplOption.enumValues[(kItem + 1) % 2])
                     });
                 }
@@ -336,7 +336,7 @@ define([
             enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
 
-            this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
+            this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
             labels = this.element.find("label");
 
             this.noButtonDisplay();
@@ -392,7 +392,7 @@ define([
             enumData = this.getMultipleEnumData();
             tplOption.enumValues = enumData.data;
 
-            this.element.append(Mustache.render(this._getTemplate('writeRadio'), this.options));
+            this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
             labels = this.element.find("label");
 
             this.noButtonDisplay();
@@ -441,7 +441,7 @@ define([
             var kendoOptions = this.getKendoOptions();
             var kddl;
 
-            this.element.append(Mustache.render(this._getTemplate('write'), this.options));
+            this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
@@ -452,7 +452,7 @@ define([
         multipleSelect: function wEnumMultipleSelect()
         {
             var kendoOptions = this.getKendoOptions();
-            this.element.append(Mustache.render(this._getTemplate('write'), this.options));
+            this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
         },
@@ -462,7 +462,7 @@ define([
             var kendoOptions = this.getKendoOptions();
             var kddl;
 
-            this.element.append(Mustache.render(this._getTemplate('write'), this.options));
+            this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");

@@ -77,7 +77,7 @@ define([
                     this.element.addClass("panel panel-default");
                     // showEmptyCOntent option
                     if (this.options.displayLabel !== false) {
-                        this.element.append(Mustache.render(this._getTemplate("label"), this.options));
+                        this.element.append(Mustache.render(this._getTemplate("label") || "", this.options));
                         if (this.options.renderOptions.labelPosition === "left") {
                             this.element.find(".dcpLabel").addClass("dcpArray__label--left");
                         }
@@ -89,7 +89,7 @@ define([
             } else {
                 this.element.addClass("panel panel-default");
                 if (this.options.displayLabel !== false) {
-                    this.element.append(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
+                    this.element.append(Mustache.render(this._getTemplate("label") || "", _.extend(this.options, {
                         displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
                     })));
                 }
@@ -103,7 +103,7 @@ define([
                     this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
 
                 } else {
-                    this.element.append(Mustache.render(this._getTemplate("content"), this.options));
+                    this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
                     if (this.options.mode === "write") {
                         this.element.find('.dcpArray__tools').tooltip({
@@ -215,7 +215,7 @@ define([
             // I9 not support transposition table
             var useTransposition = ($("html.k-ie9").length === 0);
 
-            this.element.append(Mustache.render(this._getTemplate("responsive"), _.extend(this.options, {useTransposition: useTransposition})));
+            this.element.append(Mustache.render(this._getTemplate("responsive") || "", _.extend(this.options, {useTransposition: useTransposition})));
 
             if (useTransposition) {
                 this.element.find("table.dcpArray__table").addClass("responsive");
@@ -311,7 +311,7 @@ define([
         redrawLabel: function wArrayRedrawLabel()
         {
             this.element.find(".dcpArray__label").html(
-                $(Mustache.render(this._getTemplate("label"), _.extend(this.options, {
+                $(Mustache.render(this._getTemplate("label") || "", _.extend(this.options, {
                     displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
                 }))).html()
             );
@@ -360,7 +360,7 @@ define([
                 $content.addClass("dcpArray__content__line");
                 $content.attr("data-attrid", this.options.id);
             } else {
-                $content = $(Mustache.render(this._getTemplate("line"), _.extend({lineNumber: index}, this.options)));
+                $content = $(Mustache.render(this._getTemplate("line") || "", _.extend({lineNumber: index}, this.options)));
             }
             $content.find(".dcpArray__content__toolCell").closest('td').addClass("dcpArray__toolCell");
 
@@ -420,7 +420,7 @@ define([
                         // reset tooltip
                         $(this).tooltip("hide").data("bs.tooltip", null);
 
-                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMaxMessage,
+                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMaxMessage || "",
                             {limit: currentWidget.options.renderOptions.rowMaxLimit}
                         ));
                     });
@@ -446,7 +446,7 @@ define([
                         // reset tooltip
                         $(this).tooltip("hide").data("bs.tooltip", null);
 
-                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMinMessage,
+                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMinMessage || "",
                             {limit: currentWidget.options.renderOptions.rowMinLimit}
                         ));
                     });

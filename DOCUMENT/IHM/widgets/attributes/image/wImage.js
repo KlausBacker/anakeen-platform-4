@@ -60,9 +60,9 @@ define([
                     var renderTitle;
                     var index = $(this).data("index");
                     if (typeof index !== "undefined" && index !== null) {
-                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.attributeValue[index]);
+                        renderTitle = Mustache.render(htmlLink.windowTitle || "", scope.options.attributeValue[index]);
                     } else {
-                        renderTitle = Mustache.render(htmlLink.windowTitle, scope.options.attributeValue);
+                        renderTitle = Mustache.render(htmlLink.windowTitle || "", scope.options.attributeValue);
                     }
 
                     var bdw = $('<div class="dcpImage-window"><img class="img-responsive" src="' + $(this).attr("href") + '"/></div>');

@@ -112,7 +112,7 @@ define([
                             return kendo.toString(new Date(render(text).replace(' ', 'T')), "G");
                         };
                     };
-                    scope.element.html(Mustache.render(scope.htmlCaneva(), info));
+                    scope.element.html(Mustache.render(scope.htmlCaneva() || "", info));
                     scope.element.data("kendoWindow").center();
 
                 }).fail(function wProperties_fail(xhr) {

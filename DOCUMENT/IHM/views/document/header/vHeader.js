@@ -40,7 +40,7 @@ define([
             data.document.properties.security = security || {lock: {lockedBy: null}};
             data.document.properties.security.lock.isLocked = (data.document.properties.security.lock.lockedBy && data.document.properties.security.lock.lockedBy.id > 0);
 
-            var headerRender = $(Mustache.render(this.headerTemplate, data));
+            var headerRender = $(Mustache.render(this.headerTemplate || "", data));
             var $header = this.$el;
             $header.empty();
             _.each(headerRender.children(), (function eachChildren(elt)

@@ -112,7 +112,7 @@ define([
                 this.$el.addClass("dcpAttribute--needed");
             }
 
-            this.$el.append($(Mustache.render(this.templateWrapper, data)));
+            this.$el.append($(Mustache.render(this.templateWrapper || "", data)));
 
             this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
             if (event.prevent) {
