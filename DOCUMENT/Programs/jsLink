@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+if [ -z "$WIFF_CONTEXT_ROOT" ]; then
+    echo "Error: undefined WIFF_CONTEXT_ROOT"
+    exit 1
+fi
+
+cd "$WIFF_CONTEXT_ROOT";
+cd lib/jquery;
+ln -sf 2.1.4 ddui;
+
+
+cd "$WIFF_CONTEXT_ROOT";
+cd lib/KendoUI/;
+ln -sf 2015.3.1214 ddui;
+
+exit 0;

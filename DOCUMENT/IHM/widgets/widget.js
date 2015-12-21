@@ -46,7 +46,7 @@ define([
 
             // create selector for plugin
             $.expr[ ":" ][ fullName.toLowerCase() ] = function widget_createSelector(elem) {
-                return Boolean($.data(elem, fullName));
+                return Boolean($(elem).data(fullName));
             };
 
             $[ namespace ] = $[ namespace ] || {};
@@ -179,7 +179,7 @@ define([
                 if (isMethodCall) {
                     this.each(function widget_eachMethodCall() {
                         var methodValue,
-                            instance = $.data(this, fullName);
+                            instance = $(this).data( fullName);
                         if (!instance) {
                             return $.error("cannot call methods on " + name + " prior to initialization; " +
                                 "attempted to call method '" + options + "'");
@@ -197,11 +197,11 @@ define([
                     });
                 } else {
                     this.each(function widget_eachDataCall() {
-                        var instance = $.data(this, fullName);
+                        var instance = $(this).data(fullName);
                         if (instance) {
                             instance.option(options || {})._init();
                         } else {
-                            $.data(this, fullName, new Object(options, this));
+                            $(this).data(fullName, new Object(options, this));
                         }
                     });
                 }
@@ -239,7 +239,7 @@ define([
                 }
 
                 if (element !== this) {
-                    $.data(element, this.widgetFullName, this);
+                    $(element).data(this.widgetFullName, this);
                     this._on(true, this.element, {
                         remove : function widget_remove(event) {
                             if (event.target === element) {

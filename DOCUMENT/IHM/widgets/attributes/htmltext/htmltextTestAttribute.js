@@ -13,7 +13,6 @@ define([
         {
             return currentSandbox;
         };
-
         if (value.value && !_.has(value, "displayValue")) {
             value.displayValue = value.value;
         }

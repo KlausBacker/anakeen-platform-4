@@ -57,13 +57,13 @@ function jasmine(Action & $action)
     $js = array(
         $require["require"],
         $require["config"],
+        'lib/jquery/ddui/jquery.js?ws=' . $version,
         $require["kendo"],
         'lib/jasmine/jasmine.js?ws=' . $version,
         'lib/jasmine/jasmine-html.js?ws=' . $version,
         'lib/jasmine/boot.js?ws=' . $version,
         'lib/jasmine/jasmine-jquery.js?ws=' . $version
     );
-
     $widgetList = array_merge($testWidgetLoader, $testDocumentLoader);
 
     $js = array_merge($js, $widgetList);

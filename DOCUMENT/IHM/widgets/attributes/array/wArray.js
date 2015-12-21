@@ -270,7 +270,7 @@ define([
                 var selectedLine = currentWidget.selectedLineIndex();
 
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
-                    if (selectedLine === null) {
+                    if (selectedLine === null || _.isUndefined(selectedLine)) {
                         currentWidget.options.nbLines += 1;
                         currentWidget.addLine(currentWidget.options.nbLines - 1, {
                             needAddValue: true,
