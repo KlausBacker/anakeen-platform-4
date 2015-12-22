@@ -49,13 +49,9 @@
 .dcpAttribute__content .k-multiselect .k-button {
   padding-top: 0.2em;
   padding-bottom: 0.2em;
-  margin-top: 0.3em;
+  margin-top: 0.4em;
   margin-left: 0.4em;
   margin-bottom: 0.2em;
-  .k-select {
-    padding-top:inherit;
-  }
-
 }
 
 .dcpAttribute__content .k-multiselect-wrap {
@@ -99,6 +95,7 @@
   border: none;
   /*display:none; *//* no see native radio */
 }
+
 
 .dcpAttribute__value--enumlabel.k-button {
   border-radius: 0;
@@ -152,7 +149,7 @@
   border-bottom-right-radius: @border-radius-base;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel,
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel
 {
   display: table-cell;
   overflow: hidden;
@@ -161,7 +158,20 @@
 
   border-radius: @border-radius-base;
   border: none;
+  .dcpAttribute__value--enumlabel--text {
+    margin-left: 0;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  input[type=radio], input[type=checkbox] {
+    margin-right: 0.5em;
+    margin-top: 0;
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
+
 
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel {
   display: none;
@@ -199,12 +209,24 @@
   white-space: nowrap;
   border-radius: inherit;
   border: none;
+  padding-top: 0.2em;
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
-  margin-left: 2em;
-  display: block;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: middle;
   /*width:100%*/
+}
+
+.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel {
+  input[type=radio], input[type=checkbox] {
+    margin-right: 0.5em;
+    margin-top: 0;
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel--text {
