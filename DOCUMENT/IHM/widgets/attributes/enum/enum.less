@@ -88,12 +88,19 @@
   box-shadow: inset 0 0 10px 3px darken(@gray-lighter, 8%);
 }
 
-.dcpAttribute__content .dcpAttribute__value--enumlabel input {
-  height: auto;
-  width: auto;
-  background-color: transparent;
-  border: none;
-  /*display:none; *//* no see native radio */
+.dcpAttribute__content .dcpAttribute__value--enumlabel {
+  input[type=radio], input[type=checkbox] {
+    height: auto;
+    width: auto;
+    background-color: transparent;
+    border: none;
+    /*display:none; *//* no see native radio */
+  }
+
+  input.dcpAttribute__value--enum--other {
+    height: @attrInputHeight - 6px;
+    width: ~"calc(100% - 1em)";
+  }
 }
 
 
@@ -152,16 +159,18 @@
 .dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel
 {
   display: table-cell;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 
   border-radius: @border-radius-base;
   border: none;
   .dcpAttribute__value--enumlabel--text {
     margin-left: 0;
+    width: ~"calc(100% - 1em)";
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: inline-block;
     vertical-align: middle;
+    text-align: left;
   }
   input[type=radio], input[type=checkbox] {
     margin-right: 0.5em;
@@ -195,6 +204,10 @@
 .dcpAttribute__value--enumbuttons.orientation-vertical {
   width: 100%;
   padding: 0;
+  .dcpAttribute__value--enumlabel--other {
+        height: @attrInputHeight;
+
+  }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
@@ -203,15 +216,21 @@
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel {
   display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-align: left;
   white-space: nowrap;
   border-radius: inherit;
   border: none;
   padding-top: 0.2em;
+  .dcpAttribute__value--enumlabel--text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: ~"calc(100% - 1em)";
+  }
 }
 
+.dcpAttribute__value--enumbuttons.input-group .dcpAttribute__value--enumlabel--other.dcpAttribute__value--enumlabel {
+  text-overflow: initial;
+}
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
   margin-left: 0;
   display: inline-block;
@@ -230,6 +249,25 @@
 }
 
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel--text {
-  margin-left: 1em;
   display: inline-block;
+}
+
+.dcpAttribute__value--enum-other {
+    border: none;
+    padding: 1em;
+  .dcpAttribute__value--enum-other-content {
+
+  }
+  input {
+    width: 100%;
+    margin-left: 0;
+  }
+  .btn  {
+    float:right;
+  }
+}
+
+.dcpAttribute__content--enum input.dcpAttribute__value--edit:not([aria-activedescendant]) {
+  color:@brand-danger;
+
 }

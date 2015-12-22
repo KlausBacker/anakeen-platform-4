@@ -253,7 +253,10 @@ class RenderDefault implements IRenderConfig
             "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
             "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
             "selectMessage" => ___("Select", "ddui-enum") ,
-            "unselectMessage" => ___("Unselect", "ddui-enum")
+            "unselectMessage" => ___("Unselect", "ddui-enum"),
+            "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum"),
+            "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum"),
+            "displayOtherChoice" => ___("{{value}} **", "ddui-enum")
         ));
         $opt->date()->setTranslations(array(
             "invalidDate" => ___("Invalid date", "ddui-enum")
