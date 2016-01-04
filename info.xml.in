@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@PACKAGE@"  version="@VERSION@" release="@RELEASE@" license="@LICENSE@">
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@PACKAGE@" version="@VERSION@" release="@RELEASE@"
+        license="@LICENSE@">
 
     <description>@PACKAGE@</description>
 
@@ -16,7 +17,8 @@
         <module name='dynacase-tracekit-installer'/>
         <!-- //endregion full -->
         <module name='dynacase-requirejs-installer'/>
-        <module name='dynacase-kendoui-installer'/>
+        <module name='dynacase-kendoui-2015-installer' comp='eq' version='2015.3.1214'/>
+        <module name='dynacase-jquery-2-installer' comp='eq' version='2.1.4'/>
         <module name='dynacase-underscore-installer'/>
         <module name='dynacase-backbone-installer' comp='ge' version='1.1.2'/>
         <module name='dynacase-bootstrap-3-installer' comp='ge' version='3.2.0'/>
@@ -35,6 +37,9 @@
             <label>Create Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="DOCUMENT/Programs/jsLink">
+            <label>Link js libraries</label>
+        </process>
 
         <process command="programs/update_catalog"/>
     </post-install>
@@ -46,6 +51,9 @@
             <label>Update Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="DOCUMENT/Programs/jsLink">
+            <label>Link js libraries</label>
+        </process>
         <process command="programs/update_catalog"/>
     </post-upgrade>
 
