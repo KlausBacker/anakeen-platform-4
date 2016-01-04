@@ -59,6 +59,7 @@ function jasmine(Action & $action)
         $require["config"],
         'lib/jquery/ddui/jquery.js?ws=' . $version,
         $require["kendo"],
+        'lib/jquery/ddui/jquery.min.js?ws=' . $version,
         'lib/jasmine/jasmine.js?ws=' . $version,
         'lib/jasmine/jasmine-html.js?ws=' . $version,
         'lib/jasmine/boot.js?ws=' . $version,

@@ -26,6 +26,10 @@
     },
     generateSourceMaps: true,
     preserveLicenseComments: false,
+    wrap: {
+        start: "require(['kendo-ddui'], function ddui_builded() {",
+        end: "});"
+    },
     optimize: "uglify2",
     name: "IHM/main",
     out: "main-built.js"
