@@ -1,7 +1,7 @@
 define([
     'jquery',
     'dcpDocument/widgets/attributes/double/wDouble'
-], function ($) {
+], function require_money($) {
     'use strict';
 
     $.widget("dcp.dcpMoney", $.dcp.dcpDouble, {
@@ -13,7 +13,6 @@ define([
                 numberFormat: '#,#.00'
             }
         },
-
 
         /**
          * Get kendo option from normal options and from renderOptions.kendoNumeric
