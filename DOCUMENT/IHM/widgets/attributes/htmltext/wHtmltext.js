@@ -2,9 +2,8 @@
 define([
     'underscore',
     'jquery',
-    'ckeditor-jquery',
     'dcpDocument/widgets/attributes/text/wText'
-], function (_, $)
+], function require_htmltext(_, $)
 {
     'use strict';
 
@@ -25,14 +24,21 @@ define([
 
         _initDom: function wHtmlTextInitDom()
         {
-            this._super();
+            var currentWidget = this, bind_super = _.bind(this._super, this), bindInitEvent = _.bind(this._initEvent, this);
             try {
                 if (this.getMode() === "write") {
-                    var options = _.extend(this.ckOptions(), this.options.renderOptions.ckEditorConfiguration);
-                    this.ckEditorInstance = this.getContentElements().ckeditor(
-                        options
-                    ).editor;
-                    this.options.attributeValue.value = this.ckEditorInstance.getData();
+                    require(['ckeditor-jquery'], function wHtmltext_initEditDom() {
+                        var options = _.extend(currentWidget.ckOptions(), currentWidget.options.renderOptions.ckEditorConfiguration);
+                        bind_super();
+                        currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(
+                            options
+                        ).editor;
+                        currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
+                        bindInitEvent();
+                    });
+
+                } else {
+                    bind_super();
                 }
             } catch (e) {
                 if (window.dcp.logger) {
