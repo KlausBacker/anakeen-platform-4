@@ -297,17 +297,19 @@ define([
                 this.element.find("input[type=checkbox]").removeAttr("checked");
                 this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
             }
-
-            this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
-            {
-                if (tplOption.enumValues[kItem]) {
-                    $(this).tooltip({
-                        container: ".dcpDocument",
-                        title: Mustache.render(scope.options.labels.invertSelection || "",
-                            tplOption.enumValues[(kItem + 1) % 2])
-                    });
-                }
-            });
+            if (scope.options.labels.invertSelection) {
+                this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
+                {
+                    if (tplOption.enumValues[kItem]) {
+                            $(this).tooltip({
+                                trigger:"hover",
+                                container: scope.element,
+                                title: Mustache.render(scope.options.labels.invertSelection || "",
+                                    tplOption.enumValues[(kItem + 1) % 2])
+                            });
+                    }
+                });
+            }
 
             this.noButtonDisplay();
 
@@ -409,18 +411,21 @@ define([
                 }
             }
 
-            this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
-                container: scope.element,
-                selector: '.dcpAttribute__value--enumlabel--text',
-                title: function wEnum_titleTooltip()
-                {
-                    if ($(this).closest("label").find("input").prop("checked")) {
-                        return null;
-                    } else {
-                        return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
+            if (scope.options.labels.selectMessage) {
+                this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
+                    container: ".dcpDocument",
+                    selector: '.dcpAttribute__value--enumlabel--text',
+                    trigger:"hover",
+                    title: function wEnum_titleTooltip()
+                    {
+                        if ($(this).closest("label").find("input").prop("checked")) {
+                            return null;
+                        } else {
+                            return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
+                        }
                     }
-                }
-            });
+                });
+            }
 
             this._checkRadioOther();
         },
@@ -467,20 +472,22 @@ define([
                 $(this).closest("label").addClass("k-button");
             });
 
-            this.element.tooltip({
-                container: ".dcpDocument",
-                selector: '.dcpAttribute__value--enumlabel--text',
-                title: function wEnum_titleTooltip()
-                {
-                    var $this = $(this);
-                    if ($this.closest("label").find("input").prop("checked")) {
-                        return scope.options.labels.unselectMessage + ' "' + $this.text() + '"';
-                    } else {
-                        return scope.options.labels.selectMessage + ' "' + $this.text() + '"';
+            if (this.options.labels.selectMessage) {
+                this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
+                    container: ".dcpDocument",
+                    selector: '.dcpAttribute__value--enumlabel--text',
+                    trigger:"hover",
+                    title: function wEnum_Cb_titleTooltip()
+                    {
+                        var $this = $(this);
+                        if ($this.closest("label").find("input").prop("checked")) {
+                            return scope.options.labels.unselectMessage + ' "' + $this.text() + '"';
+                        } else {
+                            return scope.options.labels.selectMessage + ' "' + $this.text() + '"';
+                        }
                     }
-                }
-            });
-
+                });
+            }
             if (this.options.renderOptions.useOtherChoice === true) {
                 this._checkBoxOther();
             }
@@ -676,6 +683,7 @@ define([
                                 }
                             });
 
+                            this.element.find(".dcpAttribute__value--enumlabel--text").tooltip("hide");
                             break;
                         default:
                             throw new Error("Unknow Enum mode : " + this.options.renderOptions.editDisplay);
@@ -734,6 +742,7 @@ define([
                                     $this.closest("label").removeClass("selected").removeClass("unselected");
                                 }
                             });
+                            this.element.find(".dcpAttribute__value--enumlabel").tooltip("hide");
 
                             break;
                         case "horizontal":
@@ -751,6 +760,7 @@ define([
                                 }
                             });
 
+                            this.element.find(".dcpAttribute__value--enumlabel--text").tooltip("hide");
                             break;
                         default:
                             throw new Error("Unknow Enum mode : " + this.options.renderOptions.editDisplay);
