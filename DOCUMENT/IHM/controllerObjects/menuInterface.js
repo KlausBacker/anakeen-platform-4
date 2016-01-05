@@ -12,6 +12,7 @@ define([
     }
     MenuError.prototype = Object.create(Error.prototype);
     MenuError.prototype.constructor = MenuError;
+
     var MenuPrototope = function AttributePrototype()
     {
         if (this._menuModel) {
@@ -35,9 +36,15 @@ define([
      *
      * @returns {*}
      */
-    MenuPrototope.prototype.getProperties = function menuInterfaceGetProperties()
+    MenuPrototope.prototype.getProperties = function menuInterfaceGetProperties(options)
     {
-        return _.clone(this._menuModel.attributes);
+        if (options && options.strict === true && !this.id) {
+            throw new MenuError("This menu doesn't exist");
+        }
+        if (this.id || (options && options.strict === true)) {
+            return _.clone(this._menuModel.attributes);
+        }
+        return {};
     };
 
     /**
