@@ -5,6 +5,13 @@ define([
 {
     'use strict';
 
+    var MenuError = function MenuError(message) {
+        this.name = 'MenuError';
+        this.message = message || 'Default Message';
+        this.stack = (new Error()).stack;
+    }
+    MenuError.prototype = Object.create(Error.prototype);
+    MenuError.prototype.constructor = MenuError;
     var MenuPrototope = function AttributePrototype()
     {
         if (this._menuModel) {
@@ -16,6 +23,9 @@ define([
 
     MenuPrototope.prototype._set = function MenuPrototope_set(key, value, options)
     {
+        if (options && options.strict === true && !this.id) {
+            throw new MenuError("This menu doesn't exist");
+        }
         if (this.id || (options && options.strict === true)) {
             this._menuModel.set(key, value, options);
         }
