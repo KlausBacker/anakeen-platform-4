@@ -1,7 +1,7 @@
 define([
     'jquery',
     'dcpDocument/widgets/attributes/int/wInt'
-], function ($) {
+], function require_double($) {
     'use strict';
 
     $.widget("dcp.dcpDouble", $.dcp.dcpInt, {
@@ -31,6 +31,13 @@ define([
          */
         getKendoNumericOptions: function wDoubleGetKendoNumericOptions () {
             var options=this._super(); // get from wInt
+            //Limits are linked to this bug => https://github.com/telerik/kendo-ui-core/issues/423
+            if (options.max === null) {
+                options.max = 9.99999e19;
+            }
+            if (options.min === null) {
+                options.min = -9.9999e19;
+            }
             if (this.options.renderOptions.decimalPrecision !== null) {
                 options.decimals = this.options.renderOptions.decimalPrecision;
             } else {

@@ -5,9 +5,7 @@ define([
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/history/wRevisionDiff',
     'kendo/kendo.window',
-    'dcpDocument/widgets/window/wDialog',
-    'datatables',
-    "datatables-bootstrap"
+    'dcpDocument/widgets/window/wDialog'
 ], function require_whistory($, _, kendo)
 {
     'use strict';
@@ -44,114 +42,116 @@ define([
         htmlCaneva: function dcpDocumentHistoryhtmlCaneva()
         {
             return '<table class="history-main"><thead>' +
-            '<tr class="history-header">' +
-            '<th class="history-header--date"/>' +
-            '<th class="history-header--message"/>' +
-            '<th class="history-header--owner"/>' +
-            '<th class="history-header--version"/>' +
-            '<th class="history-header--revision"/>' +
-            '<th class="history-header--code"/>' +
-            '<th class="history-header--level"/>' +
-            '<th class="history-header--diff"/>' +
-            '</tr>' +
-            '</thead></table>';
+                '<tr class="history-header">' +
+                '<th class="history-header--date"/>' +
+                '<th class="history-header--message"/>' +
+                '<th class="history-header--owner"/>' +
+                '<th class="history-header--version"/>' +
+                '<th class="history-header--revision"/>' +
+                '<th class="history-header--code"/>' +
+                '<th class="history-header--level"/>' +
+                '<th class="history-header--diff"/>' +
+                '</tr>' +
+                '</thead></table>';
         },
 
         element: null,
         _create: function dcpDocumentHistory_create()
         {
-            var scope = this;
-
+            var widget = this, $widget = $(this);
 
             this.element.html(this.htmlCaneva());
-            this._initDatatable();
-            this.element.data("dcpDocumentHistory", this);
+            require(['datatables',
+                "datatables-bootstrap"], function dcpDocumentWHistory_initTable()
+            {
+                widget._initDatatable();
+            });
 
+            this.element.data("dcpDocumentHistory", this);
 
             this._super();
 
-            this.element.on("click" + this.eventNamespace, ".history-button-showdetail", function ()
+            this.element.on("click" + this.eventNamespace, ".history-button-showdetail", function whistoryShowDetail()
             {
-                var noticeButton = scope.element.find(".history-button-shownotice");
+                var noticeButton = widget.element.find(".history-button-shownotice");
                 var noticeShowed = noticeButton.data("showNotice");
-                if ($(this).data("showDetail")) {
-                    $(this).data("showDetail", false);
-                    $(this).text(scope.options.labels.showDetail).removeClass("btn-primary");
-                    scope.element.find(".history-comment").hide();
+                if ($widget.data("showDetail")) {
+                    $widget.data("showDetail", false);
+                    $widget.text(widget.options.labels.showDetail).removeClass("btn-primary");
+                    widget.element.find(".history-comment").hide();
 
-                    noticeButton.attr("disabled", "disabled").removeClass("btn-primary").text(scope.options.labels.showNotice);
+                    noticeButton.attr("disabled", "disabled").removeClass("btn-primary").text(widget.options.labels.showNotice);
                 } else {
-                    $(this).data("showDetail", true);
-                    scope.element.find(".history-comment").show();
+                    $widget.data("showDetail", true);
+                    widget.element.find(".history-comment").show();
                     if (!noticeShowed) {
-                        scope.element.find(".history-level--notice").hide();
+                        widget.element.find(".history-level--notice").hide();
                     }
-                    $(this).text(scope.options.labels.hideDetail).addClass("btn-primary");
+                    $widget.text(widget.options.labels.hideDetail).addClass("btn-primary");
                     noticeButton.removeAttr("disabled");
 
                 }
             });
-            this.element.on("click" + this.eventNamespace, ".history-button-shownotice", function ()
+            this.element.on("click" + this.eventNamespace, ".history-button-shownotice", function whistoryShowNotice()
             {
-                var detailShowed = scope.element.find(".history-button-showdetail").data("showDetail");
-                if ($(this).data("showNotice")) {
-                    $(this).data("showNotice", false);
-                    $(this).text(scope.options.labels.showNotice).removeClass("btn-primary");
-                    scope.element.find(".history-level--notice").hide();
+                var detailShowed = widget.element.find(".history-button-showdetail").data("showDetail");
+                if ($widget.data("showNotice")) {
+                    $widget.data("showNotice", false);
+                    $widget.text(widget.options.labels.showNotice).removeClass("btn-primary");
+                    widget.element.find(".history-level--notice").hide();
                 } else {
-                    $(this).data("showNotice", true);
-                    scope.element.find(".history-level--notice").show();
+                    $widget.data("showNotice", true);
+                    widget.element.find(".history-level--notice").show();
                     if (!detailShowed) {
-                        scope.element.find(".history-comment").hide();
+                        widget.element.find(".history-comment").hide();
                     }
-                    $(this).text(scope.options.labels.hideNotice).addClass("btn-primary");
+                    $widget.text(widget.options.labels.hideNotice).addClass("btn-primary");
                 }
             });
-            this.element.on("click" + this.eventNamespace, ".history-diff-input", function ()
+            this.element.on("click" + this.eventNamespace, ".history-diff-input", function whistoryShowDiff()
             {
-                var selectedDiff = scope.element.find(".history-diff-input:checked");
+                var selectedDiff = widget.element.find(".history-diff-input:checked");
 
                 if (selectedDiff.length === 2) {
-                    scope.element.find(".history-diff-input:not(:checked)").attr("disabled", "disabled");
+                    widget.element.find(".history-diff-input:not(:checked)").attr("disabled", "disabled");
                     var $diffTarget = $('<div class="revision-diff"/>');
                     var diffWidget = $diffTarget.dcpRevisionDiff({
-                        documentId: scope.options.documentId,
+                        documentId: widget.options.documentId,
                         firstRevision: $(selectedDiff.get(1)).data("revision"),
                         secondRevision: $(selectedDiff.get(0)).data("revision"),
                         window: {
                             width: "70%",
                             height: "70%",
-                            title: scope.options.labels.revisionDiffLabels.title
+                            title: widget.options.labels.revisionDiffLabels.title
                         },
-                        labels: scope.options.labels.revisionDiffLabels
+                        labels: widget.options.labels.revisionDiffLabels
                     }).data("dcpRevisionDiff");
 
                     diffWidget.open();
 
                 } else
                     if (selectedDiff.length < 2) {
-                        scope.element.find(".history-diff-input").removeAttr("disabled", "disabled");
+                        widget.element.find(".history-diff-input").removeAttr("disabled", "disabled");
                     }
             });
 
-            this.element.on("click" + this.eventNamespace, "a[data-document-id]", function (event)
+            this.element.on("click" + this.eventNamespace, "a[data-document-id]", function whistoryShowDocument(event)
             {
-                var docid = $(this).data("document-id");
+                var docid = $widget.data("document-id");
                 if (docid) {
                     event.preventDefault();
-                    scope.element.trigger("viewRevision", {
+                    widget.element.trigger("viewRevision", {
                         initid: docid,
-                        revision: parseInt($(this).data("revision"))
+                        revision: parseInt($widget.data("revision"))
                     });
                 }
             });
         },
 
-
         _fillDataTable: function dcpDocumentHistory_fillDataTable(data)
         {
             var myData = [];
-            _.each(data.data.history, function (revisionInfo)
+            _.each(data.data.history, function whistoryFillRevision(revisionInfo)
             {
                 myData.push({
                     "version": revisionInfo.properties.version,
@@ -165,7 +165,7 @@ define([
                     "color": revisionInfo.properties.state.color,
                     "DT_RowClass": "history-level--revision"
                 });
-                _.each(revisionInfo.messages, function (message)
+                _.each(revisionInfo.messages, function whistoryFillMessage(message)
                 {
                     myData.push({
                         "version": '',
@@ -205,7 +205,7 @@ define([
                         name: "date",
                         title: historyWidget.options.labels.date,
                         className: "history-date",
-                        "render": function (data)
+                        "render": function whistoryRenderDate(data)
                         {
                             var theDate = new Date(data.substr(0, 10));
                             // The time is not manage by date because each navigator defer with timezone
@@ -217,14 +217,14 @@ define([
                         name: "message",
                         title: historyWidget.options.labels.message,
                         className: "history-message",
-                        render: function (data)
+                        render: function whistoryRenderMessage(data)
                         {
                             if (_.isObject(data)) {
                                 if (data.state.reference) {
 
                                     return '<div><span class="history-state-color" style="background-color:' + data.state.color + '" >&nbsp;</span>' +
-                                    (data.status === "fixed" ? data.state.stateLabel : data.state.activity) +
-                                    '</div>';
+                                        (data.status === "fixed" ? data.state.stateLabel : data.state.activity) +
+                                        '</div>';
                                 }
                                 return $("<div/>").text(data.title).html();
                             } else {
@@ -250,16 +250,16 @@ define([
                         name: "revision",
                         title: historyWidget.options.labels.revision,
                         className: "history-revision",
-                        render: function (data)
+                        render: function whistoryRenderRevision(data)
                         {
                             if (data !== '') {
                                 return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&initid=' +
-                                historyWidget.options.documentId +
-                                '&revision=' + data + '"' +
-                                'data-document-id="' + historyWidget.options.documentId + '" ' +
-                                'data-revision="' + data + '"' +
-                                '>' +
-                                historyWidget.options.labels.linkRevision.replace('#', data) + '</a>';
+                                    historyWidget.options.documentId +
+                                    '&revision=' + data + '"' +
+                                    'data-document-id="' + historyWidget.options.documentId + '" ' +
+                                    'data-revision="' + data + '"' +
+                                    '>' +
+                                    historyWidget.options.labels.linkRevision.replace('#', data) + '</a>';
                             } else {
                                 return data;
                             }
@@ -284,7 +284,7 @@ define([
                         name: "diff",
                         title: historyWidget.options.labels.diff,
                         className: "history-diff",
-                        render: function (data, renderType, allData)
+                        render: function whistoryRenderDiff(data, renderType, allData)
                         {
 
                             if (data === 1) {
@@ -296,7 +296,7 @@ define([
                     }
                 ],
 
-                "drawCallback": function ()
+                "drawCallback": function whistorydrawCallback()
                 {
 
                     var noticeShowed = historyWidget.element.find(".history-button-shownotice").data("showNotice");
@@ -312,7 +312,8 @@ define([
 
                     }
                 },
-                "initComplete": function ()
+
+                "initComplete": function whistoryinitComplete()
                 {
                     var api = this.api();
                     var data = api.rows({page: 'current'}).data();
@@ -339,7 +340,6 @@ define([
                         historyWidget.element.find(".history-diff-input").attr("disabled", "disabled");
                     }
 
-
                     if (showVersion) {
                         api.column("version:name").visible(true);
                     }
@@ -351,9 +351,9 @@ define([
                     if (fixedRevisionRow) {
                         var trHead = historyWidget.element.find(".history-header").clone();
                         $('<tr class="history-separator"><td class="history-separator-cell" colspan="' + $(trHead).find('th').length + '"><span>' +
-                        historyWidget.options.labels.pastRevision +
-                        '</span>' +
-                        '</td></tr>').insertBefore(fixedRevisionRow);
+                            historyWidget.options.labels.pastRevision +
+                            '</span>' +
+                            '</td></tr>').insertBefore(fixedRevisionRow);
                         $(trHead).insertBefore(fixedRevisionRow);
                         if (showState) {
                             $($(".history-header--message").get(1)).html(historyWidget.options.labels.state);
@@ -365,7 +365,7 @@ define([
 
                     if (historyWidget.element.find('.history-button-shownotice').length === 0) {
                         var firstHeadCell = historyWidget.element.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
-                        historyWidget.element.find(".dataTables_filter").each(function ()
+                        historyWidget.element.find(".dataTables_filter").each(function whistory_filter()
                         {
                             firstHeadCell.append($('<button class="history-button-showdetail btn btn-default btn-sm" >' + historyWidget.options.labels.showDetail + '</button>'));
 
@@ -378,55 +378,54 @@ define([
 
                 },
 
-
-                "ajax": function (data, callback)
+                "ajax": function whistory_getData(data, callback)
                 {
 
                     $.getJSON("api/v1/documents/" + historyWidget.options.documentId + '/history/').
-                        done(function (response)
+                    done(function whistory_getDataDone(response)
+                    {
+                        var tableData = historyWidget._fillDataTable(response);
+                        callback(
+                            {data: tableData}
+                        );
+                    }).fail(function whistory_getDataFail(response)
+                    {
+                        var result = JSON.parse(response.responseText);
+                        _.each(result.messages, function whistory_getDataParseMessage(error)
                         {
-                            var tableData = historyWidget._fillDataTable(response);
-                            callback(
-                                {data: tableData}
-                            );
-                        }).fail(function (response)
-                        {
-                            var result = JSON.parse(response.responseText);
-                            _.each(result.messages, function (error)
-                            {
-                                if (error.code === "CRUD0219" && error.uri) {
-                                    // redirect with the good trash uri
-                                    $.getJSON(error.uri.replace('.json', '') + '/history/').
-                                        done(function (response)
-                                        {
-                                            var tableData = historyWidget._fillDataTable(response);
-                                            callback(
-                                                {data: tableData}
-                                            );
-                                        }).fail(function (response)
-                                        {
-                                            var result = JSON.parse(response.responseText);
-                                            _.each(result.messages, function (error)
-                                            {
-                                                if (error.type === "error") {
-                                                    $('body').trigger("notification", {
-                                                        type: error.type,
-                                                        message: error.contentText
-                                                    });
-                                                }
+                            if (error.code === "CRUD0219" && error.uri) {
+                                // redirect with the good trash uri
+                                $.getJSON(error.uri.replace('.json', '') + '/history/').
+                                done(function whistory_getDataRedirect(response)
+                                {
+                                    var tableData = historyWidget._fillDataTable(response);
+                                    callback(
+                                        {data: tableData}
+                                    );
+                                }).fail(function whistory_getDataFail(response)
+                                {
+                                    var result = JSON.parse(response.responseText);
+                                    _.each(result.messages, function whistory_getDataFailParseMessage(error)
+                                    {
+                                        if (error.type === "error") {
+                                            $('body').trigger("notification", {
+                                                type: error.type,
+                                                message: error.contentText
                                             });
-                                            console.error("fail", response);
-                                        });
-                                } else
-                                    if (error.type === "error") {
-                                        $('body').trigger("notification", {
-                                            type: error.type,
-                                            message: error.contentText
-                                        });
-                                    }
-                            });
-                            console.error("fail", response);
+                                        }
+                                    });
+                                    console.error("fail", response);
+                                });
+                            } else
+                                if (error.type === "error") {
+                                    $('body').trigger("notification", {
+                                        type: error.type,
+                                        message: error.contentText
+                                    });
+                                }
                         });
+                        console.error("fail", response);
+                    });
                 }
             }).addClass('table table-condensed table-bordered table-hover');
 

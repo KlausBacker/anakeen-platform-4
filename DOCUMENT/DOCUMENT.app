@@ -49,13 +49,6 @@ $action_desc = array(
         "script" => "action-template.php",
         "function" => "template"
     ),
-    array(
-        "name" => "WRAP_KENDO",
-        "short_name" => N_("ddui:Wrap kendo"),
-        "script" => "action.wrap_kendo.php",
-        "function" => "wrap_kendo",
-        "layout" => "loaderKendo.js"
-    ),
      array(
         "name" => "LOAD_RENDERPARAMETERS",
         "short_name" => N_("ddui:INIT_RENDERPARAMETERS"),

@@ -16,13 +16,18 @@ define([
 
     (function widget_init($, undefined) {
 
-        var uuid = 0,
+        var widgetUuid = 0,
             slice = Array.prototype.slice,
             _cleanData = $.cleanData;
         $.cleanData = function widget_cleanData(elems) {
-            for (var i = 0, elem; (elem = elems[i]) != null; i++) { // jshint ignore:line
+            var events, elem, i;
+            for (i = 0, elem; (elem = elems[i]) != null; i++) { // jshint ignore:line
                 try {
-                    $(elem).triggerHandler("remove");
+                    // Only trigger remove when necessary to save time
+                    events = $._data( elem, "events" );
+                    if ( events && events.remove ) {
+                        $( elem ).triggerHandler( "remove" );
+                    }
                 } catch (e) {
                 }
             }
@@ -42,6 +47,10 @@ define([
             if (!prototype) {
                 prototype = Base;
                 Base = $.Widget;
+            }
+
+            if ( $.isArray( prototype ) ) {
+                prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
             }
 
             // create selector for plugin
@@ -136,6 +145,8 @@ define([
             }
 
             $.widget.bridge(name, Constructor);
+
+            return Constructor;
         };
 
         $.widget.extend = function widget_extend(target) {
@@ -180,6 +191,10 @@ define([
                     this.each(function widget_eachMethodCall() {
                         var methodValue,
                             instance = $(this).data( fullName);
+                        if ( options === "instance" ) {
+                            returnValue = instance;
+                            return false;
+                        }
                         if (!instance) {
                             return $.error("cannot call methods on " + name + " prior to initialization; " +
                                 "attempted to call method '" + options + "'");
@@ -196,6 +211,12 @@ define([
                         }
                     });
                 } else {
+
+                    // Allow multiple hashes to be passed on init
+                    if ( args.length ) {
+                        options = $.widget.extend.apply( null, [ options ].concat( args ) );
+                    }
+
                     this.each(function widget_eachDataCall() {
                         var instance = $(this).data(fullName);
                         if (instance) {
@@ -218,6 +239,7 @@ define([
             widgetName :          "widget",
             defaultElement :      "<div>",
             options :             {
+                classes: {},
                 disabled :    false,
                 eventPrefix : null,
                 // callbacks
@@ -226,7 +248,7 @@ define([
             _createWidget :       function widget_createWidget(options, element) {
                 element = $(element || this.defaultElement || this)[ 0 ];
                 this.element = $(element);
-                this.uuid = uuid++;
+                this.uuid = widgetUuid++;
                 this.eventNamespace = "." + this.widgetName + this.uuid;
                 this.options = $.widget.extend({},
                     this.options,
@@ -234,6 +256,7 @@ define([
                     options);
 
                 this.bindings = $();
+                this.classesElementLookup = {};
                 if (this.options.eventPrefix === null) {
                     this.options.eventPrefix = this.widgetName;
                 }
@@ -254,29 +277,46 @@ define([
                         element.document || element);
                     this.window = $(this.document[0].defaultView || this.document[0].parentWindow);
                 }
+                this.options = $.widget.extend( {},
+                    this.options,
+                    this._getCreateOptions(),
+                    options );
 
                 this._create();
+
+                if ( this.options.disabled ) {
+                    this._setOptionDisabled( this.options.disabled );
+                }
+
                 this._trigger("create", null, this._getCreateEventData());
                 this._init();
             },
-            _getCreateOptions :   $.noop,
+            _getCreateOptions: function widget_getCreateOptions() {
+                return {};
+            },
             _getCreateEventData : $.noop,
             _create :             $.noop,
             _init :               $.noop,
 
             destroy :  function widget_destroy() {
-                this._destroy();
-                this.element
-                    .unbind(this.eventNamespace)
-                    .removeData(this.widgetName)
-                    .removeData(this.widgetFullName)
-                    .removeData($.camelCase(this.widgetFullName));
-                this.widget()
-                    .unbind(this.eventNamespace)
-                    .removeAttr("aria-disabled");
+                var that = this;
 
-                // clean up events and states
-                this.bindings.unbind(this.eventNamespace);
+                this._destroy();
+                $.each( this.classesElementLookup, function widget_destroyClass( key, value ) {
+                    that._removeClass( value, key );
+                } );
+
+                // We can probably remove the unbind calls in 2.0
+                // all event bindings should go through this._on()
+                this.element
+                    .off( this.eventNamespace )
+                    .removeData( this.widgetFullName );
+                this.widget()
+                    .off( this.eventNamespace )
+                    .removeAttr( "aria-disabled" );
+
+                // Clean up events and states
+                this.bindings.off( this.eventNamespace );
             },
             _destroy : $.noop,
 
@@ -335,6 +375,94 @@ define([
             _setOption :  function widget__setOption(key, value) {
                 this.options[ key ] = value;
 
+                return this;
+            },
+
+            _setOptionClasses: function widget__setOptionClasses( value ) {
+                var classKey, elements, currentElements;
+
+                for ( classKey in value ) { // jshint ignore:line
+                    currentElements = this.classesElementLookup[ classKey ];
+                    if ( value[ classKey ] === this.options.classes[ classKey ] ||
+                        !currentElements ||
+                        !currentElements.length ) {
+                        continue;
+                    }
+
+                    // We are doing this to create a new jQuery object because the _removeClass() call
+                    // on the next line is going to destroy the reference to the current elements being
+                    // tracked. We need to save a copy of this collection so that we can add the new classes
+                    // below.
+                    elements = $( currentElements.get() );
+                    this._removeClass( currentElements, classKey );
+
+                    // We don't use _addClass() here, because that uses this.options.classes
+                    // for generating the string of classes. We want to use the value passed in from
+                    // _setOption(), this is the new value of the classes option which was passed to
+                    // _setOption(). We pass this value directly to _classes().
+                    elements.addClass( this._classes( {
+                        element: elements,
+                        keys: classKey,
+                        classes: value,
+                        add: true
+                    } ) );
+                }
+            },
+
+            _classes: function widget__classes( options ) {
+                var full = [];
+                var that = this, processClassString;
+
+                options = $.extend( {
+                    element: this.element,
+                    classes: this.options.classes || {}
+                }, options );
+
+                processClassString = function widget_processClassString( classes, checkOption ) {
+                    var current, i;
+                    for ( i = 0; i < classes.length; i++ ) {
+                        current = that.classesElementLookup[ classes[ i ] ] || $();
+                        if ( options.add ) {
+                            current = $( $.unique( current.get().concat( options.element.get() ) ) );
+                        } else {
+                            current = $( current.not( options.element ).get() );
+                        }
+                        that.classesElementLookup[ classes[ i ] ] = current;
+                        full.push( classes[ i ] );
+                        if ( checkOption && options.classes[ classes[ i ] ] ) {
+                            full.push( options.classes[ classes[ i ] ] );
+                        }
+                    }
+                };
+
+                if ( options.keys ) {
+                    processClassString( options.keys.match( /\S+/g ) || [], true );
+                }
+                if ( options.extra ) {
+                    processClassString( options.extra.match( /\S+/g ) || [] );
+                }
+
+                return full.join( " " );
+            },
+
+            _removeClass: function widget__removeClass( element, keys, extra ) {
+                return this._toggleClass( element, keys, extra, false );
+            },
+
+            _addClass: function widget__addClass( element, keys, extra ) {
+                return this._toggleClass( element, keys, extra, true );
+            },
+
+            _toggleClass: function widget__toggleClass( element, keys, extra, add ) {
+                add = ( typeof add === "boolean" ) ? add : extra;
+                var shift = ( typeof element === "string" || element === null ),
+                    options = {
+                        extra: shift ? keys : extra,
+                        keys: shift ? element : keys,
+                        element: shift ? this.element : element,
+                        add: add
+                    };
+                options.element.toggleClass( this._classes( options ), add );
                 return this;
             },
 

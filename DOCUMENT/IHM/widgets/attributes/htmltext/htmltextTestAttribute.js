@@ -3,13 +3,13 @@ define([
     "jquery",
     "underscore"
 
-], function ($, _)
+], function require_htmlText($, _)
 {
     "use strict";
-    return function (type, widget, options, value, expected)
+    return function htmlText_initTest(type, widget, options, value, expected)
     {
 
-        var currentSandbox, getSandbox = function ()
+        var currentSandbox, getSandbox = function htmlText_getSandbox()
         {
             return currentSandbox;
         };
@@ -60,11 +60,7 @@ define([
                         var $sandBox = getSandbox();
                         var ckEditor;
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
-                        ckEditor = $sandBox.dcpHtmltext().data("dcpDcpHtmltext").ckEditorInstance;
-                        ckEditor.on("loaded", function ()
-                        {
-                            done();
-                        });
+                        $sandBox.one("dcpattributewidgetready.testu", done);
                     });
 
                     describe(type + " : icon+ height", function ()

@@ -45,9 +45,13 @@ define([
          * get Selected line index (0 : first, null : no selected line)
          * @returns {*}
          */
-        selectedLineIndex: function dcpArrayselectedLineIndex()
+        getSelectedLineIndex: function dcpArray_getSelectedLineIndex()
         {
-            return this.getSelectedLineElement().data("line");
+            var index = this.getSelectedLineElement().data("line");
+            if (_.isUndefined(index) || _.isNull(index)) {
+                return null;
+            }
+            return index;
         },
         /**
          *
@@ -267,7 +271,7 @@ define([
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent()
             {
-                var selectedLine = currentWidget.selectedLineIndex();
+                var selectedLine = currentWidget.getSelectedLineIndex();
 
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     if (selectedLine === null || _.isUndefined(selectedLine)) {
@@ -284,7 +288,7 @@ define([
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent()
             {
-                var selectedLine = currentWidget.selectedLineIndex();
+                var selectedLine = currentWidget.getSelectedLineIndex();
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     currentWidget.options.nbLines += 1;
                     currentWidget.copyLine(selectedLine, {needAddValue: true, useSelectedLine: true});
