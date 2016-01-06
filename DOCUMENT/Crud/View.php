@@ -83,8 +83,10 @@ class View extends Crud
     public function read($resourceId)
     {
         $refreshMsg = '';
+        $creationMode = false;
         if ($this->viewIdentifier === self::coreViewCreationId || $this->viewIdentifier === self::defaultViewCreationId) {
             $this->createDocument($resourceId);
+            $creationMode = true;
         } else {
             $this->getDocument($resourceId);
             $refreshMsg = $this->setRefresh();
@@ -133,6 +135,9 @@ class View extends Crud
         } else {
             $viewInfo = $controlView->getView($vid);
             $info["properties"] = $this->getViewProperties($controlView, $viewInfo);
+            if ($creationMode) {
+                $info["properties"]["creationView"] = true;
+            }
         }
         
         if ($refreshMsg) {

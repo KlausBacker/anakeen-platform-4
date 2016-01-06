@@ -14,6 +14,7 @@ class EnumRenderOptions extends CommonRenderOptions
     const displayOption = "editDisplay";
     const useFirstChoiceOption = "useFirstChoice";
     const useSourceUriOption = "useSourceUri";
+    const useOtherChoiceOption = "useOtherChoice";
     const verticalDisplay = "vertical";
     const horizontalDisplay = "horizontal";
     const listDisplay = "list";
@@ -51,6 +52,20 @@ class EnumRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::useSourceUriOption, (bool)$useIt);
     }
+
+
+    /**
+     * Add input to set alternative choice
+     * @note use only in edition mode
+     * @param bool $useIt
+     * @return $this
+     * @throws Exception
+     */
+    public function useOtherChoice($useIt)
+    {
+        return $this->setOption(self::useOtherChoiceOption, (bool)$useIt);
+    }
+
     /**
      * No use first choice if no value unless if a default value is configured
      * @note use only in edition mode

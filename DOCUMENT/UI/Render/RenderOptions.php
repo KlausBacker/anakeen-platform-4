@@ -57,10 +57,10 @@ class RenderOptions implements \JsonSerializable
                 "noAccessText" => ___("Information access deny", 'ddui')
             ) ,
             EnumRenderOptions::type => array(
-                "boolColor" => "",
                 EnumRenderOptions::displayOption => EnumRenderOptions::listDisplay,
                 EnumRenderOptions::useFirstChoiceOption => false,
-                EnumRenderOptions::useSourceUriOption => false
+                EnumRenderOptions::useSourceUriOption => false,
+                EnumRenderOptions::useOtherChoiceOption => false
             ) ,
             FileRenderOptions::type => array(
                 FileRenderOptions::contentDispositionOption => FileRenderOptions::fileAttachmentDisposition

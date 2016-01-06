@@ -7,7 +7,7 @@ define([
     'kendo/kendo.multiselect',
     'kendo/kendo.combobox',
     'kendo/kendo.dropdownlist'
-], function require_wenum($, _, Mustache)
+], function require_wenum($, _, Mustache, dcpAttribute, kendo)
 {
     'use strict';
 
@@ -24,7 +24,10 @@ define([
                 invalidEntry: "Invalid Entry",
                 invertSelection: "Click to answer {{displayValue}}",
                 selectMessage: 'Select',
-                unselectMessage: 'UnSelect'
+                unselectMessage: 'UnSelect',
+                chooseAnotherChoice: "Choose another choice",
+                selectAnotherChoice: "Select choice",
+                displayOtherChoice: "** {{value}} **"
             },
             renderOptions: {
                 kendoDropDownConfiguration: {
@@ -39,13 +42,25 @@ define([
                 },
                 editDisplay: "list", // possible values are ["list', 'vertical', 'horizontal', 'autoCompletion']'
                 useFirstChoice: false,
-                useSourceUri: false
+                useSourceUri: false,
+                useOtherChoice: false
             }
         },
         _initDom: function wEnumInitDom()
         {
+            var currentWidget = this;
             if (this._isMultiple()) {
                 this.options.isMultiple = true;
+                _.each(this.options.attributeValue, function wEnumDisplayOthers(singleValue)
+                {
+                    if (singleValue.exists === false) {
+                        singleValue.displayValue = Mustache.render(currentWidget.options.labels.displayOtherChoice, singleValue);
+                    }
+                });
+            } else {
+                if (this.options.attributeValue.exists === false) {
+                    this.options.attributeValue.displayValue = Mustache.render(this.options.labels.displayOtherChoice, this.options.attributeValue);
+                }
             }
 
             if (this.getMode() === "read") {
@@ -136,6 +151,7 @@ define([
 
                         item.value = enumItem.key;
                         item.displayValue = enumItem.label || '';
+                        item.exists = enumItem.exists !== false;
 
                         // : no === because json encode use numeric cast when index is numeric
                         //noinspection JSHint
@@ -154,10 +170,12 @@ define([
                     source.push({
                         value: this.options.attributeValue.value,
                         displayValue: this.options.attributeValue.displayValue || '',
-                        selected: true
+                        selected: true,
+                        exists: false
                     });
                 }
             }
+
             return {data: source, index: selectedIndex};
         },
 
@@ -171,14 +189,16 @@ define([
 
             if (this.options.renderOptions.useSourceUri) {
                 source = values;
-                selectedValues = values;
+                selectedValues = _.pluck(values, "value");
             } else {
+
                 _.each(this.options.sourceValues, function wEnum_prepareMultipleValue(enumItem)
                 {
                     item = {};
                     item.value = enumItem.key;
                     item.displayValue = enumItem.label || '';
                     item.selected = false;
+                    item.exists = enumItem.exists !== false;
                     isIn = _.some(values, function wEnum_findSelected(aValue)
                     {
                         //noinspection JSHint
@@ -189,14 +209,31 @@ define([
                     //noinspection JSHint
                     if (isIn) {
                         item.selected = true;
-                        selectedValues.push(enumItem.key);
                     }
 
                     source.push(item);
                 });
+
+                _.each(values, function wEnum_addOtherValues(singleValue)
+                {
+                    if (singleValue.value !== null && singleValue.value !== '') {
+                        if (singleValue.exists === false) {
+                            item = {};
+                            item.value = singleValue.value;
+                            item.displayValue = singleValue.displayValue;
+                            item.selected = true;
+                            item.exists = false;
+                            source.push(item);
+                        }
+                        selectedValues.push(singleValue.value);
+                    }
+                });
             }
 
-            return {data: source, selectedValues: selectedValues};
+            return {
+                data: source,
+                selectedValues: selectedValues
+            };
         },
 
         retrieveItems: function wEnumretrieveItemse(done)
@@ -226,7 +263,7 @@ define([
         {
             if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
                 this.element.find(".dcpAttribute__value--enumbuttons").
-                    addClass("dcpAttribute__content__nobutton");
+                addClass("dcpAttribute__content__nobutton");
                 this.element.find(".dcpAttribute__content__buttons").hide();
             }
         },
@@ -251,6 +288,7 @@ define([
 
             this.options.isMultiple = true; // Just to have checkbox
 
+            this.options.renderOptions.useOtherChoice = false; // Always : no use this options
             this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
             this.options.isMultiple = false; // restore isMultiple : it never can be multiple
             labels = this.element.find("label");
@@ -259,17 +297,19 @@ define([
                 this.element.find("input[type=checkbox]").removeAttr("checked");
                 this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
             }
-
-            this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
-            {
-                if (tplOption.enumValues[kItem]) {
-                    $(this).tooltip({
-                        container: ".dcpDocument",
-                        title: Mustache.render(scope.options.labels.invertSelection || "",
-                            tplOption.enumValues[(kItem + 1) % 2])
-                    });
-                }
-            });
+            if (scope.options.labels.invertSelection) {
+                this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
+                {
+                    if (tplOption.enumValues[kItem]) {
+                            $(this).tooltip({
+                                trigger:"hover",
+                                container: scope.element,
+                                title: Mustache.render(scope.options.labels.invertSelection || "",
+                                    tplOption.enumValues[(kItem + 1) % 2])
+                            });
+                    }
+                });
+            }
 
             this.noButtonDisplay();
 
@@ -277,7 +317,7 @@ define([
             {
                 event.preventDefault();
                 // Invert selection
-                _.some(tplOption.enumValues, function wEnum_setValue(item, kItem)
+                _.some(tplOption.enumValues, function wEnum_setValue(item)
                 {
                     if (scope.options.attributeValue.value === null || item.value !== scope.options.attributeValue.value) {
                         scope.setValue(item, event);
@@ -324,6 +364,7 @@ define([
             var tplOption = this.options;
             var labels;
             var scope = this;
+            var hasNotExists;
 
             if (this.options.renderOptions.useSourceUri) {
                 this.retrieveItems(function wEnum_retrieveDone(theWidget)
@@ -334,13 +375,22 @@ define([
             }
 
             enumData = this.getSingleEnumData();
-            tplOption.enumValues = enumData.data;
 
+            tplOption.enumValues = enumData.data;
+            hasNotExists = _.some(enumData.data, function wEnum_findNotExistItem(item)
+            {
+                return (item.exists === false);
+            });
+
+            if (hasNotExists === true) {
+                // No set twice for radio
+                this.options.renderOptions.useOtherChoice = false;
+            }
             this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
             labels = this.element.find("label");
 
             this.noButtonDisplay();
-            labels.on("change" + this.eventNamespace, "input", function wEnum_onchange(event)
+            labels.on("change" + this.eventNamespace, "input[type=radio]", function wEnum_onchange(event)
             {
                 var newValue = {};
                 newValue.value = $(this).val();
@@ -361,25 +411,28 @@ define([
                 }
             }
 
-            this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
-                container: scope.element,
-                selector: '.dcpAttribute__value--enumlabel--text',
-                title: function wEnum_titleTooltip(a)
-                {
-                    if ($(this).closest("label").find("input").prop("checked")) {
-                        return null;
-                    } else {
-                        return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
+            if (scope.options.labels.selectMessage) {
+                this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
+                    container: ".dcpDocument",
+                    selector: '.dcpAttribute__value--enumlabel--text',
+                    trigger:"hover",
+                    title: function wEnum_titleTooltip()
+                    {
+                        if ($(this).closest("label").find("input").prop("checked")) {
+                            return null;
+                        } else {
+                            return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
+                        }
                     }
-                }
-            });
+                });
+            }
 
+            this._checkRadioOther();
         },
         checkboxButtons: function wEnumRadioButtons()
         {
             var enumData;
             var tplOption = this.options;
-            var labels;
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
@@ -393,10 +446,9 @@ define([
             tplOption.enumValues = enumData.data;
 
             this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
-            labels = this.element.find("label");
 
             this.noButtonDisplay();
-            labels.on("change" + this.eventNamespace, "input", function wEnum_onChange(event)
+            this.element.on("change" + this.eventNamespace, "label input[type=checkbox]", function wEnum_onChange(event)
             {
 
                 var newValue = [];
@@ -420,22 +472,101 @@ define([
                 $(this).closest("label").addClass("k-button");
             });
 
-            this.element.tooltip({
-                container: ".dcpDocument",
-                selector: '.dcpAttribute__value--enumlabel--text',
-                title: function wEnum_titleTooltip(a)
-                {
-                    var $this = $(this);
-                    if ($this.closest("label").find("input").prop("checked")) {
-                        return scope.options.labels.unselectMessage + ' "' + $this.text() + '"';
-                    } else {
-                        return scope.options.labels.selectMessage + ' "' + $this.text() + '"';
+            if (this.options.labels.selectMessage) {
+                this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
+                    container: ".dcpDocument",
+                    selector: '.dcpAttribute__value--enumlabel--text',
+                    trigger:"hover",
+                    title: function wEnum_Cb_titleTooltip()
+                    {
+                        var $this = $(this);
+                        if ($this.closest("label").find("input").prop("checked")) {
+                            return scope.options.labels.unselectMessage + ' "' + $this.text() + '"';
+                        } else {
+                            return scope.options.labels.selectMessage + ' "' + $this.text() + '"';
+                        }
                     }
-                }
-            });
-
+                });
+            }
+            if (this.options.renderOptions.useOtherChoice === true) {
+                this._checkBoxOther();
+            }
         },
 
+        /**
+         * Manage other input for radio
+         * @private
+         */
+        _checkRadioOther: function wEnum__checkRadioOther()
+        {
+            this.element.find(".dcpAttribute__value--enum--other").on("click" + this.eventNamespace, function wEnumRadioOtherInputClick()
+            {
+                var $input = $(this).closest("label").find(".dcpAttribute__value--edit");
+                if (!$input.prop("checked")) {
+                    $(this).closest("label").trigger("click");
+                    $input.prop("checked", true);
+                    $(this).focus();
+                }
+            }).on("change" + this.eventNamespace, function wEnumRadioOtherInputChange()
+            {
+                var $label = $(this).closest("label");
+                var $input = $label.find(".dcpAttribute__value--edit");
+                $input.val($(this).val());
+                // Trigger change label input to real set value
+                $label.find("input[type=radio]").trigger("change");
+            }).on("keyup" + this.eventNamespace, function wEnumRadioOtherInputKeyReturn(event)
+            {
+                var code = (event.keyCode ? event.keyCode : event.which);
+                if (code === 13 || code === 10) {
+                    $(this).blur();
+                }
+            });
+        },
+
+        /**
+         * Manage other input for checkbox
+         * @private
+         */
+        _checkBoxOther: function wEnum__checkBoxOther()
+        {
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputClick()
+            {
+                var $input = $(this).closest("label").find(".dcpAttribute__value--edit");
+                if (!$input.prop("checked")) {
+                    $(this).closest("label").trigger("click");
+                    $input.prop("checked", true);
+                    $(this).focus();
+                }
+            }).on("change" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputChange()
+            {
+                var $label = $(this).closest("label");
+                var $input = $label.find(".dcpAttribute__value--edit");
+                var $hasEmpty;
+
+                $input.val($(this).val());
+
+                $hasEmpty = _.some($(this).closest(".dcpAttribute__value--enumbuttons").find(".dcpAttribute__value--enum--other"), function wEnum_findEmptyOther(item)
+                {
+                    return $(item).val() === "";
+                });
+
+                if (!$hasEmpty) {
+                    var $newOne = $label.clone();
+                    // add new input if no one free found
+                    $label.parent().append($newOne);
+                    $newOne.find("input").val("").prop("checked", false);
+                }
+                // resend change trigger because this hook is call before the checkbox onchange event
+                $label.find("input[type=checkbox]").trigger("change");
+
+            }).on("keyup" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputKeyReturn(event)
+            {
+                var code = (event.keyCode ? event.keyCode : event.which);
+                if (code === 13 || code === 10) {
+                    $(this).blur(); // Change event will be triggered
+                }
+            });
+        },
         singleDropdown: function wEnumSingleDropdown()
         {
             var kendoOptions = this.getKendoOptions();
@@ -445,9 +576,7 @@ define([
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
-
             kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
-
         },
         multipleSelect: function wEnumMultipleSelect()
         {
@@ -461,6 +590,7 @@ define([
         {
             var kendoOptions = this.getKendoOptions();
             var kddl;
+            var currentWidget = this;
 
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
@@ -479,6 +609,13 @@ define([
                     kddl.value(this.options.attributeValue.value);
                 }
             }
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--delete", function wEnumDeleteFilter()
+            {
+                currentWidget.setError(null);
+                kddl.dataSource.filter({});
+                kddl.value('');
+            });
+
         },
 
         /**
@@ -489,6 +626,7 @@ define([
         setValue: function wEnumSetValue(value, event)
         {
             var kddl, newValues;
+            var currentWidget = this;
             if (this.options.renderOptions.editDisplay === "bool") {
                 // This display has only 2 values and cannot be set to null
                 if (value.value === null) {
@@ -503,11 +641,16 @@ define([
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion":
                         case "list":
+                            kddl = this.kendoWidget.data("kendoMultiSelect");
                             newValues = _.map(value, function wEnum_findValues(val)
                             {
+                                if (!currentWidget.options.renderOptions.useSourceUri) {
+                                    if (!kddl.dataSource.get(val.value)) {
+                                        kddl.dataSource.add(val);
+                                    }
+                                }
                                 return val.value;
                             });
-                            kddl = this.kendoWidget.data("kendoMultiSelect");
                             if (!_.isEqual(kddl.value(), newValues)) {
                                 this.flashElement();
                                 if (this.options.renderOptions.useSourceUri) {
@@ -516,7 +659,6 @@ define([
                                     }
                                 }
                                 kddl.value(newValues);
-
                             }
                             break;
 
@@ -541,6 +683,7 @@ define([
                                 }
                             });
 
+                            this.element.find(".dcpAttribute__value--enumlabel--text").tooltip("hide");
                             break;
                         default:
                             throw new Error("Unknow Enum mode : " + this.options.renderOptions.editDisplay);
@@ -556,7 +699,12 @@ define([
                                 if (value.value !== null) {
                                     if (this.options.renderOptions.useSourceUri) {
                                         kddl.dataSource.data([value]);
+                                    } else {
+                                        if (!kddl.dataSource.get(value.value)) {
+                                            kddl.dataSource.add(value);
+                                        }
                                     }
+                                    this.setError(null);
                                     kddl.value(value.value);
                                 } else {
                                     kddl.value('');
@@ -568,6 +716,10 @@ define([
 
                             if (!_.isEqual(kddl.value(), (value.value || ""))) {
                                 this.flashElement();
+                                if (!kddl.dataSource.get(value.value)) {
+                                    kddl.dataSource.add(value);
+                                }
+
                                 // kendo need empty string (not null) to clear input
                                 kddl.value(value.value || "");
                             }
@@ -590,6 +742,7 @@ define([
                                     $this.closest("label").removeClass("selected").removeClass("unselected");
                                 }
                             });
+                            this.element.find(".dcpAttribute__value--enumlabel").tooltip("hide");
 
                             break;
                         case "horizontal":
@@ -607,6 +760,7 @@ define([
                                 }
                             });
 
+                            this.element.find(".dcpAttribute__value--enumlabel--text").tooltip("hide");
                             break;
                         default:
                             throw new Error("Unknow Enum mode : " + this.options.renderOptions.editDisplay);
@@ -624,7 +778,7 @@ define([
          */
         autocompleteRequestEnum: function wEnumAutocompleteRequestEnum(options)
         {
-            var filter = {};
+            var filter = {}, scope = this;
 
             if (options.data.filter && options.data.filter.filters && options.data.filter.filters.length > 0) {
                 filter = {
@@ -651,6 +805,25 @@ define([
                             displayValue: enumItem.label || ''
                         });
                     });
+                    if (!scope._isMultiple()) {
+                        if (scope.options.attributeValue.value !== null) {
+                            if (!_.contains(_.pluck(info, "value"), scope.options.attributeValue.value)) {
+                                if (scope.options.attributeValue.displayValue === scope.options.attributeValue.value) {
+                                    scope.options.attributeValue.displayValue =
+                                        Mustache.render(scope.options.labels.displayOtherChoice, scope.options.attributeValue);
+                                }
+                                info.push(scope.options.attributeValue);
+                            }
+                        }
+                    } else {
+                        _.each(scope.options.attributeValue, function wEnumAddOtherInUri(singleValue)
+                        {
+                            if (singleValue.exists === false) {
+                                info.push(singleValue);
+                            }
+                        });
+                    }
+
                     // notify the data source that the request succeeded
                     options.success(info);
                 },
@@ -675,10 +848,14 @@ define([
             if (this._isMultiple()) {
 
                 source = this.getMultipleEnumData();
+
                 defaultOptions = {
                     dataTextField: "displayValue",
                     dataValueField: "value",
-                    dataSource: source.data,
+                    dataSource: (this.options.renderOptions.useSourceUri) ? source.data : new kendo.data.DataSource({
+                        data: source.data,
+                        schema: {model: {id: "value"}}
+                    }),
                     placeholder: this.options.labels.chooseMessage,
                     value: source.selectedValues,
 
@@ -694,6 +871,18 @@ define([
                             newValues.push({value: val.value, displayValue: val.displayValue});
                         });
                         scope.setValue(newValues, event);
+                    },
+                    open: function wEnum_open(event)
+                    {
+                        _.bind(scope._kOpen, scope, event, this)();
+                    },
+                    /**
+                     * When other input is in list do not autoclose list to enter a new value
+                     * @param event
+                     */
+                    close: function wEnum_multipleClose(event)
+                    {
+                        _.bind(scope._kClose, scope, event, this)();
                     }
                 };
 
@@ -715,6 +904,7 @@ define([
                     dataSource: source.data,
                     index: (source.index < 0) ? undefined : source.index,
                     autoBind: false,
+
                     change: function wEnum_onChange(event)
                     {
                         if (this.value() && this.selectedIndex === -1) {
@@ -730,7 +920,7 @@ define([
                             scope.setValue(newValue, event);
                         }
                     },
-                    dataBound: function wEnum_dataBound(e)
+                    dataBound: function wEnum_dataBound()
                     {
                         if (scope.options.renderOptions.useFirstChoice && scope.options.attributeValue.value === null) {
                             // Set to first enum item if empty
@@ -739,6 +929,18 @@ define([
                                 scope.setValue({value: firstItem.value, displayValue: firstItem.displayValue});
                             }
                         }
+                    },
+                    open: function wEnum_open(event)
+                    {
+                        _.bind(scope._kOpen, scope, event, this)();
+                    },
+                    /**
+                     * When other input is in list do not autoclose list to enter a new value
+                     * @param event
+                     */
+                    close: function wEnum_close(event)
+                    {
+                        _.bind(scope._kClose, scope, event, this)();
                     }
                 };
 
@@ -758,6 +960,14 @@ define([
                 }
             }
 
+            if (scope.options.renderOptions.useOtherChoice === true) {
+                // add "other" input in header list
+                defaultOptions.headerTemplate = $('<div class="dcpAttribute__value--enum-other"><div class="input-group dcpAttribute__value--enum-other-content">' +
+                    '<input class="form-control" type="text" placeholder="' + scope.options.labels.chooseAnotherChoice + '"/>' +
+                    '<span class="input-group-btn"><button class="btn btn-primary dcpAttribute__value--enum-other-select">' + scope.options.labels.selectAnotherChoice + '</button></span> ' +
+                    '</div></div>');
+            }
+
             if (this.options.renderOptions.useSourceUri) {
                 defaultOptions.dataSource = {
                     data: source.data,
@@ -773,7 +983,131 @@ define([
             return _.extend(defaultOptions, kendoOptions);
         },
 
-        close : function wEnum_close() {
+        _kSelectOther: function wEnumkSelect(event, kWidget, newValue)
+        {
+            kWidget.dataSource.filter({});
+            if (this._isMultiple()) {
+                var kdData = _.toArray(kWidget.dataItems());
+                var newValues = [];
+
+                _.each(kdData, function wEnum_pushNewValues(val)
+                {
+                    newValues.push({value: val.value, displayValue: val.displayValue});
+                });
+
+                newValues.push({
+                    value: newValue,
+                    exists: false,
+                    displayValue: Mustache.render(this.options.labels.displayOtherChoice, {value: newValue})
+                });
+
+                //kWidget.listView._filtered=false;
+                kWidget.listView.filter(false);
+                window.zou = kWidget;
+                this.setValue(newValues, event);
+            } else {
+                this.setValue({
+                    value: newValue,
+                    exists: false,
+                    displayValue: Mustache.render(this.options.labels.displayOtherChoice, {value: newValue})
+                }, event);
+            }
+
+            $(".dcpAttribute__value--enum-other input").blur();
+            kWidget.close();
+        },
+
+        /**
+         * When other input is in list do not autoclose list to enter a new value
+         * @param event
+         * @param kWidget kendo widget
+         */
+        _kClose: function wEnumkClose(event, kWidget)
+        {
+            if (this.options.renderOptions.useOtherChoice === true) {
+                var $otherInput = kWidget.ul.closest(".k-list-container").find(".dcpAttribute__value--enum-other");
+                if ($otherInput.data("dcpEnumOtherFirstClose") !== false ||
+                    $otherInput.find("input").is(":focus")
+                ) {
+                    event.preventDefault();
+                    $otherInput.data("dcpEnumOtherFirstClose", false);
+                }
+            }
+        },
+
+        _kOpen: function wEnumkOpen(event, kWidget)
+        {
+            var scope = this;
+            /**
+             * Special events for "other" choice input
+             */
+            if (this.options.renderOptions.useOtherChoice === true) {
+                var $container = kWidget.ul.closest(".k-list-container");
+                var $otherInput = $container.find(".dcpAttribute__value--enum-other");
+
+                if ($otherInput.length === 1 && $otherInput.data("dcpEnumOtherInitialized") !== true) {
+                    $otherInput.data("dcpEnumOtherInitialized", true);
+                    $otherInput.find(".dcpAttribute__value--enum-other-select").prop("disabled", true);
+                    $container.prepend($otherInput);
+
+                    $otherInput.on("click" + this.eventNamespace, "input",
+                        /**
+                         * Apply setValue and close list when confirm button is clicked
+                         * @param event
+                         */
+                        function wEnumSetOtherClick(event)
+                        {
+                            event.preventDefault();
+                            $(this).focus();
+                            $(this).data("dcpEnumOtherHasFocus", true);
+                        });
+                    $container.on("click" + this.eventNamespace, "li.k-item",
+                        /**
+                         * Force close for "normal" choice because autoclose is disabled
+                         */
+                        function wEnumItemClick()
+                        {
+                            var $input = $container.find(".dcpAttribute__value--enum-other input");
+                            $input.blur();
+                            kWidget.close();
+                        });
+
+                    $otherInput.on("keyup" + this.eventNamespace, "input",
+                        /**
+                         * Apply setValue and close list when return key is pressed
+                         * @param event
+                         */
+                        function wEnumSetOtherClick(event)
+                        {
+                            var code = (event.keyCode ? event.keyCode : event.which);
+                            var $input = $container.find(".dcpAttribute__value--enum-other input");
+                            var newValue = $input.val();
+                            if (code === 13 || code === 10) {
+                                if (newValue) {
+                                    _.bind(scope._kSelectOther, event, scope, kWidget, newValue)();
+                                }
+                            } else {
+                                kWidget.search(newValue);
+                            }
+                            $otherInput.find(".dcpAttribute__value--enum-other-select").prop("disabled", !newValue);
+                        });
+
+                    $otherInput.on("click" + this.eventNamespace, ".dcpAttribute__value--enum-other-select", function wEnumSetOtherClick(event)
+                    {
+                        var $input = $container.find(".dcpAttribute__value--enum-other input");
+                        var newValue = $input.val();
+                        if (newValue) {
+                            _.bind(scope._kSelectOther, scope, event, kWidget, newValue)();
+                        }
+                    });
+                }
+
+                $container.find(".dcpAttribute__value--enum-other").data("dcpEnumOtherFirstClose", true);
+            }
+        },
+
+        close: function wEnum_close()
+        {
             if (this.kendoWidget && this.kendoWidget.data("kendoDropDownList")) {
                 this.kendoWidget.data("kendoDropDownList").close();
             }
