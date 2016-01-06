@@ -69,6 +69,7 @@ define([
             this.activatedEventListener = {};
             this._initializedModel = false;
             this._initializedView = false;
+            this._customClientData = {};
             if (!this.options.initid) {
                 console.log("Widget initialised without document");
                 return;
@@ -127,7 +128,7 @@ define([
                 options.success = initializeSuccess;
             }
             if (customClientData) {
-                this.setCustomClientData(customClientData);
+                this._model._customClientData = customClientData;
             }
             this._model.fetch(options);
             if (!this.options.noRouter) {
@@ -999,7 +1000,9 @@ define([
                     currentWidget.options[key] = value;
                 });
                 if (values.customClientData) {
-                    this.setCustomClientData(values.customClientData);
+                    this._model._customClientData = values.customClientData;
+                } else {
+                    this._model._customClientData = this.getCustomClientData(true);
                 }
             }
             this._model.fetchDocument(this._getModelValue(), options);
@@ -1033,7 +1036,9 @@ define([
                 this._initializeWidget(options, values.customClientData);
             } else {
                 if (values.customClientData) {
-                    this.setCustomClientData(values.customClientData);
+                    this._model._customClientData = values.customClientData;
+                } else {
+                    this._model._customClientData = this.getCustomClientData(true);
                 }
                 this._model.fetchDocument(this._getModelValue(), options);
             }
@@ -1043,23 +1048,35 @@ define([
         /**
          * Save the current document
          * Reload the interface in the same mode
-         * @param options object {"success": fct, "error", fct}
+         * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
          *
          */
         saveDocument: function documentControllerSave(options)
         {
+            options = options || {};
             this._checkInitialisedModel();
+            if (options.customClientData) {
+                this._model._customClientData = options.customClientData;
+            } else {
+                this._model._customClientData = this.getCustomClientData(true);
+            }
             this._model.save(null, options);
         },
 
         /**
          * Delete the current document
          * Reload the interface in the same mode
-         * @param options object {"success": fct, "error", fct}
+         * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
          */
         deleteDocument: function documentControllerDelete(options)
         {
+            options = options || {};
             this._checkInitialisedModel();
+            if (options.customClientData) {
+                this._model._customClientData = options.customClientData;
+            } else {
+                this._model._customClientData = this.getCustomClientData(true);
+            }
             this._model.deleteDocument(options);
         },
 
@@ -1188,23 +1205,87 @@ define([
          */
         getCustomServerData: function documentControllerGetServerCustomData()
         {
+            this._checkInitialisedModel();
             return this._model.get("customServerData");
         },
         /**
          * Get customData from render view model
          * @returns {*}
          */
-        setCustomClientData: function documentControllerSetClientCustomData(data)
+        setCustomClientData: function documentControllerSetClientCustomData(documentCheck, value)
         {
-            this._model._customClientData = data;
+            var currentWidget = this;
+            this._checkInitialisedModel();
+            //First case no data, so documentCheck is data
+            if (_.isUndefined(value)) {
+                value = documentCheck;
+                documentCheck = {};
+            }
+            //Second case documentCheck is a function and data is object
+            if (_.isFunction(documentCheck) && _.isObject(value)) {
+                documentCheck = {"documentCheck": documentCheck};
+            }
+            //Third case documentCheck is an object and data is object => check if documentCheck property exist
+            if (_.isObject(value) && _.isObject(documentCheck)) {
+                documentCheck = _.defaults(documentCheck, {
+                    "documentCheck": function clientCustomOK()
+                    {
+                        return true;
+                    },
+                    once: true
+                });
+            } else {
+                throw new Error("Constraint must be an value or a function and a value");
+            }
+            //Register the customClientData
+            _.each(value, function setClientCustomData(currentValue, currentKey)
+            {
+                currentWidget._customClientData[currentKey] = {
+                    "value": currentValue,
+                    "documentCheck": documentCheck.documentCheck,
+                    "once": documentCheck.once
+                }
+            });
         },
         /**
          * Get customData from render view model
          * @returns {*}
          */
-        getCustomClientData: function documentControllerSetClientCustomData()
+        getCustomClientData: function documentControllerSetClientCustomData(deleteOnce)
         {
-            return this._model._customClientData;
+            var values = {}, currentWidget = this, $element, properties, newCustomData = {};
+            this._checkInitialisedModel();
+            properties = this.getProperties();
+            $element = $(currentWidget.element);
+            _.each(currentWidget._customClientData, function analyzeCustomClient(currentCustom, key)
+            {
+                if (currentCustom.documentCheck.call($element, properties)) {
+                    values[key] = currentCustom.value;
+                    if (deleteOnce && !currentCustom.once) {
+                        newCustomData[key] = currentCustom;
+                    }
+                } else {
+                    if (deleteOnce) {
+                        newCustomData[key] = currentCustom;
+                    }
+                }
+            });
+            if (deleteOnce) {
+                currentWidget._customClientData = newCustomData;
+            }
+            return values;
+        },
+
+        /**
+         * Delete a custom data
+         * @returns {*}
+         */
+        removeCustomClientData: function documentControllerSetClientCustomData(key)
+        {
+            if (this._customClientData[key]) {
+                delete this._customClientData[key];
+            }
+            return this;
         },
         /**
          * Set a value
