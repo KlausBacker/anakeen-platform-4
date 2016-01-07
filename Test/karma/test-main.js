@@ -121,7 +121,6 @@ require.config({ // jshint ignore:line
     baseUrl: 'http://localhost:9876/dynacase/DOCUMENT/IHM/',
     shim: {
         "bootstrap": ['jquery'],
-        "kendo-culture": ['kendo'],
         "jasmine-jquery": ['jquery'],
         "test-css": ['jquery'],
         "ckeditor-jquery": ['jquery', 'ckeditor']
@@ -139,7 +138,6 @@ require.config({ // jshint ignore:line
         "mustache": "../../lib/mustache.js/mustache",
         "bootstrap": "../../lib/bootstrap/3/js/bootstrap",
         "kendo": "../../lib/KendoUI/ddui/js/",
-        "kendo/kendo.core": "../../guest.php?jsFile=ddui/js/kendo.core&app=DOCUMENT&action=WRAP_KENDO",
         "kendo-culture-fr": "../../lib/KendoUI/ddui/js/cultures/kendo.culture.fr-FR",
         "ckeditor": "../../lib/ckeditor/4/ckeditor",
         "ckeditor-jquery": "../../lib/ckeditor/4/adapters/jquery",

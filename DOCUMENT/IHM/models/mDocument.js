@@ -61,7 +61,7 @@ define([
         {
             var urlData = "api/v1/", viewId = this.get("viewId");
             var properties;
-            var customClienData = this._customClientData;
+            var customClientData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
             var revision=this.get("revision");
 
@@ -94,8 +94,8 @@ define([
                 urlData += "/views/" + encodeURIComponent(viewId);
             }
 
-            if (customClienData && (currentMethod === "read" || currentMethod === "delete" )) {
-                urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClienData));
+            if (customClientData && (currentMethod === "read" || currentMethod === "delete" )) {
+                urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClientData));
             }
             return urlData;
         },
