@@ -1,68 +1,58 @@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
-utildir = @PUBRULE@
-pubdir = @prefix@
-srcdir = @srcdir@
-applib = FDL
-appname = @APPNAME@
-localBuildRule = @LOCAL_BUILD_RULE@
-TAR = tar
-GZIP_ENV = --best
+RELEASE = @RELEASE@
 
-export pubdir utildir appname applib PACKAGE localBuildRule
-
-SUBDIR= locale DOCUMENT HTTPAPI_V1 STYLE
-pages_not_php = documentUiStub.php prepareElementForLight.php
-
-include $(utildir)/PubRule
-include $(localBuildRule)/localBuildRule
-
-JSPOFIND = DOCUMENT/IHM
-PHPPOFIND = DOCUMENT
+localpub=$(shell pwd)/localpub
 
 stub:
-	$(utildir)/genStubFamilyClass.php DOCUMENT/Families/*STRUCT*csv > documentUiStub.php
-publish-test:
-	make -C Test publish RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
+	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
+
 
 webinst-test:
-	make -C Test webinst RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=TEST_DOCUMENT
-	mv Test/*.webinst .
+	-rm -fr $(localpub)
+	cp -ra Document-uis-test $(localpub)
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/TEST_DOCUMENT/TEST_DOCUMENT_init.php
+	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
+	-rm -fr $(localpub)
 
 webinst-full:
-	-rm -fr $(shell pwd)/localpub
-	make publish pubdir=$(shell pwd)/localpub
-	php ./prepareElementForLight.php --modeFull -f $(shell pwd)/info.xml
-	cd localpub ;	GZIP=$(GZIP_ENV) $(TAR)  czf ../content.tar.gz .
-	-rm -rf $(distdir)
-	GZIP=$(GZIP_ENV) $(TAR) czf $(distdir).webinst content.tar.gz info.xml $(wildcard LICENSE)
-	-rm -f content.tar.gz
-	-rm -fr localpub
+	-rm -fr $(localpub)
+	cp -ra Document-uis $(localpub)
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/DOCUMENT/DOCUMENT_init.php
+	r.js -o $(localpub)/DOCUMENT/IHM/build.js
+	r.js -o $(localpub)/DOCUMENT/IHM/widgets/buildWidget.js
+	php ./prepareElementForLight.php --modeFull -f $(localpub)/info.xml
+	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
+	-rm -fr $(localpub)
 
-webinst-light: PACKAGE=@PACKAGE@-light
 
 webinst-light: 
-	-rm -fr $(shell pwd)/localpub
-	make publish pubdir=$(shell pwd)/localpub
-	php ./prepareElementForLight.php -f $(shell pwd)/info.xml
-	php ./prepareElementForLight.php -f $(shell pwd)/localpub/DOCUMENT/DOCUMENT_init.php
-	php ./prepareElementForLight.php -f $(shell pwd)/localpub/DOCUMENT/DOCUMENT.app
-	find $(shell pwd)/localpub/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
-	find $(shell pwd)/localpub/DOCUMENT/IHM/ -name "*.less" -type f -delete
-	cd localpub ;	GZIP=$(GZIP_ENV) $(TAR)  czf ../content.tar.gz .
-	-rm -rf $(distdir)
-	GZIP=$(GZIP_ENV) $(TAR) czf $(distdir).webinst content.tar.gz info.xml $(wildcard LICENSE)
-	-rm -f content.tar.gz
-	-rm -fr localpub
+	-rm -fr $(localpub)
+	cp -ra Document-uis $(localpub)
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub/DOCUMENT/DOCUMENT_init.php
+	sed -i -e "s/$(PACKAGE)/$(PACKAGE)-light/" $(localpub)/build.json
+	php ./prepareElementForLight.php -f $(localpub)/info.xml
+	php ./prepareElementForLight.php -f $(localpub)/DOCUMENT/DOCUMENT_init.php
+	php ./prepareElementForLight.php -f $(localpub)/DOCUMENT/DOCUMENT.app
+	find $(localpub)/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
+	find $(localpub)/DOCUMENT/IHM/ -name "*.less" -type f -delete
+	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
+	-rm -fr $(localpub)
 
 webinst-all: webinst webinst-test
 
 webinst:
 	make webinst-full
 
-clean-test:
-	make -C Test clean
+po:
+	./development-tools/dynacase-devtool.phar extractPo -s Document-uis
 
-clean: clean-test
-	/bin/rm -f *.*~ config.* Makefile configure DOCUMENT/DOCUMENT_init.php Test/TEST_DOCUMENT/TEST_DOCUMENT_init.php info.xml *.webinst
+clean: 
+	/bin/rm -f *.*~ config.* Makefile configure \
+		Document-uis/DOCUMENT/IHM/main-built.js	\
+		Document-uis/DOCUMENT/IHM/main-built.js.map \
+		Document-uis/DOCUMENT/IHM/widgets/mainWidget-min.js \
+		Document-uis/DOCUMENT/IHM/widgets/mainWidget-min.js.map \
+		 *.webinst
 	/bin/rm -fr autom4te.cache
+

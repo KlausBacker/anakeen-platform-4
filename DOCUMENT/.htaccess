@@ -1,4 +1,0 @@
-<FilesMatch "\.(js|map|mustache|less)$">
-        Order Deny,Allow
-        Allow from All
-</FilesMatch>

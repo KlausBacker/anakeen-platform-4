@@ -1,0 +1,8 @@
+<?php
+
+global $app_const;
+
+$app_const = array(
+    "INIT" => "yes",
+    "VERSION" => "{{VERSION}}-{{RELEASE}}"
+);
