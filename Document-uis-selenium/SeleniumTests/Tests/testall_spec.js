@@ -798,7 +798,7 @@ describe('Dynacase basic test', function formAllEdit()
                     return currentDriver.isElementPresent(webdriver.By.css("#disconnect"));
                 }, 5000);
 
-                currentDriver.get(driver.rootUrl + "?app=TESTDDUI");
+                currentDriver.get(driver.rootUrl + "?app=TEST_DOCUMENT_SELENIUM");
                 var btnCreate = webdriver.By.css('.btn[data-familyname="TST_DDUI_ALLTYPE"]');
 
                 currentDriver.wait(function waitCreateButton()
