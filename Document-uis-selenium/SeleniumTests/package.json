@@ -1,0 +1,14 @@
+{
+  "name": "document-uis-selenium",
+  "version": "1.0.0",
+  "description": "Selenium test for ddui",
+  "main": "start.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config.json": "0.0.4",
+    "jasmine": "^2.4.1",
+    "jasmine-reporters": "^2.1.1",
+    "selenium-webdriver": "^2.48.2"
+  }
+}

@@ -1,7 +1,7 @@
 var webdriver = require('selenium-webdriver'),
-    driver = require("./initDriver.js"),
-    util = require("./libTesting.js"),
-    docForm = require("./libDocForm.js");
+    driver = require("../lib/initDriver.js"),
+    util = require("../lib/libTesting.js"),
+    docForm = require("../lib/libDocForm.js");
 
 describe('Dynacase basic test', function formAllEdit()
 {

@@ -1,7 +1,7 @@
 var webdriver = require('selenium-webdriver'),
-    driver = require("./initDriver.js"),
-    util = require("./libTesting.js"),
-    docForm = require("./libDocForm.js");
+    driver = require("../lib/initDriver.js"),
+    util = require("../lib/libTesting.js"),
+    docForm = require("../lib/libDocForm.js");
 
 describe('Dynacase Enum test', function formAllEdit()
 {
@@ -348,7 +348,8 @@ describe('Dynacase Enum test', function formAllEdit()
 
     };
 
-    jasmine.getEnv().defaultTimeoutInterval = 500000; // en ms : 3min
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
+
     beforeEach(function beforeFormAllEdit(beforeDone)
     {
         console.log("before main");
