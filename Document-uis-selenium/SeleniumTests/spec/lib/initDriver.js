@@ -1,5 +1,5 @@
 var webdriver = require('selenium-webdriver'),
-    config = require('config.json')('driver.json');
+    config = require('config.json')('./driver.json');
 
 var driver, buildedDriver = null;
 

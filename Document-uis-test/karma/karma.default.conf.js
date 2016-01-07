@@ -11,8 +11,8 @@ var config = {
     files: [
         'test-main.js',
         {pattern: 'test-css.js', watched: false, served: true, included: false},
-        {pattern: '../../DOCUMENT/IHM/widgets/attributes/**/test*.js', included: false},
-        {pattern: '../../DOCUMENT/IHM/test/test*.js', included: false}
+        {pattern: '../../Document-uis/DOCUMENT/IHM/widgets/attributes/**/test*.js', included: false},
+        {pattern: '../../Document-uis/DOCUMENT/IHM/test/test*.js', included: false}
     ],
 
     // list of files to exclude
