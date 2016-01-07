@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<module xmlns="urn:dynacase:webinst:module/1.0"  name="@moduleName@" release="@release@" version="@version@"  license="@LICENSE@">
+
+    <description>Document Uis</description>
+
+    <!-- //region full -->
+    <replaces>
+        <module name="dynacase-document-uis-light"/>
+    </replaces>
+    <!-- //endregion full -->
+
+    <requires>
+        <installer version="1.5.0" comp="ge"/>
+        <module comp='ge' version='3.2.19' name='dynacase-core'/>
+        <!-- //region full -->
+        <module name='dynacase-tracekit-installer'/>
+        <!-- //endregion full -->
+        <module name='dynacase-requirejs-installer'/>
+        <module name='dynacase-kendoui-2015-installer' comp='eq' version='2015.3.1214'/>
+        <module name='dynacase-jquery-2-installer' comp='eq' version='2.1.4'/>
+        <module name='dynacase-underscore-installer'/>
+        <module name='dynacase-backbone-installer' comp='ge' version='1.1.2'/>
+        <module name='dynacase-bootstrap-3-installer' comp='ge' version='3.2.0'/>
+        <module name='dynacase-mustache.js-installer'/>
+        <module name='dynacase-mustache.php-installer'/>
+        <module name='dynacase-less-installer'/>
+        <module name="dynacase-fontawesome-installer"/>
+        <module name="dynacase-jquery-dataTables-1.10-installer"/>
+        <module name='dynacase-httpapi-v1' comp='ge' version='1.0.1'/>
+    </requires>
+
+    <post-install>
+        <process command="programs/record_application DOCUMENT"/>
+        <process
+                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvrender__STRUCT.csv --csv-enclosure=auto --csv-separator=auto">
+            <label>Create Render CV family</label>
+        </process>
+        <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
+            <label>Link js libraries</label>
+        </process>
+
+        <process command="programs/update_catalog"/>
+    </post-install>
+
+    <post-upgrade>
+        <process command="programs/record_application DOCUMENT"/>
+        <process
+                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvrender__STRUCT.csv --csv-enclosure=auto --csv-separator=auto">
+            <label>Update Render CV family</label>
+        </process>
+        <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
+            <label>Link js libraries</label>
+        </process>
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+
+</module>

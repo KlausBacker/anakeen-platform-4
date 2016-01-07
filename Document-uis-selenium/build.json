@@ -1,0 +1,13 @@
+{
+    "moduleName" : "dynacase-document-uis-selenium",
+    "version": "{{VERSION}}",
+    "release": "{{RELEASE}}",
+    "application" : ["TEST_DOCUMENT_SELENIUM"],
+    "includedPath" : ["TEST_DOCUMENT_SELENIUM","HTTPAPI_V1","locale"],
+    "lang" : ["fr","en"],
+    "csvParam" : {"enclosure" : "\"", "delimiter": ";"},
+    "dynacase-devtool" : {
+            "uri" : "git@github.com:Anakeen/development-tools.git",
+            "tag" : "3.2"
+    }
+}
