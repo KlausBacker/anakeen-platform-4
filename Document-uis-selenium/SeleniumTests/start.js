@@ -7,8 +7,7 @@ var jasmine = new Jasmine();
 var args = process.argv.slice(2);
 
 var junitReporter = new reporters.JUnitXmlReporter({
-    savePath: __dirname,
-    consolidateAll: false
+    savePath: __dirname
 });
 
 var files = ["**/*[sS]pec.js"];
@@ -24,6 +23,7 @@ jasmine.loadConfig({
     "random": false
 });
 
+jasmine.configureDefaultReporter({});
 jasmine.addReporter(junitReporter);
 
 jasmine.execute();

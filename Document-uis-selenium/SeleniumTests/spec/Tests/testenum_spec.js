@@ -9,23 +9,9 @@ describe('Dynacase Enum test', function formAllEdit()
     var currentDriver, handleException = function handleException(e)
     {
 
-        jasmine.getEnv().defaultTimeoutInterval = 50; //
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50;
         console.error('Unhandled error: ', e);
         expect(false).toBe(null);
-    };
-
-    var setMainInputs = function setMainInputs()
-    {
-        var now = new Date();
-        now.setTime(now.getTime() + (now.getHours() - now.getUTCHours()) * 3600000);
-        //------------------------------------------
-        // Text : test_ddui_enum__title
-        docForm.setTextValue({
-            attrid: 'test_ddui_enum__titleref',
-            rawValue: now.toISOString().substr(0, 19) + " " + driver.browser
-        });
-
-        docForm.setEnumListValue({attrid: 'test_ddui_enum__title', selectedText: "Jaune"});
     };
 
     var setEnumDirectTab = function setEnumDirectTab()
@@ -350,7 +336,7 @@ describe('Dynacase Enum test', function formAllEdit()
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
 
-    beforeEach(function beforeFormAllEdit(beforeDone)
+    beforeAll(function beforeFormAllEdit(beforeDone)
     {
         console.log("before main");
         currentDriver = driver.getDriver();
@@ -387,7 +373,7 @@ describe('Dynacase Enum test', function formAllEdit()
         });
     });
 
-    afterEach(function afterFormAllEdit(afterDone)
+    afterAll(function afterFormAllEdit(afterDone)
     {
         console.log("Exiting... in 10s");
         webdriver.promise.controlFlow().removeListener(handleException);
@@ -396,32 +382,50 @@ describe('Dynacase Enum test', function formAllEdit()
 
     });
 
+    it("mainInput", function testMainInput(done)
+    {
+        var now = new Date();
+        now.setTime(now.getTime() + (now.getHours() - now.getUTCHours()) * 3600000);
+        //------------------------------------------
+        // Text : test_ddui_enum__title
+        docForm.setTextValue({
+            attrid: 'test_ddui_enum__titleref',
+            rawValue: now.toISOString().substr(0, 19) + " " + driver.browser
+        });
+
+        docForm.setEnumListValue({attrid: 'test_ddui_enum__title', selectedText: "Jaune"});
+        docForm.getValue('test_ddui_enum__title').then(function check_enumtitle(value)
+        {
+            expect(value.value).toEqual("yellow");
+            done();
+        });
+    });
+
     it('setEnumInputs', function testsetMainInputs(localDone)
     {
         console.log("begin setEnumInputs");
-        setMainInputs();
-        util.saveScreenshot("enumRef");
 
-        setEnumDirectTab();
-        util.saveScreenshot("enumDirectTab");
-        setEnumSrvTab();
-        util.saveScreenshot("enumServerTab");
-        setArrayEnumTab();
-        util.saveScreenshot("enumArrayTab");
 
-        docForm.createAndClose();
-        util.saveScreenshot("enumView");
+         setEnumDirectTab();
+         util.saveScreenshot("enumDirectTab");
+         setEnumSrvTab();
+         util.saveScreenshot("enumServerTab");
+         setArrayEnumTab();
+         util.saveScreenshot("enumArrayTab");
 
-        docForm.openMenu({listMenu: "Tests", "itemMenu": "Vertical"});
+         docForm.createAndClose();
+         util.saveScreenshot("enumView");
+
+         docForm.openMenu({listMenu: "Tests", "itemMenu": "Vertical"});
          currentDriver.wait(function waitLoadingDone()
-                {
-                    return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
-                }, 5000);
+         {
+         return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
+         }, 5000);
          currentDriver.sleep(1000); // Wait to see result
 
-        setVerticalEnumDirectTab();
-        util.saveScreenshot("enumVerticalEdit");
-        console.log("end setEnumInputs");
+         setVerticalEnumDirectTab();
+         util.saveScreenshot("enumVerticalEdit");
+         console.log("end setEnumInputs");
 
         currentDriver.sleep(10).then(localDone);
 
