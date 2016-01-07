@@ -39,6 +39,7 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
             var lastElement = elements[elements.length - 1];
 
             currentDriver.executeScript(
+                "$(arguments[0]).css('outline', 'none');"+
                 "if (($('body').height() > $(window).height()) && " +
                 "($(window).height() - $(arguments[0]).offset().top - $(arguments[0]).height() + $(window).scrollTop()) < 600 && " +
                 "($(window).height() + $(window).scrollTop()) < $('body').height()" +
@@ -47,9 +48,9 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
                     "$(arguments[0]).get(0).scrollIntoView(true);" +
 
                 "}" +
-                "if (($(document).height() - $(arguments[0]).offset().top  ) > 100) { " +
-                "$(arguments[0]).css('outline', 'solid 1px green');" +
-                "window.scrollBy(0,-100);" +
+                "if ($(arguments[0]).offset().top - ($(window).scrollTop() ) < 100) { " +
+                    "$(arguments[0]).css('outline', 'solid 1px green');" +
+                    "window.scrollBy(0,-100);" +
                 "}" +
                 "$('.tooltip-inner').hide()", lastElement);
 
@@ -546,6 +547,11 @@ exports.createAndClose = function createAndClose()
 {
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Créer et fermer")]')).click();
+};
+exports.saveAndClose = function saveAndClose()
+{
+    'use strict';
+    currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Enregistrer et fermer")]')).click();
 };
 
 exports.openMenu = function openMenu(config)

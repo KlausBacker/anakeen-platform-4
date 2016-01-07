@@ -174,10 +174,10 @@ describe('Dynacase Enum test', function formAllEdit()
 
         // ------------------------
         // Second array
+        currentDriver.sleep(2000);
         docForm.addRow({attrid: 'test_ddui_enum__array_multipleenum'});
         docForm.addRow({attrid: 'test_ddui_enum__array_multipleenum'});
         docForm.addRow({attrid: 'test_ddui_enum__array_multipleenum'});
-
         docForm.addEnumAutoValue({
             index: 0,
             attrid: 'test_ddui_enum__enumscountry_array',
@@ -348,6 +348,188 @@ describe('Dynacase Enum test', function formAllEdit()
 
     };
 
+    var setVerticalEnumServerTab = function setVerticalEnumServerTab()
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_srv'});
+        docForm.setEnumRadioValue({attrid: 'test_ddui_enum__srvcountry', label: "Arménie"});
+
+        docForm.setEnumRadioValue({attrid: 'test_ddui_enum__srvtext', label: "Rouge"});
+        docForm.setEnumRadioValue({attrid: 'test_ddui_enum__srvnumber', label: "2/3"});
+        docForm.setEnumRadioValue({attrid: 'test_ddui_enum__srvbool', label: "Normal"});
+
+        // Multiple
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvscountry', label: "Chili"});
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvscountry', label: "Cuba"});
+
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvsnumber', label: "30 %"});
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvsnumber', label: "70 %"});
+
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvstext', label: "Rouge"});
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvstext', label: "Bleu"});
+        docForm.addEnumCheckboxValue({attrid: 'test_ddui_enum__srvstext', label: "Jaune"});
+    };
+
+    var setVerticalArrayEnumTab = function setVerticalArrayEnumTab()
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_arrays'});
+        // First row
+        docForm.setEnumRadioValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumcountry_array',
+            label: "Albanie"
+        });
+        docForm.setEnumRadioValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumtext_array',
+            label: "Si"
+        });
+        docForm.setEnumRadioValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            label: "2/3"
+        });
+        docForm.setEnumRadioValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumbool_array',
+            label: "Dangereux"
+        });
+
+        // Second row
+        docForm.setEnumRadioValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumbool_array',
+            label: "Sans danger"
+        });
+        docForm.setEnumRadioValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumcountry_array',
+            label: "Suisse"
+        });
+        docForm.setEnumRadioValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumtext_array',
+            label: "Si"
+        });
+        docForm.setEnumRadioValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            label: "2/3"
+        });
+
+        docForm.setEnumRadioValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumbool_array',
+            label: "Dangereux"
+        });
+
+        // Third row
+        docForm.setEnumRadioValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumcountry_array',
+            label: "Barbade"
+        });
+        docForm.setEnumRadioValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumtext_array',
+            filterText: "Sol",
+            label: "Sol"
+        });
+        docForm.setEnumRadioValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            label: "3/3"
+        });
+
+        docForm.setEnumRadioValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumbool_array',
+            label: "Sans danger"
+        });
+
+        // ------------------------
+        // Second array
+
+        docForm.addEnumCheckboxValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumscountry_array',
+            label: "Barbade"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumscountry_array',
+            label: "Belgique"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumstext_array',
+            label: "La"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumstext_array',
+            label: "Sib"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            label: "2/3"
+        });
+
+        // Second row
+        docForm.addEnumCheckboxValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumscountry_array',
+            label: "Aruba"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumscountry_array',
+            label: "Australie"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumstext_array',
+            label: "Mi"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumstext_array',
+            label: "Mib"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            label: "3/3"
+        });
+        // Third row
+        docForm.addEnumCheckboxValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumscountry_array',
+            label: "Argentine"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumscountry_array',
+            label: "Australie"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumstext_array',
+            label: "Do"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumstext_array',
+            label: "Mib"
+        });
+        docForm.addEnumCheckboxValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            label: "2/3"
+        });
+
+    };
+
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
 
     beforeAll(function beforeFormAllEdit(beforeDone)
@@ -432,16 +614,20 @@ describe('Dynacase Enum test', function formAllEdit()
         util.saveScreenshot("enumView");
 
         docForm.openMenu({listMenu: "Tests", itemMenu: "Vertical"});
-         currentDriver.wait(function waitLoadingDone()
-                {
-                    return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
-                }, 5000);
-         currentDriver.sleep(1000); // Wait to see result
+        currentDriver.wait(function waitLoadingDone()
+        {
+            return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
+        }, 5000);
+        currentDriver.sleep(1000); // Wait to see result
 
         setVerticalEnumDirectTab();
+        util.saveScreenshot("enumVerticalDirectTab");
         setVerticalEnumServerTab();
+        util.saveScreenshot("enumVerticalServerTab");
         setVerticalArrayEnumTab();
-        util.saveScreenshot("enumVerticalEdit");
+        util.saveScreenshot("enumVerticalArray");
+        docForm.saveAndClose();
+        util.saveScreenshot("enumView 2");
         console.log("end setEnumInputs");
 
         currentDriver.sleep(10).then(localDone);
