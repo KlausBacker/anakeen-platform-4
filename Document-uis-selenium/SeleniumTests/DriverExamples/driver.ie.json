@@ -1,0 +1,17 @@
+{
+  "driver": "internet explorer",
+  "server": "http://192.168.251.139:4444/wd/hub",
+  "rootUrl": "http://192.168.251.147/tmp32/",
+  "data": {
+    "files":["C:\\Users\\Public\\Music\\Sample Music\\Maid with the Flaxen Hair.mp3",
+      "C:\\Users\\Public\\Music\\Sample Music\\Kalimba.mp3",
+      "C:\\Users\\Public\\Music\\Sample Music\\Sleep Away.mp3"],
+    "images":["C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg",
+      "C:\\Users\\Public\\Pictures\\Sample Pictures\\Hydrangeas.jpg",
+      "C:\\Users\\Public\\Pictures\\Sample Pictures\\Tulips.jpg"
+    ],
+    "filePath": "C:\\Users\\Public\\Music\\Sample Music\\Maid with the Flaxen Hair.mp3",
+    "imagePath": "C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg"
+  },
+  "screenshotDirectory":"/tmp/ddui"
+}

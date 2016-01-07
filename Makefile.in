@@ -8,6 +8,13 @@ stub:
 	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
 
 
+webinst-selenium:
+	-rm -fr $(localpub)
+	cp -ra Document-uis-selenium $(localpub)
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
+	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
+	-rm -fr $(localpub)
+
 webinst-test:
 	-rm -fr $(localpub)
 	cp -ra Document-uis-test $(localpub)
@@ -39,7 +46,7 @@ webinst-light:
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
 
-webinst-all: webinst webinst-test
+webinst-all: webinst webinst-test webinst-selenium
 
 webinst:
 	make webinst-full

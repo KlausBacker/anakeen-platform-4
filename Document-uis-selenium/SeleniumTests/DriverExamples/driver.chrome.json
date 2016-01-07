@@ -1,0 +1,15 @@
+{
+  "driver": "chrome",
+  "server": "http://localhost:4444/wd/hub",
+  "rootUrl":"http://localhost/tmp32/",
+  "data": {
+    "files":["/home/eric/Documents/Doc Technique/web api.pdf",
+      "/home/eric/Documents/workflow.odt"],
+    "images":["/home/eric/Images/tukjedi.jpg",
+      "/home/eric/Images/drakkar.png",
+      "/home/eric/Images/leaves_texture1224.jpg"],
+    "filePath": "/home/eric/Documents/Doc Technique/web api.pdf",
+    "imagePath": "/home/eric/Images/tukjedi.jpg"
+  },
+  "screenshotDirectory":"/tmp/ddui"
+}

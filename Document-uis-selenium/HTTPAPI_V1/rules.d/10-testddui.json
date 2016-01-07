@@ -1,0 +1,9 @@
+[
+    {
+        "order": 300,
+        "class": "\\Dcp\\Ui\\Test\\Crud\\Families",
+          "regExp": "%^/test/ddui/families/$%",
+        "description": "Family to test",
+        "canonicalURL": "test/ddui/families/"
+    }
+  ]
