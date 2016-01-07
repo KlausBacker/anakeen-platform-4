@@ -14,6 +14,20 @@ describe('Dynacase Enum test', function formAllEdit()
         expect(false).toBe(null);
     };
 
+    var setMainInputs = function setMainInputs()
+    {
+        var now = new Date();
+        now.setTime(now.getTime() + (now.getHours() - now.getUTCHours()) * 3600000);
+        //------------------------------------------
+        // Text : test_ddui_enum__title
+        docForm.setTextValue({
+            attrid: 'test_ddui_enum__titleref',
+            rawValue: now.toISOString().substr(0, 19) + " " + driver.browser
+        });
+
+        docForm.setEnumListValue({attrid: 'test_ddui_enum__title', selectedText: "Jaune"});
+    };
+
     var setEnumDirectTab = function setEnumDirectTab()
     {
         docForm.selectTab({attrid: 'test_ddui_enum__t_tab_enums'});
@@ -404,28 +418,31 @@ describe('Dynacase Enum test', function formAllEdit()
     it('setEnumInputs', function testsetMainInputs(localDone)
     {
         console.log("begin setEnumInputs");
+        setMainInputs();
+        util.saveScreenshot("enumRef");
 
+        setEnumDirectTab();
+        util.saveScreenshot("enumDirectTab");
+        setEnumSrvTab();
+        util.saveScreenshot("enumServerTab");
+        setArrayEnumTab();
+        util.saveScreenshot("enumArrayTab");
 
-         setEnumDirectTab();
-         util.saveScreenshot("enumDirectTab");
-         setEnumSrvTab();
-         util.saveScreenshot("enumServerTab");
-         setArrayEnumTab();
-         util.saveScreenshot("enumArrayTab");
+        docForm.createAndClose();
+        util.saveScreenshot("enumView");
 
-         docForm.createAndClose();
-         util.saveScreenshot("enumView");
-
-         docForm.openMenu({listMenu: "Tests", "itemMenu": "Vertical"});
+        docForm.openMenu({listMenu: "Tests", itemMenu: "Vertical"});
          currentDriver.wait(function waitLoadingDone()
-         {
-         return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
-         }, 5000);
+                {
+                    return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
+                }, 5000);
          currentDriver.sleep(1000); // Wait to see result
 
-         setVerticalEnumDirectTab();
-         util.saveScreenshot("enumVerticalEdit");
-         console.log("end setEnumInputs");
+        setVerticalEnumDirectTab();
+        setVerticalEnumServerTab();
+        setVerticalArrayEnumTab();
+        util.saveScreenshot("enumVerticalEdit");
+        console.log("end setEnumInputs");
 
         currentDriver.sleep(10).then(localDone);
 

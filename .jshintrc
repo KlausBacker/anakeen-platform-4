@@ -10,6 +10,6 @@
   "undef":true,
   "nonew":true,
   "forin":true,
-  "globals" : ["define", "require", "console", "Promise"]
+  "globals" : ["define", "require", "console", "Promise", "exports", "describe","jasmine","expect",  "beforeEach","afterEach","it"]
 
 }

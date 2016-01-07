@@ -6,6 +6,7 @@ localpub=$(shell pwd)/localpub
 
 stub:
 	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
+	./dynacase-devtool.phar generateStub -s Document-uis-selenium -o ./stubs/
 
 
 webinst-selenium:
@@ -52,7 +53,7 @@ webinst:
 	make webinst-full
 
 po:
-	./development-tools/dynacase-devtool.phar extractPo -s Document-uis
+	./dynacase-devtool.phar extractPo -s Document-uis
 
 clean: 
 	/bin/rm -f *.*~ config.* Makefile configure \

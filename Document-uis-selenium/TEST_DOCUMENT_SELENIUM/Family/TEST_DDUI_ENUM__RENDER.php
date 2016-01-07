@@ -328,7 +328,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TESTDDUI/Layout/tstenumhorizontal.css";
+        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumhorizontal.css";
         return $css;
     }
 }
@@ -356,7 +356,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TESTDDUI/Layout/tstenumvertical.css";
+        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumvertical.css";
         return $css;
     }
 
