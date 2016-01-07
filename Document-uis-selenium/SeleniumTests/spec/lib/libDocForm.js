@@ -569,3 +569,7 @@ exports.openMenu = function openMenu(config)
     currentDriver.findElement(menuPath).click();
 
 };
+
+exports.getValue = function getValue(attrid) {
+    return currentDriver.executeScript("return window.dcp.document.documentController('getValue', '"+attrid+"');");
+};

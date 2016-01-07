@@ -6,16 +6,9 @@
 
 `npm install`
 
-    npm install selenium-webdriver
-    npm install config.json
-
-### Jasmine-node
-
-`npm install jasmine-node -g` (as root)
-
 ## Run
 
-`jasmine-node test`
+`./start.js`
 
 ## Config
 
@@ -35,15 +28,8 @@ For windows :
 
 And launch after :
 
-`jasmine-node --config NODE_ENV <env> test`
+`NODE_ENV=chrome ./start.js **/enum_spec.js`
 
-For chrome :
-
-`jasmine-node --config NODE_ENV chrome test`
-
-#### Junit
-
-To have junit report add `--junitreport`
 
 ## Add a test
 
