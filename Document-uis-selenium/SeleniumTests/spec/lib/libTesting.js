@@ -35,7 +35,8 @@ exports.login = function login(loginName, password)
 exports.saveScreenshot=function saveScreenshot(name) {
     'use strict';
     var currentDriver = driver.getDriver();
-     currentDriver.takeScreenshot().then(function loginScreenShot(image)
+
+    return currentDriver.takeScreenshot().then(function loginScreenShot(image)
     {
         var outDir=driver.screenshotDirectory+'/'+driver.browser+'/';
         var outFile=outDir+name+'.png';

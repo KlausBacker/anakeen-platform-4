@@ -171,11 +171,11 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.addEnumAutoValue({attrid: 'test_ddui_all__enumsauto', filterText: "mo", selectedText: "Monaco"});
         docForm.addEnumAutoValue({attrid: 'test_ddui_all__enumsauto', filterText: "nouvelle", selectedText: "Zélande"});
 
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsvertical', label: "30 %"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsvertical', label: "70 %"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumshorizontal', label: "Vert"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumshorizontal', label: "Bleu"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumshorizontal', label: "Bleu/Bleu marine"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsvertical', label: "30 %"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsvertical', label: "70 %"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumshorizontal', label: "Vert"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumshorizontal', label: "Bleu"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumshorizontal', label: "Bleu/Bleu marine"});
 
         // Multiple Server
         docForm.addEnumAutoValue({attrid: 'test_ddui_all__enumsserverlist', filterText: "A", selectedText: "Arménie"});
@@ -199,11 +199,11 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.addEnumAutoValue({attrid: 'test_ddui_all__enumsserverauto', filterText: "y", selectedText: "Yemen"});
         docForm.addEnumAutoValue({attrid: 'test_ddui_all__enumsserverauto', filterText: "z", selectedText: "Zaïre"});
 
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsserververtical', label: "0 %"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsserververtical', label: "100 %"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Vert"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Jaune"});
-        docForm.addEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Bleu/Bleu ciel"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserververtical', label: "0 %"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserververtical', label: "100 %"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Vert"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Jaune"});
+        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Bleu/Bleu ciel"});
     };
 
     var setDateTab = function setDateTab()
@@ -582,17 +582,17 @@ describe('Dynacase basic test', function formAllEdit()
             selectedText: "Moldavie",
             filterText: "mo"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 0,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Rouge"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 0,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Jaune"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 0,
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Fa"
@@ -627,27 +627,27 @@ describe('Dynacase basic test', function formAllEdit()
             selectedText: "Bermude",
             filterText: "ber"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 1,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Jaune"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 1,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Vert"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 1,
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Mi"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 1,
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Fa"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 1,
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Ré"
@@ -668,27 +668,27 @@ describe('Dynacase basic test', function formAllEdit()
             attrid: 'test_ddui_all__enumsauto_array',
             selectedText: "Mongolie", filterText: "mo"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 2,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Bleu"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 2,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Jaune"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 2,
             attrid: 'test_ddui_all__enumsvertical_array',
             label: "Vert"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 2,
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Fa"
         });
-        docForm.addEnumCheckboxValue({
+        docForm.selectEnumCheckboxValue({
             index: 2,
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Ré"
