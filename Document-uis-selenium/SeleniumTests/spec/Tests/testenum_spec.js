@@ -62,7 +62,7 @@ describe('Dynacase Enum test', function formAllEdit()
 
     });
 
-    it("mainInput", function testMainInput(done)
+    it("mainInput", function testMainInput(itDone)
     {
         var now = new Date();
         now.setTime(now.getTime() + (now.getHours() - now.getUTCHours()) * 3600000);
@@ -83,10 +83,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expectedValue: "yellow"
         });
 
-        util.saveScreenshot("enumRef").then(function endMainInput()
-        {
-            done();
-        });
+        util.saveScreenshot("enumRef").then(itDone);
     });
 
     it("setEnumDirectTab", function setEnumDirectTab(itDone)
@@ -149,10 +146,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expectedValue: ["green", "yellow", "navyblue"]
         });
 
-        util.saveScreenshot("enumDirectTab").then(function enumEndDirectTab()
-        {
-            itDone();
-        });
+        util.saveScreenshot("enumDirectTab").then(itDone);
     });
 
     it("setEnumSrvTab", function setEnumSrvTab(itDone)
@@ -219,10 +213,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expectedValue: ["green", "yellow", "navyblue"]
         });
 
-        util.saveScreenshot("enumServerTab").then(function enumEndServerTab()
-        {
-            itDone();
-        });
+        util.saveScreenshot("enumServerTab").then(itDone);
     });
 
     it("setArrayEnumTab", function setArrayEnumTab(itDone)
@@ -499,10 +490,7 @@ describe('Dynacase Enum test', function formAllEdit()
             label: "3/3",
             expectedValue: ["0", "66.6667", "100"]
         });
-        util.saveScreenshot("enumArrayTab").then(function enumEndArrayTab()
-        {
-            itDone();
-        });
+        util.saveScreenshot("enumArrayTab").then(itDone);
     });
 
     it("createEnumDocAndReopen", function createEnumDoc(itDone)
@@ -515,10 +503,7 @@ describe('Dynacase Enum test', function formAllEdit()
         {
             return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
         }, 5000);
-        currentDriver.sleep(1000).then(function endCreateEnumDocAndReopen()
-        {
-            itDone();
-        }); // Wait to see result
+        currentDriver.sleep(1000).then(itDone); // Wait to see result
     });
 
     it("setVerticalEnumDirectTab", function setVerticalEnumDirectTab(itDone)
@@ -564,10 +549,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expectedValue: ["red", "green", "navyblue"]
         });
 
-        util.saveScreenshot("enumVerticalDirectTab").then(function endsetVerticalEnumDirectTab()
-        {
-            itDone();
-        });
+        util.saveScreenshot("enumVerticalDirectTab").then(itDone);
     });
 
     it("setVerticalEnumServerTab", function setVerticalEnumServerTab(itDone)
@@ -611,10 +593,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expectedValue: ["red", "green", "blue", "navyblue"]
         });
 
-        util.saveScreenshot("enumVerticalServerTab").then(function endsetVerticalEnumServerTab()
-        {
-            itDone();
-        });
+        util.saveScreenshot("enumVerticalServerTab").then(itDone);
     });
 
     it("setVerticalArrayEnumTab", function setVerticalArrayEnumTab(itDone)
@@ -804,10 +783,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expectedValue: ["0", "100"]
         });
 
-        util.saveScreenshot("enumVerticalArray").then(function endsetVerticalArrayEnumTab()
-        {
-            itDone();
-        });
+        util.saveScreenshot("enumVerticalArray").then(itDone);
     });
 
     it('saveEnumDoc', function testsetMainInputs(itDone)

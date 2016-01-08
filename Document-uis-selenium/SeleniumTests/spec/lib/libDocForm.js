@@ -41,17 +41,17 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
             var lastElement = elements[elements.length - 1];
 
             currentDriver.executeScript(
-                "$(arguments[0]).css('outline', 'none');" +
+             //   "$(arguments[0]).css('outline', 'none');" +
                 "if (($('body').height() > $(window).height()) && " +
                 "($(window).height() - $(arguments[0]).offset().top - $(arguments[0]).height() + $(window).scrollTop()) < 600 && " +
                 "($(window).height() + $(window).scrollTop()) < $('body').height()" +
                 " ){" +
-                "$(arguments[0]).css('outline', 'solid 1px blue');" +
+              //  "$(arguments[0]).css('outline', 'solid 1px blue');" +
                 "$(arguments[0]).get(0).scrollIntoView(true);" +
 
                 "}" +
                 "if ($(arguments[0]).offset().top - ($(window).scrollTop() ) < 100) { " +
-                "$(arguments[0]).css('outline', 'solid 1px green');" +
+             //   "$(arguments[0]).css('outline', 'solid 1px green');" +
                 "window.scrollBy(0,-100);" +
                 "}" +
                 "$('.tooltip-inner').hide()", lastElement);
@@ -144,7 +144,12 @@ exports.setLongTextValue = function setLongTextValue(data)
         currentDriver.findElement(webdriver.By.xpath(
             '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//textarea')).sendKeys(data.rawValue);
     }
-    return currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] textarea").blur()');
+    return currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] textarea").blur()').then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 
 };
 
@@ -231,7 +236,12 @@ exports.setTimeValue = function setTimeValue(data)
         currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] input").blur()');
     }
 
-    return waitAnimationClose();
+    return waitAnimationClose().then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.setNumericValue = function setNumericValue(data)
@@ -264,8 +274,12 @@ exports.setNumericValue = function setNumericValue(data)
 
         currentDriver.findElement(webdriver.By.xpath(eltRef)).sendKeys(data.number);
     }
-    return currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] input[type=text][data-role=numerictextbox]").blur()');
-
+    return currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] input[type=text][data-role=numerictextbox]").blur()').then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.setPasswordValue = function setPasswordValue(data)
@@ -282,7 +296,12 @@ exports.setPasswordValue = function setPasswordValue(data)
         currentDriver.findElement(webdriver.By.xpath(
             '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[@type="password"]')).sendKeys(data.rawValue);
     }
-    return currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] input").blur()');
+    return currentDriver.executeScript('$("div[data-attrid=' + data.attrid + '] input").blur()').then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.setColorValue = function setColorValue(data)
@@ -318,7 +337,12 @@ exports.setColorValue = function setColorValue(data)
     // Close color selector
     currentDriver.findElement(webdriver.By.xpath(
         '//*[contains(@class,"dcpLabel")][@data-attrid="' + data.attrid + '"]')).click();
-    return waitAnimationClose();
+    return waitAnimationClose().then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.setFileValue = function setFileValue(data)
@@ -354,7 +378,13 @@ exports.setFileValue = function setFileValue(data)
             '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[@type="file"]')).sendKeys(data.filePath);
     }
 
-    return currentDriver.sleep(10);
+    //@TODO Need to wait file is uploaded
+    return currentDriver.sleep(10).then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 
 };
 
@@ -378,7 +408,12 @@ exports.setDocidValue = function setDocidValue(data)
 
     currentDriver.sleep(500); // Wait animation done
     currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//span[contains(text(), '" + data.selectedText + "')]")).click();
-    return waitAnimationClose();
+    return waitAnimationClose().then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.addAccountMultipleValue = function addAccountMultipleValue(data)
@@ -403,7 +438,12 @@ exports.setHtmlTextValue = function setTextValue(data)
     currentDriver.findElement(webdriver.By.css('body')).sendKeys(data.textValue);
 
     currentDriver.switchTo().defaultContent();
-    return currentDriver.switchTo().frame(docWindow);
+    return currentDriver.switchTo().frame(docWindow).then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.setEnumListValue = function setEnumListValue(data)
@@ -620,39 +660,64 @@ exports.verifyValue = function verifyValue(verification)
 {
     'use strict';
 
+    var extractValue= function verifyValueExtract(value, key) {
+        var rawValue;
+        if (typeof verification.index === "undefined") {
+            if (Array.isArray(value)) {
+                rawValue=value.map(function docFormVerifyValueMap(x) {
+                    return x[key];
+                });
+            } else {
+                rawValue=value[key];
+            }
+
+        } else {
+            if (Array.isArray(value[verification.index])) {
+                rawValue=value[verification.index].map(function docFormVerifyValueMapIndex(x) {
+                    return x[key];
+                });
+            } else {
+                rawValue=value[verification.index][key];
+            }
+        }
+        return rawValue;
+    };
+
     if (typeof verification.expectedValue !== "undefined") {
+        if (verification.expectedValue === "===") {
+            verification.expectedValue = verification.rawValue || verification.number;
+        }
         exports.getValue(verification.attrid).then(function docForm_check_value(value)
         {
             var rawValue, msg;
-            if (typeof verification.index === "undefined") {
-                if (Array.isArray(value)) {
-                    rawValue=value.map(function docFormVerifyValueMap(x) {
-                        return x.value;
-                    });
-                } else {
-                    rawValue=value.value;
-                }
 
-            } else {
-                if (Array.isArray(value[verification.index])) {
-                    rawValue=value[verification.index].map(function docFormVerifyValueMapIndex(x) {
-                        return x.value;
-                    });
-                } else {
-                    rawValue=value[verification.index].value;
-                }
+            rawValue=extractValue(value, "value");
 
-                //console.log("Verify ", verification.attrid, verification.expectedValue, rawValue);
-               // console.log("jcm",jcm, jcm.since);
-
-
-            }
             msg='Attribute :"'+verification.attrid+
                 ((typeof verification.index === "undefined")?"":(" #"+verification.index))+
             '", expected "'+verification.expectedValue+
             '", got :"'+rawValue+'"';
 
             since(msg).expect(rawValue).toEqual(verification.expectedValue);
+        });
+    }
+
+    if (typeof verification.expectedDisplayValue !== "undefined") {
+        if (verification.expectedDisplayValue === "===") {
+            verification.expectedDisplayValue = verification.rawValue || verification.number;
+        }
+        exports.getValue(verification.attrid).then(function docForm_check_value(value)
+        {
+            var rawValue, msg;
+
+            rawValue=extractValue(value, "displayValue");
+
+            msg='Attribute :"'+verification.attrid+
+                ((typeof verification.index === "undefined")?"":(" #"+verification.index))+
+                '", expected "'+verification.expectedDisplayValue+
+                '", got :"'+rawValue+'"';
+
+            since(msg).expect(rawValue).toEqual(verification.expectedDisplayValue);
         });
     }
 

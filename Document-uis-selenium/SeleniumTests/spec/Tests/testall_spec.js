@@ -14,28 +14,84 @@ describe('Dynacase basic test', function formAllEdit()
         expect(false).toBe(null);
     };
 
-    var setFirstTab = function setFirstTab()
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
+    beforeAll(function beforeFormAllEdit(beforeDone)
+    {
+        console.log("before main");
+        currentDriver = driver.getDriver();
+        webdriver.promise.controlFlow().on('uncaughtException', handleException);
+        currentDriver.get(driver.rootUrl).then(function x()
+        {
+            util.login("admin", "anakeen").then(function afterLogin()
+            {
+                console.log("login end");
+                currentDriver.wait(function waitMainInterfaceIsDisplayed()
+                {
+                    return currentDriver.isElementPresent(webdriver.By.css("#disconnect"));
+                }, 5000);
+
+                currentDriver.get(driver.rootUrl + "?app=TEST_DOCUMENT_SELENIUM");
+                var btnCreate = webdriver.By.css('.btn[data-familyname="TST_DDUI_ALLTYPE"]');
+
+                currentDriver.wait(function waitCreateButton()
+                {
+                    return currentDriver.isElementPresent(btnCreate);
+                }, 6000);
+                currentDriver.findElement(btnCreate).click();
+
+                docForm.setDocWindow(webdriver.By.css("iframe.dcpDocumentWrapper"));
+                currentDriver.wait(function waitDocumentIsDisplayed()
+                {
+                    return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument__frames"));
+                }, 5000).then(function doneInitMainPage()
+                {
+                    console.log("begin test");
+                    beforeDone();
+                });
+
+            });
+        });
+    });
+
+    afterAll(function afterFormAllEdit(afterDone)
+    {
+        console.log("Exiting... in 5s");
+        webdriver.promise.controlFlow().removeListener(handleException);
+        currentDriver.sleep(5000); // Wait to see result
+        currentDriver.quit().then(afterDone);
+    });
+
+    it("setFirstTab",  function setFirstTab(itDone)
     {
         var now=new Date();
         now.setTime(now.getTime()+(now.getHours() - now.getUTCHours())*3600000);
         //------------------------------------------
         // Text : test_ddui_all__title
-        docForm.setTextValue({attrid: 'test_ddui_all__title', rawValue: now.toISOString().substr(0,19)+" "+driver.browser});
+        docForm.setTextValue({
+            attrid: 'test_ddui_all__title',
+            rawValue: now.toISOString().substr(0,19)+" "+driver.browser,
+            expectedValue:"==="});
 
         //------------------------------------------
         // First account : test_ddui_all__account
-        docForm.setDocidValue({attrid: 'test_ddui_all__account', filterText: "jean", selectedText: "Jean"});
+        docForm.setDocidValue({attrid: 'test_ddui_all__account',
+            filterText: "jean",
+            selectedText: "Jean",
+            expectedDisplayValue:"Grand Jean"
+        });
         //------------------------------------------
         // Second account : test_ddui_all__account_multiple
         docForm.addAccountMultipleValue({
             attrid: 'test_ddui_all__account_multiple',
             filterText: "Isabell",
-            selectedText: "di@example.net"
+            selectedText: "di@example.net",
+            expectedDisplayValue:["Dujardin Isabelle"]
         });
         docForm.addAccountMultipleValue({
             attrid: 'test_ddui_all__account_multiple',
             filterText: "Cathe",
-            selectedText: "gc@example.net"
+            selectedText: "gc@example.net",
+            expectedDisplayValue:["Dujardin Isabelle","Granget Catherine"]
         });
 
         //------------------------------------------
@@ -51,19 +107,22 @@ describe('Dynacase basic test', function formAllEdit()
 
         docForm.setTimeValue({
             attrid: 'test_ddui_all__time',
-            selectedIndex: 6
+            selectedIndex: 6,
+            expectedValue:"02:30"
         });
 
         //------------------------------------------
         // Timestamp  :test_ddui_all__timestamp
         docForm.setDateValue({
             attrid: 'test_ddui_all__timestamp',
-            date: "22/10/2000"
+            date: "22/10/2000 00:00",
+            expectedValue:"2000-10-22T00:00:00"
         });
 
         docForm.setTimeValue({
             attrid: 'test_ddui_all__timestamp',
-            selectedIndex: 5
+            selectedIndex: 5,
+            expectedValue:"2000-10-22T02:00:00"
         });
 
         //------------------------------------------
@@ -71,14 +130,16 @@ describe('Dynacase basic test', function formAllEdit()
 
         docForm.setNumericValue({
             attrid: 'test_ddui_all__integer',
-            number: "12345"
+            number: "12345",
+            expectedValue:12345
         });
 
         //------------------------------------------
         // Double : test_ddui_all__double
         docForm.setNumericValue({
             attrid: 'test_ddui_all__double',
-            number: "3,1415926535"
+            number: "3,1415926535",
+            expectedValue:3.1415926535
         });
 
         //------------------------------------------
@@ -86,7 +147,8 @@ describe('Dynacase basic test', function formAllEdit()
 
         docForm.setNumericValue({
             attrid: 'test_ddui_all__money',
-            number: "678,7"
+            number: "678,70",
+            expectedValue:678.7
         });
 
         //------------------------------------------
@@ -94,7 +156,8 @@ describe('Dynacase basic test', function formAllEdit()
 
         docForm.setPasswordValue({
             attrid: 'test_ddui_all__password',
-            rawValue: "Secret"
+            rawValue: "Secret",
+            expectedValue:"==="
         });
 
         //------------------------------------------
@@ -103,7 +166,8 @@ describe('Dynacase basic test', function formAllEdit()
             attrid: 'test_ddui_all__color',
             hue: 64,
             saturation: 20,
-            value: 90
+            value: 90,
+            expectedValue:undefined// precision "#e2e6b7" or #e4e6b9
         });
 
         //------------------------------------------
@@ -126,7 +190,9 @@ describe('Dynacase basic test', function formAllEdit()
         // Htmltext :test_ddui_all__htmltext
         docForm.setHtmlTextValue({
             attrid: "test_ddui_all__htmltext",
-            textValue: "Les ours (ou ursinés, du latin ŭrsus, de même sens) sont de grands mammifères plantigrades appartenant à la famille des ursidés.\n Il n'existe que huit espèces d'ours vivants, mais ils sont largement répandus dans une grande variété d'habitats, dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'Europe, d'Amérique du Nord, d'Amérique du Sud, et en Asie"
+            textValue: "Les ours (ou ursinés, du latin ŭrsus, de même sens) sont de grands mammifères plantigrades appartenant à la famille des ursidés.\n Il n'existe que huit espèces d'ours vivants, mais ils sont largement répandus dans une grande variété d'habitats, dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'Europe, d'Amérique du Nord, d'Amérique du Sud, et en Asie",
+            expectedValue:"<p>Les ours (ou ursinés, du latin ŭrsus, de même sens) sont de grands mammifères plantigrades appartenant à la famille des ursidés.</p>"+"\n\n"+
+    "<p>&nbsp;Il n'existe que huit espèces d'ours vivants, mais ils sont largement répandus dans une grande variété d'habitats, dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'Europe, d'Amérique du Nord, d'Amérique du Sud, et en Asie</p>"+"\n"
         });
 
         //------------------------------------------
@@ -134,14 +200,19 @@ describe('Dynacase basic test', function formAllEdit()
 
         docForm.setLongTextValue({
             attrid: 'test_ddui_all__longtext',
-            rawValue: "5 continents : \nEurope,\n Amérique,\nAsie,\nOcéanie\nAfrique"
+            rawValue: "5 continents : \nEurope,\n Amérique,\nAsie,\nOcéanie\nAfrique",
+            expectedValue:"==="
         });
 
-        docForm.setTextValue({attrid: 'test_ddui_all__text', rawValue: "Texte de fin"});
+        docForm.setTextValue({attrid: 'test_ddui_all__text',
+            rawValue: "Texte de fin",
+            expectedValue:"==="
+        });
 
-    };
+        util.saveScreenshot("commonTab").then(itDone);
+    });
 
-    var setEnumTab = function setEnumTab()
+    xit("setEnumTab",  function setEnumTab(itDone)
     {
 
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_enums'});
@@ -204,9 +275,11 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Vert"});
         docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Jaune"});
         docForm.selectEnumCheckboxValue({attrid: 'test_ddui_all__enumsserverhorizontal', label: "Bleu/Bleu ciel"});
-    };
 
-    var setDateTab = function setDateTab()
+        util.saveScreenshot("enumTab").then(itDone);
+    });
+
+    xit("setDateTab",  function setDateTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_date'});
         docForm.addRow({attrid: 'test_ddui_all__array_dates'});
@@ -281,9 +354,10 @@ describe('Dynacase basic test', function formAllEdit()
             date: "25/05/1977 14:10",
             index: 3
         });
-    };
+        util.saveScreenshot("dateTab").then(itDone);
+    });
 
-    var setRelationTab = function setRelationTab()
+    xit("setRelationTab",  function setRelationTab(itDone)
     {
 
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_relations'});
@@ -366,9 +440,11 @@ describe('Dynacase basic test', function formAllEdit()
             selectedText: "Jean",
             index: 2
         });
-    };
 
-    var setNumericTab = function setNumericTab()
+        util.saveScreenshot("relationTab").then(itDone);
+    });
+
+    xit("setNumericTab",  function setNumericTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_numbers'});
         docForm.addRow({attrid: 'test_ddui_all__array_numbers'});
@@ -419,10 +495,10 @@ describe('Dynacase basic test', function formAllEdit()
             number: "0,65",
             index: 1
         });
+        util.saveScreenshot("numericTab").then(itDone);
+    });
 
-    };
-
-    var setMiscTab = function setMiscTab()
+    xit("setMiscTab", function setMiscTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_misc'});
         docForm.addRow({attrid: 'test_ddui_all__array_misc'});
@@ -693,9 +769,10 @@ describe('Dynacase basic test', function formAllEdit()
             attrid: 'test_ddui_all__enumshorizontal_array',
             label: "Ré"
         });
-    };
+        util.saveScreenshot("miscTab").then(itDone);
+    });
 
-    var setFileTab = function setMiscTab()
+    xit("setFileTab",  function setMiscTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_files'});
         docForm.addRow({attrid: 'test_ddui_all__array_files'});
@@ -732,9 +809,10 @@ describe('Dynacase basic test', function formAllEdit()
             index:2,
             filePath: driver.data.images[2]
         });
-    };
+        util.saveScreenshot("fileTab").then(itDone);
+    });
 
-    var setTextTab = function setTextTab()
+    xit("setTextTab",  function setTextTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_all__t_tab_texts'});
         docForm.addRow({attrid: 'test_ddui_all__array_texts'});
@@ -780,84 +858,13 @@ describe('Dynacase basic test', function formAllEdit()
             index:1,
             textValue: "Hérisson est un nom vernaculaire qui désigne en français divers petits mammifères insectivores disposant de poils agglomérés, durs, hérissés et piquants.\nCe nom dérive du latin ericius. Les espèces les plus connues des francophones sont le Hérisson commun (Erinaceus europaeus) et le Hérisson oriental (Erinaceus concolor) mais il existe d'autres « hérissons » sur divers continents, y compris en Asie un genre apparenté mais dont les représentants sont dépourvus de piquants : les gymnures.\nCes espèces sont parfois très éloignées sur l'arbre phylogénique, mais se ressemblent par convergence évolutive1.\nPlusieurs espèces comme le Hérisson de Madagascar ou « tangue » sont encore consommées dans l'océan Indien, y compris à la Réunion, d'autres sont au contraire protégées."
         });
-    };
-
-    jasmine.getEnv().defaultTimeoutInterval = 500000; // en ms : 3min
-    beforeEach(function beforeFormAllEdit(beforeDone)
-    {
-        console.log("before main");
-        currentDriver = driver.getDriver();
-        webdriver.promise.controlFlow().on('uncaughtException', handleException);
-        currentDriver.get(driver.rootUrl).then(function x()
-        {
-            util.login("admin", "anakeen").then(function afterLogin()
-            {
-                console.log("login end");
-                currentDriver.wait(function waitMainInterfaceIsDisplayed()
-                {
-                    return currentDriver.isElementPresent(webdriver.By.css("#disconnect"));
-                }, 5000);
-
-                currentDriver.get(driver.rootUrl + "?app=TEST_DOCUMENT_SELENIUM");
-                var btnCreate = webdriver.By.css('.btn[data-familyname="TST_DDUI_ALLTYPE"]');
-
-                currentDriver.wait(function waitCreateButton()
-                {
-                    return currentDriver.isElementPresent(btnCreate);
-                }, 6000);
-                currentDriver.findElement(btnCreate).click();
-
-                docForm.setDocWindow(webdriver.By.css("iframe.dcpDocumentWrapper"));
-                currentDriver.wait(function waitDocumentIsDisplayed()
-                {
-                    return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument__frames"));
-                }, 5000).then(function doneInitMainPage()
-                {
-                    console.log("begin test");
-                    beforeDone();
-                });
-
-            });
-        });
+        util.saveScreenshot("textTab").then(itDone);
     });
 
-    afterEach(function afterFormAllEdit(afterDone)
+    it('createAndClose', function testSetFirstTab(itDone)
     {
-        console.log("Exiting... in 10s");
-        webdriver.promise.controlFlow().removeListener(handleException);
-        currentDriver.sleep(10000); // Wait to see result
-        currentDriver.quit().then(afterDone);
-
-    });
-
-    it('setAllInputs', function testSetFirstTab(localDone)
-    {
-        setFirstTab();
-        util.saveScreenshot("commonTab");
-
-        setEnumTab();
-        util.saveScreenshot("enumTab");
-
-        setDateTab();
-        util.saveScreenshot("dateTab");
-
-        setRelationTab();
-        util.saveScreenshot("relationTab");
-
-        setNumericTab();
-        util.saveScreenshot("numericTab");
-
-        setMiscTab();
-        util.saveScreenshot("miscTab");
-
-        setFileTab();
-        util.saveScreenshot("fileTab");
-
-        setTextTab();
-        util.saveScreenshot("textTab");
-
         docForm.createAndClose();
-        currentDriver.sleep(10).then (localDone);
-
+        util.saveScreenshot("viewCreate");
+        currentDriver.sleep(10).then (itDone);
     });
 });
