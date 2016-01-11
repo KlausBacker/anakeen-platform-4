@@ -16,10 +16,18 @@ if (config.server) {
 exports.getDriver = function buildDriver()
 {
     'use strict';
+    var session;
     if (buildedDriver === null) {
         buildedDriver = driver.build();
     }
     return buildedDriver;
+};
+
+exports.quit = function quitDriver() {
+    'use strict';
+    return buildedDriver.quit().then (function initDriverquit() {
+        buildedDriver=null;
+    });
 };
 
 exports.rootUrl = config.rootUrl;

@@ -58,7 +58,7 @@ describe('Dynacase basic test', function formAllEdit()
         console.log("Exiting... in 5s");
         webdriver.promise.controlFlow().removeListener(handleException);
         currentDriver.sleep(5000); // Wait to see result
-        currentDriver.quit().then(afterDone);
+        driver.quit().then(afterDone);
     });
 
     it("setFirstTab",  function setFirstTab(itDone)
@@ -70,14 +70,14 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setTextValue({
             attrid: 'test_ddui_all__title',
             rawValue: now.toISOString().substr(0,19)+" "+driver.browser,
-            expectedValue:"==="});
+            expected:{value:"==="}});
 
         //------------------------------------------
         // First account : test_ddui_all__account
         docForm.setDocidValue({attrid: 'test_ddui_all__account',
             filterText: "jean",
             selectedText: "Jean",
-            expectedDisplayValue:"Grand Jean"
+            expected:{displayValue:"Grand Jean"}
         });
         //------------------------------------------
         // Second account : test_ddui_all__account_multiple
@@ -85,13 +85,13 @@ describe('Dynacase basic test', function formAllEdit()
             attrid: 'test_ddui_all__account_multiple',
             filterText: "Isabell",
             selectedText: "di@example.net",
-            expectedDisplayValue:["Dujardin Isabelle"]
+            expected:{displayValue:["Dujardin Isabelle"]}
         });
         docForm.addAccountMultipleValue({
             attrid: 'test_ddui_all__account_multiple',
             filterText: "Cathe",
             selectedText: "gc@example.net",
-            expectedDisplayValue:["Dujardin Isabelle","Granget Catherine"]
+            expected:{displayValue:["Dujardin Isabelle","Granget Catherine"]}
         });
 
         //------------------------------------------
@@ -108,7 +108,7 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setTimeValue({
             attrid: 'test_ddui_all__time',
             selectedIndex: 6,
-            expectedValue:"02:30"
+            expected:{value:"02:30"}
         });
 
         //------------------------------------------
@@ -116,13 +116,13 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setDateValue({
             attrid: 'test_ddui_all__timestamp',
             date: "22/10/2000 00:00",
-            expectedValue:"2000-10-22T00:00:00"
+            expected:{value:"2000-10-22T00:00:00"}
         });
 
         docForm.setTimeValue({
             attrid: 'test_ddui_all__timestamp',
             selectedIndex: 5,
-            expectedValue:"2000-10-22T02:00:00"
+            expected:{value:"2000-10-22T02:00:00"}
         });
 
         //------------------------------------------
@@ -131,7 +131,7 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setNumericValue({
             attrid: 'test_ddui_all__integer',
             number: "12345",
-            expectedValue:12345
+            expected:{value:12345}
         });
 
         //------------------------------------------
@@ -139,7 +139,7 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setNumericValue({
             attrid: 'test_ddui_all__double',
             number: "3,1415926535",
-            expectedValue:3.1415926535
+            expected:{value:3.1415926535}
         });
 
         //------------------------------------------
@@ -148,7 +148,7 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setNumericValue({
             attrid: 'test_ddui_all__money',
             number: "678,70",
-            expectedValue:678.7
+            expected:{value:678.7}
         });
 
         //------------------------------------------
@@ -157,7 +157,7 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setPasswordValue({
             attrid: 'test_ddui_all__password',
             rawValue: "Secret",
-            expectedValue:"==="
+            expected:{value:"==="}
         });
 
         //------------------------------------------
@@ -167,7 +167,7 @@ describe('Dynacase basic test', function formAllEdit()
             hue: 64,
             saturation: 20,
             value: 90,
-            expectedValue:undefined// precision "#e2e6b7" or #e4e6b9
+            expected:{value:undefined}// precision "#e2e6b7" or #e4e6b9
         });
 
         //------------------------------------------
@@ -191,9 +191,9 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setHtmlTextValue({
             attrid: "test_ddui_all__htmltext",
             textValue: "Les ours (ou ursinés, du latin ŭrsus, de même sens) sont de grands mammifères plantigrades appartenant à la famille des ursidés.\n Il n'existe que huit espèces d'ours vivants, mais ils sont largement répandus dans une grande variété d'habitats, dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'Europe, d'Amérique du Nord, d'Amérique du Sud, et en Asie",
-            expectedValue:"<p>Les ours (ou ursinés, du latin ŭrsus, de même sens) sont de grands mammifères plantigrades appartenant à la famille des ursidés.</p>"+"\n\n"+
+            expected:{value:"<p>Les ours (ou ursinés, du latin ŭrsus, de même sens) sont de grands mammifères plantigrades appartenant à la famille des ursidés.</p>"+"\n\n"+
     "<p>&nbsp;Il n'existe que huit espèces d'ours vivants, mais ils sont largement répandus dans une grande variété d'habitats, dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'Europe, d'Amérique du Nord, d'Amérique du Sud, et en Asie</p>"+"\n"
-        });
+        }});
 
         //------------------------------------------
         // Longtext : test_ddui_all__longtext
@@ -201,12 +201,12 @@ describe('Dynacase basic test', function formAllEdit()
         docForm.setLongTextValue({
             attrid: 'test_ddui_all__longtext',
             rawValue: "5 continents : \nEurope,\n Amérique,\nAsie,\nOcéanie\nAfrique",
-            expectedValue:"==="
+            expected:{value:"==="}
         });
 
         docForm.setTextValue({attrid: 'test_ddui_all__text',
             rawValue: "Texte de fin",
-            expectedValue:"==="
+            expected:{value:"==="}
         });
 
         util.saveScreenshot("commonTab").then(itDone);

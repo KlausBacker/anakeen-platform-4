@@ -58,7 +58,7 @@ describe('Dynacase Enum test', function formAllEdit()
         console.log("Exiting... in 10s");
         webdriver.promise.controlFlow().removeListener(handleException);
         currentDriver.sleep(10000); // Wait to see result
-        currentDriver.quit().then(afterDone);
+        driver.quit().then(afterDone);
 
     });
 

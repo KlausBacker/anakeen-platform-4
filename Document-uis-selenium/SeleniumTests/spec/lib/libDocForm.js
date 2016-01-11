@@ -41,17 +41,17 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
             var lastElement = elements[elements.length - 1];
 
             currentDriver.executeScript(
-             //   "$(arguments[0]).css('outline', 'none');" +
+                //   "$(arguments[0]).css('outline', 'none');" +
                 "if (($('body').height() > $(window).height()) && " +
                 "($(window).height() - $(arguments[0]).offset().top - $(arguments[0]).height() + $(window).scrollTop()) < 600 && " +
                 "($(window).height() + $(window).scrollTop()) < $('body').height()" +
                 " ){" +
-              //  "$(arguments[0]).css('outline', 'solid 1px blue');" +
+                    //  "$(arguments[0]).css('outline', 'solid 1px blue');" +
                 "$(arguments[0]).get(0).scrollIntoView(true);" +
 
                 "}" +
                 "if ($(arguments[0]).offset().top - ($(window).scrollTop() ) < 100) { " +
-             //   "$(arguments[0]).css('outline', 'solid 1px green');" +
+                    //   "$(arguments[0]).css('outline', 'solid 1px green');" +
                 "window.scrollBy(0,-100);" +
                 "}" +
                 "$('.tooltip-inner').hide()", lastElement);
@@ -660,65 +660,71 @@ exports.verifyValue = function verifyValue(verification)
 {
     'use strict';
 
-    var extractValue= function verifyValueExtract(value, key) {
+    var extractValue = function verifyValueExtract(value, key)
+    {
         var rawValue;
         if (typeof verification.index === "undefined") {
             if (Array.isArray(value)) {
-                rawValue=value.map(function docFormVerifyValueMap(x) {
+                rawValue = value.map(function docFormVerifyValueMap(x)
+                {
                     return x[key];
                 });
             } else {
-                rawValue=value[key];
+                rawValue = value[key];
             }
 
         } else {
             if (Array.isArray(value[verification.index])) {
-                rawValue=value[verification.index].map(function docFormVerifyValueMapIndex(x) {
+                rawValue = value[verification.index].map(function docFormVerifyValueMapIndex(x)
+                {
                     return x[key];
                 });
             } else {
-                rawValue=value[verification.index][key];
+                rawValue = value[verification.index][key];
             }
         }
         return rawValue;
     };
 
-    if (typeof verification.expectedValue !== "undefined") {
-        if (verification.expectedValue === "===") {
-            verification.expectedValue = verification.rawValue || verification.number;
+    if (typeof verification.expected !== "undefined") {
+
+        if (typeof verification.expected.value !== "undefined") {
+            if (verification.expected.value === "===") {
+                verification.expected.value = verification.rawValue || verification.number;
+            }
+            exports.getValue(verification.attrid).then(function docForm_check_value(value)
+            {
+                var rawValue, msg;
+
+                rawValue = extractValue(value, "value");
+
+                msg = 'Attribute :"' + verification.attrid +
+                    ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
+                    '", expected "' + verification.expected.value +
+                    '", got :"' + rawValue + '"';
+
+                since(msg).expect(rawValue).toEqual(verification.expected.value);
+            });
         }
-        exports.getValue(verification.attrid).then(function docForm_check_value(value)
-        {
-            var rawValue, msg;
 
-            rawValue=extractValue(value, "value");
+        if (typeof verification.expectedDisplayValue !== "undefined") {
+            if (verification.expectedDisplayValue === "===") {
+                verification.expectedDisplayValue = verification.rawValue || verification.number;
+            }
+            exports.getValue(verification.attrid).then(function docForm_check_value(value)
+            {
+                var rawValue, msg;
 
-            msg='Attribute :"'+verification.attrid+
-                ((typeof verification.index === "undefined")?"":(" #"+verification.index))+
-            '", expected "'+verification.expectedValue+
-            '", got :"'+rawValue+'"';
+                rawValue = extractValue(value, "displayValue");
 
-            since(msg).expect(rawValue).toEqual(verification.expectedValue);
-        });
-    }
+                msg = 'Attribute :"' + verification.attrid +
+                    ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
+                    '", expected "' + verification.expectedDisplayValue +
+                    '", got :"' + rawValue + '"';
 
-    if (typeof verification.expectedDisplayValue !== "undefined") {
-        if (verification.expectedDisplayValue === "===") {
-            verification.expectedDisplayValue = verification.rawValue || verification.number;
+                since(msg).expect(rawValue).toEqual(verification.expectedDisplayValue);
+            });
         }
-        exports.getValue(verification.attrid).then(function docForm_check_value(value)
-        {
-            var rawValue, msg;
-
-            rawValue=extractValue(value, "displayValue");
-
-            msg='Attribute :"'+verification.attrid+
-                ((typeof verification.index === "undefined")?"":(" #"+verification.index))+
-                '", expected "'+verification.expectedDisplayValue+
-                '", got :"'+rawValue+'"';
-
-            since(msg).expect(rawValue).toEqual(verification.expectedDisplayValue);
-        });
     }
 
 };
