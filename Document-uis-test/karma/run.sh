@@ -53,7 +53,7 @@ function main {
     fi
     LOCAL_ROOT=$2
     if [ -z "$LOCAL_ROOT" ]; then
-	LOCAL_ROOT="${MY_DIR}/../../"
+	LOCAL_ROOT="${MY_DIR}/../"
     fi
     if [ ! -d "${LOCAL_ROOT}/DOCUMENT" ]; then
 	echo "Error: missing subdir 'DOCUMENT' in local root '${LOCAL_ROOT}'!"
