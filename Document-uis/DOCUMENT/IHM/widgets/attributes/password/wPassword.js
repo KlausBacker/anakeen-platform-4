@@ -1,10 +1,8 @@
 /*global define*/
 define([
     'jquery',
-    'underscore',
-    'mustache',
     'dcpDocument/widgets/attributes/text/wText'
-], function ($, _, Mustache) {
+], function wPassword($) {
     'use strict';
 
     $.widget("dcp.dcpPassword", $.dcp.dcpText, {
@@ -18,20 +16,28 @@ define([
             labels: {}
         },
 
-
         _initDom: function wasswordInitDom() {
-            if (this.getMode() === "read") {
                 if (this.options.attributeValue.value) {
                     this.options.attributeValue.displayValue = this.options.renderOptions.hideValue;
                 }
-            }
 
             this._super();
             if (this.getMode() === "write") {
                 this._getFocusInput().attr("type", "password");
             }
         },
+        /**
+         * Hide password to displayValue
+         * @param value
+         */
+        setValue: function wpasswordSetValue(value)
+        {
+            if (value.value) {
+                value.displayValue = this.options.renderOptions.hideValue;
+            }
 
+            this._super(value);
+        },
         getType: function wIntGetType() {
             return "password";
         }

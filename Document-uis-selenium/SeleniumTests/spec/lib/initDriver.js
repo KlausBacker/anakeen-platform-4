@@ -13,13 +13,21 @@ if (config.server) {
     driver.usingServer(config.server);
 }
 
+if (config.capabilities) {
+    driver.getCapabilities().merge(config.capabilities);
+}
+
 exports.getDriver = function buildDriver()
 {
     'use strict';
-    var session;
     if (buildedDriver === null) {
         buildedDriver = driver.build();
+        /*
+        buildedDriver.getSession().then(function x(session) {
+            console.log("session", session);
+        });*/
     }
+
     return buildedDriver;
 };
 

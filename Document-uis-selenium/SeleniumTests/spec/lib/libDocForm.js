@@ -4,6 +4,12 @@ var webdriver = require('selenium-webdriver'),
 
 require('jasmine2-custom-message');
 
+var ansi = {
+    green: '\x1B[32m',
+    red: '\x1B[31m',
+    yellow: '\x1B[33m',
+    none: '\x1B[0m'
+};
 var docWindow, currentDriver, currentWindow;
 
 var waitAnimationClose = function waitAnimationClose()
@@ -23,6 +29,7 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
 {
     'use strict';
     var aElt;
+    var isScrolled=false;
 
     if (typeof index === "undefined") {
         aElt = webdriver.By.css('div.dcpAttribute__content[data-attrid=' + attrid + '], div.dcpArray__content[data-attrid=' + attrid + ']');
@@ -35,7 +42,7 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
         return currentDriver.isElementPresent(aElt);
     }, 5000);
 
-    return currentDriver.findElements(aElt).then(function x(elements)
+    currentDriver.findElements(aElt).then(function x(elements)
     {
         if (elements.length > 0) {
             var lastElement = elements[elements.length - 1];
@@ -54,10 +61,19 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
                     //   "$(arguments[0]).css('outline', 'solid 1px green');" +
                 "window.scrollBy(0,-100);" +
                 "}" +
-                "$('.tooltip-inner').hide()", lastElement);
+                "$('.tooltip-inner').hide()", lastElement).then(function x() {
+                isScrolled=true;
+            });
 
+        } else {
+            isScrolled = true;
         }
     });
+    return currentDriver.wait(function waitSelect()
+    {
+        return isScrolled;
+    }, 5000);
+
 };
 
 /**
@@ -194,7 +210,12 @@ exports.setDateValue = function setDateValue(data)
 
     }
 
-    return waitAnimationClose();
+    return waitAnimationClose().then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
 };
 
 exports.setTimeValue = function setTimeValue(data)
@@ -352,7 +373,7 @@ exports.setFileValue = function setFileValue(data)
     var refWaitCss = "div[data-attrid=" + data.attrid + "] .dcpAttribute__value--transferring, div[data-attrid=" + data.attrid + "] .dcpAttribute__value--recording";
 
     // Need to wait because DOM will be destroyed after setValue
-    currentDriver.wait(function waitNumericInput()
+    currentDriver.wait(function waitFileRecording()
     {
         return currentDriver.findElements(
             webdriver.By.css(refWaitCss)).then(function waitAnimationDone(elements)
@@ -378,14 +399,28 @@ exports.setFileValue = function setFileValue(data)
             '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[@type="file"]')).sendKeys(data.filePath);
     }
 
-    //@TODO Need to wait file is uploaded
-    return currentDriver.sleep(10).then(
+    /*currentDriver.wait(function waitNumericInput()
+     {
+     return currentDriver.findElements(
+     webdriver.By.css(refWaitCss)).then(function waitAnimationDone(elements)
+     {
+     return elements.length > 0;
+     });
+     }, 5000);*/
+
+    return currentDriver.wait(function waitFileRecording()
+    {
+        return currentDriver.findElements(
+            webdriver.By.css(refWaitCss)).then(function waitAnimationDone(elements)
+        {
+            return elements.length === 0;
+        });
+    }, 5000).then(
         function docFormExpect()
         {
             exports.verifyValue(data);
         }
     );
-
 };
 
 exports.setDocidValue = function setDocidValue(data)
@@ -518,7 +553,9 @@ exports.setEnumRadioValue = function setEnumRadioValue(data)
     scrollToAttribute(data.attrid, data.index);
 
     if (typeof data.index === "undefined") {
-        localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+        var elt= currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/.."));
+
+        localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/..")).click();
     } else {
         localPromise = currentDriver.findElement(webdriver.By.xpath(
             '(//div[@data-attrid="' + data.attrid + '"])[' +
@@ -687,44 +724,35 @@ exports.verifyValue = function verifyValue(verification)
     };
 
     if (typeof verification.expected !== "undefined") {
+        Object.keys(verification.expected).forEach(function verifyValue_verifySingleKey(expectKey)
+        {
+            var expectedValue = verification.expected[expectKey];
 
-        if (typeof verification.expected.value !== "undefined") {
-            if (verification.expected.value === "===") {
-                verification.expected.value = verification.rawValue || verification.number;
+            if (typeof expectedValue !== "undefined") {
+                console.log("Examine", verification.attrid, expectKey, verification.expected[expectKey]);
+
+                if (expectedValue === "{{value}}") {
+                    expectedValue = verification.rawValue || verification.number;
+                }
+                exports.getValue(verification.attrid).then(function docForm_check_value(value)
+                {
+                    var rawValue, msg;
+
+                    rawValue = extractValue(value, expectKey);
+
+                    msg = 'Attribute :"' + verification.attrid +
+                        ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
+                        '", expected "' + expectedValue +
+                        '", got :"' + rawValue + '"';
+
+                    since(msg).expect(rawValue).toEqual(expectedValue);
+                    if (rawValue !== null && rawValue.toString() !== expectedValue.toString()) {
+                        process.stdout.write(ansi.red);
+                        process.stdout.write("Fail Examine :" + verification.attrid + ' - ' +expectKey + " " + rawValue + ", expect:" + expectedValue);
+                        process.stdout.write(ansi.none);
+                    }
+                });
             }
-            exports.getValue(verification.attrid).then(function docForm_check_value(value)
-            {
-                var rawValue, msg;
-
-                rawValue = extractValue(value, "value");
-
-                msg = 'Attribute :"' + verification.attrid +
-                    ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
-                    '", expected "' + verification.expected.value +
-                    '", got :"' + rawValue + '"';
-
-                since(msg).expect(rawValue).toEqual(verification.expected.value);
-            });
-        }
-
-        if (typeof verification.expectedDisplayValue !== "undefined") {
-            if (verification.expectedDisplayValue === "===") {
-                verification.expectedDisplayValue = verification.rawValue || verification.number;
-            }
-            exports.getValue(verification.attrid).then(function docForm_check_value(value)
-            {
-                var rawValue, msg;
-
-                rawValue = extractValue(value, "displayValue");
-
-                msg = 'Attribute :"' + verification.attrid +
-                    ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
-                    '", expected "' + verification.expectedDisplayValue +
-                    '", got :"' + rawValue + '"';
-
-                since(msg).expect(rawValue).toEqual(verification.expectedDisplayValue);
-            });
-        }
+        });
     }
-
 };

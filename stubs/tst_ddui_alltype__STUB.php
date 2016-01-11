@@ -155,28 +155,6 @@ namespace Dcp\AttributeIdentifiers {
 		const test_ddui_all__color_array='test_ddui_all__color_array';
 		/** [password] Des mots de passe */
 		const test_ddui_all__password_array='test_ddui_all__password_array';
-		/** [array] Quelques énumérés simple */
-		const test_ddui_all__array_singleenum='test_ddui_all__array_singleenum';
-		/** [enum ] Un énuméré liste */
-		const test_ddui_all__enumlist_array='test_ddui_all__enumlist_array';
-		/** [enum ] Un énuméré auto */
-		const test_ddui_all__enumauto_array='test_ddui_all__enumauto_array';
-		/** [enum ] Un énuméré vertical */
-		const test_ddui_all__enumvertical_array='test_ddui_all__enumvertical_array';
-		/** [enum ] Un énuméré horizontal */
-		const test_ddui_all__enumhorizontal_array='test_ddui_all__enumhorizontal_array';
-		/** [enum ] Un énuméré booléen */
-		const test_ddui_all__enumbool_array='test_ddui_all__enumbool_array';
-		/** [array] Quelques énumérés multiples */
-		const test_ddui_all__array_multipleenum='test_ddui_all__array_multipleenum';
-		/** [enum ] Des énumérés liste */
-		const test_ddui_all__enumslist_array='test_ddui_all__enumslist_array';
-		/** [enum ] Des énumérés auto */
-		const test_ddui_all__enumsauto_array='test_ddui_all__enumsauto_array';
-		/** [enum ] Des énumérés verticaux */
-		const test_ddui_all__enumsvertical_array='test_ddui_all__enumsvertical_array';
-		/** [enum ] Des énumérés horizontaux */
-		const test_ddui_all__enumshorizontal_array='test_ddui_all__enumshorizontal_array';
 		/** [tab] Les fichiers */
 		const test_ddui_all__t_tab_files='test_ddui_all__t_tab_files';
 		/** [frame] Fichiers & images */

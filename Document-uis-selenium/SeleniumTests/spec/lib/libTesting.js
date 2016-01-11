@@ -27,8 +27,8 @@ exports.login = function login(loginName, password)
     passInput.sendKeys(password);
 
         exports.saveScreenshot("login");
-    return currentDriver.findElement(webdriver.By.xpath('//*[contains(text(),"Se connecter")]')).click();
-    //currentDriver.sleep(1000);
+    currentDriver.findElement(webdriver.By.xpath('//*[contains(text(),"Se connecter")]')).click();
+    return currentDriver.sleep(1000);
 
 };
 

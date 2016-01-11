@@ -22,7 +22,7 @@ if (args.length > 0) {
 jasmine.loadConfig({
     "spec_dir" : 'spec',
     "spec_files" : files,
-    "stopSpecOnExpectationFailure": false,
+    "stopSpecOnExpectationFailure": true,
     "random": false
 });
 
