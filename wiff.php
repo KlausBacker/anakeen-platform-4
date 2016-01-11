@@ -1125,6 +1125,109 @@ if (isset($_REQUEST['deactivateAllRepo']) && isset($_REQUEST['context'])) {
     answer(true);
 }
 
+if (isset($_REQUEST['deployWebinst'])) {
+    if(! isset($_REQUEST['context'])) {
+        answer(null, "'context' argument is required");
+        exit(1);
+    }
+    $contextName = $_REQUEST['context'];
+    $context = $wiff->getContext($contextName);
+    if (false === $context) {
+        $availableContexts = $wiff->getContextList();
+        if (0 === count($availableContexts)) {
+            answer(
+                null,
+                "context '$context' not found",
+                'No context on this server.'
+            );
+        } else {
+            $deployMsg = 'Available contexts are:';
+            foreach ($availableContexts as $availableContext) {
+                $deployMsg .= "\n  - " . $availableContext->name;
+            }
+            answer(
+                null,
+                "context '$context' not found",
+                $deployMsg
+            );
+        }
+    }
+
+    //get module path
+    if (!array_key_exists('webinst', $_FILES)) {
+        answer(null, "no webinst file posted");
+    }
+    if ($_FILES['webinst']['error'] !== UPLOAD_ERR_OK) {
+        answer(null, sprintf(
+            "posted webinst file has an error : '%s'",
+            $_FILES['webinst']['error']
+        ));
+    }
+    $modulePath = $_FILES['webinst']['tmp_name'];
+
+    //get method
+    $action = isset($_REQUEST["action"]) ? $_REQUEST["action"] : 'auto';
+    switch ($action) {
+    case 'auto':
+        $module = $context->loadModuleFromPackage($modulePath);
+        if (false === $context->getModuleInstalled($module->name)) {
+            $action = 'install';
+        } else {
+            $action = 'upgrade';
+        }
+        $messages[] = "action '$action' has been choosen";
+        break;
+    case 'install':
+    case 'upgrade':
+        break;
+    default:
+        answer(null,
+            "action '$action' is invalid. It should be empty, 'install', 'upgrade' or 'auto'");
+    }
+
+    //get additional arguments
+    $additionalArgs = '';
+    if (isset($_REQUEST["additional_args"])) {
+        $additionalArgs = implode(' ', array_map('escapeshellarg', $_REQUEST["additional_args"]));
+    }
+
+    $cmd = sprintf(
+        '%s/wiff context %s module %s --unattended %s %s 2>&1',
+        escapeshellarg(__DIR__),
+        escapeshellarg($contextName),
+        escapeshellarg($action),
+        $additionalArgs,
+        escapeshellarg($modulePath)
+    );
+
+    //run command
+    $ret = '';
+    exec($cmd, $output, $ret);
+
+    if ($ret > 0) {
+        $answer = new JSONAnswer(
+            $output,
+            "the command '$cmd' failed with status code $ret",
+            false
+        );
+        echo $answer->encode(
+            JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_PRETTY_PRINT
+        );
+        exit(1);
+    } else {
+        $answer = new JSONAnswer(
+            $output,
+            null,
+            true,
+            "running command is '$cmd'"
+        );
+        echo $answer->encode(
+            JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_PRETTY_PRINT
+        );
+        exit();
+    }
+}
+
 // Call to get a param value
 if (isset($argv)) {
     $paramName = "";

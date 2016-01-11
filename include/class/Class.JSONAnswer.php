@@ -31,8 +31,11 @@ class JSONAnswer
         $this->warnings = $warnings;
     }
     
-    public function encode()
+    public function encode($flags=null)
     {
+        if(is_null($flags)) {
+            $flags = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP;
+        }
         $wiff = WIFF::getInstance();
         if ($this->error != '') {
             if ($this->success) {
@@ -44,6 +47,6 @@ class JSONAnswer
         foreach ($this->warnings as $warn) {
             $wiff->log(LOG_WARNING, $warn);
         }
-        return json_encode($this, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP);
+        return json_encode($this, $flags);
     }
 }
