@@ -27,15 +27,16 @@ exports.login = function login(loginName, password)
     passInput.sendKeys(password);
 
         exports.saveScreenshot("login");
-    return currentDriver.findElement(webdriver.By.xpath('//a[contains(text(),"Se connecter")]')).click();
-    //currentDriver.sleep(1000);
+    currentDriver.findElement(webdriver.By.xpath('//*[contains(text(),"Se connecter")]')).click();
+    return currentDriver.sleep(1000);
 
 };
 
 exports.saveScreenshot=function saveScreenshot(name) {
     'use strict';
     var currentDriver = driver.getDriver();
-     currentDriver.takeScreenshot().then(function loginScreenShot(image)
+
+    return currentDriver.takeScreenshot().then(function loginScreenShot(image)
     {
         var outDir=driver.screenshotDirectory+'/'+driver.browser+'/';
         var outFile=outDir+name+'.png';

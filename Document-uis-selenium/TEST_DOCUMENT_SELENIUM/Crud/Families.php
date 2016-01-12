@@ -50,7 +50,7 @@ class Families extends \Dcp\HttpApi\V1\Crud\DocumentCollection {
         $this->orderBy = $this->extractOrderBy();
         $this->_searchDoc->setOrder($this->orderBy);
 
-        $param=json_decode(\ApplicationParameterManager::getParameterValue("TESTDDUI", "TESTFAMILIES"));
+        $param=json_decode(\ApplicationParameterManager::getParameterValue("TEST_DOCUMENT_SELENIUM", "TESTFAMILIES"));
         if ($param) {
             $this->_searchDoc->addFilter($this->_searchDoc->sqlcond($param,"name" ));
         }

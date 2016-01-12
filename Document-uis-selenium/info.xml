@@ -9,20 +9,20 @@
 
     <post-install>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
-        <process command="./wsh.php --api=importDocuments --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ALL__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ALL__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__CONFIG.csv"/>
-        <process command="./wsh.php --api=importDocuments --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
 
-        <process command="./wsh.php --api=importDocuments --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ALL__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ALL__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__CONFIG.csv"/>
-        <process command="./wsh.php --api=importDocuments --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="programs/update_catalog"/>
     </post-upgrade>

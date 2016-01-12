@@ -2,6 +2,7 @@
 
 var Jasmine = require('jasmine');
 var reporters = require('jasmine-reporters');
+var expectReporter = require("./spec/lib/expectReporter.js");
 var jasmine = new Jasmine();
 
 var args = process.argv.slice(2);
@@ -12,6 +13,8 @@ var junitReporter = new reporters.JUnitXmlReporter({
 
 var files = ["**/*[sS]pec.js"];
 
+
+
 if (args.length > 0) {
     files = args;
 }
@@ -19,11 +22,18 @@ if (args.length > 0) {
 jasmine.loadConfig({
     "spec_dir" : 'spec',
     "spec_files" : files,
-    "stopSpecOnExpectationFailure": false,
+    "stopSpecOnExpectationFailure": true,
     "random": false
 });
 
-jasmine.configureDefaultReporter({});
+jasmine.configureDefaultReporter({
+    showColor:true
+});
+
 jasmine.addReporter(junitReporter);
 
+/**
+ * Register the reporter with jasmine
+ */
+jasmine.addReporter(expectReporter.reporter);
 jasmine.execute();
