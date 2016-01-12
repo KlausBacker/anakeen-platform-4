@@ -172,6 +172,7 @@ class HtmlLinkOptions
     public $windowTitle = "";
     public $title = "";
     public $url = "";
+    public $urls = array();
 }
 class ButtonOptions
 {

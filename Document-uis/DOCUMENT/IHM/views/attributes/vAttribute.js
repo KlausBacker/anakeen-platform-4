@@ -302,8 +302,13 @@ define([
 
         externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
         {
+               var documentModel = this.model.getDocumentModel();
             options.attrid = this.model.id;
             this.model.trigger("internalLinkSelected", event, options);
+            if (event.prevent) {
+                return this;
+            }
+            documentModel.trigger("actionAttributeLink", event, options);
         },
         downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options)
         {
@@ -500,7 +505,7 @@ define([
             }
         },
 
-        afterShow: function vAttributeAfterShow(event, data)
+        afterShow: function vAttributeAfterShow(/*event, data*/)
         {
             // propagate event to widgets
             this.getDOMElements().trigger("show");

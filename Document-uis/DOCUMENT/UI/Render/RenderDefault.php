@@ -253,9 +253,9 @@ class RenderDefault implements IRenderConfig
             "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
             "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
             "selectMessage" => ___("Select", "ddui-enum") ,
-            "unselectMessage" => ___("Unselect", "ddui-enum"),
-            "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum"),
-            "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum"),
+            "unselectMessage" => ___("Unselect", "ddui-enum") ,
+            "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum") ,
+            "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum") ,
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")
         ));
         $opt->date()->setTranslations(array(
@@ -285,7 +285,18 @@ class RenderDefault implements IRenderConfig
         
         foreach ($oas as $oa) {
             if ($oa->link) {
-                $linkOption = new htmlLinkOptions($document->urlWhatEncode($oa->link));
+                $link = preg_replace("/%" . ($oa->id) . "%/i", '@@value@@', $oa->link);
+                $encLink = $document->urlWhatEncode($link);
+                $encLink = str_replace('@@value@@', '{{value}}', $encLink);
+                $linkOption = new htmlLinkOptions($encLink);
+                if ($oa->isMultiple()) {
+                    $values = $document->getMultipleRawValues($oa->id);
+                    foreach ($values as $k => $v) {
+                        $encLink = $document->urlWhatEncode($link, $k);
+                        $encLink = str_replace('@@value@@', '{{value}}', $encLink);
+                        $linkOption->urls[] = $encLink;
+                    }
+                }
                 $opt->text($oa->id)->setLink($linkOption);
             }
         }
