@@ -3,7 +3,7 @@ define([
     'underscore',
     'dcpDocument/widgets/widget',
     'kendo/kendo.window'
-], function ($, _)
+], function wDialog($, _)
 {
     'use strict';
 
@@ -44,6 +44,12 @@ define([
                     }
                 });
             }
+
+
+            if ($(window).width() <= this.options.maximizeWidth) {
+                this.options.window.width="auto";
+                this.options.window.heigth="auto";
+            }
             this.dialogWindow = this.element.kendoWindow(this.options.window).data("kendoWindow");
         },
 
@@ -52,15 +58,20 @@ define([
             var kWindow = this.dialogWindow;
             if ($(window).width() <= this.options.maximizeWidth) {
                 kWindow.setOptions({
-                    actions: ["Close"]
+                    actions: ["Close"],
+                    animation:false
                 });
-                kWindow.maximize();
+
                 kWindow.open();
+                _.delay(function wDialogMaximize() {
+                    kWindow.maximize(); // Need to defer to wait window to be really opened
+                },100);
             } else {
                 kWindow.setOptions({
                     actions: this.options.window.actions
                 });
                 kWindow.center();
+                console.log("window center", this.options.window.actions);
                 kWindow.open();
             }
         },

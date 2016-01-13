@@ -431,10 +431,10 @@ exports.setDocidValue = function setDocidValue(data)
 
     if (typeof data.index === "undefined") {
 
-        currentDriver.findElement(webdriver.By.css('div[data-attrid=' + data.attrid + '] .k-input')).sendKeys(data.filterText);
+        currentDriver.findElement(webdriver.By.css('div[data-attrid=' + data.attrid + '] .k-input')).sendKeys(data.filterText || '');
     } else {
         currentDriver.findElement(webdriver.By.xpath(
-            '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).sendKeys(data.filterText);
+            '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).sendKeys(data.filterText || '');
     }
     currentDriver.wait(function waitSelect()
     {
@@ -451,6 +451,12 @@ exports.setDocidValue = function setDocidValue(data)
     );
 };
 
+exports.addDocidValue = function addDocidValue(data)
+{
+    'use strict';
+
+    return exports.setDocidValue(data);
+};
 exports.addAccountMultipleValue = function addAccountMultipleValue(data)
 {
     'use strict';
@@ -553,8 +559,6 @@ exports.setEnumRadioValue = function setEnumRadioValue(data)
     scrollToAttribute(data.attrid, data.index);
 
     if (typeof data.index === "undefined") {
-        var elt= currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/.."));
-
         localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/..")).click();
     } else {
         localPromise = currentDriver.findElement(webdriver.By.xpath(
@@ -659,11 +663,22 @@ exports.createAndClose = function createAndClose()
 {
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Créer et fermer")]')).click();
+
+    return currentDriver.wait(function waitDocumentIsDisplayed()
+        {
+            return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
+        }, 5000);
+
 };
 exports.saveAndClose = function saveAndClose()
 {
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Enregistrer et fermer")]')).click();
+
+    return currentDriver.wait(function waitDocumentIsDisplayed()
+    {
+        return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
+    }, 5000);
 };
 
 exports.openMenu = function openMenu(config)
@@ -691,6 +706,41 @@ exports.getValue = function getValue(attrid)
 {
     'use strict';
     return currentDriver.executeScript("return window.dcp.document.documentController('getValue', '" + attrid + "');");
+};
+
+exports.verifyAttributeDisplay= function verifyAttributeDisplay(data) {
+    'use strict';
+
+    var elt;
+    var prefixMsg = 'Attribute :"' + data.attrid +
+        ((typeof data.index === "undefined") ? "" : (" #" + data.index)) +'"';
+
+    if (typeof data.index === "undefined") {
+        elt = webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[contains(@class,'dcpAttribute__value--read')]");
+    } else {
+        elt = webdriver.By.xpath("(//div[@data-attrid='" + data.attrid + "']//span[contains(@class,'dcpAttribute__value--read')])[" +
+            (data.index + 1)+"]");
+    }
+    currentDriver.findElement(elt).then(function verifyAttributeGetElement(domElement) {
+
+        if (data.expected.displayText) {
+            domElement.getText().then(function verifyAttributeDisplayText(text)
+            {
+                var msg = prefixMsg +
+                        ', expected "' + data.expected.displayText +
+                        '", got :"' + text + '"';
+
+                if (text !== null && text.toString() !== data.expected.displayText.toString()) {
+                        process.stdout.write(ansi.red);
+                        process.stdout.write("Fail Examine :" + msg);
+                        process.stdout.write(ansi.none);
+                        exports.outlineElement(elt, "red");
+                    }
+                since(msg).expect(text).toEqual(data.expected.displayText);
+
+            });
+        }
+    });
 };
 
 exports.verifyValue = function verifyValue(verification)
@@ -742,17 +792,30 @@ exports.verifyValue = function verifyValue(verification)
 
                     msg = 'Attribute :"' + verification.attrid +
                         ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
-                        '", expected "' + expectedValue +
-                        '", got :"' + rawValue + '"';
+                        '", expected "' + expectedValue.toString() +
+                        '", got :"' + rawValue.toString() + '"';
 
-                    since(msg).expect(rawValue).toEqual(expectedValue);
                     if (rawValue !== null && rawValue.toString() !== expectedValue.toString()) {
                         process.stdout.write(ansi.red);
-                        process.stdout.write("Fail Examine :" + verification.attrid + ' - ' +expectKey + " " + rawValue + ", expect:" + expectedValue);
+                        process.stdout.write("Fail Examine :" + msg);
                         process.stdout.write(ansi.none);
                     }
+                    since(msg).expect(rawValue).toEqual(expectedValue);
                 });
             }
         });
     }
+};
+
+exports.outlineElement= function outlineElement(locator, color) {
+    'use strict';
+     currentDriver.findElements(locator).then(function x(elements) {
+         elements.forEach(function x(element) {
+             currentDriver.executeScript(
+                 "$(arguments[0]).css('outline', 'solid 1px '+arguments[1]);",
+                 element, color
+             );
+         });
+     });
+
 };

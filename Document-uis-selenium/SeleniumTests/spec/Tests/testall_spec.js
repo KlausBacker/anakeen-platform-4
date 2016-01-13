@@ -81,6 +81,7 @@ describe('Dynacase basic test', function formAllEdit()
             selectedText: "Jean",
             expected: {displayValue: "Grand Jean"}
         });
+
         //------------------------------------------
         // Second account : test_ddui_all__account_multiple
         docForm.addAccountMultipleValue({

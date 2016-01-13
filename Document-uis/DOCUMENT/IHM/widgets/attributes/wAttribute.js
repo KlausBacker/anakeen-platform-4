@@ -375,15 +375,16 @@ define([
                 if (this._isMultiple()) {
                     this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
                     {
+                        var urlIndex=index;
                         Mustache.escape = encodeURIComponent;
                         scopeWidget._completeRevisionData(val);
                         if (scopeWidget.options.index >= 0) {
                             // Use index of row prior to index of multiple value
-                            index=scopeWidget.options.index;
+                            urlIndex=scopeWidget.options.index;
                         }
 
-                        if (htmlLink.urls && htmlLink.urls[index]) {
-                                val.renderUrl = Mustache.render(htmlLink.urls[index], val);
+                        if (htmlLink.urls && htmlLink.urls[urlIndex]) {
+                                val.renderUrl = Mustache.render(htmlLink.urls[urlIndex], val);
                         } else {
                             val.renderUrl = Mustache.render(htmlLink.url || "", val);
                         }

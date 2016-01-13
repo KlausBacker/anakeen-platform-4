@@ -11,8 +11,11 @@
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ALL__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__CONFIG.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__PARAM.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_DOCID__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_DOCID__DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="programs/update_catalog"/>
     </post-install>
@@ -21,8 +24,11 @@
 
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ALL__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__CONFIG.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_ENUM__PARAM.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_DOCID__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=auto --file=./TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_DOCID__DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="programs/update_catalog"/>
     </post-upgrade>

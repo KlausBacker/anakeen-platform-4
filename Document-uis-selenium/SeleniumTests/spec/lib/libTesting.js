@@ -12,7 +12,7 @@ exports.login = function login(loginName, password)
     'use strict';
     var currentDriver = driver.getDriver();
     var loginInput, passInput;
-    currentDriver.get(driver.rootUrl);
+    //currentDriver.get(driver.rootUrl);
     //currentDriver.manage().window().maximize();
     currentDriver.manage().window().setSize(1280,1024);
     currentDriver.wait(function waitLogin()
@@ -26,7 +26,7 @@ exports.login = function login(loginName, password)
     loginInput.sendKeys(loginName);
     passInput.sendKeys(password);
 
-        exports.saveScreenshot("login");
+    exports.saveScreenshot("login");
     currentDriver.findElement(webdriver.By.xpath('//*[contains(text(),"Se connecter")]')).click();
     return currentDriver.sleep(1000);
 

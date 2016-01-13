@@ -709,6 +709,7 @@ define([
                     hideNotice: i18n.___("Hide notices", "historyUi"),
                     filterMessages: i18n.___("Filter messages", "historyUi"),
                     linkRevision: i18n.___("See revision number #", "historyUi"),
+                    historyTitle: i18n.___("History for {{title}}", "historyUi"),
                     loading: i18n.___("Loading ...", "historyUi"),
                     revisionDiffLabels: {
                         "title": i18n.___("Difference between two revisions", "historyDiffUi"),
@@ -828,6 +829,7 @@ define([
                     profilReference: i18n.___("Profil reference", "propertyUi"),
                     viewController: i18n.___("View controller", "propertyUi"),
                     property: i18n.___("Property", "propertyUi"),
+                    propertiesTitle: i18n.___("Properties for {{title}}", "propertyUi"),
                     propertyValue: i18n.___("Value", "propertyUi"),
                     workflow: i18n.___("Workflow", "propertyUi"),
                     activity: i18n.___("Activity", "propertyUi")
