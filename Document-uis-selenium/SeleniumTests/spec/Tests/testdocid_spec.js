@@ -1,7 +1,8 @@
 var webdriver = require('selenium-webdriver'),
     driver = require("../lib/initDriver.js"),
     util = require("../lib/libTesting.js"),
-    docForm = require("../lib/libDocForm.js");
+    docForm = require("../lib/libDocForm.js"),
+    docidTest = require("../lib/libDocidTest.js");
 
 describe('Dynacase Docid test', function formAllEdit()
 {
@@ -14,117 +15,11 @@ describe('Dynacase Docid test', function formAllEdit()
         expect(false).toBe(null);
     };
 
-    var verifyClick = function verifyClick(data)
-    {
-        var elt, xpath;
-        var prefixMsg = 'Attribute :"' + data.attrid +
-            ((typeof data.index === "undefined") ? "" : (" #" + data.index)) + '"';
-
-        if (typeof data.rowIndex !== "undefined") {
-            xpath = "(//div[@data-attrid='" + data.attrid + "']//span[contains(@class,'dcpAttribute__value--read')])[" +
-                (data.rowIndex + 1) + "]/a";
-        }
-        else {
-            xpath = "//div[@data-attrid='" + data.attrid + "']//span[contains(@class,'dcpAttribute__value--read')]/a";
-        }
-        if (typeof data.index !== "undefined") {
-            xpath += "[" + (data.index + 1) + "]";
-        }
-        elt = webdriver.By.xpath(xpath);
-        // For IE need to move and click after due to tooltip interaction
-        currentDriver.actions().mouseMove(currentDriver.findElement(elt)).perform();
-        docForm.outlineElement(elt, "orange");
-        currentDriver.sleep(50);
-        currentDriver.findElement(elt).click();
-        currentDriver.sleep(1000); // wait animation
-
-        if (data.expected.historicTitle) {
-            currentDriver.wait(function waitDocumentIsDisplayed()
-            {
-                return webdriver.until.elementIsVisible(webdriver.By.css(".document-history .history-level--revision"));
-            }, 5000);
-            elt = webdriver.By.xpath("//div[contains(@class,'document-history')]/..//span[contains(@class,'k-window-title')]");
-            currentDriver.findElement(elt).getText().then(function x(text)
-            {
-                var msg = "Verify history :" + prefixMsg +
-                    ', expected "' + data.expected.historicTitle +
-                    '", got :"' + text + '"';
-                since(msg).expect(text).toEqual(data.expected.historicTitle);
-            });
-        }
-
-        if (data.expected.documentTitle) {
-            currentDriver.wait(function waitDocumentIsDisplayed()
-            {
-                return webdriver.until.elementIsVisible(webdriver.By.css("iframe.k-content-frame"));
-            }, 5000);
-
-            elt = webdriver.By.xpath("//iframe[contains(@class,'k-content-frame')]/../..//span[contains(@class,'k-window-title')]");
-
-            getFirstVisibleElement(elt).then(function x(windowTitleElement)
-            {
-                windowTitleElement.getText().then(function x(text)
-                {
-                    var msg = "Verify document :" + prefixMsg +
-                        ', expected "' + data.expected.documentTitle +
-                        '", got :"' + text + '"';
-                    //console.log("verify", msg);
-                    since(msg).expect(text).toEqual(data.expected.documentTitle);
-                });
-            });
-
-        }
-        if (data.expected.propertiesTitle) {
-            elt = webdriver.By.xpath("//div[contains(@class,'document-properties')]/..//span[contains(@class,'k-window-title')]");
-            currentDriver.findElement(elt).getText().then(function x(text)
-            {
-                var msg = "Verify properties :" + prefixMsg +
-                    ', expected "' + data.expected.propertiesTitle +
-                    '", got :"' + text + '"';
-                since(msg).expect(text).toEqual(data.expected.propertiesTitle);
-            });
-        }
-
-        getFirstVisibleElement(webdriver.By.css(".k-window-actions .k-i-close")).click();
-
-        currentDriver.wait(function waitDocumentIsDisplayed()
-        {
-            var locator=webdriver.By.css(".k-window");
-            var links = currentDriver.findElements(locator);
-            return webdriver.promise.filter(links, function closeDialogWindowFilter(link)
-            {
-                return link.isDisplayed();
-            }).then(function closeDialogWindoGetwFirst(visibleLinks)
-            {
-                return visibleLinks.length === 0;
-            });
-
-        }, 5000);
-
-    };
-
-    var getFirstVisibleElement = function getFirstVisibleElement(locator)
-    {
-        var ftVisibleLink = function firstVisibleLink(driver)
-        {
-            var links = driver.findElements(locator);
-            return webdriver.promise.filter(links, function closeDialogWindowFilter(link)
-            {
-                return link.isDisplayed();
-            }).then(function closeDialogWindoGetwFirst(visibleLinks)
-            {
-                return visibleLinks[0];
-            });
-        };
-        return currentDriver.findElement(ftVisibleLink);
-    };
-
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
 
     beforeAll(function beforeFormAllEdit(beforeDone)
     {
         var url = driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_DOCID&viewId=!defaultCreation";
-       // var url = driver.rootUrl + "?app=DOCUMENT&initid=157313&viewId=!defaultConsultation";
 
         console.log("Begin testing");
         currentDriver = driver.getDriver();
@@ -134,9 +29,8 @@ describe('Dynacase Docid test', function formAllEdit()
         {
             util.login("admin", "anakeen").then(function afterLogin()
             {
-                console.log("logged as admin");
-
                 docForm.setDocWindow(); // Init driver variables
+                docidTest.initDriver();
 
                 currentDriver.wait(function waitDocumentIsDisplayed()
                 {
@@ -148,7 +42,7 @@ describe('Dynacase Docid test', function formAllEdit()
                     return webdriver.until.elementIsNotVisible(webdriver.By.css(".dcpLoading"));
                 }, 5000).then(function doneInitMainPage()
                 {
-                    console.log("begin test");
+                    console.log("Document loaded");
                     beforeDone();
                 });
 
@@ -159,7 +53,7 @@ describe('Dynacase Docid test', function formAllEdit()
     afterAll(function afterFormAllEdit(afterDone)
     {
         console.log("Exiting... in 10s");
-        webdriver.promise.controlFlow().removeListener(handleException);
+        webdriver.promise.controlFlow().removeListener('uncaughtException', handleException);
         currentDriver.sleep(10000); // Wait to see result
         driver.quit().then(afterDone);
 
@@ -541,43 +435,42 @@ describe('Dynacase Docid test', function formAllEdit()
 
     it("clickOnRelation", function clickOnRelation(itDone)
     {
-
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__title",
             expected: {
                 documentTitle: "- Premier document de référence -"
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single1",
             expected: {
                 documentTitle: "- Premier document de référence -"
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__histo1",
             expected: {
                 historicTitle: "Historique de \"Premier document de référence\""
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single2",
             expected: {
                 historicTitle: "Historique de \"Deuxième document de référence\""
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single3",
             expected: {
                 propertiesTitle: "Propriétés de \"Troisième document de référence\""
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple1",
             index: 0,
             expected: {
@@ -585,7 +478,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple1",
             index: 1,
             expected: {
@@ -593,7 +486,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple1",
             index: 2,
             expected: {
@@ -601,42 +494,42 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple1",
             index: 3,
             expected: {
                 documentTitle: "- Quatrième document de référence -"
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple2",
             index: 0,
             expected: {
                 historicTitle: "Historique de \"Quatrième document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple2",
             index: 1,
             expected: {
                 historicTitle: "Historique de \"Troisième document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple2",
             index: 2,
             expected: {
                 historicTitle: "Historique de \"Deuxième document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple2",
             index: 3,
             expected: {
                 historicTitle: "Historique de \"Premier document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple3",
             index: 0,
             expected: {
@@ -644,7 +537,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single_array",
             rowIndex: 0,
             expected: {
@@ -652,7 +545,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single_array",
             rowIndex: 1,
             expected: {
@@ -660,7 +553,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single_array",
             rowIndex: 2,
             expected: {
@@ -668,7 +561,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 0,
             index:0,
@@ -676,7 +569,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 documentTitle: "- Troisième document de référence -"
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 0,
             index:1,
@@ -685,7 +578,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 1,
             index:0,
@@ -693,7 +586,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 documentTitle: "- Troisième document de référence -"
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 1,
             index:1,
@@ -701,7 +594,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 documentTitle: "- Deuxième document de référence -"
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 1,
             index:2,
@@ -710,7 +603,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 2,
             index:0,
@@ -718,7 +611,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 documentTitle: "- Troisième document de référence -"
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_array",
             rowIndex: 2,
             index:1,
@@ -727,7 +620,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single_link",
             rowIndex: 0,
             expected: {
@@ -735,7 +628,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__single_link",
             rowIndex: 1,
             expected: {
@@ -743,7 +636,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__link_histo",
             rowIndex: 0,
             expected: {
@@ -751,7 +644,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__link_histo",
             rowIndex: 1,
             expected: {
@@ -759,7 +652,7 @@ describe('Dynacase Docid test', function formAllEdit()
             }
         });
 
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_link",
             rowIndex: 0,
             index: 0,
@@ -767,7 +660,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 propertiesTitle: "Propriétés de \"Troisième document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_link",
             rowIndex: 0,
             index: 1,
@@ -775,7 +668,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 propertiesTitle: "Propriétés de \"Premier document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_link",
             rowIndex: 1,
             index: 0,
@@ -783,7 +676,7 @@ describe('Dynacase Docid test', function formAllEdit()
                 propertiesTitle: "Propriétés de \"Deuxième document de référence\""
             }
         });
-        verifyClick({
+        docidTest.verifyClick({
             attrid: "test_ddui_docid__multiple_link",
             rowIndex: 1,
             index: 1,

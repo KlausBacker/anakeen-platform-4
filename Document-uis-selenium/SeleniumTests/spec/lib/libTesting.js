@@ -28,6 +28,7 @@ exports.login = function login(loginName, password)
 
     exports.saveScreenshot("login");
     currentDriver.findElement(webdriver.By.xpath('//*[contains(text(),"Se connecter")]')).click();
+    console.log("logged as "+loginName);
     return currentDriver.sleep(1000);
 
 };

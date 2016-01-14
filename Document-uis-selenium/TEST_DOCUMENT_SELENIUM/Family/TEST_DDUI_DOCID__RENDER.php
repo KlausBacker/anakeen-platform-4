@@ -40,27 +40,27 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
          */
         $link = $options->docid(myAttributes::test_ddui_docid__single2)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $link->title = "Voir l'historique de <br/><b>\"{{displayValue}}\"<b>";
-        $options->docid(myAttributes::test_ddui_docid__single2)->setFormat('<img class="dcpAttribute__value--icon" src="{{icon}}"/> {{displayValue}} (H)');
+        $options->docid(myAttributes::test_ddui_docid__single2)->setFormat('<i class="fa fa-history"/> {{displayValue}} (H)');
         
         $link = $options->docid(myAttributes::test_ddui_docid__single3)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $link->title = "Voir les propriétés de <br/><b>\"{{displayValue}}\"<b>";
-        $options->docid(myAttributes::test_ddui_docid__single3)->setFormat("<img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\"/> {{displayValue}} (P)");
+        $options->docid(myAttributes::test_ddui_docid__single3)->setFormat("<i class=\"fa fa-info-circle\"/> {{displayValue}} (P)");
         
         $link = $options->docid(myAttributes::test_ddui_docid__multiple2)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $link->title = "Voir l'historique de <br/><b>\"{{displayValue}}\"<b>";
-        $options->docid(myAttributes::test_ddui_docid__multiple2)->setFormat("<img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\"/> {{displayValue}} (H)");
+        $options->docid(myAttributes::test_ddui_docid__multiple2)->setFormat("<i class=\"fa fa-history\"/> {{displayValue}} (H)");
         
         $link = $options->docid(myAttributes::test_ddui_docid__multiple3)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $link->title = "Voir les propriétés de <br/><b>\"{{displayValue}}\"<b>";
-        $options->docid(myAttributes::test_ddui_docid__multiple3)->setFormat("<img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\"/> {{displayValue}} (P)");
+        $options->docid(myAttributes::test_ddui_docid__multiple3)->setFormat("<i class=\"fa fa-info-circle\"/> {{displayValue}} (P)");
         
         $link = $options->docid(myAttributes::test_ddui_docid__single_link)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $link->title = "Voir les propriétés de <br/><b>\"{{displayValue}}\"<b>";
-        $options->docid(myAttributes::test_ddui_docid__single_link)->setFormat("<img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\"/> {{displayValue}} (P)");
+        $options->docid(myAttributes::test_ddui_docid__single_link)->setFormat("<i class=\"fa fa-info-circle\"/> {{displayValue}} (P)");
         
         $link = $options->docid(myAttributes::test_ddui_docid__multiple_link)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $link->title = "Voir les propriétés de <br/><b>\"{{displayValue}}\"<b>";
-        $options->docid(myAttributes::test_ddui_docid__multiple_link)->setFormat("<img class=\"dcpAttribute__value--icon\" src=\"{{icon}}\"/> {{displayValue}} (P)");
+        $options->docid(myAttributes::test_ddui_docid__multiple_link)->setFormat("<i class=\"fa fa-info-circle\"/> {{displayValue}} (P)");
 
         //$link = $options->text(myAttributes::test_ddui_docid__histo1)->getOption(\Dcp\Ui\CommonRenderOptions::htmlLinkOption);
         $linkTitle = sprintf("Voir l'historique <br/><b>\"%s\"<b>", $document->getHtmlTitle($document->getRawValue(myAttributes::test_ddui_docid__single1)));

@@ -9,7 +9,7 @@ describe('Dynacase basic test', function formAllEdit()
     var currentDriver, handleException = function handleException(e)
     {
 
-        jasmine.getEnv().defaultTimeoutInterval = 50; //
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50; //
         console.error('Unhandled error: ', e);
         expect(false).toBe(null);
     };
@@ -56,7 +56,7 @@ describe('Dynacase basic test', function formAllEdit()
     afterAll(function afterFormAllEdit(afterDone)
     {
         console.log("Exiting... in 5s");
-        webdriver.promise.controlFlow().removeListener(handleException);
+        webdriver.promise.controlFlow().removeListener('uncaughtException',handleException);
         currentDriver.sleep(5000); // Wait to see result
         driver.quit().then(afterDone);
     });

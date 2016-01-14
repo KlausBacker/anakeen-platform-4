@@ -18,21 +18,14 @@ describe('Dynacase Enum test', function formAllEdit()
 
     beforeAll(function beforeFormAllEdit(beforeDone)
     {
+        var url = driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_ENUM&viewId=!defaultCreation";
         console.log("before main");
         currentDriver = driver.getDriver();
         webdriver.promise.controlFlow().on('uncaughtException', handleException);
-        currentDriver.get(driver.rootUrl).then(function x()
+        currentDriver.get(url).then(function x()
         {
             util.login("admin", "anakeen").then(function afterLogin()
             {
-                console.log("login end");
-
-                currentDriver.wait(function waitMainInterfaceIsDisplayed()
-                {
-                    return currentDriver.isElementPresent(webdriver.By.css(".css-disconnect-button"));
-                }, 5000);
-
-                currentDriver.get(driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_ENUM&viewId=!defaultCreation");
                 docForm.setDocWindow(); // Init driver variables
 
                 currentDriver.wait(function waitDocumentIsDisplayed()
@@ -45,10 +38,9 @@ describe('Dynacase Enum test', function formAllEdit()
                     return webdriver.until.elementIsNotVisible(webdriver.By.css(".dcpLoading"));
                 }, 5000).then(function doneInitMainPage()
                 {
-                    console.log("begin test");
+                    console.log("Document loaded");
                     beforeDone();
                 });
-
             });
         });
     });
@@ -56,7 +48,7 @@ describe('Dynacase Enum test', function formAllEdit()
     afterAll(function afterFormAllEdit(afterDone)
     {
         console.log("Exiting... in 10s");
-        webdriver.promise.controlFlow().removeListener(handleException);
+        webdriver.promise.controlFlow().removeListener('uncaughtException', handleException);
         currentDriver.sleep(10000); // Wait to see result
         driver.quit().then(afterDone);
 
