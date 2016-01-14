@@ -270,11 +270,12 @@ define([
                 event.prevent = !currentWidget._triggerControllerEvent("beforeRender",
                     currentWidget.getProperties(), currentWidget._model.getModelProperties());
             });
-            this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event, nextDocument)
+            this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event,
+                nextDocument, customClientData)
             {
                 if (currentWidget._initializedView !== false) {
                     event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
-                        currentWidget.getProperties(), nextDocument);
+                        currentWidget.getProperties(), nextDocument, customClientData);
                 }
             });
             this._model.listenTo(this._model, "close", function documentController_triggerClose(oldProperties)
@@ -285,20 +286,20 @@ define([
                 }
                 currentWidget._initializedView = false;
             });
-            this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event)
+            this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event, customClientData)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeSave",
-                    currentWidget.getProperties(), currentWidget._model.getModelProperties());
+                    currentWidget.getProperties(), currentWidget._model.getModelProperties(), customClientData);
             });
             this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(oldProperties)
             {
                 currentWidget._triggerControllerEvent("afterSave",
                     currentWidget.getProperties(), oldProperties);
             });
-            this._model.listenTo(this._model, "beforeDelete", function documentController_triggerBeforeDelete(event)
+            this._model.listenTo(this._model, "beforeDelete", function documentController_triggerBeforeDelete(event, customClientData)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeDelete",
-                    currentWidget.getProperties(), currentWidget._model.getModelProperties());
+                    currentWidget.getProperties(), currentWidget._model.getModelProperties(), customClientData);
             });
             this._model.listenTo(this._model, "afterDelete", function documentController_triggerAfterDelete(oldProperties)
             {
@@ -1001,6 +1002,7 @@ define([
                 });
                 if (values.customClientData) {
                     this._model._customClientData = values.customClientData;
+                    this._model._customClientData = this.getCustomClientData(true);
                 } else {
                     this._model._customClientData = this.getCustomClientData(true);
                 }
@@ -1037,6 +1039,7 @@ define([
             } else {
                 if (values.customClientData) {
                     this._model._customClientData = values.customClientData;
+                    this._model._customClientData = this.getCustomClientData(true);
                 } else {
                     this._model._customClientData = this.getCustomClientData(true);
                 }
@@ -1057,6 +1060,7 @@ define([
             this._checkInitialisedModel();
             if (options.customClientData) {
                 this._model._customClientData = options.customClientData;
+                this._model._customClientData = this.getCustomClientData(true);
             } else {
                 this._model._customClientData = this.getCustomClientData(true);
             }
@@ -1074,6 +1078,7 @@ define([
             this._checkInitialisedModel();
             if (options.customClientData) {
                 this._model._customClientData = options.customClientData;
+                this._model._customClientData = this.getCustomClientData(true);
             } else {
                 this._model._customClientData = this.getCustomClientData(true);
             }
@@ -1209,10 +1214,10 @@ define([
             return this._model.get("customServerData");
         },
         /**
-         * Get customData from render view model
+         * Add customData from render view model
          * @returns {*}
          */
-        setCustomClientData: function documentControllerSetClientCustomData(documentCheck, value)
+        addCustomClientData: function documentControllerAddClientCustomData(documentCheck, value)
         {
             var currentWidget = this;
             this._checkInitialisedModel();
@@ -1246,6 +1251,15 @@ define([
                     "once": documentCheck.once
                 }
             });
+        },
+        /**
+         * Get customData from render view model
+         * @returns {*}
+         */
+        setCustomClientData: function documentControllerSetClientCustomData(documentCheck, value)
+        {
+            console.error("this function (setCustomClientData) is deprecated");
+            return this.addCustomClientData(documentCheck, value);
         },
         /**
          * Get customData from render view model

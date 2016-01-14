@@ -48,7 +48,7 @@ define([
             attributes: undefined
         },
         // Record custom data in model directly - not in model property because must not be reset by clear method
-        _customClientData: null,
+        _customClientData: [],
 
         /**
          * Compute the REST URL for the current document
@@ -133,7 +133,7 @@ define([
                     return i18n.___("The form has been modified and is is not saved", "ddui");
                 }
 
-                theModel.trigger("beforeClose", event, theModel.getServerProperties());
+                theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
 
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     //var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
@@ -153,7 +153,7 @@ define([
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 var unlocking = theModel.get("unlocking");
 
-                theModel.trigger("beforeClose", event, theModel.getServerProperties());
+                theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
 
                 if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     $.ajax({
@@ -667,7 +667,7 @@ define([
                 messages: response.messages,
                 originalValues: view.documentData.document.attributes
             };
-            this._customClientData = null;
+            this._customClientData = [];
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
             } else {
@@ -944,7 +944,7 @@ define([
 
             _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
 
-            this.trigger("beforeClose", event, values);
+            this.trigger("beforeClose", event, values, this._customClientData);
             if (event.prevent === false) {
                 // Verify if current document need to be unlocked before fetch another
                 var security = this.get("properties") ? (this.get("properties").get("security")) : null;
@@ -1071,7 +1071,7 @@ define([
                     currentModel.trigger("close", currentProperties);
                 };
             options = options || {};
-            this.trigger("beforeSave", event);
+            this.trigger("beforeSave", event, this._customClientData);
             if (event.prevent === false) {
                 if (options.success) {
                     options.success = _.wrap(options.success, function registerSaveSuccess(success)
@@ -1116,7 +1116,7 @@ define([
                     currentModel.trigger("close", currentProperties);
                 };
             options = options || {};
-            this.trigger("beforeDelete", event);
+            this.trigger("beforeDelete", event, this._customClientData);
             if (event.prevent === false) {
                 if (options.success) {
                     options.success = _.wrap(options.success, function registerDeleteSuccess(success)
