@@ -3,6 +3,7 @@ var webdriver = require('selenium-webdriver'),
     util = require("../lib/libTesting.js"),
     docForm = require("../lib/libDocForm.js");
 
+require('jasmine2-custom-message');
 describe('Dynacase basic test', function formAllEdit()
 {
     'use strict';
@@ -11,7 +12,7 @@ describe('Dynacase basic test', function formAllEdit()
 
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50; //
         console.error('Unhandled error: ', e);
-        expect(false).toBe(null);
+        since(e).expect(false).toBeTruthy();
     };
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min

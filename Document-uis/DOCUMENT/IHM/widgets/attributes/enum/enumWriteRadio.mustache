@@ -7,7 +7,7 @@
                    class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
                    value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
             {{#exists}} <span class="dcpAttribute__value--enumlabel--text">{{displayValue}}</span>{{/exists}}
-            {{^exists}} <input class="dcpAttribute__value--enum--other k-textbox" value="{{value}}" placeholder="{{labels.chooseAnotherChoice}}"/>{{/exists}}
+            {{^exists}} <input class="dcpAttribute__value--enum--other k-textbox" type="text" value="{{value}}" placeholder="{{labels.chooseAnotherChoice}}"/>{{/exists}}
         </label>
     {{/enumValues}}
     {{#renderOptions.useOtherChoice}}
@@ -15,7 +15,7 @@
             <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}"
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
                    class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit" />
-            <input class="dcpAttribute__value--enum--other k-textbox" placeholder="{{labels.chooseAnotherChoice}}"/>
+            <input class="dcpAttribute__value--enum--other k-textbox" type="text" placeholder="{{labels.chooseAnotherChoice}}"/>
         </label>
     {{/renderOptions.useOtherChoice}}
     </div>

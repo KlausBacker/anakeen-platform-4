@@ -3,32 +3,42 @@ ORDER;CVRENDER;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv
 DOC;CVRENDER;TST_DDUI_RENDER_ENUM;;Rendus d'énumérés;;TST_DDUI_ENUM;Test énumérés;"C1
 E1
 E2
-E3";"Défaut
+E3
+E4";"Défaut
 Modifier les énumérés
 Vertical
-Horizontal";"VCONS
+Horizontal
+Autre";"VCONS
+VEDIT
 VEDIT
 VEDIT
 VEDIT";"
 
 
+
 ";"Dcp\Test\Ddui\EnumRenderConfigView
 Dcp\Test\Ddui\EnumRenderConfigEdit
 Dcp\Test\Ddui\EnumRenderConfigEditVertical
-Dcp\Test\Ddui\EnumRenderConfigEditHorizontal";"
+Dcp\Test\Ddui\EnumRenderConfigEditHorizontal
+Dcp\Test\Ddui\EnumRenderConfigEditOther";"
+
 
 
 ";"
 
 
+
 ";"1
 1
-
-";"no
+0
+0
+0";"no
 no
+yes
 yes
 yes";"
 
+Tests
 Tests
 Tests";E1;;;Modifier;
 ;;;;;;;;;;;;;;;;;;;;;;

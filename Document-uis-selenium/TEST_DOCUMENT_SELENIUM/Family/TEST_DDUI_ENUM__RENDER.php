@@ -9,7 +9,25 @@ namespace Dcp\Test\Ddui;
 
 use Dcp\AttributeIdentifiers\TST_DDUI_ENUM as myAttributes;
 
-class EnumRenderConfigEdit extends \Dcp\Ui\DefaultEdit
+class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
+{
+    public function getLabel(\Doc $document = null)
+    {
+        return "Enum Edit Default";
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->document()->setTabPlacement(
+            \Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement
+        );
+        return $options;
+    }
+}
+
+class EnumRenderConfigEdit extends EnumRenderConfigEditDefault
 {
     public function getLabel(\Doc $document = null)
     {
@@ -19,9 +37,7 @@ class EnumRenderConfigEdit extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        
 
-        
         $options->enum()->setTranslations(array(
             "invertSelection" => "",
             "selectMessage" => ""
@@ -63,7 +79,8 @@ class EnumRenderConfigEdit extends \Dcp\Ui\DefaultEdit
     }
 }
 
-class EnumRenderConfigEditButtons extends \Dcp\Ui\DefaultEdit
+
+class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
 {
     public function getLabel(\Doc $document = null)
     {
@@ -74,6 +91,7 @@ class EnumRenderConfigEditButtons extends \Dcp\Ui\DefaultEdit
     {
         $options = parent::getOptions($document);
 
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         // Inhibit enum toolips
         $options->enum()->setTranslations(array(
             "invertSelection" => "",
@@ -274,11 +292,45 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
     }
 }
 
+class EnumRenderConfigEditOther extends EnumRenderConfigEdit
+{
+    public function getLabel(\Doc $document = null)
+    {
+        return "Enum Edit Other";
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->enum()->useOtherChoice(true);
+
+        return $options;
+    }
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $css = parent::getCssReferences($document);
+        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumvertical.css";
+        return $css;
+    }
+}
+
 class EnumRenderConfigView extends \Dcp\Ui\DefaultView
 {
     
     public function getLabel(\Doc $document = null)
     {
         return "Enum View";
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options= parent::getOptions(
+            $document
+        );
+
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        return $options;
     }
 }
