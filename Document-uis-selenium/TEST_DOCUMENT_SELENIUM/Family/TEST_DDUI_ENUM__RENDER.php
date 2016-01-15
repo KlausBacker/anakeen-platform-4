@@ -64,12 +64,12 @@ class EnumRenderConfigEdit extends EnumRenderConfigEditDefault
         $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
         // ----------------------------
         // Array direct
-        $options->enum(myAttributes::test_ddui_enum__enumcountry_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumtown_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
         $options->enum(myAttributes::test_ddui_enum__enumtext_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
         $options->enum(myAttributes::test_ddui_enum__enumnumber_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
         $options->enum(myAttributes::test_ddui_enum__enumbool_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay);
         
-        $options->enum(myAttributes::test_ddui_enum__enumscountry_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumstown_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
         $options->enum(myAttributes::test_ddui_enum__enumstext_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
         $options->enum(myAttributes::test_ddui_enum__enumsnumber_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
         
@@ -167,8 +167,8 @@ HTML
                         <thead>
                             <tr>
                                 {{#attribute.toolsEnabled}}<th></th>{{/attribute.toolsEnabled}}
-                                <th>
-                                    {{attributes.test_ddui_enum__enumcountry_array.label}}
+                                <th class="customMiddle">
+                                    {{attributes.test_ddui_enum__enumtown_array.label}}
                                 </th>
                                 <th>
                                     {{attributes.test_ddui_enum__enumtext_array.label}}
@@ -183,7 +183,7 @@ HTML
                                 {{#attribute.toolsEnabled}}<td>{{{rowTools}}}</td>{{/attribute.toolsEnabled}}
                                 <td>
 
-                                    {{{content.test_ddui_enum__enumcountry_array.htmlContent}}}
+                                    {{{content.test_ddui_enum__enumtown_array.htmlContent}}}
                                 </td>
                                 <td>
                                     {{{content.test_ddui_enum__enumtext_array.htmlContent}}}
@@ -208,8 +208,8 @@ HTML
                         <thead>
                             <tr>
                                 {{#attribute.toolsEnabled}}<th></th>{{/attribute.toolsEnabled}}
-                                <th>
-                                    {{attributes.test_ddui_enum__enumscountry_array.label}}
+                                <th class="customMiddle">
+                                    {{attributes.test_ddui_enum__enumstown_array.label}}
                                 </th>
                                 <th>
                                     {{attributes.test_ddui_enum__enumstext_array.label}} et
@@ -223,7 +223,7 @@ HTML
                                 {{#attribute.toolsEnabled}}<td>{{{rowTools}}}</td>{{/attribute.toolsEnabled}}
                                 <td>
 
-                                    {{{content.test_ddui_enum__enumscountry_array.htmlContent}}}
+                                    {{{content.test_ddui_enum__enumstown_array.htmlContent}}}
                                 </td>
                                 <td>
                                     {{{content.test_ddui_enum__enumstext_array.htmlContent}}}
@@ -310,8 +310,9 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 
     public function getCssReferences(\Doc $document = null)
     {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumvertical.css";
+        $css["tsteditverticalenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumvertical.css?ws=".$version;
         return $css;
     }
 }
@@ -332,5 +333,12 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
 
         $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         return $options;
+    }
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $css = parent::getCssReferences($document);
+        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumview.css?ws=".$version;
+        return $css;
     }
 }

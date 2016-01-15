@@ -10,20 +10,22 @@
 }
 
 
-.dcpArray__head__cell[data-attrid=test_ddui_enum__enumcountry_array],
-.dcpArray__head__cell[data-attrid=test_ddui_enum__enumscountry_array]
+.dcpArray__head__cell[data-attrid=test_ddui_enum__enumtown_array],
+.dcpArray__head__cell[data-attrid=test_ddui_enum__enumstown_array]
 {
     width:40%;
 }
 
-.dcpAttribute__content[data-attrid=test_ddui_enum__enumcountry_array] .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel,
-.dcpAttribute__content[data-attrid=test_ddui_enum__enumscountry_array] .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel
+.dcpAttribute__content[data-attrid=test_ddui_enum__enumtown_array] .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel,
+.dcpAttribute__content[data-attrid=test_ddui_enum__enumstown_array] .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel
 {
     display: inline-block;
-    width: calc(25% - 3px); /* due to border radius */
+    width: calc(50% - 3px); /* due to border radius */
 }
 
-
+th.customMiddle {
+    width:50%;
+}
 .dcpCustomTemplate[data-attrid=test_ddui_enum__fr_enumsimple] .col-md-4 ,
 .dcpCustomTemplate[data-attrid=test_ddui_enum__fr_srvsimple] .col-md-4
 
