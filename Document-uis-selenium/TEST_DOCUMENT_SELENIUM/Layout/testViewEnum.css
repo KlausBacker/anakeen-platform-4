@@ -29,18 +29,24 @@
 
 
 .dcpAttribute__value[name=test_ddui_enum__enumscountry] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__srvcountry] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__srvscountry] .dcpAttribute__content__value::before,
 .dcpAttribute__value[name=test_ddui_enum__enumcountry] .dcpAttribute__content__value::before {
     font-family:FontAwesome;
     content: "\f0ac";
     margin-right:0.3em;
 }
 .dcpAttribute__value[name=test_ddui_enum__enumstext] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__srvtext] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__srvstext] .dcpAttribute__content__value::before,
 .dcpAttribute__value[name=test_ddui_enum__enumtext] .dcpAttribute__content__value::before {
     font-family:FontAwesome;
     content: "\f043";
     margin-right:0.3em;
 }
 .dcpAttribute__value[name=test_ddui_enum__enumsnumber] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__srvsnumber] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__srvnumber] .dcpAttribute__content__value::before,
 .dcpAttribute__value[name=test_ddui_enum__enumnumber] .dcpAttribute__content__value::before {
     font-family:FontAwesome;
     content: "\f0e4";

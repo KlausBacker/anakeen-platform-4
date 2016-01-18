@@ -1,5 +1,6 @@
 var webdriver = require('selenium-webdriver'),
-    driver = require("./initDriver.js");
+    driver = require("./initDriver.js"),
+    docForm = require("../lib/libDocForm.js");
 
 require('jasmine2-custom-message');
 
@@ -11,6 +12,7 @@ exports.initDriver = function initDriver()
 {
     'use strict';
     currentDriver = driver.getDriver();
+    docForm.setDocWindow();
 };
 
 exports.verifyClick = function verifyClick(data)
@@ -31,6 +33,9 @@ exports.verifyClick = function verifyClick(data)
         xpath += "[" + (data.index + 1) + "]";
     }
     elt = webdriver.By.xpath(xpath);
+
+    docForm.scrollToAttribute(data.attrid, data.rowIndex);
+
     // For IE need to move and click after due to tooltip interaction
     currentDriver.actions().mouseMove(currentDriver.findElement(elt)).perform();
     currentDriver.sleep(50);

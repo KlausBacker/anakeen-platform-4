@@ -1,0 +1,12 @@
+
+
+.custom-enum--other.dcpAttribute__content__value
+{
+    color: #9C6501;
+    font-style: italic;
+}
+
+input.dcpAttribute__value--enum--other.k-textbox,
+span.dcpAttribute__content--enum-single.dcpAttribute__content--enum-single--other {
+    color: #9C6501;
+}

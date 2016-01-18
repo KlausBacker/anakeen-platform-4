@@ -21,11 +21,11 @@ describe('Dynacase Enum test', function formAllEdit()
     {
         var url = driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_ENUM&viewId=!defaultCreation";
 
-        //var url = driver.rootUrl + "?app=DOCUMENT&initid=157329";
+        //var url = driver.rootUrl + "?app=DOCUMENT&initid=157368";
         console.log("before main");
         currentDriver = driver.getDriver();
         webdriver.promise.controlFlow().on('uncaughtException', handleException);
-        currentDriver.get(url).then(function x()
+        currentDriver.get(url).then(function enumLogin()
         {
             util.login("admin", "anakeen").then(function afterLogin()
             {
@@ -50,9 +50,9 @@ describe('Dynacase Enum test', function formAllEdit()
 
     afterAll(function afterFormAllEdit(afterDone)
     {
-        console.log("Exiting... in 10s");
+        console.log("Exiting... in 3s");
         webdriver.promise.controlFlow().removeListener('uncaughtException', handleException);
-        currentDriver.sleep(10000); // Wait to see result
+        currentDriver.sleep(3000); // Wait to see result
         driver.quit().then(afterDone);
 
     });
@@ -1023,8 +1023,311 @@ describe('Dynacase Enum test', function formAllEdit()
         console.log("save document");
 
         docForm.saveAndClose();
-        util.saveScreenshot("enumViewOther");
 
+        currentDriver.sleep(10).then(itDone);
+
+    });
+
+    it('verifyDirectDisplayEnumDoc', function verifyDirectDisplayEnumDoc(itDone)
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_enums'});
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumcountry',
+            expected: {
+                displayText: "Corruscant (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumnumber',
+            expected: {
+                displayText: "44 (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumtext',
+            expected: {
+                displayText: "Violet (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumbool',
+            expected: {
+                displayText: "Critique",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumscountry',
+            expected: {
+                displayText: "Albanie\nBelgique\nChili\nCuba\nNouvelle Calédonie\nTatooine (autre choix)\nNamibie\nRyloth (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 2}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumsnumber',
+            expected: {
+                displayText: "70 %\n100 %\n101 (autre choix)\n49 (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 2}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__enumstext',
+            expected: {
+                displayText: "Rouge\nVert\nBleu/Bleu marine\nBordeaux (autre choix)\nSaumon (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 2}]
+            }
+        });
+
+        util.saveScreenshot("enumViewDirectTab");
+        currentDriver.sleep(10).then(itDone);
+
+    });
+
+    it('verifySrvDisplayEnumDoc', function verifySrvDisplayEnumDoc(itDone)
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_srv'});
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvcountry',
+            expected: {
+                displayText: "Naboo (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvnumber',
+            expected: {
+                displayText: "42 (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvtext',
+            expected: {
+                displayText: "Verdâtre (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvbool',
+            expected: {
+                displayText: "Normal",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvscountry',
+            expected: {
+                displayText: "Albanie\nBelgique\nChili\nCuba\nNouvelle Calédonie\nMustafar (autre choix)\nKamino (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 2}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvsnumber',
+            expected: {
+                displayText: "32 (autre choix)\n14 (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 2}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            attrid: 'test_ddui_enum__srvstext',
+            expected: {
+                displayText: "Rouge\nVert\nBleu\nBleu/Bleu marine\nViolacé (autre choix)\nBeige (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 2}]
+            }
+        });
+
+        util.saveScreenshot("enumViewServerTab");
+        currentDriver.sleep(10).then(itDone);
+
+    });
+
+    it('verifyArrayDisplayEnumDoc', function verifySrvDisplayEnumDoc(itDone)
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_arrays'});
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumtown_array',
+            expected: {
+                displayText: "Naboo (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumtext_array',
+            expected: {
+                displayText: "Sib",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            expected: {
+                displayText: "2/3",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumbool_array',
+            expected: {
+                displayText: "Dangereux",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumtown_array',
+            expected: {
+                displayText: "Helsinki",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumtext_array',
+            expected: {
+                displayText: "Ut (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            expected: {
+                displayText: "2/3",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumbool_array',
+            expected: {
+                displayText: "Dangereux",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumtown_array',
+            expected: {
+                displayText: "Ljubljana",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumtext_array',
+            expected: {
+                displayText: "Sol",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            expected: {
+                displayText: "45 (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumbool_array',
+            expected: {
+                displayText: "Sans danger",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumstown_array',
+            expected: {
+                displayText: "Bratislava Paris Kamino (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumstext_array',
+            expected: {
+                displayText: "Sib Sol",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 0,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            expected: {
+                displayText: "2/3 3/3",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+
+
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumstown_array',
+            expected: {
+                displayText: "Amsterdam Bucarest Sofia Vienne",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumstext_array',
+            expected: {
+                displayText: "La Sib Do Sol Ut (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 1,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            expected: {
+                displayText: "1/3 2/3",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+
+
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumstown_array',
+            expected: {
+                displayText: "Bruxelles Budapest Madrid Riga Rome Varsovie Vilnius",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumstext_array',
+            expected: {
+                displayText: "Sib Do Do# Mib Sol Lab",
+                cssElements: [{path: ".custom-enum--other", count: 0}]
+            }
+        });
+        docForm.verifyAttributeDisplay({
+            index: 2,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            expected: {
+                displayText: "0 3/3 200 (autre choix)",
+                cssElements: [{path: ".custom-enum--other", count: 1}]
+            }
+        });
+
+        util.saveScreenshot("enumViewArrayTab");
         currentDriver.sleep(10).then(itDone);
 
     });
