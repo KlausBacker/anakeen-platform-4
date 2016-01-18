@@ -1,12 +1,13 @@
 define([
     'jquery',
     'underscore',
+    'mustache',
     'kendo/kendo.core',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/history/wRevisionDiff',
     'kendo/kendo.window',
     'dcpDocument/widgets/window/wDialog'
-], function require_whistory($, _, kendo)
+], function require_whistory($, _, Mustache, kendo)
 {
     'use strict';
 
@@ -35,6 +36,7 @@ define([
                 hideNotice: "Hide notices",
                 filterMessages: "Filter messages",
                 linkRevision: "See revision number #",
+                historyTitle: "History for {{title}}",
                 loading: "Loading ...",
                 revisionDiffLabels: {}
             }
@@ -151,6 +153,11 @@ define([
         _fillDataTable: function dcpDocumentHistory_fillDataTable(data)
         {
             var myData = [];
+
+            this.dialogWindow.setOptions({
+                title:Mustache.render(this.options.labels.historyTitle,data.data.history[0].properties)
+            });
+
             _.each(data.data.history, function whistoryFillRevision(revisionInfo)
             {
                 myData.push({
@@ -179,8 +186,8 @@ define([
                         "DT_RowClass": "history-comment history-level--" + message.level + (revisionInfo.properties.status === "fixed" ? " history-comment--fixed" : "")
                     });
                 });
-
             });
+
             return myData;
         },
 

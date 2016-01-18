@@ -3,36 +3,32 @@ var webdriver = require('selenium-webdriver'),
     util = require("../lib/libTesting.js"),
     docForm = require("../lib/libDocForm.js");
 
+require('jasmine2-custom-message');
+
 describe('Dynacase Enum test', function formAllEdit()
 {
     'use strict';
     var currentDriver, handleException = function handleException(e)
     {
-
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50;
         console.error('Unhandled error: ', e);
-        expect(false).toBe(null);
+        since(e).expect(false).toBeTruthy();
     };
 
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 10; // en ms : 10min
 
     beforeAll(function beforeFormAllEdit(beforeDone)
     {
+        var url = driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_ENUM&viewId=!defaultCreation";
+
+        //var url = driver.rootUrl + "?app=DOCUMENT&initid=157329";
         console.log("before main");
         currentDriver = driver.getDriver();
         webdriver.promise.controlFlow().on('uncaughtException', handleException);
-        currentDriver.get(driver.rootUrl).then(function x()
+        currentDriver.get(url).then(function x()
         {
             util.login("admin", "anakeen").then(function afterLogin()
             {
-                console.log("login end");
-
-                currentDriver.wait(function waitMainInterfaceIsDisplayed()
-                {
-                    return currentDriver.isElementPresent(webdriver.By.css(".css-disconnect-button"));
-                }, 5000);
-
-                currentDriver.get(driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_ENUM&viewId=!defaultCreation");
                 docForm.setDocWindow(); // Init driver variables
 
                 currentDriver.wait(function waitDocumentIsDisplayed()
@@ -45,10 +41,9 @@ describe('Dynacase Enum test', function formAllEdit()
                     return webdriver.until.elementIsNotVisible(webdriver.By.css(".dcpLoading"));
                 }, 5000).then(function doneInitMainPage()
                 {
-                    console.log("begin test");
+                    console.log("Document loaded");
                     beforeDone();
                 });
-
             });
         });
     });
@@ -56,7 +51,7 @@ describe('Dynacase Enum test', function formAllEdit()
     afterAll(function afterFormAllEdit(afterDone)
     {
         console.log("Exiting... in 10s");
-        webdriver.promise.controlFlow().removeListener(handleException);
+        webdriver.promise.controlFlow().removeListener('uncaughtException', handleException);
         currentDriver.sleep(10000); // Wait to see result
         driver.quit().then(afterDone);
 
@@ -89,7 +84,11 @@ describe('Dynacase Enum test', function formAllEdit()
     it("setEnumDirectTab", function setEnumDirectTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_enum__t_tab_enums'});
-        docForm.setEnumListValue({attrid: 'test_ddui_enum__enumcountry', selectedText: "Albanie", expected: {value: "AL"}});
+        docForm.setEnumListValue({
+            attrid: 'test_ddui_enum__enumcountry',
+            selectedText: "Albanie",
+            expected: {value: "AL"}
+        });
 
         docForm.setEnumAutoValue({
             attrid: 'test_ddui_enum__enumtext',
@@ -120,7 +119,11 @@ describe('Dynacase Enum test', function formAllEdit()
             expected: {value: ["AL", "BE", "NC"]}
         });
 
-        docForm.selectEnumCheckboxValue({attrid: 'test_ddui_enum__enumsnumber', label: "30 %", expected: {value: ["30"]}});
+        docForm.selectEnumCheckboxValue({
+            attrid: 'test_ddui_enum__enumsnumber',
+            label: "30 %",
+            expected: {value: ["30"]}
+        });
         docForm.selectEnumCheckboxValue({
             attrid: 'test_ddui_enum__enumsnumber',
             label: "70 %",
@@ -152,7 +155,11 @@ describe('Dynacase Enum test', function formAllEdit()
     it("setEnumSrvTab", function setEnumSrvTab(itDone)
     {
         docForm.selectTab({attrid: 'test_ddui_enum__t_tab_srv'});
-        docForm.setEnumListValue({attrid: 'test_ddui_enum__srvcountry', selectedText: "Albanie", expected: {value: "AL"}});
+        docForm.setEnumListValue({
+            attrid: 'test_ddui_enum__srvcountry',
+            selectedText: "Albanie",
+            expected: {value: "AL"}
+        });
 
         docForm.setEnumAutoValue({
             attrid: 'test_ddui_enum__srvtext',
@@ -227,9 +234,9 @@ describe('Dynacase Enum test', function formAllEdit()
         // First row
         docForm.setEnumListValue({
             index: 0,
-            attrid: 'test_ddui_enum__enumcountry_array',
-            selectedText: "Andorre",
-            expected: {value: "AD"}
+            attrid: 'test_ddui_enum__enumtown_array',
+            selectedText: "Athène",
+            expected: {value: "ATHENES", displayValue: "Athènes"}
         });
         docForm.setEnumAutoValue({
             index: 0,
@@ -259,9 +266,9 @@ describe('Dynacase Enum test', function formAllEdit()
         });
         docForm.setEnumListValue({
             index: 1,
-            attrid: 'test_ddui_enum__enumcountry_array',
-            selectedText: "Emirat",
-            expected: {value: "AE"}
+            attrid: 'test_ddui_enum__enumtown_array',
+            selectedText: "Berlin",
+            expected: {value: "BERLIN"}
         });
         docForm.setEnumAutoValue({
             index: 1,
@@ -287,9 +294,9 @@ describe('Dynacase Enum test', function formAllEdit()
         // Third row
         docForm.setEnumListValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumcountry_array',
-            selectedText: "Barbade",
-            expected: {value: "AG"}
+            attrid: 'test_ddui_enum__enumtown_array',
+            selectedText: "Paris",
+            expected: {value: "PARIS"}
         });
         docForm.setEnumAutoValue({
             index: 2,
@@ -319,16 +326,16 @@ describe('Dynacase Enum test', function formAllEdit()
         docForm.addRow({attrid: 'test_ddui_enum__array_multipleenum'});
         docForm.addEnumAutoValue({
             index: 0,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            selectedText: "Barbade",
-            expected: {value: ["AG"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            selectedText: "Brati",
+            expected: {value: ["BRATISLAVA"]}
         });
         docForm.addEnumAutoValue({
             index: 0,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Bel",
-            selectedText: "Belgique",
-            expected: {value: ["AG", "BE"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "Br",
+            selectedText: "Bruxelle",
+            expected: {value: ["BRATISLAVA", "BRUXELLES"]}
         });
         docForm.addEnumAutoValue({
             index: 0,
@@ -354,17 +361,17 @@ describe('Dynacase Enum test', function formAllEdit()
 
         docForm.addEnumAutoValue({
             index: 1,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Z",
-            selectedText: "Zambie",
-            expected: {value: ["ZM"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "Amster",
+            selectedText: "Amsterdam",
+            expected: {value: ["AMSTERDAM"]}
         });
         docForm.addEnumAutoValue({
             index: 1,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Y",
-            selectedText: "Yemen",
-            expected: {value: ["ZM", "YE"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "Vi",
+            selectedText: "Vienne",
+            expected: {value: ["AMSTERDAM", "VIENNE"]}
         });
         docForm.addEnumAutoValue({
             index: 1,
@@ -413,38 +420,38 @@ describe('Dynacase Enum test', function formAllEdit()
 
         docForm.addEnumAutoValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Saint",
-            selectedText: "Lucie",
-            expected: {value: ["LC"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "V",
+            selectedText: "Varsovie",
+            expected: {value: ["VARSOVIE"]}
         });
         docForm.addEnumAutoValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Saint",
-            selectedText: "Hélène",
-            expected: {value: ["LC", "SH"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "V",
+            selectedText: "Vilnius",
+            expected: {value: ["VARSOVIE", "VILNIUS"]}
         });
         docForm.addEnumAutoValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Saint",
-            selectedText: "Tomé",
-            expected: {value: ["LC", "SH", "ST"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "R",
+            selectedText: "Rome",
+            expected: {value: ["VARSOVIE", "VILNIUS", "ROME"]}
         });
         docForm.addEnumAutoValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Saint",
-            selectedText: "Pierre",
-            expected: {value: ["LC", "SH", "ST", "PM"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "R",
+            selectedText: "Riga",
+            expected: {value: ["VARSOVIE", "VILNIUS", "ROME", "RIGA"]}
         });
         docForm.addEnumAutoValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            filterText: "Saint",
-            selectedText: "Vincent",
-            expected: {value: ["LC", "SH", "ST", "PM", "VC"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            filterText: "Ma",
+            selectedText: "Madrid",
+            expected: {value: ["VARSOVIE", "VILNIUS", "ROME", "RIGA", "MADRID"]}
         });
         docForm.addEnumAutoValue({
             index: 2,
@@ -495,6 +502,7 @@ describe('Dynacase Enum test', function formAllEdit()
 
     it("createEnumDocAndReopen", function createEnumDoc(itDone)
     {
+        console.log("===> createEnumDocAndReopen ");
         docForm.createAndClose();
         util.saveScreenshot("enumView");
 
@@ -602,9 +610,9 @@ describe('Dynacase Enum test', function formAllEdit()
         // First row
         docForm.setEnumRadioValue({
             index: 0,
-            attrid: 'test_ddui_enum__enumcountry_array',
-            label: "Albanie",
-            expected: {value: "AL"}
+            attrid: 'test_ddui_enum__enumtown_array',
+            label: "Luxe",
+            expected: {value: "LUXEMBOURG"}
         });
         docForm.setEnumRadioValue({
             index: 0,
@@ -628,22 +636,25 @@ describe('Dynacase Enum test', function formAllEdit()
         // Second row
         docForm.setEnumRadioValue({
             index: 1,
-            attrid: 'test_ddui_enum__enumbool_array',
-            label: "Sans danger",
-            expected: {value: "S"}
+            attrid: 'test_ddui_enum__enumtown_array',
+            label: "Helsi",
+            expected: {value: "HELSINKI"}
         });
-        docForm.setEnumRadioValue({
-            index: 1,
-            attrid: 'test_ddui_enum__enumcountry_array',
-            label: "Suisse",
-            expected: {value: "CH"}
-        });
+
         docForm.setEnumRadioValue({
             index: 1,
             attrid: 'test_ddui_enum__enumtext_array',
             label: "Si",
             expected: {value: "Bb"}
         });
+
+        docForm.setEnumRadioValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumbool_array',
+            label: "Sans danger",
+            expected: {value: "S"}
+        });
+
         docForm.setEnumRadioValue({
             index: 1,
             attrid: 'test_ddui_enum__enumnumber_array',
@@ -661,9 +672,9 @@ describe('Dynacase Enum test', function formAllEdit()
         // Third row
         docForm.setEnumRadioValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumcountry_array',
-            label: "Bulgarie",
-            expected: {value: "BG"}
+            attrid: 'test_ddui_enum__enumtown_array',
+            label: "Lju",
+            expected: {value: "LJUBLJANA"}
         });
         docForm.setEnumRadioValue({
             index: 2,
@@ -691,15 +702,15 @@ describe('Dynacase Enum test', function formAllEdit()
 
         docForm.selectEnumCheckboxValue({
             index: 0,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            label: "Bahr",
-            expected: {value: ["AG", "BE", "BH"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            label: "Paris",
+            expected: {value: ["BRATISLAVA", "BRUXELLES", "PARIS"]}
         });
         docForm.selectEnumCheckboxValue({
             index: 0,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            label: "Belgique",
-            expected: {value: ["AG", "BH"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            label: "Bruxe",
+            expected: {value: ["BRATISLAVA", "PARIS"]}
         });
         docForm.selectEnumCheckboxValue({
             index: 0,
@@ -723,15 +734,15 @@ describe('Dynacase Enum test', function formAllEdit()
         // Second row
         docForm.selectEnumCheckboxValue({
             index: 1,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            label: "Aruba",
-            expected: {value: ["AW", "YE", "ZM"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            label: "Sofia",
+            expected: {value: ["AMSTERDAM", "SOFIA", "VIENNE"]}
         });
         docForm.selectEnumCheckboxValue({
             index: 1,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            label: "Australie",
-            expected: {value: ["AU", "AW", "YE", "ZM"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            label: "Bucarest",
+            expected: {value: ["AMSTERDAM", "BUCAREST", "SOFIA", "VIENNE"]}
         });
         docForm.selectEnumCheckboxValue({
             index: 1,
@@ -754,15 +765,15 @@ describe('Dynacase Enum test', function formAllEdit()
         // Third row
         docForm.selectEnumCheckboxValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            label: "Argentine",
-            expected: {value: ["AR", "LC", "PM", "SH", "ST", "VC"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            label: "Bruxe",
+            expected: {value: ["BRUXELLES", "MADRID", "RIGA", "ROME", "VARSOVIE", "VILNIUS"]}
         });
         docForm.selectEnumCheckboxValue({
             index: 2,
-            attrid: 'test_ddui_enum__enumscountry_array',
-            label: "Australie",
-            expected: {value: ["AR", "AU", "LC", "PM", "SH", "ST", "VC"]}
+            attrid: 'test_ddui_enum__enumstown_array',
+            label: "Budapest",
+            expected: {value: ["BRUXELLES", "BUDAPEST", "MADRID", "RIGA", "ROME", "VARSOVIE", "VILNIUS"]}
         });
         docForm.selectEnumCheckboxValue({
             index: 2,
@@ -793,6 +804,226 @@ describe('Dynacase Enum test', function formAllEdit()
         docForm.saveAndClose();
         util.saveScreenshot("enumView 2");
         console.log("end setEnumInputs");
+
+        currentDriver.sleep(10).then(itDone);
+
+    });
+
+    it("reopenAsOther", function reopenAsOther(itDone)
+    {
+        docForm.openMenu({listMenu: "Tests", itemMenu: "Autre"});
+        currentDriver.wait(function waitLoadingDone()
+        {
+            return webdriver.until.elementIsVisible(webdriver.By.css(".dcpDocument--edit"));
+        }, 5000);
+        currentDriver.sleep(1000).then(itDone); // Wait to see result
+    });
+    it("setOtherEnumDirectTab", function setOtherEnumDirectTab(itDone)
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_enums'});
+        docForm.setEnumListValue({
+            attrid: 'test_ddui_enum__enumcountry',
+            otherText: "Corruscant",
+            expected: {value: "Corruscant"}
+        });
+
+        docForm.setEnumAutoValue({
+            attrid: 'test_ddui_enum__enumtext',
+            otherText: "Violet",
+            expected: {value: "Violet"}
+        });
+        docForm.setEnumRadioValue({
+            attrid: 'test_ddui_enum__enumnumber',
+            label: "30 %",
+            otherText: "44",
+            expected: {value: "44"}
+        });
+
+        // Multiple
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__enumscountry',
+            filterText: "A",
+            otherText: "Tatooine",
+            expected: {value: ["AL", "BE", "CL", "CU", "NC", "Tatooine"]}
+        });
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__enumscountry',
+            filterText: "nam",
+            selectedText: "Namibie",
+            expected: {value: ["AL", "BE", "CL", "CU", "NC", "Tatooine", "NA"]}
+        });
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__enumscountry',
+            otherText: "Ryloth",
+            expected: {value: ["AL", "BE", "CL", "CU", "NC", "Tatooine", "NA", "Ryloth"]}
+        });
+
+        docForm.selectEnumCheckboxValue({
+            attrid: 'test_ddui_enum__enumsnumber',
+            otherText: "101",
+            expected: {value: ["70", "100", "101"]}
+        });
+        docForm.selectEnumCheckboxValue({
+            attrid: 'test_ddui_enum__enumsnumber',
+            otherText: "49",
+            expected: {value: ["70", "100", "101", "49"]}
+        });
+
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__enumstext',
+            filterText: "B",
+            otherText: "Bordeaux",
+            expected: {
+                value: ["red", "green", "navyblue", "Bordeaux"],
+                displayValue: ["Rouge", "Vert", "Bleu/Bleu marine", "Bordeaux (autre choix)"]
+            }
+        });
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__enumstext',
+
+            otherText: "Saumon",
+            expected: {
+                value: ["red", "green", "navyblue", "Bordeaux", "Saumon"],
+                displayValue: ["Rouge", "Vert", "Bleu/Bleu marine", "Bordeaux (autre choix)", "Saumon (autre choix)"]
+            }
+        });
+
+        util.saveScreenshot("enumOtherDirectTab").then(itDone);
+    });
+
+    it("setOtherEnumSrvTab", function setOtherEnumSrvTab(itDone)
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_srv'});
+        docForm.setEnumListValue({
+            attrid: 'test_ddui_enum__srvcountry',
+            otherText: "Naboo",
+            expected: {value: "Naboo"}
+        });
+
+        docForm.setEnumAutoValue({
+            attrid: 'test_ddui_enum__srvtext',
+            otherText: "Verdâtre",
+            filterText: "V",
+            expected: {value: "Verdâtre"}
+        });
+        docForm.setEnumRadioValue({
+            attrid: 'test_ddui_enum__srvnumber',
+            otherText: "42",
+            expected: {value: "42"}
+        });
+
+        // Multiple
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__srvscountry',
+            filterText: "M",
+            otherText: "Mustafar",
+            expected: {
+                value: ["AL", "BE", "CL", "CU", "NC", "Mustafar"],
+                displayValue: ["Albanie", "Belgique", "Chili", "Cuba", "Nouvelle Calédonie", "Mustafar (autre choix)"]
+
+            }
+        });
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__srvscountry',
+            filterText: "K",
+            otherText: "Kamino",
+            expected: {
+                value: ["AL", "BE", "CL", "CU", "NC", "Mustafar", "Kamino"],
+                displayValue: ["Albanie", "Belgique", "Chili", "Cuba", "Nouvelle Calédonie", "Mustafar (autre choix)", "Kamino (autre choix)"]
+            }
+        });
+
+        docForm.selectEnumCheckboxValue({
+            attrid: 'test_ddui_enum__srvsnumber',
+            otherText: "32",
+            expected: {
+                value: ["32"]
+            }
+        });
+        docForm.selectEnumCheckboxValue({
+            attrid: 'test_ddui_enum__srvsnumber',
+            otherText: "14",
+            expected: {value: ["32", "14"]}
+        });
+
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__srvstext',
+            filterText: "V",
+            otherText: "Violacé",
+            expected: {
+                value: ["red", "green", "blue", "navyblue", "Violacé"],
+                displayValue: ["Rouge", "Vert", "Bleu", "Bleu/Bleu marine", "Violacé (autre choix)"]
+            }
+        });
+        docForm.addEnumAutoValue({
+            attrid: 'test_ddui_enum__srvstext',
+            otherText: "Beige",
+            expected: {
+                value: ["red", "green", "blue", "navyblue", "Violacé", "Beige"],
+                displayValue: ["Rouge", "Vert", "Bleu", "Bleu/Bleu marine", "Violacé (autre choix)", "Beige (autre choix)"]
+            }
+        });
+
+        util.saveScreenshot("enumOtherServerTab").then(itDone);
+    });
+
+    it('setOtherEnumArrayTab', function setOtherEnumArrayTab(itDone)
+    {
+        docForm.selectTab({attrid: 'test_ddui_enum__t_tab_arrays'});
+        docForm.setEnumListValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumtown_array',
+            otherText: "Naboo",
+            expected: {
+                value: "Naboo",
+                displayValue: "Naboo (autre choix)"
+            }
+        });
+
+        docForm.setEnumAutoValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumtext_array',
+            otherText: "Ut",
+            expected: {value: "Ut"}
+        });
+        docForm.setEnumRadioValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumnumber_array',
+            otherText: "45",
+            expected: {value: "45"}
+        });
+
+        docForm.addEnumAutoValue({
+            index: 0,
+            attrid: 'test_ddui_enum__enumstown_array',
+            otherText: "Kamino",
+            expected: {
+                value: ["BRATISLAVA", "PARIS", "Kamino"],
+                displayValue: ["Bratislava", "Paris", "Kamino (autre choix)"]
+            }
+        });
+        docForm.addEnumAutoValue({
+            index: 1,
+            attrid: 'test_ddui_enum__enumstext_array',
+            otherText: "Ut",
+            expected: {value: ["A", "Bb", "C", "G", "Ut"]}
+        });
+        docForm.selectEnumCheckboxValue({
+            index: 2,
+            attrid: 'test_ddui_enum__enumsnumber_array',
+            otherText: "200",
+            expected: {value: ["0", "100", "200"]}
+        });
+
+        util.saveScreenshot("setOtherEnumArrayTab").then(itDone);
+    });
+
+    it('saveAgainEnumDoc', function saveAgainEnumDoc(itDone)
+    {
+        console.log("save document");
+
+        docForm.saveAndClose();
+        util.saveScreenshot("enumViewOther");
 
         currentDriver.sleep(10).then(itDone);
 

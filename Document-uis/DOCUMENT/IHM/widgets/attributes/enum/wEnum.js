@@ -15,8 +15,6 @@ define([
 
         options: {
             type: "enum",
-            canChooseOther: false,
-            canAddNewItem: false,
             sourceValues: [], // [{key:"the key", label:"the label"}, ...}]
             sourceUri: null, // when enum definition is dynamically get by server request
             labels: {
@@ -262,8 +260,7 @@ define([
         noButtonDisplay: function wEnumNoDisplayButton()
         {
             if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
-                this.element.find(".dcpAttribute__value--enumbuttons").
-                addClass("dcpAttribute__content__nobutton");
+                this.element.find(".dcpAttribute__value--enumbuttons").addClass("dcpAttribute__content__nobutton");
                 this.element.find(".dcpAttribute__content__buttons").hide();
             }
         },
@@ -301,12 +298,12 @@ define([
                 this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
                 {
                     if (tplOption.enumValues[kItem]) {
-                            $(this).tooltip({
-                                trigger:"hover",
-                                container: scope.element,
-                                title: Mustache.render(scope.options.labels.invertSelection || "",
-                                    tplOption.enumValues[(kItem + 1) % 2])
-                            });
+                        $(this).tooltip({
+                            trigger: "hover",
+                            container: scope.element,
+                            title: Mustache.render(scope.options.labels.invertSelection || "",
+                                tplOption.enumValues[(kItem + 1) % 2])
+                        });
                     }
                 });
             }
@@ -415,7 +412,7 @@ define([
                 this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
                     container: ".dcpDocument",
                     selector: '.dcpAttribute__value--enumlabel--text',
-                    trigger:"hover",
+                    trigger: "hover",
                     title: function wEnum_titleTooltip()
                     {
                         if ($(this).closest("label").find("input").prop("checked")) {
@@ -476,7 +473,7 @@ define([
                 this.element.find(".dcpAttribute__value--enumbuttons").tooltip({
                     container: ".dcpDocument",
                     selector: '.dcpAttribute__value--enumlabel--text',
-                    trigger:"hover",
+                    trigger: "hover",
                     title: function wEnum_Cb_titleTooltip()
                     {
                         var $this = $(this);
@@ -818,7 +815,11 @@ define([
                     } else {
                         _.each(scope.options.attributeValue, function wEnumAddOtherInUri(singleValue)
                         {
-                            if (singleValue.exists === false) {
+                            var hasValue = _.some(info, function wEnumVerifyValue(singleInfo)
+                            {
+                                return singleInfo.value === singleValue.value;
+                            });
+                            if (!hasValue) {
                                 info.push(singleValue);
                             }
                         });
@@ -1077,14 +1078,14 @@ define([
                          * Apply setValue and close list when return key is pressed
                          * @param event
                          */
-                        function wEnumSetOtherClick(event)
+                        function wEnumSetOtherKeyPress(event)
                         {
                             var code = (event.keyCode ? event.keyCode : event.which);
                             var $input = $container.find(".dcpAttribute__value--enum-other input");
                             var newValue = $input.val();
                             if (code === 13 || code === 10) {
                                 if (newValue) {
-                                    _.bind(scope._kSelectOther, event, scope, kWidget, newValue)();
+                                    _.bind(scope._kSelectOther, scope, event, kWidget, newValue)();
                                 }
                             } else {
                                 kWidget.search(newValue);

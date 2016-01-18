@@ -28,7 +28,7 @@ define([
     var checkTouchEvents = function checkTouchEvents() {
         //From modernizer
         var bool = false;
-        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch) {
+        if (('ontouchstart' in window) || window.DocumentTouch && window.document instanceof window.DocumentTouch) {
             bool = true;
         }
         return bool;
@@ -49,6 +49,7 @@ define([
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'error', this.showView);
             this.listenTo(this.model, 'displayNetworkError', this.displayNetworkError);
+            this.listenTo(this.model, 'actionAttributeLink', this.doStandardAction);
         },
 
         /**
@@ -477,7 +478,7 @@ define([
                         dataSource: hiddens,
                         dataTextField: "label",
                         dataValueField: "id",
-                        dataBound: function vDocumentTabSelectDatabound(event)
+                        dataBound: function vDocumentTabSelectDatabound()
                         {
                             var myTab = $(this.element).closest("li");
                             var liItem = $tabs.find("li[data-attrid=" + this.value() + "]");
@@ -679,12 +680,12 @@ define([
          * Show the history widget
          *
          */
-        showHistory: function vDocumentShowHistory()
+        showHistory: function vDocumentShowHistory(docid)
         {
             var scope = this;
             var $target = $('<div class="document-history"/>');
             this.historyWidget = $target.dcpDocumentHistory({
-                documentId: this.model.get("properties").get("initid"),
+                documentId: docid || this.model.get("properties").get("initid"),
                 window: {
                     width: "80%",
                     height: "80%",
@@ -708,6 +709,7 @@ define([
                     hideNotice: i18n.___("Hide notices", "historyUi"),
                     filterMessages: i18n.___("Filter messages", "historyUi"),
                     linkRevision: i18n.___("See revision number #", "historyUi"),
+                    historyTitle: i18n.___("History for {{title}}", "historyUi"),
                     loading: i18n.___("Loading ...", "historyUi"),
                     revisionDiffLabels: {
                         "title": i18n.___("Difference between two revisions", "historyDiffUi"),
@@ -762,7 +764,7 @@ define([
          * Show the transition view
          *
          */
-        showTransitionGraph: function vDocumentShowtransitionGraph(transition, nextState)
+        showTransitionGraph: function vDocumentShowtransitionGraph()
         {
             var documentView = this;
             var transitionGraph = {};
@@ -796,16 +798,16 @@ define([
          * Show the properties widget
          *
          */
-        showProperties: function vDocumentShowProperties()
+        showProperties: function vDocumentShowProperties(docid)
         {
             var scope = this;
             var $target = $('<div class="document-properties"/>');
 
             this.propertiesWidget = $target.dcpDocumentProperties({
-                documentId: this.model.get("properties").get("initid"),
+                documentId: docid || this.model.get("properties").get("initid"),
                 window: {
                     width: "auto",
-                    height: "auto",
+                    height: "80%",
                     title: i18n.___("Document properties", "propertyUi")
                 },
                 labels: {
@@ -827,6 +829,7 @@ define([
                     profilReference: i18n.___("Profil reference", "propertyUi"),
                     viewController: i18n.___("View controller", "propertyUi"),
                     property: i18n.___("Property", "propertyUi"),
+                    propertiesTitle: i18n.___("Properties for {{title}}", "propertyUi"),
                     propertyValue: i18n.___("Value", "propertyUi"),
                     workflow: i18n.___("Workflow", "propertyUi"),
                     activity: i18n.___("Activity", "propertyUi")
@@ -1030,21 +1033,28 @@ define([
             });
         },
 
-        /**
-         * Propagate menu event
-         *
-         * @param options
-         * @returns {*}
-         */
         actionDocument: function vDocumentActionDocument(options)
         {
             var event = {prevent: false};
-            var eventArgs = options.options;
 
             this.model.trigger("internalLinkSelected", event, options);
             if (event.prevent) {
                 return this;
             }
+
+            this.doStandardAction(event, options);
+        },
+
+        /**
+         * Propagate menu event
+         *test
+         * @param event
+         * @param options
+         * @returns {*}
+         */
+        doStandardAction: function vDocumentdoStandardAction(event, options)
+        {
+            var eventArgs = options.options;
 
             if (options.eventId === "document.save") {
                 return this.saveDocument();
@@ -1055,7 +1065,7 @@ define([
             }
 
             if (options.eventId === "document.history") {
-                return this.showHistory();
+                return this.showHistory(eventArgs[0]);
             }
             if (options.eventId === "document.transition") {
                 return this.showtransition(eventArgs[0], eventArgs[1]);
@@ -1064,7 +1074,7 @@ define([
                 return this.showTransitionGraph();
             }
             if (options.eventId === "document.properties") {
-                return this.showProperties();
+                return this.showProperties(eventArgs[0]);
             }
             if (options.eventId === "document.delete") {
                 return this.deleteDocument();

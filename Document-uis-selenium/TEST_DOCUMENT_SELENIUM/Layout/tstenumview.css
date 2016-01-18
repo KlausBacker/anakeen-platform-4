@@ -1,0 +1,48 @@
+
+.dcpAttribute__value[name=test_ddui_enum__enumtown_array] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__enumstown_array] .dcpAttribute__content__value::before {
+    font-family:FontAwesome;
+    content: "\f19c";
+    margin-right:0.3em;
+}
+
+.dcpAttribute__value[name=test_ddui_enum__enumtext_array] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__enumstext_array] .dcpAttribute__content__value::before {
+    font-family:FontAwesome;
+    content: "\f001";
+    margin-right:0.3em;
+}
+
+.dcpAttribute__value[name=test_ddui_enum__enumstown_array] .dcpAttribute__content__value::after,
+.dcpAttribute__value[name=test_ddui_enum__enumstext_array] .dcpAttribute__content__value::after
+{
+
+    margin-right:0;
+    content: ", ";
+}
+.dcpAttribute__value[name=test_ddui_enum__enumstown_array] .dcpAttribute__content__value:last-child::after,
+.dcpAttribute__value[name=test_ddui_enum__enumstext_array] .dcpAttribute__content__value:last-child::after
+{
+    margin-right:0;
+    content: "";
+}
+
+
+.dcpAttribute__value[name=test_ddui_enum__enumscountry] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__enumcountry] .dcpAttribute__content__value::before {
+    font-family:FontAwesome;
+    content: "\f0ac";
+    margin-right:0.3em;
+}
+.dcpAttribute__value[name=test_ddui_enum__enumstext] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__enumtext] .dcpAttribute__content__value::before {
+    font-family:FontAwesome;
+    content: "\f043";
+    margin-right:0.3em;
+}
+.dcpAttribute__value[name=test_ddui_enum__enumsnumber] .dcpAttribute__content__value::before,
+.dcpAttribute__value[name=test_ddui_enum__enumnumber] .dcpAttribute__content__value::before {
+    font-family:FontAwesome;
+    content: "\f0e4";
+    margin-right:0.3em;
+}

@@ -89,7 +89,7 @@ exports.reporter = {
 
         if (totalFail === 0) {
             process.stdout.write(ansi.green);
-            process.stdout.write('Result : ' + totalSuccess + " successed tests");
+            process.stdout.write('Result : ' + totalSuccess + " successed tests. All successed, you're a boss.");
         } else {
             process.stdout.write(ansi.red);
             process.stdout.write('Result : ' + totalSuccess + " success, " + totalFail + " failed");

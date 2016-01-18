@@ -375,9 +375,19 @@ define([
                 if (this._isMultiple()) {
                     this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
                     {
+                        var urlIndex=index;
                         Mustache.escape = encodeURIComponent;
                         scopeWidget._completeRevisionData(val);
-                        val.renderUrl = Mustache.render(htmlLink.url || "", val);
+                        if (scopeWidget.options.index >= 0) {
+                            // Use index of row prior to index of multiple value
+                            urlIndex=scopeWidget.options.index;
+                        }
+
+                        if (htmlLink.urls && htmlLink.urls[urlIndex]) {
+                                val.renderUrl = Mustache.render(htmlLink.urls[urlIndex], val);
+                        } else {
+                            val.renderUrl = Mustache.render(htmlLink.url || "", val);
+                        }
                         Mustache.escape = originalEscape;
                         val.renderTitle = Mustache.render(htmlLink.title || "", val);
                         val.index = index;
@@ -386,8 +396,11 @@ define([
                 } else {
                     Mustache.escape = encodeURIComponent;
                     this._completeRevisionData(this.options.attributeValue);
-
-                    this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url || "", this.options.attributeValue);
+                     if (htmlLink.urls && htmlLink.urls[this.options.index]) {
+                         this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.urls[this.options.index], this.options.attributeValue);
+                     } else {
+                         this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url || "", this.options.attributeValue);
+                     }
                     Mustache.escape = originalEscape;
                     this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title || "", this.options.attributeValue);
                 }

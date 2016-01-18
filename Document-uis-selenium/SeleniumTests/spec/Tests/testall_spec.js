@@ -3,15 +3,16 @@ var webdriver = require('selenium-webdriver'),
     util = require("../lib/libTesting.js"),
     docForm = require("../lib/libDocForm.js");
 
+require('jasmine2-custom-message');
 describe('Dynacase basic test', function formAllEdit()
 {
     'use strict';
     var currentDriver, handleException = function handleException(e)
     {
 
-        jasmine.getEnv().defaultTimeoutInterval = 50; //
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50; //
         console.error('Unhandled error: ', e);
-        expect(false).toBe(null);
+        since(e).expect(false).toBeTruthy();
     };
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000; // en ms : 3min
@@ -56,7 +57,7 @@ describe('Dynacase basic test', function formAllEdit()
     afterAll(function afterFormAllEdit(afterDone)
     {
         console.log("Exiting... in 5s");
-        webdriver.promise.controlFlow().removeListener(handleException);
+        webdriver.promise.controlFlow().removeListener('uncaughtException',handleException);
         currentDriver.sleep(5000); // Wait to see result
         driver.quit().then(afterDone);
     });
@@ -81,6 +82,7 @@ describe('Dynacase basic test', function formAllEdit()
             selectedText: "Jean",
             expected: {displayValue: "Grand Jean"}
         });
+
         //------------------------------------------
         // Second account : test_ddui_all__account_multiple
         docForm.addAccountMultipleValue({

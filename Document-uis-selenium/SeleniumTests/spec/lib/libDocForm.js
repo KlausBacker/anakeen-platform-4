@@ -29,7 +29,7 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
 {
     'use strict';
     var aElt;
-    var isScrolled=false;
+    var isScrolled = false;
 
     if (typeof index === "undefined") {
         aElt = webdriver.By.css('div.dcpAttribute__content[data-attrid=' + attrid + '], div.dcpArray__content[data-attrid=' + attrid + ']');
@@ -61,8 +61,9 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
                     //   "$(arguments[0]).css('outline', 'solid 1px green');" +
                 "window.scrollBy(0,-100);" +
                 "}" +
-                "$('.tooltip-inner').hide()", lastElement).then(function x() {
-                isScrolled=true;
+                "$('.tooltip-inner').hide()", lastElement).then(function x()
+            {
+                isScrolled = true;
             });
 
         } else {
@@ -431,10 +432,10 @@ exports.setDocidValue = function setDocidValue(data)
 
     if (typeof data.index === "undefined") {
 
-        currentDriver.findElement(webdriver.By.css('div[data-attrid=' + data.attrid + '] .k-input')).sendKeys(data.filterText);
+        currentDriver.findElement(webdriver.By.css('div[data-attrid=' + data.attrid + '] .k-input')).sendKeys(data.filterText || '');
     } else {
         currentDriver.findElement(webdriver.By.xpath(
-            '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).sendKeys(data.filterText);
+            '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).sendKeys(data.filterText || '');
     }
     currentDriver.wait(function waitSelect()
     {
@@ -451,6 +452,12 @@ exports.setDocidValue = function setDocidValue(data)
     );
 };
 
+exports.addDocidValue = function addDocidValue(data)
+{
+    'use strict';
+
+    return exports.setDocidValue(data);
+};
 exports.addAccountMultipleValue = function addAccountMultipleValue(data)
 {
     'use strict';
@@ -486,6 +493,12 @@ exports.setEnumListValue = function setEnumListValue(data)
     'use strict';
 
     scrollToAttribute(data.attrid, data.index);
+
+    currentDriver.wait(function waitSelect()
+    {
+        return currentDriver.isElementPresent(webdriver.By.css('div.dcpAttribute__content[data-attrid=' + data.attrid + '] .k-input'));
+    }, 5000);
+
     if (typeof data.index === "undefined") {
         currentDriver.findElement(webdriver.By.css('div.dcpAttribute__content[data-attrid=' + data.attrid + '] .k-input')).click();
     } else {
@@ -499,12 +512,20 @@ exports.setEnumListValue = function setEnumListValue(data)
     }, 5000);
 
     currentDriver.sleep(500); // Wait animation done
-    currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//li[contains(text(), '" + data.selectedText + "')]")).click().then(
-        function docFormExpect()
-        {
-            exports.verifyValue(data);
-        }
-    );
+
+    if (data.selectedText) {
+
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//li[contains(text(), '" + data.selectedText + "')]")).click().then(
+            function docFormExpect()
+            {
+                exports.verifyValue(data);
+            }
+        );
+    }
+    if (data.otherText) {
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//input[@type='text']")).sendKeys(data.otherText);
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//button[text()='Valider cet autre choix']")).click();
+    }
     return waitAnimationClose();
 };
 
@@ -535,7 +556,13 @@ exports.setEnumAutoValue = function setEnumAutoValue(data)
     }, 5000);
 
     currentDriver.sleep(500); // Wait animation done
-    currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//li[contains(text(), '" + data.selectedText + "')]")).click();
+    if (data.selectedText) {
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//li[contains(text(), '" + data.selectedText + "')]")).click();
+    }
+    if (data.otherText) {
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//input[@type='text']")).sendKeys(data.otherText);
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//button[text()='Valider cet autre choix']")).click();
+    }
 
     return waitAnimationClose().then(
         function docFormExpect()
@@ -550,17 +577,35 @@ exports.setEnumRadioValue = function setEnumRadioValue(data)
     'use strict';
 
     var localPromise;
+    var elt;
     scrollToAttribute(data.attrid, data.index);
 
-    if (typeof data.index === "undefined") {
-        var elt= currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/.."));
+    if (data.label) {
+        if (typeof data.index === "undefined") {
+            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/..")).click();
+        } else {
+            localPromise = currentDriver.findElement(webdriver.By.xpath(
+                '(//div[@data-attrid="' + data.attrid + '"])[' +
+                (data.index + 1) +
+                "]//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+        }
+    }
 
-        localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/..")).click();
-    } else {
-        localPromise = currentDriver.findElement(webdriver.By.xpath(
-            '(//div[@data-attrid="' + data.attrid + '"])[' +
-            (data.index + 1) +
-            "]//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+    if (data.otherText) {
+        if (typeof data.index === "undefined") {
+            elt = currentDriver.findElement(webdriver.By.xpath(
+                "//div[@data-attrid='" + data.attrid +
+                "']//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text']"));
+
+        } else {
+            elt = currentDriver.findElement(webdriver.By.xpath(
+                '(//div[@data-attrid="' + data.attrid + '"])[' +
+                (data.index + 1) +
+                "]//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text']"));
+
+        }
+        elt.sendKeys(data.otherText);
+        localPromise = currentDriver.executeScript('$(arguments[0]).blur()', elt);
     }
 
     return localPromise.then(
@@ -575,20 +620,21 @@ exports.addEnumAutoValue = function addEnumAutoValue(data)
 {
     'use strict';
 
+    var otherInput;
     scrollToAttribute(data.attrid, data.index);
 
     if (data.filterText) {
         if (typeof data.index === "undefined") {
-            currentDriver.findElement(webdriver.By.css('div.dcpAttribute__content[data-attrid=' + data.attrid + '] .k-input')).sendKeys(data.filterText);
+            exports.findElementWait(webdriver.By.css('div.dcpAttribute__content[data-attrid=' + data.attrid + '] .k-input')).sendKeys(data.filterText);
         } else {
-            currentDriver.findElement(webdriver.By.xpath(
+            exports.findElementWait(webdriver.By.xpath(
                 '(//div[contains(@class,"dcpAttribute__content")][@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).sendKeys(data.filterText);
         }
     } else {
         if (typeof data.index === "undefined") {
-            currentDriver.findElement(webdriver.By.css('div.dcpAttribute__content[data-attrid=' + data.attrid + '] .k-input')).click();
+            exports.findElementWait(webdriver.By.css('div.dcpAttribute__content[data-attrid=' + data.attrid + '] .k-input')).click();
         } else {
-            currentDriver.findElement(webdriver.By.xpath(
+            exports.findElementWait(webdriver.By.xpath(
                 '(//div[contains(@class,"dcpAttribute__content")][@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).click();
         }
     }
@@ -599,26 +645,81 @@ exports.addEnumAutoValue = function addEnumAutoValue(data)
     }, 5000);
 
     currentDriver.sleep(500); // Wait animation done
-    currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//li[contains(text(), '" + data.selectedText + "')]")).click();
+
+    if (data.selectedText) {
+        exports.findElementWait(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//li[contains(text(), '" + data.selectedText + "')]")).click();
+    }
+    if (data.otherText) {
+        otherInput = currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//input[@type='text']"));
+
+        otherInput.click();
+        otherInput.clear();
+        otherInput.sendKeys(data.otherText);
+        currentDriver.sleep(100);
+        currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//button[text()='Valider cet autre choix']")).click();
+    }
 
     return waitAnimationClose().then(
         function docFormExpect()
         {
+            var elts;
+
+            if (data.expected && data.expected.displayValue) {
+                // Verify inputs
+                if (typeof data.index === "undefined") {
+                    elts = currentDriver.findElements(webdriver.By.xpath(
+                        '(//div[contains(@class,"dcpAttribute__content")][@data-attrid="' + data.attrid + '"]//li[contains(@class,"k-button")]/span[1])'));
+                } else {
+                    elts = currentDriver.findElements(webdriver.By.xpath(
+                        '((//div[contains(@class,"dcpAttribute__content")][@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//li[contains(@class,"k-button")]/span[1])'));
+                }
+                elts.then(function verifyLiElt(liElements)
+                {
+                    liElements.forEach(function x(liElement, liIndex)
+                        {
+                            liElement.getText().then(function verifyLiEltText(liText)
+                            {
+                                console.log("Inspect", liText);
+                                expect(liText).toEqual(data.expected.displayValue[liIndex]);
+                            });
+                        }
+                    );
+                });
+            }
+
             exports.verifyValue(data);
         }); // Wait animation close
 };
 exports.selectEnumCheckboxValue = function addEnumCheckboxValue(data)
 {
     'use strict';
-    var localPromise;
+    var localPromise, elt;
 
     scrollToAttribute(data.attrid, data.index);
-
-    if (typeof data.index === "undefined") {
-        localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
-    } else {
-        localPromise = currentDriver.findElement(webdriver.By.xpath("(//div[@data-attrid='" + data.attrid + "'])[" + (data.index + 1) + "]//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+    if (data.label) {
+        if (typeof data.index === "undefined") {
+            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+        } else {
+            localPromise = currentDriver.findElement(webdriver.By.xpath("(//div[@data-attrid='" + data.attrid + "'])[" + (data.index + 1) + "]//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+        }
     }
+    if (data.otherText) {
+        if (typeof data.index === "undefined") {
+            elt = currentDriver.findElement(webdriver.By.xpath(
+                "(//div[@data-attrid='" + data.attrid +
+                "']//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text'])[last()]"));
+
+        } else {
+            elt = currentDriver.findElement(webdriver.By.xpath(
+                '((//div[@data-attrid="' + data.attrid + '"])[' +
+                (data.index + 1) +
+                "]//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text'])[last()]"));
+        }
+        elt.click();
+        elt.sendKeys(data.otherText);
+        localPromise = currentDriver.executeScript('$(arguments[0]).blur()', elt);
+    }
+
     return localPromise.then(
         function docFormExpect()
         {
@@ -659,11 +760,22 @@ exports.createAndClose = function createAndClose()
 {
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Créer et fermer")]')).click();
+
+    return currentDriver.wait(function waitDocumentIsDisplayed()
+    {
+        return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
+    }, 5000);
+
 };
 exports.saveAndClose = function saveAndClose()
 {
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Enregistrer et fermer")]')).click();
+
+    return currentDriver.wait(function waitDocumentIsDisplayed()
+    {
+        return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
+    }, 5000);
 };
 
 exports.openMenu = function openMenu(config)
@@ -691,6 +803,43 @@ exports.getValue = function getValue(attrid)
 {
     'use strict';
     return currentDriver.executeScript("return window.dcp.document.documentController('getValue', '" + attrid + "');");
+};
+
+exports.verifyAttributeDisplay = function verifyAttributeDisplay(data)
+{
+    'use strict';
+
+    var elt;
+    var prefixMsg = 'Attribute :"' + data.attrid +
+        ((typeof data.index === "undefined") ? "" : (" #" + data.index)) + '"';
+
+    if (typeof data.index === "undefined") {
+        elt = webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[contains(@class,'dcpAttribute__value--read')]");
+    } else {
+        elt = webdriver.By.xpath("(//div[@data-attrid='" + data.attrid + "']//span[contains(@class,'dcpAttribute__value--read')])[" +
+            (data.index + 1) + "]");
+    }
+    currentDriver.findElement(elt).then(function verifyAttributeGetElement(domElement)
+    {
+
+        if (data.expected.displayText) {
+            domElement.getText().then(function verifyAttributeDisplayText(text)
+            {
+                var msg = prefixMsg +
+                    ', expected "' + data.expected.displayText +
+                    '", got :"' + text + '"';
+
+                if (text !== null && text.toString() !== data.expected.displayText.toString()) {
+                    process.stdout.write(ansi.red);
+                    process.stdout.write("Fail Examine :" + msg);
+                    process.stdout.write(ansi.none);
+                    exports.outlineElement(elt, "red");
+                }
+                since(msg).expect(text).toEqual(data.expected.displayText);
+
+            });
+        }
+    });
 };
 
 exports.verifyValue = function verifyValue(verification)
@@ -742,17 +891,43 @@ exports.verifyValue = function verifyValue(verification)
 
                     msg = 'Attribute :"' + verification.attrid +
                         ((typeof verification.index === "undefined") ? "" : (" #" + verification.index)) +
-                        '", expected "' + expectedValue +
-                        '", got :"' + rawValue + '"';
+                        '", expected "' + expectedValue.toString() +
+                        '", got :"' + rawValue.toString() + '"';
 
-                    since(msg).expect(rawValue).toEqual(expectedValue);
                     if (rawValue !== null && rawValue.toString() !== expectedValue.toString()) {
                         process.stdout.write(ansi.red);
-                        process.stdout.write("Fail Examine :" + verification.attrid + ' - ' +expectKey + " " + rawValue + ", expect:" + expectedValue);
+                        process.stdout.write("Fail Examine :" + msg);
                         process.stdout.write(ansi.none);
                     }
+                    since(msg).expect(rawValue).toEqual(expectedValue);
                 });
             }
         });
     }
+};
+
+exports.outlineElement = function outlineElement(locator, color)
+{
+    'use strict';
+    currentDriver.findElements(locator).then(function x(elements)
+    {
+        elements.forEach(function x(element)
+        {
+            currentDriver.executeScript(
+                "$(arguments[0]).css('outline', 'solid 1px '+arguments[1]);",
+                element, color
+            );
+        });
+    });
+
+};
+
+exports.findElementWait=function findElementWait(locator) {
+    'use strict';
+    currentDriver.wait(function waitSelect()
+    {
+        return currentDriver.isElementPresent(locator);
+    }, 5000);
+
+    return currentDriver.findElement(locator);
 };

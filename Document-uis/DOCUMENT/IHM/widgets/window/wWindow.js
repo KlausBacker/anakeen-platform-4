@@ -3,12 +3,12 @@ define([
     'jquery',
     'dcpDocument/widgets/widget',
     'kendo/kendo.window'
-], function (_, $)
+], function wWindow(_, $)
 {
     'use strict';
 
     $.widget("dcp.dcpWindow", {
-
+        intervalId:0,
         options: {
             animation: {
                 open: {
@@ -29,21 +29,38 @@ define([
             /**
              * Try to add iframe title if no title is set
              */
-            open: function ()
+            open: function wWindowOpen()
             {
                 if (!this.options.title) {
                     try {
                         var kendoWindow = this;
                         var iframeTitle = this.element.find('iframe').contents().find("title").html();
                         if (typeof iframeTitle === "undefined") {
-                            _.defer(function ()
+                            _.defer(function wWindowOpenSetTitle()
                             {
-                                kendoWindow.element.find('iframe').on("load", function ()
+                                kendoWindow.element.find('iframe').on("load", function wWindowOpenSetTitleNow()
                                 {
                                     try {
+                                        var $scopeWindow = $(this);
+                                        var currentTitle=$(this).contents().find("title").html();
                                         kendoWindow.setOptions({
-                                            title: $(this).contents().find("title").html()
+                                            title: currentTitle
                                         });
+                                        // Verify if need to change title every seconds
+                                        kendoWindow.intervalId=window.setInterval(function wWindowOpenSetTitleIsChanged()
+                                        {
+                                            try {
+                                                var newTitle=$scopeWindow.contents().find("title").html();
+                                                if (newTitle !== currentTitle) {
+                                                    currentTitle=newTitle;
+                                                    kendoWindow.setOptions({
+                                                        title: currentTitle
+                                                    });
+                                                }
+                                            } catch (exp) {
+                                            }
+                                        }, 1000);
+
                                     } catch (exp) {
                                     }
                                 });
@@ -56,11 +73,14 @@ define([
                     } catch (exp) {
                     }
                 }
+            },
+            close : function wWindowClode() {
+                window.clearInterval(this.intervalId);
             }
         },
 
         currentWidget: null,
-        _create: function ()
+        _create: function wWindowCreate()
         {
             this.currentWidget = $('<div class="dialog-window"/>');
             this.element.append(this.currentWidget);
@@ -69,7 +89,7 @@ define([
             this.currentWidget.kendoWindow(this.options);
         },
 
-        _getWindowTemplate: function (templateId)
+        _getWindowTemplate: function wWindowCreate_getWindowTemplate(templateId)
         {
             if (this.options.templateData && this.options.templateData.templates &&
                 this.options.templateData.templates.window && this.options.templateData.templates.window[templateId]) {
@@ -82,6 +102,7 @@ define([
         },
         destroy: function wWindowDestroy()
         {
+            window.clearInterval(this.intervalId);
             if (this.currentWidget && this.currentWidget.data("kendoWindow")) {
                 this.currentWidget.data("kendoWindow").destroy();
             }
@@ -91,8 +112,9 @@ define([
         {
             this.currentWidget.data("kendoWindow").open();
         },
-        close: function close()
+        close: function wWindowClose()
         {
+            window.clearInterval(this.intervalId);
             this.currentWidget.data("kendoWindow").close();
         },
         kendoWindow: function wWindowkendoWindow()

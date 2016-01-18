@@ -8,11 +8,13 @@ fi
 
 cd "$WIFF_CONTEXT_ROOT";
 cd lib/jquery;
+rm -f ddui;
 ln -sf 2.1.4 ddui;
 
 
 cd "$WIFF_CONTEXT_ROOT";
 cd lib/KendoUI/;
+rm -f ddui;
 ln -sf 2015.3.1214 ddui;
 
 exit 0;

@@ -10,6 +10,7 @@ namespace Dcp\Ui;
 class DocidRenderOptions extends CommonRenderOptions
 {
     
+    use TFormatRenderOption;
     const type = "docid";
     const kendoMultiSelectConfigurationOption = "kendoMultiSelectConfiguration";
     /**

@@ -2,9 +2,10 @@
 define([
     'jquery',
     'underscore',
+    'mustache',
     'dcpDocument/widgets/attributes/wAttribute',
     'kendo/kendo.multiselect'
-], function require_wDocid($, _)
+], function require_wDocid($, _, Mustache)
 {
     'use strict';
 
@@ -28,6 +29,7 @@ define([
 
         _initDom: function wDocidInitDom()
         {
+            var scope=this;
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
@@ -38,7 +40,17 @@ define([
             }
 
             if (this.getMode() === "read") {
-
+                if (this.options.renderOptions.format) {
+                     if (this._isMultiple()) {
+                         _.each(this.options.attributeValues, function wDocidinitDomFormat(singleValue) {
+                             singleValue.formatValue=Mustache.render(scope.options.renderOptions.format,
+                                 singleValue);
+                         });
+                     } else {
+                         this.options.attributeValue.formatValue = Mustache.render(this.options.renderOptions.format,
+                             this.options.attributeValue);
+                     }
+                }
                 //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
                 $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
 

@@ -60,7 +60,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [array] Quelques énumérés simple */
 		const test_ddui_enum__array_singleenum='test_ddui_enum__array_singleenum';
 		/** [enum ] Un pays */
-		const test_ddui_enum__enumcountry_array='test_ddui_enum__enumcountry_array';
+		const test_ddui_enum__enumtown_array='test_ddui_enum__enumtown_array';
 		/** [enum ] Un chiffre */
 		const test_ddui_enum__enumnumber_array='test_ddui_enum__enumnumber_array';
 		/** [enum ] Une note */
@@ -70,7 +70,7 @@ namespace Dcp\AttributeIdentifiers {
 		/** [array] Quelques énumérés multiples */
 		const test_ddui_enum__array_multipleenum='test_ddui_enum__array_multipleenum';
 		/** [enum ] Des pays */
-		const test_ddui_enum__enumscountry_array='test_ddui_enum__enumscountry_array';
+		const test_ddui_enum__enumstown_array='test_ddui_enum__enumstown_array';
 		/** [enum ] Des chiffres */
 		const test_ddui_enum__enumsnumber_array='test_ddui_enum__enumsnumber_array';
 		/** [enum ] Des notes */
