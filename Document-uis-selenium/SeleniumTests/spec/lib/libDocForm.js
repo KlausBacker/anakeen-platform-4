@@ -76,7 +76,7 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
     }, 5000);
 
 };
-
+exports.scrollToAttribute=scrollToAttribute;
 /**
  * Switch to a document iframe
  * @param docWindowRef
@@ -102,6 +102,7 @@ exports.setDocWindow = function setPageWindow(docWindowRef)
 exports.selectTab = function selectTab(data)
 {
     'use strict';
+    var tabContentElt;
 
     currentDriver.executeScript('window.scrollTo(0,0);');
     currentDriver.wait(function waitMenuNormal()
@@ -118,6 +119,20 @@ exports.selectTab = function selectTab(data)
     {
         return webdriver.until.elementIsVisible(currentDriver.findElement(webdriver.By.css('.dcpTab__content[data-attrid=' + data.attrid + ']')));
     }, 4000);
+
+    tabContentElt= currentDriver.findElement(webdriver.By.css('.dcpTab__content[data-attrid=' + data.attrid + ']'));
+    currentDriver.wait(function waitNumericInput()
+    {
+        return tabContentElt.getCssValue("opacity").then( function getCssOpacityValue(cssValue) {
+            return cssValue === "1";
+        });
+    }, 5000);
+    currentDriver.wait(function waitNumericInput()
+    {
+        return tabContentElt.getCssValue("display").then( function getCssDisplayValue(cssValue) {
+            return cssValue === "block";
+        });
+    }, 5000);
 
     return currentDriver.wait(function waitNumericInput()
     {
@@ -761,10 +776,12 @@ exports.createAndClose = function createAndClose()
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Créer et fermer")]')).click();
 
-    return currentDriver.wait(function waitDocumentIsDisplayed()
+    currentDriver.wait(function waitDocumentIsDisplayed()
     {
         return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
     }, 5000);
+
+    return currentDriver.sleep(1000); // Wait animation done
 
 };
 exports.saveAndClose = function saveAndClose()
@@ -772,10 +789,11 @@ exports.saveAndClose = function saveAndClose()
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Enregistrer et fermer")]')).click();
 
-    return currentDriver.wait(function waitDocumentIsDisplayed()
+     currentDriver.wait(function waitDocumentIsDisplayed()
     {
         return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
     }, 5000);
+    return currentDriver.sleep(1000); // Wait animation done
 };
 
 exports.openMenu = function openMenu(config)
@@ -829,6 +847,7 @@ exports.verifyAttributeDisplay = function verifyAttributeDisplay(data)
                     ', expected "' + data.expected.displayText +
                     '", got :"' + text + '"';
 
+                msg+="\n"+text.replace(/\n/g,"\\n");
                 if (text !== null && text.toString() !== data.expected.displayText.toString()) {
                     process.stdout.write(ansi.red);
                     process.stdout.write("Fail Examine :" + msg);
@@ -837,6 +856,20 @@ exports.verifyAttributeDisplay = function verifyAttributeDisplay(data)
                 }
                 since(msg).expect(text).toEqual(data.expected.displayText);
 
+            });
+        }
+
+        if (data.expected.cssElements) {
+            data.expected.cssElements.forEach(function verifyCss (cssInfo) {
+                 currentDriver.executeScript("return $(arguments[0]).find(arguments[1]).length;",
+                 domElement, cssInfo.path
+                 ).then(
+                     function testCss(count) {
+                         var msg=prefixMsg + "search "+cssInfo.path+"(expect : "+cssInfo.count+",got : "+count+")";
+
+                         since(msg).expect(count).toEqual(cssInfo.count);
+                     }
+                 );
             });
         }
     });

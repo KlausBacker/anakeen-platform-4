@@ -28,7 +28,7 @@ define([
                 displayOtherChoice: "** {{value}} **"
             },
             renderOptions: {
-                kendoDropDownConfiguration: {
+                    kendoDropDownConfiguration: {
                     filter: "none",
                     autoBind: true
                 },
@@ -51,6 +51,8 @@ define([
                 this.options.isMultiple = true;
                 _.each(this.options.attributeValue, function wEnumDisplayOthers(singleValue)
                 {
+                    singleValue.exists=(singleValue.exists !== false);
+
                     if (singleValue.exists === false) {
                         singleValue.displayValue = Mustache.render(currentWidget.options.labels.displayOtherChoice, singleValue);
                     }
@@ -314,7 +316,7 @@ define([
             {
                 event.preventDefault();
                 // Invert selection
-                _.some(tplOption.enumValues, function wEnum_setValue(item)
+                _.some(tplOption.enumValues, function wEnum_comboSetValue(item)
                 {
                     if (scope.options.attributeValue.value === null || item.value !== scope.options.attributeValue.value) {
                         scope.setValue(item, event);
@@ -652,6 +654,9 @@ define([
                                 this.flashElement();
                                 if (this.options.renderOptions.useSourceUri) {
                                     if (newValues.length > 0) {
+                                        _.each(value, function wEnumCompleteExists(singleValue) {
+                                            singleValue.exists = (singleValue.exists !== false);
+                                        });
                                         kddl.dataSource.data(value);
                                     }
                                 }
@@ -799,7 +804,8 @@ define([
                     {
                         info.push({
                             value: enumItem.key,
-                            displayValue: enumItem.label || ''
+                            displayValue: enumItem.label || '',
+                            exists: enumItem.exists !== false
                         });
                     });
                     if (!scope._isMultiple()) {
@@ -869,7 +875,7 @@ define([
                         var newValues = [];
                         _.each(kdData, function wEnum_pushNewValues(val)
                         {
-                            newValues.push({value: val.value, displayValue: val.displayValue});
+                            newValues.push({value: val.value, displayValue: val.displayValue, exists:val.exists !== false});
                         });
                         scope.setValue(newValues, event);
                     },
@@ -993,7 +999,10 @@ define([
 
                 _.each(kdData, function wEnum_pushNewValues(val)
                 {
-                    newValues.push({value: val.value, displayValue: val.displayValue});
+                    newValues.push({
+                        value: val.value,
+                        displayValue: val.displayValue,
+                        exists:val.exists});
                 });
 
                 newValues.push({
@@ -1004,7 +1013,6 @@ define([
 
                 //kWidget.listView._filtered=false;
                 kWidget.listView.filter(false);
-                window.zou = kWidget;
                 this.setValue(newValues, event);
             } else {
                 this.setValue({

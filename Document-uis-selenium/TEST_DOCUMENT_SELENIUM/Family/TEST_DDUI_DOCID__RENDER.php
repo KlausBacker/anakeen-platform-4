@@ -77,11 +77,13 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
 
     public function getJsReferences(\Doc $document = null)
     {
+
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $jsRef= parent::getJsReferences(
             $document
         );
 
-        $jsRef["testViewDocid"]="TEST_DOCUMENT_SELENIUM/Layout/testViewDocid.js";
+        $jsRef["testViewDocid"]="TEST_DOCUMENT_SELENIUM/Layout/testViewDocid.js?ws=".$version;
         return $jsRef;
     }
 }

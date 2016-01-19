@@ -20,9 +20,8 @@ describe('Dynacase Docid test', function formAllEdit()
 
     beforeAll(function beforeFormAllEdit(beforeDone)
     {
-        var url = driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_DOCID&viewId=!defaultCreation";
+       var url = driver.rootUrl + "?app=DOCUMENT&initid=TST_DDUI_DOCID&viewId=!defaultCreation";
 
-        console.log("Begin testing");
         currentDriver = driver.getDriver();
         webdriver.promise.controlFlow().on('uncaughtException', handleException);
 
@@ -43,19 +42,18 @@ describe('Dynacase Docid test', function formAllEdit()
                     return webdriver.until.elementIsNotVisible(webdriver.By.css(".dcpLoading"));
                 }, 5000).then(function doneInitMainPage()
                 {
-                    console.log("Document loaded");
+                    console.log("Logged as admin");
                     beforeDone();
                 });
-
             });
         });
     });
 
     afterAll(function afterFormAllEdit(afterDone)
     {
-        console.log("Exiting... in 10s");
+        console.log("Exiting... in 5s");
         webdriver.promise.controlFlow().removeListener('uncaughtException', handleException);
-        currentDriver.sleep(10000); // Wait to see result
+        currentDriver.sleep(5000); // Wait to see result
         driver.quit().then(afterDone);
 
     });

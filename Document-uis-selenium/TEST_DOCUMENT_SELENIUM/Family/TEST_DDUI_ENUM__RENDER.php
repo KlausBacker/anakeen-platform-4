@@ -25,6 +25,15 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
         );
         return $options;
     }
+
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $css = parent::getCssReferences($document);
+        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
+        return $css;
+    }
 }
 
 class EnumRenderConfigEdit extends EnumRenderConfigEditDefault
@@ -305,6 +314,16 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 
         $options->enum()->useOtherChoice(true);
 
+        $tagTemplate='<span class="dcpAttribute__content--enum-single' .
+            '#if (exists === false) { #'.
+            ' dcpAttribute__content--enum-single--other'.
+            '#}#'.
+            '"> #: displayValue #</span>';
+        $options->enum()->setOption("kendoMultiSelectConfiguration", array(
+            "tagTemplate"=>$tagTemplate));
+        $options->enum()->setOption("kendoDropDownConfiguration", array(
+            "valueTemplate"=>$tagTemplate));
+
         return $options;
     }
 
@@ -338,7 +357,15 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumview.css?ws=".$version;
+        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testViewEnum.css?ws=".$version;
+        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
+        return $css;
+    }
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $css = parent::getJsReferences($document);
+        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testViewEnum.js?ws=".$version;
         return $css;
     }
 }
