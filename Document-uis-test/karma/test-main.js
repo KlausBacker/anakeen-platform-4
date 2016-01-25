@@ -137,7 +137,7 @@ require.config({ // jshint ignore:line
         "tooltip": "../../lib/bootstrap/3/js/tooltip",
         "mustache": "../../lib/mustache.js/mustache",
         "bootstrap": "../../lib/bootstrap/3/js/bootstrap",
-        "kendo": "../../lib/KendoUI/ddui/js/",
+        "kendo-ddui" : "../../lib/KendoUI/ddui/js/kendo-ddui-builded",
         "kendo-culture-fr": "../../lib/KendoUI/ddui/js/cultures/kendo.culture.fr-FR",
         "ckeditor": "../../lib/ckeditor/4/ckeditor",
         "ckeditor-jquery": "../../lib/ckeditor/4/adapters/jquery",
@@ -151,8 +151,6 @@ require.config({ // jshint ignore:line
             "datatables.net": "datatables"
         }
     },
-    // dynamically load all test files
-    deps: allTestFiles,
 
     "config": {
         "text": {
@@ -167,3 +165,10 @@ require.config({ // jshint ignore:line
 
     urlArgs: "bust=" + (new Date()).getTime()
 });
+
+// dynamically load all test files after kendo
+require(["kendo-ddui"], function() {
+    require(allTestFiles, function() {
+
+    });
+})

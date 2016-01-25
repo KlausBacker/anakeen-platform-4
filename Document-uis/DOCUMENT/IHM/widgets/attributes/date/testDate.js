@@ -3,7 +3,7 @@ require([
     'dcpDocument/widgets/attributes/date/loaderDate',
     'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/date/dateTestAttribute',
-    'kendo-culture-fr'
+    'kendo/kendo.core'
 ], function (widget, defaultTestSuite, dateTestSuite, kendo) {
     "use strict";
 
