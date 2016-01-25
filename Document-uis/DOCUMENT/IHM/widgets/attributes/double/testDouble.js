@@ -4,7 +4,7 @@ require([
     'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
     'dcpDocument/widgets/attributes/int/intTestAttribute',
     'dcpDocument/widgets/attributes/double/doubleTestAttribute',
-    'kendo-culture-fr'
+    'kendo/kendo.core'
 ], function (widget, defaultTestSuite, intTestSuite, doubleTestSuite, kendo) {
     "use strict";
 
