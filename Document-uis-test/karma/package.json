@@ -12,6 +12,6 @@
     "karma-junit-reporter": "*",
     "jasmine-core" : "*",
     "requirejs" : "*",
-    "phantomjs" : "*"
+    "phantomjs-prebuilt" : "*"
   }
 }
