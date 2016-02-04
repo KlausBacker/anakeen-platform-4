@@ -36,6 +36,7 @@ class View extends Crud
      * @var string view Identifier must match one of view control associated document
      */
     protected $viewIdentifier = '';
+    protected $properties = array();
     
     protected $resourceIdentifier = '';
     /**
@@ -187,10 +188,22 @@ class View extends Crud
                 $document->setMask($document::USEMASKCVEDIT);
             }
         }
-        
-        $documentData = new DocumentCrud();
-        $documentData->setContentParameters($this->contentParameters);
-        $documentData->update($resourceId);
+
+
+        if (!$document->isAlive() && isset($this->properties["status"]) &&
+            $this->properties["status"] === "alive" ) {
+            //Handle restoration
+            $err = $document->undelete();
+            $err .=  $document->store();
+            if ($err) {
+                throw new \Dcp\Ui\Exception("Unable to restore $err");
+            }
+        } else {
+            $documentData = new DocumentCrud();
+            $documentData->setContentParameters($this->contentParameters);
+            $documentData->update($resourceId);
+        }
+
         $this->document = null;
         return $this->read($resourceId);
     }
@@ -755,6 +768,9 @@ class View extends Crud
         $dataDocument = json_decode($jsonString, true);
         $this->customClientData = isset($dataDocument[self::fieldCustomClientData]) ? $dataDocument[self::fieldCustomClientData] : null;
         $values = DocumentUtils::analyzeDocumentJSON($jsonString);
+        if (isset($dataDocument["document"]["properties"])) {
+            $this->properties = $dataDocument["document"]["properties"];
+        }
         return $values;
     }
 }

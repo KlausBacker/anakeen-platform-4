@@ -60,7 +60,6 @@ define([
         url: function mDocumenturl()
         {
             var urlData = "api/v1/", viewId = this.get("viewId");
-            var properties;
             var customClientData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
             var revision=this.get("revision");
@@ -68,9 +67,8 @@ define([
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
             } else {
-                properties = this.getModelProperties();
                 urlData += "documents/" + encodeURIComponent(this.id);
-                //Don't add revision for delete of alive document
+                //Don't add revision for the deletion of a alive document
                 if (revision !== null && (currentMethod !== "delete")) {
                     if (_.isObject(revision) && revision.state ) {
                         urlData += "/revisions/" + encodeURIComponent("state:"+revision.state);
@@ -94,7 +92,7 @@ define([
                 urlData += "/views/" + encodeURIComponent(viewId);
             }
 
-            if (customClientData && (currentMethod === "read" || currentMethod === "delete" )) {
+            if (!_.isEmpty(customClientData) && (currentMethod === "read" || currentMethod === "delete" )) {
                 urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClientData));
             }
             return urlData;
