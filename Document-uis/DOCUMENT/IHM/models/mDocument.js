@@ -388,12 +388,27 @@ define([
                 var result = JSON.parse(xhr.responseText);
                 messages = result.messages;
             } catch (e) {
+                //Unable to parse responseText (error is not in JSON)
+                this.cleanErrorMessages();
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
                 } else {
                     console.error(e);
                 }
-                //Unable to parse responseText (error is not in JSON)
+                currentModel.trigger("displayNetworkError");
+                //Status 0 indicate offline browser
+                if (xhr.status === 0) {
+                    currentModel.trigger("showError", {
+                        "errorCode": "offline",
+                        "title": i18n.___("Your navigator seems offline, try later", "ddui")
+                    });
+                } else {
+                    currentModel.trigger("showError", {
+                        "errorCode": "unableToParseJson",
+                        "title": i18n.___("Server return unreadable", "ddui")
+                    });
+                }
+                return;
             }
 
             parsedReturn = {
@@ -403,17 +418,12 @@ define([
 
             this.cleanErrorMessages();
             if (parsedReturn.messages.length === 0) {
-                //Status 0 indicate offline browser
-                if (xhr.status === 0) {
-                    parsedReturn.responseText = i18n.___("Your navigator seems offline, try later", "ddui");
-                    errorCode = "offline";
-                }
                 if (currentModel.get("properties")) {
                     title = currentModel.get("properties").get("title");
                 }
                 currentModel.trigger("showError", {
                     "errorCode": errorCode,
-                    "title": "Unable to synchronise " + title,
+                    "title": i18n.___("Unexpected error ", "ddui") + title,
                     "message": parsedReturn.responseText
                 });
             }
