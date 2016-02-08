@@ -102,7 +102,7 @@ class DefaultView extends RenderDefault
         $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);
         
-        $item = new ItemMenu("restore", ___("Restore", "UiMenu") , "#restore/{{document.properties.id}}");
+        $item = new ItemMenu("restore", ___("Restore", "UiMenu") , "#action/document.restore");
         if ($this->displayDefaultMenuTooltip) {
             $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
         }
@@ -110,25 +110,11 @@ class DefaultView extends RenderDefault
         
         $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#action/document.history");
         $item->setBeforeContent('<div class="fa fa-history" />');
-        /*$targetOption = new MenuTargetOptions();
-        $targetOption->windowHeight = "400px";
-        $targetOption->windowWidth = "600px";
-        $item->setTarget("_dialog", $targetOption);*/
         $menu->appendElement($item);
         
         $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#action/document.properties");
         $item->setBeforeContent('<div class="fa fa-info" />');
         $menu->appendElement($item);
-        /*
-        if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG") !== "FALSE") {
-            $item = new ItemMenu("propertiesOld", "", "?app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id={{document.properties.id}}");
-            $item->setBeforeContent('<div class="fa fa-gear" />');
-            $targetOption = new MenuTargetOptions();
-            $targetOption->windowHeight = "400px";
-            $targetOption->windowWidth = "400px";
-            $item->setTarget("_dialog", $targetOption);
-            $menu->appendElement($item);
-        }*/
         
         if ($document->wid > 0) {
             if ($document->locked != - 1) {

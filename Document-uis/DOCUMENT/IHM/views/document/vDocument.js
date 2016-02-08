@@ -1033,6 +1033,21 @@ define([
             });
         },
 
+        /**
+         * Restore the deleted document
+         *
+         * @param options
+         * @returns {exports}
+         */
+        restoreDocument: function vDocumentRestoreDocument()
+        {
+            if (this.model.get("properties")) {
+                this.model.get("properties").set("status", "alive");
+                this.model.save();
+            }
+
+        },
+
         actionDocument: function vDocumentActionDocument(options)
         {
             var event = {prevent: false};
@@ -1101,6 +1116,9 @@ define([
             }
             if (options.eventId === "document.unlock") {
                 return this.unlockDocument();
+            }
+            if (options.eventId === "document.restore") {
+                return this.restoreDocument();
             }
         },
 

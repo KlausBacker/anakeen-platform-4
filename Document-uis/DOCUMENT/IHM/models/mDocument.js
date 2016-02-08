@@ -60,7 +60,6 @@ define([
         url: function mDocumenturl()
         {
             var urlData = "api/v1/", viewId = this.get("viewId");
-            var properties;
             var customClientData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
             var revision=this.get("revision");
@@ -68,9 +67,8 @@ define([
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
             } else {
-                properties = this.getModelProperties();
                 urlData += "documents/" + encodeURIComponent(this.id);
-                //Don't add revision for delete of alive document
+                //Don't add revision for the deletion of a alive document
                 if (revision !== null && (currentMethod !== "delete")) {
                     if (_.isObject(revision) && revision.state ) {
                         urlData += "/revisions/" + encodeURIComponent("state:"+revision.state);
@@ -94,7 +92,7 @@ define([
                 urlData += "/views/" + encodeURIComponent(viewId);
             }
 
-            if (customClientData && (currentMethod === "read" || currentMethod === "delete" )) {
+            if (!_.isEmpty(customClientData) && (currentMethod === "read" || currentMethod === "delete" )) {
                 urlData += "?customClientData=" + encodeURIComponent(JSON.stringify(customClientData));
             }
             return urlData;
@@ -388,12 +386,27 @@ define([
                 var result = JSON.parse(xhr.responseText);
                 messages = result.messages;
             } catch (e) {
+                //Unable to parse responseText (error is not in JSON)
+                this.cleanErrorMessages();
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
                 } else {
                     console.error(e);
                 }
-                //Unable to parse responseText (error is not in JSON)
+                currentModel.trigger("displayNetworkError");
+                //Status 0 indicate offline browser
+                if (xhr.status === 0) {
+                    currentModel.trigger("showError", {
+                        "errorCode": "offline",
+                        "title": i18n.___("Your navigator seems offline, try later", "ddui")
+                    });
+                } else {
+                    currentModel.trigger("showError", {
+                        "errorCode": "unableToParseJson",
+                        "title": i18n.___("Server return unreadable", "ddui")
+                    });
+                }
+                return;
             }
 
             parsedReturn = {
@@ -403,17 +416,12 @@ define([
 
             this.cleanErrorMessages();
             if (parsedReturn.messages.length === 0) {
-                //Status 0 indicate offline browser
-                if (xhr.status === 0) {
-                    parsedReturn.responseText = i18n.___("Your navigator seems offline, try later", "ddui");
-                    errorCode = "offline";
-                }
                 if (currentModel.get("properties")) {
                     title = currentModel.get("properties").get("title");
                 }
                 currentModel.trigger("showError", {
                     "errorCode": errorCode,
-                    "title": "Unable to synchronise " + title,
+                    "title": i18n.___("Unexpected error ", "ddui") + title,
                     "message": parsedReturn.responseText
                 });
             }
