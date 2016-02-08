@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-22 18:05+0100\n"
+"POT-Creation-Date: 2016-02-08 14:21+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -219,7 +219,7 @@ msgctxt "ddui"
 msgid "Information access deny"
 msgstr ""
 
-msgctxt "ddui-enum"
+msgctxt "ddui-date"
 msgid "Invalid date"
 msgstr ""
 
@@ -246,6 +246,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Modify"
+msgstr ""
+
+msgctxt "ddui-docid"
+msgid "No more matching"
 msgstr ""
 
 msgctxt "ddui"
@@ -363,22 +367,7 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr ""
 
-msgid "ddui::Delete : "
-msgstr ""
-
-msgid "ddui::DocumentDeleted"
-msgstr ""
-
 msgid "ddui::Initialisation"
-msgstr ""
-
-msgid "ddui::Revision :"
-msgstr ""
-
-msgid "ddui::RevisionCreated"
-msgstr ""
-
-msgid "ddui:Add new line"
 msgstr ""
 
 msgid "ddui:Admin"
@@ -393,9 +382,6 @@ msgstr ""
 msgid "ddui:Click to reload the document"
 msgstr ""
 
-msgid "ddui:Delete line"
-msgstr ""
-
 msgid "ddui:Document Render"
 msgstr ""
 
@@ -403,15 +389,6 @@ msgid "ddui:Document render"
 msgstr ""
 
 msgid "ddui:Document render long"
-msgstr ""
-
-msgid "ddui:Drag to move line"
-msgstr ""
-
-msgid "ddui:Duplicate selected row"
-msgstr ""
-
-msgid "ddui:Editing form"
 msgstr ""
 
 msgid "ddui:Get dynamic sub menu"
@@ -426,16 +403,10 @@ msgstr ""
 msgid "ddui:Render a document"
 msgstr ""
 
-msgid "ddui:Select line"
-msgstr ""
-
 msgid "ddui:Unable to load try again"
 msgstr ""
 
 msgid "ddui:View documents"
-msgstr ""
-
-msgid "ddui:Wrap kendo"
 msgstr ""
 
 msgid "ddui:activate logging"

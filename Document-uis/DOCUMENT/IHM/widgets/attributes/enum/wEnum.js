@@ -573,7 +573,6 @@ define([
 
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
-
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
             kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
         },
@@ -901,13 +900,14 @@ define([
 
                 defaultOptions = {
                     /*valuePrimitive: true,*/
-                    optionLabel: {
-                        displayValue: this.options.labels.chooseMessage + ' ',
-                        value: ''
-                    },
-                    optionLabelTemplate: '<span class="placeholder">#: displayValue #</span>',
                     dataTextField: "displayValue",
                     dataValueField: "value",
+                    optionLabel: {
+                        displayValue: this.options.labels.chooseMessage + ' ',
+                        value: '',
+                        exists:true
+                    },
+                    optionLabelTemplate: '<span class="placeholder">#: displayValue #</span>',
                     dataSource: source.data,
                     index: (source.index < 0) ? undefined : source.index,
                     autoBind: false,
@@ -1011,8 +1011,6 @@ define([
                     displayValue: Mustache.render(this.options.labels.displayOtherChoice, {value: newValue})
                 });
 
-                //kWidget.listView._filtered=false;
-                kWidget.listView.filter(false);
                 this.setValue(newValues, event);
             } else {
                 this.setValue({
