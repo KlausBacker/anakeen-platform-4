@@ -260,7 +260,13 @@ class RenderDefault implements IRenderConfig
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")
         ));
         $opt->date()->setTranslations(array(
-            "invalidDate" => ___("Invalid date", "ddui-enum")
+            "invalidDate" => ___("Invalid date", "ddui-date")
+        ));
+        $opt->docid()->setTranslations(array(
+            "allSelectedDocument" => ___("No more matching", "ddui-docid")
+        ));
+        $opt->account()->setTranslations(array(
+            "allSelectedDocument" => ___("No more matching", "ddui-docid")
         ));
         
         $selectedTab = $document->getUTag("lasttab");

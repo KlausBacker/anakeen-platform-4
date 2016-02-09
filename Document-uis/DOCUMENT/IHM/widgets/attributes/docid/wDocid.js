@@ -22,6 +22,9 @@ define([
                     '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>'
                 }
+            },
+            labels: {
+                allSelectedDocument:"No more matching"
             }
         },
 
@@ -154,11 +157,10 @@ define([
                             }
                         },
                         schema: {
-                            // Filter data to delete already recorded ids
+                            // Add already recorded data to items
                             data: function wDocidSelectSchema(items)
                             {
                                 var attrValues = scope.getValue();
-
                                 _.each(items, function wDocidDataCompose(r)
                                 {
                                     if (r.values && r.values[scope.options.id]) {
@@ -166,16 +168,17 @@ define([
                                         r.docTitle = r.values[scope.options.id].displayValue;
                                     }
                                 });
-                                if (!attrValues || !_.isArray(attrValues)) {
-                                    return items;
-                                }
-                                var recordedValues = _.pluck(attrValues, "value");
-                                return _.filter(items, function wDocidSelectSchemaFilter(item)
-                                {
-                                    if (!item.values) {
-                                        return true;
+
+                                _.each(attrValues, function wDocidDataAlreadySet(r) {
+                                    if (r && r.value) {
+                                        items.push({
+                                            docId: r.value,
+                                            docTitle: r.displayValue
+                                        });
                                     }
-                                    return (_.indexOf(recordedValues, item.values[scope.options.id].value) < 0);
+                                });
+                                return _.uniq(items, false, function wDocidDataUniq(x) {
+                                    return x.docId;
                                 });
                             }
                         }
@@ -229,6 +232,23 @@ define([
                         }
 
                         scope.setValue(newValues, event);
+                    },
+                    open: function wDocidSelectOpen() {
+                        this.ul.addClass("dcpAttribute__select--docid");
+                    },
+                    filtering: function wDocidSelectOpen() {
+                        this._isFiltering=true;
+                    },
+
+                    dataBound: function wDocidFilteringNoOne() {
+                        if (this._isFiltering) {
+                            if (this.ul.find("li:not(.k-state-selected)").length === 0 && this.ul.find("li.k-state-selected").length > 0) {
+                                // No one more : display
+                                var $noOne=$('<li class="k-item"/>').append('<span class="k-state-default"/>').append($('<span class="k-state-error dcpAttribute__select--docid-noone"/>').text(scope.options.labels.allSelectedDocument));
+                                this.ul.append($noOne);
+                            }
+                            this._isFiltering=false;
+                        }
                     }
                 };
 
@@ -330,6 +350,7 @@ define([
                     }
                 });
 
+                window.k=kendoSelect;
                 kendoSelect.value(newValues);
 
                 if (!_.isEqual(_.uniq(newValues), _.uniq(originalValues))) {

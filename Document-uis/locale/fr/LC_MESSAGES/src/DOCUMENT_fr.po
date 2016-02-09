@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-22 18:05+0100\n"
-"PO-Revision-Date: 2015-12-22 18:11+0100\n"
+"POT-Creation-Date: 2016-02-08 14:21+0100\n"
+"PO-Revision-Date: 2016-02-08 15:51+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -222,7 +222,7 @@ msgctxt "ddui"
 msgid "Information access deny"
 msgstr "Information non accessible"
 
-msgctxt "ddui-enum"
+msgctxt "ddui-date"
 msgid "Invalid date"
 msgstr "Date invalide"
 
@@ -250,6 +250,10 @@ msgstr "Le nombre de rangées minimum est de {{limit}}"
 msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
+
+msgctxt "ddui-docid"
+msgid "No more matching"
+msgstr "Aucune autre nouvelle correspondance"
 
 msgctxt "ddui"
 msgid "No result found"
@@ -366,23 +370,8 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr "Commentaire de transition du cycle de vie"
 
-msgid "ddui::Delete : "
-msgstr "Suppression de : "
-
-msgid "ddui::DocumentDeleted"
-msgstr "Supprimée le"
-
 msgid "ddui::Initialisation"
 msgstr "Initialisation"
-
-msgid "ddui::Revision :"
-msgstr "Révision n°"
-
-msgid "ddui::RevisionCreated"
-msgstr "Créée le"
-
-msgid "ddui:Add new line"
-msgstr "Ajouter une nouvelle ligne"
 
 msgid "ddui:Admin"
 msgstr "Administration"
@@ -396,9 +385,6 @@ msgstr "Récupération des erreurs clients"
 msgid "ddui:Click to reload the document"
 msgstr "Cliquez pour recharger le document"
 
-msgid "ddui:Delete line"
-msgstr "Supprimer la ligne"
-
 msgid "ddui:Document Render"
 msgstr "Affichage d'un document"
 
@@ -407,15 +393,6 @@ msgstr "DDUI : Dynacase document UI"
 
 msgid "ddui:Document render long"
 msgstr "Rendu HTML5 en One Page Application"
-
-msgid "ddui:Drag to move line"
-msgstr "Cliquer pour déplacer la ligne"
-
-msgid "ddui:Duplicate selected row"
-msgstr "Dupliquer la ligne sélectionnée"
-
-msgid "ddui:Editing form"
-msgstr "Formulaire en cours de modification"
 
 msgid "ddui:Get dynamic sub menu"
 msgstr "Action de sous-menu"
@@ -429,17 +406,11 @@ msgstr "Paramètres des rendus"
 msgid "ddui:Render a document"
 msgstr "Visualiser un document"
 
-msgid "ddui:Select line"
-msgstr "Sélectionner la ligne"
-
 msgid "ddui:Unable to load try again"
 msgstr "Impossible de charger le document. Veuillez essayer à nouveau"
 
 msgid "ddui:View documents"
 msgstr "Action vue de document"
-
-msgid "ddui:Wrap kendo"
-msgstr "Action include kendo ui"
 
 msgid "ddui:activate logging"
 msgstr "Activer les logs d'erreur client"
@@ -475,6 +446,10 @@ msgstr "{{value}} (autre choix)"
 #~ msgstr ""
 #~ "L'identifiant de document \"%s\" doit indiquer une famille dans le mode "
 #~ "création"
+
+#~ msgctxt "ddui-enum"
+#~ msgid "Invalid date"
+#~ msgstr "Date invalide"
 
 #~ msgctxt "UiMenu"
 #~ msgid "Lock"
@@ -512,8 +487,41 @@ msgstr "{{value}} (autre choix)"
 #~ msgid "View {{{displayValue}}}"
 #~ msgstr "Voir {{{displayValue}}}"
 
+#~ msgid "ddui::Delete : "
+#~ msgstr "Suppression de : "
+
+#~ msgid "ddui::DocumentDeleted"
+#~ msgstr "Supprimée le"
+
+#~ msgid "ddui::Revision :"
+#~ msgstr "Révision n°"
+
+#~ msgid "ddui::RevisionCreated"
+#~ msgstr "Créée le"
+
+#~ msgid "ddui:Add new line"
+#~ msgstr "Ajouter une nouvelle ligne"
+
+#~ msgid "ddui:Delete line"
+#~ msgstr "Supprimer la ligne"
+
+#~ msgid "ddui:Drag to move line"
+#~ msgstr "Cliquer pour déplacer la ligne"
+
+#~ msgid "ddui:Duplicate selected row"
+#~ msgstr "Dupliquer la ligne sélectionnée"
+
+#~ msgid "ddui:Editing form"
+#~ msgstr "Formulaire en cours de modification"
+
 #~ msgid "ddui:Locked by"
 #~ msgstr "Verrouillé par"
 
 #~ msgid "ddui:Read only"
 #~ msgstr "Lecture seule"
+
+#~ msgid "ddui:Select line"
+#~ msgstr "Sélectionner la ligne"
+
+#~ msgid "ddui:Wrap kendo"
+#~ msgstr "Action include kendo ui"
