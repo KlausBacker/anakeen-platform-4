@@ -177,7 +177,7 @@ define([
 
         $.widget.bridge = function widget_bridge(name, Object) {
             var fullName = Object.prototype.widgetFullName || name;
-            $.fn[ name ] = function widget_addName(options) {
+            $.fn[ name ] = function widget_callElement(options) {
                 var isMethodCall = typeof options === "string",
                     args = slice.call(arguments, 1),
                     returnValue = this;

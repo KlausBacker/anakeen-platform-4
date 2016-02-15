@@ -495,6 +495,14 @@ define([
 
             });
             this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayTransition, this));
+            this._model.listenTo(this._model, "beforeParse", _.bind(function deleteCustomClient() {
+                //Suppress customClientData after a sucessful transaction
+                try {
+                    currentWidget.getCustomClientData(true);
+                } catch (e) {
+
+                }
+            }, this));
         },
 
         /**
@@ -1000,12 +1008,11 @@ define([
                 {
                     currentWidget.options[key] = value;
                 });
-                if (values.customClientData) {
-                    this._model._customClientData = values.customClientData;
-                    this._model._customClientData = this.getCustomClientData(true);
-                } else {
-                    this._model._customClientData = this.getCustomClientData(true);
-                }
+            }
+            if (values && values.customClientData) {
+                this._model._customClientData = values.customClientData;
+            } else {
+                this._model._customClientData = this.getCustomClientData();
             }
             this._model.fetchDocument(this._getModelValue(), options);
         },
@@ -1039,9 +1046,8 @@ define([
             } else {
                 if (values.customClientData) {
                     this._model._customClientData = values.customClientData;
-                    this._model._customClientData = this.getCustomClientData(true);
                 } else {
-                    this._model._customClientData = this.getCustomClientData(true);
+                    this._model._customClientData = this.getCustomClientData();
                 }
                 this._model.fetchDocument(this._getModelValue(), options);
             }
@@ -1060,9 +1066,8 @@ define([
             this._checkInitialisedModel();
             if (options.customClientData) {
                 this._model._customClientData = options.customClientData;
-                this._model._customClientData = this.getCustomClientData(true);
             } else {
-                this._model._customClientData = this.getCustomClientData(true);
+                this._model._customClientData = this.getCustomClientData();
             }
             this._model.save(null, options);
         },
@@ -1078,9 +1083,8 @@ define([
             this._checkInitialisedModel();
             if (options.customClientData) {
                 this._model._customClientData = options.customClientData;
-                this._model._customClientData = this.getCustomClientData(true);
             } else {
-                this._model._customClientData = this.getCustomClientData(true);
+                this._model._customClientData = this.getCustomClientData();
             }
             this._model.deleteDocument(options);
         },
@@ -1275,16 +1279,16 @@ define([
             {
                 if (currentCustom.documentCheck.call($element, properties)) {
                     values[key] = currentCustom.value;
-                    if (deleteOnce && !currentCustom.once) {
+                    if (deleteOnce === true && !currentCustom.once) {
                         newCustomData[key] = currentCustom;
                     }
                 } else {
-                    if (deleteOnce) {
+                    if (deleteOnce === true) {
                         newCustomData[key] = currentCustom;
                     }
                 }
             });
-            if (deleteOnce) {
+            if (deleteOnce === true) {
                 currentWidget._customClientData = newCustomData;
             }
             return values;
