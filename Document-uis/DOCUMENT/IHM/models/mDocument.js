@@ -642,6 +642,7 @@ define([
             if (response.success === false) {
                 throw new Error("Unable to get the data from documents");
             }
+            this.trigger("beforeParse");
             if (view.renderOptions.mode) {
                 if (view.renderOptions.mode === "edit") {
                     renderMode = "edit";
