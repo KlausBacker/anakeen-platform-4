@@ -1,5 +1,5 @@
-require(["dcpDocument/document", "datatables"], function () {
-    $(document).ready(function () {
+require([ "dcpDocument/document", "datatables"], function testMain() {
+    $(document).ready(function testOnReady() {
         var firstSearch = $($("a.searchIcon").get(0));
         var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
@@ -11,7 +11,7 @@ require(["dcpDocument/document", "datatables"], function () {
                     "initid": docid,
                     "viewId": viewId || "!defaultConsultation"
                 });
-                $target.document("addEventListener", "ready", {}, function (event, document) {
+                $target.document("addEventListener", "ready", {}, function logRead(event, document) {
                     console.log("new ready", document);
 
                 });
@@ -43,11 +43,5 @@ require(["dcpDocument/document", "datatables"], function () {
 
             viewDocument($(this).data('familyname'), "!defaultCreation");
         });
-
-
-
-
-
-
-    })
+    });
 });
