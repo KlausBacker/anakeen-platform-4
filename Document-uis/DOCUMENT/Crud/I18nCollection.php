@@ -21,13 +21,17 @@ class I18nCollection extends Crud
     public function create()
     {
         $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot create a view list with the API");
+        $exception->setHttpStatus("405", "You cannot create an i18n element with the API");
         throw $exception;
     }
+
     /**
      * Read a ressource
+     *
      * @param string|int $resourceId Resource identifier
+     *
      * @return mixed
+     * @throws Exception
      */
     public function read($resourceId)
     {
@@ -61,7 +65,7 @@ class I18nCollection extends Crud
     {
         
         $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot update a view list with the API");
+        $exception->setHttpStatus("405", "You cannot update an i18n element with the API");
         throw $exception;
     }
     /**
@@ -74,7 +78,7 @@ class I18nCollection extends Crud
     {
         
         $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot delete a view list with the API");
+        $exception->setHttpStatus("405", "You cannot delete an i18n element with the API");
         throw $exception;
     }
     /**
@@ -97,7 +101,7 @@ class I18nCollection extends Crud
      */
     public function getEtagInfo()
     {
-        
-        return $this->getUserLocale();
+        $version = \ApplicationParameterManager::getUserParameterValue("CORE", "WVERSION");
+        return $version." ".$this->getUserLocale();
     }
 }
