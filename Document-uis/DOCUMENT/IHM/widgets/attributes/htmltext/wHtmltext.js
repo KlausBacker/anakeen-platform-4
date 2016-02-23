@@ -1,9 +1,19 @@
 /*global define, _super*/
-define([
-    'underscore',
-    'jquery',
-    'dcpDocument/widgets/attributes/text/wText'
-], function require_htmltext(_, $)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._);
+    }
+}(window, function require_htmltext($, _)
 {
     'use strict';
 
@@ -27,7 +37,8 @@ define([
             var currentWidget = this, bind_super = _.bind(this._super, this), bindInitEvent = _.bind(this._initEvent, this);
             try {
                 if (this.getMode() === "write") {
-                    require(['ckeditor-jquery'], function wHtmltext_initEditDom() {
+                    require(['ckeditor-jquery'], function wHtmltext_initEditDom()
+                    {
                         var options = _.extend(currentWidget.ckOptions(), currentWidget.options.renderOptions.ckEditorConfiguration);
                         bind_super();
                         currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(
@@ -291,4 +302,4 @@ define([
     });
 
     return $.fn.dcpHtmltext;
-});
+}));

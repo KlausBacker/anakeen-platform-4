@@ -1,18 +1,31 @@
-define([
-    'jquery',
-    'underscore',
-    'mustache',
-    'dcpDocument/widgets/widget'
-], function ($, _, Mustache) {
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/widget'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function requireDcpLabel($, _, Mustache)
+{
     'use strict';
 
     $.widget("dcp.dcpLabel", {
 
-        _create: function () {
+        _create: function wLabel_create()
+        {
             this._initDom();
         },
 
-        _initDom: function () {
+        _initDom: function wLabel_initDom()
+        {
             this.element.addClass("dcpAttribute__label control-label dcpLabel");
             this.element.append(Mustache.render(this._getTemplate() || "", this.options));
             if (this.options.renderOptions && this.options.renderOptions.attributeLabel) {
@@ -20,11 +33,13 @@ define([
             }
         },
 
-        setLabel: function (label) {
+        setLabel: function wLabelSetLabel(label)
+        {
             this.element.text(label);
         },
 
-        setError: function (message) {
+        setError: function wLabelSetError(message)
+        {
             if (message) {
                 this.element.addClass("has-error");
             } else {
@@ -32,7 +47,8 @@ define([
             }
         },
 
-        _getTemplate: function () {
+        _getTemplate: function wLabel_getTemplate()
+        {
             if (this.options.templates && this.options.templates.label) {
                 return this.options.templates.label;
             }
@@ -44,4 +60,4 @@ define([
     });
 
     return $.fn.dcpLabel;
-});
+}));

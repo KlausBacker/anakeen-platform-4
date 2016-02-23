@@ -1,11 +1,22 @@
 /*global define*/
-define([
-    'jquery',
-    'underscore',
-    'mustache',
-    'dcpDocument/widgets/attributes/wAttribute',
-    'kendo/kendo.multiselect'
-], function require_wDocid($, _, Mustache)
+
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/attributes/wAttribute',
+            'kendo/kendo.multiselect'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window,  function require_wDocid($, _, Mustache)
 {
     'use strict';
 
@@ -161,24 +172,28 @@ define([
                             data: function wDocidSelectSchema(items)
                             {
                                 var attrValues = scope.getValue();
-                                _.each(items, function wDocidDataCompose(r)
+                                //Add new elements
+                                _.each(items, function wDocidDataCompose(currentItem)
                                 {
-                                    if (r.values && r.values[scope.options.id]) {
-                                        r.docId = r.values[scope.options.id].value;
-                                        r.docTitle = r.values[scope.options.id].displayValue;
+                                    if (currentItem.values && currentItem.values[scope.options.id]) {
+                                        currentItem.docId = currentItem.values[scope.options.id].value;
+                                        currentItem.docTitle = currentItem.values[scope.options.id].displayValue;
                                     }
                                 });
 
-                                _.each(attrValues, function wDocidDataAlreadySet(r) {
-                                    if (r && r.value) {
+                                //Convert existing values
+                                _.each(attrValues, function wDocidDataAlreadySet(currentValue) {
+                                    if (currentValue && currentValue.value) {
                                         items.push({
-                                            docId: r.value,
-                                            docTitle: r.displayValue
+                                            docId: currentValue.value,
+                                            docTitle: currentValue.displayValue
                                         });
                                     }
                                 });
-                                return _.uniq(items, false, function wDocidDataUniq(x) {
-                                    return x.docId;
+
+                                //Suppress multiple items
+                                return _.uniq(items, false, function wDocidDataUniq(currentItem) {
+                                    return currentItem.docId;
                                 });
                             }
                         }
@@ -387,4 +402,4 @@ define([
     });
 
     return $.fn.dcpDocid;
-});
+}));

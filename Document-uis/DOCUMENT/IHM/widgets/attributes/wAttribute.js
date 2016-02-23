@@ -1,11 +1,22 @@
 /*global define*/
-define([
-    'jquery',
-    'underscore',
-    'mustache',
-    'dcpDocument/widgets/widget',
-    'tooltip'
-], function wAttributeWidget($, _, Mustache)
+
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/widget',
+            'tooltip'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function wAttributeWidget($, _, Mustache)
 {
     'use strict';
 
@@ -279,7 +290,8 @@ define([
          *
          * @returns {dcp.dcpAttribute}
          */
-        close : function wAttribute_close() {
+        close: function wAttribute_close()
+        {
             return this;
         },
 
@@ -331,8 +343,7 @@ define([
 
                 if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
                     this.element.find(".dcpAttribute__content__buttons").hide();
-                    this.element.find(".dcpAttribute__value").
-                        addClass("dcpAttribute__content__nobutton");
+                    this.element.find(".dcpAttribute__value").addClass("dcpAttribute__content__nobutton");
                 }
 
                 this._initEvent();
@@ -366,7 +377,7 @@ define([
         _initDom: function wAttributeInitDom()
         {
             var htmlLink = this.getLink();
-            var scopeWidget=this;
+            var scopeWidget = this;
             this._initMainElementClass();
             if (htmlLink) {
                 // Add render Url and title on links
@@ -375,16 +386,16 @@ define([
                 if (this._isMultiple()) {
                     this.options.attributeValues = _.map(this.options.attributeValue, function wAttributeLinkMultiple(val, index)
                     {
-                        var urlIndex=index;
+                        var urlIndex = index;
                         Mustache.escape = encodeURIComponent;
                         scopeWidget._completeRevisionData(val);
                         if (scopeWidget.options.index >= 0) {
                             // Use index of row prior to index of multiple value
-                            urlIndex=scopeWidget.options.index;
+                            urlIndex = scopeWidget.options.index;
                         }
 
                         if (htmlLink.urls && htmlLink.urls[urlIndex]) {
-                                val.renderUrl = Mustache.render(htmlLink.urls[urlIndex], val);
+                            val.renderUrl = Mustache.render(htmlLink.urls[urlIndex], val);
                         } else {
                             val.renderUrl = Mustache.render(htmlLink.url || "", val);
                         }
@@ -396,11 +407,11 @@ define([
                 } else {
                     Mustache.escape = encodeURIComponent;
                     this._completeRevisionData(this.options.attributeValue);
-                     if (htmlLink.urls && htmlLink.urls[this.options.index]) {
-                         this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.urls[this.options.index], this.options.attributeValue);
-                     } else {
-                         this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url || "", this.options.attributeValue);
-                     }
+                    if (htmlLink.urls && htmlLink.urls[this.options.index]) {
+                        this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.urls[this.options.index], this.options.attributeValue);
+                    } else {
+                        this.options.renderOptions.htmlLink.renderUrl = Mustache.render(htmlLink.url || "", this.options.attributeValue);
+                    }
                     Mustache.escape = originalEscape;
                     this.options.renderOptions.htmlLink.renderTitle = Mustache.render(htmlLink.title || "", this.options.attributeValue);
                 }
@@ -413,13 +424,14 @@ define([
          * @param data
          * @private
          */
-        _completeRevisionData: function wAttribute_completeRevisionData(data) {
-            data.isRevision=data.revision !== -1 && data.revision !== null && !_.isUndefined(data.revision);
+        _completeRevisionData: function wAttribute_completeRevisionData(data)
+        {
+            data.isRevision = data.revision !== -1 && data.revision !== null && !_.isUndefined(data.revision);
             if (data.isRevision) {
                 if (data.revision.state) {
-                    data.revisionTarget="state:"+data.revision.state;
+                    data.revisionTarget = "state:" + data.revision.state;
                 } else {
-                    data.revisionTarget=data.revision;
+                    data.revisionTarget = data.revision;
                 }
             }
         },
@@ -845,4 +857,4 @@ define([
         }
 
     });
-});
+}));

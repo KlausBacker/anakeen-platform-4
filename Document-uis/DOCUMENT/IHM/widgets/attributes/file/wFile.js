@@ -1,10 +1,20 @@
 /*global define*/
-define([
-    'jquery',
-    'underscore',
-    "mustache",
-    'dcpDocument/widgets/attributes/text/wText'
-], function wFileWidget($, _, Mustache)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function wFileWidget($, _, Mustache)
 {
     'use strict';
 
@@ -75,7 +85,7 @@ define([
                     placement: "bottom",
                     container: ".dcpDocument"
                 });
-                this.element.find("input[type=file]").attr("fileValue", this.options.attributeValue.value||null);
+                this.element.find("input[type=file]").attr("fileValue", this.options.attributeValue.value || null);
             }
         },
 
@@ -189,7 +199,7 @@ define([
         getWidgetValue: function wFilegetWidgetValue()
         {
             var $inputFile = this.element.find("input[type=file]");
-            return $inputFile.attr("fileValue")||null;
+            return $inputFile.attr("fileValue") || null;
         },
 
         /**
@@ -426,7 +436,7 @@ define([
                 this.redraw();
             }
 
-            $inputFile.attr("fileValue", (value)?value.value:null);
+            $inputFile.attr("fileValue", (value) ? value.value : null);
         },
 
         /**
@@ -451,4 +461,4 @@ define([
     });
 
     return $.fn.dcpFile;
-});
+}));

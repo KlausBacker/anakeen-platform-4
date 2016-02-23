@@ -1,7 +1,17 @@
-define([
-    'jquery',
-    'dcpDocument/widgets/attributes/int/wInt'
-], function require_double($) {
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'dcpDocument/widgets/attributes/int/wInt'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery);
+    }
+}(window,  function require_double($) {
     'use strict';
 
     $.widget("dcp.dcpDouble", $.dcp.dcpInt, {
@@ -53,4 +63,4 @@ define([
     });
 
     return $.fn.dcpDouble;
-});
+}));

@@ -1,12 +1,23 @@
 /*global define, _super*/
-define([
-    'jquery',
-    'underscore',
-    'mustache',
-    'kendo/kendo.datepicker',
-    'dcpDocument/widgets/attributes/text/wText',
-    "kendo-culture-fr"
-], function wDate($, _, Mustache, kendo)
+
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'kendo/kendo.datepicker',
+            'dcpDocument/widgets/attributes/text/wText',
+            'kendo-culture-fr'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache, window.kendo);
+    }
+}(window, function wDate($, _, Mustache, kendo)
 {
     'use strict';
 
@@ -57,8 +68,7 @@ define([
             }
 
             if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
-                this.element.find(".k-picker-wrap").
-                    addClass("dcpAttribute__content__nobutton");
+                this.element.find(".k-picker-wrap").addClass("dcpAttribute__content__nobutton");
             }
         },
 
@@ -224,7 +234,8 @@ define([
             return _.extend(defaultOptions, kendoOptions);
         },
 
-        close : function wDate_close() {
+        close: function wDate_close()
+        {
             if (this.kendoWidget.data(this.kendoWidgetClass)) {
                 this.kendoWidget.data(this.kendoWidgetClass).close();
             }
@@ -241,4 +252,4 @@ define([
     });
 
     return $.fn.dcpDate;
-});
+}));

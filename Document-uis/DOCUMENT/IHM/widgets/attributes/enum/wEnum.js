@@ -1,13 +1,23 @@
 /*global define */
-define([
-    'jquery',
-    'underscore',
-    'mustache',
-    'dcpDocument/widgets/attributes/wAttribute',
-    'kendo/kendo.multiselect',
-    'kendo/kendo.combobox',
-    'kendo/kendo.dropdownlist'
-], function require_wenum($, _, Mustache, dcpAttribute, kendo)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/attributes/wAttribute',
+            'kendo/kendo.multiselect',
+            'kendo/kendo.combobox',
+            'kendo/kendo.dropdownlist'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function require_wenum($, _, Mustache, dcpAttribute, kendo)
 {
     'use strict';
 
@@ -28,7 +38,7 @@ define([
                 displayOtherChoice: "** {{value}} **"
             },
             renderOptions: {
-                    kendoDropDownConfiguration: {
+                kendoDropDownConfiguration: {
                     filter: "none",
                     autoBind: true
                 },
@@ -51,7 +61,7 @@ define([
                 this.options.isMultiple = true;
                 _.each(this.options.attributeValue, function wEnumDisplayOthers(singleValue)
                 {
-                    singleValue.exists=(singleValue.exists !== false);
+                    singleValue.exists = (singleValue.exists !== false);
 
                     if (singleValue.exists === false) {
                         singleValue.displayValue = Mustache.render(currentWidget.options.labels.displayOtherChoice, singleValue);
@@ -653,7 +663,8 @@ define([
                                 this.flashElement();
                                 if (this.options.renderOptions.useSourceUri) {
                                     if (newValues.length > 0) {
-                                        _.each(value, function wEnumCompleteExists(singleValue) {
+                                        _.each(value, function wEnumCompleteExists(singleValue)
+                                        {
                                             singleValue.exists = (singleValue.exists !== false);
                                         });
                                         kddl.dataSource.data(value);
@@ -874,7 +885,11 @@ define([
                         var newValues = [];
                         _.each(kdData, function wEnum_pushNewValues(val)
                         {
-                            newValues.push({value: val.value, displayValue: val.displayValue, exists:val.exists !== false});
+                            newValues.push({
+                                value: val.value,
+                                displayValue: val.displayValue,
+                                exists: val.exists !== false
+                            });
                         });
                         scope.setValue(newValues, event);
                     },
@@ -905,7 +920,7 @@ define([
                     optionLabel: {
                         displayValue: this.options.labels.chooseMessage + ' ',
                         value: '',
-                        exists:true
+                        exists: true
                     },
                     optionLabelTemplate: '<span class="placeholder">#: displayValue #</span>',
                     dataSource: source.data,
@@ -1002,7 +1017,8 @@ define([
                     newValues.push({
                         value: val.value,
                         displayValue: val.displayValue,
-                        exists:val.exists});
+                        exists: val.exists
+                    });
                 });
 
                 newValues.push({
@@ -1149,4 +1165,4 @@ define([
     });
 
     return $.fn.dcpEnum;
-});
+}));

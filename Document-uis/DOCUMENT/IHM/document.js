@@ -1,9 +1,18 @@
 /*global define, console*/
-define([
-    'underscore',
-    'jquery',
-    'dcpDocument/widgets/widget'
-], function require_document(_, $)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'dcpDocument/widgets/widget'
+        ], factory);
+    } else {
+        factory(window.jQuery, window._);
+    }
+}(window, function require_document($, _)
 {
     'use strict';
 
@@ -503,4 +512,4 @@ define([
         }
     });
 
-});
+}));

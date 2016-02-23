@@ -1,8 +1,18 @@
 /*global define*/
-define([
-    'jquery',
-    'dcpDocument/widgets/attributes/text/wText'
-], function wPassword($) {
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery);
+    }
+}(window, function wPassword($) {
     'use strict';
 
     $.widget("dcp.dcpPassword", $.dcp.dcpText, {
@@ -44,4 +54,4 @@ define([
     });
 
     return $.fn.dcpPassword;
-});
+}));

@@ -1,9 +1,19 @@
-define([
-    'underscore',
-    'mustache',
-    'jquery',
-    'dcpDocument/widgets/widget'
-], function require_array(_, Mustache, $)
+(function amdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/widget'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function require_array($, _, Mustache)
 {
     'use strict';
 
@@ -593,4 +603,4 @@ define([
     });
 
     return $.fn.dcpArray;
-});
+}));
