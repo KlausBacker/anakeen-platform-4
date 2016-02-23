@@ -1,6 +1,17 @@
 /*global define*/
-// use "text!'text!dcpContextRoot/'/api/v1/i18n/DOCUMENT" to get only DDUI translation
-define([], function i18n()
+// use "text!dcpContextRoot/api/v1/i18n/DOCUMENT" to get only DDUI translation
+
+window.dcp = window.dcp || {};
+
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    }
+    root.dcp.i18n = factory([]);
+}(window, function i18n()
 {
     "use strict";
     return function catalog(translation)
@@ -46,4 +57,4 @@ define([], function i18n()
             }
         };
     };
-});
+}));
