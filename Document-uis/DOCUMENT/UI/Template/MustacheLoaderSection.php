@@ -34,33 +34,43 @@ class MustacheLoaderSection implements \Mustache_Loader
     protected function getTemplates($name)
     {
         
-        $r = $this->templateSection;
+        $templateSection = $this->templateSection;
         
         if ($name !== null) {
             $indexes = explode(".", $name);
             foreach ($indexes as $index) {
-                $r = $r[$index];
+                $templateSection = $templateSection[$index];
             }
         }
         
-        $this->getTemplatePart($r);
+        $this->getTemplatePart($templateSection);
         
-        return $r;
+        return $templateSection;
     }
-    
-    protected function getTemplatePart(array & $tplPart)
+
+    /**
+     * Replace file reference by the content
+     *
+     * @param array $templatePart
+     *
+     * @throws Exception
+     */
+    protected function getTemplatePart(array & $templatePart)
     {
-        if (!empty($tplPart["content"]) && is_string($tplPart["content"])) {
-            $tplPart = $tplPart["content"];
+        if (!empty($templatePart["content"]) && is_string($templatePart["content"])) {
+            $templatePart = $templatePart["content"];
             return;
         }
-        if (!empty($tplPart["file"]) && is_string($tplPart["file"])) {
-            $tplPart = file_get_contents($tplPart["file"]);
+        if (!empty($templatePart["file"]) && is_string($templatePart["file"])) {
+            if (!file_exists($templatePart["file"])) {
+                throw new Exception("UI0004", $templatePart["file"]);
+            }
+            $templatePart = file_get_contents($templatePart["file"]);
             return;
         }
         
-        foreach ($tplPart as $index => $content) {
-            $this->getTemplatePart($tplPart[$index]);
+        foreach ($templatePart as $index => $content) {
+            $this->getTemplatePart($templatePart[$index]);
         }
     }
     /**

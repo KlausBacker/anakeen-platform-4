@@ -502,16 +502,16 @@ class View extends Crud
             'cache_file_mode' => 0600,
             'cache_lambda_templates' => true
         );
-        $me = new \Mustache_Engine($option);
+        $mustacheEngine = new \Mustache_Engine($option);
         
-        $fl = new \Dcp\Ui\MustacheLoaderSection($templates, $delimiterStartTag, $delimiterEndTag);
-        $fl->setDocument($document);
-        $me->setPartialsLoader($fl);
+        $uiMustacheLoader = new \Dcp\Ui\MustacheLoaderSection($templates, $delimiterStartTag, $delimiterEndTag);
+        $uiMustacheLoader->setDocument($document);
+        $mustacheEngine->setPartialsLoader($uiMustacheLoader);
         $delimiter = sprintf('{{=%s %s=}}', $delimiterStartTag, $delimiterEndTag);
         $docController = $config->getContextController($document);
         
         $mainTemplate = "[[>templates]]";
-        return json_decode($me->render($delimiter . $mainTemplate, $docController));
+        return json_decode($mustacheEngine->render($delimiter . $mainTemplate, $docController));
     }
     
     protected function getUri(\Doc $document, $vid)
