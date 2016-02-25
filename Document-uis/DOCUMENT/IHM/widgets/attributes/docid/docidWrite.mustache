@@ -4,29 +4,28 @@
             {{#renderOptions.autoCompleteHtmlLabel}}
             title="{{renderOptions.autoCompleteHtmlLabel}}"
             {{/renderOptions.autoCompleteHtmlLabel}}
-            class="dcpAttribute__value--docid--button btn btn-default btn-xs">
+            class="dcpAttribute__value--docid--button btn btn-default btn-xs" tabindex="-1">
                 {{^isMultiple}}
-                <i class="fa fa-chevron-down fa-fw"></i>
+                <span class="fa fa-chevron-down fa-fw"></span>
                 {{/isMultiple}}
                 {{#isMultiple}}
-                <i class="fa fa-plus fa-fw"></i>
+                <span class="fa fa-plus fa-fw"></span>
                 {{/isMultiple}}
         </button>
     </span>
     <select name="{{id}}" id="{{viewCid}}"
-            class="form-control dcpAttribute__value dcpAttribute__value--docid"
-            >
+            class="form-control dcpAttribute__value dcpAttribute__value--docid">
     </select>
     {{#hadButtons}}
     <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
-        <button type="button" data-index="{{index}}" data-title="{{title}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">
+        <button type="button" data-index="{{index}}" data-title="{{title}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">
          {{{renderHtmlContent}}}
         </button>
         {{/renderOptions.buttons}}
         {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" class="dcpAttribute__content__button--delete btn btn-default btn-xs">
-            <i class="fa fa-times fa-fw"></i>
+        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" class="dcpAttribute__content__button--delete btn btn-default btn-xs" tabindex="-1">
+            <span class="fa fa-times fa-fw"></span>
         </button>
         {{/deleteButton}}
     </span>

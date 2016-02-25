@@ -3,8 +3,8 @@
     <span class="input-group-addon">
         <button
               {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
-                class="dcpAttribute__value--autocomplete--button btn btn-default btn-xs">
-            <i class="fa fa-chevron-down fa-fw"></i>
+                class="dcpAttribute__value--autocomplete--button btn btn-default btn-xs" tabindex="-1">
+            <span class="fa fa-chevron-down fa-fw"></span>
         </button>
     </span>
     {{/hasAutocomplete}}
@@ -14,12 +14,12 @@
           class="form-control dcpAttribute__value dcpAttribute__value--edit k-textbox">{{attributeValue.value}}</textarea>
     <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
-        <button type="button" data-title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
+        <button type="button" data-title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">{{{renderHtmlContent}}}</button>
         {{/renderOptions.buttons}}
         {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
+        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
             class="btn btn-default btn-xs dcpAttribute__content__button--delete">
-            <i class="fa fa-times fa-fw"></i>
+            <span class="fa fa-times fa-fw"></span>
         </button>
         {{/deleteButton}}
     </span>
