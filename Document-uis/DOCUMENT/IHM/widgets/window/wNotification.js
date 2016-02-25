@@ -21,35 +21,35 @@ define([
                 {
                     type: "error",
                     template: '<div class="dcpNotification--content dcpNotification--error">' +
-                    '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-bolt"></i></span>' +
+                    '<span class="dcpNotification--symbol fa-stack fa-lg"><span class="fa fa-bolt"></span></span>' +
                     '<div class="dcpNotification--message"><h1>#: title #</h1>' +
                     '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
                 },
                 {
                     type: "warning",
                     template: '<div class="dcpNotification--content dcpNotification--warning">' +
-                    '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-warning fa-inverse"></i></span>' +
+                    '<span class="dcpNotification--symbol fa-stack fa-lg"><span class="fa fa-warning fa-inverse"></span></span>' +
                     '<div class="dcpNotification--message"><h1>#: title #</h1>' +
                     '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
                 },
                 {
                     type: "info",
                     template: '<div class="dcpNotification--content dcpNotification--info">' +
-                    '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-info fa-inverse fa-flip-horizontal"></i></span>' +
+                    '<span class="dcpNotification--symbol fa-stack fa-lg"><span class="fa fa-info fa-inverse fa-flip-horizontal"></span></span>' +
                     '<div class="dcpNotification--message"><h1>#: title #</h1>' +
                     '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
                 },
                 {
                     type: "notice",
                     template: '<div class="dcpNotification--content dcpNotification--notice">' +
-                    '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-info fa-inverse fa-flip-horizontal"></i></span>' +
+                    '<span class="dcpNotification--symbol fa-stack fa-lg"><span class="fa fa-info fa-inverse fa-flip-horizontal"></span></span>' +
                     '<div class="dcpNotification--message"><h1>#: title #</h1>' +
                     '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
                 },
                 {
                     type: "success",
                     template: '<div class="dcpNotification--content dcpNotification--info">' +
-                    '<span class="dcpNotification--symbol fa-stack fa-lg"><i class="fa fa-check fa-inverse"></i></span>' +
+                    '<span class="dcpNotification--symbol fa-stack fa-lg"><span class="fa fa-check fa-inverse"></span></span>' +
                     '<div class="dcpNotification--message"><h1>#: title #</h1>' +
                     '<p>#: message #</p><p> #= htmlMessage #</p></div></div>'
                 }

@@ -34,9 +34,7 @@ class RenderDefault implements IRenderConfig
     
     public function getJsReferences(\Doc $document = null)
     {
-        return array( //"lib/jquery/jquery.js"
-            
-        );
+        return array( );
     }
     
     public function getRequireReference()
@@ -357,7 +355,7 @@ class RenderDefault implements IRenderConfig
         
         $item = new SeparatorMenu("Emblem1", "");
         $item->setHtmlAttribute("class", "menu--right");
-        $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <i class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></i>{{/document.properties.security.lock.lockedBy.id}}');
+        $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
         
         $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui") , ENT_QUOTES)) , "", true);
         
@@ -366,7 +364,7 @@ class RenderDefault implements IRenderConfig
         
         $item = new SeparatorMenu("Emblem2", "");
         $item->setHtmlAttribute("class", "menu--right");
-        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<i  class="fa fa-ban"></i>{{/document.properties.security.readOnly}}');
+        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa fa-ban"></span>{{/document.properties.security.readOnly}}');
         
         $item->setTooltipLabel(___("Read only document", "ddui"));
         $item->setImportant(true);
