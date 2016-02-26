@@ -99,7 +99,7 @@ define([
         },
 
         /**
-         * overhide Backbone sync to record method
+         * override Backbone sync to record method
          * @param method
          * @param model
          * @param options

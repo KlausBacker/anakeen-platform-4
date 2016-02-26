@@ -271,7 +271,7 @@ define([
                     currentWidget.getProperties(), currentWidget._model.getModelProperties());
             });
             this._model.listenTo(this._model, "beforeClose", function documentController_triggerBeforeClose(event,
-                nextDocument, customClientData)
+                                                                                                            nextDocument, customClientData)
             {
                 if (currentWidget._initializedView !== false) {
                     event.prevent = !currentWidget._triggerControllerEvent("beforeClose",
@@ -495,7 +495,8 @@ define([
 
             });
             this._model.listenTo(this._model, "showTransition", _.bind(currentWidget._initAndDisplayTransition, this));
-            this._model.listenTo(this._model, "beforeParse", _.bind(function deleteCustomClient() {
+            this._model.listenTo(this._model, "beforeParse", _.bind(function deleteCustomClient()
+            {
                 //Suppress customClientData after a sucessful transaction
                 try {
                     currentWidget.getCustomClientData(true);
@@ -605,10 +606,14 @@ define([
          *
          * @param nextState
          * @param transition
+         * @param values
+         * @param withoutInterface
+         * @param reinitOptions
+         * @param options
          */
-        _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition)
+        _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition, values, withoutInterface, reinitOptions, options)
         {
-            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, changeStateInterface;
+            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, transitionInterface;
 
             result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
                 currentWidget.getProperties(), new TransitionInterface(null, $target, nextState, transition));
@@ -625,59 +630,70 @@ define([
             });
 
             //Init transition view
-            transitionElements.view = new TransitionView({
-                model: transitionElements.model,
-                el: $target
-            });
+            if (withoutInterface !== true) {
+                transitionElements.view = new TransitionView({
+                    model: transitionElements.model,
+                    el: $target
+                });
+            }
 
-            changeStateInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
+            transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
 
-            //Propagate afterDisplayChange on renderDone
-            transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter()
-            {
-                currentWidget._triggerControllerEvent("afterDisplayTransition",
-                    currentWidget.getProperties(), changeStateInterface);
-            });
+            if (transitionElements.view) {
+                //Propagate afterDisplayChange on renderDone
+                transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter()
+                {
+                    currentWidget._triggerControllerEvent("afterDisplayTransition",
+                        currentWidget.getProperties(), transitionInterface);
+                });
+            }
 
             //Propagate the beforeTransition
             transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBeforeTransition(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeTransition",
-                    currentWidget.getProperties(), changeStateInterface);
+                    currentWidget.getProperties(), transitionInterface);
             });
 
             //Propagate the beforeTransitionClose
             transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateTransitionClose(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeTransitionClose",
-                    currentWidget.getProperties(), changeStateInterface);
+                    currentWidget.getProperties(), transitionInterface);
             });
 
             transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateTransitionError(error)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("failTransition",
-                    currentWidget.getProperties(), changeStateInterface, error);
+                    currentWidget.getProperties(), transitionInterface, error);
             });
 
             transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionSuccess(messages)
             {
-                transitionElements.view.$el.hide();
+                if (transitionElements.view) {
+                    transitionElements.view.$el.hide();
+                    currentWidget.view.once("renderDone", function documentController_transitionRender()
+                    {
+                        transitionElements.view.remove();
+                        _.each(messages, function documentController_parseMessage(message)
+                        {
+                            currentWidget.view.trigger("showMessage", message);
+                        });
+                    });
+                }
+
                 //delete the pop up when the render of the pop up is done
                 currentWidget._triggerControllerEvent("successTransition",
-                    currentWidget.getProperties(), changeStateInterface);
-                currentWidget.view.once("renderDone", function documentController_transitionRender()
-                {
-                    transitionElements.view.remove();
-                    _.each(messages, function documentController_parseMessage(message)
-                    {
-                        currentWidget.view.trigger("showMessage", message);
-                    });
-                });
+                    currentWidget.getProperties(), transitionInterface);
+
+                reinitOptions = reinitOptions || {revision: -1};
+                if (!_.has(reinitOptions, "revision")) {
+                    reinitOptions.revision = -1;
+                }
+                options = options || {};
+
                 //Reinit the main model with last revision
-                currentWidget._model.fetchDocument({
-                    initid: currentWidget._model.get("initid"),
-                    viewId: currentWidget._model.get("viewId")
-                });
+                currentWidget.reinitDocument(reinitOptions, options);
 
             });
 
@@ -686,7 +702,22 @@ define([
                 this.trigger("close");
             });
 
-            transitionElements.model.fetch();
+            transitionElements.model.fetch({
+                "success": function transitionModel_setDefaultValues()
+                {
+                    if (values) {
+                        transitionElements.model.setValues(values);
+                    }
+                    if (withoutInterface === true) {
+                        transitionElements.model.save({}, {
+                            success: function transitionModel_afterSave()
+                            {
+                                transitionElements.model.trigger("success");
+                            }
+                        });
+                    }
+                }
+            });
         },
 
         /**
@@ -1073,6 +1104,27 @@ define([
         },
 
         /**
+         * Change the workflow state of the document
+         *
+         * @param parameters
+         * @reinitOptions
+         * @options
+         */
+        changeStateDocument: function documentController_changeStateDocument(parameters, reinitOptions, options)
+        {
+            this._checkInitialisedModel();
+            if (!_.isObject(parameters)) {
+                throw new Error('changeStateDocument first argument must be an object {"nextState":, "transition": , "values":, "unattended":, "" }');
+            }
+            if (!_.isString(parameters.nextState) || !_.isString(parameters.transition)) {
+                throw new Error('nextState and transition arguments are mandatory');
+            }
+            //nextState, transition, values, withoutInterface
+            this._initAndDisplayTransition(parameters.nextState, parameters.transition, parameters.values || null,
+                parameters.unattended || false, reinitOptions, options);
+        },
+
+        /**
          * Delete the current document
          * Reload the interface in the same mode
          * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
@@ -1253,7 +1305,7 @@ define([
                     "value": currentValue,
                     "documentCheck": documentCheck.documentCheck,
                     "once": documentCheck.once
-                }
+                };
             });
         },
         /**
@@ -1316,20 +1368,20 @@ define([
         setValue: function documentControllerSetValue(attributeId, value)
         {
             this._checkInitialisedModel();
-            var iAttribute = new AttributeInterface(this._getAttributeModel(attributeId));
+            var attributeInterface = new AttributeInterface(this._getAttributeModel(attributeId));
             var mAttribute = this._getAttributeModel(attributeId);
             var index;
             var currentValueLength;
             var i;
 
             if (mAttribute.getParent().get("type") === "array") {
-                iAttribute.setValue(value, true); // Just verify value conditions
+                attributeInterface.setValue(value, true); // Just verify value conditions
                 if (!_.isArray(value)) {
                     index = value.index;
                 } else {
                     index = value.length - 1;
                 }
-                currentValueLength = iAttribute.getValue().length;
+                currentValueLength = attributeInterface.getValue().length;
 
                 // Add new necessary rows before set value
                 for (i = currentValueLength; i <= index; i++) {
@@ -1337,7 +1389,7 @@ define([
                 }
 
             }
-            return iAttribute.setValue(value);
+            return attributeInterface.setValue(value);
         },
 
         /**

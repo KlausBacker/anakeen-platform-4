@@ -485,7 +485,7 @@
 
     //noinspection JSValidateJSDoc
     /**
-     * Wrap the brigde that find the function to be executed
+     * Wrap the bridge that find the function to be executed
      * Search in the current widget if the function is here
      * Search in the internal widget (if ready to find the widget)
      *
