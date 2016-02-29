@@ -3,7 +3,7 @@
     "version": "{{VERSION}}",
     "release": "{{RELEASE}}",
     "application" : ["TEST_DOCUMENT_SELENIUM"],
-    "includedPath" : ["TEST_DOCUMENT_SELENIUM","HTTPAPI_V1","locale"],
+    "includedPath" : ["HTTPAPI_V1"],
     "lang" : ["fr","en"],
     "csvParam" : {"enclosure" : "\"", "delimiter": ";"},
     "dynacase-devtool" : {

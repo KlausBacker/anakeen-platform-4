@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-08 14:21+0100\n"
+"POT-Creation-Date: 2016-02-29 16:11+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -27,6 +27,12 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Add a note to the history"
+msgstr ""
+
+#. _COMMENT: content.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Add new line"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -161,6 +167,18 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
+#. _COMMENT: enumWriteRadio.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Delete : "
+msgstr ""
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Delete line"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Display document form"
 msgstr ""
@@ -179,6 +197,12 @@ msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr ""
 
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "DocumentDeleted"
+msgstr ""
+
 msgctxt "ddui-file"
 msgid "Download file"
 msgstr ""
@@ -187,12 +211,24 @@ msgctxt "ddui-image"
 msgid "Download image"
 msgstr ""
 
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Drag to move line"
+msgstr ""
+
 msgctxt "ddui-file"
 msgid "Drop file here"
 msgstr ""
 
 msgctxt "ddui-image"
 msgid "Drop image here"
+msgstr ""
+
+#. _COMMENT: content.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Duplicate selected row"
 msgstr ""
 
 msgctxt "ddui"
@@ -301,6 +337,18 @@ msgctxt "ddui"
 msgid "Revision \"%s\" must be a number or a state reference"
 msgstr ""
 
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Revision :"
+msgstr ""
+
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "RevisionCreated"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
 msgstr ""
@@ -323,6 +371,12 @@ msgstr ""
 
 msgctxt "ddui-enum"
 msgid "Select alternative choice"
+msgstr ""
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Select line"
 msgstr ""
 
 #, php-format
@@ -389,6 +443,11 @@ msgid "ddui:Document render"
 msgstr ""
 
 msgid "ddui:Document render long"
+msgstr ""
+
+#. _COMMENT: document__header.mustache
+#. _COMMENT: mustache key
+msgid "ddui:Editing form"
 msgstr ""
 
 msgid "ddui:Get dynamic sub menu"
