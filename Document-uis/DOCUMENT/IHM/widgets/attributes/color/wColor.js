@@ -1,6 +1,6 @@
 /*global define, _super, kendoColorPicker*/
 
-(function amdRequire(root, factory)
+(function umdRequire(root, factory)
 {
     'use strict';
 

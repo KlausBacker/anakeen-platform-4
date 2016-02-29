@@ -91,10 +91,11 @@
 
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
                 value.displayValue = this.formatNumber(value.value);
-            } else
+            } else {
                 if (parseFloat(value.displayValue) === parseFloat(value.value)) {
                     value.displayValue = this.formatNumber(value.value);
                 }
+            }
 
             //noinspection JSPotentiallyInvalidConstructorUsage
             $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
@@ -108,12 +109,14 @@
                     // Modify value only if different
                     this.flashElement();
                 }
-            } else
+            } else {
                 if (this.getMode() === "read") {
                     this.getContentElements().text(value.displayValue);
                 } else {
                     throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
                 }
+            }
+
         },
 
         _activateNumber: function wIntActivateNumber(inputValue)
