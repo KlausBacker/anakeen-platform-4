@@ -101,7 +101,7 @@ class I18nCollection extends Crud
      */
     public function getEtagInfo()
     {
-        $version = \ApplicationParameterManager::getUserParameterValue("CORE", "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return $version." ".$this->getUserLocale();
     }
 }
