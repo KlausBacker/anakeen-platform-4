@@ -43,7 +43,7 @@ define([
         render: function vTabContentRender()
         {
             var hasOneContent;
-            this.$el.empty().append($('<div class="dcpTab__content--loading"><i class="fa fa-spinner fa-spin"></i>'+
+            this.$el.empty().append($('<div class="dcpTab__content--loading"><span class="fa fa-spinner fa-spin"></span>'+
             i18n.___("Displaying","ddui")+'</div>'));
             this.$el.attr("id", this.model.id);
             this.$el.attr("data-attrid", this.model.id);

@@ -6,12 +6,12 @@
     {{#hadButtons}}
         <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
-            <button type="button" data-title="{{title}}" data-index="{{index}}"
+            <button type="button" data-title="{{title}}" data-index="{{index}}" tabindex="-1"
                     class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
         {{/renderOptions.buttons}}
             {{#deleteButton}}
-                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
-                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i>
+                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><span class="fa fa-times fa-fw"></span>
                 </button>
             {{/deleteButton}}
     </span>

@@ -1,9 +1,19 @@
 /*global define, _super*/
-define([
-    'underscore',
-    'jquery',
-    'dcpDocument/widgets/attributes/text/wText'
-], function require_htmltext(_, $)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._);
+    }
+}(window, function require_htmltext($, _)
 {
     'use strict';
 
@@ -22,12 +32,23 @@ define([
 
         ckEditorInstance: null,
 
-        _initDom: function wHtmlTextInitDom()
+        _initDom: function wHtmltext_InitDom()
         {
             var currentWidget = this, bind_super = _.bind(this._super, this), bindInitEvent = _.bind(this._initEvent, this);
             try {
                 if (this.getMode() === "write") {
-                    require(['ckeditor-jquery'], function wHtmltext_initEditDom() {
+                    (function wHtmltext_umdRequire(factory)
+                    {
+                        if (typeof define === 'function' && define.amd) {
+                            require([
+                                'ckeditor-jquery'
+                            ], factory);
+                        } else {
+                            //noinspection JSUnresolvedVariable
+                            factory();
+                        }
+                    }(function wHtmltext_initEditDom()
+                    {
                         var options = _.extend(currentWidget.ckOptions(), currentWidget.options.renderOptions.ckEditorConfiguration);
                         bind_super();
                         currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(
@@ -35,8 +56,7 @@ define([
                         ).editor;
                         currentWidget.options.attributeValue.value = currentWidget.ckEditorInstance.getData();
                         bindInitEvent();
-                    });
-
+                    }));
                 } else {
                     bind_super();
                 }
@@ -159,26 +179,26 @@ define([
             var currentWidget = this;
             this._super();
             if (this.ckEditorInstance) {
-                this.ckEditorInstance.on("change", function ()
+                this.ckEditorInstance.on("change", function wHtmltext_change()
                 {
                     currentWidget.setValue({value: this.getData()});
                 });
 
-                this.ckEditorInstance.on("focus", function ()
+                this.ckEditorInstance.on("focus", function wHtmltext_focus()
                 {
                     var ktTarget = currentWidget.element.find(".input-group");
                     currentWidget.showInputTooltip(ktTarget);
                     currentWidget.element.find(".cke").addClass("k-state-focused");
                 });
 
-                this.ckEditorInstance.on("blur", function ()
+                this.ckEditorInstance.on("blur", function wHtmltext_blur()
                 {
                     var ktTarget = currentWidget.element.find(".input-group");
                     currentWidget.hideInputTooltip(ktTarget);
                     currentWidget.element.find(".cke").removeClass("k-state-focused");
                 });
 
-                this.ckEditorInstance.on("loaded", function ()
+                this.ckEditorInstance.on("loaded", function wHtmltext_loaded()
                 {
                     currentWidget._trigger("widgetReady");
                 });
@@ -195,19 +215,19 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _getFocusInput: function ()
+        _getFocusInput: function wHtmltext_getFocusInput()
         {
             return this.element;
         },
         /**
          * No use parent change
          */
-        _initChangeEvent: function _initChangeEvent()
+        _initChangeEvent: function wHtmltext_initChangeEvent()
         {
 
         },
 
-        getWidgetValue: function ()
+        getWidgetValue: function wHtmltext_getWidgetValue()
         {
             return this.getContentElements().val();
         },
@@ -250,7 +270,7 @@ define([
             $.dcp.dcpAttribute.prototype.setValue.call(this, value);
         },
 
-        getType: function ()
+        getType: function wHtmltext_getType()
         {
             return "htmltext";
         },
@@ -261,14 +281,14 @@ define([
             if (this.ckEditorInstance && this.ckEditorInstance.destroy) {
                 if (this.ckEditorInstance.status === "loaded" || this.ckEditorInstance.status === "ready") {
                     this.ckEditorInstance.destroy();
-                    _.defer(function ()
+                    _.defer(function wHtmltext_deferDestroy()
                     {
                         currentWidget._destroy();
                     });
                     return;
                 } else
                     if (this.ckEditorInstance.status === "unloaded") {
-                        this.ckEditorInstance.on("loaded", function ()
+                        this.ckEditorInstance.on("loaded", function wHtmltext_loaded()
                         {
                             currentWidget._destroy();
                         });
@@ -291,4 +311,4 @@ define([
     });
 
     return $.fn.dcpHtmltext;
-});
+}));

@@ -196,7 +196,7 @@ define([
                 "-o-transform:rotate({{angle}}deg); " +
                 "-ms-transform:rotate({{angle}}deg); " +
                 "transform:rotate({{angle}}deg);' ><div class='dcpTransitionGraph__arrow__label'>{{text}}</div>" +
-                "<i class='dcpTransitionGraph__arrow__end fa fa-2x fa-caret-right'></i> </div>";
+                "<span class='dcpTransitionGraph__arrow__end fa fa-2x fa-caret-right'></span> </div>";
 
             this.$el.append(Mustache.render(htmlLine || "", {
                 error:item.transition.error,

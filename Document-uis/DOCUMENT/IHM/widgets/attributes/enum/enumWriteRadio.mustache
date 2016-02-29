@@ -15,19 +15,19 @@
             <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}"
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
                    class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit" />
-            <input class="dcpAttribute__value--enum--other k-textbox" type="text" placeholder="{{labels.chooseAnotherChoice}}"/>
+            <input class="dcpAttribute__value--enum--other k-textbox" tabindex="-1" type="text" placeholder="{{labels.chooseAnotherChoice}}"/>
         </label>
     {{/renderOptions.useOtherChoice}}
     </div>
     {{#hadButtons}}
         <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
-            <button type="button" data-title="{{title}}" data-index="{{index}}"
+            <button type="button" data-title="{{title}}" data-index="{{index}}" tabindex="-1"
                     class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
         {{/renderOptions.buttons}}
             {{#deleteButton}}
-                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]"
-                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><i class="fa fa-times fa-fw"></i>
+                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><span class="fa fa-times fa-fw"></span>
                 </button>
             {{/deleteButton}}
     </span>

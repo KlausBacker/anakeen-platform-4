@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'dcpDocument/models/mDocument'
-], function (_, Backbone, mDocument) {
+], function requireModelTransition(_, Backbone, mDocument) {
     'use strict';
 
     return mDocument.extend({
@@ -19,7 +19,7 @@ define([
         /**
          * Compute the REST URL for the current document
          *
-         * Used internaly by backbone in fetch, save, destroy
+         * Used internally by backbone in fetch, save, destroy
          *
          * @returns {string}
          */

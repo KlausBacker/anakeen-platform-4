@@ -1,10 +1,20 @@
-define([
-    'underscore',
-    'mustache',
-    'jquery',
-    'dcpDocument/widgets/attributes/wAttribute',
-    'kendo/kendo.autocomplete'
-], function wText(_, Mustache, $)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/attributes/wAttribute',
+            'kendo/kendo.autocomplete'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function wText($, _, Mustache)
 {
     'use strict';
 
@@ -181,4 +191,4 @@ define([
     });
 
     return $.fn.dcpText;
-});
+}));

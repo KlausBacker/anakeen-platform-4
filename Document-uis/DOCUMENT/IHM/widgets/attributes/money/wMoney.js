@@ -1,7 +1,17 @@
-define([
-    'jquery',
-    'dcpDocument/widgets/attributes/double/wDouble'
-], function require_money($) {
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'dcpDocument/widgets/attributes/double/wDouble'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery);
+    }
+}(window,  function require_money($) {
     'use strict';
 
     $.widget("dcp.dcpMoney", $.dcp.dcpDouble, {
@@ -43,4 +53,4 @@ define([
     });
 
     return $.fn.dcpMoney;
-});
+}));

@@ -1,11 +1,22 @@
 /*global define, _super, kendoColorPicker*/
-define([
-    'jquery',
-    'underscore',
-    'mustache',
-    'kendo/kendo.colorpicker',
-    'dcpDocument/widgets/attributes/text/wText'
-], function require_wColor($, _, Mustache, kendo) {
+
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'kendo/kendo.colorpicker',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache, window.kendo);
+    }
+}(window, function require_wColor($, _, Mustache, kendo) {
     'use strict';
 
     $.widget("dcp.dcpColor", $.dcp.dcpText, {
@@ -148,4 +159,4 @@ define([
     });
 
     return $.fn.dcpColor;
-});
+}));

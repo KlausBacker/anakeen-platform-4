@@ -1,9 +1,19 @@
-define([
-    'jquery',
-    'underscore',
-    'kendo/kendo.timepicker',
-    'dcpDocument/widgets/attributes/date/wDate'
-], function ($, _, kendo) {
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'kendo/kendo.timepicker',
+            'dcpDocument/widgets/attributes/date/wDate'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.kendo);
+    }
+}(window,  function ($, _, kendo) {
     'use strict';
 
     $.widget("dcp.dcpTime", $.dcp.dcpDate, {
@@ -130,4 +140,4 @@ define([
     });
 
     return $.fn.dcpTime;
-});
+}));

@@ -1,10 +1,20 @@
 /*global define*/
-define([
-    'jquery',
-    'underscore',
-    "mustache",
-    'dcpDocument/widgets/attributes/text/wText'
-], function wFileWidget($, _, Mustache)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'mustache',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._, window.Mustache);
+    }
+}(window, function wFileWidget($, _, Mustache)
 {
     'use strict';
 
@@ -75,13 +85,13 @@ define([
                     placement: "bottom",
                     container: ".dcpDocument"
                 });
-                this.element.find("input[type=file]").attr("fileValue", this.options.attributeValue.value||null);
+                this.element.find("input[type=file]").attr("fileValue", this.options.attributeValue.value || null);
             }
         },
 
         _initEvent: function wFileInitEvent()
         {
-            var scope = this;
+            var currentWidget = this;
             if (this.getMode() === "write") {
                 this._initUploadEvent();
             }
@@ -89,9 +99,9 @@ define([
             // Add trigger when try to download file
             this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function wFileClickDownload(event)
             {
-                scope._trigger("downloadfile", event, {
+                currentWidget._trigger("downloadfile", event, {
                     target: event.currentTarget,
-                    index: scope._getIndex()
+                    index: currentWidget._getIndex()
                 });
             });
 
@@ -108,7 +118,7 @@ define([
 
         _initUploadEvent: function wFileInitUploadEvent()
         {
-            var scope = this;
+            var currentWidget = this;
             var inputFile = this.element.find("input[type=file]");
             var inputText = this.element.find(".dcpAttribute__value");
             var fileUrl = this.options.attributeValue.url;
@@ -116,9 +126,9 @@ define([
             if (fileUrl) {
                 this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--file", function wFileOnButtonClickr(event)
                 {
-                    var isNotPrevented = scope._trigger("downloadfile", event, {
+                    var isNotPrevented = currentWidget._trigger("downloadfile", event, {
                         target: event.currentTarget,
-                        index: scope._getIndex()
+                        index: currentWidget._getIndex()
                     });
                     if (isNotPrevented) {
                         window.location.href = fileUrl + "&inline=no";
@@ -131,36 +141,36 @@ define([
             if (!_.isUndefined(window.FormData)) {
                 this.element.on("dragenter" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDragEnter(event)
                 {
-                    inputText.val(scope.options.attributeValue.displayValue);
+                    inputText.val(currentWidget.options.attributeValue.displayValue);
                     event.stopPropagation();
                     event.preventDefault();
                 });
                 this.element.on("dragover" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDragOver(event)
                 {
-                    inputText.val(scope.options.labels.dropFileHere);
+                    inputText.val(currentWidget.options.labels.dropFileHere);
                     event.stopPropagation();
                     event.preventDefault();
-                    scope.element.addClass("dcpAttribute__value--dropzone");
+                    currentWidget.element.addClass("dcpAttribute__value--dropzone");
                 });
                 this.element.on("dragleave" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnLeave(event)
                 {
-                    inputText.val(scope.options.attributeValue.displayValue);
+                    inputText.val(currentWidget.options.attributeValue.displayValue);
                     event.stopPropagation();
                     event.preventDefault();
-                    scope.element.removeClass("dcpAttribute__value--dropzone");
+                    currentWidget.element.removeClass("dcpAttribute__value--dropzone");
                 });
 
                 this.element.on("drop" + this.eventNamespace, ".dcpAttribute__dragTarget", function wFileOnDrop(event)
                 {
-                    inputText.val(scope.options.attributeValue.displayValue);
-                    scope.element.removeClass("dcpAttribute__value--dropzone");
+                    inputText.val(currentWidget.options.attributeValue.displayValue);
+                    currentWidget.element.removeClass("dcpAttribute__value--dropzone");
                     event.stopPropagation();
                     event.preventDefault();
 
                     var dt = event.originalEvent.dataTransfer;
                     var files = dt.files;
                     if (files.length > 0) {
-                        scope.uploadFile(files[0]);
+                        currentWidget.uploadFile(files[0]);
                     }
                 });
 
@@ -169,10 +179,18 @@ define([
                     inputFile.trigger("click");
                 });
 
+                this.element.on("keydown" + this.eventNamespace, ".dcpAttribute__value", function wFileOnClick(event)
+                {
+                    event.preventDefault();
+                    if (event.keyCode === 32 || event.keyCode === 13) {
+                        inputFile.trigger("click");
+                    }
+                });
+
                 this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChange(/*event*/)
                 {
                     if (this.files && this.files.length > 0) {
-                        scope.uploadFile(this.files[0]);
+                        currentWidget.uploadFile(this.files[0]);
                     }
                 });
 
@@ -181,7 +199,7 @@ define([
 
                 this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChangeOld(/*event*/)
                 {
-                    scope.uploadFileForm();
+                    currentWidget.uploadFileForm();
                 });
             }
         },
@@ -189,7 +207,7 @@ define([
         getWidgetValue: function wFilegetWidgetValue()
         {
             var $inputFile = this.element.find("input[type=file]");
-            return $inputFile.attr("fileValue")||null;
+            return $inputFile.attr("fileValue") || null;
         },
 
         /**
@@ -290,29 +308,29 @@ define([
         uploadFile: function wFileUploadFile(firstFile)
         {
             var inputText = this.element.find(".dcpAttribute__value");
-            var fd = new FormData();
+            var formData = new FormData();
             var newFileName = firstFile.name;
             var originalText = inputText.val();
             var originalBgColor = inputText.css("background-color");
-            var scope = this;
+            var currentWidget = this;
             var event = {prevent: false};
 
             if (!this.uploadCondition(firstFile)) {
                 return;
             }
 
-            var isNotPrevented = scope._trigger("uploadfile", event, {
+            var isNotPrevented = currentWidget._trigger("uploadfile", event, {
                 target: event.currentTarget,
-                index: scope._getIndex(),
+                index: currentWidget._getIndex(),
                 file: firstFile
             });
             if (!isNotPrevented) {
                 return;
             }
 
-            scope.uploadingFiles++;
+            currentWidget.uploadingFiles++;
             this._setVisibilitySavingMenu("disabled");
-            fd.append('dcpFile', firstFile);
+            formData.append('dcpFile', firstFile);
 
             inputText.addClass("dcpAttribute__value--transferring");
             var infoBgColor = inputText.css("background-color");
@@ -322,13 +340,13 @@ define([
                 processData: false,
                 contentType: false,
                 cache: false,
-                data: fd,
+                data: formData,
 
                 xhr: function wFileXhrAddProgress()
                 {
-                    var xhrobj = $.ajaxSettings.xhr();
-                    if (xhrobj.upload) {
-                        xhrobj.upload.addEventListener('progress', function wFileProgress(event)
+                    var xhrObject = $.ajaxSettings.xhr();
+                    if (xhrObject.upload) {
+                        xhrObject.upload.addEventListener('progress', function wFileProgress(event)
                         {
                             var percent = 0;
                             var position = event.loaded || event.position;
@@ -337,14 +355,14 @@ define([
                                 percent = Math.ceil(position / total * 100);
                             }
                             if (percent >= 100) {
-                                inputText.val(scope.options.labels.recording + ' ' + newFileName);
+                                inputText.val(currentWidget.options.labels.recording + ' ' + newFileName);
                                 inputText.removeClass("dcpAttribute__value--transferring");
                                 inputText.addClass("dcpAttribute__value--recording progress-bar active progress-bar-striped");
                                 inputText.css("background", "");
                                 inputText.css("background-image", "");
                             } else {
                                 inputText.addClass("dcpAttribute__value--transferring");
-                                inputText.val(scope.options.labels.transferring + ' ' + newFileName);
+                                inputText.val(currentWidget.options.labels.transferring + ' ' + newFileName);
                                 inputText.css("background-color", "red");
                                 inputText.css("background", "linear-gradient(to right," +
                                     infoBgColor + " 0%," +
@@ -354,16 +372,16 @@ define([
                             }
                         }, false);
                     }
-                    return xhrobj;
+                    return xhrObject;
                 }
 
             }).done(function wFileUploadDone(data)
             {
                 var dataFile = data.data.file;
 
-                scope.uploadingFiles--;
+                currentWidget.uploadingFiles--;
 
-                scope.setValue({
+                currentWidget.setValue({
                     value: dataFile.reference,
                     size: dataFile.size,
                     fileName: dataFile.fileName,
@@ -374,12 +392,12 @@ define([
                     icon: dataFile.iconUrl
                 });
 
-                scope._setVisibilitySavingMenu("visible");
+                currentWidget._setVisibilitySavingMenu("visible");
 
             }).fail(function wFileUploadFail(data)
             {
-                scope.uploadingFiles--;
-                inputText.css("background-image", "url(" + scope.options.attributeValue.icon + ')');
+                currentWidget.uploadingFiles--;
+                inputText.css("background-image", "url(" + currentWidget.options.attributeValue.icon + ')');
                 var result = JSON.parse(data.responseText);
                 if (result) {
                     _.each(result.messages, function wFileErrorMessages(errorMessage)
@@ -402,7 +420,7 @@ define([
                     });
                 }
 
-                scope._setVisibilitySavingMenu("visible");
+                currentWidget._setVisibilitySavingMenu("visible");
             }).always(function wFileUploadEnd()
             {
                 inputText.val(originalText);
@@ -426,7 +444,7 @@ define([
                 this.redraw();
             }
 
-            $inputFile.attr("fileValue", (value)?value.value:null);
+            $inputFile.attr("fileValue", (value) ? value.value : null);
         },
 
         /**
@@ -451,4 +469,4 @@ define([
     });
 
     return $.fn.dcpFile;
-});
+}));

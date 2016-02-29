@@ -1,9 +1,18 @@
 /*global define, console*/
-define([
-    'underscore',
-    'jquery',
-    'dcpDocument/widgets/widget'
-], function require_document(_, $)
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'dcpDocument/widgets/widget'
+        ], factory);
+    } else {
+        factory(window.jQuery, window._);
+    }
+}(window, function require_document($, _)
 {
     'use strict';
 
@@ -31,7 +40,7 @@ define([
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.viewId) { %>&initid=<%= options.initid %><% } %><% if (options.viewId) { %>&viewId=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.initid) { %>&initid=<%= options.initid %><% } %><% if (options.viewId) { %>&viewId=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -476,7 +485,7 @@ define([
 
     //noinspection JSValidateJSDoc
     /**
-     * Wrap the brigde that find the function to be executed
+     * Wrap the bridge that find the function to be executed
      * Search in the current widget if the function is here
      * Search in the internal widget (if ready to find the widget)
      *
@@ -503,4 +512,4 @@ define([
         }
     });
 
-});
+}));

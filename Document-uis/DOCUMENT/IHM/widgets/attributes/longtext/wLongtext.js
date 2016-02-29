@@ -1,9 +1,19 @@
 /*global define*/
-define([
-    'jquery',
-    'underscore',
-    'dcpDocument/widgets/attributes/text/wText'
-], function ($, _) {
+(function umdRequire(root, factory)
+{
+    'use strict';
+
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            'underscore',
+            'dcpDocument/widgets/attributes/text/wText'
+        ], factory);
+    } else {
+        //noinspection JSUnresolvedVariable
+        factory(window.jQuery, window._);
+    }
+}(window,  function requireDcpLongText($, _) {
     'use strict';
 
     $.widget("dcp.dcpLongtext", $.dcp.dcpText, {
@@ -15,7 +25,7 @@ define([
             }
         },
 
-        _initDom: function () {
+        _initDom: function dcpLongtext_initDom() {
             var maxDisplayedLine = this.options.renderOptions.displayedLineNumber;
 
             this._super();
@@ -23,18 +33,18 @@ define([
 
         },
 
-        _initEvent: function _initEvent() {
+        _initEvent: function dcpLongtext_initEvent() {
             if (this.getMode() === "write") {
                 this._initAutoFit();
             }
             this._super();
         },
 
-        _maxLinesNumber: function _maxLinesNumber(lineNumber) {
+        _maxLinesNumber: function dcpLongtext_maxLinesNumber(lineNumber) {
             lineNumber = parseInt(lineNumber, 10);
             if (lineNumber > 0) {
                 var scope = this;
-                _.defer(function () {
+                _.defer(function dcpLongtext_deferComputeSize() {
                     var $element = scope.getContentElements();
                     var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom"));
                     var lineH = $element.css("line-height");
@@ -53,11 +63,11 @@ define([
          * Define inputs for focus
          * @protected
          */
-        _getFocusInput: function () {
+        _getFocusInput: function dcpLongtext_getFocusInput() {
             return this.element.find('textarea[name="' + this.options.id + '"]');
         },
 
-        _fitToContent: function _fitToContent($element) {
+        _fitToContent: function dcpLongtext_fitToContent($element) {
 
             var delta = parseFloat($element.css("padding-top")) + parseFloat($element.css("padding-bottom")),
                 element = $element.get(0),
@@ -75,29 +85,29 @@ define([
             }
         },
 
-        _initAutoFit: function () {
+        _initAutoFit: function dcpLongtext_initAutoFit() {
             var scope = this;
-            _.defer(function () {
+            _.defer(function dcpLongtext_computeSize() {
                 scope._fitToContent(scope.getContentElements());
             });
             this.getContentElements()
-                .on("keyup" + this.eventNamespace, function (event) {
+                .on("keyup" + this.eventNamespace, function dcpLongtext_keyUpUpdateSize(event) {
                     scope._fitToContent($(this));
                 })
-                .on("focus" + this.eventNamespace, function (event) {
+                .on("focus" + this.eventNamespace, function dcpLongtext_focusUpdateSize(event) {
                     scope._fitToContent($(this));
                 });
 
-            this.element.on("show" + this.eventNamespace, function (event) {
+            this.element.on("show" + this.eventNamespace, function dcpLongtext_showUpdateSize(event) {
                     scope._fitToContent(scope.getContentElements());
                 });
         },
 
-        getType: function () {
+        getType: function dcpLongtext_getType() {
             return "longtext";
         }
 
     });
 
     return $.fn.dcpLongtext;
-});
+}));

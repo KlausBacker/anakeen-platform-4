@@ -17,7 +17,7 @@ define([
             htmlContent: '<div class="dcpTransition--content-activity" >' +
             ' <span class="dcpTransition--activity" style="border-color:{{transition.beginState.color}}">{{transition.beginState.displayValue}}</span>' +
             '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
-            '<span><i class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></i></span>' +
+            '<span><span class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></span></span>' +
             '<span class="dcpTransition--activity" style="border-color:{{transition.endState.color}}">{{transition.endState.displayValue}}</span> ' +
             '</div>',
 
@@ -28,7 +28,7 @@ define([
             htmlStateButtons: '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-default btn-sm">' +
             '{{labels.close}} </button>',
 
-            htmlLoading: '<div class="dcpTransition--loading"><i class="fa fa-2x fa-spinner fa-spin"></i> {{labels.inprogress}}</div>',
+            htmlLoading: '<div class="dcpTransition--loading"><span class="fa fa-2x fa-spinner fa-spin"></span> {{labels.inprogress}}</div>',
 
             htmlButtons: '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
             '<button title="{{transition.label}}" ' +

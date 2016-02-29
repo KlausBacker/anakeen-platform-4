@@ -99,7 +99,7 @@ define([
         },
 
         /**
-         * overhide Backbone sync to record method
+         * override Backbone sync to record method
          * @param method
          * @param model
          * @param options
@@ -483,16 +483,17 @@ define([
                         break;
 
                     default:
+                        currentModel.trigger("displayNetworkError");
                         if (message.type === "error" && message.contentText) {
                             currentModel.trigger("showError", {
-                                title: message.contentText,
+                                title: message.contentText+" "+(message.code ? message.code : ""),
                                 htmlMessage: message.contentHtml,
                                 errorCode: message.code
                             });
                         } else {
                             if (message.type && message.contentText) {
                                 currentModel.trigger("showMessage", {
-                                    title: message.contentText,
+                                    title: message.contentText+" "+(message.code ? message.code : ""),
                                     type: message.type,
                                     htmlMessage: message.contentHtml,
                                     errorCode: message.code
