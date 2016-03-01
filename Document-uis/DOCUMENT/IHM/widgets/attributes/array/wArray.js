@@ -120,13 +120,9 @@
                     this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
                     if (this.options.mode === "write") {
-                        this.element.find('.dcpArray__tools').tooltip({
-                            selector: ".dcpArray__button:visible",
-                            placement: "top",
-                            container: ".dcpDocument"
-                        });
+                        this.element.find(".dcpArray__table").addClass("dcpArray--tooltips");
                         this.element.tooltip({
-                            selector: ".dcpArray__content__toolCell span",
+                            selector: ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
                             placement: "top",
                             container: ".dcpDocument"
                         });
@@ -171,6 +167,8 @@
                             var classTable = element.closest('table').attr("class");
 
                             scope._hideTooltips();
+                            scope._disableTooltips();
+
                             return $('<table/>').addClass("dcpArray__dragLine " + classTable).
                             css("width", lineWidth).
                             css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px"). // @TODO compute delta left
@@ -178,7 +176,6 @@
                         },
                         dragstart: function dcpArraydragstart(event)
                         {
-                            scope._hideTooltips();
                             if (event.currentTarget) {
                                 var dragLine = $(event.currentTarget).closest('tr');
                                 dragLine.css("opacity", "0");
@@ -195,6 +192,8 @@
                                     toLine: dragLine.data("line")
                                 });
                             }
+
+                            scope._enableTooltips();
                         }
                     });
 
@@ -262,9 +261,13 @@
         },
 
         _hideTooltips: function wArray__hideTooltips() {
-
-            console.log("tooltips", this.element.find('[aria-describedby^=tooltip]').length);
             this.element.find('[aria-describedby^=tooltip]').tooltip("hide");
+        },
+        _disableTooltips: function wArray__disableTooltips() {
+            this.element.find(".dcpArray__table").removeClass("dcpArray--tooltips");
+        },
+        _enableTooltips: function wArray__enableTooltips() {
+            this.element.find(".dcpArray__table").addClass("dcpArray--tooltips");
         },
 
         _bindEvents: function dcpArray_bindEvents()
