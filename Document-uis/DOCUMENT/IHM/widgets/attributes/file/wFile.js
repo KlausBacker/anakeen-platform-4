@@ -179,11 +179,19 @@
                     inputFile.trigger("click");
                 });
 
-                this.element.on("keydown" + this.eventNamespace, ".dcpAttribute__value", function wFileOnClick(event)
+                this.element.on("keydown" + this.eventNamespace, ".dcpAttribute__value", function wFileFilterKeys(event)
                 {
-                    event.preventDefault();
-                    if (event.keyCode === 32 || event.keyCode === 13) {
-                        inputFile.trigger("click");
+                    if (event.keyCode !== 9 && event.keyCode !== 32 && event.keyCode !== 13) {
+                        event.preventDefault();
+                    }
+                });
+                this.element.on("keyup" + this.eventNamespace, ".dcpAttribute__value", function wFileSelectKeys(event)
+                {
+                    if (event.keyCode !== 9) {
+                        event.preventDefault();
+                        if (event.keyCode === 32 || event.keyCode === 13) {
+                            inputFile.trigger("click");
+                        }
                     }
                 });
 
