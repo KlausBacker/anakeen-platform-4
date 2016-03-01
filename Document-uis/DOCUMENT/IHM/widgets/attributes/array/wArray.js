@@ -120,13 +120,9 @@
                     this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
                     if (this.options.mode === "write") {
-                        this.element.find('.dcpArray__tools').tooltip({
-                            selector: ".dcpArray__button",
-                            placement: "top",
-                            container: ".dcpDocument"
-                        });
+                        this.element.find(".dcpArray__table").addClass("dcpArray--tooltips");
                         this.element.tooltip({
-                            selector: ".dcpArray__content__toolCell span",
+                            selector: ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
                             placement: "top",
                             container: ".dcpDocument"
                         });
@@ -170,7 +166,9 @@
                             var lineWidth = dragLine.width();
                             var classTable = element.closest('table').attr("class");
 
-                            element.tooltip("hide");
+                            scope._hideTooltips();
+                            scope._disableTooltips();
+
                             return $('<table/>').addClass("dcpArray__dragLine " + classTable).
                             css("width", lineWidth).
                             css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px"). // @TODO compute delta left
@@ -194,6 +192,8 @@
                                     toLine: dragLine.data("line")
                                 });
                             }
+
+                            scope._enableTooltips();
                         }
                     });
 
@@ -216,7 +216,7 @@
                         }
                     });
                 }
-                this.element.on("click" + this.eventNamespace, ".button-close-error", function destroyTable(event)
+                this.element.on("click" + this.eventNamespace, ".button-close-error", function destroyTable(/*event*/)
                 {
                     scope.element.find(".dcpArray__content table.table").tooltip("destroy");
                 });
@@ -260,12 +260,23 @@
             }
         },
 
+        _hideTooltips: function wArray__hideTooltips() {
+            this.element.find('[aria-describedby^=tooltip]').tooltip("hide");
+        },
+        _disableTooltips: function wArray__disableTooltips() {
+            this.element.find(".dcpArray__table").removeClass("dcpArray--tooltips");
+        },
+        _enableTooltips: function wArray__enableTooltips() {
+            this.element.find(".dcpArray__table").addClass("dcpArray--tooltips");
+        },
+
         _bindEvents: function dcpArray_bindEvents()
         {
             var currentWidget = this;
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check input", function selectLineEvent()
             {
                 var $this = $(this);
+                currentWidget._hideTooltips();
                 currentWidget._unSelectLines();
                 if ($this.data("selectedRow") === "1") {
                     $this.data("selectedRow", "0");
@@ -282,7 +293,7 @@
             this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent()
             {
                 var selectedLine = currentWidget.getSelectedLineIndex();
-
+                currentWidget._hideTooltips();
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     if (selectedLine === null || _.isUndefined(selectedLine)) {
                         currentWidget.options.nbLines += 1;
@@ -299,6 +310,8 @@
             this.element.on("click" + this.eventNamespace, ".dcpArray__copy", function copyLineEvent()
             {
                 var selectedLine = currentWidget.getSelectedLineIndex();
+
+                currentWidget._hideTooltips();
                 if (currentWidget.options.renderOptions.rowMaxLimit < 0 || currentWidget.options.nbLines < currentWidget.options.renderOptions.rowMaxLimit) {
                     currentWidget.options.nbLines += 1;
                     currentWidget.copyLine(selectedLine, {needAddValue: true, useSelectedLine: true});
@@ -307,11 +320,12 @@
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__delete button", function deleteLineEvent()
             {
-                currentWidget.element.find(".dcpArray__content__toolCell span").tooltip("hide");
+                currentWidget._hideTooltips();
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__label", function toogleTable()
             {
+                currentWidget._hideTooltips();
                 var $contentElement = currentWidget.element.find(".dcpArray__content");
                 currentWidget.element.find(".dcp__array__caret").toggleClass("fa-caret-right fa-caret-down");
                 $contentElement.toggleClass("dcpArray__content--open dcpArray__content--close");
@@ -428,13 +442,13 @@
                     this.element.find(".dcpArray__button--add, .dcpArray__button--copy").each(function dcpArray_initLine()
                     {
                         var $this = $(this);
-                        if (!$(this).data("originalTitle")) {
-                            $(this).data("originalTitle", $(this).attr("title"));
+                        if (!$this.data("originalTitle")) {
+                            $this.data("originalTitle", $this.attr("title"));
                         }
                         // reset tooltip
-                        $(this).tooltip("hide").data("bs.tooltip", null);
+                        $this.tooltip("hide").data("bs.tooltip", null);
 
-                        $(this).attr("title", Mustache.render(currentWidget.options.labels.limitMaxMessage || "",
+                        $this.attr("title", Mustache.render(currentWidget.options.labels.limitMaxMessage || "",
                             {limit: currentWidget.options.renderOptions.rowMaxLimit}
                         ));
                     });

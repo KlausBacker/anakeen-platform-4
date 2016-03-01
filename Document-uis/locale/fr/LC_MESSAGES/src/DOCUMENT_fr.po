@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-08 14:21+0100\n"
-"PO-Revision-Date: 2016-02-08 15:51+0100\n"
+"POT-Creation-Date: 2016-02-29 16:11+0100\n"
+"PO-Revision-Date: 2016-02-29 16:19+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -31,6 +31,12 @@ msgstr "Accès interdit au compte"
 msgctxt "ddui"
 msgid "Add a note to the history"
 msgstr "Ajouter une note à consigner dans l'historique"
+
+#. _COMMENT: content.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Add new line"
+msgstr "Ajouter une nouvelle ligne"
 
 msgctxt "UiMenu"
 msgid "Advanced"
@@ -164,6 +170,18 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr "Supprimer"
 
+#. _COMMENT: enumWriteRadio.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Delete : "
+msgstr "Suppression de : "
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Delete line"
+msgstr "Supprimer la ligne"
+
 msgctxt "UiMenu"
 msgid "Display document form"
 msgstr "Afficher le formulaire de modification"
@@ -182,6 +200,12 @@ msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr "Identifiant de document \"%s\" non trouvé"
 
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "DocumentDeleted"
+msgstr "Supprimée le"
+
 msgctxt "ddui-file"
 msgid "Download file"
 msgstr "Télécharger le fichier"
@@ -190,6 +214,12 @@ msgctxt "ddui-image"
 msgid "Download image"
 msgstr "Télécharger l'image"
 
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Drag to move line"
+msgstr "Cliquer pour déplacer la ligne"
+
 msgctxt "ddui-file"
 msgid "Drop file here"
 msgstr "Déposer le fichier ici"
@@ -197,6 +227,12 @@ msgstr "Déposer le fichier ici"
 msgctxt "ddui-image"
 msgid "Drop image here"
 msgstr "Déposer l'image ici"
+
+#. _COMMENT: content.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Duplicate selected row"
+msgstr "Dupliquer la ligne sélectionnée"
 
 msgctxt "ddui"
 msgid "Family View"
@@ -304,6 +340,18 @@ msgctxt "ddui"
 msgid "Revision \"%s\" must be a number or a state reference"
 msgstr "La révision \"%s\" doit être un nombre ou une référence à un état"
 
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Revision :"
+msgstr "Révision n°"
+
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "RevisionCreated"
+msgstr "Créée le"
+
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
 msgstr "Le nombre maximum de rangée est de {{limit}}"
@@ -327,6 +375,12 @@ msgstr "Sélectionner"
 msgctxt "ddui-enum"
 msgid "Select alternative choice"
 msgstr "Valider cet autre choix"
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Select line"
+msgstr "Sélectionner la ligne"
 
 #, php-format
 msgctxt "UiMenu"
@@ -393,6 +447,11 @@ msgstr "DDUI : Dynacase document UI"
 
 msgid "ddui:Document render long"
 msgstr "Rendu HTML5 en One Page Application"
+
+#. _COMMENT: document__header.mustache
+#. _COMMENT: mustache key
+msgid "ddui:Editing form"
+msgstr "Formulaire en cours de modification"
 
 msgid "ddui:Get dynamic sub menu"
 msgstr "Action de sous-menu"
@@ -510,9 +569,6 @@ msgstr "{{value}} (autre choix)"
 
 #~ msgid "ddui:Duplicate selected row"
 #~ msgstr "Dupliquer la ligne sélectionnée"
-
-#~ msgid "ddui:Editing form"
-#~ msgstr "Formulaire en cours de modification"
 
 #~ msgid "ddui:Locked by"
 #~ msgstr "Verrouillé par"

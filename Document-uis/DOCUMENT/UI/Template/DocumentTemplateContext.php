@@ -43,15 +43,35 @@ class DocumentTemplateContext implements \ArrayAccess
             return self::_i18n($s);
         };
     }
-    
+
+    /**
+     * Translate text using gettext context if exists
+     * @param string $s text to translate
+     *
+     * @return string
+     */
     protected static function _i18n($s)
     {
         if (!$s) return '';
+        if (preg_match("/^([^(::)]+)::(.+)$/", $s, $reg)) {
+            $i18n= ___($reg[2], $reg[1]);
+            if ($i18n === $reg[1]) {
+                $i18n = _($s);
+                if ($i18n === $s) {
+                    return $reg[1];
+                }
+            }
+            return $i18n;
+        }
         return _($s);
     }
+
     /**
      * Retrieve document data from CRUD API
+     *
      * @param string $field
+     * @param array  $subFields
+     *
      * @return array|mixed|null
      */
     protected function _getDocumentData($field, $subFields = array())
