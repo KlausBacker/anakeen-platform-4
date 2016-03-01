@@ -53,7 +53,7 @@ class DocumentTemplateContext implements \ArrayAccess
     protected static function _i18n($s)
     {
         if (!$s) return '';
-        if (preg_match("/^([^:]+)::(.+)$/", $s, $reg)) {
+        if (preg_match("/^([^(::)]+)::(.+)$/", $s, $reg)) {
             $i18n= ___($reg[2], $reg[1]);
             if ($i18n === $reg[1]) {
                 $i18n = _($s);
