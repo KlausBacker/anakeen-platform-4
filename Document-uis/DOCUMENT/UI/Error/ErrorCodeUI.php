@@ -49,9 +49,19 @@ namespace {
         const UI0010 = 'Render css reference must be an array "%s" found :';
         /**
          * @errorCode the implement method must return an array
-         * @see \Dcp\Ui\RenderConfig::geJsReferences
+         * @see \Dcp\Ui\RenderConfig::getJsReferences
          */
         const UI0011 = 'Render js reference must be an array "%s" found :';
+        /**
+         * @errorCode the implement method must return an array
+         * @see \Dcp\Ui\RenderConfig::getTemplates
+         */
+        const UI0012 = 'Method "%s::getTemplate" must return array';
+        /**
+         * @errorCode the implement method must return an Dcp\Ui\IRenderOptions object
+         * @see \Dcp\Ui\RenderConfig::getOptions
+         */
+        const UI0013 = 'Method "%s::getOptions" must return \Dcp\Ui\IRenderOptions';
         /**
          * @errorCode the menu item not exist
          * @see \Dcp\Ui\BarMenu::insertBefore
