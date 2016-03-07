@@ -23,7 +23,7 @@ class RenderDefault implements IRenderConfig
     
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return array(
             "bootstrap" => "css/dcp/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/dcp/document/kendo.css?ws=" . $version,
@@ -34,12 +34,12 @@ class RenderDefault implements IRenderConfig
     
     public function getJsReferences(\Doc $document = null)
     {
-        return array( );
+        return array();
     }
     
     public function getRequireReference()
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array(
