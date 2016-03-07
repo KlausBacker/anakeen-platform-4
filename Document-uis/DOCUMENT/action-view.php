@@ -71,6 +71,10 @@ function view(Action & $action)
         $otherParameters = $_GET;
         
         unset($otherParameters["initid"]);
+        
+        if (is_numeric($initid)) {
+            $initid = intval($initid);
+        }
         //merge other parameters
         $viewInformation = ["initid" => $initid, "revision" => $revision, "viewId" => $viewId];
         
