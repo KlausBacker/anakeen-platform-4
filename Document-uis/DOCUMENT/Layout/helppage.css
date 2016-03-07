@@ -1,0 +1,38 @@
+.helppage--content h1 {
+    margin: 1em 1em;
+    font-size:120%;
+}
+
+.helppage--content h1 img {
+    float:right;
+}
+.helppage--content h2 {
+    margin: 0.4em 3em;
+    font-size:110%;
+}
+.helppage--content h3 {
+    margin: 0.7em 3em;
+    font-size:100%;
+    font-weight: bold;
+}
+.helppage--content .helppage-chapter-content {
+    margin: 0 2em;
+    padding-left:1em;
+}
+
+.helppage--chapter:target {
+   /* padding-top:4em;*/
+}
+.helppage--chapter:target h3 {
+    margin-left:1.7em;
+}
+.helppage--chapter:target h3::before {
+    content:"\2217 ";
+    color:  #7676FF;
+    width:1.2em;
+    display:inline-block;
+}
+
+.helppage--chapter:target .helppage-chapter-content{
+    border-left: solid 3px #7676FF;
+}
