@@ -27,6 +27,7 @@
         <module name="dynacase-fontawesome-installer"/>
         <module name="dynacase-jquery-dataTables-1.10-installer"/>
         <module name='dynacase-httpapi-v1' comp='ge' version='1.0.1'/>
+        <module name='dynacase-es6-promise-installer'/>
     </requires>
 
     <post-install>
