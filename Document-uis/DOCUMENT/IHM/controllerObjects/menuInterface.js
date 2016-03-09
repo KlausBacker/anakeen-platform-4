@@ -111,6 +111,17 @@ define([
     {
         this._set("iconUrl", url, options);
     };
+    /**
+     * Change custom css class
+     * @param cssClass css class
+     *
+     * @returns {*}
+     * @param options
+     */
+    MenuPrototope.prototype.setCssClass = function menuInterfaceSetCssClass(cssClass, options)
+    {
+        this._set("cssClass", cssClass, options);
+    };
 
     /**
      * Change url

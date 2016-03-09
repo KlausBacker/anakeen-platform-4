@@ -1297,7 +1297,7 @@ define([
             this._checkInitialisedModel();
             menus=this._model.get("menus");
             menu = menus.get(menuId);
-            if (! menu) {
+            if (! menu && menus) {
                 menus.each(function documentControllerGetMenuIterate(itemMenu){
                     if (itemMenu.get("content")) {
                         _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu) {
