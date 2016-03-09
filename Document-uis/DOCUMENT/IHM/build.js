@@ -23,7 +23,8 @@
         "ckeditor": "empty:",
         "ckeditor-jquery": "empty:",
         "datatables": "empty:",
-        "datatables-bootstrap": "empty:"
+        "datatables-bootstrap": "empty:",
+        "es6-promise" : "empty:"
     },
     generateSourceMaps: true,
     preserveLicenseComments: false,

@@ -1002,7 +1002,9 @@ define([
                 if (_.isFunction(options.error)) {
                     options.error(values);
                 }
-                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                }
             });
 
             //Init default values
@@ -1079,7 +1081,7 @@ define([
                 //Reinit properties
                 currentModel.set(serverProperties);
                 //Indicate success to the promise object
-                globalCallback.error();
+                globalCallback.error({eventPrevented : true});
             }
 
             return globalCallback.promise;
@@ -1087,7 +1089,8 @@ define([
 
         saveDocument: function mDocumentSaveDocument(attributes, options)
         {
-            var saveCallback = this._promiseCallback(),
+            var globalCallBack = this._promiseCallback(),
+                saveCallback = this._promiseCallback(),
                 beforeSaveEvent = {prevent: false},
                 currentModel = this,
                 serverProperties = this.getServerProperties();
@@ -1096,28 +1099,28 @@ define([
 
             this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
-            if (beforeSaveEvent.event !== false) {
-                saveCallback.error();
+            if (beforeSaveEvent.prevent !== false) {
+                saveCallback.error({eventPrevented : true});
             } else {
                 this.trigger("displayLoading", {isSaving: true});
                 saveCallback.promise.then(function mDocument_saveDone()
                 {
-                    currentModel._loadDocument.call(currentModel).then(function mDocument_loadDocumentDone()
+                    currentModel._loadDocument(currentModel).then(function mDocument_loadDocumentDone()
                     {
-                        saveCallback.success();
+                        globalCallBack.success();
                     }, function mDocument_loadDocumentFail()
                     {
-                        saveCallback.error.call(currentModel, arguments);
+                        globalCallBack.error.call(currentModel, arguments);
                     });
                 }, function mDocument_saveFail()
                 {
-                    saveCallback.error.call(currentModel, arguments);
+                    globalCallBack.error.call(currentModel, arguments);
                 });
 
                 currentModel.save(attributes, saveCallback);
             }
 
-            saveCallback.promise.then(function onSaveSuccess(values)
+            globalCallBack.promise.then(function onSaveSuccess(values)
             {
                 currentModel.trigger("afterSave", serverProperties);
                 currentModel.trigger("close", serverProperties);
@@ -1130,10 +1133,12 @@ define([
                 if (_.isFunction(options.error)) {
                     options.error();
                 }
-                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                }
             });
 
-            return saveCallback.promise;
+            return globalCallBack.promise;
         },
 
         deleteDocument: function mDocumentDelete(options)
@@ -1148,8 +1153,8 @@ define([
 
             this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 
-            if (beforeDeleteEvent.event !== false) {
-                deleteCallback.error();
+            if (beforeDeleteEvent.prevent !== false) {
+                deleteCallback.error({eventPrevented : true});
             } else {
                 this.trigger("displayLoading");
                 deleteCallback.promise.then(function mDocument_deleteDone()
@@ -1182,8 +1187,9 @@ define([
                 if (_.isFunction(options.error)) {
                     options.error();
                 }
-                currentModel.trigger("displayNetworkError");
-                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail", currentModel], values.arguments));
+                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail", currentModel], values.arguments));
+                }
             });
 
             return globalCallback.promise;

@@ -132,7 +132,7 @@ define([
             if (customClientData) {
                 this._model._customClientData = customClientData;
             }
-            promise = this._model.fetchDocument(options);
+            promise = this._model.fetchDocument(this._getModelValue(), options);
             if (!this.options.noRouter) {
                 this._initRouter();
             }
@@ -618,7 +618,8 @@ define([
             var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, transitionInterface,
                 documentServerProperties = this.getProperties();
 
-            return new Promise(function documentController_changeStatePromise(resolve, reject) {
+            return new Promise(function documentController_changeStatePromise(resolve, reject)
+            {
                 result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
                     currentWidget.getProperties(), new TransitionInterface(null, $target, nextState, transition));
                 if (result) {
@@ -671,7 +672,7 @@ define([
                 {
                     event.prevent = !currentWidget._triggerControllerEvent("failTransition",
                         currentWidget.getProperties(), transitionInterface, error);
-                    reject({documentProperties : documentServerProperties});
+                    reject({documentProperties: documentServerProperties});
                 });
 
                 transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionSuccess(messages)
@@ -698,10 +699,12 @@ define([
                     }
 
                     //Reinit the main model with last revision
-                    currentWidget.reinitDocument(reinitOptions).then(function documentController_reinitDone() {
-                        resolve({documentProperties : documentServerProperties});
-                    }, function documentController_reinitFail() {
-                        reject({documentProperties : documentServerProperties});
+                    currentWidget.reinitDocument(reinitOptions).then(function documentController_reinitDone()
+                    {
+                        resolve({documentProperties: documentServerProperties});
+                    }, function documentController_reinitFail()
+                    {
+                        reject({documentProperties: documentServerProperties});
                     });
 
                 });
@@ -722,7 +725,7 @@ define([
                                 success: function transitionModel_afterSave()
                                 {
                                     transitionElements.model.trigger("success");
-                                    resolve({documentProperties : documentServerProperties});
+                                    resolve({documentProperties: documentServerProperties});
                                 }
                             });
                         }
@@ -1028,7 +1031,8 @@ define([
             }
         },
 
-        _registerOutputPromise: function documentController_registerOutputPromise(documentPromise, options) {
+        _registerOutputPromise: function documentController_registerOutputPromise(documentPromise, options)
+        {
             var currentWidget = this;
             return new Promise(function documentController_reinitPromise(resolve, reject)
             {
@@ -1040,7 +1044,11 @@ define([
                                 values.documentProperties || {},
                                 currentWidget.getProperties());
                         } catch (exception) {
-                            window.dcp.logger(exception);
+                            if (window.dcp.logger) {
+                                window.dcp.logger(exception);
+                            } else {
+                                console.error(exception);
+                            }
                         }
                     }
                     resolve({

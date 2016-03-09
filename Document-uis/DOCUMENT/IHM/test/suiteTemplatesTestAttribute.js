@@ -77,7 +77,7 @@ define([
                 view = new ViewDocument({model: modelDocument, el: $sandBox});
                 executeTest = _.after(2, function executeTest()
                 {
-                    expect($sandBox.find(".dcpFrame__content > .dcpAttribute > .dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
+                    expect($sandBox.find(".dcpFrame__content > .dcpAttribute > .dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "] label")).toHaveText(iniLabel);
                     expect($sandBox.find(".dcpAttribute[data-attrid=" + localAttrId + "]")).toExist();
                     expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toExist();
                     expect($sandBox.find(".dcpAttribute__content[data-attrid=" + localAttrId + "]")).toExist();

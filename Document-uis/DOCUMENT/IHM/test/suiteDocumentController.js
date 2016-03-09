@@ -16,16 +16,18 @@ define([
 
     "use strict";
 
+    var currentValues;
+
     try {
         values = JSON.parse(values);
-    } catch(e) {
-        console.error("Unable to parse generated data, check your server configuration "+values);
+    } catch (e) {
+        console.error("Unable to parse generated data, check your server configuration " + values);
         throw e;
     }
 
     return function require_suiteDocumentController(config, documentOptions)
     {
-        var currentSandbox, synchro, currentValues, getSandbox = function getSandbox()
+        var currentSandbox, synchro, getSandbox = function getSandbox()
         {
             return currentSandbox;
         }, prepareDocumentController = function prepareDocumentController(config)
@@ -61,10 +63,10 @@ define([
                 synchro = Backbone.sync;
                 Backbone.sync = function mockSynch(method, model, options)
                 {
-                    var documentId, id = model.id, viewId;
+                    var documentId, viewId;
                     var deferred = $.Deferred(), documentIdentifier = "no compatible model class";
                     if (model.typeModel === "ddui:document") {
-                        documentId = model.id === "document_2" ? "document_1" : "document_2";
+                        documentId = model.id === "document_1" ? "document_1" : "document_2";
                         viewId = model.get("viewId") === "!coreConsultation" ? "!defaultConsultation" : model.get("viewId");
                         documentIdentifier = documentId + viewId;
 
@@ -127,12 +129,13 @@ define([
             afterEach(function cleanAfterTest(done)
             {
                 var $sandbox = getSandbox();
-                $sandbox.documentController("addEventListener", "destroy", function onDestroy() {
+                Backbone.sync = synchro;
+                $sandbox.documentController("addEventListener", "destroy", function onDestroy()
+                {
                     done();
                 });
                 $sandbox.off(".test");
                 $sandbox.documentController("destroy");
-                Backbone.sync = synchro;
             });
 
             describe("init", function testDcinit()
@@ -204,43 +207,64 @@ define([
                     $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
                     {
-                        var mockReady = getMockFunction(), mockBeforeClose = getMockFunction(), mockClose = getMockFunction(),
-                            mockSuccess = getMockFunction(), nbReady = 0;
-                        $sandbox.documentController("addEventListener", "ready", function afterReady() {
-                            mockReady.fct();
-                            nbReady++;
-                            if (nbReady === 2) {
-                                expect(mockReady.fct.calls.count()).toEqual(2, "ready count");
+                        var mockBeforeClose = getMockFunction(), mockClose = getMockFunction(),
+                            mockSuccess = getMockFunction();
+                        $sandbox.documentController("addEventListener", "beforeClose", mockBeforeClose.fct);
+                        $sandbox.documentController("addEventListener", "close", mockClose.fct);
+                        $sandbox.documentController("fetchDocument", {"initid": "document_2"}, {
+                                success: function onFetchSuccess()
+                                {
+                                    mockSuccess.fct();
+                                    expect(mockBeforeClose.fct.calls.count()).toEqual(1, "before close count");
+                                    expect(mockClose.fct.calls.count()).toEqual(1, "close count");
+                                    expect(mockSuccess.fct.calls.count()).toEqual(1, "success count");
+                                    done();
+                                }
+                            }
+                        );
+                    });
+
+                    it("promises", function testDceventstest_events(done)
+                    {
+                        var $sandbox = getSandbox();
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
+                        $sandbox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
+                        {
+                            var mockBeforeClose = getMockFunction(), mockClose = getMockFunction(),
+                                mockSuccess = getMockFunction();
+                            $sandbox.documentController("addEventListener", "beforeClose", mockBeforeClose.fct);
+                            $sandbox.documentController("addEventListener", "close", mockClose.fct);
+                            $sandbox.documentController("fetchDocument", {"initid": "document_2"}).then(function success()
+                            {
+                                mockSuccess.fct();
                                 expect(mockBeforeClose.fct.calls.count()).toEqual(1, "before close count");
                                 expect(mockClose.fct.calls.count()).toEqual(1, "close count");
                                 expect(mockSuccess.fct.calls.count()).toEqual(1, "success count");
                                 done();
-                            }
+                            });
                         });
-                        $sandbox.documentController("addEventListener", "beforeClose", mockBeforeClose.fct);
-                        $sandbox.documentController("addEventListener", "close", mockClose.fct);
-                        $sandbox.documentController("fetchDocument", {"initid": "document_2"}, {success: mockSuccess.fct});
                     });
-                });
 
-                it("change viewId", function testDcviewId(done)
-                {
-                    var $sandbox = getSandbox(), documentOptions = prepareDocumentController(documentOptions);
-                    $sandbox.documentController(documentOptions);
-                    $sandbox.documentController("addEventListener", "ready", {"once": true}, function testDcReady()
+                    it("change viewId", function testDcviewId(done)
                     {
-                        var mock = getMockFunction(), viewId = documentOptions.viewId === "!coreConsultation" ? "!defaultEdition" : "!coreConsultation";
-                        $sandbox.documentController("addEventListener", "ready", mock.fct);
+                        var $sandbox = getSandbox(), documentOptions = prepareDocumentController(documentOptions);
+                        $sandbox.documentController(documentOptions);
+                        $sandbox.documentController("addEventListener", "ready", {"once": true}, function testDcReady()
+                        {
+                            var mock = getMockFunction(), viewId = documentOptions.viewId === "!coreConsultation" ? "!defaultEdition" : "!coreConsultation";
+                            $sandbox.documentController("addEventListener", "ready", mock.fct);
 
-                        $sandbox.documentController("fetchDocument", {
-                            "initid": $sandbox.documentController("getProperty", "initid"),
-                            "viewId": viewId
+                            $sandbox.documentController("fetchDocument", {
+                                "initid": $sandbox.documentController("getProperty", "initid"),
+                                "viewId": viewId
+                            });
+                            //2 because auto launch ready
+                            expect(mock.fct.calls.count()).toEqual(1, "ready count");
+                            expect($sandbox.documentController("getProperty", "viewId"), viewId);
+                            done();
                         });
-                        //2 because auto launch ready
-                        expect(mock.fct.calls.count()).toEqual(1, "ready count");
-                        expect($sandbox.documentController("getProperty", "viewId"), viewId);
-                        done();
                     });
+
                 });
 
             });
@@ -254,14 +278,15 @@ define([
                     $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
                     {
-                        var mockReady = getMockFunction(), mockBeforeSave = getMockFunction(), mockClose = getMockFunction(),
-                            mockAfterSave = getMockFunction(), mockSuccess = getMockFunction(), mockValidate = getMockFunction(), nbReady = 0;
-                        $sandbox.documentController("addEventListener", "ready", function isReady() {
-                            mockReady.fct();
-                            nbReady++;
-                            if (nbReady === 2) {
-                                //2 because auto launch ready
-                                expect(mockReady.fct.calls.count()).toEqual(2, "ready count");
+                        var mockBeforeSave = getMockFunction(), mockClose = getMockFunction(),
+                            mockAfterSave = getMockFunction(), mockSuccess = getMockFunction(), mockValidate = getMockFunction();
+                        $sandbox.documentController("addEventListener", "validate", mockValidate.fct);
+                        $sandbox.documentController("addEventListener", "beforeSave", mockBeforeSave.fct);
+                        $sandbox.documentController("addEventListener", "close", mockClose.fct);
+                        $sandbox.documentController("addEventListener", "afterSave", mockAfterSave.fct);
+                        $sandbox.documentController("saveDocument", {
+                            success : function successSave() {
+                                mockSuccess.fct();
                                 expect(mockBeforeSave.fct.calls.count()).toEqual(1, "save count");
                                 expect(mockClose.fct.calls.count()).toEqual(1, "close count");
                                 expect(mockAfterSave.fct.calls.count()).toEqual(1, "after save count");
@@ -271,11 +296,6 @@ define([
                                 done();
                             }
                         });
-                        $sandbox.documentController("addEventListener", "validate", mockValidate.fct);
-                        $sandbox.documentController("addEventListener", "beforeSave", mockBeforeSave.fct);
-                        $sandbox.documentController("addEventListener", "close", mockClose.fct);
-                        $sandbox.documentController("addEventListener", "afterSave", mockAfterSave.fct);
-                        $sandbox.documentController("saveDocument", {success: mockSuccess.fct});
                     });
                 });
 
@@ -290,24 +310,42 @@ define([
                     $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
                     {
-                        var mockReady = getMockFunction(), mockBeforeDelete = getMockFunction(), mockClose = getMockFunction(),
-                            mockAfterDelete = getMockFunction(), mockSuccess = getMockFunction(), nbReady = 0;
-                        $sandbox.documentController("addEventListener", "ready", function isReady() {
-                            mockReady.fct();
-                            nbReady++;
-                            if (nbReady === 2) {
-                                expect(mockReady.fct.calls.count()).toEqual(2, "ready count");
+                        var mockBeforeDelete = getMockFunction(),
+                            mockAfterDelete = getMockFunction(), mockSuccess = getMockFunction();
+                        $sandbox.documentController("addEventListener", "beforeDelete", mockBeforeDelete.fct);
+                        $sandbox.documentController("addEventListener", "afterDelete", mockAfterDelete.fct);
+                        $sandbox.documentController("deleteDocument", {
+                            success: function onDeleteSuccess()
+                            {
+                                mockSuccess.fct();
                                 expect(mockBeforeDelete.fct.calls.count()).toEqual(1, "before delete count");
-                                expect(mockClose.fct.calls.count()).toEqual(1, "close count");
                                 expect(mockAfterDelete.fct.calls.count()).toEqual(1, "after delete count");
                                 expect(mockSuccess.fct.calls.count()).toEqual(1, "success count");
                                 done();
                             }
                         });
+                    });
+                });
+
+                it("promise", function testDceventstest_promise(done)
+                {
+                    var $sandbox = getSandbox();
+                    $sandbox.documentController(prepareDocumentController(documentOptions));
+                    $sandbox.documentController("addEventListener", "ready", {"once": true}, function test_launchEvents()
+                    {
+                        var mockBeforeDelete = getMockFunction(),
+                            mockAfterDelete = getMockFunction(), mockSuccess = getMockFunction();
                         $sandbox.documentController("addEventListener", "beforeDelete", mockBeforeDelete.fct);
-                        $sandbox.documentController("addEventListener", "close", mockClose.fct);
                         $sandbox.documentController("addEventListener", "afterDelete", mockAfterDelete.fct);
-                        $sandbox.documentController("deleteDocument", {success: mockSuccess.fct});
+                        $sandbox.documentController("deleteDocument").then(
+                            function onDeleteSuccess()
+                            {
+                                mockSuccess.fct();
+                                expect(mockBeforeDelete.fct.calls.count()).toEqual(1, "before delete count");
+                                expect(mockAfterDelete.fct.calls.count()).toEqual(1, "after delete count");
+                                expect(mockSuccess.fct.calls.count()).toEqual(1, "success count");
+                                done();
+                            });
                     });
                 });
 
@@ -430,7 +468,7 @@ define([
                 it("getValue", function testDcgetValue(done)
                 {
                     var $sandbox = getSandbox();
-                    $sandbox.documentController(prepareDocumentController(config));
+                    $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "ready", function testDcready()
                     {
                         _.each(currentValues.data.view.documentData.document.attributes, function testDcattributes(value, attrid)
@@ -446,7 +484,7 @@ define([
                 it("getValues", function testDcgetValues(done)
                 {
                     var $sandbox = getSandbox();
-                    $sandbox.documentController(prepareDocumentController(config));
+                    $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "ready", function testDcready()
                     {
                         _.each(currentValues.data.view.documentData.document.attributes, function testDcValues(value, attrid)
@@ -465,7 +503,7 @@ define([
                 it("setValue", function testDcsetValue(done)
                 {
                     var $sandbox = getSandbox();
-                    $sandbox.documentController(prepareDocumentController(config));
+                    $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "ready", function testDcready()
                     {
                         $sandbox.documentController("setValue", "test_document_all__date", {value: "12-05-1985"});
@@ -477,7 +515,7 @@ define([
                 it("changeEvent", function testDcchangeEvent(done)
                 {
                     var $sandbox = getSandbox();
-                    $sandbox.documentController(prepareDocumentController(config));
+                    $sandbox.documentController(prepareDocumentController(documentOptions));
                     $sandbox.documentController("addEventListener", "change", function eventListenerChange() {
                         expect(true).toBe(true);
                         done();
@@ -498,7 +536,7 @@ define([
                     it("non array attribute", function testDcattribute(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var appendNonArrayRow = function testDcappendNonArrayRow()
@@ -513,7 +551,7 @@ define([
                     it("non good value", function testDcvalue(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var appendNonArrayRow = function testDcappendNonArrayRow()
@@ -528,7 +566,7 @@ define([
                     it("add row", function testDcrow(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var dates, length;
@@ -548,7 +586,7 @@ define([
                     it("non array attribute", function testDcattribute(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var appendNonArrayRow = function testDcappendNonArrayRow()
@@ -563,7 +601,7 @@ define([
                     it("non good value", function testDcvalue(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var appendNonArrayRow = function testDcappendNonArrayRow()
@@ -578,7 +616,7 @@ define([
                     it("non good index", function testDcindex(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var appendToBigIndex, appendToLowIndex, dates, length;
@@ -601,7 +639,7 @@ define([
                     it("append first row", function testDcrow(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var dates, length;
@@ -618,7 +656,7 @@ define([
                     it("append second row", function testDcrow(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var dates, length;
@@ -639,7 +677,7 @@ define([
                     it("non array attribute", function testDcattribute(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var removeNonArrayRow = function removeNonArrayRow()
@@ -654,7 +692,7 @@ define([
                     it("non good index", function testDcindex(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var removeToBigIndex, removeToLowIndex, dates, length;
@@ -678,7 +716,7 @@ define([
                     it("remove one row", function testDcrow(done)
                     {
                         var $sandbox = getSandbox();
-                        $sandbox.documentController(prepareDocumentController(config));
+                        $sandbox.documentController(prepareDocumentController(documentOptions));
                         $sandbox.documentController("addEventListener", "ready", function testDcready()
                         {
                             var dates, length;
