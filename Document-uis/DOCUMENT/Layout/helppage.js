@@ -11,7 +11,6 @@ define(["mustache", "jquery", "underscore",
             locale = {title: "Untitle", description: '', chapters: []};
 
         // @TODO sort by help_sec_order
-        window.console.log("values",helpValues );
         _.each(helpValues.help_sec_lang, function helppageReadyLocaleFilter(chapterLang, index)
         {
             if (chapterLang.value === lang) {
@@ -47,14 +46,32 @@ define(["mustache", "jquery", "underscore",
         },
         function helppageReady(/*event, documentObject*/)
         {
-            var currentLocale=i18n.getLocale().culture.replace('-','_') || "fr_FR";
+            var currentLocale = i18n.getLocale().culture.replace('-', '_') || "fr_FR";
+
+            if (window.frameElement) {
+                // hide header and menu if document is in dialog window
+                if ($(window.frameElement).closest(".dialog-window").length === 1) {
+                    var topMenu = this.documentController("getMenus");
+                    var wDocument = this;
+                    _.each(topMenu, function helppageReadyHideMenu(itemMenu)
+                    {
+                        if (itemMenu.id !== "helppage-langMenu") {
+                            wDocument.documentController("getMenu", itemMenu.id).hide();
+                        } else {
+                            wDocument.documentController("getMenu", itemMenu.id).setCssClass("menu--right");
+                        }
+                    });
+
+                    $(".dcpDocument__header").hide();
+                }
+            }
             helppageDisplayLocale(currentLocale, this);
             if (window.location.hash) {
                 // Need to force hash to scroll to selected chapter
                 _.delay(function helppageReadyScroll()
                 {
                     window.location.href = window.location.href;
-                    window.scrollBy(0, -100);
+                    //window.scrollBy(0, -100);
                 }, 1);
             }
         }
@@ -73,12 +90,13 @@ define(["mustache", "jquery", "underscore",
         {
             var culture;
             var langMenu;
-            if (options.eventId === "helppage" && options.options[0] === "lang") {
-                culture = options.options[1];
+            if (options.eventId === "helppage.lang") {
+                culture = options.options[0];
                 helppageDisplayLocale(culture, this);
+                window.location.href = window.location.href;
                 langMenu = this.documentController("getMenu", $(options.target).data("menu-id"));
                 this.documentController("getMenu", "helppage-langMenu").setIconUrl(langMenu.getProperties().iconUrl);
-                this.documentController("getMenu", "helppage-langMenu").setHtmlLabel('('+langMenu.getProperties().id.substr(-5,2)+') ');
+                this.documentController("getMenu", "helppage-langMenu").setHtmlLabel('(' + langMenu.getProperties().id.substr(-5, 2) + ') ');
             }
 
         }
