@@ -80,6 +80,7 @@
             }
 
             this._initDom();
+            this._initLinkHelpEvent();
             this._bindEvents();
         },
 
@@ -117,6 +118,10 @@
                     this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
 
                 } else {
+                    _.each(this.options.content , function wArrayCopyRenderContent(anOption) {
+                        // Need duplicate because Mustache is confused when 2 attributes has same name
+                        anOption.contentRenderOptions=anOption.renderOptions;
+                    });
                     this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
                     if (this.options.mode === "write") {
@@ -223,7 +228,39 @@
             }
             _.delay(_.bind(this._initCSSResponsive, this), 10);
         },
+        /**
+         * Init event when a help is associated to the attribute
+         *
+         * @protected
+         */
+        _initLinkHelpEvent: function wLabelInitLinkEvent()
+        {
+            var helpId = this.options.renderOptions.helpLinkIdentifier;
+            var scopeWidget = this;
 
+            if (helpId) {
+                this.element.on("click." + this.eventNamespace, '.dcpLabel__help__link', function wAttributeAttributeClick(event)
+                {
+                    var  eventContent;
+                    var href = $(this).attr("href");
+                    if (href.substring(0, 8) === "#action/") {
+                        event.preventDefault();
+                        eventContent = href.substring(8).split(":");
+                        scopeWidget._trigger("externalLinkSelected", event, {
+                            target: event.target,
+                            eventId: eventContent.shift(),
+                            index: -1,
+                            options: eventContent
+                        });
+                        event.stopPropagation();
+
+                        return this;
+                    }
+                });
+            }
+
+            return this;
+        },
         _initCSSResponsive: function _initCSSResponsive()
         {
             // I9 not support transposition table

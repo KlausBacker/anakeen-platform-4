@@ -17,8 +17,8 @@ define([
         customView: false,
         displayLabel: true,
 
-        events : {
-            "click .dcpFrame__label" : "toggle"
+        events: {
+            "click .dcpFrame__label": "toggle"
         },
 
         initialize: function vFrame_initialize(options)
@@ -49,15 +49,15 @@ define([
         render: function vFrame_render()
         {
             var $content, labelElement, contentElement = '', customView = null, event = {prevent: false};
-            var contentData;
+            var contentData, helpId, documentModel = this.model.getDocumentModel();
 
-            this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
+            this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
             if (event.prevent) {
                 return this;
             }
-            contentData=this.model.toJSON();
+            contentData = this.model.toData(null, true);
             if (this.model.getOption("attributeLabel")) {
-                contentData.label=this.model.getOption("attributeLabel");
+                contentData.label = this.model.getOption("attributeLabel");
             }
             this.templateLabel = this.model.getTemplates().attribute.frame.label;
             labelElement = $(Mustache.render(this.templateLabel || "", contentData));
@@ -113,6 +113,34 @@ define([
                             } else {
                                 console.error(e);
                             }
+                        }
+                    });
+                }
+
+                helpId = this.model.getOption("helpLinkIdentifier");
+                if (helpId) {
+                    this.$el.find(".dcpLabel__help__link").on("click", function vFrameLabelHelpClick(event)
+                    {
+                        var eventContent, options;
+                        var href = $(this).attr("href");
+
+                        if (href.substring(0, 8) === "#action/") {
+                            event.preventDefault();
+                            eventContent = href.substring(8).split(":");
+                            options = {
+                                target: event.target,
+                                eventId: eventContent.shift(),
+                                index: -1,
+                                options: eventContent
+                            };
+                            documentModel.trigger("internalLinkSelected", event, options);
+                            if (event.prevent) {
+                                return this;
+                            }
+                            documentModel.trigger("actionAttributeLink", event, options);
+                            event.stopPropagation();
+
+                            return this;
                         }
                     });
                 }

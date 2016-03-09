@@ -38,7 +38,7 @@ define([
             content.isDisplayable = this.isDisplayable();
             content.content = [];
             if (this.get("content") && _.isFunction(this.get("content").toData)) {
-                content.content = this.get("content").toData();
+                content.content = this.get("content").toData(index, extended);
             }
             if (extended) {
                 content.renderOptions = this.getOptions();
@@ -56,7 +56,9 @@ define([
                 content.deleteButton = true;
                 content.sourceValues = this.get("enumItems");
                 content.sourceUri = this.get("enumUri");
-                content.templates.label = this.getTemplates().attribute.label;
+                if (!content.templates.label) {
+                    content.templates.label = this.getTemplates().attribute.label;
+                }
             }
             return content;
         },

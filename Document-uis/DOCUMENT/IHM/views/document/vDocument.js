@@ -20,12 +20,13 @@ define([
     'dcpDocument/widgets/history/wHistory',
     'dcpDocument/widgets/properties/wProperties'
 ], function vDocument(_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
-             ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
+                      ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
+                      attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
 {
     'use strict';
 
-    var checkTouchEvents = function checkTouchEvents() {
+    var checkTouchEvents = function checkTouchEvents()
+    {
         //From modernizer
         var bool = false;
         if (('ontouchstart' in window) || window.DocumentTouch && window.document instanceof window.DocumentTouch) {
@@ -102,7 +103,7 @@ define([
                 this.$el.addClass("dcpTouch");
             }
 
-            this.selectedTab=this.model.getOption("openFirstTab");
+            this.selectedTab = this.model.getOption("openFirstTab");
             this.model.trigger("beforeRender", event);
 
             if (event.prevent) {
@@ -316,7 +317,8 @@ define([
             $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
             {
                 if (documentView.model.get("attributes")) {
-                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel) {
+                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel)
+                    {
                         currentAttributeModel.trigger("closeWidget");
                     });
                 }
@@ -651,7 +653,7 @@ define([
             // add custom css style
             var $head = $("head"),
                 cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
-                'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
+                    'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
                 customCss = this.model.get("customCSS");
 
             if (noRemove !== true) {
@@ -676,6 +678,46 @@ define([
                     $head.append(cssLinkTemplate(cssItem));
                 }
             });
+        },
+
+        /**
+         * Show the help document in dialog
+         *
+         */
+        showHelp: function vDocumentShowHelp(helpId, attrid)
+        {
+            var $document = $(this.el);
+            var helpWrapper = $document.data("dcpHelpWrapper");
+            var href = "?app=DOCUMENT&initid=" + helpId + '#CHAP-' + attrid;
+            var helpWindow, $dialogDiv, dpcWindow,
+                htmlLink = {
+                    target: "_dialog",
+                    windowWidth: "300px",
+                    windowHeight: "300px",
+                    windowTitle: '<i class="fa fa-info-circle"></i> ' + i18n.___("Info", "ddui")
+                };
+
+            if (!helpWrapper || helpWrapper.is(":visible") === false) {
+                $dialogDiv = $('<div/>').addClass("dcpHelp-wrapper");
+                $document.append($dialogDiv);
+                dpcWindow = $dialogDiv.dcpWindow({
+                    title: htmlLink.windowTitle,
+                    width: htmlLink.windowWidth,
+                    height: htmlLink.windowHeight,
+                    content: href,
+                    iframe: true
+                });
+
+                dpcWindow.data('dcpWindow').kendoWindow().center();
+                dpcWindow.data('dcpWindow').open();
+                helpWrapper = dpcWindow.data('dcpWindow').kendoWindow().wrapper;
+                $document.data("dcpHelpWrapper", helpWrapper);
+            } else {
+                helpWindow=$(helpWrapper).find("iframe").get(0).contentWindow;
+                helpWindow.location.hash = 'CHAP-' + attrid;
+                // To scroll to selected chapter
+                helpWindow.location.href = helpWindow.location.href;
+            }
         },
 
         /**
@@ -935,10 +977,10 @@ define([
                     },
                     confirm: function wMenuConfirm()
                     {
-                         documentView.model.fetchDocument({
-                             initid:initid,
-                             viewId:viewId
-                         });
+                        documentView.model.fetchDocument({
+                            initid: initid,
+                            viewId: viewId
+                        });
 
                     },
                     templateData: {templates: this.model.get("templates")}
@@ -946,8 +988,8 @@ define([
                 confirmWindow.data('dcpWindow').open();
             } else {
                 this.model.fetchDocument({
-                    initid:initid,
-                    viewId:viewId
+                    initid: initid,
+                    viewId: viewId
                 });
             }
         },
@@ -981,7 +1023,7 @@ define([
                     var initid = currentView.model.get("initid");
 
                     currentView.model.fetchDocument({
-                        initid:initid
+                        initid: initid
                     });
 
                 });
@@ -1027,15 +1069,14 @@ define([
         loadDocument: function vDocumentLoadDocument(docid, viewId)
         {
             this.model.fetchDocument({
-                initid:docid,
-                viewId:viewId
+                initid: docid,
+                viewId: viewId
             });
         },
 
         /**
          * Restore the deleted document
          *
-         * @param options
          * @returns {exports}
          */
         restoreDocument: function vDocumentRestoreDocument()
@@ -1073,11 +1114,9 @@ define([
             if (options.eventId === "document.save") {
                 return this.saveDocument();
             }
-
             if (options.eventId === "document.saveAndClose") {
                 return this.saveAndCloseDocument();
             }
-
             if (options.eventId === "document.history") {
                 return this.showHistory(eventArgs[0]);
             }
@@ -1102,11 +1141,9 @@ define([
             if (options.eventId === "document.create") {
                 return this.createDocument();
             }
-
             if (options.eventId === "document.createAndClose") {
                 return this.createAndCloseDocument();
             }
-
             if (options.eventId === "document.load") {
                 return this.loadDocument(eventArgs[0], eventArgs[1]);
             }
@@ -1119,9 +1156,12 @@ define([
             if (options.eventId === "document.restore") {
                 return this.restoreDocument();
             }
+            if (options.eventId === "document.help") {
+                return this.showHelp(eventArgs[0], eventArgs[1]);
+            }
         },
 
-        displayNetworkError : function vDocument_displayNetworkError()
+        displayNetworkError: function vDocument_displayNetworkError()
         {
             this.$el.hide();
             $(".dcpStaticErrorMessage").removeAttr("hidden");

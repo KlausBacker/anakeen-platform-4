@@ -21,6 +21,7 @@ define([
             "dcparraylineadded": "addLine",
             "dcparraylineremoved": "removeLine",
             "dcparraylinemoved": "moveLine",
+            "dcparrayexternallinkselected": "externalLinkSelected",
             "dcpattributechange .dcpArray__content__cell": "updateValue"
         },
 
@@ -56,7 +57,7 @@ define([
         render: function vArray_render()
         {
             // console.time("render array " + this.model.id);
-            var data = this.model.toData(), scope = this, event = {prevent : false};
+            var data = this.model.toData(null, true), scope = this, event = {prevent : false};
 
             this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
             if (event.prevent) {
@@ -286,6 +287,16 @@ define([
             event.haveView = true;
             //Add the pointer to the current jquery element to a list passed by the event
             event.elements = event.elements.add(this.$el);
+        },
+        externalLinkSelected: function vArrayExternalLinkSelected(event, options)
+        {
+            var documentModel = this.model.getDocumentModel();
+            options.attrid = this.model.id;
+            this.model.trigger("internalLinkSelected", event, options);
+            if (event.prevent) {
+                return this;
+            }
+            documentModel.trigger("actionAttributeLink", event, options);
         }
     });
 

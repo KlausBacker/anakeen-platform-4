@@ -26,6 +26,7 @@ class CommonRenderOptions extends BaseRenderOptions
     const upPosition = "up";
     const nonePosition = "none";
     const formatOption = "format";
+    const helpLinkIdentifierOption="helpLinkIdentifier";
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -152,6 +153,19 @@ class CommonRenderOptions extends BaseRenderOptions
         }
         $this->setOption(self::translatedLabelsOption, array_merge($cLabels, $labels));
         return $this;
+    }
+
+    /**
+     * Display help document links in render
+     * Add menu "help"
+     *
+     * @param string $documentIdentifier must identifier a HELP family document
+     * @param bool $displayLinkInAttributes use true to add
+     * @return $this
+     */
+    public function setLinkHelp($documentIdentifier)
+    {
+        return $this->setOption(self::helpLinkIdentifierOption, $documentIdentifier);
     }
 }
 
