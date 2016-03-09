@@ -104,4 +104,25 @@ class DefaultEdit extends RenderDefault
         $this->setEmblemMenu($document, $menu);
         return $menu;
     }
+    /**
+     * @param \Doc $document Document instance
+     *
+     * @return RenderOptions
+     */
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+        $helpDoc = $document->getHelpPage();
+        if ($helpDoc) {
+            $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
+            
+            foreach ($attrids as $k => $aid) {
+                if ($aid) {
+                    $options->commonOption($aid)->setLinkHelp($helpDoc->initid);
+                }
+            }
+        }
+        
+        return $options;
+    }
 }
