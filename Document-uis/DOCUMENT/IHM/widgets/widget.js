@@ -28,7 +28,7 @@
                 slice = Array.prototype.slice,
                 _cleanData = $.cleanData;
             $.cleanData = function widget_cleanData(elems) {
-                var events, elem, i;
+                var events, elem=null, i;
                 for (i = 0, elem; (elem = elems[i]) != null; i++) { // jshint ignore:line
                     try {
                         // Only trigger remove when necessary to save time
@@ -164,7 +164,8 @@
                     key,
                     value;
                 for (; inputIndex < inputLength; inputIndex++) {
-                    for (key in input[ inputIndex ]) { // jshint ignore:line
+                    for (key in input[ inputIndex ]) {  // jshint ignore:line
+                        //noinspection JSUnfilteredForInLoop
                         value = input[ inputIndex ][ key ];
                         if (input[ inputIndex ].hasOwnProperty(key) && value !== undefined) {
                             // Clone objects
@@ -375,6 +376,7 @@
                     var key;
 
                     for (key in options) { // jshint ignore:line
+                        //noinspection JSUnfilteredForInLoop
                         this._setOption(key, options[ key ]);
                     }
 
@@ -390,7 +392,9 @@
                     var classKey, elements, currentElements;
 
                     for ( classKey in value ) { // jshint ignore:line
+                        //noinspection JSUnfilteredForInLoop
                         currentElements = this.classesElementLookup[ classKey ];
+                        //noinspection JSUnfilteredForInLoop
                         if ( value[ classKey ] === this.options.classes[ classKey ] ||
                             !currentElements ||
                             !currentElements.length ) {
@@ -402,12 +406,14 @@
                         // tracked. We need to save a copy of this collection so that we can add the new classes
                         // below.
                         elements = $( currentElements.get() );
+                        //noinspection JSUnfilteredForInLoop
                         this._removeClass( currentElements, classKey );
 
                         // We don't use _addClass() here, because that uses this.options.classes
                         // for generating the string of classes. We want to use the value passed in from
                         // _setOption(), this is the new value of the classes option which was passed to
                         // _setOption(). We pass this value directly to _classes().
+                        //noinspection JSUnfilteredForInLoop
                         elements.addClass( this._classes( {
                             element: elements,
                             keys: classKey,
@@ -482,7 +488,7 @@
                     if (typeof suppressDisabledCheck !== "boolean") {
                         handlers = element;
                         element = suppressDisabledCheck;
-                        suppressDisabledCheck = false;
+                        //suppressDisabledCheck = false;
                     }
 
                     // no element argument, shuffle and use this.element
@@ -554,6 +560,7 @@
                     if (orig) {
                         for (prop in orig) {// jshint ignore:line
                             if (!( prop in event )) {
+                                //noinspection JSUnfilteredForInLoop
                                 event[ prop ] = orig[ prop ];
                             }
                         }
