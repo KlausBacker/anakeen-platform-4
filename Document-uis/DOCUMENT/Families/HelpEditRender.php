@@ -24,7 +24,8 @@ class HelpEditRender extends \Dcp\Ui\DefaultEdit
     {
         $options = parent::getOptions($document);
         
-        $options->arrayAttribute(myAttributes::help_t_sections)->setTemplate(<<< 'HTML'
+        $options->arrayAttribute(myAttributes::help_t_sections)->setTemplate(
+            <<< 'HTML'
                     <table class="dcpArray__table">
                         <thead>
                             <tr>
@@ -61,8 +62,8 @@ class HelpEditRender extends \Dcp\Ui\DefaultEdit
                     <div>
                         {{{attribute.tableTools}}}
                     </div>
-
-HTML) ;
+HTML
+        ) ;
         return $options;
     }
     /**

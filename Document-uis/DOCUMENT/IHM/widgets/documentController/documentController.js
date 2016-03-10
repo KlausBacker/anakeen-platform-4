@@ -613,7 +613,6 @@ define([
          * @param values
          * @param withoutInterface
          * @param reinitOptions
-         * @param options
          */
         _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition, values, withoutInterface, reinitOptions)
         {
@@ -636,7 +635,6 @@ define([
                     state: nextState,
                     transition: transition
                 });
-            }
 
                 //Init transition view
                 if (withoutInterface !== true) {
@@ -663,7 +661,6 @@ define([
                     event.prevent = !currentWidget._triggerControllerEvent("beforeTransition",
                         currentWidget.getProperties(), transitionInterface);
                 });
-            }
 
                 //Propagate the beforeTransitionClose
                 transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateTransitionClose(event)
@@ -1208,7 +1205,7 @@ define([
          */
         deleteDocument: function documentControllerDelete(options)
         {
-            var documentPromise, currentWidget = this;
+            var documentPromise;
             options = options || {};
             this._checkInitialisedModel();
             if (options.customClientData) {
