@@ -20,12 +20,13 @@ define([
     'dcpDocument/widgets/history/wHistory',
     'dcpDocument/widgets/properties/wProperties'
 ], function vDocument(_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
-             ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-             attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
+                      ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
+                      attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
 {
     'use strict';
 
-    var checkTouchEvents = function checkTouchEvents() {
+    var checkTouchEvents = function checkTouchEvents()
+    {
         //From modernizer
         var bool = false;
         if (('ontouchstart' in window) || window.DocumentTouch && window.document instanceof window.DocumentTouch) {
@@ -69,6 +70,9 @@ define([
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
                 }
+                if (this.helpWidget) {
+                    this.helpWidget.destroy();
+                }
                 if (this.transitionGraph && this.transitionGraph.view) {
                     this.transitionGraph.view.remove();
                 }
@@ -102,7 +106,7 @@ define([
                 this.$el.addClass("dcpTouch");
             }
 
-            this.selectedTab=this.model.getOption("openFirstTab");
+            this.selectedTab = this.model.getOption("openFirstTab");
             this.model.trigger("beforeRender", event);
 
             if (event.prevent) {
@@ -316,7 +320,8 @@ define([
             $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
             {
                 if (documentView.model.get("attributes")) {
-                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel) {
+                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel)
+                    {
                         currentAttributeModel.trigger("closeWidget");
                     });
                 }
@@ -651,7 +656,7 @@ define([
             // add custom css style
             var $head = $("head"),
                 cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
-                'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
+                    'href="<%= path %>" data-id="<%= key %>" data-view="true">'),
                 customCss = this.model.get("customCSS");
 
             if (noRemove !== true) {
@@ -675,6 +680,107 @@ define([
                 if ($existsLink.length === 0) {
                     $head.append(cssLinkTemplate(cssItem));
                 }
+            });
+        },
+
+        /**
+         * Show the help document in dialog
+         *
+         */
+        showHelp: function vDocumentShowHelp(event, helpId, attrid)
+        {
+            var $document = $(this.el);
+            var scope = this;
+            var $dialogDiv = $document.data("dcpHelpDocument");
+            var currentTarget = (event.originalEvent) ? event.originalEvent.currentTarget : event.currentTarget;
+            var htmlLink = {
+                target: "_dialog",
+                windowWidth: "400px",
+                windowHeight: "300px",
+                windowTitle: '<i class="fa fa-info-circle"></i> ' + i18n.___("Info", "ddui")
+            };
+
+            require(['dcpDocument/document'], function vDocumentHelp()
+            {
+                var helpX, helpY, bodyH, dialogH, dialogW;
+                if (!$dialogDiv || $dialogDiv.is(":visible") === false) {
+                    $dialogDiv = $('<div/>').addClass("dcpHelp-wrapper");
+
+                    $dialogDiv.kendoWindow({
+                        title: htmlLink.windowTitle,
+                        width: htmlLink.windowWidth,
+                        height: htmlLink.windowHeight,
+                        iframe: true,
+                        content: "about:blank",
+                        actions: [
+                            "Maximize",
+                            "Close"
+                        ],
+                        close: function vDocumentSelectHelpClose()
+                        {
+                            $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
+                        }
+                    });
+
+                    $dialogDiv.on("documentcreate", function vDocumentHelpCreate()
+                    {
+                        $dialogDiv.find("> iframe").addClass("k-content-frame");
+                    });
+
+                    $dialogDiv.document({
+                        "initid": helpId,
+                        withoutResize: true
+                    });
+
+                    $dialogDiv.document("addEventListener", "ready", {name: "ddui:help:select"}, function vDocumentSelectHelpChapter()
+                    {
+                        _.defer(function vDocumentHelpReady()
+                        {
+                            $dialogDiv.document(
+                                "triggerEvent",
+                                "custom:helppageSelect",
+                                attrid);
+                        });
+                    });
+                    $document.data("dcpHelpDocument", $dialogDiv);
+                } else {
+                    $dialogDiv.document(
+                        "triggerEvent",
+                        "custom:helppageSelect",
+                        attrid);
+                }
+
+                scope.helpWidget = $dialogDiv.data('kendoWindow');
+                $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
+
+                if ($(currentTarget).length > 0) {
+                    $(currentTarget).addClass("dcpLabel__help__link--selected");
+
+                    // Compute new position of help dialog window
+                    helpX = $(currentTarget).offset().left;
+                    helpY = $(currentTarget).offset().top;
+                    bodyH = $("body").height();
+                    dialogH = $(scope.helpWidget.wrapper).closest(".k-window").height();
+                    dialogW = $(scope.helpWidget.wrapper).closest(".k-window").width();
+                    if (helpX > dialogW + 50) {
+                        helpX = helpX - dialogW - 30;
+                    } else {
+                        helpX = helpX + 30;
+                    }
+
+                    if (helpY > bodyH - dialogH) {
+                        helpY = bodyH - dialogH - 50;
+                    }
+
+                    $(scope.helpWidget.wrapper).css({
+                        top: (helpY) + "px",
+                        left: (helpX) + "px"
+                    });
+                } else {
+                    scope.helpWidget.center();
+                }
+                scope.helpWidget.open();
+
             });
         },
 
@@ -935,10 +1041,10 @@ define([
                     },
                     confirm: function wMenuConfirm()
                     {
-                         documentView.model.fetchDocument({
-                             initid:initid,
-                             viewId:viewId
-                         });
+                        documentView.model.fetchDocument({
+                            initid: initid,
+                            viewId: viewId
+                        });
 
                     },
                     templateData: {templates: this.model.get("templates")}
@@ -946,8 +1052,8 @@ define([
                 confirmWindow.data('dcpWindow').open();
             } else {
                 this.model.fetchDocument({
-                    initid:initid,
-                    viewId:viewId
+                    initid: initid,
+                    viewId: viewId
                 });
             }
         },
@@ -981,7 +1087,7 @@ define([
                     var initid = currentView.model.get("initid");
 
                     currentView.model.fetchDocument({
-                        initid:initid
+                        initid: initid
                     });
 
                 });
@@ -1027,15 +1133,14 @@ define([
         loadDocument: function vDocumentLoadDocument(docid, viewId)
         {
             this.model.fetchDocument({
-                initid:docid,
-                viewId:viewId
+                initid: docid,
+                viewId: viewId
             });
         },
 
         /**
          * Restore the deleted document
          *
-         * @param options
          * @returns {exports}
          */
         restoreDocument: function vDocumentRestoreDocument()
@@ -1073,11 +1178,9 @@ define([
             if (options.eventId === "document.save") {
                 return this.saveDocument();
             }
-
             if (options.eventId === "document.saveAndClose") {
                 return this.saveAndCloseDocument();
             }
-
             if (options.eventId === "document.history") {
                 return this.showHistory(eventArgs[0]);
             }
@@ -1102,11 +1205,9 @@ define([
             if (options.eventId === "document.create") {
                 return this.createDocument();
             }
-
             if (options.eventId === "document.createAndClose") {
                 return this.createAndCloseDocument();
             }
-
             if (options.eventId === "document.load") {
                 return this.loadDocument(eventArgs[0], eventArgs[1]);
             }
@@ -1119,9 +1220,12 @@ define([
             if (options.eventId === "document.restore") {
                 return this.restoreDocument();
             }
+            if (options.eventId === "document.help") {
+                return this.showHelp(event, eventArgs[0], eventArgs[1]);
+            }
         },
 
-        displayNetworkError : function vDocument_displayNetworkError()
+        displayNetworkError: function vDocument_displayNetworkError()
         {
             this.$el.hide();
             $(".dcpStaticErrorMessage").removeAttr("hidden");

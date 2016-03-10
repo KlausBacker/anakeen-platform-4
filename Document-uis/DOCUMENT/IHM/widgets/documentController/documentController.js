@@ -12,11 +12,12 @@ define([
     'dcpDocument/views/document/vDocument',
     'dcpDocument/models/mTransition',
     'dcpDocument/views/workflow/vTransition',
+    'dcpDocument/models/mMenu',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification'
-], function documentController($, _, Backbone, Promise, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView)
+], function documentController($, _, Backbone, Promise, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView, MenuModel)
 {
     'use strict';
 
@@ -792,7 +793,7 @@ define([
         {
             var currentDocumentProperties = this.getProperties(), currentWidget = this;
             this.activatedConstraint = {};
-            _.each(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint, index)
+            _.each(this.options.constraintList, function documentController_getActivatedConstraint(currentConstraint)
             {
                 if (currentConstraint.documentCheck.call($(currentWidget.element), currentDocumentProperties)) {
                     currentWidget.activatedConstraint[currentConstraint.name] = currentConstraint;
@@ -1179,8 +1180,8 @@ define([
          * Change the workflow state of the document
          *
          * @param parameters
-         * @reinitOptions
-         * @options
+         * @param reinitOptions
+         * @param options
          */
         changeStateDocument: function documentController_changeStateDocument(parameters, reinitOptions, options)
         {
@@ -1204,7 +1205,7 @@ define([
          */
         deleteDocument: function documentControllerDelete(options)
         {
-            var documentPromise, currentWidget = this;
+            var documentPromise;
             options = options || {};
             this._checkInitialisedModel();
             if (options.customClientData) {
@@ -1289,10 +1290,22 @@ define([
          */
         getMenu: function documentControllerGetMenu(menuId)
         {
-            var menu;
+            var menu, menus;
             this._checkInitialisedModel();
-            menu = this._model.get("menus").get(menuId);
-            return new MenuInterface(this._model.get("menus").get(menuId));
+            menus=this._model.get("menus");
+            menu = menus.get(menuId);
+            if (! menu && menus) {
+                menus.each(function documentControllerGetMenuIterate(itemMenu){
+                    if (itemMenu.get("content")) {
+                        _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu) {
+                            if (subMenu.id === menuId) {
+                                menu=new MenuModel(subMenu);
+                            }
+                        });
+                    }
+                });
+            }
+            return new MenuInterface(menu);
         },
 
         /**

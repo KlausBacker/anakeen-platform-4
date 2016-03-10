@@ -9,7 +9,7 @@ define([
         this.name = 'MenuError';
         this.message = message || 'Default Message';
         this.stack = (new Error()).stack;
-    }
+    };
     MenuError.prototype = Object.create(Error.prototype);
     MenuError.prototype.constructor = MenuError;
 
@@ -21,7 +21,7 @@ define([
             this.id = null;
         }
     };
-
+    MenuPrototope.prototype._menuModel=null;
     MenuPrototope.prototype._set = function MenuPrototope_set(key, value, options)
     {
         if (options && options.strict === true && !this.id) {
@@ -98,6 +98,29 @@ define([
     MenuPrototope.prototype.setHtmlLabel = function menuInterfaceSetHtmlLabel(label, options)
     {
         this._set("htmlLabel", label, options);
+    };
+
+    /**
+     * Change icon url
+     * @param url image url
+     *
+     * @returns {*}
+     * @param options
+     */
+    MenuPrototope.prototype.setIconUrl = function menuInterfaceSetIconUrl(url, options)
+    {
+        this._set("iconUrl", url, options);
+    };
+    /**
+     * Change custom css class
+     * @param cssClass css class
+     *
+     * @returns {*}
+     * @param options
+     */
+    MenuPrototope.prototype.setCssClass = function menuInterfaceSetCssClass(cssClass, options)
+    {
+        this._set("cssClass", cssClass, options);
     };
 
     /**

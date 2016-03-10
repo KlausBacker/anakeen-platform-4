@@ -9,10 +9,10 @@ define([
 
         comparator : "logicalOrder",
 
-        toData : function() {
+        toData : function(index, extended) {
             var elements = [];
             this.each(function(currentAttribute) {
-                elements.push(currentAttribute.toData());
+                elements.push(currentAttribute.toData(index, extended));
             });
             return elements;
         },

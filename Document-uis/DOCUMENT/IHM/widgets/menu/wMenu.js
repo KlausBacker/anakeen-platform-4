@@ -78,9 +78,11 @@ define([
 
                             confirmDcpWindow.data('dcpWindow').open();
                         } else {
+                            scopeWidget.element.data("menu-opening", false);
                             //if href is event kind propagate event instead of default behaviour
                             if (href.substring(0, 8) === "#action/") {
                                 eventContent = href.substring(8).split(":");
+
                                 scopeWidget._trigger("selected", event, {
                                     eventId: eventContent.shift(),
                                     options: eventContent
@@ -237,7 +239,7 @@ define([
              */
             $(window).off("scroll.ddui"); // reset
 
-            if (this.element.prop("nodeName").toUpperCase()==="NAV") {
+            if (this.element.prop("nodeName").toUpperCase() === "NAV") {
                 $(window).on("scroll.ddui", function wMenuScroll()
                 {
                     if ($(window).scrollTop() > $mainElement.position().top) {
@@ -339,6 +341,7 @@ define([
             var hiddenLeft = $hiddenItems.length;
 
             if (barMenu.data("menu-opening")) {
+                // Cannot redraw menu while menu is open because kendo failure occurs in touch device
                 return;
             }
             this.inhibitBarMenu();

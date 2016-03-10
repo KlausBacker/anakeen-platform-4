@@ -29,12 +29,15 @@ define([
                     // No write revision if not a fixed one
                     options.revision=-1;
                 }
-                if (window.dcp && window.dcp.viewData && window.dcp.viewData.documentIdentifier === options.initid &&
+                if (window.dcp && window.dcp.viewData && window.dcp.viewData.initid === options.initid &&
                     window.dcp.viewData.revision === options.revision &&
-                    window.dcp.viewData.vid === options.viewId) {
+                    window.dcp.viewData.viewId === options.viewId) {
                     return;
                 }
                 if (options.initid) {
+                    window.dcp.viewData.revision = options.revision;
+                    window.dcp.viewData.viewId = options.viewId;
+                    window.dcp.viewData.initid = options.initid;
                     currentRouter.navigate(currentRouter.urlFragmentTemplate(options));
                 }
             });

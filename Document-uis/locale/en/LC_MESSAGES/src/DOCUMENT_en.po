@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-29 16:11+0100\n"
+"POT-Creation-Date: 2016-03-10 15:09+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -244,6 +244,10 @@ msgid "Goto next activity"
 msgstr ""
 
 msgctxt "UiMenu"
+msgid "Help"
+msgstr ""
+
+msgctxt "UiMenu"
 msgid "Historic"
 msgstr ""
 
@@ -265,6 +269,10 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Invalid transition"
+msgstr ""
+
+msgctxt "ddui helppage"
+msgid "Lang"
 msgstr ""
 
 msgctxt "ddui"

@@ -23,7 +23,7 @@ class RenderDefault implements IRenderConfig
     
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return array(
             "bootstrap" => "css/dcp/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/dcp/document/kendo.css?ws=" . $version,
@@ -34,12 +34,12 @@ class RenderDefault implements IRenderConfig
     
     public function getJsReferences(\Doc $document = null)
     {
-        return array( );
+        return array();
     }
     
     public function getRequireReference()
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array(
@@ -370,6 +370,23 @@ class RenderDefault implements IRenderConfig
         $item->setImportant(true);
         
         $menu->appendElement($item);
+    }
+    /**
+     * Add Help if Help document is associated to family
+     * @param \Doc $doc
+     * @param BarMenu $menu target menu
+     * @throws \Dcp\Ui\Exception
+     */
+    protected function addHelpMenu(\Doc $doc, BarMenu & $menu)
+    {
+        $helpDoc = $doc->getHelpPage();
+        if ($helpDoc && $helpDoc->isAlive()) {
+            
+            $menuItem = new ItemMenu("help", ___("Help", "UiMenu"));
+            $menuItem->setBeforeContent('<div class="fa fa-info-circle" />');
+            $menuItem->setUrl(sprintf("#action/document.help:%d", $helpDoc->initid));
+            $menu->appendElement($menuItem);
+        }
     }
     /**
      * Get custom data to transmit to client document controller

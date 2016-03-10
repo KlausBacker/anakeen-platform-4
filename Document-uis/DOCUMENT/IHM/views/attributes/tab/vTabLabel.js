@@ -4,7 +4,7 @@ define([
     'underscore',
     'backbone',
     'mustache'
-], function ($, _, Backbone, Mustache)
+], function vTabLabel($, _, Backbone, Mustache)
 {
     'use strict';
 
@@ -35,28 +35,63 @@ define([
         {
             //console.time("render tab " + this.model.id);
             var label = this.model.get("label");
-            var tooltipLabel=this.model.getOption("tooltipLabel");
-            var attrData=this.model.attributes;
+            var tooltipLabel = this.model.getOption("tooltipLabel");
+            var attrData = this.model.attributes;
+            var helpId = this.model.getOption("helpLinkIdentifier");
+            var documentModel = this.model.getDocumentModel();
 
             this.$el.empty();
             if (this.displayLabel !== false) {
                 if (this.model.getOption("attributeLabel")) {
-                    label=this.model.getOption("attributeLabel");
+                    label = this.model.getOption("attributeLabel");
                 }
 
-                this.$el.text(label);
+                if (helpId) {
+                    this.$el.append(Mustache.render('<span>{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><i class="fa fa-info-circle"></i></a></span>', {
+                        helpId: helpId,
+                        attrid: this.model.id,
+                        label: label
+                    }));
+                    this.$el.find(".dcpLabel__help__link").on("click" , function vTabLabelHelpClick(event)
+                    {
+                        var eventContent,options;
+                        var href = $(this).attr("href");
+
+                        if (href.substring(0, 8) === "#action/") {
+                            event.preventDefault();
+                            eventContent = href.substring(8).split(":");
+                            options={
+                                target: event.target,
+                                eventId: eventContent.shift(),
+                                index: -1,
+                                options: eventContent
+                            };
+                            documentModel.trigger("internalLinkSelected", event, options);
+                            if (event.prevent) {
+                                return this;
+                            }
+                            documentModel.trigger("actionAttributeLink", event, options);
+                            event.stopPropagation();
+
+                            return this;
+                        }
+                    });
+
+                } else {
+                    this.$el.text(label);
+                }
 
                 if (tooltipLabel) {
-                    tooltipLabel=Mustache.render(tooltipLabel || "", attrData);
+                    tooltipLabel = Mustache.render(tooltipLabel || "", attrData);
                     if (!this.model.getOption("tooltipHtml")) {
                         // Need encode itself because the dropselect tooltip also need
-                        tooltipLabel=$('<div/>').text(tooltipLabel).html();
+                        tooltipLabel = $('<div/>').text(tooltipLabel).html();
                     }
-                    this.$el.data("tooltipLabel",  Mustache.render(tooltipLabel || "", attrData));
+                    this.$el.data("tooltipLabel", Mustache.render(tooltipLabel || "", attrData));
                     this.$el.tooltip({
                         placement: "top",
                         container: ".dcpDocument",
-                        html:true,
+                        html: true,
                         title: function vDocumentTooltipTitle()
                         {
                             if ($(this).find(".k-input.dcpTab__label__select").length > 0) {

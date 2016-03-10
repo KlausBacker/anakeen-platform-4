@@ -46,7 +46,7 @@ window.dcp = window.dcp || {};
              */
             ___: function i18n_pgettext(key, ctxt)
             {
-                if (key && this._catalog._msgctxt_ && this._catalog._msgctxt_[ctxt] && this._catalog._msgctxt_[ctxt][key]) {
+                if (key && this._catalog && this._catalog._msgctxt_ && this._catalog._msgctxt_[ctxt] && this._catalog._msgctxt_[ctxt][key]) {
                     return this._catalog._msgctxt_[ctxt][key];
                 }
                 return key;

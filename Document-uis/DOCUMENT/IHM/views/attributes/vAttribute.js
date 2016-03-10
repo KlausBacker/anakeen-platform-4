@@ -39,6 +39,7 @@ define([
                     "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
                     "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
                     "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
+                    "dcplabelexternallinkselected": "externalLinkSelected",
                     "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
                     "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
                     "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"

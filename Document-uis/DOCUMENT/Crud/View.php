@@ -153,13 +153,16 @@ class View extends Crud
     }
     /**
      * Update the ressource
+     *
      * @param string|int $resourceId Resource identifier
-     * @throws Exception
+     *
      * @return mixed
+     * @throws Exception
+     * @throws \Dcp\Ui\Exception
      */
     public function update($resourceId)
     {
-        
+        $document = null;
         if ($this->viewIdentifier != self::coreViewEditionId) {
             $document = $this->getDocument($resourceId);
             // apply specified mask
@@ -188,13 +191,11 @@ class View extends Crud
                 $document->setMask($document::USEMASKCVEDIT);
             }
         }
-
-
-        if (!$document->isAlive() && isset($this->properties["status"]) &&
-            $this->properties["status"] === "alive" ) {
+        
+        if ($document && !$document->isAlive() && isset($this->properties["status"]) && $this->properties["status"] === "alive") {
             //Handle restoration
             $err = $document->undelete();
-            $err .=  $document->store();
+            $err.= $document->store();
             if ($err) {
                 throw new \Dcp\Ui\Exception("Unable to restore $err");
             }
@@ -203,7 +204,7 @@ class View extends Crud
             $documentData->setContentParameters($this->contentParameters);
             $documentData->update($resourceId);
         }
-
+        
         $this->document = null;
         return $this->read($resourceId);
     }
@@ -318,7 +319,11 @@ class View extends Crud
         foreach ($fields as $field) {
             switch ($field) {
                 case self::fieldRenderOptions:
-                    $viewInfo[self::fieldRenderOptions] = $config->getOptions($this->document)->jsonSerialize();
+                    $configOptions = $config->getOptions($this->document);
+                    if (!is_a($configOptions, "Dcp\\Ui\\RenderOptions")) {
+                        throw new \Dcp\Ui\Exception("UI0013", get_class($config));
+                    }
+                    $viewInfo[self::fieldRenderOptions] = $configOptions->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($this->document)->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($this->document)->jsonSerialize();
                     
@@ -489,12 +494,18 @@ class View extends Crud
     }
     /**
      * @param \Dcp\Ui\IRenderConfig $config
-     * @param \Doc $document
+     * @param \Doc                  $document
+     *
      * @return string
+     * @throws \Dcp\Ui\Exception
      */
     protected function renderTemplates(\Dcp\Ui\IRenderConfig $config, \Doc $document)
     {
         $templates = $config->getTemplates($document);
+        
+        if (!is_array($templates)) {
+            throw new \Dcp\Ui\Exception("UI0012", get_class($config));
+        }
         $delimiterStartTag = '[[';
         $delimiterEndTag = ']]';
         $option = array(
