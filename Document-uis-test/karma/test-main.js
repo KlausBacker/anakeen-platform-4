@@ -144,7 +144,8 @@ require.config({ // jshint ignore:line
         "jasmine-jquery": '../../lib/jasmine/jasmine-jquery',
         "test-css": '../../../base/test-css',
         "datatables": "../../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-        "datatables-bootstrap": "../../lib/jquery-dataTables/1.10/js/dataTables.bootstrap"
+        "datatables-bootstrap": "../../lib/jquery-dataTables/1.10/js/dataTables.bootstrap",
+        "es6-promise" : "../../lib/es6-promise/es6-promise"
     },
     map: {
         "datatables-bootstrap" : {

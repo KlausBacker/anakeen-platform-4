@@ -35,7 +35,7 @@
 
         setLabel: function wLabelSetLabel(label)
         {
-            this.element.text(label);
+            this.element.find("label").text(label);
         },
 
         setError: function wLabelSetError(message)

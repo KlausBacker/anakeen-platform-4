@@ -116,9 +116,9 @@ define([
                 view = new ViewDocument({model: modelDocument, el: $sandBox});
                 executeTest = _.after(2, function executeTest()
                 {
-                    expect($sandBox.find(".dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "]")).toHaveText(iniLabel);
+                    expect($sandBox.find(".dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "] label")).toHaveText(iniLabel);
                     modelDocument.get("attributes").get(localAttrId).set("label", newLabel);
-                    expect($sandBox.find(".dcpAttribute__label[data-attrid=" + localAttrId + "]")).toHaveText(newLabel);
+                    expect($sandBox.find(".dcpAttribute__label.dcpLabel[data-attrid=" + localAttrId + "] label")).toHaveText(newLabel);
                     done();
                 });
                 launchTest(view, executeTest);

@@ -45,11 +45,11 @@ define([
         {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'displayLoading', this.displayLoading);
-            this.listenTo(this.model, 'reload', this.cleanAndRender);
             this.listenTo(this.model, 'invalid', this.showView);
-            this.listenTo(this.model, 'error', this.showView);
             this.listenTo(this.model, 'displayNetworkError', this.displayNetworkError);
             this.listenTo(this.model, 'actionAttributeLink', this.doStandardAction);
+            this.listenTo(this.model, 'dduiDocumentReady', this.cleanAndRender);
+            this.listenTo(this.model, 'dduiDocumentDisplayView', this.showView);
         },
 
         /**
@@ -58,6 +58,8 @@ define([
         cleanAndRender: function vDocumentCleanAndRender()
         {
             this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
+            $(".dcpStaticErrorMessage").attr("hidden", true);
+            this.$el.show();
             this.$el[0].className = this.$el[0].className.replace(/\bdcpFamily.*\b/g, '');
             this.$el.removeClass("dcpDocument--view").removeClass("dcpDocument--edit");
             try {
@@ -956,10 +958,10 @@ define([
         saveDocument: function vDocumentSaveDocument()
         {
             this.trigger("cleanNotification");
-            var currentView = this, save = this.model.save();
-            //Use jquery xhr delegate done to display success
-            if (save && save.done) {
-                save.done(function vDocumentSaveDisplaySuccess()
+            var currentView = this, saveDocument = this.model.saveDocument();
+            //Use promise and display success when done
+            if (saveDocument && saveDocument.then) {
+                saveDocument.then(function vDocumentSaveDisplaySuccess()
                 {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Recorded", "ddui")});
                 });
@@ -972,10 +974,9 @@ define([
         saveAndCloseDocument: function vDocumentSaveAndCloseDocument()
         {
             this.trigger("cleanNotification");
-            var currentView = this, save = this.model.save();
-            //Use jquery xhr delegate done to display success
-            if (save && save.done) {
-                save.done(function vDocumentSaveAndCloseSuccess()
+            var currentView = this, saveDocument = this.model.saveDocument();
+            if (saveDocument && saveDocument.then) {
+                saveDocument.then(function vDocumentSaveAndCloseSuccess()
                 {
                     var initid = currentView.model.get("initid");
 
@@ -992,10 +993,9 @@ define([
          */
         createDocument: function vDocumentCreateDocument()
         {
-            var currentView = this, save = this.model.save();
-            //Use jquery xhr delegate done to display success
-            if (save && save.done) {
-                save.done(function vDocumentCreateDisplaySuccess()
+            var currentView = this, saveDocument = this.model.saveDocument();
+            if (saveDocument && saveDocument.then) {
+                saveDocument.then(function vDocumentCreateDisplaySuccess()
                 {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Created", "ddui")});
                 });
@@ -1007,10 +1007,9 @@ define([
          */
         createAndCloseDocument: function vDocumentCreateDocument()
         {
-            var currentView = this, save = this.model.save();
-            //Use jquery xhr delegate done to display success
-            if (save && save.done) {
-                save.done(function vDocumentCreateAndCloseSuccess()
+            var currentView = this, saveDocument = this.model.saveDocument();
+            if (saveDocument && saveDocument.then) {
+                saveDocument.then(function vDocumentCreateAndCloseSuccess()
                 {
                     var initid = currentView.model.get("initid");
 
@@ -1043,7 +1042,7 @@ define([
         {
             if (this.model.get("properties")) {
                 this.model.get("properties").set("status", "alive");
-                this.model.save();
+                this.model.saveDocument();
             }
 
         },
@@ -1124,8 +1123,8 @@ define([
 
         displayNetworkError : function vDocument_displayNetworkError()
         {
-            $(".document").hide();
-            $(".dcpStaticErrorMessage").show();
+            this.$el.hide();
+            $(".dcpStaticErrorMessage").removeAttr("hidden");
         },
 
         /**

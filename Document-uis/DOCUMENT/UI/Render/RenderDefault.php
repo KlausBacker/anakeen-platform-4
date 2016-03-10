@@ -54,7 +54,7 @@ class RenderDefault implements IRenderConfig
         return $jsRef = array_merge($jsRef, array(
             "require" => "lib/RequireJS/require.js?ws=" . $version,
             "config" => $modeDebug !== "FALSE" ? "DOCUMENT/IHM/require_config.js?ws=" . $version : "DOCUMENT/IHM/require_config.min.js?ws=" . $version,
-            "ddui" => $modeDebug !== "FALSE" ? "lib/KendoUI/ddui/js/kendo-ddui-builded.js?ws=" . $version : "lib/KendoUI/ddui/js/kendo-ddui-builded.min.js?ws=" . $version,
+            "kendo-ddui" => $modeDebug !== "FALSE" ? "lib/KendoUI/ddui/js/kendo-ddui-builded.js?ws=" . $version : "lib/KendoUI/ddui/js/kendo-ddui-builded.min.js?ws=" . $version,
             "document" => $modeDebug !== "FALSE" ? "DOCUMENT/IHM/main.js?ws=" . $version : "DOCUMENT/IHM/main-built.js?ws=" . $version
         ));
     }

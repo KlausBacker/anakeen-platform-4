@@ -3,6 +3,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'dcpDocument/libs/promise',
     'dcpDocument/routers/router',
     'dcpDocument/models/mDocument',
     'dcpDocument/controllerObjects/attributeInterface',
@@ -15,7 +16,7 @@ define([
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification'
-], function documentController($, _, Backbone, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView)
+], function documentController($, _, Backbone, Promise, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView)
 {
     'use strict';
 
@@ -109,7 +110,8 @@ define([
          */
         _initializeWidget: function documentController_initializeWidget(options, customClientData)
         {
-            var currentWidget = this,
+            var promise,
+                currentWidget = this,
                 initializeSuccess = function documentController_initializeSuccess()
                 {
                     currentWidget._initializedModel = true;
@@ -130,10 +132,11 @@ define([
             if (customClientData) {
                 this._model._customClientData = customClientData;
             }
-            this._model.fetch(options);
+            promise = this._model.fetchDocument(this._getModelValue(), options);
             if (!this.options.noRouter) {
                 this._initRouter();
             }
+            return promise;
         },
 
         /**
@@ -574,7 +577,7 @@ define([
             {
                 currentWidget._initModel(currentWidget._getModelValue());
                 currentWidget._initView();
-                currentWidget._model.fetch();
+                currentWidget._model.fetchDocument();
             });
         },
 
@@ -609,115 +612,127 @@ define([
          * @param values
          * @param withoutInterface
          * @param reinitOptions
-         * @param options
          */
-        _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition, values, withoutInterface, reinitOptions, options)
+        _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition, values, withoutInterface, reinitOptions)
         {
-            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, transitionInterface;
+            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, transitionInterface,
+                documentServerProperties = this.getProperties();
 
-            result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
-                currentWidget.getProperties(), new TransitionInterface(null, $target, nextState, transition));
-            if (result) {
-                return this;
-            }
+            return new Promise(function documentController_changeStatePromise(resolve, reject)
+            {
+                result = !currentWidget._triggerControllerEvent("beforeDisplayChangeState",
+                    currentWidget.getProperties(), new TransitionInterface(null, $target, nextState, transition));
+                if (result) {
+                    reject();
+                    return this;
+                }
 
-            //Init transition model
-            transitionElements.model = new TransitionModel({
-                documentId: currentWidget._model.id,
-                documentModel: currentWidget._model,
-                state: nextState,
-                transition: transition
-            });
-
-            //Init transition view
-            if (withoutInterface !== true) {
-                transitionElements.view = new TransitionView({
-                    model: transitionElements.model,
-                    el: $target
+                //Init transition model
+                transitionElements.model = new TransitionModel({
+                    documentId: currentWidget._model.id,
+                    documentModel: currentWidget._model,
+                    state: nextState,
+                    transition: transition
                 });
-            }
 
-            transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
-
-            if (transitionElements.view) {
-                //Propagate afterDisplayChange on renderDone
-                transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter()
-                {
-                    currentWidget._triggerControllerEvent("afterDisplayTransition",
-                        currentWidget.getProperties(), transitionInterface);
-                });
-            }
-
-            //Propagate the beforeTransition
-            transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBeforeTransition(event)
-            {
-                event.prevent = !currentWidget._triggerControllerEvent("beforeTransition",
-                    currentWidget.getProperties(), transitionInterface);
-            });
-
-            //Propagate the beforeTransitionClose
-            transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateTransitionClose(event)
-            {
-                event.prevent = !currentWidget._triggerControllerEvent("beforeTransitionClose",
-                    currentWidget.getProperties(), transitionInterface);
-            });
-
-            transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateTransitionError(error)
-            {
-                event.prevent = !currentWidget._triggerControllerEvent("failTransition",
-                    currentWidget.getProperties(), transitionInterface, error);
-            });
-
-            transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionSuccess(messages)
-            {
-                if (transitionElements.view) {
-                    transitionElements.view.$el.hide();
-                    currentWidget.view.once("renderDone", function documentController_transitionRender()
-                    {
-                        transitionElements.view.remove();
-                        _.each(messages, function documentController_parseMessage(message)
-                        {
-                            currentWidget.view.trigger("showMessage", message);
-                        });
+                //Init transition view
+                if (withoutInterface !== true) {
+                    transitionElements.view = new TransitionView({
+                        model: transitionElements.model,
+                        el: $target
                     });
                 }
 
-                //delete the pop up when the render of the pop up is done
-                currentWidget._triggerControllerEvent("successTransition",
-                    currentWidget.getProperties(), transitionInterface);
+                transitionInterface = new TransitionInterface(transitionElements.model, $target, nextState, transition);
 
-                reinitOptions = reinitOptions || {revision: -1};
-                if (!_.has(reinitOptions, "revision")) {
-                    reinitOptions.revision = -1;
+                if (transitionElements.view) {
+                    //Propagate afterDisplayChange on renderDone
+                    transitionElements.view.once("renderTransitionWindowDone", function documentController_propagateAfter()
+                    {
+                        currentWidget._triggerControllerEvent("afterDisplayTransition",
+                            currentWidget.getProperties(), transitionInterface);
+                    });
                 }
-                options = options || {};
 
-                //Reinit the main model with last revision
-                currentWidget.reinitDocument(reinitOptions, options);
-
-            });
-
-            transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose()
-            {
-                this.trigger("close");
-            });
-
-            transitionElements.model.fetch({
-                "success": function transitionModel_setDefaultValues()
+                //Propagate the beforeTransition
+                transitionElements.model.listenTo(transitionElements.model, "beforeChangeState", function documentController_propagateBeforeTransition(event)
                 {
-                    if (values) {
-                        transitionElements.model.setValues(values);
-                    }
-                    if (withoutInterface === true) {
-                        transitionElements.model.save({}, {
-                            success: function transitionModel_afterSave()
+                    event.prevent = !currentWidget._triggerControllerEvent("beforeTransition",
+                        currentWidget.getProperties(), transitionInterface);
+                });
+
+                //Propagate the beforeTransitionClose
+                transitionElements.model.listenTo(transitionElements.model, "beforeChangeStateClose", function documentController_propagateTransitionClose(event)
+                {
+                    event.prevent = !currentWidget._triggerControllerEvent("beforeTransitionClose",
+                        currentWidget.getProperties(), transitionInterface);
+                });
+
+                transitionElements.model.listenTo(transitionElements.model, "showError", function documentController_propagateTransitionError(error)
+                {
+                    event.prevent = !currentWidget._triggerControllerEvent("failTransition",
+                        currentWidget.getProperties(), transitionInterface, error);
+                    reject({documentProperties: documentServerProperties});
+                });
+
+                transitionElements.model.listenTo(transitionElements.model, 'success', function documentController_TransitionSuccess(messages)
+                {
+                    if (transitionElements.view) {
+                        transitionElements.view.$el.hide();
+                        currentWidget.view.once("renderDone", function documentController_transitionRender()
+                        {
+                            transitionElements.view.remove();
+                            _.each(messages, function documentController_parseMessage(message)
                             {
-                                transitionElements.model.trigger("success");
-                            }
+                                currentWidget.view.trigger("showMessage", message);
+                            });
                         });
                     }
-                }
+
+                    //delete the pop up when the render of the pop up is done
+                    currentWidget._triggerControllerEvent("successTransition",
+                        currentWidget.getProperties(), transitionInterface);
+
+                    reinitOptions = reinitOptions || {revision: -1};
+                    if (!_.has(reinitOptions, "revision")) {
+                        reinitOptions.revision = -1;
+                    }
+
+                    //Reinit the main model with last revision
+                    currentWidget.reinitDocument(reinitOptions).then(function documentController_reinitDone()
+                    {
+                        resolve({documentProperties: documentServerProperties});
+                    }, function documentController_reinitFail()
+                    {
+                        reject({documentProperties: documentServerProperties});
+                    });
+
+                });
+
+                transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose()
+                {
+                    this.trigger("close");
+                });
+
+                transitionElements.model.fetch({
+                    "success": function transitionModel_setDefaultValues()
+                    {
+                        if (values) {
+                            transitionElements.model.setValues(values);
+                        }
+                        if (withoutInterface === true) {
+                            transitionElements.model.save({}, {
+                                success: function transitionModel_afterSave()
+                                {
+                                    transitionElements.model.trigger("success");
+                                    resolve({documentProperties: documentServerProperties});
+                                }
+                            });
+                        }
+                    }
+                });
             });
+
         },
 
         /**
@@ -1016,6 +1031,52 @@ define([
             }
         },
 
+        _registerOutputPromise: function documentController_registerOutputPromise(documentPromise, options)
+        {
+            var currentWidget = this;
+            return new Promise(function documentController_reinitPromise(resolve, reject)
+            {
+                documentPromise.then(function documentController_reinitDone(values)
+                {
+                    if (_.isFunction(options.success)) {
+                        try {
+                            options.success.call($(currentWidget.element),
+                                values.documentProperties || {},
+                                currentWidget.getProperties());
+                        } catch (exception) {
+                            if (window.dcp.logger) {
+                                window.dcp.logger(exception);
+                            } else {
+                                console.error(exception);
+                            }
+                        }
+                    }
+                    resolve({
+                        element: $(currentWidget.element),
+                        previousDocument: values.documentProperties || {},
+                        nextDocument: currentWidget.getProperties()
+                    });
+                }, function documentController_reinitFail(values)
+                {
+                    if (_.isFunction(options.error)) {
+                        try {
+                            options.error.call(
+                                $(currentWidget.element),
+                                values.documentProperties || {},
+                                currentWidget.getProperties());
+                        } catch (exception) {
+                            window.dcp.logger(exception);
+                        }
+                    }
+                    reject({
+                        element: $(currentWidget.element),
+                        previousDocument: values.documentProperties || {},
+                        nextDocument: currentWidget.getProperties()
+                    });
+                });
+            });
+        },
+
         /***************************************************************************************************************
          * External function
          **************************************************************************************************************/
@@ -1027,8 +1088,10 @@ define([
          */
         reinitDocument: function documentControllerReinitDocument(values, options)
         {
+            var documentPromise;
             var currentWidget = this;
             this._checkInitialisedModel();
+            options = options || {};
             //Reinit model with server values
             _.each(_.pick(this.getProperties(), "initid", "revision", "viewId"), function dcpDocument_setCurrentOptions(value, key)
             {
@@ -1045,7 +1108,10 @@ define([
             } else {
                 this._model._customClientData = this.getCustomClientData();
             }
-            this._model.fetchDocument(this._getModelValue(), options);
+
+            documentPromise = this._model.fetchDocument(this._getModelValue());
+
+            return this._registerOutputPromise(documentPromise, options);
         },
 
         /**
@@ -1055,8 +1121,10 @@ define([
          */
         fetchDocument: function documentControllerFetchDocument(values, options)
         {
+            var documentPromise;
             var currentWidget = this;
             values = _.isUndefined(values) ? {} : values;
+            options = options || {};
             if (!_.isObject(values)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
@@ -1072,16 +1140,18 @@ define([
             {
                 currentWidget.options[key] = value;
             });
+
             if (!this._model) {
-                this._initializeWidget(options, values.customClientData);
+                documentPromise = this._initializeWidget(options, values.customClientData);
             } else {
                 if (values.customClientData) {
                     this._model._customClientData = values.customClientData;
                 } else {
                     this._model._customClientData = this.getCustomClientData();
                 }
-                this._model.fetchDocument(this._getModelValue(), options);
+                documentPromise = this._model.fetchDocument(this._getModelValue());
             }
+            return this._registerOutputPromise(documentPromise, options);
 
         },
 
@@ -1093,6 +1163,7 @@ define([
          */
         saveDocument: function documentControllerSave(options)
         {
+            var documentPromise;
             options = options || {};
             this._checkInitialisedModel();
             if (options.customClientData) {
@@ -1100,7 +1171,8 @@ define([
             } else {
                 this._model._customClientData = this.getCustomClientData();
             }
-            this._model.save(null, options);
+            documentPromise = this._model.saveDocument();
+            return this._registerOutputPromise(documentPromise, options);
         },
 
         /**
@@ -1112,6 +1184,7 @@ define([
          */
         changeStateDocument: function documentController_changeStateDocument(parameters, reinitOptions, options)
         {
+            var documentPromise;
             this._checkInitialisedModel();
             if (!_.isObject(parameters)) {
                 throw new Error('changeStateDocument first argument must be an object {"nextState":, "transition": , "values":, "unattended":, "" }');
@@ -1119,9 +1192,9 @@ define([
             if (!_.isString(parameters.nextState) || !_.isString(parameters.transition)) {
                 throw new Error('nextState and transition arguments are mandatory');
             }
-            //nextState, transition, values, withoutInterface
-            this._initAndDisplayTransition(parameters.nextState, parameters.transition, parameters.values || null,
-                parameters.unattended || false, reinitOptions, options);
+            documentPromise = this._initAndDisplayTransition(parameters.nextState, parameters.transition, parameters.values || null,
+                parameters.unattended || false, reinitOptions);
+            return this._registerOutputPromise(documentPromise, options);
         },
 
         /**
@@ -1131,6 +1204,7 @@ define([
          */
         deleteDocument: function documentControllerDelete(options)
         {
+            var documentPromise, currentWidget = this;
             options = options || {};
             this._checkInitialisedModel();
             if (options.customClientData) {
@@ -1138,7 +1212,8 @@ define([
             } else {
                 this._model._customClientData = this.getCustomClientData();
             }
-            this._model.deleteDocument(options);
+            documentPromise = this._model.deleteDocument();
+            return this._registerOutputPromise(documentPromise, options);
         },
 
         /**

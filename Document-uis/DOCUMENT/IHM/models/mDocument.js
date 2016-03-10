@@ -3,13 +3,14 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'dcpDocument/libs/promise',
     'dcpDocument/models/mDocumentProperties',
     'dcpDocument/models/mDocumentLock',
     'dcpDocument/models/mFamilyStructure',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
     'dcpDocument/documentCatalog'
-], function mDocument($, _, Backbone, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
+], function mDocument($, _, Backbone, Promise, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 
@@ -62,7 +63,7 @@ define([
             var urlData = "api/v1/", viewId = this.get("viewId");
             var customClientData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
-            var revision=this.get("revision");
+            var revision = this.get("revision");
 
             if (this.get("creationFamid") && this.id === null) {
                 urlData += "families/" + encodeURIComponent(this.get("creationFamid")) + "/documentsViews/";
@@ -70,11 +71,12 @@ define([
                 urlData += "documents/" + encodeURIComponent(this.id);
                 //Don't add revision for the deletion of a alive document
                 if (revision !== null && (currentMethod !== "delete")) {
-                    if (_.isObject(revision) && revision.state ) {
-                        urlData += "/revisions/" + encodeURIComponent("state:"+revision.state);
-                    } else if (revision >= 0) {
-                        urlData += "/revisions/" + encodeURIComponent(revision);
-                    }
+                    if (_.isObject(revision) && revision.state) {
+                        urlData += "/revisions/" + encodeURIComponent("state:" + revision.state);
+                    } else
+                        if (revision >= 0) {
+                            urlData += "/revisions/" + encodeURIComponent(revision);
+                        }
                 }
                 if (viewId === undefined) {
                     if (this.get("renderMode") === "view" || currentMethod === "delete") {
@@ -118,10 +120,9 @@ define([
         {
             var theModel = this;
 
-            this.listenTo(this, "error", this.propagateSynchroError);
+            this.listenTo(this, "dduiDocumentFail", this.propagateSynchroError);
             this.listenTo(this, "destroy", this.destroySubcollection);
             this.listenTo(this, "destroy", this.unbindLoadEvent);
-            this.listenTo(this, "sync", this.completeStructure);
 
             $(window).on("beforeunload." + this.cid, function mDocumentBeforeUnload()
             {
@@ -323,6 +324,10 @@ define([
             return properties;
         },
 
+        /**
+         * Get the initial properties as transfered by the server
+         * @returns {*|{revision, viewId, renderMode, properties, menus, attributes}|{resizeMarginHeight, resizeMarginWidth, resizeDebounceTime, withoutResize, eventPrefix}|{content}|{title, isValueAttribute, parent, mode, errorMessage}|{documentId, documentModel, state, attributes}}
+         */
         getServerProperties: function mDocument_getCurrentProperties()
         {
             var properties;
@@ -330,6 +335,11 @@ define([
             return properties;
         },
 
+        /**
+         * Indicate if one attribute of the document is modified
+         *
+         * @returns {*|boolean}
+         */
         isModified: function mDocument_isModified()
         {
             return this.hasAttributesChanged();
@@ -379,7 +389,7 @@ define([
          */
         propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr)
         {
-            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "";
+            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "", displayNetworkError = false;
             //Analyze XHR
             var messages = [];
             try {
@@ -394,6 +404,7 @@ define([
                     console.error(e);
                 }
                 currentModel.trigger("displayNetworkError");
+                displayNetworkError = true;
                 //Status 0 indicate offline browser
                 if (xhr.status === 0) {
                     currentModel.trigger("showError", {
@@ -484,16 +495,17 @@ define([
 
                     default:
                         currentModel.trigger("displayNetworkError");
+                        displayNetworkError = true;
                         if (message.type === "error" && message.contentText) {
                             currentModel.trigger("showError", {
-                                title: message.contentText+" "+(message.code ? message.code : ""),
+                                title: message.contentText + " " + (message.code ? message.code : ""),
                                 htmlMessage: message.contentHtml,
                                 errorCode: message.code
                             });
                         } else {
                             if (message.type && message.contentText) {
                                 currentModel.trigger("showMessage", {
-                                    title: message.contentText+" "+(message.code ? message.code : ""),
+                                    title: message.contentText + " " + (message.code ? message.code : ""),
                                     type: message.type,
                                     htmlMessage: message.contentHtml,
                                     errorCode: message.code
@@ -504,6 +516,9 @@ define([
                         }
                 }
             });
+            if (displayNetworkError === false) {
+                this.model.trigger("dduiDocumentDisplayView");
+            }
         },
 
         /**
@@ -687,7 +702,7 @@ define([
         },
 
         /**
-         * Generate the collection of the current model
+         * Generate the collection of the current model and bind events on the new collection
          *
          * @param keyOrValues string|object of properties or key of the current property
          * @param value
@@ -829,12 +844,16 @@ define([
          */
         injectJS: function mDocumentInjectJs()
         {
-            var documentModel = this,
+            var promiseInject = this._promiseCallback(),
                 customJS = _.pluck(this.get("customJS"), "path");
             require(customJS, function initView()
             {
-                documentModel.trigger("reload");
+                promiseInject.success();
+            }, function parseJS_unableToLoad(err)
+            {
+                promiseInject.error(err);
             });
+            return promiseInject.promise;
         },
 
         /**
@@ -866,12 +885,322 @@ define([
             return undefined;
         },
 
+        _promiseCallback: function mDocument_promiseCallback()
+        {
+            var promise, success, error, properties = this.getServerProperties();
+
+            promise = new Promise(function mDocument_promiseInternObject(resolve, reject)
+            {
+                success = function onSuccess(values)
+                {
+                    var successArguments = values;
+                    if (values && successArguments["arguments"]) {
+                        successArguments = values["arguments"];
+                    } else {
+                        successArguments = arguments;
+                    }
+                    if (values && successArguments.documentProperties) {
+                        properties = successArguments.documentProperties;
+                    }
+                    resolve({documentProperties: properties, arguments: successArguments});
+                };
+                error = function onError(values)
+                {
+                    var errorArguments = values;
+                    if (values && errorArguments["arguments"]) {
+                        errorArguments = values["arguments"];
+                    } else {
+                        errorArguments = arguments;
+                    }
+                    if (values && errorArguments.documentProperties) {
+                        properties = errorArguments.documentProperties;
+                    }
+                    reject({documentProperties: properties, arguments: errorArguments});
+                };
+            });
+
+            //noinspection JSUnusedAssignment
+            return {
+                "promise": promise,
+                "success": success,
+                "error": error
+            };
+
+        },
+
+        /**
+         * Complete the loading of the document
+         * Fetch the structure and external js deps
+         *
+         * @private
+         */
+        _loadDocument: function mDocumentLoadDocument(currentModel)
+        {
+            var properties = this.getServerProperties();
+
+            return new Promise(function mDocument_promiseLoadDocument(resolve, reject)
+            {
+                //Complete the structure after
+                currentModel._completeStructure().then(function onGetStructureDone()
+                {
+                    currentModel.injectJS().then(function mDocument_injectJSDone(values)
+                    {
+                        resolve({documentProperties: properties, successArguments: arguments});
+                    }, function mDocument_injectJSFail(values)
+                    {
+                        reject({documentProperties: properties, arguments: arguments});
+                        currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                    });
+                }, function mDocument_onGetStructureFail(values)
+                {
+                    reject({documentProperties: properties, arguments: arguments});
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                });
+            });
+        },
+
+        fetchDocument: function mDocumentFetchDocument(values, options)
+        {
+            var globalCallback = this._promiseCallback(),
+                documentCallback = this._promiseCallback(),
+                serverProperties = this.getServerProperties(),
+                currentModel = this,
+                needToUnlock = {},
+                beforeCloseReturn = {prevent: false},
+                lockModel = null,
+                nextView = false,
+                security,
+                previousMode,
+                lockCallback = this._promiseCallback();
+
+            options = options || {};
+
+            //Register promise events
+            documentCallback.promise.then(function onFetchDocumentDone(currentModelProperties)
+            {
+                currentModel._loadDocument(currentModel).then(function mDocument_loadDocumentDone(values)
+                {
+                    globalCallback.success.call(currentModelProperties, values);
+                }, function mDocument_loadDocumentFail(values)
+                {
+                    globalCallback.error.call(currentModelProperties, values);
+                });
+            }, function mDocument_onFetchDocumentFail(values)
+            {
+                globalCallback.error.call(serverProperties, values);
+            });
+
+            globalCallback.promise.then(function onPrepareDocumentDone(values)
+            {
+                if (_.isFunction(options.success)) {
+                    options.success(values);
+                }
+                currentModel.trigger("close", serverProperties);
+                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+            }, function onPrepareDocumentFail(values)
+            {
+                if (_.isFunction(options.error)) {
+                    options.error(values);
+                }
+                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                }
+            });
+
+            //Init default values
+            _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
+
+            //Trigger (synchronous) before close event
+            this.trigger("beforeClose", beforeCloseReturn, values, this._customClientData);
+
+            if (beforeCloseReturn.prevent === false) {
+                this.trigger("displayLoading");
+
+                //***********Lock Part*********************************************************************************
+
+                // Verify if current document need to be unlocked before fetch another
+                security = this.get("properties") ? (this.get("properties").get("security")) : null;
+                previousMode = this.get("renderMode");
+
+                if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
+                    needToUnlock = {
+                        initid: serverProperties.initid
+                    };
+                }
+
+                //Compute the next view
+                nextView = this.get("viewId");
+
+                if (!nextView) {
+                    nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
+                }
+
+                if (nextView !== "!defaultConsultation" &&
+                    nextView !== "!coreCreation" &&
+                    nextView !== "!defaultCreation" &&
+                    this.get("renderMode") !== "create") {
+                    //if the document is locked and the next view doesn't need the same lock delete it
+                    if (this.needUnlock && needToUnlock.initid !== this.get("initid")) {
+                        lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
+                        lockModel.destroy();
+                        lockCallback.success();
+                    }
+                    // The next view needs a lock, ask for it and fetch the document after
+                    lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
+                    lockModel.save({}, lockCallback);
+                } else {
+                    if (needToUnlock) {
+                        if (needToUnlock.initid === this.get("initid")) {
+                            // If same document "get" must be perform after unlock
+                            lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
+                            lockModel.destroy(lockCallback);
+                        } else {
+                            lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
+                            lockModel.destroy();
+                            lockCallback.success();
+                        }
+                    } else {
+                        lockCallback.success();
+                    }
+                }
+
+                lockCallback.promise.then(function mdocument_lockSucess()
+                {
+                    //save the new options in the currentDocument for the fetch
+                    _.each(_.pick(values, "initid", "revision", "viewId"), function mDocument_SetNewOptions(value, key)
+                    {
+                        currentModel.set(key, value);
+                    });
+                    currentModel.fetch(documentCallback);
+                }, function mDocument_lockFail()
+                {
+                    globalCallback.error.apply(currentModel, arguments);
+                });
+
+            } else {
+                //Reinit properties
+                currentModel.set(serverProperties);
+                //Indicate success to the promise object
+                globalCallback.error({eventPrevented : true});
+            }
+
+            return globalCallback.promise;
+        },
+
+        saveDocument: function mDocumentSaveDocument(attributes, options)
+        {
+            var globalCallBack = this._promiseCallback(),
+                saveCallback = this._promiseCallback(),
+                beforeSaveEvent = {prevent: false},
+                currentModel = this,
+                serverProperties = this.getServerProperties();
+
+            options = options || {};
+
+            this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
+
+            if (beforeSaveEvent.prevent !== false) {
+                saveCallback.error({eventPrevented : true});
+            } else {
+                this.trigger("displayLoading", {isSaving: true});
+                saveCallback.promise.then(function mDocument_saveDone()
+                {
+                    currentModel._loadDocument(currentModel).then(function mDocument_loadDocumentDone()
+                    {
+                        globalCallBack.success();
+                    }, function mDocument_loadDocumentFail()
+                    {
+                        globalCallBack.error.call(currentModel, arguments);
+                    });
+                }, function mDocument_saveFail()
+                {
+                    globalCallBack.error.call(currentModel, arguments);
+                });
+
+                currentModel.save(attributes, saveCallback);
+            }
+
+            globalCallBack.promise.then(function onSaveSuccess(values)
+            {
+                currentModel.trigger("afterSave", serverProperties);
+                currentModel.trigger("close", serverProperties);
+                if (_.isFunction(options.success)) {
+                    options.success();
+                }
+                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+            }, function onSaveFail(values)
+            {
+                if (_.isFunction(options.error)) {
+                    options.error();
+                }
+                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                }
+            });
+
+            return globalCallBack.promise;
+        },
+
+        deleteDocument: function mDocumentDelete(options)
+        {
+            var globalCallback = this._promiseCallback(),
+                deleteCallback = this._promiseCallback(),
+                beforeDeleteEvent = {prevent: false},
+                currentModel = this,
+                serverProperties = this.getServerProperties();
+
+            options = options || {};
+
+            this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
+
+            if (beforeDeleteEvent.prevent !== false) {
+                deleteCallback.error({eventPrevented : true});
+            } else {
+                this.trigger("displayLoading");
+                deleteCallback.promise.then(function mDocument_deleteDone()
+                {
+                    currentModel.fetchDocument().then(function mDocument_afterDeleteLoadDone()
+                    {
+                        globalCallback.success();
+                    }, function mDocument_afterDeleteLoadFail()
+                    {
+                        globalCallback.error.apply(currentModel, arguments);
+                    });
+                }, function mDocument_deleteFail()
+                {
+                    globalCallback.error.apply(currentModel, arguments);
+                });
+
+                this.sync('delete', this, deleteCallback);
+            }
+
+            globalCallback.promise.then(function onDeleteSuccess(values)
+            {
+                currentModel.trigger("afterDelete", serverProperties);
+                currentModel.trigger("close", serverProperties);
+                if (_.isFunction(options.success)) {
+                    options.success();
+                }
+                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+            }, function onDeleteFail(values)
+            {
+                if (_.isFunction(options.error)) {
+                    options.error();
+                }
+                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail", currentModel], values.arguments));
+                }
+            });
+
+            return globalCallback.promise;
+        },
+
         /**
          * Get complementary data : family structure
          */
-        completeStructure: function mDocumentCompleteStructure()
+        _completeStructure: function mDocumentCompleteStructure()
         {
-            var mStructure, documentModel = this;
+            var mStructure, documentModel = this, structurePromise = this._promiseCallback();
 
             var neededAttributes = this.get("renderOptions").needed;
             var visibilityAttributes = this.get("renderOptions").visibilities;
@@ -880,14 +1209,14 @@ define([
             if (this.get("properties").get("type") === "family") {
                 // Family has no attributes
                 this.set("attributes", []);
-                this.injectJS(); // inject JS before reload the document
-                return;
+                structurePromise.success();
+                return structurePromise.promise;
             }
 
             if (!_.isUndefined(this.get("attributes"))) {
                 this.set("attributes", this.get("attributes")); // to convert attributes to models
-                this.injectJS(); // trigger event to render document
-                return;
+                structurePromise.success();
+                return structurePromise.promise;
             }
 
             mStructure = new FamilyStructure({
@@ -919,248 +1248,13 @@ define([
                             }
                         });
                         documentModel.set("attributes", attributes);
-                        documentModel.injectJS(); // trigger event to render document
+                        structurePromise.success();
                     }
                 },
 
-                error: function mDocumentCompleteStructureError(structureModel, HttpResponse)
-                {
-                    if (HttpResponse && HttpResponse.status === 0) {
-                        documentModel.trigger("showError", {
-                            title: i18n.___("Unable to get the structure your navigator seems offline, try later", "ddui")
-                        });
-                        documentModel.trigger("displayNetworkError");
-                        return;
-                    }
-                    try {
-                        var response = JSON.parse(HttpResponse.responseText);
-                        documentModel.trigger("showError", {
-                            title: response.exceptionMessage
-                        });
-                    } catch (exception) {
-                        documentModel.trigger("showError", {
-                            title: exception.message
-                        });
-                    }
-                    documentModel.trigger("displayNetworkError");
-                }
+                error: structurePromise.error
             });
-        },
-
-        fetchDocument: function mDocumentFetch(values, options)
-        {
-            var docModel = this, event = {prevent: false}, currentProperties = this.initialProperties;
-            var currentInitid = this.get("initid");
-
-            _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
-
-            this.trigger("beforeClose", event, values, this._customClientData);
-            if (event.prevent === false) {
-                // Verify if current document need to be unlocked before fetch another
-                var security = this.get("properties") ? (this.get("properties").get("security")) : null;
-                var previousMode = this.get("renderMode");
-
-                if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
-                    this.needUnlock = {
-                        initid: currentInitid
-                    };
-
-                }
-                _.each(_.pick(values, "initid", "revision", "viewId"), function mDocumentsetNewOptions(value, key)
-                {
-                    docModel.set(key, value);
-                });
-                return this.fetch(options);
-            } else {
-                //Reinit properties
-                docModel.set(currentProperties);
-            }
-            return false;
-        },
-
-        fetch: function mDocumentFetch(options)
-        {
-            var currentModel = this, currentProperties = this.getServerProperties(), lockModel,
-                afterDone = function afterDone()
-                {
-                    currentModel.trigger("close", currentProperties);
-                };
-            var nextView = this.get("viewId");
-
-            options = options || {};
-
-            if (options.success) {
-                options.success = _.wrap(options.success, function launchAfterDone(success)
-                {
-                    afterDone();
-                    _.defer(function execFetchSuccess()
-                    {
-                        success.apply(this, _.rest(arguments));
-                    });
-                    return this;
-                });
-            } else {
-                options.success = afterDone;
-            }
-            this.trigger("displayLoading");
-
-            if (!nextView) {
-                nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
-            }
-            if (nextView !== "!defaultConsultation" && nextView !== "!coreCreation" && nextView !== "!defaultCreation" && this.get("renderMode") !== "create") {
-                if (this.needUnlock && this.needUnlock.initid !== this.get("initid")) {
-                    lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
-                    lockModel.destroy();
-                }
-                lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
-                lockModel.save({}, {
-                    success: function mDocumentFetchLockSuccess()
-                    {
-                        Backbone.Model.prototype.fetch.call(currentModel, options);
-                    },
-                    error: function mDocumentFetchLockError(theModel, HttpResponse)
-                    {
-                        if (HttpResponse && HttpResponse.status === 0) {
-                            currentModel.trigger("showError", {
-                                title: i18n.___("Unable to set the lock your navigator seems offline, try later", "ddui")
-                            });
-                            currentModel.trigger("displayNetworkError");
-                            return;
-                        }
-                        try {
-                            var response = JSON.parse(HttpResponse.responseText);
-                            currentModel.trigger("showError", {
-                                title: response.exceptionMessage
-                            });
-                        } catch (e) {
-                            console.error(e);
-                        }
-                        currentModel.trigger("displayNetworkError");
-                    }
-                });
-            } else {
-                if (this.needUnlock) {
-                    if (this.needUnlock.initid === this.get("initid")) {
-                        // If same document "get" must be perform after unlock
-                        lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
-                        lockModel.destroy({
-                            success: function mDocumentFetchUnLockSuccess()
-                            {
-                                Backbone.Model.prototype.fetch.call(currentModel, options);
-                            },
-                            error: function mDocumentFetchUnLockError(theModel, HttpResponse)
-                            {
-                                var response = JSON.parse(HttpResponse.responseText);
-
-                                currentModel.trigger("showError", {
-                                    title: response.exceptionMessage
-                                });
-                            }
-                        });
-                    } else {
-                        lockModel = new DocumentLock({"initid": this.needUnlock.initid, "type": "temporary"});
-                        lockModel.destroy();
-
-                        this.needUnlock = null;
-                        return Backbone.Model.prototype.fetch.call(this, options);
-                    }
-
-                    this.needUnlock = null;
-                } else {
-                    return Backbone.Model.prototype.fetch.call(this, options);
-                }
-            }
-        },
-
-        save: function mDocumentSave(attributes, options)
-        {
-            var result = false, event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
-                afterDone = function afterDone()
-                {
-                    currentModel.trigger("afterSave", currentProperties);
-                    currentModel.trigger("close", currentProperties);
-                };
-            options = options || {};
-            this.trigger("beforeSave", event, this._customClientData);
-            if (event.prevent === false) {
-                if (options.success) {
-                    options.success = _.wrap(options.success, function registerSaveSuccess(success)
-                    {
-                        afterDone();
-                        _.defer(function execSaveSuccess()
-                        {
-                            success.apply(this, _.rest(arguments));
-                        });
-                        return this;
-                    });
-                } else {
-                    options.success = afterDone;
-                }
-                this.trigger("displayLoading", {isSaving: true});
-                result = Backbone.Model.prototype.save.call(this, attributes, options);
-                if (result === false) {
-                    //unable to save for constraint error
-                    if (options.error) {
-                        options.error();
-                    }
-                }
-            }
-            return result;
-        },
-
-        deleteDocument: function mDocumentDelete(options)
-        {
-            var event = {prevent: false}, currentModel = this, currentProperties = this.getServerProperties(),
-                afterError = function afterError(resp)
-                {
-                    currentModel.trigger("displayNetworkError");
-                    currentModel.trigger('error', currentModel, resp);
-                },
-                afterDone = function afterDone(resp)
-                {
-                    if (!currentModel.set(currentModel.parse(resp, options), options)) {
-                        return false;
-                    }
-                    currentModel.trigger("sync", currentModel, resp, options);
-                    currentModel.trigger("afterDelete", currentProperties);
-                    currentModel.trigger("close", currentProperties);
-                };
-            options = options || {};
-            this.trigger("beforeDelete", event, this._customClientData);
-            if (event.prevent === false) {
-                if (options.success) {
-                    options.success = _.wrap(options.success, function registerDeleteSuccess(success)
-                    {
-                        afterDone.apply(this, _.rest(arguments));
-                        _.defer(function execDeleteSuccess()
-                        {
-                            success.apply(this, _.rest(arguments));
-                        });
-                        return this;
-                    });
-                } else {
-                    options.success = afterDone;
-                }
-                if (options.error) {
-                    options.error = _.wrap(options.error, function mDocumentDeleteError(error)
-                    {
-                        afterError();
-                        return error.apply(this, _.rest(arguments));
-                    });
-                } else {
-                    options.error = afterError;
-                }
-                this.trigger("displayLoading");
-                if (this.isNew()) {
-                    console.error("Unable to delete new document");
-                    if (options.error) {
-                        options.error();
-                    }
-                    return false;
-                }
-                return this.sync('delete', this, options);
-            }
-            return false;
+            return structurePromise.promise;
         }
     });
 

@@ -11,6 +11,7 @@ function kitchensink(\Action &$action)
     $js = array(
         $require["require"],
         $require["config"],
+        $require["kendo-ddui"],
         'TEST_DOCUMENT/Layout/kitchensink.js?wv='.$version
     );
 
