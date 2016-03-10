@@ -24,7 +24,8 @@
         "ckeditor-jquery": "empty:",
         "datatables": "empty:",
         "datatables-bootstrap": "empty:",
-        "es6-promise" : "empty:"
+        "es6-promise" : "empty:",
+        "dcpDocument/libs/promise" : "empty:"
     },
     generateSourceMaps: true,
     preserveLicenseComments: false,
