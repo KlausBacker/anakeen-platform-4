@@ -752,28 +752,33 @@ define([
 
                 scope.helpWidget = $dialogDiv.data('kendoWindow');
                 $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
-                $(currentTarget).addClass("dcpLabel__help__link--selected");
 
-                // Compute new position of help dialog window
-                helpX = $(currentTarget).offset().left;
-                helpY = $(currentTarget).offset().top;
-                bodyH = $("body").height();
-                dialogH = $(scope.helpWidget.wrapper).closest(".k-window").height();
-                dialogW = $(scope.helpWidget.wrapper).closest(".k-window").width();
-                if (helpX > dialogW + 50) {
-                    helpX = helpX - dialogW - 30;
+                if ($(currentTarget).length > 0) {
+                    $(currentTarget).addClass("dcpLabel__help__link--selected");
+
+                    // Compute new position of help dialog window
+                    helpX = $(currentTarget).offset().left;
+                    helpY = $(currentTarget).offset().top;
+                    bodyH = $("body").height();
+                    dialogH = $(scope.helpWidget.wrapper).closest(".k-window").height();
+                    dialogW = $(scope.helpWidget.wrapper).closest(".k-window").width();
+                    if (helpX > dialogW + 50) {
+                        helpX = helpX - dialogW - 30;
+                    } else {
+                        helpX = helpX + 30;
+                    }
+
+                    if (helpY > bodyH - dialogH) {
+                        helpY = bodyH - dialogH - 50;
+                    }
+
+                    $(scope.helpWidget.wrapper).css({
+                        top: (helpY) + "px",
+                        left: (helpX) + "px"
+                    });
                 } else {
-                    helpX = helpX + 30;
+                    scope.helpWidget.center();
                 }
-
-                if (helpY > bodyH - dialogH) {
-                    helpY = bodyH - dialogH - 50;
-                }
-
-                $(scope.helpWidget.wrapper).css({
-                    top: (helpY) + "px",
-                    left: (helpX) + "px"
-                });
                 scope.helpWidget.open();
 
             });

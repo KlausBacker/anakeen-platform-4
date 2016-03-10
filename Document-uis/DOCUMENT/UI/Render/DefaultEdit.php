@@ -102,6 +102,7 @@ class DefaultEdit extends RenderDefault
         }
         
         $this->setEmblemMenu($document, $menu);
+        $this->addHelpMenu($document, $menu);
         return $menu;
     }
     /**
@@ -113,7 +114,7 @@ class DefaultEdit extends RenderDefault
     {
         $options = parent::getOptions($document);
         $helpDoc = $document->getHelpPage();
-        if ($helpDoc) {
+        if ($helpDoc && $helpDoc->isAlive()) {
             $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
             
             foreach ($attrids as $k => $aid) {

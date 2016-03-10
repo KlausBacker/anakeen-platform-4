@@ -144,6 +144,7 @@ class DefaultView extends RenderDefault
         
         $this->addCvMenu($document, $menu);
         $this->addFamilyMenu($document, $menu);
+        $this->addHelpMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);
     }
     

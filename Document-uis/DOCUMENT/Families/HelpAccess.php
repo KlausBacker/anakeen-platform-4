@@ -18,7 +18,7 @@ class HelpAccess implements \Dcp\Ui\IRenderConfigAccess
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return null;
+                return new HelpEditRender($this);
             case \Dcp\Ui\RenderConfigManager::ViewMode:
                 return new HelpViewRender($this);
         }

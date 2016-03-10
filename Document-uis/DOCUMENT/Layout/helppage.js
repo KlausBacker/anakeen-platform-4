@@ -14,12 +14,21 @@ define(["mustache", "jquery", "underscore",
         var helpValues = $document.documentController("getValues");
         var htmlResult,
             locale = {title: "Untitle", description: '', chapters: []};
+        var order;
 
-        // @TODO sort by help_sec_order
-        _.each(helpValues.help_sec_lang, function helppageReadyLocaleFilter(chapterLang, index)
+        _.each(helpValues.help_sec_order, function x(item, k) {
+            item.index=k;
+        });
+
+        order=_.sortBy(helpValues.help_sec_order, "value");
+
+        _.each(order, function helppageReadyLocaleFilter(orderFork)
         {
+            var index=orderFork.index;
+            var chapterLang=helpValues.help_sec_lang[index];
             if (chapterLang.value === lang) {
                 locale.chapters.push({
+                    "order":locale.chapters.length + 1,
                     "title": helpValues.help_sec_name[index].displayValue,
                     "content": helpValues.help_sec_text[index].displayValue,
                     "id": helpValues.help_sec_key[index].value

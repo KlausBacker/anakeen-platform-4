@@ -372,6 +372,23 @@ class RenderDefault implements IRenderConfig
         $menu->appendElement($item);
     }
     /**
+     * Add Help if Help document is associated to family
+     * @param \Doc $doc
+     * @param BarMenu $menu target menu
+     * @throws \Dcp\Ui\Exception
+     */
+    protected function addHelpMenu(\Doc $doc, BarMenu & $menu)
+    {
+        $helpDoc = $doc->getHelpPage();
+        if ($helpDoc && $helpDoc->isAlive()) {
+            
+            $menuItem = new ItemMenu("help", ___("Help", "UiMenu"));
+            $menuItem->setBeforeContent('<div class="fa fa-info-circle" />');
+            $menuItem->setUrl(sprintf("#action/document.help:%d", $helpDoc->initid));
+            $menu->appendElement($menuItem);
+        }
+    }
+    /**
      * Get custom data to transmit to client document controller
      *
      * @param \Doc $document Document object instance
