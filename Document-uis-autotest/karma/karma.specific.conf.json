@@ -1,0 +1,11 @@
+{
+  "proxies": {
+    "/dynacase//api/v1/": "http://localhost:8080/TEST_DOCUMENT/FALSE_API/",
+    "/dynacase/": "http://localhost:8080/",
+    "/resizeimg.php": "http://localhost:8080/resizeimg.php",
+    "/lib/": "http://localhost:8080/lib/",
+    "/css/": "http://localhost:8080/css/",
+    "/FDL/": "http://localhost:8080/FDL/",
+    "/file/": "http://localhost:8080/TEST_DOCUMENT/FALSE_API/"
+  }
+}

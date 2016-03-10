@@ -1,0 +1,13 @@
+{
+    "moduleName" : "document_uis_autotest",
+    "version" : "1.0.0",
+    "release" : "0",
+    "application" : [],
+    "includedPath" : ["karma"],
+    "lang" : ["fr","en"],
+    "csvParam" : {"enclosure" : "\"", "delimiter": ";"},
+    "dynacase-devtool" : {
+            "uri" : "git@github.com:Anakeen/development-tools.git",
+            "tag" : "3.2"
+    }
+}
