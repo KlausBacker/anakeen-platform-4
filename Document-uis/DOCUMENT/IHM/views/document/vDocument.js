@@ -70,6 +70,9 @@ define([
                 if (this.propertiesWidget) {
                     this.propertiesWidget.destroy();
                 }
+                if (this.helpWidget) {
+                    this.helpWidget.destroy();
+                }
                 if (this.transitionGraph && this.transitionGraph.view) {
                     this.transitionGraph.view.remove();
                 }
@@ -684,40 +687,96 @@ define([
          * Show the help document in dialog
          *
          */
-        showHelp: function vDocumentShowHelp(helpId, attrid)
+        showHelp: function vDocumentShowHelp(event, helpId, attrid)
         {
             var $document = $(this.el);
-            var helpWrapper = $document.data("dcpHelpWrapper");
-            var href = "?app=DOCUMENT&initid=" + helpId + '#CHAP-' + attrid;
-            var helpWindow, $dialogDiv, dpcWindow,
-                htmlLink = {
-                    target: "_dialog",
-                    windowWidth: "300px",
-                    windowHeight: "300px",
-                    windowTitle: '<i class="fa fa-info-circle"></i> ' + i18n.___("Info", "ddui")
-                };
+            var scope = this;
+            var $dialogDiv = $document.data("dcpHelpDocument");
+            var currentTarget = (event.originalEvent) ? event.originalEvent.currentTarget : event.currentTarget;
+            var htmlLink = {
+                target: "_dialog",
+                windowWidth: "400px",
+                windowHeight: "300px",
+                windowTitle: '<i class="fa fa-info-circle"></i> ' + i18n.___("Info", "ddui")
+            };
 
-            if (!helpWrapper || helpWrapper.is(":visible") === false) {
-                $dialogDiv = $('<div/>').addClass("dcpHelp-wrapper");
-                $document.append($dialogDiv);
-                dpcWindow = $dialogDiv.dcpWindow({
-                    title: htmlLink.windowTitle,
-                    width: htmlLink.windowWidth,
-                    height: htmlLink.windowHeight,
-                    content: href,
-                    iframe: true
+            require(['dcpDocument/document'], function vDocumentHelp()
+            {
+                var helpX, helpY, bodyH, dialogH, dialogW;
+                if (!$dialogDiv || $dialogDiv.is(":visible") === false) {
+                    $dialogDiv = $('<div/>').addClass("dcpHelp-wrapper");
+
+                    $dialogDiv.kendoWindow({
+                        title: htmlLink.windowTitle,
+                        width: htmlLink.windowWidth,
+                        height: htmlLink.windowHeight,
+                        iframe: true,
+                        content: "about:blank",
+                        actions: [
+                            "Maximize",
+                            "Close"
+                        ],
+                        close: function vDocumentSelectHelpClose()
+                        {
+                            $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
+                        }
+                    });
+
+                    $dialogDiv.on("documentcreate", function vDocumentHelpCreate()
+                    {
+                        $dialogDiv.find("> iframe").addClass("k-content-frame");
+                    });
+
+                    $dialogDiv.document({
+                        "initid": helpId,
+                        withoutResize: true
+                    });
+
+                    $dialogDiv.document("addEventListener", "ready", {name: "ddui:help:select"}, function vDocumentSelectHelpChapter()
+                    {
+                        _.defer(function vDocumentHelpReady()
+                        {
+                            $dialogDiv.document(
+                                "triggerEvent",
+                                "custom:helppageSelect",
+                                attrid);
+                        });
+                    });
+                    $document.data("dcpHelpDocument", $dialogDiv);
+                } else {
+                    $dialogDiv.document(
+                        "triggerEvent",
+                        "custom:helppageSelect",
+                        attrid);
+                }
+
+                scope.helpWidget = $dialogDiv.data('kendoWindow');
+                $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
+                $(currentTarget).addClass("dcpLabel__help__link--selected");
+
+                // Compute new position of help dialog window
+                helpX = $(currentTarget).offset().left;
+                helpY = $(currentTarget).offset().top;
+                bodyH = $("body").height();
+                dialogH = $(scope.helpWidget.wrapper).closest(".k-window").height();
+                dialogW = $(scope.helpWidget.wrapper).closest(".k-window").width();
+                if (helpX > dialogW + 50) {
+                    helpX = helpX - dialogW - 30;
+                } else {
+                    helpX = helpX + 30;
+                }
+
+                if (helpY > bodyH - dialogH) {
+                    helpY = bodyH - dialogH - 50;
+                }
+
+                $(scope.helpWidget.wrapper).css({
+                    top: (helpY) + "px",
+                    left: (helpX) + "px"
                 });
+                scope.helpWidget.open();
 
-                dpcWindow.data('dcpWindow').kendoWindow().center();
-                dpcWindow.data('dcpWindow').open();
-                helpWrapper = dpcWindow.data('dcpWindow').kendoWindow().wrapper;
-                $document.data("dcpHelpWrapper", helpWrapper);
-            } else {
-                helpWindow=$(helpWrapper).find("iframe").get(0).contentWindow;
-                helpWindow.location.hash = 'CHAP-' + attrid;
-                // To scroll to selected chapter
-                helpWindow.location.href = helpWindow.location.href;
-            }
+            });
         },
 
         /**
@@ -1157,7 +1216,7 @@ define([
                 return this.restoreDocument();
             }
             if (options.eventId === "document.help") {
-                return this.showHelp(eventArgs[0], eventArgs[1]);
+                return this.showHelp(event, eventArgs[0], eventArgs[1]);
             }
         },
 

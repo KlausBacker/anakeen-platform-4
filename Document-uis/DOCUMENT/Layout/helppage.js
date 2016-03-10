@@ -3,10 +3,15 @@ define(["mustache", "jquery", "underscore",
 {
     "use strict";
 
-    var helppageDisplayLocale = function helppageDisplayLocale(lang, documentController)
+    /**
+     * Display help content according to parameter locale
+     * @param lang fr_FR / en_US
+     * @param $document current document element
+     */
+    var helppageDisplayLocale = function helppageDisplayLocale(lang, $document)
     {
         var template = $("#helppage-template").text();
-        var helpValues = documentController.documentController("getValues");
+        var helpValues = $document.documentController("getValues");
         var htmlResult,
             locale = {title: "Untitle", description: '', chapters: []};
 
@@ -35,6 +40,20 @@ define(["mustache", "jquery", "underscore",
         $(".helppage--content").html(htmlResult);
     };
 
+    /**
+     * Scroll window to selected chapter
+     * @param chapter selected chapter
+     */
+    var helpPageSelectChapter = function helpPageSelectChapter(chapter)
+    {
+        $(".helppage--select").removeClass("helppage--select");
+        if ($(chapter).length === 1) {
+            $(chapter).addClass("helppage--select");
+            //$(chapter).get(0).scrollIntoView();
+            window.scrollTo(0, $(chapter).offset().top - $(".dcpDocument__menu").height() - 40);
+        }
+    };
+
     window.dcp.document.documentController("addEventListener",
         "ready",
         {
@@ -49,10 +68,12 @@ define(["mustache", "jquery", "underscore",
             var currentLocale = i18n.getLocale().culture.replace('-', '_') || "fr_FR";
 
             if (window.frameElement) {
-                // hide header and menu if document is in dialog window
-                if ($(window.frameElement).closest(".dialog-window").length === 1) {
+                // if document is in dialog window
+                if ($(window.frameElement).closest(".k-window").length === 1) {
                     var topMenu = this.documentController("getMenus");
                     var wDocument = this;
+
+                    // Hide all menu except lang menu
                     _.each(topMenu, function helppageReadyHideMenu(itemMenu)
                     {
                         if (itemMenu.id !== "helppage-langMenu") {
@@ -61,42 +82,69 @@ define(["mustache", "jquery", "underscore",
                             wDocument.documentController("getMenu", itemMenu.id).setCssClass("menu--right");
                         }
                     });
-
-                    $(".dcpDocument__header").hide();
+                    // Fix menu
+                    $(window).off("scroll.ddui");
+                    $(".dcpDocument__menu").addClass("menu--fixed");
+                    // hide header
+                    this.find(".dcpDocument__header").hide();
                 }
-            }
-            helppageDisplayLocale(currentLocale, this);
-            if (window.location.hash) {
-                // Need to force hash to scroll to selected chapter
-                _.delay(function helppageReadyScroll()
-                {
-                    window.location.href = window.location.href;
-                    //window.scrollBy(0, -100);
-                }, 1);
+                helppageDisplayLocale(currentLocale, this);
+            } else {
+                helppageDisplayLocale(currentLocale, this);
+                if (window.location.hash) {
+                    // Need to force hash to scroll to selected chapter
+                    _.defer(function helppageReadyScroll()
+                    {
+                        helpPageSelectChapter(window.location.hash);
+                    });
+                }
             }
         }
     );
 
+    /**
+     * Select chapter and scroll to it
+     */
     window.dcp.document.documentController("addEventListener",
-        "actionClick",
+        "custom:helppageSelect",
         {
-            "name": "helppage-changelang",
+            "name": "helppage-selectchapter",
             "documentCheck": function helppageReadyCheck(documentObject)
             {
                 return documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE";
             }
         },
-        function changeDisplayError(event, documentObject, options)
+        function helppageDoSelectChapter(event, chapter)
+        {
+            helpPageSelectChapter("#CHAP-" + chapter);
+        }
+    );
+
+    /**
+     * Change locale when lang menu is selected
+     */
+    window.dcp.document.documentController("addEventListener",
+        "actionClick",
+        {
+            "name": "helppage-changelang",
+            "documentCheck": function helppageClickCheck(documentObject)
+            {
+                return documentObject.renderMode === "view" && documentObject.family.name === "HELPPAGE";
+            }
+        },
+        function helppageClickChangeLocale(event, documentObject, options)
         {
             var culture;
-            var langMenu;
+            var langMenu, selectedChapter;
             if (options.eventId === "helppage.lang") {
                 culture = options.options[0];
+                selectedChapter = $(".helppage--select").attr("id");
                 helppageDisplayLocale(culture, this);
-                window.location.href = window.location.href;
+                helpPageSelectChapter("#" + selectedChapter);
                 langMenu = this.documentController("getMenu", $(options.target).data("menu-id"));
                 this.documentController("getMenu", "helppage-langMenu").setIconUrl(langMenu.getProperties().iconUrl);
                 this.documentController("getMenu", "helppage-langMenu").setHtmlLabel('(' + langMenu.getProperties().id.substr(-5, 2) + ') ');
+                event.preventDefault();
             }
 
         }
