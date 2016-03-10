@@ -23,6 +23,13 @@ webinst-test:
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
 
+webinst-autotest:
+	-rm -fr $(localpub)
+	cp -ra Document-uis-autotest $(localpub)
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json
+	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
+	-rm -fr $(localpub)
+
 webinst-full:
 	-rm -fr $(localpub)
 	cp -ra Document-uis $(localpub)
@@ -47,7 +54,7 @@ webinst-light:
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
 
-webinst-all: webinst webinst-test webinst-selenium
+webinst-all: webinst webinst-test webinst-selenium webinst-autotest
 
 webinst:
 	make webinst-full

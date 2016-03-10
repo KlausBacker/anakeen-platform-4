@@ -10,15 +10,11 @@
     </requires>
 
     <post-install>
-	<process command="/usr/bin/env chmod a+x karma/run.sh"/>
-
         <process command="programs/record_application TEST_DOCUMENT"/>
         <process command="programs/update_catalog"/>
     </post-install>
 
     <post-upgrade>
-	<process command="/usr/bin/env chmod a+x karma/run.sh"/>
-
         <process command="programs/pre_migration TEST_DOCUMENT"/>
         <process command="programs/record_application TEST_DOCUMENT"/>
         <process command="programs/post_migration TEST_DOCUMENT"/>

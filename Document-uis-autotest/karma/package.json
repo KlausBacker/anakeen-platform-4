@@ -5,7 +5,6 @@
   "version": "0.0.1",
   "devDependencies": {
     "karma": "*",
-    "karma-chrome-launcher": "*",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
     "karma-requirejs": "*",

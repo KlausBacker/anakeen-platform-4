@@ -74,7 +74,7 @@ function main {
 
     genKarmaSpecificConf > "karma.specific.conf.json"
     if [ $? -ne 0 ]; then
-	echo "Error: eror generating '${MY_DIR}/karma.specific.conf.js'!"
+	echo "Error: error generating '${MY_DIR}/karma.specific.conf.js'!"
 	return 1
     fi
 

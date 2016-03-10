@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
+    <description>document_uis_autotest</description>
+
+    <requires>
+        <module comp="ge" name="dynacase-core" version="3.2"/>
+        <module comp="ge" name="dynacase-document-uis-test"/>
+    </requires>
+
+    <pre-install>
+        <check type="syscommand" command="node" />
+        <check type="syscommand" command="npm" />
+    </pre-install>
+
+    <post-install>
+
+    </post-install>
+    <post-upgrade>
+
+    </post-upgrade>
+</module>
