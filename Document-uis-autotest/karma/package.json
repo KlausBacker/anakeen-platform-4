@@ -8,7 +8,7 @@
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
     "karma-requirejs": "*",
-    "karma-junit-reporter": "*",
+    "karma-junit-reporter": "~0.3",
     "jasmine-core" : "*",
     "requirejs" : "*",
     "phantomjs-prebuilt" : "*"
