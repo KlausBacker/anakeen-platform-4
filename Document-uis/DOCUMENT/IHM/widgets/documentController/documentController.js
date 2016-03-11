@@ -37,6 +37,7 @@ define([
         "beforeClose", "close",
         "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",
+        "beforeRestore", "afterRestore",
         "failTransition", "successTransition",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
@@ -298,6 +299,16 @@ define([
             this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(oldProperties)
             {
                 currentWidget._triggerControllerEvent("afterSave",
+                    currentWidget.getProperties(), oldProperties);
+            });
+            this._model.listenTo(this._model, "beforeRestore", function documentController_triggerBeforeSave(event)
+            {
+                event.prevent = !currentWidget._triggerControllerEvent("beforeRestore",
+                    currentWidget.getProperties(), currentWidget._model.getModelProperties());
+            });
+            this._model.listenTo(this._model, "afterRestore", function documentController_triggerAfterSave(oldProperties)
+            {
+                currentWidget._triggerControllerEvent("afterRestore",
                     currentWidget.getProperties(), oldProperties);
             });
             this._model.listenTo(this._model, "beforeDelete", function documentController_triggerBeforeDelete(event, customClientData)

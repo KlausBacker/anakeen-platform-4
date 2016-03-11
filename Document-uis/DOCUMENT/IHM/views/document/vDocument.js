@@ -1145,9 +1145,13 @@ define([
          */
         restoreDocument: function vDocumentRestoreDocument()
         {
-            if (this.model.get("properties")) {
+            var event = {prevent: false}, serverProperties = this.model.getServerProperties();
+            this.model.trigger("beforeRestore", event);
+            if (!event.prevent && this.model.get("properties")) {
                 this.model.get("properties").set("status", "alive");
-                this.model.saveDocument();
+                this.model.saveDocument().then(_.bind(function vDocument_afterRestoreSave() {
+                    this.model.trigger("afterRestore", serverProperties);
+                }, this));
             }
 
         },
