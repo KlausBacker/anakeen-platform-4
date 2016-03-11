@@ -406,7 +406,7 @@ define([
                 currentModel.trigger("displayNetworkError");
                 displayNetworkError = true;
                 //Status 0 indicate offline browser
-                if (xhr.status === 0) {
+                if (xhr && xhr.status === 0) {
                     currentModel.trigger("showError", {
                         "errorCode": "offline",
                         "title": i18n.___("Your navigator seems offline, try later", "ddui")
@@ -517,7 +517,7 @@ define([
                 }
             });
             if (displayNetworkError === false) {
-                this.model.trigger("dduiDocumentDisplayView");
+                this.trigger("dduiDocumentDisplayView");
             }
         },
 
@@ -980,14 +980,14 @@ define([
             {
                 currentModel._loadDocument(currentModel).then(function mDocument_loadDocumentDone(values)
                 {
-                    globalCallback.success.call(currentModelProperties, values);
+                    globalCallback.success.apply(currentModelProperties, values);
                 }, function mDocument_loadDocumentFail(values)
                 {
-                    globalCallback.error.call(currentModelProperties, values);
+                    globalCallback.error.apply(currentModelProperties, values);
                 });
             }, function mDocument_onFetchDocumentFail(values)
             {
-                globalCallback.error.call(serverProperties, values);
+                globalCallback.error.apply(serverProperties, values);
             });
 
             globalCallback.promise.then(function onPrepareDocumentDone(values)
@@ -1110,11 +1110,11 @@ define([
                         globalCallBack.success();
                     }, function mDocument_loadDocumentFail()
                     {
-                        globalCallBack.error.call(currentModel, arguments);
+                        globalCallBack.error.apply(currentModel, arguments);
                     });
                 }, function mDocument_saveFail()
                 {
-                    globalCallBack.error.call(currentModel, arguments);
+                    globalCallBack.error.apply(currentModel, arguments);
                 });
 
                 currentModel.save(attributes, saveCallback);
