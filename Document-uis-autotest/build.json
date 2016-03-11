@@ -1,7 +1,7 @@
 {
     "moduleName" : "dynacase-document-uis-autotest",
-    "version" : "1.0.0",
-    "release" : "0",
+    "version" : "{{VERSION}}",
+    "release" : "{{RELEASE}}",
     "application" : [],
     "includedPath" : ["karma"],
     "lang" : ["fr","en"],
