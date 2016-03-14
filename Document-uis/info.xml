@@ -37,6 +37,7 @@
             <label>Create Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
         <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
             <label>Link js libraries</label>
         </process>
@@ -51,6 +52,7 @@
             <label>Update Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
         <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
             <label>Link js libraries</label>
         </process>

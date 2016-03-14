@@ -68,11 +68,11 @@ class HelpViewRender extends \Dcp\Ui\DefaultView
         foreach ($all_lang_keys as $i => $key) {
             $menuItem = new \Dcp\Ui\ItemMenu("helppage-lang-" . $key, mb_ucfirst($all_lang_texts[$i]));
             $lang = strtolower(substr($key, 3, 2));
-            $menuItem->setIcon(sprintf("Images/flags/%s.png", $lang));
+            $menuItem->setIcon(sprintf("FDL/Images/flags/%s.png", $lang));
             $menuItem->setUrl("#action/helppage.lang:" . $key);
             
             if (substr($key, 0, 2) === $currentLocale["locale"]) {
-                $langMenuList->setIcon(sprintf("Images/flags/%s.png", $lang));
+                $langMenuList->setIcon(sprintf("FDL/Images/flags/%s.png", $lang));
                 $langMenuList->setHtmlLabel(sprintf("(%s) ", substr($key, 0, 2)));
             }
             
