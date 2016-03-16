@@ -25,7 +25,8 @@
                 toolbar: 'Basic',
                 height: '100px',
                 toolbarStartupExpanded: true,
-                ckEditorConfiguration: {}
+                ckEditorConfiguration: {},
+                ckEditorAllowAllTags:false
             },
             locale: "en"
         },
@@ -51,6 +52,19 @@
                     {
                         var options = _.extend(currentWidget.ckOptions(), currentWidget.options.renderOptions.ckEditorConfiguration);
                         bind_super();
+                        if (currentWidget.options.renderOptions.ckEditorAllowAllTags) {
+                            // Allow all HTML tags
+                            options.allowedContent = {
+                                $1: {
+                                    // Use the ability to specify elements as an object.
+                                    elements: window.CKEDITOR.dtd,
+                                    attributes: true,
+                                    styles: true,
+                                    classes: true
+                                }
+                            };
+                            options.disallowedContent = 'script; *[on*]';
+                        }
                         currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(
                             options
                         ).editor;

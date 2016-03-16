@@ -15,6 +15,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
     const heightOption = "height";
     const toolbarStartupExpandedOption = "toolbarStartupExpanded";
     const ckEditorConfigurationOption = "ckEditorConfiguration";
+    const ckEditorAllowAllTagsOption = "ckEditorAllowAllTags";
     
     const fullToolbar = "Full";
     const simpleToolbar = "Simple";
@@ -66,5 +67,17 @@ class HtmltextRenderOptions extends CommonRenderOptions
     public function setCkEditorConfiguration($config)
     {
         return $this->setOption(self::ckEditorConfigurationOption, $config);
+    }
+    /**
+     * Allow all HTML tags in htlm source
+     *
+     * @note use only in edition mode
+     * @param bool $allow set to true to allow al tags else depends of ckEditor toolbar configuration
+     * @see setToolbar
+     * @return $this
+     */
+    public function setCkEditorAllowAllTags($allow)
+    {
+        return $this->setOption(self::ckEditorAllowAllTagsOption, (bool)$allow);
     }
 }
