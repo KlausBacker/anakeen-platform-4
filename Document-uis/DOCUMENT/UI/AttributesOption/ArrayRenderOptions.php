@@ -17,6 +17,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     const rowDelDisableOption = "rowDelDisable";
     const rowMoveDisableOption = "rowMoveDisable";
     const rowMinLimitOption = "rowMinLimit";
+    const rowMinDefaultOption = "rowMinDefault";
     const rowMaxLimitOption = "rowMaxLimit";
     const arrayBreakPointsOption = "arrayBreakPoints";
     
@@ -73,6 +74,22 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowMinLimitOption, (int)$limit);
     }
+
+
+    /**
+     * Set min row displayed for the array
+     * If array has not the min, empty rows are added since reach limit
+     * The remove button is NOT disabled when default limit is reach unlike the setRowMinLimit option
+     * No min by default
+     * @param int $default : min default, 0 (or negative) means no default
+     * @see setRowMinLimit
+     * @return $this
+     */
+    public function setRowMinDefault($default)
+    {
+        return $this->setOption(self::rowMinDefaultOption, (int)$default);
+    }
+
     /**
      * Set max row to the table
      * The add button is disabled when limit is reach
