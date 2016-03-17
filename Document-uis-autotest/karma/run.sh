@@ -32,8 +32,8 @@ function genKarmaSpecificConf {
     "files": [
 	"test-main.js",
 	{"pattern": "test-css.js", "watched": false, "served": true, "included": false},
-	{"pattern": "${LOCAL_ROOT}DOCUMENT/IHM/widgets/attributes/**/test*.js", "included": false},
-	{"pattern": "${LOCAL_ROOT}DOCUMENT/IHM/test/test*.js", "included": false}
+	{"pattern": "${LOCAL_ROOT}/DOCUMENT/IHM/widgets/attributes/**/test*.js", "included": false},
+	{"pattern": "${LOCAL_ROOT}/DOCUMENT/IHM/test/test*.js", "included": false}
     ],
     "reporters": [${REPORTERS}],
     "junitReporter": {
@@ -84,8 +84,7 @@ function main {
 	return 1
     fi
 
-    ./node_modules/karma/bin/karma start
+    ./node_modules/karma/bin/karma start --log-level debug
 }
-
 
 main "$@"
