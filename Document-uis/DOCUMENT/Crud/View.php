@@ -195,7 +195,6 @@ class View extends Crud
         if ($document && !$document->isAlive() && isset($this->properties["status"]) && $this->properties["status"] === "alive") {
             //Handle restoration
             $err = $document->undelete();
-            $err.= $document->store();
             if ($err) {
                 throw new \Dcp\Ui\Exception("Unable to restore $err");
             }
