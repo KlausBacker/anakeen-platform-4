@@ -28,6 +28,7 @@
                 rowDelDisable: false,
                 rowMoveDisable: false,
                 rowMinLimit: -1,
+                rowMinDefault: 0,
                 rowMaxLimit: -1,
                 arrayBreakPoints: {
                     transpositionRule: "@media (max-width: 768px)",
@@ -125,11 +126,15 @@
                     this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
                     if (this.options.mode === "write") {
-                        this.element.find(".dcpArray__table").addClass("dcpArray--tooltips");
+                        this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
                         this.element.tooltip({
                             selector: ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
                             placement: "top",
-                            container: ".dcpDocument"
+                            container: ".dcpDocument",
+                            delay : {
+                                hide:0,
+                                show:500
+                            }
                         });
                     }
                 }
@@ -301,10 +306,10 @@
             this.element.find('[aria-describedby^=tooltip]').tooltip("hide");
         },
         _disableTooltips: function wArray__disableTooltips() {
-            this.element.find(".dcpArray__table").removeClass("dcpArray--tooltips");
+            this.element.find(".dcpArray__content").removeClass("dcpArray--tooltips");
         },
         _enableTooltips: function wArray__enableTooltips() {
-            this.element.find(".dcpArray__table").addClass("dcpArray--tooltips");
+            this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
         },
 
         _bindEvents: function dcpArray_bindEvents()
@@ -399,16 +404,17 @@
 
         addAllLines: function dcpArrayaddAllLines(lineNumber)
         {
-            var i;
+            var i, min;
             this.element.find(".dcpArray__body").empty();
 
             for (i = 0; i < lineNumber; i += 1) {
                 this.addLine(i);
             }
 
-            if (this.options.renderOptions.rowMinLimit >= 0) {
-                if (this.options.nbLines < this.options.renderOptions.rowMinLimit) {
-                    for (i = this.options.nbLines; i < this.options.renderOptions.rowMinLimit; i += 1) {
+            min=Math.max(this.options.renderOptions.rowMinLimit, this.options.renderOptions.rowMinDefault);
+            if (min > 0) {
+                if (this.options.nbLines < min) {
+                    for (i = this.options.nbLines; i < min; i += 1) {
 
                         this.addLine(i, {needAddValue: true});
                     }
