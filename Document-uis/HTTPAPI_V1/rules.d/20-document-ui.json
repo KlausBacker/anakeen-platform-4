@@ -1,5 +1,12 @@
 [
   {
+    "order" :        400,
+    "class" :        "\\Dcp\\Ui\\Html\\Document",
+    "regExp" :       "%^/documents/?(?P<identifier>[^/]+)\\.html$%",
+    "description" :  "HTML Document <documentId>",
+    "canonicalURL" : "documents/<documentId>.html"
+  },
+  {
     "order": 300,
     "class": "\\Dcp\\Ui\\Crud\\ViewCollection",
     "regExp": "%^/documents/(?P<identifier>[^/]+)/views/$%",
@@ -13,6 +20,14 @@
     "description": "Document View",
     "canonicalURL": "documents/<documentId>/views/<viewId>"
   },
+
+  {
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Html\\Document",
+    "regExp": "%^/documents/(?P<identifier>[^\\/]+)/views/(?P<viewIdentifier>[^/]+)\\.html$%",
+    "description": "HTML Document View",
+    "canonicalURL": "documents/<documentId>/views/<viewId>.html"
+  },
   {
     "order": 300,
     "class": "\\Dcp\\Ui\\Crud\\View",
@@ -21,11 +36,32 @@
     "canonicalURL": "documents/<documentId>/revisions/<revision>/views/<viewId>"
   },
   {
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Html\\Document",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)\\.html$%",
+    "description": "HTML Revision View",
+    "canonicalURL": "documents/<documentId>/revisions.html"
+  },
+  {
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Html\\Document",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)/views/(?P<viewIdentifier>[^/]+)\\.html$%",
+    "description": "HTML Revision View",
+    "canonicalURL": "documents/<documentId>/revisions/<revision>/views/<viewId>.html"
+  },
+  {
     "order": 300,
     "class": "\\Dcp\\Ui\\Crud\\View",
     "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>state:[^/]+)/views/(?P<viewIdentifier>[^/]+)$%",
     "description": "Revision View by State",
     "canonicalURL": "documents/<documentId>/revisions/state:<state>/views/<viewId>"
+  },
+  {
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Html\\Document",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>state:[^/]+)/views/(?P<viewIdentifier>[^/]+)\\.html$%",
+    "description": "Revision View by State",
+    "canonicalURL": "documents/<documentId>/revisions/state:<state>/views/<viewId>.html"
   },
   {
     "order": 300,

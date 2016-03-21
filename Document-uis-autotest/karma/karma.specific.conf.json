@@ -1,11 +1,22 @@
 {
-  "proxies": {
-    "/dynacase//api/v1/": "http://localhost:8080/TEST_DOCUMENT/FALSE_API/",
-    "/dynacase/": "http://localhost:8080/",
-    "/resizeimg.php": "http://localhost:8080/resizeimg.php",
-    "/lib/": "http://localhost:8080/lib/",
-    "/css/": "http://localhost:8080/css/",
-    "/FDL/": "http://localhost:8080/FDL/",
-    "/file/": "http://localhost:8080/TEST_DOCUMENT/FALSE_API/"
-  }
+    "proxies": {
+	"/dynacase//api/v1/" :  "http://localhost:80/tmp32/TEST_DOCUMENT/FALSE_API/",
+	"/dynacase/": "http://localhost:80/tmp32/",
+	"/resizeimg.php": "http://localhost:80/tmp32/resizeimg.php",
+	"/lib/": "http://localhost:80/tmp32/lib/",
+	"/css/": "http://localhost:80/tmp32/css/",
+	"/FDL/": "http://localhost:80/tmp32/FDL/",
+	"/file/" : "http://localhost:80/tmp32/TEST_DOCUMENT/FALSE_API/"
+    },
+    "files": [
+	"test-main.js",
+	{"pattern": "test-css.js", "watched": false, "served": true, "included": false},
+	{"pattern": "/home/eric/anakeen/modules/ddui/Document-uis//DOCUMENT/IHM/widgets/attributes/**/test*.js", "included": false},
+	{"pattern": "/home/eric/anakeen/modules/ddui/Document-uis//DOCUMENT/IHM/test/test*.js", "included": false}
+    ],
+    "reporters": ["junit","progress"],
+    "junitReporter": {
+	"outputDir": "/home/eric/anakeen/modules/ddui/Document-uis-autotest/karma",
+	"suite": ""
+    }
 }

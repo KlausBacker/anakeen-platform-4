@@ -85,7 +85,13 @@ class View extends Crud
     {
         $refreshMsg = '';
         $creationMode = false;
+        $family = null;
         if ($this->viewIdentifier === self::coreViewCreationId || $this->viewIdentifier === self::defaultViewCreationId) {
+            /**
+             * @var \DocFam $family
+             */
+            $family = DocManager::getFamily($resourceId);
+            DocManager::cache()->addDocument($family);
             $this->createDocument($resourceId);
             $creationMode = true;
         } else {
@@ -107,7 +113,7 @@ class View extends Crud
         }
         
         $info = array(
-            "uri" => $this->getUri($this->document, $this->viewIdentifier)
+            "uri" => $this->getUri($creationMode ? $family : $this->document, $this->viewIdentifier)
         );
         /**
          * @var \Cvdoc $controlView

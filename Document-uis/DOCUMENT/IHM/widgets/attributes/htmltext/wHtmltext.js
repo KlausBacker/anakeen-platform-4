@@ -90,6 +90,7 @@
         ckOptions: function wHtmlTextCkOptions()
         {
             var locale = this.options.locale;
+            var hrefBase=$("head base").attr("href") || ""; // no use document.baseURI because get complete url if no base href defined
             if (this.options.renderOptions.toolbar) {
                 this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
             }
@@ -106,8 +107,9 @@
                 //extraPlugins: 'sourcedialog',
                 toolbarCanCollapse: true,
                 entities: false, // no use HTML entities
-                filebrowserImageBrowseUrl: '?sole=Y&app=FDL&action=CKIMAGE',
-                filebrowserImageUploadUrl: '?sole=Y&app=FDL&action=CKUPLOAD',
+                baseHref : hrefBase,
+                filebrowserImageBrowseUrl: hrefBase+'?sole=Y&app=FDL&action=CKIMAGE',
+                filebrowserImageUploadUrl: hrefBase+'?sole=Y&app=FDL&action=CKUPLOAD',
                 toolbar_Full: [
                     {
                         name: 'document',

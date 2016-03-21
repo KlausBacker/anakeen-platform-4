@@ -46,7 +46,7 @@ class DefaultView extends RenderDefault
                 $menu->getElement("restore")->setVisibility(ElementMenu::VisibilityHidden);
                 $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityHidden);
                 
-                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "?app=DOCUMENT&initid={{document.properties.id}}");
+                $item = new ItemMenu("gotolatest", ___("View current revision", "UiMenu") , "api/v1/documents/{{document.properties.id}}.html");
                 if ($this->displayDefaultMenuTooltip) {
                     $item->setTooltipLabel(___("Display latest document revision", "UiMenu"));
                 }
@@ -55,7 +55,7 @@ class DefaultView extends RenderDefault
                 $menu->insertBefore("modify", $item);
             } else {
                 
-                if ($editErr = $document->CanEdit()) {
+                if ($editErr = $document->canEdit()) {
                     $menu->getElement("modify")->setVisibility(ElementMenu::VisibilityDisabled);
                     if ($this->displayDefaultMenuTooltip) {
                         $menu->getElement("modify")->setTooltipLabel($editErr);
@@ -98,7 +98,7 @@ class DefaultView extends RenderDefault
         $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
         $confirmOption->windowWidth = "350px";
         $confirmOption->windowHeight = "150px";
-        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getHtmlTitle()) , $confirmOption);
+        $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getHTMLTitle()) , $confirmOption);
         $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);
         
@@ -172,8 +172,8 @@ class DefaultView extends RenderDefault
             if (!$doc) {
                 return;
             }
-            $wdoc->Set($doc, true);
-            $fstate = $wdoc->GetFollowingStates();
+            $wdoc->set($doc, true);
+            $fstate = $wdoc->getFollowingStates();
             
             foreach ($fstate as $v) {
                 
@@ -275,7 +275,7 @@ class DefaultView extends RenderDefault
             /**
              * @var \CVDoc $cv
              */
-            $cv->set($doc);
+            $cv->Set($doc);
             $views = $cv->getDisplayableViews();
             foreach ($views as $view) {
                 $vid = $view["cv_idview"];
@@ -289,7 +289,7 @@ class DefaultView extends RenderDefault
                     $lmenu = $menu->getElement($idListMenu);
                     if (!$lmenu) {
                         // Create new list menu
-                        $lmenu = new listMenu($idListMenu, $cv->getLocaleViewMenu($vid));
+                        $lmenu = new ListMenu($idListMenu, $cv->getLocaleViewMenu($vid));
                         $menu->insertBefore("delete", $lmenu);
                     }
                     $lmenu->appendElement($menuItem);
@@ -341,7 +341,7 @@ class DefaultView extends RenderDefault
                         $lmenu = $menu->getElement($link["submenu"]);
                         if (!$lmenu) {
                             // Create new list menu
-                            $lmenu = new listMenu($link["submenu"], $link["submenu"]);
+                            $lmenu = new ListMenu($link["submenu"], $link["submenu"]);
                             $menu->insertBefore("historic", $lmenu);
                         }
                         $lmenu->appendElement($menuItem);
