@@ -469,7 +469,6 @@ class View extends Crud
             // Do not twice
             if ($this->revision === - 1) {
                 $this->document = DocManager::getDocument($resourceId);
-                DocManager::cache()->addDocument($this->document);
             } else {
                 $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
                 $this->document = DocManager::getDocument($revId, false);
