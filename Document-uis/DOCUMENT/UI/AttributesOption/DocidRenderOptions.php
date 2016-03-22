@@ -37,8 +37,6 @@ class DocidRenderOptions extends CommonRenderOptions
      */
     public function setPlaceHolder($text)
     {
-        return $this->setKendoMultiSelectConfiguration(array(
-            "placeholder" => $text
-        ));
+        return $this->setOption(self::placeHolderOption, $text);
     }
 }

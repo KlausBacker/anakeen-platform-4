@@ -1,12 +1,12 @@
 {
     "proxies": {
-	"/dynacase//api/v1/" :  "http://localhost:80/tmp32/TEST_DOCUMENT/FALSE_API/",
-	"/dynacase/": "http://localhost:80/tmp32/",
-	"/resizeimg.php": "http://localhost:80/tmp32/resizeimg.php",
-	"/lib/": "http://localhost:80/tmp32/lib/",
-	"/css/": "http://localhost:80/tmp32/css/",
-	"/FDL/": "http://localhost:80/tmp32/FDL/",
-	"/file/" : "http://localhost:80/tmp32/TEST_DOCUMENT/FALSE_API/"
+	"/dynacase//api/v1/" :  "http://localhost:80/tmp/TEST_DOCUMENT/FALSE_API/",
+	"/dynacase/": "http://localhost:80/tmp/",
+	"/resizeimg.php": "http://localhost:80/tmp/resizeimg.php",
+	"/lib/": "http://localhost:80/tmp/lib/",
+	"/css/": "http://localhost:80/tmp/css/",
+	"/FDL/": "http://localhost:80/tmp/FDL/",
+	"/file/" : "http://localhost:80/tmp/TEST_DOCUMENT/FALSE_API/"
     },
     "files": [
 	"test-main.js",

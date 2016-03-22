@@ -20,13 +20,14 @@ class CommonRenderOptions extends BaseRenderOptions
     const displayDeleteButtonOption = "displayDeleteButton";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
     const translatedLabelsOption = "translatedLabels";
+    const placeHolderOption = "placeHolder";
     const attributeLabelOption = "attributeLabel";
     const autoPosition = "auto";
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
     const formatOption = "format";
-    const helpLinkIdentifierOption="helpLinkIdentifier";
+    const helpLinkIdentifierOption = "helpLinkIdentifier";
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -154,7 +155,6 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::translatedLabelsOption, array_merge($cLabels, $labels));
         return $this;
     }
-
     /**
      * Display help document links in render
      * Add menu "help"

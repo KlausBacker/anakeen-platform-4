@@ -65,8 +65,6 @@ class IntRenderOptions extends CommonRenderOptions
      */
     public function setPlaceHolder($text)
     {
-        return $this->setKendoNumericConfiguration(array(
-            "placeholder" => $text
-        ));
+        return $this->setOption(self::placeHolderOption, $text);
     }
 }

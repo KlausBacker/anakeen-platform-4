@@ -12,7 +12,6 @@ class TextRenderOptions extends CommonRenderOptions
     use TFormatRenderOption;
     const type = "text";
     const maxLengthOption = "maxLength";
-    const placeHolderOption = "placeHolder";
     const formatOption = "format";
     const kendoAutoCompleteConfigurationOption = "kendoAutoCompleteConfiguration";
     /**

@@ -26,11 +26,11 @@
             type: "file",
             renderOptions: {
                 contentDisposition: false,
-                htmlLink: {}
+                htmlLink: {},
+                placeHolder: "Click to upload file"
             },
             labels: {
                 dropFileHere: "Drop file here",
-                placeHolder: "Click to upload file",
                 tooltipLabel: "Choose file",
                 downloadLabel: "Download file",
                 recording: "Recording",
@@ -77,7 +77,7 @@
             if (this.getMode() === "write") {
                 visibleInput = this.element.find("input[type=text]");
                 visibleInput.attr("title", this.options.labels.tooltipLabel);
-                visibleInput.attr("placeholder", this.options.labels.placeHolder);
+                visibleInput.attr("placeholder", this.options.renderOptions.placeHolder);
                 this.element.find(".dcpAttribute__content__button--file").attr("title", this.options.labels.downloadLabel);
 
                 visibleInput.tooltip({

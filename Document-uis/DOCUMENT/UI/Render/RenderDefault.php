@@ -229,16 +229,15 @@ class RenderDefault implements IRenderConfig
         ));
         $opt->image()->setTranslations(array(
             "dropFileHere" => ___("Drop image here", "ddui-image") ,
-            "placeHolder" => ___("Click to upload image", "ddui-image") ,
             "tooltipLabel" => ___("Choose image", "ddui-image") ,
             "downloadLabel" => ___("Download image", "ddui-image") ,
             "kiloByte" => ___("kB", "ddui-file") ,
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
+        $opt->image()->setPlaceHolder(___("Click to upload image", "ddui-image"));
         $opt->file()->setTranslations(array(
             "dropFileHere" => ___("Drop file here", "ddui-file") ,
-            "placeHolder" => ___("Click to upload file", "ddui-file") ,
             "tooltipLabel" => ___("Choose file", "ddui-file") ,
             "downloadLabel" => ___("Download file", "ddui-file") ,
             "kiloByte" => ___("kB", "ddui-file") ,
@@ -246,13 +245,14 @@ class RenderDefault implements IRenderConfig
             "recording" => ___("Recording", "ddui-file") ,
             "transferring" => ___("Transferring", "ddui-file") ,
         ));
+        $opt->file()->setPlaceHolder(___("Click to upload file", "ddui-file"));
         
         $opt->enum()->setTranslations(array(
             "chooseMessage" => ___("Choose", "ddui-enum") ,
             "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
             "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
-            "selectMessage" => ___("Select", "ddui-enum") ,
-            "unselectMessage" => ___("Unselect", "ddui-enum") ,
+            "selectMessage" => ___("Select {{displayValue}}", "ddui-enum") ,
+            "unselectMessage" => ___("Unselect {{displayValue}}", "ddui-enum") ,
             "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum") ,
             "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum") ,
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")

@@ -25,5 +25,14 @@ class TimeRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::kendoTimeConfigurationOption, $config);
     }
-
+    /**
+     * Text to set into input when is empty
+     * @note use only in edition mode
+     * @param string $text text to display
+     * @return $this
+     */
+    public function setPlaceHolder($text)
+    {
+        return $this->setOption(self::placeHolderOption, $text);
+    }
 }
