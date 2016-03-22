@@ -12,8 +12,8 @@ class FileRenderOptions extends CommonRenderOptions
     
     const type = "file";
     const contentDispositionOption = "contentDisposition";
-    const fileInlineDisposition='inline';
-    const fileAttachmentDisposition='attachment';
+    const fileInlineDisposition = 'inline';
+    const fileAttachmentDisposition = 'attachment';
     /**
      * Define if image link show image in browser or propose download
      * @note use only in view mode
@@ -28,7 +28,7 @@ class FileRenderOptions extends CommonRenderOptions
             $this->setOption(self::htmlLinkOption, $htmlLink);
         }
         
-        return $this->setOption(self::contentDispositionOption, $inline?self::fileInlineDisposition:self::fileAttachmentDisposition);
+        return $this->setOption(self::contentDispositionOption, $inline ? self::fileInlineDisposition : self::fileAttachmentDisposition);
     }
     /**
      * Text to set into input when is empty
@@ -38,8 +38,6 @@ class FileRenderOptions extends CommonRenderOptions
      */
     public function setPlaceHolder($text)
     {
-        return $this->setTranslations(array(
-            "placeHolder" => $text
-        ));
+        return $this->setOption(self::placeHolderOption, $text);
     }
 }

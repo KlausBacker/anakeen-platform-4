@@ -52,8 +52,6 @@ class EnumRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::useSourceUriOption, (bool)$useIt);
     }
-
-
     /**
      * Add input to set alternative choice
      * @note use only in edition mode
@@ -65,7 +63,6 @@ class EnumRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::useOtherChoiceOption, (bool)$useIt);
     }
-
     /**
      * No use first choice if no value unless if a default value is configured
      * @note use only in edition mode
@@ -76,5 +73,15 @@ class EnumRenderOptions extends CommonRenderOptions
     public function useFirstChoice($useIt)
     {
         return $this->setOption(self::useFirstChoiceOption, (bool)$useIt);
+    }
+    /**
+     * Text to set into input when is empty
+     * @note use only in edition mode
+     * @param string $text text to display
+     * @return $this
+     */
+    public function setPlaceHolder($text)
+    {
+        return $this->setOption(self::placeHolderOption, $text);
     }
 }

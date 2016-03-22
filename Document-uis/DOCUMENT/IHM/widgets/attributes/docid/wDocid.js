@@ -74,6 +74,9 @@
                     //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
                     $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
                     this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
+                    if (this.options.renderOptions.placeHolder) {
+                        this.options.renderOptions.kendoMultiSelectConfiguration.placeholder=this.options.renderOptions.placeHolder;
+                    }
                     if (this._isMultiple()) {
                         this._decorateMultipleValue(this.kendoWidget);
                     } else {

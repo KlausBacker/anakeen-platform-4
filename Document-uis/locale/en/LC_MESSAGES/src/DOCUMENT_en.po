@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 15:09+0100\n"
+"POT-Creation-Date: 2016-03-22 14:08+0100\n"
 "PO-Revision-Date: 2013-05-10 11:59+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -374,10 +374,6 @@ msgid "Save and close"
 msgstr ""
 
 msgctxt "ddui-enum"
-msgid "Select"
-msgstr ""
-
-msgctxt "ddui-enum"
 msgid "Select alternative choice"
 msgstr ""
 
@@ -385,6 +381,10 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Select line"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Select {{displayValue}}"
 msgstr ""
 
 #, php-format
@@ -405,7 +405,7 @@ msgid "Transition success"
 msgstr ""
 
 msgctxt "ddui-enum"
-msgid "Unselect"
+msgid "Unselect {{displayValue}}"
 msgstr ""
 
 msgctxt "UiMenu"

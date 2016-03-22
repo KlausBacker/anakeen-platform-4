@@ -28,7 +28,6 @@
             sourceValues: [], // [{key:"the key", label:"the label"}, ...}]
             sourceUri: null, // when enum definition is dynamically get by server request
             labels: {
-                chooseMessage: 'Select', // Message to display when no useFirstChoice is true and no value selected
                 invalidEntry: "Invalid Entry",
                 invertSelection: "Click to answer {{displayValue}}",
                 selectMessage: 'Select',
@@ -51,7 +50,8 @@
                 editDisplay: "list", // possible values are ["list', 'vertical', 'horizontal', 'autoCompletion']'
                 useFirstChoice: false,
                 useSourceUri: false,
-                useOtherChoice: false
+                useOtherChoice: false,
+                placeHolder:'Select' // Message to display when no useFirstChoice is true and no value selected
             }
         },
         _initDom: function wEnumInitDom()
@@ -430,7 +430,10 @@
                         if ($(this).closest("label").find("input").prop("checked")) {
                             return null;
                         } else {
-                            return scope.options.labels.selectMessage + ' "' + $(this).text() + '"';
+                            return Mustache.render(scope.options.labels.selectMessage , {
+                                displayValue: $(this).text(),
+                                value : $(this).parent().find("input").val()
+                            });
                         }
                     }
                 });
@@ -490,9 +493,16 @@
                     {
                         var $this = $(this);
                         if ($this.closest("label").find("input").prop("checked")) {
-                            return scope.options.labels.unselectMessage + ' "' + $this.text() + '"';
+
+                            return Mustache.render(scope.options.labels.unselectMessage , {
+                                displayValue: $(this).text(),
+                                value : $(this).parent().find("input").val()
+                            });
                         } else {
-                            return scope.options.labels.selectMessage + ' "' + $this.text() + '"';
+                            return Mustache.render(scope.options.labels.selectMessage , {
+                                displayValue: $(this).text(),
+                                value : $(this).parent().find("input").val()
+                            });
                         }
                     }
                 });
@@ -580,7 +590,6 @@
         {
             var kendoOptions = this.getKendoOptions();
             var kddl;
-
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
@@ -873,7 +882,7 @@
                         data: source.data,
                         schema: {model: {id: "value"}}
                     }),
-                    placeholder: this.options.labels.chooseMessage,
+                    placeholder: this.options.renderOptions.placeHolder,
                     value: source.selectedValues,
 
                     change: function wEnum_onChange(event)
@@ -918,7 +927,7 @@
                     dataTextField: "displayValue",
                     dataValueField: "value",
                     optionLabel: {
-                        displayValue: this.options.labels.chooseMessage + ' ',
+                        displayValue: this.options.renderOptions.placeHolder + ' ',
                         value: '',
                         exists: true
                     },
@@ -970,12 +979,13 @@
 
                     defaultOptions.index = -1;
                     defaultOptions.value = this.options.attributeValue.value;
-                    defaultOptions.placeholder = this.options.labels.chooseMessage;
+                    defaultOptions.placeholder = this.options.renderOptions.placeHolder;
 
                     if (_.isObject(scope.options.renderOptions.kendoComboBoxConfiguration)) {
                         kendoOptions = scope.options.renderOptions.kendoComboBoxConfiguration;
                     }
                 } else {
+
                     if (_.isObject(scope.options.renderOptions.kendoDropDownConfiguration)) {
                         kendoOptions = scope.options.renderOptions.kendoDropDownConfiguration;
                     }
