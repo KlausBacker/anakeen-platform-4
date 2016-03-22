@@ -260,9 +260,9 @@ define([
                         render: function whistoryRenderRevision(data)
                         {
                             if (data !== '') {
-                                return '<a class="history-revision-link btn btn-default" href="?app=DOCUMENT&initid=' +
+                                return '<a class="history-revision-link btn btn-default" href="api/v1/documents/' +
                                     historyWidget.options.documentId +
-                                    '&revision=' + data + '"' +
+                                    '/revisions/' + data + '.html"' +
                                     'data-document-id="' + historyWidget.options.documentId + '" ' +
                                     'data-revision="' + data + '"' +
                                     '>' +

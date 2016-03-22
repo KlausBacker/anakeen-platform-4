@@ -1,6 +1,6 @@
 <header class="dcpDocument__header dcpDocument__header--{{document.properties.status}}">
     <img class="dcpDocument__header__icon" src="{{document.properties.icon}}" alt="Document icon"/>
-    <a class="dcpDocument__header__title" href="?app=DOCUMENT&initid={{document.properties.id}}">{{document.properties.title}}</a>
+    <a class="dcpDocument__header__title" href="api/v1/documents/{{document.properties.id}}.html">{{document.properties.title}}</a>
     <span class="dcpDocument__header__revision">[[#i18n]]ddui::Revision :[[/i18n]] {{document.properties.revision}}</span>
     <span class="dcpDocument__header__revdate">
         [[#isdocumentdeleted]][[#i18n]]ddui::DocumentDeleted[[/i18n]][[/isdocumentdeleted]]

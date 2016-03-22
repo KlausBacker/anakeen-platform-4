@@ -1,6 +1,6 @@
 <header class="dcpDocument__header {{#document.properties.security.readOnly}} dcpDocument__header--readonly {{/document.properties.security.readOnly}}">
     <img class="dcpDocument__header__icon" src="{{document.properties.icon}}" alt="Document icon"/>
-    <a class="dcpDocument__header__title" href="{{#document.properties.initid}}?app=DOCUMENT&initid={{document.properties.id}}{{/document.properties.initid}}{{^document.properties.initid}}?app=DOCUMENT&initid={{document.properties.family.name}}&viewId=!defaultCreation{{/document.properties.initid}}">{{document.properties.title}}</a>
+    <a class="dcpDocument__header__title" href="api/v1/documents/{{#document.properties.initid}}{{document.properties.id}}{{/document.properties.initid}}{{^document.properties.initid}}{{document.properties.family.name}}/views/!defaultCreation{{/document.properties.initid}}.html">{{document.properties.title}}</a>
     <span style="display:none;" title="[[#i18n]]ddui:Editing form[[/i18n]]" class="dcpDocument__header__modified fa fa-asterisk"></span>
 
 

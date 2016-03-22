@@ -1016,7 +1016,7 @@ define([
                 )) {
                 return true;
             }
-            throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.join(" ,"));
+            throw new Error("The event type " + eventName + " is not known. It must be one of " + eventList.sort().join(" ,"));
         },
 
         /**

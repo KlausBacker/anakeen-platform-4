@@ -987,7 +987,7 @@ define([
                 });
             }, function mDocument_onFetchDocumentFail(values)
             {
-                globalCallback.error.apply(serverProperties, values);
+                globalCallback.error.call(serverProperties, values);
             });
 
             globalCallback.promise.then(function onPrepareDocumentDone(values)

@@ -71,7 +71,6 @@ define([
                     actions: this.options.window.actions
                 });
                 kWindow.center();
-                console.log("window center", this.options.window.actions);
                 kWindow.open();
             }
         },

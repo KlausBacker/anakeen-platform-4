@@ -3,52 +3,170 @@
 define([
     'underscore',
     'backbone'
-], function define_router(_, Backbone) {
+], function define_router(_, Backbone)
+{
     'use strict';
 
     return Backbone.Router.extend({
-
-        initialize : function router_initialize(options) {
+        initialize: function router_initialize(options)
+        {
             var currentRouter = this;
+
             this.document = options.document;
-            this.urlFragmentTemplate = _.template("<%= path %>?app=DOCUMENT&initid=<%= initid %><% if (revision >= 0) { %>&revision=<%= revision %><% } %><% if (viewId) { %>&viewId=<%= viewId %><% } %>");
+
+            this.route(/[^?]api\/v1\/documents\/([^\/]+)\.html/, "viewDocument");
+            this.route(/[^?]api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\.html/, "viewRevision");
+            this.route(/[^?]api\/v1\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
+            this.route(/[^?]api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/, "viewRevisionView");
 
             this.route(/[^?]*\?app=DOCUMENT([^#]+)/, "fetch");
+
             // Listen to document sync and update url
-            this.document.listenTo(this.document, "sync", function sync() {
+            this.document.listenTo(this.document, "sync", function sync()
+            {
+                var searchArguments;
+
                 var viewId = currentRouter.document.get("viewId"),
                     options = {
-                        "path" :     window.location.pathname,
-                        "initid" :   currentRouter.document.get("initid"),
-                        "revision" : currentRouter.document.get("revision") >= 0 ? currentRouter.document.get("revision") : undefined,
-                        "viewId" :   undefined
+                        "path": window.location.pathname,
+                        "initid": currentRouter.document.get("initid"),
+                        "revision": currentRouter.document.get("revision") >= 0 ? currentRouter.document.get("revision") : undefined,
+                        "viewId": undefined
                     };
-                var docProperties=currentRouter.document.getServerProperties();
+                var docProperties = currentRouter.document.getServerProperties();
+
+                if (!options.initid) {
+
+                    if (docProperties.renderMode === "edit") {
+                        options.initid = docProperties.family.name;
+                    }
+                }
                 options.viewId = viewId;
                 if (docProperties && docProperties.status === "alive") {
                     // No write revision if not a fixed one
-                    options.revision=-1;
+                    options.revision = -1;
                 }
-                if (window.dcp && window.dcp.viewData && window.dcp.viewData.initid === options.initid &&
-                    window.dcp.viewData.revision === options.revision &&
-                    window.dcp.viewData.viewId === options.viewId) {
-                    return;
+
+                searchArguments = currentRouter.getUrlParameters(window.location.search);
+                if (searchArguments.app) {
+                    // old school url
+                    currentRouter.rewriteAppUrl(searchArguments, options);
+                } else {
+                    // api url
+                    currentRouter.rewriteApiUrl(options);
                 }
+            });
+
+        },
+
+        /**
+         * Rewrite access document render HTML page from url like ?app=DOCUMENT&initid=1456&revision=45
+         * @param searchArguments
+         * @param options
+         */
+        rewriteAppUrl: function router_rewriteAppUrl(searchArguments, options)
+        {
+            var searchPart, urlSecondPart = '', newUrl;
+            if (searchArguments.app) {
                 if (options.initid) {
-                    window.dcp.viewData.revision = options.revision;
-                    window.dcp.viewData.viewId = options.viewId;
-                    window.dcp.viewData.initid = options.initid;
-                    currentRouter.navigate(currentRouter.urlFragmentTemplate(options));
+                    // Extract all GET parameters and rewrite if needed
+                    _.each(searchArguments, function routerGetUrl(getParameter, getKey)
+                    {
+                        if (["id", "initid", "app", "viewId", "revision"].indexOf(getKey) >= 0) {
+                            searchArguments[getKey] = null;
+                        }
+                    });
+
+                    searchPart = _.compact(_.map(searchArguments, function router_composeSearchLocation(GETValue, GETKey)
+                    {
+                        if (GETValue === null) {
+                            return null;
+                        }
+                        return GETKey + "=" + encodeURIComponent(GETValue);
+
+                    }));
+
+                    if (options.viewId !== '!defaultConsultation') {
+                        urlSecondPart = "/views/" + encodeURIComponent(options.viewId);
+                        if (options.revision >= 0) {
+                            urlSecondPart += "/revisions/" + encodeURIComponent(options.revision);
+                        }
+                    } else {
+                        if (options.revision >= 0) {
+                            urlSecondPart = "/revisions/" + encodeURIComponent(options.revision);
+                        }
+                    }
+                    newUrl = window.location.pathname + 'api/v1/documents/' + options.initid + urlSecondPart + ".html";
+                    if (searchPart.length > 0) {
+                        newUrl += '?' + searchPart.join('&');
+                    }
+                    newUrl += window.location.hash;
+                    this.navigate(newUrl);
                 }
+
+            }
+        },
+
+        /**
+         * Rewrite URL if mismatches detected between server information and url access
+         * @param options
+         */
+        rewriteApiUrl: function router_rewriteApiUrl(options)
+        {
+            var parsePath = false, beginPath = '', urlSecondPart = '';
+            if (options.initid) {
+                parsePath = window.location.pathname.match('(.*)api\\/v1\\/documents\\/(.*)');
+                if (parsePath) {
+                    beginPath = parsePath[1];
+
+                    if (options.viewId !== '!defaultConsultation') {
+                        urlSecondPart = "/views/" + encodeURIComponent(options.viewId);
+                        if (options.revision >= 0) {
+                            urlSecondPart += "/revisions/" + encodeURIComponent(options.revision);
+                        }
+                    } else {
+                        if (options.revision >= 0) {
+                            urlSecondPart = "/revisions/" + encodeURIComponent(options.revision);
+                        }
+                    }
+
+                    this.navigate(beginPath + 'api/v1/documents/' + options.initid + urlSecondPart + '.html' + window.location.search + window.location.hash);
+                }
+            }
+        },
+        viewDocument: function router_viewDocument(initid)
+        {
+            this.document.fetchDocument({initid: initid});
+        },
+        viewRevision: function router_viewRevision(initid, revision)
+        {
+            this.document.fetchDocument({
+                initid: initid,
+                revision: revision
             });
         },
 
-        fetch : function router_fetch(searchPart) {
-            var i, split, queries = searchPart.split('&'), searchObject = {}, newValues = {};
-            for (i = 0; i < queries.length; i++) {
-                split = queries[i].split('=');
-                searchObject[split[0]] = decodeURIComponent(split[1]);
-            }
+        viewView: function router_viewView(initid, viewId)
+        {
+            this.document.fetchDocument({
+                initid: initid,
+                viewId: viewId
+            });
+        },
+
+        viewRevisionView: function router_viewRevisionView(initid, revision, viewId)
+        {
+            this.document.fetchDocument({
+                initid: initid,
+                revision: revision,
+                viewId: viewId
+            });
+        },
+        fetch: function router_fetch(searchPart)
+        {
+            var searchObject, newValues = {};
+            searchObject = this.getUrlParameters(searchPart);
+
             if (!_.isUndefined(searchObject.id)) {
                 newValues.initid = searchObject.id;
             }
@@ -66,6 +184,28 @@ define([
                 newValues.viewId = undefined;
             }
             this.document.fetchDocument(newValues);
+        },
+
+        /**
+         * extract url parameters and return an simple object indexed by parameters keys
+         * @param searchPart
+         * @returns {{}}
+         */
+        getUrlParameters: function router_getUrlParameters(searchPart)
+        {
+            var extract,
+                getParameters = searchPart.substr(1).split('&'),
+                result = {};
+
+            for (var i = 0; i < getParameters.length; i++) {
+                extract = getParameters[i].match(/^([^=]+)=(.*)$/);
+                if (extract) {
+                    result[extract[1]] = decodeURIComponent(extract[2]);
+                } else {
+                    result[getParameters[i]] = "";
+                }
+            }
+            return result;
         }
 
     });
