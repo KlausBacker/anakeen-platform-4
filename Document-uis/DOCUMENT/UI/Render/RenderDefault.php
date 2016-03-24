@@ -383,7 +383,7 @@ class RenderDefault implements IRenderConfig
         if ($helpDoc && $helpDoc->isAlive()) {
             
             $menuItem = new ItemMenu("help", ___("Help", "UiMenu"));
-            $menuItem->setBeforeContent('<div class="fa fa-info-circle" />');
+            $menuItem->setBeforeContent('<div class="fa fa-question-circle" />');
             $menuItem->setUrl(sprintf("#action/document.help:%d", $helpDoc->initid));
             $menu->appendElement($menuItem);
         }

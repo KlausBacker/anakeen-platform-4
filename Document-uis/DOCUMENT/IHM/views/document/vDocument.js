@@ -697,7 +697,7 @@ define([
                 target: "_dialog",
                 windowWidth: "400px",
                 windowHeight: "300px",
-                windowTitle: '<i class="fa fa-info-circle"></i> ' + i18n.___("Info", "ddui")
+                windowTitle: '<i class="fa fa-question-circle"></i> ' + i18n.___("Info", "ddui")
             };
 
             require(['dcpDocument/document'], function vDocumentHelp()

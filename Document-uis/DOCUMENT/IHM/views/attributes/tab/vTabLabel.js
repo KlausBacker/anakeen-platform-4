@@ -47,7 +47,7 @@ define([
                 }
 
                 if (helpId) {
-                    this.$el.append(Mustache.render('<span>{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><i class="fa fa-info-circle"></i></a></span>', {
+                    this.$el.append(Mustache.render('<span>{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><i class="fa fa-question-circle"></i></a></span>', {
                         helpId: helpId,
                         attrid: this.model.id,
                         label: label
