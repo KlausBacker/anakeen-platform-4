@@ -100,6 +100,9 @@ class RenderDefault implements IRenderConfig
                 "simpleWrapper" => array(
                     "file" => "DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
                 ) ,
+                "description" => array(
+                    "file" => "DOCUMENT/IHM/views/attributes/attributeDescription.mustache"
+                ) ,
                 
                 "default" => array( // use it when no type is defined
                     "write" => array(

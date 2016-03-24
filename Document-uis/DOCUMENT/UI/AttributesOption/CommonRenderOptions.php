@@ -19,6 +19,7 @@ class CommonRenderOptions extends BaseRenderOptions
     const inputHtmlTooltip = "inputHtmlTooltip";
     const displayDeleteButtonOption = "displayDeleteButton";
     const autoCompleteHtmlLabelOption = "autoCompleteHtmlLabel";
+    const descriptionOption = "description";
     const translatedLabelsOption = "translatedLabels";
     const placeHolderOption = "placeHolder";
     const attributeLabelOption = "attributeLabel";
@@ -116,6 +117,48 @@ class CommonRenderOptions extends BaseRenderOptions
         return $this;
     }
     /**
+     * Add an html text near the attribute
+     *
+     * @param string $htmlTitle Html text short description
+     * @param string $position position : top, bottom, left, topLeft, topRight, bottomLeft, bottomRight, right, click
+     *
+     * @param string $htmlText Html text long description
+     * @param bool   $collapsed if true the long description is collapsed (need click to see it)
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setDescription($htmlTitle, $position = "top", $htmlText = "", $collapsed = false)
+    {
+        $allow = array(
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "topLeft",
+            "topRight",
+            "bottomLeft",
+            "bottomRight",
+            "click"
+        );
+        if (!in_array($position, $allow)) {
+            throw new Exception("UI0205", $position, implode(', ', $allow));
+        }
+        if (!is_string($htmlText)) {
+            throw new Exception("UI0206", gettype($htmlText));
+        }
+        if (!is_bool($collapsed)) {
+            throw new Exception("UI0207", gettype($collapsed));
+        }
+        $this->setOption(self::descriptionOption, array(
+            "htmlTitle" => $htmlTitle,
+            "htmlContent" => $htmlText,
+            "position" => $position,
+            "collapsed" => $collapsed
+        ));
+        return $this;
+    }
+    /**
      * Add a html link on value
      * @param \Dcp\Ui\ButtonOptions $options
      * @return $this
@@ -160,7 +203,6 @@ class CommonRenderOptions extends BaseRenderOptions
      * Add menu "help"
      *
      * @param string $documentIdentifier must identifier a HELP family document
-     * @param bool $displayLinkInAttributes use true to add
      * @return $this
      */
     public function setLinkHelp($documentIdentifier)

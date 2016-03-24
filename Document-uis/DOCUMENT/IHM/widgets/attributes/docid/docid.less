@@ -57,9 +57,15 @@
   transition: background-color 500ms linear;
 }
 .dcpAttribute__value--docid .dcpAttribute__content__link.dcpAttribute__value--multiple {
+  //display:block;
+  //float:left; /* special to center tooltip to content */
+  //clear:both;
+}
+
+
+.dcpAttribute__value--docid .dcpAttribute__content__link.dcpAttribute__value--multiple::after {
+  content:" ";
   display:block;
-  float:left; /* special to center tooltip to content */
-  clear:both;
 }
 
 .dcpAttribute__select--docid li.k-state-selected {

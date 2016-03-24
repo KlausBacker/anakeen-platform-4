@@ -125,6 +125,21 @@ namespace {
          */
         const UI0204 = 'Line number  "%s" is not a positive number';
         /**
+         * @errorCode Description Position must be in defined set
+         * @see CommonRenderOptions::setDescription
+         */
+        const UI0205 = 'Value "%s" for position option "setDescription" is invalid : allowed are : %s';
+        /**
+         * @errorCode Description Html text is a string
+         * @see CommonRenderOptions::setDescription
+         */
+        const UI0206 = 'Text must string, found "%s"';
+        /**
+         * @errorCode Description Expand parameter is a bool
+         * @see CommonRenderOptions::setDescription
+         */
+        const UI0207 = 'Expand must be a bool, found "%s"';
+        /**
          * @errorCode Only view,edit, create are allowed
          */
         const UI0300 = 'Mode "%s" is not a valid render mode';
