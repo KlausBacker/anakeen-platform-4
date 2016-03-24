@@ -128,8 +128,8 @@ function autocomplete(Action & $action)
 function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
 {
     dduiSetHttpVar("_ct", " ");
+    
     if (is_array($attributes)) {
-        
         foreach ($attributes as $aid => $formatValue) {
             if ($formatValue) {
                 $first = current($formatValue);
@@ -148,7 +148,9 @@ function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
                     }
                     dduiSetHttpVar("_$aid", $rawValue);
                 } else {
-                    dduiSetHttpVar("_$aid", $formatValue["value"]);
+                    if (isset($formatValue["value"])) {
+                        dduiSetHttpVar("_$aid", $formatValue["value"]);
+                    }
                 }
             }
         }

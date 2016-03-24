@@ -75,7 +75,7 @@
                     $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
                     this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
                     if (this.options.renderOptions.placeHolder) {
-                        this.options.renderOptions.kendoMultiSelectConfiguration.placeholder=this.options.renderOptions.placeHolder;
+                        this.options.renderOptions.kendoMultiSelectConfiguration.placeholder = this.options.renderOptions.placeHolder;
                     }
                     if (this._isMultiple()) {
                         this._decorateMultipleValue(this.kendoWidget);
@@ -230,19 +230,21 @@
 
                         _.each(this.value(), function wDocidSelectChange(val)
                         {
-                            displayValue = _.where(oldValues, {value: val});
-                            if (displayValue.length === 0) {
-                                displayValue = _.where(kMultiSelect.dataSource.data(), {docId: val});
-                                if (displayValue.length > 0) {
-                                    displayValue = displayValue[0].docTitle;
+                            if (!_.isUndefined(val)) {
+                                displayValue = _.where(oldValues, {value: val});
+                                if (displayValue.length === 0) {
+                                    displayValue = _.where(kMultiSelect.dataSource.data(), {docId: val});
+                                    if (displayValue.length > 0) {
+                                        displayValue = displayValue[0].docTitle;
+                                    } else {
+                                        displayValue = "-";
+                                    }
                                 } else {
-                                    displayValue = "-";
+                                    displayValue = displayValue[0].displayValue;
                                 }
-                            } else {
-                                displayValue = displayValue[0].displayValue;
-                            }
 
-                            newValues.push({value: val, displayValue: displayValue});
+                                newValues.push({value: val, displayValue: displayValue});
+                            }
                         });
 
                         if (!currentWidget._isMultiple()) {
