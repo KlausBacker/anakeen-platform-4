@@ -1,5 +1,5 @@
 /*global define*/
-define(function (require, exports, module)
+define(function attributeTemplate(require/*, exports, module*/)
     {
         'use strict';
         var _ = require('underscore');
@@ -32,11 +32,11 @@ define(function (require, exports, module)
                 {
                     templateInfo.attributes[attributeId] = {attributeValue: attributeValue};
                 });
-                _.each(documentData.attributeLabels, function (attributeLabel, attributeId)
+                _.each(documentData.attributeLabels, function attributeTemplategetTemplateModelInfoEach(attributeLabel, attributeId)
                 {
                     var currentAttributeModel = documentModel.get('attributes').get(attributeId);
                     if (currentAttributeModel.getOption("attributeLabel")) {
-                        attributeLabel=currentAttributeModel.getOption("attributeLabel");
+                        attributeLabel = currentAttributeModel.getOption("attributeLabel");
                     }
 
                     if (templateInfo.attributes[attributeId]) {
@@ -53,9 +53,9 @@ define(function (require, exports, module)
                     if (currentAttributeModel.get("type") === "array") {
                         templateInfo.attributes[attributeId].toolsEnabled = templateInfo.attributes[attributeId].isWriteMode &&
                             (currentAttributeModel.get("visibility") !== "U") &&
-                        (currentAttributeModel.getOption("rowAddDisable") !== true ||
-                         currentAttributeModel.getOption("rowDelDisable") !== true||
-                         currentAttributeModel.getOption("rowMoveDisable") !== true);
+                            (currentAttributeModel.getOption("rowAddDisable") !== true ||
+                            currentAttributeModel.getOption("rowDelDisable") !== true ||
+                            currentAttributeModel.getOption("rowMoveDisable") !== true);
                         templateInfo.attributes[attributeId].rows = _.bind(currentTemplate.getArrayRowInfo, currentTemplate, currentAttributeModel);
                         templateInfo.attributes[attributeId].tableTools = _.bind(currentTemplate.getArrayTools, currentTemplate, currentAttributeModel);
                     }
@@ -129,7 +129,6 @@ define(function (require, exports, module)
                 return $render;
             },
 
-
             /**
              *
              * @param $el
@@ -139,7 +138,7 @@ define(function (require, exports, module)
              */
             completeCustomContent: function attributeTemplateCompleteCustomContent($el, documentModel, callBackView, config)
             {
-                $el.find(".dcpCustomTemplate--content").each(function ()
+                $el.find(".dcpCustomTemplate--content").each(function attributeTemplatecompleteCustomContentEach()
                 {
                     var attrId = $(this).data("attrid"),
                         displayLabel = ($(this).data("displaylabel") === true),
@@ -205,7 +204,6 @@ define(function (require, exports, module)
                 var templateInfo = this.getTemplateInfo(attributeModel);
                 var extraKeys = attributeModel.getOption("templateKeys");
 
-
                 _.each(documentData.attributeLabels, function attributeTemplate_eachLabel(attributeLabel, attributeId)
                 {
                     var currentAttributeModel = attributeModel.getDocumentModel().get('attributes').get(attributeId);
@@ -228,7 +226,7 @@ define(function (require, exports, module)
                     }
 
                     if (currentAttribute.getOption("attributeLabel")) {
-                        attributeLabel=currentAttribute.getOption("attributeLabel");
+                        attributeLabel = currentAttribute.getOption("attributeLabel");
                     }
                     templateInfo.content[attributeId] = {};
                     templateInfo.content[attributeId].attributeValue = {
@@ -241,7 +239,7 @@ define(function (require, exports, module)
                 });
 
                 if (extraKeys && extraKeys.attribute && extraKeys.attribute.rows) {
-                    _.each(extraKeys.attribute.rows, function (extraValues, extraKey)
+                    _.each(extraKeys.attribute.rows, function attributeTemplategetLineInfoEach(extraValues, extraKey)
                     {
                         templateInfo[extraKey] = extraValues[index];
                     });
@@ -263,9 +261,9 @@ define(function (require, exports, module)
 
                 info = {
                     attribute: {
-                        rows: function ()
+                        rows: function attributeTemplateExtractRowContent()
                         {
-                            return function attributeTemplate_getRowContent(text, render)
+                            return function attributeTemplate_getRowContent(text)
                             {
                                 scope.customLineTemplate = text.trim();
                             };
@@ -281,10 +279,9 @@ define(function (require, exports, module)
              * Construct custom line (declared in vArray::render and used in wArray::_getLineContent)
              * @param index
              * @param attrModel
-             * @param callerView
              * @returns {*|HTMLElement}
              */
-            customArrayRowView: function attributeTemplateCustomArrayRowView(index, attrModel, callerView)
+            customArrayRowView: function attributeTemplateCustomArrayRowView(index, attrModel)
             {
 
                 var $render;
@@ -337,11 +334,10 @@ define(function (require, exports, module)
                 var templates = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var tool = '';
                 if (templates && templates.line) {
-                    tool = $(Mustache.render(templates.line || "", {tools: true})).find(".dcpArray__toolCell").html() ;
+                    tool = $(Mustache.render(templates.line || "", {tools: true})).find(".dcpArray__toolCell").html();
                 }
                 return tool;
             },
-
 
             /**
              * Get data for mustache "rows" variable
@@ -365,10 +361,10 @@ define(function (require, exports, module)
                     }
 
                     if (currentAttribute.getOption("attributeLabel")) {
-                        attributeLabel=currentAttribute.getOption("attributeLabel");
+                        attributeLabel = currentAttribute.getOption("attributeLabel");
                     }
                     values = currentAttribute.get('attributeValue');
-                    _.each(values, function (singleValue, index)
+                    _.each(values, function attributeTemplategetArrayRowInfoEach(singleValue, index)
                     {
                         if (_.isUndefined(rows[index])) {
                             rows[index] = {content: {}};
@@ -386,6 +382,132 @@ define(function (require, exports, module)
                 });
 
                 return rows;
+            },
+
+            insertDescription: function attributeTemplateInsertDescription(attributeView)
+            {
+                var data = attributeView.model.toData(null, true);
+                var descriptionTemplate;
+                var $viewElement = attributeView.$el;
+                var isFrame = $viewElement.hasClass("dcpFrame");
+
+                if (data.renderOptions.description) {
+                    descriptionTemplate = attributeView.model.getTemplates().attribute.description;
+                    data.renderOptions.description.htmlContentRender = Mustache.render(data.renderOptions.description.htmlContent, data);
+                    data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
+
+                    $viewElement.append($(Mustache.render(descriptionTemplate || "", data)));
+
+                    if (isFrame) {
+                        switch (data.renderOptions.description.position) {
+                            case "top":
+                            case "topLabel":
+                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                                break;
+                            case "left":
+                                $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--left-description");
+                                $viewElement.find("> .dcpAttribute__description").insertAfter($viewElement.find(".dcpFrame__label"));
+                                break;
+                            case "right":
+                                // Need to add class because no have css selector
+                                $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--right-description");
+
+                                break;
+                            case "bottomLabel":
+                                $viewElement.find("> .dcpAttribute__description").insertAfter($viewElement.find(".dcpFrame__label"));
+                                break;
+                            case "topValue":
+                                $viewElement.find(".dcpFrame__content").prepend($viewElement.find("> .dcpAttribute__description"));
+                                break;
+                            case "bottomValue":
+                                $viewElement.find(".dcpFrame__content").append($viewElement.find("> .dcpAttribute__description"));
+                                break;
+                            case "click":
+                                $viewElement.find(".dcpFrame__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+
+                                $viewElement.find(".dcpAttribute__label_description").tooltip({
+                                    html: true,
+                                    container: $viewElement,
+                                    title: $viewElement.find("> .dcpAttribute__description"),
+                                    placement: "auto",
+                                    trigger: "manual"
+                                }).on("click", function vAttributeShowDesc()
+                                {
+                                    event.stopPropagation();
+                                    $(this).tooltip("toggle");
+                                }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
+
+                                $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
+                                $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                {
+                                    event.stopPropagation();
+                                    $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
+                                });
+
+                        }
+                    } else {
+                        switch (data.renderOptions.description.position) {
+                            case "top":
+                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                                break;
+                            case "left":
+                                $viewElement.find(".dcpAttribute__label").append($viewElement.find("> .dcpAttribute__description"));
+                                break;
+                            case "right":
+                                $viewElement.find(".dcpAttribute__content").append($viewElement.find("> .dcpAttribute__description"));
+                                break;
+                            case "topValue":
+                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
+                                break;
+                            case "topLabel":
+                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
+                                break;
+                            case "bottomValue":
+                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
+                                break;
+                            case "bottomLabel":
+                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
+                                break;
+                            case "click":
+                                $viewElement.find(".dcpAttribute__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+
+                                $viewElement.find(".dcpAttribute__label_description").tooltip({
+                                    html: true,
+                                    container: $viewElement,
+                                    placement: "auto",
+                                    title: $viewElement.find("> .dcpAttribute__description"),
+                                    trigger: "manual"
+                                }).on("click", function vAttributeShowDesc()
+                                {
+                                    $(this).tooltip("toggle");
+                                }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
+
+                                $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
+                                $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                {
+                                    event.stopPropagation();
+                                    $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
+                                });
+
+                        }
+                    }
+                    if (data.renderOptions.description.htmlContent) {
+                        $viewElement.on("click", ".dcpAttribute__description__title", function vAttribute_descToggle()
+                        {
+                            var $contentElement = $(this).closest(".dcpAttribute__description").find(".dcpAttribute__description__content");
+                            $(this).find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
+                            $contentElement.slideToggle(200);
+
+                        });
+                        if (data.renderOptions.description.collapsed === true) {
+                            $viewElement.find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
+                            $viewElement.find(".dcpAttribute__description__content").hide();
+
+                        }
+                    }
+                }
             }
         };
 

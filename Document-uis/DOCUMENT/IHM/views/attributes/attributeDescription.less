@@ -12,17 +12,17 @@
   clear: both;
 }
 
-.dcpAttribute__description.dcpAttribute__description--topRight.dcpAttribute__right,
-.dcpAttribute__description.dcpAttribute__description--bottomRight.dcpAttribute__right {
+.dcpAttribute__description.dcpAttribute__description--topValue.dcpAttribute__right,
+.dcpAttribute__description.dcpAttribute__description--bottomValue.dcpAttribute__right {
   clear: both;
   float: right;
 }
 
-.dcpAttribute__description.dcpAttribute__description--topLeft.dcpAttribute__left {
+.dcpAttribute__description.dcpAttribute__description--topLabel.dcpAttribute__left {
   float: none;
 }
 
-.dcpAttribute__description--topRight + .dcpAttribute__left.dcpAttribute__label {
+.dcpAttribute__description--topValue + .dcpAttribute__left.dcpAttribute__label {
   clear: both;
 }
 
@@ -89,16 +89,17 @@
   margin-top: (-1 - @dcpAttributeDescriptionArrowSize);
 }
 
-.dcpAttribute__description--top, .dcpAttribute__description--topLeft, .dcpAttribute__description--topRight {
+.dcpAttribute__description--top, .dcpAttribute__description--topLabel, .dcpAttribute__description--topValue {
   position: relative;
 }
+
 .dcpAttribute__description--click {
-  display:none;
+  display: none;
 }
 
 .dcpAttribute__description--top:after, .dcpAttribute__description--top:before,
-.dcpAttribute__description--topLeft:after, .dcpAttribute__description--topLeft:before,
-.dcpAttribute__description--topRight:after, .dcpAttribute__description--topRight:before {
+.dcpAttribute__description--topLabel:after, .dcpAttribute__description--topLabel:before,
+.dcpAttribute__description--topValue:after, .dcpAttribute__description--topValue:before {
   top: 100%;
   left: 50%;
   border: solid transparent;
@@ -110,8 +111,8 @@
 }
 
 .dcpAttribute__description--top:after,
-.dcpAttribute__description--topLeft:after,
-.dcpAttribute__description--topRight:after {
+.dcpAttribute__description--topLabel:after,
+.dcpAttribute__description--topValue:after {
   border-color: rgba(255, 255, 255, 0);
   border-top-color: @dcpAttributeDescriptionBackgroundColor;
   border-width: @dcpAttributeDescriptionArrowSize;
@@ -119,8 +120,8 @@
 }
 
 .dcpAttribute__description--top:before,
-.dcpAttribute__description--topLeft:before,
-.dcpAttribute__description--topRight:before {
+.dcpAttribute__description--topLabel:before,
+.dcpAttribute__description--topValue:before {
   border-color: rgba(191, 191, 191, 0);
   border-top-color: @dcpAttributeDescriptionBorderColor;
   border-width: (@dcpAttributeDescriptionArrowSize + 1);
@@ -128,16 +129,16 @@
 }
 
 .dcpAttribute__description--bottom,
-.dcpAttribute__description--bottomRight,
-.dcpAttribute__description--bottomLeft {
+.dcpAttribute__description--bottomValue,
+.dcpAttribute__description--bottomLabel {
   position: relative;
   top: @dcpAttributeDescriptionArrowSize;
   clear: both;
 }
 
 .dcpAttribute__description--bottom:after, .dcpAttribute__description--bottom:before,
-.dcpAttribute__description--bottomRight:after, .dcpAttribute__description--bottomRight:before,
-.dcpAttribute__description--bottomLeft:after, .dcpAttribute__description--bottomLeft:before {
+.dcpAttribute__description--bottomValue:after, .dcpAttribute__description--bottomValue:before,
+.dcpAttribute__description--bottomLabel:after, .dcpAttribute__description--bottomLabel:before {
   bottom: 100%;
   left: 50%;
   border: solid transparent;
@@ -148,21 +149,96 @@
   pointer-events: none;
 }
 
+.dcpFrame > .dcpAttribute__description {
+  float: none;
+  width: 100%;
+
+  &.dcpAttribute__description--top,
+  &.dcpAttribute__description--topLabel,
+  &.dcpAttribute__description--topValue,
+  &.dcpAttribute__description--bottom,
+  &.dcpAttribute__description--bottomValue,
+  &.dcpAttribute__description--bottomLabel {
+    &:before, &:after {
+      left: 50%;
+    }
+  }
+  &.dcpAttribute__description--topLabel,
+  &.dcpAttribute__description--top {
+    margin-bottom: @dcpAttributeDescriptionArrowSize;
+  }
+
+  &.dcpAttribute__description--bottom,
+  &.dcpAttribute__description--bottomLabel,
+  &.dcpAttribute__description--left,
+  &.dcpAttribute__description--right {
+    &:before, &:after {
+      display: none;
+    }
+  }
+  &.dcpAttribute__description--left, &.dcpAttribute__description--right {
+    //margin-right: @dcpAttributeDescriptionArrowSize;
+    display: inline-block;
+    width: 10em;
+
+    vertical-align: top;
+    margin: 1em;
+
+    &:before, &:after {
+      top: 50%;
+    }
+  }
+}
+
+.dcpFrame__content.dcpFrame__content--right-description,
+.dcpFrame__content.dcpFrame__content--left-description  {
+  display: inline-block;
+  width: ~"calc(100% - 12em)";
+}
+
+@media (min-width: @screen-md-min) {
+  .dcpFrame > .dcpAttribute__description {
+    &.dcpAttribute__description--right,
+    &.dcpAttribute__description--left {
+      width: 15em;
+    }
+  }
+
+  .dcpFrame__content.dcpFrame__content--left-description,
+  .dcpFrame__content.dcpFrame__content--right-description  {
+    width: ~"calc(100% - 17em)";
+  }
+}
+
+
+.dcpFrame__content > .dcpAttribute__description {
+  &.dcpAttribute__description--topValue,
+  &.dcpAttribute__description--bottomLabel,
+  &.dcpAttribute__description--bottomValue {
+    &:before, &:after {
+      display: none;
+    }
+  }
+}
+
 @media (min-width: (@grid-float-breakpoint + 1)) {
-  .dcpAttribute__description--bottomLeft:after, .dcpAttribute__description--bottomLeft:before,
-  .dcpAttribute__description--topLeft:after, .dcpAttribute__description--topLeft:before {
+  .dcpAttribute > .dcpAttribute__description--bottomLabel:after,
+  .dcpAttribute > .dcpAttribute__description--bottomLabel:before,
+  .dcpAttribute > .dcpAttribute__description--topLabel:after, .dcpAttribute > .dcpAttribute__description--topLabel:before {
     left: ~"calc(100% - 2em)";
   }
 
-  .dcpAttribute__description--bottomRight:after, .dcpAttribute__description--bottomRight:before,
-  .dcpAttribute__description--topRight:after, .dcpAttribute__description--topRight:before {
+  .dcpAttribute > .dcpAttribute__description--bottomValue:after,
+  .dcpAttribute > .dcpAttribute__description--bottomValue:before,
+  .dcpAttribute > .dcpAttribute__description--topValue:after,
+  .dcpAttribute > .dcpAttribute__description--topValue:before {
     left: 2em;
   }
 }
 
 .dcpAttribute__description--bottom:after,
-.dcpAttribute__description--bottomRight:after,
-.dcpAttribute__description--bottomLeft:after {
+.dcpAttribute__description--bottomValue:after,
+.dcpAttribute__description--bottomLabel:after {
   border-color: rgba(255, 255, 255, 0);
   border-bottom-color: @dcpAttributeDescriptionBackgroundColor;
   border-width: @dcpAttributeDescriptionArrowSize;
@@ -170,8 +246,8 @@
 }
 
 .dcpAttribute__description--bottom:before,
-.dcpAttribute__description--bottomRight:before,
-.dcpAttribute__description--bottomLeft:before {
+.dcpAttribute__description--bottomValue:before,
+.dcpAttribute__description--bottomLabel:before {
   border-color: rgba(191, 191, 191, 0);
   border-bottom-color: @dcpAttributeDescriptionBorderColor;
   border-width: (@dcpAttributeDescriptionArrowSize + 1);
@@ -212,26 +288,40 @@
   border-width: (@dcpAttributeDescriptionArrowSize + 1);
   margin-top: (-1 - @dcpAttributeDescriptionArrowSize);
 }
+
 .dcpAttribute__description-info.in {
   opacity: 1;
 }
+
 .dcpAttribute__description-info .tooltip-inner {
-  background-color:@dcpAttributeDescriptionBackgroundColor;
-  color:black;
-  max-width:400px;
-  border:solid @brand-info 2px;
+  background-color: @dcpAttributeDescriptionBackgroundColor;
+  color: black;
+  max-width: 400px;
+  border: solid @dcpAttributeDescriptionBorderColor 2px;
 }
+
 .dcpAttribute__description-info .dcpAttribute__description {
   background: transparent;
-  display:block;
-  border:none;
-  border-radius:0;
-  box-shadow:none;
+  display: block;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
+
 .dcpAttribute__description-info.tooltip.top .tooltip-arrow {
-  border-top-color: @brand-info;
+  border-top-color: @dcpAttributeDescriptionBorderColor;
 }
+.dcpAttribute__description-info.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: @dcpAttributeDescriptionBorderColor;
+}
+.dcpAttribute__description-info.tooltip.left .tooltip-arrow {
+  border-left-color: @dcpAttributeDescriptionBorderColor;
+}
+.dcpAttribute__description-info.tooltip.right .tooltip-arrow {
+  border-right-color: @dcpAttributeDescriptionBorderColor;
+}
+
 .dcpAttribute__label_description {
-  padding-right:0.5em;
-  cursor:pointer;
+  padding-right: 0.5em;
+  cursor: pointer;
 }

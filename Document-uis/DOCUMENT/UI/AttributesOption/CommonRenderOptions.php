@@ -120,7 +120,7 @@ class CommonRenderOptions extends BaseRenderOptions
      * Add an html text near the attribute
      *
      * @param string $htmlTitle Html text short description
-     * @param string $position position : top, bottom, left, topLeft, topRight, bottomLeft, bottomRight, right, click
+     * @param string $position position : top, bottom, left, topLabel, topValue, bottomLabel, bottomValue, right, click
      *
      * @param string $htmlText Html text long description
      * @param bool   $collapsed if true the long description is collapsed (need click to see it)
@@ -135,10 +135,10 @@ class CommonRenderOptions extends BaseRenderOptions
             "bottom",
             "left",
             "right",
-            "topLeft",
-            "topRight",
-            "bottomLeft",
-            "bottomRight",
+            "topLabel",
+            "topValue",
+            "bottomLabel",
+            "bottomValue",
             "click"
         );
         if (!in_array($position, $allow)) {

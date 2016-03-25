@@ -63,7 +63,6 @@ define([
             this.listenTo(this.model, 'haveView', this._identifyView);
             this.listenTo(this.model, 'closeWidget', this._closeWidget);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
-            this.descriptionTemplate = this.model.getTemplates().attribute.description;
 
             if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
                 this.displayLabel = false;
@@ -106,7 +105,6 @@ define([
         {
             //console.time("render attribute " + this.model.id);
             var data = this.getData(), event = {prevent: false};
-            var $viewElement=this.$el;
 
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
             this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
@@ -115,75 +113,9 @@ define([
                 this.$el.addClass("dcpAttribute--needed");
             }
 
-            if (data.renderOptions.description) {
-                data.renderOptions.description.htmlContentRender = Mustache.render(data.renderOptions.description.htmlContent, data);
-                data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
-
-                this.$el.append($(Mustache.render(this.descriptionTemplate || "", data)));
-            }
-
             this.$el.append($(Mustache.render(this.templateWrapper || "", data)));
 
-            if (data.renderOptions.description) {
-                switch (data.renderOptions.description.position) {
-                    case "bottom":
-                        this.$el.append(this.$el.find("> .dcpAttribute__description"));
-                        break;
-                    case "left":
-                        this.$el.find(".dcpAttribute__label").append(this.$el.find("> .dcpAttribute__description"));
-                        break;
-                    case "right":
-                        this.$el.find(".dcpAttribute__content").append(this.$el.find("> .dcpAttribute__description"));
-                        break;
-                    case "topRight":
-                        this.$el.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
-                        break;
-                    case "topLeft":
-                        this.$el.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
-                        break;
-                    case "bottomRight":
-                        this.$el.append(this.$el.find("> .dcpAttribute__description"));
-                        this.$el.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
-                        break;
-                    case "bottomLeft":
-                        this.$el.append(this.$el.find("> .dcpAttribute__description"));
-                        this.$el.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
-                        break;
-                    case "click":
-                        this.$el.find(".dcpAttribute__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
-
-                        this.$el.find(".dcpAttribute__label_description").tooltip({
-                            html: true,
-                             container: this.$el,
-                            title: this.$el.find("> .dcpAttribute__description"),
-                            trigger: "manual"
-                        }).on("click", function vAttributeShowDesc() {
-                            $(this).tooltip("toggle");
-                        }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                        this.$el.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                        this.$el.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                        {
-                            event.stopPropagation();
-                            $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
-                        });
-
-                }
-                if (data.renderOptions.description.htmlContent) {
-                    this.$el.on("click", ".dcpAttribute__description__title", function vAttribute_descToggle()
-                    {
-                        var $contentElement = $(this).closest(".dcpAttribute__description").find(".dcpAttribute__description__content");
-                        $(this).find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
-                        $contentElement.slideToggle(200);
-
-                    });
-                    if (data.renderOptions.description.collapsed === true) {
-                        this.$el.find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
-                        this.$el.find(".dcpAttribute__description__content").hide();
-
-                    }
-                }
-            }
+            attributeTemplate.insertDescription(this);
 
             this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
             if (event.prevent) {

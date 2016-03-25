@@ -76,6 +76,7 @@ define([
             this.$el.append(contentElement);
             this.$el.attr("data-attrid", this.model.id);
 
+
             $content = this.$el.find(".dcpFrame__content");
             var hasOneContent = this.model.get("content").some(function vFrame_getDisplayable(value)
             {
@@ -117,6 +118,7 @@ define([
                     });
                 }
 
+                attributeTemplate.insertDescription(this);
                 helpId = this.model.getOption("helpLinkIdentifier");
                 if (helpId) {
                     this.$el.find(".dcpLabel__help__link").on("click", function vFrameLabelHelpClick(event)
