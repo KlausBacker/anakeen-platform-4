@@ -149,7 +149,8 @@
   pointer-events: none;
 }
 
-.dcpFrame > .dcpAttribute__description {
+.dcpFrame > .dcpAttribute__description,
+.dcpArray > .dcpAttribute__description {
   float: none;
   width: 100%;
 
@@ -190,8 +191,9 @@
   }
 }
 
+
 .dcpFrame__content.dcpFrame__content--right-description,
-.dcpFrame__content.dcpFrame__content--left-description  {
+.dcpFrame__content.dcpFrame__content--left-description {
   display: inline-block;
   width: ~"calc(100% - 12em)";
 }
@@ -211,10 +213,21 @@
 }
 
 
+.dcpArray__content > .dcpAttribute__description,
 .dcpFrame__content > .dcpAttribute__description {
   &.dcpAttribute__description--topValue,
   &.dcpAttribute__description--bottomLabel,
   &.dcpAttribute__description--bottomValue {
+    &:before, &:after {
+      display: none;
+    }
+  }
+}
+
+
+.dcpArray__label > .dcpAttribute__description {
+  &.dcpAttribute__description--topLabel,
+  &.dcpAttribute__description--bottomLabel {
     &:before, &:after {
       display: none;
     }
@@ -246,6 +259,10 @@
   &:before, &:after {
       display: none;
     }
+}
+
+.dcpArray__table + .dcpAttribute__description--bottomValue {
+  margin-bottom:1em;
 }
 .dcpArray__cell > .dcpAttribute__description {
   white-space: normal;

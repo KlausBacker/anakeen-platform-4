@@ -116,7 +116,6 @@ define([
                             }
                         }
                     });
-                    attributeTemplate.insertDescription(this);
                 }
             }
 
@@ -133,6 +132,7 @@ define([
                     this.$el.append(this.customView);
                 } else {
                     this.$el.dcpArray(data);
+                    attributeTemplate.insertDescription(this);
                 }
             } catch (e) {
                 if (window.dcp.logger) {
