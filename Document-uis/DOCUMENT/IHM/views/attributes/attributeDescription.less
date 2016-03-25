@@ -236,6 +236,25 @@
   }
 }
 
+.dcpArray__head__cell > .dcpAttribute__description {
+  white-space: normal;
+  font-weight: normal;
+
+  &.dcpAttribute__description--bottomLabel {
+    margin-bottom:1em;
+  }
+  &:before, &:after {
+      display: none;
+    }
+}
+.dcpArray__cell > .dcpAttribute__description {
+  white-space: normal;
+
+  &.dcpAttribute__description--bottomValue {
+    margin-bottom:@dcpAttributeDescriptionArrowSize;
+  }
+}
+
 .dcpAttribute__description--bottom:after,
 .dcpAttribute__description--bottomValue:after,
 .dcpAttribute__description--bottomLabel:after {

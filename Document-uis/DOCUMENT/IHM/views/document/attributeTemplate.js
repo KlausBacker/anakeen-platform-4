@@ -384,21 +384,31 @@ define(function attributeTemplate(require/*, exports, module*/)
                 return rows;
             },
 
-            insertDescription: function attributeTemplateInsertDescription(attributeView)
+            /**
+             * Insert attribute description
+             * @param attributeView Backbone view
+             * @param $customElement specific other DOM element instead of default element view
+             */
+            insertDescription: function attributeTemplateInsertDescription(attributeView, $customElement)
             {
                 var data = attributeView.model.toData(null, true);
                 var descriptionTemplate;
-                var $viewElement = attributeView.$el;
+                var $viewElement = $customElement ? $customElement : attributeView.$el;
                 var isFrame = $viewElement.hasClass("dcpFrame");
+                var isArray = $viewElement.hasClass("dcpArray");
+                var isArrayHead = $viewElement.hasClass("dcpArray__head__cell");
+                var isArrayCell = $viewElement.hasClass("dcpArray__cell");
+                var isAttribute = $viewElement.hasClass("dcpAttribute");
+                var descriptionElement;
 
                 if (data.renderOptions.description) {
                     descriptionTemplate = attributeView.model.getTemplates().attribute.description;
                     data.renderOptions.description.htmlContentRender = Mustache.render(data.renderOptions.description.htmlContent, data);
                     data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
 
-                    $viewElement.append($(Mustache.render(descriptionTemplate || "", data)));
-
+                    descriptionElement = $(Mustache.render(descriptionTemplate || "", data));
                     if (isFrame) {
+                        $viewElement.append(descriptionElement);
                         switch (data.renderOptions.description.position) {
                             case "top":
                             case "topLabel":
@@ -445,7 +455,9 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 });
 
                         }
-                    } else {
+                    }
+                    if (isAttribute) {
+                        $viewElement.append(descriptionElement);
                         switch (data.renderOptions.description.position) {
                             case "top":
                                 $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
@@ -491,6 +503,62 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                                 });
 
+                        }
+                    }
+
+                    if (isArrayCell || isArrayHead) {
+                        switch (data.renderOptions.description.position) {
+                            case "topLabel":
+                            case "top":
+                                if (isArrayHead) {
+                                    $viewElement.prepend(descriptionElement);
+                                }
+                                break;
+                            case "topValue":
+                                if (isArrayCell) {
+                                    $viewElement.prepend(descriptionElement);
+                                }
+                                break;
+                            case "bottomValue":
+                                if (isArrayCell) {
+                                    $viewElement.append(descriptionElement);
+                                }
+                                break;
+                            case "bottom":
+                            case "bottomLabel":
+                                if (isArrayHead) {
+                                    $viewElement.append(descriptionElement);
+                                }
+                                break;
+                            case "click":
+                                if (isArrayHead) {
+                                    $viewElement.append(descriptionElement);
+                                    $viewElement.prepend('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+
+                                    $viewElement.find(".dcpAttribute__label_description").tooltip({
+                                        html: true,
+                                        container: $viewElement,
+                                        placement: "auto",
+                                        title: $viewElement.find("> .dcpAttribute__description"),
+                                        trigger: "manual"
+                                    }).on("click", function vAttributeShowDesc()
+                                    {
+                                        $(this).tooltip("toggle");
+                                    }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
+
+                                    $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
+                                    $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                    {
+                                        event.stopPropagation();
+                                        $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
+                                    });
+                                }
+                                break;
+                            case "left":
+                            case "right":
+                                // No use in column context
+                                console.error("Cannot use \"" + data.renderOptions.description.position + "\" description position in column attribute : " + data.id);
+                                break;
                         }
                     }
                     if (data.renderOptions.description.htmlContent) {

@@ -4,8 +4,9 @@ define([
     'underscore',
     'backbone',
     'mustache',
-    'dcpDocument/views/attributes/vAttribute'
-], function ($, _, Backbone, Mustache, ViewAttribute)
+    'dcpDocument/views/attributes/vAttribute',
+    'dcpDocument/views/document/attributeTemplate'
+], function vColumn($, _, Backbone, Mustache, ViewAttribute, attributeTemplate)
 {
     'use strict';
 
@@ -42,7 +43,15 @@ define([
                 // Need to defer because thead is not construct yet
                 _.defer(function vColumnHideHead()
                 {
-                    scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]').hide();
+                    var $head = scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]');
+                    $head.hide();
+                });
+            } else {
+                // Need to defer because thead is not construct yet
+                _.defer(function vColumnDescriptionHead()
+                {
+                    var $head = scope.$el.find('.dcpArray__head__cell[data-attrid="' + scope.model.id + '"]');
+                    attributeTemplate.insertDescription(scope, $head);
                 });
             }
             this.model.trigger("renderColumnDone", {model: this.model, $el: this.$el});
@@ -52,7 +61,8 @@ define([
         /**
          * Change the label of the column
          */
-        changeLabel : function vColumnChangeLabel() {
+        changeLabel: function vColumnChangeLabel()
+        {
             this.$el.find('.dcpArray__head__cell[data-attrid="' + this.model.id + '"]').text(this.model.get("label"));
         },
 
@@ -70,7 +80,7 @@ define([
                 if (cells[index]) {
                     try {
                         $el = $(cells[index]);
-                        this.model.trigger("beforeRender", event, {model : this.model, $el : $el, index : index});
+                        this.model.trigger("beforeRender", event, {model: this.model, $el: $el, index: index});
                         if (event.prevent) {
                             return this;
                         }
@@ -78,8 +88,9 @@ define([
                             $el.append(customView);
                         } else {
                             this.widgetInit($el, data);
+                            attributeTemplate.insertDescription(this, $el.parent());
                         }
-                        this.model.trigger("renderDone", {model: this.model, $el: $el, index : index});
+                        this.model.trigger("renderDone", {model: this.model, $el: $el, index: index});
                         this.moveValueIndex({});
                     } catch (error) {
                         if (window.dcp.logger) {
@@ -116,7 +127,7 @@ define([
                 attrid: this.model.id,
                 options: [initid, "!defaultConsultation"],
                 index: options.index,
-                row:tableLine
+                row: tableLine
             });
 
             if (event.prevent) {
@@ -135,7 +146,7 @@ define([
          */
         hide: function vColumnHide()
         {
-            this.getDOMElements().each(function ()
+            this.getDOMElements().each(function vColumnHideEach()
             {
                 var $cell = $(this);
                 var tagName = $cell.prop("tagName").toLowerCase();
@@ -151,7 +162,7 @@ define([
          */
         show: function vColumnShow()
         {
-            this.getDOMElements().each(function ()
+            this.getDOMElements().each(function vColumnShowEach()
             {
                 var $cell = $(this);
                 var tagName = $cell.prop("tagName").toLowerCase();
@@ -162,8 +173,5 @@ define([
                 $cell.show();
             });
         }
-
     });
-
-
 });
