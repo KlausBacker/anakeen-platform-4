@@ -9,7 +9,7 @@ window.dcp = window.dcp || {};
     } else {
         //Load translation and load i18n handler for non require project
         $.get("api/v1/i18n/DOCUMENT").done(function translationLoaded(catalog) {
-            factory(window.dcp.i18n, catalog);
+            factory(window.dcp._i18n, catalog);
             //Trigger an event when translation loaded
             $(window).trigger("documentCatalogLoaded");
         });

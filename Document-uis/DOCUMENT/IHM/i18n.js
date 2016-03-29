@@ -10,7 +10,7 @@ window.dcp = window.dcp || {};
     if (typeof define === 'function' && define.amd) {
         define([], factory);
     }
-    root.dcp.i18n = factory([]);
+    root.dcp._i18n = factory([]);
 }(window, function i18n()
 {
     "use strict";
