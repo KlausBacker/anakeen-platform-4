@@ -594,6 +594,16 @@ define([
                 {
                     // prevent ios double tap
                     var $tooltip = $(this);
+                    var tooltipObject=$tooltip.data("bs.tooltip");
+
+                    if (tooltipObject &&
+                        tooltipObject.inState.click === false &&
+                        tooltipObject.inState.focus === false &&
+                        tooltipObject.inState.hover === false
+                    ) {
+                        return;
+                    }
+
                     if ('ontouchstart' in document.documentElement) {
                         if (!$tooltip.data("showios")) {
                             e.preventDefault();

@@ -76,7 +76,6 @@ define([
             this.$el.append(contentElement);
             this.$el.attr("data-attrid", this.model.id);
 
-
             $content = this.$el.find(".dcpFrame__content");
             var hasOneContent = this.model.get("content").some(function vFrame_getDisplayable(value)
             {

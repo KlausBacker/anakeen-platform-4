@@ -392,97 +392,98 @@ define(function attributeTemplate(require/*, exports, module*/)
             insertDescription: function attributeTemplateInsertDescription(attributeView, $customElement)
             {
                 var data = attributeView.model.toData(null, true);
+
+                if (!data.renderOptions.description) {
+                    return;
+                }
+
                 var descriptionTemplate;
+                var $tip;
                 var $viewElement = $customElement ? $customElement : attributeView.$el;
                 var isFrame = $viewElement.hasClass("dcpFrame");
                 var isArray = $viewElement.hasClass("dcpArray");
                 var isArrayHead = $viewElement.hasClass("dcpArray__head__cell");
                 var isArrayCell = $viewElement.hasClass("dcpArray__cell");
                 var isAttribute = $viewElement.hasClass("dcpAttribute");
+                var isTabContent = $viewElement.hasClass("dcpTab__content");
+                var isTabLabel = $viewElement.hasClass("dcpTab__label");
                 var $descriptionElement;
 
-                if (data.renderOptions.description) {
-                    descriptionTemplate = attributeView.model.getTemplates().attribute.description;
-                    data.renderOptions.description.htmlContentRender = Mustache.render(data.renderOptions.description.htmlContent, data);
-                    data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
+                descriptionTemplate = attributeView.model.getTemplates().attribute.description;
+                data.renderOptions.description.htmlContentRender = Mustache.render(data.renderOptions.description.htmlContent, data);
+                data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
 
-                    $descriptionElement = $(Mustache.render(descriptionTemplate || "", data));
-                    if (isFrame) {
-                        $viewElement.append($descriptionElement);
-                        switch (data.renderOptions.description.position) {
-                            case "top":
-                            case "topLabel":
-                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
-                                break;
-                            case "left":
-                                $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--left-description");
-                                $viewElement.find("> .dcpAttribute__description").insertAfter($viewElement.find(".dcpFrame__label"));
-                                break;
-                            case "right":
-                                // Need to add class because no have css selector
-                                $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--right-description");
+                $descriptionElement = $(Mustache.render(descriptionTemplate || "", data));
+                if (isFrame) {
+                    $viewElement.append($descriptionElement);
+                    switch (data.renderOptions.description.position) {
+                        case "top":
+                        case "topLabel":
+                            $viewElement.prepend($descriptionElement);
+                            break;
+                        case "left":
+                            $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--left-description");
+                            $descriptionElement.insertAfter($viewElement.find(".dcpFrame__label"));
+                            break;
+                        case "right":
+                            // Need to add class because no have css selector
+                            $viewElement.find(".dcpFrame__content").addClass("dcpFrame__content--right-description");
+                            break;
+                        case "bottomLabel":
+                            $descriptionElement.insertAfter($viewElement.find(".dcpFrame__label"));
+                            break;
+                        case "topValue":
+                            $viewElement.find(".dcpFrame__content").prepend($descriptionElement);
+                            break;
+                        case "bottomValue":
+                            $viewElement.find(".dcpFrame__content").append($descriptionElement);
+                            break;
+                        case "click":
+                            $viewElement.find(".dcpFrame__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                            $tip = $viewElement.find(".dcpFrame__label > .dcpAttribute__label_description").tooltip({
+                                html: true,
+                                container: $viewElement,
+                                title: $descriptionElement,
+                                placement: "auto",
+                                trigger: "manual"
+                            }).on("click", function vAttributeShowDesc()
+                            {
+                                event.stopPropagation();
+                                $(this).tooltip("toggle");
+                            }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
-                                break;
-                            case "bottomLabel":
-                                $viewElement.find("> .dcpAttribute__description").insertAfter($viewElement.find(".dcpFrame__label"));
-                                break;
-                            case "topValue":
-                                $viewElement.find(".dcpFrame__content").prepend($viewElement.find("> .dcpAttribute__description"));
-                                break;
-                            case "bottomValue":
-                                $viewElement.find(".dcpFrame__content").append($viewElement.find("> .dcpAttribute__description"));
-                                break;
-                            case "click":
-                                $viewElement.find(".dcpFrame__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                            $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
+                            $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                            {
+                                event.stopPropagation();
+                                $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
+                            });
 
-                                $viewElement.find(".dcpAttribute__label_description").tooltip({
-                                    html: true,
-                                    container: $viewElement,
-                                    title: $viewElement.find("> .dcpAttribute__description"),
-                                    placement: "auto",
-                                    trigger: "manual"
-                                }).on("click", function vAttributeShowDesc()
-                                {
-                                    event.stopPropagation();
-                                    $(this).tooltip("toggle");
-                                }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                                $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                                {
-                                    event.stopPropagation();
-                                    $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
-                                });
-
-                        }
                     }
-                    if (isArray) {
-                        switch (data.renderOptions.description.position) {
-                            case "top":
+                }
+                if (isTabContent || isTabLabel) {
+                    switch (data.renderOptions.description.position) {
+                        case "top":
+                        case "bottomLabel":
+                        case "topValue":
+                            if (isTabContent) {
                                 $viewElement.prepend($descriptionElement);
-                                break;
-                            case "topLabel":
-                                $viewElement.find(".dcpArray__label").prepend($descriptionElement);
-                                break;
-                            case "bottomLabel":
-                                $viewElement.find(".dcpArray__label").append($descriptionElement);
-                                break;
-                            case "topValue":
-                                $viewElement.find(".dcpArray__content").prepend($descriptionElement);
-                                break;
-                            case "bottomValue":
-                                $descriptionElement.insertAfter($viewElement.find(".dcpArray__table"));
-                                break;
-                            case "bottom":
+                            }
+                            break;
+                        case "bottom":
+                        case "bottomValue":
+                            if (isTabContent) {
                                 $viewElement.append($descriptionElement);
-                                break;
-                            case "click":
+                            }
+                            break;
+                        case "click":
+                            if (isTabLabel) {
                                 $viewElement.append($descriptionElement);
-                                $viewElement.find(".dcpArray__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                                $viewElement.find(".dcpLabel__text").prepend('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
 
-                                $viewElement.find(".dcpAttribute__label_description").tooltip({
+                                $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
                                     html: true,
-                                    container: $viewElement,
+                                    container: ".dcpDocument",
                                     title: $descriptionElement,
                                     placement: "auto",
                                     trigger: "manual"
@@ -493,49 +494,150 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                                 $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                                 {
                                     event.stopPropagation();
                                     $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                                 });
-                                break;
+                            }
+                            break;
 
-                            case "left":
-                            case "right":
-                                console.error("Cannot use \"" + data.renderOptions.description.position + "\" description position in array attribute : " + data.id);
-                                break;
-                        }
+                        case "topLabel":
+                        case "left":
+                        case "right":
+                            console.error("Cannot use \"" + data.renderOptions.description.position + "\" description position in tab attribute : " + data.id);
                     }
-                    if (isAttribute) {
-                        $viewElement.append($descriptionElement);
-                        switch (data.renderOptions.description.position) {
-                            case "top":
-                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
-                                break;
-                            case "left":
-                                $viewElement.find(".dcpAttribute__label").append($viewElement.find("> .dcpAttribute__description"));
-                                break;
-                            case "right":
-                                $viewElement.find(".dcpAttribute__content").append($viewElement.find("> .dcpAttribute__description"));
-                                break;
-                            case "topValue":
-                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
-                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
-                                break;
-                            case "topLabel":
-                                $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
-                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
-                                break;
-                            case "bottomValue":
-                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
-                                break;
-                            case "bottomLabel":
-                                $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
-                                break;
-                            case "click":
-                                $viewElement.find(".dcpAttribute__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                }
+                if (isArray) {
+                    switch (data.renderOptions.description.position) {
+                        case "top":
+                            $viewElement.prepend($descriptionElement);
+                            break;
+                        case "topLabel":
+                            $viewElement.find(".dcpArray__label").prepend($descriptionElement);
+                            break;
+                        case "bottomLabel":
+                            $viewElement.find(".dcpArray__label").append($descriptionElement);
+                            break;
+                        case "topValue":
+                            $viewElement.find(".dcpArray__content").prepend($descriptionElement);
+                            break;
+                        case "bottomValue":
+                            $descriptionElement.insertAfter($viewElement.find(".dcpArray__table"));
+                            break;
+                        case "bottom":
+                            $viewElement.append($descriptionElement);
+                            break;
+                        case "click":
+                            $viewElement.append($descriptionElement);
+                            $viewElement.find(".dcpArray__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
 
-                                $viewElement.find(".dcpAttribute__label_description").tooltip({
+                            $tip = $viewElement.find(".dcpArray__label > .dcpAttribute__label_description").tooltip({
+                                html: true,
+                                container: $viewElement,
+                                title: $descriptionElement,
+                                placement: "auto",
+                                trigger: "manual"
+                            }).on("click", function vAttributeShowDesc()
+                            {
+                                event.stopPropagation();
+                                $(this).tooltip("toggle");
+                            }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
+
+                            $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
+                            $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                            {
+                                event.stopPropagation();
+                                $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
+                            });
+                            break;
+
+                        case "left":
+                        case "right":
+                            console.error("Cannot use \"" + data.renderOptions.description.position + "\" description position in array attribute : " + data.id);
+                            break;
+                    }
+                }
+                if (isAttribute) {
+                    $viewElement.append($descriptionElement);
+                    switch (data.renderOptions.description.position) {
+                        case "top":
+                            $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                            break;
+                        case "left":
+                            $viewElement.find(".dcpAttribute__label").append($viewElement.find("> .dcpAttribute__description"));
+                            break;
+                        case "right":
+                            $viewElement.find(".dcpAttribute__content").append($viewElement.find("> .dcpAttribute__description"));
+                            break;
+                        case "topValue":
+                            $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                            $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
+                            break;
+                        case "topLabel":
+                            $viewElement.prepend($viewElement.find("> .dcpAttribute__description"));
+                            $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
+                            break;
+                        case "bottomValue":
+                            $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__right");
+                            break;
+                        case "bottomLabel":
+                            $viewElement.find("> .dcpAttribute__description").addClass("dcpAttribute__left");
+                            break;
+                        case "click":
+                            $viewElement.find(".dcpAttribute__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+
+                            $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
+                                html: true,
+                                container: $viewElement,
+                                placement: "auto",
+                                title: $viewElement.find("> .dcpAttribute__description"),
+                                trigger: "manual"
+                            }).on("click", function vAttributeShowDesc()
+                            {
+                                $(this).tooltip("toggle");
+                            }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
+
+                            $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
+                            $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                            {
+                                event.stopPropagation();
+                                $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
+                            });
+
+                    }
+                }
+
+                if (isArrayCell || isArrayHead) {
+                    switch (data.renderOptions.description.position) {
+                        case "topLabel":
+                        case "top":
+                            if (isArrayHead) {
+                                $viewElement.prepend($descriptionElement);
+                            }
+                            break;
+                        case "topValue":
+                            if (isArrayCell) {
+                                $viewElement.prepend($descriptionElement);
+                            }
+                            break;
+                        case "bottomValue":
+                            if (isArrayCell) {
+                                $viewElement.append($descriptionElement);
+                            }
+                            break;
+                        case "bottom":
+                        case "bottomLabel":
+                            if (isArrayHead) {
+                                $viewElement.append($descriptionElement);
+                            }
+                            break;
+                        case "click":
+                            if (isArrayHead) {
+                                $viewElement.append($descriptionElement);
+                                $viewElement.prepend('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+
+                                $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
                                     html: true,
                                     container: $viewElement,
                                     placement: "auto",
@@ -547,85 +649,35 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                                 $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                                 {
                                     event.stopPropagation();
                                     $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                                 });
-
-                        }
-                    }
-
-                    if (isArrayCell || isArrayHead) {
-                        switch (data.renderOptions.description.position) {
-                            case "topLabel":
-                            case "top":
-                                if (isArrayHead) {
-                                    $viewElement.prepend($descriptionElement);
-                                }
-                                break;
-                            case "topValue":
-                                if (isArrayCell) {
-                                    $viewElement.prepend($descriptionElement);
-                                }
-                                break;
-                            case "bottomValue":
-                                if (isArrayCell) {
-                                    $viewElement.append($descriptionElement);
-                                }
-                                break;
-                            case "bottom":
-                            case "bottomLabel":
-                                if (isArrayHead) {
-                                    $viewElement.append($descriptionElement);
-                                }
-                                break;
-                            case "click":
-                                if (isArrayHead) {
-                                    $viewElement.append($descriptionElement);
-                                    $viewElement.prepend('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
-
-                                    $viewElement.find(".dcpAttribute__label_description").tooltip({
-                                        html: true,
-                                        container: $viewElement,
-                                        placement: "auto",
-                                        title: $viewElement.find("> .dcpAttribute__description"),
-                                        trigger: "manual"
-                                    }).on("click", function vAttributeShowDesc()
-                                    {
-                                        $(this).tooltip("toggle");
-                                    }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                                    $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                    $viewElement.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                                    {
-                                        event.stopPropagation();
-                                        $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
-                                    });
-                                }
-                                break;
-                            case "left":
-                            case "right":
-                                // No use in column context
-                                console.error("Cannot use \"" + data.renderOptions.description.position + "\" description position in column attribute : " + data.id);
-                                break;
-                        }
-                    }
-                    if (data.renderOptions.description.htmlContent) {
-                        $viewElement.on("click", ".dcpAttribute__description__title", function vAttribute_descToggle()
-                        {
-                            var $contentElement = $(this).closest(".dcpAttribute__description").find(".dcpAttribute__description__content");
-                            $(this).find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
-                            $contentElement.slideToggle(200);
-
-                        });
-                        if (data.renderOptions.description.collapsed === true) {
-                            $viewElement.find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
-                            $viewElement.find(".dcpAttribute__description__content").hide();
-
-                        }
+                            }
+                            break;
+                        case "left":
+                        case "right":
+                            // No use in column context
+                            console.error("Cannot use \"" + data.renderOptions.description.position + "\" description position in column attribute : " + data.id);
+                            break;
                     }
                 }
+                if (data.renderOptions.description.htmlContent) {
+                    $viewElement.on("click", ".dcpAttribute__description__title", function vAttribute_descToggle()
+                    {
+                        var $contentElement = $(this).closest(".dcpAttribute__description").find(".dcpAttribute__description__content");
+                        $(this).find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
+                        $contentElement.slideToggle(200);
+
+                    });
+                    if (data.renderOptions.description.collapsed === true) {
+                        $viewElement.find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");
+                        $viewElement.find(".dcpAttribute__description__content").hide();
+
+                    }
+                }
+
             }
         };
 

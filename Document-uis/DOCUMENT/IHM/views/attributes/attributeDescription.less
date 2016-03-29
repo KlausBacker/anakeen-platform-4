@@ -261,6 +261,14 @@
     }
 }
 
+
+.dcptab__content > .dcpAttribute__description {
+
+  &:before, &:after {
+    display: none;
+  }
+}
+
 .dcpArray__table + .dcpAttribute__description--bottomValue {
   margin-bottom:1em;
 }
@@ -297,7 +305,7 @@
 }
 
 .dcpAttribute__description.dcpAttribute__description--right + .input-group {
-  width: calc(~"60% - " @dcpAttributeDescriptionArrowSize);
+  width: calc(~"60% - @{dcpAttributeDescriptionArrowSize}");
 }
 
 .dcpAttribute__description--right:after, .dcpAttribute__description--right:before {

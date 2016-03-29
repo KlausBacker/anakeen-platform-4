@@ -3,8 +3,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'mustache'
-], function vTabLabel($, _, Backbone, Mustache)
+    'mustache',
+    'dcpDocument/views/document/attributeTemplate'
+], function vTabLabel($, _, Backbone, Mustache, attributeTemplate)
 {
     'use strict';
 
@@ -47,7 +48,7 @@ define([
                 }
 
                 if (helpId) {
-                    this.$el.append(Mustache.render('<span>{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><i class="fa fa-question-circle"></i></a></span>', {
+                    this.$el.append(Mustache.render('<span class="dcpLabel__text">{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><i class="fa fa-question-circle"></i></a></span>', {
                         helpId: helpId,
                         attrid: this.model.id,
                         label: label
@@ -78,9 +79,10 @@ define([
                     });
 
                 } else {
-                    this.$el.text(label);
+                    this.$el.html($('<span class="dcpLabel__text" />').text(label));
                 }
 
+                attributeTemplate.insertDescription(this);
                 if (tooltipLabel) {
                     tooltipLabel = Mustache.render(tooltipLabel || "", attrData);
                     if (!this.model.getOption("tooltipHtml")) {
