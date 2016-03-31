@@ -722,7 +722,7 @@ define([
 
                 });
 
-                transitionElements.model.listenTo(this._model, "sync", function documentController_TransitionClose()
+                transitionElements.model.listenTo(currentWidget._model, "sync", function documentController_TransitionClose()
                 {
                     this.trigger("close");
                 });
@@ -740,6 +740,10 @@ define([
                                     transitionElements.model.trigger("success");
                                     resolve({documentProperties: documentServerProperties});
                                 }
+                            });
+                        } else {
+                            transitionElements.model._loadDocument(transitionElements.model).then(function documentController_TransitionDisplay() {
+                                transitionElements.model.trigger("dduiDocumentReady");
                             });
                         }
                     }
