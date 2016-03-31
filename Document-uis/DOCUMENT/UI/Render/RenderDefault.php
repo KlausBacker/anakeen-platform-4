@@ -260,6 +260,7 @@ class RenderDefault implements IRenderConfig
             "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum") ,
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")
         ));
+        $opt->enum()->setPlaceHolder(___("Choose", "ddui-enum"));
         $opt->date()->setTranslations(array(
             "invalidDate" => ___("Invalid date", "ddui-date")
         ));

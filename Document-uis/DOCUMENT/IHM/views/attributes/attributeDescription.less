@@ -49,7 +49,7 @@
   cursor: pointer;
 }
 
-.dcpAttribute__description__title__expand.fa-caret-down:before {
+.dcpAttribute__description__title__expand.fa-caret-down::before {
   margin-left: -3px;
 }
 
@@ -64,7 +64,7 @@
   position: relative;
 }
 
-.dcpAttribute__description--left:after, .dcpAttribute__description--left:before {
+.dcpAttribute__description--left::after, .dcpAttribute__description--left::before {
   left: 100%;
   top: 1.5em;
   border: solid transparent;
@@ -75,14 +75,14 @@
   pointer-events: none;
 }
 
-.dcpAttribute__description--left:after {
+.dcpAttribute__description--left::after {
   border-color: rgba(255, 255, 255, 0);
   border-left-color: @dcpAttributeDescriptionBackgroundColor;
   border-width: @dcpAttributeDescriptionArrowSize;
   margin-top: (0 - @dcpAttributeDescriptionArrowSize);
 }
 
-.dcpAttribute__description--left:before {
+.dcpAttribute__description--left::before {
   border-color: rgba(191, 191, 191, 0);
   border-left-color: @dcpAttributeDescriptionBorderColor;
   border-width: (@dcpAttributeDescriptionArrowSize + 1);
@@ -97,9 +97,9 @@
   display: none;
 }
 
-.dcpAttribute__description--top:after, .dcpAttribute__description--top:before,
-.dcpAttribute__description--topLabel:after, .dcpAttribute__description--topLabel:before,
-.dcpAttribute__description--topValue:after, .dcpAttribute__description--topValue:before {
+.dcpAttribute__description--top::after, .dcpAttribute__description--top::before,
+.dcpAttribute__description--topLabel::after, .dcpAttribute__description--topLabel::before,
+.dcpAttribute__description--topValue::after, .dcpAttribute__description--topValue::before {
   top: 100%;
   left: 50%;
   border: solid transparent;
@@ -110,18 +110,18 @@
   pointer-events: none;
 }
 
-.dcpAttribute__description--top:after,
-.dcpAttribute__description--topLabel:after,
-.dcpAttribute__description--topValue:after {
+.dcpAttribute__description--top::after,
+.dcpAttribute__description--topLabel::after,
+.dcpAttribute__description--topValue::after {
   border-color: rgba(255, 255, 255, 0);
   border-top-color: @dcpAttributeDescriptionBackgroundColor;
   border-width: @dcpAttributeDescriptionArrowSize;
   margin-left: (0 - @dcpAttributeDescriptionArrowSize);
 }
 
-.dcpAttribute__description--top:before,
-.dcpAttribute__description--topLabel:before,
-.dcpAttribute__description--topValue:before {
+.dcpAttribute__description--top::before,
+.dcpAttribute__description--topLabel::before,
+.dcpAttribute__description--topValue::before {
   border-color: rgba(191, 191, 191, 0);
   border-top-color: @dcpAttributeDescriptionBorderColor;
   border-width: (@dcpAttributeDescriptionArrowSize + 1);
@@ -136,9 +136,9 @@
   clear: both;
 }
 
-.dcpAttribute__description--bottom:after, .dcpAttribute__description--bottom:before,
-.dcpAttribute__description--bottomValue:after, .dcpAttribute__description--bottomValue:before,
-.dcpAttribute__description--bottomLabel:after, .dcpAttribute__description--bottomLabel:before {
+.dcpAttribute__description--bottom::after, .dcpAttribute__description--bottom::before,
+.dcpAttribute__description--bottomValue::after, .dcpAttribute__description--bottomValue::before,
+.dcpAttribute__description--bottomLabel::after, .dcpAttribute__description--bottomLabel::before {
   bottom: 100%;
   left: 50%;
   border: solid transparent;
@@ -149,8 +149,28 @@
   pointer-events: none;
 }
 
-.dcpFrame > .dcpAttribute__description,
-.dcpArray > .dcpAttribute__description {
+
+.dcpTab__content > .dcpAttribute__description {
+
+  &.dcpAttribute__description--top,
+  &.dcpAttribute__description--topLabel,
+  &.dcpAttribute__description--topValue,
+  &.dcpAttribute__description--bottom,
+  &.dcpAttribute__description--bottomValue,
+  &.dcpAttribute__description--bottomLabel {
+    &::before, &::after {
+      display: none;
+    }
+  }
+
+  &.dcpAttribute__description--top,
+  &.dcpAttribute__description--bottomLabel,
+  &.dcpAttribute__description--topValue {
+    margin-bottom:0.5em;
+  }
+}
+
+.dcpFrame > .dcpAttribute__description {
   float: none;
   width: 100%;
 
@@ -159,8 +179,36 @@
   &.dcpAttribute__description--topValue,
   &.dcpAttribute__description--bottom,
   &.dcpAttribute__description--bottomValue,
+  &.dcpAttribute__description--bottomLabel,
+  &.dcpAttribute__description--left,
+  &.dcpAttribute__description--right {
+    &::before, &::after {
+      display: none;
+    }
+  }
+
+
   &.dcpAttribute__description--bottomLabel {
-    &:before, &:after {
+    top:0;
+  }
+
+  &.dcpAttribute__description--left, &.dcpAttribute__description--right {
+    display: inline-block;
+    width: 10em;
+    vertical-align: top;
+    margin: 1em;
+  }
+}
+
+.dcpArray > .dcpAttribute__description {
+  float: none;
+  width: 100%;
+
+  &.dcpAttribute__description--top,
+  &.dcpAttribute__description--topLabel,
+  &.dcpAttribute__description--topValue,
+  &.dcpAttribute__description--bottomValue {
+    &::before, &::after {
       left: 50%;
     }
   }
@@ -173,20 +221,26 @@
   &.dcpAttribute__description--bottomLabel,
   &.dcpAttribute__description--left,
   &.dcpAttribute__description--right {
-    &:before, &:after {
+    &::before, &::after {
       display: none;
     }
   }
-  &.dcpAttribute__description--left, &.dcpAttribute__description--right {
-    //margin-right: @dcpAttributeDescriptionArrowSize;
-    display: inline-block;
-    width: 10em;
+}
 
-    vertical-align: top;
-    margin: 1em;
 
-    &:before, &:after {
-      top: 50%;
+.dcpArray {
+  .dcpArray__head__cell  {
+    .dcpAttribute__description--bottom{
+      margin-bottom:1em;
+    }
+  }
+  .dcpAttribute__description--bottomLabel {
+    margin-bottom:1em;
+  }
+  .dcpArray__label {
+    .dcpAttribute__description--bottomLabel,
+    .dcpAttribute__description--topLabel {
+      margin-right: (@font-size-base - @grid-gutter-width)/2;
     }
   }
 }
@@ -218,7 +272,7 @@
   &.dcpAttribute__description--topValue,
   &.dcpAttribute__description--bottomLabel,
   &.dcpAttribute__description--bottomValue {
-    &:before, &:after {
+    &::before, &::after {
       display: none;
     }
   }
@@ -228,23 +282,23 @@
 .dcpArray__label > .dcpAttribute__description {
   &.dcpAttribute__description--topLabel,
   &.dcpAttribute__description--bottomLabel {
-    &:before, &:after {
+    &::before, &::after {
       display: none;
     }
   }
 }
 
 @media (min-width: (@grid-float-breakpoint + 1)) {
-  .dcpAttribute > .dcpAttribute__description--bottomLabel:after,
-  .dcpAttribute > .dcpAttribute__description--bottomLabel:before,
-  .dcpAttribute > .dcpAttribute__description--topLabel:after, .dcpAttribute > .dcpAttribute__description--topLabel:before {
+  .dcpAttribute > .dcpAttribute__description--bottomLabel::after,
+  .dcpAttribute > .dcpAttribute__description--bottomLabel::before,
+  .dcpAttribute > .dcpAttribute__description--topLabel::after, .dcpAttribute > .dcpAttribute__description--topLabel::before {
     left: ~"calc(100% - 2em)";
   }
 
-  .dcpAttribute > .dcpAttribute__description--bottomValue:after,
-  .dcpAttribute > .dcpAttribute__description--bottomValue:before,
-  .dcpAttribute > .dcpAttribute__description--topValue:after,
-  .dcpAttribute > .dcpAttribute__description--topValue:before {
+  .dcpAttribute > .dcpAttribute__description--bottomValue::after,
+  .dcpAttribute > .dcpAttribute__description--bottomValue::before,
+  .dcpAttribute > .dcpAttribute__description--topValue::after,
+  .dcpAttribute > .dcpAttribute__description--topValue::before {
     left: 2em;
   }
 }
@@ -256,7 +310,7 @@
   &.dcpAttribute__description--bottomLabel {
     margin-bottom:1em;
   }
-  &:before, &:after {
+  &::before, &::after {
       display: none;
     }
 }
@@ -264,7 +318,7 @@
 
 .dcptab__content > .dcpAttribute__description {
 
-  &:before, &:after {
+  &::before, &::after {
     display: none;
   }
 }
@@ -280,18 +334,18 @@
   }
 }
 
-.dcpAttribute__description--bottom:after,
-.dcpAttribute__description--bottomValue:after,
-.dcpAttribute__description--bottomLabel:after {
+.dcpAttribute__description--bottom::after,
+.dcpAttribute__description--bottomValue::after,
+.dcpAttribute__description--bottomLabel::after {
   border-color: rgba(255, 255, 255, 0);
   border-bottom-color: @dcpAttributeDescriptionBackgroundColor;
   border-width: @dcpAttributeDescriptionArrowSize;
   margin-left: (0 - @dcpAttributeDescriptionArrowSize);
 }
 
-.dcpAttribute__description--bottom:before,
-.dcpAttribute__description--bottomValue:before,
-.dcpAttribute__description--bottomLabel:before {
+.dcpAttribute__description--bottom::before,
+.dcpAttribute__description--bottomValue::before,
+.dcpAttribute__description--bottomLabel::before {
   border-color: rgba(191, 191, 191, 0);
   border-bottom-color: @dcpAttributeDescriptionBorderColor;
   border-width: (@dcpAttributeDescriptionArrowSize + 1);
@@ -308,7 +362,7 @@
   width: calc(~"60% - @{dcpAttributeDescriptionArrowSize}");
 }
 
-.dcpAttribute__description--right:after, .dcpAttribute__description--right:before {
+.dcpAttribute__description--right::after, .dcpAttribute__description--right::before {
   right: 100%;
   top: 1.5em;
   border: solid transparent;
@@ -319,14 +373,14 @@
   pointer-events: none;
 }
 
-.dcpAttribute__description--right:after {
+.dcpAttribute__description--right::after {
   border-color: rgba(255, 255, 255, 0);
   border-right-color: @dcpAttributeDescriptionBackgroundColor;
   border-width: @dcpAttributeDescriptionArrowSize;
   margin-top: (0 - @dcpAttributeDescriptionArrowSize);
 }
 
-.dcpAttribute__description--right:before {
+.dcpAttribute__description--right::before {
   border-color: rgba(191, 191, 191, 0);
   border-right-color: @dcpAttributeDescriptionBorderColor;
   border-width: (@dcpAttributeDescriptionArrowSize + 1);

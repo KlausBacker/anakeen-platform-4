@@ -23,12 +23,23 @@ class CommonRenderOptions extends BaseRenderOptions
     const translatedLabelsOption = "translatedLabels";
     const placeHolderOption = "placeHolder";
     const attributeLabelOption = "attributeLabel";
+    const formatOption = "format";
+    const helpLinkIdentifierOption = "helpLinkIdentifier";
+    
     const autoPosition = "auto";
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
-    const formatOption = "format";
-    const helpLinkIdentifierOption = "helpLinkIdentifier";
+    
+    const topPosition = "top";
+    const bottomPosition = "bottom";
+    //const leftPosition="left";
+    const rightPosition = "right";
+    const topLabelPosition = "topLabel";
+    const topValuePosition = "topValue";
+    const bottomLabelPosition = "bottomLabel";
+    const bottomValuePosition = "bottomValue";
+    const clickPosition = "click";
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -119,40 +130,40 @@ class CommonRenderOptions extends BaseRenderOptions
     /**
      * Add an html text near the attribute
      *
-     * @param string $htmlTitle Html text short description
-     * @param string $position position : top, bottom, left, topLabel, topValue, bottomLabel, bottomValue, right, click
+     * @param string $htmlTitle   Html text short description
+     * @param string $position    position : top, bottom, left, topLabel, topValue, bottomLabel, bottomValue, right, click
      *
-     * @param string $htmlText Html text long description
-     * @param bool   $collapsed if true the long description is collapsed (need click to see it)
+     * @param string $htmlContent Html text long description
+     * @param bool   $collapsed   if true the long description is collapsed (need click to see it)
      *
      * @return $this
      * @throws Exception
      */
-    public function setDescription($htmlTitle, $position = "top", $htmlText = "", $collapsed = false)
+    public function setDescription($htmlTitle, $position = "top", $htmlContent = "", $collapsed = false)
     {
         $allow = array(
-            "top",
-            "bottom",
-            "left",
-            "right",
-            "topLabel",
-            "topValue",
-            "bottomLabel",
-            "bottomValue",
-            "click"
+            self::topPosition,
+            self::bottomPosition,
+            self::leftPosition,
+            self::rightPosition,
+            self::topLabelPosition,
+            self::topValuePosition,
+            self::bottomLabelPosition,
+            self::bottomValuePosition,
+            self::clickPosition
         );
         if (!in_array($position, $allow)) {
             throw new Exception("UI0205", $position, implode(', ', $allow));
         }
-        if (!is_string($htmlText)) {
-            throw new Exception("UI0206", gettype($htmlText));
+        if (!is_string($htmlContent)) {
+            throw new Exception("UI0206", gettype($htmlContent));
         }
         if (!is_bool($collapsed)) {
             throw new Exception("UI0207", gettype($collapsed));
         }
         $this->setOption(self::descriptionOption, array(
             "htmlTitle" => $htmlTitle,
-            "htmlContent" => $htmlText,
+            "htmlContent" => $htmlContent,
             "position" => $position,
             "collapsed" => $collapsed
         ));
@@ -220,14 +231,32 @@ class HtmlLinkOptions
         }
     }
     /**
-     * @var string title of window
+     * @var string target of window
      */
     public $target = "_self";
+    /**
+     * @var string width of window
+     */
     public $windowWidth = "300px";
+    /**
+     * @var string height of window
+     */
     public $windowHeight = "200px";
+    /**
+     * @var string title of window
+     */
     public $windowTitle = "";
+    /**
+     * @var string tooltip text
+     */
     public $title = "";
+    /**
+     * @var string url link for single value
+     */
     public $url = "";
+    /**
+     * @var string[] url links for multiple value
+     */
     public $urls = array();
 }
 class ButtonOptions
