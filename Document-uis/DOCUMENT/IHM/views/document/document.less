@@ -2,6 +2,7 @@
 @import "../../../../lib/bootstrap/3/less/mixins.less";
 @import "menu/menu";
 @import "../attributes/attribute";
+@import "../attributes/attributeDescription";
 @import "../../widgets/attributes/attribute";
 @import "../../widgets/attributes/tooltip";
 @import "../../widgets/attributes/label/label";
@@ -132,7 +133,7 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: fade(@gray, "10%");
+  background-color: fade(@gray, 10%);
 }
 
 /**
@@ -155,7 +156,7 @@ body {
   margin: 0;
   line-height: 1px;
   z-index: 11;
-  background-color: fade(@gray, "10%");
+  background-color: fade(@gray, 10%);
 }
 
 .dcpLoading .progress {
@@ -235,7 +236,7 @@ body {
 }
 
 .dcpDocument__header--fixed .dcpDocument__header__revision,
-.dcpDocument__header--deleted .dcpDocument__header__revision,
+.dcpDocument__header--deleted .dcpDocument__header__revision
 {
   padding-right: 2em;
   padding-left: 2em;
@@ -243,7 +244,7 @@ body {
 }
 
 .dcpDocument__header--fixed .dcpDocument__header__revdate,
-.dcpDocument__header--deleted .dcpDocument__header__revdate,
+.dcpDocument__header--deleted .dcpDocument__header__revdate
 {
   padding-right: 2em;
   font-size: @documentHeaderHeight/2;

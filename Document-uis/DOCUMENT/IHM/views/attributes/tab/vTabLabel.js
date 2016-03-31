@@ -3,8 +3,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'mustache'
-], function vTabLabel($, _, Backbone, Mustache)
+    'mustache',
+    'dcpDocument/views/document/attributeTemplate'
+], function vTabLabel($, _, Backbone, Mustache, attributeTemplate)
 {
     'use strict';
 
@@ -47,20 +48,20 @@ define([
                 }
 
                 if (helpId) {
-                    this.$el.append(Mustache.render('<span>{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><i class="fa fa-info-circle"></i></a></span>', {
+                    this.$el.append(Mustache.render('<span class="dcpLabel__text">{{label}} <a class="dcpLabel__help__link" href="#action/document.help:{{helpId}}:{{attrid}}"><span class="fa fa-question-circle"></span></a></span>', {
                         helpId: helpId,
                         attrid: this.model.id,
                         label: label
                     }));
-                    this.$el.find(".dcpLabel__help__link").on("click" , function vTabLabelHelpClick(event)
+                    this.$el.find(".dcpLabel__help__link").on("click.v"+this.model.cid, function vTabLabelHelpClick(event)
                     {
-                        var eventContent,options;
+                        var eventContent, options;
                         var href = $(this).attr("href");
 
                         if (href.substring(0, 8) === "#action/") {
                             event.preventDefault();
                             eventContent = href.substring(8).split(":");
-                            options={
+                            options = {
                                 target: event.target,
                                 eventId: eventContent.shift(),
                                 index: -1,
@@ -78,9 +79,10 @@ define([
                     });
 
                 } else {
-                    this.$el.text(label);
+                    this.$el.html($('<span class="dcpLabel__text" />').text(label));
                 }
 
+                attributeTemplate.insertDescription(this);
                 if (tooltipLabel) {
                     tooltipLabel = Mustache.render(tooltipLabel || "", attrData);
                     if (!this.model.getOption("tooltipHtml")) {

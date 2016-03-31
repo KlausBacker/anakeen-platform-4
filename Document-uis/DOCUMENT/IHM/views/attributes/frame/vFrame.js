@@ -117,9 +117,10 @@ define([
                     });
                 }
 
+                attributeTemplate.insertDescription(this);
                 helpId = this.model.getOption("helpLinkIdentifier");
                 if (helpId) {
-                    this.$el.find(".dcpLabel__help__link").on("click", function vFrameLabelHelpClick(event)
+                    this.$el.find(".dcpLabel__help__link").on("click.v" + this.model.cid, function vFrameLabelHelpClick(event)
                     {
                         var eventContent, options;
                         var href = $(this).attr("href");

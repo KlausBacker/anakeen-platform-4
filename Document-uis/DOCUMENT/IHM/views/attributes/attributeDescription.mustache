@@ -1,0 +1,7 @@
+{{#renderOptions.description}}
+    <div class="dcpAttribute__description dcpAttribute__description--{{renderOptions.description.position}} panel " data-attrid="{{id}}">
+        <div class="dcpAttribute__description__title panel-heading {{#renderOptions.description.htmlContentRender}}dcpAttribute__description__title--expandable{{/renderOptions.description.htmlContentRender}}">
+            {{#renderOptions.description.htmlContentRender}}<span class="dcpAttribute__description__title__expand fa fa-caret-down fa-lg"></span>{{/renderOptions.description.htmlContentRender}}
+            {{{renderOptions.description.htmlTitleRender}}}</div>
+        {{#renderOptions.description.htmlContentRender}}<div class="dcpAttribute__description__content">{{{renderOptions.description.htmlContentRender}}}</div>{{/renderOptions.description.htmlContentRender}}</div>
+{{/renderOptions.description}}

@@ -8,7 +8,7 @@ define([
     'dcpDocument/views/attributes/array/vColumn',
     'dcpDocument/views/document/attributeTemplate',
     'dcpDocument/widgets/attributes/array/wArray'
-], function ($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate)
+], function vArray($, _, Backbone, Mustache, ViewAttribute, ViewColumn, attributeTemplate)
 {
     'use strict';
 
@@ -100,7 +100,7 @@ define([
                                     el: scope.el,
                                     els: function vArray_findScope()
                                     {
-                                        return scope.$el.find('[data-attrid="' + currentAttr.id + '"]');
+                                        return scope.$el.find('.dcpArray__cell[data-attrid="' + currentAttr.id + '"]');
                                     },
                                     originalView: true,
                                     model: currentAttr,
@@ -132,6 +132,7 @@ define([
                     this.$el.append(this.customView);
                 } else {
                     this.$el.dcpArray(data);
+                    attributeTemplate.insertDescription(this);
                 }
             } catch (e) {
                 if (window.dcp.logger) {
@@ -147,7 +148,7 @@ define([
             return this;
         },
 
-        getNbLines: function ()
+        getNbLines: function vArraygetNbLines()
         {
             var nbLigne = this.nbLines || 0;
             this.model.get("content").each(function vArray_getCurrentLine(currentAttr)
@@ -159,7 +160,7 @@ define([
             return nbLigne;
         },
 
-        updateLabel: function ()
+        updateLabel: function vArrayupdateLabel()
         {
             this.$el.find(".dcpArray__label").text(this.model.get("label"));
         },
@@ -185,7 +186,7 @@ define([
             this.render();
         },
 
-        removeLine: function (event, options)
+        removeLine: function vArray_removeLine(event, options)
         {
             this.model.get("content").each(function vArray_removeLine(currentContent)
             {
@@ -256,8 +257,7 @@ define([
             } else {
                 this.$el.find(".dcpArray__label").removeClass("has-error");
             }
-
-
+            
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);
                 if (parentModel) {

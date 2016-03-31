@@ -100,6 +100,9 @@ class RenderDefault implements IRenderConfig
                 "simpleWrapper" => array(
                     "file" => "DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
                 ) ,
+                "description" => array(
+                    "file" => "DOCUMENT/IHM/views/attributes/attributeDescription.mustache"
+                ) ,
                 
                 "default" => array( // use it when no type is defined
                     "write" => array(
@@ -257,6 +260,7 @@ class RenderDefault implements IRenderConfig
             "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum") ,
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")
         ));
+        $opt->enum()->setPlaceHolder(___("Choose", "ddui-enum"));
         $opt->date()->setTranslations(array(
             "invalidDate" => ___("Invalid date", "ddui-date")
         ));
@@ -383,7 +387,7 @@ class RenderDefault implements IRenderConfig
         if ($helpDoc && $helpDoc->isAlive()) {
             
             $menuItem = new ItemMenu("help", ___("Help", "UiMenu"));
-            $menuItem->setBeforeContent('<div class="fa fa-info-circle" />');
+            $menuItem->setBeforeContent('<div class="fa fa-question-circle" />');
             $menuItem->setUrl(sprintf("#action/document.help:%d", $helpDoc->initid));
             $menu->appendElement($menuItem);
         }

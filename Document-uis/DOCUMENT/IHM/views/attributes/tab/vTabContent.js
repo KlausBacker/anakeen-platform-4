@@ -7,7 +7,7 @@ define([
     'dcpDocument/views/attributes/frame/vFrame',
     'dcpDocument/views/document/attributeTemplate',
     'dcpDocument/documentCatalog'
-], function ($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate, i18n)
+], function vTabContent($, _, Backbone, Mustache, ViewAttributeFrame, attributeTemplate, i18n)
 {
     'use strict';
 
@@ -58,6 +58,7 @@ define([
             } else {
                 this.renderContent();
             }
+
             this.$el.removeClass("dcpTab__content--loading");
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             this.propageShowTab();
@@ -97,6 +98,7 @@ define([
                             }
                         }
                     });
+                    attributeTemplate.insertDescription(this);
                 }
                 this.initialized = true;
                 //console.timeEnd("render tab " + this.model.id);

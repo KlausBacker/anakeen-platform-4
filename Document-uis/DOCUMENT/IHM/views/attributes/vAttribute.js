@@ -115,7 +115,9 @@ define([
 
             this.$el.append($(Mustache.render(this.templateWrapper || "", data)));
 
-            this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
+            attributeTemplate.insertDescription(this);
+
+            this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
             if (event.prevent) {
                 return this;
             }
@@ -133,12 +135,12 @@ define([
                 this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
             } else {
                 if (this.model.getOption("labelPosition") === "left") {
-                    this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--left");
-                    this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--left");
+                    this.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
+                    this.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
                 }
                 if (this.model.getOption("labelPosition") === "up") {
-                    this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--up");
-                    this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--up");
+                    this.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
+                    this.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
                 }
                 if (this.model.getOption("labelPosition") === "auto") {
                     this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
@@ -152,18 +154,19 @@ define([
             if (this.customView) {
                 this.widgetReady = true;
             }
+
             this.triggerRenderDone();
             return this;
         },
 
         refreshLabel: function vAttributeRefreshLabel()
         {
-            var label=this.model.get("label"), labelDom = this.getDOMElements().find(".dcpAttribute__label");
+            var label = this.model.get("label"), labelDom = this.getDOMElements().find(".dcpAttribute__label");
             if (this.model.getOption("attributeLabel")) {
-                label=this.model.getOption("attributeLabel");
+                label = this.model.getOption("attributeLabel");
             }
             if (labelDom.data("dcpDcpLabel")) {
-                this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel",label);
+                this.getDOMElements().find(".dcpAttribute__label").dcpLabel("setLabel", label);
             }
         },
 
@@ -238,12 +241,13 @@ define([
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
-                            currentValue=attrModel.getValue();
+                            currentValue = attrModel.getValue();
                             if (valueIndex >= 0) {
-                                currentValue=currentValue[valueIndex];
+                                currentValue = currentValue[valueIndex];
                             }
                             // No add same value twice
-                            if (!_.some(currentValue, function vAttributeNoDouble(itemValue) {
+                            if (!_.some(currentValue, function vAttributeNoDouble(itemValue)
+                                {
                                     return itemValue.value === attributeValue.value;
                                 })) {
                                 attrModel.addValue({
@@ -276,7 +280,7 @@ define([
             var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel(), revision = -1;
             if (_.isUndefined(index)) {
                 initid = attributeValue.value;
-                revision=attributeValue.revision;
+                revision = attributeValue.revision;
             } else {
                 initid = attributeValue[index].value;
                 revision = attributeValue[index].revision;
@@ -303,7 +307,7 @@ define([
 
         externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
         {
-               var documentModel = this.model.getDocumentModel();
+            var documentModel = this.model.getDocumentModel();
             options.attrid = this.model.id;
             this.model.trigger("internalLinkSelected", event, options);
             if (event.prevent) {
@@ -315,7 +319,7 @@ define([
         {
             var event = {prevent: false};
 
-            this.model.trigger("downloadFile", event,this.model.id, options);
+            this.model.trigger("downloadFile", event, this.model.id, options);
             if (event.prevent) {
                 widgetEvent.preventDefault();
             }
@@ -324,7 +328,7 @@ define([
         {
             var event = {prevent: false};
 
-            this.model.trigger("uploadFile", event,this.model.id, options);
+            this.model.trigger("uploadFile", event, this.model.id, options);
             if (event.prevent) {
                 widgetEvent.preventDefault();
             }
@@ -632,7 +636,8 @@ define([
             this.$el.show();
         },
 
-        _closeWidget : function vAttribute__closeWidget() {
+        _closeWidget: function vAttribute__closeWidget()
+        {
             try {
                 if (this.currentDcpWidget && this.getWidgetClass(this.currentDcpWidget) && this._findWidgetName(this.currentDcpWidget)) {
                     this.getWidgetClass(this.currentDcpWidget).call(this.currentDcpWidget, "close");

@@ -594,6 +594,16 @@ define([
                 {
                     // prevent ios double tap
                     var $tooltip = $(this);
+                    var tooltipObject = $tooltip.data("bs.tooltip");
+
+                    if (tooltipObject &&
+                        tooltipObject.inState.click === false &&
+                        tooltipObject.inState.focus === false &&
+                        tooltipObject.inState.hover === false
+                    ) {
+                        return;
+                    }
+
                     if ('ontouchstart' in document.documentElement) {
                         if (!$tooltip.data("showios")) {
                             e.preventDefault();
@@ -677,7 +687,9 @@ define([
             _.each(customCss, function vDocumentInjectNewCSS(cssItem)
             {
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
+
                 if ($existsLink.length === 0) {
+
                     $head.append(cssLinkTemplate(cssItem));
                 }
             });
@@ -697,7 +709,7 @@ define([
                 target: "_dialog",
                 windowWidth: "400px",
                 windowHeight: "300px",
-                windowTitle: '<i class="fa fa-info-circle"></i> ' + i18n.___("Info", "ddui")
+                windowTitle: '<span class="fa fa-question-circle"></span> ' + i18n.___("Info", "ddui")
             };
 
             require(['dcpDocument/document'], function vDocumentHelp()
@@ -1149,7 +1161,8 @@ define([
             this.model.trigger("beforeRestore", event);
             if (!event.prevent && this.model.get("properties")) {
                 this.model.get("properties").set("status", "alive");
-                this.model.saveDocument().then(_.bind(function vDocument_afterRestoreSave() {
+                this.model.saveDocument().then(_.bind(function vDocument_afterRestoreSave()
+                {
                     this.model.trigger("afterRestore", serverProperties);
                 }, this));
             }

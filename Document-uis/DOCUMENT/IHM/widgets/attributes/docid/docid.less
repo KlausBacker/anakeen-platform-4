@@ -1,8 +1,4 @@
-.dcpAttribute__value--read.dcpAttribute__value--docid {
- /* position: inherit;
-  top: (@padding-base-vertical - 2);
-  top : @padding-base-vertical - 10*/
-}
+
 .dcpAttribute__value--read.dcpAttribute__value--docid.k-button a:hover {
   background-color:inherit;
 }
@@ -56,10 +52,10 @@
   background-color: inherit;
   transition: background-color 500ms linear;
 }
-.dcpAttribute__value--docid .dcpAttribute__content__link.dcpAttribute__value--multiple {
+
+.dcpAttribute__value--docid .dcpAttribute__content__link.dcpAttribute__value--multiple::after {
+  content:" ";
   display:block;
-  float:left; /* special to center tooltip to content */
-  clear:both;
 }
 
 .dcpAttribute__select--docid li.k-state-selected {

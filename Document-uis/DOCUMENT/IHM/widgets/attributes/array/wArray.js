@@ -119,9 +119,10 @@
                     this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
 
                 } else {
-                    _.each(this.options.content , function wArrayCopyRenderContent(anOption) {
+                    _.each(this.options.content, function wArrayCopyRenderContent(anOption)
+                    {
                         // Need duplicate because Mustache is confused when 2 attributes has same name
-                        anOption.contentRenderOptions=anOption.renderOptions;
+                        anOption.contentRenderOptions = anOption.renderOptions;
                     });
                     this.element.append(Mustache.render(this._getTemplate("content") || "", this.options));
 
@@ -131,9 +132,9 @@
                             selector: ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
                             placement: "top",
                             container: ".dcpDocument",
-                            delay : {
-                                hide:0,
-                                show:500
+                            delay: {
+                                hide: 0,
+                                show: 500
                             }
                         });
                     }
@@ -159,8 +160,7 @@
                 $table = this.element.find("table.dcpArray__table");
                 $table.addClass("table table-condensed table-hover table-bordered responsive");
                 $table.find("> tbody").addClass("dcpArray__body").attr("data-attrid", this.options.id);
-                $table.find("> thead").attr("data-attrid", this.options.id).
-                find("tr").addClass("dcpArray__head").attr("data-attrid", this.options.id);
+                $table.find("> thead").attr("data-attrid", this.options.id).find("tr").addClass("dcpArray__head").attr("data-attrid", this.options.id);
 
                 this.addAllLines(this.options.nbLines);
 
@@ -179,10 +179,7 @@
                             scope._hideTooltips();
                             scope._disableTooltips();
 
-                            return $('<table/>').addClass("dcpArray__dragLine " + classTable).
-                            css("width", lineWidth).
-                            css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px"). // @TODO compute delta left
-                            append(dragLine.clone());
+                            return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px").append(dragLine.clone());
                         },
                         dragstart: function dcpArraydragstart(event)
                         {
@@ -246,7 +243,7 @@
             if (helpId) {
                 this.element.on("click." + this.eventNamespace, '.dcpLabel__help__link', function wAttributeAttributeClick(event)
                 {
-                    var  eventContent;
+                    var eventContent;
                     var href = $(this).attr("href");
                     if (href.substring(0, 8) === "#action/") {
                         event.preventDefault();
@@ -275,7 +272,7 @@
 
             if (useTransposition) {
                 this.element.find("table.dcpArray__table").addClass("responsive");
-                var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th"), function addResponsiveKey(currentElement, index)
+                var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th .dcpArray__head__label"), function addResponsiveKey(currentElement, index)
                 {
                     var $currentElement = $(currentElement);
                     $currentElement.attr("data-responsiveKey", "rk" + index);
@@ -302,13 +299,22 @@
             }
         },
 
-        _hideTooltips: function wArray__hideTooltips() {
-            this.element.find('[aria-describedby^=tooltip]').tooltip("hide");
+        _hideTooltips: function wArray__hideTooltips()
+        {
+            var $element = this.element;
+            $element.find('[aria-describedby^=tooltip]').tooltip("hide");
+            _.delay(function _hideTooltipsOneAgain()
+            {
+                // Need redo cause animation delay of 500ms
+                $element.find('[aria-describedby^=tooltip]').tooltip("hide");
+            }, 500);
         },
-        _disableTooltips: function wArray__disableTooltips() {
+        _disableTooltips: function wArray__disableTooltips()
+        {
             this.element.find(".dcpArray__content").removeClass("dcpArray--tooltips");
         },
-        _enableTooltips: function wArray__enableTooltips() {
+        _enableTooltips: function wArray__enableTooltips()
+        {
             this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
         },
 
@@ -411,7 +417,7 @@
                 this.addLine(i);
             }
 
-            min=Math.max(this.options.renderOptions.rowMinLimit, this.options.renderOptions.rowMinDefault);
+            min = Math.max(this.options.renderOptions.rowMinLimit, this.options.renderOptions.rowMinDefault);
             if (min > 0) {
                 if (this.options.nbLines < min) {
                     for (i = this.options.nbLines; i < min; i += 1) {
