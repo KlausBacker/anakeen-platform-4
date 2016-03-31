@@ -16,7 +16,8 @@ define([
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
-    'dcpDocument/widgets/window/wNotification'
+    'dcpDocument/widgets/window/wNotification',
+    'dcpDocument/translatorFactory'
 ], function documentController($, _, Backbone, Promise, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView, MenuModel)
 {
     'use strict';
