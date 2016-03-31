@@ -398,6 +398,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                 }
                 var descriptionTemplate;
                 var $tip;
+                var nsOn = ".v" + attributeView.model.cid;
                 var $viewElement = $customElement ? $customElement : attributeView.$el;
                 var isFrame = $viewElement.hasClass("dcpFrame");
                 var isArray = $viewElement.hasClass("dcpArray");
@@ -413,6 +414,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                 data.renderOptions.description.htmlTitleRender = Mustache.render(data.renderOptions.description.htmlTitle, data);
 
                 $descriptionElement = $(Mustache.render(descriptionTemplate || "", data));
+
                 if (isFrame) {
                     switch (data.renderOptions.description.position) {
                         case "bottom":
@@ -442,21 +444,21 @@ define(function attributeTemplate(require/*, exports, module*/)
                             break;
                         case "click":
                             $viewElement.append($descriptionElement);
-                            $viewElement.find(".dcpFrame__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                            $viewElement.find(".dcpFrame__label").append('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
                             $tip = $viewElement.find(".dcpFrame__label > .dcpAttribute__label_description").tooltip({
                                 html: true,
                                 container: $viewElement,
                                 title: $descriptionElement,
                                 placement: "auto",
                                 trigger: "manual"
-                            }).on("click", function vAttributeShowDesc()
+                            }).on("click" + nsOn, function vAttributeShowDesc()
                             {
                                 event.stopPropagation();
                                 $(this).tooltip("toggle");
                             }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                             $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                            $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                            $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                             {
                                 event.stopPropagation();
                                 $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
@@ -480,7 +482,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                         case "click":
                             if (isTabLabel) {
                                 $viewElement.append($descriptionElement);
-                                $viewElement.find(".dcpLabel__text").prepend('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                                $viewElement.find(".dcpLabel__text").prepend('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
 
                                 $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
                                     html: true,
@@ -488,14 +490,14 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     title: $descriptionElement,
                                     placement: "auto",
                                     trigger: "manual"
-                                }).on("click", function vAttributeShowDesc()
+                                }).on("click" + nsOn, function vAttributeShowDesc()
                                 {
                                     event.stopPropagation();
                                     $(this).tooltip("toggle");
                                 }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                                 $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                                 {
                                     event.stopPropagation();
                                     $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
@@ -532,7 +534,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                             break;
                         case "click":
                             $viewElement.append($descriptionElement);
-                            $viewElement.find(".dcpArray__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                            $viewElement.find(".dcpArray__label").append('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
 
                             $tip = $viewElement.find(".dcpArray__label > .dcpAttribute__label_description").tooltip({
                                 html: true,
@@ -540,14 +542,14 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 title: $descriptionElement,
                                 placement: "auto",
                                 trigger: "manual"
-                            }).on("click", function vAttributeShowDesc()
+                            }).on("click" + nsOn, function vAttributeShowDesc()
                             {
                                 event.stopPropagation();
                                 $(this).tooltip("toggle");
                             }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                             $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                            $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                            $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                             {
                                 event.stopPropagation();
                                 $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
@@ -592,7 +594,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                             break;
                         case "click":
                             $viewElement.append($descriptionElement);
-                            $viewElement.find(".dcpAttribute__label").append('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                            $viewElement.find(".dcpAttribute__label").append('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
 
                             $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
                                 html: true,
@@ -600,13 +602,13 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 placement: "auto",
                                 title: $descriptionElement,
                                 trigger: "manual"
-                            }).on("click", function vAttributeShowDesc()
+                            }).on("click" + nsOn, function vAttributeShowDesc()
                             {
                                 $(this).tooltip("toggle");
                             }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                             $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                            $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                            $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                             {
                                 event.stopPropagation();
                                 $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
@@ -642,7 +644,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                         case "click":
                             if (isArrayHead) {
                                 $viewElement.append($descriptionElement);
-                                $viewElement.prepend('<a class="dcpAttribute__label_description"><i class="fa fa-info-circle"></i></a>');
+                                $viewElement.prepend('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
 
                                 $tip = $viewElement.find(".dcpAttribute__label_description").tooltip({
                                     html: true,
@@ -650,13 +652,13 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     placement: "auto",
                                     title: $viewElement.find("> .dcpAttribute__description"),
                                     trigger: "manual"
-                                }).on("click", function vAttributeShowDesc()
+                                }).on("click" + nsOn, function vAttributeShowDesc()
                                 {
                                     $(this).tooltip("toggle");
                                 }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
 
                                 $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $tip.on("click", ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
+                                $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
                                 {
                                     event.stopPropagation();
                                     $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
@@ -671,7 +673,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                     }
                 }
                 if (data.renderOptions.description.htmlContent) {
-                    $viewElement.on("click", ".dcpAttribute__description__title", function vAttribute_descToggle()
+                    $viewElement.on("click" + nsOn, ".dcpAttribute__description__title", function vAttribute_descToggle()
                     {
                         var $contentElement = $(this).closest(".dcpAttribute__description").find(".dcpAttribute__description__content");
                         $(this).find(".dcpAttribute__description__title__expand").toggleClass("fa-caret-right fa-caret-down");

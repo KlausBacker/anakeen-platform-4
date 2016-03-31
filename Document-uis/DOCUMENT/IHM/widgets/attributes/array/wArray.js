@@ -179,8 +179,7 @@
                             scope._hideTooltips();
                             scope._disableTooltips();
 
-                            return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px").// @TODO compute delta left
-                            append(dragLine.clone());
+                            return $('<table/>').addClass("dcpArray__dragLine " + classTable).css("width", lineWidth).css("margin-left", "-" + (element.offset().left - dragLine.offset().left) + "px").append(dragLine.clone());
                         },
                         dragstart: function dcpArraydragstart(event)
                         {

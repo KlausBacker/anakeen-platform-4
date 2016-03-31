@@ -6,7 +6,7 @@
                 <th class="dcpArray__head__toolCell"></th>
             {{/tools}}
             {{#content}}
-                <th class="dcpArray__head__cell dcpLabel dcpArray__head__cell--{{type}} {{#needed}}dcpAttribute--needed{{/needed}}" data-attrid="{{id}}"><span class="dcpArray__head__label">{{label}}{{#contentRenderOptions.helpLinkIdentifier}} <a class="dcpLabel__help__link" href="#action/document.help:{{contentRenderOptions.helpLinkIdentifier}}:{{id}}"><i class="fa fa-question-circle"></i></a>{{/contentRenderOptions.helpLinkIdentifier}}</span></th>
+                <th class="dcpArray__head__cell dcpLabel dcpArray__head__cell--{{type}} {{#needed}}dcpAttribute--needed{{/needed}}" data-attrid="{{id}}"><span class="dcpArray__head__label">{{label}}{{#contentRenderOptions.helpLinkIdentifier}} <a class="dcpLabel__help__link" href="#action/document.help:{{contentRenderOptions.helpLinkIdentifier}}:{{id}}"><span class="fa fa-question-circle"></span></a>{{/contentRenderOptions.helpLinkIdentifier}}</span></th>
             {{/content}}
         </tr>
         </thead>
