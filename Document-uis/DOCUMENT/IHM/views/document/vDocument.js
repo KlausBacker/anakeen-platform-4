@@ -689,7 +689,10 @@ define([
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
 
                 if ($existsLink.length === 0) {
-
+                    if (document.createStyleSheet) {
+                        // Special thanks to IE : ! up to 31 css cause errors...
+                        document.createStyleSheet(cssItem.path);
+                    }
                     $head.append(cssLinkTemplate(cssItem));
                 }
             });
