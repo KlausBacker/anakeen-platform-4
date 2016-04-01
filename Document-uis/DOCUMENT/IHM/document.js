@@ -40,7 +40,7 @@
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="?app=DOCUMENT<% if (options.initid) { %>&initid=<%= options.initid %><% } %><% if (options.viewId) { %>&viewId=<%= options.viewId %><% } %><% if (options.revision) { %>&revision=<%= options.revision %><% } %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="api/v1/documents/<% if (options.initid) { %><%= options.initid %><% } else { %>0<% } if (options.viewId) { %>/views/<%= options.viewId %><% } %><% if (options.revision) { %>/revisions/<%= options.revision %><% } %>.html"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
