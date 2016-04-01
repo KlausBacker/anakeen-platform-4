@@ -1,26 +1,26 @@
 window.dcp = window.dcp || {};
 
-(function umdRequire(root, factory)
+(function umdRequire(root, requireFunction)
 {
     'use strict';
 
     if (typeof define === 'function' && define.amd) {
-        define(["jquery", "dcpDocument/i18n"], factory);
+        define(["jquery", "dcpDocument/i18n/translatorFactory"], requireFunction);
     } else {
-        factory(window.$, window.dcp._i18n);
+        requireFunction(window.$, window.dcp.translatorFactory);
     }
-}(window, function factory_translatorFactory($, i18n)
+}(window, function require_getTranslator($, translatorFactory)
 {
     "use strict";
 
-    var knownTranslation = {};
+    var knownTranslations = {};
 
-    window.dcp.translatorFactory = function translatorFactory(applicationName, success, error)
+    window.dcp.getTranslator = function getTranslator(applicationName, success, error)
     {
         var translatePromise = new Promise(function promiseInternalFunction(resolve, reject)
         {
-            if (knownTranslation[applicationName]) {
-                resolve(knownTranslation[applicationName]);
+            if (knownTranslations[applicationName]) {
+                resolve(knownTranslations[applicationName]);
             }
 
             $.ajax({
@@ -29,8 +29,8 @@ window.dcp = window.dcp || {};
                 "dataType": "text"
             }).done(function getI18nDone(data)
             {
-                knownTranslation[applicationName] = i18n(data);
-                resolve(knownTranslation[applicationName]);
+                knownTranslations[applicationName] = translatorFactory(data);
+                resolve(knownTranslations[applicationName]);
             }).fail(function getI18nFail(error)
             {
                 reject(error)
@@ -52,5 +52,5 @@ window.dcp = window.dcp || {};
         return translatePromise;
     };
 
-    return window.dcp.translatorFactory;
+    return window.dcp.getTranslator;
 }));

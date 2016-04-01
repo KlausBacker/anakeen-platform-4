@@ -4,7 +4,7 @@
 
     if (typeof define === 'function' && define.amd) {
         require([
-            'dcpDocument/i18n',
+            'dcpDocument/i18n/getTranslator',
             'dcpDocument/widgets/attributes/password/wPassword',
             'dcpDocument/widgets/attributes/text/wText',
             'dcpDocument/widgets/attributes/money/wMoney',

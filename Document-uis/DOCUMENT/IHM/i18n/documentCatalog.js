@@ -5,19 +5,19 @@ window.dcp = window.dcp || {};
     'use strict';
 
     if (typeof define === 'function' && define.amd) {
-        define(["dcpDocument/i18n", "text!dcpContextRoot/api/v1/i18n/DOCUMENT"], factory);
+        define(["dcpDocument/i18n/translatorFactory", "text!dcpContextRoot/api/v1/i18n/DOCUMENT"], factory);
     } else {
         //Load translation and load i18n handler for non require project
         $.get("api/v1/i18n/DOCUMENT").done(function translationLoaded(catalog) {
-            factory(window.dcp._i18n, catalog);
+            factory(window.dcp.translatorFactory, catalog);
             //Trigger an event when translation loaded
             $(window).trigger("documentCatalogLoaded");
         });
     }
-}(window, function documentCatalog(i18n, catalog)
+}(window, function documentCatalog(translatorFactory, catalog)
 {
     "use strict";
     //Register document translation in the global window.dcp.documentCatalog
-    window.dcp.documentCatalog = i18n(catalog);
+    window.dcp.documentCatalog = translatorFactory(catalog);
     return window.dcp.documentCatalog;
 }));

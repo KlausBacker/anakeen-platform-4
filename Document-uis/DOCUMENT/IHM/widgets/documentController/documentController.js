@@ -17,7 +17,7 @@ define([
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification',
-    'dcpDocument/translatorFactory'
+    'dcpDocument/i18n/getTranslator'
 ], function documentController($, _, Backbone, Promise, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView, MenuModel)
 {
     'use strict';
@@ -305,7 +305,7 @@ define([
             this._model.listenTo(this._model, "beforeRestore", function documentController_triggerBeforeSave(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeRestore",
-                    currentWidget.getProperties(), currentWidget._model.getModelProperties());
+                    currentWidget.getProperties());
             });
             this._model.listenTo(this._model, "afterRestore", function documentController_triggerAfterSave(oldProperties)
             {

@@ -3,7 +3,7 @@ define([
     'jquery',
     'backbone',
     'mustache',
-    'dcpDocument/documentCatalog',
+    'dcpDocument/i18n/documentCatalog',
     'dcpDocument/widgets/window/wDialog'
 ], function vTransitionGraph(_, $, Backbone, Mustache, i18n)
 {

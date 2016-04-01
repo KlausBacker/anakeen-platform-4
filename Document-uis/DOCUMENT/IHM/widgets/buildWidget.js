@@ -8,7 +8,7 @@
     paths: {
         "dcpDocument": "IHM",
         //use empty: to indicate deps that cannot/should not be concatened/minified
-        "dcpDocument/documentCatalog": "empty:",
+        "dcpDocument/i18n/documentCatalog": "empty:",
         "jquery": "empty:",
         "underscore": "empty:",
         "backbone": "empty:",

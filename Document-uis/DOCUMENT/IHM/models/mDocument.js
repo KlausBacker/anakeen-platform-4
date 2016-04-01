@@ -9,7 +9,7 @@ define([
     'dcpDocument/models/mFamilyStructure',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
-    'dcpDocument/documentCatalog'
+    'dcpDocument/i18n/documentCatalog'
 ], function mDocument($, _, Backbone, Promise, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
@@ -1193,6 +1193,18 @@ define([
             });
 
             return globalCallback.promise;
+        },
+        
+        restoreDocument : function mDocumentRestoreDocument() {
+            var event = {prevent: false}, serverProperties = this.getServerProperties();
+            this.trigger("beforeRestore", event);
+            if (!event.prevent && this.get("properties")) {
+                this.get("properties").set("status", "alive");
+                this.saveDocument().then(_.bind(function vDocument_afterRestoreSave()
+                {
+                    this.trigger("afterRestore", serverProperties);
+                }, this));
+            }
         },
 
         /**
