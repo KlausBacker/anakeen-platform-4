@@ -383,9 +383,8 @@ class RenderDefault implements IRenderConfig
      */
     protected function addHelpMenu(\Doc $doc, BarMenu & $menu)
     {
-        $helpDoc = $doc->getHelpPage();
-        if ($helpDoc && $helpDoc->isAlive()) {
-            
+        $helpDoc = $helpDoc = $this->getDefaultHelpPageDocument($doc);
+        if ($helpDoc) {
             $menuItem = new ItemMenu("help", ___("Help", "UiMenu"));
             $menuItem->setBeforeContent('<div class="fa fa-question-circle" />');
             $menuItem->setUrl(sprintf("#action/document.help:%d", $helpDoc->initid));
@@ -419,5 +418,42 @@ class RenderDefault implements IRenderConfig
     public function getEtag(\Doc $document)
     {
         return '';
+    }
+
+    /**
+     * Add setLinkHelp option to attributes referenced in HELP family related document
+     * @param RenderOptions $options
+     * @param \Doc          $document Document instance
+     *
+     * @return $this
+     */
+    protected function addDocumentHelpLinks(RenderOptions $options, \Doc $document)
+    {
+        $helpDoc = $this->getDefaultHelpPageDocument($document);
+        if ($helpDoc) {
+            \Dcp\HttpApi\V1\DocManager\DocManager::cache()->addDocument($helpDoc);
+            $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
+
+            foreach ($attrids as $k => $aid) {
+                if ($aid) {
+                    $options->commonOption($aid)->setLinkHelp($helpDoc->initid);
+                }
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Return default help document associated with family
+     * @param \Doc $document
+     *
+     * @return \Dcp\Family\HELPPAGE|null
+     */
+    protected function getDefaultHelpPageDocument(\Doc $document) {
+        $helpDoc = $document->getHelpPage();
+        if ($helpDoc && $helpDoc->isAlive()) {
+            return $helpDoc;
+        }
+        return null;
     }
 }

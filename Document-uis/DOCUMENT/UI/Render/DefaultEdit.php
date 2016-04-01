@@ -113,17 +113,9 @@ class DefaultEdit extends RenderDefault
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        $helpDoc = $document->getHelpPage();
-        if ($helpDoc && $helpDoc->isAlive()) {
-            $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
-            
-            foreach ($attrids as $k => $aid) {
-                if ($aid) {
-                    $options->commonOption($aid)->setLinkHelp($helpDoc->initid);
-                }
-            }
-        }
+        $this->addDocumentHelpLinks($options, $document);
         
         return $options;
     }
+
 }

@@ -188,7 +188,7 @@ define([
             console.time("render attributes");
 
             $content = this.$el.find(".dcpDocument__frames");
-            if ($body.length > 0) {
+            if ($body && $body.length > 0) {
                 this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr)
                 {
                     var view, viewTabLabel, viewTabContent;
@@ -703,7 +703,7 @@ define([
         {
             var $document = $(this.el);
             var scope = this;
-            var $dialogDiv = $document.data("dcpHelpDocument");
+            var $dialogDiv = $document.data("dcpHelpDocument-"+helpId);
             var currentTarget = (event.originalEvent) ? event.originalEvent.currentTarget : event.currentTarget;
             var htmlLink = {
                 target: "_dialog",
@@ -715,7 +715,12 @@ define([
             require(['dcpDocument/document'], function vDocumentHelp()
             {
                 var helpX, helpY, bodyH, dialogH, dialogW;
+
                 if (!$dialogDiv || $dialogDiv.is(":visible") === false) {
+
+                    if (scope.helpWidget) {
+                        scope.helpWidget.destroy();
+                    }
                     $dialogDiv = $('<div/>').addClass("dcpHelp-wrapper");
 
                     $dialogDiv.kendoWindow({
@@ -754,7 +759,7 @@ define([
                                 attrid);
                         });
                     });
-                    $document.data("dcpHelpDocument", $dialogDiv);
+                    $document.data("dcpHelpDocument-"+helpId, $dialogDiv);
                 } else {
                     $dialogDiv.document(
                         "triggerEvent",
