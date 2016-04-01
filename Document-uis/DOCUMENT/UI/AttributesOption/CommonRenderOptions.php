@@ -7,6 +7,8 @@
 
 namespace Dcp\Ui;
 
+use Dcp\HttpApi\V1\DocManager\DocManager;
+
 class CommonRenderOptions extends BaseRenderOptions
 {
     const type = "common";
@@ -209,15 +211,22 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::translatedLabelsOption, array_merge($cLabels, $labels));
         return $this;
     }
+
     /**
-     * Display help document links in render
-     * Add menu "help"
+     * Display help document links before attribute label
      *
      * @param string $documentIdentifier must identifier a HELP family document
+     *
      * @return $this
+     * @throws Exception
      */
     public function setLinkHelp($documentIdentifier)
     {
+        $helpDocument=DocManager::getDocument($documentIdentifier);
+        if (!$helpDocument || !is_a($helpDocument, "\\Dcp\\Family\\HelpPage")) {
+            throw new Exception("UI0208", $helpDocument->fromname);
+        }
+        DocManager::cache()->addDocument($helpDocument);
         return $this->setOption(self::helpLinkIdentifierOption, $documentIdentifier);
     }
 }

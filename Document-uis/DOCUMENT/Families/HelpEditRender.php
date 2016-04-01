@@ -23,7 +23,7 @@ class HelpEditRender extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        
+
         $options->arrayAttribute(myAttributes::help_t_sections)->setTemplate(
             <<< 'HTML'
                     <table class="dcpArray__table">
@@ -33,8 +33,8 @@ class HelpEditRender extends \Dcp\Ui\DefaultEdit
                                 <th style="width:200px">
                                     {{attributes.help_sec_order.label}}<br/>
                                     {{attributes.help_sec_lang.label}}<br/>
-                                    {{attributes.help_sec_name.label}}<br/>
-                                    {{attributes.help_sec_key.label}}
+                                    {{attributes.help_sec_key.label}}<br/>
+                                    {{attributes.help_sec_name.label}}
                                 </th>
                                 <th>
                                     {{attributes.help_sec_text.label}}
@@ -49,8 +49,8 @@ class HelpEditRender extends \Dcp\Ui\DefaultEdit
 
                                     {{{content.help_sec_order.htmlContent}}}<br/>
                                     {{{content.help_sec_lang.htmlContent}}}<br/>
-                                    {{{content.help_sec_name.htmlContent}}}<br/>
-                                    {{{content.help_sec_key.htmlContent}}}
+                                    {{{content.help_sec_key.htmlContent}}}<br/>
+                                    {{{content.help_sec_name.htmlContent}}}
                                 </td>
                                 <td>
                                     {{{content.help_sec_text.htmlContent}}}
@@ -64,6 +64,12 @@ class HelpEditRender extends \Dcp\Ui\DefaultEdit
                     </div>
 HTML
         ) ;
+
+        $options->arrayAttribute(myAttributes::help_t_sections)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->text(myAttributes::help_sec_key)->setPlaceHolder($document->getLabel(myAttributes::help_sec_key));
+        $options->text(myAttributes::help_sec_lang)->setPlaceHolder($document->getLabel(myAttributes::help_sec_lang));
+        $options->text(myAttributes::help_sec_name)->setPlaceHolder($document->getLabel(myAttributes::help_sec_name));
+        $options->int(myAttributes::help_sec_order)->setPlaceHolder($document->getLabel(myAttributes::help_sec_order));
         return $options;
     }
     /**
