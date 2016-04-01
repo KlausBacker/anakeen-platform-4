@@ -230,7 +230,9 @@ define([
                         var event = {prevent: false};
                         currentView.model.trigger("beforeChangeState", event);
                         if (event.prevent === false) {
-                            currentView.model.save();
+                            currentView.model.save().then(function vTransition_clickOnOk_afterSave() {
+                                currentView.model.trigger("success", currentView.getMessages());
+                            });
                         }
                     });
                 }
@@ -280,10 +282,13 @@ define([
 
         clickOnOk: function vTransition_clickOnOk()
         {
-            var event = {prevent: false};
+            var event = {prevent: false}, currentView=this;
             this.model.trigger("beforeChangeState", event);
+
             if (event.prevent === false) {
-                this.model.save();
+                this.model.save().then(function vTransition_clickOnOk_afterSave() {
+                    currentView.model.trigger("success", currentView.getMessages());
+                });
             }
         },
 
@@ -295,7 +300,20 @@ define([
         clickOnClose: function vTransition_clickOnClose()
         {
             this.transitionWindow.close();
-        }
+        },
 
+        getMessages: function vTransition_getMessages()
+        {
+            var messages=[];
+            _.each(this.model.get("messages"), function vTransition_getMessagesAMessage(aMessage)
+            {
+                messages.push( {
+                    type: aMessage.type,
+                    title: aMessage.contentText,
+                    htmlMessage: aMessage.contentHtml
+                });
+            });
+            return messages;
+        }
     });
 });
