@@ -1194,6 +1194,18 @@ define([
 
             return globalCallback.promise;
         },
+        
+        restoreDocument : function mDocumentRestoreDocument() {
+            var event = {prevent: false}, serverProperties = this.getServerProperties();
+            this.trigger("beforeRestore", event);
+            if (!event.prevent && this.get("properties")) {
+                this.get("properties").set("status", "alive");
+                this.saveDocument().then(_.bind(function vDocument_afterRestoreSave()
+                {
+                    this.trigger("afterRestore", serverProperties);
+                }, this));
+            }
+        },
 
         /**
          * Get complementary data : family structure

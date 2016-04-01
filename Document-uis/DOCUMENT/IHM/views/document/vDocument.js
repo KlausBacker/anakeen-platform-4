@@ -1165,16 +1165,7 @@ define([
          */
         restoreDocument: function vDocumentRestoreDocument()
         {
-            var event = {prevent: false}, serverProperties = this.model.getServerProperties();
-            this.model.trigger("beforeRestore", event);
-            if (!event.prevent && this.model.get("properties")) {
-                this.model.get("properties").set("status", "alive");
-                this.model.saveDocument().then(_.bind(function vDocument_afterRestoreSave()
-                {
-                    this.model.trigger("afterRestore", serverProperties);
-                }, this));
-            }
-
+            this.model.restoreDocument();
         },
 
         actionDocument: function vDocumentActionDocument(options)
