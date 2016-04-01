@@ -1,5 +1,5 @@
 define(["mustache", "jquery", "underscore",
-    "dcpDocument/documentCatalog"], function helppageCustomMain(Mustache, $, _, i18n)
+    "dcpDocument/i18n/documentCatalog"], function helppageCustomMain(Mustache, $, _, i18n)
 {
     "use strict";
 

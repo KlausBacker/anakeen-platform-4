@@ -3,25 +3,34 @@
 
 window.dcp = window.dcp || {};
 
-(function umdRequire(root, factory)
+(function umdRequire(root, requireFunction)
 {
     'use strict';
 
     if (typeof define === 'function' && define.amd) {
-        define([], factory);
+        define([], requireFunction);
     }
-    root.dcp._i18n = factory([]);
-}(window, function i18n()
+    root.dcp.translatorFactory = requireFunction([]);
+}(window, function require_translatorFactory()
 {
     "use strict";
+
+    var isString = function isString(obj)
+    {
+        return toString.call(obj) === '[object String]';
+    };
+
     return function catalog(translation)
     {
-        try {
-            translation = JSON.parse(translation);
-        } catch (e) {
-            translation = {data: {catalog: {}}};
-            console.error("Locale catalog error : " + e.message);
+        if (isString(translation)) {
+            try {
+                translation = JSON.parse(translation);
+            } catch (e) {
+                translation = {data: {catalog: {}}};
+                console.error("Locale catalog error : " + e.message);
+            }
         }
+
         return {
             _catalog: translation.data.catalog,
             _locale: translation.data.locale,
@@ -51,6 +60,11 @@ window.dcp = window.dcp || {};
                 }
                 return key;
             },
+            /**
+             * Return some info on the current locale
+             * 
+             * @returns {locale|{culture}|*|string|string}
+             */
             getLocale: function i18n_getLocale()
             {
                 return this._locale;

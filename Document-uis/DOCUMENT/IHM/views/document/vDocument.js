@@ -15,7 +15,7 @@ define([
     'dcpDocument/models/mTransitionGraph',
     'dcpDocument/views/workflow/vTransitionGraph',
     'kendo/kendo.core',
-    'dcpDocument/documentCatalog',
+    'dcpDocument/i18n/documentCatalog',
     'kendo/kendo.tabstrip',
     'dcpDocument/widgets/history/wHistory',
     'dcpDocument/widgets/properties/wProperties'

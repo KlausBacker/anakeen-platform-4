@@ -2,7 +2,7 @@ define([
     "jquery",
     'underscore',
     'mustache',
-    'dcpDocument/documentCatalog',
+    'dcpDocument/i18n/documentCatalog',
     "kendo/kendo.menu",
     "kendo/kendo.window",
     'dcpDocument/widgets/widget'

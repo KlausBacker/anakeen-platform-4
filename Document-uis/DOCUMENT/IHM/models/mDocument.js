@@ -9,7 +9,7 @@ define([
     'dcpDocument/models/mFamilyStructure',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
-    'dcpDocument/documentCatalog'
+    'dcpDocument/i18n/documentCatalog'
 ], function mDocument($, _, Backbone, Promise, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
