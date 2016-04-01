@@ -57,9 +57,9 @@ define([
         render: function vArray_render()
         {
             // console.time("render array " + this.model.id);
-            var data = this.model.toData(null, true), scope = this, event = {prevent : false};
+            var data = this.model.toData(null, true), scope = this, event = {prevent: false};
 
-            this.model.trigger("beforeRender", event, { model : this.model, $el : this.$el});
+            this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
             if (event.prevent) {
                 return this;
             }
@@ -79,7 +79,7 @@ define([
                 data.showEmpty = this.model.getOption('showEmptyContent');
             } else {
                 if (!this.customView || this.customRowView) {
-                    this.columnViews=[];
+                    this.columnViews = [];
                     this.model.get("content").each(function vArray_analyzeContent(currentAttr)
                     {
                         if (!currentAttr.isDisplayable()) {
@@ -90,7 +90,7 @@ define([
                                 data.content = _.map(data.content, function vArray_changeLabelCurrentElement(currentContent)
                                 {
                                     if (currentContent.id === currentAttr.id) {
-                                        currentContent.label=currentAttr.getOption("attributeLabel");
+                                        currentContent.label = currentAttr.getOption("attributeLabel");
                                     }
                                     return currentContent;
                                 });
@@ -100,7 +100,9 @@ define([
                                     el: scope.el,
                                     els: function vArray_findScope()
                                     {
-                                        return scope.$el.find('.dcpArray__cell[data-attrid="' + currentAttr.id + '"]');
+                                        return scope.$el.find('.dcpArray__cell[data-attrid="' + currentAttr.id + '"],' +
+                                            '.dcpCustomTemplate--row[data-attrid="' + currentAttr.id + '"]'
+                                        );
                                     },
                                     originalView: true,
                                     model: currentAttr,
@@ -257,7 +259,7 @@ define([
             } else {
                 this.$el.find(".dcpArray__label").removeClass("has-error");
             }
-            
+
             if (parentId) {
                 var parentModel = this.getAttributeModel(parentId);
                 if (parentModel) {
