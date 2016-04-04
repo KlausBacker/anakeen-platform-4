@@ -21,6 +21,16 @@
 {
     'use strict';
 
+    var localeCompareSupportsLocales = (function testLocaleCompareSupportsLocales()
+    {
+        try {
+            'foo'.localeCompare('bar', 'i');
+        } catch (e) {
+            return e.name === 'RangeError';
+        }
+        return false;
+    })();
+
     $.widget("dcp.dcpEnum", $.dcp.dcpAttribute, {
 
         options: {
@@ -51,12 +61,45 @@
                 useFirstChoice: false,
                 useSourceUri: false,
                 useOtherChoice: false,
-                placeHolder:'Select' // Message to display when no useFirstChoice is true and no value selected
+                placeHolder:'Select', // Message to display when no useFirstChoice is true and no value selected
+                sortBy: false
             }
         },
         _initDom: function wEnumInitDom()
         {
             var currentWidget = this;
+            if (this.getMode() === "write" &&
+                this.options.renderOptions &&
+                this.options.renderOptions.sortBy) {
+                switch (this.options.renderOptions.sortBy) {
+                    case 'key':
+                        if (this.options.sourceValues && this.options.sourceValues.sort) {
+                            this.options.sourceValues = this.options.sourceValues.sort(function (a, b)
+                            {
+                                if (a.key === b.key) {
+                                    return 0;
+                                }
+                                return (a.key < b.key) ? -1 : 1;
+                            });
+                        }
+                        break;
+                    case 'label':
+                        if (this.options.sourceValues && this.options.sourceValues.sort) {
+                            this.options.sourceValues = this.options.sourceValues.sort(function (a, b)
+                            {
+                                if (localeCompareSupportsLocales) {
+                                    return String(a.label).localeCompare(String(b.label), content.locale, {
+                                        numeric: true,
+                                        caseFirst: false
+                                    });
+                                } else {
+                                    return String(a.label).localeCompare(String(b.label));
+                                }
+                            });
+                        }
+                        break;
+                }
+            }
             if (this._isMultiple()) {
                 this.options.isMultiple = true;
                 _.each(this.options.attributeValue, function wEnumDisplayOthers(singleValue)
@@ -153,7 +196,6 @@
                 source = [this.options.attributeValue];
                 selectedIndex = this.options.attributeValue.value;
             } else {
-
                 _.each(this.options.sourceValues, function wEnum_prepareValue(enumItem)
                 {
                     if (enumItem.key !== '' && enumItem.key !== ' ') {
@@ -248,12 +290,19 @@
 
         retrieveItems: function wEnumretrieveItemse(done)
         {
-            var scope = this;
+            var scope = this,
+                requestData = {};
+
+            if (this.options.renderOptions.sortBy) {
+                requestData.sortBy = this.options.renderOptions.sortBy;
+            }
+
             // Get enums data and defer render
             $.ajax({
                 type: "GET",
                 url: this.options.sourceUri,
-                dataType: "json"
+                dataType: "json",
+                data: requestData
             }).done(function wEnum_retrieveDone(result)
             {
                 scope.options.sourceValues = result.data.enumItems;
@@ -799,13 +848,14 @@
          */
         autocompleteRequestEnum: function wEnumAutocompleteRequestEnum(options)
         {
-            var filter = {}, scope = this;
+            var requestData = {}, scope = this;
 
             if (options.data.filter && options.data.filter.filters && options.data.filter.filters.length > 0) {
-                filter = {
-                    keyword: options.data.filter.filters[0].value,
-                    operator: options.data.filter.filters[0].operator
-                };
+                requestData.keyword = options.data.filter.filters[0].value;
+                requestData.operator = options.data.filter.filters[0].operator;
+            }
+            if (this.options.renderOptions.sortBy) {
+                requestData.sortBy = this.options.renderOptions.sortBy;
             }
 
             if (!this.options.sourceUri) {
@@ -814,7 +864,7 @@
             $.ajax({
                 type: "GET",
                 url: this.options.sourceUri,
-                data: filter,
+                data: requestData,
                 dataType: "json",
                 success: function wEnum_onAutoCompleteSuccess(result)
                 {

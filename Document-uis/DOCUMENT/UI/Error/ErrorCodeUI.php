@@ -145,6 +145,10 @@ namespace {
          */
         const UI0208 = 'Document help must be a HELPPAGE document , found "%s"';
         /**
+         * @errorCode invalid value for sortBy enum option
+         */
+        const UI0209 = 'Value "%s" for Enum option "sortBy" is invalid : allowed are : %s';
+        /**
          * @errorCode Only view,edit, create are allowed
          */
         const UI0300 = 'Mode "%s" is not a valid render mode';

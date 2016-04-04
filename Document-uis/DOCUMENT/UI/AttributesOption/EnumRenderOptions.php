@@ -20,6 +20,10 @@ class EnumRenderOptions extends CommonRenderOptions
     const listDisplay = "list";
     const autocompletionDisplay = "autoCompletion";
     const boolDisplay = "bool";
+    const sortByOption = "sortBy";
+    const sortByKeyOption = "key";
+    const sortByLabelOption = "label";
+    const sortByOrderOption = "none";
     /**
      * Display formet
      * @note use only in edition mode
@@ -73,6 +77,18 @@ class EnumRenderOptions extends CommonRenderOptions
     public function useFirstChoice($useIt)
     {
         return $this->setOption(self::useFirstChoiceOption, (bool)$useIt);
+    }
+    public function setSortBy($sortBy)
+    {
+        $allow = array(
+            self::sortByOrderOption,
+            self::sortByLabelOption,
+            self::sortByKeyOption
+        );
+        if (!in_array($sortBy, $allow)) {
+            throw new Exception("UI0209", $sortBy, implode(', ', $allow));
+        }
+        return $this->setOption(self::sortByOption, $sortBy);
     }
     /**
      * Text to set into input when is empty
