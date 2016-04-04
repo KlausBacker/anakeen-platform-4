@@ -451,7 +451,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 title: $descriptionElement,
                                 placement: "auto",
                                 trigger: "manual"
-                            }).on("click" + nsOn, function vAttributeShowDesc()
+                            }).on("click" + nsOn, function vAttributeShowDesc(event)
                             {
                                 event.stopPropagation();
                                 $(this).tooltip("toggle");
@@ -490,7 +490,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     title: $descriptionElement,
                                     placement: "auto",
                                     trigger: "manual"
-                                }).on("click" + nsOn, function vAttributeShowDesc()
+                                }).on("click" + nsOn, function vAttributeShowDesc(event)
                                 {
                                     event.stopPropagation();
                                     $(this).tooltip("toggle");
@@ -542,7 +542,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 title: $descriptionElement,
                                 placement: "auto",
                                 trigger: "manual"
-                            }).on("click" + nsOn, function vAttributeShowDesc()
+                            }).on("click" + nsOn, function vAttributeShowDesc(event)
                             {
                                 event.stopPropagation();
                                 $(this).tooltip("toggle");
