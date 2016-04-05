@@ -14,7 +14,7 @@ class RenderDefault implements IRenderConfig
      */
     protected $displayDefaultMenuTooltip = false;
     
-    protected $clientCustomData = null;
+    protected $customClientData = null;
     
     public function getLabel(\Doc $document = null)
     {
@@ -412,7 +412,7 @@ class RenderDefault implements IRenderConfig
      */
     public function setCustomClientData(\Doc $document, $data)
     {
-        $this->clientCustomData = $data;
+        $this->customClientData = $data;
     }
     
     public function getEtag(\Doc $document)
