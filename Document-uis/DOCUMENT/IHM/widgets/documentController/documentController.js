@@ -742,7 +742,8 @@ define([
                                 }
                             });
                         } else {
-                            transitionElements.model._loadDocument(transitionElements.model).then(function documentController_TransitionDisplay() {
+                            transitionElements.model._loadDocument(transitionElements.model).then(function documentController_TransitionDisplay()
+                            {
                                 transitionElements.model.trigger("dduiDocumentReady");
                             });
                         }
@@ -1054,43 +1055,57 @@ define([
             return new Promise(function documentController_reinitPromise(resolve, reject)
             {
                 documentPromise.then(function documentController_reinitDone(values)
-                {
-                    if (_.isFunction(options.success)) {
-                        try {
-                            options.success.call($(currentWidget.element),
-                                values.documentProperties || {},
-                                currentWidget.getProperties());
-                        } catch (exception) {
-                            if (window.dcp.logger) {
-                                window.dcp.logger(exception);
-                            } else {
-                                console.error(exception);
+                    {
+                        if (_.isFunction(options.success)) {
+                            try {
+                                options.success.call($(currentWidget.element),
+                                    values.documentProperties || {},
+                                    currentWidget.getProperties());
+                            } catch (exception) {
+                                if (window.dcp.logger) {
+                                    window.dcp.logger(exception);
+                                } else {
+                                    console.error(exception);
+                                }
                             }
                         }
-                    }
-                    resolve({
-                        element: $(currentWidget.element),
-                        previousDocument: values.documentProperties || {},
-                        nextDocument: currentWidget.getProperties()
-                    });
-                }, function documentController_reinitFail(values)
-                {
-                    if (_.isFunction(options.error)) {
-                        try {
-                            options.error.call(
-                                $(currentWidget.element),
-                                values.documentProperties || {},
-                                currentWidget.getProperties());
-                        } catch (exception) {
-                            window.dcp.logger(exception);
+                        resolve({
+                            element: $(currentWidget.element),
+                            previousDocument: values.documentProperties || {},
+                            nextDocument: currentWidget.getProperties()
+                        });
+                    }, function documentController_reinitFail(values)
+                    {
+                        var errorArguments = values.arguments;
+                        var errorMessage = {contentText: "Undefined error"};
+
+                        if (values.arguments) {
+                            if (errorArguments && errorArguments[0] && errorArguments[0].errorMessage) {
+                                errorMessage = errorArguments[0].errorMessage;
+                            } else {
+                                if (errorArguments && errorArguments[1] && errorArguments[1].responseJSON) {
+                                    errorMessage = errorArguments[1].responseJSON.messages[0];
+                                }
+                            }
                         }
+                        if (_.isFunction(options.error)) {
+                            try {
+                                options.error.call(
+                                    $(currentWidget.element),
+                                    values.documentProperties || {},
+                                    null, errorMessage);
+                            } catch (exception) {
+                                window.dcp.logger(exception);
+                            }
+                        }
+                        reject({
+                            element: $(currentWidget.element),
+                            previousDocument: values.documentProperties || {},
+                            nextDocument: null,
+                            errorMessage: errorMessage
+                        });
                     }
-                    reject({
-                        element: $(currentWidget.element),
-                        previousDocument: values.documentProperties || {},
-                        nextDocument: currentWidget.getProperties()
-                    });
-                });
+                );
             });
         },
 
@@ -1105,30 +1120,13 @@ define([
          */
         reinitDocument: function documentControllerReinitDocument(values, options)
         {
-            var documentPromise;
-            var currentWidget = this;
+            var properties = this.getProperties();
             this._checkInitialisedModel();
-            options = options || {};
+
             //Reinit model with server values
-            _.each(_.pick(this.getProperties(), "initid", "revision", "viewId"), function dcpDocument_setCurrentOptions(value, key)
-            {
-                currentWidget.options[key] = value;
-            });
-            if (values) {
-                _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
-                {
-                    currentWidget.options[key] = value;
-                });
-            }
-            if (values && values.customClientData) {
-                this._model._customClientData = values.customClientData;
-            } else {
-                this._model._customClientData = this.getCustomClientData();
-            }
+            _.defaults(values, {revision: properties.revision, viewId: properties.viewId, initid: properties.initid});
 
-            documentPromise = this._model.fetchDocument(this._getModelValue());
-
-            return this._registerOutputPromise(documentPromise, options);
+            return this.fetchDocument(values, options);
         },
 
         /**
@@ -1138,10 +1136,11 @@ define([
          */
         fetchDocument: function documentControllerFetchDocument(values, options)
         {
-            var documentPromise;
+            var documentPromise, callBackPromise;
             var currentWidget = this;
             values = _.isUndefined(values) ? {} : values;
             options = options || {};
+
             if (!_.isObject(values)) {
                 throw new Error('Fetch argument must be an object {"initid":, "revision": , "viewId": }');
             }
@@ -1152,6 +1151,7 @@ define([
 
             // Use default values when fetch another document
             _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
+            _.defaults(options, {force: false});
 
             _.each(_.pick(values, "initid", "revision", "viewId"), function dcpDocument_setNewOptions(value, key)
             {
@@ -1166,7 +1166,20 @@ define([
                 } else {
                     this._model._customClientData = this.getCustomClientData();
                 }
-                documentPromise = this._model.fetchDocument(this._getModelValue());
+
+                if (this._model.isModified() && options.force === false) {
+                    callBackPromise = this._model._promiseCallback();
+                    this._model.trigger("loadDocument",
+                        this._getModelValue(),
+                        {
+                            success: callBackPromise.success,
+                            error: callBackPromise.error
+                        }
+                    );
+                    documentPromise = callBackPromise.promise;
+                } else {
+                    documentPromise = this._model.fetchDocument(this._getModelValue());
+                }
             }
             return this._registerOutputPromise(documentPromise, options);
 
@@ -1308,14 +1321,16 @@ define([
         {
             var menu, menus;
             this._checkInitialisedModel();
-            menus=this._model.get("menus");
+            menus = this._model.get("menus");
             menu = menus.get(menuId);
-            if (! menu && menus) {
-                menus.each(function documentControllerGetMenuIterate(itemMenu){
+            if (!menu && menus) {
+                menus.each(function documentControllerGetMenuIterate(itemMenu)
+                {
                     if (itemMenu.get("content")) {
-                        _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu) {
+                        _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu)
+                        {
                             if (subMenu.id === menuId) {
-                                menu=new MenuModel(subMenu);
+                                menu = new MenuModel(subMenu);
                             }
                         });
                     }
