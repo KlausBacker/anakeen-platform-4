@@ -1377,7 +1377,7 @@ define([
          * Add customData from render view model
          * @returns {*}
          */
-        addCustomClientData: function documentControllerAddClientCustomData(documentCheck, value)
+        addCustomClientData: function documentControllerAddCustomClientData(documentCheck, value)
         {
             var currentWidget = this;
             this._checkInitialisedModel();
@@ -1403,7 +1403,7 @@ define([
                 throw new Error("Constraint must be an value or a function and a value");
             }
             //Register the customClientData
-            _.each(value, function setClientCustomData(currentValue, currentKey)
+            _.each(value, function documentControllerAddCustomClientDataEach(currentValue, currentKey)
             {
                 currentWidget._customClientData[currentKey] = {
                     "value": currentValue,
@@ -1416,7 +1416,7 @@ define([
          * Get customData from render view model
          * @returns {*}
          */
-        setCustomClientData: function documentControllerSetClientCustomData(documentCheck, value)
+        setCustomClientData: function documentControllerSetCustomClientData(documentCheck, value)
         {
             console.error("this function (setCustomClientData) is deprecated");
             return this.addCustomClientData(documentCheck, value);
@@ -1425,7 +1425,7 @@ define([
          * Get customData from render view model
          * @returns {*}
          */
-        getCustomClientData: function documentControllerSetClientCustomData(deleteOnce)
+        getCustomClientData: function documentControllerSetCustomClientData(deleteOnce)
         {
             var values = {}, currentWidget = this, $element, properties, newCustomData = {};
             this._checkInitialisedModel();
@@ -1454,7 +1454,7 @@ define([
          * Delete a custom data
          * @returns {*}
          */
-        removeCustomClientData: function documentControllerSetClientCustomData(key)
+        removeCustomClientData: function documentControllerRemoveCustomClientData(key)
         {
             if (this._customClientData[key]) {
                 delete this._customClientData[key];
