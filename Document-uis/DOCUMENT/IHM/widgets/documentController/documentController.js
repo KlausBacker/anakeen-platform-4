@@ -1058,6 +1058,9 @@ define([
                     {
                         if (_.isFunction(options.success)) {
                             try {
+                                if (window.console.warn) {
+                                    window.console.warn("Callback \"success\" is deprecated use promise instead");
+                                }
                                 options.success.call($(currentWidget.element),
                                     values.documentProperties || {},
                                     currentWidget.getProperties());
@@ -1090,6 +1093,9 @@ define([
                         }
                         if (_.isFunction(options.error)) {
                             try {
+                                if (window.console.warn) {
+                                    window.console.warn("Callback \"error\" is deprecated use promise instead");
+                                }
                                 options.error.call(
                                     $(currentWidget.element),
                                     values.documentProperties || {},
@@ -1147,6 +1153,11 @@ define([
 
             if (!values.initid) {
                 throw new Error('initid argument is mandatory');
+            }
+
+            if (! isNaN(values.initid)) {
+                // Convert to numeric initid is possible
+                values.initid=parseInt(values.initid);
             }
 
             // Use default values when fetch another document

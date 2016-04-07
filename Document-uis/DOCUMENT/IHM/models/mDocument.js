@@ -972,6 +972,7 @@ define([
                 lockCallback = this._promiseCallback();
 
             options = options || {};
+            values = values || {};
 
             //Register promise events
             documentCallback.promise.then(function onFetchDocumentDone(currentModelProperties)
@@ -1006,7 +1007,7 @@ define([
             });
 
             //Init default values
-            _.defaults(values, {revision: -1, viewId: "!defaultConsultation"});
+            _.defaults(values, {revision: -1, viewId: "!defaultConsultation", initid:this.get("initid")});
 
             //Trigger (synchronous) before close event
             this.trigger("beforeClose", beforeCloseReturn, values, this._customClientData);
@@ -1156,7 +1157,7 @@ define([
                 this.trigger("displayLoading");
                 deleteCallback.promise.then(function mDocument_deleteDone()
                 {
-                    currentModel.fetchDocument().then(function mDocument_afterDeleteLoadDone()
+                    currentModel.fetchDocument({initid:currentModel.get("initid")}).then(function mDocument_afterDeleteLoadDone()
                     {
                         globalCallback.success();
                     }, function mDocument_afterDeleteLoadFail()

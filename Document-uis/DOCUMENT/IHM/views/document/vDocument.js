@@ -1154,8 +1154,8 @@ define([
                         if (callbacks && _.isFunction(callbacks.error)) {
                             callbacks.error({
                                 errorMessage: {
-                                    code: "DOCUMENTMODIFIED",
-                                    contentText: "User has cancelled the action."
+                                    code: "USERCANCEL",
+                                    contentText: i18n.___("User has cancelled the action.","ddui")
                                 }
                             });
                         }
