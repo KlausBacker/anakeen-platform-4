@@ -135,8 +135,6 @@ define([
                 theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
 
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
-                    //var lockModel = new DocumentLock({"initid": theModel.get("initid"), "type": "temporary"});
-                    //lockModel.destroy({wait: false});
                     // No use model destroy : page is destroyed before request is some case
                     $.ajax({
                         url: "api/v1/documents/" + theModel.get("initid") + "/locks/temporary",
@@ -1023,13 +1021,13 @@ define([
                 previousMode = this.get("renderMode");
 
                 if (previousMode === "edit" && security && security.lock && security.lock.temporary) {
+
                     needToUnlock = {
                         initid: serverProperties.initid
                     };
                 }
-
                 //Compute the next view
-                nextView = this.get("viewId");
+                nextView = values.viewId;
 
                 if (!nextView) {
                     nextView = (this.get("renderMode") === "edit") ? "!defaultEdition" : "!defaultConsultation";
@@ -1040,17 +1038,16 @@ define([
                     nextView !== "!defaultCreation" &&
                     this.get("renderMode") !== "create") {
                     //if the document is locked and the next view doesn't need the same lock delete it
-                    if (this.needUnlock && needToUnlock.initid !== this.get("initid")) {
+                    if (needToUnlock.initid && needToUnlock.initid !== values.initid) {
                         lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
                         lockModel.destroy();
-                        lockCallback.success();
                     }
                     // The next view needs a lock, ask for it and fetch the document after
-                    lockModel = new DocumentLock({initid: this.get("initid"), viewId: nextView, type: "temporary"});
+                    lockModel = new DocumentLock({initid: values.initid, viewId: nextView, type: "temporary"});
                     lockModel.save({}, lockCallback);
                 } else {
                     if (needToUnlock) {
-                        if (needToUnlock.initid === this.get("initid")) {
+                        if (needToUnlock.initid === values.initid) {
                             // If same document "get" must be perform after unlock
                             lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
                             lockModel.destroy(lockCallback);
@@ -1081,7 +1078,7 @@ define([
                 //Reinit properties
                 currentModel.set(serverProperties);
                 //Indicate success to the promise object
-                globalCallback.error({eventPrevented : true});
+                globalCallback.error({eventPrevented: true});
             }
 
             return globalCallback.promise;
@@ -1100,7 +1097,7 @@ define([
             this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
             if (beforeSaveEvent.prevent !== false) {
-                saveCallback.error({eventPrevented : true});
+                saveCallback.error({eventPrevented: true});
             } else {
                 this.trigger("displayLoading", {isSaving: true});
                 saveCallback.promise.then(function mDocument_saveDone()
@@ -1154,7 +1151,7 @@ define([
             this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 
             if (beforeDeleteEvent.prevent !== false) {
-                deleteCallback.error({eventPrevented : true});
+                deleteCallback.error({eventPrevented: true});
             } else {
                 this.trigger("displayLoading");
                 deleteCallback.promise.then(function mDocument_deleteDone()
@@ -1194,8 +1191,9 @@ define([
 
             return globalCallback.promise;
         },
-        
-        restoreDocument : function mDocumentRestoreDocument() {
+
+        restoreDocument: function mDocumentRestoreDocument()
+        {
             var event = {prevent: false}, serverProperties = this.getServerProperties();
             this.trigger("beforeRestore", event);
             if (!event.prevent && this.get("properties")) {
