@@ -247,6 +247,7 @@
                 currentWidget.element.data("voidLoaded", false);
             };
             options = options || {};
+
             if (!values.initid) {
                 throw new Error("You need to set the initid to fetch the document");
             }
@@ -275,7 +276,7 @@
                 } else {
                     options.error = initWidget;
                 }
-                internalWidget.fetchDocument.call(internalWidget, values, options);
+                return internalWidget.fetchDocument.call(internalWidget, values, options);
             } else {
                 this._render();
             }

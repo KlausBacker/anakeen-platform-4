@@ -49,6 +49,7 @@ define([
             this.listenTo(this.model, 'invalid', this.showView);
             this.listenTo(this.model, 'displayNetworkError', this.displayNetworkError);
             this.listenTo(this.model, 'actionAttributeLink', this.doStandardAction);
+            this.listenTo(this.model, 'loadDocument', this.loadDocument);
             this.listenTo(this.model, 'dduiDocumentReady', this.cleanAndRender);
             this.listenTo(this.model, 'dduiDocumentDisplayView', this.showView);
         },
@@ -706,7 +707,7 @@ define([
         {
             var $document = $(this.el);
             var scope = this;
-            var $dialogDiv = $document.data("dcpHelpDocument-"+helpId);
+            var $dialogDiv = $document.data("dcpHelpDocument-" + helpId);
             var currentTarget = (event.originalEvent) ? event.originalEvent.currentTarget : event.currentTarget;
             var htmlLink = {
                 target: "_dialog",
@@ -762,7 +763,7 @@ define([
                                 attrid);
                         });
                     });
-                    $document.data("dcpHelpDocument-"+helpId, $dialogDiv);
+                    $document.data("dcpHelpDocument-" + helpId, $dialogDiv);
                 } else {
                     $dialogDiv.document(
                         "triggerEvent",
@@ -1037,9 +1038,6 @@ define([
          */
         closeDocument: function vDocumentCloseDocument(viewId)
         {
-            var confirmWindow;
-            var documentView = this;
-            var initid = this.model.get("initid");
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -1047,35 +1045,7 @@ define([
                     viewId = "!defaultConsultation";
                 }
             }
-            if (this.model.hasAttributesChanged()) {
-                confirmWindow = $('body').dcpConfirm({
-                    title: i18n.___("Confirm close document", "ddui"),
-                    width: "510px",
-                    height: "150px",
-                    maxWidth: $(window).width(),
-                    messages: {
-                        okMessage: i18n.___("Abord modification", "ddui"),
-                        cancelMessage: i18n.___("Stay on the form", "ddui"),
-                        htmlMessage: i18n.___("The form has been modified without saving", "ddui"),
-                        textMessage: ''
-                    },
-                    confirm: function wMenuConfirm()
-                    {
-                        documentView.model.fetchDocument({
-                            initid: initid,
-                            viewId: viewId
-                        });
-
-                    },
-                    templateData: {templates: this.model.get("templates")}
-                });
-                confirmWindow.data('dcpWindow').open();
-            } else {
-                this.model.fetchDocument({
-                    initid: initid,
-                    viewId: viewId
-                });
-            }
+            this.loadDocument({initid: this.model.get("initid"), viewId: viewId});
         },
 
         /**
@@ -1148,14 +1118,60 @@ define([
         },
 
         /**
-         * load another document document
+         * load another document document  : confirm if modified
+         * options : {initid, viewId, revision}
+         * callbacks : {success, error}
          */
-        loadDocument: function vDocumentLoadDocument(docid, viewId)
+        loadDocument: function vDocumentLoadDocument(options, callbacks)
         {
-            this.model.fetchDocument({
-                initid: docid,
-                viewId: viewId
-            });
+            var confirmWindow;
+            var documentView = this;
+
+            callbacks = callbacks || {};
+
+            if (this.model.hasAttributesChanged()) {
+                confirmWindow = $('body').dcpConfirm({
+                    title: i18n.___("Confirm close document", "ddui"),
+                    width: "510px",
+                    height: "150px",
+                    maxWidth: $(window).width(),
+                    messages: {
+                        okMessage: i18n.___("Abord modification", "ddui"),
+                        cancelMessage: i18n.___("Stay on the form", "ddui"),
+                        htmlMessage: i18n.___("The form has been modified without saving", "ddui"),
+                        textMessage: ''
+                    },
+                    confirm: function wMenuConfirm()
+                    {
+                        documentView.model.fetchDocument({
+                            initid: options.initid,
+                            viewId: options.viewId,
+                            revision: options.revision
+                        }).then(callbacks.success, callbacks.error);
+                    },
+                    cancel: function wLoadCancel()
+                    {
+                        if (callbacks && _.isFunction(callbacks.error)) {
+                            callbacks.error({
+                                errorMessage: {
+                                    code: "USERCANCEL",
+                                    contentText: i18n.___("User has cancelled the action.","ddui")
+                                }
+                            });
+                        }
+                        this.destroy();
+
+                    },
+                    templateData: {templates: this.model.get("templates")}
+                });
+                confirmWindow.data('dcpWindow').open();
+            } else {
+                this.model.fetchDocument({
+                    initid: options.initid,
+                    viewId: options.viewId,
+                    revision: options.revision
+                }).then(callbacks.success, callbacks.error);
+            }
         },
 
         /**
@@ -1225,7 +1241,9 @@ define([
                 return this.createAndCloseDocument();
             }
             if (options.eventId === "document.load") {
-                return this.loadDocument(eventArgs[0], eventArgs[1]);
+                return this.loadDocument({
+                    initid: eventArgs[0], viewId: eventArgs[1], revision: eventArgs[2]
+                });
             }
             if (options.eventId === "document.lock") {
                 return this.lockDocument();

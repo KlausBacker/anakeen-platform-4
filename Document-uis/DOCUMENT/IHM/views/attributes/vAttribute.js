@@ -298,11 +298,13 @@ define([
                 return this;
             }
 
-            documentModel.fetchDocument({
-                "initid": initid,
-                "revision": revision,
-                "viewId": "!defaultConsultation"
-            });
+            documentModel.trigger("loadDocument",
+                {
+                    initid:initid,
+                    viewId:"!defaultConsultation",
+                    revision:revision
+                }
+            );
         },
 
         externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
