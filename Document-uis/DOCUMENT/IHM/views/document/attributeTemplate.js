@@ -35,6 +35,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                 _.each(documentData.attributeLabels, function attributeTemplategetTemplateModelInfoEach(attributeLabel, attributeId)
                 {
                     var currentAttributeModel = documentModel.get('attributes').get(attributeId);
+                    var attrValue = currentAttributeModel.get("attributeValue");
                     if (currentAttributeModel.getOption("attributeLabel")) {
                         attributeLabel = currentAttributeModel.getOption("attributeLabel");
                     }
@@ -44,7 +45,10 @@ define(function attributeTemplate(require/*, exports, module*/)
                     } else {
                         templateInfo.attributes[attributeId] = {label: attributeLabel};
                     }
+
                     templateInfo.attributes[attributeId].id = attributeId;
+                    templateInfo.attributes[attributeId].isEmpty = currentTemplate._isEmptyAttribute(currentAttributeModel);
+
                     templateInfo.attributes[attributeId].htmlContent = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, false);
                     templateInfo.attributes[attributeId].htmlView = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, true);
                     templateInfo.attributes[attributeId].isReadMode = (currentAttributeModel.get("mode") === "read");
@@ -61,6 +65,24 @@ define(function attributeTemplate(require/*, exports, module*/)
                     }
                 });
                 return templateInfo;
+            },
+
+            _isEmptyAttribute: function attributeTemplate_isEmptyAttribute(attributeModel)
+            {
+                var currentTemplate = this;
+                if (attributeModel.get("isValueAttribute")) {
+                    var attrValue = attributeModel.get("attributeValue");
+                    return _.isEmpty(attrValue) || ( attrValue.value === "" || attrValue.value === null);
+                }
+                if (attributeModel.get("content").length === 0) {
+                    return false;
+                }
+                if (attributeModel.get("content").some) {
+                    return !attributeModel.get("content").some(function attributeTemplate_isEmptyAttribute_checkEmpty(value)
+                    {
+                        return !currentTemplate._isEmptyAttribute(value);
+                    });
+                }
             },
 
             /**
