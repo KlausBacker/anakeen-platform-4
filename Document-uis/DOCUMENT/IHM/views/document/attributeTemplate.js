@@ -466,7 +466,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                             break;
                         case "click":
                             $viewElement.append($descriptionElement);
-                            $viewElement.find(".dcpFrame__label").append('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
+                            $viewElement.find(".dcpFrame__label").prepend('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
                             $tip = $viewElement.find(".dcpFrame__label > .dcpAttribute__label_description").tooltip({
                                 html: true,
                                 container: $viewElement,
@@ -556,7 +556,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                             break;
                         case "click":
                             $viewElement.append($descriptionElement);
-                            $viewElement.find(".dcpArray__label").append('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
+                            $viewElement.find(".dcpArray__label").prepend('<a class="dcpAttribute__label_description"><span class="fa fa-info-circle"></span></a>');
 
                             $tip = $viewElement.find(".dcpArray__label > .dcpAttribute__label_description").tooltip({
                                 html: true,
