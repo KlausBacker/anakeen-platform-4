@@ -74,8 +74,8 @@ define(function attributeTemplate(require/*, exports, module*/)
                     var attrValue = attributeModel.get("attributeValue");
                     return _.isEmpty(attrValue) || ( attrValue.value === "" || attrValue.value === null);
                 }
-                if (attributeModel.get("content").length === 0) {
-                    return false;
+                if ((!attributeModel.get("content")) || attributeModel.get("content").length === 0) {
+                    return true;
                 }
                 if (attributeModel.get("content").some) {
                     return !attributeModel.get("content").some(function attributeTemplate_isEmptyAttribute_checkEmpty(value)
