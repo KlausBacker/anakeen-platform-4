@@ -8,7 +8,7 @@ namespace Dcp\Ui\Html;
 
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 use Dcp\HttpApi\V1\Etag\Manager as EtagManager;
-use Dcp\Ui\Exception;
+use Dcp\HttpApi\V1\Crud\Exception;
 
 class Document extends \Dcp\HttpApi\V1\Crud\Crud
 {
@@ -122,11 +122,15 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         } else {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
-                throw new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui") , $initid));
+                $e=new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui") , $initid));
+                $e->setHttpStatus("404", "Document not found");
+                throw $e;
             }
             $err = $doc->control("view");
             if ($err) {
-                throw new Exception($err);
+                $e=new Exception($err);
+                $e->setHttpStatus("403", "Forbidden");
+                throw $e;
             }
             DocManager::cache()->addDocument($doc);
             $otherParameters = $_GET;
