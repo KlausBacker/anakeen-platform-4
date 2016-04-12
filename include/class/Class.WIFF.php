@@ -800,11 +800,22 @@ class WIFF extends WiffCommon
         }
         return false;
     }
+
+    /**
+     * Get Context list with contexts being restored
+     * @return Context[]
+     */
+    public function getContextListWithInProgress() {
+        return $this->getContextList(true);
+    }
+
     /**
      * Get Context list
-     * @return Context[] array of object Context
+     * @param bool $withInProgress Include contexts being restored as ContextProperties objects instead of
+     * full-blown Context objects (default: bool(false))
+     * @return Context[] array of object Context or bool(false) on error
      */
-    public function getContextList()
+    public function getContextList($withInProgress = false)
     {
         require_once ('class/Class.Repository.php');
         require_once ('class/Class.Context.php');
@@ -867,17 +878,20 @@ class WIFF extends WiffCommon
             }
         }
         
-        if ($handle = opendir($archived_root)) {
-            
-            while (false !== ($file = readdir($handle))) {
-                
-                if (preg_match('/^.+\.ctx$/', $file)) {
-                    
-                    $status_handle = fopen($archived_root . DIRECTORY_SEPARATOR . $file, 'r');
-                    $context = array();
-                    $context['name'] = fread($status_handle, filesize($archived_root . DIRECTORY_SEPARATOR . $file));
-                    $context['inProgress'] = true;
-                    $contextList[] = $context;
+        if ($withInProgress) {
+            if ($handle = opendir($archived_root)) {
+                while (false !== ($file = readdir($handle))) {
+                    if (!preg_match('/^.+\.ctx$/', $file)) {
+                        continue;
+                    }
+                    $absFile = $archived_root . DIRECTORY_SEPARATOR . $file;
+                    if (($name = file_get_contents($absFile)) !== false) {
+                        $contextClass = new ContextProperties();
+                        $contextClass->name = rtrim($name, "\n");
+                        $contextClass->inProgress = true;
+                        $contextClass->description = sprintf("Restoration in progress (started on %s)", date("Y-m-d H:i:s", filectime($absFile)));
+                        $contextList[] = $contextClass;
+                    }
                 }
             }
         }
@@ -924,7 +938,7 @@ class WIFF extends WiffCommon
                     $zipfile = $archived_root . DIRECTORY_SEPARATOR . $file;
                     $size = $this->filesize_stat($zipfile);
                     $archiveContext = array(
-                        "urlfile" => wiff::archive_filepath . DIRECTORY_SEPARATOR . $file,
+                        "urlfile" => WIFF::archive_filepath . DIRECTORY_SEPARATOR . $file,
                         "moduleList" => array() ,
                         "id" => $fmatch["basename"],
                         "size" => $size / (1024 * 1024) >= 1024 ? sprintf("%.3f Go", $size / (1024.0 * 1024.0 * 1024.0)) : sprintf("%.3f Mo", $size / (1024.0 * 1024.0)) ,
@@ -1004,7 +1018,7 @@ class WIFF extends WiffCommon
                             $archiveContext['id'] = $fmatch['basename'];
                             $archiveContext['datetime'] = $context->getAttribute('datetime');
                             $archiveContext['vault'] = $context->getAttribute('vault');
-                            $archiveContext['urlfile'] = wiff::archive_filepath . DIRECTORY_SEPARATOR . $file;
+                            $archiveContext['urlfile'] = self::archive_filepath . DIRECTORY_SEPARATOR . $file;
                             
                             $moduleList = array();
                             
@@ -1111,11 +1125,10 @@ class WIFF extends WiffCommon
             $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
             return false;
         }
-        $archived_root = $wiff_root . WIFF::archive_filepath;
+        $archived_root = $wiff_root . self::archive_filepath;
         // --- Create status file for context --- //
         $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.ctx';
-        $status_handle = fopen($status_file, "w");
-        fwrite($status_handle, $name);
+        file_put_contents($status_file, $name);
         // --- Connect to database --- //
         $dbconnect = pg_connect("service=$pgservice");
         if ($dbconnect === false) {
@@ -1570,7 +1583,7 @@ class WIFF extends WiffCommon
     public function downloadArchive($archiveId)
     {
         
-        $archived_url = curPageURL() . wiff::archive_filepath;
+        $archived_url = curPageURL() . self::archive_filepath;
         
         return $archived_url . DIRECTORY_SEPARATOR . $archiveId . 'fcz';
     }
@@ -2280,7 +2293,7 @@ class WIFF extends WiffCommon
             $rewriteInfo = true;
         }
         if ($force || $info['ctrlid'] == '') {
-            $info['ctrlid'] = $this->genControlId();
+            $info['ctrlid'] = $this->genControlID();
             $rewriteInfo = true;
         }
         
@@ -2462,7 +2475,7 @@ class WIFF extends WiffCommon
             return false;
         }
         
-        $ret = $context->sendConfiguration($this);
+        $ret = $context->sendConfiguration();
         if ($ret === false) {
             $this->errorMessage = sprintf("Could not send context configuration for context '%s': %s", $contextName, $context->errorMessage);
             return false;

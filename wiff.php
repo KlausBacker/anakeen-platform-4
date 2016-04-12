@@ -303,7 +303,7 @@ if (isset($_REQUEST['authRepo'])) {
 }
 // Request to get context list
 if (isset($_REQUEST['getContextList'])) {
-    $contextList = $wiff->getContextList();
+    $contextList = $wiff->getContextListWithInProgress();
     if ($contextList === false) {
         answer(null, $wiff->errorMessage);
     }

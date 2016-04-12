@@ -227,8 +227,9 @@ function wiff_list_context(&$argv)
     $options = parse_argv_options($argv);
     
     $wiff = WIFF::getInstance();
-    
-    $ctxList = $wiff->getContextList();
+
+    $withInProgress = boolopt('all', $options);
+    $ctxList = $wiff->getContextList($withInProgress);
     if ($ctxList === false) {
         printerr(sprintf("Error: could not get contexts list: %s\n", $wiff->errorMessage));
         return 1;
@@ -239,10 +240,15 @@ function wiff_list_context(&$argv)
         echo sprintf("%-16s---%-64s\n", str_repeat("-", 16) , str_repeat("-", 64));
     }
     foreach ($ctxList as $ctx) {
+        $name = $ctx->name;
+        $description = $ctx->description;
+        if ($ctx->inProgress) {
+            $name = sprintf("* %s", $name);
+        }
         if (boolopt('pretty', $options)) {
-            echo sprintf("%-16s   %-64s\n", $ctx->name, $ctx->description);
+            echo sprintf("%-16s   %-64s\n", $name, $description);
         } else {
-            echo sprintf("%s\n", $ctx->name);
+            echo sprintf("%s\n", $name);
         }
     }
     

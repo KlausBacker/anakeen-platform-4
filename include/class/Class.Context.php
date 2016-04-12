@@ -31,7 +31,7 @@ function deleteChildren($node)
 
 require_once 'class/Class.Context.php';
 
-class Context extends WiffCommon
+class ContextProperties extends WiffCommon
 {
     /**
      * @var string Context's name
@@ -68,11 +68,18 @@ class Context extends WiffCommon
     /**
      * @var array
      */
-    private $props = array(
+    protected $props = array(
         'url',
         'description'
     );
-    
+    /**
+     * @var bool Is context being restored?
+     */
+    public $inProgress = false;
+}
+
+class Context extends ContextProperties
+{
     public function __construct($name, $desc, $root, array $repo, $url, $register)
     {
         $this->name = $name;
