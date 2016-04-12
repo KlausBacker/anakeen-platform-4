@@ -3,18 +3,10 @@
 /**
  * Check for required PHP classes/functions on server
  * @param array $errors
- * @return bool
  */
-function checkInitServer(& $errors = array())
-{
+function checkDependencies(& $errors = array()) {
     require_once ('lib/Lib.System.php');
-
-    $errors = array();
-    if (($wiff_root = getenv('WIFF_ROOT')) === false) {
-        array_push($errors, sprintf("Could not get WIFF_ROOT."));
-        return false;
-    }
-
+    
     // Check PHP version
     if (version_compare(PHP_VERSION, '5.4') < 0) {
         array_push($errors, sprintf("PHP version %s is not supported: you must use PHP >= 5.4.", PHP_VERSION));
@@ -55,6 +47,21 @@ function checkInitServer(& $errors = array())
             array_push($errors, sprintf("System command '%s' not found in PATH.", $cmd));
         }
     }
+}
+
+/**
+ * Check for required dependencies and initialize config
+ * @param array $errors
+ * @return bool
+ */
+function checkInitServer(& $errors = array())
+{
+    $errors = array();
+    if (($wiff_root = getenv('WIFF_ROOT')) === false) {
+        array_push($errors, sprintf("Could not get WIFF_ROOT."));
+        return false;
+    }
+    checkDependencies($errors);
     // Initialize xml conf files
     foreach (array(
                  $wiff_root . DIRECTORY_SEPARATOR . 'conf/params.xml',

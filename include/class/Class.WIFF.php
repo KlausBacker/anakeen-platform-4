@@ -46,8 +46,6 @@ class WIFF extends WiffCommon
     
     public $errorMessage = null;
     
-    public $archiveFile;
-    
     public $authInfo = array();
     
     private static $instance;
@@ -339,25 +337,32 @@ class WIFF extends WiffCommon
      * Download latest WIFF file archive
      * @return bool|string
      */
-    private function download()
+    private function downloadUpdateFile()
     {
-        $this->archiveFile = $this->downloadUrl($this->getUpdateBaseURL() . $this->update_file);
-        return $this->archiveFile;
+        return $this->downloadUrl($this->getUpdateBaseURL() . $this->update_file);
     }
     /**
      * Unpack archive in specified destination directory
      * @return string containing the given destination dir pr false in case of error
      */
-    private function unpack()
+    private function unpack($archiveFile, $destDir = null)
     {
         include_once ('lib/Lib.System.php');
         
-        if (!is_file($this->archiveFile)) {
-            $this->errorMessage = sprintf("Archive file has not been downloaded.");
+        if (!is_file($archiveFile) || !is_readable($archiveFile)) {
+            $this->errorMessage = sprintf("Archive file '%s' does not exists or is not readable.", $archiveFile);
             return false;
         }
         
-        $cmd = 'tar xf ' . escapeshellarg($this->archiveFile) . ' --strip-components 1 2>&1';
+        if ($destDir === null) {
+            $destDir = $this->getWiffRoot();
+        }
+        if (!is_dir($destDir) || !is_writable($destDir)) {
+            $this->errorMessage = sprintf("Unpack directory '%s' does not exists or is not writable.", $destDir);
+            return false;
+        }
+        
+        $cmd = sprintf('tar -C %s -zxf %s --strip-components 1 2>&1', escapeshellarg($destDir) , escapeshellarg($archiveFile));
         
         $ret = null;
         exec($cmd, $output, $ret);
@@ -368,6 +373,61 @@ class WIFF extends WiffCommon
         
         return true;
     }
+    private function checkPreUpdate($archiveFile)
+    {
+        require_once ('class/Class.String.php');
+        
+        $tempDir = WiffLibSystem::tempnam(null, 'WIFF_checkPreUpdate');
+        if ($tempDir === false) {
+            $this->errorMessage = sprintf(__METHOD__ . " " . "Error creating temporary file.");
+            return false;
+        }
+        
+        unlink($tempDir);
+        if (mkdir($tempDir, 0700) === false) {
+            $this->errorMessage = sprintf(__METHOD__ . " " . "Error creating temporary directory.");
+            return false;
+        }
+        
+        $this->log(LOG_INFO, sprintf("Unpacking update file '%s' into temporary directory '%s'.", $archiveFile, $tempDir));
+        if ($this->unpack($archiveFile, $tempDir) === false) {
+            $this->errorMessage = sprintf(__METHOD__ . " " . "Error unpacking update into temporary directory '%s': %s", $tempDir, $this->errorMessage);
+            $this->rm_Rf($tempDir);
+            return false;
+        }
+        
+        $preUpdateFile = $tempDir . DIRECTORY_SEPARATOR . 'migr' . DIRECTORY_SEPARATOR . 'pre-update';
+        $this->log(LOG_INFO, sprintf("Checking for pre-update script '%s'.", $preUpdateFile));
+        if (!is_file($preUpdateFile)) {
+            $this->rm_Rf($tempDir);
+            return true;
+        }
+        
+        $newVersion = '';
+        if (($lines = file($tempDir . DIRECTORY_SEPARATOR . 'VERSION')) !== false) {
+            $newVersion = trim($lines[0]);
+        }
+        if (($lines = file($tempDir . DIRECTORY_SEPARATOR . 'RELEASE')) !== false) {
+            $newVersion.= "-" . trim($lines[0]);
+        }
+        
+        $cmd = sprintf("%s %s %s 2>&1", escapeshellarg($preUpdateFile) , escapeshellarg($this->getWiffRoot()) , escapeshellarg($tempDir));
+        $this->log(LOG_INFO, sprintf("Executing pre-update script with command: %s", $cmd));
+        exec($cmd, $output, $ret);
+        if ($ret !== 0) {
+            $message = sprintf('<p style="font-weight: bold">Pre-update verification for dynacase-control %s failed with:</p></p><pre style="font-weight: bold; color: red; white-space: pre-wrap;">%s</pre>', $newVersion, join("<br/>", array_map(function ($s)
+            {
+                return htmlspecialchars($s, ENT_QUOTES);
+            }
+            , $output)));
+            $this->errorMessage = (string)new \String\HTML($message);
+            $this->log(LOG_ERR, sprintf("pre-update script '%s' returned with error: %s", $preUpdateFile, $this->errorMessage));
+            $this->rm_Rf($tempDir);
+            return false;
+        }
+        $this->rm_Rf($tempDir);
+        return true;
+    }
     /**
      * Update WIFF
      * @return boolean
@@ -376,21 +436,30 @@ class WIFF extends WiffCommon
     {
         $v1 = $this->getVersion();
         
-        $ret = $this->download();
-        if ($ret === false) {
-            return $ret;
+        $this->log(LOG_INFO, sprintf("Downloading update file."));
+        if (($updateFile = $this->downloadUpdateFile()) === false) {
+            $this->log(LOG_ERR, sprintf("Error downloading update file: %s", $this->errorMessage));
+            return false;
         }
         
-        $ret = $this->unpack();
-        if ($ret === false) {
-            return $ret;
+        $this->log(LOG_INFO, sprintf("Checking pre-update."));
+        if (($this->checkPreUpdate($updateFile)) === false) {
+            $this->log(LOG_ERR, sprintf("Pre-update failed with error: %s", $this->errorMessage));
+            return false;
+        }
+        
+        $this->log(LOG_INFO, sprintf("Unpacking update file."));
+        if (($this->unpack($updateFile)) === false) {
+            $this->log(LOG_ERR, sprintf("Error unpacking update file: %s", $this->errorMessage));
+            return false;
         }
         
         $v2 = $this->getVersion();
         
-        $ret = $this->postUpgrade($v1, $v2);
-        if ($ret === false) {
-            return $ret;
+        $this->log(LOG_INFO, sprintf("Running post-upgrade scripts."));
+        if (($this->postUpgrade($v1, $v2)) === false) {
+            $this->log(LOG_ERR, sprintf("post-upgrade scripts returned with error: %s", $this->errorMessage));
+            return false;
         }
         
         return true;
@@ -800,15 +869,14 @@ class WIFF extends WiffCommon
         }
         return false;
     }
-
     /**
      * Get Context list with contexts being restored
      * @return Context[]
      */
-    public function getContextListWithInProgress() {
+    public function getContextListWithInProgress()
+    {
         return $this->getContextList(true);
     }
-
     /**
      * Get Context list
      * @param bool $withInProgress Include contexts being restored as ContextProperties objects instead of
@@ -2023,6 +2091,9 @@ class WIFF extends WiffCommon
         
         $migrList = array();
         while ($migr = readdir($dir)) {
+            if (!preg_match('/^[0-9.-]+$/', $migr)) {
+                continue;
+            }
             array_push($migrList, $migr);
         }
         
@@ -2691,6 +2762,74 @@ class WIFF extends WiffCommon
         }
         $ret = fpassthru($fh);
         fclose($fh);
+        return $ret;
+    }
+    
+    public function rm_Rf($path, &$err_list = array())
+    {
+        if (!is_array($err_list)) {
+            $err = sprintf(__METHOD__ . " " . "err_list is not an array.");
+            $this->errorMessage.= $err;
+            $this->log(LOG_ERR, $err);
+            return false;
+        }
+        
+        $filetype = filetype($path);
+        if ($filetype === false) {
+            $this->errorMessage.= sprintf(__METHOD__ . " " . "Could not get type for file '%s'.\n", $path);
+            $err = sprintf("Could not get type for file '%s'.", $path);
+            array_push($err_list, $err);
+            $this->log(LOG_ERR, $this->errorMessage);
+            return false;
+        }
+        
+        if ($filetype == 'dir') {
+            $recursive_ret = true;
+            foreach (scandir($path) as $file) {
+                if ($file == "." || $file == "..") {
+                    continue;
+                };
+                $recursive_ret = ($recursive_ret && $this->rm_Rf(sprintf("%s%s%s", $path, DIRECTORY_SEPARATOR, $file) , $err_list));
+            }
+            
+            $s = stat($path);
+            if ($s === false) {
+                $this->errorMessage.= sprintf(__METHOD__ . " " . "Could not stat dir '%s'.\n", $path);
+                $err = sprintf("Could not stat dir '%s'.", $path);
+                array_push($err_list, $err);
+                $this->log(LOG_ERR, $this->errorMessage);
+                return false;
+            }
+            
+            if ($s['nlink'] > 2) {
+                $this->errorMessage = sprintf(__METHOD__ . " " . "Won't remove dir '%s' as it contains %s files.\n", $path, $s['nlink'] - 2);
+                $err = sprintf("Won't remove dir '%s' as it contains %s files.", $path, $s['nlink'] - 2);
+                array_push($err_list, $err);
+                $this->log(LOG_ERR, $this->errorMessage);
+                return false;
+            }
+            
+            $ret = @rmdir($path);
+            if ($ret === false) {
+                $this->errorMessage = sprintf(__METHOD__ . " " . "Error removing dir '%s'.\n", $path);
+                $err = sprintf("Error removing dir '%s'.", $path);
+                array_push($err_list, $err);
+                $this->log(LOG_ERR, $this->errorMessage);
+                return false;
+            }
+            
+            return ($ret && $recursive_ret);
+        }
+        
+        $ret = unlink($path);
+        if ($ret === false) {
+            $this->errorMessage = sprintf(__METHOD__ . " " . "Error removing file '%s' (filetype=%s).\n", $path, $filetype);
+            $err = sprintf("Error removing file '%s' (filetype=%s).", $path, $filetype);
+            array_push($err_list, $err);
+            $this->log(LOG_ERR, $this->errorMessage);
+            return false;
+        }
+        
         return $ret;
     }
 }
