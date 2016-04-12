@@ -1128,6 +1128,7 @@ define([
         {
             var properties = this.getProperties();
             this._checkInitialisedModel();
+            values=values || {};
 
             //Reinit model with server values
             _.defaults(values, {revision: properties.revision, viewId: properties.viewId, initid: properties.initid});
