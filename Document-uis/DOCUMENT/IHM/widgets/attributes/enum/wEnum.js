@@ -62,7 +62,7 @@
                 useSourceUri: false,
                 useOtherChoice: false,
                 placeHolder:'Select', // Message to display when no useFirstChoice is true and no value selected
-                sortBy: false
+                orderBy: false
             }
         },
         _initDom: function wEnumInitDom()
@@ -70,11 +70,11 @@
             var currentWidget = this;
             if (this.getMode() === "write" &&
                 this.options.renderOptions &&
-                this.options.renderOptions.sortBy) {
-                switch (this.options.renderOptions.sortBy) {
+                this.options.renderOptions.orderBy) {
+                switch (this.options.renderOptions.orderBy) {
                     case 'key':
                         if (this.options.sourceValues && this.options.sourceValues.sort) {
-                            this.options.sourceValues = this.options.sourceValues.sort(function (a, b)
+                            this.options.sourceValues = this.options.sourceValues.sort(function wEnum_initDomSortKey(a, b)
                             {
                                 if (a.key === b.key) {
                                     return 0;
@@ -85,10 +85,10 @@
                         break;
                     case 'label':
                         if (this.options.sourceValues && this.options.sourceValues.sort) {
-                            this.options.sourceValues = this.options.sourceValues.sort(function (a, b)
+                            this.options.sourceValues = this.options.sourceValues.sort(function wEnum_initDomSortLabel(a, b)
                             {
                                 if (localeCompareSupportsLocales) {
-                                    return String(a.label).localeCompare(String(b.label), content.locale, {
+                                    return String(a.label).localeCompare(String(b.label), currentWidget.options.locale, {
                                         numeric: true,
                                         caseFirst: false
                                     });
@@ -293,8 +293,8 @@
             var scope = this,
                 requestData = {};
 
-            if (this.options.renderOptions.sortBy) {
-                requestData.sortBy = this.options.renderOptions.sortBy;
+            if (this.options.renderOptions.orderBy) {
+                requestData.orderBy = this.options.renderOptions.orderBy;
             }
 
             // Get enums data and defer render
@@ -854,8 +854,8 @@
                 requestData.keyword = options.data.filter.filters[0].value;
                 requestData.operator = options.data.filter.filters[0].operator;
             }
-            if (this.options.renderOptions.sortBy) {
-                requestData.sortBy = this.options.renderOptions.sortBy;
+            if (this.options.renderOptions.orderBy) {
+                requestData.orderBy = this.options.renderOptions.orderBy;
             }
 
             if (!this.options.sourceUri) {
