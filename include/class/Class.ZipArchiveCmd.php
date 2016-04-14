@@ -1,13 +1,11 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
  * ZipArchiveCmd Class
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  *
  * A class to create/extract Zip file using the command line 'zip' and
  * 'unzip' tools.

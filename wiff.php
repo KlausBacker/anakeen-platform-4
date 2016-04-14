@@ -1,14 +1,12 @@
 <?php
 /*
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
  * Web Installer for Freedom
  * XHR PHP Portal
  * @author Anakeen
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  *
  * PHP Script called by Web Installer asynchronous requests.
  *
@@ -303,7 +301,7 @@ if (isset($_REQUEST['authRepo'])) {
 }
 // Request to get context list
 if (isset($_REQUEST['getContextList'])) {
-    $contextList = $wiff->getContextList();
+    $contextList = $wiff->getContextListWithInProgress();
     if ($contextList === false) {
         answer(null, $wiff->errorMessage);
     }

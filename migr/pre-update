@@ -1,0 +1,50 @@
+#!/usr/bin/env php
+<?php
+
+function usage($me)
+{
+    $msg = <<<EOF
+Usage
+-----
+
+    $me <wiff_root> <wiff_temp_root>
+
+
+EOF;
+    print $msg;
+}
+
+if (count($argv) < 2) {
+    usage(basename($argv[0]));
+    exit(1);
+}
+
+$WIFF_ROOT = $argv[1];
+if (!is_file($WIFF_ROOT . DIRECTORY_SEPARATOR . 'wiff.php')) {
+    printf("Error: missing argument <wiff_root>.\n");
+    usage(basename($argv[0]));
+    exit(1);
+}
+
+$WIFF_TEMP_ROOT = $argv[2];
+if (!is_file($WIFF_TEMP_ROOT . DIRECTORY_SEPARATOR . 'wiff.php')) {
+    printf("Error: missing argument <wiff_temp_root>.\n");
+    usage(basename($argv[0]));
+    exit(1);
+}
+/*
+ * Setup include path to temporary wiff to check dependencies
+*/
+set_include_path(get_include_path() . PATH_SEPARATOR . $WIFF_TEMP_ROOT . DIRECTORY_SEPARATOR . 'include');
+require_once "lib/Lib.checkInitServer.php";
+
+$errors = array();
+checkDependencies($errors);
+if (count($errors) > 0) {
+    foreach ($errors as $error) {
+        printf("* %s\n", $error);
+    }
+    exit(1);
+}
+
+exit(0);
