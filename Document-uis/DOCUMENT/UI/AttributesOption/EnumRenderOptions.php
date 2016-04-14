@@ -19,10 +19,10 @@ class EnumRenderOptions extends CommonRenderOptions
     const listDisplay = "list";
     const autocompletionDisplay = "autoCompletion";
     const boolDisplay = "bool";
-    const sortByOption = "sortBy";
-    const sortByKeyOption = "key";
-    const sortByLabelOption = "label";
-    const sortByOrderOption = "none";
+    const orderByOption = "orderBy";
+    const orderByKeyOption = "key";
+    const orderByLabelOption = "label";
+    const orderByOrderOption = "none";
     /**
      * Display formet
      * @note use only in edition mode
@@ -77,17 +77,25 @@ class EnumRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::useFirstChoiceOption, (bool)$useIt);
     }
-    public function setSortBy($sortBy)
+
+    /**
+     * Order enum by label, key or internal order option
+     * @param string $orderBy
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setOrderBy($orderBy)
     {
         $allow = array(
-            self::sortByOrderOption,
-            self::sortByLabelOption,
-            self::sortByKeyOption
+            self::orderByOrderOption,
+            self::orderByLabelOption,
+            self::orderByKeyOption
         );
-        if (!in_array($sortBy, $allow)) {
-            throw new Exception("UI0209", $sortBy, implode(', ', $allow));
+        if (!in_array($orderBy, $allow)) {
+            throw new Exception("UI0209", $orderBy, implode(', ', $allow));
         }
-        return $this->setOption(self::sortByOption, $sortBy);
+        return $this->setOption(self::orderByOption, $orderBy);
     }
     /**
      * Text to set into input when is empty
