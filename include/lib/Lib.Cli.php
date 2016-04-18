@@ -826,10 +826,8 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
         if ($paramList !== false && count($paramList) > 0) {
             
             $title = sprintf("Parameters for module '%s'", $module->name);
-            if (!boolopt('yes', $options)) {
-                echo sprintf("\n%s\n%s\n\n", $title, str_repeat('-', strlen($title)));
-            }
-            
+            echo sprintf("\n%s\n%s\n\n", $title, str_repeat('-', strlen($title)));
+
             foreach ($paramList as $param) {
                 /**
                  * @var Parameter $param
@@ -841,11 +839,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                 
                 $pvalue = $param->value == "" ? $param->default : $param->value;
                 
-                if (boolopt('yes', $options)) {
-                    $value = $pvalue;
-                } else {
-                    $value = param_ask($options, $param->name, $pvalue, $pvalue);
-                }
+                $value = param_ask($options, $param->name, $pvalue, $pvalue);
                 if ($value === false) {
                     printerr(sprintf("Error: could not read answer!\n"));
                     return 1;
@@ -858,9 +852,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     return 1;
                 }
                 
-                if (!boolopt('yes', $options)) {
-                    echo "\n";
-                }
+                echo "\n";
             }
         }
         /**
