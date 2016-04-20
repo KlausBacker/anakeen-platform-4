@@ -181,7 +181,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
     
     protected static function getBaseUrl()
     {
-        $url = sprintf("%s://%s", $_SERVER["REQUEST_SCHEME"], $_SERVER["SERVER_NAME"]);
+        $url = sprintf("%s://%s", self::getRequestScheme() , $_SERVER["SERVER_NAME"]);
         if ($_SERVER["SERVER_PORT"] !== "80") {
             $url.= sprintf(":%s", $_SERVER["SERVER_PORT"]);
         }
@@ -194,5 +194,32 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         }
         $url.= "/";
         return $url;
+    }
+    /**
+     * Get the request's scheme in a "portable" way
+     *
+     * @return string
+     */
+    protected static function getRequestScheme()
+    {
+        if (!empty($_SERVER['REQUEST_SCHEME'])) {
+            /*
+             * $_SERVER['REQUEST_SCHEME'] is only available with Apache >= 2.4
+             * and contains the scheme part of the request's URI
+            */
+            return $_SERVER['REQUEST_SCHEME'];
+        } elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            /*
+             * "on" if the request uses https, "off" otherwise
+            */
+            return 'https';
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            /*
+             * https://tools.ietf.org/html/rfc7239#section-5.4
+             * The "proto" parameter has the value of the used protocol type.
+            */
+            return $_SERVER['HTTP_X_FORWARDED_PROTO'];
+        }
+        return 'http';
     }
 }
