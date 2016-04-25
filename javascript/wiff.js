@@ -2856,12 +2856,15 @@ function installBeginWithError(errorMsg) {
 		});
 }
 function installEndWithError(errorMsg) {
-    Ext.Msg.alert('Dynacase Control', '<span class="message error">Install successful with error:<br/>'+errorMsg+'</span>',
-		function() {
+	wiffAlert(
+		Ext.util.Format.htmlEncode('Dynacase Control'),
+		'<span class="message error">Install successful with error:<br/><br/><pre style="white-space: pre-wrap">' + Ext.util.Format.htmlEncode(errorMsg) + '</pre></span>',
+		function () {
 			installedStore[currentContext].load();
 			availableStore[currentContext].load();
 			globalwin.close();
-		});
+		}
+	);
 }
 function
     installHappyEnd() {
@@ -4946,4 +4949,56 @@ function set_onbeforeunload() {
 
 function unset_onbeforeunload() {
     window.onbeforeunload = null;
+}
+
+/**
+ * Custom variant of Ext.Msg.alert() with scrollable message
+ *
+ * @param {String} title The title bar HTML text
+ * @param {String} msg The message box body HTML text
+ * @param {Function} fn (optional) The callback function invoked after the message box is closed
+ */
+function wiffAlert(title, msg, fn) {
+	var win = new Ext.Window({
+		title : title,
+		items : [
+			new Ext.form.FormPanel({
+				border : false,
+				frame : true,
+				bodyStyle : 'padding:15px;',
+				monitorValid : true,
+				layout : 'vbox',
+				items : [
+					new Ext.Panel({
+						border : false,
+						bodyStyle : 'padding-bottom:10px;',
+						autoScroll : true,
+						flex : 1,
+						items : [
+							new Ext.Panel({
+								html : msg
+							})
+						]
+					})
+				],
+				buttons : [
+					{
+						text : 'Ok',
+						handler : function () {
+							this.findParentByType(Ext.Window).close();
+						}
+					}
+				]
+			})
+		],
+		height : 400,
+		width : 600,
+		modal : true,
+		closable : true,
+		layout : 'fit',
+		listeners : {
+			close : fn
+		}
+	});
+	win.show();
 }
