@@ -395,7 +395,7 @@ class WIFF extends WiffCommon
             return false;
         }
         
-        $preUpdateFile = $tempDir . DIRECTORY_SEPARATOR . 'migr' . DIRECTORY_SEPARATOR . 'pre-update';
+        $preUpdateFile = $tempDir . DIRECTORY_SEPARATOR . 'pre-update';
         $this->log(LOG_INFO, sprintf("Checking for pre-update script '%s'.", $preUpdateFile));
         if (!is_file($preUpdateFile)) {
             $this->rm_Rf($tempDir);
@@ -2090,6 +2090,12 @@ class WIFF extends WiffCommon
         
         $migrList = array();
         while ($migr = readdir($dir)) {
+            if ($migr == '.' || $migr == '..') {
+                continue;
+            }
+            if (!is_file($dir . DIRECTORY_SEPARATOR . $migr)) {
+                continue;
+            }
             if (!preg_match('/^[0-9.-]+$/', $migr)) {
                 continue;
             }
