@@ -23,6 +23,7 @@
         "beforeClose", "close",
         "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",
+        "beforeRestore", "afterRestore",
         "failTransition", "successTransition",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
