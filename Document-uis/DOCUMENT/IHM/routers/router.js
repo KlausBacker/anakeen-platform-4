@@ -14,10 +14,10 @@ define([
 
             this.document = options.document;
 
-            this.route(/[^?]api\/v1\/documents\/([^\/]+)\.html/, "viewDocument");
-            this.route(/[^?]api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\.html/, "viewRevision");
-            this.route(/[^?]api\/v1\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
-            this.route(/[^?]api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/, "viewRevisionView");
+            this.route(/api\/v1\/documents\/([^\/]+)\.html/, "viewDocument");
+            this.route(/api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\.html/, "viewRevision");
+            this.route(/api\/v1\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
+            this.route(/api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/, "viewRevisionView");
 
             this.route(/[^?]*\?app=DOCUMENT([^#]+)/, "fetch");
 
