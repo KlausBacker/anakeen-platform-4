@@ -13,8 +13,8 @@
 }
 
 .properties-header--description {
-  text-align: right;
   padding-right: 1em;
+  width:10em;
 }
 
 table.properties-main .properties-separator {
@@ -23,7 +23,6 @@ table.properties-main .properties-separator {
 }
 
 .properties-description {
-  text-align: right;
   white-space: nowrap;
 }
 
@@ -33,15 +32,22 @@ table.properties-main .properties-separator {
   display: inline-block;
   margin-right: 1em;
 }
-
+/*
 .properties-description {
   &:after {
     content: ":";
     padding-left: 0.6em;
   }
+}*/
+
+.properties-value, .properties-header--value {
+  &:before {
+    content: ":";
+    padding-right: 0.6em;
+  }
 }
 
 .properties-value--famname {
-  text-align: right;
+  padding-left:3em;
   font-weight: bold;
 }
