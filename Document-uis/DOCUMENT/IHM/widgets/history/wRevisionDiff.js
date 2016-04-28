@@ -64,13 +64,12 @@ define([
             this.element.on("click" + this.eventNamespace, ".revision-diff-button-showonlydiff", function dcpRevisionDiff_showDiff() {
                 if ($widget.data("showOnlyDiff")) {
                     $widget.data("showOnlyDiff", false);
-                    $widget.text(currentWidget.options.labels.showOnlyDiff).removeClass("btn-primary");
+                    $(this).text(currentWidget.options.labels.showOnlyDiff).removeClass("btn-primary");
                     currentWidget.element.find(".revision-diff-equal").show();
                 } else {
                     $widget.data("showOnlyDiff", true);
                     currentWidget.element.find(".revision-diff-equal").hide();
-
-                    $widget.text(currentWidget.options.labels.showAll).addClass("btn-primary");
+                    $(this).text(currentWidget.options.labels.showAll).addClass("btn-primary");
                 }
             });
 

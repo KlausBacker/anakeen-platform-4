@@ -104,6 +104,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         
         $layout = new \Layout("DOCUMENT/Layout/view.html");
         $layout->set("BASEURL", self::getBaseUrl());
+        $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
         
         if ($initid === false) {
             //Boot the init page in void mode (used by offline project)
@@ -121,13 +122,13 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         } else {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
-                $e=new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui") , $initid));
+                $e = new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui") , $initid));
                 $e->setHttpStatus("404", "Document not found");
                 throw $e;
             }
             $err = $doc->control("view");
             if ($err) {
-                $e=new Exception($err);
+                $e = new Exception($err);
                 $e->setHttpStatus("403", "Forbidden");
                 throw $e;
             }

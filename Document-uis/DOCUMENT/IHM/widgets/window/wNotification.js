@@ -3,15 +3,14 @@ define([
     'underscore',
     'dcpDocument/widgets/widget',
     'kendo/kendo.notification'
-], function ($, _) {
+], function wNotification($, _) {
     'use strict';
 
     $.widget("dcp.dcpNotification", {
-
-
+        
         options: {
             // animation:false,
-            autoHideAfter: 0,
+            autoHideAfter: 5000,
             appendTo: "#dcpNotificationContainer",
             position: {
                 top: 60, // override by notification.less
@@ -57,7 +56,7 @@ define([
         },
         notificationElement: null,
 
-        _create: function () {
+        _create: function wNotificationCreate() {
             var scope = this;
             this.notificationElement = $('<div class="dcpNotification--widget" />');
 
@@ -66,14 +65,12 @@ define([
 
             this.notificationElement.kendoNotification(this.options);
 
-            this.element.on("notification", function (event, data) {
+            this.element.on("notification", function wNotificationOn(event, data) {
                 scope.show(data.type, data);
             });
         },
-
-
-
-        show: function (type, options) {
+        
+        show: function wNotificationShow(type, options) {
             options.title = options.title || '';
             options.message = options.message || '';
             options.htmlMessage = options.htmlMessage || '';
@@ -87,26 +84,25 @@ define([
             }, type);
         },
 
-        showError: function (options) {
+        showError: function wNotificationShowError(options) {
             this.show("error", options);
         },
 
-        showInfo: function (options) {
+        showInfo: function wNotificationShowInfo(options) {
             this.show("info", options);
         },
 
-        showWarning: function (options) {
+        showWarning: function wNotificationShowWarning(options) {
             this.show("warning", options);
         },
 
-        showSuccess: function (options) {
+        showSuccess: function wNotificationShowSuccess(options) {
             this.show("success", options);
         },
 
-        clear: function () {
+        clear: function wNotificationClear() {
             this.notificationElement.kendoNotification("hide");
         }
-
-
+        
     });
 });

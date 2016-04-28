@@ -269,6 +269,7 @@ class RenderDefault implements IRenderConfig
         $opt->account()->setTranslations(array(
             "allSelectedDocument" => ___("No more matching", "ddui-docid")
         ));
+        $opt->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
         
         $selectedTab = $document->getUTag("lasttab");
         if ($selectedTab) {
@@ -418,7 +419,6 @@ class RenderDefault implements IRenderConfig
     {
         return '';
     }
-
     /**
      * Add setLinkHelp option to attributes referenced in HELP family related document
      * @param RenderOptions $options
@@ -432,7 +432,7 @@ class RenderDefault implements IRenderConfig
         if ($helpDoc) {
             \Dcp\HttpApi\V1\DocManager\DocManager::cache()->addDocument($helpDoc);
             $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
-
+            
             foreach ($attrids as $k => $aid) {
                 if ($aid) {
                     $options->commonOption($aid)->setLinkHelp($helpDoc->initid);
@@ -441,14 +441,14 @@ class RenderDefault implements IRenderConfig
         }
         return $this;
     }
-
     /**
      * Return default help document associated with family
      * @param \Doc $document
      *
      * @return \Dcp\Family\HELPPAGE|null
      */
-    protected function getDefaultHelpPageDocument(\Doc $document) {
+    protected function getDefaultHelpPageDocument(\Doc $document)
+    {
         $helpDoc = $document->getHelpPage();
         if ($helpDoc && $helpDoc->isAlive()) {
             return $helpDoc;

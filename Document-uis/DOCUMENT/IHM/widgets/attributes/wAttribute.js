@@ -124,7 +124,7 @@
                             placement: "auto bottom",
                             html: true,
                             animation: false,
-                            container: ".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
+                            container: scope.element, //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();

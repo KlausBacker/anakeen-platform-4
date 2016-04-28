@@ -1,9 +1,7 @@
 <?php
-
 global $app_const;
 
-$loggerClass
-    = <<<'JSON'
+$loggerClass = <<<'JSON'
 [
     "\\Dcp\\UI\\Logger\\JS\\Dcp"
 ]
@@ -14,24 +12,27 @@ $app_const = array(
     "VERSION" => "{{VERSION}}-{{RELEASE}}",
     //region full
     "LOGGER" => array(
-        "descr" => N_("ddui:logging class"),
+        "descr" => N_("ddui:logging class") ,
         "val" => "$loggerClass"
-    ),
+    ) ,
     "ACTIVATE_LOGGING" => array(
         "val" => "TRUE",
-        "descr" => N_("ddui:activate logging"),
+        "descr" => N_("ddui:activate logging") ,
         "kind" => "enum(FALSE|TRUE)"
-    ),
+    ) ,
     "MODE_DEBUG" => array(
         "val" => "FALSE",
-        "descr" => N_("ddui:debug mode"),
+        "descr" => N_("ddui:debug mode") ,
         "kind" => "enum(FALSE|TRUE)"
-    ),
+    ) ,
     "RENDER_PARAMETERS" => array(
         "val" => "{}",
         "descr" => N_("ddui:render parameters")
+    ) ,
+    "NOTIFICATION_DELAY" => array(
+        "val" => "5000",
+        "descr" => N_("ddui:Delay notifications display (in ms)")
     )
-
     //endregion full
+    
 );
-?>

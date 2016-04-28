@@ -46,7 +46,7 @@ define([
         {
             return '<table class="properties-main table table-condensed table-hover"><thead>' +
                 '<tr class="properties-header">' +
-                '<th class="properties-header--description">{{labels.property}} : </th>' +
+                '<th class="properties-header--description">{{labels.property}}</th>' +
                 '<th class="properties-header--value">{{labels.propertyValue}}</th>' +
                 '</tr></thead>' +
                 '<tbody>' +
@@ -121,7 +121,7 @@ define([
                     };
                 };
                 scope.element.html(Mustache.render(scope.htmlCaneva() || "", info));
-                scope.dialogWindow.center();
+                //scope.dialogWindow.center();
 
                 scope.dialogWindow.setOptions({
                     title: Mustache.render(scope.options.labels.propertiesTitle, data.data.document.properties)
