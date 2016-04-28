@@ -22,7 +22,7 @@ class ArrayRenderOptions extends CommonRenderOptions
     const arrayBreakPointsOption = "arrayBreakPoints";
     
     const transpositionRule = "@media only screen and (max-width: 768px),(min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)";
-    const upRule = "@media (max-width: 1280px)";
+    const upRule = "@media (max-width: 1200px)";
     /**
      * Display row count if row number is greater than $since
      * @param int $since : limit to see row numbers (if zero always see count) if (-1) never see count
@@ -74,8 +74,6 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowMinLimitOption, (int)$limit);
     }
-
-
     /**
      * Set min row displayed for the array
      * If array has not the min, empty rows are added since reach limit
@@ -89,7 +87,6 @@ class ArrayRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::rowMinDefaultOption, (int)$default);
     }
-
     /**
      * Set max row to the table
      * The add button is disabled when limit is reach
