@@ -224,7 +224,9 @@ define([
         _initExternalElements: function documentController_initExternalElements()
         {
             this.$loading = $(".dcpLoading").dcpLoading();
-            this.$notification = $('body').dcpNotification(); // active notification
+            this.$notification = $('body').dcpNotification(
+                window.dcp.notifications 
+            ); // active notification
         },
 
         /**
