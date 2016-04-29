@@ -483,7 +483,15 @@ define([
                 try {
                     var currentAttribute = currentWidget.getAttribute(attribute),
                         currentModel = currentWidget.getProperties(),
-                        $element = $(currentWidget.element);
+                        $element = $(currentWidget.element),
+                        addConstraint = function documentController_addConstraint(currentConstraint) {
+                            if (_.isString(currentConstraint)) {
+                                constraintController.addConstraintMessage(currentConstraint);
+                            }
+                            if (_.isObject(currentConstraint) && currentConstraint.message && _.isNumber(currentConstraint.index)) {
+                                constraintController.addConstraintMessage(currentConstraint.message, currentConstraint.index);
+                            }
+                        };
                     _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                     {
                         try {
@@ -493,11 +501,10 @@ define([
                                     currentAttribute,
                                     currentAttribute.getValue("all")
                                 );
-                                if (_.isString(response)) {
-                                    constraintController.addConstraintMessage(response);
-                                }
-                                if (_.isObject(response) && response.message && _.isNumber(response.index)) {
-                                    constraintController.addConstraintMessage(response.message, response.index);
+                                if (_.isArray(response)) {
+                                    _.each(response, addConstraint);
+                                } else {
+                                    addConstraint(response);
                                 }
                             }
                         } catch (e) {

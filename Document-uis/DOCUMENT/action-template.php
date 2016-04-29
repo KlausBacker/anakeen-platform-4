@@ -4,6 +4,8 @@
  * @package FDL
 */
 
+require_once "FDL/freedom_util.php";
+
 /**
  * Return a template
  *
@@ -64,6 +66,8 @@ function template(Action & $action)
         $mustacheLoader = new \Dcp\Ui\MustacheLoaderSection($templates);
         $mustacheRender->setPartialsLoader($mustacheLoader);
         $content["content"] = json_decode($mustacheRender->render("{{>templates}}"), true);
+        //Translation
+        $content["options"] = $renderConfig->getOptions(new_Doc(getDbAccess()));
     } catch(Exception $e) {
         $content["success"] = false;
         $content["error"] = $e->getMessage();
