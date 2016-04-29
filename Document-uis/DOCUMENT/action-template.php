@@ -67,9 +67,7 @@ function template(Action & $action)
         $mustacheRender->setPartialsLoader($mustacheLoader);
         $content["content"] = json_decode($mustacheRender->render("{{>templates}}"), true);
         //Translation
-        $doc = createDoc(getDbAccess(), "BASE", false);
-        $renderConfig->getOptions($doc);
-        $content["options"] = $renderConfig->getOptions($doc);
+        $content["options"] = $renderConfig->getOptions(new_Doc(getDbAccess()));
     } catch(Exception $e) {
         $content["success"] = false;
         $content["error"] = $e->getMessage();
