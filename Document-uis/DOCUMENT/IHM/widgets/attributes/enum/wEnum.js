@@ -161,6 +161,11 @@
                         default:
                             this.multipleSelect();
                     }
+                    this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--enum--button', function wEnumSelectClick(event)
+                    {
+                        event.preventDefault();
+                        currentWidget.kendoWidgetObject.search("");
+                    });
                 } else {
                     switch (this.options.renderOptions.editDisplay) {
                         case "autoCompletion" :
@@ -642,6 +647,7 @@
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
+            this.kendoWidgetObject=this.kendoWidget.data("kendoDrobDownList");
             kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
         },
         multipleSelect: function wEnumMultipleSelect()
@@ -650,6 +656,7 @@
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
+            this.kendoWidgetObject=this.kendoWidget.data("kendoMultiSelect");
         },
 
         singleCombobox: function wEnumSingleCombobox()
@@ -662,6 +669,8 @@
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
 
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
+
+            this.kendoWidgetObject=kddl;
             if (this.options.renderOptions.useSourceUri) {
                 if (this.options.attributeValue.value === null) {
                     //kddl.dataSource.data([]);

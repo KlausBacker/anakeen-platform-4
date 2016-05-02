@@ -32,7 +32,8 @@
                     '#if (data.error) {#' +
                     '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>'
-                }
+                },
+                editDisplay: "list"
             },
             labels: {
                 allSelectedDocument: "No more matching"
@@ -80,7 +81,15 @@
                     if (this._isMultiple()) {
                         this._decorateMultipleValue(this.kendoWidget);
                     } else {
-                        this._decorateSingleValue(this.kendoWidget);
+
+                        switch (this.options.renderOptions.editDisplay) {
+                            case "singleMultiple" :
+                                this._decorateSingleValue(this.kendoWidget);
+                                break;
+                            //case "list":
+                            default:
+                               this.singleDropdown(this.kendoWidget);
+                        }
                     }
                     if (this.options.attributeValue && this.options.attributeValue.value !== null) {
                         if (!this.hasMultipleOption()) {
@@ -124,6 +133,152 @@
         _getFocusInput: function wDocidFocusInput()
         {
             return this.element.find('input');
+        },
+
+        /**
+         * Get kendo option from normal options and from renderOptions.kendoNumeric
+         * @returns {*}
+         */
+        getKendoOptions: function wDocidGetKendoOptions(inputValue, extraOptions) {
+
+            var currentWidget = this;
+            var options = {
+                filter: "contains",
+                autoBind: false,
+                dataTextField: "docTitle",
+                dataValueField: "docId",
+                highlightFirst: true,
+                //value: values,
+                dataSource: {
+                    type: "json",
+                    serverFiltering: true,
+                    // data:values,
+                    transport: {
+                        read: function wDocidSelectRead(options)
+                        {
+                            currentWidget._hasBeenRequested = true;
+                            options.data.index = currentWidget._getIndex();
+                            return currentWidget.options.autocompleteRequest.call(null, options);
+                        }
+                    },
+                    schema: {
+                        // Add already recorded data to items
+                        data: function wDocidSelectSchema(items)
+                        {
+                            var attrValues = currentWidget.getValue();
+                            //Add new elements
+                            _.each(items, function wDocidDataCompose(currentItem)
+                            {
+                                if (currentItem.values && currentItem.values[currentWidget.options.id]) {
+                                    currentItem.docId = currentItem.values[currentWidget.options.id].value;
+                                    currentItem.docTitle = currentItem.values[currentWidget.options.id].displayValue;
+                                }
+                            });
+
+                            //Convert existing values
+                            _.each(attrValues, function wDocidDataAlreadySet(currentValue)
+                            {
+                                if (currentValue && currentValue.value) {
+                                    items.push({
+                                        docId: currentValue.value,
+                                        docTitle: currentValue.displayValue
+                                    });
+                                }
+                            });
+
+                            //Suppress multiple items
+                            return _.uniq(items, false, function wDocidDataUniq(currentItem)
+                            {
+                                return currentItem.docId;
+                            });
+                        }
+                    }
+                },
+                select: function kendoDocidSelect(event)
+                {
+                    var valueIndex = currentWidget._getIndex();
+                    var dataItem = this.dataSource.at(event.item.index()).toJSON();
+                    //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
+
+                    _.defer(function wDocidChangeOnSelect()
+                    {
+                        // Change others attributes designed by help returns
+                        currentWidget._trigger("changeattrsvalue", event, {
+                            dataItem: dataItem,
+                            valueIndex: valueIndex
+                        });
+                    });
+                },
+                change: function kendoChangeSelect(event)
+                {
+                    // set in case of delete item
+                    var oldValues = currentWidget.options.attributeValue;
+                    var displayValue;
+                    var newValues = [];
+                    var kMultiSelect = this;
+
+                    _.each(this.value(), function wDocidSelectChange(val)
+                    {
+                        if (!_.isUndefined(val)) {
+                            displayValue = _.where(oldValues, {value: val});
+                            if (displayValue.length === 0) {
+                                displayValue = _.where(kMultiSelect.dataSource.data(), {docId: val});
+                                if (displayValue.length > 0) {
+                                    displayValue = displayValue[0].docTitle;
+                                } else {
+                                    displayValue = "-";
+                                }
+                            } else {
+                                displayValue = displayValue[0].displayValue;
+                            }
+
+                            newValues.push({value: val, displayValue: displayValue});
+                        }
+                    });
+
+                    if (!currentWidget._isMultiple()) {
+                        if (newValues.length === 0) {
+                            newValues = {value: null, displayValue: ""};
+                        } else {
+                            newValues = newValues[0];
+                        }
+                    }
+
+                    currentWidget.setValue(newValues, event);
+                },
+                open: function wDocidSelectOpen(event)
+                {
+                    if (currentWidget._hasBeenRequested !== true) {
+                        event.preventDefault();
+                        currentWidget.kendoWidgetObject.search(""); // @TODO Not multiselect
+                    }
+                    this.ul.addClass("dcpAttribute__select--docid");
+                },
+                filtering: function wDocidSelectOpen()
+                {
+                    this._isFiltering = true;
+                },
+                dataBound: function wDocidFilteringNoOne()
+                {
+
+                    if (this._isFiltering) {
+                        if (this.ul.find("li:not(.k-state-selected)").length === 0 && this.ul.find("li.k-state-selected").length > 0) {
+                            // No one more : display
+                            var $noOne = $('<li class="k-item"/>')
+                                .append('<span class="k-state-default"/>')
+                                .append($('<span class="k-state-error dcpAttribute__select--docid-none"/>')
+                                    .text(currentWidget.options.labels.allSelectedDocument));
+                            this.ul.append($noOne);
+                        }
+                        this._isFiltering = false;
+                    }
+                }
+            };
+
+            if (extraOptions) {
+                options = _.extend(options, extraOptions);
+            }
+            return options;
         },
 
         /**
@@ -261,7 +416,8 @@
                     {
                         if (currentWidget._hasBeenRequested !== true) {
                             event.preventDefault();
-                            inputValue.data("kendoMultiSelect").search("");
+                            console.log("NO requested");
+                            currentWidget.kendoWidgetObject.search("");
                         }
                         this.ul.addClass("dcpAttribute__select--docid");
                     },
@@ -295,11 +451,12 @@
             }
             //noinspection JSUnresolvedFunction
             inputValue.kendoMultiSelect(options);
-            inputValue.data("kendoMultiSelect").dataSource.data(values);
+            this.kendoWidgetObject = inputValue.data("kendoMultiSelect");
+            this.kendoWidgetObject.dataSource.data(values);
 
             if (this.options.attributeValues.value !== null) {
                 // Init kendo widget with identifier array
-                inputValue.data("kendoMultiSelect").value(_.filter(_.map(values, function wDocidInitValue(item)
+                this.kendoWidgetObject.value(_.filter(_.map(values, function wDocidInitValue(item)
                 {
                     return item.docId;
                 }), function wDocidFilterEmpty(item)
@@ -310,12 +467,27 @@
             this.element.on("click" + this.eventNamespace, '.dcpAttribute__value--docid--button', function wDocidSelectClick(event)
             {
                 event.preventDefault();
-                inputValue.data("kendoMultiSelect").search("");
+                currentWidget.kendoWidgetObject.search("");
             });
 
             this.element.find('.dcpAttribute__value--docid--button[title]').tooltip({
                 html: true
             });
+        },
+
+        singleDropdown: function wDocidSingleDropdown(inputValue)
+        {
+            var kendoOptions = this.getKendoOptions( inputValue);
+            var kddl;
+
+            this.kendoWidgetObject = inputValue.kendoDropDownList(kendoOptions).data("kendoDropDownList");
+            console.log("inputs", inputValue);
+            console.log("options", kendoOptions);
+            console.log("ME", this);
+            this.kendoWidgetObject.list.find(".k-list-optionlabel").addClass("placeholder--clear");
+            this.kendoWidgetObject.value(this.options.attributeValue.value);
+            this.element.find(".dcpAttribute__value--docid--button").parent().hide();
+
         },
         /**
          * Return true if attribut has multiple option
@@ -353,7 +525,7 @@
                 {
                     return val.value;
                 });
-                var kendoSelect = this.kendoWidget.data("kendoMultiSelect");
+                var kendoSelect = this.kendoWidgetObject;
                 var originalValues = _.clone(kendoSelect.value());
                 // update values in kendo widget
 
@@ -384,6 +556,7 @@
                     }
                 });
 
+                console.log("New value",newValues );
                 kendoSelect.value(newValues);
 
                 if (!_.isEqual(_.uniq(newValues), _.uniq(originalValues))) {
@@ -400,8 +573,8 @@
 
         close: function wDocid_close()
         {
-            if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
-                this.kendoWidget.data("kendoMultiSelect").close();
+            if (this.kendoWidget && this.kendoWidgetObject) {
+                this.kendoWidgetObject.close();
             }
         },
 
@@ -412,8 +585,8 @@
 
         _destroy: function wDocid__destroy()
         {
-            if (this.kendoWidget && this.kendoWidget.data("kendoMultiSelect")) {
-                this.kendoWidget.data("kendoMultiSelect").destroy();
+            if (this.kendoWidget && this.kendoWidgetObject) {
+                this.kendoWidgetObject.destroy();
             }
             this._super();
         }

@@ -9,13 +9,13 @@
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
                 {{/isMultiple}}
                 {{#isMultiple}}
-                <span class="fa fa-plus fa-fw"></span>
+                <span class="k-icon k-i-arrow-s"></span>
                 {{/isMultiple}}
         </button>
     </span>
-    <select name="{{id}}" id="{{viewCid}}"
+    <input name="{{id}}" id="{{viewCid}}"
             class="form-control dcpAttribute__value dcpAttribute__value--docid">
-    </select>
+    </input>
     {{#hadButtons}}
     <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
