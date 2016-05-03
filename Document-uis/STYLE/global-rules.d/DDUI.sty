@@ -28,7 +28,10 @@ $generateGlobalVarFile = function () {
         if ($fileinfo->isDot()) {
             continue;
         }
-        $files[$fileinfo->getPathname()] = $fileinfo->getPathname();
+
+        if ($fileinfo->getExtension() === "less") {
+            $files[$fileinfo->getPathname()] = $fileinfo->getPathname();
+        }
 
     }
 

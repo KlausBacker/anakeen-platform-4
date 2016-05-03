@@ -286,13 +286,6 @@ define([
                 if (tabPlacement === "topFix" && this.kendoTabs) {
                     this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
 
-                    // Use an overflow to hide resize effects, it is delete at the end of tab resize
-                    var tabList = this.$(".dcpDocument__tabs .dcpDocument__tabs__list");
-                    tabList.css("overflow", "hidden").css("max-height", "2.7em");
-                    $(window).on("resize.v" + this.model.cid, function vDocumentResize()
-                    {
-                        tabList.css("overflow", "hidden").css("max-height", "2.7em");
-                    });
                     $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
 
                 }
@@ -344,6 +337,9 @@ define([
             _.delay(function vDocumentEndLoading()
             {
                 $(".dcpLoading--init").removeClass("dcpLoading--init");
+                if (tabPlacement === "topFix" && documentView.kendoTabs) {
+                    documentView.responsiveTabMenu(); // need to call here to have good dimensions
+                }
             }, 500);
 
             return this;
@@ -382,7 +378,7 @@ define([
             var dataSource = null;
             var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
-            $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
+           // $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
             // Restore initial tabs
             $tabLabel.show();
 
@@ -433,12 +429,12 @@ define([
                     $kendoTabs.disable($(lastShow));
                 }
 
-                $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
+                //$tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
                 return;
             }
 
             // Delete fixed height
-            $tabLabel.css("height", '');
+            //$tabLabel.css("height", '');
             // Record hidden count to optimization
             $tabs.data("hiddenTabsLength", hiddens.length);
             $tabLabel.find(".k-link").show(); // Restore original link (tab label)
@@ -477,7 +473,7 @@ define([
                 }
 
                 $(lastShow).addClass("dcpLabel--select");
-                $(lastShow).height(currentHeight - 5);
+                //$(lastShow).height(currentHeight - 5);
                 if ($dropTopSelect.length === 0) {
                     $dropSelect = $('<input class="dcpTab__label__select" />');
                     $(lastShow).append($dropSelect);
@@ -512,9 +508,11 @@ define([
                             // Need to compute width of container to see elements
                             // Set max-width to not be out of body
                             var $ul = $(this.ul);
-                            var x = $(this.element).closest("li").offset().left;
+                            var $li=$(this.element).closest("li");
+                            var x = $li.offset().left;
                             var bodyWidth = $('body').width();
-                            $ul.css("max-width", (bodyWidth - x - 20) + "px");
+                            $ul.css("max-width", Math.max((bodyWidth - x - 20),$(lastShow).width())  + "px");
+                            $ul.css("min-width", $li.width());
                             _.defer(function vDocumentSelectTabOpen()
                             {
                                 $ul.closest(".k-animation-container").addClass("menu__select_container");
@@ -547,6 +545,7 @@ define([
                             return $(this).find(".dcpLabel__select--tooltip").attr("data-tooltipLabel");
                         }
                     });
+                    $dropSelect.parent().find(".k-input").css("width","");
 
                 } else {
                     // Reuse dropDown created previously
@@ -623,7 +622,7 @@ define([
                 });
             }
 
-            $tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
+            //$tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
 
         },
 

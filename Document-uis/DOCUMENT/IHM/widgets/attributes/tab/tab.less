@@ -1,18 +1,23 @@
 @tabstrip-tabs-color: #428bca;
+@tabFiwWidth:10em;
 
+.dcpDocument__tabs .dcpDocument__tabs__list {
+  white-space: nowrap;
+}
 .dcpDocument__tabs .dcpDocument__tabs__list > li {
   max-width: 200px;
 }
-
+.dcpDocument__tabs .dcpLabel--select .k-dropdown-wrap,
 .dcpDocument__tabs .dcpTab__label .k-link {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  padding: 10px 5% 5px 5%;
+  padding: 10px 0.5em 0 0.5em;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
 }
+
 
 
 .dcpDocument__tabs.k-tabstrip > .k-content {
@@ -57,7 +62,7 @@
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label {
-  width: 10em;
+  width: @tabFiwWidth;
 }
 .dcpTab__content--loading {
   text-align:center;
@@ -71,33 +76,55 @@
 
 }
 
+.menu__select_container {
+ // margin-top:8px;
+}
+
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
   //width: 2em;
-  padding-right: 5px;
-  padding-top: 5px;
+  padding-right: 1px;
+  width: ~"calc(@{tabFiwWidth} + 2.2em + 2px)";
 }
 
-.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-combobox {
-  width: 100%;
-  margin-top: 0;
+.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
+  .k-input {
+    padding:0;
+    width: @tabFiwWidth;
+    text-align: left;
+
+  }
+  .k-combobox {
+    width: 100%;
+    margin-top: 0;
+  }
+  .k-dropdown-wrap {
+    padding-bottom: 3px;
+    text-align: left;
+
+    &:before {
+      padding-bottom:0;
+    }
+  }
+  .k-select {
+    border-style: solid;
+    // border-color: @nav-tabs-border-color  @nav-tabs-border-color transparent @nav-tabs-border-color;
+    border-color: transparent;
+    border-radius: 0 @border-radius-base 0 0;
+    border-width: 1px;
+    margin-right: -4px;
+    //height: ~"calc(100% + 9px)";
+    margin-top: 2px;
+    box-sizing: border-box;
+    padding: 5px 4px 4px 4px;
+    width: 2.2em;
+    background-color:@body-bg;
+  }
 }
 
-.dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-select {
-  border-style: solid;
-  border-color: @nav-tabs-border-color  @nav-tabs-border-color transparent @nav-tabs-border-color;
-  border-radius: 0 @border-radius-base 0 0;
-  border-width: 1px;
-  margin-right: -4px;
-  height: ~"calc(100% + 6px)";
-  margin-top: -4px;
-  box-sizing: border-box;
-  padding: 8px 4px 4px 4px;
-  width: 2.2em;
-}
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active .k-select {
 
-  border-color: transparent transparent transparent @nav-tabs-border-color;
+ // border-color: transparent transparent transparent @nav-tabs-border-color;
   //border-radius: 0 @border-radius-base;
 }
 
@@ -159,6 +186,7 @@
   box-shadow: none;
   background-color: transparent;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select.k-state-active .k-combobox .k-input {
@@ -175,8 +203,6 @@
 
 .dcpTab__label__select {
   text-align: center;
-  height: 1.6em;
-  margin-top: 3px;
 }
 
 /**

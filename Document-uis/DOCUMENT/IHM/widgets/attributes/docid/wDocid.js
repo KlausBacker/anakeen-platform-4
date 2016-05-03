@@ -481,9 +481,7 @@
             var kddl;
 
             this.kendoWidgetObject = inputValue.kendoDropDownList(kendoOptions).data("kendoDropDownList");
-            console.log("inputs", inputValue);
-            console.log("options", kendoOptions);
-            console.log("ME", this);
+            
             this.kendoWidgetObject.list.find(".k-list-optionlabel").addClass("placeholder--clear");
             this.kendoWidgetObject.value(this.options.attributeValue.value);
             this.element.find(".dcpAttribute__value--docid--button").parent().hide();
