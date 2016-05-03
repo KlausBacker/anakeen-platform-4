@@ -834,6 +834,7 @@ define([
                     showDetail: i18n.___("Show details", "historyUi"),
                     hideDetail: i18n.___("Hide details", "historyUi"),
                     showNotice: i18n.___("Show notices", "historyUi"),
+                    noOneNotice: i18n.___("No one notices", "historyUi"),
                     hideNotice: i18n.___("Hide notices", "historyUi"),
                     filterMessages: i18n.___("Filter messages", "historyUi"),
                     linkRevision: i18n.___("See revision number #", "historyUi"),
