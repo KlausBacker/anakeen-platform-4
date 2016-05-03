@@ -498,9 +498,10 @@
 
         setValue: function wDocidSetValue(value, event)
         {
+            var newValues;
             this._super(value, event);
             if (this.getMode() === "write") {
-                if (!this.hasMultipleOption()) {
+                if (!this.hasMultipleOption() && this.options.renderOptions.editDisplay === "singleMultiple") {
                     if (!_.isArray(value)) {
                         if (value.value !== null) {
                             value = [value];
@@ -519,10 +520,15 @@
                         this.element.find('input.k-input').attr("disabled", "disabled");
                     }
                 }
-                var newValues = _.map(value, function wDocidMapValue(val)
-                {
-                    return val.value;
-                });
+
+                if (this.hasMultipleOption()) {
+                    newValues = _.map(value, function wDocidMapValue(val)
+                    {
+                        return val.value;
+                    });
+                } else {
+                    newValues=value.value;
+                }
                 var kendoSelect = this.kendoWidgetObject;
                 var originalValues = _.clone(kendoSelect.value());
                 // update values in kendo widget
@@ -554,7 +560,6 @@
                     }
                 });
 
-                console.log("New value",newValues );
                 kendoSelect.value(newValues);
 
                 if (!_.isEqual(_.uniq(newValues), _.uniq(originalValues))) {
