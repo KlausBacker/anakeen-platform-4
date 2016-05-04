@@ -105,6 +105,8 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         $layout = new \Layout("DOCUMENT/Layout/view.html");
         $layout->set("BASEURL", self::getBaseUrl());
         $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
+        $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));
+        $layout->set("notificationTitleMore", ___("Notification", "ddui:notification"));
         
         if ($initid === false) {
             //Boot the init page in void mode (used by offline project)

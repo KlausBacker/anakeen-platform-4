@@ -1,7 +1,7 @@
 @import "../../../../lib/bootstrap/3/less/variables.less";
 
 @dcpNotifierWidth:300px;
-@dcpNotifierHeight:100px;
+@dcpNotifierHeight:9em;
 @dcpNotifierSymbolWidth:50px;
 
 /* Error template */
@@ -38,7 +38,37 @@
 }
 .dcpNotification--message {
   max-height: @dcpNotifierHeight;
-  overflow:auto;
+  overflow:hidden;
+}
+
+.k-window {
+
+  .dcpNotification--message {
+    max-height: unset;
+    width:auto;
+    overflow:auto;
+    text-align: justify;
+  }
+  .dcpNotification--content {
+    width:auto;
+  }
+  .dcpNotification--symbol {
+    float:left;
+  }
+}
+
+.dcpNotification--more {
+  padding: 0.5em;
+  border: solid 1px;
+  margin: 1em;
+  display:inline-block;
+  cursor: pointer;
+}
+
+
+.dcpNotification--more:hover {
+  border-color: rgba(240, 240, 240, 0.5);
+  border-style: outset;
 }
 .dcpNotifications {
   position:fixed;
@@ -76,6 +106,7 @@
   vertical-align: middle;
 }
 .dcpNotification--message h1 {
+  padding-top:0.5em;
    margin-top:0;
   line-height: normal;
    font-weight: bold;
