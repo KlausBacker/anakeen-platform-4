@@ -438,6 +438,7 @@
                 $content.addClass("dcpArray__content__line");
                 $content.attr("data-attrid", this.options.id);
             } else {
+                console.log("array options", this.options);
                 $content = $(Mustache.render(this._getTemplate("line") || "", _.extend({lineNumber: index}, this.options)));
             }
             $content.find(".dcpArray__content__toolCell").closest('td').addClass("dcpArray__toolCell");
