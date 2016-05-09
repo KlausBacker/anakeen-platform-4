@@ -433,12 +433,13 @@
         _getLineContent: function dcpArray_getLineContent(index)
         {
             var $content = "NULL LINE";
+
+            this.options.lineCid=_.uniqueId(this.options.id);
             if (this.options.customTemplate) {
                 $content = this.options.customLineCallback.apply(this, [index]);
                 $content.addClass("dcpArray__content__line");
                 $content.attr("data-attrid", this.options.id);
             } else {
-                console.log("array options", this.options);
                 $content = $(Mustache.render(this._getTemplate("line") || "", _.extend({lineNumber: index}, this.options)));
             }
             $content.find(".dcpArray__content__toolCell").closest('td').addClass("dcpArray__toolCell");
