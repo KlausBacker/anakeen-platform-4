@@ -33,6 +33,12 @@
                     '<span class="k-state-error">#: data.error#</span>' +
                     '#}# </span>'
                 },
+                kendoComboBoxConfiguration: {
+                    template: '<span><span class="k-state-default">#= data.title#</span>' +
+                    '#if (data.error) {#' +
+                    '<span class="k-state-error">#: data.error#</span>' +
+                    '#}# </span>'
+                },
                 editDisplay: "list"
             },
             labels: {
@@ -81,22 +87,20 @@
                     if (this._isMultiple()) {
                         this._decorateMultipleValue(this.kendoWidget);
                     } else {
-
                         switch (this.options.renderOptions.editDisplay) {
                             case "singleMultiple" :
                                 this._decorateSingleValue(this.kendoWidget);
+
+                                break;
+                            case "autoCompletion":
+                                this.singleCombobox(this.kendoWidget);
                                 break;
                             //case "list":
                             default:
-                               this.singleDropdown(this.kendoWidget);
+                                this.singleDropdown(this.kendoWidget);
                         }
                     }
-                    if (this.options.attributeValue && this.options.attributeValue.value !== null) {
-                        if (!this.hasMultipleOption()) {
-                            this.element.find('.dcpAttribute__value--docid--button').attr("disabled", "disabled");
-                            this.element.find('input.k-input').attr("disabled", "disabled");
-                        }
-                    }
+
                 }
         },
 
@@ -139,11 +143,11 @@
          * Get kendo option from normal options and from renderOptions.kendoNumeric
          * @returns {*}
          */
-        getKendoOptions: function wDocidGetKendoOptions(inputValue, extraOptions) {
+        getKendoOptions: function wDocidGetKendoOptions(inputValue, extraOptions)
+        {
 
             var currentWidget = this;
             var options = {
-                filter: "contains",
                 autoBind: false,
                 dataTextField: "docTitle",
                 dataValueField: "docId",
@@ -158,6 +162,7 @@
                         {
                             currentWidget._hasBeenRequested = true;
                             options.data.index = currentWidget._getIndex();
+                            console.log("read docid");
                             return currentWidget.options.autocompleteRequest.call(null, options);
                         }
                     },
@@ -166,6 +171,11 @@
                         data: function wDocidSelectSchema(items)
                         {
                             var attrValues = currentWidget.getValue();
+                            console.log("schema docid", attrValues);
+
+                            if (attrValues && !_.isArray(attrValues) && attrValues.value) {
+                                attrValues=[attrValues];
+                            }
                             //Add new elements
                             _.each(items, function wDocidDataCompose(currentItem)
                             {
@@ -196,18 +206,27 @@
                 },
                 select: function kendoDocidSelect(event)
                 {
-                    var valueIndex = currentWidget._getIndex();
-                    var dataItem = this.dataSource.at(event.item.index()).toJSON();
-                    //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
+                    if (!event.item || _.isUndefined(event.item.index())) {
+                        console.log("need clear ");
+                    } else {
+                        var valueIndex = currentWidget._getIndex();
+                        var dataItem = this.dataSource.at(event.item.index()).toJSON();
 
-                    _.defer(function wDocidChangeOnSelect()
-                    {
-                        // Change others attributes designed by help returns
-                        currentWidget._trigger("changeattrsvalue", event, {
-                            dataItem: dataItem,
-                            valueIndex: valueIndex
-                        });
-                    });
+                        if (dataItem.error)  {
+                            console.log("need clear ");
+                        } else {
+                            //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
+
+                            _.defer(function wDocidChangeOnSelect()
+                            {
+                                // Change others attributes designed by help returns
+                                currentWidget._trigger("changeattrsvalue", event, {
+                                    dataItem: dataItem,
+                                    valueIndex: valueIndex
+                                });
+                            });
+                        }
+                    }
                 },
                 change: function kendoChangeSelect(event)
                 {
@@ -216,174 +235,12 @@
                     var displayValue;
                     var newValues = [];
                     var kMultiSelect = this;
+                    var widgetValue=this.value();
 
-                    _.each(this.value(), function wDocidSelectChange(val)
-                    {
-                        if (!_.isUndefined(val)) {
-                            displayValue = _.where(oldValues, {value: val});
-                            if (displayValue.length === 0) {
-                                displayValue = _.where(kMultiSelect.dataSource.data(), {docId: val});
-                                if (displayValue.length > 0) {
-                                    displayValue = displayValue[0].docTitle;
-                                } else {
-                                    displayValue = "-";
-                                }
-                            } else {
-                                displayValue = displayValue[0].displayValue;
-                            }
+                    console.log("change to ", this.value());
 
-                            newValues.push({value: val, displayValue: displayValue});
-                        }
-                    });
-
-                    if (!currentWidget._isMultiple()) {
-                        if (newValues.length === 0) {
-                            newValues = {value: null, displayValue: ""};
-                        } else {
-                            newValues = newValues[0];
-                        }
-                    }
-
-                    currentWidget.setValue(newValues, event);
-                },
-                open: function wDocidSelectOpen(event)
-                {
-                    if (currentWidget._hasBeenRequested !== true) {
-                        event.preventDefault();
-                        currentWidget.kendoWidgetObject.search(""); // @TODO Not multiselect
-                    }
-                    this.ul.addClass("dcpAttribute__select--docid");
-                },
-                filtering: function wDocidSelectOpen()
-                {
-                    this._isFiltering = true;
-                },
-                dataBound: function wDocidFilteringNoOne()
-                {
-
-                    if (this._isFiltering) {
-                        if (this.ul.find("li:not(.k-state-selected)").length === 0 && this.ul.find("li.k-state-selected").length > 0) {
-                            // No one more : display
-                            var $noOne = $('<li class="k-item"/>')
-                                .append('<span class="k-state-default"/>')
-                                .append($('<span class="k-state-error dcpAttribute__select--docid-none"/>')
-                                    .text(currentWidget.options.labels.allSelectedDocument));
-                            this.ul.append($noOne);
-                        }
-                        this._isFiltering = false;
-                    }
-                }
-            };
-
-            if (extraOptions) {
-                options = _.extend(options, extraOptions);
-            }
-            return options;
-        },
-
-        /**
-         * When docid is not multiple, it is a multiselect limited to one element
-         * @param inputValue select  element
-         */
-        _decorateSingleValue: function wDocidDecorateSingleValue(inputValue)
-        {
-            this.options.attributeValues = [];
-            if (this.options.attributeValue) {
-                this.options.attributeValues.push(this.options.attributeValue);
-            }
-
-            this._decorateMultipleValue(inputValue, {
-                    maxSelectedItems: 1
-                }
-            );
-        },
-
-        _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions)
-        {
-            var currentWidget = this,
-                values = _.map(this.options.attributeValues, function wDocidSelectMap(val)
-                {
-                    var info = {};
-                    info.docTitle = val.displayValue;
-                    info.docId = val.value;
-                    return info;
-                }),
-                options = {
-                    filter: "contains",
-                    autoBind: false,
-                    dataTextField: "docTitle",
-                    dataValueField: "docId",
-                    highlightFirst: true,
-                    //value: values,
-                    dataSource: {
-                        type: "json",
-                        serverFiltering: true,
-                        // data:values,
-                        transport: {
-                            read: function wDocidSelectRead(options)
-                            {
-                                currentWidget._hasBeenRequested = true;
-                                options.data.index = currentWidget._getIndex();
-                                return currentWidget.options.autocompleteRequest.call(null, options);
-                            }
-                        },
-                        schema: {
-                            // Add already recorded data to items
-                            data: function wDocidSelectSchema(items)
-                            {
-                                var attrValues = currentWidget.getValue();
-                                //Add new elements
-                                _.each(items, function wDocidDataCompose(currentItem)
-                                {
-                                    if (currentItem.values && currentItem.values[currentWidget.options.id]) {
-                                        currentItem.docId = currentItem.values[currentWidget.options.id].value;
-                                        currentItem.docTitle = currentItem.values[currentWidget.options.id].displayValue;
-                                    }
-                                });
-
-                                //Convert existing values
-                                _.each(attrValues, function wDocidDataAlreadySet(currentValue)
-                                {
-                                    if (currentValue && currentValue.value) {
-                                        items.push({
-                                            docId: currentValue.value,
-                                            docTitle: currentValue.displayValue
-                                        });
-                                    }
-                                });
-
-                                //Suppress multiple items
-                                return _.uniq(items, false, function wDocidDataUniq(currentItem)
-                                {
-                                    return currentItem.docId;
-                                });
-                            }
-                        }
-                    },
-                    select: function kendoDocidSelect(event)
-                    {
-                        var valueIndex = currentWidget._getIndex();
-                        var dataItem = this.dataSource.at(event.item.index()).toJSON();
-                        //The object returned by dataSource.at are internal kendo object so I clean it with toJSON
-
-                        _.defer(function wDocidChangeOnSelect()
-                        {
-                            // Change others attributes designed by help returns
-                            currentWidget._trigger("changeattrsvalue", event, {
-                                dataItem: dataItem,
-                                valueIndex: valueIndex
-                            });
-                        });
-                    },
-                    change: function kendoChangeSelect(event)
-                    {
-                        // set in case of delete item
-                        var oldValues = currentWidget.options.attributeValue;
-                        var displayValue;
-                        var newValues = [];
-                        var kMultiSelect = this;
-
-                        _.each(this.value(), function wDocidSelectChange(val)
+                    if (_.isArray(widgetValue)) {
+                        _.each(widgetValue, function wDocidSelectChange(val)
                         {
                             if (!_.isUndefined(val)) {
                                 displayValue = _.where(oldValues, {value: val});
@@ -403,44 +260,107 @@
                         });
 
                         if (!currentWidget._isMultiple()) {
-                            if (newValues.length === 0) {
-                                newValues = {value: null, displayValue: ""};
-                            } else {
+                            if (newValues.length > 0) {
                                 newValues = newValues[0];
+                            } else {
+                                newValues = {value: null, displayValue: ""};
                             }
                         }
 
-                        currentWidget.setValue(newValues, event);
-                    },
-                    open: function wDocidSelectOpen(event)
-                    {
-                        if (currentWidget._hasBeenRequested !== true) {
-                            event.preventDefault();
-                            console.log("NO requested");
-                            currentWidget.kendoWidgetObject.search("");
-                        }
-                        this.ul.addClass("dcpAttribute__select--docid");
-                    },
-                    filtering: function wDocidSelectOpen()
-                    {
-                        this._isFiltering = true;
-                    },
-                    dataBound: function wDocidFilteringNoOne()
-                    {
-
-                        if (this._isFiltering) {
-                            if (this.ul.find("li:not(.k-state-selected)").length === 0 && this.ul.find("li.k-state-selected").length > 0) {
-                                // No one more : display
-                                var $noOne = $('<li class="k-item"/>')
-                                    .append('<span class="k-state-default"/>')
-                                    .append($('<span class="k-state-error dcpAttribute__select--docid-none"/>')
-                                        .text(currentWidget.options.labels.allSelectedDocument));
-                                this.ul.append($noOne);
-                            }
-                            this._isFiltering = false;
+                    } else {
+                        if (widgetValue) {
+                                displayValue = _.where(kMultiSelect.dataSource.data(), {docId: widgetValue});
+                                if (displayValue.length > 0) {
+                                    displayValue = displayValue[0].docTitle;
+                                    newValues = {value:widgetValue, displayValue:displayValue};
+                                } else {
+                                    newValues = {value:null, displayValue:""};
+                                }
+                        } else {
+                            newValues = {value: null, displayValue: ""};
                         }
                     }
-                };
+
+                    console.log("new value", newValues);
+                    currentWidget.setValue(newValues, event);
+                },
+                open: function wDocidSelectOpen(event)
+                {
+                    if (currentWidget._hasBeenRequested !== true) {
+                        event.preventDefault();
+                        currentWidget.kendoWidgetObject.search("");
+                    }
+                    this.ul.addClass("dcpAttribute__select--docid");
+                },
+                filtering: function wDocidSelectOpen()
+                {
+                    this._isFiltering = true;
+                },
+                dataBound: function wDocidFilteringNoOne()
+                {
+
+                    if (this._isFiltering) {
+                        console.log("dataBound", this);
+                        if (this.ul.find("li:not(.k-state-selected)").length === 0 && this.ul.find("li.k-state-selected").length > 0) {
+                            // No one more : display
+                            var $noOne = $('<li class="k-item"/>')
+                                .append('<span class="k-state-default"/>')
+                                .append($('<span class="k-state-error dcpAttribute__select--docid-none"/>')
+                                    .text(currentWidget.options.labels.allSelectedDocument));
+                            this.ul.append($noOne);
+                        }
+                        this._isFiltering = false;
+                    }
+                }
+            };
+
+            if (extraOptions) {
+                options = _.extend(options, extraOptions);
+            }
+            if (this.options.renderOptions.kendoComboBoxConfiguration) {
+                options = _.extend(this.options.renderOptions.kendoComboBoxConfiguration, options);
+            }
+
+            return options;
+        },
+
+        /**
+         * When docid is not multiple, it is a multiselect limited to one element
+         * @param inputValue select  element
+         */
+        _decorateSingleValue: function wDocidDecorateSingleValue(inputValue)
+        {
+
+            this.options.attributeValues = [];
+            if (this.options.attributeValue) {
+                this.options.attributeValues.push(this.options.attributeValue);
+            }
+
+            this._decorateMultipleValue(inputValue, {
+                    maxSelectedItems: 1
+                }
+            );
+
+            if (this.options.attributeValue && this.options.attributeValue.value !== null) {
+                this.element.find('.dcpAttribute__value--docid--button').attr("disabled", "disabled");
+                this.element.find('input.k-input').attr("disabled", "disabled");
+
+            }
+        },
+
+        _decorateMultipleValue: function wDocidDecorateMultipleValue(inputValue, extraOptions)
+        {
+            var options = this.getKendoOptions(inputValue, {
+                filter: "contains"
+            });
+            var currentWidget = this,
+                values = _.map(this.options.attributeValues, function wDocidSelectMap(val)
+                {
+                    var info = {};
+                    info.docTitle = val.displayValue;
+                    info.docId = val.value;
+                    return info;
+                });
 
             if (extraOptions) {
                 options = _.extend(options, extraOptions);
@@ -477,16 +397,29 @@
 
         singleDropdown: function wDocidSingleDropdown(inputValue)
         {
-            var kendoOptions = this.getKendoOptions( inputValue);
-            var kddl;
+            var kendoOptions = this.getKendoOptions(inputValue);
 
             this.kendoWidgetObject = inputValue.kendoDropDownList(kendoOptions).data("kendoDropDownList");
-            
+
             this.kendoWidgetObject.list.find(".k-list-optionlabel").addClass("placeholder--clear");
             this.kendoWidgetObject.value(this.options.attributeValue.value);
             this.element.find(".dcpAttribute__value--docid--button").parent().hide();
-
         },
+
+        singleCombobox: function wDocidSingleCombobox(inputValue)
+        {
+            var kendoOptions = this.getKendoOptions(inputValue, {
+                filter: "startswith" //@TODO use filter option in standard auto complete
+            });
+
+            console.log("kendo", kendoOptions);
+            this.kendoWidgetObject = inputValue.kendoComboBox(kendoOptions).data("kendoComboBox");
+
+            this.kendoWidgetObject.list.find(".k-list-optionlabel").addClass("placeholder--clear");
+            this.kendoWidgetObject.value(this.options.attributeValue.value);
+            this.element.find(".dcpAttribute__value--docid--button").parent().hide();
+        },
+
         /**
          * Return true if attribut has multiple option
          * @returns bool
@@ -521,13 +454,14 @@
                     }
                 }
 
-                if (this.hasMultipleOption()) {
+                if (this.hasMultipleOption() || this.options.renderOptions.editDisplay === "singleMultiple") {
                     newValues = _.map(value, function wDocidMapValue(val)
                     {
                         return val.value;
                     });
+
                 } else {
-                    newValues=value.value;
+                    newValues = value.value;
                 }
                 var kendoSelect = this.kendoWidgetObject;
                 var originalValues = _.clone(kendoSelect.value());
@@ -544,6 +478,10 @@
                     };
                 });
 
+                if (!_.isArray(value)) {
+                    value=[value];
+                }
+                console.log("set value", value);
                 _.each(value, function wDocidEachData(val)
                 {
                     var info = {};
@@ -556,6 +494,7 @@
                         // add more static data in dataSource
                         info.docTitle = val.displayValue;
                         info.docId = val.value;
+                        console.log("add db value", info);
                         kendoSelect.dataSource.add(info);
                     }
                 });

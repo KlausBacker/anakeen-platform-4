@@ -5,12 +5,7 @@
             title="{{renderOptions.autoCompleteHtmlLabel}}"
             {{/renderOptions.autoCompleteHtmlLabel}}
             class="dcpAttribute__value--docid--button btn btn-default btn-xs" tabindex="-1">
-                {{^isMultiple}}
-                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                {{/isMultiple}}
-                {{#isMultiple}}
                 <span class="k-icon k-i-arrow-s"></span>
-                {{/isMultiple}}
         </button>
     </span>
     <input name="{{id}}" id="{{viewCid}}"

@@ -327,7 +327,7 @@ describe('Dynacase Docid test', function formAllEdit()
         docForm.verifyAttributeDisplay({
             attrid: 'test_ddui_docid__multiple1',
             expected: {
-                displayText: "Premier document de référence\nDeuxième document de référence\nTroisième document de référence\nQuatrième document de référence"
+                displayText: "Premier document de référence Deuxième document de référence Troisième document de référence Quatrième document de référence"
             }
         });
 
@@ -341,7 +341,7 @@ describe('Dynacase Docid test', function formAllEdit()
         docForm.verifyAttributeDisplay({
             attrid: 'test_ddui_docid__multiple2',
             expected: {
-                displayText: "Quatrième document de référence (H)\nTroisième document de référence (H)\nDeuxième document de référence (H)\nPremier document de référence (H)"
+                displayText: "Quatrième document de référence (H) Troisième document de référence (H) Deuxième document de référence (H) Premier document de référence (H)"
             }
         });
         docForm.verifyAttributeDisplay({
@@ -379,7 +379,7 @@ describe('Dynacase Docid test', function formAllEdit()
             attrid: 'test_ddui_docid__multiple_array',
             index: 0,
             expected: {
-                displayText: "Troisième document de référence\nPremier document de référence"
+                displayText: "Troisième document de référence Premier document de référence"
             }
         });
 
@@ -387,7 +387,7 @@ describe('Dynacase Docid test', function formAllEdit()
             attrid: 'test_ddui_docid__multiple_array',
             index: 1,
             expected: {
-                displayText: "Troisième document de référence\nDeuxième document de référence\nQuatrième document de référence"
+                displayText: "Troisième document de référence Deuxième document de référence Quatrième document de référence"
             }
         });
 
@@ -395,7 +395,7 @@ describe('Dynacase Docid test', function formAllEdit()
             attrid: 'test_ddui_docid__multiple_array',
             index: 2,
             expected: {
-                displayText: "Troisième document de référence\nQuatrième document de référence"
+                displayText: "Troisième document de référence Quatrième document de référence"
             }
         });
 
@@ -418,14 +418,14 @@ describe('Dynacase Docid test', function formAllEdit()
             attrid: 'test_ddui_docid__multiple_link',
             index: 0,
             expected: {
-                displayText: "Troisième document de référence (P)\nPremier document de référence (P)"
+                displayText: "Troisième document de référence (P) Premier document de référence (P)"
             }
         });
         docForm.verifyAttributeDisplay({
             attrid: 'test_ddui_docid__multiple_link',
             index: 1,
             expected: {
-                displayText: "Deuxième document de référence (P)\nPremier document de référence (P)"
+                displayText: "Deuxième document de référence (P) Premier document de référence (P)"
             }
         });
 

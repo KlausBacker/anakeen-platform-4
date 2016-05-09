@@ -53,12 +53,12 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
                 "($(window).height() - $(arguments[0]).offset().top - $(arguments[0]).height() + $(window).scrollTop()) < 600 && " +
                 "($(window).height() + $(window).scrollTop()) < $('body').height()" +
                 " ){" +
-                    //  "$(arguments[0]).css('outline', 'solid 1px blue');" +
+                //  "$(arguments[0]).css('outline', 'solid 1px blue');" +
                 "$(arguments[0]).get(0).scrollIntoView(true);" +
 
                 "}" +
                 "if ($(arguments[0]).offset().top - ($(window).scrollTop() ) < 100) { " +
-                    //   "$(arguments[0]).css('outline', 'solid 1px green');" +
+                //   "$(arguments[0]).css('outline', 'solid 1px green');" +
                 "window.scrollBy(0,-100);" +
                 "}" +
                 "$('.tooltip-inner').hide()", lastElement).then(function x()
@@ -76,7 +76,7 @@ var scrollToAttribute = function scrollToAttribute(attrid, index)
     }, 5000);
 
 };
-exports.scrollToAttribute=scrollToAttribute;
+exports.scrollToAttribute = scrollToAttribute;
 /**
  * Switch to a document iframe
  * @param docWindowRef
@@ -120,16 +120,18 @@ exports.selectTab = function selectTab(data)
         return webdriver.until.elementIsVisible(currentDriver.findElement(webdriver.By.css('.dcpTab__content[data-attrid=' + data.attrid + ']')));
     }, 4000);
 
-    tabContentElt= currentDriver.findElement(webdriver.By.css('.dcpTab__content[data-attrid=' + data.attrid + ']'));
+    tabContentElt = currentDriver.findElement(webdriver.By.css('.dcpTab__content[data-attrid=' + data.attrid + ']'));
     currentDriver.wait(function waitNumericInput()
     {
-        return tabContentElt.getCssValue("opacity").then( function getCssOpacityValue(cssValue) {
+        return tabContentElt.getCssValue("opacity").then(function getCssOpacityValue(cssValue)
+        {
             return cssValue === "1";
         });
     }, 5000);
     currentDriver.wait(function waitNumericInput()
     {
-        return tabContentElt.getCssValue("display").then( function getCssDisplayValue(cssValue) {
+        return tabContentElt.getCssValue("display").then(function getCssDisplayValue(cssValue)
+        {
             return cssValue === "block";
         });
     }, 5000);
@@ -443,6 +445,53 @@ exports.setDocidValue = function setDocidValue(data)
 {
     'use strict';
 
+    var elt;
+    scrollToAttribute(data.attrid, data.index);
+
+    if (typeof data.index === "undefined") {
+
+        elt = webdriver.By.css('div[data-attrid=' + data.attrid + '] span.k-input');
+        currentDriver.findElements(elt).then(function setDocidSelect(elements)
+        {
+            if (elements.length > 0) {
+                currentDriver.findElement(elt).click();
+            } else {
+                currentDriver.findElement(webdriver.By.css('div[data-attrid=' + data.attrid + '] input.k-input')).sendKeys(data.filterText || '');
+            }
+        });
+
+    } else {
+        elt=webdriver.By.xpath(
+            '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//span[contains(@class,"k-input")]');
+
+        currentDriver.findElements(elt).then(function setDocidIndexSelect(elements)
+        {
+            if (elements.length > 0) {
+                currentDriver.findElement(elt).click();
+            } else {
+                currentDriver.findElement(webdriver.By.xpath(
+                    '(//div[@data-attrid="' + data.attrid + '"])[' + (data.index + 1) + ']//input[contains(@class,"k-input")]')).sendKeys(data.filterText || '');
+            }
+        });
+    }
+    currentDriver.wait(function waitSelect()
+    {
+        return currentDriver.isElementPresent(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]"));
+    }, 5000);
+
+    currentDriver.sleep(500); // Wait animation done
+    currentDriver.findElement(webdriver.By.xpath("//div[contains(@class, 'k-animation-container')][contains(@style, 'block')]//span[contains(text(), '" + data.selectedText + "')]")).click();
+    return waitAnimationClose().then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
+};
+
+exports.addDocidValue = function addDocidValue(data)
+{
+    'use strict';
     scrollToAttribute(data.attrid, data.index);
 
     if (typeof data.index === "undefined") {
@@ -466,18 +515,11 @@ exports.setDocidValue = function setDocidValue(data)
         }
     );
 };
-
-exports.addDocidValue = function addDocidValue(data)
-{
-    'use strict';
-
-    return exports.setDocidValue(data);
-};
 exports.addAccountMultipleValue = function addAccountMultipleValue(data)
 {
     'use strict';
 
-    return exports.setDocidValue(data);
+    return exports.addDocidValue(data);
 };
 
 exports.setHtmlTextValue = function setTextValue(data)
@@ -789,7 +831,7 @@ exports.saveAndClose = function saveAndClose()
     'use strict';
     currentDriver.findElement(webdriver.By.xpath('//nav[contains(@class,"dcpDocument__menu")]//a/*[contains(text(),"Enregistrer et fermer")]')).click();
 
-     currentDriver.wait(function waitDocumentIsDisplayed()
+    currentDriver.wait(function waitDocumentIsDisplayed()
     {
         return currentDriver.isElementPresent(webdriver.By.css(".dcpDocument--view"));
     }, 5000);
@@ -847,7 +889,7 @@ exports.verifyAttributeDisplay = function verifyAttributeDisplay(data)
                     ', expected "' + data.expected.displayText +
                     '", got :"' + text + '"';
 
-                msg+="\n"+text.replace(/\n/g,"\\n");
+                msg += "\n" + text.replace(/\n/g, "\\n");
                 if (text !== null && text.toString() !== data.expected.displayText.toString()) {
                     process.stdout.write(ansi.red);
                     process.stdout.write("Fail Examine :" + msg);
@@ -860,16 +902,18 @@ exports.verifyAttributeDisplay = function verifyAttributeDisplay(data)
         }
 
         if (data.expected.cssElements) {
-            data.expected.cssElements.forEach(function verifyCss (cssInfo) {
-                 currentDriver.executeScript("return $(arguments[0]).find(arguments[1]).length;",
-                 domElement, cssInfo.path
-                 ).then(
-                     function testCss(count) {
-                         var msg=prefixMsg + "search "+cssInfo.path+"(expect : "+cssInfo.count+",got : "+count+")";
+            data.expected.cssElements.forEach(function verifyCss(cssInfo)
+            {
+                currentDriver.executeScript("return $(arguments[0]).find(arguments[1]).length;",
+                    domElement, cssInfo.path
+                ).then(
+                    function testCss(count)
+                    {
+                        var msg = prefixMsg + "search " + cssInfo.path + "(expect : " + cssInfo.count + ",got : " + count + ")";
 
-                         since(msg).expect(count).toEqual(cssInfo.count);
-                     }
-                 );
+                        since(msg).expect(count).toEqual(cssInfo.count);
+                    }
+                );
             });
         }
     });
@@ -955,7 +999,8 @@ exports.outlineElement = function outlineElement(locator, color)
 
 };
 
-exports.findElementWait=function findElementWait(locator) {
+exports.findElementWait = function findElementWait(locator)
+{
     'use strict';
     currentDriver.wait(function waitSelect()
     {

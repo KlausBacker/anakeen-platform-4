@@ -37,11 +37,11 @@ class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
         $options->enum(myAttributes::test_ddui_all__enumhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay);
         $options->enum(myAttributes::test_ddui_all__enumbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay);
         
-        $options->enum(myAttributes::test_ddui_all__enumserverlist)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay)->useSourceUri(false);
-        $options->enum(myAttributes::test_ddui_all__enumserverauto)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(false);
-        $options->enum(myAttributes::test_ddui_all__enumserververtical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(false);
-        $options->enum(myAttributes::test_ddui_all__enumserverhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(false);
-        $options->enum(myAttributes::test_ddui_all__enumserverbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay)->useSourceUri(false);
+        $options->enum(myAttributes::test_ddui_all__enumserverlist)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_all__enumserverauto)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_all__enumserververtical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_all__enumserverhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_all__enumserverbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay)->useSourceUri(true);
         
         $options->enum(myAttributes::test_ddui_all__enumslist)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
         $options->enum(myAttributes::test_ddui_all__enumsauto)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
