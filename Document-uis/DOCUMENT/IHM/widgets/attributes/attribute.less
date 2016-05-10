@@ -9,10 +9,15 @@
   word-break: break-word;
 }
 
-
+.dcpAttribute__value {
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+}
 .dcpDocument--view .dcpAttribute__content .dcpAttribute__content__buttons {
   float:right;
 }
+.dcpDocument--view
 .dcpAttribute__content {
   padding-top: @dcp-attribute-padding-base-vertical; // Default padding plus a border
 
@@ -38,7 +43,7 @@
 }
 
 .dcpAttribute__content .k-widget > .k-state-default {
-  border-radius: 4px 0 0 4px;
+  border-radius: @border-radius-base 0 0 @border-radius-base;
 }
 .dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
 .dcpAttribute__content .input-group .dcpAttribute__value.dcpAttribute__content__nobutton,

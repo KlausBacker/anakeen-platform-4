@@ -5,7 +5,9 @@
 */
 
 namespace {
-    
+
+    use Dcp\Ui\DocidRenderOptions;
+
     class ErrorCodeUI
     {
         /**
@@ -147,6 +149,11 @@ namespace {
          * @errorCode invalid value for orderBy enum option
          */
         const UI0209 = 'Value "%s" for Enum option "orderBy" is invalid : allowed are : %s';
+        /**
+         * @errorCode The options to display docid are restricted
+         * @see DocidRenderOptions::setDisplay
+         */
+        const UI0210 = 'Value "%s" for Docid option "display" is invalid : allowed are : %s';
         /**
          * @errorCode Only view,edit, create are allowed
          */

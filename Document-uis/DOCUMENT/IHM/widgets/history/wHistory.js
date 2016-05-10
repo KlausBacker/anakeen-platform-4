@@ -34,6 +34,7 @@ define([
                 hideDetail: "Hide details",
                 showNotice: "Show notices",
                 hideNotice: "Hide notices",
+                noOneNotice: "No one notices",
                 filterMessages: "Filter messages",
                 linkRevision: "See revision number #",
                 historyTitle: "History for {{title}}",
@@ -79,7 +80,8 @@ define([
                 var noticeShowed = noticeButton.data("showNotice");
                 if ($widget.data("showDetail")) {
                     $widget.data("showDetail", false);
-                    $widget.text(widget.options.labels.showDetail).removeClass("btn-primary");
+                    $widget.data("showNotice", false);
+                    $(this).text(widget.options.labels.showDetail).removeClass("btn-primary");
                     widget.element.find(".history-comment").hide();
 
                     noticeButton.attr("disabled", "disabled").removeClass("btn-primary").text(widget.options.labels.showNotice);
@@ -89,25 +91,27 @@ define([
                     if (!noticeShowed) {
                         widget.element.find(".history-level--notice").hide();
                     }
-                    $widget.text(widget.options.labels.hideDetail).addClass("btn-primary");
+                    $(this).text(widget.options.labels.hideDetail).addClass("btn-primary");
                     noticeButton.removeAttr("disabled");
-
                 }
             });
             this.element.on("click" + this.eventNamespace, ".history-button-shownotice", function whistoryShowNotice()
             {
-                var detailShowed = widget.element.find(".history-button-showdetail").data("showDetail");
+                var $notices = widget.element.find(".history-level--notice");
                 if ($widget.data("showNotice")) {
                     $widget.data("showNotice", false);
-                    $widget.text(widget.options.labels.showNotice).removeClass("btn-primary");
+                    $(this).text(widget.options.labels.showNotice).removeClass("btn-primary");
                     widget.element.find(".history-level--notice").hide();
                 } else {
                     $widget.data("showNotice", true);
-                    widget.element.find(".history-level--notice").show();
-                    if (!detailShowed) {
-                        widget.element.find(".history-comment").hide();
+                    if ($notices.length > 0) {
+                        $notices.show();
+                        $(this).text(widget.options.labels.hideNotice).addClass("btn-primary");
+                    } else {
+
+                        $(this).text(widget.options.labels.noOneNotice);
                     }
-                    $widget.text(widget.options.labels.hideNotice).addClass("btn-primary");
+
                 }
             });
             this.element.on("click" + this.eventNamespace, ".history-diff-input", function whistoryShowDiff()

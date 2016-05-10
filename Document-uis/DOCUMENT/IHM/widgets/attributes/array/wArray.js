@@ -324,18 +324,17 @@
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check input", function selectLineEvent()
             {
                 var $this = $(this);
+                var isAlreadyChecked=$this.closest(".dcpArray__content__line").hasClass("dcpArray__content__line--selected");
                 currentWidget._hideTooltips();
                 currentWidget._unSelectLines();
-                if ($this.data("selectedRow") === "1") {
-                    $this.data("selectedRow", "0");
+                if (isAlreadyChecked) {
                     currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
-                    $(this).prop("checked", false);
+                    $(this).prop("checked", false).removeAttr("checked");
                 } else {
                     $this.find('.fa-check').show();
                     $this.closest(".dcpArray__content__line").addClass("dcpArray__content__line--selected active");
-                    $this.data("selectedRow", "1");
                     currentWidget.element.find(".dcpArray__copy").prop("disabled", false);
-                    $(this).prop("checked", true);
+                    $(this).prop("checked", true).attr("checked", "checked");
                 }
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__add", function addLineEvent()
@@ -370,6 +369,8 @@
             {
                 currentWidget._hideTooltips();
                 currentWidget.removeLine($(this).closest(".dcpArray__content__line").data("line"));
+                currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
+
             });
             this.element.on("click" + this.eventNamespace, ".dcpArray__label", function toogleTable()
             {
@@ -432,6 +433,8 @@
         _getLineContent: function dcpArray_getLineContent(index)
         {
             var $content = "NULL LINE";
+
+            this.options.lineCid=_.uniqueId(this.options.id);
             if (this.options.customTemplate) {
                 $content = this.options.customLineCallback.apply(this, [index]);
                 $content.addClass("dcpArray__content__line");

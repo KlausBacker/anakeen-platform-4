@@ -18,6 +18,10 @@ class DocidRenderConfigEdit extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
+
+        $options->docid(myAttributes::test_ddui_docid__single1)->setDisplay(\Dcp\Ui\DocidRenderOptions::listDisplay);
+        $options->docid(myAttributes::test_ddui_docid__single2)->setDisplay(\Dcp\Ui\DocidRenderOptions::autocompletionDisplay);
+        $options->docid(myAttributes::test_ddui_docid__single3)->setDisplay(\Dcp\Ui\DocidRenderOptions::multipleSingleDisplay);
         
         return $options;
     }

@@ -1,4 +1,15 @@
 <div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
+    {{#isMultiple}}
+      <span class="input-group-addon">
+        <button
+            {{#renderOptions.autoCompleteHtmlLabel}}
+            title="{{renderOptions.autoCompleteHtmlLabel}}"
+            {{/renderOptions.autoCompleteHtmlLabel}}
+            class="dcpAttribute__value--enum--button btn btn-default btn-xs" tabindex="-1">
+                <span class="k-icon k-i-arrow-s"></span>
+        </button>
+    </span>
+    {{/isMultiple}}
     <input type="text" name="{{id}}" id="{{viewCid}}"
            {{# options.size}}style="width : {{options.size}}em;"{{/ options.size}}
            class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"

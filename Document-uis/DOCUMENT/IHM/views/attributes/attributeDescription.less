@@ -2,7 +2,7 @@
 .dcpAttribute__description {
   border: solid 1px @dcpAttributeDescriptionBorderColor;
   //padding: 0.3em;
-  border-radius: 0.4em;
+  border-radius: @border-radius-base;
   margin-bottom: 2px;
   background: @dcpAttributeDescriptionBackgroundColor;
 }
@@ -16,6 +16,20 @@
 .dcpAttribute__description.dcpAttribute__description--bottomValue.dcpAttribute__right {
   clear: both;
   float: right;
+}
+
+
+.dcpAttribute__description.dcpAttribute__description--top,
+.dcpAttribute__description.dcpAttribute__description--topLabel,
+.dcpAttribute__description.dcpAttribute__description--topValue {
+  margin-bottom:@dcp-attribute-padding-base-vertical;
+}
+
+
+.dcpAttribute__description.dcpAttribute__description--bottom,
+.dcpAttribute__description.dcpAttribute__description--bottomLabel,
+.dcpAttribute__description.dcpAttribute__description--bottomValue {
+  margin-bottom:@dcp-attribute-padding-base-vertical;
 }
 
 .dcpAttribute__description.dcpAttribute__description--topLabel.dcpAttribute__left {

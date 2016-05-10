@@ -18,7 +18,7 @@
 .dcpAttribute__content--docid .k-multiselect, .dcpArray__content__cell--docid .k-multiselect ,
 .dcpAttribute__content--account .k-multiselect, .dcpArray__content__cell--account .k-multiselect {
   height:auto;
-  min-height: @attrInputHeight;
+  min-height: @attrInputHeight - 2;
 }
 .dcpAttribute__value--single .k-multiselect-wrap .k-delete {
   visibility: hidden;
@@ -57,7 +57,7 @@
   content:" ";
   display:block;
 }
-
+// No see already selected relation in list
 .dcpAttribute__select--docid li.k-state-selected {
   display:none;
 }
@@ -66,4 +66,13 @@
 .dcpAttribute__select--docid .k-state-error {
   padding-left:1em;
   width:~"calc(100% - 1em)";
+}
+
+.dcpAttribute__content--docid ,
+.dcpAttribute__content--account  {
+  .k-state-focused {
+    input.k-input {
+      font-style: italic;
+    }
+  }
 }

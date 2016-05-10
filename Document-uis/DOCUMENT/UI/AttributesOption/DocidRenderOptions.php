@@ -12,6 +12,10 @@ class DocidRenderOptions extends CommonRenderOptions
     use TFormatRenderOption;
     const type = "docid";
     const kendoMultiSelectConfigurationOption = "kendoMultiSelectConfiguration";
+    const listDisplay = "list";
+    const autocompletionDisplay = "autoCompletion";
+    const multipleSingleDisplay = "singleMultiple";
+    const displayOption = "editDisplay";
     /**
      * Set extra configuration for kendoMultiSelect widget
      *
@@ -37,5 +41,25 @@ class DocidRenderOptions extends CommonRenderOptions
     public function setPlaceHolder($text)
     {
         return $this->setOption(self::placeHolderOption, $text);
+    }
+
+    /**
+     * Display format
+     * @note use only in edition mode
+     * @param string $display one of vertical, horizontal, select, autoCompletion, bool
+     * @return $this
+     * @throws Exception
+     */
+    public function setDisplay($display)
+    {
+        $allow = array(
+            self::listDisplay,
+            self::multipleSingleDisplay,
+            self::autocompletionDisplay
+        );
+        if (!in_array($display, $allow)) {
+            throw new Exception("UI0210", $display, implode(', ', $allow));
+        }
+        return $this->setOption(self::displayOption, $display);
     }
 }
