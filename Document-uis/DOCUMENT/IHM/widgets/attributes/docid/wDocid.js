@@ -420,7 +420,10 @@
                 });
             }
 
-            this.kendoWidgetObject.value(this.options.attributeValue.value);
+            if (this.options.attributeValue.value) {
+                // Init value in kendo only if any : if not call to server is performed
+                this.kendoWidgetObject.value(this.options.attributeValue.value);
+            }
             this.element.find(".dcpAttribute__value--docid--button").parent().hide();
         },
 
