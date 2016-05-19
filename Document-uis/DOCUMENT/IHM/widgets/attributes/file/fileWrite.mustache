@@ -20,13 +20,12 @@
         <button type="button"  data-index="{{index}}" tabindex="-1"
                 class="dcpAttribute__content__button--file btn btn-default btn-xs">
             <span class="fa fa-download fa-fw"></span>
-        </button>
-        {{#renderOptions.buttons}}
+        </button><!-- avoid white spaces
+        -->{{#renderOptions.buttons}}
         <button type="button" data-title="{{title}}" data-index="{{index}}"
                 class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
-        {{/renderOptions.buttons}}
-        {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+        {{/renderOptions.buttons}}{{#deleteButton}}<!-- avoid white spaces
+        --><button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
                 class="btn btn-default btn-xs dcpAttribute__content__button--delete"><span class="fa fa-times fa-fw"></span>
         </button>
         {{/deleteButton}}
