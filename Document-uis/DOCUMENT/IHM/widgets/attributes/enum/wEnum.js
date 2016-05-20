@@ -343,7 +343,6 @@
         {
             var enumData;
             var tplOption = this.options;
-            var labels;
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
@@ -357,19 +356,19 @@
             enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
 
+            if (tplOption.enumValues.length > 1) {
+                tplOption.enumValues[0].off = true;
+                tplOption.enumValues[1].on = true;
+            }
+
             this.options.isMultiple = true; // Just to have checkbox
 
             this.options.renderOptions.useOtherChoice = false; // Always : no use this options
-            this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
+            this.element.append(Mustache.render(this._getTemplate('writeToggle') || "", this.options));
             this.options.isMultiple = false; // restore isMultiple : it never can be multiple
-            labels = this.element.find(".dcpAttribute__value--enumlabel");
 
-            if (tplOption.enumValues[0].value === this.options.attributeValue.value) {
-                this.element.find("input[type=checkbox]").removeAttr("checked");
-                this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
-            }
             if (scope.options.labels.invertSelection) {
-                this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
+                this.element.find(".dcpAttribute__value--toggle").each(function wEnum_insertTooltip(kItem)
                 {
                     if (tplOption.enumValues[kItem]) {
                         $(this).tooltip({
@@ -384,7 +383,7 @@
 
             this.noButtonDisplay();
 
-            labels.on("click" + this.eventNamespace, "input", function wEnum_booleanClick(event)
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__value--toggle", function wEnum_booleanClick(event)
             {
                 event.preventDefault();
                 // Invert selection
@@ -638,8 +637,6 @@
                     }
                 }
                 // resend change trigger because this hook is call before the checkbox onchange event
-
-
                 $checkbox.trigger("change");
 
             }).on("keyup" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputKeyReturn(event)
@@ -814,21 +811,14 @@
                             }
                             break;
                         case "bool":
-                            this.getContentElements().each(function wEnum_parseElements(kItem)
+                            this.getContentElements().each(function wEnum_parseElements()
                             {
                                 var $this = $(this);
                                 //noinspection JSHint
-                                if ($this.val() == value.value) {
-                                    if (kItem > 0) {
-                                        $this.prop("checked", true);
-                                        $this.closest(".dcpAttribute__value--enumlabel").addClass("selected").removeClass("unselected");
-                                    } else {
-                                        $this.prop("checked", false);
-                                        $this.closest(".dcpAttribute__value--enumlabel").addClass("unselected").removeClass("selected");
-                                    }
+                                if ($this.data("toglevalue").toString() === value.value) {
+                                    $this.addClass("selected").removeClass("unselected");
                                 } else {
-                                    $this.prop("checked", false);
-                                    $this.closest(".dcpAttribute__value--enumlabel").removeClass("selected").removeClass("unselected");
+                                    $this.removeClass("selected").addClass("unselected");
                                 }
                             });
                             this.element.find(".dcpAttribute__value--enumlabel").tooltip("hide");

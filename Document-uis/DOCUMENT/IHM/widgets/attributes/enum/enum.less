@@ -180,8 +180,7 @@
 }
 
 .dcpAttribute__value--enumlabel.k-button {
-  padding-left:3px;
-  padding-right:3px;
+  padding: 0 3px 0 3px;
 }
 .dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel
 {
@@ -348,4 +347,130 @@ label.dcpAttribute__value--enumlabel--text {
 .dcpAttribute__content--enum input.dcpAttribute__value--edit:not([aria-activedescendant]) {
   color:@brand-danger;
 
+}
+
+@dcpBoolAnamiationDelay:1s;
+.dcpAttribute__value--enumbuttons.orientation-bool {
+  .dcpAttribute__value--toggle {
+
+    width:100%;
+    text-align: left;
+    border:none;
+    padding: 2px 0.5em 0 0.5em;
+    position:relative;
+    &.unselected {
+       display:none;
+    }
+
+
+    .dcpAttribute__value--text {
+      width: auto;
+      min-width: 10em;
+      display:inline-block;
+      padding: 3px;
+      border-radius: 1em;
+      position:relative;
+    }
+
+    &.off {
+      .dcpAttribute__value--text {
+        color: @gray-light;
+        background-color:@gray-lighter;
+        padding-left:2.5em;
+        animation: pulseoff @dcpBoolAnamiationDelay;
+
+        &:before {
+          animation: pulseoffmove @dcpBoolAnamiationDelay;
+          content: " ";
+          display: inline-block;
+          position:absolute;
+          left:@border-radius-base;
+          box-sizing: border-box;
+          width: @dcp-input-height - 13px;
+          height: @dcp-input-height - 13px;
+          top: 5px;
+          border: 3px solid white;
+          border-radius: 50%;
+          color: #f5f5f5;
+          text-align: center;
+          text-decoration: none;
+          background: transparent;
+          box-shadow: 0 0 3px gray;
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    &.on {
+      .dcpAttribute__value--text {
+        background-color:@enum-selected-button-bg;
+        color:@enum-selected-button-color;
+        font-weight: bold;
+        padding-left:1em;
+        padding-right: 2em;
+        animation: pulseon @dcpBoolAnamiationDelay;
+
+        &:before  {
+          content: " ";
+          display: inline-block;
+          box-sizing: border-box;
+          margin-right:0.5em;
+          animation: pulseonmove @dcpBoolAnamiationDelay;
+
+          position:absolute;
+          left:~"calc(100% - 1em - @{border-radius-base})";
+          width: @dcp-input-height - 13px;
+          height: @dcp-input-height - 13px;
+          top: 5px;
+          border: 3px solid #f5f5f5;
+          border-radius: 50%;
+          color: #f5f5f5;
+          text-align: center;
+          text-decoration: none;
+          background: transparent;
+          box-shadow: 0 0 3px gray;
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+@keyframes pulseon {
+  0% {
+    background-color: @gray-lighter;
+    padding-left:2.5em;
+  }
+  100% {
+    background-color: @enum-selected-button-bg;
+    padding-left:1em;
+  }
+}
+@keyframes pulseoff {
+  0% {
+    background-color: @enum-selected-button-bg;
+    padding-left:1em;
+  }
+  100% {
+    background-color: @gray-lighter;
+    padding-left:2.5em;
+  }
+}
+
+@keyframes pulseonmove {
+  0% {
+    left:@border-radius-base;
+  }
+  100% {
+    left:~"calc(100% - 1em - @{border-radius-base})";
+  }
+}
+@keyframes pulseoffmove {
+  0% {
+    left:~"calc(100% - 1em - @{border-radius-base})";
+  }
+  100% {
+    left:@border-radius-base;
+  }
 }
