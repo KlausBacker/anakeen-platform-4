@@ -100,7 +100,8 @@
 
   input.dcpAttribute__value--enum--other {
     height: @attrInputHeight - 6px;
-    width: ~"calc(100% - 1em)";
+    width: ~"calc(100% - 2.5em)";
+
   }
 }
 
@@ -149,6 +150,22 @@
   table-layout: fixed; /* same width for each item */
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  .k-checkbox-label {
+    &:before {
+      top: 6px;
+    }
+    &:after {
+      top: 6px + 3px;
+    }
+  }
+  .k-radio-label {
+    &:before {
+      top: 5px;
+    }
+    &:after {
+      top: 5px + 3px;
+    }
+  }
 }
 
 .dcpAttribute__value--enumbuttons.dcpAttribute__content__nobutton.orientation-horizontal.input-group,
@@ -156,7 +173,16 @@
   border-top-right-radius: @border-radius-base;
   border-bottom-right-radius: @border-radius-base;
 }
+.k-textbox.dcpAttribute__value--enumbuttons {
+  &:hover {
+    background-color:unset;
+  }
+}
 
+.dcpAttribute__value--enumlabel.k-button {
+  padding-left:3px;
+  padding-right:3px;
+}
 .dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel
 {
   display: table-cell;
@@ -165,13 +191,14 @@
   border-radius: @border-radius-base;
   border: none;
   .dcpAttribute__value--enumlabel--text {
-    margin-left: 0;
     width: ~"calc(100% - 1em)";
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
     vertical-align: middle;
     text-align: left;
+
+    margin: 0 0 0 0.3em;
   }
   input[type=radio], input[type=checkbox] {
     margin-right: 0.5em;
@@ -206,13 +233,33 @@
   width: 100%;
   padding: 0;
   .dcpAttribute__value--enumlabel--other {
-        height: @attrInputHeight;
-
+    padding-top:0;
   }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
   border-radius: @border-radius-base 0 0 @border-radius-base;
+
+
+  label.dcpAttribute__value--enumlabel--text {
+    line-height:2;
+  }
+  .k-checkbox-label {
+    &:before {
+      top: 4px;
+    }
+    &:after {
+      top: 4px + 3px;
+    }
+  }
+  .k-radio-label {
+    &:before {
+      top: 3px;
+    }
+    &:after {
+      top: 3px + 3px;
+    }
+  }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel {
@@ -226,28 +273,58 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: ~"calc(100% - 1em)";
+    margin:0;
   }
+
 }
 
+label.dcpAttribute__value--enumlabel--text {
+  font-weight: normal;
+  height:@dcp-input-height - 2;
+  line-height: @dcp-input-height - 2;
+}
+
+.dcpAttribute__value--enumbuttons.input-group {
+  .k-radio, .k-checkbox {
+    display: inline;
+    width: 0;
+    position: absolute;
+
+  }
+
+}
 .dcpAttribute__value--enumbuttons.input-group .dcpAttribute__value--enumlabel--other.dcpAttribute__value--enumlabel {
   text-overflow: initial;
+    padding-top:0;
+  .k-checkbox-label {
+    &:before {
+      top: 7px;
+    }
+    &:after {
+      top:7px + 3px;
+    }
+  }
+  .k-radio-label {
+    &:before {
+      top: 6px;
+    }
+    &:after {
+      top: 6px + 3px;
+    }
+  }
+  label.dcpAttribute__value--enumlabel--text {
+    width:0;
+  }
+
 }
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
-  margin-left: 0;
+  margin-left: 0.5em;
   display: inline-block;
   vertical-align: middle;
   /*width:100%*/
 }
 
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel {
-  input[type=radio], input[type=checkbox] {
-    margin-right: 0.5em;
-    margin-top: 0;
-    float: none;
-    display: inline-block;
-    vertical-align: middle;
-  }
-}
+
 
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel--text {
   display: inline-block;

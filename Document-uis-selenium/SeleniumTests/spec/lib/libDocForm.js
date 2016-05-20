@@ -639,12 +639,12 @@ exports.setEnumRadioValue = function setEnumRadioValue(data)
 
     if (data.label) {
         if (typeof data.index === "undefined") {
-            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]/..")).click();
+            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//label[contains(@class,'dcpAttribute__value--enumlabel--text')][contains(text(), '" + data.label + "')]/..")).click();
         } else {
             localPromise = currentDriver.findElement(webdriver.By.xpath(
                 '(//div[@data-attrid="' + data.attrid + '"])[' +
                 (data.index + 1) +
-                "]//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+                "]//label[contains(@class,'dcpAttribute__value--enumlabel--text')][contains(text(), '" + data.label + "')]")).click();
         }
     }
 
@@ -652,13 +652,13 @@ exports.setEnumRadioValue = function setEnumRadioValue(data)
         if (typeof data.index === "undefined") {
             elt = currentDriver.findElement(webdriver.By.xpath(
                 "//div[@data-attrid='" + data.attrid +
-                "']//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text']"));
+                "']//div[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text']"));
 
         } else {
             elt = currentDriver.findElement(webdriver.By.xpath(
                 '(//div[@data-attrid="' + data.attrid + '"])[' +
                 (data.index + 1) +
-                "]//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text']"));
+                "]//div[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text']"));
 
         }
         elt.sendKeys(data.otherText);
@@ -755,22 +755,22 @@ exports.selectEnumCheckboxValue = function addEnumCheckboxValue(data)
     scrollToAttribute(data.attrid, data.index);
     if (data.label) {
         if (typeof data.index === "undefined") {
-            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//label[contains(@class,'dcpAttribute__value--enumlabel--text')][contains(text(), '" + data.label + "')]")).click();
         } else {
-            localPromise = currentDriver.findElement(webdriver.By.xpath("(//div[@data-attrid='" + data.attrid + "'])[" + (data.index + 1) + "]//span[@class='dcpAttribute__value--enumlabel--text'][contains(text(), '" + data.label + "')]")).click();
+            localPromise = currentDriver.findElement(webdriver.By.xpath("(//div[@data-attrid='" + data.attrid + "'])[" + (data.index + 1) + "]//label[contains(@class,'dcpAttribute__value--enumlabel--text')][contains(text(), '" + data.label + "')]")).click();
         }
     }
     if (data.otherText) {
         if (typeof data.index === "undefined") {
             elt = currentDriver.findElement(webdriver.By.xpath(
                 "(//div[@data-attrid='" + data.attrid +
-                "']//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text'])[last()]"));
+                "']//div[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text'])[last()]"));
 
         } else {
             elt = currentDriver.findElement(webdriver.By.xpath(
                 '((//div[@data-attrid="' + data.attrid + '"])[' +
                 (data.index + 1) +
-                "]//label[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text'])[last()]"));
+                "]//div[contains(@class,'dcpAttribute__value--enumlabel--other')]//input[@type='text'])[last()]"));
         }
         elt.click();
         elt.sendKeys(data.otherText);

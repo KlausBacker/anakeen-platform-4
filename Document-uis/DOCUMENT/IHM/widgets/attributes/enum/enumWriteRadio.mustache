@@ -1,22 +1,23 @@
 <div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
     <div class=" input-group k-textbox dcpAttribute__value--enumbuttons orientation-{{renderOptions.editDisplay}}">
     {{#enumValues}}
-        <label class="dcpAttribute__value--enumlabel{{#selected}} selected{{/selected}}{{^exists}} dcpAttribute__value--enumlabel--other{{/exists}}">
-            <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}"
+        <div class="dcpAttribute__value--enumlabel k-button{{#selected}} selected{{/selected}}{{^exists}} dcpAttribute__value--enumlabel--other{{/exists}}">
+            <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}" id="{{enumUuid}}"
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
-                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit"
+                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit {{^isMultiple}}k-radio{{/isMultiple}}{{#isMultiple}}k-checkbox{{/isMultiple}}"
                    value="{{value}}" {{#selected}}checked="checked"{{/selected}}/>
-            {{#exists}} <span class="dcpAttribute__value--enumlabel--text">{{displayValue}}</span>{{/exists}}
-            {{^exists}} <input class="dcpAttribute__value--enum--other k-textbox" type="text" value="{{value}}" placeholder="{{labels.chooseAnotherChoice}}"/>{{/exists}}
-        </label>
+            {{#exists}} <label for="{{enumUuid}}" class="dcpAttribute__value--enumlabel--text {{^isMultiple}}k-radio-label{{/isMultiple}}{{#isMultiple}}k-checkbox-label{{/isMultiple}}">{{displayValue}}</label>{{/exists}}
+            {{^exists}} <label for="{{enumUuid}}" class="dcpAttribute__value--enumlabel--text {{^isMultiple}}k-radio-label{{/isMultiple}}{{#isMultiple}}k-checkbox-label{{/isMultiple}}" /><input class="dcpAttribute__value--enum--other k-textbox" type="text" value="{{value}}" placeholder="{{labels.chooseAnotherChoice}}"/>{{/exists}}
+        </div>
     {{/enumValues}}
     {{#renderOptions.useOtherChoice}}
-        <label class="dcpAttribute__value--enumlabel dcpAttribute__value--enumlabel--other{{#selected}} selected{{/selected}}">
-            <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}"
+        <div class="dcpAttribute__value--enumlabel dcpAttribute__value--enumlabel--other k-button{{#selected}} selected{{/selected}}">
+            <input name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}" id="{{otherUuid}}"
                    {{^isMultiple}}type="radio"{{/isMultiple}}{{#isMultiple}}type="checkbox"{{/isMultiple}}
-                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit" />
+                   class="{{#hadButtons}}form-control{{/hadButtons}} dcpAttribute__value dcpAttribute__value--edit {{^isMultiple}}k-radio{{/isMultiple}}{{#isMultiple}}k-checkbox{{/isMultiple}}" />
+            <label for="{{otherUuid}}" class="dcpAttribute__value--enumlabel--text {{^isMultiple}}k-radio-label{{/isMultiple}}{{#isMultiple}}k-checkbox-label{{/isMultiple}}" />
             <input class="dcpAttribute__value--enum--other k-textbox" tabindex="-1" type="text" placeholder="{{labels.chooseAnotherChoice}}"/>
-        </label>
+        </div>
     {{/renderOptions.useOtherChoice}}
     </div>
     {{#hadButtons}}
