@@ -815,7 +815,7 @@
                             {
                                 var $this = $(this);
                                 //noinspection JSHint
-                                if ($this.data("toglevalue").toString() === value.value) {
+                                if ($this.data("togglevalue").toString() === value.value) {
                                     $this.addClass("selected").removeClass("unselected");
                                 } else {
                                     $this.removeClass("selected").addClass("unselected");

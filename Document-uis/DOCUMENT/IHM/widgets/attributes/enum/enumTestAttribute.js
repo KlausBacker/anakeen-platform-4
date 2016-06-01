@@ -55,8 +55,7 @@ define(["underscore"], function (_) {
                         widget.call($sandBox, _.defaults({"attributeValue": value}, options));
 
                         if (options.renderOptions.editDisplay === "vertical" ||
-                            options.renderOptions.editDisplay === "horizontal" ||
-                            options.renderOptions.editDisplay === "bool") {
+                            options.renderOptions.editDisplay === "horizontal" ) {
                             attrValue = widget.call($sandBox, "getValue");
 
                             _.each(options.sourceValues, function (item) {
@@ -77,6 +76,18 @@ define(["underscore"], function (_) {
                                 });
 
                             }
+                        }
+
+                        if (options.renderOptions.editDisplay === "bool") {
+                            attrValue = widget.call($sandBox, "getValue");
+
+                            _.each(options.sourceValues, function (item) {
+                                expect($sandBox.find(".dcpAttribute__value--toggle[data-togglevalue=" + item.key + "]")).toExist();
+                            });
+                                expect($sandBox.find(".dcpAttribute__value--toggle.on[data-togglevalue=" + value.value + "]")).toExist();
+
+                                expect(value.value).toEqual(attrValue.value);
+                                //expect($sandBox.find(".dcpAttribute__value--toggle")).toExist();
                         }
                     });
                 });
@@ -112,11 +123,9 @@ define(["underscore"], function (_) {
                             expect(attrValue.value).toEqual(options.sourceValues[0].key);
 
                             // invert select trigger
-                            $sandBox.find("input.dcpAttribute__value[value!=" + value.value + "]").trigger("click");
+                            $sandBox.find(".dcpAttribute__value--toggle[data-togglevalue!=" + value.value + "]").trigger("click");
                             attrValue = widget.call($sandBox, "getValue");
                             expect(attrValue.value).toEqual(value.value);
-
-
                         }
                     });
                 });
