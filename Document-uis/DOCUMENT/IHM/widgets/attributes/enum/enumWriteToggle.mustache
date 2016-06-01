@@ -1,0 +1,29 @@
+<div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
+    <div class=" input-group k-textbox dcpAttribute__value--enumbuttons orientation-{{renderOptions.editDisplay}}">
+    {{#enumValues}}
+        <div class="dcpAttribute__value dcpAttribute__value--toggle k-button
+        {{#on}} on{{/on}}{{#off}} off{{/off}}
+        {{#selected}} selected{{/selected}}{{^selected}} unselected{{/selected}}"
+             name="{{id}}{{#inArray}}[{{enumIndex}}]{{/inArray}}"
+                data-togglevalue="{{value}}">
+
+            <div class="dcpAttribute__value--text">{{displayValue}}</div>
+
+        </div>
+    {{/enumValues}}
+
+    </div>
+    {{#hadButtons}}
+        <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#renderOptions.buttons}}
+            <button type="button" data-title="{{title}}" data-index="{{index}}" tabindex="-1"
+                    class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
+        {{/renderOptions.buttons}}
+            {{#deleteButton}}
+                <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                        class="btn btn-default btn-xs dcpAttribute__content__button--delete"><span class="fa fa-times fa-fw"></span>
+                </button>
+            {{/deleteButton}}
+    </span>
+    {{/hadButtons}}
+</div>

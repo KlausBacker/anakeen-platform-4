@@ -265,6 +265,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
         $options = parent::getOptions($document);
         
         $options->enum()->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay);
+        $options->enum()->useOtherChoice(true);
         return $options;
     }
     
@@ -288,6 +289,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
         $options = parent::getOptions($document);
         
         $options->enum()->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
+        $options->enum()->useOtherChoice(true);
         
         return $options;
     }

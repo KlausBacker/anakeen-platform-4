@@ -137,6 +137,9 @@ class RenderDefault implements IRenderConfig
                     "writeRadio" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
                     ) ,
+                    "writeToggle" => array(
+                        "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
+                    ) ,
                     "read" => array(
                         "file" => "DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
                     )
@@ -252,9 +255,9 @@ class RenderDefault implements IRenderConfig
         $opt->enum()->setTranslations(array(
             "chooseMessage" => ___("Choose", "ddui-enum") ,
             "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
-            "invertSelection" => ___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
-            "selectMessage" => ___("Select {{displayValue}}", "ddui-enum") ,
-            "unselectMessage" => ___("Unselect {{displayValue}}", "ddui-enum") ,
+            "invertSelection" => "", //___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
+            "selectMessage" => "", //___("Select {{displayValue}}", "ddui-enum") ,
+            "unselectMessage" => "", //___("Unselect {{displayValue}}", "ddui-enum") ,
             "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum") ,
             "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum") ,
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")

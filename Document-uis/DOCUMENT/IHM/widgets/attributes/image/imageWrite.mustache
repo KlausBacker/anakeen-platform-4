@@ -11,18 +11,19 @@
     <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none" accept="image/*"
            class="dcpAttribute__value--file"
           value="{{attributeValue.value}}"/>
-    <input {{#attributeValue.thumbnail}}style="background-image:url({{attributeValue.thumbnail}}){{/attributeValue.thumbnail}}"  type="text"
-           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.thumbnail}}dcpAttribute__value--filethumb{{/attributeValue.thumbnail}}"
+    <input type="text"
+           class="form-control dcpAttribute__value dcpAttribute__value--edit"
            value="{{attributeValue.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
-        <button type="button" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs" tabindex="-1">
-            <span class="fa fa-download fa-fw"></span>
-        </button>
-        {{#renderOptions.buttons}}
-        <button type="button" data-title="{{title}}" tabindex="-1" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
-        {{/renderOptions.buttons}}
-        {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+        <button type="button" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs"
+                tabindex="-1">
+            <span class="dcpAttribute__value--filethumb"
+                  {{#attributeValue.thumbnail}}style="background-image:url({{attributeValue.thumbnail}})"{{/attributeValue.thumbnail}}></span>
+            <span class="fa fa-download fa-fw dcpAttribute__value--filethumb-download"></span>
+        </button><!-- avoid white spaces
+        -->{{#renderOptions.buttons}}<button type="button" data-title="{{title}}" tabindex="-1" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button><!-- avoid white spaces
+        -->{{/renderOptions.buttons}}<!-- avoid white spaces
+        -->{{#deleteButton}}<button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
                 class="btn btn-default btn-xs dcpAttribute__content__button--delete">
             <span class="fa fa-times fa-fw"></span>
         </button>

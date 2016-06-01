@@ -61,7 +61,7 @@
                 useFirstChoice: false,
                 useSourceUri: false,
                 useOtherChoice: false,
-                placeHolder:'Select', // Message to display when no useFirstChoice is true and no value selected
+                placeHolder: 'Select', // Message to display when no useFirstChoice is true and no value selected
                 orderBy: false
             }
         },
@@ -130,6 +130,10 @@
             if (this.getMode() === "write") {
                 if (this.options.options && this.options.options.eformat === "auto") {
                     this.options.renderOptions.useSourceUri = true;
+                }
+
+                if (this.options.renderOptions.useOtherChoice === true) {
+                    this.options.otherUuid = _.uniqueId("enum");
                 }
                 if (this.options.index >= 0) {
                     var enumIndex = this.element.closest("table").data("enumIndex");
@@ -209,6 +213,7 @@
                         item.value = enumItem.key;
                         item.displayValue = enumItem.label || '';
                         item.exists = enumItem.exists !== false;
+                        item.enumUuid = _.uniqueId("enum");
 
                         // : no === because json encode use numeric cast when index is numeric
                         //noinspection JSHint
@@ -228,7 +233,8 @@
                         value: this.options.attributeValue.value,
                         displayValue: this.options.attributeValue.displayValue || '',
                         selected: true,
-                        exists: false
+                        exists: false,
+                        enumUuid: _.uniqueId("enum")
                     });
                 }
             }
@@ -256,6 +262,7 @@
                     item.displayValue = enumItem.label || '';
                     item.selected = false;
                     item.exists = enumItem.exists !== false;
+                    item.enumUuid = _.uniqueId("enum");
                     isIn = _.some(values, function wEnum_findSelected(aValue)
                     {
                         //noinspection JSHint
@@ -280,6 +287,7 @@
                             item.displayValue = singleValue.displayValue;
                             item.selected = true;
                             item.exists = false;
+                            item.enumUuid = _.uniqueId("enum");
                             source.push(item);
                         }
                         selectedValues.push(singleValue.value);
@@ -335,7 +343,6 @@
         {
             var enumData;
             var tplOption = this.options;
-            var labels;
             var scope = this;
 
             if (this.options.renderOptions.useSourceUri) {
@@ -349,19 +356,19 @@
             enumData = this.getSingleEnumData();
             tplOption.enumValues = enumData.data;
 
+            if (tplOption.enumValues.length > 1) {
+                tplOption.enumValues[0].off = true;
+                tplOption.enumValues[1].on = true;
+            }
+
             this.options.isMultiple = true; // Just to have checkbox
 
             this.options.renderOptions.useOtherChoice = false; // Always : no use this options
-            this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
+            this.element.append(Mustache.render(this._getTemplate('writeToggle') || "", this.options));
             this.options.isMultiple = false; // restore isMultiple : it never can be multiple
-            labels = this.element.find("label");
 
-            if (tplOption.enumValues[0].value === this.options.attributeValue.value) {
-                this.element.find("input[type=checkbox]").removeAttr("checked");
-                this.element.find(".dcpAttribute__value--enumlabel.selected").addClass("unselected").removeClass("selected");
-            }
             if (scope.options.labels.invertSelection) {
-                this.element.find(".dcpAttribute__value--enumlabel").each(function wEnum_insertTooltip(kItem)
+                this.element.find(".dcpAttribute__value--toggle").each(function wEnum_insertTooltip(kItem)
                 {
                     if (tplOption.enumValues[kItem]) {
                         $(this).tooltip({
@@ -376,7 +383,7 @@
 
             this.noButtonDisplay();
 
-            labels.on("click" + this.eventNamespace, "input", function wEnum_booleanClick(event)
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__value--toggle", function wEnum_booleanClick(event)
             {
                 event.preventDefault();
                 // Invert selection
@@ -392,7 +399,7 @@
 
             this.getContentElements().each(function wEnum_addKButton()
             {
-                $(this).closest("label").addClass("k-button");
+                $(this).closest(".dcpAttribute__value--enumlabel").addClass("k-button");
 
             });
             if (scope.options.attributeValue.value === null) {
@@ -450,14 +457,14 @@
                 this.options.renderOptions.useOtherChoice = false;
             }
             this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
-            labels = this.element.find("label");
+            labels = this.element.find(".dcpAttribute__value--enumlabel");
 
             this.noButtonDisplay();
             labels.on("change" + this.eventNamespace, "input[type=radio]", function wEnum_onchange(event)
             {
                 var newValue = {};
                 newValue.value = $(this).val();
-                newValue.displayValue = $(this).closest('label').text().trim();
+                newValue.displayValue = $(this).closest(".dcpAttribute__value--enumlabel").find("label").text().trim();
                 scope.setValue(newValue, event);
             });
 
@@ -481,12 +488,12 @@
                     trigger: "hover",
                     title: function wEnum_titleTooltip()
                     {
-                        if ($(this).closest("label").find("input").prop("checked")) {
+                        if ($(this).closest(".dcpAttribute__value--enumlabel").find("input").prop("checked")) {
                             return null;
                         } else {
-                            return Mustache.render(scope.options.labels.selectMessage , {
+                            return Mustache.render(scope.options.labels.selectMessage, {
                                 displayValue: $(this).text(),
-                                value : $(this).parent().find("input").val()
+                                value: $(this).parent().find("input").val()
                             });
                         }
                     }
@@ -514,7 +521,7 @@
             this.element.append(Mustache.render(this._getTemplate('writeRadio') || "", this.options));
 
             this.noButtonDisplay();
-            this.element.on("change" + this.eventNamespace, "label input[type=checkbox]", function wEnum_onChange(event)
+            this.element.on("change" + this.eventNamespace, ".dcpAttribute__value--enumlabel input[type=checkbox]", function wEnum_onChange(event)
             {
 
                 var newValue = [];
@@ -546,16 +553,16 @@
                     title: function wEnum_Cb_titleTooltip()
                     {
                         var $this = $(this);
-                        if ($this.closest("label").find("input").prop("checked")) {
+                        if ($this.closest(".dcpAttribute__value--enumlabel").find("input").prop("checked")) {
 
-                            return Mustache.render(scope.options.labels.unselectMessage , {
+                            return Mustache.render(scope.options.labels.unselectMessage, {
                                 displayValue: $(this).text(),
-                                value : $(this).parent().find("input").val()
+                                value: $(this).parent().find("input").val()
                             });
                         } else {
-                            return Mustache.render(scope.options.labels.selectMessage , {
+                            return Mustache.render(scope.options.labels.selectMessage, {
                                 displayValue: $(this).text(),
-                                value : $(this).parent().find("input").val()
+                                value: $(this).parent().find("input").val()
                             });
                         }
                     }
@@ -572,17 +579,14 @@
          */
         _checkRadioOther: function wEnum__checkRadioOther()
         {
-            this.element.find(".dcpAttribute__value--enum--other").on("click" + this.eventNamespace, function wEnumRadioOtherInputClick()
+            this.element.find(".dcpAttribute__value--enum--other").on("focus" + this.eventNamespace, function wEnumRadioOtherInputClick()
             {
-                var $input = $(this).closest("label").find(".dcpAttribute__value--edit");
-                if (!$input.prop("checked")) {
-                    $(this).closest("label").trigger("click");
-                    $input.prop("checked", true);
-                    $(this).focus();
-                }
+
+                $(this).trigger("change");
+
             }).on("change" + this.eventNamespace, function wEnumRadioOtherInputChange()
             {
-                var $label = $(this).closest("label");
+                var $label = $(this).closest(".dcpAttribute__value--enumlabel");
                 var $input = $label.find(".dcpAttribute__value--edit");
                 $input.val($(this).val());
                 // Trigger change label input to real set value
@@ -602,19 +606,15 @@
          */
         _checkBoxOther: function wEnum__checkBoxOther()
         {
-            this.element.on("click" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputClick()
+            this.element.on("focus" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputClick()
             {
-                var $input = $(this).closest("label").find(".dcpAttribute__value--edit");
-                if (!$input.prop("checked")) {
-                    $(this).closest("label").trigger("click");
-                    $input.prop("checked", true);
-                    $(this).focus();
-                }
+                $(this).trigger("change");
             }).on("change" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputChange()
             {
-                var $label = $(this).closest("label");
+                var $label = $(this).closest(".dcpAttribute__value--enumlabel");
                 var $input = $label.find(".dcpAttribute__value--edit");
                 var $hasEmpty;
+                var $checkbox = $label.find("input[type=checkbox]");
 
                 $input.val($(this).val());
 
@@ -625,12 +625,19 @@
 
                 if (!$hasEmpty) {
                     var $newOne = $label.clone();
+                    var uuid = _.uniqueId("enum");
+                    $newOne.find("input[type=checkbox]").attr("id", uuid);
+                    $newOne.find("label").attr("for", uuid);
                     // add new input if no one free found
                     $label.parent().append($newOne);
                     $newOne.find("input").val("").prop("checked", false);
+
+                    if (!$checkbox.prop("checked")) {
+                        $label.find("label").trigger("click");
+                    }
                 }
                 // resend change trigger because this hook is call before the checkbox onchange event
-                $label.find("input[type=checkbox]").trigger("change");
+                $checkbox.trigger("change");
 
             }).on("keyup" + this.eventNamespace, ".dcpAttribute__value--enum--other", function wEnumCheckOtherInputKeyReturn(event)
             {
@@ -647,7 +654,7 @@
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             kddl = this.kendoWidget.kendoDropDownList(kendoOptions).data("kendoDropDownList");
-            this.kendoWidgetObject=this.kendoWidget.data("kendoDrobDownList");
+            this.kendoWidgetObject = this.kendoWidget.data("kendoDrobDownList");
             kddl.list.find(".k-list-optionlabel").addClass("placeholder--clear");
         },
         multipleSelect: function wEnumMultipleSelect()
@@ -656,7 +663,7 @@
             this.element.append(Mustache.render(this._getTemplate('write') || "", this.options));
             this.kendoWidget = this.element.find(".dcpAttribute__value--edit");
             this.kendoWidget.kendoMultiSelect(kendoOptions);
-            this.kendoWidgetObject=this.kendoWidget.data("kendoMultiSelect");
+            this.kendoWidgetObject = this.kendoWidget.data("kendoMultiSelect");
         },
 
         singleCombobox: function wEnumSingleCombobox()
@@ -670,7 +677,7 @@
 
             kddl = this.kendoWidget.kendoComboBox(kendoOptions).data("kendoComboBox");
 
-            this.kendoWidgetObject=kddl;
+            this.kendoWidgetObject = kddl;
             if (this.options.renderOptions.useSourceUri) {
                 if (this.options.attributeValue.value === null) {
                     //kddl.dataSource.data([]);
@@ -755,10 +762,10 @@
                                 });
                                 if (isIn) {
                                     $this.prop("checked", true);
-                                    $this.closest("label").addClass("selected");
+                                    $this.closest(".dcpAttribute__value--enumlabel").addClass("selected");
                                 } else {
                                     $this.prop("checked", false);
-                                    $this.closest("label").removeClass("selected");
+                                    $this.closest(".dcpAttribute__value--enumlabel").removeClass("selected");
                                 }
                             });
 
@@ -804,21 +811,14 @@
                             }
                             break;
                         case "bool":
-                            this.getContentElements().each(function wEnum_parseElements(kItem)
+                            this.getContentElements().each(function wEnum_parseElements()
                             {
                                 var $this = $(this);
                                 //noinspection JSHint
-                                if ($this.val() == value.value) {
-                                    if (kItem > 0) {
-                                        $this.prop("checked", true);
-                                        $this.closest("label").addClass("selected").removeClass("unselected");
-                                    } else {
-                                        $this.prop("checked", false);
-                                        $this.closest("label").addClass("unselected").removeClass("selected");
-                                    }
+                                if ($this.data("togglevalue").toString() === value.value) {
+                                    $this.addClass("selected").removeClass("unselected");
                                 } else {
-                                    $this.prop("checked", false);
-                                    $this.closest("label").removeClass("selected").removeClass("unselected");
+                                    $this.removeClass("selected").addClass("unselected");
                                 }
                             });
                             this.element.find(".dcpAttribute__value--enumlabel").tooltip("hide");
@@ -832,10 +832,10 @@
                                 //noinspection JSHint
                                 if ($this.val() == value.value) {
                                     $this.prop("checked", true);
-                                    $this.closest("label").addClass("selected");
+                                    $this.closest(".dcpAttribute__value--enumlabel").addClass("selected");
                                 } else {
                                     $this.prop("checked", false);
-                                    $this.closest("label").removeClass("selected");
+                                    $this.closest(".dcpAttribute__value--enumlabel").removeClass("selected");
                                 }
                             });
 

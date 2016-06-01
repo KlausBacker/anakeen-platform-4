@@ -17,7 +17,7 @@ window.dcp = window.dcp || {};
 
     var isString = function isString(obj)
     {
-        return toString.call(obj) === '[object String]';
+        return typeof obj === 'string';
     };
 
     return function catalog(translation)
