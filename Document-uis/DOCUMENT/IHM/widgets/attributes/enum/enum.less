@@ -349,7 +349,7 @@ label.dcpAttribute__value--enumlabel--text {
 
 }
 
-@dcpBoolAnamiationDelay:1s;
+@dcpBoolAnimationDelay:1s;
 .dcpAttribute__value--enumbuttons.orientation-bool {
   .dcpAttribute__value--toggle {
 
@@ -377,10 +377,10 @@ label.dcpAttribute__value--enumlabel--text {
         color: @gray-light;
         background-color:@gray-lighter;
         padding-left:2.5em;
-        animation: pulseoff @dcpBoolAnamiationDelay;
+        transition: background-color @dcpBoolAnimationDelay, padding-left @dcpBoolAnimationDelay;
 
         &:before {
-          animation: pulseoffmove @dcpBoolAnamiationDelay;
+          transition: left @dcpBoolAnimationDelay;
           content: " ";
           display: inline-block;
           position:absolute;
@@ -409,14 +409,14 @@ label.dcpAttribute__value--enumlabel--text {
         font-weight: bold;
         padding-left:1em;
         padding-right: 2em;
-        animation: pulseon @dcpBoolAnamiationDelay;
+        transition: background-color @dcpBoolAnimationDelay, padding-left @dcpBoolAnimationDelay;
 
         &:before  {
           content: " ";
           display: inline-block;
           box-sizing: border-box;
           margin-right:0.5em;
-          animation: pulseonmove @dcpBoolAnamiationDelay;
+          transition: left @dcpBoolAnimationDelay;
 
           position:absolute;
           left:~"calc(100% - 1em - @{border-radius-base})";
@@ -435,42 +435,5 @@ label.dcpAttribute__value--enumlabel--text {
         }
       }
     }
-  }
-}
-@keyframes pulseon {
-  0% {
-    background-color: @gray-lighter;
-    padding-left:2.5em;
-  }
-  100% {
-    background-color: @enum-selected-button-bg;
-    padding-left:1em;
-  }
-}
-@keyframes pulseoff {
-  0% {
-    background-color: @enum-selected-button-bg;
-    padding-left:1em;
-  }
-  100% {
-    background-color: @gray-lighter;
-    padding-left:2.5em;
-  }
-}
-
-@keyframes pulseonmove {
-  0% {
-    left:@border-radius-base;
-  }
-  100% {
-    left:~"calc(100% - 1em - @{border-radius-base})";
-  }
-}
-@keyframes pulseoffmove {
-  0% {
-    left:~"calc(100% - 1em - @{border-radius-base})";
-  }
-  100% {
-    left:@border-radius-base;
   }
 }
