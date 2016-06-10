@@ -814,9 +814,27 @@
                             this.getContentElements().each(function wEnum_parseElements()
                             {
                                 var $this = $(this);
+                                var isOn;
                                 //noinspection JSHint
                                 if ($this.data("togglevalue").toString() === value.value) {
-                                    $this.addClass("selected").removeClass("unselected");
+                                    if (!$this.hasClass("selected")) {
+                                        if ($this.hasClass("on")) {
+                                            isOn=true;
+                                            $this.removeClass("on").addClass("off");
+                                        } else if ($this.hasClass("off")) {
+                                            $this.removeClass("off").addClass("on");
+                                            isOn=false;
+                                        }
+                                        $this.addClass("selected").removeClass("unselected");
+
+                                        _.defer(function wEnumAnimateBool() {
+                                            if (isOn === true) {
+                                                $this.addClass("on").removeClass("off");
+                                            } else {
+                                                $this.addClass("off").removeClass("on");
+                                            }
+                                        });
+                                    }
                                 } else {
                                     $this.removeClass("selected").addClass("unselected");
                                 }
