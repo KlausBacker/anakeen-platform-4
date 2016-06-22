@@ -6,7 +6,6 @@
 namespace Dcp\Ui\Html;
 
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
-use Dcp\HttpApi\V1\Etag\Manager as EtagManager;
 use Dcp\HttpApi\V1\Crud\Exception;
 
 class Document extends \Dcp\HttpApi\V1\Crud\Crud
@@ -107,21 +106,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
         $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));
         $layout->set("notificationTitleMore", ___("Notification", "ddui:notification"));
-        
-        if ($initid === false) {
-            //Boot the init page in void mode (used by offline project)
-            $etag = md5(sprintf("%s : %s", \ApplicationParameterManager::getParameterValue("CORE", "WVERSION") , \ApplicationParameterManager::getScopedParameterValue("CORE_LANG")));
-            $etagManager = new EtagManager();
-            if ($etagManager->verifyCache($etag)) {
-                $etagManager->generateNotModifiedResponse($etag);
-                $layout->template = "";
-                $layout->noparse = true;
-                header("Cache-Control:");
-                return "";
-            }
-            $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML(false));
-            $etagManager->generateResponseHeader($etag);
-        } else {
+        if ($initid !== false) {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
                 $e = new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui") , $initid));
@@ -155,7 +140,6 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
         }
-        
         $render = new \Dcp\Ui\RenderDefault();
         
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
@@ -224,5 +208,21 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             return $_SERVER['HTTP_X_FORWARDED_PROTO'];
         }
         return 'http';
+    }
+    
+    public function getEtagInfo()
+    {
+        if (isset($this->urlParameters["identifier"])) {
+            
+            $id = $this->urlParameters["identifier"];
+            if ($id === "0") {
+                //Boot the init page in void mode (used by offline project)
+                $etag = md5(sprintf("%s : %s", \ApplicationParameterManager::getParameterValue("CORE", "WVERSION") , \ApplicationParameterManager::getScopedParameterValue("CORE_LANG")));
+                
+                return $etag;
+            }
+        }
+        
+        return "";
     }
 }
