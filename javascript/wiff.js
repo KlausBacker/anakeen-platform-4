@@ -2139,7 +2139,7 @@ function updateContextList_success(responseObject, select) {
 											authInfo : Ext.encode(authInfo)
 										},
 										root : 'data',
-										fields : ['name', 'vendor', 'versionrelease',
+										fields : ['name', 'vendor', 'license', 'versionrelease',
 												'availableversionrelease',
 												'description', 'infopath',
 												'errorstatus', {
@@ -2219,9 +2219,16 @@ function updateContextList_success(responseObject, select) {
 											dataIndex : 'name',
 											width : 140
 										}, {
-											header : 'Vendor',
-											dataIndex : 'vendor',
-											width : 70
+											header: 'Vendor',
+											dataIndex: 'vendor',
+											width: 70
+										}, {
+											header: 'License',
+											dataIndex: 'license',
+											width: 140,
+											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
+												return WIFF.Utils.renderModuleLicense(value);
+											}
 										}, {
 											id : 'installed-version',
 											header : 'Installed<br/>Version',
@@ -2229,7 +2236,7 @@ function updateContextList_success(responseObject, select) {
 											width : 60 + 16 + 5,
 											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
 												var changelog = record.get('changelog');
-												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + (changelog == '' ? 'visibility: hidden' : '') + '" title="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
+												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + (changelog == '' ? 'visibility: hidden' : '') + '" qtip="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
 												if (changelog != '') {
 													icon = '<a href="' + Ext.util.Format.htmlEncode(changelog) + '" target="_blank">' + icon + '</a>';
 												}
@@ -2289,7 +2296,7 @@ function updateContextList_success(responseObject, select) {
 											authInfo : Ext.encode(authInfo)
 										},
 										root : 'data',
-										fields : ['name', 'versionrelease',
+										fields : ['name', 'vendor', 'license', 'versionrelease',
 												'description', 'infopath',
 												'basecomponent', {
 													name : 'repository',
@@ -2359,13 +2366,24 @@ function updateContextList_success(responseObject, select) {
 											dataIndex : 'name',
 											width : 140
 										}, {
+											header: 'Vendor',
+											dataIndex: 'vendor',
+											width: 70
+										}, {
+											header: 'License',
+											dataIndex: 'license',
+											width: 140,
+											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
+												return WIFF.Utils.renderModuleLicense(value);
+											}
+										}, {
 											id : 'available-version',
 											header : 'Available<br/>Version',
 											dataIndex : 'versionrelease',
 											width : 60 + 16 + 5,
 											renderer : function(value, metadata, record, rowIndex, colIndex, store) {
 												var changelog = record.get('changelog');
-												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + (changelog == '' ? 'visibility: hidden' : '') + '" title="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
+												var icon = '<div class="x-icon-log x-icon-log-alone" style="' + (changelog == '' ? 'visibility: hidden' : '') + '" qtip="View changelog (' + Ext.util.Format.htmlEncode(value) + ')"></div>';
 												if (changelog != '') {
 													icon = '<a href="' + Ext.util.Format.htmlEncode(changelog) + '" target="_blank">' + icon + '</a>';
 												}
