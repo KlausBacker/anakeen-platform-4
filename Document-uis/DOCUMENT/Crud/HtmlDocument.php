@@ -139,6 +139,8 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             }
             
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
+        } else {
+            $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML(false));
         }
         $render = new \Dcp\Ui\RenderDefault();
         
