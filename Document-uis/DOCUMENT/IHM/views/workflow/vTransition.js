@@ -131,11 +131,11 @@ define([
         {
             ViewDocument.prototype.renderCss.apply(this, [true]);
         },
-        updateTitle:function vTransitionupdateTitle()
+        updateTitle: function vTransitionupdateTitle()
         {
             // No update title
         },
-        updateIcon:function vTransitionupdateIcon()
+        updateIcon: function vTransitionupdateIcon()
         {
             // No update icon
         },
@@ -230,8 +230,15 @@ define([
                         var event = {prevent: false};
                         currentView.model.trigger("beforeChangeState", event);
                         if (event.prevent === false) {
-                            currentView.model.save().then(function vTransition_clickOnOk_afterSave() {
+                            currentView.model.save().then(function vTransition_direct_afterSave()
+                            {
                                 currentView.model.trigger("success", currentView.getMessages());
+                            }).fail(function vTransition_direct_error(response, statusTxt, errorTxt)
+                            {
+                                if (errorTxt && !errorTxt.title && errorTxt.message) {
+                                    errorTxt.title = errorTxt.message;
+                                }
+                                currentView.displayError(errorTxt);
                             });
                         }
                     });
@@ -242,10 +249,12 @@ define([
                 }
 
                 // No use border color if same as background
-                _.defer(function vTransition_renderWhiteOnWhite() {
-                    currentView.$el.find(".dcpTransition--activity").each(function vTransition_renderBorderColor() {
+                _.defer(function vTransition_renderWhiteOnWhite()
+                {
+                    currentView.$el.find(".dcpTransition--activity").each(function vTransition_renderBorderColor()
+                    {
                         if (currentView.$el.css("background-color") === $(this).css("border-color")) {
-                            $(this).css("border-color","");
+                            $(this).css("border-color", "");
                         }
                     });
                 });
@@ -282,12 +291,19 @@ define([
 
         clickOnOk: function vTransition_clickOnOk()
         {
-            var event = {prevent: false}, currentView=this;
+            var event = {prevent: false}, currentView = this;
             this.model.trigger("beforeChangeState", event);
 
             if (event.prevent === false) {
-                this.model.save().then(function vTransition_clickOnOk_afterSave() {
+                this.model.save().then(function vTransition_clickOnOk_afterSave()
+                {
                     currentView.model.trigger("success", currentView.getMessages());
+                }).fail(function vTransition_clickOnOk_error(response, statusTxt, errorTxt)
+                {
+                    if (errorTxt && !errorTxt.title && errorTxt.message) {
+                        errorTxt.title = errorTxt.message;
+                    }
+                    currentView.displayError(errorTxt);
                 });
             }
         },
@@ -304,10 +320,10 @@ define([
 
         getMessages: function vTransition_getMessages()
         {
-            var messages=[];
+            var messages = [];
             _.each(this.model.get("messages"), function vTransition_getMessagesAMessage(aMessage)
             {
-                messages.push( {
+                messages.push({
                     type: aMessage.type,
                     title: aMessage.contentText,
                     htmlMessage: aMessage.contentHtml

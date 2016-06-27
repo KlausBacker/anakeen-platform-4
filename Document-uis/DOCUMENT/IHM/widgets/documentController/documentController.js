@@ -756,6 +756,13 @@ define([
                                 transitionElements.model.trigger("dduiDocumentReady");
                             });
                         }
+                    },
+                    "error": function transitionModel_error(theModel, response, options) {
+                        var errorTxt={title:"Transition Error"};
+                        if (options && options.errorThrown) {
+                            errorTxt.message=options.errorThrown;
+                        }
+                        currentWidget.$notification.dcpNotification("showError", errorTxt);
                     }
                 });
             });
