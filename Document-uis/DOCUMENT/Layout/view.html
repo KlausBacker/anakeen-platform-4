@@ -6,10 +6,12 @@
     <script type="text/javascript">
         window.dcp= window.dcp || {};
 
-        if (window.location.pathname.indexOf("/api/v1/") > 0) {
+        if (window.location.pathname.indexOf("/api/v1/") >= 0) {
             window.dcp.baseHref=window.location.href.substr(0, window.location.href.indexOf("/api/v1/") + 1);
         } else {
-            window.dcp.baseHref=window.location.href.substr(0, window.location.href.indexOf(window.location.search) );
+            if (window.location.search) {
+                window.dcp.baseHref = window.location.href.substr(0, window.location.href.indexOf(window.location.search));
+            }
         }
 
         window.document.getElementsByTagName("base")[0].setAttribute("href",window.dcp.baseHref );
