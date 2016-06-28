@@ -17,7 +17,7 @@ define([
             htmlContent: '<div class="dcpTransition--content-activity" >' +
             ' <span class="dcpTransition--activity" style="border-color:{{transition.beginState.color}}">{{transition.beginState.displayValue}}</span>' +
             '<span class="dcpTransition--transition {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}" >{{transition.label}}</span>' +
-            '<span><span class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></span></span>' +
+            '<span class="dcpTransition--arrow"><span class="fa fa-caret-right fa-2x {{^transition.id}}dcpTransition--transition--invalid{{/transition.id}}"></span></span>' +
             '<span class="dcpTransition--activity" style="border-color:{{transition.endState.color}}">{{transition.endState.displayValue}}</span> ' +
             '</div>',
 
@@ -227,19 +227,22 @@ define([
                     // Direct send transition without user control
                     _.defer(function vTransition_saveForMe()
                     {
-                        var event = {prevent: false};
+                        var event = {prevent: false}, saveXhr;
                         currentView.model.trigger("beforeChangeState", event);
                         if (event.prevent === false) {
-                            currentView.model.save().then(function vTransition_direct_afterSave()
-                            {
-                                currentView.model.trigger("success", currentView.getMessages());
-                            }).fail(function vTransition_direct_error(response, statusTxt, errorTxt)
-                            {
-                                if (errorTxt && !errorTxt.title && errorTxt.message) {
-                                    errorTxt.title = errorTxt.message;
-                                }
-                                currentView.displayError(errorTxt);
-                            });
+                            saveXhr = currentView.model.save();
+                            if (saveXhr) {
+                                saveXhr.then(function vTransition_direct_afterSave()
+                                {
+                                    currentView.model.trigger("success", currentView.getMessages());
+                                }).fail(function vTransition_direct_error(response, statusTxt, errorTxt)
+                                {
+                                    if (errorTxt && !errorTxt.title && errorTxt.message) {
+                                        errorTxt.title = errorTxt.message;
+                                    }
+                                    currentView.displayError(errorTxt);
+                                });
+                            }
                         }
                     });
                 }
@@ -291,20 +294,35 @@ define([
 
         clickOnOk: function vTransition_clickOnOk()
         {
-            var event = {prevent: false}, currentView = this;
+            var event = {prevent: false}, currentView = this, saveXhr;
             this.model.trigger("beforeChangeState", event);
 
             if (event.prevent === false) {
-                this.model.save().then(function vTransition_clickOnOk_afterSave()
-                {
-                    currentView.model.trigger("success", currentView.getMessages());
-                }).fail(function vTransition_clickOnOk_error(response, statusTxt, errorTxt)
-                {
-                    if (errorTxt && !errorTxt.title && errorTxt.message) {
-                        errorTxt.title = errorTxt.message;
-                    }
-                    currentView.displayError(errorTxt);
-                });
+                saveXhr = this.model.save();
+                if (saveXhr) {
+                    saveXhr.then(function vTransition_clickOnOk_afterSave()
+                    {
+                        currentView.model.trigger("success", currentView.getMessages());
+                    }).fail(function vTransition_clickOnOk_error(response, statusTxt, errorTxt)
+                    {
+                        if (response.responseJSON) {
+                            _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage)
+                            {
+                                currentView.displayError({
+                                    title: aMessage.contentText
+                                });
+                            });
+                        } else {
+                            if (errorTxt && !errorTxt.title && errorTxt.message) {
+                                errorTxt.title = errorTxt.message;
+                                currentView.displayError(errorTxt);
+                            } else
+                                if (_.isString(errorTxt)) {
+                                    currentView.displayError({title: errorTxt});
+                                }
+                        }
+                    });
+                }
             }
         },
 
