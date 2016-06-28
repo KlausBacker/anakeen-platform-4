@@ -366,7 +366,7 @@ class DefaultView extends RenderDefault
         $controller = parent::getContextController($document);
         if ($document->locked == - 1) {
             $controller->offsetSet("isdocumentdeleted", ($document->doctype == "Z"));
-            $controller->offsetSet("formattedRevdate", strftime("%d %B %Y %H:%M", $document->revdate));
+            $controller->offsetSet("formattedRevdate", strftime("%A %d %B %Y %H:%M", $document->revdate));
         }
         return $controller;
     }
