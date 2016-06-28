@@ -156,6 +156,8 @@ define([
                 }
                 $cell.hide();
             });
+
+            this.$el.find('thead th[data-attrid="' + this.model.id + '"]').hide();
         },
         /**
          * Show all hidden items of the column
@@ -172,6 +174,7 @@ define([
                 }
                 $cell.show();
             });
+            this.$el.find('thead th[data-attrid="' + this.model.id + '"]').show();
         }
     });
 });
