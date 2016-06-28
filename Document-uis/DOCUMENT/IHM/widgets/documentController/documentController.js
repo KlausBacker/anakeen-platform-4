@@ -225,7 +225,7 @@ define([
         {
             this.$loading = $(".dcpLoading").dcpLoading();
             this.$notification = $('body').dcpNotification(
-                window.dcp.notifications 
+                window.dcp.notifications
             ); // active notification
         },
 
@@ -484,7 +484,8 @@ define([
                     var currentAttribute = currentWidget.getAttribute(attribute),
                         currentModel = currentWidget.getProperties(),
                         $element = $(currentWidget.element),
-                        addConstraint = function documentController_addConstraint(currentConstraint) {
+                        addConstraint = function documentController_addConstraint(currentConstraint)
+                        {
                             if (_.isString(currentConstraint)) {
                                 constraintController.addConstraintMessage(currentConstraint);
                             }
@@ -743,26 +744,38 @@ define([
                             transitionElements.model.setValues(values);
                         }
                         if (withoutInterface === true) {
-                            transitionElements.model.save({}, {
-                                success: function transitionModel_afterSave()
-                                {
-                                    transitionElements.model.trigger("success");
-                                    resolve({documentProperties: documentServerProperties});
-                                }
+                            transitionElements.model._loadDocument(transitionElements.model).then(function documentController_TransitionSave()
+                            {
+                                transitionElements.model.save({}, {
+                                    success: function transitionModel_afterSave()
+                                    {
+                                        transitionElements.model.trigger("success");
+                                        resolve({documentProperties: documentServerProperties});
+                                    },
+                                    error: function transitionModel_error() {
+                                        reject({documentProperties: documentServerProperties});
+                                    }
+                                });
+                            }).catch(function transitionModel_error() {
+                                reject({documentProperties: documentServerProperties});
                             });
                         } else {
                             transitionElements.model._loadDocument(transitionElements.model).then(function documentController_TransitionDisplay()
                             {
                                 transitionElements.model.trigger("dduiDocumentReady");
+                            }).catch(function transitionModel_error() {
+                                reject({documentProperties: documentServerProperties});
                             });
                         }
                     },
-                    "error": function transitionModel_error(theModel, response, options) {
-                        var errorTxt={title:"Transition Error"};
+                    "error": function transitionModel_error(theModel, response, options)
+                    {
+                        var errorTxt = {title: "Transition Error"};
                         if (options && options.errorThrown) {
-                            errorTxt.message=options.errorThrown;
+                            errorTxt.message = options.errorThrown;
                         }
                         currentWidget.$notification.dcpNotification("showError", errorTxt);
+                        transitionElements.model.trigger("showError", errorTxt);
                     }
                 });
             });
@@ -1072,7 +1085,7 @@ define([
             {
                 documentPromise.then(function documentController_reinitDone(values)
                     {
-                        if (_.isFunction(options.success)) {
+                        if (options && _.isFunction(options.success)) {
                             try {
                                 if (window.console.warn) {
                                     window.console.warn("Callback \"success\" is deprecated use promise instead");
@@ -1107,7 +1120,7 @@ define([
                                 }
                             }
                         }
-                        if (_.isFunction(options.error)) {
+                        if (options && _.isFunction(options.error)) {
                             try {
                                 if (window.console.warn) {
                                     window.console.warn("Callback \"error\" is deprecated use promise instead");
@@ -1144,7 +1157,7 @@ define([
         {
             var properties = this.getProperties();
             this._checkInitialisedModel();
-            values=values || {};
+            values = values || {};
 
             //Reinit model with server values
             _.defaults(values, {revision: properties.revision, viewId: properties.viewId, initid: properties.initid});
@@ -1172,9 +1185,9 @@ define([
                 throw new Error('initid argument is mandatory');
             }
 
-            if (! isNaN(values.initid)) {
+            if (!isNaN(values.initid)) {
                 // Convert to numeric initid is possible
-                values.initid=parseInt(values.initid);
+                values.initid = parseInt(values.initid);
             }
 
             // Use default values when fetch another document
