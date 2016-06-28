@@ -129,13 +129,14 @@ define([
                     initializeSuccess.apply(this, _.rest(arguments));
                     return success.apply(this, _.rest(arguments));
                 });
-            } else {
-                options.success = initializeSuccess;
             }
             if (customClientData) {
                 this._model._customClientData = customClientData;
             }
             promise = this._model.fetchDocument(this._getModelValue(), options);
+            if (!options.success) {
+                promise.then(initializeSuccess);
+            }
             if (!this.options.noRouter) {
                 this._initRouter();
             }
@@ -752,18 +753,21 @@ define([
                                         transitionElements.model.trigger("success");
                                         resolve({documentProperties: documentServerProperties});
                                     },
-                                    error: function transitionModel_error() {
+                                    error: function transitionModel_error()
+                                    {
                                         reject({documentProperties: documentServerProperties});
                                     }
                                 });
-                            }).catch(function transitionModel_error() {
+                            }).catch(function transitionModel_error()
+                            {
                                 reject({documentProperties: documentServerProperties});
                             });
                         } else {
                             transitionElements.model._loadDocument(transitionElements.model).then(function documentController_TransitionDisplay()
                             {
                                 transitionElements.model.trigger("dduiDocumentReady");
-                            }).catch(function transitionModel_error() {
+                            }).catch(function transitionModel_error()
+                            {
                                 reject({documentProperties: documentServerProperties});
                             });
                         }

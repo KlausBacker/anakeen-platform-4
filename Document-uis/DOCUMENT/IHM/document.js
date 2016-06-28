@@ -48,7 +48,7 @@
             "resizeMarginWidth": 0,
             "resizeDebounceTime": 50,
             "withoutResize": false,
-            eventPrefix : "document"
+            eventPrefix: "document"
         },
 
         /**
@@ -147,7 +147,7 @@
             }
             this.element.data("internalWidgetInitialised", true);
             if (voidLoaded) {
-                this._trigger("loaded",{}, {"isEmpty" : true});
+                this._trigger("loaded", {}, {"isEmpty": true});
                 return this;
             }
             this._trigger("loaded");
@@ -212,10 +212,10 @@
         {
             if (_.isString(eventName) &&
                 (eventName.indexOf("custom:") === 0 ||
-                _.find(eventList, function documentController_CheckEventType(currentEventType)
-                {
-                    return currentEventType === eventName;
-                })
+                    _.find(eventList, function documentController_CheckEventType(currentEventType)
+                    {
+                        return currentEventType === eventName;
+                    })
                 )) {
                 return true;
             }
@@ -243,41 +243,50 @@
         {
             var internalWidget,
                 currentWidget = this,
-                initWidget = function dpcDocument_successWidget() {
+                fetchPromise = null,
+                initWidget = function dpcDocument_successWidget()
+                {
                     currentWidget.rebindEvents.call(currentWidget);
-                currentWidget.element.data("voidLoaded", false);
-            };
+                    currentWidget.element.data("voidLoaded", false);
+                };
             options = options || {};
 
             if (!values.initid) {
                 throw new Error("You need to set the initid to fetch the document");
             }
-            _.each(_.pick(values, "initid", "revision", "viewId","customClientData"), function dcpDocument_setNewOptions(value, key)
+            _.each(_.pick(values, "initid", "revision", "viewId", "customClientData"), function dcpDocument_setNewOptions(value, key)
             {
                 currentWidget.options[key] = value;
             });
 
             if (this.element.data("internalWidgetInitialised")) {
                 internalWidget = this.element.data("internalWidget");
+
                 if (options.success) {
+                    // @deprecated : use promise instead
                     options.success = _.wrap(options.success, function dcpDocument_success(success)
                     {
                         initWidget.apply(this, _.rest(arguments));
                         return success.apply(this, _.rest(arguments));
                     });
-                } else {
-                    options.success = initWidget;
                 }
                 if (options.error) {
+                    // @deprecated : use promise instead
                     options.error = _.wrap(options.error, function dcpDocument_error(error)
                     {
                         initWidget.apply(this, _.rest(arguments));
                         return error.apply(this, _.rest(arguments));
                     });
-                } else {
-                    options.error = initWidget;
                 }
-                return internalWidget.fetchDocument.call(internalWidget, values, options);
+                fetchPromise = internalWidget.fetchDocument.call(internalWidget, values, options);
+
+                if (!options.success) {
+                    fetchPromise.then(initWidget);
+                }
+                if (!options.error) {
+                    fetchPromise.catch(initWidget);
+                }
+                return fetchPromise;
             } else {
                 this._render();
             }
@@ -292,7 +301,7 @@
          * @param callback function callback
          * @returns {*}
          */
-        addEventListener : function dcpDocument_addEventListener(eventType, options, callback)
+        addEventListener: function dcpDocument_addEventListener(eventType, options, callback)
         {
             var currentEvent, currentWidget = this;
             if (_.isUndefined(callback) && _.isFunction(options)) {
@@ -493,7 +502,7 @@
      *
      * @type {Function|function(): Function|function(): _Chain<T>|*}
      */
-        //noinspection JSUnresolvedVariable
+    //noinspection JSUnresolvedVariable
     $.fn.document = _.wrap($.fn.document, function dcpDocument_wrap(initialDocumentBridge, methodName)
     { // jshint ignore:line
         var isMethodCall, internalWidget;
