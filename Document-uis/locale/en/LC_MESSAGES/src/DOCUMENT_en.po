@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-04 09:37+0200\n"
-"PO-Revision-Date: 2013-05-10 11:59+0200\n"
+"PO-Revision-Date: 2016-06-28 15:01+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
 "Language: en\n"
@@ -201,7 +201,7 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "DocumentDeleted"
-msgstr ""
+msgstr "Document deleted at"
 
 msgctxt "ddui-file"
 msgid "Download file"
@@ -359,7 +359,7 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "RevisionCreated"
-msgstr ""
+msgstr "Revision created at"
 
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
@@ -438,28 +438,28 @@ msgid "Workflow Transition Comment"
 msgstr ""
 
 msgid "ddui::Initialisation"
-msgstr ""
+msgstr "Initialization"
 
 msgid "ddui:Admin"
-msgstr ""
+msgstr "Admin"
 
 msgid "ddui:Autocomplete attributes"
-msgstr ""
+msgstr "Autocomplete attributes"
 
 msgid "ddui:COLLECT_ERROR"
-msgstr ""
+msgstr "Collect errors"
 
 msgid "ddui:Click to reload the document"
-msgstr ""
+msgstr "Click to reload the document"
 
 msgid "ddui:Delay notifications display (in ms)"
-msgstr ""
+msgstr "Notification display delay (in ms)"
 
 msgid "ddui:Document Render"
-msgstr ""
+msgstr "Document Render"
 
 msgid "ddui:Document render"
-msgstr ""
+msgstr "Document render"
 
 msgid "ddui:Document render long"
 msgstr ""
@@ -467,41 +467,41 @@ msgstr ""
 #. _COMMENT: document__header.mustache
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
-msgstr ""
+msgstr "Form is modified"
 
 msgid "ddui:Get dynamic sub menu"
-msgstr ""
+msgstr "Get dynamic sub menu"
 
 msgid "ddui:Get some template"
-msgstr ""
+msgstr "Get some template"
 
 msgid "ddui:INIT_RENDERPARAMETERS"
-msgstr ""
+msgstr "Init render parameters"
 
 msgid "ddui:Render a document"
-msgstr ""
+msgstr "Render a document"
 
 msgid "ddui:Unable to load try again"
-msgstr ""
+msgstr "Unable to load. Try again"
 
 msgid "ddui:View documents"
-msgstr ""
+msgstr "View documents"
 
 msgid "ddui:activate logging"
-msgstr ""
+msgstr "Activate logging"
 
 msgid "ddui:debug mode"
-msgstr ""
+msgstr "Debug mode"
 
 msgid "ddui:logging class"
-msgstr ""
+msgstr "Loggionf class"
 
 msgid "ddui:render parameters"
-msgstr ""
+msgstr "Render parameters"
 
 msgctxt "ddui-file"
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #, php-format
 msgctxt "ddui"
