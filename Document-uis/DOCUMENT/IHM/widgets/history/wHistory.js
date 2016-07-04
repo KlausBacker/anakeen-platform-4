@@ -247,14 +247,20 @@ define([
                         data: "owner",
                         name: "owner",
                         title: historyWidget.options.labels.owner,
-                        className: "history-owner"
+                        className: "history-owner",
+                        render: function whistoryEncodeMessage(data) {
+                             return $("<div/>").text(data).html();
+                        }
                     },
                     {
                         data: "version",
                         name: "version",
                         title: historyWidget.options.labels.version,
                         className: "history-version",
-                        visible: false
+                        visible: false,
+                        render: function whistoryEncodeMessage(data) {
+                            return $("<div/>").text(data).html();
+                        }
                     },
                     {
                         data: "revision",
@@ -281,14 +287,20 @@ define([
                         name: "code",
                         title: historyWidget.options.labels.code,
                         className: "history-code",
-                        visible: false
+                        visible: false,
+                        render: function whistoryEncodeMessage(data) {
+                            return $("<div/>").text(data).html();
+                        }
                     },
                     {
                         data: "level",
                         name: "level",
                         title: historyWidget.options.labels.level,
                         className: "history-level",
-                        visible: false
+                        visible: false,
+                        render: function whistoryEncodeMessage(data) {
+                            return $("<div/>").text(data).html();
+                        }
                     },
                     {
                         data: "diff",

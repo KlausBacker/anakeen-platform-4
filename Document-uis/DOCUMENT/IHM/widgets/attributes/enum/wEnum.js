@@ -1009,7 +1009,10 @@
                         exists: true
                     },
                     optionLabelTemplate: '<span class="placeholder">#: displayValue #</span>',
-                    dataSource: source.data,
+                    dataSource: (this.options.renderOptions.useSourceUri) ? source.data : new kendo.data.DataSource({
+                        data: source.data,
+                        schema: {model: {id: "value"}}
+                    }),
                     index: (source.index < 0) ? undefined : source.index,
                     autoBind: false,
 

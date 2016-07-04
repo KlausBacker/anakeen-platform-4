@@ -300,11 +300,40 @@ define([
 
             documentModel.trigger("loadDocument",
                 {
-                    initid:initid,
-                    viewId:"!defaultConsultation",
-                    revision:revision
+                    initid: initid,
+                    viewId: "!defaultConsultation",
+                    revision: revision
                 }
             );
+        },
+
+        /**
+         * Create dialog window to create and insert document
+         */
+        displayFormDocument: function vAttributedisplayFormDocument(event, buttonConfig, index)
+        {
+            var attrid=this.model.id;
+            if (buttonConfig.createLabel) {
+                var documentModel = this.model.getDocumentModel();
+
+                require(['dcpDocument/widgets/attributes/docid/wCreateDocument'], function vDocumentCreateDocument()
+                {
+                    var $bdw = $('<div class="dcpDocid-create-window"/>');
+                    var $dcp = $bdw.dcpCreateDocument(
+                        _.extend(buttonConfig, {
+                            originDocumentModel: documentModel,
+                            attributeId: attrid,
+                            index: index,
+                            listener: function vDocumentCreateListener(event, triggerId, options)
+                            {
+                                options.dialogDocument = this;
+                                options.triggerId = triggerId;
+                                documentModel.trigger("createDialogListener", event, attrid, options);
+                            }
+                        })).data("dcpCreateDocument");
+                    $dcp.open();
+                });
+            }
         },
 
         externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
@@ -315,7 +344,11 @@ define([
             if (event.prevent) {
                 return this;
             }
-            documentModel.trigger("actionAttributeLink", event, options);
+            if (options.eventId === "attribute.createDocumentRelation") {
+                this.displayFormDocument(event, options.buttonConfig, options.index);
+            } else {
+                documentModel.trigger("actionAttributeLink", event, options);
+            }
         },
         downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options)
         {

@@ -55,4 +55,19 @@ class FamilyStructure extends \Dcp\HttpApi\V1\Crud\Document
         $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return join(" ", $result);
     }
+    /**
+     * Get the attribute info
+     *
+     * @param \BasicAttribute $attribute
+     * @param int $order
+     * @return array
+     */
+    public function getAttributeInfo(\BasicAttribute $attribute, $order = 0)
+    {
+        $info = parent::getAttributeInfo($attribute, $order);
+        if ($attribute->format) {
+            $info["typeFormat"] = $attribute->format;
+        }
+        return $info;
+    }
 }

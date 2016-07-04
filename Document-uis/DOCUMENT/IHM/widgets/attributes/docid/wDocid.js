@@ -102,8 +102,28 @@
                                 this.singleCombobox(this.kendoWidget);
                         }
                     }
-
+                    this._updateCreateButton();
                 }
+        },
+
+        _updateCreateButton: function wDocid_updateCreateButton()
+        {
+            var currentValue = this.options.attributeValue.value;
+            var buttonsConfig = this.options.renderOptions.buttons;
+
+            this.element.find(".dcpAttribute__content__button--create").each(function wDocid_updateCreateButtonEach()
+            {
+                var $button = $(this);
+                var buttonIndex = $button.data("index");
+                var buttonConfig = buttonsConfig[buttonIndex];
+
+                if (currentValue) {
+                    $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent);
+                } else {
+                    // also when mutiple always create
+                    $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlCreateContent);
+                }
+            });
         },
 
         /**
@@ -131,7 +151,41 @@
             }
             return this;
         },
+        _initButtonsEvent: function _initButtonsEvent()
+        {
+            var currentWidget = this;
+            this._super();
 
+            this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--create", function wAttributeButtonClick(event)
+            {
+                var buttonsConfig = currentWidget.options.renderOptions.buttons;
+                var $button = $(this);
+                var buttonIndex = $button.data("index");
+                var buttonConfig = buttonsConfig[buttonIndex];
+
+                currentWidget._trigger("externalLinkSelected", event, {
+                    target: event.target,
+                    eventId: "attribute.createDocumentRelation",
+                    index: currentWidget._getIndex(),
+                    buttonConfig: buttonConfig
+                });
+            });
+            this.element.tooltip({
+                selector: ".dcpAttribute__content__buttons button",
+                placement: "top",
+                trigger: "hover",
+                html: true,
+                title: function wAttributeGetButtonTitle()
+                {
+                    var title = $(this).data("title");
+                    var attrValue = currentWidget.getValue();
+                    return Mustache.render(title || "", attrValue);
+                },
+                container: this.element
+            });
+
+            return this;
+        },
         /**
          * Define inputs for focus
          * @protected
@@ -170,11 +224,11 @@
                         data: function wDocidSelectSchema(items)
                         {
                             /*
-                            var attrValues = currentWidget.getValue();
+                             var attrValues = currentWidget.getValue();
 
-                            if (attrValues && !_.isArray(attrValues) && attrValues.value) {
-                                attrValues = [attrValues];
-                            }*/
+                             if (attrValues && !_.isArray(attrValues) && attrValues.value) {
+                             attrValues = [attrValues];
+                             }*/
                             //Add new elements
                             _.each(items, function wDocidDataCompose(currentItem)
                             {
@@ -506,10 +560,15 @@
                     }
                 });
 
-                if (!_.isEqual(_.uniq(newValues), _.uniq(originalValues))) {
+                if (
+                    (_.isArray(newValues) && !_.isEqual(_.uniq(newValues), _.uniq(originalValues))) ||
+                    (newValues === null && !_.isEmpty(originalValues)) ||
+                    (!_.isArray(newValues) && !_.isEqual(newValues.toString(), originalValues.toString()))
+                ) {
                     kendoSelect.value(newValues);
                     this.flashElement();
                 }
+                this._updateCreateButton();
 
             } else
                 if (this.getMode() === "read") {
@@ -536,6 +595,13 @@
             if (this.kendoWidget && this.kendoWidgetObject) {
                 this.kendoWidgetObject.destroy();
             }
+            $(".dcpDocid-create-window").each(function wDocid_destroyWindow()
+            {
+                var kWindow = $(this).data("dcpWindow");
+                if (kWindow) {
+                    kWindow.destroy();
+                }
+            });
             this._super();
         }
 

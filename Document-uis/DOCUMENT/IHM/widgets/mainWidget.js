@@ -22,7 +22,8 @@
             'dcpDocument/widgets/attributes/image/wImage',
             'dcpDocument/widgets/attributes/time/wTime',
             'dcpDocument/widgets/attributes/htmltext/wHtmltext',
-            'dcpDocument/widgets/attributes/docid/wDocid'
+            'dcpDocument/widgets/attributes/docid/wDocid',
+            'dcpDocument/widgets/attributes/docid/wCreateDocument'
         ], function require_widget()
         {
         });

@@ -5,9 +5,9 @@
 */
 
 namespace {
-
+    
     use Dcp\Ui\DocidRenderOptions;
-
+    
     class ErrorCodeUI
     {
         /**
@@ -154,6 +154,11 @@ namespace {
          * @see DocidRenderOptions::setDisplay
          */
         const UI0210 = 'Value "%s" for Docid option "display" is invalid : allowed are : %s';
+        /**
+         * @errorCode The family must be indicated to display creation form
+         * @see DocidRenderOptions::addCreateDocumentButton
+         */
+        const UI0211 = 'Family name is required in addCreateDocumentButton option';
         /**
          * @errorCode Only view,edit, create are allowed
          */
