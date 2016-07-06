@@ -103,7 +103,6 @@ define([
 
         render: function vAttributeRender()
         {
-            //console.time("render attribute " + this.model.id);
             var data = this.getData(), event = {prevent: false};
 
             this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
@@ -149,7 +148,6 @@ define([
                 this.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 
-            // console.timeEnd("render attribute " + this.model.id);
             this.renderDone = true;
             if (this.customView) {
                 this.widgetReady = true;

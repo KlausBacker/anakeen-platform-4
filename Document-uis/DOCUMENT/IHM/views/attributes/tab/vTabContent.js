@@ -71,7 +71,6 @@ define([
             var $content = this.$el, model = this.model;
             if (this.initialized === false) {
                 this.$el.empty();
-                //console.time("render tab " + this.model.id);
                 if (this.customView) {
                     $content.append(this.customView);
                 } else {
@@ -101,7 +100,6 @@ define([
                     attributeTemplate.insertDescription(this);
                 }
                 this.initialized = true;
-                //console.timeEnd("render tab " + this.model.id);
             }
             $(window.document).trigger("redrawErrorMessages");
         },

@@ -34,7 +34,6 @@ define([
 
         render: function vTabLabel_render()
         {
-            //console.time("render tab " + this.model.id);
             var label = this.model.get("label");
             var tooltipLabel = this.model.getOption("tooltipLabel");
             var attrData = this.model.attributes;
@@ -108,7 +107,6 @@ define([
 
             this.$el.attr("data-attrid", this.model.id);
 
-            //console.timeEnd("render tab " + this.model.id);
             return this;
         },
 

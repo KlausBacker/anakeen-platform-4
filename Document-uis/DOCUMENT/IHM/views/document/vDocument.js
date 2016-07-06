@@ -186,7 +186,6 @@ define([
             }
             this.trigger("loading", 20, this.model.get("attributes").length);
             //add first level attributes
-            console.time("render attributes");
 
             $content = this.$el.find(".dcpDocument__frames");
             if ($body && $body.length > 0) {
