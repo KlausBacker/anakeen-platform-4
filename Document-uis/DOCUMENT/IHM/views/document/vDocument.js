@@ -1156,8 +1156,6 @@ define([
                                 }
                             });
                         }
-                        this.destroy();
-
                     },
                     templateData: {templates: this.model.get("templates")}
                 });

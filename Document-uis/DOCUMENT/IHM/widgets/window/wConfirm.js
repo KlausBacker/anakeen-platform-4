@@ -4,25 +4,30 @@ define([
     'mustache',
     'dcpDocument/widgets/window/wWindow',
     'kendo/kendo.button'
-], function ($, _, Mustache) {
+], function wConfirm($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpConfirm", $.dcp.dcpWindow, {
 
         options: {
             modal: true,
-            templateData: window.dcp.documentData,
+            templateData: {
+                templates: {
+                    window: {
+                        confirm:'<div class="confirm--body"> <div class="confirm--content">  <div>{{messages.textMessage}}</div><div>{{{messages.htmlMessage}}}</div> </div> <div class="confirm--buttons"> <button class="button--cancel" type="button">{{messages.cancelMessage}}</button> <button class="button--ok k-primary" type="button">{{messages.okMessage}}</button> </div> </div>'
+                    }
+                }
+            },
             messages: {
                 textMessage: 'Are you sure ?',
                 htmlMessage: '',
                 okMessage: "Ok",
                 cancelMessage: "Cancel"
             },
-            cancel: function () {
-                this.destroy();
+            cancel: function wConfirmCancel() {
             },
 
-            confirm: function () {
+            confirm: function wConfirmConfirm() {
 
             },
             actions: [
@@ -32,7 +37,8 @@ define([
 
         },
 
-        _create: function () {
+        _create: function wConfirmCreate() {
+            var scope = this;
             var scoppedCancel = _.bind(this.options.cancel, this);
             this.options.close = scoppedCancel;
             this.options.templateData.messages = this.options.messages || [];
@@ -42,16 +48,16 @@ define([
             this.currentWidget.data("kendoWindow").center();
 
             this.currentWidget.find('.button--cancel').kendoButton({
-                click: function () {
+                click: function wConfirmCancelClick() {
                     scoppedCancel();
+                    scope.destroy();
                 }
             });
 
             var scoppedConfirm = _.bind(this.options.confirm, this);
-            var scope = this;
 
             this.currentWidget.find('.button--ok').kendoButton({
-                click: function () {
+                click: function wConfirmOkClick() {
                     scoppedConfirm();
                     scope.destroy();
                 }
@@ -59,7 +65,6 @@ define([
 
             this.element.data("dcpWindow", this);
         }
-
 
     });
 });

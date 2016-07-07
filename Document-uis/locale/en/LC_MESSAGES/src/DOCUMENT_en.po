@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-04 09:37+0200\n"
+"POT-Creation-Date: 2016-07-07 13:45+0200\n"
 "PO-Revision-Date: 2016-06-28 15:01+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -80,10 +80,6 @@ msgstr ""
 msgid "Class \"%s\" problem : %s"
 msgstr ""
 
-msgctxt "ddui-enum"
-msgid "Click to answer \"{{displayValue}}\""
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "Click to upload file"
 msgstr ""
@@ -147,6 +143,10 @@ msgctxt "UiMenu"
 msgid "Create and close"
 msgstr ""
 
+msgctxt "ddui"
+msgid "Create and insert to \"{{label}}\""
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Create new document to server"
 msgstr ""
@@ -167,7 +167,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
-#. _COMMENT: enumWriteRadio.mustache
+#. _COMMENT: enumWriteToggle.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -377,6 +377,10 @@ msgctxt "UiMenu"
 msgid "Save and close"
 msgstr ""
 
+msgctxt "ddui"
+msgid "Save and update \"{{label}}\""
+msgstr ""
+
 msgctxt "ddui:notification"
 msgid "See more ..."
 msgstr ""
@@ -389,10 +393,6 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Select line"
-msgstr ""
-
-msgctxt "ddui-enum"
-msgid "Select {{displayValue}}"
 msgstr ""
 
 #, php-format
@@ -410,10 +410,6 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Transition success"
-msgstr ""
-
-msgctxt "ddui-enum"
-msgid "Unselect {{displayValue}}"
 msgstr ""
 
 msgctxt "UiMenu"

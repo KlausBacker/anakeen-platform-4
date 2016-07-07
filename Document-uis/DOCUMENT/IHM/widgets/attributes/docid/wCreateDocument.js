@@ -2,9 +2,10 @@ define([
     'underscore',
     'jquery',
     "mustache",
+    'dcpDocument/i18n/documentCatalog',
     'dcpDocument/views/document/attributeTemplate',
     'dcpDocument/document'
-], function wCreateDocument(_, $, Mustache, attributeTemplate)
+], function wCreateDocument(_, $, Mustache, i18n, attributeTemplate)
 {
     'use strict';
 
@@ -34,6 +35,7 @@ define([
                 var attributeModel = documentModel.get('attributes').get(config.attributeId);
                 var currentValue;
                 var url = "about:blank";
+                var $createDocument;
 
                 if (index >= 0) {
                     currentValue = attributeModel.getValue()[index];
@@ -52,20 +54,13 @@ define([
                     iframe: true,
                     close: function wcdClose(event)
                     {
-                        var isPrevented = wWidget.proxyTrigger(event, "beforeClose", {});
-
-                        if (!isPrevented) {
-                            wWidget.proxyTrigger(event, "beforeDestroy", {});
-                            this.destroy();
-                        } else {
-                            event.preventDefault();
-                        }
+                        wWidget.closeDialog(event, true);
                     }
                 }).data('dcpWindow');
                 dw.kendoWindow().center();
                 dw.open();
 
-                var $createDocument = dw.currentWidget;
+                $createDocument = dw.currentWidget;
                 $createDocument.on("documentcreate", function wAttributeCreateDocumentCreation()
                 {
                     dw.currentWidget.find("> iframe").addClass("k-content-frame");
@@ -116,10 +111,24 @@ define([
                             }
                             this.documentController("getMenu", "createAndClose").hide();
                             this.documentController("getMenu", "saveAndClose").hide();
-                            this.documentController("getMenu", "close").hide();
                             this.documentController("getMenu", "create").setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
                             this.documentController("getMenu", "save").setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
                         }
+
+                        this.documentController("addEventListener",
+                            "actionClick",
+                            {
+                                name: "ddui:create:close"
+                            },
+                            function wAttributeCreateDocumentbeforeClose(event, documentObject, options)
+                            {
+                                if (options.eventId === "document.close") {
+                                    event.preventDefault();
+                                    wWidget.closeDialog(event, true);
+                                }
+                            }
+                        );
+
                         this.documentController("addEventListener",
                             "afterSave",
                             {
@@ -137,7 +146,7 @@ define([
                                 var isPrevented;
                                 isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue",
                                     {
-                                        attributeValue: newValue
+                                        attributeValue: newOneValue
                                     }
                                 );
                                 if (isPrevented) {
@@ -165,7 +174,6 @@ define([
                                 });
                                 if (!isPrevented) {
                                     dw.close();
-                                    dw.destroy();
                                 }
                             }
                         );
@@ -219,6 +227,56 @@ define([
                 return (event.prevent === true);
             }
             return false;
+        },
+
+        confirmClose: function wcdConfirmClose()
+        {
+            var targetProperties = this.$document.documentController("getProperties");
+            return new Promise(function wsdAskConfirmation(resolve, reject)
+            {
+                var confirmWindow = $('body').dcpConfirm({
+                    title: Mustache.render(i18n.___("Confirm close form \"{{title}}\"", "ddui"), targetProperties),
+                    width: "510px",
+                    height: "150px",
+                    maxWidth: $(window).width(),
+                    messages: {
+                        okMessage: i18n.___("Abord modification", "ddui"),
+                        cancelMessage: i18n.___("Stay on the form", "ddui"),
+                        htmlMessage: i18n.___("The form has been modified without saving", "ddui"),
+                        textMessage: ''
+                    },
+                    confirm: resolve,
+                    cancel: reject
+                });
+                confirmWindow.data('dcpWindow').open();
+            });
+        },
+
+        closeDialog: function wcdcloseDialog(event, askConfirm)
+        {
+            var wWidget = this;
+            var targetProperties = this.$document.documentController("getProperties");
+            var kDialog = this.$dialog.data("dcpWindow");
+
+            var isPrevented = this.proxyTrigger(event, "beforeClose", {});
+
+            if (!isPrevented && askConfirm && targetProperties && targetProperties.isModified) {
+                console.log("modified", targetProperties);
+                wWidget.confirmClose().then(function wcdConfirmClose()
+                {
+                    wWidget.closeDialog(event, false);
+                });
+                isPrevented = true;
+            }
+
+            if (!isPrevented) {
+                isPrevented = wWidget.proxyTrigger(event, "beforeDestroy", {});
+                if (!isPrevented) {
+                    kDialog.destroy();
+                }
+            } else {
+                event.preventDefault();
+            }
         }
     });
 });
