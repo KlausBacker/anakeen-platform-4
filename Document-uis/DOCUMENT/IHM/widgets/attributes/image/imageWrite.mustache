@@ -18,7 +18,7 @@
         <button type="button" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs"
                 tabindex="-1">
             <span class="dcpAttribute__value--filethumb"
-                  {{#attributeValue.thumbnail}}style="background-image:url({{attributeValue.thumbnail}})"{{/attributeValue.thumbnail}}></span>
+                  {{#attributeValue.thumbnail}}style="background-image:url({{attributeValue.thumbnail}})"{{/attributeValue.thumbnail}}>{{^attributeValue.thumbnail}}<span class="fa fa-picture-o"/>{{/attributeValue.thumbnail}}</span>
             <span class="fa fa-download fa-fw dcpAttribute__value--filethumb-download"></span>
         </button><!-- avoid white spaces
         -->{{#renderOptions.buttons}}<button type="button" data-title="{{title}}" tabindex="-1" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button><!-- avoid white spaces
