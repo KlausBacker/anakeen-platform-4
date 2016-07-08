@@ -56,7 +56,6 @@ define([
 
         render: function vArray_render()
         {
-            // console.time("render array " + this.model.id);
             var data = this.model.toData(null, true), scope = this, event = {prevent: false};
 
             this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
@@ -145,7 +144,6 @@ define([
             }
 
             this.$el.attr("data-attrid", this.model.id);
-            // console.timeEnd("render array " + this.model.id);
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             return this;
         },

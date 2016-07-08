@@ -42,7 +42,9 @@ define([
         "failTransition", "successTransition",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
-        "destroy"
+        "destroy","attributeCreateDialogDocumentBeforeSetFormValues",
+        "attributeCreateDialogDocumentBeforeSetTargetValue","attributeCreateDialogDocumentReady",
+        "attributeCreateDialogDocumentBeforeClose","attributeCreateDialogDocumentBeforeDestroy"
     ];
 
     $.widget("dcp.documentController", {
@@ -479,6 +481,28 @@ define([
                     }
                 }
             });
+
+            // Generic listener for addCreateDocumentButton docid render option
+            this._model.listenTo(this._model, "createDialogListener", function documentController_triggercreateDialogDocumentOpen(event, attrid, options)
+            {
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    var triggername="attributeCreateDialogDocument";
+                    // Uppercase first letter
+                    triggername+=options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
+
+                    event.prevent = !currentWidget._triggerAttributeControllerEvent(triggername,
+                        currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+            });
             this._model.listenTo(this._model, "constraint", function documentController_triggerConstraint(attribute, constraintController)
             {
                 try {
@@ -794,9 +818,14 @@ define([
          */
         _getAttributeModel: function documentController_getAttributeModel(attributeId)
         {
-            var attribute = this._model.get("attributes").get(attributeId);
+            var attributes=this._model.get("attributes");
+            var attribute;
+            if (!attributes) {
+                throw new Error('Attribute models not initialized yet : The attribute "' + attributeId + '" cannot be found.');
+            }
+            attribute = this._model.get("attributes").get(attributeId);
             if (!attribute) {
-                throw new Error("The attribute " + attributeId + " doesn't exist");
+                throw new Error('The attribute "' + attributeId + '" doesn\'t exist');
             }
             return attribute;
         },
@@ -964,7 +993,7 @@ define([
                     if (!_.isFunction(currentEvent.attributeCheck)) {
                         return true;
                     }
-                    return currentEvent.attributeCheck.apply($element, [attributeInternalElement]);
+                    return currentEvent.attributeCheck.apply($element, [attributeInternalElement, currentWidget.getProperties()]);
                 }
                 return false;
             }).each(function documentController_applyCallBack(currentEvent)

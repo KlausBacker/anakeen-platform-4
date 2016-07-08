@@ -80,7 +80,7 @@ define([
             } catch (e) {
                 console.error(e);
             }
-            this.trigger("cleanNotification");
+            //  this.trigger("cleanNotification");
             this.render();
         },
 
@@ -186,7 +186,6 @@ define([
             }
             this.trigger("loading", 20, this.model.get("attributes").length);
             //add first level attributes
-            console.time("render attributes");
 
             $content = this.$el.find(".dcpDocument__frames");
             if ($body && $body.length > 0) {
@@ -373,12 +372,11 @@ define([
             var liIndex = 0;
             var $tabs = this.$(".dcpDocument__tabs");
             var $selectedTabId = this.selectedTab;
-            var currentHeight;
             var hiddenSelected = false;
             var dataSource = null;
             var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
-           // $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
+            // $tabs.find(".dcpDocument__tabs__list").css("overflow", "hidden").css("max-height", "2.7em");
             // Restore initial tabs
             $tabLabel.show();
 
@@ -454,8 +452,7 @@ define([
                 if (lastShow) {
                     $kendoTabs.disable($(lastShow));
                 }
-                // Need to force same heigth as other tabs
-                currentHeight = $(lastShow).height();
+
                 // Hide original link
                 $(lastShow).find(".k-link").hide();
                 // Replace it to a dropdown selector
@@ -508,10 +505,10 @@ define([
                             // Need to compute width of container to see elements
                             // Set max-width to not be out of body
                             var $ul = $(this.ul);
-                            var $li=$(this.element).closest("li");
+                            var $li = $(this.element).closest("li");
                             var x = $li.offset().left;
                             var bodyWidth = $('body').width();
-                            $ul.css("max-width", Math.max((bodyWidth - x - 20),$(lastShow).width())  + "px");
+                            $ul.css("max-width", Math.max((bodyWidth - x - 20), $(lastShow).width()) + "px");
                             $ul.css("min-width", $li.width());
                             _.defer(function vDocumentSelectTabOpen()
                             {
@@ -545,7 +542,7 @@ define([
                             return $(this).find(".dcpLabel__select--tooltip").attr("data-tooltipLabel");
                         }
                     });
-                    $dropSelect.parent().find(".k-input").css("width","");
+                    $dropSelect.parent().find(".k-input").css("width", "");
 
                 } else {
                     // Reuse dropDown created previously
@@ -1155,12 +1152,10 @@ define([
                             callbacks.error({
                                 errorMessage: {
                                     code: "USERCANCEL",
-                                    contentText: i18n.___("User has cancelled the action.","ddui")
+                                    contentText: i18n.___("User has cancelled the action.", "ddui")
                                 }
                             });
                         }
-                        this.destroy();
-
                     },
                     templateData: {templates: this.model.get("templates")}
                 });

@@ -47,6 +47,10 @@
   overflow: hidden;
 }
 
+.window-dialog .dcpDocument__header {
+  display:none; // No see header if inside a dialog window
+}
+
 .dcpDocument__header__icon {
   height: @documentHeaderHeight;
   padding-right: 1em;
@@ -199,7 +203,9 @@ body {
   position: inherit;
   width: auto;
 }
-
+.k-window-title img {
+  height: 1.4em;
+}
 .dcpLoading img {
   width: 2em;
 }

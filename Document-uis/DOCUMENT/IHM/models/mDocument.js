@@ -404,6 +404,7 @@ define([
                 currentModel.trigger("displayNetworkError");
                 displayNetworkError = true;
                 //Status 0 indicate offline browser
+                /* @TODO See with CBO : Never displayed
                 if (xhr && xhr.status === 0) {
                     currentModel.trigger("showError", {
                         "errorCode": "offline",
@@ -415,6 +416,7 @@ define([
                         "title": i18n.___("Server return unreadable", "ddui")
                     });
                 }
+                */
                 return;
             }
 
@@ -492,8 +494,6 @@ define([
                         break;
 
                     default:
-                        currentModel.trigger("displayNetworkError");
-                        displayNetworkError = true;
                         if (message.type === "error" && message.contentText) {
                             currentModel.trigger("showError", {
                                 title: message.contentText + " " + (message.code ? message.code : ""),
@@ -1007,7 +1007,7 @@ define([
             });
 
             //Init default values
-            _.defaults(values, {revision: -1, viewId: "!defaultConsultation", initid:this.get("initid")});
+            _.defaults(values, {revision: -1, viewId: "!defaultConsultation", initid: this.get("initid")});
 
             //Trigger (synchronous) before close event
             this.trigger("beforeClose", beforeCloseReturn, values, this._customClientData);
@@ -1157,7 +1157,7 @@ define([
                 this.trigger("displayLoading");
                 deleteCallback.promise.then(function mDocument_deleteDone()
                 {
-                    currentModel.fetchDocument({initid:currentModel.get("initid")}).then(function mDocument_afterDeleteLoadDone()
+                    currentModel.fetchDocument({initid: currentModel.get("initid")}).then(function mDocument_afterDeleteLoadDone()
                     {
                         globalCallback.success();
                     }, function mDocument_afterDeleteLoadFail()

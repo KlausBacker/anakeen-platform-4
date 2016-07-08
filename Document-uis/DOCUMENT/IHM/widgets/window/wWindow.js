@@ -8,7 +8,7 @@ define([
     'use strict';
 
     $.widget("dcp.dcpWindow", {
-        intervalId:0,
+        intervalId: 0,
         options: {
             animation: {
                 open: {
@@ -38,32 +38,46 @@ define([
                         if (typeof iframeTitle === "undefined") {
                             _.defer(function wWindowOpenSetTitle()
                             {
+                                var currentTitle = "";
+                                var $content = kendoWindow.element.find('iframe').contents();
                                 kendoWindow.element.find('iframe').on("load", function wWindowOpenSetTitleNow()
                                 {
                                     try {
                                         var $scopeWindow = $(this);
-                                        var currentTitle=$(this).contents().find("title").html();
+                                        var $content = $scopeWindow.contents();
+
                                         kendoWindow.setOptions({
                                             title: currentTitle
                                         });
-                                        // Verify if need to change title every seconds
-                                        kendoWindow.intervalId=window.setInterval(function wWindowOpenSetTitleIsChanged()
-                                        {
-                                            try {
-                                                var newTitle=$scopeWindow.contents().find("title").html();
-                                                if (newTitle !== currentTitle) {
-                                                    currentTitle=newTitle;
-                                                    kendoWindow.setOptions({
-                                                        title: currentTitle
-                                                    });
-                                                }
-                                            } catch (exp) {
-                                            }
-                                        }, 1000);
+                                        $content.find("body").addClass("window-dialog");
 
                                     } catch (exp) {
                                     }
                                 });
+
+                                // Verify if need to change title every seconds
+                                kendoWindow.intervalId = window.setInterval(function wWindowOpenSetTitleIsChanged()
+                                {
+                                    try {
+                                        $content = kendoWindow.element.find('iframe').contents();
+                                        var newTitle = $content.find("title").html();
+                                        var currentIcon = $content.find('link[rel="shortcut icon"]').attr("href");
+
+                                        if (newTitle) {
+                                            $content.find("body").addClass("window-dialog");
+                                            if (currentIcon) {
+                                                newTitle = '<img src="' + currentIcon + '" /> ' + newTitle;
+                                            }
+                                            if (newTitle !== currentTitle) {
+                                                currentTitle = newTitle;
+                                                kendoWindow.setOptions({
+                                                    title: currentTitle
+                                                });
+                                            }
+                                        }
+                                    } catch (exp) {
+                                    }
+                                }, 1000);
                             });
                         } else {
                             kendoWindow.setOptions({
@@ -74,7 +88,12 @@ define([
                     }
                 }
             },
-            close : function wWindowClode() {
+            close: function wWindowClose()
+            {
+                window.clearInterval(this.intervalId);
+            },
+            destroy: function wWindowDestroy()
+            {
                 window.clearInterval(this.intervalId);
             }
         },

@@ -42,7 +42,6 @@ class DocidRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::placeHolderOption, $text);
     }
-
     /**
      * Display format
      * @note use only in edition mode
@@ -61,5 +60,35 @@ class DocidRenderOptions extends CommonRenderOptions
             throw new Exception("UI0210", $display, implode(', ', $allow));
         }
         return $this->setOption(self::displayOption, $display);
+    }
+    
+    public function addCreateDocumentButton(CreateDocumentOptions $options)
+    {
+        $options->target = "_dialog";
+        $options->url = "";
+        $options->class.= " dcpAttribute__content__button--create";
+        $options->class = trim($options->class);
+        $this->addButton($options);
+    }
+}
+
+class CreateDocumentOptions extends \Dcp\Ui\ButtonOptions
+{
+    public $familyName;
+    public $createLabel;
+    public $htmlCreateContent;
+    public $htmlEditContent;
+    public $formValues = [];
+    
+    public function __construct($familyName = null)
+    {
+        parent::__construct();
+        $this->familyName = $familyName;
+        $this->htmlCreateContent = '<i class="fa fa-plus-circle" />';
+        $this->htmlEditContent = '<i class="fa fa-pencil" />';
+        $this->createLabel = ___("Create and insert to \"{{label}}\"", "ddui");
+        $this->updateLabel = ___("Save and update \"{{label}}\"", "ddui");
+        $this->windowWidth = "479px";
+        $this->windowHeight = "400px";
     }
 }

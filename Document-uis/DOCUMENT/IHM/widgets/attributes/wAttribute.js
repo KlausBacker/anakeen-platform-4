@@ -523,7 +523,8 @@
             this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--extra", function wAttributeButtonClick(event)
             {
                 var buttonsConfig = currentWidget.options.renderOptions.buttons;
-                var buttonIndex = $(this).data("index");
+                var $button = $(this);
+                var buttonIndex = $button.data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
                 var wFeature = '';
 
@@ -554,9 +555,9 @@
                             height: buttonConfig.windowHeight,
                             content: url,
                             iframe: true
-                        });
-                        dw.data('dcpWindow').kendoWindow().center();
-                        dw.data('dcpWindow').open();
+                        }).data('dcpWindow');
+                        dw.kendoWindow().center();
+                        dw.open();
                     }
                 }
 

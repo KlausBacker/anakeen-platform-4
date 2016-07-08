@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-04 09:37+0200\n"
-"PO-Revision-Date: 2016-05-04 09:37+0200\n"
+"POT-Creation-Date: 2016-07-07 13:45+0200\n"
+"PO-Revision-Date: 2016-07-06 17:31+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -83,10 +83,6 @@ msgstr "Classe \"%s\" n'implémente pas %s"
 msgid "Class \"%s\" problem : %s"
 msgstr "Classe \"%s\", problème détecté : %s"
 
-msgctxt "ddui-enum"
-msgid "Click to answer \"{{displayValue}}\""
-msgstr "Cliquer pour répondre \"{{displayValue}}\""
-
 msgctxt "ddui-file"
 msgid "Click to upload file"
 msgstr "Cliquez pour choisir un fichier"
@@ -150,6 +146,10 @@ msgctxt "UiMenu"
 msgid "Create and close"
 msgstr "Créer et fermer"
 
+msgctxt "ddui"
+msgid "Create and insert to \"{{label}}\""
+msgstr "Créer et insérer dans \"{{label}}\""
+
 msgctxt "UiMenu"
 msgid "Create new document to server"
 msgstr "Créer un nouveau document sur le serveur"
@@ -170,7 +170,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr "Supprimer"
 
-#. _COMMENT: enumWriteRadio.mustache
+#. _COMMENT: enumWriteToggle.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -380,6 +380,10 @@ msgctxt "UiMenu"
 msgid "Save and close"
 msgstr "Enregistrer et fermer"
 
+msgctxt "ddui"
+msgid "Save and update \"{{label}}\""
+msgstr "Enregistrer et mettre à jour \"{{label}}\""
+
 msgctxt "ddui:notification"
 msgid "See more ..."
 msgstr "Voir l'intégralité du message ..."
@@ -393,10 +397,6 @@ msgstr "Valider cet autre choix"
 msgctxt "ddui"
 msgid "Select line"
 msgstr "Sélectionner la ligne"
-
-msgctxt "ddui-enum"
-msgid "Select {{displayValue}}"
-msgstr "Sélectionner {{displayValue}}"
 
 #, php-format
 msgctxt "UiMenu"
@@ -414,10 +414,6 @@ msgstr "Commentaire de transition"
 msgctxt "ddui"
 msgid "Transition success"
 msgstr "Transition réussie"
-
-msgctxt "ddui-enum"
-msgid "Unselect {{displayValue}}"
-msgstr "Désélectionner {{displayValue}}"
 
 msgctxt "UiMenu"
 msgid "View current revision"
@@ -519,6 +515,10 @@ msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr "{{value}} (autre choix)"
 
+#~ msgctxt "ddui-enum"
+#~ msgid "Click to answer \"{{displayValue}}\""
+#~ msgstr "Cliquer pour répondre \"{{displayValue}}\""
+
 #~ msgctxt "ddui"
 #~ msgid "Document identifier \"%s\" must be a family in create mode"
 #~ msgstr ""
@@ -557,6 +557,10 @@ msgstr "{{value}} (autre choix)"
 #~ msgid "Select"
 #~ msgstr "Sélectionner"
 
+#~ msgctxt "ddui-enum"
+#~ msgid "Select {{displayValue}}"
+#~ msgstr "Sélectionner {{displayValue}}"
+
 #~ msgctxt "UiMenu"
 #~ msgid "Unlock"
 #~ msgstr "Déverrouiller"
@@ -568,6 +572,10 @@ msgstr "{{value}} (autre choix)"
 #~ msgctxt "ddui-enum"
 #~ msgid "Unselect"
 #~ msgstr "Désélectionner"
+
+#~ msgctxt "ddui-enum"
+#~ msgid "Unselect {{displayValue}}"
+#~ msgstr "Désélectionner {{displayValue}}"
 
 #~ msgctxt "ddui"
 #~ msgid "View {{{displayValue}}}"

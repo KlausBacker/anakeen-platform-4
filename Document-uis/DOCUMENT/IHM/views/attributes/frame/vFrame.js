@@ -151,7 +151,6 @@ define([
                 this.toggle(null, true);
             }
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});
-            //console.timeEnd("render frame " + this.model.id);
             return this;
         },
 
