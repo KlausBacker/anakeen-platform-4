@@ -113,11 +113,30 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
                 $e->setHttpStatus("404", "Document not found");
                 throw $e;
             }
-            $err = $doc->control("view");
-            if ($err) {
-                $e = new Exception($err);
-                $e->setHttpStatus("403", "Forbidden");
-                throw $e;
+            if ($viewId !== \Dcp\Ui\Crud\View::defaultViewCreationId && $viewId !== \Dcp\Ui\Crud\View::coreViewCreationId) {
+                $err = $doc->control("view");
+                if ($err) {
+                    $e = new Exception(
+                        sprintf(
+                            ___("Access not granted for document #%s", "ddui"),
+                            $initid
+                        )
+                    );
+                    $e->setHttpStatus("403", "Forbidden");
+                    throw $e;
+                }
+            } else {
+                $err = $doc->control("icreate");
+                if ($err) {
+                    $e = new Exception(
+                        sprintf(
+                            ___("Access not granted to create \"%s\" document", "ddui"),
+                            $doc->getTitle()
+                        )
+                    );
+                    $e->setHttpStatus("403", "Forbidden");
+                    throw $e;
+                }
             }
             DocManager::cache()->addDocument($doc);
             $otherParameters = $_GET;

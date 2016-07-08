@@ -70,8 +70,7 @@ define([
                     $createDocument.document({
                         initid: currentValue.value,
                         viewId: "!defaultEdition",
-                        withoutResize: true,
-                        _customClientData: {test: true}
+                        withoutResize: true
                     });
                 } else {
                     $createDocument.document({
@@ -255,20 +254,22 @@ define([
         closeDialog: function wcdcloseDialog(event, askConfirm)
         {
             var wWidget = this;
-            var targetProperties = this.$document.documentController("getProperties");
+            var isPrevented = false;
             var kDialog = this.$dialog.data("dcpWindow");
+            if (this.$document) {
 
-            var isPrevented = this.proxyTrigger(event, "beforeClose", {});
+                var targetProperties = this.$document.documentController("getProperties");
+                isPrevented = this.proxyTrigger(event, "beforeClose", {});
 
-            if (!isPrevented && askConfirm && targetProperties && targetProperties.isModified) {
-                console.log("modified", targetProperties);
-                wWidget.confirmClose().then(function wcdConfirmClose()
-                {
-                    wWidget.closeDialog(event, false);
-                });
-                isPrevented = true;
+                if (!isPrevented && askConfirm && targetProperties && targetProperties.isModified) {
+                    console.log("modified", targetProperties);
+                    wWidget.confirmClose().then(function wcdConfirmClose()
+                    {
+                        wWidget.closeDialog(event, false);
+                    });
+                    isPrevented = true;
+                }
             }
-
             if (!isPrevented) {
                 isPrevented = wWidget.proxyTrigger(event, "beforeDestroy", {});
                 if (!isPrevented) {

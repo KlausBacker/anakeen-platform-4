@@ -673,6 +673,33 @@ exports.setEnumRadioValue = function setEnumRadioValue(data)
     );
 };
 
+exports.setEnumBoolValue = function setEnumBoolValue(data)
+{
+    'use strict';
+
+    var localPromise;
+    var elt;
+    scrollToAttribute(data.attrid, data.index);
+
+    if (data.label) {
+        if (typeof data.index === "undefined") {
+            localPromise = currentDriver.findElement(webdriver.By.xpath("//div[@data-attrid='" + data.attrid + "']//div[contains(@class,'dcpAttribute__value--text')][contains(text(), '" + data.label + "')]/..")).click();
+        } else {
+            localPromise = currentDriver.findElement(webdriver.By.xpath(
+                '(//div[@data-attrid="' + data.attrid + '"])[' +
+                (data.index + 1) +
+                "]//div[contains(@class,'dcpAttribute__value--text')][contains(text(), '" + data.label + "')]")).click();
+        }
+    }
+
+    return localPromise.then(
+        function docFormExpect()
+        {
+            exports.verifyValue(data);
+        }
+    );
+};
+
 exports.addEnumAutoValue = function addEnumAutoValue(data)
 {
     'use strict';
