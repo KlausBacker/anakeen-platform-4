@@ -234,7 +234,7 @@ describe('Dynacase basic test', function formAllEdit()
         });
         docForm.setEnumRadioValue({attrid: 'test_ddui_all__enumvertical', label: "30 %", expected: {value: "30"}});
         docForm.setEnumRadioValue({attrid: 'test_ddui_all__enumhorizontal', label: "Vert", expected: {value: "green"}});
-        docForm.setEnumRadioValue({attrid: 'test_ddui_all__enumbool', label: "Normal", expected: {value: "C"}});
+        docForm.setEnumBoolValue({attrid: 'test_ddui_all__enumbool', label: "Normal", expected: {value: "C"}});
 
         // Single Server
         docForm.setEnumListValue({
@@ -258,7 +258,7 @@ describe('Dynacase basic test', function formAllEdit()
             label: "30",
             expected: {value: "30"}
         });
-        docForm.setEnumRadioValue({attrid: 'test_ddui_all__enumserverbool', label: "Normal", expected: {value: "C"}});
+        docForm.setEnumBoolValue({attrid: 'test_ddui_all__enumserverbool', label: "Normal", expected: {value: "C"}});
 
         // Multiple
         docForm.addEnumAutoValue({

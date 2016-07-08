@@ -97,7 +97,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expected: {value: "green"}
         });
         docForm.setEnumRadioValue({attrid: 'test_ddui_enum__enumnumber', label: "30 %", expected: {value: "30"}});
-        docForm.setEnumRadioValue({attrid: 'test_ddui_enum__enumbool', label: "Normal", expected: {value: "C"}});
+        docForm.setEnumBoolValue({attrid: 'test_ddui_enum__enumbool', label: "Normal", expected: {value: "C"}});
 
         // Multiple
         docForm.addEnumAutoValue({
@@ -168,7 +168,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expected: {value: "green"}
         });
         docForm.setEnumRadioValue({attrid: 'test_ddui_enum__srvnumber', label: "1/3", expected: {value: "33.3333"}});
-        docForm.setEnumRadioValue({attrid: 'test_ddui_enum__srvbool', label: "Normal", expected: {value: "C"}});
+        docForm.setEnumBoolValue({attrid: 'test_ddui_enum__srvbool', label: "Normal", expected: {value: "C"}});
 
         // Multiple
         docForm.addEnumAutoValue({
@@ -250,7 +250,7 @@ describe('Dynacase Enum test', function formAllEdit()
             label: "1/3",
             expected: {value: "33.3333"}
         });
-        docForm.setEnumRadioValue({
+        docForm.setEnumBoolValue({
             index: 0,
             attrid: 'test_ddui_enum__enumbool_array',
             label: "Sans danger",
@@ -258,7 +258,7 @@ describe('Dynacase Enum test', function formAllEdit()
         });
 
         // Second row
-        docForm.setEnumRadioValue({
+        docForm.setEnumBoolValue({
             index: 1,
             attrid: 'test_ddui_enum__enumbool_array',
             label: "Sans danger",
@@ -284,7 +284,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expected: {value: "66.6667"}
         });
 
-        docForm.setEnumRadioValue({
+        docForm.setEnumBoolValue({
             index: 1,
             attrid: 'test_ddui_enum__enumbool_array',
             label: "Dangereux",
@@ -312,7 +312,7 @@ describe('Dynacase Enum test', function formAllEdit()
             expected: {value: "100"}
         });
 
-        docForm.setEnumRadioValue({
+        docForm.setEnumBoolValue({
             index: 2,
             attrid: 'test_ddui_enum__enumbool_array',
             label: "Sans danger",
