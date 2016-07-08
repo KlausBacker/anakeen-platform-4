@@ -108,7 +108,7 @@
 
         _updateCreateButton: function wDocid_updateCreateButton()
         {
-            var currentValue = this.options.attributeValue.value;
+            var currentValue = this.options.attributeValue;
             var buttonsConfig = this.options.renderOptions.buttons;
 
             this.element.find(".dcpAttribute__content__button--create").each(function wDocid_updateCreateButtonEach()
@@ -117,8 +117,12 @@
                 var buttonIndex = $button.data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
 
-                if (currentValue) {
+                        $button.prop("disabled", false);
+                if (currentValue.value) {
                     $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent);
+                    if (! currentValue.initid) {
+                        $button.prop("disabled", true);
+                    }
                 } else {
                     // also when mutiple always create
                     $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlCreateContent);
