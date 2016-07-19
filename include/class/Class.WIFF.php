@@ -1493,81 +1493,25 @@ class WIFF extends WiffCommon
             return false;
         }
         /**
-         * @var DOMElement $context
+         * @var DOMElement $contextImportNode
          */
-        $context = $xml->importNode($archiveList->item(0) , true); // Node must be imported from archive document.
-        $context->setAttribute('name', $name);
-        $context->setAttribute('root', $root);
-        $context->setAttribute('url', $url);
-        $contextList->item(0)->appendChild($context);
-        // Modify core_db in xml
-        $paramList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value/param[@name='core_db']");
-        if ($paramList->length != 1) {
-            $this->errorMessage = "Parameter core_db does not exist.";
-            // --- Delete status file --- //
-            unlink($status_file);
-            return false;
-        }
-        /**
-         * @var DOMElement $paramNode
-         */
-        $paramNode = $paramList->item(0);
-        $paramNode->setAttribute('value', $pgservice);
-        // Modify client_name in xml by context name
-        $paramList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value/param[@name='client_name']");
-        if ($paramList->length != 1) {
-            $this->errorMessage = "Parameter client_name does not exist.";
-            // --- Delete status file --- //
-            unlink($status_file);
-            return false;
-        }
-        $paramNode = $paramList->item(0);
-        $paramNode->setAttribute('value', $name);
-        // Modify or add vault_root in xml
-        $paramList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value/param[@name='vault_root']");
-        $paramValueList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value");
-        $paramVaultRoot = $xml->createElement('param');
-        $paramVaultRoot->setAttribute('name', 'vault_root');
-        $paramVaultRoot->setAttribute('value', $vault_root);
-        if ($vaultfound === false) {
-            $vault_save_value = 'no';
-        } else {
-            $vault_save_value = 'yes';
-        }
-        if ($paramList->length != 1) {
-            $paramVaultRoot = $paramValueList->item(0)->appendChild($paramVaultRoot);
-        } else {
-            $paramNode = $paramList->item(0);
-            $paramVaultRoot = $paramValueList->item(0)->replaceChild($paramVaultRoot, $paramNode);
-        }
+        $contextImportNode = $xml->importNode($archiveList->item(0) , true); // Node must be imported from archive document.
+        $contextImportNode->setAttribute('name', $name);
+        $contextImportNode->setAttribute('root', $root);
+        $contextImportNode->setAttribute('url', $url);
+        $contextList->item(0)->appendChild($contextImportNode);
         
-        $vault_save = $xml->createElement('param');
-        $vault_save->setAttribute('name', 'vault_save');
-        $vault_save->setAttribute('value', $vault_save_value);
-        $paramValueList->item(0)->appendChild($vault_save);
+        $context = WIFF::getContext($name);
+        // Modify context's parameters
+        $context->setParamByName('core_db', $pgservice);
+        $context->setParamByName('client_name', $name);
+        $context->setParamByName('vault_root', $vault_root);
+        $context->setParamByName('vault_save', ($vaultfound === false ? 'no' : 'yes'));
         
         if (isset($remove_profiles) && $remove_profiles == true) {
-            // Modify or add remove_profiles in xml
-            $paramList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value/param[@name='remove_profiles']");
-            if ($paramList->length != 1) {
-                
-                $paramValueList = $xmlXPath->query("/contexts/context[@name='" . $name . "']/parameters-value");
-                
-                $paramRemoveProfiles = $xml->createElement('param');
-                $paramRemoveProfiles->setAttribute('name', 'remove_profiles');
-                $paramRemoveProfiles->setAttribute('value', true);
-                $paramValueList->item(0)->appendChild($paramVaultRoot);
-                
-                $paramUserLogin = $xml->createElement('param');
-                $paramUserLogin->setAttribute('name', 'user_login');
-                $paramUserLogin->setAttribute('value', $user_login);
-                $paramValueList->item(0)->appendChild($paramUserLogin);
-                
-                $paramUserPassword = $xml->createElement('param');
-                $paramUserPassword->setAttribute('name', 'user_password');
-                $paramUserPassword->setAttribute('value', $user_password);
-                $paramValueList->item(0)->appendChild($paramUserPassword);
-            }
+            $context->setParamByName('remove_profiles', true);
+            $context->setParamByName('user_login', $user_login);
+            $context->setParamByName('user_password', $user_password);
         }
         // Save XML to file
         $ret = $this->commitDOMDocument($xml);
