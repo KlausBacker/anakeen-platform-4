@@ -47,14 +47,16 @@ class LockView extends \Dcp\HttpApi\V1\Crud\Lock
             return false;
         }
         if (in_array($this->viewId, array(
-            "!defaultConsultation",
-            "!coreConsultation"
+            View::coreViewConsultationId,
+            View::defaultViewConsultationId,
+            View::defaultViewCreationId,
+            View::coreViewCreationId
         ))) {
             return false;
         }
         if (in_array($this->viewId, array(
-            "!defaultEdition",
-            "!coreEdition"
+            View::defaultViewEditionId,
+            View::coreViewEditionId
         ))) {
             return true;
         }
