@@ -1322,7 +1322,54 @@ class Context extends ContextProperties
         $this->errorMessage = sprintf("Parameter with name '%s' not found in context '%s'.", $paramName, $this->name);
         return '';
     }
-    
+    /**
+     * Set parameter value
+     *
+     * @param string $paramName The parameter's name
+     * @param string $paramValue The parameter's value
+     * @return bool bool(false) on error or bool(true) on success
+     */
+    public function setParamByName($paramName, $paramValue)
+    {
+        require_once 'class/Class.WIFF.php';
+        
+        $wiff = WIFF::getInstance();
+        
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
+        
+        $xpath = new DOMXpath($xml);
+        $parametersRoot = $xpath->query(sprintf("/contexts/context[@name='%s']/parameters-value", $this->name))->item(0);
+        if (!$parametersRoot) {
+            $this->errorMessage = sprintf("Could not find 'parameters-value' node for context with name '%s'.", $this->name);
+            return false;
+        }
+        /**
+         * @var DOMElement $paramNode
+         */
+        $paramList = $xpath->query(sprintf("/contexts/context[@name='%s']/parameters-value/param[@name='%s']", $this->name, $paramName));
+        if ($paramList->length >= 1) {
+            /* Update first parameter */
+            $paramNode = $paramList->item(0);
+            $paramNode->setAttribute('value', $paramValue);
+        } else {
+            /* Store new parameter */
+            $paramNode = $xml->createElement('param');
+            $paramNode->setAttribute('name', $paramName);
+            $paramNode->setAttribute('value', $paramValue);
+            $parametersRoot->appendChild($paramNode);
+        }
+        
+        if ($wiff->commitDOMDocument($xml) === false) {
+            $this->errorMessage = sprintf("Error saving contexts.xml '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
+            return false;
+        }
+        
+        return true;
+    }
     public function wstop(&$output = array())
     {
         $wstop = sprintf("%s/wstop", $this->root);
