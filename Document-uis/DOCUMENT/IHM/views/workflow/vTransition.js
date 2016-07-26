@@ -237,10 +237,22 @@ define([
                                     currentView.model.trigger("success", currentView.getMessages());
                                 }).fail(function vTransition_direct_error(response, statusTxt, errorTxt)
                                 {
-                                    if (errorTxt && !errorTxt.title && errorTxt.message) {
-                                        errorTxt.title = errorTxt.message;
+                                    if (response.responseJSON) {
+                                        _.each(response.responseJSON.messages, function vTransition_clickOnOk_displayError(aMessage)
+                                        {
+                                            currentView.displayError({
+                                                title: aMessage.contentText
+                                            });
+                                        });
+                                    } else {
+                                        if (errorTxt && !errorTxt.title && errorTxt.message) {
+                                            errorTxt.title = errorTxt.message;
+                                            currentView.displayError(errorTxt);
+                                        } else
+                                            if (_.isString(errorTxt)) {
+                                                currentView.displayError({title: errorTxt});
+                                            }
                                     }
-                                    currentView.displayError(errorTxt);
                                 });
                             }
                         }
