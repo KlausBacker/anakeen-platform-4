@@ -300,6 +300,8 @@ class DefaultView extends RenderDefault
             if ($defaultview !== 0) {
                 $modifyItem = $menu->getElement("modify");
                 $modifyItem->setTextLabel($cv->getLocaleViewLabel($defaultview['cv_idview']));
+                
+                $menu->removeElement("vid-" . $defaultview['cv_idview']);
             }
         }
     }
