@@ -3112,9 +3112,14 @@ function askParameter_success(module, operation, responseObject) {
 				handler : function() {
 
 					form = Ext.getCmp('parameter-panel').getForm();
+					var formParameters = form.getValues();
 					form.submit({
 						url : 'wiff.php',
 						success : function(form, action) {
+							if (action.result.error) {
+								Ext.Msg.alert('Server Error', action.result.error);
+								return;
+							}
 							Ext.getCmp('parameter-window')
 								.close();
 							if (operation!='parameter') getPhaseList(module, operation);
@@ -3127,6 +3132,7 @@ function askParameter_success(module, operation, responseObject) {
 							context : currentContext,
 							module : module.name,
 							operation : operation,
+							parameters : Ext.encode(formParameters),
 							storeParameter : true
 						},
 						waitMsg : 'Saving parameters...'
