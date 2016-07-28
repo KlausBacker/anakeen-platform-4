@@ -594,7 +594,7 @@ class WIFF extends WiffCommon
         }
         return ($returnRepoValidation ? $isValid : true);
     }
-    public function createRepoUrl($name, $url, $authUser = null, $authPassword = null)
+    public function createRepoUrl($name, $url, $authUser = null, $authPassword = null, $default = false)
     {
         $pURL = parse_url($url);
         
@@ -640,7 +640,7 @@ class WIFF extends WiffCommon
         $description = sprintf("%s://%s/%s", $protocol, $host, $path);
         
         $ret = $this->createRepo($name, $description, $protocol, $host, $path, /* default */
-        'no', $authenticated, $authUser, $authPassword, false);
+        ($default ? 'yes' : 'no') , $authenticated, $authUser, $authPassword, false);
         if ($ret === false) {
             return false;
         }
