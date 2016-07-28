@@ -2197,9 +2197,9 @@ class Context extends ContextProperties
         exec(sprintf("%s 2>&1", $cmd) , $output, $ret);
         if ($ret != 0) {
             $this->errorMessage = sprintf("Wsh command '%s' returned with error: %s", $cmd, join("\n", $output));
-            return 'Error Trying to delete crontab';
+            return false;
         }
-        return "";
+        return true;
     }
     /**
      * Delete context
@@ -2217,8 +2217,8 @@ class Context extends ContextProperties
                 'file' => 'FREEDOM/freedom.cron'
             );
             $ret = $this->wsh("crontab", $args);
-            if ($ret) {
-                $err_msg.= $ret;
+            if ($ret === false) {
+                $err_msg.= 'Error Trying to delete crontab';
                 $this->log(LOG_WARNING, __CLASS__ . "::" . __FUNCTION__ . " " . sprintf("deleteContextCrontab returned with error: %s", $this->errorMessage));
             }
             $this->log(LOG_INFO, "crontab deleted");
