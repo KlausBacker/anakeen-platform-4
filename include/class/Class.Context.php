@@ -1373,20 +1373,47 @@ class Context extends ContextProperties
     public function wstop(&$output = array())
     {
         $wstop = sprintf("%s/wstop", $this->root);
-        # error_log( __CLASS__ ."::". __FUNCTION__ ." ".sprintf("%s", $wstop));
         $ret = 0;
-        if (is_executable($wstop)) exec(sprintf("%s", escapeshellarg($wstop)) , $output, $ret);
+        if (!is_executable($wstop)) {
+            $this->log(LOG_WARNING, sprintf("Unexpected missing or non-executable script '%s/wstop' in context '%s'.", $this->root, $this->name));
+            return 0;
+        }
+        $cmd = sprintf("%s", escapeshellarg($wstop));
+        $this->log(LOG_INFO, sprintf("Running '%s' in context '%s'.", $cmd, $this->name));
+        exec($cmd, $output, $ret);
+        if ($ret !== 0) {
+            $this->log(LOG_ERR, sprintf("Execution of '%s' in context '%s' failed with exit code '%d': %s", $cmd, $this->name, $ret, join("\n", $output)));
+        }
         
         return $ret;
     }
     
-    public function wstart(&$output = array())
+    public function wstart(&$output = array() , $args = array())
     {
-        $wstart = sprintf("%s/wstart", $this->root);
-        # error_log( __CLASS__ ."::". __FUNCTION__ ." ".sprintf("%s", $wstart));
-        $ret = 0;
-        if (is_executable($wstart)) exec(sprintf("%s", escapeshellarg($wstart)) , $output, $ret);
+        if (!is_array($args)) {
+            $args = array();
+        }
+        $wstart_args = array();
+        foreach ($args as $arg) {
+            $wstart_args[] = escapeshellarg($arg);
+        }
         
+        $wstart = sprintf("%s/wstart", $this->root);
+        if (!is_executable($wstart)) {
+            $this->log(LOG_WARNING, sprintf("Unexpected missing or non-executable script '%s/wstart' in context '%s'.", $this->root, $this->name));
+            return 0;
+        }
+        
+        $ret = 0;
+        $cmd = escapeshellarg($wstart);
+        if ($wstart_args != '') {
+            $cmd = $cmd . " " . join(' ', $wstart_args);
+        }
+        $this->log(LOG_INFO, sprintf("Running '%s' in context '%s'.", $cmd, $this->name));
+        exec($cmd, $output, $ret);
+        if ($ret !== 0) {
+            $this->log(LOG_ERR, sprintf("Execution of '%s' in context '%s' failed with exit code '%d': %s", $cmd, $this->name, $ret, join("\n", $output)));
+        }
         return $ret;
     }
     /**

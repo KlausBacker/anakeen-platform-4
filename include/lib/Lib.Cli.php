@@ -2491,14 +2491,13 @@ function wiff_context_archive_help(&$argv) {
  * @param array $argv
  */
 function wiff_context_archive(&$context, $argv) {
-    $context->wstop();
-
     $archiveName = array_shift($argv);
     if ($archiveName === null) {
         printerr(sprintf("Error: missing archive name.\n"));
         wiff_context_archive_help($argv);
         return 1;
     }
+    $context->wstop();
     $options = parse_argv_options($argv);
     $excludeVault = (isset($options['without-vault']) && $options['without-vault'] === true);
     $archiveDesc = sprintf("%s@%s", $context->name, strftime("%Y-%m-%dT%H:%M:%S"));
@@ -2510,6 +2509,7 @@ function wiff_context_archive(&$context, $argv) {
     foreach ($modules as & $module) {
         printf("Doing '%s' of module '%s'.\n", 'pre-archive', $module->name);
         if (($ret = executeModulePhase($module, 'pre-archive', $options)) != 0) {
+            $context->wstart($output, array('-m'));
             return $ret;
         }
     }
@@ -2518,18 +2518,20 @@ function wiff_context_archive(&$context, $argv) {
     $archiveId = $context->archiveContext($archiveName, $archiveDesc, $excludeVault);
     if ($archiveId === false) {
         printerr(sprintf("Error: could not archive context: %s\n", $context->errorMessage));
+        $context->wstart($output, array('-m'));
         return 1;
     }
     /* post-archive */
     foreach ($modules as & $module) {
         printf("Doing '%s' of module '%s'.\n", 'post-archive', $module->name);
         if (($ret = executeModulePhase($module, 'post-archive', $options)) != 0) {
+            $context->wstart($output, array('-m'));
             return $ret;
         }
     }
     unset($module);
 
-    $context->wstart();
+    $context->wstart($output, array('-m'));
 
     printf("%s\n", $archiveId);
     return 0;
@@ -2660,7 +2662,7 @@ function wiff_archive_restore($archiveId, &$argv) {
     }
     unset($module);
 
-    $context->wstart();
+    $context->wstart($output, array('-m'));
 
     printf("Context '%s' successfully created from archive '%s'.\n", $contextName, $archiveId);
     return 0;
