@@ -375,7 +375,6 @@ if (isset($_REQUEST['saveContext'])) {
     $ret = $context->setRegister((isset($_REQUEST['register'])) ? true : false);
     if ($ret === false) {
         answer(null, $context->errorMessage);
-        exit(1);
     }
     
     $context->deactivateAllRepo();
@@ -390,7 +389,6 @@ if (isset($_REQUEST['saveContext'])) {
             $context->activateRepo($repo->name);
             if ($context->errorMessage) {
                 answer(null, $context->errorMessage);
-                exit(1);
             }
         }
     }
@@ -1110,14 +1108,11 @@ if (isset($_REQUEST['deactivateAllRepo']) && isset($_REQUEST['context'])) {
     $context = $wiff->getContext($contextName);
     if ($context === false) {
         answer(null, $wiff->errorMessage);
-        exit(1);
     }
 
     $repoList = $context->deactivateAllRepo();
     if ($repoList === false) {
-        $answer = new JSONAnswer(null, $context->errorMessage);
         answer(null, $wiff->errorMessage);
-        exit(1);
     }
 
     answer(true);
@@ -1126,7 +1121,6 @@ if (isset($_REQUEST['deactivateAllRepo']) && isset($_REQUEST['context'])) {
 if (isset($_REQUEST['deployWebinst'])) {
     if(! isset($_REQUEST['context'])) {
         answer(null, "'context' argument is required");
-        exit(1);
     }
     $contextName = $_REQUEST['context'];
     $context = $wiff->getContext($contextName);
