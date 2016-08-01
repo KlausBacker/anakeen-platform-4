@@ -602,18 +602,20 @@ function execute_next_restore_module_phase(module, phase) {
 }
 function end_restore() {
     globalwin.close();
-    Ext.Msg
-        .alert(
-        'Dynacase Control',
-        'Context '
-            + currentContext
-            + ' successfully created',
-        function () {
-            (function () {
-                updateContextList();
-            })
-                .defer(100);
-        });
+    wstart_cb(function (context, response) {
+        Ext.Msg
+            .alert(
+                'Dynacase Control',
+                'Context '
+                + currentContext
+                + ' successfully created',
+                function () {
+                    (function () {
+                        updateContextList();
+                    })
+                        .defer(100);
+                });
+    }, ['-m']);
 }
 
 function do_restore() {
@@ -750,16 +752,18 @@ function do_archive() {
                 mask.hide();
                 if (action
                     && action.result) {
-                    Ext.Msg
-                        .alert(
-                        'Failure',
-                        action.result.error,
-                        function () {
-                            (function () {
-                                updateArchiveList();
-                            })
-                                .defer(100);
-                        });
+                    wstart_cb(function (context, response) {
+                        Ext.Msg
+                            .alert(
+                            'Failure',
+                            action.result.error,
+                            function () {
+                                (function () {
+                                    updateArchiveList();
+                                })
+                                    .defer(100);
+                            });
+                    }, ['-m']);
                 } else if (action
                     && action.failureType == Ext.form.Action.CONNECT_FAILURE) {
                     Ext.Msg
@@ -773,16 +777,18 @@ function do_archive() {
                                 .defer(100);
                         });
                 } else {
-                    Ext.Msg
-                        .alert(
-                        'Warning',
-                        'Unknow error',
-                        function () {
-                            (function () {
-                                updateArchiveList();
-                            })
-                                .defer(100);
-                        });
+                    wstart_cb(function (context, response) {
+                        Ext.Msg
+                            .alert(
+                            'Warning',
+                            'Unknow error',
+                            function () {
+                                (function () {
+                                    updateArchiveList();
+                                })
+                                    .defer(100);
+                            });
+                    }, ['-m']);
                 }
                 // archive_failure(action.response);
             },
@@ -820,16 +826,18 @@ function execute_next_archive_module_phase(module, phase) {
 
 function end_archive() {
     globalwin.close();
-    Ext.Msg
-        .alert(
-        'Dynacase Control',
-        'Context successfully archived',
-        function () {
-            (function () {
-                updateArchiveList();
-            })
-                .defer(100);
-        });
+    wstart_cb(function (context, response) {
+        Ext.Msg
+            .alert(
+            'Dynacase Control',
+            'Context successfully archived',
+            function () {
+                (function () {
+                    updateArchiveList();
+                })
+                    .defer(100);
+            });
+    }, ['-m']);
 }
 
 function get_archive_process_list(module, phase) {
@@ -869,7 +877,9 @@ function archive_success(responseObject) {
          * Do pre-archive
          */
         getGlobalwin(true, toArchive);
-        get_archive_process_list(toArchive[0], 'pre-archive');
+        wstop_cb(function (context, response) {
+            get_archive_process_list(toArchive[0], 'pre-archive');
+        });
 
     }
 }
