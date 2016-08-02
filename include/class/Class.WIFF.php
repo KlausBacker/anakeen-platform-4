@@ -1188,6 +1188,10 @@ class WIFF extends WiffCommon
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
+        if ($this->getContext($name) !== false) {
+            $this->errorMessage = sprintf("Context '%s' already exists!\n", $name);
+            return false;
+        }
         if (!$this->checkValidContextDirChars($root)) {
             $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
             return false;
@@ -1196,6 +1200,12 @@ class WIFF extends WiffCommon
         // --- Create status file for context --- //
         $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.ctx';
         file_put_contents($status_file, $name);
+        // --- Check database is empty --- //
+        if ($this->checkDatabaseBeforeRestore($pgservice) === false) {
+            $this->log(LOG_ERR, $this->errorMessage);
+            unlink($status_file);
+            return false;
+        }
         // --- Connect to database --- //
         $dbconnect = pg_connect("service=$pgservice");
         if ($dbconnect === false) {
@@ -1556,6 +1566,87 @@ class WIFF extends WiffCommon
         // --- Delete status file --- //
         unlink($status_file);
         
+        return true;
+    }
+    
+    public function checkDatabaseBeforeRestore($pgServiceName)
+    {
+        if (($conn = pg_connect(sprintf("service=%s", $pgServiceName))) === false) {
+            $this->errorMessage = sprintf("Error connecting to 'service=%s'.", $pgServiceName);
+            pg_close($conn);
+            return false;
+        }
+        /*
+         * Count objects in 'public', 'dav', and 'family' schemas
+        */
+        $sql = <<<'EOF'
+WITH
+    schemas AS (
+        SELECT unnest(ARRAY['public', 'dav', 'family']) AS schema_name
+    ),
+    tables AS (
+        SELECT 'TABLE'::text AS type, table_schema AS schema, table_name AS name FROM information_schema.tables, schemas WHERE table_schema = schema_name
+    ),
+    sequences AS (
+        SELECT 'SEQUENCE'::text AS type, sequence_schema AS schema, sequence_name AS name FROM information_schema.sequences, schemas WHERE sequence_schema = schema_name
+    ),
+    routines AS (
+        SELECT 'ROUTINE'::text AS type, routine_schema AS schema, routine_name AS name FROM information_schema.routines, schemas WHERE routine_schema = schema_name
+    ),
+    triggers AS (
+        SELECT 'TRIGGER'::text AS type, trigger_schema AS schema, trigger_name AS name FROM information_schema.triggers, schemas WHERE trigger_schema = schema_name 
+    ),
+    all_objects AS (
+        SELECT * FROM tables
+        UNION
+        SELECT * FROM sequences
+        UNION
+        SELECT * FROM routines
+        UNION
+        SELECT * FROM triggers
+    )
+SELECT count(*) AS count FROM all_objects;
+EOF;
+        if (($q = pg_query($conn, $sql)) === false) {
+            $this->errorMessage = sprintf("Error requesting database content: %s", pg_last_error($conn));
+            pg_close($conn);
+            return false;
+        }
+        if (($res = pg_fetch_all($q)) === false) {
+            $this->errorMessage = sprintf("Error getting database content: %s", pg_last_error($conn));
+            pg_close($conn);
+            return false;
+        }
+        $count = $res[0]['count'];
+        if ($count > 0) {
+            $this->errorMessage = sprintf("Database service '%s' is not empty: found %d existing objects", $pgServiceName, $count);
+            pg_close($conn);
+            return false;
+        }
+        /*
+         * Check the 'public' schema exists and is usable by the current user.
+        */
+        $sql = <<<'EOF'
+SELECT current_user, count(schema_name) FROM information_schema.schemata WHERE schema_name = 'public';
+EOF;
+        if (($q = pg_query($conn, $sql)) === false) {
+            $this->errorMessage = sprintf("Error requesting database content: %s", pg_last_error($conn));
+            pg_close($conn);
+            return false;
+        }
+        if (($res = pg_fetch_all($q)) === false) {
+            $this->errorMessage = sprintf("Error getting database content: %s", pg_last_error($conn));
+            pg_close($conn);
+            return false;
+        }
+        $count = $res[0]['count'];
+        if ($count <= 0) {
+            $this->errorMessage = sprintf("The database service '%s' is missing a 'public' schema or the 'public' schema is not owned by user '%s'.", $pgServiceName, $res[0]['current_user']);
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
         return true;
     }
     

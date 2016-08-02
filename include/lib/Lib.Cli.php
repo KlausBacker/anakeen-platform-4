@@ -2667,7 +2667,7 @@ function wiff_archive_restore($archiveId, &$argv) {
     }
     $ret = $wiff->createContextFromArchive($archiveId, $contextName, $contextRoot, '', '', $vaultRoot, $pgService, $removeProfiles, $userLogin, $userPassword, $cleanTmpDirectory);
     if ($ret === false) {
-        printerr(sprintf("Error: could not restore archive '%s' to new context '%s': %s", $archiveId, $contextName, $wiff->errorMessage));
+        printerr(sprintf("Error: could not restore archive '%s' to new context '%s': %s\n", $archiveId, $contextName, $wiff->errorMessage));
         return 1;
     }
     $context = $wiff->getContext($contextName);
