@@ -1202,6 +1202,7 @@ class WIFF extends WiffCommon
             $this->errorMessage = "Error connecting to database 'service=$pgservice'";
             $this->log(LOG_ERR, $this->errorMessage);
             unlink($status_file);
+            pg_close($dbconnect);
             return false;
         }
         // --- Create or reuse directory --- //
@@ -1210,6 +1211,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Directory '%s' is not writable.", $root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
             $dirListing = @scandir($root);
@@ -1217,6 +1219,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Error scanning directory '%s'.", $root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
             $dirListingCount = count($dirListing);
@@ -1224,6 +1227,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Directory '%s' is not empty.", $root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
         } else {
@@ -1231,6 +1235,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Error creating directory '%s'.", $root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
         }
@@ -1240,6 +1245,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Directory '%s' is not writable.", $vault_root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
             $dirListing = @scandir($vault_root);
@@ -1247,6 +1253,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Error scanning directory '%s'.", $vault_root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
             $dirListingCount = count($dirListing);
@@ -1254,6 +1261,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Directory '%s' is not empty.", $vault_root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
         } else {
@@ -1261,6 +1269,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Error creating directory '%s'.", $vault_root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
         }
@@ -1269,6 +1278,7 @@ class WIFF extends WiffCommon
             $this->errorMessage = sprintf("Context '%s' already exists.", $name);
             // --- Delete status file --- //
             unlink($status_file);
+            pg_close($dbconnect);
             return false;
         }
         // Get absolute pathname if directory is not already in absolute form
@@ -1278,6 +1288,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Error getting absolute pathname for '%s'.", $root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
             $root = $abs_root;
@@ -1289,6 +1300,7 @@ class WIFF extends WiffCommon
                 $this->errorMessage = sprintf("Error getting absolute pathname for '%s'.", $vault_root);
                 // --- Delete status file --- //
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
             $vault_root = $abs_vault_root;
@@ -1307,12 +1319,14 @@ class WIFF extends WiffCommon
             if ($ret === false) {
                 $this->errorMessage = sprintf("Error creating temporary extract root directory '%s'.", $temporary_extract_root);
                 unlink($status_file);
+                pg_close($dbconnect);
                 return false;
             }
         }
         if (!$this->deleteDirContent($temporary_extract_root, true)) {
             $this->errorMessage = sprintf("Error cleaning up extract-tmp dir: %s", $this->errorMessage);
             unlink($status_file);
+            pg_close($dbconnect);
             return false;
         }
         $vaultfound = false;
@@ -1332,6 +1346,7 @@ class WIFF extends WiffCommon
                         $this->errorMessage = sprintf("Error when opening archive '%s': %s", $zipfile, $zip->getStatusString());
                         // --- Delete status file --- //
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     $ret = $zip->extractTo($temporary_extract_root);
@@ -1339,6 +1354,7 @@ class WIFF extends WiffCommon
                         $this->errorMessage = sprintf("Error extracting '%s' into '%s': %s", $zipfile, $temporary_extract_root, $zip->getStatusString());
                         unlink($status_file);
                         $zip->close();
+                        pg_close($dbconnect);
                         return false;
                     }
                     
@@ -1346,6 +1362,7 @@ class WIFF extends WiffCommon
                     if ($ret === false) {
                         unlink($status_file);
                         $zip->close();
+                        pg_close($dbconnect);
                         return false;
                     }
                     // --- Extract context tar gz --- //
@@ -1357,6 +1374,7 @@ class WIFF extends WiffCommon
                         $this->errorMessage = "Error when extracting context.tar.gz to $root";
                         // --- Delete status file --- //
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     
@@ -1369,6 +1387,7 @@ class WIFF extends WiffCommon
                         $this->errorMessage = sprintf("Error getting current database name: %s", pg_last_error($dbconnect));
                         $this->log(LOG_ERR, $this->errorMessage);
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     $row = pg_fetch_assoc($result);
@@ -1376,12 +1395,14 @@ class WIFF extends WiffCommon
                         $this->errorMessage = sprintf("Error fetching first row for current database name: %s", pg_last_error($dbconnect));
                         $this->log(LOG_ERR, $this->errorMessage);
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     if (!isset($row['current_database'])) {
                         $this->errorMessage = sprintf("Error getting 'current_database' field in row: %s", pg_last_error($dbconnect));
                         $this->log(LOG_ERR, $this->errorMessage);
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     $current_database = $row['current_database'];
@@ -1389,6 +1410,7 @@ class WIFF extends WiffCommon
                         $this->errorMessage = sprintf("Got an empty current database name!?!");
                         $this->log(LOG_ERR, $this->errorMessage);
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     // Alter current database datestyle
@@ -1397,6 +1419,7 @@ class WIFF extends WiffCommon
                         $this->errorMessage = "Error when trying to set database datestyle :: " . pg_last_error($dbconnect);
                         $this->log(LOG_ERR, "Error when trying to set database datestyle :: " . pg_last_error($dbconnect));
                         unlink($status_file);
+                        pg_close($dbconnect);
                         return false;
                     }
                     pg_close($dbconnect);
