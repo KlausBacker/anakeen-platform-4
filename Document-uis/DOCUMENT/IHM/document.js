@@ -41,13 +41,14 @@
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="api/v1/documents/<% if (options.initid) { %><%= options.initid %><% } else { %>0<% } if (options.viewId && options.viewId !== \'!defaultConsultation\') { %>/views/<%= options.viewId %><% } %><% if (options.revision && options.revision !== -1) { %>/revisions/<%= options.revision %><% } %>.html"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="api/v1/documents/<% if (options.initid) { %><%= options.initid %><% } else { %>0<% } if (options.viewId && options.viewId !== \'!defaultConsultation\') { %>/views/<%= options.viewId %><% } %><% if (options.revision && options.revision !== -1) { %>/revisions/<%= options.revision %><% } %>.html"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
             "resizeMarginWidth": 0,
             "resizeDebounceTime": 50,
             "withoutResize": false,
+            "iframeName": _.uniqueId("documentFrame"),
             eventPrefix: "document"
         },
 

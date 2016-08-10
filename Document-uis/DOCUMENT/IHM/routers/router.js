@@ -130,7 +130,13 @@ define([
                         }
                     }
 
-                    this.navigate(beginPath + 'api/v1/documents/' + options.initid + urlSecondPart + '.html' + window.location.search + window.location.hash);
+                    this.navigate(beginPath +
+                        'api/v1/documents/' +
+                        options.initid +
+                        urlSecondPart + '.html' +
+                        window.location.search + window.location.hash,
+                        { replace : /documents\/0\.html$/.test(options.path) }
+                    );
                 }
             }
         },
