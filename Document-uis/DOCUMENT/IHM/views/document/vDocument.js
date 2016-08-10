@@ -400,7 +400,7 @@ define([
                         index: liIndex
                     });
                 } else {
-                    $kendoTabs.enable($(this));
+                    $kendoTabs.enable && $kendoTabs.enable($(this));
                     lastShow = this;
                 }
 
@@ -424,7 +424,7 @@ define([
             if ($tabs.data("hiddenTabsLength") === hiddens.length) {
                 // Optimization if no new tabs to hide
                 if (hiddens.length > 0) {
-                    $kendoTabs.disable($(lastShow));
+                    $kendoTabs && $kendoTabs.disable && $kendoTabs.disable($(lastShow));
                 }
 
                 //$tabs.find(".dcpDocument__tabs__list").css("overflow", "").css("max-height", "");
@@ -440,6 +440,8 @@ define([
             $dropTopSelect = $tabs.find(".dcpTab__label__select.k-combobox").hide();
             $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function vDocumentSelectTabClose()
             {
+                $(this).data("kendoComboBox") &&
+                $(this).data("kendoComboBox").close &&
                 $(this).data("kendoComboBox").close();
             });
 
@@ -471,7 +473,7 @@ define([
 
                 $(lastShow).addClass("dcpLabel--select");
                 //$(lastShow).height(currentHeight - 5);
-                if ($dropTopSelect.length === 0) {
+                if ($dropTopSelect.length === 0 && $dropTopSelect.data("kendoComboBox")) {
                     $dropSelect = $('<input class="dcpTab__label__select" />');
                     $(lastShow).append($dropSelect);
                     $dropSelect.kendoComboBox({
@@ -549,11 +551,13 @@ define([
                     $dropTopSelect.show();
                     $dropSelect = $tabs.find("input.dcpTab__label__select[data-role=combobox]");
                     $(lastShow).append($dropTopSelect); // Move to new lastShow
-                    $dropSelect.data("kendoComboBox").value(hiddenSelected ? $selectedTabId : hiddens[0].id);
-                    dataSource = new kendo.data.DataSource({
-                        data: hiddens
-                    });
-                    $dropSelect.data("kendoComboBox").setDataSource(dataSource);
+                    if ($dropSelect.data("kendoComboBox")) {
+                        $dropSelect.data("kendoComboBox").value(hiddenSelected ? $selectedTabId : hiddens[0].id);
+                        dataSource = new kendo.data.DataSource({
+                            data: hiddens
+                        });
+                        $dropSelect.data("kendoComboBox").setDataSource(dataSource);
+                    }
                 }
 
                 // Add count in select button

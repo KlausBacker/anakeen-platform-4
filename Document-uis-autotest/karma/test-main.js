@@ -152,6 +152,7 @@ require.config({ // jshint ignore:line
             "datatables.net": "datatables"
         }
     },
+    "waitSeconds": 60,
 
     "config": {
         "text": {
@@ -168,6 +169,8 @@ require.config({ // jshint ignore:line
 });
 
 // dynamically load all test files after kendo
+
+console.log(allTestFiles);
 require(["kendo-ddui"], function() {
     require(allTestFiles, function() {
 

@@ -11,19 +11,13 @@ This directory contains conf for karma with dynacase document-uis
 
 You can run test with the command :
 
-`./node_modules/karma/bin/karma start`
+`run.sh <url_localhost> <path_to_document>`
 
 launched is the directory karma
 
 ## Configuration
 
 The configuration is in the file `karma.conf.js` and in the `test-main.js`.
-
-You should modify the proxy options to indicate where is the dynacase URL (root url).
-
-## Local configuration
-
-You can add `karma.specific.conf.json` with specific configuration, this file is merged with `karma.default.conf.js`
 
 ## Links
 
