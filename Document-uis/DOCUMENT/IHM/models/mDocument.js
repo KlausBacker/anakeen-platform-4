@@ -974,6 +974,10 @@ define([
             options = options || {};
             values = values || {};
 
+            if (_.isEmpty(this._customClientData)) {
+                this.trigger("getCustomClientData");
+            }
+
             //Register promise events
             documentCallback.promise.then(function onFetchDocumentDone(currentModelProperties)
             {
@@ -1095,6 +1099,9 @@ define([
 
             options = options || {};
 
+            if (_.isEmpty(this._customClientData)) {
+                this.trigger("getCustomClientData");
+            }
             this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
             if (beforeSaveEvent.prevent !== false) {
@@ -1148,6 +1155,10 @@ define([
                 serverProperties = this.getServerProperties();
 
             options = options || {};
+
+            if (_.isEmpty(this._customClientData)) {
+                this.trigger("getCustomClientData");
+            }
 
             this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 

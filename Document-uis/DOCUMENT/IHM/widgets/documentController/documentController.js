@@ -297,6 +297,10 @@ define([
                 }
                 currentWidget._initializedView = false;
             });
+            this._model.listenTo(this._model, "getCustomClientData", function documentController_triggerAddCustomData()
+            {
+                currentWidget._model._customClientData = currentWidget.getCustomClientData();
+            });
             this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event, customClientData)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeSave",
@@ -1237,8 +1241,6 @@ define([
             } else {
                 if (values.customClientData) {
                     this._model._customClientData = values.customClientData;
-                } else {
-                    this._model._customClientData = this.getCustomClientData();
                 }
 
                 if (this._model.isModified() && options.force === false) {
@@ -1272,8 +1274,6 @@ define([
             this._checkInitialisedModel();
             if (options.customClientData) {
                 this._model._customClientData = options.customClientData;
-            } else {
-                this._model._customClientData = this.getCustomClientData();
             }
             documentPromise = this._model.saveDocument();
             return this._registerOutputPromise(documentPromise, options);
@@ -1313,8 +1313,6 @@ define([
             this._checkInitialisedModel();
             if (options.customClientData) {
                 this._model._customClientData = options.customClientData;
-            } else {
-                this._model._customClientData = this.getCustomClientData();
             }
             documentPromise = this._model.deleteDocument();
             return this._registerOutputPromise(documentPromise, options);
