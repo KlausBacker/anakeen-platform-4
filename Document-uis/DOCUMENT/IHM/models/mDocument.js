@@ -49,7 +49,7 @@ define([
             attributes: undefined
         },
         // Record custom data in model directly - not in model property because must not be reset by clear method
-        _customClientData: [],
+        _customClientData: {},
 
         /**
          * Compute the REST URL for the current document
@@ -690,7 +690,7 @@ define([
                 messages: response.messages,
                 originalValues: view.documentData.document.attributes
             };
-            this._customClientData = [];
+            this._customClientData = {};
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
             } else {
