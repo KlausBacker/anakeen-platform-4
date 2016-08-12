@@ -41,7 +41,7 @@
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="api/v1/documents/<% if (options.initid) { %><%= options.initid %><% } else { %>0<% } if (options.viewId && options.viewId !== \'!defaultConsultation\') { %>/views/<%= options.viewId %><% } %><% if (options.revision && options.revision !== -1) { %>/revisions/<%= options.revision %><% } %>.html"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="api/v1/documents/0.html#initValue<%- options.json_encode %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -71,9 +71,17 @@
          */
         _render: function dcpDocument_render()
         {
-            var $iframe, currentWidget = this, documentWindow;
+            var $iframe, currentWidget = this, documentWindow, options_encode;
             //inject the iframe
-            this.element.empty().append(this._template({options: this.options}));
+            options_encode = JSON.stringify(_.omit(this.options,
+                "resizeMarginHeight", "resizeMarginWidth", "resizeDebounceTime",
+                "withoutResize", "iframeName", "eventPrefix", "eventListener",
+                "constraintList"
+            ));
+            this.element.empty().append(this._template({options:  {
+                iframeName : this.options.iframeName,
+                json_encode: options_encode
+            }}));
             //bind the internal controller to the documentWidget
             $iframe = this.element.find(".dcpDocumentWrapper");
             //Listen the load to the iframe (initial JS added and page loaded)

@@ -80,7 +80,7 @@ define([
                 console.log("Widget initialised without document");
                 return;
             }
-            this._initializeWidget();
+            this._initializeWidget({}, this.options.customClientData);
             this._super();
         },
 
@@ -299,7 +299,11 @@ define([
             });
             this._model.listenTo(this._model, "getCustomClientData", function documentController_triggerAddCustomData()
             {
-                currentWidget._model._customClientData = currentWidget.getCustomClientData();
+                try {
+                    currentWidget._model._customClientData = currentWidget.getCustomClientData();
+                } catch (e) {
+
+                }
             });
             this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event, customClientData)
             {

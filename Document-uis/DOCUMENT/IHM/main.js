@@ -11,11 +11,24 @@ require([
     'use strict';
     console.timeEnd("js loading");
 
-    var $document = $(".document");
+    var $document = $(".document"), currentValues;
 
     window.dcp = window.dcp || {};
 
     window.dcp.documentReady = false;
+
+    if (!window.dcp.viewData && window.location.hash) {
+        currentValues = window.location.hash;
+        if (currentValues[0] === "#") {
+            currentValues = currentValues.slice(1);
+        }
+        try {
+            if (currentValues.slice(0, 9) === "initValue") {
+                window.dcp.viewData = JSON.parse(currentValues.slice(9));
+            }
+        } catch(e) {}
+
+    }
 
     window.dcp.triggerReload = function triggerReload()
     {
