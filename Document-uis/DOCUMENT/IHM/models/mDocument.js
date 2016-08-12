@@ -387,7 +387,8 @@ define([
          */
         propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr)
         {
-            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "", displayNetworkError = false;
+            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "",
+            properties;
             //Analyze XHR
             var messages = [];
             try {
@@ -401,10 +402,15 @@ define([
                 } else {
                     console.error(e);
                 }
-                currentModel.trigger("displayNetworkError");
-                displayNetworkError = true;
+                properties = currentModel.getServerProperties();
+                if (!properties.initid) {
+                    //First loading, unable to load display reload iframe panel
+                    currentModel.trigger("displayNetworkError");
+                    return;
+                }
+                //There is an initd, so there is a document
+                //We display a message and let the user try again
                 //Status 0 indicate offline browser
-                /* @TODO See with CBO : Never displayed
                 if (xhr && xhr.status === 0) {
                     currentModel.trigger("showError", {
                         "errorCode": "offline",
@@ -416,7 +422,8 @@ define([
                         "title": i18n.___("Server return unreadable", "ddui")
                     });
                 }
-                */
+                currentModel.setProperties(properties);
+                this.trigger("dduiDocumentDisplayView");
                 return;
             }
 
@@ -514,9 +521,7 @@ define([
                         }
                 }
             });
-            if (displayNetworkError === false) {
-                this.trigger("dduiDocumentDisplayView");
-            }
+            this.trigger("dduiDocumentDisplayView");
         },
 
         /**
