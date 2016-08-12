@@ -199,6 +199,25 @@
             }
         },
 
+        tryToDestroy: function dcpDocument_tryToDestroy() {
+            var currentWidget = this;
+            return new Promise(function dcpDocument_tryToDestroy_promise(resolve, reject) {
+                var internalWidget;
+                if (currentWidget.isLoaded()) {
+                    internalWidget = currentWidget.element.data("internalWidget");
+                    internalWidget.tryToDestroy().then(function dcpDocument_destroy_then() {
+                        resolve();
+                        currentWidget._destroy();
+                    })["catch"](function dcpDocument_destroy_catch(errorMessage) {
+                        reject(errorMessage);
+                    });
+                    return;
+                }
+                resolve();
+                currentWidget._destroy();
+            });
+        },
+
         /**
          * Destroy the widget
          */
@@ -498,7 +517,7 @@
 
         isLoaded: function dcpDocument_isLoaded()
         {
-            return this.element.data("internalWidgetInitialised");
+            return this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded");
         }
 
     });

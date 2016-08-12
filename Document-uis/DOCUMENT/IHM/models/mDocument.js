@@ -134,6 +134,10 @@ define([
 
                 theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
 
+                if (event.prevent) {
+                    return i18n.___("Unable to close the document", "ddui");
+                }
+
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     // No use model destroy : page is destroyed before request is some case
                     $.ajax({
@@ -150,7 +154,7 @@ define([
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 var unlocking = theModel.get("unlocking");
 
-                theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
+                theModel.trigger("close", event, theModel.getServerProperties(), this._customClientData);
 
                 if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     $.ajax({
@@ -1164,7 +1168,6 @@ define([
             if (_.isEmpty(this._customClientData)) {
                 this.trigger("getCustomClientData");
             }
-
             this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 
             if (beforeDeleteEvent.prevent !== false) {

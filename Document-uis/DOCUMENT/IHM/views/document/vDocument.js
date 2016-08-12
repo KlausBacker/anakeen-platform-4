@@ -1137,7 +1137,7 @@ define([
                     height: "150px",
                     maxWidth: $(window).width(),
                     messages: {
-                        okMessage: i18n.___("Abord modification", "ddui"),
+                        okMessage: i18n.___("Abort modification", "ddui"),
                         cancelMessage: i18n.___("Stay on the form", "ddui"),
                         htmlMessage: i18n.___("The form has been modified without saving", "ddui"),
                         textMessage: ''

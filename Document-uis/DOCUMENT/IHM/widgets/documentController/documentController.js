@@ -13,12 +13,14 @@ define([
     'dcpDocument/models/mTransition',
     'dcpDocument/views/workflow/vTransition',
     'dcpDocument/models/mMenu',
+    'dcpDocument/i18n/documentCatalog',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
-    'dcpDocument/widgets/window/wNotification',
-    'dcpDocument/i18n/getTranslator'
-], function documentController($, _, Backbone, Promise, Router, DocumentModel, AttributeInterface, MenuInterface, TransitionInterface, DocumentView, TransitionModel, TransitionView, MenuModel)
+    'dcpDocument/widgets/window/wNotification'
+], function documentController($, _, Backbone, Promise, Router, DocumentModel,
+    AttributeInterface, MenuInterface, TransitionInterface,
+    DocumentView, TransitionModel, TransitionView, MenuModel, i18n)
 {
     'use strict';
 
@@ -83,7 +85,34 @@ define([
             this._initializeWidget({}, this.options.customClientData);
             this._super();
         },
-
+        /**
+         * tryToDestroy the widget
+         *
+         * @return Promise
+         */
+        tryToDestroy: function documentController_tryToDestroy()
+        {
+            var currentWidget = this;
+            return new Promise(function documentController_promiseDestroy(resolve, reject) {
+                var event = {prevent: false};
+                if (!currentWidget._model) {
+                    resolve();
+                    return;
+                }
+                if (currentWidget._model
+                    && currentWidget._model.isModified()
+                    && !window.confirm(i18n.___("The form has been modified without saving, do you want to close it ?", "ddui"))) {
+                    reject("Unable to destroy because user refuses it");
+                    return;
+                }
+                currentWidget._triggerControllerEvent("beforeClose", event, currentWidget._model.getServerProperties());
+                if (event.prevent) {
+                    reject("Unable to destroy because before close refuses it");
+                    return;
+                }
+                resolve();
+            });
+        },
         /**
          * Delete the widget
          * @private
@@ -98,7 +127,9 @@ define([
             this._initializedModel = false;
             this._initializedView = false;
             this.element.removeData("document");
-            this._model.trigger("destroy");
+            if (this._model) {
+                this._model.trigger("destroy");
+            }
             this._trigger("destroy");
             this._super();
         },
