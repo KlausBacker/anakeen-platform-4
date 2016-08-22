@@ -41,13 +41,14 @@
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" style="border : 0;" data-src="api/v1/documents/<% if (options.initid) { %><%= options.initid %><% } else { %>0<% } if (options.viewId && options.viewId !== \'!defaultConsultation\') { %>/views/<%= options.viewId %><% } %><% if (options.revision && options.revision !== -1) { %>/revisions/<%= options.revision %><% } %>.html"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="api/v1/documents/0.html#initValue<%- options.json_encode %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
             "resizeMarginWidth": 0,
             "resizeDebounceTime": 50,
             "withoutResize": false,
+            "iframeName": _.uniqueId("documentFrame"),
             eventPrefix: "document"
         },
 
@@ -70,9 +71,17 @@
          */
         _render: function dcpDocument_render()
         {
-            var $iframe, currentWidget = this, documentWindow;
+            var $iframe, currentWidget = this, documentWindow, options_encode;
             //inject the iframe
-            this.element.empty().append(this._template({options: this.options}));
+            options_encode = JSON.stringify(_.omit(this.options,
+                "resizeMarginHeight", "resizeMarginWidth", "resizeDebounceTime",
+                "withoutResize", "iframeName", "eventPrefix", "eventListener",
+                "constraintList"
+            ));
+            this.element.empty().append(this._template({options:  {
+                iframeName : this.options.iframeName,
+                json_encode: options_encode
+            }}));
             //bind the internal controller to the documentWidget
             $iframe = this.element.find(".dcpDocumentWrapper");
             //Listen the load to the iframe (initial JS added and page loaded)
@@ -188,6 +197,25 @@
                     $documentWrapper.height(element.innerHeight() - parseInt(currentWidget.options.resizeMarginHeight, 10));
                 });
             }
+        },
+
+        tryToDestroy: function dcpDocument_tryToDestroy() {
+            var currentWidget = this;
+            return new Promise(function dcpDocument_tryToDestroy_promise(resolve, reject) {
+                var internalWidget;
+                if (currentWidget.isLoaded()) {
+                    internalWidget = currentWidget.element.data("internalWidget");
+                    internalWidget.tryToDestroy().then(function dcpDocument_destroy_then() {
+                        resolve();
+                        currentWidget._destroy();
+                    })["catch"](function dcpDocument_destroy_catch(errorMessage) {
+                        reject(errorMessage);
+                    });
+                    return;
+                }
+                resolve();
+                currentWidget._destroy();
+            });
         },
 
         /**
@@ -489,7 +517,7 @@
 
         isLoaded: function dcpDocument_isLoaded()
         {
-            return this.element.data("internalWidgetInitialised");
+            return this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded");
         }
 
     });

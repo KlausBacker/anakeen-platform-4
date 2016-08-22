@@ -49,7 +49,7 @@ define([
             attributes: undefined
         },
         // Record custom data in model directly - not in model property because must not be reset by clear method
-        _customClientData: [],
+        _customClientData: {},
 
         /**
          * Compute the REST URL for the current document
@@ -134,6 +134,10 @@ define([
 
                 theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
 
+                if (event.prevent) {
+                    return i18n.___("Unable to close the document", "ddui");
+                }
+
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     // No use model destroy : page is destroyed before request is some case
                     $.ajax({
@@ -150,7 +154,7 @@ define([
                 var security = theModel.get("properties") ? (theModel.get("properties").get("security")) : null;
                 var unlocking = theModel.get("unlocking");
 
-                theModel.trigger("beforeClose", event, theModel.getServerProperties(), this._customClientData);
+                theModel.trigger("close", event, theModel.getServerProperties(), this._customClientData);
 
                 if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     $.ajax({
@@ -387,7 +391,8 @@ define([
          */
         propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr)
         {
-            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "", displayNetworkError = false;
+            var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "",
+            properties;
             //Analyze XHR
             var messages = [];
             try {
@@ -401,10 +406,15 @@ define([
                 } else {
                     console.error(e);
                 }
-                currentModel.trigger("displayNetworkError");
-                displayNetworkError = true;
+                properties = currentModel.getServerProperties();
+                if (!properties.initid) {
+                    //First loading, unable to load display reload iframe panel
+                    currentModel.trigger("displayNetworkError");
+                    return;
+                }
+                //There is an initd, so there is a document
+                //We display a message and let the user try again
                 //Status 0 indicate offline browser
-                /* @TODO See with CBO : Never displayed
                 if (xhr && xhr.status === 0) {
                     currentModel.trigger("showError", {
                         "errorCode": "offline",
@@ -416,7 +426,8 @@ define([
                         "title": i18n.___("Server return unreadable", "ddui")
                     });
                 }
-                */
+                currentModel.setProperties(properties);
+                this.trigger("dduiDocumentDisplayView");
                 return;
             }
 
@@ -514,9 +525,7 @@ define([
                         }
                 }
             });
-            if (displayNetworkError === false) {
-                this.trigger("dduiDocumentDisplayView");
-            }
+            this.trigger("dduiDocumentDisplayView");
         },
 
         /**
@@ -690,7 +699,7 @@ define([
                 messages: response.messages,
                 originalValues: view.documentData.document.attributes
             };
-            this._customClientData = [];
+            this._customClientData = {};
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
             } else {
@@ -974,6 +983,10 @@ define([
             options = options || {};
             values = values || {};
 
+            if (_.isEmpty(this._customClientData)) {
+                this.trigger("getCustomClientData");
+            }
+
             //Register promise events
             documentCallback.promise.then(function onFetchDocumentDone(currentModelProperties)
             {
@@ -1095,6 +1108,9 @@ define([
 
             options = options || {};
 
+            if (_.isEmpty(this._customClientData)) {
+                this.trigger("getCustomClientData");
+            }
             this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
             if (beforeSaveEvent.prevent !== false) {
@@ -1149,6 +1165,9 @@ define([
 
             options = options || {};
 
+            if (_.isEmpty(this._customClientData)) {
+                this.trigger("getCustomClientData");
+            }
             this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 
             if (beforeDeleteEvent.prevent !== false) {
