@@ -22,11 +22,21 @@ require([
         if (currentValues[0] === "#") {
             currentValues = currentValues.slice(1);
         }
-        try {
-            if (currentValues.slice(0, 9) === "initValue") {
+        if (currentValues.slice(0, 9) === "initValue") {
+
+            try {
                 window.dcp.viewData = JSON.parse(currentValues.slice(9));
+            } catch(e) {
+                try {
+                    window.dcp.viewData = JSON.parse(decodeURI(currentValues.slice(9)));
+                } catch(e) {
+                    $document.documentController("showMessage", {
+                        type: "error",
+                        message: "unable to retrieve document"
+                    })
+                }
             }
-        } catch(e) {}
+        }
 
     }
 
