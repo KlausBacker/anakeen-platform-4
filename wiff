@@ -36,6 +36,10 @@ if (checkInitServer($errors) === false) {
   exit( 1 );
 }
 
+if (count($argv) <= 0) {
+    exit(wiff_help($argv));
+}
+
 $ret = 0;
 switch( $argv[0] ) {
 case 'param':
