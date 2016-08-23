@@ -1065,7 +1065,70 @@ class Context extends ContextProperties
         }
         unset($mod);
         
+        if (($err = $this->checkBrokenDepsInInstalledModules($orderList)) !== '') {
+            $this->errorMessage = $err;
+            return false;
+        }
+        
         return $orderList;
+    }
+    /**
+     * Check installed modules against the new set of module to see if a module
+     * in the new set would break the requirements/dependencies of the
+     * installed modules.
+     *
+     * Note:
+     * @param $newSet
+     * @return string
+     */
+    public function checkBrokenDepsInInstalledModules($newSet)
+    {
+        $installedList = $this->getInstalledModuleList();
+        $brokenDeps = array();
+        /*
+         * Iterate over all installed modules
+        */
+        foreach ($installedList as $module) {
+            /*
+             * Skip modules which are in the new set of modules
+            */
+            $skipModule = false;
+            foreach ($newSet as $newModule) {
+                if ($newModule->name == $module->name) {
+                    $skipModule = true;
+                }
+            }
+            if ($skipModule) {
+                continue;
+            }
+            /*
+             * Check the requirements of the remaining installed modules to
+             * see if the new set would break these modules requirements.
+            */
+            $requires = $module->getRequiredModules();
+            foreach ($requires as $req) {
+                foreach ($newSet as $newModule) {
+                    if ($req['name'] == $newModule->name) {
+                        if (!$this->moduleMeetsRequiredVersion($newModule, $req['comp'], $req['version'])) {
+                            $brokenDeps[] = array(
+                                'brokenModule' => $module,
+                                'brokenBy' => $newModule,
+                                'brokenRequirement' => $req
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (count($brokenDeps) > 0) {
+            $errList = array();
+            foreach ($brokenDeps as $elmt) {
+                $errList[] = sprintf("Module '%s' (version %s) would break installed module '%s' (version %s) which requires '%s' (version %s %s)", $elmt['brokenBy']->name, $elmt['brokenBy']->version, $elmt['brokenModule']->name, $elmt['brokenModule']->version, $elmt['brokenBy']->name, $elmt['brokenRequirement']['comp'], $elmt['brokenRequirement']['version']);
+            }
+            return join("\n", $errList);
+        }
+        return '';
     }
     /**
      * Check if $list contains module $name
