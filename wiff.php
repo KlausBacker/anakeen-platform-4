@@ -732,9 +732,15 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST
     
     $parameterList = $module->getParameterList();
     
+    $requestParameters = json_decode($_REQUEST['parameters'], true);
+    if (!is_array($requestParameters)) {
+        $answer = new JSONAnswer(null, sprintf("Error decoding JSON from 'parameters' argument."));
+        echo $answer->encode();
+        exit(1);
+    }
     foreach ($parameterList as $parameter) {
-        if (isset($_REQUEST[$parameter->name])) {
-            $parameter->value = $_REQUEST[$parameter->name];
+        if (isset($requestParameters[$parameter->name])) {
+            $parameter->value = $requestParameters[$parameter->name];
             $module->storeParameter($parameter);
         }
     }
