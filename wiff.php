@@ -764,7 +764,13 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['wstop'])) {
 }
 // Request to run wstart in context
 if (isset($_REQUEST['context']) && isset($_REQUEST['wstart'])) {
-    $wiff->activity(sprintf("* Request wstart (context = '%s')", $_REQUEST['context']));
+    $args = (isset($_REQUEST['args']) ? $_REQUEST['args'] : '');
+    $wiff->activity(sprintf("* Request wstart (context = '%s', args = '[%s]')", $_REQUEST['context'], $args));
+
+    $args = json_decode($args, true);
+    if (!is_array($args)) {
+        $args = array();
+    }
 
     $context = $wiff->getContext($_REQUEST['context']);
     if ($context === false) {
@@ -774,7 +780,7 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['wstart'])) {
     }
     
     $errors = array();
-    $ret = $context->wstart($errors);
+    $ret = $context->wstart($errors, $args);
     if ($ret) answer(null, implode("<br/>", $errors));
     
     answer(true);

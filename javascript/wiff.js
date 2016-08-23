@@ -2866,6 +2866,46 @@ function wstart(module, operation) {
 				}
 			});
 }
+/**
+ * Perform `wstart` and run callback(contextName, responseData)
+ * @param callback
+ * @param args
+ */
+function wstart_cb(callback, args) {
+	Ext.Ajax.request({
+		url : 'wiff.php',
+		params : {
+			context : currentContext,
+			wstart : 'yes',
+			authInfo : Ext.encode(authInfo),
+			args : Ext.encode(args)
+		},
+		callback : function(option, success, responseObject) {
+			var context = getCurrentContext();
+			var response = eval('(' + responseObject.responseText + ')');
+			return callback(context, response);
+		}
+	});
+}
+/**
+ * Perform `wstop` and run callback(contextName, responseData)
+ * @param callback
+ */
+function wstop_cb(callback) {
+	Ext.Ajax.request({
+		url : 'wiff.php',
+		params : {
+			context : currentContext,
+			wstop : 'yes',
+			authInfo : Ext.encode(authInfo)
+		},
+		callback : function(option, success, responseObject) {
+			var context = getCurrentContext();
+			var response = eval('(' + responseObject.responseText + ')');
+			return callback(context, response);
+		}
+	});
+}
 function installBeginWithError(errorMsg) {
     Ext.Msg.alert('Dynacase Control', '<span class="message error">Install cannot begin:<br/>'+errorMsg+'</span>',
 		function() {
