@@ -297,6 +297,30 @@ class Context extends ContextProperties
         return true;
     }
     /**
+     * Activate repositories declared as 'default'
+     * @return boolean success
+     */
+    public function activateDefaultRepo()
+    {
+        require_once ('class/Class.WIFF.php');
+        
+        $wiff = WIFF::getInstance();
+        if (($repoList = $wiff->getRepoList(false)) === false) {
+            $this->errorMessage = $wiff->errorMessage;
+            return false;
+        }
+        foreach ($repoList as $repo) {
+            if ($repo->default !== 'yes') {
+                continue;
+            }
+            if ($this->activateRepo($repo->name) === false) {
+                $this->errorMessage = sprintf("Error activating default repository '%s': %s", $repo->name, $this->errorMessage);
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
      * Deactivate repository for Context
      * @return boolean success
      * @param string $name repository name

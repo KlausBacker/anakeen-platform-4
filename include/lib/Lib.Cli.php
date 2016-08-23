@@ -2177,7 +2177,7 @@ function wiff_repository_help(&$argv) {
     echo "-----\n";
     echo "\n";
     echo "  wiff repository list [--show-password]\n";
-    echo "  wiff repository add <repo-name> <repo-url> <repo-auth-user> <repo-auth-password>\n";
+    echo "  wiff repository add [--default] <repo-name> <repo-url> <repo-auth-user> <repo-auth-password>\n";
     echo "  wiff repository delete <repo-name>\n";
     echo "  wiff repository delete --all\n";
     echo "\n";
@@ -2199,10 +2199,14 @@ function wiff_repository_list(&$argv) {
     foreach ($repoList as & $repo) {
         $name = $repo->name;
         $url = $repo->getUrl();
+        $extra = "";
         if (!isset($options['show-password']) || $options['show-password'] !== true) {
             $url = $repo->displayUrl;
         }
-        printf("%s\t%s\n", $name, $url);
+        if ($repo->default === 'yes') {
+            $extra .= "(default)";
+        }
+        printf("%s\t%s%s\n", $name, $url, (($extra!=='')?"\t$extra":""));
     }
     unset($repo);
     return 0;
@@ -2213,6 +2217,8 @@ function wiff_repository_list(&$argv) {
  * @return int
  */
 function wiff_repository_add(&$argv) {
+    $options = parse_argv_options($argv);
+    $default = (isset($options['default']) && $options['default'] === true);
     $repoName = array_shift($argv);
     if ($repoName === null) {
         printerr(sprintf("Error: missing repo-name.\n"));
@@ -2231,7 +2237,7 @@ function wiff_repository_add(&$argv) {
     $repoAuthPassword = array_shift($argv);
 
     $wiff = WIFF::getInstance();
-    $ret = $wiff->createRepoUrl($repoName, $repoUrl, $repoAuthUser, $repoAuthPassword);
+    $ret = $wiff->createRepoUrl($repoName, $repoUrl, $repoAuthUser, $repoAuthPassword, $default);
     if ($ret === false) {
         printerr(sprintf("Error: could not create repository '%s': %s\n", $repoName, $wiff->errorMessage));
         return 1;
@@ -2309,7 +2315,7 @@ function wiff_context_repository_help(&$argv) {
     echo "-----\n";
     echo "\n";
     echo "  wiff context <context-name> repository list\n";
-    echo "  wiff context <context-name> repository enable <repo-name>\n";
+    echo "  wiff context <context-name> repository enable [--default] <repo-name>\n";
     echo "  wiff context <context-name> repository disable <repo-name>\n";
     echo "  wiff context <context-name> repository disable --all\n";
     echo "\n";
@@ -2334,7 +2340,19 @@ function wiff_context_repository_list(&$context, &$argv) {
  * @return int
  */
 function wiff_context_repository_enable(&$context, &$argv) {
+    $options = parse_argv_options($argv);
     $repoName = array_shift($argv);
+    $default = (isset($options['default']) && $options['default'] === true);
+    if ($default) {
+        $ret = $context->activateDefaultRepo();
+        if ($ret === false) {
+            printerr(sprintf("Error: could not activate default repositories on context '%s': %s\n", $context->name, $context->errorMessage));
+            return 1;
+        }
+        if ($repoName === null) {
+            return 0;
+        }
+    }
     if ($repoName === null) {
         printerr(sprintf("Error: missing repo-name.\n"));;
         return 1;
