@@ -268,7 +268,7 @@ class Module
         $modUrl = $this->repository->getUrl() . '/' . $this->src;
         $this->tmpfile = $wiff->downloadUrl($modUrl);
         if ($this->tmpfile === false) {
-            $this->errorMessage = sprintf("Could not download '%s'.", $modUrl);
+            $this->errorMessage = sprintf("Could not download '%s': %s", WIFF::anonymizeUrl($modUrl) , $wiff->errorMessage);
             return false;
         }
         // Register downloaded module in context xml
