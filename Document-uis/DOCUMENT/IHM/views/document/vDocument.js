@@ -473,7 +473,7 @@ define([
 
                 $(lastShow).addClass("dcpLabel--select");
                 //$(lastShow).height(currentHeight - 5);
-                if ($dropTopSelect.length === 0 && $dropTopSelect.data("kendoComboBox")) {
+                if ($dropTopSelect.length === 0 ) {
                     $dropSelect = $('<input class="dcpTab__label__select" />');
                     $(lastShow).append($dropSelect);
                     $dropSelect.kendoComboBox({
