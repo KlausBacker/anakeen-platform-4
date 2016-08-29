@@ -36,7 +36,6 @@
             if (this.getMode() === "read") {
                 if (this.options.attributeValue.url) {
                     if (!this.options.renderOptions.htmlLink.url) {
-                        console.log("image", this.options.renderOptions.thumbnailSize);
                         if (this.options.renderOptions.thumbnailSize ) {
                             var reSize = /sizes\/([^\/]+)/;
                             this.options.attributeValue.thumbnail=this.options.attributeValue.thumbnail.replace(reSize,"sizes/"+this.options.renderOptions.thumbnailSize)+".png";
@@ -45,9 +44,13 @@
                             if (!this.options.renderOptions.thumbnailSize ) {
                                 this.options.attributeValue.thumbnail = this.options.attributeValue.url;
                             }
-
                     }
+
                 }
+            }
+            if (this.options.attributeValue.thumbnail) {
+                this.options.attributeValue.hash = this.options.attributeValue.creationDate.replace(/[ :-]/g, "");
+                this.options.attributeValue.thumbnail+='?c='+this.options.attributeValue.hash ;
             }
             this._super();
         },

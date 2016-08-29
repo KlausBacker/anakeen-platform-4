@@ -10,7 +10,6 @@ class ImageRenderOptions extends FileRenderOptions
 {
     const type = "image";
     const thumbnailSizeOption = "thumbnailSize";
-
     /**
      * Define image width
      * Width of displayed image
@@ -26,7 +25,6 @@ class ImageRenderOptions extends FileRenderOptions
     {
         return $this->setOption(self::thumbnailSizeOption, (int)$width);
     }
-
     /**
      * Define image geometry
      * 200 : width 200px
@@ -45,7 +43,7 @@ class ImageRenderOptions extends FileRenderOptions
     public function setThumbnailSize($size)
     {
         if (!preg_match("/^x?[0-9]+$/", $size) && !preg_match("/^[0-9]+x[0-9]+[fsc]?$/", $size)) {
-            throw new Exception("UI0212" , $size);
+            throw new Exception("UI0212", $size);
         }
         return $this->setOption(self::thumbnailSizeOption, $size);
     }
