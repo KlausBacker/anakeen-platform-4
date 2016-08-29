@@ -68,7 +68,7 @@ class RenderOptions implements \JsonSerializable
             ImageRenderOptions::type => array(
                 ImageRenderOptions::htmlLinkOption => $imageLinkOption,
                 ImageRenderOptions::contentDispositionOption => ImageRenderOptions::fileInlineDisposition,
-                ImageRenderOptions::thumbnailWidthOption => 48,
+                ImageRenderOptions::thumbnailSizeOption => 48,
             ) ,
             HtmltextRenderOptions::type => array(
                 HtmltextRenderOptions::toolbarOption => "Simple",
