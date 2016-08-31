@@ -16,6 +16,7 @@ class DocidRenderOptions extends CommonRenderOptions
     const autocompletionDisplay = "autoCompletion";
     const multipleSingleDisplay = "singleMultiple";
     const displayOption = "editDisplay";
+    const documentIconSizeOption = "documentIconSize";
     /**
      * Set extra configuration for kendoMultiSelect widget
      *
@@ -69,6 +70,28 @@ class DocidRenderOptions extends CommonRenderOptions
         $options->class.= " dcpAttribute__content__button--create";
         $options->class = trim($options->class);
         $this->addButton($options);
+    }
+    /**
+     * Define icon geometry of relation
+     * 200 : width 200px
+     * x300 : height 300px
+     * 200x300 : width 200 height 300 (define the box where image dimension can be included)
+     * 200x300c : width 200 height 300 with crop to get exact dimension
+     * 200x300s : width 200 height 300 with streched image to get exact dimension
+     *
+     * @note use only in view mode
+     *
+     * @param string $size in px (number to define width, xNumber to define Height, or WidthxHeight) : 300, x450, 200x300
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setDocumentIconSize($size)
+    {
+        if (!preg_match("/^x?[0-9]+$/", $size) && !preg_match("/^[0-9]+x[0-9]+[fsc]?$/", $size)) {
+            throw new Exception("UI0212", $size);
+        }
+        return $this->setOption(self::documentIconSizeOption, $size);
     }
 }
 

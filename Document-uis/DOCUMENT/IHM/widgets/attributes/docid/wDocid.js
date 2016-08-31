@@ -73,6 +73,19 @@
                             this.options.attributeValue);
                     }
                 }
+                if (this.options.renderOptions.documentIconSize) {
+                    var reSize = /sizes\/([^\/]+)/;
+                    if (this._isMultiple()) {
+                        _.each(this.options.attributeValues, function wDocidResizeIcons(singleValue)
+                        {
+                            singleValue.icon = singleValue.icon.replace(reSize, "sizes/" + scope.options.renderOptions.documentIconSize);
+                        });
+                    } else
+                        if (this.options.attributeValue.icon) {
+                            this.options.attributeValue.icon = this.options.attributeValue.icon.replace(reSize, "sizes/" + this.options.renderOptions.documentIconSize);
+                        }
+                }
+
                 //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
                 $.dcp.dcpAttribute.prototype._initDom.apply(this, []);
 
@@ -117,10 +130,10 @@
                 var buttonIndex = $button.data("index");
                 var buttonConfig = buttonsConfig[buttonIndex];
 
-                        $button.prop("disabled", false);
+                $button.prop("disabled", false);
                 if (currentValue.value) {
                     $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent);
-                    if (! currentValue.initid) {
+                    if (!currentValue.initid) {
                         $button.prop("disabled", true);
                     }
                 } else {

@@ -160,6 +160,10 @@ namespace {
          */
         const UI0211 = 'Family name is required in addCreateDocumentButton option';
         /**
+         * @errorCode The size can be a number or a geometry (300, x400, 200x120)
+         */
+        const UI0212 = 'Incorrect size "%s" : must be a number or 2 numbers separate by x';
+        /**
          * @errorCode Only view,edit, create are allowed
          */
         const UI0300 = 'Mode "%s" is not a valid render mode';

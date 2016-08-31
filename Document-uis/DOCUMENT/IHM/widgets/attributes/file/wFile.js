@@ -70,6 +70,12 @@
                             }
                         }
                     }
+                    if (this.options.renderOptions.mimeIconSize ) {
+                            var reSize = /sizes\/([^\/]+)/;
+                            this.options.attributeValue.icon=this.options.attributeValue.icon.replace(reSize,"sizes/"+this.options.renderOptions.mimeIconSize);
+
+                        }
+
                 }
             }
 

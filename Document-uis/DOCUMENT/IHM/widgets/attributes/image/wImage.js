@@ -27,29 +27,30 @@
                 downloadLabel: "Download the image"
             },
             renderOptions: {
-                thumbnailWidth: 100
+                thumbnailSize: "100x100"
             }
         },
 
         _initDom: function wImageInitDom()
         {
             if (this.getMode() === "read") {
-                var urlSep = '?';
                 if (this.options.attributeValue.url) {
                     if (!this.options.renderOptions.htmlLink.url) {
+                        if (this.options.renderOptions.thumbnailSize ) {
+                            var reSize = /sizes\/([^\/]+)/;
+                            this.options.attributeValue.thumbnail=this.options.attributeValue.thumbnail.replace(reSize,"sizes/"+this.options.renderOptions.thumbnailSize)+".png";
 
-                        if (this.options.renderOptions.thumbnailWidth > 0) {
-                            urlSep = (this.options.attributeValue.thumbnail.indexOf('?') >= 0) ? "&" : "?";
-                            this.options.attributeValue.thumbnail += urlSep +
-                                "size=" + parseInt(this.options.renderOptions.thumbnailWidth) +
-                                "&width=" + parseInt(this.options.renderOptions.thumbnailWidth);
                         } else
-                            if (this.options.renderOptions.thumbnailWidth === 0) {
+                            if (!this.options.renderOptions.thumbnailSize ) {
                                 this.options.attributeValue.thumbnail = this.options.attributeValue.url;
                             }
-
                     }
+
                 }
+            }
+            if (this.options.attributeValue.thumbnail) {
+                this.options.attributeValue.hash = this.options.attributeValue.creationDate.replace(/[ :-]/g, "");
+                this.options.attributeValue.thumbnail+='?c='+this.options.attributeValue.hash ;
             }
             this._super();
         },
