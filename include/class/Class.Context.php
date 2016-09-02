@@ -2470,6 +2470,15 @@ class Context extends ContextProperties
             $this->log(LOG_ERR, $err);
             return false;
         }
+        /**
+         * We use lstat() because file_exists() could return bool(false) if $path
+         * is a symlink pointing to a non-existing file: in this case we do not want
+         * to check the existence of the target but really want to check the existence
+         * of the symlink itself.
+         */
+        if (lstat($path) === false) {
+            return true;
+        }
         
         $filetype = filetype($path);
         if ($filetype === false) {
