@@ -2606,7 +2606,7 @@ class Context extends ContextProperties
             return false;
         }
         
-        $res = pg_query($conn, sprintf("DROP SCHEMA public CASCADE"));
+        $res = pg_query($conn, sprintf("DROP SCHEMA IF EXISTS public CASCADE"));
         if ($res === false) {
             $this->errorMessage.= sprintf("Error dropping schema public.\n");
             $err.= sprintf("Error dropping schema public.\n");
@@ -2621,7 +2621,7 @@ class Context extends ContextProperties
             "family",
             "dav"
         ) as $schema) {
-            $res = pg_query($conn, sprintf("DROP SCHEMA %s CASCADE", pg_escape_string($schema)));
+            $res = pg_query($conn, sprintf("DROP SCHEMA IF EXISTS %s CASCADE", pg_escape_string($schema)));
             if ($res === false) {
                 $this->errorMessage.= sprintf("Error dropping schema %s.", $schema);
                 $err.= sprintf("Error dropping schema %s.", $schema);
