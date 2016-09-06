@@ -70,15 +70,17 @@
                             }
                         }
                     }
-                    if (this.options.renderOptions.mimeIconSize ) {
-                            var reSize = /sizes\/([^\/]+)/;
-                            this.options.attributeValue.icon=this.options.attributeValue.icon.replace(reSize,"sizes/"+this.options.renderOptions.mimeIconSize);
-
-                        }
 
                 }
             }
-
+            if (this.options.renderOptions.mimeIconSize) {
+                if (["0", "0x0", "x0"].indexOf(this.options.renderOptions.mimeIconSize) !== -1) {
+                    this.options.attributeValue.icon = null;
+                } else {
+                    var reSize = /sizes\/([^\/]+)/;
+                    this.options.attributeValue.icon = this.options.attributeValue.icon.replace(reSize, "sizes/" + this.options.renderOptions.mimeIconSize);
+                }
+            }
             this._super();
             if (this.getMode() === "write") {
                 visibleInput = this.element.find("input[type=text]");
@@ -137,12 +139,12 @@
                         index: currentWidget._getIndex()
                     });
                     if (isNotPrevented) {
-                        var url=fileUrl + "&inline=yes", $base=$("base");
+                        var url = fileUrl + "&inline=yes", $base = $("base");
 
                         if (isNotPrevented) {
-                            if ($base.length > 0 ){
+                            if ($base.length > 0) {
                                 // For IE : Not honor base href in this case
-                                url=$base.attr("href")+url;
+                                url = $base.attr("href") + url;
                             }
                             window.open(url);
                         }

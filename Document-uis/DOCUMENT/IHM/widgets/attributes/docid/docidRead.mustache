@@ -7,7 +7,7 @@
                         href="{{renderOptions.htmlLink.renderUrl}}">
         {{/renderOptions.htmlLink.renderUrl}}
         {{^attributeValue.formatValue}}
-        <img class="dcpAttribute__value--icon" src="{{attributeValue.icon}}" />
+            {{#attributeValue.icon}}<img class="dcpAttribute__value--icon" src="{{attributeValue.icon}}" />{{/attributeValue.icon}}
         <span class="dcpAttribute__content__value">{{attributeValue.displayValue}}</span>
         {{/attributeValue.formatValue}}
         {{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}
@@ -23,7 +23,7 @@
                   target="{{renderOptions.htmlLink.target}}"
                    href="{{renderUrl}}">
             {{/renderUrl}}{{^formatValue}}
-            <img class="dcpAttribute__value--icon" src="{{icon}}" />
+            {{#icon}}<img class="dcpAttribute__value--icon" src="{{icon}}" />{{/icon}}
             <span class="dcpAttribute__content__value">{{displayValue}}</span>{{/formatValue}}
         {{#formatValue}}{{{formatValue}}}{{/formatValue}}
         {{#renderUrl}}

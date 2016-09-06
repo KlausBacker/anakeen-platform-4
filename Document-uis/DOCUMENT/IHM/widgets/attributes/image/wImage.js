@@ -41,7 +41,7 @@
                             this.options.attributeValue.thumbnail=this.options.attributeValue.thumbnail.replace(reSize,"sizes/"+this.options.renderOptions.thumbnailSize)+".png";
 
                         } else
-                            if (!this.options.renderOptions.thumbnailSize ) {
+                            if (!this.options.renderOptions.thumbnailSize) {
                                 this.options.attributeValue.thumbnail = this.options.attributeValue.url;
                             }
                     }
