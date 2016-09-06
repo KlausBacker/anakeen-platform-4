@@ -157,7 +157,7 @@
                 }
 
                 // Set system css classes
-                $table = this.element.find("table.dcpArray__table");
+                $table = this.element.find(".dcpArray__table");
                 $table.addClass("table table-condensed table-hover table-bordered responsive");
                 $table.find("> tbody").addClass("dcpArray__body").attr("data-attrid", this.options.id);
                 $table.find("> thead").attr("data-attrid", this.options.id).find("tr").addClass("dcpArray__head").attr("data-attrid", this.options.id);
