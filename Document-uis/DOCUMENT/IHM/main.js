@@ -23,17 +23,16 @@ require([
             currentValues = currentValues.slice(1);
         }
         if (currentValues.slice(0, 9) === "initValue") {
-
             try {
                 window.dcp.viewData = JSON.parse(currentValues.slice(9));
-            } catch(e) {
+            } catch(ex1) {
                 try {
                     window.dcp.viewData = JSON.parse(decodeURI(currentValues.slice(9)));
-                } catch(e) {
+                } catch(ex2) {
                     $document.documentController("showMessage", {
                         type: "error",
                         message: "unable to retrieve document"
-                    })
+                    });
                 }
             }
         }
