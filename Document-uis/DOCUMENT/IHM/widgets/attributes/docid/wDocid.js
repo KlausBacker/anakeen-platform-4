@@ -74,16 +74,25 @@
                     }
                 }
                 if (this.options.renderOptions.documentIconSize) {
-                    var reSize = /sizes\/([^\/]+)/;
+                    var reSize = /sizes\/([0-9xcfs]+)/;
+                    var noIcon = (["0", "0x0", "x0"].indexOf(this.options.renderOptions.documentIconSize) !== -1);
                     if (this._isMultiple()) {
                         _.each(this.options.attributeValues, function wDocidResizeIcons(singleValue)
                         {
-                            singleValue.icon = singleValue.icon.replace(reSize, "sizes/" + scope.options.renderOptions.documentIconSize);
+                            if (noIcon) {
+                                singleValue.icon = null;
+                            } else
+                                if (singleValue.icon) {
+                                    singleValue.icon = singleValue.icon.replace(reSize, "sizes/" + scope.options.renderOptions.documentIconSize);
+                                }
                         });
                     } else
-                        if (this.options.attributeValue.icon) {
-                            this.options.attributeValue.icon = this.options.attributeValue.icon.replace(reSize, "sizes/" + this.options.renderOptions.documentIconSize);
-                        }
+                        if (noIcon) {
+                            this.options.attributeValue.icon = null;
+                        } else
+                            if (this.options.attributeValue.icon) {
+                                this.options.attributeValue.icon = this.options.attributeValue.icon.replace(reSize, "sizes/" + this.options.renderOptions.documentIconSize);
+                            }
                 }
 
                 //noinspection JSPotentiallyInvalidConstructorUsage,JSAccessibilityCheck
@@ -133,9 +142,11 @@
                 $button.prop("disabled", false);
                 if (currentValue.value) {
                     $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlEditContent);
-                    if (!currentValue.initid) {
-                        $button.prop("disabled", true);
-                    }
+                    // @TODO Find an efficient way to verify edit access of target
+                    /*
+                     if (!currentValue.value) {
+                     $button.prop("disabled", true);
+                     }*/
                 } else {
                     // also when mutiple always create
                     $button.html(buttonConfig.renderHtmlContent + buttonConfig.htmlCreateContent);
