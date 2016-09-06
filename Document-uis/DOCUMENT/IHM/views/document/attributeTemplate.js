@@ -391,7 +391,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                         if (_.isUndefined(rows[index])) {
                             rows[index] = {content: {}};
                         }
-
+                        rows[index].index=index;
                         rows[index].content[attributeId] = {
                             label: attributeLabel,
                             attributeValue: singleValue,
