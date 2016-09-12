@@ -1,0 +1,146 @@
+<div class="family-configuration">
+    <button class="changeIcon"><img src="[icon]"/></button>
+    [label] ([famname])
+
+
+    <ul class="barmenu">
+        <li>
+            <div><a target="[idFrame]" href="?app=GENERIC&action=GENERIC_EDIT&classid=[famid]">[CreateLabel]</a></div>
+        </li>
+        <li>
+            <div><a target="[idFrame]"
+                    href="?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=[famid]">[AttributesLabel]</a></div>
+        </li>
+
+
+        <li>
+            <div><a target="[idFrame]" href="?app=FDL&action=EDITFAMILYENUMS&famid=[famid]">[EnumerateLabel]</a></div>
+        </li>
+
+        <li>
+            <div>[ConfigurationLabel]</div>
+            <ul>
+                <li>
+                    <div><a target="[idFrame]" href="?app=FDL&action=IMPCARD&zone=FDL:VIEWDEFAULTVALUES:T&id=[famid]">[DefaultLabel]</a>
+                    </div>
+                </li>
+                <li>
+                    <div><a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[famid]">[ExportConfLabel]</a></div>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <div>[SecurityLabel]</div>
+            <ul>
+                <li>
+                    <div><a target="[idFrame]"
+                            href="?app=FREEDOM&action=EDITPROF&id=[famid]">[ChangeFamilyProfileLabel]</a></div>
+                </li>
+                <li>
+                    <div><a target="[idFrame]" href="?app=FREEDOM&action=EDITPROF&create=1&id=[famid]">[ChangeNewDocProfileLabel]</a>
+                    </div>
+                </li>
+                <li>
+                    <div><a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[profid]">[ChangeFamilyAccess]</a>
+                    </div>
+                </li>
+                <li>
+                    <div><a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[cprofid]">[ChangeNewDocAccess]</a>
+                    </div>
+                </li>
+                <li>
+                    <div><a target="[idFrame]" [IFNOT cvid]class="ui-state-disabled" [ENDIF cvid]
+                            href="?app=FDL&action=FDL_CARD&id=[cvid]">[ViewDefaultCv]</a></div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div>[WorkflowLabel]</div>
+            <ul>
+                <li>
+                    <div><a target="[idFrame]" href="?app=FREEDOM&action=EDITWDOC&current=Y&id=[famid]">[ChooseDefaultWorkflow]</a>
+                    </div>
+                </li>
+                <li>
+                    <div><a target="[idFrame]" [IFNOT wid]class="ui-state-disabled" [ENDIF wid]
+                            href="?app=FDL&action=FDL_CARD&id=[wid]">[ViewDefaultWorkflow]</a></div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div><a class="abstract">[PresentationLabel]</a></div>
+        </li>
+    </ul>
+
+    <section class="home">
+        <div>
+            <p class="header">
+                [PropertiesLabel]
+            </p>
+            <div>
+                <a target="[idFrame]" href="?app=GENERIC&action=GENERIC_EDIT&classid=[famid]">[CreateLabel]</a>
+                <a target="[idFrame]" href="?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=[famid]">[AttributesLabel]</a>
+                <a target="[idFrame]" href="?app=FDL&action=EDITFAMILYENUMS&famid=[famid]">[EnumerateLabel]</a>
+                <a target="[idFrame]" href="?app=FDL&action=FDL_CARD&zone=FDL:VIEWDEFAULTVALUES&id=[famid]">[DefaultLabel]</a>
+            </div>
+        </div>
+        <div>
+            <p class="header">
+                [SecurityLabel]
+            </p>
+
+            <div>
+                <p>
+                    [FamilyProfil] :
+                    [IF profid]<a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[profid]">
+                    <img src="[pIcon]"/>[pLabel]</a>[ENDIF profid]
+                    [IFNOT profid]<a target="[idFrame]" data-reload="true" href="?app=FREEDOM&action=MODPROF&docid=[famid]&profid=[famid]">
+                    [InitialiseFamProfileLabel]</a>[ENDIF profid]
+                </p>
+
+                <a target="[idFrame]" href="?app=FREEDOM&action=EDITPROF&id=[famid]">[ChangeFamilyProfileLabel]</a>
+
+                <p>
+                    [DocumentProfil] :
+                    [IF cprofid]<a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[cprofid]"><img
+                        src="[cpIcon]"/>[cpLabel]</a>[ENDIF cprofid]
+
+                    [IFNOT cprofid]<a target="[idFrame]" data-reload="true" href="?app=FREEDOM&action=CREATEPROF&targetid=[famid]&attrid=cprofid&famid=[famid]">[CreateNewDocProfile]</a>[ENDIF cprofid]
+
+                </p>
+                <p> [ViewControl] :
+                    [IF cvid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[cvid]"><img src="[cvIcon]"/>[cvLabel]</a>
+                    [ENDIF  cvid]
+                    [IFNOT cvid]<a target="[idFrame]"
+                                   href="?app=GENERIC&action=GENERIC_EDIT&classid=CVDOC&cv_famid=[famid]">[cvCreate]</a>
+                    [ENDIF cvid]
+
+                </p>
+
+
+                <a target="[idFrame]"
+                   href="?app=FREEDOM&action=EDITPROF&create=1&id=[famid]">[ChangeNewDocProfileLabel]</a>
+            </div>
+
+        </div>
+
+        <div>
+            <p class="header">
+                [WorkflowLabel]
+            </p>
+            <p>
+                [DefaultWorkflow] :
+                [IF wid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[wid]"><img src="[wIcon]"/> [wLabel]</a>[ENDIF
+                wid]
+                [IFNOT wid][NoWorkflow][ENDIF wid]
+            </p>
+            <p>
+                <a target="[idFrame]"
+                   href="?app=FREEDOM&action=EDITWDOC&current=Y&id=[famid]">[ChooseDefaultWorkflow]</a>
+            </p>
+        </div>
+
+    </section>
+    <iframe class="config-result" name="[idFrame]" src="about:blank"/>
+</div>

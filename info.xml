@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
+    <description>dynacase_devel_ui</description>
+
+    <requires>
+        <module comp="ge" name="dynacase-core" version="3.2"/>
+        <module name="dynacase-jquery-dataTables-1.10-installer"/>
+    </requires>
+
+    <post-install>
+        <process command="programs/record_application DCPDEVEL"/>
+        <process command="programs/update_catalog"/>
+    </post-install>
+    <post-upgrade>
+        <process command="programs/pre_migration DCPDEVEL"/>
+        <process command="programs/record_application DCPDEVEL"/>
+        <process command="programs/post_migration DCPDEVEL"/>
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+</module>
