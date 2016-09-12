@@ -8,15 +8,27 @@
 </head>
 <body>
 
-
-<table class="mainSystem">
+<div class="devel-right">
+    <div class="family-filter"></div>
+    <div class="scrolldiv">
+<table class="develmain">
+    <thead>
+    <tr><th>[TEXT:Families]</th></tr>
+    </thead>
+    <tbody>
     [BLOCK families]
-    <tr>
-        <td class="systemLeft">
-            <div><a data-familyid="[familyid]"><img src="[icon]" />[label]</a></div>
+    <tr class="family-anchor" data-familyid="[familyid]">
+        <td  >
+            <div><a  ><img class="family-icon" src="[icon]" />[label] ([familyid])</a></div>
     </td>
     </tr>
-    [ENDBLOCK families]
-    </table>
+    [ENDBLOCK families]</tbody>
+    </table></div>
+</div>
+<div class="devel-left ">
+    <div class="devel-init">
+<img src="[IMG:searchsysdoc.png]" />
+        </div>
+</div>
 </body>
 </html>

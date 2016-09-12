@@ -38,6 +38,40 @@ $action_desc = array(
         "function" => "develmain",
         "root" => "Y",
         "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "FAMILYCONF",
+        "short_name" => N_("DCPDEVEL:FAMILYCONF"),
+        "script" => "action.familyconf.php",
+        "layout" => "familyconf.html",
+        "function" => "familyconf",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "FAMILYEXPORTFORM",
+        "short_name" => N_("DCPDEVEL:FAMILYEXPORTFORM"),
+        "script" => "action.familyexportform.php",
+        "layout" => "familyexportform.html",
+        "function" => "familyexportform",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "SETLOGICALNAME",
+        "short_name" => N_("DCPDEVEL:SETLOGICALNAME"),
+        "script" => "action.setlogicalname.php",
+        "function" => "setlogicalname",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "EXPORTFAMILYCONFIG",
+        "short_name" => N_("DCPDEVEL:EXPORTFAMILYCONFIG"),
+        "script" => "action.exportfamilyconfig.php",
+        "function" => "exportfamilyconfig",
+        "root" => "N",
+        "acl" => "DEVEL"
     )
 );
 

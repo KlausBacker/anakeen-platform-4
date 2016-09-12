@@ -1,0 +1,92 @@
+/* Css */
+
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+}
+
+.dataTables_filter input {
+
+    width: 100%;
+    padding: 3px;
+}
+
+
+.family-icon {
+    vertical-align: middle;
+    margin-right: 1em;
+}
+.family-anchor {
+    cursor:pointer;
+}
+.develmain thead {
+    display:none;
+}
+.scrolldiv {
+    overflow-y:auto;
+}
+.devel-right {
+    width:300px;
+
+    display:inline-block;
+    vertical-align: top;
+}
+.devel-left {
+
+    width:calc(100% - 304px);
+
+    display:inline-block;
+    vertical-align: top;
+
+}
+table.dataTable tbody tr:hover {
+    background-color: #e7e7e7;
+}
+
+iframe.config-result {
+
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.barmenu > li.ui-menu-item {
+    min-width: 100px;
+    display:inline-block;
+}
+.barmenu.ui-widget.ui-widget-content {
+    width:100%;
+    border-left: none;
+    border-right: none;
+}
+
+.barmenu  li.ui-menu-item a{
+    text-decoration: none;
+}
+.changeIcon img {
+    vertical-align: middle;
+}
+
+.ui-button img {
+    vertical-align: middle;
+
+}
+
+.header {
+    border-bottom: solid 2px #D4D4D4;
+    font-weight: bold;
+}
+.devel-init {
+    text-align: center;
+    padding-top: 50px;
+}
+.home label {
+    min-width: 14em;
+    display: inline-block;
+}
+.home a.ui-button.ui-corner-all.ui-widget {
+    min-width: 14em;
+    text-align: left;
+}

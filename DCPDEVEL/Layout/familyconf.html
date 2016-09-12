@@ -1,6 +1,6 @@
 <div class="family-configuration">
     <button class="changeIcon"><img src="[icon]"/></button>
-    [label] ([famname])
+    [label] ([famname])  #[famid]
 
 
     <ul class="barmenu">
@@ -25,7 +25,7 @@
                     </div>
                 </li>
                 <li>
-                    <div><a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[famid]">[ExportConfLabel]</a></div>
+                    <div><a target="[idFrame]" href="?app=DCPDEVEL&action=FAMILYEXPORTFORM&family=[famid]">[ExportConfLabel]</a></div>
                 </li>
             </ul>
         </li>
@@ -76,13 +76,14 @@
     <section class="home">
         <div>
             <p class="header">
-                [PropertiesLabel]
+                <label>[ConfigurationLabel]</label>
             </p>
             <div>
                 <a target="[idFrame]" href="?app=GENERIC&action=GENERIC_EDIT&classid=[famid]">[CreateLabel]</a>
                 <a target="[idFrame]" href="?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=[famid]">[AttributesLabel]</a>
                 <a target="[idFrame]" href="?app=FDL&action=EDITFAMILYENUMS&famid=[famid]">[EnumerateLabel]</a>
-                <a target="[idFrame]" href="?app=FDL&action=FDL_CARD&zone=FDL:VIEWDEFAULTVALUES&id=[famid]">[DefaultLabel]</a>
+                <a target="[idFrame]" href="?app=FDL&action=FDL_CARD&zone=FDL:VIEWDEFAULTVALUES:T&id=[famid]">[DefaultLabel]</a>
+                <a target="[idFrame]" href="?app=DCPDEVEL&action=FAMILYEXPORTFORM&family=[famid]">[ExportConf]</a>
             </div>
         </div>
         <div>
@@ -92,25 +93,26 @@
 
             <div>
                 <p>
-                    [FamilyProfil] :
+                    <label>[FamilyProfil] :</label>
                     [IF profid]<a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[profid]">
-                    <img src="[pIcon]"/>[pLabel]</a>[ENDIF profid]
+                    <img class="ui-icon" src="[pIcon]"/> [pLabel]</a>[ENDIF profid]
                     [IFNOT profid]<a target="[idFrame]" data-reload="true" href="?app=FREEDOM&action=MODPROF&docid=[famid]&profid=[famid]">
-                    [InitialiseFamProfileLabel]</a>[ENDIF profid]
+                    [InitialiseFamProfileLabel]</a> [TEXT:dcpdev:or] [ENDIF profid]
+
+                    <a target="[idFrame]" href="?app=FREEDOM&action=EDITPROF&id=[famid]">[ChangeFamilyProfileLabel]</a>
                 </p>
 
-                <a target="[idFrame]" href="?app=FREEDOM&action=EDITPROF&id=[famid]">[ChangeFamilyProfileLabel]</a>
 
                 <p>
-                    [DocumentProfil] :
-                    [IF cprofid]<a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[cprofid]"><img
-                        src="[cpIcon]"/>[cpLabel]</a>[ENDIF cprofid]
+                    <label>[DocumentProfil] :</label>
+                    [IF cprofid]<a target="[idFrame]" href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[cprofid]"><img  class="ui-icon"
+                        src="[cpIcon]"/> [cpLabel]</a>[ENDIF cprofid]
 
                     [IFNOT cprofid]<a target="[idFrame]" data-reload="true" href="?app=FREEDOM&action=CREATEPROF&targetid=[famid]&attrid=cprofid&famid=[famid]">[CreateNewDocProfile]</a>[ENDIF cprofid]
 
                 </p>
-                <p> [ViewControl] :
-                    [IF cvid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[cvid]"><img src="[cvIcon]"/>[cvLabel]</a>
+                <p> <label>[ViewControl] :</label>
+                    [IF cvid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[cvid]"><img  class="ui-icon"src="[cvIcon]"/> [cvLabel]</a>
                     [ENDIF  cvid]
                     [IFNOT cvid]<a target="[idFrame]"
                                    href="?app=GENERIC&action=GENERIC_EDIT&classid=CVDOC&cv_famid=[famid]">[cvCreate]</a>
@@ -130,12 +132,11 @@
                 [WorkflowLabel]
             </p>
             <p>
-                [DefaultWorkflow] :
-                [IF wid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[wid]"><img src="[wIcon]"/> [wLabel]</a>[ENDIF
+                <label>[DefaultWorkflow] :</label>
+                [IF wid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[wid]"><img  class="ui-icon" src="[wIcon]"/> [wLabel]</a>[ENDIF
                 wid]
                 [IFNOT wid][NoWorkflow][ENDIF wid]
-            </p>
-            <p>
+
                 <a target="[idFrame]"
                    href="?app=FREEDOM&action=EDITWDOC&current=Y&id=[famid]">[ChooseDefaultWorkflow]</a>
             </p>

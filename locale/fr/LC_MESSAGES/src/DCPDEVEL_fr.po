@@ -1,8 +1,13 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-06 14:10+0200\n"
+"POT-Creation-Date: 2016-09-12 16:19+0200\n"
+"PO-Revision-Date: 2016-09-12 16:34+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -11,5 +16,197 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+
+msgctxt "dcpdevel"
+msgid "Attributes"
+msgstr "Attributs"
+
+msgctxt "dcpdevel"
+msgid "Back"
+msgstr "Retour"
+
+msgctxt "dcpdevel"
+msgid "Choose another existing family profile"
+msgstr "Choisir un autre profil de famille"
+
+msgctxt "dcpdevel"
+msgid "Choose default workflow"
+msgstr "Choisir un profil par défaut pour le workflow "
+
+msgctxt "dcpdevel"
+msgid "Choose existing family profile"
+msgstr "Choisir un profil de famille existant"
+
+msgctxt "dcpdevel"
+msgid "Choose profile and view control for new documents"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Clear logical name \"%s\""
+msgstr "Effacement du nom logique \"%s\""
+
+msgctxt "dcpdevel"
+msgid "Configuration"
+msgstr "Configuration"
+
+msgctxt "dcpdevel"
+msgid "Configure family access"
+msgstr "Configuration de l'accès à la famille"
+
+msgctxt "dcpdevel"
+msgid "Configure new doc access"
+msgstr "Configuration de l'accès aux nouveaux documents"
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Create %s"
+msgstr "Créer %s"
+
+msgctxt "dcpdevel"
+msgid "Create new view control"
+msgstr "Créer un nouveau contrôle de vue"
+
+msgctxt "dcpdevel"
+msgid "Create profile for new document"
+msgstr "Créer un profil pour les nouveaux documents"
+
 msgid "DCPDEVEL:DCPDEVEL"
+msgstr ""
+
+msgid "DCPDEVEL:DEVELMAIN"
+msgstr ""
+
+msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
+msgstr ""
+
+msgid "DCPDEVEL:FAMILYCONF"
+msgstr ""
+
+msgid "DCPDEVEL:FAMILYEXPORTFORM"
+msgstr ""
+
+msgid "DCPDEVEL:SETLOGICALNAME"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Default view control"
+msgstr "Contrôle de vue par défaut"
+
+msgctxt "dcpdevel"
+msgid "Default workflow"
+msgstr "Workflow par défaut"
+
+msgctxt "dcpdevel"
+msgid "Defaut values and parameters"
+msgstr "Valeur par défaut et paramètre"
+
+msgctxt "dcpdevel"
+msgid "Enumerates"
+msgstr "Énumérés"
+
+msgctxt "dcpdevel"
+msgid "Export Configuration"
+msgstr "Exportation de la configuration"
+
+msgctxt "dcpdevel"
+msgid "Export configuration"
+msgstr "Exportation de la configuration"
+
+msgid "Families"
+msgstr "Familles"
+
+msgid "Families configuration"
+msgstr "Configuration de la famille"
+
+msgctxt "dcpdevel"
+msgid "Family profile"
+msgstr "Profil de la famille"
+
+msgctxt "dcpdevel"
+msgid "Initialize specific profile for family"
+msgstr "Initialiser le profil spécifique pour la famille"
+
+msgctxt "dcpdevel"
+msgid "No default view control configurated"
+msgstr "Aucun contrôle de vue n'est configuré"
+
+msgctxt "dcpdevel"
+msgid "No default workflow configurated"
+msgstr "Aucun workflow n'est configuré"
+
+msgctxt "dcpdevel"
+msgid "No update logical name for family"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Profile for new documents"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Security"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Set logical name to \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Update logical name from \"%s\" to \"%s\""
+msgstr "Mise à jour du nom logique de \"%s\" vers \"%s\""
+
+msgctxt "dcpdevel"
+msgid "View Control"
+msgstr "Contrôle de vue"
+
+msgctxt "dcpdevel"
+msgid "View default workflow"
+msgstr "Voir le workflow par défaut"
+
+msgctxt "dcpdevel"
+msgid "Workflow"
+msgstr "Workflow"
+
+msgid "dcpdev:Configuration documents to exports for "
+msgstr "Document de configuration de la famille"
+
+msgid "dcpdev:Csv enclosure"
+msgstr "Délimiteur CSV"
+
+msgid "dcpdev:Csv separator"
+msgstr "Séparateur CSV"
+
+msgid "dcpdev:Documents"
+msgstr "Documents"
+
+msgid "dcpdev:Export configuration"
+msgstr "Exporter la configuration"
+
+msgid "dcpdev:Family"
+msgstr "Famille"
+
+msgid "dcpdev:Logical name"
+msgstr "Nom logique"
+
+msgid "dcpdev:comma"
+msgstr "Virgule"
+
+msgid "dcpdev:double-quote"
+msgstr "Guillement"
+
+msgid "dcpdev:or"
+msgstr "ou"
+
+msgid "dcpdev:semi-colon"
+msgstr "Point-virgule"
+
+msgid "dcpdev:single-quote"
+msgstr "Simple quote"
+
+msgid "dcpdevel:ADMIN_ACTIONS_LIST short_name"
+msgstr ""
+
+msgid "dcpdevel:main Access"
 msgstr ""

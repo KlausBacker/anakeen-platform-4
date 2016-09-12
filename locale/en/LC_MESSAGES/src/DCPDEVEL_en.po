@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-06 14:10+0200\n"
+"POT-Creation-Date: 2016-09-12 16:19+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -11,5 +11,196 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+msgctxt "dcpdevel"
+msgid "Attributes"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Back"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Choose another existing family profile"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Choose default workflow"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Choose existing family profile"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Choose profile and view control for new documents"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Clear logical name \"%s\""
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Configuration"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Configure family access"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Configure new doc access"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Create %s"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Create new view control"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Create profile for new document"
+msgstr ""
+
 msgid "DCPDEVEL:DCPDEVEL"
+msgstr ""
+
+msgid "DCPDEVEL:DEVELMAIN"
+msgstr ""
+
+msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
+msgstr ""
+
+msgid "DCPDEVEL:FAMILYCONF"
+msgstr ""
+
+msgid "DCPDEVEL:FAMILYEXPORTFORM"
+msgstr ""
+
+msgid "DCPDEVEL:SETLOGICALNAME"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Default view control"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Default workflow"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Defaut values and parameters"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Enumerates"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Export Configuration"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Export configuration"
+msgstr ""
+
+msgid "Families"
+msgstr ""
+
+msgid "Families configuration"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Family profile"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Initialize specific profile for family"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "No default view control configurated"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "No default workflow configurated"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "No update logical name for family"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Profile for new documents"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Security"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Set logical name to \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Update logical name from \"%s\" to \"%s\""
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "View Control"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "View default workflow"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Workflow"
+msgstr ""
+
+msgid "dcpdev:Configuration documents to exports for "
+msgstr ""
+
+msgid "dcpdev:Csv enclosure"
+msgstr ""
+
+msgid "dcpdev:Csv separator"
+msgstr ""
+
+msgid "dcpdev:Documents"
+msgstr ""
+
+msgid "dcpdev:Export configuration"
+msgstr ""
+
+msgid "dcpdev:Family"
+msgstr ""
+
+msgid "dcpdev:Logical name"
+msgstr ""
+
+msgid "dcpdev:comma"
+msgstr ""
+
+msgid "dcpdev:double-quote"
+msgstr ""
+
+msgid "dcpdev:or"
+msgstr ""
+
+msgid "dcpdev:semi-colon"
+msgstr ""
+
+msgid "dcpdev:single-quote"
+msgstr ""
+
+msgid "dcpdevel:ADMIN_ACTIONS_LIST short_name"
+msgstr ""
+
+msgid "dcpdevel:main Access"
 msgstr ""

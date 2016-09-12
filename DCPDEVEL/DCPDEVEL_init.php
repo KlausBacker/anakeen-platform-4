@@ -1,5 +1,4 @@
 <?php
-
 /**
  * provided by module @moduleName@ (version @version@-@release@)
  */

@@ -1,41 +1,60 @@
 <?php
-
-function develmain(Action &$action) {
-
-
-    $action->parent->addJsRef("lib/jquery/1.7.2/jquery.js");
-    $action->parent->addJsRef("lib/jquery-ui-1.12.0/jquery-ui.js");
-    $action->parent->addJsRef("lib/jquery-dataTables/1.10/js/jquery.dataTables.js");
-    $action->parent->addJsRef("DCPDEVEL/Layout/develmain.js");
-
-    $action->parent->addCssRef("WHAT/Layout/size-normal.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.structure.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.theme.min.css");
-
-
-    $action->parent->addCssRef("lib/jquery-dataTables/1.10/css/jquery.dataTables.css");
-    $action->parent->addCssRef("lib/jquery-dataTables/1.10/css/dataTables.jqueryui.css");
-
-    $action->parent->addCssRef("DCPDEVEL/Layout/develmain.css");
-
-    $families=new SearchDoc("", -1);
-    $families->setObjectReturn(true);
-    $families->search();
-
-    $familyList=$families->getDocumentList();
-
-    $familyData=[];
-    foreach ($familyList as $family) {
-        $familyData[]=[
-            "label"=>$family->getTitle(),
-            "icon"=>$family->getIcon("", 22),
-            "familyid"=>$family->name
-        ];
+require_once ("FDL/Class.Doc.php");
+function setlogicalname(Action & $action)
+{
+    
+    $usage = new ActionUsage($action);
+    $usage->setDefinitionText("Set Logical name");
+    $docid = $usage->addRequiredParameter("id", "Document identifier");
+    $logicalName = $usage->addRequiredParameter("name", "New name");
+    $usage->verify();
+    /**
+     * @var Doc $doc
+     */
+    $doc = new_Doc("", $docid);
+    
+    $message = "";
+    $err = "";
+    if (!$doc->isAffected()) {
+        $err = sprintf("Undefined Document \"%s\"", $docid);
+    } else {
+        if (is_a($doc, "\\DocFam")) {
+            $err = sprintf(___("No update logical name for family", "dcpdevel"));
+        }
+        
+        if (!$err && $logicalName !== ":initial:") {
+            
+            if ($logicalName === ":auto:") {
+                $logicalName = sprintf("%s-%s", $doc->fromname, str_replace(" ", "_", unaccent($doc->getTitle())));
+            }
+            
+            $oldName = $doc->name;
+            if ($logicalName === ":clear:") {
+                simpleQuery("", sprintf("update doc set name=null where initid=%d", $doc->initid));
+                simpleQuery("", sprintf("delete from docname where id=%d", $doc->id));
+                $message = sprintf(___("Clear logical name \"%s\"", "dcpdevel") , $oldName);
+                $doc->name = null;
+            } else {
+                $err = $doc->setLogicalName($logicalName, true);
+                if ($err == "") {
+                    if ($oldName) {
+                        $message = sprintf(___("Update logical name from \"%s\" to \"%s\"", "dcpdevel") , $oldName, $doc->name);
+                    } else {
+                        $message = sprintf(___("Set logical name to \"%s\"", "dcpdevel") , $doc->name);
+                    }
+                    $doc->addHistoryEntry($message);
+                }
+            }
+        }
     }
-
-
-
-    $action->lay->eSetBlockData("families", $familyData);
-
+    header('Content-Type: application/json');
+    
+    if ($err) {
+        header("HTTP/1.0 400 Error");
+        $response = ["success" => false, "error" => $err, "logicalName" => $doc->name];
+    } else {
+        $response = ["success" => true, "message" => $message, "logicalName" => $doc->name];
+    }
+    $action->lay->noparse = true;
+    $action->lay->template = json_encode($response);
 }

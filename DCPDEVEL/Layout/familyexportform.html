@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>[TEXT:Families configuration]</title>
+    [CSS:CUSTOMREF]
+    [JS:REF]
+    <style>
+        .list-export {
+            width:100%;
+        }
+        .list-export img {
+            vertical-align: middle;
+        }
+
+        .list-export a {
+            width: calc(100% - 26px);
+            text-align: left;
+        }
+
+        .list-export input {
+            font: inherit;
+            color: inherit;
+            text-align: left;
+            outline: none;
+            cursor: text;
+            background: none;
+        }
+
+        .list-export input.error {
+            color: red;
+        }
+         input.logical-name {
+             width: calc(100% - 80px);
+         }
+        input.logical-name.updated {
+            color: green;
+            font-weight: bold;
+        }
+
+        .doclink {
+            min-width:14em;
+        }
+        .family-label {
+            white-space: nowrap;
+        }
+        .logical-name.ui-button:focus {
+            border: 1px solid #8D81EC;
+            background: none;
+            color: inherit;
+        }
+        .result {
+            border:none;
+            padding:0;
+            margin:0;
+            height: 50px;
+            width:80%;
+        }
+        form.export {
+            margin:10px;
+            border: solid 1px #dadada;
+            padding: 1em;
+        }
+        .export input[type=submit] {
+            margin:10px;
+        }
+        .empty {
+            border-color:red;
+        }
+        .list-export td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+<h2>[TEXT:dcpdev:Configuration documents to exports for ] "[famTitle]"</h2>
+
+<table class="list-export">
+    <thead>
+    <tr>
+        <th>[TEXT:dcpdev:Family]</th>
+        <th>[TEXT:dcpdev:Documents]</th>
+        <th>[TEXT:dcpdev:Logical name]</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    [BLOCK documents]
+    <tr>
+        <td class="family-label">[famlabel]</td>
+        <td class="doclink"><a  target="_blank" href="?app=FDL&action=FDL_CARD&id=[docid]"> <img src="[icon]"> [label]</a></td>
+        <td><input data-docid="[docid]" class="logical-name" type="text" value="[name]"/>
+        <div class="message"></div>
+        </td>
+
+    </tr>
+    [ENDBLOCK documents]
+    </tbody>
+</table>
+
+<form class="export" target="exportresult" method="POST" action="?app=DCPDEVEL&action=EXPORTFAMILYCONFIG&family=[famid]">
+    <label>[TEXT:dcpdev:Csv separator]
+    <select name="csvseparator">
+        <option value=';'>; ([TEXT:dcpdev:semi-colon])</option>
+        <option value=",">, ([TEXT:dcpdev:comma])</option>
+    </select></label>
+    <label>[TEXT:dcpdev:Csv enclosure]
+    <select name="csvenclosure">
+        <option value='"'>" ([TEXT:dcpdev:double-quote])</option>
+        <option value="'">' ([TEXT:dcpdev:single-quote])</option>
+    </select></label>
+    <br/>
+
+    <input type="submit" value="[TEXT:dcpdev:Export configuration]"/>
+</form>
+<iframe class="result" name="exportresult" />
+</body>
+</html>
