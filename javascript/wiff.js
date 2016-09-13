@@ -3146,6 +3146,7 @@ function askParameter_success(module, operation, responseObject) {
 			bodyStyle : 'padding:15px;',
 			monitorValid : true,
 			autoHeight : true,
+			labelAlign: 'top',
 			buttons : [{
 				text : operation=='parameter' ? 'Save' : 'Save and continue',
 				formBind : true,
@@ -3197,6 +3198,7 @@ function askParameter_success(module, operation, responseObject) {
 				bodyStyle : 'padding:15px;',
 				monitorValid : true,
 				autoHeight : true,
+				labelAlign: 'top',
 				buttons : [{
 					text : cancelLabel,
 					handler : function() {
