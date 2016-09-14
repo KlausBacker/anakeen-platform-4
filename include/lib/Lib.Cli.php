@@ -1869,9 +1869,13 @@ function wiff_delete_context(&$argv)
 
     printf("Deleting context '%s'... ", $context->name);
     $res = 0;
-    $wiff->deleteContext($ctx_name, $res);
+    $err = $wiff->deleteContext($ctx_name, $res);
     if ($res === false) {
         printerr(sprintf("Error: could not delete context '%s': %s\n", $ctx_name, $wiff->errorMessage));
+        return 1;
+    }
+    if (!empty($err)) {
+        printerr(sprintf("Error: deletion of context '%s' returned with errors: %s\n", $ctx_name, $err));
         return 1;
     }
     echo sprintf("[%sOK%s]\n", fg_green() , color_reset());
@@ -2663,7 +2667,7 @@ function wiff_archive_restore($archiveId, &$argv) {
     }
     $ret = $wiff->createContextFromArchive($archiveId, $contextName, $contextRoot, '', '', $vaultRoot, $pgService, $removeProfiles, $userLogin, $userPassword, $cleanTmpDirectory);
     if ($ret === false) {
-        printerr(sprintf("Error: could not restore archive '%s' to new context '%s': %s", $archiveId, $contextName, $wiff->errorMessage));
+        printerr(sprintf("Error: could not restore archive '%s' to new context '%s': %s\n", $archiveId, $contextName, $wiff->errorMessage));
         return 1;
     }
     $context = $wiff->getContext($contextName);

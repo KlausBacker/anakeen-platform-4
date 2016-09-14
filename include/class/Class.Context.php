@@ -2470,6 +2470,15 @@ class Context extends ContextProperties
             $this->log(LOG_ERR, $err);
             return false;
         }
+        /**
+         * We use lstat() because file_exists() could return bool(false) if $path
+         * is a symlink pointing to a non-existing file: in this case we do not want
+         * to check the existence of the target but really want to check the existence
+         * of the symlink itself.
+         */
+        if (lstat($path) === false) {
+            return true;
+        }
         
         $filetype = filetype($path);
         if ($filetype === false) {
@@ -2597,7 +2606,7 @@ class Context extends ContextProperties
             return false;
         }
         
-        $res = pg_query($conn, sprintf("DROP SCHEMA public CASCADE"));
+        $res = pg_query($conn, sprintf("DROP SCHEMA IF EXISTS public CASCADE"));
         if ($res === false) {
             $this->errorMessage.= sprintf("Error dropping schema public.\n");
             $err.= sprintf("Error dropping schema public.\n");
@@ -2612,7 +2621,7 @@ class Context extends ContextProperties
             "family",
             "dav"
         ) as $schema) {
-            $res = pg_query($conn, sprintf("DROP SCHEMA %s CASCADE", pg_escape_string($schema)));
+            $res = pg_query($conn, sprintf("DROP SCHEMA IF EXISTS %s CASCADE", pg_escape_string($schema)));
             if ($res === false) {
                 $this->errorMessage.= sprintf("Error dropping schema %s.", $schema);
                 $err.= sprintf("Error dropping schema %s.", $schema);
