@@ -156,6 +156,19 @@ class UserAgent extends \WiffCommon
         if (isset($opts['tries']) && $opts['tries'] > 0) {
             $tries = $opts['tries'];
         }
+        /*
+         * If CURLOPT_TCP_KEEPALIVE is available, then use the same defaults
+         * as the `curl` CLI.
+         *
+         * See:
+         * - https://github.com/curl/curl/blob/curl-7_50_2/src/tool_operate.c#L1268
+         * - https://github.com/curl/curl/blob/curl-7_50_2/lib/url.c#L602
+        */
+        if (defined('CURLOPT_TCP_KEEPALIVE') && defined('CURLOPT_TCP_KEEPIDLE') && defined('CURLOPT_TCP_KEEPINTVL')) {
+            curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
+            curl_setopt($ch, CURLOPT_TCP_KEEPIDLE, 60);
+            curl_setopt($ch, CURLOPT_TCP_KEEPINTVL, 60);
+        }
         /* Fetch the URL */
         while ($tries > 0) {
             ftruncate($ftmp, 0);
@@ -249,7 +262,6 @@ class UserAgent extends \WiffCommon
         }
         return $url;
     }
-
 }
 
 class CacheException extends \Exception
@@ -263,7 +275,7 @@ interface Cache
     public function remove($url);
 }
 
-class DefaultCache  extends \WiffCommon implements Cache
+class DefaultCache extends \WiffCommon implements Cache
 {
     /**
      * @var CacheItem[]
@@ -330,7 +342,6 @@ class DefaultCache  extends \WiffCommon implements Cache
             }
         }
     }
-
 }
 
 class NoCache implements Cache
