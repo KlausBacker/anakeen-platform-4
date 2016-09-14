@@ -2845,26 +2845,18 @@ function getGlobalwin(display, moduleList) {
  * wstart
  */
 function wstart(module, operation) {
-	Ext.Ajax.request({
-				url : 'wiff.php',
-				params : {
-					context : currentContext,
-					wstart : 'yes',
-					authInfo : Ext.encode(authInfo)
-				},
-				callback : function(option, success, responseObject) {
-					var context = getCurrentContext();
-					if( context.register == 'registered' ) {
-						return sendContextConfiguration();
-					}
-                    var response = eval('(' + responseObject.responseText + ')');
-                    if( !response.success ) {
-                        return installEndWithError(response.error);
-                    }
-					return installHappyEnd();
-					// The end
-				}
-			});
+	wstart_cb(function (context, response) {
+		if( context.register == 'registered' ) {
+			return sendContextConfiguration();
+		}
+		if (!response) {
+			return installEndWithError("Missing response");
+		}
+		if( !response.success ) {
+			return installEndWithError(response.error);
+		}
+		return installHappyEnd();
+	});
 }
 /**
  * Perform `wstart` and run callback(contextName, responseData)
@@ -2872,6 +2864,11 @@ function wstart(module, operation) {
  * @param args
  */
 function wstart_cb(callback, args) {
+	mask = new Ext.LoadMask(Ext.getBody(), {
+		msg : 'Restarting context "' + currentContext + '"... Please wait...'
+	});
+	mask.show();
+
 	Ext.Ajax.request({
 		url : 'wiff.php',
 		params : {
@@ -2881,6 +2878,7 @@ function wstart_cb(callback, args) {
 			args : Ext.encode(args)
 		},
 		callback : function(option, success, responseObject) {
+			mask.hide();
 			var context = getCurrentContext();
 			var response = eval('(' + responseObject.responseText + ')');
 			return callback(context, response);
