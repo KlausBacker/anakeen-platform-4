@@ -3,7 +3,7 @@ $(document).ready(function ()
     "use strict";
 
     $(".list-export a").button();
-    $(".list-export input.logical-name").button().on("change", function () {
+    $(".logical-name input").button().on("change", function () {
         var $this=$(this);
         var newLogicalName=$this.val();
         var docid=$(this).data("docid");
@@ -37,7 +37,7 @@ $(document).ready(function ()
     $("input[type=submit]").button();
 
     function verifyEmptyLn() {
-        var $inputs=$(".logical-name");
+        var $inputs=$(".logical-name input");
         var empty=false;
 
         $(".list-export .auto").remove();
@@ -60,12 +60,14 @@ $(document).ready(function ()
 
         if (empty) {
             $("input[type=submit]").prop("disabled",true).button("disable");
+            $(".warning").show();
         } else {
             $("input[type=submit]").prop("disabled",false).button("enable");
+            $(".warning").hide();
 
         }
 
     }
-    $("select").button();
+    $("select").selectmenu();
     verifyEmptyLn();
 });

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-12 16:19+0200\n"
+"POT-Creation-Date: 2016-09-14 15:06+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -17,6 +17,23 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Back"
+msgstr ""
+
+#, php-format
+msgid "Change creation profil to %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "Change creation view control to %s [%d]"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Change default workflow to %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "Change profil to %s [%d]"
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -68,7 +85,7 @@ msgstr ""
 msgid "DCPDEVEL:DCPDEVEL"
 msgstr ""
 
-msgid "DCPDEVEL:DEVELMAIN"
+msgid "DCPDEVEL:DEVELFAMILY"
 msgstr ""
 
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
@@ -78,6 +95,12 @@ msgid "DCPDEVEL:FAMILYCONF"
 msgstr ""
 
 msgid "DCPDEVEL:FAMILYEXPORTFORM"
+msgstr ""
+
+msgid "DCPDEVEL:MODIFYFAMILY"
+msgstr ""
+
+msgid "DCPDEVEL:SEARCHSYSDOC"
 msgstr ""
 
 msgid "DCPDEVEL:SETLOGICALNAME"
@@ -122,6 +145,10 @@ msgid "Initialize specific profile for family"
 msgstr ""
 
 msgctxt "dcpdevel"
+msgid "No cv"
+msgstr ""
+
+msgctxt "dcpdevel"
 msgid "No default view control configurated"
 msgstr ""
 
@@ -130,7 +157,19 @@ msgid "No default workflow configurated"
 msgstr ""
 
 msgctxt "dcpdevel"
+msgid "No profile (free access)"
+msgstr ""
+
+msgctxt "dcpdevel"
 msgid "No update logical name for family"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "No workflow"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Not a family"
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -144,6 +183,10 @@ msgstr ""
 #, php-format
 msgctxt "dcpdevel"
 msgid "Set logical name to \"%s\""
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Specific profil"
 msgstr ""
 
 #, php-format
@@ -163,7 +206,22 @@ msgctxt "dcpdevel"
 msgid "Workflow"
 msgstr ""
 
+msgid "dcpdev:All logical name must be set to export configuration"
+msgstr ""
+
+msgid "dcpdev:Choose cv"
+msgstr ""
+
+msgid "dcpdev:Choose document profil"
+msgstr ""
+
+msgid "dcpdev:Choose workflow"
+msgstr ""
+
 msgid "dcpdev:Configuration documents to exports for "
+msgstr ""
+
+msgid "dcpdev:Create new"
 msgstr ""
 
 msgid "dcpdev:Csv enclosure"

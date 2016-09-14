@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-12 16:19+0200\n"
-"PO-Revision-Date: 2016-09-12 16:34+0200\n"
+"POT-Creation-Date: 2016-09-14 15:06+0200\n"
+"PO-Revision-Date: 2016-09-14 15:07+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -15,7 +15,6 @@ msgstr ""
 "Content-Type: text/plain;  charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
 
 msgctxt "dcpdevel"
 msgid "Attributes"
@@ -25,13 +24,30 @@ msgctxt "dcpdevel"
 msgid "Back"
 msgstr "Retour"
 
+#, php-format
+msgid "Change creation profil to %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "Change creation view control to %s [%d]"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Change default workflow to %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "Change profil to %s [%d]"
+msgstr ""
+
 msgctxt "dcpdevel"
 msgid "Choose another existing family profile"
 msgstr "Choisir un autre profil de famille"
 
 msgctxt "dcpdevel"
 msgid "Choose default workflow"
-msgstr "Choisir un profil par défaut pour le workflow "
+msgstr "Choisir un cycle de vie par défaut "
 
 msgctxt "dcpdevel"
 msgid "Choose existing family profile"
@@ -74,7 +90,7 @@ msgstr "Créer un profil pour les nouveaux documents"
 msgid "DCPDEVEL:DCPDEVEL"
 msgstr ""
 
-msgid "DCPDEVEL:DEVELMAIN"
+msgid "DCPDEVEL:DEVELFAMILY"
 msgstr ""
 
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
@@ -86,6 +102,12 @@ msgstr ""
 msgid "DCPDEVEL:FAMILYEXPORTFORM"
 msgstr ""
 
+msgid "DCPDEVEL:MODIFYFAMILY"
+msgstr ""
+
+msgid "DCPDEVEL:SEARCHSYSDOC"
+msgstr ""
+
 msgid "DCPDEVEL:SETLOGICALNAME"
 msgstr ""
 
@@ -95,7 +117,7 @@ msgstr "Contrôle de vue par défaut"
 
 msgctxt "dcpdevel"
 msgid "Default workflow"
-msgstr "Workflow par défaut"
+msgstr "Cycle de vie par défaut"
 
 msgctxt "dcpdevel"
 msgid "Defaut values and parameters"
@@ -128,29 +150,49 @@ msgid "Initialize specific profile for family"
 msgstr "Initialiser le profil spécifique pour la famille"
 
 msgctxt "dcpdevel"
+msgid "No cv"
+msgstr "Aucun contrôle de vue"
+
+msgctxt "dcpdevel"
 msgid "No default view control configurated"
 msgstr "Aucun contrôle de vue n'est configuré"
 
 msgctxt "dcpdevel"
 msgid "No default workflow configurated"
-msgstr "Aucun workflow n'est configuré"
+msgstr "Aucun cycle de vie n'est associé"
+
+msgctxt "dcpdevel"
+msgid "No profile (free access)"
+msgstr "Aucun profil (accès libre)"
 
 msgctxt "dcpdevel"
 msgid "No update logical name for family"
 msgstr ""
 
 msgctxt "dcpdevel"
-msgid "Profile for new documents"
+msgid "No workflow"
 msgstr ""
 
 msgctxt "dcpdevel"
+msgid "Not a family"
+msgstr "Ce n'est pas une famille"
+
+msgctxt "dcpdevel"
+msgid "Profile for new documents"
+msgstr "Profil pour les nouveaux documents"
+
+msgctxt "dcpdevel"
 msgid "Security"
-msgstr ""
+msgstr "Sécurité"
 
 #, php-format
 msgctxt "dcpdevel"
 msgid "Set logical name to \"%s\""
-msgstr ""
+msgstr "Modification du nom logique \"%s\""
+
+msgctxt "dcpdevel"
+msgid "Specific profil"
+msgstr "Profil spécifique"
 
 #, php-format
 msgctxt "dcpdevel"
@@ -163,14 +205,29 @@ msgstr "Contrôle de vue"
 
 msgctxt "dcpdevel"
 msgid "View default workflow"
-msgstr "Voir le workflow par défaut"
+msgstr "Voir le cycle de vie par défaut"
 
 msgctxt "dcpdevel"
 msgid "Workflow"
-msgstr "Workflow"
+msgstr "Cycle de vie"
+
+msgid "dcpdev:All logical name must be set to export configuration"
+msgstr "Tous les noms logiques doivent être affectés pour l'exportation"
+
+msgid "dcpdev:Choose cv"
+msgstr "Choisir un contrôle de vue"
+
+msgid "dcpdev:Choose document profil"
+msgstr "Choisir un profil pour les documents"
+
+msgid "dcpdev:Choose workflow"
+msgstr "Choisir un cycle de vie"
 
 msgid "dcpdev:Configuration documents to exports for "
-msgstr "Document de configuration de la famille"
+msgstr "Documents de configuration de la famille"
+
+msgid "dcpdev:Create new"
+msgstr "Créer un nouveau"
 
 msgid "dcpdev:Csv enclosure"
 msgstr "Délimiteur CSV"
@@ -179,7 +236,7 @@ msgid "dcpdev:Csv separator"
 msgstr "Séparateur CSV"
 
 msgid "dcpdev:Documents"
-msgstr "Documents"
+msgstr "Document"
 
 msgid "dcpdev:Export configuration"
 msgstr "Exporter la configuration"
@@ -194,7 +251,7 @@ msgid "dcpdev:comma"
 msgstr "Virgule"
 
 msgid "dcpdev:double-quote"
-msgstr "Guillement"
+msgstr "Guillemets"
 
 msgid "dcpdev:or"
 msgstr "ou"

@@ -9,9 +9,8 @@ function develmain(Action & $action)
     
     $action->parent->addCssRef("WHAT/Layout/size-normal.css");
     $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.structure.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.theme.min.css");
-    
+    //  $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.structure.css");
+    //  $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.theme.min.css");
     $action->parent->addCssRef("lib/jquery-dataTables/1.10/css/jquery.dataTables.css");
     $action->parent->addCssRef("lib/jquery-dataTables/1.10/css/dataTables.jqueryui.css");
     
@@ -25,7 +24,7 @@ function develmain(Action & $action)
     
     $familyData = [];
     foreach ($familyList as $family) {
-        $familyData[] = ["label" => $family->getTitle() , "icon" => $family->getIcon("", 22) , "familyid" => $family->name];
+        $familyData[] = ["label" => $family->getTitle() , "icon" => $family->getIcon("", 22) , "familyid" => $family->id];
     }
     
     $action->lay->eSetBlockData("families", $familyData);

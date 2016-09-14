@@ -51,6 +51,19 @@ function familyconf(Action & $action)
         $action->lay->eSet("cpLabel", $cprofil->getTitle());
         $action->lay->eSet("cpIcon", $cprofil->getIcon("", 20));
     }
+    
+    $cv = new_Doc("", "CVDOC");
+    $subFam = $cv->getChildFam();
+    if ($subFam) {
+        $cvfams[] = ["cvid" => $cv->id, "cvtitle" => $cv->getTitle() ];
+        foreach ($subFam as $sub) {
+            $cvfams[] = ["cvid" => $sub["id"], "cvtitle" => $cv->getTitle($sub["id"]) ];
+        }
+        $action->lay->eSetBlockData("cvfams", $cvfams);
+        $action->lay->set("cvfam", true);
+    } else {
+        $action->lay->set("cvfams", false);
+    }
 }
 
 function i18N_familyconf(Action & $action, $family)

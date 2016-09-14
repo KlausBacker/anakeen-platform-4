@@ -29,21 +29,26 @@
         .list-export input.error {
             color: red;
         }
-         input.logical-name {
+        .logical-name input {
              width: calc(100% - 80px);
+            -moz-user-select: auto;
+            -webkit-user-select: auto;
+            user-select: auto;
          }
-        input.logical-name.updated {
+        .logical-name input.updated {
             color: green;
             font-weight: bold;
         }
 
         .doclink {
             min-width:14em;
+            width:30%;
         }
         .family-label {
             white-space: nowrap;
+            width:10em;
         }
-        .logical-name.ui-button:focus {
+        .logical-name .ui-button:focus {
             border: 1px solid #8D81EC;
             background: none;
             color: inherit;
@@ -88,7 +93,7 @@
     <tr>
         <td class="family-label">[famlabel]</td>
         <td class="doclink"><a  target="_blank" href="?app=FDL&action=FDL_CARD&id=[docid]"> <img src="[icon]"> [label]</a></td>
-        <td><input data-docid="[docid]" class="logical-name" type="text" value="[name]"/>
+        <td class="logical-name"><input data-docid="[docid]"  type="text" value="[name]"/>
         <div class="message"></div>
         </td>
 
@@ -111,6 +116,7 @@
     <br/>
 
     <input type="submit" value="[TEXT:dcpdev:Export configuration]"/>
+    <span class="warning">[TEXT:dcpdev:All logical name must be set to export configuration]</span>
 </form>
 <iframe class="result" name="exportresult" />
 </body>

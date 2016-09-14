@@ -90,9 +90,6 @@ class ExportFamily
         $root = $dom->createElement("module");
         $install = $dom->createElement("pre-install");
         $upgrade = $dom->createElement("pre-upgrade");
-        
-        $struct = $dom->createElement("module");
-        $struct = $dom->createElement("module");
         //<process command="./wsh.php --api=importDocuments --file=./@APPNAME@/zoo_espece__INIT_DATA.csv --csv-separator=auto --csv-enclosure='&quot;'"/>
         if ($this->csvEnclosure === '"') {
             $enclosureArg = "'\"'";
@@ -195,7 +192,7 @@ class ExportFamily
         
         $this->putcsv($filename, $data);
         
-        $this->moveProfilAtTheEnd($filename);
+        $this->sortData($filename);
         $this->zip->addFile($filename, basename($filename));
         $this->infoInstall[] = basename($filename);
     }
@@ -318,7 +315,7 @@ class ExportFamily
         $data[] = ["END", "", "", "", "", ""];
         fclose($fout);
         
-        $this->moveProfilAtTheEnd($filename);
+        $this->sortData($filename);
         $this->putcsv($filename, $data);
         
         $this->zip->addFile($filename, basename($filename));
@@ -350,7 +347,7 @@ class ExportFamily
             $data[] = ["END", "", "", "", "", ""];
             $this->putcsv($filename, $data);
             
-            $this->moveProfilAtTheEnd($filename);
+            $this->sortData($filename);
             $this->zip->addFile($filename, basename($filename));
             $this->infoInstall[] = basename($filename);
         }
@@ -444,35 +441,102 @@ class ExportFamily
         }
     }
     
-    protected function moveProfilAtTheEnd($filename)
+    protected function sortData($filename)
     {
-        $content = file($filename);
-        $fout = fopen($filename, "w");
-        $profil = [];
-        foreach ($content as $line) {
-            if (substr($line, 0, 6) === "PROFIL") {
-                $profil[] = $line;
-            } else {
-                fputs($fout, $line);
+        $handle = fopen($filename, "r");
+        $data = [];
+        while (($data[] = fgetcsv($handle, 0, $this->csvSeparator, $this->csvEnclosure)) !== false);
+        fclose($handle);
+        array_pop($data);
+        
+        $profilAccess = $others = $masks = [];
+        $profilLink = [];
+        
+        foreach ($data as $k => $cells) {
+            if (!empty($cells)) {
+                if ($cells[0] === "PROFIL") {
+                    if (empty($cells[2]) || $cells[2][0] !== ":") {
+                        $profilLink[] = $cells;
+                    } else {
+                        $profilAccess[] = $cells;
+                    }
+                    unset($data[$k]);
+                }
             }
         }
-        
-        if ($profil) {
-            fputcsv($fout, array(
+        if ($profilAccess) {
+            usort($profilAccess, function ($a, $b)
+            {
+                return strcasecmp($a[1], $b[1]);
+            });
+            array_unshift($profilAccess, array(
                 "//PROFIL",
                 "Id",
                 "AccountType",
                 "Reset",
                 "Access"
-            ) , $this->csvSeparator, $this->csvEnclosure);
-            foreach ($profil as $line) {
-                
-                fputs($fout, $line);
-            }
+            ));
+        }
+        if ($profilLink) {
+            usort($profilLink, function ($a, $b)
+            {
+                return strcasecmp($a[1], $b[1]);
+            });
+            array_unshift($profilLink, array(
+                "//PROFIL",
+                "Id",
+                "Reference"
+            ));
         }
         
-        fclose($fout);
+        $masks = $this->extractData($data, "MASK");
+        $cv = $this->extractData($data, "CVDOC");
+        $mt = $this->extractData($data, "MAILTEMPLATE");
+        $tm = $this->extractData($data, "TIMER");
+        $pdoc = $this->extractData($data, "PDOC");
+        $pdir = $this->extractData($data, "PDIR");
+        
+        $outData = array_merge($masks, $mt, $tm, $cv, $pdoc, $pdir, $data, $profilAccess, $profilLink);
+        /* print "<pre>-------------\n";
+        
+        foreach ($outData as $k=>$row) {
+        
+            print "$k)".substr(htmlspecialchars(implode(";", $row)), 0, 40)."\n";
+        }
+        print "</pre>";*/
+        
+        unlink($filename);
+        $this->putcsv($filename, $outData);
     }
+    
+    protected function extractData(&$data, $key)
+    {
+        $out = [];
+        $order = [];
+        foreach ($data as $k => $cells) {
+            if (!empty($cells)) {
+                if (isset($cells[1]) && $cells[1] === $key) {
+                    if ($cells[0] === "ORDER") {
+                        if (!$order) {
+                            $order["fam$k"] = $data[$k - 1];
+                            $order["order$k"] = $data[$k];
+                        }
+                        unset($data[$k - 1]);
+                        unset($data[$k]);
+                    } else {
+                        $out[] = $cells;
+                        unset($data[$k]);
+                    }
+                }
+            }
+        }
+        usort($out, function ($a, $b)
+        {
+            return strcasecmp($a[2], $b[2]);
+        });
+        return array_values(array_merge($order, $out));
+    }
+    
     protected function putcsv($filename, $data)
     {
         
@@ -480,6 +544,7 @@ class ExportFamily
         if (!$handler) {
             throw new Exception(sprintf("Cannot open \"%s\" to write csv", $filename));
         }
+        
         foreach ($data as $row) {
             fputcsv($handler, $row, $this->csvSeparator, $this->csvEnclosure);
         }

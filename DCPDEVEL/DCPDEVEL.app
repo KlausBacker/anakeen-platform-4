@@ -32,7 +32,7 @@ $action_desc = array(
     ),
     array(
         "name" => "DEVELMAIN",
-        "short_name" => N_("DCPDEVEL:DEVELMAIN"),
+        "short_name" => N_("DCPDEVEL:DEVELFAMILY"),
         "script" => "action.develmain.php",
         "layout" => "develmain.html",
         "function" => "develmain",
@@ -62,6 +62,22 @@ $action_desc = array(
         "short_name" => N_("DCPDEVEL:SETLOGICALNAME"),
         "script" => "action.setlogicalname.php",
         "function" => "setlogicalname",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "SEARCHSYSDOC",
+        "short_name" => N_("DCPDEVEL:SEARCHSYSDOC"),
+        "script" => "action.searchsysdoc.php",
+        "function" => "searchsysdoc",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "MODIFYFAMILY",
+        "short_name" => N_("DCPDEVEL:MODIFYFAMILY"),
+        "script" => "action.modifyfamily.php",
+        "function" => "modifyfamily",
         "root" => "N",
         "acl" => "DEVEL"
     ),
