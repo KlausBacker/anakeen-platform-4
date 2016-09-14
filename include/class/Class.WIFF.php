@@ -1015,6 +1015,11 @@ class WIFF extends WiffCommon
                         "name" => "invalid archive"
                     );
                     
+                    if ($size === false) {
+                        $this->addErrorToArchiveInfo(sprintf("Error getting size of archive '%s'.", $zipfile) , $archiveContext, $archivedContextList);
+                        continue;
+                    }
+                    
                     if (file_exists($archived_root . DIRECTORY_SEPARATOR . $fmatch["basename"] . ".error")) {
                         $file = $fmatch["basename"] . ".error";
                         $error_handle = fopen($archived_root . DIRECTORY_SEPARATOR . $file, 'r');
