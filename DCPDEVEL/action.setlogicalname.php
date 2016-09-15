@@ -23,7 +23,6 @@ function setlogicalname(Action & $action)
         }
         
         if (!$err && $logicalName !== ":initial:") {
-            
             if ($logicalName === ":auto:") {
                 $logicalName = sprintf("%s-%s", $doc->fromname, str_replace(" ", "_", unaccent($doc->getTitle())));
             }

@@ -10,6 +10,7 @@ $(document).ready(function ()
         var url="?app=DCPDEVEL&action=SETLOGICALNAME&id="+docid+"&name="+encodeURI(newLogicalName||":initial:");
         var $message=$this.closest("tr").find(".message");
         console.log("LN", newLogicalName);
+        $("input[type=submit]").prop("disabled",true).button("disable");
 
         $.getJSON(url).done(function (response) {
             $message.text(response.message);

@@ -3,7 +3,7 @@
 $app_desc = array(
     "name" => "DCPDEVEL",
     "short_name" => N_("DCPDEVEL:DCPDEVEL"),
-    "description" => N_("DCPDEVEL:DCPDEVEL"),
+    "description" => N_("DCPDEVEL:DCPDEVELDESCR"),
     "icon" => "DCPDEVEL.png",
     "with_frame" =>"Y",
     "displayable" => "N",

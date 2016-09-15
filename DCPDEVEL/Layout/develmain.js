@@ -179,7 +179,53 @@ $(document).ready(function ()
             $(".devel-left ").html(htmlResponse);
 
             $(".barmenu").menu({ position: { my: "left top", at: "right-100 top+30" } }).hide();
-            $(".changeIcon").button();
+            $(".changeIcon").button().on("click", function ()
+            {
+                $(".form-icon input[type=submit]").button().prop("disabled", true).button("disable");
+                $(".dialog--icon").dialog({});
+
+                $(".dialog--icon input[type=file]").button().on("change", function ()
+                {
+                    var file = this.files[0];
+                    var reader = new FileReader();
+
+                    reader.onloadend = function ()
+                    {
+                        $(".bigicon").attr("src", reader.result);
+                        $(".form-icon input[type=submit]").prop("enable", true).button("enable");
+                    };
+
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.src = "";
+                    }
+                });
+                $('.form-icon').on('submit', function (e)
+                {
+                    // On empêche le navigateur de soumettre le formulaire
+                    e.preventDefault();
+
+                    var $form = $(this);
+                    var formdata = (window.FormData) ? new FormData($form[0]) : null;
+                    var data = (formdata !== null) ? formdata : $form.serialize();
+
+                    $.ajax({
+                        url: $form.attr('action'),
+                        type: $form.attr('method'),
+                        contentType: false, // obligatoire pour de l'upload
+                        processData: false, // obligatoire pour de l'upload
+                        dataType: 'json', // selon le retour attendu
+                        data: data
+                    }).done(function () {
+                        $(".dialog--icon").dialog("destroy");
+                        $(".family-anchor.selected").trigger("click");
+                    }).fail(function (response) {
+                        alert(response);
+                    });
+                });
+
+            });
             $(".ui-menu-icon.ui-icon-caret-1-e").addClass("ui-icon-caret-1-s").removeClass("ui-icon-caret-1-e");
 
             $(".home a").button().not("[data-reload]").on("click", function ()
@@ -236,8 +282,8 @@ $(document).ready(function ()
 
             $(".profil--label").each(function ()
             {
-                var wAction = "?app=DCPDEVEL&action=MODIFYFAMILY&type={{type}}&docid={{docid}}&famid={{family}}";
-                var wSource="?app=DCPDEVEL&action=SEARCHSYSDOC&type={{type}}&famid={{family}}";
+                var wAction = "?app=DCPDEVEL&action=MODIFYFAMILY&type={{type}}&value={{docid}}&famid={{family}}";
+                var wSource = "?app=DCPDEVEL&action=SEARCHSYSDOC&type={{type}}&famid={{family}}";
                 wAction = wAction.replace("{{family}}", family);
                 wAction = wAction.replace("{{type}}", $(this).data("type"));
                 wSource = wSource.replace("{{family}}", family);
@@ -255,4 +301,5 @@ $(document).ready(function ()
             setTimeout(resizeScroll, 500);
         });
     });
+
 });

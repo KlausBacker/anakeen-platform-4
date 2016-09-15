@@ -18,6 +18,7 @@ function familyconf(Action & $action)
     i18N_familyconf($action, $family);
     
     $action->lay->set("icon", $family->getIcon("", 32));
+    $action->lay->set("bigicon", $family->getIcon("", 64));
     $action->lay->eSet("famid", $family->id);
     $action->lay->eSet("famname", $family->name);
     $action->lay->eSet("profid", $family->profid);

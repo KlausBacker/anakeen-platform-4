@@ -5,12 +5,13 @@ function modifyfamily(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Modify some family configuration elements");
     $famid = $usage->addRequiredParameter("famid", "Family identifier");
-    $docid = $usage->addRequiredParameter("docid", "Parameter identifier");
+    $value = $usage->addRequiredParameter("value", "Parameter identifier");
     $type = $usage->addRequiredParameter("type", "Data type", array(
         "famProfile",
         "docProfile",
         "docCv",
-        "docWid"
+        "docWid",
+        "icon"
     ));
     $usage->verify();
     /**
@@ -31,10 +32,10 @@ function modifyfamily(Action & $action)
     if (!$err) {
         switch ($type) {
             case "famProfile":
-                if ($docid) {
-                    $profil = new_Doc("", $docid);
+                if ($value) {
+                    $profil = new_Doc("", $value);
                     if (!$family->isAlive()) {
-                        $err = sprintf("Undefined Profil \"%s\"", $docid);
+                        $err = sprintf("Undefined Profil \"%s\"", $value);
                     }
                     $profid = $profil->id;
                 } else {
@@ -60,10 +61,10 @@ function modifyfamily(Action & $action)
 
             case "docProfile":
                 
-                if ($docid) {
-                    $profil = new_Doc("", $docid);
+                if ($value) {
+                    $profil = new_Doc("", $value);
                     if (!$family->isAlive()) {
-                        $err = sprintf("Undefined Profil \"%s\"", $docid);
+                        $err = sprintf("Undefined Profil \"%s\"", $value);
                     }
                     $profid = $profil->id;
                 } else {
@@ -79,10 +80,10 @@ function modifyfamily(Action & $action)
                 break;
 
             case "docCv":
-                if ($docid) {
-                    $profil = new_Doc("", $docid);
+                if ($value) {
+                    $profil = new_Doc("", $value);
                     if (!$family->isAlive()) {
-                        $err = sprintf("Undefined Profil \"%s\"", $docid);
+                        $err = sprintf("Undefined Profil \"%s\"", $value);
                     }
                     $cvid = $profil->id;
                 } else {
@@ -97,10 +98,10 @@ function modifyfamily(Action & $action)
                 break;
 
             case "docWid":
-                if ($docid) {
-                    $profil = new_Doc("", $docid);
+                if ($value) {
+                    $profil = new_Doc("", $value);
                     if (!$family->isAlive()) {
-                        $err = sprintf("Undefined Workflow \"%s\"", $docid);
+                        $err = sprintf("Undefined Workflow \"%s\"", $value);
                     }
                     $wid = $profil->id;
                 } else {
@@ -113,10 +114,33 @@ function modifyfamily(Action & $action)
                     $err = $family->modify();
                 }
                 break;
+
+            case "icon":
+                if (!is_uploaded_file($value['tmp_name'])) {
+                    $err=(_("file not expected : possible attack : update aborted"));
+                }
+
+                $imageSize = getimagesize($value['tmp_name']);
+                if (!$imageSize) {
+                    $err="File is not recognized like an image";
+                }
+
+                if (!$err) {
+                    $vid = \Dcp\VaultManager::storeFile(
+                        $value['tmp_name'], $value['name'], true
+                    );
+                    $fileVaultInfo = \Dcp\VaultManager::getFileInfo($vid);
+
+                    $family->changeIcon(
+                        sprintf(
+                            "%s|%s|%s", $fileVaultInfo->mime_s,
+                            $fileVaultInfo->id_file, $fileVaultInfo->name
+                        )
+                    );
+                }
+                break;
         }
-        
-        $data[] = ["id" => 0, "label" => "No profile", "value" => "0"];
-        $data[] = ["id" => $family->id, "label" => "Private", "value" => $family->id];
+
     }
     header('Content-Type: application/json');
     

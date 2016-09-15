@@ -175,8 +175,20 @@
             </td></tr>
 
 
+
         </table>
 
     </section>
+    <div class="dialog--icon" style="display:none" title="[TEXT:dcpdev:Change icon]">
+        <img class="bigicon" src="[bigicon]"/><br/>
+    <form method="POST" class="form-icon"
+          action="?app=DCPDEVEL&action=MODIFYFAMILY"
+          enctype="multipart/form-data">
+        <input type="file" accept="image/*" name="value"/>
+        <input name="famid"  value="[famid]" type="hidden"/>
+        <input name="type"  value="icon" type="hidden"/>
+        <input  value="[TEXT:dcpdev:Change icon]" type="submit"/>
+    </form></div>
+
     <iframe class="config-result" name="[idFrame]" src="about:blank" />
 </div>

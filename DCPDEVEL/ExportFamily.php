@@ -280,9 +280,25 @@ class ExportFamily
         $fout = fopen($filename, "a");
         if ($this->family->icon) {
             // @TODO when is in vault
-            $data[] = ["ICON", $this->family->icon];
-            copy(sprintf("%s/Images/%s", DEFAULT_PUBDIR, $this->family->icon) , sprintf("%s/%s", $this->workDirectory, $this->family->icon));
-            $this->zip->addFile(sprintf("%s/Images/%s", DEFAULT_PUBDIR, $this->family->icon) , $this->family->icon);
+            if (preg_match(PREGEXPFILE, $this->family->icon, $reg)) {
+                $vid=$reg["vid"];
+                $info=\Dcp\VaultManager::getFileInfo($vid);
+
+                $data[] = ["ICON", $info->name];
+
+                $this->zip->addFile(
+                    $info->path, $info->name
+                );
+            } else {
+
+                $data[] = ["ICON", $this->family->icon];
+
+                $this->zip->addFile(
+                    sprintf(
+                        "%s/Images/%s", DEFAULT_PUBDIR, $this->family->icon
+                    ), $this->family->icon
+                );
+            }
         }
         
         if ($this->family->schar) {

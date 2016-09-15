@@ -68,7 +68,10 @@ iframe.config-result {
 .changeIcon img {
     vertical-align: middle;
 }
-
+.bigicon {
+    width:64px;
+    height:64px;
+}
 .ui-button img {
     vertical-align: middle;
 
@@ -131,4 +134,8 @@ ul.ui-autocomplete .ui-state-active {
 
 .reload-anchor {
     display:none;
+}
+
+.dialog--icon  {
+    text-align:center;
 }
