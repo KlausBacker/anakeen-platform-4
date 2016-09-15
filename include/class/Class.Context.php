@@ -1706,13 +1706,12 @@ class Context extends ContextProperties
     /**
      * Create or write in error file for archive error
      * @param string $archiveId
-     * @param string $archived_root
+     * @param string $dir
      */
-    private function writeArchiveError($archiveId, $archived_root)
+    private function writeArchiveError($archiveId, $dir)
     {
-        $error_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.error';
-        $error_handle = fopen($error_file, "w");
-        fwrite($error_handle, $this->errorMessage);
+        $error_file = $dir . DIRECTORY_SEPARATOR . $archiveId . '.error';
+        file_put_contents($error_file, $this->errorMessage);
     }
     /**
      * Archive context
@@ -1742,37 +1741,36 @@ class Context extends ContextProperties
             return false;
         }
         
-        $tmp = $wiff_root . 'archived-tmp';
+        $archived_tmp_dir = $wiff->archived_tmp_dir;
         // --- Create or reuse directory --- //
-        if (is_dir($tmp)) {
-            if (!is_writable($tmp)) {
-                $this->errorMessage = sprintf("Directory '%s' is not writable.", $tmp);
+        if (is_dir($archived_tmp_dir)) {
+            if (!is_writable($archived_tmp_dir)) {
+                $this->errorMessage = sprintf("Directory '%s' is not writable.", $archived_tmp_dir);
                 return false;
             }
         } else {
-            if (@mkdir($tmp) === false) {
-                $this->errorMessage = sprintf("Error creating directory '%s'.", $tmp);
+            if (@mkdir($archived_tmp_dir) === false) {
+                $this->errorMessage = sprintf("Error creating directory '%s'.", $archived_tmp_dir);
                 return false;
             }
         }
         
         $zip = new ZipArchiveCmd();
         
-        $archived_root = $wiff_root . WIFF::archive_filepath;
+        $archived_contexts_dir = $wiff->archived_contexts_dir;
         // --- Generate archive id --- //
         $datetime = new DateTime();
         $archiveId = sprintf("%s-%s", preg_replace('/\//', '_', $archiveName) , sha1($this->name . $datetime->format('Y-m-d H:i:s')));
         // --- Create status file for archive --- //
-        $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.sts';
-        $status_handle = fopen($status_file, "w");
-        fwrite($status_handle, $archiveName);
+        $status_file = $archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.sts';
+        file_put_contents($status_file, $archiveName);
         $unlink[$status_file] = true;
         
-        $zipfile = $archived_root . "/$archiveId.fcz";
+        $zipfile = $archived_contexts_dir . "/$archiveId.fcz";
         if ($zip->open($zipfile, ZipArchiveCmd::CREATE) === false) {
             $this->errorMessage = sprintf("Cannot create Zip archive '%s': %s", $zipfile, $zip->getStatusString());
             // --- Delete status file --- //
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         // --- Generate info.xml --- //
@@ -1787,7 +1785,7 @@ class Context extends ContextProperties
         if ($contextsXml === false) {
             $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         
@@ -1798,7 +1796,7 @@ class Context extends ContextProperties
             // If more than one context with name
             $this->errorMessage = "Duplicate contexts with same name";
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         /**
@@ -1820,14 +1818,14 @@ class Context extends ContextProperties
         if ($vaultList === false) {
             $this->errorMessage = sprintf("Error getting vault list for context '%s'", $this->root);
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         $realContextRootPath = realpath($this->root);
         if ($realContextRootPath === false) {
             $this->errorMessage = sprintf("Error getting real path for '%s'", $this->root);
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         $tarExcludeOpts = '';
@@ -1853,42 +1851,42 @@ class Context extends ContextProperties
         }
         //error_log(__METHOD__ . " " . sprintf("tarExcludeOpts = [%s]", $tarExcludeOpts));
         // --- Generate context tar.gz --- //
-        $script = sprintf("tar -C %s -czf %s/context.tar.gz %s . 2>&1", escapeshellarg($this->root) , escapeshellarg($tmp) , $tarExcludeOpts);
+        $script = sprintf("tar -C %s -czf %s/context.tar.gz %s . 2>&1", escapeshellarg($this->root) , escapeshellarg($archived_tmp_dir) , $tarExcludeOpts);
         exec($script, $output, $retval);
-        $unlink["$tmp/context.tar.gz"] = true;
+        $unlink["$archived_tmp_dir/context.tar.gz"] = true;
         if ($retval != 0) {
             $this->errorMessage = "Error when making context tar :: " . join("\n", $output);
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
-        if ($wiff->verifyGzipIntegrity("$tmp/context.tar.gz", $err) === false) {
-            $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", "$tmp/context.tar.gz", $err);
+        if ($wiff->verifyGzipIntegrity("$archived_tmp_dir/context.tar.gz", $err) === false) {
+            $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", "$archived_tmp_dir/context.tar.gz", $err);
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
-        $err = $zip->addFileWithoutPath("$tmp/context.tar.gz");
+        $err = $zip->addFileWithoutPath("$archived_tmp_dir/context.tar.gz");
         if ($err === false) {
             $this->errorMessage = sprintf("Could not add 'context.tar.gz' to archive: %s", $zip->getStatusString());
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         $this->log(LOG_INFO, 'Generated context.tar.gz');
-        unlink("$tmp/context.tar.gz");
-        unset($unlink["$tmp/context.tar.gz"]);
+        unlink("$archived_tmp_dir/context.tar.gz");
+        unset($unlink["$archived_tmp_dir/context.tar.gz"]);
         // --- Generate database dump --- //
         $pgservice_core = $this->getParamByName('core_db');
         
-        $dump = $tmp . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
+        $dump = $archived_tmp_dir . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
         
         $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
         if ($errorFile === false) {
             $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
             $this->errorMessage = "Error creating temporary file for error.";
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         
@@ -1901,20 +1899,20 @@ class Context extends ContextProperties
                 unlink("$errorFile");
             }
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         if ($wiff->verifyGzipIntegrity($dump, $err) === false) {
             $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $dump, $err);
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         $err = $zip->addFileWithoutPath($dump);
         if ($err === false) {
             $this->errorMessage = sprintf("Could not add 'core_db.pg_dump.gz' to archive: %s", $zip->getStatusString());
             $zip->close();
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         $this->log(LOG_INFO, 'Generated core_db.pg_dump.gz');
@@ -1927,7 +1925,7 @@ class Context extends ContextProperties
             if ($vaultList === false) {
                 $this->errorMessage = sprintf("Error getting vault list: %s", $this->errorMessage);
                 $zip->close();
-                $this->writeArchiveError($archiveId, $archived_root);
+                $this->writeArchiveError($archiveId, $archived_tmp_dir);
                 return false;
             }
             
@@ -1941,27 +1939,27 @@ class Context extends ContextProperties
                         "r_path" => $r_path
                     );
                     $vaultExclude = 'Vaultexists';
-                    $tmpVault = sprintf("%s/vault_%s.tar.gz", $tmp, $id_fs);
+                    $tmpVault = sprintf("%s/vault_%s.tar.gz", $archived_tmp_dir, $id_fs);
                     $script = sprintf("tar -C %s -czf  %s . 2>&1", escapeshellarg($r_path) , escapeshellarg($tmpVault));
                     exec($script, $output, $retval);
                     $unlink[$tmpVault] = true;
                     if ($retval != 0) {
                         $this->errorMessage = sprintf("Error when archiving vault '%s': %s", $r_path, join("\n", $output));
                         $zip->close();
-                        $this->writeArchiveError($archiveId, $archived_root);
+                        $this->writeArchiveError($archiveId, $archived_tmp_dir);
                         return false;
                     }
                     $err = $zip->addFileWithoutPath($tmpVault);
                     if ($err === false) {
                         $this->errorMessage = sprintf("Could not add 'vault_%s.tar.gz' to archive: %s", $id_fs, $zip->getStatusString());
                         $zip->close();
-                        $this->writeArchiveError($archiveId, $archived_root);
+                        $this->writeArchiveError($archiveId, $archived_tmp_dir);
                         return false;
                     }
                     if ($wiff->verifyGzipIntegrity($tmpVault, $err) === false) {
                         $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $tmpVault, $err);
                         $zip->close();
-                        $this->writeArchiveError($archiveId, $archived_root);
+                        $this->writeArchiveError($archiveId, $archived_tmp_dir);
                         return false;
                     }
                     unlink($tmpVault);
@@ -1995,7 +1993,7 @@ class Context extends ContextProperties
         if ($err === false) {
             $zip->close();
             $this->errorMessage = sprintf("Could not add 'info.xml' to archive: %s", $zip->getStatusString());
-            $this->writeArchiveError($archiveId, $archived_root);
+            $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
         

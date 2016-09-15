@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+$WIFF_ROOT = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+set_include_path(get_include_path() . PATH_SEPARATOR . $WIFF_ROOT . DIRECTORY_SEPARATOR . 'include');
+putenv('WIFF_ROOT=' . $WIFF_ROOT);
+
+require_once ('class/Class.WIFF.php');
+
+function __autoload($class_name)
+{
+    require_once 'class/Class.' . $class_name . '.php';
+}
+
+$wiff = WIFF::getInstance();
+if ($wiff === false) {
+    error_log(sprintf("Error: could not get WIFF instance."));
+    exit(1);
+}
+
+if (($dh = opendir($wiff->archived_contexts_dir)) === false) {
+    error_log(sprintf("Error: could not open directory '%s'.", $wiff->archived_contexts_dir));
+    exit(1);
+}
+if (!is_dir($wiff->archived_tmp_dir) || !is_writable($wiff->archived_tmp_dir)) {
+    error_log(sprintf("Error: directory '%s' does not exists or is not writable.", $wiff->archived_tmp_dir));
+    exit(1);
+}
+
+/*
+ * Move only .ctx, .error, and .sts files from 'archived-contexts' to 'archived-tmp'.
+*/
+$errors = array();
+while (($file = readdir($dh)) !== false) {
+    if ($file == '.' || $file == '..') {
+        continue;
+    }
+    $src = $wiff->archived_contexts_dir . DIRECTORY_SEPARATOR . $file;
+    if (is_dir($src)) {
+        continue;
+    }
+    if (!preg_match('/\.(ctx|error|sts)$/', $src)) {
+        continue;
+    }
+    $dst = $wiff->archived_tmp_dir . DIRECTORY_SEPARATOR . $file;
+    printf("Moving file '%s' to '%s'.... ", $src, $dst);
+    if (rename($src, $dst) === false) {
+        $errors[] = sprintf("Error: could not move file '%s' to '%s'.", $src, $dst);
+        printf("[FAIL]\n");
+    } else {
+        printf("[OK]\n");
+    }
+}
+closedir($dh);
+
+$olddir = $wiff->archived_contexts_dir . DIRECTORY_SEPARATOR . 'archived-tmp';
+if (is_dir($olddir)) {
+    $content = scandir($olddir);
+    if ($content !== false && count($content) <= 2) {
+        printf("Removing directory '%s'... ", $olddir);
+        if (rmdir($olddir) === false) {
+            $errors[] = sprintf("Error: could not remove empty directory '%s'.", $olddir);
+            printf("[FAIL]\n");
+        } else {
+            printf("[OK]\n");
+        }
+    }
+}
+
+if (count($errors) > 0) {
+    error_log(join(PHP_EOL, $errors));
+    exit(1);
+}
+exit(0);

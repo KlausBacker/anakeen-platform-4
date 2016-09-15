@@ -27,7 +27,8 @@ class WIFF extends WiffCommon
     
     const contexts_filepath = 'conf/contexts.xml';
     const params_filepath = 'conf/params.xml';
-    const archive_filepath = 'archived-contexts/';
+    const archived_contexts_dir = 'archived-contexts/';
+    const archived_tmp_dir = 'archived-tmp/';
     const xsd_catalog_xml = 'xsd/catalog.xml';
     const log_filepath = 'log/wiff.log';
     
@@ -39,7 +40,8 @@ class WIFF extends WiffCommon
     
     public $contexts_filepath = '';
     public $params_filepath = '';
-    public $archive_filepath = '';
+    public $archived_contexts_dir = '';
+    public $archived_tmp_dir = '';
     public $xsd_catalog_xml = '';
     public $log_filepath = '';
     
@@ -66,7 +68,8 @@ class WIFF extends WiffCommon
         
         $this->contexts_filepath = $wiff_root . WIFF::contexts_filepath;
         $this->params_filepath = $wiff_root . WIFF::params_filepath;
-        $this->archive_filepath = $wiff_root . WIFF::archive_filepath;
+        $this->archived_contexts_dir = $wiff_root . WIFF::archived_contexts_dir;
+        $this->archived_tmp_dir = $wiff_root . WIFF::archived_tmp_dir;
         $this->xsd_catalog_xml = $wiff_root . WIFF::xsd_catalog_xml;
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
         
@@ -931,28 +934,26 @@ class WIFF extends WiffCommon
             return $collator->compare($context1->name, $context2->name);
         });
         
-        $archived_root = $this->archive_filepath;
-        
-        if (is_dir($archived_root)) {
-            if (!is_writable($archived_root)) {
-                $this->errorMessage = sprintf("Directory '%s' is not writable.", $archived_root);
+        if (is_dir($this->archived_tmp_dir)) {
+            if (!is_writable($this->archived_tmp_dir)) {
+                $this->errorMessage = sprintf("Directory '%s' is not writable.", $this->archived_tmp_dir);
                 return false;
             }
         } else {
-            if (@mkdir($archived_root) === false) {
-                $this->errorMessage = sprintf("Error creating directory '%s'.", $archived_root);
+            if (@mkdir($this->archived_tmp_dir) === false) {
+                $this->errorMessage = sprintf("Error creating directory '%s'.", $this->archived_tmp_dir);
                 return false;
             }
         }
         
         if ($withInProgress) {
-            if ($handle = opendir($archived_root)) {
+            if ($handle = opendir($this->archived_tmp_dir)) {
                 while (false !== ($file = readdir($handle))) {
                     if (!preg_match('/^.+\.ctx$/', $file)) {
                         continue;
                     }
-                    $absFile = $archived_root . DIRECTORY_SEPARATOR . $file;
-                    if (($name = file_get_contents($absFile)) !== false) {
+                    $absFile = $this->archived_tmp_dir . DIRECTORY_SEPARATOR . $file;
+                    if (($name = self::readFirstLine($absFile)) !== false) {
                         $contextClass = new ContextProperties();
                         $contextClass->name = rtrim($name, "\n");
                         $contextClass->inProgress = true;
@@ -976,36 +977,38 @@ class WIFF extends WiffCommon
     public function getArchivedContextList()
     {
         $archivedContextList = array();
-        
-        $wiff_root = getenv('WIFF_ROOT');
-        if ($wiff_root !== false) {
-            $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
-        }
-        
-        $archived_root = $wiff_root . WIFF::archive_filepath;
-        
-        if (is_dir($archived_root)) {
-            if (!is_writable($archived_root)) {
-                $this->errorMessage = sprintf("Directory '%s' is not writable.", $archived_root);
-                return false;
-            }
-        } else {
-            if (@mkdir($archived_root) === false) {
-                $this->errorMessage = sprintf("Error creating directory '%s'.", $archived_root);
+        /* Auto-create archived_root if not exists */
+        if (!is_dir($this->archived_contexts_dir)) {
+            if (mkdir($this->archived_contexts_dir) === false) {
+                $this->errorMessage = sprintf("Error creating directory '%s'.", $this->archived_contexts_dir);
                 return false;
             }
         }
+        if (!is_writable($this->archived_contexts_dir)) {
+            $this->errorMessage = sprintf("Directory '%s' is not writable.", $this->archived_contexts_dir);
+            return false;
+        }
+        /* Auto-create archived_tmp if not exists */
+        if (!is_dir($this->archived_tmp_dir)) {
+            if (mkdir($this->archived_tmp_dir) === false) {
+                $this->errorMessage = sprintf("Error creating directory '%s'.", $this->archived_tmp_dir);
+                return false;
+            }
+        }
+        if (!is_writable($this->archived_tmp_dir)) {
+            $this->errorMessage = sprintf("Directory '%s' is not writable.", $this->archived_tmp_dir);
+            return false;
+        }
         
-        if ($handle = opendir($archived_root)) {
+        if ($handle = opendir($this->archived_contexts_dir)) {
             
             while (false !== ($file = readdir($handle))) {
-                
                 if (preg_match('/^(?P<basename>.+)\.fcz$/', $file, $fmatch)) {
                     
-                    $zipfile = $archived_root . DIRECTORY_SEPARATOR . $file;
+                    $zipfile = $this->archived_contexts_dir . DIRECTORY_SEPARATOR . $file;
                     $size = $this->filesize_stat($zipfile);
                     $archiveContext = array(
-                        "urlfile" => WIFF::archive_filepath . DIRECTORY_SEPARATOR . $file,
+                        "urlfile" => WIFF::archived_contexts_dir . DIRECTORY_SEPARATOR . $file,
                         "moduleList" => array() ,
                         "id" => $fmatch["basename"],
                         "size" => $size / (1024 * 1024) >= 1024 ? sprintf("%.3f Go", $size / (1024.0 * 1024.0 * 1024.0)) : sprintf("%.3f Mo", $size / (1024.0 * 1024.0)) ,
@@ -1020,10 +1023,9 @@ class WIFF extends WiffCommon
                         continue;
                     }
                     
-                    if (file_exists($archived_root . DIRECTORY_SEPARATOR . $fmatch["basename"] . ".error")) {
+                    if (file_exists($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $fmatch["basename"] . ".error")) {
                         $file = $fmatch["basename"] . ".error";
-                        $error_handle = fopen($archived_root . DIRECTORY_SEPARATOR . $file, 'r');
-                        $this->addErrorToArchiveInfo("Error with archive " . $zipfile . " : " . fread($error_handle, filesize($archived_root . DIRECTORY_SEPARATOR . $file)) , $archiveContext, $archivedContextList);
+                        $this->addErrorToArchiveInfo("Error with archive " . $zipfile . " : " . file_get_contents($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $file) , $archiveContext, $archivedContextList);
                         continue;
                     }
                     
@@ -1090,7 +1092,7 @@ class WIFF extends WiffCommon
                             $archiveContext['id'] = $fmatch['basename'];
                             $archiveContext['datetime'] = $context->getAttribute('datetime');
                             $archiveContext['vault'] = $context->getAttribute('vault');
-                            $archiveContext['urlfile'] = self::archive_filepath . DIRECTORY_SEPARATOR . $file;
+                            $archiveContext['urlfile'] = self::archived_contexts_dir . DIRECTORY_SEPARATOR . $file;
                             
                             $moduleList = array();
                             
@@ -1109,20 +1111,34 @@ class WIFF extends WiffCommon
                         }
                     }
                 }
-                
+            }
+        }
+        
+        if (($handle = opendir($this->archived_tmp_dir)) !== false) {
+            while (false !== ($file = readdir($handle))) {
                 if (preg_match('/^.+\.sts$/', $file)) {
                     
                     $this->log(LOG_INFO, 'STATUS FILE --- ' . $file);
                     
-                    $status_handle = fopen($archived_root . DIRECTORY_SEPARATOR . $file, 'r');
                     $archiveContext = array();
-                    $archiveContext['name'] = fread($status_handle, filesize($archived_root . DIRECTORY_SEPARATOR . $file));
+                    $archiveContext['name'] = self::readFirstLine($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $file);
                     
                     $archiveContext['inProgress'] = true;
                     $archivedContextList[] = $archiveContext;
                 }
             }
         }
+        
+        usort($archivedContextList, function ($a, $b)
+        {
+            if (!isset($a['name']) || !isset($b['name'])) {
+                return 0;
+            }
+            if (($cmp = strcmp($a['name'], $b['name'])) == 0) {
+                return 0;
+            }
+            return ($cmp > 0) ? 1 : -1;
+        });
         
         return $archivedContextList;
     }
@@ -1189,10 +1205,6 @@ class WIFF extends WiffCommon
     
     public function createContextFromArchive($archiveId, $name, $root, $desc, $url, $vault_root, $pgservice, $remove_profiles, $user_login, $user_password, $clean_tmp_directory = false)
     {
-        $wiff_root = getenv('WIFF_ROOT');
-        if ($wiff_root !== false) {
-            $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
-        }
         if ($this->getContext($name) !== false) {
             $this->errorMessage = sprintf("Context '%s' already exists!\n", $name);
             return false;
@@ -1201,10 +1213,13 @@ class WIFF extends WiffCommon
             $this->errorMessage = sprintf("Invalid context root directory '%s': %s", $root, $this->errorMessage);
             return false;
         }
-        $archived_root = $wiff_root . self::archive_filepath;
         // --- Create status file for context --- //
-        $status_file = $archived_root . DIRECTORY_SEPARATOR . $archiveId . '.ctx';
-        file_put_contents($status_file, $name);
+        $status_file = $this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.ctx';
+        if (file_put_contents($status_file, $name) === false) {
+            $this->errorMessage = sprintf("Error writing content to status file '%s'.", $status_file);
+            $this->log(LOG_ERR, $this->errorMessage);
+            return false;
+        }
         // --- Check database is empty --- //
         if ($this->checkDatabaseBeforeRestore($pgservice) === false) {
             $this->log(LOG_ERR, $this->errorMessage);
@@ -1321,14 +1336,7 @@ class WIFF extends WiffCommon
             $vault_root = $abs_vault_root;
         }
         
-        $wiff_root = getenv('WIFF_ROOT');
-        if ($wiff_root !== false) {
-            $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
-        }
-        
-        $archived_root = $wiff_root . WIFF::archive_filepath;
-        
-        $temporary_extract_root = $archived_root . 'archived-tmp';
+        $temporary_extract_root = $this->archived_tmp_dir . DIRECTORY_SEPARATOR . 'extract-tmp';
         if (!is_dir($temporary_extract_root)) {
             $ret = mkdir($temporary_extract_root);
             if ($ret === false) {
@@ -1348,14 +1356,14 @@ class WIFF extends WiffCommon
         $context_tar = $temporary_extract_root . DIRECTORY_SEPARATOR . "context.tar.gz";
         $dump = $temporary_extract_root . DIRECTORY_SEPARATOR . "core_db.pg_dump.gz";
         
-        if ($handle = opendir($archived_root)) {
+        if ($handle = opendir($this->archived_contexts_dir)) {
             
             while (false !== ($file = readdir($handle))) {
                 
                 if ($file == $archiveId . '.fcz') {
                     
                     $zip = new ZipArchiveCmd();
-                    $zipfile = $archived_root . DIRECTORY_SEPARATOR . $file;
+                    $zipfile = $this->archived_contexts_dir . DIRECTORY_SEPARATOR . $file;
                     $ret = $zip->open($zipfile);
                     if ($ret === false) {
                         $this->errorMessage = sprintf("Error when opening archive '%s': %s", $zipfile, $zip->getStatusString());
@@ -1684,22 +1692,17 @@ EOF;
      */
     public function deleteArchive($archiveId)
     {
-        
-        $wiff_root = getenv('WIFF_ROOT');
-        if ($wiff_root !== false) {
-            $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
+        if (file_exists($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.error')) {
+            unlink($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.error');
+        }
+        if (file_exists($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.sts')) {
+            unlink($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.sts');
+        }
+        if (file_exists($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.ctx')) {
+            unlink($this->archived_tmp_dir . DIRECTORY_SEPARATOR . $archiveId . '.ctx');
         }
         
-        $archived_root = $wiff_root . WIFF::archive_filepath;
-        
-        if (file_exists($archived_root . $archiveId . '.error')) {
-            unlink($archived_root . $archiveId . '.error');
-        }
-        if (file_exists($archived_root . $archiveId . '.sts')) {
-            unlink($archived_root . $archiveId . '.sts');
-        }
-        
-        if (unlink($archived_root . $archiveId . '.fcz')) {
+        if (unlink($this->archived_contexts_dir . DIRECTORY_SEPARATOR . $archiveId . '.fcz')) {
             return true;
         }
         
@@ -1713,7 +1716,7 @@ EOF;
     public function downloadArchive($archiveId)
     {
         
-        $archived_url = curPageURL() . self::archive_filepath;
+        $archived_url = curPageURL() . self::archived_contexts_dir;
         
         return $archived_url . DIRECTORY_SEPARATOR . $archiveId . 'fcz';
     }
@@ -2899,5 +2902,23 @@ EOF;
         }
         
         return $ret;
+    }
+    /**
+     * Return the first line of a file and remove trailing CR/LF.
+     *
+     * @param $file
+     * @return string|bool(false) The first line without trailing CR/LF or bool(false) on failure
+     */
+    static function readFirstLine($file)
+    {
+        if (($fh = fopen($file, 'r')) === false) {
+            return false;
+        }
+        if (($line = fgets($fh)) === false) {
+            fclose($fh);
+            return false;
+        }
+        fclose($fh);
+        return rtrim($line, "\r\n");
     }
 }
