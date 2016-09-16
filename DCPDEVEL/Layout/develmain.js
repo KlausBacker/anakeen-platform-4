@@ -26,7 +26,10 @@ $(document).ready(function ()
 
         var $iframe = $('iframe.config-result');
         if ($iframe.length === 1) {
-            h = $(window).height() - $iframe.offset().top - 4;
+            h = $(window).height() - $iframe.offset().top - 40;
+            //$iframe.width($(".devel-left").width() - 40);
+            $(".config-result").dialog("option", {width:$(".devel-left").width() - 40});
+            $iframe.css("width","");
             $iframe.height(h);
         }
     }
@@ -173,6 +176,7 @@ $(document).ready(function ()
         var family = $(this).data("familyid");
         $(".family-anchor").removeClass("selected");
         $(this).addClass("selected");
+        $(".ui-dialog").remove();
 
         $.get("?app=DCPDEVEL&action=FAMILYCONF&family=" + family).done(function (htmlResponse)
         {
@@ -217,23 +221,33 @@ $(document).ready(function ()
                         processData: false, // obligatoire pour de l'upload
                         dataType: 'json', // selon le retour attendu
                         data: data
-                    }).done(function () {
+                    }).done(function ()
+                    {
                         $(".dialog--icon").dialog("destroy");
                         $(".family-anchor.selected").trigger("click");
-                    }).fail(function (response) {
+                    }).fail(function (response)
+                    {
                         alert(response);
                     });
                 });
 
             });
             $(".ui-menu-icon.ui-icon-caret-1-e").addClass("ui-icon-caret-1-s").removeClass("ui-icon-caret-1-e");
-
+            $(".config-result").dialog({}).dialog("close");
             $(".home a").button().not("[data-reload]").on("click", function ()
             {
 
-                $(".barmenu").show();
-                $(".home").hide();
-                $(".config-result").show();
+                //$(".barmenu").show();
+                //$(".home").hide();
+                //$(".config-result").dialog( "option", "width", $(".devel-left").width() - 40 ).dialog("open");
+                $(".config-result").dialog("option", {
+                    width: $(".devel-left").width() - 40,
+                    position: {
+                        my: "left+20 top",
+                        at: "left bottom",
+                        of: $("header.header")
+                    }
+                }).dialog("open").dialog("option", {height:300});
                 setTimeout(resizeScroll, 100);
 
             });

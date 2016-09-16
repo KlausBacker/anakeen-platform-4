@@ -279,7 +279,6 @@ class ExportFamily
         
         $fout = fopen($filename, "a");
         if ($this->family->icon) {
-            // @TODO when is in vault
             if (preg_match(PREGEXPFILE, $this->family->icon, $reg)) {
                 $vid=$reg["vid"];
                 $info=\Dcp\VaultManager::getFileInfo($vid);

@@ -46,7 +46,7 @@ table.dataTable tbody tr:hover {
 
 iframe.config-result {
 
-    width: 100%;
+    width: calc(100% - 10px);
     padding: 0;
     margin: 0;
     border: none;
@@ -77,7 +77,7 @@ iframe.config-result {
 
 }
 
-.header {
+p.header {
     border-bottom: solid 2px #D4D4D4;
     font-weight: bold;
 }
