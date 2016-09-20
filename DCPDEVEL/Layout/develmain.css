@@ -139,3 +139,7 @@ ul.ui-autocomplete .ui-state-active {
 .dialog--icon  {
     text-align:center;
 }
+
+.ui-dialog .ui-openwindow {
+    right:2.3em;
+}

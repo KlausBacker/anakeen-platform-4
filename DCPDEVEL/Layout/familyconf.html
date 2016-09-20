@@ -4,71 +4,7 @@
     [label] ([famname]) #[famid]
     </header>
 
-    <ul class="barmenu">
-        <li>
-            <div><a target="[idFrame]" href="?app=GENERIC&action=GENERIC_EDIT&classid=[famid]">[CreateLabel]</a></div>
-        </li>
-        <li>
-            <div><a target="[idFrame]"
-                    href="?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=[famid]">[AttributesLabel]</a></div>
-        </li>
-
-
-        <li>
-            <div><a target="[idFrame]" href="?app=FDL&action=EDITFAMILYENUMS&famid=[famid]">[EnumerateLabel]</a></div>
-        </li>
-
-        <li>
-            <div>[ConfigurationLabel]</div>
-            <ul>
-                <li>
-                    <div><a target="[idFrame]" href="?app=FDL&action=IMPCARD&zone=FDL:VIEWDEFAULTVALUES:T&id=[famid]">[DefaultLabel]</a>
-                    </div>
-                </li>
-                <li>
-                    <div><a target="[idFrame]" href="?app=DCPDEVEL&action=FAMILYEXPORTFORM&family=[famid]">[ExportConfLabel]</a>
-                    </div>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <div>[SecurityLabel]</div>
-            <ul>
-
-                <li>
-                    <div><a target="[idFrame]" [IFNOT profid]class="ui-state-disabled" [ENDIF profid]
-                            href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[profid]">[ChangeFamilyAccess]</a>
-                    </div>
-                </li>
-                <li>
-                    <div><a target="[idFrame]" [IFNOT cprofid]class="ui-state-disabled" [ENDIF cprofid]
-                            href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[cprofid]">[ChangeNewDocAccess]</a>
-                    </div>
-                </li>
-                <li>
-                    <div><a target="[idFrame]" [IFNOT cvid]class="ui-state-disabled" [ENDIF cvid]
-                            href="?app=FDL&action=FDL_CARD&id=[cvid]">[ViewDefaultCv]</a></div>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <div>[WorkflowLabel]</div>
-            <ul>
-                <li>
-                    <div><a target="[idFrame]" href="?app=FREEDOM&action=EDITWDOC&current=Y&id=[famid]">[ChooseDefaultWorkflow]</a>
-                    </div>
-                </li>
-                <li>
-                    <div><a target="[idFrame]" [IFNOT wid]class="ui-state-disabled" [ENDIF wid]
-                            href="?app=FDL&action=FDL_CARD&id=[wid]">[ViewDefaultWorkflow]</a></div>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <div><a class="abstract">[PresentationLabel]</a></div>
-        </li>
-    </ul>
+   
 
     <section class="home">
 

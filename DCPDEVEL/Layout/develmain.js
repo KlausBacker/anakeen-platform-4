@@ -180,6 +180,7 @@ $(document).ready(function ()
 
         $.get("?app=DCPDEVEL&action=FAMILYCONF&family=" + family).done(function (htmlResponse)
         {
+            var $openIcon, $closeIcon;
             $(".devel-left ").html(htmlResponse);
 
             $(".barmenu").menu({ position: { my: "left top", at: "right-100 top+30" } }).hide();
@@ -233,13 +234,29 @@ $(document).ready(function ()
 
             });
             $(".ui-menu-icon.ui-icon-caret-1-e").addClass("ui-icon-caret-1-s").removeClass("ui-icon-caret-1-e");
-            $(".config-result").dialog({}).dialog("close");
+            $(".config-result").dialog({resizable: false}).dialog("close");
+            $(".config-result").on("load", function () {
+               console.log("LOADED IFRAME");
+                try {
+                    var title=$(this.contentDocument).find("title").text();
+                    $(this).dialog("option", "title", title);
+                } catch (e) {
+
+                }
+            });
+            $closeIcon=$(".ui-dialog-titlebar-close");
+            $openIcon=$closeIcon.clone().addClass("ui-openwindow").attr("title","Open in new window");
+            $openIcon.find(".ui-icon-closethick").removeClass("ui-icon-closethick").addClass("ui-icon-arrowthick-1-ne");
+            $openIcon.insertBefore($closeIcon);
+            $openIcon.on("click", function () {
+                var $iframe=$(".config-result");
+                window.open($iframe.get(0).contentWindow.location.href,"_blank");
+                $iframe.dialog("close");
+            });
+
+
             $(".home a").button().not("[data-reload]").on("click", function ()
             {
-
-                //$(".barmenu").show();
-                //$(".home").hide();
-                //$(".config-result").dialog( "option", "width", $(".devel-left").width() - 40 ).dialog("open");
                 $(".config-result").dialog("option", {
                     width: $(".devel-left").width() - 40,
                     position: {
@@ -277,8 +294,6 @@ $(document).ready(function ()
 
             $(".cv-fams").selectmenu().on("selectmenucreate", function (event, element)
             {
-
-                console.log("create", element);
 
             }).on("selectmenuchange", function (event, element)
             {
