@@ -224,7 +224,7 @@
         },
 
         /**
-         * Get kendo option from normal options and from renderOptions.kendoNumeric
+         * Get kendo option from normal options and from renderOptions.kendoMultiSelectConfiguration
          * @returns {*}
          */
         getKendoOptions: function wDocidGetKendoOptions(inputValue, extraOptions)
@@ -251,12 +251,6 @@
                         // Add already recorded data to items
                         data: function wDocidSelectSchema(items)
                         {
-                            /*
-                             var attrValues = currentWidget.getValue();
-
-                             if (attrValues && !_.isArray(attrValues) && attrValues.value) {
-                             attrValues = [attrValues];
-                             }*/
                             //Add new elements
                             _.each(items, function wDocidDataCompose(currentItem)
                             {
@@ -265,18 +259,6 @@
                                     currentItem.docTitle = currentItem.values[currentWidget.options.id].displayValue;
                                 }
                             });
-
-                            //Convert existing values
-                            /*
-                             _.each(attrValues, function wDocidDataAlreadySet(currentValue)
-                             {
-                             if (currentValue && currentValue.value) {
-                             items.push({
-                             docId: currentValue.value,
-                             docTitle: currentValue.displayValue
-                             });
-                             }
-                             });*/
 
                             //Suppress multiple items
                             return _.uniq(items, false, function wDocidDataUniq(currentItem)
@@ -371,6 +353,9 @@
                         currentWidget.kendoWidgetObject.search("");
                     }
                     this.ul.addClass("dcpAttribute__select--docid");
+                },
+                close: function wDocidSelectClose() {
+                    currentWidget._hasBeenRequested = false;
                 },
                 filtering: function wDocidSelectOpen()
                 {
