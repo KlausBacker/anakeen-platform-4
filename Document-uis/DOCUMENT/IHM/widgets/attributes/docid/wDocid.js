@@ -588,11 +588,7 @@
                     }
                 });
 
-                if (
-                    (_.isArray(newValues) && !_.isEqual(_.uniq(newValues), _.uniq(originalValues))) ||
-                    (newValues === null && !_.isEmpty(originalValues)) ||
-                    (!_.isArray(newValues) && !_.isEqual(newValues.toString(), originalValues.toString()))
-                ) {
+                if (!this._isEqual(originalValues, newValues)) {
                     kendoSelect.value(newValues);
                     this.flashElement();
                 }
@@ -604,6 +600,24 @@
                 } else {
                     throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
                 }
+        },
+
+        _isEqual: function(values1, values2) {
+            var convertToString = function(currentValue) {
+                if (!currentValue || !currentValue.toString) {
+                    currentValue = "";
+                }
+                return currentValue.toString();
+            };
+            if (!_.isArray(values1)) {
+                values1 = [values1];
+            }
+            if (!_.isArray(values2)) {
+                values2 = [values2];
+            }
+            values1 = _.filter(_.uniq(_.map(values1, convertToString)), function(value) {return !!value;});
+            values2 = _.filter(_.uniq(_.map(values2, convertToString)), function(value) {return !!value;});
+            return _.isEqual(values1, values2);
         },
 
         close: function wDocid_close()
