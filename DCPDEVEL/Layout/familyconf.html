@@ -4,7 +4,7 @@
     [label] ([famname]) #[famid]
     </header>
 
-   
+
 
     <section class="home">
 
@@ -38,7 +38,7 @@
                     [InitialiseFamProfileLabel]</a> [TEXT:dcpdev:or] [ENDIF profid]</td>
 
                     <td>
-                    <span class="ui-widget">
+                    <span class="ui-widget ui-inputgroup">
                        <input data-type="famProfile"
                               placeholder="[ChangeFamilyProfileLabel]"
                               class="profil--label"/>
@@ -55,7 +55,7 @@
                     [IFNOT cprofid]<a target="[idFrame]" data-reload="true"
                                       href="?app=FREEDOM&action=CREATEPROF&targetid=[famid]&attrid=cprofid&famid=[famid]">[CreateNewDocProfile]</a>
                     [ENDIF cprofid]</td><td>
-                    <span class="ui-widget">
+                    <span class="ui-widget  ui-inputgroup">
                        <input data-type="docProfile"
                               placeholder="[TEXT:dcpdev:Choose document profil]"
                               class="profil--label"/>
@@ -72,9 +72,7 @@
                     <span class="cv-idgroup">
                         <a target="[idFrame]" class="cv-create"
                            data-famid="[famid]" data-cv="CVDOC"
-                           data-title="[TEXT:dcpdev:Create new]">[cvCreate]</a>
-                        [IF cvfam]
-                        <select class="cv-fams">
+                           data-title="[TEXT:dcpdev:Create new]">[cvCreate]</a>[IF cvfam]<select class="cv-fams">
                             [BLOCK cvfams]
                             <option value="[cvid]">[cvtitle]</option>
                             [ENDBLOCK cvfams]
@@ -82,7 +80,7 @@
                         [ENDIF cvfam]
                     </span>
                     [ENDIF cvid]</td><td>
-                    <span class="ui-widget">
+                    <span class="ui-widget ui-inputgroup">
                        <input data-type="docCv"
                               placeholder="[TEXT:dcpdev:Choose cv]"
                               class="profil--label"/>
@@ -103,7 +101,7 @@
               <img class="ui-icon" src="[wIcon]"/> [wLabel]</a>
               [ENDIF  wid]
               [IFNOT wid][NoWorkflow][ENDIF wid]</td><td>
-              <span class="ui-widget">
+              <span class="ui-widget ui-inputgroup">
                        <input data-type="docWid"
                               placeholder="[TEXT:dcpdev:Choose workflow]"
                               class="profil--label"/>

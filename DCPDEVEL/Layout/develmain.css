@@ -143,3 +143,12 @@ ul.ui-autocomplete .ui-state-active {
 .ui-dialog .ui-openwindow {
     right:2.3em;
 }
+.ui-inputgroup {
+    white-space: nowrap;
+}
+.ui-controlgroup > .ui-controlgroup-item {
+    float:none;
+}
+.ui-controlgroup {
+    white-space: nowrap;
+}
