@@ -11,6 +11,7 @@ define([
         initialize: function router_initialize(options)
         {
             var currentRouter = this;
+            this.useHistory = options.useHistory;
 
             this.document = options.document;
 
@@ -101,7 +102,7 @@ define([
                         newUrl += '?' + searchPart.join('&');
                     }
                     newUrl += window.location.hash;
-                    this.navigate(newUrl);
+                    this.navigate(newUrl, {replace: !this.useHistory});
                 }
 
             }
@@ -113,7 +114,8 @@ define([
          */
         rewriteApiUrl: function router_rewriteApiUrl(options)
         {
-            var parsePath = false, beginPath = '', urlSecondPart = '';
+            var parsePath = false, parseHash = false, beginPath = '', urlSecondPart = '', locationSearch = window.location.search, locationHash = window.location.hash;
+            var noRecordHistory;
             if (options.initid) {
                 parsePath = window.location.pathname.match('(.*)api\\/v1\\/documents\\/(.*)');
                 if (parsePath) {
@@ -130,12 +132,43 @@ define([
                         }
                     }
 
+                    noRecordHistory = /documents\/0\.html$/.test(options.path);
+
+                    parseHash = /#widgetValue{(.*)}/.exec(locationHash);
+                    if (parseHash) {
+                        try {
+                            var hashData = JSON.parse('{' + parseHash[1] + '}');
+
+                            delete hashData.viewId;
+                            delete hashData.initid;
+                            delete hashData.revision;
+
+                            if (hashData.customClientData) {
+                                locationSearch += locationSearch ? '&' : '?';
+                                locationSearch += "customClientData=";
+                                locationSearch += encodeURIComponent(JSON.stringify(hashData.customClientData));
+                                delete hashData.customClientData;
+                            }
+                            if (noRecordHistory) {
+                                locationHash='';
+                            } else {
+                                locationHash = '#widgetValue' + JSON.stringify(hashData);
+                            }
+                        } catch (e) {
+
+                        }
+                    }
+
+                    if (!this.useHistory) {
+                        noRecordHistory = true;
+                    }
+
                     this.navigate(beginPath +
                         'api/v1/documents/' +
                         options.initid +
                         urlSecondPart + '.html' +
-                        window.location.search + window.location.hash,
-                        { replace : /documents\/0\.html$/.test(options.path) }
+                        locationSearch + locationHash,
+                        {replace: noRecordHistory}
                     );
                 }
             }
