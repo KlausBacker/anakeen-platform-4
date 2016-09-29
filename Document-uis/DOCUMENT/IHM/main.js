@@ -11,7 +11,7 @@ require([
     'use strict';
     console.timeEnd("js loading");
 
-    var $document = $(".document"), currentValues;
+    var $document = $(".document"), currentValues, varWidgetValue="widgetValue";
 
     window.dcp = window.dcp || {};
 
@@ -22,12 +22,12 @@ require([
         if (currentValues[0] === "#") {
             currentValues = currentValues.slice(1);
         }
-        if (currentValues.slice(0, 9) === "initValue") {
+        if (currentValues.indexOf(varWidgetValue) === 0) {
             try {
-                window.dcp.viewData = JSON.parse(currentValues.slice(9));
+                window.dcp.viewData = JSON.parse(currentValues.slice(varWidgetValue.length));
             } catch(ex1) {
                 try {
-                    window.dcp.viewData = JSON.parse(decodeURI(currentValues.slice(9)));
+                    window.dcp.viewData = JSON.parse(decodeURI(currentValues.slice(varWidgetValue.length)));
                 } catch(ex2) {
                     $document.documentController("showMessage", {
                         type: "error",

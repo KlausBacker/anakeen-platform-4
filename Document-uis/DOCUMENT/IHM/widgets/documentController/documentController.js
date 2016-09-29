@@ -170,9 +170,9 @@ define([
             if (!options.success) {
                 promise.then(initializeSuccess);
             }
-            if (!this.options.noRouter) {
-                this._initRouter();
-            }
+
+            this._initRouter({useHistory:!this.options.noRouter});
+
             return promise;
         },
 
@@ -673,7 +673,7 @@ define([
          *
          * @private
          */
-        _initRouter: function documentController_initRouter()
+        _initRouter: function documentController_initRouter(config)
         {
             if (this.router) {
                 return this.router;
@@ -688,7 +688,10 @@ define([
             } catch (e) {
                 console.error(e);
             }
-            this.router = new Router({document: this._model});
+            this.router = new Router({
+                document: this._model,
+                useHistory:(!config || config.useHistory)
+            });
         },
 
         /**
@@ -1386,6 +1389,7 @@ define([
             if (ready) {
                 properties = this._model.getServerProperties();
                 properties.isModified = this._model.isModified();
+                properties.url=window.location.href;
             }
 
             return properties;
