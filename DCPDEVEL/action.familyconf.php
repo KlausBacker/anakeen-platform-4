@@ -63,7 +63,7 @@ function familyconf(Action & $action)
         $action->lay->eSetBlockData("cvfams", $cvfams);
         $action->lay->set("cvfam", true);
     } else {
-        $action->lay->set("cvfams", false);
+        $action->lay->set("cvfam", false);
     }
 }
 
