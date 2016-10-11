@@ -13,11 +13,11 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Attributes"
-msgstr ""
+msgstr "Attributes"
 
 msgctxt "dcpdevel"
 msgid "Back"
-msgstr ""
+msgstr "Back"
 
 #, php-format
 msgid "Change creation profil to %s [%d]"
@@ -83,31 +83,31 @@ msgid "Create profile for new document"
 msgstr ""
 
 msgid "DCPDEVEL:DCPDEVEL"
-msgstr ""
+msgstr "Admin Development Tool"
 
 msgid "DCPDEVEL:DCPDEVELDESCR"
-msgstr ""
+msgstr "Handle family configuration"
 
 msgid "DCPDEVEL:DEVELFAMILY"
-msgstr ""
+msgstr "Devel Family Configuration"
 
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
-msgstr ""
+msgstr "Export Family Configuration"
 
 msgid "DCPDEVEL:FAMILYCONF"
-msgstr ""
+msgstr "Family Configuration"
 
 msgid "DCPDEVEL:FAMILYEXPORTFORM"
-msgstr ""
+msgstr "Family Export : IHM"
 
 msgid "DCPDEVEL:MODIFYFAMILY"
-msgstr ""
+msgstr "Modify family"
 
 msgid "DCPDEVEL:SEARCHSYSDOC"
-msgstr ""
+msgstr "Search Sys Doc"
 
 msgid "DCPDEVEL:SETLOGICALNAME"
-msgstr ""
+msgstr "Set Logical Name"
 
 msgctxt "dcpdevel"
 msgid "Default view control"
@@ -149,7 +149,7 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "No cv"
-msgstr ""
+msgstr "No View Control"
 
 msgctxt "dcpdevel"
 msgid "No default view control configurated"
@@ -210,58 +210,58 @@ msgid "Workflow"
 msgstr ""
 
 msgid "dcpdev:All logical name must be set to export configuration"
-msgstr ""
+msgstr "All logical names must be set to export configuration"
 
 msgid "dcpdev:Choose cv"
-msgstr ""
+msgstr "Choose a View Control"
 
 msgid "dcpdev:Choose document profil"
-msgstr ""
+msgstr "Choose a Document Profil"
 
 msgid "dcpdev:Choose workflow"
-msgstr ""
+msgstr "Choose a Workflow"
 
 msgid "dcpdev:Configuration documents to exports for "
-msgstr ""
+msgstr "Configuration documents to exports for "
 
 msgid "dcpdev:Create new"
-msgstr ""
+msgstr "Create new"
 
 msgid "dcpdev:Csv enclosure"
-msgstr ""
+msgstr "CSV enclosure"
 
 msgid "dcpdev:Csv separator"
-msgstr ""
+msgstr "CSV Separator"
 
 msgid "dcpdev:Documents"
-msgstr ""
+msgstr "Documents"
 
 msgid "dcpdev:Export configuration"
-msgstr ""
+msgstr "Export configuration"
 
 msgid "dcpdev:Family"
-msgstr ""
+msgstr "Family"
 
 msgid "dcpdev:Logical name"
-msgstr ""
+msgstr "Logical name"
 
 msgid "dcpdev:comma"
-msgstr ""
+msgstr "comma"
 
 msgid "dcpdev:double-quote"
-msgstr ""
+msgstr "double quote"
 
 msgid "dcpdev:or"
-msgstr ""
+msgstr "or"
 
 msgid "dcpdev:semi-colon"
-msgstr ""
+msgstr "semi colon"
 
 msgid "dcpdev:single-quote"
-msgstr ""
+msgstr "single quote"
 
 msgid "dcpdevel:ADMIN_ACTIONS_LIST short_name"
-msgstr ""
+msgstr "Admin Action List"
 
 msgid "dcpdevel:main Access"
-msgstr ""
+msgstr "Main Access"

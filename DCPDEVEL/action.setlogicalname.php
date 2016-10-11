@@ -7,6 +7,7 @@ function setlogicalname(Action & $action)
     $usage->setDefinitionText("Set Logical name");
     $docid = $usage->addRequiredParameter("id", "Document identifier");
     $logicalName = $usage->addRequiredParameter("name", "New name");
+    $usage->setStrictMode(false);
     $usage->verify();
     /**
      * @var Doc $doc

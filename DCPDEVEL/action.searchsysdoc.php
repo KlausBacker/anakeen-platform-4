@@ -13,6 +13,7 @@ function searchsysdoc(Action & $action)
         "docWid"
     ));
     $term = $usage->addOptionalParameter("term", "Filter term");
+    $usage->setStrictMode(false);
     $usage->verify();
     /**
      * @var Docfam $doc
