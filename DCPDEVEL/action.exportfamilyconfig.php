@@ -14,6 +14,7 @@ function exportFamilyConfig(Action & $action)
         ";",
         ","
     ) , ';');
+    $usage->setStrictMode(false);
     $usage->verify();
     /**
      * @var DocFam $family

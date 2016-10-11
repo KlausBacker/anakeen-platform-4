@@ -13,6 +13,7 @@ function modifyfamily(Action & $action)
         "docWid",
         "icon"
     ));
+    $usage->setStrictMode(false);
     $usage->verify();
     /**
      * @var Docfam $family

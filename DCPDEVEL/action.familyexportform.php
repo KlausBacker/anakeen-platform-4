@@ -6,6 +6,7 @@ function familyexportform(Action & $action)
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Export Family Configuration Form");
     $familyId = $usage->addRequiredParameter("family", "Family identifier");
+    $usage->setStrictMode(false);
     $usage->verify();
     /**
      * @var DocFam $family
