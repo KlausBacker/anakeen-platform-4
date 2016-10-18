@@ -60,7 +60,11 @@ $sty_rules = array(
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
-                    "sourceMap" => true
+                    "sourceMap" => true,
+                    "sourceMapWriteTo" => 'css/dcp/document/bootstrap.map',
+                    "sourceMapURL" => 'bootstrap.map',
+                    "sourceRoot"=> '../../../',
+                    "compress" => true
                 )
             )
         ),
@@ -72,7 +76,11 @@ $sty_rules = array(
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
-                    "sourceMap" => true
+                    "sourceMap" => true,
+                    "sourceMapWriteTo" => 'css/dcp/document/kendo.map',
+                    "sourceMapURL" => 'kendo.map',
+                    "sourceRoot"=> '../../../',
+                    "compress" => true
                 )
             ),
         ),
@@ -83,7 +91,11 @@ $sty_rules = array(
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
-                    "sourceMap" => true
+                    "sourceMap" => true,
+                    "sourceMapWriteTo" => 'css/dcp/document/document.map',
+                    "sourceMapURL" => 'document.map',
+                    "sourceRoot"=> '../../../',
+                    "compress" => true
                 )
             )
         ),
@@ -94,7 +106,11 @@ $sty_rules = array(
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
-                    "sourceMap" => true
+                    "sourceMap" => true,
+                    "sourceMapWriteTo" => 'css/dcp/document/ckeditor.map',
+                    "sourceMapURL" => 'ckeditor.map',
+                    "sourceRoot"=> '../../../',
+                    "compress" => true
                 )
             )
         )
