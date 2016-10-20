@@ -31,5 +31,5 @@ function exportFamilyConfig(Action & $action)
     
     $filename = $famConf->export();
     
-    Http_DownloadFile($filename, sprintf("%s.zip", $family->name) , "application/x-zip", false, false, true);
+    Http_DownloadFile($filename, sprintf("%s-%s.zip",$family->name, date("Ymd\\THis")) , "application/x-zip", false, false, true);
 }

@@ -70,14 +70,15 @@
                     [ENDIF cvid]
                     [IFNOT cvid]
                     <span class="cv-idgroup">
-                        <a target="[idFrame]" class="cv-create"
-                           data-famid="[famid]" data-cv="CVDOC"
-                           data-title="[TEXT:dcpdev:Create new]">[cvCreate]</a>[IF cvfam]<select class="cv-fams">
+                        [IF cvfam]<select class="cv-fams">
                             [BLOCK cvfams]
                             <option value="[cvid]">[cvtitle]</option>
                             [ENDBLOCK cvfams]
                         </select>
                         [ENDIF cvfam]
+                        <a target="[idFrame]" class="cv-create"
+                           data-famid="[famid]" data-cv="CVDOC"
+                           data-title="[TEXT:dcpdev:Create new]">[cvCreate]</a>
                     </span>
                     [ENDIF cvid]</td><td>
                     <span class="ui-widget ui-inputgroup">
@@ -100,7 +101,21 @@
           </td><td>[IF wid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[wid]">
               <img class="ui-icon" src="[wIcon]"/> [wLabel]</a>
               [ENDIF  wid]
-              [IFNOT wid][NoWorkflow][ENDIF wid]</td><td>
+              [IFNOT wid]
+              <span class="wid-idgroup">
+
+                  [IF wfam]<select class="w-fams">
+                            <option value="0">[TEXT:Choose workflow]</option>
+                            [BLOCK wfams]
+                            <option value="[wfid]">[wtitle]</option>
+                            [ENDBLOCK wfams]
+                        </select>
+                        [ENDIF wfam]
+                    </span>
+              <a target="[idFrame]" class="w-create"
+                 data-famid="[famid]" data-wfam="WDOC"
+                 data-title="[TEXT:dcpdev:Create new workflow]">[TEXT:dcpdev:Create workflow]</a>
+              [ENDIF wid]</td><td>
               <span class="ui-widget ui-inputgroup">
                        <input data-type="docWid"
                               placeholder="[TEXT:dcpdev:Choose workflow]"
@@ -108,9 +123,6 @@
                     </span>
 
             </td></tr>
-
-
-
         </table>
 
     </section>

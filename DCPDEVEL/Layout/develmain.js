@@ -299,14 +299,53 @@ $(document).ready(function ()
             {
                 var $cvCreate = $(".cv-create");
                 $cvCreate.data("cv", $(this).val());
-                $cvCreate.text($cvCreate.data("title") + " " + element.item.label);
 
             }).selectmenu("widget").addClass("nolabel");
             $(".cv-create").on("click", function ()
             {
-                $(this).attr("href", "?app=GENERIC&action=GENERIC_EDIT&classid=" + $(this).data("cv") + "&cv_famid=" + $(this).data("famid"));
+                var url="?app=DCPDEVEL&action=MODIFYFAMILY&type=newCvid&value={{cvfamily}}&famid={{family}}";
+                url = url.replace("{{family}}", family);
+                url = url.replace("{{cvfamily}}", $(this).data("cv"));
+
+
+                $.getJSON(url).done(function () {
+                    $(".family-anchor.selected").trigger("click");
+                }).fail(function (response) {
+                    $('<div/>').html(response.responseText).dialog();
+                });
             });
             $(".cv-idgroup").controlgroup();
+
+
+            $(".w-fams").selectmenu().on("selectmenucreate", function (event, element)
+            {
+
+            }).on("selectmenuchange", function (event, element)
+            {
+                var $wCreate = $(".w-create");
+                var wfam= $(this).val();
+                if (wfam) {
+                    $wCreate.data("wfam", wfam);
+                    $wCreate.button("enable");
+                } else {
+                    $wCreate.button("disable");
+                }
+
+            }).selectmenu("widget").addClass("nolabel");
+            $(".w-create").on("click", function ()
+            {
+                var url="?app=DCPDEVEL&action=MODIFYFAMILY&type=newWid&value={{wfamily}}&famid={{family}}";
+                url = url.replace("{{family}}", family);
+                url = url.replace("{{wfamily}}", $(this).data("wfam"));
+
+
+                $.getJSON(url).done(function () {
+                    $(".family-anchor.selected").trigger("click");
+                }).fail(function (response) {
+                    $('<div/>').html(response.responseText).dialog();
+                });
+            }).button("disable");
+            $(".wid-idgroup").controlgroup();
 
 
             $(".profil--label").each(function ()

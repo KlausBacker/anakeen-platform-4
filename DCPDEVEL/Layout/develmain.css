@@ -95,7 +95,7 @@ p.header {
 }
 
 .ui-button.nolabel {
-    width: 8px;
+    width: 11em;
     height: 14px;
     padding-left: 12px;
     padding-right: 4px;
@@ -103,7 +103,10 @@ p.header {
 a.cv-create {
     height: 14px;
     min-width: 18em;
+}
 
+.cv-fams + .ui-widget + .cv-create {
+    min-width: 10em;
 }
 .custom-combobox .custom-combobox-input {
     height:22px;

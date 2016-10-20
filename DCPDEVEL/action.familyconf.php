@@ -63,9 +63,22 @@ function familyconf(Action & $action)
         }
         $action->lay->eSetBlockData("cvfams", $cvfams);
         $action->lay->set("cvfam", true);
+        $action->lay->set("cvCreate", ___("Initialize control","dcpdevel"));
     } else {
         $action->lay->set("cvfam", false);
     }
+
+    $sw=new SearchDoc("", "-1");
+    $sw->addFilter("usefor ~ 'W' ");
+    $sw->addFilter("id != 20 ");
+    $sw->setObjectReturn(true);
+    $fws=$sw->search()->getDocumentList();
+    $tws=[];
+    foreach ($fws as $fw) {
+        $tws[]=["wfid" => $fw->id, "wtitle" => $fw->getTitle() ];
+    }
+     $action->lay->eSetBlockData("wfams", $tws);
+    $action->lay->set("wfam", count($tws)>0);
 }
 
 function i18N_familyconf(Action & $action, $family)

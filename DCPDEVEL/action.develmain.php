@@ -24,7 +24,7 @@ function develmain(Action & $action)
     
     $familyData = [];
     foreach ($familyList as $family) {
-        $familyData[] = ["label" => $family->getTitle() , "icon" => $family->getIcon("", 22) , "familyid" => $family->id];
+        $familyData[] = ["label" => $family->getTitle() , "icon" => $family->getIcon("", 22) , "familyid" => $family->id, "familyname" => $family->name];
     }
     
     $action->lay->eSetBlockData("families", $familyData);

@@ -10,7 +10,7 @@ function modifyfamily(Action & $action)
         "famProfile",
         "docProfile",
         "docCv",
-        "docWid",
+        "docWid","newWid","newCvid",
         "icon"
     ));
     $usage->setStrictMode(false);
@@ -98,13 +98,50 @@ function modifyfamily(Action & $action)
                 }
                 break;
 
+        case "newCvid":
+            // Create new control view
+            if ($value) {
+                $newWid=createDoc("", $value);
+                if ($newWid) {
+                    $err=$newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::cv_famid, $family->id);
+                    $err.=$newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::ba_title, sprintf(___("Default workflow for %s family","dcpdevel"),$family->getTitle()));
+                    if (!$err) {
+                        $err=$newWid->store();
+                    }
+                    if (!$err) {
+                        $family->ccvid = $newWid->id; //  default control view for creation
+                        $family->addHistoryEntry(sprintf(___("Change default view control to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
+                        $err = $family->modify();
+                    }
+                }
+            }
+            break;
+        case "newWid":
+            // Create new workflow
+            if ($value) {
+                $newWid=createDoc("", $value);
+                if ($newWid) {
+                    $err=$newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::wf_famid, $family->id);
+                    $err.=$newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::ba_title, sprintf(___("Default workflow for %s family","dcpdevel"),$family->getTitle()));
+                    if (!$err) {
+                        $err=$newWid->store();
+                    }
+                    if (!$err) {
+                        $family->wid = $newWid->id; //  default workflow
+                        $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
+                        $err = $family->modify();
+                    }
+
+                }
+            }
+            break;
             case "docWid":
                 if ($value) {
-                    $profil = new_Doc("", $value);
+                    $wdoc = new_Doc("", $value);
                     if (!$family->isAlive()) {
                         $err = sprintf("Undefined Workflow \"%s\"", $value);
                     }
-                    $wid = $profil->id;
+                    $wid = $wdoc->id;
                 } else {
                     $wid = 0;
                 }

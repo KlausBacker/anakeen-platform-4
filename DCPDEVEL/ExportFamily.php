@@ -314,7 +314,10 @@ class ExportFamily
             $data[] = ["CLASS", $this->family->classname];
         }
         if ($this->family->atags) {
-            $data[] = ["TAGS", $this->family->atags];
+            $tags=explode("\n", $this->family->atags);
+            foreach ($tags as $tag) {
+                $data[] = ["TAGS", $tag];
+            }
         }
         if ($this->family->dfldid) {
             $configDocument = new_Doc("", $this->family->dfldid);
