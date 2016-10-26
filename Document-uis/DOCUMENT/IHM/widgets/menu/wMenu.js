@@ -91,7 +91,15 @@ define([
                                 target = $elementA.attr("target") || '_self';
 
                                 if (target === "_self") {
-                                    window.location.href = href;
+                                    // For IE : Not honor base href in this case
+                                    var $base = $("base");
+                                    var isAbsUrl = new RegExp('^(?:[a-z]+:)?//', 'i');
+
+                                    if (!isAbsUrl.test(href)) {
+                                        window.location.href = $base.attr("href") + href;
+                                    } else {
+                                        window.location.href = href;
+                                    }
                                 } else {
                                     configMenu = $menuElement.data("menuConfiguration");
                                     targetOptions = configMenu.targetOptions || {};
