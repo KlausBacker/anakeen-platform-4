@@ -39,6 +39,11 @@ define([
 
         className: "dcpDocument container-fluid",
 
+        events:
+        {
+            'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]': 'propagateActionClick'
+        },
+
         /**
          * Init event
          */
@@ -163,8 +168,6 @@ define([
                     model: this.model,
                     el: this.$el.find(".dcpDocument__menu:first")[0]
                 }).render();
-
-                this.listenTo(viewMenu, 'menuselected', this.actionDocument);
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
@@ -1185,16 +1188,35 @@ define([
             this.model.restoreDocument();
         },
 
-        actionDocument: function vDocumentActionDocument(options)
+        propagateActionClick: function vDocumentPropagateActionClick(event)
         {
-            var event = {prevent: false};
+            var $target = $(event.currentTarget),
+                action,
+                options,
+                eventOptions,
+                internalEvent = {
+                    prevent: false
+                };
 
-            this.model.trigger("internalLinkSelected", event, options);
-            if (event.prevent) {
+            event.preventDefault();
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+
+            action = $target.data('action') || $target.attr("href");
+            options = action.substring(8).split(":");
+            eventOptions = {
+                target: event.target,
+                eventId: options.shift(),
+                options: options
+            };
+
+            this.model.trigger("internalLinkSelected", internalEvent, eventOptions);
+            if (internalEvent.prevent) {
                 return this;
             }
 
-            this.doStandardAction(event, options);
+            return this.doStandardAction(internalEvent, eventOptions);
         },
 
         /**

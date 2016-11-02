@@ -81,7 +81,7 @@
             }
 
             this._initDom();
-            this._initLinkHelpEvent();
+            this._initActionClickEvent();
             this._bindEvents();
         },
 
@@ -231,37 +231,36 @@
             _.delay(_.bind(this._initCSSResponsive, this), 10);
         },
         /**
-         * Init event when a help is associated to the attribute
+         * Init event for #action/ links
          *
          * @protected
          */
-        _initLinkHelpEvent: function wLabelInitLinkEvent()
-        {
-            var helpId = this.options.renderOptions.helpLinkIdentifier;
+        _initActionClickEvent: function wAttributeInitActionClickEvent() {
             var scopeWidget = this;
 
-            if (helpId) {
-                this.element.on("click." + this.eventNamespace, '.dcpLabel__help__link', function wAttributeAttributeClick(event)
-                {
-                    var eventContent;
-                    var href = $(this).attr("href");
-                    if (href.substring(0, 8) === "#action/") {
-                        event.preventDefault();
-                        eventContent = href.substring(8).split(":");
-                        scopeWidget._trigger("externalLinkSelected", event, {
-                            target: event.target,
-                            eventId: eventContent.shift(),
-                            index: -1,
-                            options: eventContent
-                        });
-                        event.stopPropagation();
+            this.element.on("click." + this.eventNamespace, 'a[href^="#action/"], a[data-action], button[data-action]', function wAttributeActionClick(event) {
+                var $this = $(this),
+                    action,
+                    options,
+                    eventOptions;
 
-                        return this;
-                    }
-                });
-            }
+                event.preventDefault();
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
 
-            return this;
+                action = $this.data('action') || $this.attr("href");
+                options = action.substring(8).split(":");
+                eventOptions = {
+                    target: event.target,
+                    index: -1,
+                    eventId: options.shift(),
+                    options: options
+                };
+
+                scopeWidget._trigger("externalLinkSelected", event, eventOptions);
+                return this;
+            });
         },
         _initCSSResponsive: function _initCSSResponsive()
         {
