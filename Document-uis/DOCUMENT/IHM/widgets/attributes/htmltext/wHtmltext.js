@@ -22,6 +22,9 @@
         options: {
             type: "htmltext",
             renderOptions: {
+                anchors: {
+                    target: "_blank"
+                },
                 toolbar: 'Basic',
                 height: '100px',
                 toolbarStartupExpanded: true,
@@ -37,6 +40,7 @@
         {
             var currentWidget = this, bind_super = _.bind(this._super, this), bindInitEvent = _.bind(this._initEvent, this);
             try {
+                this.popupWindows = {};
                 if (this.getMode() === "write") {
                     (function wHtmltext_umdRequire(factory)
                     {
@@ -226,6 +230,76 @@
                     }
                 });
             }
+
+            this.element.on("click." + this.eventNamespace, 'a:not([href^="#action/"]):not([data-action])', function wHtmlAnchorClick(event) {
+                var internalEvent = {prevent: false},
+                    anchor = this,
+                    isNotPrevented,
+                    anchorsConfig,
+                    anchorsTarget,
+                    wFeature = '',
+                    href,
+                    dcpWindow;
+
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
+                event.preventDefault();
+
+                anchorsConfig = _.extend({}, currentWidget.options.renderOptions.anchors);
+
+                isNotPrevented = currentWidget._trigger("anchorClick", internalEvent, {
+                    anchor: anchor,
+                    anchorsConfig: anchorsConfig
+                });
+                if (isNotPrevented) {
+                    anchorsTarget = anchorsConfig.target || "_blank";
+                    href = anchor.href;
+
+                    switch(anchorsTarget) {
+                        case "_dialog":
+                            if(currentWidget.popupWindows[href]) {
+                                dcpWindow = currentWidget.popupWindows[href];
+                            } else {
+                                dcpWindow = $('<div/>').appendTo('body').dcpWindow({
+                                    width: anchorsConfig.windowWidth,
+                                    height: anchorsConfig.windowHeight,
+                                    modal: anchorsConfig.modal,
+                                    content: href,
+                                    iframe: true
+                                });
+
+                                currentWidget.popupWindows[href] = dcpWindow;
+                                dcpWindow.data('dcpWindow').kendoWindow().center();
+                            }
+                            dcpWindow.data('dcpWindow').open();
+                            break;
+                        case "_self":
+                            // For IE : Not honor base href in this case
+                            var $base = $("base");
+                            var isAbsUrl = new RegExp('^(?:[a-z]+:)?//', 'i');
+
+                            if (!isAbsUrl.test(href)) {
+                                window.location.href = $base.attr("href") + href;
+                            } else {
+                                window.location.href = href;
+                            }
+                            break;
+                        default:
+                            if (anchorsConfig.windowWidth || anchorsConfig.windowHeight) {
+                                if (anchorsConfig.windowWidth) {
+                                    wFeature += "width=" + parseInt(anchorsConfig.windowWidth, 10) + ",";
+                                }
+                                if (anchorsConfig.windowHeight) {
+                                    wFeature += "height=" + parseInt(anchorsConfig.windowHeight, 10) + ",";
+                                }
+                                wFeature += "resizable=yes,scrollbars=yes";
+                            }
+                            window.open(href, anchorsTarget, wFeature);
+                            break;
+                    }
+                }
+            });
         },
         /**
          * Define inputs for focus
@@ -311,6 +385,10 @@
                         return;
                     }
             }
+            _.each(this.popupWindows, function wHtmltextDestroyPopup(pWindow)
+            {
+                pWindow.data('dcpWindow').destroy();
+            });
             this._super();
         },
 

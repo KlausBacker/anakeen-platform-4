@@ -37,6 +37,7 @@ define([
         "attributeBeforeRender", "attributeReady",
         "attributeHelperSearch", "attributeHelperResponse", "attributeHelperSelect",
         "attributeArrayChange", "actionClick",
+        "attributeAnchorClick",
         "beforeClose", "close",
         "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",
@@ -510,6 +511,23 @@ define([
                 try {
                     var currentAttribute = currentWidget.getAttribute(attrid);
                     event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeHelperSelect", currentAttribute,
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+            });
+
+            // listener to prevent default actions when anchorClick is triggered
+            this._model.listenTo(this._model, "anchorClick", function documentController_triggerHelperSelect(event, attrid, options)
+            {
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeAnchorClick", currentAttribute,
                         currentWidget.getProperties(),
                         currentAttribute,
                         options
