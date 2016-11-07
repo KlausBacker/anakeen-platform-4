@@ -96,17 +96,19 @@ function autocomplete(Action & $action)
                     if ($argName === "CT") {
                         $values[$attributeObject->id]["displayValue"] = isset($currentResult[$key]) ? $currentResult[$key] : null;
                     } else {
-                        if (substr($argName, 0, 3) === "CT[") {
+                        if ($argName === "?" || substr($argName, 0, 3) === "CT[") {
                             continue;
                         }
                         $values[strtolower($argName)]["value"] = isset($currentResult[$key]) ? $currentResult[$key] : null;
-                        $ctKey = array_search("CT[".$argName."]", $rargids);
+                        $values[strtolower($argName)]["value"] = $values[strtolower($argName)]["value"] === "" ? null : $values[strtolower($argName)]["value"];
+
+                        $ctKey = array_search("CT[" . $argName . "]", $rargids);
                         if ($ctKey !== false) {
                             $values[strtolower($argName)]["displayValue"] = isset($currentResult[$ctKey]) ? $currentResult[$ctKey] : null;
                         }
                     }
                 }
-                
+
                 $return["data"][] = array(
                     "title" => $title,
                     "values" => $values
