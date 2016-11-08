@@ -20,6 +20,7 @@
         "attributeBeforeRender", "attributeReady",
         "attributeHelperSearch", "attributeHelperResponse", "attributeHelperSelect",
         "attributeArrayChange", "actionClick",
+        "attributeAnchorClick",
         "beforeClose", "close",
         "beforeSave", "afterSave", "downloadFile", "uploadFile",
         "beforeDelete", "afterDelete",

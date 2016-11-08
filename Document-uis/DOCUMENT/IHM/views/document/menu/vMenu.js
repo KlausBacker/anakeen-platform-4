@@ -13,7 +13,7 @@ define([
         className: "dcpDocument",
 
         events: {
-            "dcpmenuselected": "propagateSelected"
+            "dcpmenuexternallinkselected": "externalLinkSelected"
         },
 
         /**
@@ -40,13 +40,19 @@ define([
             return this;
         },
 
-        propagateSelected: function vMenuPropagateSelected(event, options)
+        externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
         {
-            this.trigger("menuselected", {
-                target: event.item,
-                eventId: options.eventId,
-                options: options.options
-            });
+            var internalEvent = {
+                prevent: false
+            };
+
+            options.attrid = this.model.id;
+            this.model.trigger("internalLinkSelected", internalEvent, options);
+            if (event.prevent) {
+                return this;
+            }
+            this.model.trigger("actionAttributeLink", internalEvent, options);
+            return this;
         },
 
         changeVisibility: function vMenuchangeVisibility(event, data)

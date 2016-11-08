@@ -462,6 +462,7 @@
             }
             if (this.getMode() === "read") {
                 this._initButtonsEvent();
+                this._initActionClickEvent();
                 this._initLinkEvent();
             }
             this._initErrorEvent();
@@ -636,6 +637,38 @@
             return this;
         },
         /**
+         * Init event for #action/ links
+         *
+         * @protected
+         */
+        _initActionClickEvent: function wAttributeInitActionClickEvent() {
+            var scopeWidget = this;
+
+            this.element.on("click." + this.eventNamespace, 'a[href^="#action/"], a[data-action], button[data-action]', function wAttributeActionClick(event) {
+                var $this = $(this),
+                    action,
+                    options,
+                    eventOptions;
+
+                event.preventDefault();
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
+
+                action = $this.data('action') || $this.attr("href");
+                options = action.substring(8).split(":");
+                eventOptions = {
+                    target: event.target,
+                    index: scopeWidget._getIndex(),
+                    eventId: options.shift(),
+                    options: options
+                };
+
+                scopeWidget._trigger("externalLinkSelected", event, eventOptions);
+                return this;
+            });
+        },
+        /**
          * Init event when a hyperlink is associated to the attribute
          *
          * @protected
@@ -646,48 +679,36 @@
             var scopeWidget = this;
 
             if (htmlLink) {
-
                 this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function wAttributeAttributeClick(event)
                 {
 
-                    var renderTitle, index, $dialogDiv, dpcWindow, href = $(this).attr("href"), eventContent;
+                    var $this = $(this), renderTitle, index, $dialogDiv, dpcWindow, href = $this.attr("href");
 
-                    if (href.substring(0, 8) === "#action/") {
-                        event.preventDefault();
-                        eventContent = href.substring(8).split(":");
-                        scopeWidget._trigger("externalLinkSelected", event, {
-                            target: event.target,
-                            eventId: eventContent.shift(),
-                            index: scopeWidget._getIndex(),
-                            options: eventContent
-                        });
-                        return this;
-                    }
+                    if (href.substring(0, 8) !== "#action/" && !$this.data("action")) {
+                        if (htmlLink.target === "_dialog") {
+                            event.preventDefault();
 
-                    if (htmlLink.target === "_dialog") {
-                        event.preventDefault();
+                            index = $(this).data("index");
+                            if (typeof index !== "undefined" && index !== null) {
+                                renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue[index]);
+                            } else {
+                                renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue);
+                            }
 
-                        index = $(this).data("index");
-                        if (typeof index !== "undefined" && index !== null) {
-                            renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue[index]);
-                        } else {
-                            renderTitle = Mustache.render(htmlLink.windowTitle || "", scopeWidget.options.attributeValue);
+                            $dialogDiv = $('<div/>');
+                            $('body').append($dialogDiv);
+
+                            dpcWindow = $dialogDiv.dcpWindow({
+                                title: renderTitle,
+                                width: htmlLink.windowWidth,
+                                height: htmlLink.windowHeight,
+                                content: href,
+                                iframe: true
+                            });
+
+                            dpcWindow.data('dcpWindow').kendoWindow().center();
+                            dpcWindow.data('dcpWindow').open();
                         }
-
-                        $dialogDiv = $('<div/>');
-                        $('body').append($dialogDiv);
-
-                        dpcWindow = $dialogDiv.dcpWindow({
-                            title: renderTitle,
-                            width: htmlLink.windowWidth,
-                            height: htmlLink.windowHeight,
-                            content: href,
-                            iframe: true
-                        });
-
-                        dpcWindow.data('dcpWindow').kendoWindow().center();
-                        dpcWindow.data('dcpWindow').open();
-
                     }
                 });
 

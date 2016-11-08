@@ -14,6 +14,12 @@ define([
         tagName: "li",
 
         className: "dcpTab__label dcpLabel",
+
+        events:
+        {
+            'click a[href^="#action/"], a[data-action], button[data-action]': 'externalLinkSelected'
+        },
+
         displayLabel: true,
 
         initialize: function vTabLabel_initialize(options)
@@ -52,31 +58,6 @@ define([
                         attrid: this.model.id,
                         label: label
                     }));
-                    this.$el.find(".dcpLabel__help__link").on("click.v"+this.model.cid, function vTabLabelHelpClick(event)
-                    {
-                        var eventContent, options;
-                        var href = $(this).attr("href");
-
-                        if (href.substring(0, 8) === "#action/") {
-                            event.preventDefault();
-                            eventContent = href.substring(8).split(":");
-                            options = {
-                                target: event.target,
-                                eventId: eventContent.shift(),
-                                index: -1,
-                                options: eventContent
-                            };
-                            documentModel.trigger("internalLinkSelected", event, options);
-                            if (event.prevent) {
-                                return this;
-                            }
-                            documentModel.trigger("actionAttributeLink", event, options);
-                            event.stopPropagation();
-
-                            return this;
-                        }
-                    });
-
                 } else {
                     this.$el.html($('<span class="dcpLabel__text" />').text(label));
                 }
@@ -132,6 +113,42 @@ define([
         show: function vTabLabel_show()
         {
             this.$el.show();
+        },
+
+        externalLinkSelected: function vAttributeExternalLinkSelected(event)
+        {
+            var $target = $(event.currentTarget),
+                action,
+                options,
+                eventOptions,
+                documentModel,
+                internalEvent = {
+                    prevent: false
+                };
+
+            event.preventDefault();
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+
+            action = $target.data('action') || $target.attr("href");
+            options = action.substring(8).split(":");
+            eventOptions = {
+                target: event.target,
+                index: scopeWidget._getIndex(),
+                eventId: options.shift(),
+                options: options
+            };
+            documentModel = this.model.getDocumentModel();
+
+            this.model.trigger("internalLinkSelected", internalEvent, eventOptions);
+            if (event.prevent) {
+                return this;
+            }
+
+            documentModel.trigger("actionAttributeLink", internalEvent, options);
+
+            return this;
         }
     });
 

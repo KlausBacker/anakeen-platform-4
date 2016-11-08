@@ -15,6 +15,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
     const toolbarStartupExpandedOption = "toolbarStartupExpanded";
     const ckEditorConfigurationOption = "ckEditorConfiguration";
     const ckEditorAllowAllTagsOption = "ckEditorAllowAllTags";
+    const anchorsOptions = "anchors";
     
     const fullToolbar = "Full";
     const simpleToolbar = "Simple";
@@ -79,4 +80,36 @@ class HtmltextRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::ckEditorAllowAllTagsOption, (bool)$allow);
     }
+
+    /**
+     * Add a html link on value (view mode only)
+     * @note use only in view mode
+     * @param anchorOptions $options
+     * @return $this
+     */
+    public function setAnchorsOptions(anchorOptions $options)
+    {
+        $this->setOption(self::anchorsOptions, $options);
+        return $this;
+    }
+}
+
+class anchorOptions
+{
+    /**
+     * @var string target of window
+     */
+    public $target = "_self";
+    /**
+     * @var string width of window
+     */
+    public $windowWidth = "300px";
+    /**
+     * @var string height of window
+     */
+    public $windowHeight = "200px";
+    /**
+     * @var bool modal window
+     */
+    public $modal = false;
 }

@@ -81,9 +81,13 @@ define([
                             scopeWidget.element.data("menu-opening", false);
                             //if href is event kind propagate event instead of default behaviour
                             if (href.substring(0, 8) === "#action/") {
+                                event.preventDefault();
+                                if (event.stopPropagation) {
+                                    event.stopPropagation();
+                                }
                                 eventContent = href.substring(8).split(":");
-
-                                scopeWidget._trigger("selected", event, {
+                                scopeWidget._trigger("externalLinkSelected", event, {
+                                    target: event.target,
                                     eventId: eventContent.shift(),
                                     options: eventContent
                                 });
