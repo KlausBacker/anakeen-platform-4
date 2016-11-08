@@ -69,6 +69,12 @@
                     [V_CV_RENDERCONFIGCLASS]
                 </div>
                 <div class="cvdoc_array_view__label cvdoc_array_view__label--docid">
+                    [L_CV_ZVIEW]&nbsp;:
+                </div>
+                <div class="cvdoc_array_view__value  cvdoc_array_view__value--docid">
+                    [V_CV_ZVIEW]
+                </div>
+                <div class="cvdoc_array_view__label cvdoc_array_view__label--docid">
                     [L_CV_MSKID]&nbsp;:
                 </div>
                 <div class="cvdoc_array_view__value cvdoc_array_view__value--docid">

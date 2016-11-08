@@ -5,7 +5,7 @@
 */
 namespace Dcp\Ui\Crud;
 
-use Dcp\AttributeIdentifiers\Cvrender;
+use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
 use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\Crud\Document as DocumentCrud;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;
@@ -115,7 +115,7 @@ class View extends Crud
             "uri" => $this->getUri($creationMode ? $family : $this->document, $this->viewIdentifier)
         );
         /**
-         * @var \Cvdoc $controlView
+         * @var \Dcp\Family\Cvdoc $controlView
          */
         $controlView = DocManager::getDocument($this->document->cvid);
         
@@ -175,7 +175,7 @@ class View extends Crud
                 // special controlled view
                 
                 /**
-                 * @var \CVDoc $cvdoc
+                 * @var \Dcp\Family\Cvdoc $cvdoc
                  */
                 $cvdoc = DocManager::getDocument($document->cvid);
                 $cvdoc->Set($document);
@@ -187,7 +187,7 @@ class View extends Crud
                     throw $exception;
                 }
                 $tview = $cvdoc->getView($this->viewIdentifier);
-                $mask = $tview[cvrender::cv_mskid];
+                $mask = $tview[CvdocAttribute::cv_mskid];
                 if ($mask) {
                     $document->setMask($mask); // apply mask to avoid modification of invisible attribute
                     
@@ -287,24 +287,24 @@ class View extends Crud
     /**
      * Compute properties
      *
-     * @param \CVDoc $controlView
+     * @param \Dcp\Family\Cvdoc $controlView
      * @param array $viewInfo
      * @return array
      */
-    protected function getViewProperties(\CVDoc $controlView, array $viewInfo)
+    protected function getViewProperties(\Dcp\Family\Cvdoc $controlView, array $viewInfo)
     {
-        $viewId = $viewInfo[Cvrender::cv_idview];
+        $viewId = $viewInfo[CvdocAttribute::cv_idview];
         return array(
             "requestIdentifier" => $this->viewIdentifier,
             "identifier" => $viewId,
-            "mode" => ($viewInfo[Cvrender::cv_kview] === "VCONS") ? "consultation" : "edition",
+            "mode" => ($viewInfo[CvdocAttribute::cv_kview] === "VCONS") ? "consultation" : "edition",
             "label" => $controlView->getLocaleViewLabel($viewId) ,
-            "isDisplayable" => ($viewInfo[Cvrender::cv_displayed] === "yes") ,
-            "order" => intval($viewInfo[Cvrender::cv_order]) ,
+            "isDisplayable" => ($viewInfo[CvdocAttribute::cv_displayed] === "yes") ,
+            "order" => intval($viewInfo[CvdocAttribute::cv_order]) ,
             self::fieldMenu => $controlView->getLocaleViewMenu($viewId) ,
             "mask" => array(
-                "id" => intval($viewInfo[Cvrender::cv_mskid]) ,
-                "title" => $viewInfo[Cvrender::cv_msk]
+                "id" => intval($viewInfo[CvdocAttribute::cv_mskid]) ,
+                "title" => $viewInfo[CvdocAttribute::cv_msk]
             )
         );
     }

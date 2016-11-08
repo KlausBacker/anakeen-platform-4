@@ -91,9 +91,9 @@ namespace Dcp\AttributeIdentifiers {
 		const test_ddui_all__enumslist='test_ddui_all__enumslist';
 		/** [enum ] Des énumérés auto */
 		const test_ddui_all__enumsauto='test_ddui_all__enumsauto';
-		/** [enum ] Des énumérés vertical */
+		/** [enum ] Des énumérés verticaux */
 		const test_ddui_all__enumsvertical='test_ddui_all__enumsvertical';
-		/** [enum ] Des énumérés horizontal */
+		/** [enum ] Des énumérés horizontaux */
 		const test_ddui_all__enumshorizontal='test_ddui_all__enumshorizontal';
 		/** [frame] Énumérés server multiple */
 		const test_ddui_all__fr_enumservermultiple='test_ddui_all__fr_enumservermultiple';
@@ -101,9 +101,9 @@ namespace Dcp\AttributeIdentifiers {
 		const test_ddui_all__enumsserverlist='test_ddui_all__enumsserverlist';
 		/** [enum ] Des énumérés auto */
 		const test_ddui_all__enumsserverauto='test_ddui_all__enumsserverauto';
-		/** [enum ] Des énumérés vertical */
+		/** [enum ] Des énumérés verticaux */
 		const test_ddui_all__enumsserververtical='test_ddui_all__enumsserververtical';
-		/** [enum ] Des énumérés horizontal */
+		/** [enum ] Des énumérés horizontaux */
 		const test_ddui_all__enumsserverhorizontal='test_ddui_all__enumsserverhorizontal';
 		/** [tab] Les dates */
 		const test_ddui_all__t_tab_date='test_ddui_all__t_tab_date';

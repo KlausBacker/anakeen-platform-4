@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-07 17:27+0200\n"
+"POT-Creation-Date: 2016-11-09 13:21+0100\n"
 "PO-Revision-Date: 2016-06-28 15:01+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -58,6 +58,18 @@ msgctxt "ddui-file"
 msgid "B"
 msgstr ""
 
+msgid "CVDOC_ARRAY_VIEW:display"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:idview"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:type"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:view"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Cancel"
 msgstr ""
@@ -80,6 +92,10 @@ msgstr ""
 
 msgctxt "ddui-image"
 msgid "Choose image"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" not exists"
 msgstr ""
 
 #, php-format
@@ -259,6 +275,14 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Historic"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Ignored CORE view"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Ignored HTML5 view"
 msgstr ""
 
 msgctxt "ddui"

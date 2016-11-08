@@ -47,13 +47,13 @@ class ViewCollection extends View
         }
         DocManager::cache()->addDocument($cv);
         /**
-         * @var \CVDoc $cv
+         * @var \Dcp\Family\Cvdoc $cv
          */
         $cv->set($document);
         $views = $cv->getViews();
         $info = array();
         foreach ($views as $view) {
-            $vid = $view[\Dcp\AttributeIdentifiers\Cvrender::cv_idview];
+            $vid = $view[\Dcp\AttributeIdentifiers\Cvdoc::cv_idview];
             if ($cv->control($vid) == "") {
                 //$viewInfo = $this->getViewInformation($document, $vid);
                 $prop = $this->getViewProperties($cv, $view);

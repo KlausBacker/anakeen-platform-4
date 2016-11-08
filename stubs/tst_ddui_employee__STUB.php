@@ -31,9 +31,9 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_nais_date='tst_nais_date';
 		/** [enum] Nationalité */
 		const tst_nationalite='tst_nationalite';
-		/** [tab] Statut de l'expert */
+		/** [tab] Statut */
 		const tst_t_statut='tst_t_statut';
-		/** [frame] Statut de l'expert */
+		/** [frame] Statut de l'employé */
 		const tst_f_statut='tst_f_statut';
 		/** [enum] Statut */
 		const tst_statut='tst_statut';

@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - <<'SQL'
+
+CREATE OR REPLACE FUNCTION pg_temp.viewExists(arg_schema text, arg_table text)
+RETURNS BOOLEAN AS
+$$
+DECLARE
+  t_schema text;
+  res text;
+BEGIN
+
+  t_schema := arg_schema;
+  IF t_schema = '' THEN
+    SELECT current_schema() INTO t_schema;
+  END IF;
+
+  SELECT * INTO res FROM information_schema.tables WHERE
+    table_schema = t_schema
+    AND table_name = arg_table;
+
+  IF FOUND THEN
+    RETURN TRUE;
+  END IF;
+
+  RETURN FALSE;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION pg_temp.moveCvDoc()
+RETURNS BOOLEAN AS
+$$
+DECLARE
+    cvrenderid int;
+BEGIN
+   IF pg_temp.viewExists('family', 'cvrender') THEN
+        raise notice 'move cvrender to cvdoc';
+
+
+        update family.cvrender set fromid=28;
+        insert into family.cvdoc (select * from family.cvrender);
+        delete from  family.cvrender;
+
+        select id into cvrenderid from docfam where name ='CVRENDER';
+        execute 'drop table doc' || cvrenderid || ' cascade';
+        delete from docfam where name ='CVRENDER';
+        update docfam set icon='cvrender.png' where name='CVDOC';
+        update family.cvdoc set icon='cvrender.png' where icon='cview.gif';
+
+        RETURN TRUE;
+  END IF;
+
+  RETURN FALSE;
+END;
+$$ LANGUAGE plpgsql;
+
+select pg_temp.moveCvDoc();
+
+SQL
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Fail to move cvrender to cvdoc."
+    exit $RET
+fi
+
+
+"$wpub"/wsh.php --api=cleanContext

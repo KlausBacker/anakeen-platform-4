@@ -11,7 +11,7 @@
 
     <requires>
         <installer version="1.5.0" comp="ge"/>
-        <module comp='ge' version='3.2.19' name='dynacase-core'/>
+        <module comp='ge' version='3.2.23' name='dynacase-core'/>
         <!-- //region full -->
         <module name='dynacase-tracekit-installer'/>
         <!-- //endregion full -->
@@ -33,7 +33,7 @@
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvrender__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
             <label>Create Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
@@ -48,13 +48,16 @@
     <post-upgrade>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvrender__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
             <label>Update Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
         <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
             <label>Link js libraries</label>
+        </process>
+        <process command="programs/post_migration DOCUMENT">
+            <label>Migration</label>
         </process>
         <process command="programs/update_catalog"/>
     </post-upgrade>
