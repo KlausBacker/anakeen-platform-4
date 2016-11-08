@@ -793,6 +793,8 @@ define([
                         helpY = bodyH - dialogH - 50;
                     }
 
+                    helpY = helpY < 0 ? 0 : helpY;
+
                     $(scope.helpWidget.wrapper).css({
                         top: (helpY) + "px",
                         left: (helpX) + "px"
