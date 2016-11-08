@@ -58,7 +58,6 @@
                     var href = $(this).attr("href");
                     if (href.substring(0, 8) === "#action/") {
                         event.preventDefault();
-                        console.log("event", event);
                         eventContent = href.substring(8).split(":");
                         scopeWidget._trigger("externalLinkSelected", event, {
                             target: event.target,
