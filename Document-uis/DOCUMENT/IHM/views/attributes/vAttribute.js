@@ -29,30 +29,24 @@ define([
         className: "row dcpAttribute form-group",
         customView: false,
         displayLabel: true,
-        events: function vAttributeEvents()
-        {
-            if (this.customView === false) {
-                return {
-                    "dcpattributechange .dcpAttribute__content": "updateValue",
-                    "dcpattributedelete .dcpAttribute__content": "deleteValue",
-                    "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
-                    "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
-                    "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
-                    "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
-                    "dcplabelexternallinkselected": "externalLinkSelected",
-                    "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
-                    "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
-                    "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
-                    "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
-                };
-            } else {
-                // No events in custom
-                return {};
-            }
+        //Don't use standard event to launch the event only when there is no template
+        attributeEvents: {
+            "dcpattributechange .dcpAttribute__content": "updateValue",
+            "dcpattributedelete .dcpAttribute__content": "deleteValue",
+            "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
+            "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
+            "dcpattributefetchdocument .dcpAttribute__content": "loadDocument",
+            "dcpattributeexternallinkselected .dcpAttribute__content": "externalLinkSelected",
+            "dcplabelexternallinkselected": "externalLinkSelected",
+            "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
+            "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
+            "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
+            "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
         },
 
         initialize: function vAttributeInitialize(options)
         {
+            var events;
             this.listenTo(this.model, 'change:label', this.refreshLabel);
             this.listenTo(this.model, 'change:attributeValue', this.refreshValue);
             this.listenTo(this.model, 'change:errorMessage', this.refreshError);
@@ -78,6 +72,14 @@ define([
             }
             if (options.secondView) {
                 this.noRenderEvent = false;
+            }
+            if (this.customView === false) {
+                events = this.attributeEvents;
+                //For vColumn events
+                if (_.isFunction(events)) {
+                    events = events.apply(this);
+                }
+                this.delegateEvents(events);
             }
             this.options = options;
         },
