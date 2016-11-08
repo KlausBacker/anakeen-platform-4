@@ -1212,17 +1212,72 @@ define([
             return globalCallback.promise;
         },
 
-        restoreDocument: function mDocumentRestoreDocument()
+        restoreDocument: function mDocumentRestoreDocument(options)
         {
-            var event = {prevent: false}, serverProperties = this.getServerProperties();
-            this.trigger("beforeRestore", event);
-            if (!event.prevent && this.get("properties")) {
-                this.get("properties").set("status", "alive");
-                this.saveDocument().then(_.bind(function vDocument_afterRestoreSave()
-                {
-                    this.trigger("afterRestore", serverProperties);
-                }, this));
+            var globalCallback = this._promiseCallback(),
+                restoreCallback = this._promiseCallback(),
+                beforeRestoreEvent = {prevent: false},
+                currentModel = this,
+                serverProperties = this.getServerProperties();
+
+            options = options || {};
+
+            if ("deleted" === this.get("properties").get("status")) {
+                if (_.isEmpty(this._customClientData)) {
+                    this.trigger("getCustomClientData");
+                }
+                this.trigger("beforeRestore", beforeRestoreEvent, this._customClientData);
+
+                if (beforeRestoreEvent.prevent !== false) {
+                    globalCallback.error({eventPrevented: true});
+                } else {
+                    this.trigger("displayLoading", {isSaving: true});
+
+                    restoreCallback.promise.then(
+                        function mDocument_restoreDocument_Success() {
+                            currentModel._loadDocument(currentModel).then(
+                                function mDocument_restoreDocument_loadSuccess() {
+                                    globalCallback.success();
+                                },
+                                function mDocument_restoreDocument_loadFail() {
+                                    globalCallback.error.apply(currentModel, arguments);
+                                }
+                            );
+                        },
+                        function mDocument_restoreDocument_Fail() {
+                            globalCallback.error.apply(currentModel, arguments);
+                        }
+                    );
+
+                    this.get("properties").set("status", "alive");
+                    currentModel.save({}, restoreCallback);
+                }
+            } else {
+                globalCallback.error({systemError: true, errorMessage: "Unable to restore alive doc"});
             }
+
+            globalCallback.promise.then(
+                function mDocument_restoreDocument_onSuccess(values)
+                {
+                    currentModel.trigger("afterRestore", serverProperties);
+                    currentModel.trigger("close", serverProperties);
+                    if (_.isFunction(options.success)) {
+                        options.success();
+                    }
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+                },
+                function mDocument_restoreDocument_onFail(values)
+                {
+                    if (_.isFunction(options.error)) {
+                        options.error();
+                    }
+                    if (!(values.arguments && values.arguments[0] && (values.arguments[0].eventPrevented || values.arguments[0].systemError))) {
+                        currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                    }
+                }
+            );
+
+            return globalCallback.promise;
         },
 
         /**

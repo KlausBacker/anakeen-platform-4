@@ -346,12 +346,12 @@ define([
                 currentWidget._triggerControllerEvent("afterSave",
                     currentWidget.getProperties(), oldProperties);
             });
-            this._model.listenTo(this._model, "beforeRestore", function documentController_triggerBeforeSave(event)
+            this._model.listenTo(this._model, "beforeRestore", function documentController_triggerBeforeRestore(event)
             {
                 event.prevent = !currentWidget._triggerControllerEvent("beforeRestore",
                     currentWidget.getProperties());
             });
-            this._model.listenTo(this._model, "afterRestore", function documentController_triggerAfterSave(oldProperties)
+            this._model.listenTo(this._model, "afterRestore", function documentController_triggerAfterRestore(oldProperties)
             {
                 currentWidget._triggerControllerEvent("afterRestore",
                     currentWidget.getProperties(), oldProperties);
@@ -1353,6 +1353,23 @@ define([
                 this._model._customClientData = options.customClientData;
             }
             documentPromise = this._model.deleteDocument();
+            return this._registerOutputPromise(documentPromise, options);
+        },
+
+        /**
+         * Restore the current document
+         * Reload the interface in the same mode
+         * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
+         */
+        restoreDocument: function documentControllerRestore(options)
+        {
+            var documentPromise;
+            options = options || {};
+            this._checkInitialisedModel();
+            if (options.customClientData) {
+                this._model._customClientData = options.customClientData;
+            }
+            documentPromise = this._model.restoreDocument();
             return this._registerOutputPromise(documentPromise, options);
         },
 
