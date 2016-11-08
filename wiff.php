@@ -502,8 +502,10 @@ if (isset($_REQUEST['context']) && isset($_REQUEST['file']) && isset($_REQUEST['
 // Request to download module to temporary dir
 if (isset($_REQUEST['context']) && isset($_REQUEST['module']) && isset($_REQUEST['download'])) {
     $wiff->activity(sprintf("* Request download (context = '%s', module = '%s')", $_REQUEST['context'], $_REQUEST['module']));
-
-    $module = $context->getModuleAvail($_REQUEST['module']);
+    
+    if (($module = $context->getModuleAvail($_REQUEST['module'])) === false) {
+        answer(null, $context->errorMessage, $context->warningMessage);
+    }
     
     if ($module->download('downloaded')) {
         answer(true, null, $module->warningMessage);
