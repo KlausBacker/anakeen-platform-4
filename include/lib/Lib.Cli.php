@@ -425,6 +425,19 @@ function wiff_context_shell(&$context, &$argv)
     }
     
     $envs = array();
+    exec("env 2> /dev/null", $current_envvars, $ret);
+    if ($ret === 0) {
+        /*
+         * Copy locale related environment variables from parent process
+         * ("LANG", "LC_*", "LANGUAGE", and "NLSPATH").
+        */
+        foreach ($current_envvars as $var) {
+            if (!preg_match('/^(?<name>LANG|LC_[^=]+|LANGUAGE|NLSPATH)=(?<value>.*)$/', $var, $reg)) {
+                continue;
+            }
+            $envs[$reg['name']] = $reg['value'];
+        }
+    }
     $envs['wpub'] = $context->root;
     $envs['pgservice_core'] = $context->getParamByName("core_db");
     $envs['pgservice_freedom'] = $envs['pgservice_core'];
