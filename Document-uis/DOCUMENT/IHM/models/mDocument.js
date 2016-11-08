@@ -1100,7 +1100,7 @@ define([
 
         saveDocument: function mDocumentSaveDocument(attributes, options)
         {
-            var globalCallBack = this._promiseCallback(),
+            var globalCallback = this._promiseCallback(),
                 saveCallback = this._promiseCallback(),
                 beforeSaveEvent = {prevent: false},
                 currentModel = this,
@@ -1114,27 +1114,27 @@ define([
             this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
             if (beforeSaveEvent.prevent !== false) {
-                saveCallback.error({eventPrevented: true});
+                globalCallback.error({eventPrevented: true});
             } else {
                 this.trigger("displayLoading", {isSaving: true});
                 saveCallback.promise.then(function mDocument_saveDone()
                 {
                     currentModel._loadDocument(currentModel).then(function mDocument_loadDocumentDone()
                     {
-                        globalCallBack.success();
+                        globalCallback.success();
                     }, function mDocument_loadDocumentFail()
                     {
-                        globalCallBack.error.apply(currentModel, arguments);
+                        globalCallback.error.apply(currentModel, arguments);
                     });
                 }, function mDocument_saveFail()
                 {
-                    globalCallBack.error.apply(currentModel, arguments);
+                    globalCallback.error.apply(currentModel, arguments);
                 });
 
                 currentModel.save(attributes, saveCallback);
             }
 
-            globalCallBack.promise.then(function onSaveSuccess(values)
+            globalCallback.promise.then(function onSaveSuccess(values)
             {
                 currentModel.trigger("afterSave", serverProperties);
                 currentModel.trigger("close", serverProperties);
@@ -1152,7 +1152,7 @@ define([
                 }
             });
 
-            return globalCallBack.promise;
+            return globalCallback.promise;
         },
 
         deleteDocument: function mDocumentDelete(options)
@@ -1171,7 +1171,7 @@ define([
             this.trigger("beforeDelete", beforeDeleteEvent, this._customClientData);
 
             if (beforeDeleteEvent.prevent !== false) {
-                deleteCallback.error({eventPrevented: true});
+                globalCallback.error({eventPrevented: true});
             } else {
                 this.trigger("displayLoading");
                 deleteCallback.promise.then(function mDocument_deleteDone()
