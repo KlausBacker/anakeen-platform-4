@@ -88,6 +88,9 @@ class I18nCollection extends Crud
         if ($this->userLocale === null) {
             $this->userLocale = \ApplicationParameterManager::getUserParameterValue("CORE", "CORE_LANG");
             if (empty($this->userLocale)) {
+                $this->userLocale = \ApplicationParameterManager::getCommonParameterValue("CORE", "CORE_LANG");
+            }
+            if (empty($this->userLocale)) {
                 $this->userLocale = "fr_FR";
             }
         }

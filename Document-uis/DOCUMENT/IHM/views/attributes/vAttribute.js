@@ -236,6 +236,11 @@ define([
             _.each(dataItem.values, function vAttributeChangeAttributeValue(attributeValue, attributeId)
             {
                 if (typeof attributeValue === "object") {
+                    if (attributeValue.value === null) {
+                        //Value not completed by helper so don't use it
+                        return;
+                    }
+
                     var attrModel = currentView.model.getDocumentModel().get('attributes').get(attributeId);
                     if (attrModel) {
                         if (attrModel.hasMultipleOption()) {
