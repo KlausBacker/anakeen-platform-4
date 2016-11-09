@@ -186,17 +186,20 @@ define([
                 arrayWrapper.dcpArray("setLines", values.length, options);
             }
 
-            allWrapper = this.getDOMElements().find(".dcpAttribute__content--widget")
-                .add(this.getDOMElements().filter(".dcpAttribute__content--widget"));
+            allWrapper = this.getDOMElements();
 
             if (this.model.isInArray()) {
                 values = _.toArray(values);
-                allWrapper.each(function vAttributeRefreshOneValue(index, element)
-                {
-                    if (!_.isUndefined(values[index])) {
-                        scope.widgetApply($(element), "setValue", values[index]);
+                _.each(values, function analyzeValues(currentValue, index) {
+                    if (_.isUndefined(currentValue)) {
+                        return;
                     }
+                    $(allWrapper[index]).find('.dcpAttribute__content--widget[data-attrid="'+model.id+'"]').each(
+                        function vAttributeRefreshOneValue(index, element) {
+                            scope.widgetApply($(element), "setValue", currentValue);
+                        });
                 });
+
             } else {
                 this.widgetApply(allWrapper, "setValue", values);
             }

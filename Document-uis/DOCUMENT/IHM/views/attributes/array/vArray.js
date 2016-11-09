@@ -221,9 +221,17 @@ define([
                         customView = attributeTemplate.customView(currentContent,
                             function vArray_customViewInit()
                             {
+                                var $this = $(this), currentWidgetOption = currentViewColumn.getData(options.line);
+                                //Check if the asked attribute is the current attribute
+                                if ($this.data("attrid") !== currentContent.id) {
+                                    throw Error("An attribute template in an array cannot asked" +
+                                        " for another attribute than the current ("+$this.data("attrid")+" asked instead of "+currentContent.id+")");
+                                }
+                                currentWidgetOption.viewCid = _.uniqueId(currentWidgetOption.viewCid);
                                 currentViewColumn.widgetInit(
-                                    $(this),
-                                    currentViewColumn.getData(options.line));
+                                    $this,
+                                    currentWidgetOption
+                                );
                                 currentViewColumn.moveValueIndex({});
                             }, {index: options.line}
                         );
