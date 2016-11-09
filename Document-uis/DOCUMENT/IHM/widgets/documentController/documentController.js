@@ -1866,7 +1866,7 @@ define([
             if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
                 currentEvent = eventType;
                 if (!currentEvent.name) {
-                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(currentEvent));
+                    throw new Error("When an event is initiated with a single object, this object needs to have the name property "+JSON.stringify(currentEvent));
                 }
             } else {
                 currentEvent = _.defaults(options, {

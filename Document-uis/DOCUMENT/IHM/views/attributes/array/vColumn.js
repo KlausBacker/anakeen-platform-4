@@ -20,13 +20,14 @@ define([
             var events = {
                 "dcparraylineadded": "addNewWidget"
             };
-            this._mergeEvent(events, "changeattrsvalue", "changeAttributesValue");
             this._mergeEvent(events, "delete", "deleteValue");
-            this._mergeEvent(events, "fetchdocument", "loadDocument");
-            this._mergeEvent(events, "downloadfile", "downloadFileSelect");
-            this._mergeEvent(events, "externallinkselected", "externalLinkSelected");
             this._mergeEvent(events, "changeattrmenuvisibility", "changeMenuVisibility");
+            this._mergeEvent(events, "changeattrsvalue", "changeAttributesValue");
+            this._mergeEvent(events, "fetchdocument", "loadDocument");
+            this._mergeEvent(events, "externallinkselected", "externalLinkSelected");
+            this._mergeEvent(events, "downloadfile", "downloadFileSelect");
             this._mergeEvent(events, "uploadfile", "uploadFileSelect");
+            this._mergeEvent(events, "anchorclick", "anchorClick");
             this.listenTo(this.model, "change:label", this.changeLabel);
             return events;
         },
