@@ -50,7 +50,8 @@
             "resizeDebounceTime": 50,
             "withoutResize": false,
             "iframeName": _.uniqueId("documentFrame"),
-            eventPrefix: "document"
+            "noRouter": true,
+            "eventPrefix": "document"
         },
 
         /**
