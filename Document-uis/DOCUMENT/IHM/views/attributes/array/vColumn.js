@@ -15,23 +15,23 @@ define([
         /**
          * Use special event to trigger only attributes of model
          */
-        events: function vColumnEvents()
+        attributeEvents: function vColumnEvents()
         {
-            var absEvents = {
+            var events = {
                 "dcparraylineadded": "addNewWidget"
             };
-            this._addEvent(absEvents, "changeattrsvalue", "changeAttributesValue");
-            this._addEvent(absEvents, "delete", "deleteValue");
-            this._addEvent(absEvents, "fetchdocument", "loadDocument");
-            this._addEvent(absEvents, "downloadfile", "downloadFileSelect");
-            this._addEvent(absEvents, "externallinkselected", "externalLinkSelected");
-            this._addEvent(absEvents, "changeattrmenuvisibility", "changeMenuVisibility");
-            this._addEvent(absEvents, "uploadfile", "uploadFileSelect");
+            this._mergeEvent(events, "changeattrsvalue", "changeAttributesValue");
+            this._mergeEvent(events, "delete", "deleteValue");
+            this._mergeEvent(events, "fetchdocument", "loadDocument");
+            this._mergeEvent(events, "downloadfile", "downloadFileSelect");
+            this._mergeEvent(events, "externallinkselected", "externalLinkSelected");
+            this._mergeEvent(events, "changeattrmenuvisibility", "changeMenuVisibility");
+            this._mergeEvent(events, "uploadfile", "uploadFileSelect");
             this.listenTo(this.model, "change:label", this.changeLabel);
-            return absEvents;
+            return events;
         },
 
-        _addEvent: function vColumn_addEvent(events, name, method)
+        _mergeEvent: function vColumn_addEvent(events, name, method)
         {
             events["dcpattribute" + name + ' .dcpArray__content__cell[data-attrid="' + this.model.id + '"]'] = method;
         },
