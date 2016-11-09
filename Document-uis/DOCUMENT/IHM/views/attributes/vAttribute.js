@@ -201,12 +201,12 @@ define([
                 });
 
             } else {
-                this.widgetApply(allWrapper, "setValue", values);
+                this.widgetApply(allWrapper.find('.dcpAttribute__content--widget[data-attrid="'+model.id+'"]'), "setValue", values);
             }
         },
 
         /**
-         * Dispay error message around the widget if needed
+         * Display error message around the widget if needed
          * @param event
          */
         refreshError: function vAttributeRefreshError(event)
