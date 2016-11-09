@@ -7,6 +7,7 @@
 namespace Dcp\Ui;
 
 use Dcp\HttpApi\V1\DocManager\DocManager;
+use \Dcp\AttributeIdentifiers\Cvdoc as CvAttributes;
 
 class DefaultView extends RenderDefault
 {
@@ -272,23 +273,24 @@ class DefaultView extends RenderDefault
                 throw new Exception("UI0202", $doc->cvid);
             }
             /**
-             * @var \CVDoc $cv
+             * @var \Dcp\Ui\Cvdoc $cv
              */
             $cv->Set($doc);
-            $views = $cv->getDisplayableViews();
+            $views = $cv->getDisplayableViews(true);
             foreach ($views as $view) {
-                $vid = $view["cv_idview"];
+                $vid = $view[CvAttributes::cv_idview];
+                
                 $label = $cv->getLocaleViewLabel($vid);
                 $idMenu = "vid-" . $vid;
                 $cvMenu = $view["cv_menu"];
                 $menuItem = new ItemMenu($idMenu, $label);
                 $menuItem->setUrl(sprintf("#action/document.load:%d:%s", $doc->initid, $vid));
                 if ($cvMenu) {
-                    $idListMenu = $cvMenu;
+                    $idListMenu = $cv->getLocaleViewMenu($vid);
                     $lmenu = $menu->getElement($idListMenu);
                     if (!$lmenu) {
                         // Create new list menu
-                        $lmenu = new ListMenu($idListMenu, $cv->getLocaleViewMenu($vid));
+                        $lmenu = new ListMenu($idListMenu, $idListMenu);
                         $menu->insertBefore("delete", $lmenu);
                     }
                     $lmenu->appendElement($menuItem);

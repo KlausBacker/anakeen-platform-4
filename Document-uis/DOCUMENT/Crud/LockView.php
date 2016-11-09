@@ -65,7 +65,7 @@ class LockView extends \Dcp\HttpApi\V1\Crud\Lock
             throw $exception;
         }
         /**
-         * @var \CVDoc $cv
+         * @var \Dcp\Family\CVDoc $cv
          */
         $cv = \Dcp\HttpApi\V1\DocManager\DocManager::getDocument($this->_document->cvid);
         $cv->set($this->_document);

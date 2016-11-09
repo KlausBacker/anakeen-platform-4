@@ -47,11 +47,11 @@ class RenderConfigManager
             throw new Exception("UI0302", $document->cvid);
         }
         
-        if (!is_a($cvDoc, "CVDoc")) {
+        if (!is_a($cvDoc, "\\Dcp\\Family\\CVDoc")) {
             throw new Exception("UI0303", $cvDoc->getTitle());
         }
         /**
-         * @var \CVDoc $cvDoc
+         * @var \Dcp\Family\CVDoc $cvDoc
          */
         $cvDoc->set($document);
         $err = $cvDoc->control($vId); // control special view
@@ -61,7 +61,7 @@ class RenderConfigManager
             throw $e;
         }
         /**
-         * @var \CVDoc $cvDoc
+         * @var \Dcp\Family\CVDoc $cvDoc
          */
         $vidInfo = $cvDoc->getView($vId);
         if (empty($vidInfo)) {
@@ -74,7 +74,7 @@ class RenderConfigManager
     protected static function getRenderFromVidinfo(array $vidInfo, \Doc $document)
     {
         
-        $mskId = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_mskid];
+        $mskId = $vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_mskid];
         if ($mskId) {
             $err = $document->setMask($mskId);
             if ($err) {
@@ -82,7 +82,7 @@ class RenderConfigManager
             }
         }
         
-        $renderClass = isset($vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderconfigclass]) ? $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_renderconfigclass] : null;
+        $renderClass = isset($vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_renderconfigclass]) ? $vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_renderconfigclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
             if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {
@@ -90,7 +90,7 @@ class RenderConfigManager
             }
             return $rc;
         } else {
-            if ($vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_kview] === "VCONS") {
+            if ($vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_kview] === "VCONS") {
                 $mode = self::ViewMode;
             } else {
                 $mode = self::EditMode;
@@ -114,7 +114,7 @@ class RenderConfigManager
         }
         if ($document->cvid > 0) {
             /**
-             * @var \CVDoc $cvDoc
+             * @var \Dcp\Family\CVDoc $cvDoc
              */
             $cvDoc = DocManager::getDocument($document->cvid);
             return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
@@ -250,18 +250,18 @@ class RenderConfigManager
     }
     /**
      * @param string $mode view/edit/create
-     * @param \CVDoc $cv
+     * @param \Dcp\Family\CVDoc $cv
      * @param \Doc   $document
      * @param string $vid view identifier
      *
      * @return IRenderConfig
      * @throws Exception
      */
-    public static function getRenderConfigCv($mode, \CVDoc $cv, \Doc $document, &$vid = '')
+    public static function getRenderConfigCv($mode, \Dcp\Family\CVDoc $cv, \Doc $document, &$vid = '')
     {
         $cv->set($document);
         
-        $renderAccessClass = $cv->getRawValue(\Dcp\AttributeIdentifiers\Cvrender::cv_renderaccessclass);
+        $renderAccessClass = $cv->getRawValue(\Dcp\AttributeIdentifiers\Cvdoc::cv_renderaccessclass);
         if ($renderAccessClass) {
             if ($renderAccessClass[0] !== '\\') {
                 $renderAccessClass = '\\' . $renderAccessClass;
@@ -278,7 +278,7 @@ class RenderConfigManager
         $vidInfo = $document->getDefaultView(($mode === "edit" || $mode === "create") , "all");
         if ($vidInfo) {
             // vid already controlled by cv class
-            $vid = $vidInfo[\Dcp\AttributeIdentifiers\Cvrender::cv_idview];
+            $vid = $vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_idview];
             $rc = self::getRenderFromVidinfo($vidInfo, $document);
             if ($rc) {
                 return $rc;

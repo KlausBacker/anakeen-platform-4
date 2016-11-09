@@ -1,0 +1,9 @@
+BEGIN;;;;;CVDOC;;;;;;;;;;
+CLASS;Dcp\Ui\CVDoc;;;;;;;;;;;;;;
+ICON;cvrender.png;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+;;;;;;;;;;;;;;;
+ATTR;CV_RENDERCONFIGCLASS;CV_T_VIEWS;Classe de configuration de rendu (HTML5);N;N;text;140;W;;;;;;"::cvIsA(CV_RENDERCONFIGCLASS,""Dcp\Ui\IRenderConfig"")";"showempty=&lt;configuration standard&gt;"
+ATTR;CV_RENDERACCESSCLASS;CV_FR_DEFAULT;Classe d'accès au rendu (HTML5);N;N;text;300;W;;;;;;"::cvIsA(CV_RENDERACCESSCLASS,""Dcp\Ui\IRenderConfigAccess"")";elabel=Classe utilisée pour choisir le rendu par défaut
+END;;;;;;;;;;;;;;;

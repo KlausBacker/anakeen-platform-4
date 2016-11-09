@@ -4,51 +4,47 @@
  * @package FDL
 */
 
+ini_set("pcre.jit", 0); // Need for PHP7.0 to compress big css files
 $sty_desc = array(
     "name" => "DDUI", //Name
     "description" => "DDUI LESS STYLE", //long description
-
+    
 );
-
 //produce global less file
-
-$generateGlobalVarFile = function () {
+$generateGlobalVarFile = function ()
+{
     $globalVarFile = "STYLE/custom-less-variable.d/global_variables.less";
-
+    
     if (is_file($globalVarFile)) {
         unlink($globalVarFile);
     }
-
+    
     $fullContent = "";
-
+    
     $files = array();
-
+    
     $iterator = new DirectoryIterator("STYLE/custom-less-variable.d/");
     foreach ($iterator as $fileinfo) {
         if ($fileinfo->isDot()) {
             continue;
         }
-
+        
         if ($fileinfo->getExtension() === "less") {
-            $files[$fileinfo->getPathname()] = $fileinfo->getPathname();
+            $files[$fileinfo->getPathname() ] = $fileinfo->getPathname();
         }
-
     }
-
+    
     ksort($files);
-
+    
     foreach ($files as $currentFiles) {
-        $fullContent .= "// $currentFiles\n";
-        $fullContent .= file_get_contents($currentFiles) . "\n";
+        $fullContent.= "// $currentFiles\n";
+        $fullContent.= file_get_contents($currentFiles) . "\n";
     }
-
+    
     file_put_contents($globalVarFile, $fullContent);
-
 };
 
 $generateGlobalVarFile();
-
-
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
@@ -56,60 +52,60 @@ $sty_rules = array(
             "src" => array(
                 "bootstrap" => "STYLE/DDUI/dduiAssets/bootstrap.less",
                 "fontAwesome" => "STYLE/DDUI/dduiAssets/fontawesome.less"
-            ),
+            ) ,
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'css/dcp/document/bootstrap.map',
                     "sourceMapURL" => 'bootstrap.map',
-                    "sourceRoot"=> '../../../',
+                    "sourceRoot" => '../../../',
                     "compress" => true
                 )
             )
-        ),
+        ) ,
         'dcp/document/kendo.css' => array(
             "src" => array(
                 "kendo-bootstrap-common" => "STYLE/DDUI/dduiAssets/kendo.common.less",
                 "kendo-bootstrap" => "STYLE/DDUI/dduiAssets/kendo.bootstrap.less",
-            ),
+            ) ,
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'css/dcp/document/kendo.map',
                     "sourceMapURL" => 'kendo.map',
-                    "sourceRoot"=> '../../../',
+                    "sourceRoot" => '../../../',
                     "compress" => true
                 )
-            ),
-        ),
+            ) ,
+        ) ,
         'dcp/document/document.css' => array(
             "src" => array(
                 "document" => "STYLE/DDUI/dduiAssets/document.less"
-            ),
+            ) ,
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'css/dcp/document/document.map',
                     "sourceMapURL" => 'document.map',
-                    "sourceRoot"=> '../../../',
+                    "sourceRoot" => '../../../',
                     "compress" => true
                 )
             )
-        ),
+        ) ,
         'dcp/document/ckeditor.css' => array(
             "src" => array(
                 "document" => "DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.less"
-            ),
+            ) ,
             "deploy_parser" => array(
                 "className" => '\Dcp\Style\dcpLessParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'css/dcp/document/ckeditor.map',
                     "sourceMapURL" => 'ckeditor.map',
-                    "sourceRoot"=> '../../../',
+                    "sourceRoot" => '../../../',
                     "compress" => true
                 )
             )
