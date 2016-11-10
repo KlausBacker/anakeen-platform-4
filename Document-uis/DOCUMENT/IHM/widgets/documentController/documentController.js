@@ -374,31 +374,32 @@ define([
             this._model.listenTo(this._model, "changeValue", function documentController_triggerChangeValue(options)
             {
                 try {
-                    var index = 0, values = currentAttribute.getValue("all");
-                    _.find(values.current, function(currentValue) {
-                        var result, previous = values.previous[index];
-                        if (!previous) {
+                    var currentAttribute = currentWidget.getAttribute(options.attributeId),
+                    index = 0, values = currentAttribute.getValue("all"),
+                    mAttribute = currentWidget._getAttributeModel(options.attributeId);
+                    if (mAttribute.getParent().get("type") !== "array") {
+                        index = -1;
+                    } else {
+                        _.find(values.current, function documentController_valueIsModified(currentValue) {
+                            var result, previous = values.previous[index];
+                            if (!previous) {
+                                index++;
+                                return true;
+                            }
+                            if (_.isArray(currentValue)) {
+                                currentValue = currentValue.join(",");
+                            }
+                            currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
+                            if (_.isArray(previous)) {
+                                previous =  previous.join(",");
+                            }
+                            previous = _.has(previous, "value") ? previous.value : previous;
+                            result = previous !== currentValue;
                             index++;
-                            return true;
-                        }
-                        if (_.isArray(currentValue)) {
-                            currentValue = _.reduce(currentValue, function(memo, subValue) {
-                                return memo + parseInt(subValue.value, 10);
-                            }, 0);
-                        }
-                        currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
-                        if (_.isArray(previous)) {
-                            previous = _.reduce(previous, function(memo, subValue) {
-                                return memo + parseInt(subValue.value, 10);
-                            }, 0);
-                        }
-                        previous = _.has(previous, "value") ? previous.value : previous;
-                        result = previous !== currentValue;
-                        index++;
-                        return result;
-                    });
-                    index--;
-                    var currentAttribute = currentWidget.getAttribute(options.attributeId);
+                            return result;
+                        });
+                        index--;
+                    }
                     currentWidget._triggerAttributeControllerEvent("change", currentAttribute,
                         currentWidget.getProperties(),
                         currentAttribute,
