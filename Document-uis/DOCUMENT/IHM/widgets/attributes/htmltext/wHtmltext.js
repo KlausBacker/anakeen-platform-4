@@ -236,6 +236,7 @@
                 this.element.on("click." + this.eventNamespace, 'a:not([href^="#action/"]):not([data-action])', function wHtmlAnchorClick(event) {
                     var internalEvent = {prevent: false},
                         anchor = this,
+                        $anchor = $(this),
                         isNotPrevented,
                         anchorsConfig,
                         anchorsTarget,
@@ -257,6 +258,15 @@
                     if (isNotPrevented) {
                         anchorsTarget = anchorsConfig.target || "_blank";
                         href = anchor.href;
+
+                        if ($anchor.attr("href") && $anchor.attr("href").substring(0, 1) === "#") {
+                            href = window.location.protocol +
+                                "//" + window.location.hostname +
+                                (window.location.port ? ':' + window.location.port: '') +
+                                (window.location.pathname ? window.location.pathname : '/') +
+                                (window.location.search ? window.location.search : '')
+                                +$anchor.attr("href");
+                        }
 
                         switch (anchorsTarget) {
                             case "_dialog":
