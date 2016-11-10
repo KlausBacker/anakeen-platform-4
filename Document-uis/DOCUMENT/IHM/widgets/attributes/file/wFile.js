@@ -107,8 +107,8 @@
             // Add trigger when try to download file
             this.element.on("click." + this.eventNamespace, '.dcpAttribute__content__link', function wFileClickDownload(event)
             {
-                currentWidget._trigger("downloadfile", event, {
-                    target: event.currentTarget,
+                currentWidget._trigger("downloadFile", event, {
+                    $el: currentWidget.element,
                     index: currentWidget._getIndex()
                 });
             });
@@ -134,8 +134,8 @@
             if (fileUrl) {
                 this.element.on("click" + this.eventNamespace, ".dcpAttribute__content__button--file", function wFileOnButtonClickr(event)
                 {
-                    var isNotPrevented = currentWidget._trigger("downloadfile", event, {
-                        target: event.currentTarget,
+                    var isNotPrevented = currentWidget._trigger("downloadFile", event, {
+                        $el: currentWidget.element,
                         index: currentWidget._getIndex()
                     });
                     if (isNotPrevented) {
@@ -344,7 +344,7 @@
             }
 
             var isNotPrevented = currentWidget._trigger("uploadfile", event, {
-                target: event.currentTarget,
+                $el: currentWidget.element,
                 index: currentWidget._getIndex(),
                 file: firstFile
             });

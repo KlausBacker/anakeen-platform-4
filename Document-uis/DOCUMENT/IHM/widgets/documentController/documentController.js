@@ -39,7 +39,7 @@ define([
         "attributeArrayChange", "actionClick",
         "attributeAnchorClick",
         "beforeClose", "close",
-        "beforeSave", "afterSave", "downloadFile", "uploadFile",
+        "beforeSave", "afterSave", "attributeDownloadFile", "attributeUploadFile",
         "beforeDelete", "afterDelete",
         "beforeRestore", "afterRestore",
         "failTransition", "successTransition",
@@ -473,10 +473,11 @@ define([
             {
                 try {
                     var currentAttribute = currentWidget.getAttribute(attrid);
-                    event.prevent = !currentWidget._triggerControllerEvent("downloadFile",
+                    event.prevent = !currentWidget._triggerControllerEvent("attributeDownloadFile",
                         currentWidget.getProperties(),
                         currentAttribute,
-                        options
+                        options.$el,
+                        options.index
                     );
                 } catch (error) {
                     if (!(error instanceof ErrorModelNonInitialized)) {
@@ -489,10 +490,11 @@ define([
             {
                 try {
                     var currentAttribute = currentWidget.getAttribute(attrid);
-                    event.prevent = !currentWidget._triggerControllerEvent("uploadFile",
+                    event.prevent = !currentWidget._triggerControllerEvent("attributeUploadFile",
                         currentWidget.getProperties(),
                         currentAttribute,
-                        options
+                        options.$el,
+                        options.index
                     );
                 } catch (error) {
                     if (!(error instanceof ErrorModelNonInitialized)) {
