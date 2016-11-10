@@ -64,6 +64,8 @@
             this.options = _.extend({}, this.defaults, this.options);
             this.options.eventListener = {};
             this.options.constraintList = {};
+            this.options.cssToInject = [];
+            this.options.jsToInject = [];
             this._render();
             this._bindEvents();
         },
@@ -143,7 +145,22 @@
                     internalController.addConstraint(currentConstaint);
                 });
             }
-        }, /**
+        },
+
+        reinjectCSSAndJS: function dcpDocument_reinjectCSSAndJS()
+        {
+            var internalController = this.element.data("internalWidget");
+            if (internalController) {
+                try {
+                    internalController.injectCSS(this.options.cssToInject);
+                    internalController.injectJS(this.options.jsToInject);
+                } catch(e) {
+
+                }
+            }
+        },
+
+        /**
          * Bind the internal controller to the current widget
          * Reinit the constraint and the event
          *
@@ -155,6 +172,7 @@
             this.element.data("internalWidget", internalController);
             if (!voidLoaded) {
                 this.rebindEvents();
+                this.reinjectCSSAndJS();
             }
             this.element.data("internalWidgetInitialised", true);
             if (voidLoaded) {
@@ -497,10 +515,10 @@
         {
             var removed = [], newConstraintList, constraintList,
                 testRegExp = new RegExp("\\" + constraintName + "$");
-            newConstraintList = _.filter(this.options.constraintList, function dcpDocument_removeConstraint(currentConstrait)
+            newConstraintList = _.filter(this.options.constraintList, function dcpDocument_removeConstraint(currentConstraint)
             {
-                if (currentConstrait.name === constraintName || testRegExp.test(currentConstrait.name)) {
-                    removed.push(currentConstrait);
+                if (currentConstraint.name === constraintName || testRegExp.test(currentConstraint.name)) {
+                    removed.push(currentConstraint);
                     return false;
                 }
                 return true;
@@ -520,6 +538,38 @@
         isLoaded: function dcpDocument_isLoaded()
         {
             return this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded");
+        },
+
+        injectCSS: function documentController_injectCSS(cssToInject)
+        {
+            if (!_.isArray(cssToInject) && !_.isString(cssToInject)) {
+                throw new Error("The css to inject must be an array string or a string");
+            }
+            if (_.isString(cssToInject)) {
+                cssToInject = [cssToInject];
+            }
+
+            this.options.cssToInject = _.union(this.options.cssToInject, cssToInject);
+
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
+                this.element.data("internalWidget").injectCSS(cssToInject);
+            }
+        },
+
+        injectJS: function documentController_injectCSS(jsToInject)
+        {
+            if (!_.isArray(jsToInject) && !_.isString(jsToInject)) {
+                throw new Error("The js to inject must be an array string or a string");
+            }
+            if (_.isString(jsToInject)) {
+                jsToInject = [jsToInject];
+            }
+
+            this.options.jsToInject = _.union(this.options.jsToInject, jsToInject);
+
+            if (this.element.data("internalWidgetInitialised") && !this.element.data("voidLoaded")) {
+                this.element.data("internalWidget").injectJS(jsToInject);
+            }
         }
 
     });

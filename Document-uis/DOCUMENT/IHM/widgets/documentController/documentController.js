@@ -2075,6 +2075,32 @@ define([
         {
             this._checkInitialisedView();
             this._getAttributeModel(attributeId).setErrorMessage(null, index);
+        },
+
+        injectCSS: function documentController_injectCSS(cssToInject)
+        {
+            this._checkInitialisedView();
+            if (!_.isArray(cssToInject) && !_.isString(cssToInject)) {
+                throw new Error("The css to inject must be an array string or a string");
+            }
+            if (_.isString(cssToInject)) {
+                cssToInject = [cssToInject];
+            }
+
+            this._model.injectCSS(cssToInject);
+        },
+
+        injectJS: function documentController_injectCSS(jsToInject)
+        {
+            this._checkInitialisedView();
+            if (!_.isArray(jsToInject) && !_.isString(jsToInject)) {
+                throw new Error("The js to inject must be an array string or a string");
+            }
+            if (_.isString(jsToInject)) {
+                jsToInject = [jsToInject];
+            }
+
+            return this._model.injectJS(jsToInject);
         }
 
     });
