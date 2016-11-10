@@ -244,7 +244,7 @@
                         {
                             currentWidget._hasBeenRequested = true;
                             options.data.index = currentWidget._getIndex();
-                            return currentWidget.options.autocompleteRequest.call(null, options);
+                            return currentWidget.options.autocompleteRequest.call(null, options, currentWidget._getIndex());
                         }
                     },
                     schema: {
@@ -288,7 +288,7 @@
                             currentWidget._trigger("changeattrsvalue", event, {
                                 dataItem: dataItem,
                                 valueIndex: valueIndex
-                            });
+                            }, currentWidget._getIndex());
                         });
                     }
 

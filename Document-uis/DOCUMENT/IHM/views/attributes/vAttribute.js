@@ -30,6 +30,9 @@ define([
         customView: false,
         displayLabel: true,
         //Don't use standard event to launch the event only when there is no template
+        //********************************************************************************************
+        // If you add an event here, you probably want to add it in vColumn.js and test it in an array
+        //********************************************************************************************
         attributeEvents: {
             "dcpattributechange .dcpAttribute__content": "updateValue",
             "dcpattributedelete .dcpAttribute__content": "deleteValue",
@@ -228,14 +231,14 @@ define([
          * @param event event object
          * @param options object {dataItem :, valueIndex :}
          */
-        changeAttributesValue: function vAttributeChangeAttributesValue(event, options)
+        changeAttributesValue: function vAttributeChangeAttributesValue(event, options, index)
         {
             var externalEvent = {prevent: false},
                 currentView = this,
                 dataItem = options.dataItem,
                 valueIndex = options.valueIndex,
                 currentValue;
-            this.model.trigger("helperSelect", externalEvent, this.model.id, dataItem);
+            this.model.trigger("helperSelect", externalEvent, this.model.id, dataItem, index);
             if (externalEvent.prevent) {
                 return this;
             }
@@ -378,11 +381,11 @@ define([
             }
         },
 
-        anchorClick: function vAttributeAnchorClick(widgetEvent, options)
+        anchorClick: function vAttributeAnchorClick(widgetEvent, options, index)
         {
             var internalEvent = {prevent: false};
 
-            this.model.trigger("anchorClick", internalEvent, this.model.id, options);
+            this.model.trigger("anchorClick", internalEvent, this.model.id, options, index);
             if (internalEvent.prevent) {
                 widgetEvent.preventDefault();
             }
@@ -469,7 +472,7 @@ define([
          * method use for transport multiselect widget
          * @param options
          */
-        autocompleteRequestRead: function vAttributeAutocompleteRequestRead(options)
+        autocompleteRequestRead: function vAttributeAutocompleteRequestRead(options, index)
         {
             var currentView = this,
                 documentModel = this.model.getDocumentModel(),
@@ -487,7 +490,7 @@ define([
             {
                 var options = {}, event = {prevent: false};
                 options.data = content;
-                currentView.model.trigger("helperResponse", event, currentView.model.id, options);
+                currentView.model.trigger("helperResponse", event, currentView.model.id, options, index);
                 if (event.prevent) {
                     return success([]);
                 }
@@ -496,7 +499,7 @@ define([
 
             //Add helperSearch event (can prevent default ajax request)
             options.data.attributes = documentModel.getValues();
-            this.model.trigger("helperSearch", event, this.model.id, externalOptions);
+            this.model.trigger("helperSearch", event, this.model.id, externalOptions, index);
             if (event.prevent) {
                 return this;
             }

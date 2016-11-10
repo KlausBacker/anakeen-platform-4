@@ -374,11 +374,36 @@ define([
             this._model.listenTo(this._model, "changeValue", function documentController_triggerChangeValue(options)
             {
                 try {
+                    var index = 0, values = currentAttribute.getValue("all");
+                    _.find(values.current, function(currentValue) {
+                        var result, previous = values.previous[index];
+                        if (!previous) {
+                            index++;
+                            return true;
+                        }
+                        if (_.isArray(currentValue)) {
+                            currentValue = _.reduce(currentValue, function(memo, subValue) {
+                                return memo + parseInt(subValue.value, 10);
+                            }, 0);
+                        }
+                        currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
+                        if (_.isArray(previous)) {
+                            previous = _.reduce(previous, function(memo, subValue) {
+                                return memo + parseInt(subValue.value, 10);
+                            }, 0);
+                        }
+                        previous = _.has(previous, "value") ? previous.value : previous;
+                        result = previous !== currentValue;
+                        index++;
+                        return result;
+                    });
+                    index--;
                     var currentAttribute = currentWidget.getAttribute(options.attributeId);
                     currentWidget._triggerAttributeControllerEvent("change", currentAttribute,
                         currentWidget.getProperties(),
                         currentAttribute,
-                        currentAttribute.getValue("all")
+                        currentAttribute.getValue("all"),
+                        index
                     );
                 } catch (error) {
                     if (!(error instanceof ErrorModelNonInitialized)) {
@@ -523,14 +548,15 @@ define([
             });
 
             // listener to prevent default actions when anchorClick is triggered
-            this._model.listenTo(this._model, "anchorClick", function documentController_triggerHelperSelect(event, attrid, options)
+            this._model.listenTo(this._model, "anchorClick", function documentController_triggerHelperSelect(event, attrid, options, index)
             {
                 try {
                     var currentAttribute = currentWidget.getAttribute(attrid);
                     event.prevent = !currentWidget._triggerAttributeControllerEvent("attributeAnchorClick", currentAttribute,
                         currentWidget.getProperties(),
                         currentAttribute,
-                        options
+                        options,
+                        index
                     );
                 } catch (error) {
                     if (!(error instanceof ErrorModelNonInitialized)) {
@@ -1866,7 +1892,7 @@ define([
             if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
                 currentEvent = eventType;
                 if (!currentEvent.name) {
-                    throw new Error("When an event is initiated with a single object, this object needs to have the name property ".JSON.stringify(currentEvent));
+                    throw new Error("When an event is initiated with a single object, this object needs to have the name property "+JSON.stringify(currentEvent));
                 }
             } else {
                 currentEvent = _.defaults(options, {

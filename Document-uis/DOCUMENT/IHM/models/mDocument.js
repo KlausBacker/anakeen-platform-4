@@ -805,24 +805,24 @@ define([
                     currentModel.trigger("uploadFile", event, attrid, options);
                 });
                 //Propagate the event helperSearch to the model
-                currentModel.listenTo(value, "helperSearch", function mDocumentsetValuesListenHelperSearch(event, attrid, options)
+                currentModel.listenTo(value, "helperSearch", function mDocumentsetValuesListenHelperSearch(event, attrid, options, index)
                 {
-                    currentModel.trigger("helperSearch", event, attrid, options);
+                    currentModel.trigger("helperSearch", event, attrid, options, index);
                 });
                 //Propagate the event helperResponse to the model
-                currentModel.listenTo(value, "helperResponse", function mDocumentsetValuesListenHelperResponse(event, attrid, options)
+                currentModel.listenTo(value, "helperResponse", function mDocumentsetValuesListenHelperResponse(event, attrid, options, index)
                 {
-                    currentModel.trigger("helperResponse", event, attrid, options);
+                    currentModel.trigger("helperResponse", event, attrid, options, index);
                 });
                 //Propagate the event helperResponse to the model
-                currentModel.listenTo(value, "helperSelect", function mDocumentsetValuesListenHelperSelect(event, attrid, options)
+                currentModel.listenTo(value, "helperSelect", function mDocumentsetValuesListenHelperSelect(event, attrid, options, index)
                 {
-                    currentModel.trigger("helperSelect", event, attrid, options);
+                    currentModel.trigger("helperSelect", event, attrid, options, index);
                 });
                 //Propagate the click on an anchor to the model
-                currentModel.listenTo(value, "anchorClick", function mDocumentsetValuesListenAnchorClicked(event, attrid, options)
+                currentModel.listenTo(value, "anchorClick", function mDocumentsetValuesListenAnchorClicked(event, attrid, options, index)
                 {
-                    currentModel.trigger("anchorClick", event, attrid, options);
+                    currentModel.trigger("anchorClick", event, attrid, options, index);
                 });
             }
             return Backbone.Model.prototype.set.call(this, keyOrValues, value);
