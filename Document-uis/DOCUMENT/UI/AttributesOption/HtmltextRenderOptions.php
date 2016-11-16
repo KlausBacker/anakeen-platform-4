@@ -96,10 +96,18 @@ class HtmltextRenderOptions extends CommonRenderOptions
 
 class anchorOptions
 {
+    public function __construct($target = "_blank", $width = "300px", $height = "200px", $modal = false)
+    {
+        $this->$target = $target;
+        $this->windowWidth = $width;
+        $this->windowHeight = $height;
+        $this->$modal = $modal;
+    }
+
     /**
      * @var string target of window
      */
-    public $target = "_self";
+    public $target = "_blank";
     /**
      * @var string width of window
      */
