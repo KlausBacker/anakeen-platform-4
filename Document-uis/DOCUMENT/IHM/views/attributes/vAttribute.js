@@ -381,11 +381,11 @@ define([
             }
         },
 
-        anchorClick: function vAttributeAnchorClick(widgetEvent, options, index)
+        anchorClick: function vAttributeAnchorClick(widgetEvent, options)
         {
             var internalEvent = {prevent: false};
 
-            this.model.trigger("anchorClick", internalEvent, this.model.id, options, index);
+            this.model.trigger("anchorClick", internalEvent, this.model.id, options);
             if (internalEvent.prevent) {
                 widgetEvent.preventDefault();
             }

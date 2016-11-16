@@ -820,9 +820,9 @@ define([
                     currentModel.trigger("helperSelect", event, attrid, options, index);
                 });
                 //Propagate the click on an anchor to the model
-                currentModel.listenTo(value, "anchorClick", function mDocumentsetValuesListenAnchorClicked(event, attrid, options, index)
+                currentModel.listenTo(value, "anchorClick", function mDocumentsetValuesListenAnchorClicked(event, attrid, options)
                 {
-                    currentModel.trigger("anchorClick", event, attrid, options, index);
+                    currentModel.trigger("anchorClick", event, attrid, options);
                 });
             }
             return Backbone.Model.prototype.set.call(this, keyOrValues, value);
