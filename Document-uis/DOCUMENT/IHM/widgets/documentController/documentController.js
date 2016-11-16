@@ -494,7 +494,10 @@ define([
                         currentWidget.getProperties(),
                         currentAttribute,
                         options.$el,
-                        options.index
+                        options.index,
+                        {
+                            file: options.file
+                        }
                     );
                 } catch (error) {
                     if (!(error instanceof ErrorModelNonInitialized)) {
