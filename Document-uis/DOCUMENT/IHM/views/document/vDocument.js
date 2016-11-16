@@ -1051,7 +1051,10 @@ define([
                     viewId = "!defaultConsultation";
                 }
             }
-            this.loadDocument({initid: this.model.get("initid"), viewId: viewId});
+            this.loadDocument({
+                initid: this.model.get("initid"),
+                viewId: viewId
+            });
         },
 
         /**
@@ -1073,7 +1076,7 @@ define([
         /**
          * Save and close the current document
          */
-        saveAndCloseDocument: function vDocumentSaveAndCloseDocument()
+        saveAndCloseDocument: function vDocumentSaveAndCloseDocument(viewId)
         {
             this.trigger("cleanNotification");
             var currentView = this, saveDocument = this.model.saveDocument();
@@ -1083,7 +1086,8 @@ define([
                     var initid = currentView.model.get("initid");
 
                     currentView.model.fetchDocument({
-                        initid: initid
+                        initid: initid,
+                        viewId: viewId || "!defaultConsultation"
                     });
 
                 });
@@ -1107,7 +1111,7 @@ define([
         /**
          * Create the current document
          */
-        createAndCloseDocument: function vDocumentCreateDocument()
+        createAndCloseDocument: function vDocumentCreateDocument(viewId)
         {
             var currentView = this, saveDocument = this.model.saveDocument();
             if (saveDocument && saveDocument.then) {
@@ -1116,7 +1120,8 @@ define([
                     var initid = currentView.model.get("initid");
 
                     currentView.model.fetchDocument({
-                        initid: initid
+                        initid: initid,
+                        viewId: viewId || "!defaultConsultation"
                     });
 
                 });
@@ -1234,7 +1239,7 @@ define([
                 return this.saveDocument();
             }
             if (options.eventId === "document.saveAndClose") {
-                return this.saveAndCloseDocument();
+                return this.saveAndCloseDocument(eventArgs[0]);
             }
             if (options.eventId === "document.history") {
                 return this.showHistory(eventArgs[0]);
@@ -1261,7 +1266,7 @@ define([
                 return this.createDocument();
             }
             if (options.eventId === "document.createAndClose") {
-                return this.createAndCloseDocument();
+                return this.createAndCloseDocument(eventArgs[0]);
             }
             if (options.eventId === "document.load") {
                 return this.loadDocument({
