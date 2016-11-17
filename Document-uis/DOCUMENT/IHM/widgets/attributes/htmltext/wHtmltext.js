@@ -252,9 +252,13 @@
                     anchorsConfig = _.extend({}, currentWidget.options.renderOptions.anchors);
 
                     isNotPrevented = currentWidget._trigger("anchorClick", internalEvent, {
-                        anchor: anchor,
-                        anchorsConfig: anchorsConfig
-                    }, currentWidget.options.index);
+                        $el: currentWidget.element,
+                        index: currentWidget._getIndex(),
+                        options: {
+                            anchor: anchor,
+                            anchorsConfig: anchorsConfig
+                        }
+                    });
                     if (isNotPrevented) {
                         anchorsTarget = anchorsConfig.target || "_blank";
                         href = anchor.href;
