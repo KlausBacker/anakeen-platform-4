@@ -854,7 +854,7 @@ define([
          * Inject JS in the main page before render view
          * To launch beforeRender and beforeRenderAttribute
          */
-        injectJS: function mDocumentInjectJs()
+        injectCurrentDocJS: function mDocumentInjectCurrentDocJS()
         {
             var promiseInject = this._promiseCallback(),
                 customJS = _.pluck(this.get("customJS"), "path");
@@ -866,6 +866,54 @@ define([
                 promiseInject.error(err);
             });
             return promiseInject.promise;
+        },
+
+        /**
+         * Inject an array of js in the current page
+         *
+         * @param jsToInject Array of string to inject
+         * @return Promise
+         */
+        injectJS: function mDocumentInjectJs(jsToInject) {
+            if (!_.isArray(jsToInject)) {
+                throw new Error("The js to inject must be an array of string path");
+            }
+            var promiseInject = this._promiseCallback();
+            require(jsToInject, function injectCustomJSSuccess()
+            {
+                promiseInject.success();
+            }, function unableToInjectCustom(err)
+            {
+                promiseInject.error(err);
+            });
+            return promiseInject.promise;
+
+        },
+
+        /**
+         * Inject an array of css path in the current page
+         *
+         * @param customCss
+         */
+        injectCSS: function mDocumentInjectCSS(customCss)
+        {// add custom css style
+            var $head = $("head"),
+                cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
+                    'href="<%= path %>" data-injected="true">');
+
+            if (!_.isArray(customCss)) {
+                throw new Error("The css to inject must be an array of string path");
+            }
+
+            // Inject new CSS
+            _.each(customCss, function vDocumentInjectNewCSS(cssItem)
+            {
+                if (document.createStyleSheet) {
+                    document.createStyleSheet(cssItem);
+                }
+                $head.append(cssLinkTemplate({"path": cssItem}));
+            });
+
         },
 
         /**
@@ -955,7 +1003,7 @@ define([
                 //Complete the structure after
                 currentModel._completeStructure().then(function onGetStructureDone()
                 {
-                    currentModel.injectJS().then(function mDocument_injectJSDone(values)
+                    currentModel.injectCurrentDocJS().then(function mDocument_injectJSDone(values)
                     {
                         resolve({documentProperties: properties, successArguments: arguments});
                     }, function mDocument_injectJSFail(values)

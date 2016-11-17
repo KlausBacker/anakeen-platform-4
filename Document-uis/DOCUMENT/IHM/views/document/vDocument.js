@@ -41,7 +41,8 @@ define([
 
         events:
         {
-            'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]': 'propagateActionClick'
+            'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]': 'propagateActionClick',
+            'click .dcpDocument__body a[href^="#"]' : 'handleHashClick'
         },
 
         /**
@@ -1222,6 +1223,21 @@ define([
             }
 
             return this.doStandardAction(internalEvent, eventOptions);
+        },
+
+        handleHashClick: function vDocumenthandleHashClick(event) {
+            var $target = $(event.currentTarget), href = $target.attr('href');
+
+            if (!href || !href.substring || href.substring(0, 7) === '#action') {
+                return;
+            }
+
+            event.preventDefault();
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+
+            window.location.hash = href;
         },
 
         /**
