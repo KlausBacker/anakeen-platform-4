@@ -1239,12 +1239,18 @@ define([
                         var errorMessage = {contentText: "Undefined error"};
 
                         if (values.arguments) {
-                            if (errorArguments && errorArguments[0] && errorArguments[0].errorMessage) {
-                                errorMessage = errorArguments[0].errorMessage;
-                            } else {
+                            try {
                                 if (errorArguments && errorArguments[1] && errorArguments[1].responseJSON) {
                                     errorMessage = errorArguments[1].responseJSON.messages[0];
                                 }
+                            } catch (e) {
+
+                            }
+                            if (errorArguments && errorArguments[0] && errorArguments[0].eventPrevented) {
+                                errorMessage = {contentText: "Event prevented"};
+                            }
+                            if (errorArguments && errorArguments[0] && errorArguments[0].errorMessage) {
+                                errorMessage = errorArguments[0].errorMessage;
                             }
                         }
                         if (options && _.isFunction(options.error)) {
