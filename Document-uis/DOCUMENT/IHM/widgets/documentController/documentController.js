@@ -919,9 +919,28 @@ define([
             }
             attribute = this._model.get("attributes").get(attributeId);
             if (!attribute) {
-                throw new Error('The attribute "' + attributeId + '" doesn\'t exist');
+                return undefined;
             }
             return attribute;
+        },
+
+        _getMenuModel: function documentController_getMenuModel(menuId) {
+            var menus = this._model.get("menus");;
+            var menu = menus.get(menuId);
+            if (!menu && menus) {
+                menus.each(function documentControllerGetMenuIterate(itemMenu)
+                {
+                    if (itemMenu.get("content")) {
+                        _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu)
+                        {
+                            if (subMenu.id === menuId) {
+                                menu = new MenuModel(subMenu);
+                            }
+                        });
+                    }
+                });
+            }
+            return menu;
         },
 
         /**
@@ -1471,6 +1490,19 @@ define([
         },
 
         /**
+         * Check if an attribute exist
+         *
+         * @param attributeId
+         * @return {boolean}
+         */
+        hasAttribute: function documentController_hasAttribute(attributeId)
+        {
+            this._checkInitialisedModel();
+            var attribute = this._model.get("attributes").get(attributeId);
+            return !!attribute;
+        },
+
+        /**
          * Get the attribute interface object
          *
          * @param attributeId
@@ -1479,6 +1511,10 @@ define([
         getAttribute: function documentControllerGetAttribute(attributeId)
         {
             this._checkInitialisedModel();
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                return undefined;
+            }
             return new AttributeInterface(this._getAttributeModel(attributeId));
         },
 
@@ -1498,6 +1534,18 @@ define([
         },
 
         /**
+         * Check if a menu exist
+         *
+         * @param menuId
+         * @return {boolean}
+         */
+        hasMenu: function documentController_hasMenu(menuId) {
+            this._checkInitialisedModel();
+            var menu = this._getMenuModel(menuId);
+            return !!menu;
+        },
+
+        /**
          * Get the menu interface object
          *
          * @param menuId
@@ -1505,22 +1553,10 @@ define([
          */
         getMenu: function documentControllerGetMenu(menuId)
         {
-            var menu, menus;
             this._checkInitialisedModel();
-            menus = this._model.get("menus");
-            menu = menus.get(menuId);
-            if (!menu && menus) {
-                menus.each(function documentControllerGetMenuIterate(itemMenu)
-                {
-                    if (itemMenu.get("content")) {
-                        _.each(itemMenu.get("content"), function documentControllerGetSubMenuIterate(subMenu)
-                        {
-                            if (subMenu.id === menuId) {
-                                menu = new MenuModel(subMenu);
-                            }
-                        });
-                    }
-                });
+            var menu = this._getMenuModel(menuId);
+            if (!menu) {
+                return undefined;
             }
             return new MenuInterface(menu);
         },
@@ -1549,8 +1585,13 @@ define([
          */
         getValue: function documentControllerGetValue(attributeId, type)
         {
+            var attribute;
             this._checkInitialisedModel();
-            var attribute = new AttributeInterface(this._getAttributeModel(attributeId));
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                return undefined;
+            }
+            attribute =new AttributeInterface(attributeModel);
             return attribute.getValue(type);
         },
 
@@ -1673,13 +1714,16 @@ define([
         setValue: function documentControllerSetValue(attributeId, value)
         {
             this._checkInitialisedModel();
-            var attributeInterface = new AttributeInterface(this._getAttributeModel(attributeId));
-            var mAttribute = this._getAttributeModel(attributeId);
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                throw new Error("Unable to find attribute "+attributeId);
+            }
+            var attributeInterface = new AttributeInterface(attributeModel);
             var index;
             var currentValueLength;
             var i;
 
-            if (mAttribute.getParent().get("type") === "array") {
+            if (attributeModel.getParent().get("type") === "array") {
                 attributeInterface.setValue(value, true); // Just verify value conditions
                 if (!_.isArray(value)) {
                     index = value.index;
@@ -1690,7 +1734,7 @@ define([
 
                 // Add new necessary rows before set value
                 for (i = currentValueLength; i <= index; i++) {
-                    this.appendArrayRow(mAttribute.getParent(), {});
+                    this.appendArrayRow(attributeModel.getParent(), {});
                 }
 
             }
@@ -1707,6 +1751,10 @@ define([
         {
             this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId);
+
+            if (!attribute) {
+                throw new Error("Unable to find attribute "+attributeId);
+            }
 
             if (attribute.get("type") !== "array") {
                 throw new Error("Attribute " + attributeId + " must be an attribute of type array");
@@ -1739,6 +1787,9 @@ define([
         {
             this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId), maxValue;
+            if (!attribute) {
+                throw new Error("Unable to find attribute "+attributeId);
+            }
             if (attribute.get("type") !== "array") {
                 throw new Error("Attribute " + attributeId + " must be an attribute of type array");
             }
@@ -1773,6 +1824,9 @@ define([
         {
             this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId), maxIndex;
+            if (!attribute) {
+                throw new Error("Unable to find attribute "+attributeId);
+            }
             if (attribute.get("type") !== "array") {
                 throw Error("Attribute " + attributeId + " must be an attribute of type array");
             }
@@ -1897,7 +1951,7 @@ define([
         addEventListener: function documentControllerAddEvent(eventType, options, callback)
         {
             var currentEvent, currentWidget = this;
-            //options is facultative and the callback can be the second parameters
+            //options is not mandatory and the callback can be the second parameters
             if (_.isUndefined(callback) && _.isFunction(options)) {
                 callback = options;
                 options = {};
@@ -2003,7 +2057,12 @@ define([
         hideAttribute: function documentControllerHideAttribute(attributeId)
         {
             this._checkInitialisedView();
-            this._getAttributeModel(attributeId).trigger("hide");
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                console.log("Unable find and hide the attribute "+attributeId);
+                return;
+            }
+            attributeModel.trigger("hide");
         },
         /**
          * show a visible attribute (previously hidden)
@@ -2013,7 +2072,12 @@ define([
         showAttribute: function documentControllerShowAttribute(attributeId)
         {
             this._checkInitialisedView();
-            this._getAttributeModel(attributeId).trigger("show");
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                console.log("Unable find and show the attribute "+attributeId);
+                return;
+            }
+            attributeModel.trigger("show");
         },
 
         /**
@@ -2073,7 +2137,12 @@ define([
         setAttributeErrorMessage: function documentControllersetAttributeErrorMessage(attributeId, message, index)
         {
             this._checkInitialisedView();
-            this._getAttributeModel(attributeId).setErrorMessage(message, index);
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                console.log("Unable find and show the attribute "+attributeId);
+                return;
+            }
+            attributeModel.setErrorMessage(message, index);
         },
 
         /**
@@ -2085,7 +2154,12 @@ define([
         cleanAttributeErrorMessage: function documentControllercleanAttributeErrorMessage(attributeId, index)
         {
             this._checkInitialisedView();
-            this._getAttributeModel(attributeId).setErrorMessage(null, index);
+            var attributeModel = this._getAttributeModel(attributeId);
+            if (!attributeModel) {
+                console.log("Unable find and show the attribute "+attributeId);
+                return;
+            }
+            attributeModel.setErrorMessage(null, index);
         },
 
         injectCSS: function documentController_injectCSS(cssToInject)
