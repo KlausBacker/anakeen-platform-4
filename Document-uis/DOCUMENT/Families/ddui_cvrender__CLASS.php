@@ -76,27 +76,35 @@ class CVDoc extends \Dcp\Core\CVDoc
     {
         $views = parent::getDisplayableViews();
         foreach ($views as $k => $view) {
-            $zone = $view[MyAttributes::cv_zview];
-            $render = $view[MyAttributes::cv_renderconfigclass];
-            
-            if ($html5mode) {
-                if ($zone && $zone !== $this->defaultview && $zone != $this->defaultedit && !$render) {
-                    // No display special CORE zone
-                    unset($views[$k]);
-                }
-            } else {
-                if ($render) {
-                    if ($render[0] === "\\") {
-                        $render = substr($render, 1);
-                    }
-                    $render = mb_strtolower($render);
-                    if (!$zone && $render !== "dcp\\ui\\defaultview" && $render !== "dcp\\ui\\defaultedit") {
-                        // No display special DDUI render
-                        unset($views[$k]);
-                    }
-                }
+            if (!$this->isValidView($view, $html5mode)) {
+                unset($views[$k]);
             }
         }
         return $views;
+    }
+    
+    public function isValidView(array $viewIndo, $html5mode)
+    {
+        $zone = $viewIndo[MyAttributes::cv_zview];
+        $render = $viewIndo[MyAttributes::cv_renderconfigclass];
+        
+        if ($html5mode) {
+            if ($zone && $zone !== $this->defaultview && $zone != $this->defaultedit && !$render) {
+                // No display special CORE zone
+                return false;
+            }
+        } else {
+            if ($render) {
+                if ($render[0] === "\\") {
+                    $render = substr($render, 1);
+                }
+                $render = mb_strtolower($render);
+                if (!$zone && $render !== "dcp\\ui\\defaultview" && $render !== "dcp\\ui\\defaultedit") {
+                    // No display special DDUI render
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

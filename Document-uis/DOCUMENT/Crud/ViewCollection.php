@@ -53,14 +53,15 @@ class ViewCollection extends View
         $views = $cv->getViews();
         $info = array();
         foreach ($views as $view) {
-            $vid = $view[\Dcp\AttributeIdentifiers\Cvdoc::cv_idview];
-            if ($cv->control($vid) == "") {
-                //$viewInfo = $this->getViewInformation($document, $vid);
-                $prop = $this->getViewProperties($cv, $view);
-                $prop["uri"] = $this->getUri($document, $vid);
-                $info[] = array(
-                    "properties" => $prop
-                );
+            if ($cv->isValidView($view, true)) {
+                $vid = $view[\Dcp\AttributeIdentifiers\Cvdoc::cv_idview];
+                if ($cv->control($vid) == "") {
+                    $prop = $this->getViewProperties($cv, $view);
+                    $prop["uri"] = $this->getUri($document, $vid);
+                    $info[] = array(
+                        "properties" => $prop
+                    );
+                }
             }
         }
         return $info;

@@ -196,6 +196,10 @@ namespace {
          */
         const UI0307 = 'Identifier "%s" must be a family identifier . ';
         /**
+         * @errorCode The view identifier use core ZONE and not declare renderConfig class
+         */
+        const UI0308 = 'view "%s" is not valid in view control document "%s" . It use a ZONE layout';
+        /**
          * for beautifier
          */
         private function _bo()
