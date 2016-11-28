@@ -5,11 +5,11 @@
   "data": {
     "files":["/home/eric/Documents/Doc Technique/web api.pdf",
       "/home/eric/Documents/workflow.odt"],
-    "images":["/home/eric/Images/tukjedi.jpg",
+    "images":["/home/eric/Images/Fond/tukjedi.jpg",
       "/home/eric/Images/drakkar.png",
-      "/home/eric/Images/leaves_texture1224.jpg"],
+      "/home/eric/Images/Fond/leaves_texture1224.jpg"],
     "filePath": "/home/eric/Documents/Doc Technique/web api.pdf",
-    "imagePath": "/home/eric/Images/tukjedi.jpg"
+    "imagePath": "/home/eric/Images/Fond/tukjedi.jpg"
   },
   "screenshotDirectory":"/tmp/ddui"
 }

@@ -28,7 +28,7 @@ require([ "dcpDocument/document", "datatables"], function testMain() {
 
         $.getJSON("api/v1/test/ddui/families/").done(function getFamiliesTst(result) {
             console.log("result", result);
-            var template= _.template('<button data-familyname="<%- properties.name %>" class="btn btn-default tst-create"><img src="<%- properties.icon %>&width=32"/>Create <%- properties.title %></button>');
+            var template= _.template('<button data-familyname="<%- properties.name %>" class="btn btn-default tst-create"><img src="<%- properties.icon %>?width=32"/>Create <%- properties.title %></button>');
             var btns;
 
             if (result && result.data && result.data.documents) {
