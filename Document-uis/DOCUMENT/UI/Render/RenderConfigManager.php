@@ -67,6 +67,9 @@ class RenderConfigManager
         if (empty($vidInfo)) {
             throw new Exception("UI0305", $vId, $cvDoc->getTitle());
         }
+        if (!$cvDoc->isValidView($vidInfo, true)) {
+            throw new Exception("UI0308", $vId, $cvDoc->getTitle());
+        }
         
         return self::getRenderFromVidinfo($vidInfo, $document);
     }
@@ -96,6 +99,8 @@ class RenderConfigManager
                 $mode = self::EditMode;
             }
             return self::getRenderDefaultConfig($mode);
+
+
         }
     }
     /**
