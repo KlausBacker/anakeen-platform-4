@@ -5,7 +5,7 @@ use Dcp\Exception;
 
 class ExportFamily
 {
-    
+    const OTHERTAGPREFIX = "FAMEXPORT:";
     protected $csvEnclosure = '"';
     protected $csvSeparator = ',';
     /**
@@ -77,6 +77,7 @@ class ExportFamily
         $this->exportParam();
         $this->exportConfig();
         $this->exportWorkflow();
+        $this->exportOthers();
         $this->exportInfoXml();
         $this->zip->close();
         return $filename;
@@ -280,23 +281,17 @@ class ExportFamily
         $fout = fopen($filename, "a");
         if ($this->family->icon) {
             if (preg_match(PREGEXPFILE, $this->family->icon, $reg)) {
-                $vid=$reg["vid"];
-                $info=\Dcp\VaultManager::getFileInfo($vid);
-
+                $vid = $reg["vid"];
+                $info = \Dcp\VaultManager::getFileInfo($vid);
+                
                 $data[] = ["ICON", $info->name];
-
-                $this->zip->addFile(
-                    $info->path, $info->name
-                );
+                
+                $this->zip->addFile($info->path, $info->name);
             } else {
-
+                
                 $data[] = ["ICON", $this->family->icon];
-
-                $this->zip->addFile(
-                    sprintf(
-                        "%s/Images/%s", DEFAULT_PUBDIR, $this->family->icon
-                    ), $this->family->icon
-                );
+                
+                $this->zip->addFile(sprintf("%s/Images/%s", DEFAULT_PUBDIR, $this->family->icon) , $this->family->icon);
             }
         }
         
@@ -314,7 +309,7 @@ class ExportFamily
             $data[] = ["CLASS", $this->family->classname];
         }
         if ($this->family->atags) {
-            $tags=explode("\n", $this->family->atags);
+            $tags = explode("\n", $this->family->atags);
             foreach ($tags as $tag) {
                 $data[] = ["TAGS", $tag];
             }
@@ -371,6 +366,39 @@ class ExportFamily
         }
     }
     
+    protected function exportOthers()
+    {
+        $exportDocuments = $this->getOtherDocumentToExport();
+        
+        if ($exportDocuments) {
+            $atags = [];
+            $filename = sprintf("%s/%s__OTHERS.csv", $this->workDirectory, $this->family->name);
+            
+            $fout = fopen($filename, "a");
+            foreach ($exportDocuments as $exportData) {
+                
+                $doc = new_Doc("", $exportData["docid"]);
+                if (!$doc->isAlive()) {
+                    throw new Exception(sprintf("Export Document %s (%s)not alive", $exportData["docid"], $exportData["index"]));
+                }
+                
+                $this->exportDocument($doc, $fout);
+                $atags[] = array(
+                    "DOCATAG",
+                    $exportData["name"] ? $exportData["name"] : $exportData["docid"],
+                    self::OTHERTAGPREFIX . $this->family->name
+                );
+            }
+            fclose($fout);
+            
+            $this->putcsv($filename, $atags);
+            
+            $this->sortData($filename);
+            $this->zip->addFile($filename, basename($filename));
+            $this->infoInstall[] = basename($filename);
+        }
+    }
+    
     public function getDocumentToExport()
     {
         if (!$this->family) {
@@ -399,62 +427,91 @@ class ExportFamily
             $this->addDocumentToExport($this->family->ccvid, "cv");
         }
         if ($this->family->wid > 0) {
+            /**
+             * @var \WDoc $wdoc
+             */
             $wdoc = \new_Doc("", $this->family->wid);
-            
-            $tattr = $wdoc->getAttributes();
-            foreach ($tattr as $ka => $oa) {
-                if ($oa->type == "docid") {
-                    $tdid = $wdoc->getMultipleRawValues($ka);
-                    foreach ($tdid as $did) {
-                        if ($did != "") {
-                            $m = getTDoc("", $did);
-                            if ($m) {
-                                if ($m["doctype"] !== "C") {
-                                    $tmoredoc[$m["initid"]] = "wrel";
-                                    
-                                    if (!empty($m["cv_mskid"])) {
-                                        $tmskid = $this->family->rawValueToArray($m["cv_mskid"]);
-                                        foreach ($tmskid as $kmsk => $imsk) {
-                                            if ($imsk != "") {
-                                                $msk = getTDoc("", $imsk);
-                                                if ($msk) {
-                                                    $tmoredoc[$msk["id"]] = "wmask";
-                                                    $this->addDocumentToExport($msk["initid"], "w-cvmask");
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (!empty($m["tm_tmail"])) {
-                                        $tmskid = $this->family->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
-                                        foreach ($tmskid as $kmsk => $imsk) {
-                                            if ($imsk != "") {
-                                                $msk = getTDoc("", $imsk);
-                                                if ($msk) {
-                                                    $tmoredoc[$msk["id"]] = "tmask";
-                                                    $this->addDocumentToExport($msk["initid"], "w-tmmail");
-                                                }
-                                            }
-                                        }
-                                    }
-                                    $this->addDocumentToExport($m["initid"], "w-conf");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            $this->addDocumentToExport($this->family->wid, "wid");
+            $this->addWorkflowToExport($wdoc);
         }
         
         return $this->exportDocuments;
     }
     
-    protected function addDocumentToExport($docid, $index)
+    protected function addWorkflowToExport(\WDoc $wdoc)
+    {
+        $tattr = $wdoc->getAttributes();
+        foreach ($tattr as $ka => $oa) {
+            if ($oa->type == "docid") {
+                $tdid = $wdoc->getMultipleRawValues($ka);
+                foreach ($tdid as $did) {
+                    if ($did != "") {
+                        $m = getTDoc("", $did);
+                        if ($m) {
+                            if ($m["doctype"] !== "C") {
+                                $tmoredoc[$m["initid"]] = "wrel";
+                                
+                                if (!empty($m["cv_mskid"])) {
+                                    $tmskid = $this->family->rawValueToArray($m["cv_mskid"]);
+                                    foreach ($tmskid as $kmsk => $imsk) {
+                                        if ($imsk != "") {
+                                            $msk = getTDoc("", $imsk);
+                                            if ($msk) {
+                                                $tmoredoc[$msk["id"]] = "wmask";
+                                                $this->addDocumentToExport($msk["initid"], "w-cvmask");
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!empty($m["tm_tmail"])) {
+                                    $tmskid = $this->family->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
+                                    foreach ($tmskid as $kmsk => $imsk) {
+                                        if ($imsk != "") {
+                                            $msk = getTDoc("", $imsk);
+                                            if ($msk) {
+                                                $tmoredoc[$msk["id"]] = "tmask";
+                                                $this->addDocumentToExport($msk["initid"], "w-tmmail");
+                                            }
+                                        }
+                                    }
+                                }
+                                $this->addDocumentToExport($m["initid"], "w-conf");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $this->addDocumentToExport($this->family->wid, "wid");
+    }
+    
+    public function getOtherDocumentToExport()
+    {
+        if (!$this->family) {
+            throw new Exception("Need set a family use ::setFamily()");
+        }
+        
+        $s = new \SearchDoc($this->family->dbaccess);
+        $s->addFilter("atags ~ '\\\\y%s%s\\\\y'", self::OTHERTAGPREFIX, $this->family->name);
+        $s->setObjectReturn(true);
+        $s->setOrder("fromid, name");
+        $dl = $s->search()->getDocumentList();
+        foreach ($dl as $other) {
+            $this->addDocumentToExport($other->initid, "other", $other->name);
+        }
+        
+        return array_filter($this->exportDocuments, function ($a)
+        {
+            return ($a["index"] === "other");
+        });
+    }
+    
+    protected function addDocumentToExport($docid, $index, $name = '')
     {
         if ($docid) {
             $this->exportDocuments[] = array(
                 "index" => $index,
-                "docid" => $docid
+                "docid" => $docid,
+                "name" => $name
             );
         }
     }

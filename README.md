@@ -1,4 +1,4 @@
 dynacase-devel-uis
 ==================
 
-User interfaces for developpement
+User interfaces to developpement

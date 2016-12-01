@@ -112,10 +112,14 @@ a.cv-create {
     height:22px;
     width:20em;
     vertical-align: top;
+    padding-left:1em;
 }
 .custom-combobox .custom-combobox-toggle {
      height:26px;
     vertical-align: top;
+}
+.custom-combobox-input:focus {
+    border:solid 1px #8D81EC;
 }
 
 ul.ui-autocomplete {

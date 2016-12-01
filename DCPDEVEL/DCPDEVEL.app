@@ -66,6 +66,14 @@ $action_desc = array(
         "acl" => "DEVEL"
     ),
     array(
+        "name" => "OTHERDOCUMENT",
+        "short_name" => N_("DCPDEVEL:OTHERDOCUMENT"),
+        "script" => "action.otherdocument.php",
+        "function" => "otherdocument",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
         "name" => "SEARCHSYSDOC",
         "short_name" => N_("DCPDEVEL:SEARCHSYSDOC"),
         "script" => "action.searchsysdoc.php",

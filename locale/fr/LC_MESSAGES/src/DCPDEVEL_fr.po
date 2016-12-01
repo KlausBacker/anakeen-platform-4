@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 15:54+0200\n"
-"PO-Revision-Date: 2016-09-14 15:54+0200\n"
+"POT-Creation-Date: 2016-12-01 14:54+0100\n"
+"PO-Revision-Date: 2016-12-01 14:58+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -25,19 +25,27 @@ msgid "Back"
 msgstr "Retour"
 
 #, php-format
+msgctxt "dcpdev"
 msgid "Change creation profil to %s [%d]"
-msgstr ""
+msgstr "Changement du profil de création \"%s\" [%d]"
 
 #, php-format
+msgctxt "dcpdev"
 msgid "Change creation view control to %s [%d]"
-msgstr ""
+msgstr "Changement du contrôle de vue utilisé à la création \"%s\" [%d]"
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Change default view control to %s [%d]"
+msgstr "Changement du contrôle de vue par défaut \"%s\" [%d]"
 
 #, php-format
 msgctxt "dcpdevel"
 msgid "Change default workflow to %s [%d]"
-msgstr ""
+msgstr "Changement du cycle de vie par défaut \"%s\" [%d]"
 
 #, php-format
+msgctxt "dcpdev"
 msgid "Change profil to %s [%d]"
 msgstr ""
 
@@ -55,6 +63,9 @@ msgstr "Choisir un profil de famille existant"
 
 msgctxt "dcpdevel"
 msgid "Choose profile and view control for new documents"
+msgstr ""
+
+msgid "Choose workflow"
 msgstr ""
 
 #, php-format
@@ -108,6 +119,9 @@ msgstr ""
 msgid "DCPDEVEL:MODIFYFAMILY"
 msgstr ""
 
+msgid "DCPDEVEL:OTHERDOCUMENT"
+msgstr ""
+
 msgid "DCPDEVEL:SEARCHSYSDOC"
 msgstr ""
 
@@ -121,6 +135,11 @@ msgstr "Contrôle de vue par défaut"
 msgctxt "dcpdevel"
 msgid "Default workflow"
 msgstr "Cycle de vie par défaut"
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Default workflow for %s family"
+msgstr "Cycle de vue par défaut pour la famille \"%s\""
 
 msgctxt "dcpdevel"
 msgid "Defaut values and parameters"
@@ -149,8 +168,17 @@ msgid "Family profile"
 msgstr "Profil de la famille"
 
 msgctxt "dcpdevel"
+msgid "Initialize control"
+msgstr "Initialisation du contrôle d'accès"
+
+msgctxt "dcpdevel"
 msgid "Initialize specific profile for family"
 msgstr "Initialiser le profil spécifique pour la famille"
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "No \"%s\" match \"%s\""
+msgstr "Aucune correspondance de \"%s\" pour \"%s\""
 
 msgctxt "dcpdevel"
 msgid "No cv"
@@ -164,17 +192,22 @@ msgctxt "dcpdevel"
 msgid "No default workflow configurated"
 msgstr "Aucun cycle de vie n'est associé"
 
+#, php-format
+msgctxt "dcpdevel"
+msgid "No families match \"%s\""
+msgstr "Pas de familles correspondant à \"%s\""
+
 msgctxt "dcpdevel"
 msgid "No profile (free access)"
 msgstr "Aucun profil (accès libre)"
 
 msgctxt "dcpdevel"
 msgid "No update logical name for family"
-msgstr ""
+msgstr "Pas de mise à jour du nom logique"
 
 msgctxt "dcpdevel"
 msgid "No workflow"
-msgstr ""
+msgstr "Pas de cycle de vie"
 
 msgctxt "dcpdevel"
 msgid "Not a family"
@@ -214,8 +247,14 @@ msgctxt "dcpdevel"
 msgid "Workflow"
 msgstr "Cycle de vie"
 
+msgid "dcpdev:Add other configuration document :"
+msgstr "Ajouter un nouveau document de configuration :"
+
 msgid "dcpdev:All logical name must be set to export configuration"
 msgstr "Tous les noms logiques doivent être affectés pour l'exportation"
+
+msgid "dcpdev:Change icon"
+msgstr "Changer l'icône"
 
 msgid "dcpdev:Choose cv"
 msgstr "Choisir un contrôle de vue"
@@ -223,14 +262,29 @@ msgstr "Choisir un contrôle de vue"
 msgid "dcpdev:Choose document profil"
 msgstr "Choisir un profil pour les documents"
 
+msgid "dcpdev:Choose family"
+msgstr "Choisir une famille"
+
+msgid "dcpdev:Choose family first"
+msgstr "Choisissez une famille d'abord"
+
 msgid "dcpdev:Choose workflow"
 msgstr "Choisir un cycle de vie"
+
+msgid "dcpdev:Choose {{family}}"
+msgstr "Choisir {{family}}"
 
 msgid "dcpdev:Configuration documents to exports for "
 msgstr "Documents de configuration de la famille"
 
 msgid "dcpdev:Create new"
 msgstr "Créer un nouveau"
+
+msgid "dcpdev:Create new workflow"
+msgstr "Créer un nouveau cycle"
+
+msgid "dcpdev:Create workflow"
+msgstr "Créer un cycle"
 
 msgid "dcpdev:Csv enclosure"
 msgstr "Délimiteur CSV"
@@ -250,6 +304,9 @@ msgstr "Famille"
 msgid "dcpdev:Logical name"
 msgstr "Nom logique"
 
+msgid "dcpdev:Other documents"
+msgstr "Autres documents de configuration"
+
 msgid "dcpdev:comma"
 msgstr "Virgule"
 
@@ -266,7 +323,11 @@ msgid "dcpdev:single-quote"
 msgstr "Simple quote"
 
 msgid "dcpdevel:ADMIN_ACTIONS_LIST short_name"
-msgstr ""
+msgstr "Liste des actions"
 
 msgid "dcpdevel:main Access"
-msgstr ""
+msgstr "Accès principal"
+
+msgctxt "dcpdev"
+msgid "file not expected : possible attack : update aborted"
+msgstr "Erreur de téléversement: mise à jour abondonnée"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 15:54+0200\n"
+"POT-Creation-Date: 2016-12-01 14:54+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -20,11 +20,18 @@ msgid "Back"
 msgstr "Back"
 
 #, php-format
+msgctxt "dcpdev"
 msgid "Change creation profil to %s [%d]"
 msgstr ""
 
 #, php-format
+msgctxt "dcpdev"
 msgid "Change creation view control to %s [%d]"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Change default view control to %s [%d]"
 msgstr ""
 
 #, php-format
@@ -33,6 +40,7 @@ msgid "Change default workflow to %s [%d]"
 msgstr ""
 
 #, php-format
+msgctxt "dcpdev"
 msgid "Change profil to %s [%d]"
 msgstr ""
 
@@ -50,6 +58,9 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Choose profile and view control for new documents"
+msgstr ""
+
+msgid "Choose workflow"
 msgstr ""
 
 #, php-format
@@ -103,6 +114,9 @@ msgstr "Family Export : IHM"
 msgid "DCPDEVEL:MODIFYFAMILY"
 msgstr "Modify family"
 
+msgid "DCPDEVEL:OTHERDOCUMENT"
+msgstr ""
+
 msgid "DCPDEVEL:SEARCHSYSDOC"
 msgstr "Search Sys Doc"
 
@@ -115,6 +129,11 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Default workflow"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "Default workflow for %s family"
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -144,7 +163,16 @@ msgid "Family profile"
 msgstr ""
 
 msgctxt "dcpdevel"
+msgid "Initialize control"
+msgstr ""
+
+msgctxt "dcpdevel"
 msgid "Initialize specific profile for family"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "No \"%s\" match \"%s\""
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -157,6 +185,11 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "No default workflow configurated"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "No families match \"%s\""
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -209,8 +242,14 @@ msgctxt "dcpdevel"
 msgid "Workflow"
 msgstr ""
 
+msgid "dcpdev:Add other configuration document :"
+msgstr ""
+
 msgid "dcpdev:All logical name must be set to export configuration"
 msgstr "All logical names must be set to export configuration"
+
+msgid "dcpdev:Change icon"
+msgstr ""
 
 msgid "dcpdev:Choose cv"
 msgstr "Choose a View Control"
@@ -218,14 +257,29 @@ msgstr "Choose a View Control"
 msgid "dcpdev:Choose document profil"
 msgstr "Choose a Document Profil"
 
+msgid "dcpdev:Choose family"
+msgstr ""
+
+msgid "dcpdev:Choose family first"
+msgstr ""
+
 msgid "dcpdev:Choose workflow"
 msgstr "Choose a Workflow"
+
+msgid "dcpdev:Choose {{family}}"
+msgstr ""
 
 msgid "dcpdev:Configuration documents to exports for "
 msgstr "Configuration documents to exports for "
 
 msgid "dcpdev:Create new"
 msgstr "Create new"
+
+msgid "dcpdev:Create new workflow"
+msgstr ""
+
+msgid "dcpdev:Create workflow"
+msgstr ""
 
 msgid "dcpdev:Csv enclosure"
 msgstr "CSV enclosure"
@@ -244,6 +298,9 @@ msgstr "Family"
 
 msgid "dcpdev:Logical name"
 msgstr "Logical name"
+
+msgid "dcpdev:Other documents"
+msgstr ""
 
 msgid "dcpdev:comma"
 msgstr "comma"
@@ -265,3 +322,7 @@ msgstr "Admin Action List"
 
 msgid "dcpdevel:main Access"
 msgstr "Main Access"
+
+msgctxt "dcpdev"
+msgid "file not expected : possible attack : update aborted"
+msgstr ""

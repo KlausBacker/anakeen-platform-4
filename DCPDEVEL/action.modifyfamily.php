@@ -10,7 +10,9 @@ function modifyfamily(Action & $action)
         "famProfile",
         "docProfile",
         "docCv",
-        "docWid","newWid","newCvid",
+        "docWid",
+        "newWid",
+        "newCvid",
         "icon"
     ));
     $usage->setStrictMode(false);
@@ -47,7 +49,7 @@ function modifyfamily(Action & $action)
                     $family->unsetControl();
                 }
                 if ($family->profid != $profid) {
-                    $family->addHistoryEntry(sprintf(_("Change profil to %s [%d]") , $family->getTitle($profid) , $profid));
+                    $family->addHistoryEntry(sprintf(___("Change profil to %s [%d]", "dcpdev") , $family->getTitle($profid) , $profid));
                 }
                 // specific control
                 $family->setProfil($profid); // change profile
@@ -73,7 +75,7 @@ function modifyfamily(Action & $action)
                 }
                 // change creation profile
                 if (!$err && $family->cprofid != $profid) {
-                    $family->addHistoryEntry(sprintf(_("Change creation profil to %s [%d]") , $family->getTitle($profid) , $profid));
+                    $family->addHistoryEntry(sprintf(___("Change creation profil to %s [%d]", "dcpdev") , $family->getTitle($profid) , $profid));
                     $family->cprofid = $profid; // new creation profile access
                     $err = $family->modify();
                 }
@@ -93,48 +95,49 @@ function modifyfamily(Action & $action)
                 
                 if (!$err && $family->ccvid != $cvid) {
                     $family->ccvid = $cvid; //  default control view for creation
-                    $family->addHistoryEntry(sprintf(_("Change creation view control to %s [%d]") , $family->getTitle($cvid) , $cvid));
+                    $family->addHistoryEntry(sprintf(___("Change creation view control to %s [%d]", "dcpdev") , $family->getTitle($cvid) , $cvid));
                     $err = $family->modify();
                 }
                 break;
 
-        case "newCvid":
-            // Create new control view
-            if ($value) {
-                $newWid=createDoc("", $value);
-                if ($newWid) {
-                    $err=$newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::cv_famid, $family->id);
-                    $err.=$newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::ba_title, sprintf(___("Default workflow for %s family","dcpdevel"),$family->getTitle()));
-                    if (!$err) {
-                        $err=$newWid->store();
-                    }
-                    if (!$err) {
-                        $family->ccvid = $newWid->id; //  default control view for creation
-                        $family->addHistoryEntry(sprintf(___("Change default view control to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
-                        $err = $family->modify();
+            case "newCvid":
+                // Create new control view
+                if ($value) {
+                    $newWid = createDoc("", $value);
+                    if ($newWid) {
+                        $err = $newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::cv_famid, $family->id);
+                        $err.= $newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::ba_title, sprintf(___("Default workflow for %s family", "dcpdevel") , $family->getTitle()));
+                        if (!$err) {
+                            $err = $newWid->store();
+                        }
+                        if (!$err) {
+                            $family->ccvid = $newWid->id; //  default control view for creation
+                            $family->addHistoryEntry(sprintf(___("Change default view control to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
+                            $err = $family->modify();
+                        }
                     }
                 }
-            }
-            break;
-        case "newWid":
-            // Create new workflow
-            if ($value) {
-                $newWid=createDoc("", $value);
-                if ($newWid) {
-                    $err=$newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::wf_famid, $family->id);
-                    $err.=$newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::ba_title, sprintf(___("Default workflow for %s family","dcpdevel"),$family->getTitle()));
-                    if (!$err) {
-                        $err=$newWid->store();
-                    }
-                    if (!$err) {
-                        $family->wid = $newWid->id; //  default workflow
-                        $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
-                        $err = $family->modify();
-                    }
+                break;
 
+            case "newWid":
+                // Create new workflow
+                if ($value) {
+                    $newWid = createDoc("", $value);
+                    if ($newWid) {
+                        $err = $newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::wf_famid, $family->id);
+                        $err.= $newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::ba_title, sprintf(___("Default workflow for %s family", "dcpdevel") , $family->getTitle()));
+                        if (!$err) {
+                            $err = $newWid->store();
+                        }
+                        if (!$err) {
+                            $family->wid = $newWid->id; //  default workflow
+                            $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
+                            $err = $family->modify();
+                        }
+                    }
                 }
-            }
-            break;
+                break;
+
             case "docWid":
                 if ($value) {
                     $wdoc = new_Doc("", $value);
@@ -155,30 +158,22 @@ function modifyfamily(Action & $action)
 
             case "icon":
                 if (!is_uploaded_file($value['tmp_name'])) {
-                    $err=(_("file not expected : possible attack : update aborted"));
+                    $err = (___("file not expected : possible attack : update aborted", "dcpdev"));
                 }
-
+                
                 $imageSize = getimagesize($value['tmp_name']);
                 if (!$imageSize) {
-                    $err="File is not recognized like an image";
+                    $err = "File is not recognized like an image";
                 }
-
+                
                 if (!$err) {
-                    $vid = \Dcp\VaultManager::storeFile(
-                        $value['tmp_name'], $value['name'], true
-                    );
+                    $vid = \Dcp\VaultManager::storeFile($value['tmp_name'], $value['name'], true);
                     $fileVaultInfo = \Dcp\VaultManager::getFileInfo($vid);
-
-                    $family->changeIcon(
-                        sprintf(
-                            "%s|%s|%s", $fileVaultInfo->mime_s,
-                            $fileVaultInfo->id_file, $fileVaultInfo->name
-                        )
-                    );
+                    
+                    $family->changeIcon(sprintf("%s|%s|%s", $fileVaultInfo->mime_s, $fileVaultInfo->id_file, $fileVaultInfo->name));
                 }
                 break;
         }
-
     }
     header('Content-Type: application/json');
     
