@@ -63,22 +63,22 @@ function familyconf(Action & $action)
         }
         $action->lay->eSetBlockData("cvfams", $cvfams);
         $action->lay->set("cvfam", true);
-        $action->lay->set("cvCreate", ___("Initialize control","dcpdevel"));
+        $action->lay->set("cvCreate", ___("Initialize control", "dcpdevel"));
     } else {
         $action->lay->set("cvfam", false);
     }
-
-    $sw=new SearchDoc("", "-1");
+    
+    $sw = new SearchDoc("", "-1");
     $sw->addFilter("usefor ~ 'W' ");
     $sw->addFilter("id != 20 ");
     $sw->setObjectReturn(true);
-    $fws=$sw->search()->getDocumentList();
-    $tws=[];
+    $fws = $sw->search()->getDocumentList();
+    $tws = [];
     foreach ($fws as $fw) {
-        $tws[]=["wfid" => $fw->id, "wtitle" => $fw->getTitle() ];
+        $tws[] = ["wfid" => $fw->id, "wtitle" => $fw->getTitle() ];
     }
-     $action->lay->eSetBlockData("wfams", $tws);
-    $action->lay->set("wfam", count($tws)>0);
+    $action->lay->eSetBlockData("wfams", $tws);
+    $action->lay->set("wfam", count($tws) > 0);
 }
 
 function i18N_familyconf(Action & $action, $family)
@@ -86,7 +86,8 @@ function i18N_familyconf(Action & $action, $family)
     $action->lay->eSet("AttributesLabel", ___("Attributes", "dcpdevel"));
     $action->lay->eSet("EnumerateLabel", ___("Enumerates", "dcpdevel"));
     $action->lay->eSet("DefaultLabel", ___("Defaut values and parameters", "dcpdevel"));
-    
+    $action->lay->eSet("List", ___("Document List", "dcpdevel"));
+
     if ($family->profid) {
         $action->lay->eSet("ChangeFamilyProfileLabel", ___("Choose another existing family profile", "dcpdevel"));
     } else {

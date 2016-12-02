@@ -96,6 +96,23 @@ $action_desc = array(
         "function" => "exportfamilyconfig",
         "root" => "N",
         "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "DOCUMENTFAMILYLIST",
+        "short_name" => N_("DCPDEVEL:DOCUMENTFAMILYLIST"),
+        "script" => "action.documentfamilylist.php",
+        "function" => "documentfamilylist",
+        "layout" => "documentfamilylist.html",
+        "root" => "N",
+        "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "DOCUMENTLISTDATA",
+        "short_name" => N_("DCPDEVEL:DOCUMENTLISTDATA"),
+        "script" => "action.documentlistdata.php",
+        "function" => "documentlistdata",
+        "root" => "N",
+        "acl" => "DEVEL"
     )
 );
 

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-01 14:54+0100\n"
-"PO-Revision-Date: 2016-12-01 14:58+0100\n"
+"POT-Creation-Date: 2016-12-02 10:15+0100\n"
+"PO-Revision-Date: 2016-12-02 10:22+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -47,7 +47,7 @@ msgstr "Changement du cycle de vie par défaut \"%s\" [%d]"
 #, php-format
 msgctxt "dcpdev"
 msgid "Change profil to %s [%d]"
-msgstr ""
+msgstr "Changement du profil vers \"%s\" [%d]"
 
 msgctxt "dcpdevel"
 msgid "Choose another existing family profile"
@@ -63,10 +63,10 @@ msgstr "Choisir un profil de famille existant"
 
 msgctxt "dcpdevel"
 msgid "Choose profile and view control for new documents"
-msgstr ""
+msgstr "Choisir un profil et un contrôle de vue pour les nouveaux documents"
 
 msgid "Choose workflow"
-msgstr ""
+msgstr "Choisir un cycle de vie"
 
 #, php-format
 msgctxt "dcpdevel"
@@ -106,6 +106,12 @@ msgstr "Outils de paramétrage pour le développeur"
 
 msgid "DCPDEVEL:DEVELFAMILY"
 msgstr "Configuration de familles"
+
+msgid "DCPDEVEL:DOCUMENTFAMILYLIST"
+msgstr ""
+
+msgid "DCPDEVEL:DOCUMENTLISTDATA"
+msgstr ""
 
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
 msgstr ""
@@ -163,6 +169,9 @@ msgstr "Familles"
 msgid "Families configuration"
 msgstr "Configuration de la famille"
 
+msgid "Families document list"
+msgstr "Liste de document pour une famille"
+
 msgctxt "dcpdevel"
 msgid "Family profile"
 msgstr "Profil de la famille"
@@ -174,6 +183,20 @@ msgstr "Initialisation du contrôle d'accès"
 msgctxt "dcpdevel"
 msgid "Initialize specific profile for family"
 msgstr "Initialiser le profil spécifique pour la famille"
+
+msgctxt "dcpdevel"
+msgid "Liste"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "Next %d %s >>>"
+msgstr "Prochains %d %s >>>"
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No \"%s\" documents has a name"
+msgstr "Aucun \"%s\" n'a de nom logique"
 
 #, php-format
 msgctxt "dcpdevel"
@@ -193,9 +216,29 @@ msgid "No default workflow configurated"
 msgstr "Aucun cycle de vie n'est associé"
 
 #, php-format
+msgctxt "dcpdev"
+msgid "No documents name match \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No documents with id \"%s\""
+msgstr "Aucun document avec l'identifiant \"%s\""
+
+#, php-format
 msgctxt "dcpdevel"
 msgid "No families match \"%s\""
 msgstr "Pas de familles correspondant à \"%s\""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No one \"%s\" documents exists"
+msgstr "Aucun \"%s\" n'existe"
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No one \"%s\" documents title match \"%s\""
+msgstr "Aucun titre de document \"%s\" correspond à \"%s\" "
 
 msgctxt "dcpdevel"
 msgid "No profile (free access)"
@@ -229,6 +272,16 @@ msgstr "Modification du nom logique \"%s\""
 msgctxt "dcpdevel"
 msgid "Specific profil"
 msgstr "Profil spécifique"
+
+#, php-format
+msgctxt "dcpdev"
+msgid "These documents are not members of family \"%s\""
+msgstr "Ces documents ne font pas parti de la famille \"%s\""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "This document is not a member of family \"%s\""
+msgstr "Ce document n'est pas de la famille \"%s\""
 
 #, php-format
 msgctxt "dcpdevel"
@@ -306,6 +359,15 @@ msgstr "Nom logique"
 
 msgid "dcpdev:Other documents"
 msgstr "Autres documents de configuration"
+
+msgid "dcpdev:Search by id"
+msgstr "Recherche par identifiant"
+
+msgid "dcpdev:Search by name (Can use *)"
+msgstr "Recherche par nom logique"
+
+msgid "dcpdev:Search by title (contains)"
+msgstr "Recherche par titre (contient)"
 
 msgid "dcpdev:comma"
 msgstr "Virgule"

@@ -1,0 +1,53 @@
+.searchzone input {
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    outline: none;
+    cursor: text;
+    background: none;
+    user-select: initial;
+}
+
+
+.searchzone input.ui-button:focus {
+    border: 1px solid #8D81EC;
+    background: none;
+    color: inherit;
+}
+
+.resultzone button {
+    width:15em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin:0.4em;
+}
+.resultzone button img {
+    vertical-align: bottom;
+}
+.document-next {
+    background-color: #a4e888;
+}
+.document-message {
+    font-style: italic;
+}
+.document-message--only {
+    margin: 3em;
+    display: block;
+}
+
+.searchzone .search-disabled {
+    background-color: #bfbfbf;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.5) 10px, rgba(255,255,255,.5) 20px);
+}
+
+.searching {
+    text-align: center;
+    margin:3em;
+    padding:2em;
+    border:solid 1px grey;
+}
+.searching img {
+    vertical-align: middle;
+}

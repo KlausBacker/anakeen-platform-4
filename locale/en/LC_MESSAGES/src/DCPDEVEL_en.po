@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-01 14:54+0100\n"
+"POT-Creation-Date: 2016-12-02 10:15+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -102,6 +102,12 @@ msgstr "Handle family configuration"
 msgid "DCPDEVEL:DEVELFAMILY"
 msgstr "Devel Family Configuration"
 
+msgid "DCPDEVEL:DOCUMENTFAMILYLIST"
+msgstr ""
+
+msgid "DCPDEVEL:DOCUMENTLISTDATA"
+msgstr ""
+
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
 msgstr "Export Family Configuration"
 
@@ -158,6 +164,9 @@ msgstr ""
 msgid "Families configuration"
 msgstr ""
 
+msgid "Families document list"
+msgstr ""
+
 msgctxt "dcpdevel"
 msgid "Family profile"
 msgstr ""
@@ -168,6 +177,20 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Initialize specific profile for family"
+msgstr ""
+
+msgctxt "dcpdevel"
+msgid "Liste"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "Next %d %s >>>"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No \"%s\" documents has a name"
 msgstr ""
 
 #, php-format
@@ -188,8 +211,28 @@ msgid "No default workflow configurated"
 msgstr ""
 
 #, php-format
+msgctxt "dcpdev"
+msgid "No documents name match \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No documents with id \"%s\""
+msgstr ""
+
+#, php-format
 msgctxt "dcpdevel"
 msgid "No families match \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No one \"%s\" documents exists"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No one \"%s\" documents title match \"%s\""
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -223,6 +266,16 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Specific profil"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "These documents are not members of family \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "This document is not a member of family \"%s\""
 msgstr ""
 
 #, php-format
@@ -300,6 +353,15 @@ msgid "dcpdev:Logical name"
 msgstr "Logical name"
 
 msgid "dcpdev:Other documents"
+msgstr ""
+
+msgid "dcpdev:Search by id"
+msgstr ""
+
+msgid "dcpdev:Search by name (Can use *)"
+msgstr ""
+
+msgid "dcpdev:Search by title (contains)"
 msgstr ""
 
 msgid "dcpdev:comma"

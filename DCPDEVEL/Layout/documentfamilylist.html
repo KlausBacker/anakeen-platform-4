@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>[TEXT:Families document list] : [famname]</title>
+    <meta name="family" content="[famid]"/>
+    [CSS:CUSTOMREF]
+    [JS:REF]
+
+    <script id="zoneItem" type="text/template">
+
+        {{#results}}
+        <button title="#{{id}} {{title}}" data-docid="{{id}}" class="document-button"><img src="{{icon}}"/>  {{#name}}(<i>{{name}}</i>){{/name}} {{title}}</button>
+        {{/results}}
+            {{#next.url}}
+            <button data-url="{{next.url}}" class="document-next">{{next.label}}</button>
+            {{/next.url}}
+            {{#message}}<span class="document-message {{^results}}document-message--only{{/results}}">{{message}}</span>{{/message}}
+
+    </script>
+</head>
+<body>
+<div class="searchzone">
+    <form class="searchform" action="?app=DCPDEVEL&amp;action=DOCUMENTLISTDATA&amp;family=[famid]" method="POST">
+        <input name="searchtitle" type="text" placeholder="[TEXT:dcpdev:Search by title (contains)]"/>
+        <input name="searchname" type="text" placeholder="[TEXT:dcpdev:Search by name (Can use *)]"/>
+        <input name="searchid" type="number" placeholder="[TEXT:dcpdev:Search by id]"/>
+    </form>
+</div>
+
+
+<div class="searching" >
+    <img src="[IMG:loading.gif]"/> [TEXT:dcpdev:Searching...]
+</div>
+<section class="resultzone">
+
+
+</section>
+</body>
+</html>

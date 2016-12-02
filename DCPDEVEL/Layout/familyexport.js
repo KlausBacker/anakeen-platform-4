@@ -33,7 +33,7 @@ $(document).ready(function ()
             }
             $this.addClass("error").removeClass("updated");
             console.error(response);
-        })
+        });
     });
 
     if ($(".list-export tbody tr").length === 0) {
