@@ -36,9 +36,7 @@ $(document).ready(function ()
         });
     });
 
-    if ($(".list-export tbody tr").length === 0) {
-        $listExport.hide();
-    }
+
 
     $("input[type=submit]").button();
 
