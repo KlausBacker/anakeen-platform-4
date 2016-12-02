@@ -121,6 +121,14 @@ $action_desc = array(
         "function" => "familiesdata",
         "root" => "N",
         "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "EXPORTDOCUMENTS",
+        "short_name" => N_("DCPDEVEL:EXPORTDOCUMENT"),
+        "script" => "action.documentlistdata.php",
+        "function" => "exportdocuments",
+        "root" => "N",
+        "acl" => "DEVEL"
     )
 );
 

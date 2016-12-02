@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 13:35+0100\n"
-"PO-Revision-Date: 2016-12-02 13:37+0100\n"
+"POT-Creation-Date: 2016-12-02 16:21+0100\n"
+"PO-Revision-Date: 2016-12-02 16:35+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -113,6 +113,9 @@ msgstr ""
 msgid "DCPDEVEL:DOCUMENTLISTDATA"
 msgstr ""
 
+msgid "DCPDEVEL:EXPORTDOCUMENT"
+msgstr ""
+
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
 msgstr ""
 
@@ -180,6 +183,19 @@ msgctxt "dcpdevel"
 msgid "Family profile"
 msgstr "Profil de la famille"
 
+#, php-format
+msgctxt "dcpdev"
+msgid "Get result for search id \"%s\" in all families"
+msgstr ""
+"Voici les résultats pour la recherche de l'identifiant \"%s\" quelque soit "
+"la famille"
+
+#, php-format
+msgctxt "dcpdev"
+msgid "Get results for search name \"%s\" in all families"
+msgstr ""
+"Voici le résultat pour la recherche du nom logique \"%s\" pour toute famille"
+
 msgctxt "dcpdevel"
 msgid "Initialize control"
 msgstr "Initialisation du contrôle d'accès"
@@ -224,6 +240,16 @@ msgstr "Aucun nom logique correspond à \"%s\""
 msgctxt "dcpdev"
 msgid "No documents with id \"%s\""
 msgstr "Aucun document avec l'identifiant \"%s\""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No documents with id \"%s\" in family \"%s\""
+msgstr "Aucun document avec l'identifiant \"%s\" dans la famille \"%s\""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No documents with name \"%s\" in family \"%s\""
+msgstr "Aucun document avec le nom logique \"%s\" dans la famille \"%s\""
 
 #, php-format
 msgctxt "dcpdevel"
@@ -274,16 +300,6 @@ msgid "Specific profil"
 msgstr "Profil spécifique"
 
 #, php-format
-msgctxt "dcpdev"
-msgid "These documents are not members of family \"%s\""
-msgstr "Ces documents ne font pas parti de la famille \"%s\""
-
-#, php-format
-msgctxt "dcpdev"
-msgid "This document is not a member of family \"%s\""
-msgstr "Ce document n'est pas de la famille \"%s\""
-
-#, php-format
 msgctxt "dcpdevel"
 msgid "Update logical name from \"%s\" to \"%s\""
 msgstr "Mise à jour du nom logique de \"%s\" vers \"%s\""
@@ -301,7 +317,7 @@ msgid "Workflow"
 msgstr "Cycle de vie"
 
 msgid "dcpdev:Add other configuration document :"
-msgstr "Ajouter un nouveau document de configuration :"
+msgstr "Ajouter un nouveau document de configuration&nbsp;:"
 
 msgid "dcpdev:All logical name must be set to export configuration"
 msgstr "Tous les noms logiques doivent être affectés pour l'exportation"
@@ -350,6 +366,9 @@ msgstr "Document"
 
 msgid "dcpdev:Export configuration"
 msgstr "Exporter la configuration"
+
+msgid "dcpdev:Export these documents"
+msgstr "Exporter ces documents"
 
 msgid "dcpdev:Family"
 msgstr "Famille"
@@ -411,3 +430,11 @@ msgstr "Erreur de téléversement: mise à jour abondonnée"
 
 #~ msgid "Families"
 #~ msgstr "Familles"
+
+#~ msgctxt "dcpdev"
+#~ msgid "These documents are not members of family \"%s\""
+#~ msgstr "Ces documents ne font pas parti de la famille \"%s\""
+
+#~ msgctxt "dcpdev"
+#~ msgid "This document is not a member of family \"%s\""
+#~ msgstr "Ce document n'est pas de la famille \"%s\""

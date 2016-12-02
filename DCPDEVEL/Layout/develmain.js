@@ -277,7 +277,12 @@ $(document).ready(function ()
 
             });
             $(".ui-menu-icon.ui-icon-caret-1-e").addClass("ui-icon-caret-1-s").removeClass("ui-icon-caret-1-e");
-            $(".config-result").dialog({resizable: false}).dialog("close");
+            $(".config-result").dialog({
+                resizable: false,
+                close: function () {
+                    $(".config-result").attr("src", "about:blank");
+                }
+            }).dialog("close");
             $(".config-result").on("load", function () {
                 try {
                     var title=$(this.contentDocument).find("title").text();

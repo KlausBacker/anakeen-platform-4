@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 13:35+0100\n"
-"PO-Revision-Date: 2016-12-02 13:41+0100\n"
+"POT-Creation-Date: 2016-12-02 16:21+0100\n"
+"PO-Revision-Date: 2016-12-02 16:21+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -109,6 +109,9 @@ msgstr ""
 msgid "DCPDEVEL:DOCUMENTLISTDATA"
 msgstr ""
 
+msgid "DCPDEVEL:EXPORTDOCUMENT"
+msgstr ""
+
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
 msgstr "Export Family Configuration"
 
@@ -176,6 +179,16 @@ msgctxt "dcpdevel"
 msgid "Family profile"
 msgstr ""
 
+#, php-format
+msgctxt "dcpdev"
+msgid "Get result for search id \"%s\" in all families"
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "Get results for search name \"%s\" in all families"
+msgstr ""
+
 msgctxt "dcpdevel"
 msgid "Initialize control"
 msgstr ""
@@ -219,6 +232,16 @@ msgstr ""
 #, php-format
 msgctxt "dcpdev"
 msgid "No documents with id \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No documents with id \"%s\" in family \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "dcpdev"
+msgid "No documents with name \"%s\" in family \"%s\""
 msgstr ""
 
 #, php-format
@@ -267,16 +290,6 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Specific profil"
-msgstr ""
-
-#, php-format
-msgctxt "dcpdev"
-msgid "These documents are not members of family \"%s\""
-msgstr ""
-
-#, php-format
-msgctxt "dcpdev"
-msgid "This document is not a member of family \"%s\""
 msgstr ""
 
 #, php-format
@@ -346,6 +359,9 @@ msgstr "Documents"
 
 msgid "dcpdev:Export configuration"
 msgstr "Export configuration"
+
+msgid "dcpdev:Export these documents"
+msgstr "Export these documents"
 
 msgid "dcpdev:Family"
 msgstr "Family"

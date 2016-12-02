@@ -3,15 +3,16 @@ $(document).ready(function ()
     "use strict";
 
     var $resultzone = $(".resultzone");
-    $(".searchzone input").button();
     var $form = $(".searchform");
     var $inputs = $(".searchform input");
     var $searching=$(".searching");
+    var $export=$(".searchexport");
 
+    $(".searchzone input").button();
     $searching.dialog({ title: null, resizable: false, autoOpen: false });
     $(".ui-dialog-titlebar").hide();
 
-
+    $export.button({icon: "ui-icon-extlink"});
 
     $resultzone.on("refresh", function (event, options)
     {
@@ -104,5 +105,20 @@ $(document).ready(function ()
     $inputs.on("keyup change", function ()
     {
         $resultzone.trigger("refresh");
+    });
+
+    $export.on("click", function () {
+        var family=$("meta[name=family]").attr("content");
+        var url="?app=DCPDEVEL&action=EXPORTDOCUMENTS&family="+family;
+        $inputs.each(function (index, input)
+        {
+
+            if ($(input).val() && !$(input).attr("readonly")) {
+                url+="&"+$(input).attr("name")+"="+encodeURIComponent($(input).val());
+
+            }
+        });
+
+        window.open(url, "_blank");
     });
 });

@@ -31,10 +31,13 @@
 }
 .document-message {
     font-style: italic;
+    padding: 1em;
+    white-space: pre;
 }
 .document-message--only {
     margin: 3em;
     display: block;
+    white-space: pre;
 }
 
 .searchzone .search-disabled {
@@ -50,4 +53,11 @@
 }
 .searching img {
     vertical-align: middle;
+}
+
+.searchzone {
+    display:inline;
+}
+.searchexport {
+    float:right;
 }
