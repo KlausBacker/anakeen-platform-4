@@ -9,7 +9,9 @@ html, body {
 .dataTables_filter input {
 
     width: 100%;
-    padding: 3px;
+    padding: 4px;
+    border-radius: 2px;
+    border: solid 1px #c5c5c5;
 }
 
 
@@ -40,10 +42,26 @@ html, body {
     vertical-align: top;
 
 }
+
+.devel-right .dataTables_filter {
+    padding:3px;
+}
 table.dataTable tbody tr:hover {
     background-color: #e7e7e7;
 }
 
+.family-name div {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.family-title div {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 iframe.config-result {
 
     width: calc(100% - 10px);

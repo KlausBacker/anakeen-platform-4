@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 10:15+0100\n"
-"PO-Revision-Date: 2016-12-02 10:22+0100\n"
+"POT-Creation-Date: 2016-12-02 13:35+0100\n"
+"PO-Revision-Date: 2016-12-02 13:37+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -116,6 +116,9 @@ msgstr ""
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
 msgstr ""
 
+msgid "DCPDEVEL:FAMILIESDATA"
+msgstr ""
+
 msgid "DCPDEVEL:FAMILYCONF"
 msgstr ""
 
@@ -152,6 +155,10 @@ msgid "Defaut values and parameters"
 msgstr "Valeur par défaut et paramètre"
 
 msgctxt "dcpdevel"
+msgid "Document List"
+msgstr "Liste des documents"
+
+msgctxt "dcpdevel"
 msgid "Enumerates"
 msgstr "Énumérés"
 
@@ -162,9 +169,6 @@ msgstr "Exportation de la configuration"
 msgctxt "dcpdevel"
 msgid "Export configuration"
 msgstr "Exportation de la configuration"
-
-msgid "Families"
-msgstr "Familles"
 
 msgid "Families configuration"
 msgstr "Configuration de la famille"
@@ -183,10 +187,6 @@ msgstr "Initialisation du contrôle d'accès"
 msgctxt "dcpdevel"
 msgid "Initialize specific profile for family"
 msgstr "Initialiser le profil spécifique pour la famille"
-
-msgctxt "dcpdevel"
-msgid "Liste"
-msgstr ""
 
 #, php-format
 msgctxt "dcpdev"
@@ -218,7 +218,7 @@ msgstr "Aucun cycle de vie n'est associé"
 #, php-format
 msgctxt "dcpdev"
 msgid "No documents name match \"%s\""
-msgstr ""
+msgstr "Aucun nom logique correspond à \"%s\""
 
 #, php-format
 msgctxt "dcpdev"
@@ -354,6 +354,9 @@ msgstr "Exporter la configuration"
 msgid "dcpdev:Family"
 msgstr "Famille"
 
+msgid "dcpdev:Filter families"
+msgstr "Filtrer les familles"
+
 msgid "dcpdev:Logical name"
 msgstr "Nom logique"
 
@@ -369,11 +372,20 @@ msgstr "Recherche par nom logique"
 msgid "dcpdev:Search by title (contains)"
 msgstr "Recherche par titre (contient)"
 
+msgid "dcpdev:Searching..."
+msgstr "Recherche en cours..."
+
 msgid "dcpdev:comma"
 msgstr "Virgule"
 
 msgid "dcpdev:double-quote"
 msgstr "Guillemets"
+
+msgid "dcpdev:famicon"
+msgstr "Icon"
+
+msgid "dcpdev:famname"
+msgstr "Nom"
 
 msgid "dcpdev:or"
 msgstr "ou"
@@ -390,6 +402,12 @@ msgstr "Liste des actions"
 msgid "dcpdevel:main Access"
 msgstr "Accès principal"
 
+msgid "depdev:famtitle"
+msgstr "Titre"
+
 msgctxt "dcpdev"
 msgid "file not expected : possible attack : update aborted"
 msgstr "Erreur de téléversement: mise à jour abondonnée"
+
+#~ msgid "Families"
+#~ msgstr "Familles"

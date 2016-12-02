@@ -16,16 +16,5 @@ function develmain(Action & $action)
     
     $action->parent->addCssRef("DCPDEVEL/Layout/develmain.css");
     
-    $families = new SearchDoc("", -1);
-    $families->setObjectReturn(true);
-    $families->search();
-    
-    $familyList = $families->getDocumentList();
-    
-    $familyData = [];
-    foreach ($familyList as $family) {
-        $familyData[] = ["label" => $family->getTitle() , "icon" => $family->getIcon("", 22) , "familyid" => $family->id, "familyname" => $family->name];
-    }
-    
-    $action->lay->eSetBlockData("families", $familyData);
+
 }

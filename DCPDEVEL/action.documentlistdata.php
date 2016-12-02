@@ -35,7 +35,6 @@ function documentlistdata(Action & $action)
     } elseif ($searchTitle) {
         $ds->searchByTitle($searchTitle);
     }
-
     $result = $ds->getResults();
     
     $info = [];
@@ -94,6 +93,7 @@ class DevelSearchDocument
     {
         $this->search = $search;
         $this->search->setObjectReturn(true);
+        $this->search->setOrder("name, title, id");
         $this->search->returnsOnly(array(
             "name",
             "icon"
@@ -108,6 +108,7 @@ class DevelSearchDocument
         $this->search->addFilter("title ~* '%s'", preg_quote($title));
         $this->searchType = "title";
         $this->searchKey = $title;
+        $this->search->setOrder("name, title, id");
     }
     public function searchByName($name)
     {
@@ -119,6 +120,7 @@ class DevelSearchDocument
             $this->search->addFilter("name ~* '%s'", preg_quote($name));
             $this->searchType = "name";
         }
+        $this->search->setOrder("name, id");
         $this->searchKey = $name;
     }
     public function searchById($id)

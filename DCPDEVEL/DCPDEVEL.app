@@ -113,6 +113,14 @@ $action_desc = array(
         "function" => "documentlistdata",
         "root" => "N",
         "acl" => "DEVEL"
+    ),
+    array(
+        "name" => "FAMILIESDATA",
+        "short_name" => N_("DCPDEVEL:FAMILIESDATA"),
+        "script" => "action.familiesdata.php",
+        "function" => "familiesdata",
+        "root" => "N",
+        "acl" => "DEVEL"
     )
 );
 

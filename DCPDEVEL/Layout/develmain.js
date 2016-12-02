@@ -10,12 +10,55 @@ $(document).ready(function ()
         "heigth": "200px",
         "language": {
             "search": ""
+        },
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "?app=DCPDEVEL&action=FAMILIESDATA",
+            type: "POST",
+            dataType: "json",
+            data: function (d)
+            {
+                d.showExpired = $("#ctoken-expired").attr("checked") === "checked";
+                return d;
+            },
+            error: function (response) {
+                try {
+                    var info=JSON.parse((response.responseText));
+                    if (info.error) {
+                        $(".dataTables_processing").hide();
+                        alert(info.error);
+                    }
+                } catch (e) {
+                }
+            }
+        },
+        columns: [
+            { data: 'icon', "class": "family-icon" },
+            { data: 'name', "class": "family-name" },
+            { data: 'title', "class": "family-title" }
+        ],
+        "rowCallback": function (row, data)
+        {
+            var $iconCell = $('.family-icon', row);
+            var $nameCell = $('.family-name', row);
+            var $titleCell = $('.family-title', row);
+
+
+            $iconCell.html($("<img/> ").attr("src", data.icon));
+            $(row).addClass("family-anchor").data("familyid", data.name);
+
+            $nameCell.html($("<div/> ").text(data.name));
+            $titleCell.html($("<div/> ").text(data.title));
+
+
         }
     });
 
 
     $('.family-filter').append($(".dataTables_filter"));
-    $(".dataTables_filter input").attr("placeholder", "Filter Families");
+    $(".dataTables_filter input").attr("placeholder", $('.develmain').data("filtertext"));
+    $(".dataTables_wrapper").hide();
 
     function resizeScroll()
     {
@@ -171,7 +214,7 @@ $(document).ready(function ()
     });
     resizeScroll();
 
-    $(".family-anchor").on("click", function ()
+    $(".devel-right").on( "click", ".family-anchor", function ()
     {
         var family = $(this).data("familyid");
         $(".family-anchor").removeClass("selected");

@@ -6,15 +6,19 @@ $(document).ready(function ()
     $(".searchzone input").button();
     var $form = $(".searchform");
     var $inputs = $(".searchform input");
+    var $searching=$(".searching");
 
-    $(".searching").dialog({ title: null, resizable: false, autoOpen: true });
+    $searching.dialog({ title: null, resizable: false, autoOpen: false });
     $(".ui-dialog-titlebar").hide();
+
+
 
     $resultzone.on("refresh", function (event, options)
     {
 
         var data = {};
         var template = $("#zoneItem").html();
+        var isWaitingClose=false;
 
         if (!$form.data("originalAction")) {
             $form.data("originalAction", $form.attr("action"));
@@ -29,7 +33,16 @@ $(document).ready(function ()
         });
 
 
-        $(".ui-dialog").show();
+        // View waiting message if waiting mode 300ms
+        window.setTimeout(function () {
+            if (!isWaitingClose) {
+                if (!$searching.dialog("isOpen")) {
+                    $searching.dialog("open");
+                }
+                $(".ui-dialog").show();
+                $searching.dialog("option", "position", { my: "center top+50", at: "center", of: $resultzone });
+            }
+        }, 300);
 
 
         $.ajax({
@@ -40,7 +53,7 @@ $(document).ready(function ()
         }).done(function (data)
         {
             //  $waiting.dialog("close");
-            $(".ui-dialog").hide();
+            $(".ui-dialog").hide();isWaitingClose=true;
             var content = Mustache.render(template, data);
 
             if (options && options.append) {
@@ -55,7 +68,7 @@ $(document).ready(function ()
         {
             //$waiting.dialog("close");
 
-            $(".ui-dialog").hide();
+            $(".ui-dialog").hide();isWaitingClose=true;
             $resultzone.text(response.contentText);
             console.error(response);
         });
@@ -83,6 +96,7 @@ $(document).ready(function ()
         $(this).removeClass("search-disabled");
         $(this).removeAttr("readonly");
         if ($(this).val()) {
+            $form.attr("action", $form.data("originalAction"));
             $resultzone.trigger("refresh");
         }
 
