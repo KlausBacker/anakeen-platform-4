@@ -57,8 +57,15 @@
 }
 
 .searchzone {
-    display:inline;
+    padding-bottom: 3px;
 }
-.searchexport {
+.exportinput {
     float:right;
+}
+
+.exportform label {
+    display:block;
+}
+.ui-widget-overlay {
+    opacity:0.3;
 }

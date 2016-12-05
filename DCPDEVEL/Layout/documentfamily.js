@@ -7,12 +7,15 @@ $(document).ready(function ()
     var $inputs = $(".searchform input");
     var $searching=$(".searching");
     var $export=$(".searchexport");
+    var $configExport=$(".configexport");
 
     $(".searchzone input").button();
     $searching.dialog({ title: null, resizable: false, autoOpen: false });
     $(".ui-dialog-titlebar").hide();
 
+    $( ".exportinput" ).buttonset();
     $export.button({icon: "ui-icon-extlink"});
+    $configExport.button({icon: "ui-icon-gear"});
 
     $resultzone.on("refresh", function (event, options)
     {
@@ -110,15 +113,43 @@ $(document).ready(function ()
     $export.on("click", function () {
         var family=$("meta[name=family]").attr("content");
         var url="?app=DCPDEVEL&action=EXPORTDOCUMENTS&family="+family;
+        var $csvOption=$(".exportform select");
         $inputs.each(function (index, input)
         {
-
             if ($(input).val() && !$(input).attr("readonly")) {
                 url+="&"+$(input).attr("name")+"="+encodeURIComponent($(input).val());
-
             }
         });
-
+        $csvOption.each(function (index, input)
+        {
+            if ($(input).val() ) {
+                url+="&"+$(input).attr("name")+"="+encodeURIComponent($(input).val());
+            }
+        });
         window.open(url, "_blank");
+    });
+
+    /**
+     * workaround bug jquery ui for select in dialog
+     */
+    $(".exportform select").selectmenu({
+        open: function (event, ui)
+        {
+            var $dialog = $(event.target).closest(".ui-dialog");
+
+            if ($dialog.length > 0) {
+                var zIndex = parseInt($dialog.css("z-index"));
+                var $menu = $(event.target).selectmenu("menuWidget").parent();
+
+                if (zIndex > 100) {
+                    $dialog.css("z-index", 101);
+                }
+                $menu.css("z-index", zIndex + 1);
+            }
+        }
+    });
+
+    $configExport.on("click", function () {
+        $(".exportform").dialog({modal:true});
     });
 });

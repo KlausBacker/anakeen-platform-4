@@ -62,4 +62,6 @@ function familyexportform(Action & $action)
     $action->lay->eSet("famTitle", $family->getTitle());
     $action->lay->eSetBlockData("documents", $documentData);
     $action->lay->eSetBlockData("othersdocuments", $otherData);
+    $action->lay->set("csvcomma", $action->getParam("CSV_SEPARATOR") === ",");
+    $action->lay->set("csvquote", $action->getParam("CSV_ENCLOSURE") === "'");
 }

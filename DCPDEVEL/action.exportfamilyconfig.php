@@ -9,13 +9,16 @@ function exportFamilyConfig(Action & $action)
     $csvEnclosure = $usage->addOptionalParameter("csvenclosure", "CSV enclosure", array(
         "'",
         '"'
-    ) , '"');
+    ) , $action->getParam("CSV_ENCLOSURE", '"'));
     $csvSeparator = $usage->addOptionalParameter("csvseparator", "CSV separator", array(
         ";",
         ","
-    ) , ';');
+    ) , $action->getParam("CSV_SEPARATOR", ";"));
     $usage->setStrictMode(false);
     $usage->verify();
+    
+    $action->setParamU("CSV_SEPARATOR", $csvSeparator);
+    $action->setParamU("CSV_ENCLOSURE", $csvEnclosure);
     /**
      * @var DocFam $family
      */
@@ -31,5 +34,5 @@ function exportFamilyConfig(Action & $action)
     
     $filename = $famConf->export();
     
-    Http_DownloadFile($filename, sprintf("%s-%s.zip",$family->name, date("Ymd\\THis")) , "application/x-zip", false, false, true);
+    Http_DownloadFile($filename, sprintf("%s-%s.zip", $family->name, date("Ymd\\THis")) , "application/x-zip", false, false, true);
 }

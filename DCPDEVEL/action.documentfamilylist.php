@@ -32,4 +32,7 @@ function documentfamilylist(Action & $action)
     
     $action->lay->set("famid", $family->id);
     $action->lay->set("famname", $family->name);
+    
+    $action->lay->set("csvcomma", $action->getParam("CSV_SEPARATOR") === ",");
+    $action->lay->set("csvquote", $action->getParam("CSV_ENCLOSURE") === "'");
 }

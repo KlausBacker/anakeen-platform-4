@@ -81,12 +81,12 @@
     <label>[TEXT:dcpdev:Csv separator]
         <select name="csvseparator">
             <option value=';'>; ([TEXT:dcpdev:semi-colon])</option>
-            <option value=",">, ([TEXT:dcpdev:comma])</option>
+            <option value="," [IF csvcomma]selected="selected"[ENDIF csvcomma]>, ([TEXT:dcpdev:comma])</option>
         </select></label>
     <label>[TEXT:dcpdev:Csv enclosure]
         <select name="csvenclosure">
             <option value='"'>" ([TEXT:dcpdev:double-quote])</option>
-            <option value="'">' ([TEXT:dcpdev:single-quote])</option>
+            <option value="'" [IF csvquote]selected="selected"[ENDIF csvquote]>' ([TEXT:dcpdev:single-quote])</option>
         </select></label>
     <br/>
 

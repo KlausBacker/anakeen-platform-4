@@ -49,17 +49,30 @@ function documentlistdata(Action & $action)
 function exportDocuments(Action & $action)
 {
     
-    $separator = ";";
     $documentData = new DevelDocumentData($action);
     $ds = $documentData->getSearchResult();
     $s = $ds->getSearch();
+    
+    $separator = $action->getArgument("csvseparator");
+    if (!$separator) {
+        $separator = $action->getParam("CSV_SEPARATOR", ";");
+    } else {
+        $action->setParamU("CSV_SEPARATOR", $separator);
+    }
+    
+    $enclosure = $action->getArgument("csvenclosure");
+    if (!$enclosure) {
+        $enclosure = $action->getParam("CSV_ENCLOSURE", '"');
+    } else {
+        $action->setParamU("CSV_ENCLOSURE", $enclosure);
+    }
     
     $s->setOrder("fromid, name, title, id");
     $s->setStart(0);
     $s->setSlice("ALL");
     $exportCollection = new Dcp\ExportCollection();
     $exportCollection->setDocumentlist($s->getDocumentList());
-    $exportCollection->setCvsEnclosure('"');
+    $exportCollection->setCvsEnclosure($enclosure);
     $exportCollection->setCvsSeparator($separator);
     $exportCollection->setExportProfil(false);
     
@@ -71,7 +84,7 @@ function exportDocuments(Action & $action)
     if (file_exists($foutname)) {
         // Sort profil
         if (($handle = fopen($foutname, "r")) !== false) {
-            while (($data = fgetcsv($handle, 0, $separator)) !== false) {
+            while (($data = fgetcsv($handle, 0, $separator, $enclosure)) !== false) {
                 if ($data && $data[0] === "PROFIL") {
                     $profils[] = $data;
                 } else {
@@ -87,7 +100,7 @@ function exportDocuments(Action & $action)
             $contents = array_merge($others, $profils);
             
             foreach ($contents as $dataLine) {
-                fputcsv($handle, $dataLine, $separator);
+                fputcsv($handle, $dataLine, $separator, $enclosure);
             }
             fclose($handle);
         }
