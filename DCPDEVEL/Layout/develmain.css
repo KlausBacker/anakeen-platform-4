@@ -136,8 +136,9 @@ a.cv-create {
      height:26px;
     vertical-align: top;
 }
+.dataTables_filter input:focus,
 .custom-combobox-input:focus {
-    border:solid 1px #8D81EC;
+    border:solid 1px #5340e8;
 }
 
 ul.ui-autocomplete {

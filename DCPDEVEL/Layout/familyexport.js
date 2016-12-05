@@ -71,16 +71,22 @@ $(document).ready(function ()
                 var docid = $(this).data("docid");
                 var $tr = $(this).closest("tr");
                 var method = $tr.hasClass("other--deleted") ? "ADD" : "DELETE";
+                var $button=$(this);
 
                 $tr.removeClass("other--deleted").addClass("other--deleted--processing");
                 $.getJSON("?app=DCPDEVEL&action=OTHERDOCUMENT&method=" + method + "&famid=" + famid + "&docid=" + docid).done(function ()
                 {
                     $tr.removeClass("other--deleted--processing");
                     if (method === "DELETE") {
+                        if (! $button.data("trashTitle")) {
+                            $button.data("trashTitle", $button.attr("title"));
+                        }
                         $tr.addClass("other--deleted");
+                        $button.attr("title", $button.data("revertTitle"));
                         $tr.find(".ui-icon-trash").removeClass("ui-icon-trash").addClass("ui-icon-refresh");
                     } else {
                         $tr.removeClass("other--deleted");
+                        $button.attr("title", $button.data("trashTitle"));
                         $tr.find(".ui-icon-refresh").removeClass("ui-icon-refresh").addClass("ui-icon-trash");
                     }
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 16:21+0100\n"
-"PO-Revision-Date: 2016-12-02 16:21+0100\n"
+"POT-Creation-Date: 2016-12-05 12:47+0100\n"
+"PO-Revision-Date: 2016-12-05 11:37+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -11,6 +11,11 @@ msgstr ""
 "Content-Type: text/plain;  charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "\"%s\" List"
+msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Attributes"
@@ -151,10 +156,6 @@ msgstr ""
 
 msgctxt "dcpdevel"
 msgid "Defaut values and parameters"
-msgstr ""
-
-msgctxt "dcpdevel"
-msgid "Document List"
 msgstr ""
 
 msgctxt "dcpdevel"
@@ -375,6 +376,9 @@ msgstr "Logical name"
 msgid "dcpdev:Other documents"
 msgstr "Other documents"
 
+msgid "dcpdev:Reset from the list"
+msgstr "Insert into the configuration document list"
+
 msgid "dcpdev:Search by id"
 msgstr "Search by id"
 
@@ -386,6 +390,9 @@ msgstr "Search by title (contains)"
 
 msgid "dcpdev:Searching..."
 msgstr "Searching..."
+
+msgid "dcpdev:Unset from the list"
+msgstr "Remmove from configuration document list"
 
 msgid "dcpdev:comma"
 msgstr "comma"

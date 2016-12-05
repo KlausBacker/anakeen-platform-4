@@ -81,13 +81,13 @@ function familyconf(Action & $action)
     $action->lay->set("wfam", count($tws) > 0);
 }
 
-function i18N_familyconf(Action & $action, $family)
+function i18N_familyconf(Action & $action, \DocFam $family)
 {
     $action->lay->eSet("AttributesLabel", ___("Attributes", "dcpdevel"));
     $action->lay->eSet("EnumerateLabel", ___("Enumerates", "dcpdevel"));
     $action->lay->eSet("DefaultLabel", ___("Defaut values and parameters", "dcpdevel"));
-    $action->lay->eSet("List", ___("Document List", "dcpdevel"));
-
+    $action->lay->eSet("List", sprintf(___("\"%s\" List", "dcpdevel") , $family->getTitle()));
+    
     if ($family->profid) {
         $action->lay->eSet("ChangeFamilyProfileLabel", ___("Choose another existing family profile", "dcpdevel"));
     } else {

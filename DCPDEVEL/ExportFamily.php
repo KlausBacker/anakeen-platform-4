@@ -386,6 +386,8 @@ class ExportFamily
                 $atags[] = array(
                     "DOCATAG",
                     $exportData["name"] ? $exportData["name"] : $exportData["docid"],
+                    '',
+                    'ADD',
                     self::OTHERTAGPREFIX . $this->family->name
                 );
             }

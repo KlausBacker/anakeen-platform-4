@@ -110,15 +110,15 @@ function searchsysdoc(Action & $action)
 
             case "families":
                 $s = new SearchDoc("", -1);
+                $s->setOrder("name, title, id");
                 if ($term) {
                     $s->addFilter("title ~* '%s' or name ~* '%s'", $term, $term);
                 }
                 $docData = $s->search();
                 foreach ($docData as $rawDoc) {
-                    
                     $title = $rawDoc["title"];
                     if ($rawDoc["name"]) {
-                        $title.= ' (' . $rawDoc["name"] . ')';
+                        $title = sprintf("%s (%s)", $rawDoc["name"], $title);
                     }
                     $data[] = ["id" => $rawDoc["id"], "label" => $title, "value" => $rawDoc["id"]];
                 }

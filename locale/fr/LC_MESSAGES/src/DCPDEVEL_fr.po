@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DCPDEVEL_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 16:21+0100\n"
-"PO-Revision-Date: 2016-12-02 16:56+0100\n"
+"POT-Creation-Date: 2016-12-05 12:47+0100\n"
+"PO-Revision-Date: 2016-12-05 12:47+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -15,6 +15,11 @@ msgstr ""
 "Content-Type: text/plain;  charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#, php-format
+msgctxt "dcpdevel"
+msgid "\"%s\" List"
+msgstr "Liste des \"%s\""
 
 msgctxt "dcpdevel"
 msgid "Attributes"
@@ -108,37 +113,37 @@ msgid "DCPDEVEL:DEVELFAMILY"
 msgstr "Configuration de familles"
 
 msgid "DCPDEVEL:DOCUMENTFAMILYLIST"
-msgstr ""
+msgstr "Liste des familles"
 
 msgid "DCPDEVEL:DOCUMENTLISTDATA"
-msgstr ""
+msgstr "Données des documents"
 
 msgid "DCPDEVEL:EXPORTDOCUMENT"
-msgstr ""
+msgstr "Export des documents"
 
 msgid "DCPDEVEL:EXPORTFAMILYCONFIG"
-msgstr ""
+msgstr "Exportation de la configuration de famille"
 
 msgid "DCPDEVEL:FAMILIESDATA"
-msgstr ""
+msgstr "Données sur les familles"
 
 msgid "DCPDEVEL:FAMILYCONF"
-msgstr ""
+msgstr "Configuration de famille"
 
 msgid "DCPDEVEL:FAMILYEXPORTFORM"
-msgstr ""
+msgstr "Formulaire d'exportation de famille"
 
 msgid "DCPDEVEL:MODIFYFAMILY"
-msgstr ""
+msgstr "Modification configuration de famille"
 
 msgid "DCPDEVEL:OTHERDOCUMENT"
-msgstr ""
+msgstr "Autres documents"
 
 msgid "DCPDEVEL:SEARCHSYSDOC"
-msgstr ""
+msgstr "Recherche de documents système"
 
 msgid "DCPDEVEL:SETLOGICALNAME"
-msgstr ""
+msgstr "Modificatiin nom logique"
 
 msgctxt "dcpdevel"
 msgid "Default view control"
@@ -158,10 +163,6 @@ msgid "Defaut values and parameters"
 msgstr "Valeur par défaut et paramètre"
 
 msgctxt "dcpdevel"
-msgid "Document List"
-msgstr "Liste des documents"
-
-msgctxt "dcpdevel"
 msgid "Enumerates"
 msgstr "Énumérés"
 
@@ -177,7 +178,7 @@ msgid "Families configuration"
 msgstr "Configuration de la famille"
 
 msgid "Families document list"
-msgstr "Liste de document pour une famille"
+msgstr "Liste de document pour la famille"
 
 msgctxt "dcpdevel"
 msgid "Family profile"
@@ -187,13 +188,15 @@ msgstr "Profil de la famille"
 msgctxt "dcpdev"
 msgid "Get result for search id \"%s\" in all families"
 msgstr ""
-"Voici les résultats pour la recherche de l'identifiant \"%s\" quelque soit "
-"la famille"
+"Voici les résultats pour la recherche de l'identifiant \"%s\" quelle que "
+"soit la famille"
 
 #, php-format
 msgctxt "dcpdev"
 msgid "Get results for search name \"%s\" in all families"
-msgstr "Voici le résultat pour la recherche du nom logique \"%s\" pour les autres familles"
+msgstr ""
+"Voici le résultat pour la recherche du nom logique \"%s\" pour les autres "
+"familles"
 
 msgctxt "dcpdevel"
 msgid "Initialize control"
@@ -381,6 +384,9 @@ msgstr "Nom logique"
 msgid "dcpdev:Other documents"
 msgstr "Autres documents de configuration"
 
+msgid "dcpdev:Reset from the list"
+msgstr "Remettre dans la liste des documents de configuration"
+
 msgid "dcpdev:Search by id"
 msgstr "Recherche par identifiant"
 
@@ -392,6 +398,9 @@ msgstr "Recherche par titre (contient)"
 
 msgid "dcpdev:Searching..."
 msgstr "Recherche en cours..."
+
+msgid "dcpdev:Unset from the list"
+msgstr "Enlever de la liste des documents de configuration"
 
 msgid "dcpdev:comma"
 msgstr "Virgule"
@@ -426,6 +435,10 @@ msgstr "Titre"
 msgctxt "dcpdev"
 msgid "file not expected : possible attack : update aborted"
 msgstr "Erreur de téléversement: mise à jour abondonnée"
+
+#~ msgctxt "dcpdevel"
+#~ msgid "Document List"
+#~ msgstr "Liste des documents"
 
 #~ msgid "Families"
 #~ msgstr "Familles"

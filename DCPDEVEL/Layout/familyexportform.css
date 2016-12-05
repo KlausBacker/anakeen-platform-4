@@ -64,12 +64,10 @@
     50% {  background-color:red}
 }
 
-.other--deleted {
-    background-color: red;
-    text-decoration: line-through;
-}
+
+.other--deleted ,
 .other--deleted a.ui-button, .other--deleted .ui-button {
-    background-color: red;
+    background-color: #ff585f;
     text-decoration: line-through;
 }
 .other--deleted button.other-delete.ui-button.ui-widget {
@@ -119,4 +117,8 @@ ul.ui-autocomplete {
     max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.head-family {
+    min-width:13em;
 }

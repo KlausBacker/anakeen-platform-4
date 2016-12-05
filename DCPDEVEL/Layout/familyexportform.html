@@ -13,9 +13,9 @@
 <table class="list-export">
     <thead>
     <tr>
-        <th>[TEXT:dcpdev:Family]</th>
-        <th>[TEXT:dcpdev:Documents]</th>
-        <th>[TEXT:dcpdev:Logical name]</th>
+        <th class="head-family">[TEXT:dcpdev:Family]</th>
+        <th class="head-document">[TEXT:dcpdev:Documents]</th>
+        <th class="head-docname">[TEXT:dcpdev:Logical name]</th>
 
     </tr>
     </thead>
@@ -42,7 +42,9 @@
     [BLOCK othersdocuments]
     [IF TPL] <script class="othertpl" type="text/template">[ENDIF TPL]
     <tr>
-        <td class="family-label"><button data-docid="[docid]" class="other-delete"></button>[famlabel]</td>
+        <td class="family-label"><button data-docid="[docid]" class="other-delete"
+                                         title="[TEXT:dcpdev:Unset from the list]"
+                                         data-revert-title="[TEXT:dcpdev:Reset from the list]"></button>[famlabel]</td>
         <td class="doclink"><a target="_blank" href="?app=FDL&action=FDL_CARD&id=[docid]"> <img src="[icon]">
             [label]</a></td>
         <td class="logical-name"><input data-docid="[docid]" type="text" value="[name]"/>
