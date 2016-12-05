@@ -9,32 +9,72 @@
     width: 15em;
 }
 
-
 .searchzone input.ui-button:focus {
     border: 1px solid #8D81EC;
     background: none;
     color: inherit;
 }
 
+.resultzone {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
 .resultzone button {
-    width:15em;
+    flex-basis: calc(100% - 0.8em);
+    height: 2.3em;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin:0.4em;
+    margin: 0.4em;
 }
+
 .resultzone button img {
     vertical-align: bottom;
 }
+
+@media screen and (min-width: 480px) {
+    .resultzone button {
+        /* 2 columns */
+        flex-basis: calc(50% - 0.8em);
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .resultzone button {
+        /* 3 columns */
+        flex-basis: calc(33% - 0.8em);
+    }
+}
+
+@media screen and (min-width: 1030px) {
+    .resultzone button {
+        /* 5 columns */
+        flex-basis: calc(20% - 0.8em);
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .resultzone button {
+        /* 7 columns */
+        flex-basis: calc(14.28% - 0.8em);
+    }
+}
+
 .document-next {
     background-color: #a4e888;
 }
+
 .document-message {
     font-style: italic;
     padding: 1em;
     white-space: pre;
+    flex-basis: 100%;
 }
+
 .document-message--only {
     margin: 3em;
     display: block;
@@ -43,15 +83,16 @@
 
 .searchzone .search-disabled {
     background-color: #bfbfbf;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.5) 10px, rgba(255,255,255,.5) 20px);
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, .5) 10px, rgba(255, 255, 255, .5) 20px);
 }
 
 .searching {
     text-align: center;
-    margin:3em;
-    padding:2em;
-    border:solid 1px grey;
+    margin: 3em;
+    padding: 2em;
+    border: solid 1px grey;
 }
+
 .searching img {
     vertical-align: middle;
 }
@@ -59,13 +100,15 @@
 .searchzone {
     padding-bottom: 3px;
 }
+
 .exportinput {
-    float:right;
+    float: right;
 }
 
 .exportform label {
-    display:block;
+    display: block;
 }
+
 .ui-widget-overlay {
-    opacity:0.3;
+    opacity: 0.3;
 }
