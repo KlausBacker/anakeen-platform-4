@@ -303,7 +303,7 @@ class ExportFamily
             $data[] = ["USEFOR", $this->family->usefor];
         }
         if ($this->family->methods) {
-            $data[] = ["METHODS", $this->family->methods];
+            $data[] = ["METHOD", $this->family->methods];
         }
         if ($this->family->classname) {
             $data[] = ["CLASS", $this->family->classname];

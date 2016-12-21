@@ -47,6 +47,7 @@ $(document).ready(function ()
 
             $iconCell.html($("<img/> ").attr("src", data.icon));
             $(row).addClass("family-anchor").data("familyid", data.name);
+            $(row).attr("title", data.name);
 
             $nameCell.html($("<div/> ").text(data.name));
             $titleCell.html($("<div/> ").text(data.title));
