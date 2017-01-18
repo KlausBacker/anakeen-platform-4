@@ -89,8 +89,8 @@ class ExportFamily
         $dom = new \DOMDocument();
         $dom->formatOutput = true;
         $root = $dom->createElement("module");
-        $install = $dom->createElement("pre-install");
-        $upgrade = $dom->createElement("pre-upgrade");
+        $install = $dom->createElement("post-install");
+        $upgrade = $dom->createElement("post-upgrade");
         //<process command="./wsh.php --api=importDocuments --file=./@APPNAME@/zoo_espece__INIT_DATA.csv --csv-separator=auto --csv-enclosure='&quot;'"/>
         if ($this->csvEnclosure === '"') {
             $enclosureArg = "'\"'";
