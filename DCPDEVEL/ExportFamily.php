@@ -103,12 +103,14 @@ class ExportFamily
         foreach ($this->infoInstall as $installFile) {
             $command = sprintf('./wsh.php --api=importDocuments --file=./@APPNAME@/%s --csv-separator="%s" --csv-enclosure=%s', $installFile, $this->csvSeparator, $enclosureArg);
             $process = $dom->createElement("process");
+            $process->setAttribute("id", base64_encode("pi" . $installFile));
             $process->setAttribute("command", $command);
             $install->appendChild($process);
         }
         foreach ($this->infoUpgrade as $installFile) {
             $command = sprintf('./wsh.php --api=importDocuments --file=./@APPNAME@/%s --csv-separator="%s" --csv-enclosure=%s', $installFile, $this->csvSeparator, $enclosureArg);
             $process = $dom->createElement("process");
+            $process->setAttribute("id", base64_encode("pu" . $installFile));
             $process->setAttribute("command", $command);
             $upgrade->appendChild($process);
         }
