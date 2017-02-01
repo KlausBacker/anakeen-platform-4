@@ -20,7 +20,12 @@ class CVDoc extends \Dcp\Core\CVDoc
                     $isA = '\\' . $isA;
                 }
                 if (!\Dcp\Autoloader::classExists($className)) {
-                    return sprintf(___("Class \"%s\" not exists") , $className);
+                    \Dcp\Autoloader::forceRegenerate();
+                     if (!\Dcp\Autoloader::classExists($className)) {
+                         return sprintf(
+                             ___("Class \"%s\" not exists"), $className
+                         );
+                     }
                 }
                 
                 $a = new $className();
