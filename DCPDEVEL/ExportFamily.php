@@ -89,8 +89,8 @@ class ExportFamily
         $dom = new \DOMDocument();
         $dom->formatOutput = true;
         $root = $dom->createElement("module");
-        $install = $dom->createElement("pre-install");
-        $upgrade = $dom->createElement("pre-upgrade");
+        $install = $dom->createElement("post-install");
+        $upgrade = $dom->createElement("post-upgrade");
         //<process command="./wsh.php --api=importDocuments --file=./@APPNAME@/zoo_espece__INIT_DATA.csv --csv-separator=auto --csv-enclosure='&quot;'"/>
         if ($this->csvEnclosure === '"') {
             $enclosureArg = "'\"'";
@@ -103,12 +103,14 @@ class ExportFamily
         foreach ($this->infoInstall as $installFile) {
             $command = sprintf('./wsh.php --api=importDocuments --file=./@APPNAME@/%s --csv-separator="%s" --csv-enclosure=%s', $installFile, $this->csvSeparator, $enclosureArg);
             $process = $dom->createElement("process");
+            $process->setAttribute("id", base64_encode("pi" . $installFile));
             $process->setAttribute("command", $command);
             $install->appendChild($process);
         }
         foreach ($this->infoUpgrade as $installFile) {
             $command = sprintf('./wsh.php --api=importDocuments --file=./@APPNAME@/%s --csv-separator="%s" --csv-enclosure=%s', $installFile, $this->csvSeparator, $enclosureArg);
             $process = $dom->createElement("process");
+            $process->setAttribute("id", base64_encode("pu" . $installFile));
             $process->setAttribute("command", $command);
             $upgrade->appendChild($process);
         }
