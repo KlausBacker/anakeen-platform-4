@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function documentfamilylist(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("List document family");
     $familyId = $usage->addRequiredParameter("family", "Family identifier");

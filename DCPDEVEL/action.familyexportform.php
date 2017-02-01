@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function familyexportform(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Export Family Configuration Form");
     $familyId = $usage->addRequiredParameter("family", "Family identifier");
@@ -48,7 +47,6 @@ function familyexportform(Action & $action)
     
     $dl->addDocumentIdentifiers(array_merge($exportDocids, $exportOtherDocids));
     foreach ($dl as $document) {
-        
         $data = ["TPL" => false, "icon" => $document->getIcon("", 16) , "name" => $document->name, "docid" => $document->id, "label" => $document->getTitle() , "famlabel" => $document->getFamilyDocument()->getTitle() ];
         if (in_array($document->id, $exportDocids)) {
             $documentData[] = $data;

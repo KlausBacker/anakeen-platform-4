@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function familyconf(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $familyId = $usage->addRequiredParameter("family", "Family identifier");
     $usage->setStrictMode(false);
@@ -15,7 +14,7 @@ function familyconf(Action & $action)
         $action->exitError("Undefined family");
     }
     
-    $action->lay->eSet("CreateLabel", sprintf(___("Create %s", "dcpdevel") , $family->getTitle()));
+    $action->lay->eSet("CreateLabel", sprintf(___("Create %s", "dcpdevel"), $family->getTitle()));
     i18N_familyconf($action, $family);
     
     $action->lay->set("icon", $family->getIcon("", 32));
@@ -86,7 +85,7 @@ function i18N_familyconf(Action & $action, \DocFam $family)
     $action->lay->eSet("AttributesLabel", ___("Attributes", "dcpdevel"));
     $action->lay->eSet("EnumerateLabel", ___("Enumerates", "dcpdevel"));
     $action->lay->eSet("DefaultLabel", ___("Defaut values and parameters", "dcpdevel"));
-    $action->lay->eSet("List", sprintf(___("\"%s\" List", "dcpdevel") , $family->getTitle()));
+    $action->lay->eSet("List", sprintf(___("\"%s\" List", "dcpdevel"), $family->getTitle()));
     
     if ($family->profid) {
         $action->lay->eSet("ChangeFamilyProfileLabel", ___("Choose another existing family profile", "dcpdevel"));

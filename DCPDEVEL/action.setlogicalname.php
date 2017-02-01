@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function setlogicalname(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Set Logical name");
     $docid = $usage->addRequiredParameter("id", "Document identifier");
@@ -32,15 +31,15 @@ function setlogicalname(Action & $action)
             if ($logicalName === ":clear:") {
                 simpleQuery("", sprintf("update doc set name=null where initid=%d", $doc->initid));
                 simpleQuery("", sprintf("delete from docname where id=%d", $doc->id));
-                $message = sprintf(___("Clear logical name \"%s\"", "dcpdevel") , $oldName);
+                $message = sprintf(___("Clear logical name \"%s\"", "dcpdevel"), $oldName);
                 $doc->name = null;
             } else {
                 $err = $doc->setLogicalName($logicalName, true);
                 if ($err == "") {
                     if ($oldName) {
-                        $message = sprintf(___("Update logical name from \"%s\" to \"%s\"", "dcpdevel") , $oldName, $doc->name);
+                        $message = sprintf(___("Update logical name from \"%s\" to \"%s\"", "dcpdevel"), $oldName, $doc->name);
                     } else {
-                        $message = sprintf(___("Set logical name to \"%s\"", "dcpdevel") , $doc->name);
+                        $message = sprintf(___("Set logical name to \"%s\"", "dcpdevel"), $doc->name);
                     }
                     $doc->addHistoryEntry($message);
                 }

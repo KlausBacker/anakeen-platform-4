@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function searchsysdoc(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Get sys doc list");
     $famid = $usage->addRequiredParameter("famid", "Family identifier");
@@ -38,7 +37,6 @@ function searchsysdoc(Action & $action)
                 }
                 $docData = $s->search();
                 foreach ($docData as $rawDoc) {
-                    
                     $data[] = ["id" => $rawDoc["id"], "label" => sprintf("%s (%s)", $rawDoc["title"], $rawDoc["name"]) , "value" => $rawDoc["id"]];
                 }
                 $data[] = ["id" => 0, "label" => ___("No profile (free access)", "dcpdevel") , "value" => "0"];
@@ -57,7 +55,6 @@ function searchsysdoc(Action & $action)
                 }
                 $docData = $s->search();
                 foreach ($docData as $rawDoc) {
-                    
                     $title = $rawDoc["title"];
                     if ($rawDoc["name"]) {
                         $title.= ' (' . $rawDoc["name"] . ')';
@@ -78,7 +75,6 @@ function searchsysdoc(Action & $action)
                 }
                 $docData = $s->search();
                 foreach ($docData as $rawDoc) {
-                    
                     $title = $rawDoc["title"];
                     if ($rawDoc["name"]) {
                         $title.= ' (' . $rawDoc["name"] . ')';
@@ -98,7 +94,6 @@ function searchsysdoc(Action & $action)
                 }
                 $docData = $s->search();
                 foreach ($docData as $rawDoc) {
-                    
                     $title = $rawDoc["title"];
                     if ($rawDoc["name"]) {
                         $title.= ' (' . $rawDoc["name"] . ')';
@@ -123,7 +118,7 @@ function searchsysdoc(Action & $action)
                     $data[] = ["id" => $rawDoc["id"], "label" => $title, "value" => $rawDoc["id"]];
                 }
                 if (count($data) === 0) {
-                    $data[] = ["id" => 0, "label" => sprintf(___("No families match \"%s\"", "dcpdevel") , $term) , "value" => "0"];
+                    $data[] = ["id" => 0, "label" => sprintf(___("No families match \"%s\"", "dcpdevel"), $term) , "value" => "0"];
                 }
                 break;
 
@@ -135,7 +130,6 @@ function searchsysdoc(Action & $action)
                 }
                 $docData = $s->search();
                 foreach ($docData as $rawDoc) {
-                    
                     $title = $rawDoc["title"];
                     if ($rawDoc["name"]) {
                         $title.= ' (' . $rawDoc["name"] . ')';
@@ -143,7 +137,7 @@ function searchsysdoc(Action & $action)
                     $data[] = ["id" => $rawDoc["id"], "label" => $title, "value" => $rawDoc["id"]];
                 }
                 if (count($data) === 0) {
-                    $data[] = ["id" => 0, "label" => sprintf(___("No \"%s\" match \"%s\"", "dcpdevel") , $family->getTitle() , $term) , "value" => "0"];
+                    $data[] = ["id" => 0, "label" => sprintf(___("No \"%s\" match \"%s\"", "dcpdevel"), $family->getTitle(), $term) , "value" => "0"];
                 }
                 break;
         }

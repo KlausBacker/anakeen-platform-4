@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function familiesdata(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("List families");
     $search=$usage->addOptionalParameter("search", "search term", function ($a) {
@@ -16,7 +15,7 @@ function familiesdata(Action & $action)
     $err="";
 
     $s=new SearchDoc($action->dbaccess, -1);
-    $s->setOrder("name","title");
+    $s->setOrder("name", "title");
     $s->setObjectReturn(true);
     if ($search && $search["value"]) {
         $s->addFilter("name ~* '%s' or title ~* '%s'", $search["value"], $search["value"]);
@@ -31,7 +30,6 @@ function familiesdata(Action & $action)
         "title"=>$family->getTitle(),
         "name"=>$family->name
         );
-
     }
 
 
