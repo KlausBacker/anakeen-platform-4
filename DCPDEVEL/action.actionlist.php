@@ -43,16 +43,14 @@ SQL;
             }
         }
         
-        $sortFunction = function ($value1, $value2)
-        {
+        $sortFunction = function ($value1, $value2) {
             return strnatcasecmp($value1["label"], $value2["label"]);
         };
         
         usort($body, $sortFunction);
         
         $return["body"] = $body;
-    }
-    catch(Exception $e) {
+    } catch (Exception $e) {
         $return["success"] = false;
         $return["error"][] = $e->getMessage();
         unset($return["body"]);

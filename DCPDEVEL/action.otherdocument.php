@@ -1,8 +1,7 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function otherdocument(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     $usage->setDefinitionText("Add document to family export");
     $docid = $usage->addRequiredParameter("docid", "Document identifier");

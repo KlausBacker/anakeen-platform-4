@@ -1,5 +1,5 @@
 <?php
-require_once ("FDL/Class.Doc.php");
+require_once("FDL/Class.Doc.php");
 function modifyfamily(Action & $action)
 {
     $usage = new ActionUsage($action);
@@ -49,14 +49,13 @@ function modifyfamily(Action & $action)
                     $family->unsetControl();
                 }
                 if ($family->profid != $profid) {
-                    $family->addHistoryEntry(sprintf(___("Change profil to %s [%d]", "dcpdev") , $family->getTitle($profid) , $profid));
+                    $family->addHistoryEntry(sprintf(___("Change profil to %s [%d]", "dcpdev"), $family->getTitle($profid), $profid));
                 }
                 // specific control
                 $family->setProfil($profid); // change profile
                 if ($family->profid == $family->id) {
                     $family->setControl();
                     $family->setProfil($family->id); // force recompute of view of specific profil itself
-                    
                 }
                 
                 $family->disableEditControl(); // need because new profil is not enable yet
@@ -75,7 +74,7 @@ function modifyfamily(Action & $action)
                 }
                 // change creation profile
                 if (!$err && $family->cprofid != $profid) {
-                    $family->addHistoryEntry(sprintf(___("Change creation profil to %s [%d]", "dcpdev") , $family->getTitle($profid) , $profid));
+                    $family->addHistoryEntry(sprintf(___("Change creation profil to %s [%d]", "dcpdev"), $family->getTitle($profid), $profid));
                     $family->cprofid = $profid; // new creation profile access
                     $err = $family->modify();
                 }
@@ -95,7 +94,7 @@ function modifyfamily(Action & $action)
                 
                 if (!$err && $family->ccvid != $cvid) {
                     $family->ccvid = $cvid; //  default control view for creation
-                    $family->addHistoryEntry(sprintf(___("Change creation view control to %s [%d]", "dcpdev") , $family->getTitle($cvid) , $cvid));
+                    $family->addHistoryEntry(sprintf(___("Change creation view control to %s [%d]", "dcpdev"), $family->getTitle($cvid), $cvid));
                     $err = $family->modify();
                 }
                 break;
@@ -106,13 +105,13 @@ function modifyfamily(Action & $action)
                     $newWid = createDoc("", $value);
                     if ($newWid) {
                         $err = $newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::cv_famid, $family->id);
-                        $err.= $newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::ba_title, sprintf(___("Default workflow for %s family", "dcpdevel") , $family->getTitle()));
+                        $err.= $newWid->setValue(\Dcp\AttributeIdentifiers\Cvdoc::ba_title, sprintf(___("Default workflow for %s family", "dcpdevel"), $family->getTitle()));
                         if (!$err) {
                             $err = $newWid->store();
                         }
                         if (!$err) {
                             $family->ccvid = $newWid->id; //  default control view for creation
-                            $family->addHistoryEntry(sprintf(___("Change default view control to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
+                            $family->addHistoryEntry(sprintf(___("Change default view control to %s [%d]", "dcpdevel"), $family->getTitle($newWid->id), $newWid->id));
                             $err = $family->modify();
                         }
                     }
@@ -125,13 +124,13 @@ function modifyfamily(Action & $action)
                     $newWid = createDoc("", $value);
                     if ($newWid) {
                         $err = $newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::wf_famid, $family->id);
-                        $err.= $newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::ba_title, sprintf(___("Default workflow for %s family", "dcpdevel") , $family->getTitle()));
+                        $err.= $newWid->setValue(\Dcp\AttributeIdentifiers\Wdoc::ba_title, sprintf(___("Default workflow for %s family", "dcpdevel"), $family->getTitle()));
                         if (!$err) {
                             $err = $newWid->store();
                         }
                         if (!$err) {
                             $family->wid = $newWid->id; //  default workflow
-                            $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel") , $family->getTitle($newWid->id) , $newWid->id));
+                            $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel"), $family->getTitle($newWid->id), $newWid->id));
                             $err = $family->modify();
                         }
                     }
@@ -151,7 +150,7 @@ function modifyfamily(Action & $action)
                 
                 if (!$err && $family->wid != $wid) {
                     $family->wid = $wid; //  default control view for creation
-                    $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel") , $family->getTitle($wid) , $wid));
+                    $family->addHistoryEntry(sprintf(___("Change default workflow to %s [%d]", "dcpdevel"), $family->getTitle($wid), $wid));
                     $err = $family->modify();
                 }
                 break;
