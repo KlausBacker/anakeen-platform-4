@@ -278,7 +278,10 @@ class ExportFamily
                 $key = "ATTR";
             }
 
-          
+            if ($attr["type"] === "enum" && empty($attr["phpfile"])) {
+                $attr["phpfunc"] = \EnumAttributeTools::getFlatEnumNotation($this->family->id, $attr["id"]);
+            }
+            
             $data[] = [
                 $key,
                 $attr["id"],
