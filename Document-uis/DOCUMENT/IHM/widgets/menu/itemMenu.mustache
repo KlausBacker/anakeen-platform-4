@@ -1,9 +1,9 @@
-<li data-menu-id="{{id}}"{{# htmlAttr}}{{attrId}}="{{attrValue}}"{{/ htmlAttr}}
+<li data-menu-id="{{id}}"{{#htmlAttr}} {{attrId}}="{{attrValue}}"{{/htmlAttr}}
     class="menu__element menu__element--item {{cssClass}}"
     {{# disabled}}disabled="disabled"{{/ disabled}}
     {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
     >
-    <a {{# confirmationText}}class="menu--confirm" data-confirm-message="{{confirmationText}}"{{/ confirmationText}}
+    <a {{#confirmationText}}class="menu--confirm" data-confirm-message="{{confirmationText}}"{{/confirmationText}}
        {{# target}}target="{{target}}"{{/ target}}
        data-url="{{url}}" >
         {{#iconUrl}}

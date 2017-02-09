@@ -87,7 +87,7 @@ define([
                                 }
                                 eventContent = href.substring(8).split(":");
                                 scopeWidget._trigger("externalLinkSelected", event, {
-                                    target: event.target,
+                                    target: event.target || event.item,
                                     eventId: eventContent.shift(),
                                     options: eventContent
                                 });
