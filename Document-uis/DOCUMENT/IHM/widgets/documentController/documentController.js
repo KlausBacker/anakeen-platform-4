@@ -1556,7 +1556,7 @@ define([
             this._checkInitialisedModel();
             var menu = this._getMenuModel(menuId);
             if (!menu) {
-                return undefined;
+                return null;
             }
             return new MenuInterface(menu);
         },
@@ -1589,7 +1589,7 @@ define([
             this._checkInitialisedModel();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                return undefined;
+                return null;
             }
             attribute =new AttributeInterface(attributeModel);
             return attribute.getValue(type);
