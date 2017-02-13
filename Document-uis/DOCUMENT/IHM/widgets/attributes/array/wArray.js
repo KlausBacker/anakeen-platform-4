@@ -271,14 +271,19 @@
 
             if (useTransposition) {
                 this.element.find("table.dcpArray__table").addClass("responsive");
-                var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th .dcpArray__head__label"), function addResponsiveKey(currentElement, index)
+                var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th"), function addResponsiveKey(currentElement, index)
                 {
                     var $currentElement = $(currentElement);
-                    $currentElement.attr("data-responsiveKey", "rk" + index);
+                    var $label = $currentElement.find(".dcpArray__head__label");
+
+                    if ($label.length === 0) {
+                        $label=$currentElement;
+                    }
+                    $label.attr("data-responsiveKey", "rk" + index);
                     return {
-                        "key": $currentElement.attr("data-responsiveKey"),
-                        "attrid": $currentElement.data("attrid"),
-                        "label": $currentElement.text().trim()
+                        "key": $label.attr("data-responsiveKey"),
+                        "attrid": $label.data("attrid"),
+                        "label": $label.text().trim()
                     };
                 });
 
