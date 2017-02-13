@@ -295,8 +295,8 @@ describe('Dynacase Enum test', function formAllEdit()
         docForm.setEnumListValue({
             index: 2,
             attrid: 'test_ddui_enum__enumtown_array',
-            selectedText: "Paris",
-            expected: {value: "PARIS"}
+            selectedText: "Bruxelle",
+            expected: {value: "BRUXELLES"}
         });
         docForm.setEnumAutoValue({
             index: 2,

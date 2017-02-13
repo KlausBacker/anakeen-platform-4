@@ -396,8 +396,13 @@ define([
             //Analyze XHR
             var messages = [];
             try {
-                var result = JSON.parse(xhr.responseText);
-                messages = result.messages;
+                if (! xhr && model.message) {
+                    messages.push({type:"error", contentText:model.message});
+                    xhr={status:500, statusText:"Internal - No HTTP response"};
+                } else {
+                    var result = JSON.parse(xhr.responseText);
+                    messages = result.messages;
+                }
             } catch (e) {
                 //Unable to parse responseText (error is not in JSON)
                 this.cleanErrorMessages();

@@ -197,7 +197,8 @@ define([
                     if (_.isUndefined(currentValue)) {
                         return;
                     }
-                    $(allWrapper[index]).find('.dcpAttribute__content--widget[data-attrid="'+model.id+'"]').each(
+                    var cssIndex='.dcpAttribute__content--widget[data-attrid="'+model.id+'"]';
+                    $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
                         function vAttributeRefreshOneValue(index, element) {
                             scope.widgetApply($(element), "setValue", currentValue);
                         });

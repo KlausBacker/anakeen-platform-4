@@ -43,12 +43,12 @@ require([
     {
         // Init bind events in case of use extern document controller
         if (window.documentLoaded && _.isFunction(window.documentLoaded) && !window.dcp.documentReady) {
-            window.documentLoaded($document, !window.dcp.viewData);
+            window.documentLoaded($document, window.dcp.viewData);
             window.dcp.documentReady = true;
         }
     };
 
-    if (window.dcp.viewData !== false) {
+    if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
         $document.documentController(window.dcp.viewData);
         $document.one("documentready", function launchReady()
         {

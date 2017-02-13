@@ -42,16 +42,16 @@ BEGIN
    IF pg_temp.viewExists('family', 'cvrender') THEN
         raise notice 'move cvrender to cvdoc';
 
-
-        update family.cvrender set fromid=28;
-        insert into family.cvdoc (select * from family.cvrender);
-        delete from  family.cvrender;
-
         select id into cvrenderid from docfam where name ='CVRENDER';
+
+        execute 'update doc' || cvrenderid || ' set fromid=28';
+        insert into doc28 (select * from family.cvrender);
+        execute 'delete from  doc' || cvrenderid;
+
         execute 'drop table doc' || cvrenderid || ' cascade';
         delete from docfam where name ='CVRENDER';
         update docfam set icon='cvrender.png' where name='CVDOC';
-        update family.cvdoc set icon='cvrender.png' where icon='cview.gif';
+        update doc28 set icon='cvrender.png' where icon='cview.gif';
 
         RETURN TRUE;
   END IF;
