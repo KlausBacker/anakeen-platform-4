@@ -1,10 +1,10 @@
 [
   {
-    "order" :        400,
-    "class" :        "\\Dcp\\Ui\\Html\\Document",
-    "regExp" :       "%^/documents/?(?P<identifier>[^/]+)\\.html$%",
-    "description" :  "HTML Document <documentId>",
-    "canonicalURL" : "documents/<documentId>.html"
+    "order": 400,
+    "class": "\\Dcp\\Ui\\Html\\Document",
+    "regExp": "%^/documents/?(?P<identifier>[^/]+)\\.html$%",
+    "description": "HTML Document <documentId>",
+    "canonicalURL": "documents/<documentId>.html"
   },
   {
     "order": 300,
@@ -20,7 +20,6 @@
     "description": "Document View",
     "canonicalURL": "documents/<documentId>/views/<viewId>"
   },
-
   {
     "order": 400,
     "class": "\\Dcp\\Ui\\Html\\Document",
@@ -104,5 +103,12 @@
     "regExp": "%^/documents/(?P<identifier>[^/]+)/autocomplete/(?P<attribute>[^/]+)$%",
     "description": "Autocomplete data for attributes",
     "canonicalURL": "documents/<documentId>/autocomplete/<attribute>"
+  },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\Menu",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/menus/(?P<menu>[^/]+)$%",
+    "description": "Get submenu description",
+    "canonicalURL": "documents/<documentId>/menus/<menu>"
   }
 ]

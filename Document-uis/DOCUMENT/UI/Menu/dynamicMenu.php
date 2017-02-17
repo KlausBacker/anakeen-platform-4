@@ -26,7 +26,8 @@ class DynamicMenu extends ElementMenu
     public function setContent(\Closure $definition)
     {
         $this->contentDefinition = $definition;
-        $this->url = sprintf("?app=DOCUMENT&action=SUBMENU&initid={{document.properties.id}}&render={{document.properties.renderMode}}&viewId={{document.properties.viewId}}&menu=%s", urlencode($this->id));
+        
+        $this->url = sprintf("api/v1/documents/{{document.properties.id}}/menus/%s?render={{document.properties.renderMode}}&viewId={{document.properties.viewId}}", urlencode($this->id));
     }
     /**
      * Return instanciated dynamic menu
@@ -43,14 +44,13 @@ class DynamicMenu extends ElementMenu
         }
         return null;
     }
-
-
     /**
      * Return closure function set by setContent method
      * @see setContent
      * @return \Closure
      */
-    public function getClosure() {
+    public function getClosure()
+    {
         return $this->contentDefinition;
     }
     /**

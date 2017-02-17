@@ -186,8 +186,9 @@ define([
                                 }
 
                                 // Get subMenu
-                                $.get(menuUrl, function wMenuDone(data)
+                                $.get(menuUrl, function wMenuDone(response)
                                 {
+                                    var data=response.data;
                                     $menuElement.find(".listmenu__content").html('');
 
                                     scopeWidget._insertMenuContent(
