@@ -30,13 +30,6 @@ $action_desc = array(
         "acl" => "VIEW_RENDER"
     ),
     array(
-        "name" => "SUBMENU",
-        "short_name" => N_("ddui:Get dynamic sub menu"),
-        "script" => "action-submenu.php",
-        "function" => "submenu",
-        "acl" => "VIEW_RENDER"
-    ),
-    array(
         "name" => "TEMPLATE",
         "short_name" => N_("ddui:Get some template"),
         "script" => "action-template.php",
