@@ -37,13 +37,6 @@ $action_desc = array(
         "acl" => "VIEW_RENDER"
     ),
     array(
-        "name" => "AUTOCOMPLETE",
-        "short_name" => N_("ddui:Autocomplete attributes"),
-        "script" => "action-autocomplete.php",
-        "function" => "autocomplete",
-        "acl" => "VIEW_RENDER"
-    ),
-    array(
         "name" => "TEMPLATE",
         "short_name" => N_("ddui:Get some template"),
         "script" => "action-template.php",

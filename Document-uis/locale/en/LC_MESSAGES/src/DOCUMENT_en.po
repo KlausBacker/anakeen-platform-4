@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 13:21+0100\n"
+"POT-Creation-Date: 2017-02-16 14:41+0100\n"
 "PO-Revision-Date: 2016-06-28 15:01+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -193,7 +193,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
-#. _COMMENT: enumWriteToggle.mustache
+#. _COMMENT: docidWrite.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -324,6 +324,11 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Modify"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "No matches \"<i>%s</i>\""
 msgstr ""
 
 msgctxt "ddui-docid"

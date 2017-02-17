@@ -28,16 +28,16 @@
             renderOptions: {
                 kendoMultiSelectConfiguration: {
                     minLength: 1,
-                    itemTemplate: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>'
+                    itemTemplate: '<div class="dcpAutocomplete"><span class="k-state-default">#= data.title#</span>' +
+                    '#if (data.message) {#' +
+                    '<div class="dcpAutocomplete--#= data.message.type#">#: data.message.contentText# #= data.message.contentHtml#</div>' +
+                    '#}# </div>'
                 },
                 kendoComboBoxConfiguration: {
-                    template: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>'
+                    template: '<div class="dcpAutocomplete"><span class="k-state-default">#= data.title#</span>' +
+                    '#if (data.message) {#' +
+                    '<div class="dcpAutocomplete--#= data.message.type#">#: data.message.contentText# #= data.message.contentHtml#</div>' +
+                    '#}# </div>'
                 },
                 editDisplay: "autoCompletion"
             },
@@ -263,7 +263,7 @@
                             //Suppress multiple items
                             return _.uniq(items, false, function wDocidDataUniq(currentItem)
                             {
-                                return currentItem.docId;
+                                return currentItem.docId || currentItem.message;
                             });
                         }
                     }
@@ -277,7 +277,7 @@
                     var valueIndex = currentWidget._getIndex();
                     var dataItem = this.dataSource.at(event.item.index()).toJSON();
 
-                    if (dataItem.error) {
+                    if (dataItem.message) {
                         event.preventDefault();
                     } else {
                         //The object returned by dataSource.at are internal kendo object so I clean it with toJSON

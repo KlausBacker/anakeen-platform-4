@@ -29,10 +29,10 @@
                 kendoAutoCompleteConfiguration: {
                     filter: "contains",
                     minLength: 1,
-                    template: '<span><span class="k-state-default">#= data.title#</span>' +
-                    '#if (data.error) {#' +
-                    '<span class="k-state-error">#: data.error#</span>' +
-                    '#}# </span>'
+                    template: '<div class="dcpAutocomplete"><span class="k-state-default">#= data.title#</span>' +
+                    '#if (data.message) {#' +
+                    '<div class="dcpAutocomplete--#= data.message.type#">#: data.message.contentText# #= data.message.contentHtml#</div>' +
+                    '#}# </div>'
                 }
             }
         },
