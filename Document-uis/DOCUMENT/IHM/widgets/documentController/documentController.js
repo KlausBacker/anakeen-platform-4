@@ -612,7 +612,7 @@ define([
                     _.each(currentWidget.activatedConstraint, function triggerCurrentConstraint(currentConstraint)
                     {
                         try {
-                            if (currentConstraint.attributeCheck.apply($element, [currentModel, currentAttribute])) {
+                            if (currentConstraint.attributeCheck.apply($element, [currentAttribute, currentModel])) {
                                 var response = currentConstraint.constraintCheck.call($element,
                                     currentModel,
                                     currentAttribute,
