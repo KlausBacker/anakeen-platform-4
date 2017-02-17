@@ -97,5 +97,12 @@
     "regExp": "%^/i18n/(?P<identifier>[^\\/]+)$%",
     "description": "Locale catalog",
     "canonicalURL": "i18n/<catalog>"
+  },
+  {
+    "order": 300,
+    "class": "\\Dcp\\Ui\\Crud\\Autocomplete",
+    "regExp": "%^/documents/(?P<identifier>[^/]+)/autocomplete/(?P<attribute>[^/]+)$%",
+    "description": "Autocomplete data for attributes",
+    "canonicalURL": "documents/<documentId>/autocomplete/<attribute>"
   }
 ]

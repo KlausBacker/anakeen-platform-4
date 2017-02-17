@@ -230,6 +230,7 @@ define([
         /**
          * Modify several attribute
          * @param event event object
+         * @param index the value rank in case of multiple
          * @param options object {dataItem :, valueIndex :}
          */
         changeAttributesValue: function vAttributeChangeAttributesValue(event, options, index)
@@ -471,6 +472,7 @@ define([
 
         /**
          * method use for transport multiselect widget
+         * @param index the row index of autocomplete when it is in array
          * @param options
          */
         autocompleteRequestRead: function vAttributeAutocompleteRequestRead(options, index)
@@ -481,10 +483,26 @@ define([
                 externalOptions = {
                     setResult: function vAttributeAutoCompleteSet(content)
                     {
+                        _.each(content, function (item) {
+                            if (item.message) {
+                                item.message.contentText=item.message.contentText || '';
+                                item.message.contentHtml=item.message.contentHtml || '';
+                                item.message.type=item.message.type || 'message';
+                            } else if (item.error) {
+                                item.message={
+                                    contentHtml:'',
+                                    contentText:item.error,
+                                    type:"error"
+                                }
+                            }
+                            item.title=item.title || '';
+
+                        });
                         success(content);
                     },
                     data: options.data
                 },
+                autocompleteUrl,
                 event = {prevent: false};
             //Add helperResonse event (can be used to reprocess the content of the request)
             success = _.wrap(success, function vAttributeAutoCompleteSuccess(success, content)
@@ -504,12 +522,16 @@ define([
             if (event.prevent) {
                 return this;
             }
+            autocompleteUrl="api/v1/documents/"+(documentModel.id || "0" )+"/autocomplete/" + this.model.id;
+
+
+            options.data.fromid=documentModel.get("properties").get("family").id;
+
             $.ajax({
                 type: "POST",
-                url: "?app=DOCUMENT&action=AUTOCOMPLETE&attrid=" + this.model.id + "&id=" +
-                (documentModel.id || "0" ) +
-                "&fromid=" + documentModel.get("properties").get("family").id,
+                url: autocompleteUrl,
                 data: options.data,
+
                 dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requestsons.error(result);
             }).pipe(
                 function vAttributeAutocompletehandleSuccessRequest(response)
@@ -536,6 +558,14 @@ define([
             ).then(function vAttributeAutocompleteSuccessResult(result)
                 {
                     // notify the data source that the request succeeded
+                    _.each(result.messages, function (message) {
+                        message.contentText=message.contentText || '';
+                        message.contentHtml=message.contentHtml || '';
+                        result.data.unshift({
+                            message:message,
+                            title:''
+                        });
+                    });
                     success(result.data);
                 }, function vAttributeAutocompleteErrorResult(result)
                 {
@@ -543,7 +573,7 @@ define([
                     if (_.isArray(result.error)) {
                         result.error = result.error.join(" ");
                     }
-                    //use the sucess callback because http error are handling by the pipe
+                    //use the success callback because http error are handling by the pipe
                     success([{"title": "", "error": result.error}]);
                 }
             );

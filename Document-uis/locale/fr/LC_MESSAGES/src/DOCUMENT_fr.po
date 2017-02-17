@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 13:21+0100\n"
-"PO-Revision-Date: 2016-11-09 11:52+0100\n"
+"POT-Creation-Date: 2017-02-16 14:41+0100\n"
+"PO-Revision-Date: 2017-02-16 14:42+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -99,7 +99,7 @@ msgstr "Choisissez une image"
 
 #, php-format
 msgid "Class \"%s\" not exists"
-msgstr ""
+msgstr "La classe \"%s\" n'existe pas"
 
 #, php-format
 msgid "Class \"%s\" not implement %s"
@@ -196,7 +196,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr "Supprimer"
 
-#. _COMMENT: enumWriteToggle.mustache
+#. _COMMENT: docidWrite.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -328,6 +328,11 @@ msgstr "Le nombre de rangées minimum est de {{limit}}"
 msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
+
+#, php-format
+msgctxt "ddui"
+msgid "No matches \"<i>%s</i>\""
+msgstr "Aucune correspondance pour \"<i>%s</i>\""
 
 msgctxt "ddui-docid"
 msgid "No more matching"
