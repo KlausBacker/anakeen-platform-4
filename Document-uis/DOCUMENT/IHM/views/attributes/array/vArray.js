@@ -67,6 +67,7 @@ define([
                 return currentContent.isDisplayable;
             });
             data.nbLines = this.getNbLines();
+            this.padValues(data.nbLines);
             data.renderOptions = this.model.getOptions();
             data.templates = {};
             data.displayLabel = this.displayLabel;
@@ -158,6 +159,20 @@ define([
                 }
             });
             return nbLigne;
+        },
+
+        padValues: function vArrayPadValues(lineNumber) {
+            if (lineNumber > 0) {
+                this.model.get("content").each(function vArray_padCurrentLine(currentAttr)
+                {
+                    var currentValue=currentAttr.get("attributeValue");
+                    if (currentValue !== null && currentValue !== undefined && _.size(currentValue) < lineNumber) {
+                        for (var idx=currentValue.length; idx<lineNumber; idx++) {
+                            currentValue.push({value:null, displayValue:''});
+                        }
+                    }
+                });
+            }
         },
 
         updateLabel: function vArrayupdateLabel()

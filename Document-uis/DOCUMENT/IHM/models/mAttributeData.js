@@ -27,12 +27,17 @@ define([
         },
         setValue: function mAttributesetValue(value, index)
         {
-            var currentValue;
+            var currentValue, idx;
             if (this.get("multiple") && !_.isNumber(index) && !_.isArray(value)) {
                 throw new Error("You need to add an index to set value for a multiple id " + this.id);
             }
             if (this.get("multiple") && index >= 0) {
                 currentValue = _.clone(this.get("attributeValue"));
+                if (currentValue.length < index) {
+                    for (idx=currentValue.length; idx<index; idx++) {
+                        currentValue.push({value:null, displayValue:''});
+                    }
+                }
                 currentValue[index] = value;
                 this.set("attributeValue", currentValue);
             } else {
