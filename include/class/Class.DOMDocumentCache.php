@@ -40,7 +40,7 @@ class DOMDocumentCache extends DOMDocument
         /*
          * Try to safely write content to disk
          * by first writing content to a temporary file
-         * then commiting by replacing final file
+         * then committing by replacing final file
         */
         $filename = $this->documentURI;
         if ($filename === null) {
@@ -52,8 +52,32 @@ class DOMDocumentCache extends DOMDocument
         if ($tmpfile === false) {
             throw new Exception(sprintf("Transaction error creating temporary file in '%s'.", $dirName));
         }
-        $ret = parent::save($tmpfile, $options);
-        if ($ret === false) {
+        /*
+         * DOMDocument::save() returns bool(false) on error or the number of bytes successfully written.
+         *
+         * Therefore the number of bytes written can be < to the real content's length when not enough disk space
+         * is available.
+         *
+         * The problem is that I do not know in advance what is the content's length, hence I cannot check that the
+         * number of bytes written is exactly the content's length and not lower.
+         *
+         * So, I have the option of first serializing the XML to a string to compute the content's length, then write
+         * it with save(), and finally compare the actual number of bytes written with the expected content's length.
+         *
+         * But am I sure that saveXML() and save() will always generate the exact same content?
+         *
+         * If I'm not 100% sure that saveMXL() and save() will yield the exact same content, then I can handle the
+         * write myself with the XML content obtained previously from saveXML().
+         *
+         * PHP's file_put_contents() seems to return bool(false) when not enough free disk space is available: so, it
+         * will be perfect for handling our "not enough free disk space" edge-case.
+         *
+         * However this will come with a negative counterpart in the form of a potential increase in memory usage as
+         * we need to store the serialized XML content as a PHP string in memory before writing it to disk.
+        */
+        $xml = $this->saveXML(null, $options);
+        $ret = file_put_contents($tmpfile, $xml);
+        if ($ret === false || $xml === false || $ret !== strlen($xml)) {
             unlink($tmpfile);
             throw new Exception(sprintf("Transaction error saving content to temporary file '%s'.", $tmpfile));
         }
