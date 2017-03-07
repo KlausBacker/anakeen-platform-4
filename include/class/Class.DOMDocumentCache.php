@@ -85,6 +85,7 @@ class DOMDocumentCache extends DOMDocument
             unlink($tmpfile);
             throw new Exception(sprintf("Transaction error renaming temporary file '%s' to '%s'.", $tmpfile, $filename));
         }
+        $this->originalHashId = $this->_hashId();
         return $ret;
     }
     private function _hashId()
