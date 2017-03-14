@@ -755,9 +755,7 @@ define([
                     $dialogDiv.document({
                         "initid": helpId,
                         withoutResize: true
-                    });
-
-                    $dialogDiv.document("addEventListener", "ready", {name: "ddui:help:select"}, function vDocumentSelectHelpChapter()
+                    }).on("documentloaded", function vDocumentSelectHelpChapter()
                     {
                         _.defer(function vDocumentHelpReady()
                         {
@@ -767,6 +765,7 @@ define([
                                 attrid);
                         });
                     });
+
                     $document.data("dcpHelpDocument-" + helpId, $dialogDiv);
                 } else {
                     $dialogDiv.document(
