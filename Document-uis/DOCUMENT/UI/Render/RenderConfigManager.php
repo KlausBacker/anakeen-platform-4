@@ -98,9 +98,7 @@ class RenderConfigManager
             } else {
                 $mode = self::EditMode;
             }
-            return self::getRenderDefaultConfig($mode);
-
-
+            return self::getDefaultFamilyRenderConfig($mode, $document);
         }
     }
     /**
@@ -113,10 +111,6 @@ class RenderConfigManager
      */
     public static function getDocumentRenderConfig($mode, \Doc $document, &$vid = '')
     {
-        $parameterRender = self::getParameterRenderConfig($mode, $document);
-        if ($parameterRender) {
-            return $parameterRender;
-        }
         if ($document->cvid > 0) {
             /**
              * @var \Dcp\Family\CVDoc $cvDoc
@@ -265,7 +259,6 @@ class RenderConfigManager
     public static function getRenderConfigCv($mode, \Dcp\Family\CVDoc $cv, \Doc $document, &$vid = '')
     {
         $cv->set($document);
-        
         $renderAccessClass = $cv->getRawValue(\Dcp\AttributeIdentifiers\Cvdoc::cv_renderaccessclass);
         if ($renderAccessClass) {
             if ($renderAccessClass[0] !== '\\') {
@@ -281,6 +274,7 @@ class RenderConfigManager
             }
         }
         $vidInfo = $document->getDefaultView(($mode === "edit" || $mode === "create") , "all");
+        
         if ($vidInfo) {
             // vid already controlled by cv class
             $vid = $vidInfo[\Dcp\AttributeIdentifiers\Cvdoc::cv_idview];
