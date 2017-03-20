@@ -133,7 +133,7 @@ class Autocomplete extends Crud
                 $serializedFilter = serialize($filter);
                 
                 if ($attributeObject->type === "thesaurus") {
-                    $th = $doc->getRawValue("thc_thesaurus");
+                    $th = $attributeObject->format;
                     $attributeObject->phpfunc = "getThConcept(D,$th,CT):${attributeName},CT";
                     $attributeObject->phpfile = "thesaurus.php";
                 } else {
