@@ -80,9 +80,11 @@
                 this.options.label = this.options.renderOptions.attributeLabel;
             }
 
+            this.initializing = true;
             this._initDom();
             this._initActionClickEvent();
             this._bindEvents();
+            this.initializing = false;
         },
 
         _initDom: function dcpArray_initDom()
@@ -235,10 +237,12 @@
          *
          * @protected
          */
-        _initActionClickEvent: function wAttributeInitActionClickEvent() {
+        _initActionClickEvent: function wAttributeInitActionClickEvent()
+        {
             var scopeWidget = this;
 
-            this.element.on("click." + this.eventNamespace, 'a[href^="#action/"], a[data-action], button[data-action]', function wAttributeActionClick(event) {
+            this.element.on("click." + this.eventNamespace, 'a[href^="#action/"], a[data-action], button[data-action]', function wAttributeActionClick(event)
+            {
                 var $this = $(this),
                     action,
                     options,
@@ -271,21 +275,22 @@
 
             if (useTransposition) {
                 this.element.find("table.dcpArray__table").addClass("responsive");
-                var cssString, cssTemplate, headers = _.map(this.element.find("table.responsive > thead th"), function addResponsiveKey(currentElement, index)
-                {
-                    var $currentElement = $(currentElement);
-                    var $label = $currentElement.find(".dcpArray__head__label");
+                var cssString, cssTemplate,
+                    headers = _.map(this.element.find("table.responsive > thead th"), function addResponsiveKey(currentElement, index)
+                    {
+                        var $currentElement = $(currentElement);
+                        var $label = $currentElement.find(".dcpArray__head__label");
 
-                    if ($label.length === 0) {
-                        $label=$currentElement;
-                    }
-                    $label.attr("data-responsiveKey", "rk" + index);
-                    return {
-                        "key": $label.attr("data-responsiveKey"),
-                        "attrid": $label.data("attrid"),
-                        "label": $label.text().trim()
-                    };
-                });
+                        if ($label.length === 0) {
+                            $label = $currentElement;
+                        }
+                        $label.attr("data-responsiveKey", "rk" + index);
+                        return {
+                            "key": $label.attr("data-responsiveKey"),
+                            "attrid": $label.data("attrid"),
+                            "label": $label.text().trim()
+                        };
+                    });
 
                 // Generate CSS string
                 cssString = "<style>" + this.options.renderOptions.arrayBreakPoints.transpositionRule + " { ";
@@ -328,7 +333,7 @@
             this.element.on("click" + this.eventNamespace, ".dcpArray__content__toolCell__check input", function selectLineEvent()
             {
                 var $this = $(this);
-                var isAlreadyChecked=$this.closest(".dcpArray__content__line").hasClass("dcpArray__content__line--selected");
+                var isAlreadyChecked = $this.closest(".dcpArray__content__line").hasClass("dcpArray__content__line--selected");
                 currentWidget._hideTooltips();
                 currentWidget._unSelectLines();
                 if (isAlreadyChecked) {
@@ -399,18 +404,21 @@
         },
         setLines: function wArraySetLines(lineNumber, options)
         {
-            var currentLineNumber = this.options.nbLines;
-            var i;
-            if (lineNumber > currentLineNumber) {
-                for (i = 0; i < (lineNumber - currentLineNumber); i += 1) {
-                    this.addLine(currentLineNumber + i, options);
-                }
-            } else
-                if (lineNumber < currentLineNumber) {
-                    for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
-                        this.removeLine(this.options.nbLines - 1, options);
+            if (!this.initializing) {
+                // No auto add lines when array is initializing itself
+                var currentLineNumber = this.options.nbLines;
+                var i;
+                if (lineNumber > currentLineNumber) {
+                    for (i = 0; i < (lineNumber - currentLineNumber); i += 1) {
+                        this.addLine(currentLineNumber + i, options);
                     }
-                }
+                } else
+                    if (lineNumber < currentLineNumber) {
+                        for (i = 0; i < (currentLineNumber - lineNumber ); i += 1) {
+                            this.removeLine(this.options.nbLines - 1, options);
+                        }
+                    }
+            }
         },
 
         addAllLines: function dcpArrayaddAllLines(lineNumber)
@@ -438,7 +446,7 @@
         {
             var $content = "NULL LINE";
 
-            this.options.lineCid=_.uniqueId(this.options.id);
+            this.options.lineCid = _.uniqueId(this.options.id);
             if (this.options.customTemplate) {
                 $content = this.options.customLineCallback.apply(this, [index]);
                 $content.addClass("dcpArray__content__line");
