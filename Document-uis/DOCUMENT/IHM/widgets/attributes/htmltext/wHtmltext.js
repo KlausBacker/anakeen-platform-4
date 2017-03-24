@@ -187,7 +187,7 @@
                 toolbar_Basic: [
                     {
                         name: 'links',
-                        items: ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'quicksave', 'About']
+                        items: ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'Maximize', 'About']
                     }
                 ],
                 removeButtons: ""

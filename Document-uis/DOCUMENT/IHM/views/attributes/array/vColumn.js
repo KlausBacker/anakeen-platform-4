@@ -17,9 +17,7 @@ define([
          */
         attributeEvents: function vColumnEvents()
         {
-            var events = {
-                "dcparraylineadded": "addNewWidget"
-            };
+            var events = {};
             this._mergeEvent(events, "delete", "deleteValue");
             this._mergeEvent(events, "changeattrmenuvisibility", "changeMenuVisibility");
             this._mergeEvent(events, "changeattrsvalue", "changeAttributesValue");
