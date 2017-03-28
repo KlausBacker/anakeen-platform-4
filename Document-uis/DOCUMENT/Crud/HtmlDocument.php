@@ -148,7 +148,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             }
             //merge other parameters
             $viewInformation = ["initid" => $initid, "revision" => $revision, "viewId" => $viewId];
-            
+
             $viewInformation = array_merge($viewInformation, $otherParameters);
             
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
@@ -156,7 +156,13 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
                     "state" => $regStates[1]
                 );
             }
-            
+            if ($viewInformation["customClientData"]) {
+                $viewInformation["customClientData"]=json_decode($viewInformation["customClientData"], true);
+                if ($viewInformation["customClientData"] === null) {
+                    throw new Exception("Parameter \"customClientData\" must be json encoded");
+                }
+            }
+
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
         } else {
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML(false));
