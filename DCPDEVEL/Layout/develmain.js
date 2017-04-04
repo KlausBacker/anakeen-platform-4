@@ -34,24 +34,35 @@ $(document).ready(function ()
             }
         },
         columns: [
-            { data: 'icon', "class": "family-icon" },
-            { data: 'name', "class": "family-name" },
-            { data: 'title', "class": "family-title" }
+            { data: 'icon',
+                "class": "family-icon",
+             render: function (data) {
+                var $div=$("<img/>").attr("src", data);
+                   return $div[0].outerHTML;
+             }
+            },
+            {
+                data: 'name',
+                "class": "family-name",
+                render: function (data, displayType, otherData) {
+                    var $div=$("<div/>").append($("<span/>").text(otherData.name)).append("<br/>").append($("<i/>").text(otherData.title));
+
+
+                    console.log("render", arguments);
+
+                    return $div[0].outerHTML;
+                }
+            },
+            { data: 'title',
+                "class": "family-title",
+                "visible": false
+            }
         ],
         "rowCallback": function (row, data)
         {
-            var $iconCell = $('.family-icon', row);
-            var $nameCell = $('.family-name', row);
-            var $titleCell = $('.family-title', row);
-
-
-            $iconCell.html($("<img/> ").attr("src", data.icon));
+            
             $(row).addClass("family-anchor").data("familyid", data.name);
             $(row).attr("title", data.name);
-
-            $nameCell.html($("<div/> ").text(data.name));
-            $titleCell.html($("<div/> ").text(data.title));
-
 
         }
     });

@@ -51,7 +51,7 @@ table.dataTable tbody tr:hover {
 }
 
 .family-name div {
-    width: 100px;
+    width: 222px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
