@@ -139,7 +139,7 @@
                         index: currentWidget._getIndex()
                     });
                     if (isNotPrevented) {
-                        var url = fileUrl + "&inline=yes", $base = $("base");
+                        var url = fileUrl, $base = $("base");
 
                         if (isNotPrevented) {
                             if ($base.length > 0) {

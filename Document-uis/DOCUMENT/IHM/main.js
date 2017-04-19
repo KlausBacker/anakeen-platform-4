@@ -53,6 +53,12 @@ require([
         $document.one("documentready", function launchReady()
         {
             window.dcp.triggerReload();
+            _.each(window.dcp.messages, function (msg) {
+                $document.documentController("showMessage", {
+                    type: msg.type,
+                    message: msg.contentText
+                });
+            });
         });
     } else {
         $document.documentController();

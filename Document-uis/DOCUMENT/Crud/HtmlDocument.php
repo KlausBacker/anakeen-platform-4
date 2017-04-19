@@ -106,6 +106,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
         $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));
         $layout->set("notificationTitleMore", ___("Notification", "ddui:notification"));
+        $layout->set("messages", "{}");
         if ($initid !== false) {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
@@ -116,24 +117,14 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             if ($viewId !== \Dcp\Ui\Crud\View::defaultViewCreationId && $viewId !== \Dcp\Ui\Crud\View::coreViewCreationId) {
                 $err = $doc->control("view");
                 if ($err) {
-                    $e = new Exception(
-                        sprintf(
-                            ___("Access not granted for document #%s", "ddui"),
-                            $initid
-                        )
-                    );
+                    $e = new Exception(sprintf(___("Access not granted for document #%s", "ddui") , $initid));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
             } else {
                 $err = $doc->control("icreate");
                 if ($err) {
-                    $e = new Exception(
-                        sprintf(
-                            ___("Access not granted to create \"%s\" document", "ddui"),
-                            $doc->getTitle()
-                        )
-                    );
+                    $e = new Exception(sprintf(___("Access not granted to create \"%s\" document", "ddui") , $doc->getTitle()));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
@@ -148,7 +139,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             }
             //merge other parameters
             $viewInformation = ["initid" => $initid, "revision" => $revision, "viewId" => $viewId];
-
+            
             $viewInformation = array_merge($viewInformation, $otherParameters);
             
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
@@ -157,16 +148,17 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
                 );
             }
             if ($viewInformation["customClientData"]) {
-                $viewInformation["customClientData"]=json_decode($viewInformation["customClientData"], true);
+                $viewInformation["customClientData"] = json_decode($viewInformation["customClientData"], true);
                 if ($viewInformation["customClientData"] === null) {
                     throw new Exception("Parameter \"customClientData\" must be json encoded");
                 }
             }
-
+            
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
         } else {
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML(false));
         }
+        $layout->set("messages", $this->getWarningMessages());
         $render = new \Dcp\Ui\RenderDefault();
         
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
@@ -193,10 +185,25 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         return $layout->gen();
     }
     
+    protected function getWarningMessages()
+    {
+        global $action;
+        $warnings = $action->parent->getWarningMsg();
+        $messages = [];
+        foreach ($warnings as $warning) {
+            $message = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
+            $message->contentText = $warning;
+            $message->type = $message::WARNING;
+            
+            $messages[] = $message;
+        }
+        return json_encode($messages);
+    }
+    
     protected static function getBaseUrl()
     {
         // Use protocol relative url
-        $url = sprintf("//%s",  $_SERVER["SERVER_NAME"]);
+        $url = sprintf("//%s", $_SERVER["SERVER_NAME"]);
         if ($_SERVER["SERVER_PORT"] !== "80") {
             $url.= sprintf(":%s", $_SERVER["SERVER_PORT"]);
         }
@@ -210,7 +217,6 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         $url.= "/";
         return $url;
     }
-
     
     public function getEtagInfo()
     {
