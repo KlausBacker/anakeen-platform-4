@@ -15,6 +15,7 @@ class ExportFamily
     protected $data = [];
     protected $exportDocuments = [];
     protected $workDirectory;
+    protected $contentDescription = [];
     /**
      * @var \Dcp\ExportDocument
      */
@@ -37,6 +38,8 @@ class ExportFamily
         if ($this->family->fromid) {
             $this->family->fromname = getNameFromId("", $this->family->fromid);
         }
+        $this->contentDescription['name'] = $this->family->name;
+        $this->contentDescription['parent'] = $this->family->fromname;
     }
 
     /**
@@ -80,8 +83,16 @@ class ExportFamily
         $this->exportWorkflow();
         $this->exportOthers();
         $this->exportInfoXml();
+        $this->exportContentDescription();
         $this->zip->close();
         return $filename;
+    }
+
+    protected function exportContentDescription()
+    {
+        $filename = sprintf("%s/%s__DESC.json", $this->workDirectory, $this->family->name);
+        file_put_contents($filename, json_encode($this->contentDescription, JSON_PRETTY_PRINT));
+        $this->zip->addFile($filename, basename($filename));
     }
 
     protected function exportInfoXml()
@@ -133,6 +144,7 @@ class ExportFamily
         file_put_contents($filename, $dom->saveXML());
 
         $this->zip->addFile($filename, basename($filename));
+        $this->contentDescription['Infoxml'] = basename($filename);
     }
 
     protected function exportDocument(\Doc $configDocument, $fout)
@@ -203,6 +215,7 @@ class ExportFamily
 
         $this->sortData($filename);
         $this->zip->addFile($filename, basename($filename));
+        $this->contentDescription['Param'] = basename($filename);
         $this->infoInstall[] = basename($filename);
     }
 
@@ -227,6 +240,7 @@ class ExportFamily
         $this->putcsv($filename, $data);
 
         $this->zip->addFile($filename, basename($filename));
+        $this->contentDescription['Struct'] = basename($filename);
         $this->infoInstall[] = basename($filename);
         $this->infoUpgrade[] = basename($filename);
     }
@@ -332,10 +346,12 @@ class ExportFamily
                 $data[] = ["ICON", $info->name];
 
                 $this->zip->addFile($info->path, $info->name);
+                $this->contentDescription['Icon'] = $info->name;
             } else {
                 $data[] = ["ICON", $this->family->icon];
 
                 $this->zip->addFile(sprintf("%s/Images/%s", DEFAULT_PUBDIR, $this->family->icon), $this->family->icon);
+                $this->contentDescription['Icon'] = $this->family->icon;
             }
         }
 
@@ -376,6 +392,7 @@ class ExportFamily
         $this->putcsv($filename, $data);
 
         $this->zip->addFile($filename, basename($filename));
+        $this->contentDescription['Config'] = basename($filename);
         $this->infoInstall[] = basename($filename);
     }
 
@@ -412,6 +429,8 @@ class ExportFamily
 
             $this->sortData($filename);
             $this->zip->addFile($filename, basename($filename));
+            $this->contentDescription['Workflow'] = basename($filename);
+            $this->contentDescription['wfam'] = $workflow->name;
             $this->infoInstall[] = basename($filename);
         }
     }
@@ -452,6 +471,7 @@ class ExportFamily
 
             $this->sortData($filename);
             $this->zip->addFile($filename, basename($filename));
+            $this->contentDescription['Others'] = basename($filename);
             $this->infoInstall[] = basename($filename);
         }
     }
