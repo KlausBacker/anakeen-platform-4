@@ -361,19 +361,16 @@ class RenderDefault implements IRenderConfig
     {
         
         $item = new SeparatorMenu("EmblemLock", "");
-        $item->setHtmlAttribute("class", "menu--right emblem emblem--lock".((abs($document->locked)==getCurrentUser()->id)?" emblem-lock--my":""));
+        $item->setHtmlAttribute("class", "menu--right emblem emblem--lock" . ((abs($document->locked) == getCurrentUser()->id) ? " emblem-lock--my" : ""));
         $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
-
-
-        if ($document->locked == -1) {
-            $item->setTooltipLabel(___("Revision", "ddui"), "", false);
+        
+        if ($document->locked == - 1) {
+            $item->setTooltipLabel(___("Revision", "ddui") , "", false);
             $item->setHtmlLabel('<span class="dcpDocument__emblem__revised fa fa-archive"></span>');
-        } elseif ($document->locked < -1) {
-            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ',
-                htmlspecialchars(___("Modifying by", "ddui"), ENT_QUOTES)), "", true);
+        } elseif ($document->locked < - 1) {
+            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Modifying by", "ddui") , ENT_QUOTES)) , "", true);
         } else {
-            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ',
-                htmlspecialchars(___("Locked by", "ddui"), ENT_QUOTES)), "", true);
+            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui") , ENT_QUOTES)) , "", true);
         }
         
         $item->setImportant(true);
@@ -381,7 +378,10 @@ class RenderDefault implements IRenderConfig
         
         $item = new SeparatorMenu("EmblemReadOnly", "");
         $item->setHtmlAttribute("class", "menu--right emblem emblem--readonly");
-        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa fa-ban"></span>{{/document.properties.security.readOnly}}');
+        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa-stack fa-lg">
+        <i class="fa fa-ban fa-stack-1x fa-rotate-90 text-danger"></i>
+        <i class="fa fa-pencil fa-stack-1x"></i>
+        </span>{{/document.properties.security.readOnly}}');
         
         $item->setTooltipLabel(___("Read only document", "ddui"));
         $item->setImportant(true);
