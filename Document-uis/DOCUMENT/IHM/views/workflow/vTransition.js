@@ -59,8 +59,8 @@ define([
             });
             this.listenTo(this.model, 'close', function vTransition_close()
             {
-                if (this.$el.data("kendoWindow")) {
-                    this.$el.kendoWindow("close");
+                if (this.transitionWindow) {
+                    this.transitionWindow.close();
                 }
             });
             this.options = options;
