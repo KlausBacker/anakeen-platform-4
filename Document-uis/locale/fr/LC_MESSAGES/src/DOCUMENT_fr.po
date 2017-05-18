@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DOCUMENT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-16 14:41+0100\n"
-"PO-Revision-Date: 2017-02-16 14:42+0100\n"
+"POT-Creation-Date: 2017-05-16 08:29+0200\n"
+"PO-Revision-Date: 2017-05-16 08:30+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -132,6 +132,10 @@ msgstr "Quitter le formulaire"
 msgctxt "ddui"
 msgid "Close message"
 msgstr "Fermer le message"
+
+msgctxt "ddui"
+msgid "Confidential document"
+msgstr "Document confidentiel"
 
 msgctxt "UiMenu"
 msgid "Confirm"
@@ -329,6 +333,10 @@ msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
 
+msgctxt "ddui"
+msgid "Modifying by"
+msgstr "En cours de modification par"
+
 #, php-format
 msgctxt "ddui"
 msgid "No matches \"<i>%s</i>\""
@@ -385,6 +393,10 @@ msgstr "Retirer le document de la poubelle"
 msgctxt "ddui"
 msgid "Retry transition"
 msgstr "Confirmer"
+
+msgctxt "ddui"
+msgid "Revision"
+msgstr "Révision"
 
 #, php-format
 msgctxt "ddui"

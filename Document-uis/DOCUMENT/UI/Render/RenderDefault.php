@@ -360,23 +360,41 @@ class RenderDefault implements IRenderConfig
     protected function setEmblemMenu(\Doc $document, BarMenu $menu)
     {
         
-        $item = new SeparatorMenu("Emblem1", "");
-        $item->setHtmlAttribute("class", "menu--right");
+        $item = new SeparatorMenu("EmblemLock", "");
+        $item->setHtmlAttribute("class", "menu--right emblem emblem--lock" . ((abs($document->locked) == getCurrentUser()->id) ? " emblem-lock--my" : ""));
         $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
         
-        $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui") , ENT_QUOTES)) , "", true);
+        if ($document->locked == - 1) {
+            $item->setTooltipLabel(___("Revision", "ddui") , "", false);
+            $item->setHtmlLabel('<span class="dcpDocument__emblem__revised fa fa-archive"></span>');
+        } elseif ($document->locked < - 1) {
+            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Modifying by", "ddui") , ENT_QUOTES)) , "", true);
+        } else {
+            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui") , ENT_QUOTES)) , "", true);
+        }
         
         $item->setImportant(true);
         $menu->appendElement($item);
         
-        $item = new SeparatorMenu("Emblem2", "");
-        $item->setHtmlAttribute("class", "menu--right");
-        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa fa-ban"></span>{{/document.properties.security.readOnly}}');
+        $item = new SeparatorMenu("EmblemReadOnly", "");
+        $item->setHtmlAttribute("class", "menu--right emblem emblem--readonly");
+        $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa-stack fa-lg">
+        <i class="fa fa-ban fa-stack-1x fa-rotate-90 text-danger"></i>
+        <i class="fa fa-pencil fa-stack-1x"></i>
+        </span>{{/document.properties.security.readOnly}}');
         
         $item->setTooltipLabel(___("Read only document", "ddui"));
         $item->setImportant(true);
-        
         $menu->appendElement($item);
+        if ($document->confidential > 0) {
+            $item = new SeparatorMenu("EmblemConfidential", "");
+            $item->setHtmlAttribute("class", "menu--right emblem emblem--confidential");
+            $item->setHtmlLabel('<i  class="fa fa-eye-slash"></i>');
+            
+            $item->setTooltipLabel(___("Confidential document", "ddui"));
+            $item->setImportant(true);
+            $menu->appendElement($item);
+        }
     }
     /**
      * Add Help if Help document is associated to family
