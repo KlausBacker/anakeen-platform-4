@@ -101,7 +101,7 @@
             if (this.getMode() === "write") {
                 originalValue = this.convertDateToPseudoIsoString(this.kendoWidget.data(this.kendoWidgetClass).value());
                 // : explicit lazy equal
-                //noinspection JSHint
+                //noinspection JSHint, EqualityComparisonWithCoercionJS
                 if (originalValue != value.value) {
                     if (value.value) {
                         originalDate = new Date(value.value);
@@ -143,7 +143,7 @@
             inputValue.kendoDatePicker(kOptions);
 
             // Workaround for date paste : change event is not trigger in this case
-            inputValue.on("paste"+ this.eventNamespace, function wDatePaste()
+            inputValue.on("paste" + this.eventNamespace, function wDatePaste()
             {
                 var $input = $(this);
                 _.defer(function wDatePasteAfter()
@@ -160,7 +160,7 @@
         _controlDate: function wDateControlDate(inputValue)
         {
             var currentWidget = this;
-            inputValue.on('blur' + this.eventNamespace, function validateDate(event)
+            inputValue.on('blur' + this.eventNamespace, function validateDate(/*event*/)
             {
                 var dateValue = $(this).val().trim();
 
@@ -196,7 +196,15 @@
 
         parseDate: function wDateParseDate(value)
         {
-            return kendo.parseDate(value);
+            var parseFormat = this.options.renderOptions.kendoDateConfiguration.parseFormats;
+            var goodDate = kendo.parseDate(value);
+            if (goodDate) {
+                return goodDate;
+            }
+            if (this.options.renderOptions.kendoDateConfiguration.format) {
+                parseFormat.push(this.options.renderOptions.kendoDateConfiguration.format);
+            }
+            return kendo.parseDate(value, parseFormat);
         },
 
         convertDateToPseudoIsoString: function wDateconvertDateToPseudoIsoString(dateObject)
