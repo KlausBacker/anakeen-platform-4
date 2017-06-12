@@ -55,7 +55,7 @@ define([
                 }
                 content.deleteButton = true;
                 content.sourceValues = this.get("enumItems");
-                content.sourceUri = this.get("enumUri");
+                content.sourceUri = this.get("enumUrl");
                 if (!content.templates.label) {
                     content.templates.label = this.getTemplates().attribute.label;
                 }
