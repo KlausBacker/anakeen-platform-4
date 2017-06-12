@@ -33,6 +33,7 @@ define([
             this.listenTo(this.model.get("content"), 'remove', this.render);
             this.listenTo(this.model.get("content"), 'reset', this.render);
             this.listenTo(this.model, 'errorMessage', this.setError);
+            this.listenTo(this.model, 'change:errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'hide', this.hide);
@@ -136,17 +137,10 @@ define([
 
         setError: function vFrame_setError(event, data)
         {
-            var parentId = this.model.get('parent');
             if (data) {
                 this.$el.find(".dcpFrame__label").addClass("has-error");
             } else {
                 this.$el.find(".dcpFrame__label").removeClass("has-error");
-            }
-            if (parentId) {
-                var parentModel = this.getAttributeModel(parentId);
-                if (parentModel) {
-                    parentModel.trigger("errorMessage", event, data);
-                }
             }
         },
 

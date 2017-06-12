@@ -238,6 +238,7 @@ define([
         },
 
         setErrorMessage : function mAttributesetErrorMessage(message, index) {
+            var parentId = this.get('parent');
             if (this.get("multiple") && typeof index !== "undefined") {
                 var errorMessage = this.get('errorMessage') || [];
                 // delete duplicate
@@ -247,6 +248,13 @@ define([
                 this.set('errorMessage', [{message : message, index : index}].concat(errorMessage));
             } else {
                 this.set('errorMessage', message);
+            }
+            if (parentId) {
+                // Propagate error message on parent structure
+                 var parentModel = this.getDocumentModel().get('attributes').get(parentId);
+                 if (parentModel) {
+                     parentModel.setErrorMessage(message);
+                 }
             }
         },
 
