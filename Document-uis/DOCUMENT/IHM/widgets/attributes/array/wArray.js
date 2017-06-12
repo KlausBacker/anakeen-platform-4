@@ -132,8 +132,18 @@
                         this.element.find(".dcpArray__content").addClass("dcpArray--tooltips");
                         this.element.tooltip({
                             selector: ".dcpArray--tooltips .dcpArray__content__toolCell span, .dcpArray--tooltips .dcpArray__tools .dcpArray__button",
-                            placement: "top",
+                            placement: function (tooltipDom, targetDom){
+                                // Auto hide after 3s
+                                _.delay(function () {
+                                    $(targetDom).tooltip("hide");
+                                }, 3000);
+                                if ($(targetDom).closest(".dcpArray__tools").length > 0) {
+                                    return "bottom";
+                                }
+                                return "top";
+                            },
                             container: ".dcpDocument",
+
                             delay: {
                                 hide: 0,
                                 show: 500
