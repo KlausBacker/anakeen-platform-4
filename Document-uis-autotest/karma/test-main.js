@@ -143,13 +143,13 @@ require.config({ // jshint ignore:line
         "ckeditor-jquery": "../../lib/ckeditor/4/adapters/jquery",
         "jasmine-jquery": '../../lib/jasmine/jasmine-jquery',
         "test-css": '../../../base/test-css',
-        "datatables": "../../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-        "datatables-bootstrap": "../../lib/jquery-dataTables/1.10/js/dataTables.bootstrap",
+        "datatables.net": "../../lib/jquery-dataTables/1.10/js/jquery.dataTables",
+        "datatables": "../../lib/jquery-dataTables/1.10/js/dataTables.bootstrap",
         "es6-promise" : "../../lib/es6-promise/es6-promise"
     },
     map: {
-        "datatables-bootstrap" : {
-            "datatables.net": "datatables"
+        '*' : {
+            "datatables-bootstrap" : "datatables"
         }
     },
     "waitSeconds": 60,

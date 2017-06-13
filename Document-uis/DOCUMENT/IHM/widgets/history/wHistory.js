@@ -64,8 +64,7 @@ define([
             var widget = this, $widget = $(this);
 
             this.element.html(this.htmlCaneva());
-            require(['datatables',
-                "datatables-bootstrap"], function dcpDocumentWHistory_initTable()
+            require(['datatables'], function dcpDocumentWHistory_initTable()
             {
                 widget._initDatatable();
             });
