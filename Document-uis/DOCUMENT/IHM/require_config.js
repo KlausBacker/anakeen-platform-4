@@ -27,14 +27,11 @@
             "ckeditor": "../lib/ckeditor/4/ckeditor",
             "ckeditor-jquery": "../lib/ckeditor/4/adapters/jquery",
             "datatables.net": "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-            "datatables": "../lib/jquery-dataTables/1.10/js/jquery.dataTables",
-            "datatables-bootstrap": "../lib/jquery-dataTables/1.10/js/dataTables.bootstrap",
+            "datatables": "../lib/jquery-dataTables/1.10/js/dataTables.bootstrap",
             "es6-promise" : "../lib/es6-promise/es6-promise"
         },
         map: {
-            "datatables-bootstrap" : {
-                "datatables.net": "datatables"
-            }
+
         },
         "waitSeconds": 60
     };

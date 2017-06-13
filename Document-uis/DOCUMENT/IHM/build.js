@@ -23,7 +23,7 @@
         "ckeditor": "empty:",
         "ckeditor-jquery": "empty:",
         "datatables": "empty:",
-        "datatables-bootstrap": "empty:",
+        "datatables.net": "empty:",
         "es6-promise" : "empty:",
         "dcpDocument/libs/promise" : "empty:"
     },

@@ -19,8 +19,8 @@
         "kendo-culture-fr": "empty:",
         "ckeditor": "empty:",
         "ckeditor-jquery": "empty:",
-        "datatables": "empty:",
-        "datatables-bootstrap": "empty:"
+        "datatables.net": "empty:",
+        "datatables": "empty:"
     },
     generateSourceMaps: true,
     preserveLicenseComments: false,
