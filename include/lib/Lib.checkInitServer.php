@@ -54,19 +54,37 @@ function checkDependencies(& $errors = array()) {
  * @param array $errors
  * @return bool
  */
-function checkInitServer(& $errors = array())
+function checkInitServer(&$errors = array())
 {
+    $lockFile = join(DIRECTORY_SEPARATOR, array(
+        __DIR__,
+        '..',
+        '..',
+        'conf',
+        'checkInitServer.lock'
+    ));
+    if (($lock = fopen($lockFile, 'c')) === false) {
+        array_push($errors, sprintf("Error creating lock file '%s'", $lockFile));
+        return false;
+    }
+    if (flock($lock, LOCK_EX) === false) {
+        array_push($errors, sprintf("Error obtaining exclusive access on lock file '%s'", $lockFile));
+        fclose($lock);
+        return false;
+    }
     $errors = array();
     if (($wiff_root = getenv('WIFF_ROOT')) === false) {
         array_push($errors, sprintf("Could not get WIFF_ROOT."));
+        flock($lock, LOCK_UN);
+        fclose($lock);
         return false;
     }
     checkDependencies($errors);
     // Initialize xml conf files
     foreach (array(
-                 $wiff_root . DIRECTORY_SEPARATOR . 'conf/params.xml',
-                 $wiff_root . DIRECTORY_SEPARATOR . 'conf/contexts.xml'
-             ) as $file) {
+        $wiff_root . DIRECTORY_SEPARATOR . 'conf/params.xml',
+        $wiff_root . DIRECTORY_SEPARATOR . 'conf/contexts.xml'
+    ) as $file) {
         if (is_file($file)) {
             continue;
         }
@@ -82,18 +100,19 @@ function checkInitServer(& $errors = array())
         $content = @file_get_contents(sprintf("%s.template", $file));
         if ($content === false) {
             array_push($errors, sprintf("Error reading content of '%s.template'.", $file));
+            fclose($fout);
             continue;
         }
         $ret = fwrite($fout, $content);
         if ($ret === false) {
             array_push($errors, sprintf("Error writing content to '%s'.", $file));
+            fclose($fout);
             continue;
         }
         fclose($fout);
     }
-
-    if (count($errors) > 0) {
-        return false;
-    }
-    return true;
+    
+    flock($lock, LOCK_UN);
+    fclose($lock);
+    return (count($errors) <= 0);
 }
