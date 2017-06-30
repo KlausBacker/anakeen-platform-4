@@ -19,8 +19,8 @@ define([
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification'
 ], function documentController($, _, Backbone, Promise, Router, DocumentModel,
-    AttributeInterface, MenuInterface, TransitionInterface,
-    DocumentView, TransitionModel, TransitionView, MenuModel, i18n)
+                               AttributeInterface, MenuInterface, TransitionInterface,
+                               DocumentView, TransitionModel, TransitionView, MenuModel, i18n)
 {
     'use strict';
 
@@ -45,9 +45,9 @@ define([
         "failTransition", "successTransition",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
-        "destroy","attributeCreateDialogDocumentBeforeSetFormValues",
-        "attributeCreateDialogDocumentBeforeSetTargetValue","attributeCreateDialogDocumentReady",
-        "attributeCreateDialogDocumentBeforeClose","attributeCreateDialogDocumentBeforeDestroy"
+        "destroy", "attributeCreateDialogDocumentBeforeSetFormValues",
+        "attributeCreateDialogDocumentBeforeSetTargetValue", "attributeCreateDialogDocumentReady",
+        "attributeCreateDialogDocumentBeforeClose", "attributeCreateDialogDocumentBeforeDestroy"
     ];
 
     $.widget("dcp.documentController", {
@@ -94,7 +94,8 @@ define([
         tryToDestroy: function documentController_tryToDestroy()
         {
             var currentWidget = this;
-            return new Promise(function documentController_promiseDestroy(resolve, reject) {
+            return new Promise(function documentController_promiseDestroy(resolve, reject)
+            {
                 var event = {prevent: false};
                 if (!currentWidget._model) {
                     resolve();
@@ -102,7 +103,7 @@ define([
                 }
                 if (currentWidget._model
                     && currentWidget._model.isModified()
-                    && !window.confirm(i18n.___("The form has been modified without saving, do you want to close it ?", "ddui"))) {
+                    && !window.confirm(currentWidget._model.get("properties").get("title") + "\n" + i18n.___("The form has been modified without saving, do you want to close it ?", "ddui"))) {
                     reject("Unable to destroy because user refuses it");
                     return;
                 }
@@ -172,7 +173,7 @@ define([
                 promise.then(initializeSuccess);
             }
 
-            this._initRouter({useHistory:!this.options.noRouter});
+            this._initRouter({useHistory: !this.options.noRouter});
 
             return promise;
         },
@@ -375,12 +376,13 @@ define([
             {
                 try {
                     var currentAttribute = currentWidget.getAttribute(options.attributeId),
-                    index = 0, values = currentAttribute.getValue("all"),
-                    mAttribute = currentWidget._getAttributeModel(options.attributeId);
+                        index = 0, values = currentAttribute.getValue("all"),
+                        mAttribute = currentWidget._getAttributeModel(options.attributeId);
                     if (mAttribute.getParent().get("type") !== "array") {
                         index = -1;
                     } else {
-                        _.find(values.current, function documentController_valueIsModified(currentValue) {
+                        _.find(values.current, function documentController_valueIsModified(currentValue)
+                        {
                             var result, previous = values.previous[index];
                             if (!previous) {
                                 index++;
@@ -391,7 +393,7 @@ define([
                             }
                             currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
                             if (_.isArray(previous)) {
-                                previous =  previous.join(",");
+                                previous = previous.join(",");
                             }
                             previous = _.has(previous, "value") ? previous.value : previous;
                             result = previous !== currentValue;
@@ -578,9 +580,9 @@ define([
             {
                 try {
                     var currentAttribute = currentWidget.getAttribute(attrid);
-                    var triggername="attributeCreateDialogDocument";
+                    var triggername = "attributeCreateDialogDocument";
                     // Uppercase first letter
-                    triggername+=options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
+                    triggername += options.triggerId.charAt(0).toUpperCase() + options.triggerId.slice(1);
 
                     event.prevent = !currentWidget._triggerAttributeControllerEvent(triggername,
                         currentAttribute,
@@ -742,7 +744,7 @@ define([
             }
             this.router = new Router({
                 document: this._model,
-                useHistory:(!config || config.useHistory)
+                useHistory: (!config || config.useHistory)
             });
         },
 
@@ -757,7 +759,8 @@ define([
          */
         _initAndDisplayTransition: function documentController_initAndDisplayTransition(nextState, transition, values, withoutInterface, reinitOptions)
         {
-            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result, transitionInterface,
+            var $target = $('<div class="dcpTransition"/>'), transitionElements = {}, currentWidget = this, result,
+                transitionInterface,
                 documentServerProperties = this.getProperties();
 
             return new Promise(function documentController_changeStatePromise(resolve, reject)
@@ -912,7 +915,7 @@ define([
          */
         _getAttributeModel: function documentController_getAttributeModel(attributeId)
         {
-            var attributes=this._model.get("attributes");
+            var attributes = this._model.get("attributes");
             var attribute;
             if (!attributes) {
                 throw new Error('Attribute models not initialized yet : The attribute "' + attributeId + '" cannot be found.');
@@ -924,8 +927,10 @@ define([
             return attribute;
         },
 
-        _getMenuModel: function documentController_getMenuModel(menuId) {
-            var menus = this._model.get("menus");;
+        _getMenuModel: function documentController_getMenuModel(menuId)
+        {
+            var menus = this._model.get("menus");
+            ;
             var menu = menus.get(menuId);
             if (!menu && menus) {
                 menus.each(function documentControllerGetMenuIterate(itemMenu)
@@ -1093,7 +1098,8 @@ define([
          */
         _triggerAttributeControllerEvent: function documentController_triggerAttributeControllerEvent(eventName, attributeInternalElement)
         {
-            var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName), externalEventArgument,
+            var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName),
+                externalEventArgument,
                 $element = $(currentWidget.element);
             event.target = currentWidget.element;
             // internal event trigger
@@ -1483,7 +1489,7 @@ define([
             if (ready) {
                 properties = this._model.getServerProperties();
                 properties.isModified = this._model.isModified();
-                properties.url=window.location.href;
+                properties.url = window.location.href;
             }
 
             return properties;
@@ -1539,7 +1545,8 @@ define([
          * @param menuId
          * @return {boolean}
          */
-        hasMenu: function documentController_hasMenu(menuId) {
+        hasMenu: function documentController_hasMenu(menuId)
+        {
             this._checkInitialisedModel();
             var menu = this._getMenuModel(menuId);
             return !!menu;
@@ -1591,7 +1598,7 @@ define([
             if (!attributeModel) {
                 return null;
             }
-            attribute =new AttributeInterface(attributeModel);
+            attribute = new AttributeInterface(attributeModel);
             return attribute.getValue(type);
         },
 
@@ -1716,7 +1723,7 @@ define([
             this._checkInitialisedModel();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                throw new Error("Unable to find attribute "+attributeId);
+                throw new Error("Unable to find attribute " + attributeId);
             }
             var attributeInterface = new AttributeInterface(attributeModel);
             var index;
@@ -1753,7 +1760,7 @@ define([
             var attribute = this._getAttributeModel(attributeId);
 
             if (!attribute) {
-                throw new Error("Unable to find attribute "+attributeId);
+                throw new Error("Unable to find attribute " + attributeId);
             }
 
             if (attribute.get("type") !== "array") {
@@ -1788,7 +1795,7 @@ define([
             this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId), maxValue;
             if (!attribute) {
-                throw new Error("Unable to find attribute "+attributeId);
+                throw new Error("Unable to find attribute " + attributeId);
             }
             if (attribute.get("type") !== "array") {
                 throw new Error("Attribute " + attributeId + " must be an attribute of type array");
@@ -1825,7 +1832,7 @@ define([
             this._checkInitialisedModel();
             var attribute = this._getAttributeModel(attributeId), maxIndex;
             if (!attribute) {
-                throw new Error("Unable to find attribute "+attributeId);
+                throw new Error("Unable to find attribute " + attributeId);
             }
             if (attribute.get("type") !== "array") {
                 throw Error("Attribute " + attributeId + " must be an attribute of type array");
@@ -1960,7 +1967,7 @@ define([
             if (_.isObject(eventType) && _.isUndefined(options) && _.isUndefined(callback)) {
                 currentEvent = eventType;
                 if (!currentEvent.name) {
-                    throw new Error("When an event is initiated with a single object, this object needs to have the name property "+JSON.stringify(currentEvent));
+                    throw new Error("When an event is initiated with a single object, this object needs to have the name property " + JSON.stringify(currentEvent));
                 }
             } else {
                 currentEvent = _.defaults(options, {
@@ -2059,7 +2066,7 @@ define([
             this._checkInitialisedView();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                console.log("Unable find and hide the attribute "+attributeId);
+                console.log("Unable find and hide the attribute " + attributeId);
                 return;
             }
             attributeModel.trigger("hide");
@@ -2074,7 +2081,7 @@ define([
             this._checkInitialisedView();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                console.log("Unable find and show the attribute "+attributeId);
+                console.log("Unable find and show the attribute " + attributeId);
                 return;
             }
             attributeModel.trigger("show");
@@ -2139,7 +2146,7 @@ define([
             this._checkInitialisedView();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                console.log("Unable find and show the attribute "+attributeId);
+                console.log("Unable find and show the attribute " + attributeId);
                 return;
             }
             attributeModel.setErrorMessage(message, index);
@@ -2156,7 +2163,7 @@ define([
             this._checkInitialisedView();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                console.log("Unable find and show the attribute "+attributeId);
+                console.log("Unable find and show the attribute " + attributeId);
                 return;
             }
             attributeModel.setErrorMessage(null, index);

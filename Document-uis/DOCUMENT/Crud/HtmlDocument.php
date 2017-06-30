@@ -147,7 +147,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
                     "state" => $regStates[1]
                 );
             }
-            if ($viewInformation["customClientData"]) {
+            if (!empty($viewInformation["customClientData"])) {
                 $viewInformation["customClientData"] = json_decode($viewInformation["customClientData"], true);
                 if ($viewInformation["customClientData"] === null) {
                     throw new Exception("Parameter \"customClientData\" must be json encoded");
@@ -223,12 +223,9 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         if (isset($this->urlParameters["identifier"])) {
             
             $id = $this->urlParameters["identifier"];
-            if ($id === "0") {
-                //Boot the init page in void mode (used by offline project)
-                $etag = md5(sprintf("%s : %s", \ApplicationParameterManager::getParameterValue("CORE", "WVERSION") , \ApplicationParameterManager::getScopedParameterValue("CORE_LANG")));
-                
-                return $etag;
-            }
+            $etag = sprintf("%s : %s : %s", \ApplicationParameterManager::getScopedParameterValue("WVERSION") , \ApplicationParameterManager::getScopedParameterValue("CORE_LANG"), $id);
+            
+            return $etag;
         }
         
         return "";
