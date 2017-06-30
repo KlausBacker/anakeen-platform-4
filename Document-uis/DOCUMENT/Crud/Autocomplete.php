@@ -248,8 +248,10 @@ class Autocomplete extends Crud
                 $this->dduiSetHttpVar("_ct", $ct);
                 if ($index >= 0) {
                     $current = getHttpVars("_$currentAid");
-                    $current[$index] = $ct;
-                    $this->dduiSetHttpVar("_$currentAid", $current);
+                    if (is_array($current)) {
+                        $current[$index] = $ct;
+                        $this->dduiSetHttpVar("_$currentAid", $current);
+                    }
                 } else {
                     $this->dduiSetHttpVar("_$currentAid", $ct);
                 }
