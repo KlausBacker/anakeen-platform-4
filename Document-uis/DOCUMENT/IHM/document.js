@@ -98,11 +98,12 @@
                 // It is load also the first time
                 $iframe.on("load", function dcpDocument_setReadyEvent()
                 {
-                    documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode, voidLoaded)
+                    documentWindow.documentLoaded = function dcpDocument_loadedCallback(domNode, viewData)
                     {
-                        //Re Bind the internalController function to the current widget
-                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"), voidLoaded);
-                        currentWidget.element.data("voidLoaded", !!voidLoaded);
+                        // Re Bind the internalController function to the current widget
+                        currentWidget._bindInternalWidget.call(currentWidget, domNode.data("dcpDocumentController"), viewData);
+                        // voidLoaded is true when document 0 is loaded
+                        currentWidget.element.data("voidLoaded", !viewData || !viewData.initid );
                     };
 
                     $(documentWindow).on("unload", function dcpDocument_setUnloadEvent()
