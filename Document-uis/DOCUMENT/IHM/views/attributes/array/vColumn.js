@@ -25,6 +25,7 @@ define([
             this._mergeEvent(events, "externallinkselected", "externalLinkSelected");
             this._mergeEvent(events, "downloadfile", "downloadFileSelect");
             this._mergeEvent(events, "uploadfile", "uploadFileSelect");
+            this._mergeEvent(events, "uploadfiledone", "uploadFileDone");
             this._mergeEvent(events, "anchorclick", "anchorClick");
             this.listenTo(this.model, "change:label", this.changeLabel);
             return events;

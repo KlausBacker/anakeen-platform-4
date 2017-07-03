@@ -50,7 +50,7 @@ define([
         },
         // Record custom data in model directly - not in model property because must not be reset by clear method
         _customClientData: {},
-
+        _uploadingFile: 0,
         /**
          * Compute the REST URL for the current document
          *
@@ -334,6 +334,9 @@ define([
         {
             var properties;
             properties = this.initialProperties;
+            if (properties) {
+                properties.hasUploadingFiles = this.hasUploadingFile();
+            }
             return properties;
         },
 
@@ -383,6 +386,11 @@ define([
             });
         },
 
+        hasUploadingFile: function mdocumenthasUploadingFile()
+        {
+            return this._uploadingFile > 0;
+        },
+
         /**
          * Analyze return in case of sync uncomplete and trigger event error
          *
@@ -392,13 +400,13 @@ define([
         propagateSynchroError: function mDocumentpropagateSynchroError(model, xhr)
         {
             var attrModel, currentModel = this, parsedReturn, errorCode = null, title = "",
-            properties;
+                properties;
             //Analyze XHR
             var messages = [];
             try {
-                if (! xhr && model.message) {
-                    messages.push({type:"error", contentText:model.message});
-                    xhr={status:500, statusText:"Internal - No HTTP response"};
+                if (!xhr && model.message) {
+                    messages.push({type: "error", contentText: model.message});
+                    xhr = {status: 500, statusText: "Internal - No HTTP response"};
                 } else {
                     var result = JSON.parse(xhr.responseText);
                     messages = result.messages;
@@ -805,10 +813,45 @@ define([
                 });
 
                 //Propagate the event uploadFile to the model
-                currentModel.listenTo(value, "uploadFile", function mDocumentsetValuesListenUploadfile(event, attrid, options)
+                currentModel.listenTo(value, "uploadFile", function mDocumentListenUploadfileStart(event, attrid, options)
                 {
+                    var attr, attrValue;
                     currentModel.trigger("uploadFile", event, attrid, options);
+
+                    if (!event.prevent) {
+                        attr = currentModel.get("attributes").get(attrid);
+
+                        currentModel._uploadingFile++;
+
+                        if (attr) {
+                            attrValue = attr.get("attributeValue");
+                            if (options.index >= 0) {
+                                attrValue = _.clone(attrValue);
+                                attrValue[options.index] = {value: "-^-", displayValue: "Uploading"};
+
+                            } else {
+                                attrValue = {value: "--", displayValue: "Uploading"};
+                            }
+                            // Use Silent to not redraw widget - it will be redraw at the end of uploading
+                            attr.set("attributeValue", attrValue, {silent: true});
+                            currentModel.trigger("changeValue", {
+                                attributeId: attrid
+                            });
+                        }
+                    }
                 });
+
+                //Propagate the event uploadFile to the model
+                currentModel.listenTo(value, "uploadFileDone", function mDocumentListenuploadFileDone(event, attrid, options)
+                {
+                    currentModel._uploadingFile--;
+                    currentModel.trigger("uploadFileDone", event, attrid, options);
+
+                    if (currentModel._uploadingFile <= 0) {
+                        currentModel.trigger("uploadFileFinished");
+                    }
+                });
+
                 //Propagate the event helperSearch to the model
                 currentModel.listenTo(value, "helperSearch", function mDocumentsetValuesListenHelperSearch(event, attrid, options, index)
                 {
@@ -879,7 +922,8 @@ define([
          * @param jsToInject Array of string to inject
          * @return Promise
          */
-        injectJS: function mDocumentInjectJs(jsToInject) {
+        injectJS: function mDocumentInjectJs(jsToInject)
+        {
             if (!_.isArray(jsToInject)) {
                 throw new Error("The js to inject must be an array of string path");
             }
@@ -1174,7 +1218,6 @@ define([
             if (beforeSaveEvent.prevent !== false) {
                 globalCallback.error({eventPrevented: true});
             } else {
-                this.trigger("displayLoading", {isSaving: true});
                 saveCallback.promise.then(function mDocument_saveDone()
                 {
                     currentModel._loadDocument(currentModel).then(function mDocument_loadDocumentDone()
@@ -1189,7 +1232,26 @@ define([
                     globalCallback.error.apply(currentModel, arguments);
                 });
 
-                currentModel.save(attributes, saveCallback);
+                if (currentModel.hasUploadingFile()) {
+
+                    this.trigger("displayLoading", {
+                        isSaving: true,
+                        text: i18n.___("Recording files in progress", "ddui")
+                    });
+                    currentModel.trigger("showMessage", {
+                        title: i18n.___("Waiting uploads in progress", "ddui"),
+                        type: "info"
+                    });
+                    currentModel.once("uploadFileFinished", function mDocumentsetValuesListenUploadUntilTheEnd(event)
+                    {
+                        this.trigger("displayLoading", {isSaving: true});
+                        currentModel.save(attributes, saveCallback);
+                    });
+                } else {
+
+                    this.trigger("displayLoading", {isSaving: true});
+                    currentModel.save(attributes, saveCallback);
+                }
             }
 
             globalCallback.promise.then(function onSaveSuccess(values)
@@ -1292,17 +1354,21 @@ define([
                     this.trigger("displayLoading", {isSaving: true});
 
                     restoreCallback.promise.then(
-                        function mDocument_restoreDocument_Success() {
+                        function mDocument_restoreDocument_Success()
+                        {
                             currentModel._loadDocument(currentModel).then(
-                                function mDocument_restoreDocument_loadSuccess() {
+                                function mDocument_restoreDocument_loadSuccess()
+                                {
                                     globalCallback.success();
                                 },
-                                function mDocument_restoreDocument_loadFail() {
+                                function mDocument_restoreDocument_loadFail()
+                                {
                                     globalCallback.error.apply(currentModel, arguments);
                                 }
                             );
                         },
-                        function mDocument_restoreDocument_Fail() {
+                        function mDocument_restoreDocument_Fail()
+                        {
                             globalCallback.error.apply(currentModel, arguments);
                         }
                     );

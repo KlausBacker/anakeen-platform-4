@@ -39,7 +39,7 @@ define([
         "attributeArrayChange", "actionClick",
         "attributeAnchorClick",
         "beforeClose", "close",
-        "beforeSave", "afterSave", "attributeDownloadFile", "attributeUploadFile",
+        "beforeSave", "afterSave", "attributeDownloadFile", "attributeUploadFile", "attributeUploadFileDone",
         "beforeDelete", "afterDelete",
         "beforeRestore", "afterRestore",
         "failTransition", "successTransition",
@@ -499,7 +499,29 @@ define([
                         options.$el,
                         options.index,
                         {
-                            file: options.file
+                            file: options.file,
+                            hasUploadingFiles: currentWidget._model.hasUploadingFile()
+
+                        }
+                    );
+                } catch (error) {
+                    if (!(error instanceof ErrorModelNonInitialized)) {
+                        console.error(error);
+                    }
+                }
+            });
+            this._model.listenTo(this._model, "uploadFileDone", function documentController_triggerUploadFile(event, attrid, options)
+            {
+                try {
+                    var currentAttribute = currentWidget.getAttribute(attrid);
+                    event.prevent = !currentWidget._triggerControllerEvent("attributeUploadFileDone",
+                        currentWidget.getProperties(),
+                        currentAttribute,
+                        options.$el,
+                        options.index,
+                        {
+                            file: options.file,
+                            hasUploadingFiles: currentWidget._model.hasUploadingFile()
                         }
                     );
                 } catch (error) {
@@ -673,9 +695,7 @@ define([
             this.view.on('loaderShow', function documentController_triggerLoaderShow(text, pc)
             {
                 console.time("xhr+render document view");
-                if (!currentWidget.$loading.dcpLoading("isDisplayed")) {
-                    currentWidget.$loading.dcpLoading('show', text, pc);
-                }
+                currentWidget.$loading.dcpLoading('show', text, pc);
             });
             this.view.on('loaderHide', function documentController_triggerHide()
             {
@@ -694,7 +714,7 @@ define([
                 currentWidget._triggerControllerEvent("ready", currentWidget.getProperties());
                 _.delay(function documentController_endRender()
                 {
-                    currentWidget.$loading.dcpLoading("hide");
+                    currentWidget.$loading.dcpLoading("hide", true);
                     console.timeEnd('main');
                 });
             });

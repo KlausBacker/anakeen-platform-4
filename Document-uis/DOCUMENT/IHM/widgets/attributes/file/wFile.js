@@ -338,6 +338,7 @@
             var originalBgColor = inputText.css("background-color");
             var currentWidget = this;
             var event = {prevent: false};
+            var currentFileValue = this.options.attributeValue;
 
             if (!this.uploadCondition(firstFile)) {
                 return;
@@ -351,9 +352,9 @@
             if (!isNotPrevented) {
                 return;
             }
-
+            currentFileValue.uploadStartData = new Date().getTime();
+            //currentWidget.setValue(currentFileValue);
             currentWidget.uploadingFiles++;
-            this._setVisibilitySavingMenu("disabled");
             formData.append('dcpFile', firstFile);
 
             inputText.addClass("dcpAttribute__value--transferring");
@@ -402,10 +403,8 @@
             }).done(function wFileUploadDone(data)
             {
                 var dataFile = data.data.file;
-
-                currentWidget.uploadingFiles--;
-
-                currentWidget.setValue({
+                var event = {prevent: false};
+                var fileValue = {
                     value: dataFile.reference,
                     size: dataFile.size,
                     fileName: dataFile.fileName,
@@ -414,13 +413,25 @@
                     thumbnail: dataFile.thumbnailUrl,
                     url: dataFile.downloadUrl,
                     icon: dataFile.iconUrl
-                });
+                };
 
-                currentWidget._setVisibilitySavingMenu("visible");
+                currentWidget.uploadingFiles--;
+
+                currentWidget.setValue(fileValue);
+                currentWidget._trigger("uploadfiledone", event, {
+                    $el: currentWidget.element,
+                    index: currentWidget._getIndex(),
+                    file: fileValue
+                });
 
             }).fail(function wFileUploadFail(data)
             {
                 currentWidget.uploadingFiles--;
+                currentWidget._trigger("uploadfiledone", event, {
+                    $el: currentWidget.element,
+                    index: currentWidget._getIndex(),
+                    file: null
+                });
                 inputText.css("background-image", "url(" + currentWidget.options.attributeValue.icon + ')');
                 var result = JSON.parse(data.responseText);
                 if (result) {
@@ -444,7 +455,6 @@
                     });
                 }
 
-                currentWidget._setVisibilitySavingMenu("visible");
             }).always(function wFileUploadEnd()
             {
                 inputText.val(originalText);

@@ -43,6 +43,7 @@ define([
             "dcplabelexternallinkselected": "externalLinkSelected",
             "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
             "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
+            "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
             "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
             "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
         },
@@ -193,19 +194,21 @@ define([
 
             if (this.model.isInArray()) {
                 values = _.toArray(values);
-                _.each(values, function analyzeValues(currentValue, index) {
+                _.each(values, function analyzeValues(currentValue, index)
+                {
                     if (_.isUndefined(currentValue)) {
                         return;
                     }
-                    var cssIndex='.dcpAttribute__content--widget[data-attrid="'+model.id+'"]';
+                    var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
                     $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
-                        function vAttributeRefreshOneValue(index, element) {
+                        function vAttributeRefreshOneValue(index, element)
+                        {
                             scope.widgetApply($(element), "setValue", currentValue);
                         });
                 });
 
             } else {
-                this.widgetApply(allWrapper.find('.dcpAttribute__content--widget[data-attrid="'+model.id+'"]'), "setValue", values);
+                this.widgetApply(allWrapper.find('.dcpAttribute__content--widget[data-attrid="' + model.id + '"]'), "setValue", values);
             }
         },
 
@@ -285,7 +288,8 @@ define([
          */
         loadDocument: function changeAttributesValueLoadDocument(event, options)
         {
-            var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"), documentModel = this.model.getDocumentModel(), revision = -1;
+            var index = options.index, initid = null, attributeValue = this.model.get("attributeValue"),
+                documentModel = this.model.getDocumentModel(), revision = -1;
             if (_.isUndefined(index)) {
                 initid = attributeValue.value;
                 revision = attributeValue.revision;
@@ -320,7 +324,7 @@ define([
          */
         displayFormDocument: function vAttributedisplayFormDocument(event, buttonConfig, index)
         {
-            var attrid=this.model.id;
+            var attrid = this.model.id;
             if (buttonConfig.createLabel) {
                 var documentModel = this.model.getDocumentModel();
 
@@ -375,6 +379,12 @@ define([
             if (event.prevent) {
                 widgetEvent.preventDefault();
             }
+        },
+        uploadFileDone: function vAttributeuploadFileSEnd(widgetEvent, options)
+        {
+            var event = {prevent: false};
+
+            this.model.trigger("uploadFileDone", event, this.model.id, options);
         },
 
         anchorClick: function vAttributeAnchorClick(widgetEvent, options)
@@ -477,19 +487,21 @@ define([
                 externalOptions = {
                     setResult: function vAttributeAutoCompleteSet(content)
                     {
-                        _.each(content, function (item) {
+                        _.each(content, function (item)
+                        {
                             if (item.message) {
-                                item.message.contentText=item.message.contentText || '';
-                                item.message.contentHtml=item.message.contentHtml || '';
-                                item.message.type=item.message.type || 'message';
-                            } else if (item.error) {
-                                item.message={
-                                    contentHtml:'',
-                                    contentText:item.error,
-                                    type:"error"
+                                item.message.contentText = item.message.contentText || '';
+                                item.message.contentHtml = item.message.contentHtml || '';
+                                item.message.type = item.message.type || 'message';
+                            } else
+                                if (item.error) {
+                                    item.message = {
+                                        contentHtml: '',
+                                        contentText: item.error,
+                                        type: "error"
+                                    }
                                 }
-                            }
-                            item.title=item.title || '';
+                            item.title = item.title || '';
 
                         });
                         success(content);
@@ -516,10 +528,10 @@ define([
             if (event.prevent) {
                 return this;
             }
-            autocompleteUrl="api/v1/documents/"+(documentModel.id || "0" )+"/autocomplete/" + this.model.id;
+            autocompleteUrl = "api/v1/documents/" + (documentModel.id || "0" ) + "/autocomplete/" + this.model.id;
 
 
-            options.data.fromid=documentModel.get("properties").get("family").id;
+            options.data.fromid = documentModel.get("properties").get("family").id;
 
             $.ajax({
                 type: "POST",
@@ -552,12 +564,13 @@ define([
             ).then(function vAttributeAutocompleteSuccessResult(result)
                 {
                     // notify the data source that the request succeeded
-                    _.each(result.messages, function (message) {
-                        message.contentText=message.contentText || '';
-                        message.contentHtml=message.contentHtml || '';
+                    _.each(result.messages, function (message)
+                    {
+                        message.contentText = message.contentText || '';
+                        message.contentHtml = message.contentHtml || '';
                         result.data.unshift({
-                            message:message,
-                            title:''
+                            message: message,
+                            title: ''
                         });
                     });
                     success(result.data);
