@@ -104,10 +104,12 @@
                 this.options.isMultiple = true;
                 _.each(this.options.attributeValue, function wEnumDisplayOthers(singleValue)
                 {
-                    singleValue.exists = (singleValue.exists !== false);
+                    if (singleValue) {
+                        singleValue.exists = (singleValue.exists !== false);
 
-                    if (singleValue.exists === false) {
-                        singleValue.displayValue = Mustache.render(currentWidget.options.labels.displayOtherChoice, singleValue);
+                        if (singleValue.exists === false) {
+                            singleValue.displayValue = Mustache.render(currentWidget.options.labels.displayOtherChoice, singleValue);
+                        }
                     }
                 });
             } else {
@@ -248,7 +250,11 @@
             var selectedValues = [];
             var isIn = false;
             var item;
-            var values = _.toArray(this.options.attributeValue);
+            var values = [];
+
+            if (this.options.attributeValue && this.options.attributeValue.value !== null) {
+                values = _.toArray(this.options.attributeValue);
+            }
 
             if (this.options.renderOptions.useSourceUri) {
                 source = values;
@@ -819,15 +825,17 @@
                                 if ($this.data("togglevalue").toString() === value.value) {
                                     if (!$this.hasClass("selected")) {
                                         if ($this.hasClass("on")) {
-                                            isOn=true;
+                                            isOn = true;
                                             $this.removeClass("on").addClass("off");
-                                        } else if ($this.hasClass("off")) {
-                                            $this.removeClass("off").addClass("on");
-                                            isOn=false;
-                                        }
+                                        } else
+                                            if ($this.hasClass("off")) {
+                                                $this.removeClass("off").addClass("on");
+                                                isOn = false;
+                                            }
                                         $this.addClass("selected").removeClass("unselected");
 
-                                        _.defer(function wEnumAnimateBool() {
+                                        _.defer(function wEnumAnimateBool()
+                                        {
                                             if (isOn === true) {
                                                 $this.addClass("on").removeClass("off");
                                             } else {

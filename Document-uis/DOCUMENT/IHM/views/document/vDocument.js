@@ -1014,10 +1014,15 @@ define([
         {
             var text = i18n.___("Loading", "ddui"), avance = 50;
             options = options || {};
-            this.$el.append('<div class="dcpDocument--disabled"/>');
+            if (this.$el.find(".dcpDocument--disabled") === 0) {
+                this.$el.append('<div class="dcpDocument--disabled"/>');
+            }
             if (options.isSaving) {
                 text = i18n.___("Recording", "ddui");
                 avance = 70;
+            }
+            if (options.text) {
+                text=options.text;
             }
             this.trigger("cleanNotification");
             this.trigger("loaderShow", text, avance);

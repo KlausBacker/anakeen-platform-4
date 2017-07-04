@@ -338,6 +338,8 @@
             var originalBgColor = inputText.css("background-color");
             var currentWidget = this;
             var event = {prevent: false};
+            var currentFileValue = this.options.attributeValue;
+            var $inputFile = this.element.find("input[type=file]");
 
             if (!this.uploadCondition(firstFile)) {
                 return;
@@ -351,10 +353,10 @@
             if (!isNotPrevented) {
                 return;
             }
-
+            //currentWidget.setValue(currentFileValue);
             currentWidget.uploadingFiles++;
-            this._setVisibilitySavingMenu("disabled");
             formData.append('dcpFile', firstFile);
+            $inputFile.prop("disabled", true);
 
             inputText.addClass("dcpAttribute__value--transferring");
             var infoBgColor = inputText.css("background-color");
@@ -402,10 +404,8 @@
             }).done(function wFileUploadDone(data)
             {
                 var dataFile = data.data.file;
-
-                currentWidget.uploadingFiles--;
-
-                currentWidget.setValue({
+                var event = {prevent: false};
+                var fileValue = {
                     value: dataFile.reference,
                     size: dataFile.size,
                     fileName: dataFile.fileName,
@@ -414,13 +414,25 @@
                     thumbnail: dataFile.thumbnailUrl,
                     url: dataFile.downloadUrl,
                     icon: dataFile.iconUrl
-                });
+                };
 
-                currentWidget._setVisibilitySavingMenu("visible");
+                currentWidget.uploadingFiles--;
+
+                currentWidget.setValue(fileValue);
+                currentWidget._trigger("uploadfiledone", event, {
+                    $el: currentWidget.element,
+                    index: currentWidget._getIndex(),
+                    file: fileValue
+                });
 
             }).fail(function wFileUploadFail(data)
             {
                 currentWidget.uploadingFiles--;
+                currentWidget._trigger("uploadfiledone", event, {
+                    $el: currentWidget.element,
+                    index: currentWidget._getIndex(),
+                    file: null
+                });
                 inputText.css("background-image", "url(" + currentWidget.options.attributeValue.icon + ')');
                 var result = JSON.parse(data.responseText);
                 if (result) {
@@ -444,9 +456,9 @@
                     });
                 }
 
-                currentWidget._setVisibilitySavingMenu("visible");
             }).always(function wFileUploadEnd()
             {
+                $inputFile.prop("disabled", false);
                 inputText.val(originalText);
                 inputText.css("background", "");
                 inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");

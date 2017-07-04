@@ -22,7 +22,7 @@
         "attributeArrayChange", "actionClick",
         "attributeAnchorClick",
         "beforeClose", "close",
-        "beforeSave", "afterSave", "attributeDownloadFile", "attributeUploadFile",
+        "beforeSave", "afterSave", "attributeDownloadFile", "attributeUploadFile", "attributeUploadFileDone",
         "beforeDelete", "afterDelete",
         "beforeRestore", "afterRestore",
         "failTransition", "successTransition",

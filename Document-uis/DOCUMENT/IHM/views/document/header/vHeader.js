@@ -33,7 +33,8 @@ define([
          */
         render: function vheaderRender()
         {
-            var data = this.model.toData(), properties = this.model.getModelProperties(), security = properties.security || false;
+            var data = this.model.toData(), properties = this.model.getModelProperties(),
+                security = properties.security || false;
 
             data.document.properties = properties;
 
@@ -49,8 +50,8 @@ define([
             }));
 
             $header.find(".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified").tooltip({
-                placement:"bottom",
-                html:true
+                placement: "bottom",
+                html: true
             });
 
             return this;
@@ -84,8 +85,9 @@ define([
             }
             throw new Error("Unknown template  " + key);
         },
-        documentHasChanged :function vheaderdocumentHasChanged() {
-            var wTitle=window.document.title.replace(/^\*+/g, "");
+        documentHasChanged: function vheaderdocumentHasChanged()
+        {
+            var wTitle = window.document.title.replace(/^\*+/g, "");
 
             if (this.model.hasAttributesChanged()) {
                 this.$el.find(".dcpDocument__header__modified").show();
@@ -93,6 +95,11 @@ define([
             } else {
                 this.$el.find(".dcpDocument__header__modified").hide();
                 window.document.title = wTitle;
+            }
+            if (this.model.hasUploadingFile()) {
+                this.$el.find(".dcpDocument__header__modified").addClass("fa-spin");
+            } else {
+                this.$el.find(".dcpDocument__header__modified").removeClass("fa-spin");
             }
         }
 
