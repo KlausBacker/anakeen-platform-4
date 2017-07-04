@@ -28,7 +28,9 @@
         "failTransition", "successTransition",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
-        "destroy"
+        "destroy", "attributeCreateDialogDocumentBeforeSetFormValues",
+        "attributeCreateDialogDocumentBeforeSetTargetValue", "attributeCreateDialogDocumentReady",
+        "attributeCreateDialogDocumentBeforeClose", "attributeCreateDialogDocumentBeforeDestroy"
     ];
 
     //Create a new kind of event
