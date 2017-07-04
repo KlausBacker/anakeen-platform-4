@@ -339,6 +339,7 @@
             var currentWidget = this;
             var event = {prevent: false};
             var currentFileValue = this.options.attributeValue;
+            var $inputFile = this.element.find("input[type=file]");
 
             if (!this.uploadCondition(firstFile)) {
                 return;
@@ -352,10 +353,10 @@
             if (!isNotPrevented) {
                 return;
             }
-            currentFileValue.uploadStartData = new Date().getTime();
             //currentWidget.setValue(currentFileValue);
             currentWidget.uploadingFiles++;
             formData.append('dcpFile', firstFile);
+            $inputFile.prop("disabled", true);
 
             inputText.addClass("dcpAttribute__value--transferring");
             var infoBgColor = inputText.css("background-color");
@@ -457,6 +458,7 @@
 
             }).always(function wFileUploadEnd()
             {
+                $inputFile.prop("disabled", false);
                 inputText.val(originalText);
                 inputText.css("background", "");
                 inputText.removeClass("progress-bar active progress-bar-striped dcpAttribute__value--transferring dcpAttribute__value--recording");
