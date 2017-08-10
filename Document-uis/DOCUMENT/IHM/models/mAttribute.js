@@ -64,6 +64,7 @@ define([
         },
 
         isDisplayable : function mAttributeisDisplayable() {
+            var canBeDisplayable;
             if (this.get("mode") === "hidden") {
                 return false;
             }
@@ -72,7 +73,11 @@ define([
                     if (this.getOption('showEmptyContent') !== null) {
                         return true;
                     } else {
-                        return (this.get("attributeValue") && this.get("attributeValue").value !== null);
+                        canBeDisplayable = (this.get("attributeValue") && this.get("attributeValue").value !== null);
+                        if (_.isArray(this.get("attributeValue"))) {
+                            canBeDisplayable = _.isArray(this.get("attributeValue")) && this.get("attributeValue").length > 0;
+                        }
+                        return canBeDisplayable;
                     }
                 } else if (this.get("mode") === "write") {
                     return true;
