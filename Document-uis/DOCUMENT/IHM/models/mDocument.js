@@ -544,12 +544,12 @@ define([
         /**
          * Validate the content of the model before synchro
          */
-        validate: function mDocumentvalidate()
+        validate: function mDocumentvalidate(documentElements, options)
         {
             var success = true,
                 currentDocument = this,
                 errorMessage = [], event = {prevent: false},
-                templateMessage;
+                templateMessage, error;
             try {
                 this.trigger("validate", event);
                 if (event.prevent) {
@@ -571,7 +571,11 @@ define([
                                 // Verify each index
                                 _.each(currentValue, function mDocumentvalidateArray(attributeValue, index)
                                 {
-                                    if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0) {
+                                    //If the attribute is multiple we check if the array has a size superior to 0
+                                    if ((_.isArray(attributeValue) && attributeValue.length > 0)) {
+                                        return;
+                                    }
+                                    if ((!attributeValue || !attributeValue.value) && attributeValue.value !== 0 ) {
                                         currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"), index);
 
                                         templateMessage = _.template(i18n.___("{{parentLabel}} / {{label}} (row # {{index}}) is needed", "ddui"), {escape: /\{\{(.+?)\}\}/g});
@@ -624,11 +628,13 @@ define([
                     }
                 });
                 if (!success) {
-                    return {
+                    error = {
                         title: i18n.___("Unable to save", "ddui"),
                         message: errorMessage.join(', ' + "\n"),
                         errorCode: "attributeNeeded"
                     };
+                    options.error(_.extend({"eventPrevented" : true}, error));
+                    return error;
                 }
             } catch (e) {
                 console.error("Unable to validate");
