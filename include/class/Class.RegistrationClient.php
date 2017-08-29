@@ -174,7 +174,8 @@ class RegistrationClient
     private function _getResponse($response)
     {
         $content_type = $response['content-type'];
-        if ($content_type != 'text/xml') {
+        if (!preg_match('!^[^/]+/xml\b!', $content_type)) {
+            /* Match XML content-types 'text/xml', 'application/xml; charset=UTF-8', etc. */
             $err = sprintf("Bad content-type '%s' in response with HTTP code '%s'.", $content_type, $response['code']);
             $this->last_error = $err;
             return false;
