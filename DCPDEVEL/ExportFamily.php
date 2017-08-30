@@ -40,6 +40,7 @@ class ExportFamily
         }
         $this->contentDescription['name'] = $this->family->name;
         $this->contentDescription['parent'] = $this->family->fromname;
+        $this->getDocumentToExport();
     }
 
     /**
@@ -167,29 +168,44 @@ class ExportFamily
 
         $data[] = ["//BEGIN", "Parent family", "Family title", "", "", "Family name"];
         $data[] = ["BEGIN", $this->family->fromname, "", "", "", $this->family->name];
+
         $fout = fopen($filename, "a");
-        if ($this->family->profid) {
-            $configDocument = new_Doc("", $this->family->profid);
-            $data[] = ["PROFID", ($configDocument->name) ? $configDocument->name : $configDocument->id];
-            if ($this->family->profid == $this->family->id) {
-                $this->export->exportProfil($fout, $configDocument->id);
-            } else {
-                $this->exportDocument($configDocument, $fout);
+        foreach ($this->exportDocuments as $exportData) {
+            if (substr($exportData["index"],0,2) === 'f-') {
+                $configDocument = new_Doc("", $exportData['docid']);
+                if (!$configDocument->isAlive()) {
+                    throw new Exception(
+                        sprintf(
+                            "Export Document %s (%s)not alive",
+                            $exportData["docid"],
+                            $exportData["index"]
+                        )
+                    );
+                }
+                switch ($exportData["index"]) {
+                    case 'f-profid':
+                        $data[] = ["PROFID", ($configDocument->name) ? $configDocument->name : $configDocument->id];
+                        if ($exportData['docid'] == $this->family->id) {
+                            $this->export->exportProfil($fout, $configDocument->id);
+                        } else {
+                            $this->exportDocument($configDocument, $fout);
+                        }
+                        break;
+                    case 'f-cprofid':
+                        $data[] = ["CPROFID", ($configDocument->name) ? $configDocument->name : $configDocument->id];
+                        $this->exportDocument($configDocument, $fout);
+                        break;
+                    case 'f-cvmask':
+                        $this->exportDocument($configDocument, $fout);
+                    case 'f-ccvid':
+                        $data[] = ["CVID", ($configDocument->name) ? $configDocument->name : $configDocument->id];
+                        $this->exportDocument($configDocument, $fout);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-        if ($this->family->cprofid) {
-            $configDocument = new_Doc("", $this->family->cprofid);
-            $data[] = ["CPROFID", ($configDocument->name) ? $configDocument->name : $configDocument->id];
-
-            $this->exportDocument($configDocument, $fout);
-        }
-        if ($this->family->ccvid) {
-            $configDocument = new_Doc("", $this->family->ccvid);
-            $data[] = ["CVID", ($configDocument->name) ? $configDocument->name : $configDocument->id];
-
-            $this->exportDocument($configDocument, $fout);
-        }
-
         fclose($fout);
 
         $data = array_merge($data, $this->getStruct(true));
@@ -403,8 +419,7 @@ class ExportFamily
             $filename = sprintf("%s/%s__WORKFLOW.csv", $this->workDirectory, $this->family->name);
 
             $fout = fopen($filename, "a");
-            $exportDocuments = $this->getDocumentToExport();
-            foreach ($exportDocuments as $exportData) {
+            foreach ($this->exportDocuments as $exportData) {
                 if ($exportData["index"][0] === "w") {
                     $doc = new_Doc("", $exportData["docid"]);
                     if (!$doc->isAlive()) {
@@ -501,7 +516,7 @@ class ExportFamily
             foreach ($tmskid as $imsk) {
                 $this->addDocumentToExport($imsk, "f-cvmask");
             }
-            $this->addDocumentToExport($this->family->ccvid, "cv");
+            $this->addDocumentToExport($this->family->ccvid, "f-ccvid");
         }
         if ($this->family->wid > 0) {
             /**
