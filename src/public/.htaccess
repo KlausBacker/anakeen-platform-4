@@ -3,7 +3,7 @@ php_value upload_max_filesize "80M"
 php_value default_charset utf-8
 php_value magic_quotes_gpc "Off"
 
-php_value session.save_path "/var/www/dynacase/var/session"
+php_value session.save_path "../var/session"
 php_value session.gc_maxlifetime 2147483647
 
 SetEnv FREEDOM_ACCESS CORE
@@ -36,7 +36,7 @@ Options -Indexes
 </FilesMatch>
 
 
-<FilesMatch "^(admin|index|indexq|guest|data|nu|notifier|authent).php$">
+<FilesMatch ".php$">
         Order Deny,Allow
         Allow from All
         Header set X-UA-Compatible "IE=Edge"

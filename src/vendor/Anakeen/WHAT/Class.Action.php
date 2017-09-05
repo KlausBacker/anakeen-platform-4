@@ -566,17 +566,18 @@ create sequence SEQ_ID_ACTION;
         }
         
         $this->log->push("{$this->parent->name}:{$this->name}");
-        $pubdir = DEFAULT_PUBDIR;
+        $appDir = DEFAULT_PUBDIR."/Apps";
         if ($this->layout != "") {
             $layout = $this->GetLayoutFile($this->layout);
         } else {
             $layout = "";
         }
+
         $this->lay = new Layout($layout, $this);
         if (isset($this->script) && $this->script != "") {
-            $script = $pubdir . "/" . $this->parent->name . "/" . $this->script;
+            $script = $appDir . "/" . $this->parent->name . "/" . $this->script;
             if (!file_exists($script)) // try generic application
-            $script = $pubdir . "/" . $this->parent->childof . "/" . $this->script;
+            $script = $appDir . "/" . $this->parent->childof . "/" . $this->script;
             
             if (file_exists($script)) {
                 include_once ($script);

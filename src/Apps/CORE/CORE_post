@@ -13,7 +13,7 @@ fi
 #post installation
 #------------------------------
 if [ "$1" = "I" ] ; then
-
+    echo "See CORE_init";
 
 fi
 
@@ -34,11 +34,11 @@ if [ "$1" = "U" ] ; then
     fi
 
     #add permission functionnalities
-    log "Executing '$wpub/WHAT/getprivilege.sql' in database service $pgservice_core..."
-    PGSERVICE=$pgservice_core pgExecuteSqlFile "$wpub"/WHAT/getprivilege.sql
+    log "Executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' in database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgExecuteSqlFile "$wpub"/vendor/Anakeen/WHAT/getprivilege.sql
     RET=$?
     if [ $RET -ne 0 ]; then
-	echo "An error occured while executing '$wpub/WHAT/getprivilege.sql' : $RET"
+	echo "An error occured while executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' : $RET"
 	exit $RET
     fi
 

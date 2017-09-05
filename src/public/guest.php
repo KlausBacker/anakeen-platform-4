@@ -14,6 +14,7 @@
 /**
  */
 
+require_once __DIR__."/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 include_once ('WHAT/Class.ActionRouter.php');
 
 $allowGuest = getParam('CORE_ALLOW_GUEST', 'no');
