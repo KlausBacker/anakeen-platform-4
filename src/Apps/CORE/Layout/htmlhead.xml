@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<link rel="icon" href="[DYNACASE_FAVICO]" />
+<link rel="SHORTCUT ICON" href="[DYNACASE_FAVICO]" />
+   <title>[TITLE]</title>
+[CSS:CUSTOMREF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+[JS:REF]
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="core">
+
+<!-- END HEAD HTML -->

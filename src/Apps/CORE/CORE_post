@@ -1,0 +1,80 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+    echo "Env variable pgservice_core is empty !"
+    echo "Check your context for missing or misconfigured environment variables."
+    exit 1
+fi
+
+. "$wpub"/log.sh
+. "$wpub"/libutil.sh
+
+#------------------------------
+#post installation
+#------------------------------
+if [ "$1" = "I" ] ; then
+
+
+fi
+
+
+#------------------------------
+#post update
+#------------------------------
+if [ "$1" = "U" ] ; then
+
+    log "Setting database parameters..."
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while setting standard_conforming_strings to 'off'."
+	exit $RET
+    fi
+
+    #add permission functionnalities
+    log "Executing '$wpub/WHAT/getprivilege.sql' in database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgExecuteSqlFile "$wpub"/WHAT/getprivilege.sql
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while executing '$wpub/WHAT/getprivilege.sql' : $RET"
+	exit $RET
+    fi
+
+
+    echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql
+fi
+
+#------------------------------
+#post uninstallation
+#------------------------------
+if [ "$1" = "D" ] ; then
+
+  set -e
+
+#  grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
+#  mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
+#
+#  # Remove what from syslog
+#  echo "Remove what.log from syslog"
+#  cp /etc/syslog.conf /etc/syslog.conf.sav
+#  cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
+#  /etc/rc.d/init.d/syslog restart
+#  rm -f /etc/logrotate.d/what
+#
+#  # drop anakeen database and user
+#  log "The $dbname database will be dropped, we save a dump in /tmp/anakeen$$.dump"
+#  sulog  postgres  "pg_dump -d $dbname >/tmp/anakeen$$.dump"
+#  sulog  postgres  "dropuser anakeen" 
+#  sulog  postgres  "dropdb $dbname"
+#
+#  log "Unregister DB $dbname for automatic dump"
+#  mv /etc/ankpsql-tools/base-list /etc/ankpsql-tools/base-list.old
+#  cat /etc/ankpsql-tools/base-list.old | grep -v "^$dbname$" > /etc/ankpsql-tools/base-list
+#  rm -f /etc/ankpsql-tools/base-list.old
+fi
+
+exit 0
+
+# vim: set tabstop=8 softtabstop=4 shiftwidth=4 noexpandtab:

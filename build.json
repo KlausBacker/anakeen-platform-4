@@ -1,0 +1,14 @@
+{
+    "moduleName" : "anakeen-core",
+    "version" : "4.0.0",
+    "release" : "0",
+    "application" : [],
+    "includedPath2" : ["locale", "API", "config", "TOOLBOX", "var", "vendor", "programs", "public"],
+    "includedPath" : ["."],
+    "lang" : ["fr","en"],
+    "csvParam" : {"enclosure" : "\"", "delimiter": ";"},
+    "dynacase-devtool" : {
+            "uri" : "git@github.com:Anakeen/development-tools.git",
+            "tag" : "3.2"
+    }
+}

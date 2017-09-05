@@ -1,0 +1,1967 @@
+<?php
+/*
+ * @author Anakeen
+ * @package FDL
+*/
+/**
+ * Get Html form inputs for documents
+ * @class DocFormFormat
+ *
+ */
+class DocFormFormat
+{
+    /**
+     * @var Doc
+     */
+    public $doc = null;
+    private $index = - 1;
+    /**
+     * @var NormalAttribute
+     */
+    private $oattr = null;
+    /**
+     * @var bool use td tag has button separator
+     */
+    private $notd = false;
+    /**
+     * @var string current attribute id
+     */
+    private $attrid;
+    /**
+     * @var string current attribute HTML name (ie with _ prefix)
+     */
+    private $attrin;
+    /**
+     * @var string current attribute HTML id with index
+     */
+    private $attridk;
+    /**
+     * @var string current attribute visibility
+     */
+    private $visibility;
+    /**
+     * @var boolean the attribute is in the non visible duplicable line
+     *
+     */
+    private $isInDuplicableTableLine = false;
+    private $classname;
+    /**
+     * @var int current document id
+     */
+    private $docid;
+    private $onChange;
+    private $linkPrefix;
+    /**
+     * @var string mode option for  specific interface
+     */
+    private $iOptions;
+    /**
+     * @var string js disabled attribute
+     */
+    private $idisabled;
+    /**
+     * @var string add an javascript callback on input (like onblur or onmouseover)
+     */
+    private $jsEvents = '';
+    
+    const arrayIndex = '__1x_';
+    
+    public function __construct(Doc & $doc)
+    {
+        $this->setDoc($doc);
+    }
+    
+    public function setDoc(Doc & $doc)
+    {
+        $this->doc = $doc;
+    }
+    /**
+     * add TD HTML tag between input and button
+     * @param bool $usetd
+     */
+    public function useTd($usetd)
+    {
+        $this->notd = (!$usetd);
+    }
+    /**
+     * add some js handler un input like onmouseover="alert('foo')"
+     * @param string $jsEvent
+     */
+    public function setJsEvents($jsEvent)
+    {
+        $this->jsEvents = $jsEvent;
+    }
+    /**
+     * Compose html code to insert input
+     * @param NormalAttribute &$oattr attribute to edit
+     * @param string $value value of the attribute
+     * @param string $index in case of array : row of the array
+     * @return mixed|string
+     */
+    function getHtmlInput(&$oattr, $value, $index = "")
+    {
+        global $action;
+        $this->oattr = $oattr;
+        $this->index = $index;
+        $docid = intval($this->doc->id);
+        if ($docid == 0) $docid = intval($this->doc->fromid);
+        $attrtype = $this->oattr->type;
+        $usephpfunc = true;
+        $alone = $this->oattr->isAlone; // set by method caller in special case to display alone
+        $this->linkPrefix = "";
+        $attrid = $this->oattr->id;
+        $attrin = '_' . $this->oattr->id; // for js name => for return values from client
+        if ($this->index !== "") $attridk = $this->oattr->id . '_' . $this->index;
+        else $attridk = $this->oattr->id . $this->index;
+        $this->isInDuplicableTableLine = false;
+        if ($this->oattr->inArray()) {
+            if ($this->index == - 1) {
+                $attrin.= '[-1]';
+                $attridk = $this->oattr->id . DocFormFormat::arrayIndex;
+                $this->isInDuplicableTableLine = true;
+            } else $attrin.= "[{$this->index}]";
+        }
+        if (isset($this->oattr->mvisibility)) $this->visibility = $this->oattr->mvisibility;
+        else $this->visibility = $this->oattr->visibility;
+        if ($this->visibility == "I") return ""; // not editable attribute
+        $this->idisabled = ' disabled="disabled" readonly="readonly" visibility="S"  title="' . _("read only") . '" ';
+        $input = "";
+        
+        if (!$this->notd) $classname = "class=\"fullresize\"";
+        else $classname = "";
+        if ($this->isInDuplicableTableLine == false) {
+            $this->isInDuplicableTableLine = ($this->index === DocFormFormat::arrayIndex);
+        }
+        $this->attrid = $this->oattr->id;
+        $this->docid = $docid;
+        $this->attrin = $attrin;
+        $this->attridk = $attridk;
+        $this->classname = $classname;
+        if (($this->visibility == "H") || ($this->visibility == "R")) {
+            $input = "<input  type=\"hidden\" name=\"" . $attrin . "\" value=\"" . chop(htmlentities(($value) , ENT_COMPAT, "UTF-8")) . "\"";
+            $input.= " id=\"" . $attridk . "\" ";
+            $input.= " > ";
+            if (!$this->notd) $input.= '</td><td class="hiddenAttribute">';
+            return $input;
+        }
+        
+        $this->onChange = $this->jsEvents;
+        if ($docid == 0) {
+            // case of specific interface
+            if ($this->oattr->phpfile != '' && $this->oattr->phpfunc != '') {
+                $acId = $this->_newAcId($action, array(
+                    'phpfile' => $this->oattr->phpfile,
+                    'phpfunc' => $this->oattr->phpfunc,
+                    'label' => $this->oattr->getLabel()
+                ));
+                $this->iOptions = sprintf('&acid=%s', $acId);
+            }
+        } else $this->iOptions = "";
+        if (($this->oattr->type != "array") && ($this->oattr->type != "htmltext") && ($this->oattr->type != "docid")) {
+            if ($this->visibility != "S") {
+                if ($usephpfunc && ($this->oattr->phpfunc != "") && ($this->oattr->phpfile != "") && ($this->oattr->type != "enum") && ($this->oattr->type != "enumlist")) {
+                    if ($this->oattr->getOption("autosuggest", "yes") != "no") {
+                        $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $docid . ",this,'{$this->iOptions}','$attrid','{$this->index}')\" ";
+                        $this->onChange.= $autocomplete;
+                    }
+                }
+            }
+        }
+        // output change with type
+        switch ($attrtype) {
+                //----------------------------------------
+                
+            case "image":
+                $input = $this->formatImage($value);
+                break;
+
+            case "file":
+                $input = $this->formatFile($value);
+                break;
+
+            case "longtext":
+            case "xml":
+                $input = $this->formatLongText($value);
+                break;
+
+            case "htmltext":
+                $input = $this->formatHtmlText($value);
+                break;
+
+            case "array":
+                $input = $this->formatArray();
+                break;
+
+            case "thesaurus":
+                $input = $this->formatThesaurus($value);
+                break;
+
+            case "doc":
+                $input = $this->formatDoc($value);
+                break;
+
+            case "docid":
+                $input = $this->formatDocid($value);
+                break;
+
+            case "account":
+                $input = $this->formatAccount($value);
+                break;
+
+            case "enum":
+                $input = $this->formatEnum($value);
+                break;
+
+            case "color":
+                $input = $this->formatColor($value);
+                break;
+
+            case "date":
+                $input = $this->formatDate($value);
+                break;
+
+            case "timestamp":
+                $input = $this->formatTimestamp($value);
+                break;
+
+            case "time":
+                $input = $this->formatTime($value);
+                break;
+
+            case "password":
+                $input = $this->formatPassword($value);
+                break;
+
+            case "option":
+                /** @noinspection PhpDeprecationInspection
+                 * only for very old compatibility
+                 */
+                $input = $this->formatOption($value);
+                break;
+
+            default:
+                
+                if (($this->oattr->repeat) && (!$this->oattr->inArray())) { // textlist
+                    $input = "<textarea {$this->onChange} $classname rows=2 name=\"" . $attrin . "\" ";
+                    $input.= " id=\"" . $attridk . "\" ";
+                    if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+                    $input.= " >\n" . htmlentities((str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8") . "</textarea>";
+                } else {
+                    $hvalue = str_replace(array(
+                        "[",
+                        "$"
+                    ) , array(
+                        "&#091;",
+                        "&#036;"
+                    ) , chop(htmlentities(($value) , ENT_COMPAT, "UTF-8")));
+                    
+                    if ($this->oattr->eformat != "") {
+                        // input help with selector
+                        $lay = new Layout("FDL/Layout/edittextlist.xml", $action);
+                        if ($this->getLayTextOptions($lay, $this->doc, $this->oattr, $value, $attrin, $this->index)) {
+                            if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
+                            else $lay->set("disabled", "");
+                            $lay->set("adisabled", $this->idisabled);
+                            $lay->set("oc", $this->jsEvents);
+                            
+                            if ($this->oattr->eformat == "hlist") $lay->set("atype", "hidden");
+                            else $lay->set("atype", "text");
+                            $input = $lay->gen();
+                            $usephpfunc = false; // disabled default input help
+                            
+                        } else {
+                            $this->oattr->eformat = ""; // restore default display
+                            
+                        }
+                    }
+                    if ($this->oattr->eformat == "") {
+                        //Common representation
+                        $eopt = "$classname ";
+                        $esize = $this->oattr->getOption("esize");
+                        if ($esize > 0) $eopt = "size=$esize";
+                        $elabel = $this->oattr->getOption("elabel");
+                        if ($elabel != "") $eopt.= " title=\"$elabel\"";
+                        $ecolor = $this->oattr->getOption("color");
+                        $estyle = ""; // css style
+                        if ($ecolor != "") $estyle = "color:$ecolor;";
+                        $ealign = $this->oattr->getOption("align");
+                        if ($ealign != "") $estyle.= "text-align:$ealign";
+                        if ($estyle) $estyle = "style=\"$estyle\"";
+                        
+                        $input = "<input {$this->onChange} $eopt $estyle type=\"text\" name=\"" . $attrin . "\" value=\"" . $hvalue . "\"";
+                        $input.= " id=\"" . $attridk . "\" ";
+                        if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+                        $input.= " > ";
+                    }
+                }
+                break;
+            }
+            if (($this->oattr->type != "array")) {
+                if ($this->visibility != "S") {
+                    if ($usephpfunc && ($this->oattr->phpfunc != "") && ($this->oattr->phpfile != "") && ($this->oattr->type != "enum") && ($this->oattr->type != "enumlist")) {
+                        $phpfunc = $this->oattr->phpfunc;
+                        
+                        $linkPrefixCT = "ilink_";
+                        $phpfunc = preg_replace_callback('/([\s|,|:|\(])CT\[([^]]+)\]/', function ($matches) use ($linkPrefixCT)
+                        {
+                            return $matches[1] . $linkPrefixCT . strtolower($matches[2]);
+                        }
+                        , $phpfunc);
+                        // capture title
+                        //if (isUTF8($oattr->getLabel())) $oattr->labelText=utf8_decode($oattr->getLabel());
+                        $ititle = sprintf(_("choose inputs for %s") , str_replace("\"", "&quot;", $this->oattr->getLabel()));
+                        if ($this->oattr->getOption("ititle") != "") $ititle = str_replace("\"", "&quot;", $this->oattr->getOption("ititle"));
+                        if ($phpfunc[0] == "[") {
+                            if (preg_match('/\[(.*)\](.*)/', $phpfunc, $reg)) {
+                                $phpfunc = $reg[2];
+                                $ititle = addslashes($reg[1]);
+                            }
+                        }
+                        if (!$this->notd) $input.= "</td><td class=\"editbutton\">";
+                        
+                        if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i', $phpfunc)) {
+                            $mheight = $this->oattr->getOption('mheight', 30);
+                            $mwidth = $this->oattr->getOption('mwidth', 290);
+                            $input.= "<input id=\"ic_{$this->linkPrefix}$attridk\" type=\"button\" class=\"inlineButton\" value=\"Z\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendSpecialChoice(event,'{$this->linkPrefix}${attridk}'," . $docid . ",'$attrid','{$this->index}','$mheight','$mwidth')\">";
+                        } else {
+                            $ib = "<input id=\"ic_{$this->linkPrefix}$attridk\" type=\"button\" class=\"inlineButton\" value=\"&#133;\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendAutoChoice(event," . $docid . ",this,'{$this->linkPrefix}${attridk}','{$this->iOptions}','$attrid','{$this->index}')\">";
+                            $input.= $ib;
+                        }
+                        // clear button
+                        if (($this->oattr->type == "docid" || $this->oattr->type == "account") && ($this->oattr->getOption("multiple") == "yes")) {
+                            $ib = "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear selected inputs") . "\" disabled " . " onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";
+                            //$input.="</td><td>";
+                            $input.= $ib;
+                        } elseif (preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
+                            
+                            $outsideArg = array();
+                            if ($alone && $this->oattr->type != "docid") {
+                                $arg = array(
+                                    $this->oattr->id
+                                );
+                            } else {
+                                $argids = explode(",", $reg[3]); // output args
+                                $arg = array();
+                                foreach ($argids as $k => $v) {
+                                    $this->linkPrefix = "ilink_";
+                                    $isILink = false;
+                                    $attrId = trim($v);
+                                    if (substr($attrId, 0, strlen($this->linkPrefix)) == $this->linkPrefix) {
+                                        $attrId = substr($attrId, strlen($this->linkPrefix));
+                                        $isILink = true;
+                                    }
+                                    $docAttr = $this->doc->getAttribute($attrId);
+                                    if (is_object($docAttr) && !$docAttr->inArray()) {
+                                        $targid = trim(strtolower($attrId));
+                                        if ($isILink) {
+                                            $targid = $this->linkPrefix . $targid;
+                                        }
+                                        $outsideArg[] = $targid;
+                                    } else {
+                                        $targid = strtolower(trim($attrId));
+                                        if ($isILink) {
+                                            $targid = $this->linkPrefix . $targid;
+                                        }
+                                        if (strlen($attrId) > 1) $arg[$targid] = $targid;
+                                    }
+                                }
+                            }
+                            if (count($arg) > 0 || count($outsideArg) > 0) {
+                                
+                                $jOutsideArg = "";
+                                if (count($arg) == 0) {
+                                    $jarg = "'" . implode("','", $outsideArg) . "'";
+                                } else {
+                                    $jarg = "'" . implode("','", $arg) . "'";
+                                    if (count($outsideArg) > 0) {
+                                        $jOutsideArg = "'" . implode("','", $outsideArg) . "'";
+                                    }
+                                    if (!empty($jOutsideArg)) {
+                                        $jOutsideArg = ",[$jOutsideArg]";
+                                    }
+                                }
+                                
+                                $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs([$jarg],'{$this->index}','$attridk' $jOutsideArg)\">";
+                            }
+                        }
+                    } else if (($this->oattr->type == "date") || ($this->oattr->type == "timestamp")) {
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs(['$attrid'],'{$this->index}')\">";
+                        if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
+                    } else if ($this->oattr->type == "color") {
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearInputs(['$attrid'],'{$this->index}')\">";
+                        $input.= "</td><td class=\"nowrap\">";
+                    } else if ($this->oattr->type == "time") {
+                        $input.= "<input id=\"ix_$attridk\" type=\"button\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear inputs") . "\"" . " onclick=\"clearTime('$attridk')\">";
+                        if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
+                    } else if (($this->oattr->type == "file") || ($this->oattr->type == "image")) {
+                        // $input.= "<input id=\"ix_$attridk\" type=\"button\" style=\"vertical-align:baseline\" class=\"inlineButton\" value=\"&times;\"" . " title=\"" . _("clear file") . "\"" . " title1=\"" . _("clear file") . "\"" . " value1=\"&times;\"" . " title2=\"" . _("restore original file") . "\"" . " value2=\"&minus;\"" . " onclick=\"clearFile(this,'$attridk')\">";
+                        if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
+                    } else {
+                        if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
+                    }
+                } else {
+                    if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
+                }
+                
+                $input.= $this->addDocidCreate($this->oattr, $this->doc, $attridk, $this->index);
+                if ($this->oattr->elink != "" && (!$alone)) {
+                    
+                    $isymbol = $ititle = '';
+                    if (substr($this->oattr->elink, 0, 3) == "JS:") {
+                        // javascript action
+                        $url = $this->elinkEncode($this->doc, $attridk, substr($this->oattr->elink, 3) , $this->index, $ititle, $isymbol);
+                        
+                        $jsfunc = $url;
+                    } else {
+                        $url = $this->elinkEncode($this->doc, $attridk, $this->oattr->elink, $this->index, $ititle, $isymbol);
+                        
+                        $target = $this->oattr->getOption("eltarget", $attrid);
+                        
+                        $jsfunc = "subwindow(300,500,'$target','$url');";
+                    }
+                    
+                    if ($this->oattr->getOption("elsymbol") != "") $isymbol = $this->oattr->getOption("elsymbol");
+                    if ($this->oattr->getOption("eltitle") != "") $ititle = str_replace("\"", "'", $this->oattr->getOption("eltitle"));
+                    $input.= "<input type=\"button\" class=\"inlineButton\" value=\"$isymbol\"" . " title=\"" . $ititle . "\"" . " onclick=\"$jsfunc;";
+                    
+                    $input.= "\">";
+                }
+            } elseif ($this->oattr->type == "htmltext") {
+                if (!$this->notd) $input.= "</td><td class=\"nowrap\">";
+            }
+            
+            return $input;
+        }
+        
+        private function formatImage($value)
+        {
+            $lay = new Layout("FDL/Layout/editimage.xml");
+            $lay->set("downloadUrl", "");
+            $lay->set("imageUrl", "");
+            $lay->set("checkPfc", "");
+            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
+            $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+            if (preg_match(PREGEXPFILE, $value, $reg)) {
+                $dbaccess = getDbAccess();
+                $vf = newFreeVaultFile($dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
+                $info = null;
+                if ($vf->Show($reg[2], $info) == "") {
+                    $vid = $reg[2];
+                    
+                    $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false, $value));
+                    
+                    $fname = $info->name;
+                    
+                    if ($this->oattr->getOption("preventfilechange") == "yes") {
+                        include_once ("FDL/Lib.Vault.php");
+                        $check = vault_uniqname($vid);
+                        $lay->set("checkPfc", $check);
+                        $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
+                    }
+                } else $fname = _("error in filename");
+            } elseif ($value) {
+                global $action;
+                $fname = '';
+                $lay->set("imageUrl", $action->parent->getImageLink($value, '', 30));
+            } else {
+                $fname = _("no image");
+                global $action;
+                $lay->set("imageUrl", $action->parent->getImageLink($this->oattr->getOption("defaultimage", "noimage.png") , '', 30));
+            }
+            
+            $lay->eset("fname", $fname);
+            $lay->set("id", $this->attridk);
+            $lay->set("name", $this->attrin);
+            $lay->eset("value", $value);
+            
+            $lay->set("disable", "");
+            if (($this->visibility == "R") || ($this->visibility == "S")) {
+                
+                $lay->set("disable", $this->idisabled);
+            }
+            
+            return $lay->gen();
+        }
+        
+        private function formatFile($value)
+        {
+            $lay = new Layout("FDL/Layout/editfile.xml");
+            $lay->set("downloadUrl", "");
+            $lay->set("checkPfc", "");
+            $lay->set("DAV", false);
+            $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
+            if (preg_match(PREGEXPFILE, $value, $reg)) {
+                $dbaccess = getDbAccess();
+                $vf = newFreeVaultFile($dbaccess);
+                /**
+                 * @var vaultFileInfo $info
+                 */
+                $info = null;
+                if ($vf->Show($reg[2], $info) == "") {
+                    $vid = $reg[2];
+                    $DAV = getParam("FREEDAV_SERVEUR", false);
+                    
+                    global $action;
+                    if ($DAV) {
+                        $lay->eset("ISIESSL", false);
+                        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/DAV/Layout/getsessionid.js");
+                        $parms = $action->parent->GetAllParam();
+                        if (isset($parms['CORE_ABSURL']) && isset($parms['ISIE']) && $parms['ISIE'] && preg_match('/^https:/i', $parms['CORE_ABSURL'])) {
+                            $lay->eset("ISIESSL", true);
+                        }
+                        
+                        $lay->eset("docid", $this->docid);
+                        $lay->eset("vid", $vid);
+                        $lay->eset("DAV", $DAV);
+                    } else {
+                        $lay->set("downloadUrl", $this->doc->getFileLink($this->attrid, $this->index, false, false));
+                    }
+                    $fname = $info->name;
+                    
+                    if ($this->oattr->getOption("preventfilechange") == "yes") {
+                        include_once ("FDL/Lib.Vault.php");
+                        $check = vault_uniqname($vid);
+                        $lay->set("checkPfc", $check);
+                        $lay->eset("originalValue", $this->doc->vault_filename($this->attrid, false, ($this->index ? $this->index : -1)));
+                    }
+                } else $fname = _("error in filename");
+            } else $fname = _("no filename");
+            
+            $lay->eset("fname", $fname);
+            $lay->set("id", $this->attridk);
+            $lay->set("name", $this->attrin);
+            $lay->eset("value", $value);
+            
+            $lay->set("disable", "");
+            if (($this->visibility == "R") || ($this->visibility == "S")) {
+                
+                $lay->set("disable", $this->idisabled);
+            }
+            
+            return $lay->gen();
+        }
+        /**
+         * HTML input for Longtext attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatLongText($value)
+        {
+            $lh = $this->oattr->getOption("editheight", "2em");
+            $elabel = $this->oattr->getOption("elabel");
+            if ($elabel != "") $this->onChange.= " title=\"$elabel\"";
+            
+            $input = "<textarea {$this->onChange} wrap=\"virtual\"  onkeyup=\"textautovsize(event,this)\"  onclick=\"textautovsize(event,this)\" class=\"autoresize\" style=\"height:$lh\" name=\"" . $this->attrin . "\" ";
+            $input.= " id=\"" . $this->attridk . "\" ";
+            if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+            $input.= " >" . str_replace(array(
+                "[",
+                "$"
+            ) , array(
+                "&#091;",
+                "&#036;"
+            ) , htmlentities((str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8")) . "</textarea>";
+            return $input;
+        }
+        /**
+         * HTML input for Htmltext attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatHtmlText($value)
+        {
+            $prefix = uniqid("");
+            $value = str_replace(array(
+                "[",
+                "&#x5B;",
+                "]"
+            ) , array(
+                "B$prefix",
+                "B$prefix",
+                "D$prefix"
+            ) , $value);
+            $value = \Dcp\Utils\htmlclean::normalizeHTMLFragment(mb_convert_encoding($value, 'HTML-ENTITIES', 'UTF-8') , $error);
+            $value = str_replace(array(
+                "B$prefix",
+                "D$prefix"
+            ) , array(
+                "[",
+                "]"
+            ) , $value);
+            
+            if ($error != '') {
+                addWarningMsg(_("Malformed HTML:") . "\n" . $error);
+            }
+            if ($value === false) {
+                $value = '';
+            }
+            $value = str_replace("[", "&#x5B;", $value);
+            if (($this->visibility == "H") || ($this->visibility == "R")) {
+                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, htmlspecialchars($value));
+            } elseif ($this->visibility == "S") {
+                // no input : just text
+                $input = sprintf('<textarea style="display:none" name="%s" id="%s">%s</textarea>', $this->attrin, $this->attridk, htmlspecialchars($value));
+                if ($value == "") {
+                    $value = '<br/>';
+                }
+                $input.= sprintf('<div class="static" attrid="%s">%s</div>', $this->attrin, $value);
+            } else {
+                global $action;
+                $lay = new Layout("FDL/Layout/ckeditor.xml", $action);
+                $lay->set("Value", str_replace(array(
+                    "\n",
+                    "\r",
+                    "script>",
+                    '&quot;',
+                    '&lt;',
+                    '&gt;'
+                ) , array(
+                    " ",
+                    " ",
+                    "pre>",
+                    '&amp;quot;',
+                    '&amp;lt;',
+                    '&amp;gt;'
+                ) , $value));
+                $lay->set("isInDuplicableTableLine", $this->isInDuplicableTableLine ? "TRUE" : "");
+                $lay->set("label", ucFirst($this->oattr->getLabel()));
+                $lay->set("need", $this->oattr->needed);
+                $jsonconf = $this->oattr->getOption("jsonconf");
+                if (!$jsonconf) {
+                    $imageFamily = new_Doc("", "IMAGE");
+                    $conf = array(
+                        "height" => $this->oattr->getOption("editheight", "150px") ,
+                        "toolbar" => $this->oattr->getOption("toolbar", "Simple") ,
+                        "toolbarCanCollapse" => true,
+                        "toolbarStartupExpanded" => (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? false : true,
+                        "filebrowserImageUploadUrl" => $imageFamily->hasPermission("create") ? '?sole=Y&app=FDL&action=CKUPLOAD' : null
+                    );
+                    
+                    $jsonconf = json_encode($conf);
+                }
+                if ($this->oattr->getOption("doclink")) {
+                    $conf = json_decode($jsonconf, true);
+                    $conf["doclink"] = json_decode($this->oattr->getOption("doclink") , true);
+                    $jsonconf = json_encode($conf);
+                }
+                
+                $lay->set("jsonconf", $jsonconf);
+                
+                $lay->set("allowedContent", ($this->oattr->getOption("allowedcontent") === "all"));
+                $lay->set("height", $this->oattr->getOption("editheight", "150px"));
+                $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
+                $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");
+                $lay->set("aid", $this->attridk);
+                $lay->set("aname", $this->attrin);
+                if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
+                else $lay->set("disabled", "");
+                $input = $lay->gen();
+            }
+            return $input;
+        }
+        /**
+         * HTML input for array attribute
+         * @return string HTML input fragment
+         */
+        private function formatArray()
+        {
+            global $action;
+            $lay = new Layout("FDL/Layout/editarray.xml", $action);
+            $rn = $this->oattr->getOption("roweditzone");
+            if ($rn) $this->getZoneLayArray($lay, $this->doc, $this->oattr, $rn);
+            else $this->getLayArray($lay, $this->doc, $this->oattr);
+            
+            $input = $lay->gen();
+            return $input;
+        }
+        /**
+         * HTML input for Thesaurus attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatThesaurus($value)
+        {
+            
+            $multi = $this->oattr->getOption("multiple");
+            if ($multi) {
+                
+                $lay = new Layout("THESAURUS/Layout/editmultiinputthconcept.xml");
+                $lay->set("atitle", false);
+                $lay->set("elabel", $this->oattr->getOption("elabel", _("Display available choices")));
+                $top = array();
+                if ($value) {
+                    $thids = explode("<BR>", str_replace("\n", "<BR>", $value));
+                    foreach ($thids as $kth => $vth) {
+                        $th = new_doc($this->doc->dbaccess, trim($vth));
+                        if ($th->isAlive()) {
+                            $thtitle = $th->getCustomTitle();
+                            $top[] = array(
+                                "ltitle" => substr($thtitle, 0, 100) ,
+                                "ldocid" => $vth
+                            );
+                        }
+                    }
+                    $lay->setBlockData("options", $top);
+                    $lay->set("size", count($top));
+                } else $lay->set("size", 1); // may be up to zero
+                $lay->set("empty", count($top) == 0);
+            } else {
+                $lay = new Layout("THESAURUS/Layout/editinputthconcept.xml");
+                if ($value) {
+                    $th = new_doc($this->doc->dbaccess, $value);
+                    $thtitle = $th->getCustomTitle();
+                    $lay->set("atitle", $thtitle);
+                } else $lay->set("atitle", false);
+            }
+            $lay->set("value", $value);
+            $lay->set("aname", $this->attrin);
+            $lay->set("aid", $this->attridk);
+            $idth = $this->oattr->format;
+            
+            $thid = $this->doc->getRawValue($idth);
+            if (!$thid) $thid = $idth; // direct logical name
+            $lay->set("thesaurus", $thid);
+            $this->notd = true; // autonome input
+            $input = $lay->gen();
+            return $input;
+        }
+        /**
+         * HTML input for Doc attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatDoc($value)
+        {
+            global $action;
+            $lay = new Layout("FDL/Layout/editadoc.xml", $action);
+            $this->getLayAdoc($lay, $this->oattr, $value, $this->attrin, $this->index);
+            
+            if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
+            else $lay->set("disabled", "");
+            $input = $lay->gen();
+            return $input;
+        }
+        /**
+         * HTML input for Account attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatAccount($value)
+        {
+            if (!$this->oattr->format) {
+                $match = $this->oattr->getOption("match");
+                switch ($match) {
+                    case 'user':
+                        $this->oattr->format = 'IUSER';
+                        break;
+
+                    case 'role':
+                        $this->oattr->format = 'ROLE';
+                        break;
+
+                    case 'group':
+                        $this->oattr->format = 'IGROUP';
+                        break;
+
+                    case 'all':
+                        $this->oattr->format = 'IUSER|IGROUP|ROLE';
+                        break;
+
+                    default:
+                        $this->oattr->format = 'IUSER';
+                        break;
+                }
+            }
+            
+            if (!$this->oattr->phpfile && !$this->oattr->phpfunc) {
+                // use fdlGetAccounts phpfunc
+                $this->oattr->phpfile = 'fdl.php';
+                $this->oattr->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $this->oattr->options, $this->oattr->id);
+            }
+            return $this->formatDocid($value);
+        }
+        /**
+         * HTML input for Docid attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatDocid($value)
+        {
+            global $action;
+            $famid = $this->oattr->format;
+            $textvalue = '';
+            if ($famid) {
+                $needLatest = ($this->oattr->getOption("docrev", "latest") == "latest");
+                // edit document relation
+                $multi = $this->oattr->getOption("multiple");
+                $input = "";
+                $this->linkPrefix = "ilink_";
+                if ($multi == "yes") {
+                    $lay = new Layout("FDL/Layout/editmdoc.xml", $action);
+                    $this->getLayMultiDoc($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
+                    
+                    $cible = "mdocid_work";
+                    if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
+                    else $lay->set("disabled", "");
+                    $lay->set("cible", $cible);
+                    
+                    $input2 = $lay->gen();
+                } else {
+                    $input2 = "";
+                    
+                    if ($this->doc->usefor == "D") $input = "<input type=\"text\" title=\"" . _("real value to set") . "\" name=\"" . $this->attrin . "\"";
+                    else $input = "<input type=\"hidden\"  name=\"" . $this->attrin . "\"";
+                    $input.= " id=\"" . $this->attridk . "\" value=\"$value\">";
+                    $cible = "";
+                    $textvalue = $this->doc->getHtmlTitle(trim($value) , '', $needLatest);
+                }
+                if (!$this->oattr->phpfile) {
+                    $this->oattr->phpfile = "fdl.php";
+                    $this->oattr->phpfunc = "lfamily(D,$famid,{$this->linkPrefix}{$this->attrid}):${cible}{$this->attrid},{$this->linkPrefix}{$this->attrid}";
+                } else {
+                    $phpfunc = preg_replace('/([\s|,|:|\(])CT([\s|,|\)]|$)/', '$1' . $this->linkPrefix . $this->attrid . '$2', $this->oattr->phpfunc);
+                    $phpfunc = str_replace("):{$this->attrid},", "):${cible}{$this->attrid},", $phpfunc);
+                    $phpfunc = str_replace("):" . strtoupper($this->attrid) . ",", "):${cible}{$this->attrid},", $phpfunc);
+                    $this->oattr->phpfunc = $phpfunc;
+                }
+                if ($this->docid == 0) {
+                    // case of specific interface
+                    if ($this->oattr->phpfile != '' && $this->oattr->phpfunc != '') {
+                        $acId = $this->_newAcId($action, array(
+                            'phpfile' => $this->oattr->phpfile,
+                            'phpfunc' => $this->oattr->phpfunc,
+                            'label' => $this->oattr->getLabel()
+                        ));
+                        $this->iOptions = sprintf('&acid=%s', $acId);
+                    }
+                }
+                $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
+                $this->onChange.= $autocomplete;
+                
+                $input.= "<input {$this->classname} $autocomplete {$this->jsEvents} onchange=\"addmdocs('{$this->attrin}');document.isChanged=true\" type=\"text\" name=\"_{$this->linkPrefix}" . substr($this->attrin, 1) . "\"";
+                if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+                $input.= " id=\"{$this->linkPrefix}" . $this->attridk . "\" value=\"" . str_replace('"', '&quot;', $textvalue) . "\">";
+                
+                if (!$cible) {
+                    $this->doc->addparamrefresh($this->attrid, $this->linkPrefix . $this->attrid);
+                } else {
+                    $input = $input2 . $input;
+                }
+            } else {
+                $input = "<input {$this->onChange} {$this->classname}  type=\"text\" name=\"" . $this->attrin . "\" value=\"" . $value . "\"";
+                $input.= " id=\"" . $this->attridk . "\" ";
+                if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+                $input.= " > ";
+            }
+            return $input;
+        }
+        /**
+         * HTML input for Enum attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatEnum($value)
+        {
+            global $action;
+            
+            $trueNotd = $this->notd;
+            if ($this->oattr->eformat == "") $this->oattr->eformat = $this->oattr->getOption("eformat");
+            if (($this->oattr->repeat) && (!$this->oattr->inArray())) { // enumlist
+                switch ($this->oattr->eformat) {
+                    case "vcheck":
+                        $lay = new Layout("FDL/Layout/editenumlistvcheck.xml", $action);
+                        break;
+
+                    case "hcheck":
+                        $lay = new Layout("FDL/Layout/editenumlisthcheck.xml", $action);
+                        break;
+
+                    case "auto":
+                        $lay = new Layout("FDL/Layout/editenumlistauto.xml", $action);
+                        $this->doc->AddParamRefresh($this->oattr->id, "ic_" . $this->oattr->id);
+                        break;
+
+                    default:
+                        $lay = new Layout("FDL/Layout/editenumlist.xml", $action);
+                }
+            } else {
+                $enuml = $this->oattr->getenumlabel(null, false);
+                $lunset = current($enuml);
+                if ($value == "") {
+                    if (($this->oattr->eformat == 'bool') || ($this->oattr->getOption("eunset") != "yes")) $value = key($enuml);
+                    else $value = " ";
+                }
+                switch ($this->oattr->eformat) {
+                    case "vcheck":
+                        $lay = new Layout("FDL/Layout/editenumvcheck.xml", $action);
+                        break;
+
+                    case "hcheck":
+                        $lay = new Layout("FDL/Layout/editenumhcheck.xml", $action);
+                        break;
+
+                    case "auto":
+                        $lay = new Layout("FDL/Layout/editenumauto.xml", $action);
+                        $this->notd = true;
+                        $this->doc->AddParamRefresh($this->oattr->id, "ic_" . $this->oattr->id);
+                        break;
+
+                    case "bool":
+                        $lay = new Layout("FDL/Layout/editenumbool.xml", $action);
+                        $lset = next($enuml);
+                        $boolkeys = array_keys($enuml);
+                        if ($value == key($enuml)) $lay->set("checkedyesno", "checked");
+                        else $lay->rSet("checkedyesno", "");
+                        $lay->eSet("tyesno", sprintf(_("set for %s, unset for %s") , $lset, $lunset));
+                        $lay->eSet("val1", json_encode((string)$boolkeys[0]));
+                        $lay->eSet("val2", json_encode((string)$boolkeys[1]));
+                        break;
+
+                    default:
+                        $lay = new Layout("FDL/Layout/editenum.xml", $action);
+                    }
+                }
+                
+                $this->getLayOptions($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
+                $lay->eSet("msize", $this->oattr->getOption("mselectsize", 3));
+                if (($this->visibility == "R") || ($this->visibility == "S")) $lay->rSet("disabled", $this->idisabled);
+                else $lay->rSet("disabled", "");
+                
+                $lay->rSet("NOTD", ($trueNotd == true));
+                $input = $lay->gen();
+                return $input;
+            }
+            /**
+             * HTML input for Color attribute
+             * @param string $value the row value of input
+             * @return string HTML input fragment
+             */
+            private function formatColor($value)
+            {
+                
+                $eopt = '';
+                $elabel = $this->oattr->getOption("elabel");
+                if ($elabel != "") $eopt.= " title=\"$elabel\"";
+                $input = sprintf('<input size=7 %s style="background-color: %s" type="text" name="%s" value="%s"', $eopt, htmlspecialchars($value, ENT_QUOTES) , htmlspecialchars($this->attrin, ENT_QUOTES) , chop(htmlspecialchars($value, ENT_QUOTES)));
+                $input.= " id=\"" . $this->attridk . "\" ";
+                
+                if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+                else if ($this->doc->usefor != 'D') $input.= ' readonly="readonly"'; // always but default
+                $input.= " class=\"color {pickerOnfocus:true,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
+                
+                $input.= " >&nbsp;";
+                if (!(($this->visibility == "R") || ($this->visibility == "S"))) {
+                    $input.= "<input id=\"ic_{$this->attridk}\" type=\"button\" class=\"inlineButton\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"jscolor.init(); document.getElementById('{$this->attridk}').color.showPicker()\"" . ">";
+                }
+                return $input;
+            }
+            /**
+             * HTML input for Enum attribute
+             * @param string $value the row value of input
+             * @return string HTML input fragment
+             */
+            private function formatDate($value)
+            {
+                global $action;
+                $lay = new Layout("FDL/Layout/editdate.xml", $action);
+                $this->getLayDate($lay, $this->oattr, $value, $this->attrin, $this->index);
+                
+                $lay->set("disabled", "");
+                if (($this->visibility == "R") || ($this->visibility == "S")) {
+                    $lay->set("disabled", $this->idisabled);
+                } else if ($this->doc->usefor != 'D') $lay->set("disabled", ' readonly="readonly"');
+                $lay->set("VIEWCALSEL", (!(($this->visibility == "R") || ($this->visibility == "S"))));
+                
+                $lay->set("CONTROLCAL", (($this->doc->usefor != 'D') && ($this->doc->usefor != 'Q')));
+                $input = trim($lay->gen());
+                return $input;
+            }
+            /**
+             * HTML input for Timestamp attribute
+             * @param string $value the row value of input
+             * @return string HTML input fragment
+             */
+            private function formatTimestamp($value)
+            {
+                global $action;
+                $lay = new Layout("FDL/Layout/edittimestamp.xml", $action);
+                $this->getLayDate($lay, $this->oattr, $value, $this->attrin, $this->index);
+                
+                $lay->set("readonly", false);
+                $lay->set("disabled", "");
+                if (($this->visibility == "R") || ($this->visibility == "S")) {
+                    $lay->set("disabled", $this->idisabled);
+                    $lay->set("readonly", true);
+                } else if ($this->doc->usefor != 'D') $lay->set("disabled", ' readonly="readonly"');
+                
+                $input = $lay->gen();
+                return $input;
+            }
+            /**
+             * HTML input for Time attribute
+             * @param string $value the row value of input
+             * @return string HTML input fragment
+             */
+            private function formatTime($value)
+            {
+                $isDisabled = "";
+                if (($this->visibility == "R") || ($this->visibility == "S")) $isDisabled = $this->idisabled;
+                if (strpos($value, ':') !== false) {
+                    list($hh, $mm) = explode(":", $value);
+                } else {
+                    $hh = $mm = 0;
+                }
+                $input = "<input $isDisabled size=2 maxlength=2 onchange=\"chtime('{$this->attridk}')\" type=\"text\"  value=\"" . $hh . "\" id=\"hh" . $this->attridk . "\">:";
+                
+                $input.= "<input $isDisabled size=2 maxlength=2 onchange=\"chtime('{$this->attridk}')\" type=\"text\"  value=\"" . $mm . "\"id=\"mm" . $this->attridk . "\">";
+                
+                $input.= "<input  type=\"hidden\" onchange=\"displayTime(this)\" name=\"" . $this->attrin . "\" id=\"" . $this->attridk . "\" value=\"" . $value . "\">";
+                return $input;
+            }
+            /**
+             * HTML input for Password attribute
+             * @param string $value the row value of input
+             * @return string HTML input fragment
+             */
+            private function formatPassword(
+            /** @noinspection PhpUnusedParameterInspection */
+            $value)
+            {
+                // don't see the value
+                $eopt = $this->classname . ' ';
+                $esize = $this->oattr->getOption("esize");
+                if ($esize > 0) $eopt = "size=$esize";
+                $input = "<input {$this->onChange} $eopt type=\"password\" name=\"" . $this->attrin . "\" value=\"" . "\"";
+                $input.= " id=\"" . $this->attridk . "\" ";
+                
+                if (($this->visibility == "R") || ($this->visibility == "S")) $input.= $this->idisabled;
+                
+                $input.= " > ";
+                return $input;
+            }
+            /**
+             * HTML input for Password attribute
+             * @param string $value the row value of input
+             * @deprecated option attributes are not supported
+             * @return string HTML input fragment
+             */
+            private function formatOption($value)
+            {
+                global $action;
+                $lay = new Layout("FDL/Layout/editdocoption.xml", $action);
+                $this->getLayDocOption($lay, $this->doc, $this->oattr, $value, $this->attrin, $this->index);
+                if (($this->visibility == "R") || ($this->visibility == "S")) $lay->set("disabled", $this->idisabled);
+                else $lay->set("disabled", "");
+                $input = $lay->gen();
+                return $input;
+            }
+            /**
+             * @param Doc $doc
+             * @param string $attrik
+             * @param string $link
+             * @param int $index
+             * @param string $ititle
+             * @param string $isymbol
+             * @return string
+             */
+            public function elinkEncode(&$doc, $attrik, $link, $index, &$ititle = "", &$isymbol = "")
+            {
+                
+                $linkprefix = "ilink_";
+                $ititle = _("add inputs");
+                $isymbol = '+';
+                
+                $urllink = "";
+                if ($link[0] == "[") {
+                    if (preg_match('/\[(.*)\|(.*)\](.*)/', $link, $reg)) {
+                        $link = $reg[3];
+                        $ititle = $reg[1];
+                        $isymbol = $reg[2];
+                    }
+                }
+                
+                for ($i = 0; $i < strlen($link); $i++) {
+                    switch ($link[$i]) {
+                        case '%':
+                            $i++; // skip end '%'
+                            $sattrid = "";
+                            while (($link[$i] != "%") && ($i <= strlen($link))) {
+                                $sattrid.= $link[$i];
+                                $i++;
+                            }
+                            
+                            switch ($sattrid) {
+                                case "B": // baseurl
+                                    $urllink.= GetParam("CORE_BASEURL");
+                                    break;
+
+                                case "S": // standurl
+                                    $urllink.= GetParam("CORE_STANDURL");
+                                    break;
+
+                                case "K":
+                                    $urllink.= $index;
+                                    break;
+
+                                case "I":
+                                    $urllink.= $doc->id;
+                                    break;
+
+                                case "F":
+                                    $urllink.= $doc->fromid;
+                                    break;
+
+                                case "A":
+                                    $urllink.= $attrik;
+                                    break;
+
+                                case "CT":
+                                    $urllink.= "'+elinkvalue('${linkprefix}${attrik}')+'";
+                                    break;
+
+                                default:
+                                    $prop = $doc->getPropertyValue($sattrid);
+                                    if ($prop !== false) {
+                                        $urllink.= $prop;
+                                    } else {
+                                        $sattrid = strtolower($sattrid);
+                                        
+                                        $attr = $doc->getAttribute($sattrid);
+                                        if (!$attr) {
+                                            global $action;
+                                            $action->exitError(sprintf(_("elinkEncode::attribute not found %s in %s : %s") , $sattrid, $attrik, $link));
+                                        }
+                                        if ($attr->inArray()) $sattrid.= '_' . $index;
+                                        //print "attr=$sattrid";
+                                        $urllink.= "'+elinkvalue('$sattrid')+'";
+                                    }
+                                }
+                                break;
+
+                            case "{":
+                                $i++;
+                                
+                                $sattrid = "";
+                                while ($link[$i] != '}') {
+                                    $sattrid.= $link[$i];
+                                    $i++;
+                                }
+                                //	  print "attr=$sattrid";
+                                $ovalue = GetParam($sattrid, getFamIdFromName($doc->dbaccess, $sattrid));
+                                
+                                $urllink.= $ovalue;
+                                
+                                break;
+
+                            default:
+                                $urllink.= $link[$i];
+                        }
+                }
+                
+                return ($urllink);
+            }
+            /**
+             * @param Layout $lay
+             * @param Doc $doc
+             * @param NormalAttribute $oattr
+             * @param int $row
+             */
+            public function getLayArray(&$lay, &$doc, &$oattr, $row = - 1)
+            {
+                static $defValues = null;
+                $attrid = $oattr->id;
+                $ta = $doc->attributes->getArrayElements($attrid);
+                
+                $height = $oattr->getOption("height", false);
+                $lay->set("tableheight", $height);
+                $tableStyle = $oattr->getOption("tstyle", '');
+                $lay->set("tableStyle", $tableStyle);
+                $lay->set("thspan", "2");
+                
+                $talabel = array();
+                $tilabel = array();
+                
+                $max = - 1;
+                $max0 = - 1;
+                // get inline help
+                $help = $doc->getHelpPage();
+                
+                foreach ($ta as $k => $v) { // detect uncompleted rows
+                    $t = $doc->getMultipleRawValues($k);
+                    $c = count($t);
+                    if ($c > $max) {
+                        if ($max0 < 0) $max0 = $c;
+                        $max = $c;
+                    }
+                }
+                
+                if ($max > $max0) {
+                    foreach ($ta as $k => $v) { // fill uncompleted rows
+                        $t = $doc->getMultipleRawValues($k);
+                        $c = count($t);
+                        if ($c < $max) {
+                            $t = array_pad($t, $max, "");
+                            $doc->setValue($k, $t);
+                        }
+                    }
+                }
+                // get default values
+                $cid = $doc->fromid == 0 ? $doc->id : $doc->fromid;
+                /*
+                 * Apply default parameters values for arrays
+                */
+                if ($oattr->usefor == 'Q') {
+                    /*
+                     * Check for manually set default parameters values
+                     * in array's columns.
+                    */
+                    $paramArrayColumns = $doc->attributes->getArrayElements($oattr->id);
+                    $defaultColumnValues = array();
+                    foreach ($paramArrayColumns as $paramColumn => $paramValues) {
+                        $v = Doc::rawValueToArray($doc->getFamilyParameterValue($paramColumn));
+                        if (count($v) > 0) {
+                            /*
+                             * If there are manually set default values, then
+                             * apply these default param values.
+                            */
+                            $defaultColumnValues[$paramColumn] = $v;
+                        }
+                    }
+                    if (count($defaultColumnValues) <= 0) {
+                        /*
+                         * Otherwise, if there are no values manually set in the array's columns,
+                         * then try to set the array's default values.
+                        */
+                        $paramDefaultArrayValues = $doc->getFamilyParameterValue($oattr->id);
+                        $defaultColumnValues = array();
+                        /* Transpose from rows to columns */
+                        
+                        if (is_array($paramDefaultArrayValues)) {
+                            foreach ($paramDefaultArrayValues as $arrayRow) {
+                                foreach ($arrayRow as $columnName => $value) {
+                                    $defaultColumnValues[$columnName][] = $value;
+                                }
+                            }
+                        }
+                    }
+                    /*
+                     * Apply default parameters values
+                    */
+                    $doc->setDefaultValues($defaultColumnValues, false, false);
+                }
+                
+                if (!isset($defValues[$cid])) {
+                    $ddoc = createTmpDoc($doc->dbaccess, $cid, false);
+                    $ddoc->setDefaultValues($ddoc->getFamilyDocument()->getDefValues() , true, true);
+                    $defValues[$cid] = $ddoc;
+                } else {
+                    $ddoc = $defValues[$cid];
+                }
+                
+                $tad = $ddoc->attributes->getArrayElements($attrid);
+                $tval = array();
+                $nbcolattr = 0; // number of column
+                $autoWidthAttr = false; //is there at least one attribute displayed with width auto?
+                foreach ($ta as $k => $v) {
+                    if ($v->mvisibility == "R") {
+                        $v->mvisibility = "H"; // don't see read attribute
+                        $ta[$k]->mvisibility = "H";
+                    }
+                    $visible = ($v->mvisibility != "H");
+                    $width = $v->getOption("cwidth", "auto");
+                    $talabel[] = array(
+                        "aid" => $v->id,
+                        "alabel" => (!$visible) ? "" : $v->getLabel() ,
+                        "elabel" => $v->getOption("elabel") ,
+                        "aneeded" => $v->needed,
+                        "astyle" => $v->getOption("cellheadstyle") ,
+                        "ahclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute",
+                        "aehelp" => ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,
+                        "aehelpid" => ($help->isAlive()) ? $help->id : false
+                    );
+                    
+                    $tvale = $ddoc->getRawValue($tad[$k]->id) === "\t" ? "" : $ddoc->getRawValue($tad[$k]->id);
+                    $tilabel[] = array(
+                        "ilabel" => getHtmlInput($doc, $v, $tvale, DocFormFormat::arrayIndex) ,
+                        "ihw" => (!$visible) ? "0px" : $width,
+                        "bgcolor" => $v->getOption("bgcolor", "inherit") ,
+                        "tdstyle" => $v->getOption("cellbodystyle") ,
+                        "cellatype" => $v->type,
+                        "cellattrid" => $v->id,
+                        "cellmultiple" => ($v->getOption("multiple") == "yes") ? "true" : "false",
+                        "ihclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute"
+                    );
+                    
+                    if ($visible) $nbcolattr++;
+                    $tval[$k] = $doc->getMultipleRawValues($k);
+                    $nbitem = count($tval[$k]);
+                    
+                    if (($visible) && ($width == "auto")) {
+                        $autoWidthAttr = true;
+                    }
+                    
+                    if ($nbitem == 0) {
+                        // add first range
+                        if ($oattr->format != "empty" && $oattr->getOption("empty") != "yes") {
+                            $tval[$k] = array(
+                                0 => ""
+                            );
+                        }
+                    }
+                }
+                
+                $pindex = '';
+                if (($row >= 0) && ($oattr->mvisibility == "W" || $oattr->mvisibility == "O" || $oattr->mvisibility == "U")) {
+                    $oattr->mvisibility = "U";
+                    $pindex = 's';
+                }
+                //Compute table width with some compatibility rules
+                $tableWidth = $oattr->getOption("twidth", '100%'); //compatibility
+                //but if all columns are fixed, you probably want an 'auto' layout...
+                if ((!$autoWidthAttr) && ($tableWidth != 'auto')) {
+                    //TODO: should write something in the log
+                    $tableWidth = 'auto';
+                }
+                $lay->set("tableWidth", $tableWidth);
+                
+                $lay->setBlockData("TATTR", $talabel);
+                $lay->setBlockData("IATTR", $tilabel);
+                $lay->set("attrid", $attrid);
+                $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($attrid) : false);
+                $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
+                if (($oattr->getOption("vlabel") == "") || ($oattr->getOption("vlabel") == "up")) $lay->set("caption", $oattr->getLabel());
+                else $lay->set("caption", "");
+                $lay->set("footspan", count($ta) * 2);
+                
+                reset($tval);
+                $nbitem = count(current($tval));
+                
+                $tvattr = array();
+                for ($k = 0; $k < $nbitem; $k++) {
+                    if (($row >= 0) && ($k != $row)) continue;
+                    $tvattr[] = array(
+                        "bevalue" => "bevalue_$k",
+                        "index" => $k
+                    );
+                    reset($ta);
+                    $tivalue = array();
+                    $ika = 0;
+                    foreach ($ta as $ka => $va) {
+                        
+                        $visible = ($va->mvisibility != "H");
+                        $tivalue[] = array(
+                            "eivalue" => getHtmlInput($doc, $va, $tval[$ka][$k], $pindex . $k) ,
+                            "bgcolor" => $va->getOption("bgcolor", "inherit") ,
+                            "cellatype" => $va->type,
+                            "cellattrid" => $va->id,
+                            "cellmultiple" => ($va->getOption("multiple") == "yes") ? "true" : "false",
+                            "tdstyle" => $va->getOption("cellbodystyle") ,
+                            "vhw" => (!$visible) ? "0px" : $va->getOption("cwidth", "auto") ,
+                            "aneeded" => $va->needed,
+                            "eiclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute"
+                        );
+                        $ika++;
+                    }
+                    $lay->setBlockData("bevalue_$k", $tivalue);
+                }
+                $lay->set("addfunc", false);
+                if (($oattr->phpfunc != "") && ($oattr->phpfile != "")) {
+                    if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i', $oattr->phpfunc)) {
+                        $mheight = $oattr->getOption('mheight', 30);
+                        $mwidth = $oattr->getOption('mwidth', 290);
+                        $lay->set("addtitle", $oattr->getOption("ltitle", _("Modify table")));
+                        $lay->set("addsymbol", $oattr->getOption("lsymbol"));
+                        $lay->set("addfunc", "sendSpecialChoice(event,'{$oattr->id}'," . ($doc->id ? $doc->id : $doc->fromid) . ",'" . $oattr->id . "','" . $row . "','" . $mheight . "','" . $mwidth . "')");
+                    }
+                }
+                
+                $lay->set("useadd", ($oattr->getOption("userowadd") != "no"));
+                $lay->set("readonly", ($oattr->mvisibility == 'U'));
+                if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
+            }
+            /**
+             * @param layout $lay
+             * @param Doc $doc
+             * @param NormalAttribute $oattr
+             * @param string $zone
+             * @return mixed
+             */
+            private function getZoneLayArray(&$lay, &$doc, &$oattr, $zone)
+            {
+                $height = $oattr->getOption("height", false);
+                $help = $doc->getHelpPage();
+                
+                $lay->set("tableheight", $height);
+                $lay->set("readonly", ($oattr->mvisibility == 'U'));
+                $lay->set("thspan", "1");
+                $lay->set("aehelp", false);
+                $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($oattr->id) : false);
+                $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
+                if (($zone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $zone, $reg)) {
+                    $attrid = $oattr->id;
+                    $ta = $doc->attributes->getArrayElements($attrid);
+                    
+                    $dxml = new DomDocument();
+                    $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
+                    if (!file_exists($rowlayfile)) {
+                        $lay->template = sprintf(_("cannot open %s layout file") , $rowlayfile);
+                        $lay->noparse = true;
+                        AddwarningMsg(sprintf(_("cannot open %s layout file") , $rowlayfile));
+                        return;
+                    }
+                    if (!@$dxml->load($rowlayfile)) {
+                        AddwarningMsg(sprintf(_("cannot load xml template : %s") , print_r(libxml_get_last_error() , true)));
+                        $lay->template = sprintf(_("cannot load xml %s layout file") , $rowlayfile);
+                        $lay->noparse = true;
+                        return;
+                    }
+                    $theads = $dxml->getElementsByTagName('table-head');
+                    if ($theads->length > 0) {
+                        /**
+                         * @var DOMElement $thead
+                         */
+                        $thead = $theads->item(0);
+                        $theadcells = $thead->getElementsByTagName('cell');
+                        $talabel = array();
+                        for ($i = 0; $i < $theadcells->length; $i++) {
+                            /**
+                             * @var DOMElement $iti
+                             */
+                            $iti = $theadcells->item($i);
+                            $th = xt_innerXML($iti);
+                            $thstyle = $iti->getAttribute("style");
+                            $thclass = $iti->getAttribute("class");
+                            
+                            $talabel[] = array(
+                                "alabel" => $th,
+                                "ahw" => "auto",
+                                "astyle" => $thstyle,
+                                "ahclass" => $thclass,
+                                "ahvis" => "visible"
+                            );
+                        }
+                        $lay->setBlockData("TATTR", $talabel);
+                    }
+                    
+                    $tbodies = $dxml->getElementsByTagName('table-body');
+                    $tr = $tcellstyle = $tcellclass = array();
+                    if ($tbodies->length > 0) {
+                        /**
+                         * @var DOMElement $tbody
+                         */
+                        $tbody = $tbodies->item(0);
+                        $tbodycells = $tbody->getElementsByTagName('cell');
+                        for ($i = 0; $i < $tbodycells->length; $i++) {
+                            /**
+                             * @var DOMElement $iti
+                             */
+                            $iti = $tbodycells->item($i);
+                            $tr[] = xt_innerXML($iti);
+                            $tcellstyle[] = $iti->getAttribute("style");
+                            $tcellclass[] = $iti->getAttribute("class");
+                        }
+                    }
+                    
+                    $nbitem = 0;
+                    
+                    foreach ($ta as $k => $v) {
+                        $tval[$k] = $doc->getMultipleRawValues($k);
+                        $nbitem = max($nbitem, count($tval[$k]));
+                        $lay->set("L_" . strtoupper($v->id) , $v->getLabel());
+                    }
+                    
+                    $lay->set("attrid", $attrid);
+                    $lay->set("caption", $oattr->getLabel());
+                    $lay->set("footspan", count($ta) * 2);
+                    $lay->set("eiclass", '');
+                    $lay->set("tableWidth", $oattr->getOption("twidth", '100%'));
+                    $lay->set("tableStyle", $oattr->getOption("tstyle", ''));
+                    // get default values
+                    if ($doc->doctype == 'C') {
+                        /**
+                         * @var DocFam $doc
+                         */
+                        $defval = $doc->getDefValues();
+                    } else {
+                        
+                        $fdoc = $doc->getFamilyDocument();
+                        $defval = $fdoc->getDefValues();
+                    }
+                    
+                    $tvattr = array();
+                    for ($k = 0; $k < $nbitem; $k++) {
+                        $tvattr[] = array(
+                            "bevalue" => "bevalue_$k",
+                            "index" => $k,
+                            "cellattrid" => '',
+                            "cellmultiple" => '',
+                            "cellatype" => ''
+                        );
+                        $tivalue = array();
+                        
+                        foreach ($tr as $kd => $td) {
+                            $val = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($doc, $k)
+                            {
+                                return DocFormFormat::rowattrReplace($doc, $matches[1], $k);
+                            }
+                            , $td);
+                            $tivalue[] = array(
+                                "eivalue" => $val,
+                                "ehvis" => "visible",
+                                "tdstyle" => $tcellstyle[$kd],
+                                "eiclass" => $tcellclass[$kd],
+                                "bgcolor" => "inherit",
+                                "vhw" => "auto"
+                            );
+                        }
+                        $lay->setBlockData("bevalue_$k", $tivalue);
+                    }
+                    $tilabel = array();
+                    foreach ($tr as $kd => $td) {
+                        $dval = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($doc, $defval)
+                        {
+                            return DocFormFormat::rowattrReplace($doc, $matches[1], DocFormFormat::arrayIndex, $defval);
+                        }
+                        , $td);
+                        $tilabel[] = array(
+                            "ilabel" => $dval,
+                            "ihw" => "auto",
+                            "tdstyle" => $tcellstyle[$kd],
+                            "bgcolor" => "inherit",
+                            "ihvis" => "visible"
+                        );
+                    }
+                    $lay->set("addfunc", false);
+                    if (($oattr->phpfunc != "") && ($oattr->phpfile != "")) {
+                        if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i', $oattr->phpfunc)) {
+                            $row = '';
+                            $mheight = $oattr->getOption('mheight', 30);
+                            $mwidth = $oattr->getOption('mwidth', 290);
+                            $docid = $doc->id ? $doc->id : $doc->fromid;
+                            $lay->set("addtitle", $oattr->getOption("ltitle", _("Modify table")));
+                            $lay->set("addsymbol", $oattr->getOption("lsymbol"));
+                            $lay->set("addfunc", "sendSpecialChoice(event,'{$oattr->id}',$docid,'{$oattr->id}','$row','$mheight','$mwidth')");
+                        }
+                    }
+                    $lay->setBlockData("IATTR", $tilabel);
+                    $lay->set("readonly", ($oattr->mvisibility == 'U'));
+                    $lay->set("useadd", ($oattr->getOption("userowadd") != "no"));
+                    if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
+                    
+                    if ($oattr->getOption("vlabel", "up") == "up") $lay->set("caption", $oattr->getLabel());
+                    else $lay->set("caption", "");
+                } else {
+                    addWarningMsg(sprintf(_("roweditzone syntax %s is invalid") , $zone));
+                }
+            }
+            /**
+             * @param Doc $doc
+             * @param string $s
+             * @param int $index
+             * @param string $defval
+             * @private
+             * @return array|mixed|string
+             */
+            public static function rowattrReplace(&$doc, $s, $index, &$defval = null)
+            {
+                if (substr($s, 0, 2) == "L_") return "[$s]";
+                if (substr($s, 0, 2) == "V_") {
+                    $s = substr($s, 2);
+                    if ($index != - 1) $value = $doc->getMultipleRawValues($s, "", $index);
+                    else $value = $defval[strtolower($s) ];
+                    $oattr = $doc->getAttribute($s);
+                    if (!$oattr) return sprintf(_("unknow attribute %s") , $s);
+                    $v = getHtmlInput($doc, $oattr, $value, $index, "", true);
+                } else {
+                    $sl = strtolower($s);
+                    if (!isset($doc->$sl)) return "[$s]";
+                    if ($index == - 1) $v = $doc->getRawValue($sl);
+                    else $v = $doc->getMultipleRawValues($sl, "", $index);
+                    $v = str_replace('"', '&quot;', $v);
+                }
+                return $v;
+            }
+            /**
+             * generate HTML for inline document (not virtual)
+             *
+             * @param Layout $lay template of html input
+             * @param NormalAttribute $oattr current attribute for input
+             * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
+             * @param int $index current row number if it is in array ("" if it is not in array)
+             */
+            private function getLayAdoc(&$lay, &$oattr, $value, $aname, $index)
+            {
+                $idocid = $oattr->format . $index;
+                $lay->set("name", $aname);
+                $lay->set("id", $oattr->id . $index);
+                $lay->set("idocid", strtolower($idocid));
+                $lay->set("value", $value);
+            }
+            /**
+             * generate HTML for multiple docid
+             *
+             * @param Layout $lay template of html input
+             * @param Doc $doc current document in edition
+             * @param NormalAttribute $oattr current attribute for input
+             * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
+             * @param int $index current row number if it is in array ("" if it is not in array)
+             */
+            private function getLayMultiDoc(&$lay, &$doc, &$oattr, $value, $aname, $index)
+            {
+                if ($index !== "") $idocid = $oattr->id . '_' . $index;
+                else $idocid = $oattr->id;
+                $needLatest = ($oattr->getOption("docrev", "latest") == "latest");
+                
+                $lay->set("name", $aname);
+                $lay->set("aid", $idocid);
+                $lay->set("value", $value);
+                $lay->set("docid", ($doc->id == 0) ? $doc->fromid : $doc->id);
+                $value = str_replace("\n", "<BR>", $value);
+                $topt = array();
+                $lay->set("size", 1);
+                if ($value != "") {
+                    $tval = explode("<BR>", $value);
+                    foreach ($tval as $k => $v) {
+                        $topt[] = array(
+                            "ltitle" => $doc->getTitle($v, '', $needLatest) ,
+                            "ldocid" => $v
+                        );
+                    }
+                    $lay->set("size", min(count($topt) , 6));
+                }
+                $lay->setBlockData("options", $topt);
+            }
+            /**
+             * generate HTML for date attribute
+             *
+             * @param Layout $lay template of html input
+             * @param NormalAttribute $oattr current attribute for input
+             * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
+             * @param int $index current row number if it is in array ("" if it is not in array)
+             */
+            private function getLayDate(&$lay, &$oattr, $value, $aname, $index)
+            {
+                if ($index !== "") $idocid = $oattr->format . '_' . $index;
+                else $idocid = $oattr->format;
+                $lay->set("name", $aname);
+                
+                $localeconfig = getLocaleConfig();
+                if ($localeconfig != false) {
+                    $lay->set("dateformat", $localeconfig['dateFormat']);
+                    $lay->set("datetimeformat", $localeconfig['dateTimeFormat']);
+                    $value = stringDateToLocaleDate($value);
+                } else {
+                    $lay->set("dateformat", '');
+                    $lay->set("datetimeformat", '');
+                }
+                
+                if ($index !== "") $lay->set("id", $oattr->id . '_' . $index);
+                else $lay->set("id", $oattr->id);
+                $lay->set("idocid", strtolower($idocid));
+                $lay->set("value", $value);
+            }
+            /**
+             * generate HTML for enum attributes
+             *
+             * @param Layout $lay template of html input
+             * @param Doc $doc current document in edition
+             * @param NormalAttribute $oattr current attribute for input
+             * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
+             * @param int $index current row number if it is in array ("" if it is not in array)
+             */
+            private function getLayOptions(&$lay, &$doc, &$oattr, $value, $aname, $index)
+            {
+                $lay->set("name", $aname);
+                if ($index !== "") $idx = $oattr->id . '_' . $index;
+                else $idx = $oattr->id;
+                
+                $lay->set("id", $idx);
+                $lay->set("idi", $oattr->id);
+                $etype = $oattr->getOption("etype");
+                $eformat = $oattr->getOption("eformat");
+                $multiple = $oattr->getOption("multiple");
+                $esort = $oattr->getOption("esort", "none");
+                if (($eformat == "auto") && ($multiple != "yes")) $doc->addParamRefresh($oattr->id, "li_" . $oattr->id);
+                
+                $lay->set("isopen", ($etype == "open"));
+                $lay->set("isfreeselected", false);
+                $lay->set("isfree", ($etype == "free"));
+                $tvalue = $doc->rawValueToArray($value);
+                
+                $lay->eSet("lvalue", $value);
+                $enuml = $oattr->getenumlabel(null, false);
+                if ($esort == 'key' || $esort == 'label') {
+                    $enuml = $this->sortEnumMap($enuml, $esort);
+                }
+                
+                $enumk = array_keys($enuml);
+                if (($etype == "free") && ($eformat != "auto")) {
+                    $enuml['...'] = _("Other...");
+                }
+                if (($eformat == "" || $eformat == "list") && ($value == " ") && ($oattr->getOption("eunset") == "yes")) {
+                    if ($oattr->mvisibility == 'S') {
+                        $enuml[' '] = '';
+                    } else {
+                        $enuml[' '] = _("Do choice");
+                    }
+                }
+                
+                $ki = 0;
+                $noselect = true;
+                $topt = array();
+                foreach ($enuml as $k => $v) {
+                    $found = false;
+                    foreach ($tvalue as $valKey) {
+                        if ((string)$k === $valKey) $found = true;
+                    }
+                    if ($found) {
+                        $topt[$k]["selected"] = "selected";
+                        $topt[$k]["checked"] = "checked";
+                        $lay->eSet("lvalue", $v);
+                        $noselect = false;
+                    } else {
+                        if ($eformat != "auto") {
+                            $topt[$k]["selected"] = "";
+                            $topt[$k]["checked"] = "nochecked";
+                        }
+                    }
+                    if (($eformat != "auto") || (isset($topt[$k]["selected"]) && $topt[$k]["selected"] == "selected")) {
+                        if ($k == "...") $topt[$k]["optid"] = $idx . '___';
+                        else $topt[$k]["optid"] = $idx . '_' . $ki;
+                        $topt[$k]["fvalue"] = $v;
+                        $topt[$k]["kvalue"] = $k;
+                        $topt[$k]["ki"] = $ki;
+                        $topt[$k]["other"] = false;
+                    }
+                    $ki++;
+                }
+                if (($eformat == "auto") && ($multiple == "yes")) $lay->set("isopen", false); // set by typing
+                if ($noselect && ($etype == "free")) {
+                    if ((trim($value) != "") && ($value != "\t")) {
+                        
+                        $lay->set("isfreeselected", true);
+                        $lay->rSet("lvalue", $lay->get("lvalue") . ' ' . _("(Other)"));
+                        if (!$eformat) {
+                            if ($multiple != "yes") {
+                                $topt['.sel.'] = $topt['...'];
+                                $topt['.sel.']["fvalue"] = $value . ' ' . _("(Other input)");
+                                $topt['.sel.']["kvalue"] = $value;
+                                $topt['.sel.']["selected"] = "selected";
+                                $topt['.sel.']["checked"] = "checked";
+                            }
+                            $topt['...']["selected"] = "";
+                            $topt['...']["checked"] = "";
+                            $lay->set("isfreeselected", false);
+                        }
+                    }
+                    //    $lay->set("isfree",true);
+                    
+                }
+                
+                if ($multiple && ($etype == "free")) {
+                    $lay->set("freevalue", "");
+                    if ($eformat != "auto") $topt['...']["other"] = true;
+                    foreach ($tvalue as $kv) {
+                        if (trim($kv) && (!in_array($kv, $enumk))) {
+                            if (($eformat == "auto") || ($eformat == "")) {
+                                $topt[$kv]["fvalue"] = $kv . ' ' . _("(Other)");
+                                $topt[$kv]["kvalue"] = $kv;
+                                $topt[$kv]["ki"] = $ki++;
+                                $topt[$kv]["selected"] = "selected";
+                            } else {
+                                if ($eformat) {
+                                    $topt['...']["selected"] = "selected";
+                                    $topt['...']["checked"] = "checked";
+                                    $lay->set("isfreeselected", true);
+                                    $lay->set("freevalue", $kv);
+                                }
+                            }
+                        }
+                    }
+                }
+                $lay->setBlockData("OPTIONS", $topt);
+                $lay->set("NBOPT", max(count($topt) , 1));
+                $lay->eSet("value", $value);
+                $lay->set("docid", ($doc->id == 0) ? $doc->fromid : $doc->id);
+                $lay->set("index", $index);
+            }
+            /**
+             * generate HTML for option attributes
+             *
+             * @param Layout $lay template of html input
+             * @param Doc $doc current document in edition
+             * @param NormalAttribute $oattr current attribute for input
+             * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
+             * @param int $index current row number if it is in array ("" if it is not in array)
+             */
+            private function getLayDocOption(&$lay, &$doc, &$oattr, $value, $aname, $index)
+            {
+                $lay->set("name", $aname);
+                $idx = $oattr->id . $index;
+                $lay->set("id", $idx);
+                $lay->set("didx", $index);
+                $lay->set("di", trim(strtolower($oattr->format)));
+                if ($index !== "") $lay->set("said", $doc->getMultipleRawValues($oattr->format, "", $index));
+                else $lay->set("said", $doc->getRawValue($oattr->format));
+                
+                $lay->eSet("value", $value);
+                $lay->set("uuvalue", urlencode($value));
+            }
+            /**
+             * generate HTML for text attributes with help function
+             *
+             * @param Layout $lay template of html input
+             * @param Doc $doc current document in edition
+             * @param NormalAttribute $oattr current attribute for input
+             * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
+             * @param int $index current row number if it is in array ("" if it is not in array)
+             * @return bool
+             */
+            private function getLayTextOptions(&$lay, &$doc, &$oattr, $value, $aname, $index)
+            {
+                include_once ("FDL/enum_choice.php");
+                
+                $lay->set("name", $aname);
+                $idx = $oattr->id . $index;
+                $lay->set("id", $idx);
+                
+                $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, false);
+                
+                if ($res === false) return false; // one or more attribute are not set
+                $sattrid = "[";
+                if (is_array($rargids)) $sattrid.= strtolower("'" . implode("','", $rargids) . "'");
+                $sattrid.= "]";
+                $lay->Set("attrid", $sattrid);
+                
+                if (is_array($tselect)) {
+                    foreach ($tselect as $k => $v) {
+                        if ($v["choice"] == $value) $tselect[$k]["selected"] = "selected";
+                        else $tselect[$k]["selected"] = "";
+                    }
+                    $lay->SetBlockData("SELECTENUM", $tselect);
+                }
+                
+                $lay->SetBlockData("ATTRVAL", $tval);
+                
+                $lay->set("value", $value);
+                return true;
+            }
+            /**
+             * add button to create/modify document relation
+             *
+             * @param \BasicAttribute|\NormalAttribute $oattr
+             * @param \Doc $doc
+             * @param string $attridk id suffix of the <input/> tag
+             * @param integer $index
+             * @return string
+             */
+            private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $index)
+            {
+                
+                if ($oattr->type == "docid" || $oattr->type == "account") {
+                    $creation = $oattr->getOption("creation");
+                    if ($creation && ($creation != "no")) {
+                        $reldoc = new_doc($doc->dbaccess, $oattr->format);
+                        if ($reldoc->control('icreate') != "") return '';
+                        
+                        $urlcreate = '';
+                        if ($creation != "yes") {
+                            $create = str_replace('"', '&quote;', $creation);
+                            $create = str_replace(array(
+                                '{',
+                                '}',
+                                ':',
+                                ','
+                            ) , array(
+                                '{"',
+                                '"}',
+                                '":"',
+                                '","'
+                            ) , $create);
+                            
+                            $jscreate = json_decode($create);
+                            if ($jscreate === null) {
+                                addWarningMsg(sprintf("creation option syntax error:%s [%s] ", $oattr->id, $creation));
+                            } else {
+                                foreach ($jscreate as $k => $v) {
+                                    $kl = trim(strtolower($k));
+                                    $v = str_replace('&quote;', '"', $v);
+                                    
+                                    if ($v[0] == '"') {
+                                        $urlcreate.= sprintf("&%s=%s", $kl, urlencode(trim($v, '"')));
+                                    } else {
+                                        $urlcreate.= sprintf("&%s=%s", $kl, $this->elinkencode($doc, $attridk, "%$v%", $index));
+                                    }
+                                }
+                            }
+                        }
+                        $esymbol = '&nbsp;';
+                        if (!$attridk) $attridk = $oattr->id;
+                        $ectitle = sprintf(_("create a %s document") , $reldoc->getTitle());
+                        
+                        $emtitle = sprintf(_("modify document"));
+                        
+                        $jsfunc = sprintf("editRelation('%s',elinkvalue('%s'),'%s','%s')", $oattr->format, $attridk, $attridk, ($urlcreate));
+                        $input = sprintf("<input id=\"icr_%s\" class=\"%s\" type=\"button\" value=\"%s\" titleedit=\"%s\" titleview=\"%s\" onclick=\"%s\">", $attridk, "add-doc", $esymbol, $ectitle, $emtitle, $jsfunc);
+                        return $input;
+                    }
+                }
+                return '';
+            }
+            /**
+             * Sort an enum's (key => label) mapping structure by 'key' or 'label'.
+             *
+             * @param array $enumMap an enum mapping structure as returned by NormalAttribute::getEnumLabel() method
+             * @param string $sortBy 'key' to sort by key, 'label' to sort by label
+             * @return array the sorted enum's mapping structure
+             */
+            function sortEnumMap($enumMap, $sortBy)
+            {
+                global $action;
+                
+                switch ($sortBy) {
+                    case 'key':
+                        uksort($enumMap, function ($a, $b)
+                        {
+                            return strcmp($a, $b);
+                        });
+                        break;
+
+                    case 'label':
+                        $collator = new Collator($action->GetParam('CORE_LANG', 'fr_FR'));
+                        uasort($enumMap, function ($a, $b) use ($collator)
+                        {
+                            /**
+                             * @var Collator $collator
+                             */
+                            return $collator->compare($a, $b);
+                        });
+                        break;
+                }
+                return $enumMap;
+            }
+            /**
+             * Store autocompletion's parameters in user's session and return the corresponding identifier.
+             * @param Action $action
+             * @param array $ac The autocompletion parameters array('phpfile' => $phpfile, 'phpfunc' => $phpfunc, 'label' => $label)
+             * @return string the autocompletion Id
+             */
+            private function _newAcId(Action $action, $ac)
+            {
+                $acId = sha1(serialize($ac));
+                $action->Register(sprintf('autocompletion.%s', $acId) , $ac);
+                return $acId;
+            }
+        }
+        
+        

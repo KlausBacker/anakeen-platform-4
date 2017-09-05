@@ -1,0 +1,42 @@
+// famille profile doc;;;id;class;name;;;;;;;;;;
+BEGIN;BASE;Profil de document;3;PDoc;PDOC;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ICON;profil.gif;;;;;;;;;;;;;;
+USEFOR;SP;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;PRF_DESC;FR_BASIC ;Description;N;N;longtext;10;W;N;;;;;;
+ATTR;DPDOC_FR_DYN;;Dynamique;N;N;frame;100;W;;;;;;;
+ATTR;DPDOC_FAMID;DPDOC_FR_DYN;Famille (id);N;N;docid;110;H;;;;::getTitle(DPDOC_FAMID):DPDOC_FAM;;;
+ATTR;DPDOC_FAM;DPDOC_FR_DYN;Famille;N;Y;text;120;W;;%S%app=FDL&action=FDL_CARD&id=%DPDOC_FAMID%;fdl.php;lfamilies(D,DPDOC_FAM):DPDOC_FAMID,DPDOC_FAM;;;elabel=famille utilisée pour les profils dynamiques
+ATTR;PRF_ACCESS;;Accessibilités;N;N;action;200;R;;;FREEDOM;FREEDOM_GACCESS;;::controlActifProfil();
+ATTR;PRF_ACTIVATE;;Activer;N;N;action;210;R;;;FREEDOM;MODPROF&profid=%I%&docid=%I%;;::profilIsActivate(false);ltarget=_self
+ATTR;PRF_DESACTIVATE;;Désactiver;N;N;action;220;R;;;FREEDOM;MODPROF&profid=0&docid=%I%;;::profilIsActivate(true);ltarget=_self
+ATTR;PRF_FORCECOMPUTING;;Forcer la propagation du profil;N;N;menu;230;R;;::recomputeProfiledDocument();;::profilIsActivate(true);;;ltarget=_self|ltitle=Force le recalcul des profils des documents associés
+END;1;9;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+// famille profile dossier;;;;;name;;;;;;;;;;
+BEGIN;PDOC;Profil de dossier;4;PDir;PDIR;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ICON;profil_dossier.gif;;;;;;;;;;;;;;
+USEFOR;SP;;;;;;;;;;;;;;
+END;1;9;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+// famille profile recherche;;;;;name;;;;;;;;;;
+BEGIN;PDOC;Profil de recherche;6;PDocSearch;PSEARCH;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ICON;profil_recherche.gif;;;;;;;;;;;;;;
+USEFOR;SP;;;;;;;;;;;;;;
+END;1;9;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+// famille profile famille;;;;;name;;;;;;;;;;
+BEGIN;PDOC;Profil de famille;23;PFam;PFAM;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ICON;profil_family.gif;;;;;;;;;;;;;;
+MODATTR;DPDOC_FR_DYN;;;;;;;H;;;;;;;
+USEFOR;SP;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;1;9;;;;;;;;;;;;;

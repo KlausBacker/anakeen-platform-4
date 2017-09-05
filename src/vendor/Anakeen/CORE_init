@@ -1,0 +1,226 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+    echo "Env variable pgservice_core is empty !"
+    echo "Check your context for missing or misconfigured environment variables."
+    exit 1
+fi
+
+. "$wpub"/log.sh
+. "$wpub"/libutil.sh
+
+set -e
+#------------------------------
+#post installation
+#------------------------------
+if [ "$1" = "I" ] ; then
+
+    log "Setting database parameters..."
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET DateStyle='ISO, DMY';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while setting DateStyle to 'ISO, DMY'."
+	exit $RET
+    fi
+    PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while setting standard_conforming_strings to 'off'."
+	exit $RET
+    fi
+
+    log "Checking if the database service $pgservice_core is running and available..."
+    PGSERVICE=$pgservice_core pgIsRunning
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Could not connect to database service $pgservice_core) !"
+	echo "Check that your database is running and acessible with the service from pgservice.conf."
+	exit $RET
+    fi
+
+    log "Checking if plpsgql language is active on database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgLanguageExists "plpgsql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	log "Trying to active plpgsql language on database service $pgservice_core..."
+	OUT=`PGSERVICE="$pgservice_core" psql -c 'CREATE LANGUAGE plpgsql;' 2> /dev/null`
+	RET=$?
+	if [ $RET -ne 0 ]; then
+	    echo "An error occured while creating language plpgsql : $RET"
+	    exit $RET
+	fi
+    fi
+
+    log "Executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' in database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgExecuteSqlFile "$wpub"/vendor/Anakeen/WHAT/getprivilege.sql
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' : $RET"
+	exit $RET
+    fi
+
+    log "Getting current database..."
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while querying current database name : $RET"
+	exit $RET
+    fi
+
+    "$wpub"/programs/core_appinitialize
+    "$wpub"/wsh.php --api=setSessionHandler --handlerClass=SessionHandler
+    "$wpub"/wsh.php --api=updateclass  --class=Application
+    "$wpub"/wsh.php --api=updateclass --class=Action
+    "$wpub"/wsh.php --api=updateclass --class=Style
+    "$wpub"/wsh.php --api=updateclass --class=ParamDef
+    "$wpub"/wsh.php --api=updateclass --class=Param
+    "$wpub"/wsh.php --api=updateclass --class=User
+    "$wpub"/wsh.php --api=updateclass --class=Group
+    "$wpub"/wsh.php --api=updateclass --class=Permission
+    "$wpub"/wsh.php --api=updateclass --class=Acl
+    "$wpub"/wsh.php --api=updateclass --class=Session
+    "$wpub"/wsh.php --api=updateclass --class=UserToken
+
+
+    
+
+    "$wpub"/wsh.php  --api=manageApplications --appname=CORE
+    
+    OUT=`PGSERVICE="$pgservice_core" psql -c 'CREATE SCHEMA family;' 2> /dev/null`
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while creating schema family : $RET"
+	exit $RET
+    fi
+
+    for CLASS in \
+        Doc \
+        DocRead \
+	; do
+        "$wpub"/wsh.php --api=updateclass  --appc=FDL "--class=$CLASS"
+    done
+
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+        echo "An error occured while setting standard_conforming_strings to 'off'"
+        exit $RET
+    fi
+
+    PGSERVICE="$pgservice_core" pgExecuteSqlFile "$wpub/vendor/Anakeen/WHAT/getprivilege.sql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error executing sql file \"$wpub/vendor/Anakeen/WHAT/getprivilege.sql\""
+	exit $RET
+    fi
+    
+    PGSERVICE="$pgservice_core" pgExecuteSqlFile "$wpub/vendor/Anakeen/FDL/fdl.sql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error executing sql file \"$wpub/vendor/Anakeen/FDL/fdl.sql\""
+	exit $RET
+    fi
+
+    for CLASS in \
+        DocAttr \
+        DocAttrLDAP \
+        DocCount \
+        DocFam \
+        DocHisto \
+        DocLog \
+        DocEnum \
+        DocWait \
+        DocPermExt \
+        DocPerm \
+        DocRel \
+        DocTimer \
+        DocUTag \
+        DocVaultIndex \
+        QueryDir \
+        TaskRequest \
+        VGroup \
+    ; do
+        "$wpub"/wsh.php --api=updateclass  "--class=$CLASS"
+    done
+
+    "$wpub"/wsh.php --api=updateclass   "--class=VaultDiskDirStorage"
+    "$wpub"/wsh.php --api=updateclass   "--class=VaultDiskFsStorage"
+    "$wpub"/wsh.php --api=updateclass   "--class=VaultDiskStorage"
+
+    "$wpub"/wsh.php --api=updateclass  --class=Group
+
+
+
+    "$wpub"/wsh.php --api=fdl_trigger --docid=-1 | PGSERVICE="$pgservice_core" psql
+    "$wpub"/wsh.php --api=fdl_trigger --trigger=Y --docid=-1 | PGSERVICE="$pgservice_core" psql
+    if [ ! -d "$wpub"/FDLGEN ]; then
+        mkdir  "$wpub"/FDLGEN;
+    fi;
+
+fi
+
+
+#------------------------------
+#post update
+#------------------------------
+if [ "$1" = "U" ] ; then
+
+    log "Setting database parameters..."
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
+    PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while setting standard_conforming_strings to 'off'."
+	exit $RET
+    fi
+
+    #add permission functionnalities
+    log "Executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' in database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgExecuteSqlFile "$wpub"/vendor/Anakeen/WHAT/getprivilege.sql
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while executing '$wpub/vendor/Anakeen/WHAT/getprivilege.sql' : $RET"
+	exit $RET
+    fi
+
+
+    echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql
+fi
+
+#------------------------------
+#post uninstallation
+#------------------------------
+if [ "$1" = "D" ] ; then
+
+  set -e
+
+#  grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
+#  mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
+#
+#  # Remove what from syslog
+#  echo "Remove what.log from syslog"
+#  cp /etc/syslog.conf /etc/syslog.conf.sav
+#  cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
+#  /etc/rc.d/init.d/syslog restart
+#  rm -f /etc/logrotate.d/what
+#
+#  # drop anakeen database and user
+#  log "The $dbname database will be dropped, we save a dump in /tmp/anakeen$$.dump"
+#  sulog  postgres  "pg_dump -d $dbname >/tmp/anakeen$$.dump"
+#  sulog  postgres  "dropuser anakeen" 
+#  sulog  postgres  "dropdb $dbname"
+#
+#  log "Unregister DB $dbname for automatic dump"
+#  mv /etc/ankpsql-tools/base-list /etc/ankpsql-tools/base-list.old
+#  cat /etc/ankpsql-tools/base-list.old | grep -v "^$dbname$" > /etc/ankpsql-tools/base-list
+#  rm -f /etc/ankpsql-tools/base-list.old
+fi
+
+exit 0
+
+# vim: set tabstop=8 softtabstop=4 shiftwidth=4 noexpandtab:

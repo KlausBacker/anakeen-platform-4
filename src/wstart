@@ -1,0 +1,8 @@
+#!/usr/bin/env php
+<?php
+
+
+require_once sprintf('%s/vendor/Anakeen/WHAT/Lib.Prefix.php', __DIR__);
+require_once sprintf('%s/vendor/Anakeen/WHAT/Class.Dcp_Utils_WStartCLI.php', __DIR__);
+
+\Dcp\Utils\WStartCLI::run($argv);

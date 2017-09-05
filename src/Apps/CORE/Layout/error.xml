@@ -1,0 +1,53 @@
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<LINK REL="icon" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="SHORTCUT ICON" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="stylesheet" type="text/css" HREF="?app=CORE&action=CORE_CSS" >
+   <title>[TITLE]</title>
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+      [JS:REF]
+         <script language="JavaScript">
+        <!--
+          [JS:CODE]
+        //-->
+         </script>
+ </head>
+
+<body class="core">
+<script language="javascript">
+
+if (window.name == 'fhidden' || window.innerWidth == 0 || window.document.body.clientWidth == 0) {
+  alert([serror]);
+}
+
+</script>
+<style>
+div.error {
+  color:[CORE_ERRORCOLOR];
+  margin-left:auto;
+  margin-right:auto;
+  width:80%;
+  text-align:left;
+}
+div.COREError {
+    margin:10px;
+    border: solid 3px;
+}
+</style>
+<div  class="COREError" >
+
+<div class="CoreTextError" title="[appname]/[appact]">
+<div class="error">[error]</div>
+<div>
+
+
+
+
+</div>
+    </body></html>

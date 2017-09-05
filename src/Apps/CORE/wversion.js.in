@@ -1,0 +1,8 @@
+
+/**
+ * @author Anakeen
+ */
+
+function getVersion() {
+  return '%VERSION%';
+}
