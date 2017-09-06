@@ -1,13 +1,13 @@
 {
-  "moduleName": "dynacase-document-uis",
+  "moduleName": "anakeen-document-uis",
   "version": "{{VERSION}}",
   "release": "{{RELEASE}}",
   "licence":"http://docs.anakeen.com/licenses/anakeen-1.0/licence.html Licence Anakeen",
   "application": [
-    "DOCUMENT"
+    
   ],
   "includedPath": [
-    "HTTPAPI_V1",
+      "Apps","vendor","var",
     "locale",
     "STYLE"
   ],

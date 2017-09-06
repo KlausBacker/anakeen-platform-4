@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module xmlns="urn:dynacase:webinst:module/1.0"  name="@moduleName@" release="@release@" version="@version@"  license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module  name="@moduleName@" release="@release@" version="@version@"  license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
 
     <description>Document Uis</description>
 
@@ -9,7 +9,7 @@
     </replaces>
     <!-- //endregion full -->
 
-    <requires>
+    <requiresOld>
         <installer version="1.5.0" comp="ge"/>
         <module comp='ge' version='3.2.23' name='dynacase-core'/>
         <!-- //region full -->
@@ -28,17 +28,17 @@
         <module name="dynacase-jquery-dataTables-1.10-installer"/>
         <module name='dynacase-httpapi-v1' comp='ge' version='1.0.1'/>
         <module name='dynacase-es6-promise-installer'/>
-    </requires>
+    </requiresOld>
 
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./Apps/DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
             <label>Create Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
-        <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
+        <process command="/bin/bash ./Apps/DOCUMENT/Programs/jsLink">
             <label>Link js libraries</label>
         </process>
 
@@ -48,12 +48,12 @@
     <post-upgrade>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./Apps/DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
             <label>Update Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
-        <process command="/bin/bash ./DOCUMENT/Programs/jsLink">
+        <process command="/bin/bash ./Apps/DOCUMENT/Programs/jsLink">
             <label>Link js libraries</label>
         </process>
         <process command="programs/post_migration DOCUMENT">

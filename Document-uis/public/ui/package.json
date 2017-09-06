@@ -1,0 +1,14 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "Document Ui Dependences",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anakeen",
+  "license": "ISC",
+  "dependencies": {
+    "kendo-ui-core": "^2017.2.621"
+  }
+}
