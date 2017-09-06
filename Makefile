@@ -2,10 +2,7 @@ DHOST=$(word 2, $(MAKECMDGOALS) )
 DCTX=$(word 3, $(MAKECMDGOALS) )
 
 webinst:
-	cp build.json info.xml src
-	php ./dynacase-devtool.phar generateWebinst -s src
-	mv src/*webinst .
-	rm src/build.json src/info.xml
+	php ./dynacase-devtool.phar generateWebinst -s .
 
 deploy:
 	cp build.json info.xml src
