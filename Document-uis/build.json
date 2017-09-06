@@ -7,9 +7,7 @@
     
   ],
   "includedPath": [
-      "Apps","vendor","var",
-    "locale",
-    "STYLE"
+    "src"
   ],
   "lang": [
     "fr",
@@ -18,9 +16,5 @@
   "csvParam": {
     "enclosure": "\"",
     "delimiter": ";"
-  },
-  "dynacase-devtool": {
-    "uri": "git@github.com:Anakeen/development-tools.git",
-    "tag": "3.2"
   }
 }
