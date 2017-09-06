@@ -7,7 +7,7 @@
     
   ],
   "includedPath": [
-    "src"
+    "src/*"
   ],
   "lang": [
     "fr",
