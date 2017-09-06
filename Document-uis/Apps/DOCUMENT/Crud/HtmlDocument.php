@@ -101,7 +101,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
             }
         }
         
-        $layout = new \Layout("DOCUMENT/Layout/view.html");
+        $layout = new \Layout("Apps/DOCUMENT/Layout/view.html");
         $layout->set("BASEURL", self::getBaseUrl());
         $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
         $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));

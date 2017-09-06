@@ -4,6 +4,7 @@ RELEASE = @RELEASE@
 
 localpub=$(shell pwd)/localpub
 
+
 stub:
 	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
 	./dynacase-devtool.phar generateStub -s Document-uis-selenium -o ./stubs/
@@ -33,9 +34,9 @@ webinst-autotest:
 webinst-full:
 	-rm -fr $(localpub)
 	cp -ra Document-uis $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/DOCUMENT/DOCUMENT_init.php
-	r.js -o $(localpub)/DOCUMENT/IHM/build.js
-	r.js -o $(localpub)/DOCUMENT/IHM/widgets/buildWidget.js
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/Apps/DOCUMENT/DOCUMENT_init.php
+	r.js -o $(localpub)/Apps/DOCUMENT/IHM/build.js
+	r.js -o $(localpub)/Apps/DOCUMENT/IHM/widgets/buildWidget.js
 	php ./prepareElementForLight.php --modeFull -f $(localpub)/info.xml
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
@@ -44,19 +45,21 @@ webinst-full:
 webinst-light: 
 	-rm -fr $(localpub)
 	cp -ra Document-uis $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub/DOCUMENT/DOCUMENT_init.php
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub/Apps/DOCUMENT/DOCUMENT_init.php
 	sed -i -e "s/$(PACKAGE)/$(PACKAGE)-light/" $(localpub)/build.json
 	php ./prepareElementForLight.php -f $(localpub)/info.xml
-	php ./prepareElementForLight.php -f $(localpub)/DOCUMENT/DOCUMENT_init.php
-	php ./prepareElementForLight.php -f $(localpub)/DOCUMENT/DOCUMENT.app
+	php ./prepareElementForLight.php -f $(localpub)/Apps/DOCUMENT/DOCUMENT_init.php
+	php ./prepareElementForLight.php -f $(localpub)/Apps/DOCUMENT/DOCUMENT.app
 	find $(localpub)/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
 	find $(localpub)/DOCUMENT/IHM/ -name "*.less" -type f -delete
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
 
-webinst-all: webinst webinst-test webinst-selenium webinst-autotest
+webinst-all: webinst # webinst-test webinst-selenium webinst-autotest
 
 webinst:
+	cd Document-uis/public/ui; npm install
+	cd Document-uis/vendor/Anakeen/Ui/PhpLib; composer install
 	make webinst-full
 
 po:
@@ -71,3 +74,6 @@ clean:
 		 *.webinst
 	/bin/rm -fr autom4te.cache
 
+
+deploy:
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s src
