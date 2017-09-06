@@ -15,7 +15,7 @@
 
     <parameters>
         <param name="client_name" label="client name" type="text"/>
-        <param name="core_db" label="database postgresql service name" default="&#x40;CONTEXT_NAME" type="text" needed="Y"/>
+        <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y"/>
         <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic"
                needed="Y"/>
 
@@ -33,14 +33,14 @@
         <check type="phpversion" predicate="lt" version="7.2.0">
             <label lang="en">Maximum PHP version is 7.1</label>
         </check>
-        <check type="pgversion" service="&#x40;core_db" predicate="ge" version="9.1.0">
+        <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
             <label lang="en">Minimum database version is 9.1</label>
         </check>
-        <check type="pgversion" service="&#x40;core_db" predicate="lt" version="9.7.0">
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.7.0">
             <label lang="en">Maximum database version is 9.6</label>
         </check>
 
-        <check type="pgempty" service="&#x40;core_db" optional="yes">
+        <check type="pgempty" service="@core_db" optional="yes">
             <label lang="en">Check database empty</label>
         </check>
 
@@ -323,11 +323,11 @@
         <check type="phpversion" predicate="lt" version="7.2.0">
             <label lang="en">Maximum PHP version is 7.1</label>
         </check>
-        <check type="pgversion" service="&#x40;core_db" predicate="ge" version="9.1.0">
+        <check type="pgversion" service="@core_db" predicate="ge" version="9.1.0">
             <label lang="en">Minimum database version is 9.1</label>
         </check>
 
-        <check type="pgversion" service="&#x40;core_db" predicate="lt" version="9.7.0">
+        <check type="pgversion" service="@core_db" predicate="lt" version="9.7.0">
             <label lang="en">Maximum database version is 9.6</label>
         </check>
 
@@ -390,7 +390,7 @@ Your PHP installation seems to have a known bug (ref #45996: <a href="http://bug
 Please use an updated PHP version that corrects this bug.
 ]]></help>
         </check>
-        <check type="phpbug40926" service="&#x40;core_db">
+        <check type="phpbug40926" service="@core_db">
             <help><![CDATA[
 Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
 <br/>
