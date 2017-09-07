@@ -1,7 +1,8 @@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 RELEASE = @RELEASE@
-
+DHOST=$(word 2, $(MAKECMDGOALS) )
+DCTX=$(word 3, $(MAKECMDGOALS) )
 localpub=$(shell pwd)/localpub
 
 
@@ -76,5 +77,8 @@ clean:
 	/bin/rm -fr autom4te.cache
 
 
+
 deploy:
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s src
+	rm -f *webinst
+	make webinst
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX)  -w anakeen-document-uis-1*webinst -- --force
