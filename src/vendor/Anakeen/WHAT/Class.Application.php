@@ -164,6 +164,8 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public $cssref = array();
     public $csscode = array();
+    protected $publicdir;
+
     /**
      * Application constructor.
      * @param string $dbaccess
@@ -175,6 +177,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->rootdir = DEFAULT_PUBDIR. "/Apps";
+        $this->publicdir = DEFAULT_PUBDIR. "/public";
     }
     /**
      * initialize  Application object
@@ -956,18 +959,18 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
             }
             // try application
-            if (file_exists($this->rootdir . "/" . $this->name . "/Images/" . $img)) {
+            if (file_exists($this->publicdir . "/" . $this->name . "/Images/" . $img)) {
                 $url = $this->name . "/Images/" . $img;
                 if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
                 $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
             } else { // perhaps generic application
-                if (($this->childof != "") && (file_exists($this->rootdir . "/" . $this->childof . "/Images/" . $img))) {
+                if (($this->childof != "") && (file_exists($this->publicdir . "/" . $this->childof . "/Images/" . $img))) {
                     $url = $this->childof . "/Images/" . $img;
                     if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
                     $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
-                } else if (file_exists($this->rootdir . "/Images/" . $img)) {
+                } else if (file_exists($this->publicdir . "/Images/" . $img)) {
                     $url = "Images/" . $img;
                     if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
                     $cacheImgUrl[$cacheIndex] = $url;
@@ -983,6 +986,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         if ($size !== null) return 'resizeimg.php?img=' . urlencode($this->noimage) . '&size=' . $size;
+        $this->addLogMsg("No find image \"$img\"");
         return $this->noimage;
     }
     /**

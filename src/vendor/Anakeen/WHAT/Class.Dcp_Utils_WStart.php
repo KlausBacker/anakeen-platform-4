@@ -109,20 +109,20 @@ class WStartInternals
     public function linkFiles($sourceDir, $destDir, &$linked = array())
     {
         $this->verbose(2, sprintf("Processing files from '%s'.\n", $sourceDir));
-        if (($dh = opendir($this->absolutize($sourceDir))) === false) {
-            throw new WStartException(sprintf("Error opening directory '%s'.", $this->absolutize($sourceDir)));
+        if (($dh = opendir($this->publize($sourceDir))) === false) {
+            throw new WStartException(sprintf("Error opening directory '%s'.", $this->publize($sourceDir)));
         }
         while (($file = readdir($dh)) !== false) {
             if ($file == '.' || $file == '..') {
                 continue;
             }
             $relSourceFile = $this->relativize($sourceDir . DIRECTORY_SEPARATOR . $file);
-            $absSourceFile = $this->absolutize($relSourceFile);
+            $absSourceFile = $this->publize($relSourceFile);
             if (!is_file($absSourceFile) && !is_dir($absSourceFile)) {
                 continue;
             }
             $relTarget = '..' . DIRECTORY_SEPARATOR . $relSourceFile;
-            $absLink = $this->absolutize($destDir . DIRECTORY_SEPARATOR . basename($relSourceFile));
+            $absLink = $this->publize($destDir . DIRECTORY_SEPARATOR . basename($relSourceFile));
             if (!isset($linked[$absLink])) {
                 $linked[$absLink] = array();
             }
@@ -202,20 +202,21 @@ class WStartInternals
     public function getSubDirs($subdir)
     {
         $appImagesDirs = array();
-        if (($dh = opendir($this->contextRoot)) === false) {
+        if (($dh = opendir($this->contextRoot."/public")) === false) {
             return $appImagesDirs;
         }
         while (($elmt = readdir($dh)) !== false) {
             if ($elmt == '.' || $elmt == '..') {
                 continue;
             }
+
             if ($elmt === 'supervisor') {
                 continue;
             }
-            if (!is_dir($this->absolutize($elmt))) {
+            if (!is_dir($this->publize($elmt))) {
                 continue;
             }
-            if (!is_dir($this->absolutize($elmt . DIRECTORY_SEPARATOR . $subdir))) {
+            if (!is_dir($this->publize($elmt . DIRECTORY_SEPARATOR . $subdir))) {
                 continue;
             }
             $appImagesDirs[] = $elmt . DIRECTORY_SEPARATOR . $subdir;
@@ -286,7 +287,23 @@ class WStartInternals
     public function absolutize($file)
     {
         if (substr($file, 0, 1) != '/') {
-            $file = $this->contextRoot . DIRECTORY_SEPARATOR . $file;
+            $file = $this->contextRoot . DIRECTORY_SEPARATOR. $file;
+        }
+        return $file;
+    }
+    /**
+     * Compute absolute path from context's root
+     *
+     * - If the file is relative, then the absolute path is computed relative to the context's root.
+     * - If the file is already in a absolute form, then their current absolute form is used.
+     *
+     * @param $file
+     * @return string
+     */
+    protected function publize($file)
+    {
+        if (substr($file, 0, 1) != '/') {
+            $file = $this->contextRoot . DIRECTORY_SEPARATOR . "public". DIRECTORY_SEPARATOR. $file;
         }
         return $file;
     }
@@ -376,15 +393,16 @@ class WStart extends WStartInternals
         $this->verbose(1, sprintf("[+] Re-generating Images and Docs symlinks.\n"));
         $linked = array();
         /* Images */
-        $imagesDir = $this->absolutize('Images');
+        $imagesDir = $this->publize('Images');
         $this->mkdir($imagesDir);
         $dirs = $this->getImagesDirs();
+        print_r2($dirs);
         foreach ($dirs as $dir) {
             $this->linkFiles($dir, $imagesDir, $linked);
         }
         $this->deleteDeadLinks($imagesDir);
         /* Docs */
-        $docsDir = $this->absolutize('Docs');
+        $docsDir = $this->publize('Docs');
         $this->mkdir($docsDir);
         $dirs = $this->getDocsDirs();
         foreach ($dirs as $dir) {

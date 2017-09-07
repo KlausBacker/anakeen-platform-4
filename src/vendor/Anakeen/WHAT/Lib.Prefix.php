@@ -20,6 +20,7 @@ set_include_path(implode([
     $pubdir,
         $pubdir."/vendor/Anakeen",
         $pubdir."/vendor/Anakeen/WHAT",
+        $pubdir."/Apps",
 
     ], PATH_SEPARATOR) . PATH_SEPARATOR . get_include_path());
 

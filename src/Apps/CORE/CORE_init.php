@@ -411,11 +411,9 @@ $app_const = array(
     )
 );
 
-if (file_exists('WHAT/Lib.Prefix.php')) {
-    include_once ('WHAT/Lib.Prefix.php');
-}
-if (file_exists('CORE/lang.php')) {
-    include_once ("CORE/lang.php");
+
+if (file_exists('Apps/CORE/lang.php')) {
+    include_once ("Apps/CORE/lang.php");
 }
 
 if (isset($lang)) {

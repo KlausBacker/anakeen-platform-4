@@ -5,9 +5,7 @@ webinst:
 	php ./dynacase-devtool.phar generateWebinst -s .
 
 deploy:
-	cp build.json info.xml src
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s src
-	rm src/build.json src/info.xml
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s .
 
 stub:
 	php ./dynacase-devtool.phar generateStub -s . -o stubs

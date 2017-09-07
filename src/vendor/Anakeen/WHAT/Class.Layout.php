@@ -114,8 +114,11 @@ class Layout
      */
     public function __construct($caneva = "", $action = null, $template = "[OUT]")
     {
+        $this->initialFile=$caneva;
         $this->LOG = new Log("", "Layout");
-        if (($template == "[OUT]") && ($caneva != "")) $this->template = sprintf(_("Template [%s] not found") , $caneva);
+        if (($template == "[OUT]") && ($caneva != "")) {
+            $this->template = sprintf(_("Template [%s] not found") , $caneva);
+        }
         else $this->template = $template;
         if ($action) $this->action = & $action;
         $this->generation = "";
@@ -125,8 +128,7 @@ class Layout
         $this->file = "";
         if ($caneva != "") {
             if ((!file_exists($file)) && ($file[0] != '/')) {
-                $file = DEFAULT_PUBDIR . "/$file"; // try absolute
-                
+                $file = DEFAULT_PUBDIR . "/Apps/$file"; // try absolute
             }
             if (file_exists($file)) {
                 $this->file = $file;
@@ -648,6 +650,12 @@ class Layout
             $this->goZoneMapping,
             "["
         ) , $out);
+
+        if ($out === '[OUT]') {
+            $out = sprintf("[ERROR LAYOUT: %s]",$this->initialFile);
+
+        }
+
         return ($out);
     }
     /**

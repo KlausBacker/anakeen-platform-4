@@ -7842,34 +7842,6 @@ create unique index i_docir on doc(initid, revision);";
         return "";
     }
     /**
-     * view only option values
-     * @templateController
-     * @deprecated option attributes are not supported
-     * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
-     * @return void
-     */
-    final public function viewoptcard($target = "_self", $ulink = true, $abstract = false)
-    {
-        deprecatedFunction();
-        $this->viewbodycard($target, $ulink, $abstract, true);
-    }
-    /**
-     * edit only option
-     * @templateController
-     * @deprecated option attributes are not supported
-     * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
-     * @return void
-     */
-    final public function editoptcard($target = "_self", $ulink = true, $abstract = false)
-    {
-        deprecatedFunction();
-        $this->editbodycard($target, $ulink, $abstract, true);
-    }
-    /**
      * value for edit interface
      * @templateController default control for HTML form document edition
      * @param string $target
@@ -7883,7 +7855,6 @@ create unique index i_docir on doc(initid, revision);";
     $target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
         include_once ("FDL/editutil.php");
-        include_once ("FDL/Class.SearchDoc.php");
         
         $docid = $this->id; // document to edit
         // ------------------------------------------------------

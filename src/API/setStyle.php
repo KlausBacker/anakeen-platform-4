@@ -308,6 +308,7 @@ class styleManager
         $filesDefinition = array();
         
         $pubDir = DEFAULT_PUBDIR;
+        $targetDirName="public".DIRECTORY_SEPARATOR.$targetDirName;
         $targetDir = $pubDir . DIRECTORY_SEPARATOR . $targetDirName;
         // clean previous files
         $this->deleteDirectory($targetDir);

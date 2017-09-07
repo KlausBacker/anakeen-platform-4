@@ -258,35 +258,35 @@ function getLayoutFile($app, $layfile)
     if (!strstr($layfile, '.')) $layfile.= ".xml";
     $socStyle = Getparam("CORE_SOCSTYLE");
     $style = Getparam("STYLE");
-    $root = DEFAULT_PUBDIR;
+    $appDir = DEFAULT_PUBDIR."/Apps";
     if ($socStyle != "") {
-        $file = $root . "/STYLE/$socStyle/Layout/$layfile";
+        $file = $appDir . "/STYLE/$socStyle/Layout/$layfile";
         if (file_exists($file)) {
             return ($file);
         }
         
-        $file = $root . "/STYLE/$socStyle/Layout/" . strtolower($layfile);
+        $file = $appDir . "/STYLE/$socStyle/Layout/" . strtolower($layfile);
         if (file_exists($file)) {
             return ($file);
         }
     } elseif ($style != "") {
-        $file = $root . "/STYLE/$style/Layout/$layfile";
+        $file = $appDir . "/STYLE/$style/Layout/$layfile";
         if (file_exists($file)) {
             return ($file);
         }
         
-        $file = $root . "/STYLE/$style/Layout/" . strtolower($layfile);
+        $file = $appDir . "/STYLE/$style/Layout/" . strtolower($layfile);
         if (file_exists($file)) {
             return ($file);
         }
     }
     
-    $file = $root . "/$app/Layout/$layfile";
+    $file = $appDir . "/$app/Layout/$layfile";
     if (file_exists($file)) {
         return ($file);
     }
     
-    $file = $root . "/$app/Layout/" . strtolower($layfile);
+    $file = $appDir . "/$app/Layout/" . strtolower($layfile);
     if (file_exists($file)) {
         return ($file);
     }
@@ -871,7 +871,7 @@ function getLocales()
 function setLanguage($lang)
 {
     global $action;
-    
+
     if (!$lang) {
         return;
     }
@@ -902,7 +902,6 @@ function setLanguage($lang)
     $enumAttr->resetEnum();
     
     $td = "main-catalog$number";
-    
     putenv("LANG=" . $lang); // needed for old Linux kernel < 2.4
     putenv("LANGUAGE="); // no use LANGUAGE variable
     bindtextdomain($td, sprintf("%s/locale", DEFAULT_PUBDIR));
