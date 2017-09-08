@@ -232,12 +232,13 @@
             var currentWidget = this;
             var options = {
                 autoBind: false,
+                clearButton: false,
                 dataTextField: "docTitle",
                 dataValueField: "docId",
                 highlightFirst: true,
                 //value: values,
                 dataSource: {
-                    type: "json",
+                    // type: "json",
                     serverFiltering: true,
                     transport: {
                         read: function wDocidSelectRead(options)

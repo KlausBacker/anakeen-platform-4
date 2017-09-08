@@ -91,7 +91,7 @@
             var systemOption = {
                 dataTextField: "title",
                 dataSource: {
-                    type: "json",
+                    // type: "json",
 
                     serverFiltering: true,
                     transport: {

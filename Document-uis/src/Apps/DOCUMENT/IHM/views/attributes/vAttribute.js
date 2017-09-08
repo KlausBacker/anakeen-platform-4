@@ -219,9 +219,15 @@ define([
         refreshError: function vAttributeRefreshError(event)
         {
             this.$el.find(".dcpAttribute__label").dcpLabel("setError", this.model.get("errorMessage"));
-            this.widgetApply(this.getDOMElements().find(".dcpAttribute__content--widget").andSelf().filter(".dcpAttribute__content--widget"),
+            // andSelf method was removed from jQuery 3.0.0+ use addBack instead
+            var jqueryVersion = +$().jquery.split('.')[0];
+            if (jqueryVersion >= 3) {
+              this.widgetApply(this.getDOMElements().find(".dcpAttribute__content--widget").addBack().filter(".dcpAttribute__content--widget"),
                 "setError", this.model.get("errorMessage"));
-
+            } else {
+              this.widgetApply(this.getDOMElements().find(".dcpAttribute__content--widget").andSelf().filter(".dcpAttribute__content--widget"),
+                "setError", this.model.get("errorMessage"));
+            }
         },
 
         /**

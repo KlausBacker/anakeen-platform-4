@@ -62,8 +62,12 @@
                 }
 
                 // create selector for plugin
-                $.expr[ ":" ][ fullName.toLowerCase() ] = function widget_createSelector(elem) {
-                    return Boolean($(elem).data(fullName));
+                // $.expr[ ":" ] is deprecated with jQuery 3.0.0+ in favor of $.expr.pseudos
+                // $.expr[ ":" ][ fullName.toLowerCase() ] = function widget_createSelector(elem) {
+                //     return Boolean($(elem).data(fullName));
+                // };
+                $.expr.pseudos[ fullName.toLowerCase() ] = function widget_createSelector(elem) {
+                  return Boolean($(elem).data(fullName));
                 };
 
                 $[ namespace ] = $[ namespace ] || {};
@@ -437,7 +441,13 @@
                         for ( i = 0; i < classes.length; i++ ) {
                             current = that.classesElementLookup[ classes[ i ] ] || $();
                             if ( options.add ) {
-                                current = $( $.unique( current.get().concat( options.element.get() ) ) );
+                                // unique is deprecated in jQuery 3.0.0+ renamed to uniqueSort
+                                var jqueryVersion = +$().jquery.split('.')[0];
+                                if (jqueryVersion >= 3) {
+                                  current = $( $.uniqueSort( current.get().concat( options.element.get() ) ) );
+                                } else {
+                                  current = $( $.unique( current.get().concat( options.element.get() ) ) );
+                                }
                             } else {
                                 current = $( current.not( options.element ).get() );
                             }
@@ -521,7 +531,20 @@
                             eventName = match[1] + instance.eventNamespace,
                             selector = match[2];
                         if (selector) {
-                            delegateElement.delegate(selector, eventName, handlerProxy);
+                            // delegate is deprecated in jQuery 3.0.0+ in favor of on method
+                            var jqueryVersion = +$().jquery.split('.')[0];
+                            if (jqueryVersion >= 3) {
+                              delegateElement.on(eventName, selector, handlerProxy);
+                            } else {
+                              delegateElement.delegate(selector, eventName, handlerProxy);
+                            }
+                        } else {
+                          // bind is deprecated in jQuery 3.0.0+ in favor of on method
+                          if (!element.bind) {
+                            element.on(eventName, handlerProxy);
+                          } else {
+                            element.bind(eventName, handlerProxy);
+                          }
                         } else {
                             element.bind(eventName, handlerProxy);
                         }
