@@ -464,7 +464,7 @@ class DocOooFormat
         $xhtml_body = $this->cleanhtml($xhtml_body);
         
         $domHtml = new \Dcp\Utils\XDOMDocument();
-        $domHtml->load(DEFAULT_PUBDIR . "/CORE/Layout/html2odt.xsl");
+        $domHtml->load(DEFAULT_PUBDIR . "/Apps/CORE/Layout/html2odt.xsl");
         $xslt = new xsltProcessor;
         $xslt->importStyleSheet($domHtml);
         $dom = null;

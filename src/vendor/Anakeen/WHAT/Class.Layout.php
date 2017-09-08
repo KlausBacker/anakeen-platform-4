@@ -127,9 +127,16 @@ class Layout
         $file = $caneva;
         $this->file = "";
         if ($caneva != "") {
-            if ((!file_exists($file)) && ($file[0] != '/')) {
-                $file = DEFAULT_PUBDIR . "/Apps/$file"; // try absolute
+            if ($this->initialFile[0] !== '/') {
+                if ((!file_exists($file)) ) {
+                    $file = DEFAULT_PUBDIR . "/Apps/".$this->initialFile; // try absolute in Apps
+                }
+                if ((!file_exists($file)) ) {
+                    $file = DEFAULT_PUBDIR . "/" .$this->initialFile; // try absolute
+                }
             }
+
+
             if (file_exists($file)) {
                 $this->file = $file;
                 $this->template = file_get_contents($file);

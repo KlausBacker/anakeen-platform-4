@@ -30,7 +30,7 @@ $err = "";
 if (!is_dir($dirname)) {
     if (is_dir(dirname($dirname))) {
         print sprintf(_("create directory %s\n") , $dirname);
-        mkdir($dirname . "/", VAULT_DMODE);
+        mkdir($dirname . "/", VaultFile::VAULT_DMODE);
     }
 }
 if (!is_dir($dirname)) {

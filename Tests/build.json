@@ -1,0 +1,9 @@
+{
+    "moduleName" : "anakeen-core-test",
+    "version" : "4.0.0",
+    "release" : "0",
+    "application" : [],
+    "includedPath" : ["src/*"],
+    "lang" : ["fr","en"],
+    "csvParam" : {"enclosure" : "\"", "delimiter": ";"}
+}

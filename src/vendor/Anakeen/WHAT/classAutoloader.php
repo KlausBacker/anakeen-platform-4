@@ -507,7 +507,7 @@ class DirectoriesAutoloader
      */
     public function getClassFile($className)
     {
-        return isset($this->_classes[strtolower($className) ]) ? $this->_classes[strtolower($className) ] : null;
+        return isset($this->_classes[strtolower($className) ]) ? DEFAULT_PUBDIR."/".$this->_classes[strtolower($className) ] : null;
     }
     /**
      * write cache file

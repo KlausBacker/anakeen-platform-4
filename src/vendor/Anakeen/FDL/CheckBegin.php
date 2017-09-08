@@ -60,7 +60,7 @@ class CheckBegin extends CheckData
     
     private function getClassFile($className)
     {
-        $file= sprintf('FDL/Class.%s.php', $className);
+        $file= sprintf(DEFAULT_PUBDIR.'/Apps/FDL/Class.%s.php', $className);
         if (!file_exists($file)) {
             if (\Dcp\Autoloader::classExists($className)) {
                 return \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($className);

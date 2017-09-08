@@ -439,7 +439,7 @@ SQL;
         $goodFile = true;
         $phpFile = trim($this->structAttr->phpfile);
         if ($phpFile && $phpFile != '-' && ($this->getType() != "action")) {
-            $phpFile = sprintf("EXTERNALS/%s", $phpFile);
+            $phpFile = sprintf(DEFAULT_PUBDIR."/EXTERNALS/%s", $phpFile);
             if (!file_exists($phpFile)) {
                 $this->addError(ErrorCode::getError('ATTR1100', $phpFile, $this->attrid));
                 $goodFile = false;
@@ -521,7 +521,7 @@ SQL;
                         } else {
                             
                             $targetFile = $refFunc->getFileName();
-                            $realPhpFile = realpath(sprintf("EXTERNALS/%s", $phpFile));
+                            $realPhpFile = realpath(sprintf(DEFAULT_PUBDIR."/EXTERNALS/%s", $phpFile));
                             if ($targetFile != $realPhpFile) {
                                 if (!$oParse->appName) {
                                     $this->addError(ErrorCode::getError('ATTR1210', $phpFuncName, $realPhpFile));

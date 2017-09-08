@@ -4,8 +4,17 @@ DCTX=$(word 3, $(MAKECMDGOALS) )
 webinst:
 	php ./dynacase-devtool.phar generateWebinst -s .
 
+
+webinst-test:
+	php ./dynacase-devtool.phar generateWebinst -s Tests
+	mv Tests/*webinst .
+
 deploy:
 	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s .
+
+
+deploy-test:
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s Tests
 
 stub:
 	php ./dynacase-devtool.phar generateStub -s . -o stubs

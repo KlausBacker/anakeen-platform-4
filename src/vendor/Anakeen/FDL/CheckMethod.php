@@ -29,7 +29,7 @@ class CheckMethod extends CheckData
     }
     private function getClassFile($className)
     {
-        return sprintf('Apps/FDL/%s', $className);
+        return sprintf(DEFAULT_PUBDIR.'/Apps/FDL/%s', $className);
     }
     /**
      * check if it is a folder

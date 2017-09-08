@@ -2177,7 +2177,7 @@ create unique index i_docir on doc(initid, revision);";
             $classname = "Doc" . $fromid;
             $GEN = getGen($this->dbaccess);
             $includePath = "FDL$GEN/Class.$classname.php";
-            if (file_exists($includePath)) {
+            if (stream_resolve_include_path($includePath)) {
                 include_once ($includePath);
                 $this->attributes = new $adocClassName();
             }
@@ -9589,6 +9589,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($withLocale) {
                 $currentLocale = getParam("CORE_LANG", "fr_FR");
                 $lang = getLocales();
+
                 $locales = array_keys($lang);
                 // set current at then end to get same locale when function finished
                 unset($locales[$currentLocale]);

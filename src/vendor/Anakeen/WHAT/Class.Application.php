@@ -393,6 +393,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         if (is_file($ref)) return $ref;
+        if (is_file($this->publicdir."/".$ref)) {
+             return $ref;
+        }
         /* TODO : update with application log class */
         $this->log->error(__METHOD__ . " Unable to identify the ref $ref");
         
@@ -1253,8 +1256,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         $this->log->info("Init : $name");
 
-        $appFilePath=sprintf("%s/%s/%s.app", DEFAULT_PUBDIR, $name, $name);
-        $appFilePath=sprintf("%s/Apps/%s/%s.app", DEFAULT_PUBDIR, $name, $name);
+        $appFilePath=sprintf("%s/%s/%s.app", $this->rootdir, $name, $name);
         if (file_exists($appFilePath)) {
             global $app_desc, $app_acl, $action_desc;
             // init global array
@@ -1320,7 +1322,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             //----------------------------------
             // init application constant
-            $initAppFile=sprintf("%s/Apps/%s/%s_init.php", DEFAULT_PUBDIR, $name, $name);
+            $initAppFile=sprintf("%s/%s/%s_init.php", $this->rootdir, $name, $name);
             if (file_exists($initAppFile)) {
                 include ($initAppFile);
                 if ($update) {

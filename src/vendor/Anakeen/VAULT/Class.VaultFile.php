@@ -14,9 +14,7 @@
  */
 
 include_once ("VAULT/Class.VaultDiskStorage.php");
-include_once ("Class.Log.php");
-define("VAULT_FMODE", 0600);
-define("VAULT_DMODE", 0700);
+
 
 class VaultFile
 {
@@ -28,7 +26,7 @@ class VaultFile
     public $d_mode = 0700;
     public $type = "fs";
     
-    const VAULT_DMODE = VAULT_DMODE;
+    const VAULT_DMODE = 0700;
     /**
      * @var VaultDiskStorage
      */

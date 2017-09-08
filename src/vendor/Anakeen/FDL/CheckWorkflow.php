@@ -358,9 +358,8 @@ class CheckWorkflow
         }
         
         if (!$classFile) {
-            $classFile = sprintf("FDL/Class.%s.php", $this->className);
+            $classFile = sprintf(DEFAULT_PUBDIR."/Apps/FDL/Class.%s.php", $this->className);
         }
         return $classFile;
     }
 }
-?>

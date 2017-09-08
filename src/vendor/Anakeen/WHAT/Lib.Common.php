@@ -841,10 +841,10 @@ function getLocaleConfig($core_lang = '')
         $core_lang = getParam("CORE_LANG", "fr_FR");
     }
     $lng = substr($core_lang, 0, 2);
-    if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang) && file_exists("locale/" . $lng . "/lang.php")) {
-        include ("locale/" . $lng . "/lang.php");
+    if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang) && file_exists(DEFAULT_PUBDIR."/locale/" . $lng . "/lang.php")) {
+        include (DEFAULT_PUBDIR."/locale/" . $lng . "/lang.php");
     } else {
-        include ("locale/fr/lang.php");
+        include (DEFAULT_PUBDIR."/locale/fr/lang.php");
     }
     if (!isset($lang) || !isset($lang[$core_lang]) || !is_array($lang[$core_lang])) {
         return false;

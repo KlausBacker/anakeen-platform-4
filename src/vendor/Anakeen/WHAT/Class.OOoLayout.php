@@ -61,6 +61,7 @@ class OOoLayout extends Layout
      */
     public function __construct($caneva = "", Action & $action = null, Doc & $doc = null)
     {
+        $this->initialFile=$caneva;
         $this->LOG = new Log("", "Layout");
         $this->doc = $doc;
         $this->template = "";
@@ -69,10 +70,16 @@ class OOoLayout extends Layout
         $file = $caneva;
         $this->file = "";
         if ($caneva != "") {
-            if ((!file_exists($file)) && ($file[0] != '/')) {
-                $file = DEFAULT_PUBDIR . "/$file"; // try absolute
-                
+
+            if ($this->initialFile[0] !== '/') {
+                if ((!file_exists($file)) ) {
+                    $file = DEFAULT_PUBDIR . "/Apps/".$this->initialFile; // try absolute in Apps
+                }
+                if ((!file_exists($file)) ) {
+                    $file = DEFAULT_PUBDIR . "/" .$this->initialFile; // try absolute
+                }
             }
+
             if (file_exists($file)) {
                 if (filesize($file) > 0) {
                     $this->odf2content($file);
@@ -1601,7 +1608,7 @@ class OOoLayout extends Layout
         $xmldata = '<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">' . "</xhtml:html>";
         
         $ddXsl = new DOMDocument();
-        $ddXsl->load(DEFAULT_PUBDIR . "/CORE/Layout/html2odt.xsl");
+        $ddXsl->load(DEFAULT_PUBDIR . "/Apps/CORE/Layout/html2odt.xsl");
         $xslt = new xsltProcessor;
         
         $xslt->importStyleSheet($ddXsl);
@@ -1614,7 +1621,7 @@ class OOoLayout extends Layout
         $dxml->loadXML($xmlout);
         $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "automatic-styles");
         if ($ot->length <= 0) {
-            $this->addError("LAY0008", DEFAULT_PUBDIR . "/CORE/Layout/html2odt.xsl");
+            $this->addError("LAY0008", DEFAULT_PUBDIR . "/Apps/CORE/Layout/html2odt.xsl");
             $this->exitError();
         }
         $ot1 = $ot->item(0);

@@ -1233,7 +1233,7 @@ class importDocumentDescription
             $tmethods = explode("\n", $this->doc->methods);
             foreach ($tmethods as $method) {
                 $fileMethod = ($method && $method[0] == '*') ? substr($method, 1) : $method;
-                if (!file_exists(sprintf("Apps/FDL/%s", $fileMethod))) {
+                if (!file_exists(sprintf(DEFAULT_PUBDIR."/Apps/FDL/%s", $fileMethod))) {
                     $this->tcr[$this->nLine]["err"].= sprintf("Method file '%s' not found.", $fileMethod);
                 }
             }
