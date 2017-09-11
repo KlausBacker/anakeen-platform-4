@@ -15,18 +15,13 @@
         <!-- //region full -->
         <module name='dynacase-tracekit-installer'/>
         <!-- //endregion full -->
-        <module name='dynacase-requirejs-installer'/>
-        <module name='dynacase-kendoui-2016-installer' comp='eq' version='2016.1.120'/>
         <module name='dynacase-jquery-2-installer' comp='eq' version='2.1.4'/>
         <module name='dynacase-underscore-installer'/>
         <module name='dynacase-backbone-installer' comp='ge' version='1.1.2'/>
-        <module name='dynacase-bootstrap-3-installer' comp='ge' version='3.2.0'/>
         <module name='dynacase-mustache.js-installer'/>
         <module name='dynacase-mustache.php-installer'/>
         <module name='dynacase-less-installer'/>
-        <module name="dynacase-fontawesome-installer"/>
         <module name="dynacase-jquery-dataTables-1.10-installer"/>
-        <module name='dynacase-httpapi-v1' comp='ge' version='1.0.1'/>
         <module name='dynacase-es6-promise-installer'/>
     </requiresOld>
 

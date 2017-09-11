@@ -963,6 +963,7 @@
                 defaultOptions = {
                     dataTextField: "displayValue",
                     dataValueField: "value",
+                    clearButton: false,
                     dataSource: (this.options.renderOptions.useSourceUri) ? source.data : new kendo.data.DataSource({
                         data: source.data,
                         schema: {model: {id: "value"}}
@@ -1011,6 +1012,7 @@
                     /*valuePrimitive: true,*/
                     dataTextField: "displayValue",
                     dataValueField: "value",
+                    clearButton: false,
                     optionLabel: {
                         displayValue: this.options.renderOptions.placeHolder + ' ',
                         value: '',
@@ -1092,7 +1094,7 @@
                 defaultOptions.dataSource = {
                     data: source.data,
                     index: source.index,
-                    type: "json",
+                    // type: "json",
                     serverFiltering: true,
                     minLength: 0,
                     transport: {
