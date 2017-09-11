@@ -28,7 +28,7 @@
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./Apps/DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/ddui_cvdoc.struct.csv --csv-enclosure='&quot;' --csv-separator=auto">
             <label>Create Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
@@ -43,7 +43,7 @@
     <post-upgrade>
         <process command="programs/record_application DOCUMENT"/>
         <process
-                command="./wsh.php --api=importDocuments --file=./Apps/DOCUMENT/Families/ddui_cvdoc__STRUCT.csv --csv-enclosure='&quot;' --csv-separator=auto">
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/ddui_cvdoc.struct.csv --csv-enclosure='&quot;' --csv-separator=auto">
             <label>Update Render CV family</label>
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>

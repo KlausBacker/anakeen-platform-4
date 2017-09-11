@@ -4,19 +4,14 @@
  * @package DDUI
 */
 
-namespace Dcp\Ui;
+namespace Anakeen\Ui;
 
-class HelpViewRender extends \Dcp\Ui\DefaultView
+class HelppageViewRender extends \Dcp\Ui\DefaultView
 {
-    
-    public function getLabel(\Doc $document = null)
-    {
-        return "Help View";
-    }
     /**
      * @param \Doc $document Document instance
      *
-     * @return RenderOptions
+     * @return \Dcp\Ui\RenderOptions
      */
     public function getOptions(\Doc $document)
     {
@@ -28,7 +23,7 @@ class HelpViewRender extends \Dcp\Ui\DefaultView
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"] = array(
-            "file" => 'DOCUMENT/Families/helpView.mustache'
+            "file" => __DIR__.'/HelppageView.mustache'
         );
         /*$templates["sections"]["header"] = array(
             "content" => ' '
@@ -40,20 +35,20 @@ class HelpViewRender extends \Dcp\Ui\DefaultView
     {
         $js = parent::getJsReferences();
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $js["dduiHelppage"] = "DOCUMENT/Layout/helppage.js?ws=" . $version;
+        $js["dduiHelppage"] = "uiAssets/Families/helppage/helppage.js?ws=" . $version;
         return $js;
     }
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences();
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $css["dduiHelppage"] = "DOCUMENT/Layout/helppage.css?ws=" . $version;
+        $css["dduiHelppage"] = "uiAssets/Families/helppage/helppage.css?ws=" . $version;
         return $css;
     }
     /**
      * @param \Doc $document Document object instance
      *
-     * @return BarMenu Menu configuration
+     * @return \Dcp\Ui\BarMenu Menu configuration
      */
     public function getMenu(\Doc $document)
     {

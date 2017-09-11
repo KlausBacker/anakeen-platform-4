@@ -17,7 +17,7 @@ class RenderDefault implements IRenderConfig
     
     public function getLabel(\Doc $document = null)
     {
-        return ___("Abstract view", "ddui");
+        return __CLASS__;
     }
     
     public function getCssReferences(\Doc $document = null)

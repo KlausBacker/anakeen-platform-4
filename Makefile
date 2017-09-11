@@ -1,7 +1,5 @@
 VERSION = 1.1.0
 RELEASE = 2.1
-DHOST=$(word 2, $(MAKECMDGOALS) )
-DCTX=$(word 3, $(MAKECMDGOALS) )
 localpub=$(shell pwd)/localpub
 
 
@@ -66,5 +64,6 @@ clean:
 
 deploy:
 	rm -f *webinst
+	cd ui; npm run build
 	make webinst
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX)  -w anakeen-document-uis-1*webinst -- --force
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx)  -w anakeen-document-uis-1*webinst -- --force

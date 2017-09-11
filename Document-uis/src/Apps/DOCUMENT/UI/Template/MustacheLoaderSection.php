@@ -61,10 +61,16 @@ class MustacheLoaderSection implements \Mustache_Loader
             return;
         }
         if (!empty($templatePart["file"]) && is_string($templatePart["file"])) {
-            if (!file_exists($templatePart["file"])) {
-                throw new Exception("UI0004", $templatePart["file"]);
+            $filePath=$templatePart["file"];
+            if ($filePath[0] !== "/") {
+                // Use Apps directory for Relative path
+                $filePath=DEFAULT_PUBDIR."/Apps/".$templatePart["file"];
             }
-            $templatePart = file_get_contents($templatePart["file"]);
+
+            if (!file_exists($filePath)) {
+                throw new Exception("UI0004", $filePath);
+            }
+            $templatePart = file_get_contents($filePath);
             return;
         }
         

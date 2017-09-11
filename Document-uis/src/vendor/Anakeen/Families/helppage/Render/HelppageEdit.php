@@ -4,20 +4,15 @@
  * @package DDUI
 */
 
-namespace Dcp\Ui;
+namespace Anakeen\Ui;
 
 use Dcp\AttributeIdentifiers\HELPPAGE as myAttributes;
-class HelpEditRender extends \Dcp\Ui\DefaultEdit
+class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 {
-    
-    public function getLabel(\Doc $document = null)
-    {
-        return "Help edit";
-    }
     /**
      * @param \Doc $document Document instance
      *
-     * @return RenderOptions
+     * @return \Dcp\Ui\RenderOptions
      */
     public function getOptions(\Doc $document)
     {

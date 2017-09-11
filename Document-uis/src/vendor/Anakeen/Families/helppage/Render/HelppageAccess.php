@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-namespace Dcp\Ui;
+namespace Anakeen\Ui;
 
-class HelpAccess implements \Dcp\Ui\IRenderConfigAccess
+class HelppageAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
@@ -17,9 +17,9 @@ class HelpAccess implements \Dcp\Ui\IRenderConfigAccess
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return new HelpEditRender($this);
+                return new HelppageEditRender();
             case \Dcp\Ui\RenderConfigManager::ViewMode:
-                return new HelpViewRender($this);
+                return new HelppageViewRender();
         }
         return null;
     }
