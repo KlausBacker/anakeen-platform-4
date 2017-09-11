@@ -1,6 +1,5 @@
-PACKAGE = @PACKAGE@
-VERSION = @VERSION@
-RELEASE = @RELEASE@
+VERSION = 1.1.0
+RELEASE = 2.1
 DHOST=$(word 2, $(MAKECMDGOALS) )
 DCTX=$(word 3, $(MAKECMDGOALS) )
 localpub=$(shell pwd)/localpub
@@ -13,24 +12,11 @@ stub:
 
 webinst-selenium:
 	-rm -fr $(localpub)
-	cp -ra Document-uis-selenium $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
+	cp -ra Tests $(localpub)
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
 
-webinst-test:
-	-rm -fr $(localpub)
-	cp -ra Document-uis-test $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/TEST_DOCUMENT/TEST_DOCUMENT_init.php
-	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
-	-rm -fr $(localpub)
-
-webinst-autotest:
-	-rm -fr $(localpub)
-	cp -ra Document-uis-autotest $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json
-	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
-	-rm -fr $(localpub)
 
 webinst-full:
 	-rm -fr $(localpub)
@@ -56,7 +42,7 @@ webinst-light:
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
 
-webinst-all: webinst # webinst-test webinst-selenium webinst-autotest
+webinst-all: webinst webinst-selenium
 
 webinst:
 	cd ui; npm install

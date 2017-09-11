@@ -1,13 +1,12 @@
 <?php
 /*
- * @author Anakeen
- * @package FDL
+ * package FDL
 */
 
 global $app_const;
 
 $app_const = array(
-    "VERSION" => "{{VERSION}}-{{RELEASE}}",
+    "VERSION" => "1.1.0-0",
     
     "TESTFAMILIES" => array(
         "descr" => "Testing Families",

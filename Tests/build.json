@@ -1,13 +1,11 @@
 {
-  "moduleName": "dynacase-document-uis-test",
+  "moduleName": "anakeen-ui-test",
   "version": "{{VERSION}}",
   "release": "{{RELEASE}}",
   "licence":"http://docs.anakeen.com/licenses/anakeen-1.0/licence.html Licence Anakeen",
-  "application": [
-    "TEST_DOCUMENT"
-  ],
+  "application": [],
   "includedPath": [
-    "TEST_DOCUMENT"
+    "src/*"
   ],
   "lang": [
     "fr",
@@ -16,9 +14,5 @@
   "csvParam": {
     "enclosure": "\"",
     "delimiter": ";"
-  },
-  "dynacase-devtool": {
-    "uri": "git@github.com:Anakeen/development-tools.git",
-    "tag": "3.2"
   }
 }
