@@ -15,10 +15,12 @@
     "bootstrap": "^3.3.7",
     "ckeditor": "^4.7.2",
     "datatables.net": "^1.10.16",
+    "datatables.net-src": "^1.10.12",
     "font-awesome": "^4.7.0",
     "kendo-ui-core": "^2017.2.621",
     "mustache": "^2.3.0",
     "requirejs": "^2.3.5",
+    "tracekit": "^0.4.5",
     "underscore": "^1.8.3"
   }
 }

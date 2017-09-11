@@ -11,4 +11,5 @@ $BASE_PATH/.bin/r.js -o scripts/build.js && $BASE_PATH/.bin/r.js -o scripts/buil
 mv $BASE_PATH/kendo-ui-core/js $DEST_PATH/KendoUI/$PACKAGE_VERSION/
 mv $BASE_PATH/kendo-ui-core/css $DEST_PATH/KendoUI/$PACKAGE_VERSION/styles
 mv $DEST_PATH/KendoUI/js/* $DEST_PATH/KendoUI/$PACKAGE_VERSION/js
+ln -s $DEST_PATH/KendoUI/$PACKAGE_VERSION $DEST_PATH/KendoUI/ddui
 rmdir $DEST_PATH/KendoUI/js
