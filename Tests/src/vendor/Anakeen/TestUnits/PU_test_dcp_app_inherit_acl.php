@@ -15,17 +15,15 @@ class TestAppInheritAcl extends TestCaseDcpApplication
         return array(
             array(
                 "appRoot" => join(DIRECTORY_SEPARATOR, array(
-                    DEFAULT_PUBDIR,
-                    "DCPTEST",
-                    "app"
+                    DEFAULT_PUBDIR,"vendor", "Anakeen",
+                    "TestUnits","Apps"
                 )) ,
                 "appName" => "INHERIT_ACL_A",
             ) ,
             array(
                 "appRoot" => join(DIRECTORY_SEPARATOR, array(
-                    DEFAULT_PUBDIR,
-                    "DCPTEST",
-                    "app"
+                    DEFAULT_PUBDIR,"vendor", "Anakeen",
+                    "TestUnits","Apps"
                 )) ,
                 "appName" => "INHERIT_ACL_B",
                 "import" => array(

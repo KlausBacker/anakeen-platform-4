@@ -36,7 +36,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
         try {
             $import = new \Dcp\Core\ImportAccounts();
             
-            $import->setFile(sprintf("%s/DCPTEST/Layout/%s", DEFAULT_PUBDIR, $accountFile));
+            $import->setFile(sprintf("%s/Layout/%s", __DIR__, $accountFile));
             $import->import();
         }
         catch(\Exception $e) {

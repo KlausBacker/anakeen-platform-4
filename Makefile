@@ -1,5 +1,4 @@
-DHOST=$(word 2, $(MAKECMDGOALS) )
-DCTX=$(word 3, $(MAKECMDGOALS) )
+
 
 webinst:
 	php ./dynacase-devtool.phar generateWebinst -s .
@@ -10,11 +9,11 @@ webinst-test:
 	mv Tests/*webinst .
 
 deploy:
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s .
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -a -s .
 
 
 deploy-test:
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(DHOST)/control/ -c $(DCTX) -a -s Tests
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -a -s Tests
 
 stub:
 	php ./dynacase-devtool.phar generateStub -s . -o stubs

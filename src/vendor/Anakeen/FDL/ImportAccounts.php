@@ -32,7 +32,7 @@ class ImportAccounts
      */
     protected $report = array();
     
-    protected $xsd = "USERCARD/Layout/accounts.xsd";
+    protected $xsd = "vendor/Anakeen/Xml/accounts.xsd";
     
     protected $familiesXsd = array();
     
@@ -216,7 +216,7 @@ class ImportAccounts
             }
         }
         
-        if (!$xmlWithoutDocument->schemaValidate($this->xsd)) {
+        if (!$xmlWithoutDocument->schemaValidate(DEFAULT_PUBDIR."/".$this->xsd)) {
             throw new Exception("ACCT0201", $this->getXmlError());
         }
         // Now validate document part

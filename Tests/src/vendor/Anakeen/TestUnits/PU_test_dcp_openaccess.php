@@ -14,9 +14,8 @@ class TestOpenAccess extends TestCaseDcpApplication
     {
         return array(
             "appRoot" => join(DIRECTORY_SEPARATOR, array(
-                DEFAULT_PUBDIR,
-                "DCPTEST",
-                "app"
+                DEFAULT_PUBDIR,"vendor", "Anakeen",
+                "TestUnits","Apps"
             )) ,
             "appName" => "TST_OPENACCESS",
             "import" => array(
