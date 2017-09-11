@@ -1,15 +1,16 @@
 <?xml version="1.0"?>
-<module name="anakeen-core" version="@version@" release="@release@" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="yes">
+<module name="anakeen-core" version="@version@" release="@release@"
+        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="yes">
 
     <description lang="en">Anakeen Platform 4</description>
     <description lang="fr">Anakeen Platform 4</description>
 
     <replaces>
-        <module name="dynacase-platform" />
-        <module name="dynacase-core-patchset-20170717" />
+        <module name="dynacase-platform"/>
+        <module name="dynacase-core-patchset-20170717"/>
     </replaces>
 
-   <requires>
+    <requires>
         <installer version="1.4.0" comp="ge"/>
     </requires>
 
@@ -97,11 +98,16 @@
         <!-- Check PHP functions/extensions -->
 
         <check type="phpfunction" function="openssl_random_pseudo_bytes">
-            <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL support in PHP.</help>
+            <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL
+                support in PHP.
+            </help>
         </check>
-        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+        <check type="exec"
+               cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
             <label lang="en">Check for cryptographically strong random bytes from openssl</label>
-            <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old.</help>
+            <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
+                old.
+            </help>
         </check>
         <check type="phpfunction" function="gettext">
             <help>You might need to install a php-gettext package from your distribution in order to have localization
@@ -136,19 +142,27 @@
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
             <label lang="en">Check english spelling dictionary</label>
-            <help>English spelling dictionary not found: you might need to install a aspell-en package from your distribution in order to have english spelling support.</help>
+            <help>English spelling dictionary not found: you might need to install a aspell-en package from your
+                distribution in order to have english spelling support.
+            </help>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
             <label lang="en">Check french spelling dictionary</label>
-            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your distribution in order to have french spelling support.</help>
+            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your
+                distribution in order to have french spelling support.
+            </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
             <label lang="en">Check required "en_US.UTF-8" locale</label>
-            <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "en_US.UTF-8" locale on your operating system.</help>
+            <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the
+                required "en_US.UTF-8" locale on your operating system.
+            </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;fr_FR.UTF-8&quot;)!==false?0:1);'">
             <label lang="en">Check required "fr_FR.UTF-8" locale</label>
-            <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "fr_FR.UTF-8" locale on your operating system.</help>
+            <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the
+                required "fr_FR.UTF-8" locale on your operating system.
+            </help>
         </check>
         <check type="phpfunction" function="iconv">
             <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
@@ -245,33 +259,70 @@
             <label lang="en">Register temporary folder</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/base/base.csv --csv-enclosure='&quot;'">
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/base/base.csv --csv-enclosure='&quot;'">
             <label>Import BASE Family</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/pdoc/pdoc.csv --csv-enclosure='&quot;'">
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/pdoc/pdoc.csv --csv-enclosure='&quot;'">
             <label>Import PROFIL Families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/dir/dir.csv --csv-enclosure='&quot;'">
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/dir/dir.csv --csv-enclosure='&quot;'">
             <label>Import DIR Family</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/fdl.ods">
-            <label>Import basic system families</label>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mail/mail.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Mail form family</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cv_init.csv --csv-separator=';' --csv-enclosure='&quot;'">
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/exec/exec.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Processus family</label>
+        </process>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helppage/help.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Helpage family</label>
+        </process>
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helppage/help.param.csv  --csv-enclosure='&quot;'">
+            <label>Config Helpage family</label>
+        </process>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cv_init.csv --csv-separator=';' --csv-enclosure='&quot;'">
             <label>Add config in view control families</label>
         </process>
+
         <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/workflows.ods">
             <label>Import workflow system families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/searches.ods">
-            <label>Import searches families</label>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/search/search.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Processus family</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/misc.ods">
-            <label>Import others system families</label>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/msearch/msearch.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Processus family</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/freeaction.ods">
-            <label>Import process system families</label>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/dsearch/dsearch.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Processus family</label>
+        </process>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/ssearch/ssearch.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Processus family</label>
+        </process>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/report/report.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Processus family</label>
         </process>
 
 
@@ -300,7 +351,8 @@
         </process>
 
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helps.csv --csv-separator=';' --csv-enclosure='&quot;'" >
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.data.csv  --csv-enclosure='&quot;'">
             <label>Help Documents</label>
         </process>
 
@@ -309,7 +361,7 @@
         <process command="wsh.php --api=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
 
 
-        <process command="programs/record_application HTTPAPI_V1" />
+        <process command="programs/record_application HTTPAPI_V1"/>
         <process command="wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
 
         <process command="programs/update_catalog"/>
@@ -401,11 +453,16 @@ This can be solved by:<br/>
         </check>
 
         <check type="phpfunction" function="openssl_random_pseudo_bytes">
-            <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL support in PHP.</help>
+            <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL
+                support in PHP.
+            </help>
         </check>
-        <check type="exec" cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
+        <check type="exec"
+               cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
             <label lang="en">Check for cryptographically strong random bytes from openssl</label>
-            <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old.</help>
+            <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
+                old.
+            </help>
         </check>
         <check type="phpfunction" function="gettext">
             <help>You might need to install a php-gettext package from your distribution in order to have localization
@@ -442,19 +499,27 @@ This can be solved by:<br/>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
             <label lang="en">Check english spelling dictionary</label>
-            <help>English spelling dictionary not found: you might need to install a aspell-en package from your distribution in order to have english spelling support.</help>
+            <help>English spelling dictionary not found: you might need to install a aspell-en package from your
+                distribution in order to have english spelling support.
+            </help>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
             <label lang="en">Check french spelling dictionary</label>
-            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your distribution in order to have french spelling support.</help>
+            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your
+                distribution in order to have french spelling support.
+            </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
             <label lang="en">Check required "en_US.UTF-8" locale</label>
-            <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "en_US.UTF-8" locale on your operating system.</help>
+            <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the
+                required "en_US.UTF-8" locale on your operating system.
+            </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;fr_FR.UTF-8&quot;)!==false?0:1);'">
             <label lang="en">Check required "fr_FR.UTF-8" locale</label>
-            <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the required "fr_FR.UTF-8" locale on your operating system.</help>
+            <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the
+                required "fr_FR.UTF-8" locale on your operating system.
+            </help>
         </check>
         <check type="phpfunction" function="iconv">
             <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
@@ -536,14 +601,18 @@ This can be solved by:<br/>
         </process>
 
 
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.struct.csv  --csv-enclosure='&quot;'">
+            <label>Update Helpage family</label>
+        </process>
+
         <process command="programs/post_migration CORE">
             <label lang="en">Migration second level</label>
         </process>
 
-    <process command="programs/record_application HTTPAPI_V1" />
-    <process command="wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
 
-
+        <process command="programs/record_application HTTPAPI_V1"/>
+        <process command="wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
 
 
         <process command="programs/check_autoloader">
@@ -564,7 +633,7 @@ This can be solved by:<br/>
     </reconfigure>
 
     <pre-delete>
-        <process command="wsh.php --api=manageContextCrontab --cmd=unregister-all" />
+        <process command="wsh.php --api=manageContextCrontab --cmd=unregister-all"/>
     </pre-delete>
 
 </module>

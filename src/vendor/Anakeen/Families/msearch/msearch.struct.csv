@@ -1,0 +1,17 @@
+// recherche détaillée;fromid;;id;class;name;;;;;;;;;;
+;;;;;;;;;;;;;;;
+BEGIN;SEARCH;Recherche groupée;31;;MSEARCH;;;;;;;;;;
+ICON;searchm.gif;;;;;;;;;;;;;;
+CLASS;Dcp\Core\GroupedSearch;;;;;;;;;;;;;;
+METHOD;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+;;;;;;;;;;;;;;;
+ATTR;SE_CRIT;;Critère;N;N;frame;0;H;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;SE_FR_SEARCHES;;Les recherches;N;N;frame;100;W;;;;;;;
+ATTR;SEG_T_COND;SE_FR_SEARCHES;Ensemble de recherche;N;N;array;110;W;;;;;;;
+ATTR;SEG_IDCOND;SEG_T_COND;Recherche;N;N;"docid(""SEG_IDCOND"")";120;W;;;fdl.php;lsearches(D,CT):SEG_IDCOND,CT;;;doctitle=seg_cond
+ATTR;SEG_COND;SEG_T_COND;Recherche (titre);N;N;text;130;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;0;;;;;;;;;;;;;;

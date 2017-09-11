@@ -1,0 +1,22 @@
+// famille dossier;inherit;;id;class;name;;;;;;;;;;
+BEGIN;;;;;HELPPAGE;;;;;;;;;;
+;;;;;;;;;;;;;;;
+METHOD;;;;;;;;;;;;;;;
+USEFOR;S;;;;;;;;;;;;;;
+ICON;helppage.png;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+PARAM;HELP_FR_FAMILY;;Paramètres de famille;N;N;frame;10;W;;;;;;;
+PARAM;HELP_T_FAMILY;HELP_FR_FAMILY;Langues;N;N;array;20;W;;;;;;;
+PARAM;HELP_P_LANG_NAME;HELP_T_FAMILY;Libellé de la langue;N;N;text;30;W;;;;;;;
+PARAM;HELP_P_LANG_KEY;HELP_T_FAMILY;Langue;N;N;text;40;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+DEFAULT;HELP_LANG;fr_FR;;;;;;;;;;;;;
+DEFAULT;HELP_SEC_LANG;fr_FR;;;;;;;;;;;;;
+DEFAULT;HELP_P_LANG_NAME;français\nenglish;;;;;;;;;;;;;
+DEFAULT;HELP_P_LANG_KEY;fr_FR\nen_US;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;0;;;;;;;;;;;;;;
