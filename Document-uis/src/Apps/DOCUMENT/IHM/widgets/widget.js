@@ -530,9 +530,9 @@
                         var match = event.match(/^(\w+)\s*(.*)$/),
                             eventName = match[1] + instance.eventNamespace,
                             selector = match[2];
+                        // delegate is deprecated in jQuery 3.0.0+ in favor of on method
+                        var jqueryVersion = +$().jquery.split('.')[0];
                         if (selector) {
-                            // delegate is deprecated in jQuery 3.0.0+ in favor of on method
-                            var jqueryVersion = +$().jquery.split('.')[0];
                             if (jqueryVersion >= 3) {
                               delegateElement.on(eventName, selector, handlerProxy);
                             } else {
@@ -540,13 +540,11 @@
                             }
                         } else {
                           // bind is deprecated in jQuery 3.0.0+ in favor of on method
-                          if (!element.bind) {
+                          if (jqueryVersion >= 3) {
                             element.on(eventName, handlerProxy);
                           } else {
                             element.bind(eventName, handlerProxy);
                           }
-                        } else {
-                            element.bind(eventName, handlerProxy);
                         }
                     });
                 },
