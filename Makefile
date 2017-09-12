@@ -1,6 +1,7 @@
 VERSION = 1.1.0
 RELEASE = 2.1
 localpub=$(shell pwd)/localpub
+pubDest=$(localpub)/src/public/uiAssets/anakeen
 
 
 stub:
@@ -20,8 +21,10 @@ webinst-full:
 	-rm -fr $(localpub)
 	cp -ra Document-uis $(localpub)
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/src/Apps/DOCUMENT/DOCUMENT_init.php
-	r.js -o $(localpub)/src/Apps/DOCUMENT/IHM/build.js
-	r.js -o $(localpub)/src/Apps/DOCUMENT/IHM/widgets/buildWidget.js
+	mkdir -p $(pubDest)
+	cp -r $(localpub)/src/Apps/DOCUMENT/IHM/ $(pubDest)
+	r.js -o $(pubDest)/IHM/build.js
+	r.js -o $(pubDest)/IHM/widgets/buildWidget.js
 	php ./prepareElementForLight.php --modeFull -f $(localpub)/info.xml
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)
@@ -43,7 +46,7 @@ webinst-light:
 webinst-all: webinst webinst-selenium
 
 webinst:
-	cd ui; npm install
+	cd ui && npm run build
 	# TODO Move some assets to Document-uis/src/public
 	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; composer install
 	make webinst-full
@@ -64,6 +67,5 @@ clean:
 
 deploy:
 	rm -f *webinst
-	cd ui; npm run build
 	make webinst
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx)  -w anakeen-document-uis-1*webinst -- --force
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-document-uis-1*webinst -- --force

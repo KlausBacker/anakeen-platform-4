@@ -27,7 +27,7 @@ class RenderDefault implements IRenderConfig
             "bootstrap" => "css/dcp/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/dcp/document/kendo.css?ws=" . $version,
             "document" => "css/dcp/document/document.css?ws=" . $version,
-            "datatable" => "lib/jquery-dataTables/1.10/css/dataTables.bootstrap.css?ws=" . $version
+            "datatable" => "uiAssets/externals/jquery-dataTables/css/dataTables.bootstrap.css?ws=" . $version
         );
     }
     
@@ -38,23 +38,25 @@ class RenderDefault implements IRenderConfig
     
     public function getRequireReference()
     {
+        $pubExternalPath = "uiAssets/externals";
+        $pubInternalPath = "uiAssets/anakeen";
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array(
-                "traceKit" => "lib/TraceKit/tracekit.js?ws=" . $version,
-                "traceError" => "DOCUMENT/IHM/dynacaseReport.js?ws=" . $version
+                "traceKit" => "$pubExternalPath/TraceKit/tracekit.js?ws=" . $version,
+                "traceError" => "$pubInternalPath/dynacaseReport.js?ws=" . $version
             );
         } else {
             $jsRef = array(
-                "traceError" => "DOCUMENT/IHM/dynacaseReportLight.js?ws=" . $version
+                "traceError" => "$pubInternalPath/dynacaseReportLight.js?ws=" . $version
             );
         }
         return $jsRef = array_merge($jsRef, array(
-            "require" => "lib/RequireJS/require.js?ws=" . $version,
-            "config" => $modeDebug !== "FALSE" ? "DOCUMENT/IHM/require_config.js?ws=" . $version : "DOCUMENT/IHM/require_config.min.js?ws=" . $version,
-            "kendo-ddui" => $modeDebug !== "FALSE" ? "lib/KendoUI/ddui/js/kendo-ddui-builded.js?ws=" . $version : "lib/KendoUI/ddui/js/kendo-ddui-builded.min.js?ws=" . $version,
-            "document" => $modeDebug !== "FALSE" ? "DOCUMENT/IHM/main.js?ws=" . $version : "DOCUMENT/IHM/main-built.js?ws=" . $version
+            "require" => "$pubExternalPath/RequireJS/require.js?ws=" . $version,
+            "config" => $modeDebug !== "FALSE" ? "$pubInternalPath/require_config.js?ws=" . $version : "$pubInternalPath/require_config.min.js?ws=" . $version,
+            "kendo-ddui" => $modeDebug !== "FALSE" ? "$pubExternalPath/KendoUI/js/kendo-ddui-builded.js?ws=" . $version : "$pubExternalPath/KendoUI/js/kendo-ddui-builded.min.js?ws=" . $version,
+            "document" => $modeDebug !== "FALSE" ? "DOCUMENT/IHM/main.js?ws=" . $version : "$pubInternalPath/main-built.js?ws=" . $version
         ));
     }
     

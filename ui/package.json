@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && scripts/build.sh",
+    "build": "scripts/build.sh",
     "clean": "rm -rf node_modules"
   },
   "author": "Anakeen",
@@ -14,12 +14,16 @@
     "backbone": "^1.3.3",
     "bootstrap": "^3.3.7",
     "ckeditor": "^4.7.2",
+    "datatables": "git+https://github.com/DataTables/DataTables.git",
     "datatables.net": "^1.10.16",
     "datatables.net-src": "^1.10.12",
+    "es6-promise": "^4.1.1",
     "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
     "kendo-ui-core": "^2017.2.621",
     "mustache": "^2.3.0",
     "requirejs": "^2.3.5",
+    "requirejs-text": "^2.0.15",
     "tracekit": "^0.4.5",
     "underscore": "^1.8.3"
   }
