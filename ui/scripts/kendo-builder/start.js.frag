@@ -1,5 +1,4 @@
 (function (name, factory) {
-  console.log("NAME = " + name);
   try {
       // NodeJS
       if (module !== undefined && module.exports !== undefined) {

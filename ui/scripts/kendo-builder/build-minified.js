@@ -4,7 +4,7 @@
   paths :   {
     "kendo-culture-fr" :     "cultures/kendo.culture.fr-FR",
     "kendo-culture-en" :     "cultures/kendo.culture.en",
-    "jquery" : "../../jquery"
+    "jquery" : "../../jquery/jquery"
   },
   onBuildWrite : function (name, path, contents) {
     contents = contents.replace(/(['"])\.\.\/kendo\.(\w+['"])/g, "$1kendo.$2");

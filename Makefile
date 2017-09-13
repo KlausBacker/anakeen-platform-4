@@ -24,7 +24,7 @@ webinst-full:
 	mkdir -p $(pubDest)
 	cp -r $(localpub)/src/Apps/DOCUMENT/IHM/ $(pubDest)
 	r.js -o $(pubDest)/IHM/build.js
-	r.js -o $(pubDest)/IHM/widgets/buildWidget.js
+#	r.js -o $(pubDest)/IHM/widgets/buildWidget.js
 	php ./prepareElementForLight.php --modeFull -f $(localpub)/info.xml
 	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
 	-rm -fr $(localpub)

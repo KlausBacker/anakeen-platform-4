@@ -4,7 +4,7 @@ LIB_SRC=./node_modules
 DEST_PATH=../Document-uis/src/public/uiAssets
 THIRD_PARTY=$DEST_PATH/externals
 ANAKEEN=$DEST_PATH/anakeen
-rm -rf $DEST_PATH
+rm -rf $THIRD_PARTY
 rm -rf $LIB_SRC
 npm install
 mkdir -p $THIRD_PARTY

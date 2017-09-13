@@ -52,12 +52,26 @@ class RenderDefault implements IRenderConfig
                 "traceError" => "$pubInternalPath/dynacaseReportLight.js?ws=" . $version
             );
         }
-        return $jsRef = array_merge($jsRef, array(
+        if ($modeDebug !== "FALSE") {
+            return $jsRef = array_merge($jsRef, array(
+                "require" => "$pubExternalPath/RequireJS/require.js?ws=" . $version,
+                "config" => "$pubInternalPath/require_config.js?ws=" . $version,
+                "kendo-ddui" => "$pubExternalPath/KendoUI/js/kendo-ddui-builded.js?ws=" . $version,
+                "document" => "$pubInternalPath/main.js?ws=" . $version
+            ));
+        } else {
+            return $jsRef = array_merge($jsRef, array(
+                "require" => "$pubExternalPath/RequireJS/require.js?ws=" . $version,
+                "config" => "$pubInternalPath/require_config.min.js?ws=" . $version,
+                "document" => "$pubInternalPath/main-built.js?ws=" . $version
+            ));
+        }
+        /*return $jsRef = array_merge($jsRef, array(
             "require" => "$pubExternalPath/RequireJS/require.js?ws=" . $version,
             "config" => $modeDebug !== "FALSE" ? "$pubInternalPath/require_config.js?ws=" . $version : "$pubInternalPath/require_config.min.js?ws=" . $version,
             "kendo-ddui" => $modeDebug !== "FALSE" ? "$pubExternalPath/KendoUI/js/kendo-ddui-builded.js?ws=" . $version : "$pubExternalPath/KendoUI/js/kendo-ddui-builded.min.js?ws=" . $version,
             "document" => $modeDebug !== "FALSE" ? "DOCUMENT/IHM/main.js?ws=" . $version : "$pubInternalPath/main-built.js?ws=" . $version
-        ));
+        ));*/
     }
     
     public function getTemplates(\Doc $document = null)
