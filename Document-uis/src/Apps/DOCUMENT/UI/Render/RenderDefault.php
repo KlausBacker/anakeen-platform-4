@@ -39,7 +39,7 @@ class RenderDefault implements IRenderConfig
     public function getRequireReference()
     {
         $pubExternalPath = "uiAssets/externals";
-        $pubInternalPath = "uiAssets/anakeen";
+        $pubInternalPath = "uiAssets/anakeen/IHM";
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
