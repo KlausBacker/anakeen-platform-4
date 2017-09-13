@@ -11,8 +11,8 @@
     return contents.replace(/(['"])kendo\.(\w+['"])/g, "$1kendo/kendo.$2");
   },
   wrap: {
-    startFile: './start.js.frag',
-    endFile: './end.js.frag'
+    startFile: '../kendo-builder/start.js.frag',
+    endFile: '../kendo-builder/end.js.frag'
   },
   generateSourceMaps : true,
   preserveLicenseComments : false,

@@ -1,6 +1,28 @@
-(function mainBoostraper(root, factory) {
-    var customDefine = typeof define == 'function' && define.amd ? define : function customDefine(a1, a2, a3) {(a3 || a2)();};
-     factory(customDefine);
-}(window, function mainFactory(define) {
+(function (name, factory) {
+  console.log("NAME = " + name);
+  try {
+      // NodeJS
+      if (module !== undefined && module.exports !== undefined) {
+        module.id = name;
+        module.exports = factory();
+      }
 
-"use strict";
+      // CommonJS
+      else if (module !== undefined && exports !== undefined) {
+        module.id = name;
+        exports = factory();
+      }
+  } catch (err) {
+    if (typeof define === 'function' && define.amd) {
+        define(name, factory);
+    }
+    else if (window) {
+        // On definie `require` pour gérer les
+        // dépendances de la même façon que les autres
+        window.require = window.require ||
+        function (module) { return window[module]; };
+
+        window[name] = factory();
+    }
+  }
+}('kendo', function () {

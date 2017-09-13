@@ -8,11 +8,11 @@
   },
   onBuildWrite : function (name, path, contents) {
     contents = contents.replace(/(['"])\.\.\/kendo\.(\w+['"])/g, "$1kendo.$2");
-    return contents.replace(/(['"])kendo\.(\w+['"])/g, "$1kendo/js/kendo.$2");
+    return contents.replace(/(['"])kendo\.(\w+['"])/g, "$1kendo/kendo.$2");
   },
   wrap: {
-    startFile: './start.js.frag',
-    endFile: './end.js.frag'
+    startFile: '../kendo-builder/start.js.frag',
+    endFile: '../kendo-builder/end.js.frag'
   },
   optimize : "none",
   name :    "../kendo-builder/main",
