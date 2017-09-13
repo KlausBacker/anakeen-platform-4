@@ -38,9 +38,9 @@ class I18nCollection extends Crud
         $shortLocale = strtok($currentLocale, '_');
         
         if ($resourceId === "_all") {
-            $file = sprintf("./locale/%s/js/catalog.js", $shortLocale);
+            $file = sprintf("../locale/%s/js/catalog.js", $shortLocale);
         } else {
-            $file = sprintf("./locale/%s/js/catalog-%s_%s.js", $shortLocale, $resourceId, $shortLocale);
+            $file = sprintf("../locale/%s/js/catalog-%s_%s.js", $shortLocale, $resourceId, $shortLocale);
         }
         if (!file_exists($file)) {
             $exception = new Exception("CRUDUI0009", $file);
