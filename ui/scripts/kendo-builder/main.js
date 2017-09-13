@@ -1,9 +1,4 @@
-(function packKendo() {
-
-  "use strict";
-
-  if (typeof define === 'function' && define.amd) {
-    require([
+require([
       "kendo.core",
       "kendo-culture-en",
       "kendo-culture-fr",
@@ -28,6 +23,7 @@
       "kendo.button"
     ], function require_kendo()
     {
-    });
-  }
-})();
+    }, function onError(err) {
+      console.error(err);
+    }
+);

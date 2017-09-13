@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 2 ]; then
+    echo "Usage : $0 lib_sources_dir destination_dir"
+fi
+BASE_PATH=$1/backbone
+DEST_PATH=$2/backbone
+mkdir -p $DEST_PATH
+mv $BASE_PATH/README.md $DEST_PATH
+mv $BASE_PATH/backbone*.js $DEST_PATH
