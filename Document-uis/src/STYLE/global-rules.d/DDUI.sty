@@ -46,17 +46,52 @@ $generateGlobalVarFile = function ()
     }
 };
 
+$generateGlobalScssVarFile = function ()
+{
+    $globalVarFile = "STYLE/custom-scss-variable.d/global_variables.scss";
+    $fullContent = "";
+    $files = array();
+
+    $iterator = new DirectoryIterator("STYLE/custom-scss-variable.d/");
+    foreach ($iterator as $fileinfo) {
+        if (!$fileinfo->isFile()) {
+            continue;
+        }
+        if ($fileinfo->getBasename() == 'global_variables.scss') {
+            continue;
+        }
+        if ($fileinfo->getExtension() === "scss") {
+            $files[$fileinfo->getPathname() ] = $fileinfo->getPathname();
+        }
+    }
+
+    ksort($files);
+
+    foreach ($files as $currentFiles) {
+        $fullContent.= "// $currentFiles\n";
+        $fullContent.= file_get_contents($currentFiles) . "\n";
+    }
+    if ((file_exists($globalVarFile) === false) || (($previousContent = file_get_contents($globalVarFile)) === false)) {
+        $previousContent = '';
+    }
+    if ($fullContent !== $previousContent) {
+        file_put_contents($globalVarFile, $fullContent);
+    }
+};
+
+
 $generateGlobalVarFile();
+$generateGlobalScssVarFile();
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
         'dcp/document/bootstrap.css' => array(
             "src" => array(
-                "bootstrap" => "STYLE/DDUI/dduiAssets/bootstrap.less",
-                "fontAwesome" => "STYLE/DDUI/dduiAssets/fontawesome.less"
+                "bootstrap" => "STYLE/DDUI/dduiAssets/scss/bootstrap.scss",
+                "fontAwesome" => "STYLE/DDUI/dduiAssets/scss/fontawesome.scss"
             ) ,
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpLessParser',
+                "className" => '\Dcp\Style\dcpScssParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'css/dcp/document/bootstrap.map',

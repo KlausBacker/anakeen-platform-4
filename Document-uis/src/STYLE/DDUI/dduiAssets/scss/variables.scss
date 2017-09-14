@@ -1,0 +1,35 @@
+@import "../../../../public/uiAssets/externals/bootstrap/scss/variables.scss";
+
+//Attribute size
+$dcp-font-size: 12px;
+$dcp-line-height: 1.2;
+$dcp-input-height: 30px;
+
+//Document size
+$dcp-header-height: 30px;
+
+// Enum color
+$enum-selected-button-bg: $input-bg;
+$enum-selected-button-color: $input-color;
+
+// Bootstrap variables
+// Gutter between label and content attribute
+$grid-gutter-width: 5px;
+// Width limit to view label up to content
+$grid-float-breakpoint: 480px;
+
+$font-size-base: $dcp-font-size;
+$line-height-base: $dcp-line-height;
+/*$panel-body-padding : $font-size-base/2;
+$padding-base-vertical : $font-size-base*0.20;
+$padding-base-horizontal : 2*$padding-base-vertical;*/
+
+//$icon-font-path: '../../../public/uiAssets/externals/bootstrap/fonts/';
+
+$dcp-set-padding: 10px;
+$dcp-attribute-padding-base-vertical: 6px + 1;
+
+// Attribute decription field
+$dcpAttributeDescriptionArrowSize: 8px;
+$dcpAttributeDescriptionBorderColor: #5bc0de;
+$dcpAttributeDescriptionBackgroundColor: #f5f5f5;
