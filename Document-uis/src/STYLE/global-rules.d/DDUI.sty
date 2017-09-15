@@ -118,10 +118,10 @@ $sty_rules = array(
         ) ,
         'dcp/document/document.css' => array(
             "src" => array(
-                "document" => "STYLE/DDUI/dduiAssets/document.less"
+                "document" => "STYLE/DDUI/dduiAssets/scss/document.scss"
             ) ,
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpLessParser',
+                "className" => '\Dcp\Style\dcpScssParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'public/css/dcp/document/document.map',

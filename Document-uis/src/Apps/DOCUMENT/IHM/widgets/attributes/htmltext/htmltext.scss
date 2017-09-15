@@ -1,0 +1,7 @@
+.dcpAttribute__content--htmltext .cke.k-state-focused {
+  border-color: $input-border-focus;
+}
+
+.dcpAttribute__content--htmltext.has-error .cke {
+  border-color: $brand-danger transparent $brand-danger $brand-danger;
+}

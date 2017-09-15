@@ -1,0 +1,222 @@
+.dcpTransition * {
+  box-sizing: border-box;
+}
+.dcpTransition .k-widget, .dcpTransition .k-widget * {
+  box-sizing: content-box;
+}
+.dcpTransition--activity {
+  /* border: solid 1px;
+   padding: 2em 1em;
+   border-radius: 4em;
+   max-width: 15em;*/
+  display: inline-block;
+  padding: 0.3em 0.3em;
+  border-radius: 4px;
+  min-width : 10em;
+  width:30%;
+  min-height: 4em;
+  border-style : solid;
+  border-width: 0.5em 1px 1px 1px;
+  vertical-align: middle;
+}
+.dcpTransition--arrow {
+  display:inline-block;
+  vertical-align: middle;
+}
+.dcpTransition--content-activity i.fa {
+  position: relative;
+  top: 0.25em;
+}
+
+.dcpTransition--content-activity {
+  /*padding: 2em;*/
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.dcpTransition--transition {
+  border-bottom: solid 2px black;
+  position: relative;
+  top: -0.6em;
+  padding-left: 1em;
+  padding-right: 1em;
+  display: inline-block;
+  width:35%;
+  min-width:12em;
+}
+
+.dcpTransition--transition--invalid {
+  color: $brand-danger;
+  border-color: $brand-danger;
+  border-bottom-style: dashed;
+}
+
+.dcpTransition--transition--invalid.fa {
+  border:none;
+}
+
+.dcpTransition--success {
+  background-color: $brand-success;
+  color: $btn-success-color;
+  padding: 4px 20px;
+  border-radius: 4px;
+}
+.dcpTransition--loading {
+  text-align: center;
+  font-weight: bold;
+}
+.dcpTransition--buttons {
+  padding-top: 1em;
+  text-align: right;
+}
+
+.dcpTransition-button-ok .fa {
+  margin-right: 1em;
+}
+
+.dcpTransition--error {
+  color: white;
+  border: solid 1px fade($brand-danger, 50%);
+  background-color: $brand-danger;
+  text-align: center;
+  padding: 4px;
+  margin-top: 2px;
+  border-radius: 4px;
+  font-weight: bold;
+  overflow: auto;
+  max-height: 10em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.dcpTransition--message {
+  color: white;
+  border: none;
+  background-color: $brand-info;
+  text-align: center;
+  padding: 4px;
+  margin-top: 2px;
+  border-radius: 4px;
+  overflow: auto;
+  max-height: 10em;
+  word-wrap: break-word;
+}
+
+.dcpTransition--message--message {
+  background-color: $brand-info;
+}
+
+.dcpTransition--message--warning {
+  background-color: $brand-warning;
+}
+
+.dcpTransition--message--notice {
+  background-color: $gray;
+}
+
+.dcpTransition--message--error {
+  background-color: $brand-danger;
+}
+
+
+
+/**
+ * GRAPH TRANSITION
+ */
+
+.dcpTransitionGraph.k-window-content {
+  padding-top:4em; // for tooltip
+}
+
+.dcpTransitionGraph .dcpTransitionGraph_state {
+  padding:1em;
+  margin:1em;
+  text-align: center;
+  width: 12em;
+  display: inline-block;
+  min-height:3em;
+  border-style:solid;
+  border-width:0.5em 1px 1px 1px;
+  border-radius: 4px;
+  box-shadow: 5px 5px 5px $gray;
+  overflow: auto;
+  flex:1;
+  // flex-basis:3em;
+
+}
+
+.dcpTransitionGraph_state_message {
+  text-align: left;
+  padding-top: 0.5em;
+  border-top: solid 1px $gray;
+}
+
+.dcpTransitionGraph .dcpTransitionGraph--from {
+  width:40%;
+  float:left;
+  display:flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dcpTransitionGraph--to .dcpTransitionGraph_state:hover {
+  background-color: darken($body-bg, 10%);
+  cursor:pointer;
+}
+.dcpTransitionGraph__arrow__end {
+  right:-0.3em;
+  top: -0.4em;
+  position: absolute;
+  color:$gray;
+}
+.dcpTransitionGraph .dcpTransitionGraph--to {
+  float:right;
+  width:50%;
+  display:flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.dcpTransitionGraph .dcpTransitionGraph--from {
+
+}
+
+.dcpTransitionGraph__arrow  {
+  padding:0px;
+  margin:0px;
+  line-height:2em;
+  position:absolute;
+  background-color: $gray;
+}
+
+.dcpTransitionGraph_state--error {
+  color:$gray;
+}
+.dcpTransitionGraph__arrow--error  {
+  background-color: lighten($gray, 30%);
+}
+
+.dcpTransitionGraph--to .dcpTransitionGraph_state--error:hover {
+  cursor: not-allowed;
+}
+.dcpTransitionGraph__arrow--error .dcpTransitionGraph__arrow__end{
+  color:lighten($gray, 30%);
+}
+
+.dcpTransitionGraph__arrow--error .dcpTransitionGraph__arrow__label {
+  color:lighten($gray, 30%);
+}
+
+.dcpTransitionGraph__arrow .dcpTransitionGraph__arrow__label {
+  text-align: center;
+  margin-top:-1.7em;
+}
+
+.dcpTransitionGraph__arrow.dcpTransitionGraph__arrow--selected {
+  font-weight:   bold;
+  background-color: $gray-base;
+}
+.dcpTransitionGraph__arrow.dcpTransitionGraph__arrow--selected .dcpTransitionGraph__arrow__end {
+  color: $gray-base;
+}

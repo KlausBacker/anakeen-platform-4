@@ -1,0 +1,54 @@
+// Removed Boostrap 3 variables
+// #TODO Define new variables
+// The Bootstrap 3 removed variables used in sources are temporarly defined
+$dropdown-divider-bg: #e5e5e5;
+$dropdown-bg: #fff;
+
+$body-bg: #fff;
+
+$panel-bg: #fff;
+$panel-default-border: #ddd;
+
+$brand-primary: darken(#428bca, 6.5%); // #337ab7
+$brand-danger: #d9534f;
+$brand-success: #5cb85c;
+$brand-info: #5bc0de;
+$brand-warning: #f0ad4e;
+
+$border-radius-base: 4px;
+$border-radius-large: 6px;
+$border-radius-small: 3px;
+
+$btn-default-border: #ccc;
+$btn-danger-color: #fff;
+$btn-success-color: #fff;
+
+$input-border-focus: #66afe9;
+
+$screen-sm: 768px;
+$screen-sm-min: $screen-sm;
+
+$screen-md: 992px;
+$screen-md-min: $screen-md;
+
+$gray-base: #000;
+$gray-darker: lighten($gray-base, 13.5%); // #222
+$gray-dark: lighten($gray-base, 20%); // #333
+$gray: lighten($gray-base, 33.5%); // #555
+$gray-light: lighten($gray-base, 46.7%); // #777
+$gray-lighter: lighten($gray-base, 93.5%); // #eee
+
+$btn-primary-color: #fff;
+$btn-primary-bg: $brand-primary;
+$btn-primary-border: darken($btn-primary-bg, 5%);
+
+$padding-base-vertical: 6px;
+
+$nav-link-hover-bg: $gray-lighter;
+// END OLD VARIABLES
+
+@import "../../../custom-scss-variable.d/global_variables.scss";
+@import "../../../../Apps/DOCUMENT/IHM/views/document/document.scss";
+
+$attrInputHeight: $dcp-input-height;
+$documentHeaderHeight: $dcp-header-height;

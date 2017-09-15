@@ -1,0 +1,188 @@
+$attrInputHeight : 30px;
+
+.dcpAttribute__value--read {
+  position: inherit;
+}
+
+.dcpAttribute__value--read .dcpAttribute__content__value {
+  //display: inline-block;
+  word-wrap: break-word;
+}
+
+.dcpAttribute__value {
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+}
+.dcpDocument--view .dcpAttribute__content .dcpAttribute__content__buttons {
+  float:right;
+}
+.dcpDocument--view
+.dcpAttribute__content {
+  padding-top: $dcp-attribute-padding-base-vertical; // Default padding plus a border
+
+}
+
+.dcpAttribute__content .input-group .k-autocomplete input {
+  height: ($attrInputHeight - 2);
+}
+.dcpAttribute__content .input-group {
+  width:100%;
+}
+.dcpAttribute__content .input-group-addon {
+  background-color:transparent;
+}
+
+
+.dcpAttribute__value {
+  height: $attrInputHeight ;
+}
+.dcpDocument--edit {
+  .dcpAttribute__label.dcpAttribute__left,
+  .dcpAttribute--visibility--S .dcpAttribute__right {
+    min-height: $attrInputHeight;
+  }
+
+  .dcpAttribute--visibility--S .dcpAttribute__right {
+    padding-top: $dcp-attribute-padding-base-vertical;
+  }
+}
+.dcpAttribute__content .k-widget > .k-state-default {
+  border-radius: $border-radius-base 0 0 $border-radius-base;
+}
+.dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
+.dcpAttribute__content .input-group .dcpAttribute__value.dcpAttribute__content__nobutton,
+.dcpAttribute__content .form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__content__nobutton .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content .k-widget > .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content .dcpAttribute__content__nobutton > .k-state-default
+{
+  border-bottom-right-radius: $border-radius-base ;
+  border-top-right-radius: $border-radius-base ;
+}
+.dcpAttribute__content .input-group input,
+.dcpArray__content__cell .input-group input,
+.dcpAttribute__content .input-group .k-autocomplete {
+  height: $attrInputHeight;
+}
+
+.dcpAttribute__content .input-group-addon,
+.dcpArray__content__cell .input-group-addon {
+  padding: 0;
+  height: $attrInputHeight;
+}
+
+.dcpAttribute__content .input-group-addon button,
+.dcpArray__content__cell .input-group-addon button {
+  /* background-color: transparent;*/
+  border: none;
+  min-width: 2em;
+  height: 100%;
+  padding: 0;
+}
+
+.dcpAttribute__content .input-group-addon button {
+  border-right: 1px solid $btn-default-border;
+}
+.dcpAttribute__content .input-group-addon button:last-child {
+  border-right: none;
+}
+
+.dcpAttribute__content .input-group-addon button:hover,
+.dcpArray__content__cell .input-group-addon button:hover {
+  /*background-color: @btn-default-bg;*/
+}
+
+.dcpAttribute__value--flash input,
+.dcpAttribute__value--flash textarea,
+.dcpAttribute__value--flash .k-input,
+iframe.dcpAttribute__value--flash {
+  background-color: $brand-info;
+}
+
+.k-input.form-control {
+  float:none;
+}
+
+.dcpAttribute__value--endflash input,
+.dcpAttribute__value--endflash textarea,
+.dcpAttribute__value--endflash .k-input,
+iframe.dcpAttribute__value--endflash {
+  background-color: inherit;
+  transition: background-color 500ms linear;
+}
+
+.button-close-error {
+  padding-right: 0;
+  padding-top: 0;
+  float: right;
+}
+
+.dcpAttribute__content .k-autocomplete .k-loading {
+  position: relative;
+  right: 20px;
+  z-index: 3;
+  top: 5px;
+}
+
+.k-list .k-state-error {
+  border: none;
+  width: 100%;
+  display: inline-block;
+}
+
+.k-textbox:hover,
+.k-autocomplete.k-state-hover,
+.k-picker-wrap.k-state-hover,
+.k-numeric-wrap.k-state-hover,
+.k-multiselect.k-header.k-state-hover,
+.k-dropdown-wrap.k-state-hover {
+
+  border-color: $input-border-focus;
+}
+
+.dcpAttribute__content .input-group-addon button.dcpAttribute__content__button--extra,
+.dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/**
+* no delete button on IE10
+*/
+//noinspection CssInvalidPseudoSelector
+.dcpAttribute__content input[type=text]::-ms-clear {
+  display: none;
+}
+
+.dcpAttribute__content .tooltip-inner {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.dcpAttribute__content__button--extra {
+  border-radius:0;
+  &:last-child {
+    border-bottom-right-radius: $border-radius-base ;
+    border-top-right-radius: $border-radius-base ;
+  }
+}
+
+.dcpAutocomplete div {
+  padding-left: 1em;
+  border-radius: $border-radius-base;
+}
+
+.dcpAutocomplete--message {
+  background-color: $brand-info;
+}
+.dcpAutocomplete--warning {
+  background-color: $brand-warning;
+}
+.dcpAutocomplete--error {
+  background-color: $brand-danger;
+}
+
+.dcpCustomTemplate--content .dcpAttribute__content {
+  padding-top:0;
+}

@@ -5,9 +5,10 @@ if [ $# -ne 2 ]; then
 fi
 BASE_PATH=$1/
 DEST_PATH=$2/jquery-dataTables
-git clone git@github.com:DataTables/DataTables.git
+if [ ! -d ./DataTables ]; then
+    git clone git@github.com:DataTables/DataTables.git
+fi
 mkdir -p $DEST_PATH
-mv ./DataTables/media/css $DEST_PATH
-mv ./DataTables/media/images $DEST_PATH
-mv ./DataTables/media/js $DEST_PATH
-rm -rf ./DataTables
+cp -r ./DataTables/media/css $DEST_PATH
+cp -r ./DataTables/media/images $DEST_PATH
+cp -r ./DataTables/media/js $DEST_PATH

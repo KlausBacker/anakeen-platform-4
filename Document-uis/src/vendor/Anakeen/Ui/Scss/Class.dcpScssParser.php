@@ -63,8 +63,16 @@ class dcpScssParser implements ICssParser
         try {
             $compiler = new Compiler();
             $server = new Server(DEFAULT_PUBDIR, $this->_options['cache_dir'], $compiler);
+            $compiler->addImportPath(function ($path) {
+               error_log("Query path : $path");
+               return null;
+            });
             foreach ($this->_srcFiles as $srcPath) {
                 $srcFullPath = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $srcPath;
+
+                error_log("Dirname=".dirname($srcFullPath));
+                error_log("Fullpath=$srcFullPath");
+
                 $compiler->addImportPath(dirname($srcFullPath));
                 $css = $server->checkedCachedCompile($srcFullPath, $fullTargetPath);
                 if (false === file_put_contents($fullTargetPath, $css)) {
