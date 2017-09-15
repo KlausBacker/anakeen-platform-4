@@ -15,7 +15,7 @@
                     <label>[ConfigurationLabel]</label>
                 </p></td></tr>
             <tr ><td colspan="3">
-                <a target="[idFrame]" href="?app=GENERIC&action=GENERIC_EDIT&classid=[famid]">[CreateLabel]</a>
+                <a target="[idFrame]" href="api/v1/documents/[famid]/views/!defaultCreation.html">[CreateLabel]</a>
                 <a target="[idFrame]" href="?app=DCPDEVEL&action=DOCUMENTFAMILYLIST&family=[famid]">[List]</a>
                 <a target="[idFrame]" href="?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=[famid]">[AttributesLabel]</a>
                 <a target="[idFrame]" href="?app=FDL&action=EDITFAMILYENUMS&famid=[famid]">[EnumerateLabel]</a>
@@ -66,7 +66,7 @@
                 <tr>
                     <td><label>[ViewControl] :</label></td><td>
                     [IF cvid]
-                    <a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[cvid]">
+                    <a target="[idFrame]" href="api/v1/documents/[cvid].html">
                         <img class="ui-icon" src="[cvIcon]"/> [cvLabel]</a>
                     [ENDIF cvid]
                     [IFNOT cvid]
@@ -99,7 +99,7 @@
           <tr><td>
                 <label>[DefaultWorkflow] :</label>
 
-          </td><td>[IF wid]<a target="[idFrame]" href="?app=FDL&action=FDL_CARD&id=[wid]">
+          </td><td>[IF wid]<a target="[idFrame]" href="api/v1/documents/[wid].html">
               <img class="ui-icon" src="[wIcon]"/> [wLabel]</a>
               [ENDIF  wid]
               [IFNOT wid]

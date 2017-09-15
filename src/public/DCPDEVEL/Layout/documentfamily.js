@@ -70,7 +70,7 @@ $(document).ready(() => {
   $resultzone.trigger('refresh');
 
   $resultzone.on('click', '.document-button', function () {
-    const url = `?app=FDL&action=FDL_CARD&id=${$(this).data('docid')}`;
+    const url = `api/v1/documents/${$(this).data('docid')}.html`;
     window.open(url, '_blank');
   });
   $resultzone.on('click', '.document-next', function () {

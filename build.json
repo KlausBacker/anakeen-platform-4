@@ -1,13 +1,9 @@
 {
-    "moduleName" : "dynacase-devel-ui",
+    "moduleName" : "anakeen-admin",
     "version" : "1.0.0",
     "release" : "0",
-    "application" : ["DCPDEVEL"],
-    "includedPath" : ["locale"],
+    "application" : [],
+    "includedPath" : ["src/*"],
     "lang" : ["fr","en"],
-    "csvParam" : {"enclosure" : "\"", "delimiter": ";"},
-    "dynacase-devtool" : {
-            "uri" : "git@github.com:Anakeen/development-tools.git",
-            "tag" : "3.2"
-    }
+    "csvParam" : {"enclosure" : "\"", "delimiter": ";"}
 }

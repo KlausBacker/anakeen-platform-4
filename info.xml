@@ -1,13 +1,8 @@
 <?xml version="1.0" ?>
 <module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
-    <description>dynacase_devel_ui</description>
+    <description>Admin Center</description>
 
-    <requires>
-        <module comp="ge" name="dynacase-core" version="3.2"/>
-        <module name="dynacase-jquery-dataTables-1.10-installer" comp="ge" version="1.10.11"/>
-        <module name="dynacase-jquery-ui-installer" comp="ge" version="1.12.0"/>
-        <module name='dynacase-mustache.js-installer'/>
-    </requires>
+
 
     <post-install>
         <process command="programs/record_application DCPDEVEL"/>

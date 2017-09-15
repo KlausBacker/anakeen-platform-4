@@ -14,19 +14,19 @@ function familyexportform(Action & $action)
     if (!$family->isAffected()) {
         $action->exitError("Undefined family");
     }
-    $action->parent->addJsRef("lib/jquery/1.7.2/jquery.js");
-    $action->parent->addJsRef("lib/jquery-ui-1.12.0/jquery-ui.js");
-    $action->parent->addJsRef("lib/jquery-dataTables/1.10/js/jquery.dataTables.js");
+    $action->parent->addJsRef("legacy/jquery/1.7.2/jquery.js");
+    $action->parent->addJsRef("legacy/jquery-ui-1.12.0/jquery-ui.js");
+    $action->parent->addJsRef("legacy/jquery-dataTables/1.10/js/jquery.dataTables.js");
     $action->parent->addJsRef("DCPDEVEL/Layout/combobox.js");
     $action->parent->addJsRef("DCPDEVEL/Layout/familyexport.js");
+
+    $action->parent->addCssRef("DCPDEVEL/Layout/develinit.css");
+    $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.css");
+    $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.structure.css");
+    $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.theme.min.css");
     
-    $action->parent->addCssRef("WHAT/Layout/size-normal.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.structure.css");
-    $action->parent->addCssRef("lib/jquery-ui-1.12.0/jquery-ui.theme.min.css");
-    
-    $action->parent->addCssRef("lib/jquery-dataTables/1.10/css/jquery.dataTables.css");
-    $action->parent->addCssRef("lib/jquery-dataTables/1.10/css/dataTables.jqueryui.css");
+    $action->parent->addCssRef("legacy/jquery-dataTables/1.10/css/jquery.dataTables.css");
+    $action->parent->addCssRef("legacy/jquery-dataTables/1.10/css/dataTables.jqueryui.css");
     // $action->parent->addCssRef("DCPDEVEL/Layout/develmain.css");
     $action->parent->addCssRef("DCPDEVEL/Layout/familyexportform.css");
     
