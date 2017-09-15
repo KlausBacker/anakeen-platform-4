@@ -13,6 +13,7 @@
   "dependencies": {
     "@progress/kendo-theme-bootstrap": "^2.8.0",
     "backbone": "^1.3.3",
+    "bootstrap": "github:twbs/bootstrap#v3-dev",
     "ckeditor": "^4.7.2",
     "es6-promise": "^4.1.1",
     "font-awesome": "^4.7.0",
