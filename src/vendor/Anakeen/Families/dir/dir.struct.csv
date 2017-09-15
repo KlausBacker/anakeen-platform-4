@@ -26,7 +26,5 @@ ATTR;FLD_OPENFOLIO;;Ouvrir comme une chemise;N;N;menu;40;R;;C%S%app=FREEDOM&acti
 ATTR;FLD_INSERTDOC;;Insérer des documents;N;N;menu;50;R;;C%S%app=FDL&action=EDITINSERTDOCUMENT&id=%I%;;;;;ltarget=_self
 ATTR;FLD_SETSYSRSS;;RSS visible/masquée aux utilisateurs;N;N;menu;60;R;;C%S%app=FREEDOM&action=SETSYSRSS&id=%I%;;;;;ltarget=_self
 DEFAULT;FLD_SUBFAM;;;;;;;;;;;;;;
-END;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-//DOC;Famille;<special id>;<special dirid>;titre;;;;;;;;;;;
-DOC;2;9;;Racine;;;;;;;;;;;
+END;;;;;;;;;;;;;;;;;
+

@@ -396,7 +396,6 @@ class WStart extends WStartInternals
         $imagesDir = $this->publize('Images');
         $this->mkdir($imagesDir);
         $dirs = $this->getImagesDirs();
-        print_r2($dirs);
         foreach ($dirs as $dir) {
             $this->linkFiles($dir, $imagesDir, $linked);
         }
