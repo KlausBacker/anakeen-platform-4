@@ -3,6 +3,10 @@
     <description>Admin Center</description>
 
 
+    <requires>
+        <!-- To remove after refactor -->
+        <module name="anakeen-legacy"/>
+    </requires>
 
     <post-install>
         <process command="programs/record_application DCPDEVEL"/>
