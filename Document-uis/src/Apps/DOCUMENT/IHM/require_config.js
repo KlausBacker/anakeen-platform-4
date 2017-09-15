@@ -19,7 +19,7 @@
             "text": "../uiAssets/externals/RequireJS/text",
             "underscore": "../uiAssets/externals/underscore/underscore",
             "backbone": "../uiAssets/externals/backbone/backbone",
-            "mustache": "../uiAssets/externals/mustache/mustache",
+            "mustache": "../uiAssets/externals/mustache.js/mustache",
             "bootstrap": "../uiAssets/externals/bootstrap/js/bootstrap",
             "tooltip": "../uiAssets/externals/bootstrap/js/tooltip",
 //          "dcpContextRoot": "empty:",

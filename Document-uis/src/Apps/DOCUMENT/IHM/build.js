@@ -15,7 +15,7 @@
 //        "text": "empty:",
         "underscore": "../externals/underscore/underscore",
         "backbone": "../externals/backbone/backbone",
-        "mustache": "../externals/mustache/mustache",
+        "mustache": "../externals/mustache.js/mustache",
         "bootstrap": "../externals/bootstrap/js/bootstrap",
         "tooltip": "../externals/bootstrap/js/tooltip",
 //        "dcpContextRoot": "empty:",
