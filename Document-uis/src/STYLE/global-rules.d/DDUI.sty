@@ -103,11 +103,10 @@ $sty_rules = array(
         ) ,
         'dcp/document/kendo.css' => array(
             "src" => array(
-                "kendo-bootstrap-common" => "STYLE/DDUI/dduiAssets/kendo.common.less",
-                "kendo-bootstrap" => "STYLE/DDUI/dduiAssets/kendo.bootstrap.less",
+                "kendo-bootstrap" => "STYLE/DDUI/dduiAssets/scss/kendo.bootstrap.scss",
             ) ,
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpLessParser',
+                "className" => '\Dcp\Style\dcpScssParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'css/dcp/document/kendo.map',
