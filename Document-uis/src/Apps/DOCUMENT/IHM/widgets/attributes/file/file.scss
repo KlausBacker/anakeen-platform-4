@@ -1,0 +1,56 @@
+
+.dcpAttribute__value--dropzone .dcpAttribute__value--edit {
+  background-color: $brand-primary;
+  font-weight: bold;
+  color:$btn-primary-color;
+  text-align: center;
+}
+
+.dcpAttribute__value--transferring {
+  background-color: $brand-info;
+}
+
+/**
+* force repead to inhib --fileicon when recording
+*/
+.active.dcpAttribute__value--recording {
+  background-repeat: repeat;
+}
+
+.dcpAttribute__value--fileicon {
+  background-repeat: no-repeat;
+  background-position: 4px center;
+  padding-left: 30px;
+}
+.dcpAttribute__content--file .dcpAttribute__value--edit {
+  cursor:pointer;
+
+}
+.dcpAttribute__content__button--file {
+  border-radius:0;
+}
+
+.dcpAttribute__content--file .form-control.dcpAttribute__value.dcpAttribute__value--edit {
+  border-bottom-left-radius: $border-radius-base;
+  border-top-left-radius: $border-radius-base;
+}
+
+
+.dcpFile--old-browser .dcpAttribute__value {
+  // width:50%;
+}
+.dcpFile--old-browser input[type=file] {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:2;
+  font-size: 200px;
+  opacity:0;
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.dcpFile--old-browser .dcpFile__form {
+  position:relative;
+}

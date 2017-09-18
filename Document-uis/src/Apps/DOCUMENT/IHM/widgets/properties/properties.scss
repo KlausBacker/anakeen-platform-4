@@ -1,0 +1,53 @@
+
+.document-properties * {
+  box-sizing: border-box;
+}
+
+.document-properties {
+}
+
+.properties-value img {
+  width: 2.2em;
+  vertical-align: bottom;
+  padding-right: 0.8em;
+}
+
+.properties-header--description {
+  padding-right: 1em;
+  width:10em;
+}
+
+table.properties-main .properties-separator {
+  border-top-color: $brand-primary;
+  padding: 0;
+}
+
+.properties-description {
+  white-space: nowrap;
+}
+
+.properties-value-statecolor {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  margin-right: 1em;
+}
+/*
+.properties-description {
+  &:after {
+    content: ":";
+    padding-left: 0.6em;
+  }
+}*/
+
+.properties-value, .properties-header--value {
+  &:before {
+    content: ":";
+    padding-right: 0.6em;
+  }
+}
+
+.properties-value--famname {
+  padding-left:3em;
+  font-weight: bold;
+}

@@ -1,0 +1,21 @@
+$dcp-revision-diff-bg-before : #ff9ca9;
+$dcp-revision-diff-bg-after : #c6ffcc;
+
+.revision-diff * {
+  box-sizing: border-box;
+}
+
+.revision-diff-not-equal {
+  font-weight: bold;
+}
+
+.revision-diff-equal {
+
+}
+
+.revision-diff-not-equal .revision-diff-first {
+  background-color: $dcp-revision-diff-bg-before;
+}
+.revision-diff-not-equal .revision-diff-second {
+  background-color: $dcp-revision-diff-bg-after;
+}

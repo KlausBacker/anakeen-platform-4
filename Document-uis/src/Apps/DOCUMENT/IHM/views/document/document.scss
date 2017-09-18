@@ -1,0 +1,269 @@
+//noinspection CssUnknownTarget
+@import "../../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/mixins";
+@import "menu/menu";
+@import "../attributes/attribute";
+@import "../attributes/attributeDescription";
+@import "../../widgets/attributes/attribute";
+@import "../../widgets/attributes/tooltip";
+@import "../../widgets/attributes/label/label";
+@import "../../widgets/attributes/text/text";
+@import "../../widgets/attributes/docid/docid";
+@import "../../widgets/attributes/int/int";
+@import "../../widgets/attributes/longtext/longtext";
+@import "../../widgets/attributes/htmltext/htmltext";
+@import "../../widgets/attributes/date/date";
+@import "../../widgets/attributes/timestamp/timestamp";
+@import "../../widgets/attributes/time/time";
+@import "../../widgets/attributes/image/image";
+@import "../../widgets/attributes/file/file";
+@import "../../widgets/attributes/enum/enum";
+@import "../../widgets/attributes/password/password";
+@import "../../widgets/attributes/color/color";
+@import "../../widgets/attributes/array/array";
+@import "../../widgets/attributes/tab/tab";
+@import "../../widgets/window/notification";
+@import "../../widgets/history/history";
+@import "../../widgets/history/revisiondiff";
+@import "../../widgets/properties/properties";
+@import "../../widgets/workflow/transition";
+
+.dcpDocument__body {
+  padding: 10px;
+}
+
+.dcpDocument--edit {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.dcpDocument__header {
+  line-height: $documentHeaderHeight;
+  background-color: $body-bg;
+  width: 100%;
+  z-index: 100;
+  font-size: $documentHeaderHeight/1.5;
+  overflow: hidden;
+}
+
+.window-dialog .dcpDocument__header {
+  display:none; // No see header if inside a dialog window
+}
+
+.dcpDocument__header__icon {
+  height: $documentHeaderHeight;
+  padding-right: 1em;
+  padding-left: 0.5em;
+}
+
+.dcpDocument__header__family {
+  display: inline;
+  font-size: $documentHeaderHeight/2;
+  float: right;
+  font-style: italic;
+  margin-right: 10px;
+}
+
+.dcpDocument__footer {
+  background-color: darken($body-bg, 5%);
+  text-align: center;
+  // padding: 3px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+body {
+  /*margin-bottom: 20px;*/
+}
+
+.dcpDocument__tabs .nav-tabs > li.active > a {
+  margin-bottom: -2px;
+  border-bottom: solid 3px transparent;
+  background-color: $panel-bg;
+}
+
+.dcpDocument__tabs .nav-tabs {
+  border-bottom: none;
+}
+
+.dcpDocument__tabs__content {
+  padding: 5px;
+  border: solid 1px $panel-default-border;
+}
+
+.dcpDocument__tabs__content .tab-pane .panel:last-child {
+  margin-bottom: 0;
+}
+
+.confirm--content {
+  padding: 10px;
+}
+
+.confirm--buttons {
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  padding: 10px;
+}
+
+.confirm--body {
+  position: relative;
+}
+
+.confirm--buttons button {
+  min-width: 6em;
+}
+
+.dcpDocument {
+  opacity: 0;
+}
+
+.dcpDocument--show {
+  transition: opacity 0.7s linear;
+  opacity: 1;
+}
+
+.dcpDocument--disabled {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: fade($gray, 10%);
+}
+
+/**
+ * Loading
+ */
+.dcpLoading--hide {
+  transition: opacity 0.5s linear;
+  opacity: 0;
+}
+
+.dcpLoading {
+  padding: 0;
+  border: none;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  line-height: 1px;
+  z-index: 11;
+  background-color: fade($gray, 10%);
+}
+
+.dcpLoading .progress {
+  width: 100%;
+  height: 3px;
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+  background: $body-bg;
+}
+
+.dcpLoading--header .fa {
+  color: darken($brand-info, 30%);
+}
+
+.dcpLoading--header {
+  height: 100%;
+  display: inline-block;
+  padding: 4px;
+  border-radius: 0 0 4px 4px;
+}
+
+.dcpLoading--title {
+  background: $body-bg;
+  display: inline-block;
+  line-height: normal;
+  padding: 0.5em;
+  border: solid 1px $gray-lighter;
+  min-width: 10em;
+}
+
+.dcpLoading--init .dcpLoading--title {
+  font-size: 1.4em;
+  top: 30%;
+  position: relative;
+}
+
+.k-window .dcpLoading {
+  top: auto;
+  position: inherit;
+  width: auto;
+}
+.k-window-title img {
+  height: 1.4em;
+}
+.dcpLoading img {
+  width: 2em;
+}
+
+.dcpDocument__header__modified {
+  padding-left: 0.5em;
+  font-size: x-small;
+  vertical-align: super;
+  color: $brand-warning;
+}
+
+.dcpDocument__header__lock {
+  // color:$brand-success;
+}
+
+.dcpDocument__header--readonly .dcpDocument__header__lock {
+  // color:$brand-danger;
+}
+
+.dcpDocument__emblem__lock--temporary {
+  color: lighten($gray, 30%);
+}
+
+.dcpDocument__header--readonly {
+  background-color: lighten($gray, 60%);
+}
+
+.dcpDocument__header--fixed {
+  background-color: lighten($brand-warning, 20%);
+}
+
+.dcpDocument__header--deleted {
+  background-color: lighten($brand-danger, 20%);
+}
+
+.dcpDocument__header--fixed .dcpDocument__header__revision,
+.dcpDocument__header--deleted .dcpDocument__header__revision
+{
+  padding-right: 2em;
+  padding-left: 2em;
+  font-size: $documentHeaderHeight/2;
+}
+
+.dcpDocument__header--fixed .dcpDocument__header__revdate,
+.dcpDocument__header--deleted .dcpDocument__header__revdate
+{
+  padding-right: 2em;
+  font-size: $documentHeaderHeight/2;
+}
+
+//static error message
+
+.dcpStaticErrorMessage {
+  text-align: center;
+  z-index: 10000;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

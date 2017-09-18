@@ -1,0 +1,17 @@
+
+
+.dcpAttribute__content .k-selected-color {
+  width: 100%;
+  height: ($attrInputHeight - 2);
+  box-sizing: border-box;
+}
+
+.dcpAttribute__content .k-colorpicker  .k-i-arrow-60-down {
+  margin-top:5px;
+}
+
+.dcpAttribute__content--color .dcpAttribute__value--read {
+  border-left-style: solid;
+  border-left-width: 1em;
+  padding-left: 0.5em;
+}

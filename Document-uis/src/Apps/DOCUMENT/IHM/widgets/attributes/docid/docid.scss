@@ -1,0 +1,78 @@
+
+.dcpAttribute__value--read.dcpAttribute__value--docid.k-button a:hover {
+  background-color:inherit;
+}
+.dcpAttribute__value--read.dcpAttribute__value--docid .dcpAttribute__value--icon{
+  //width:1.2em;
+  //height: 1.2em;
+  vertical-align: top;
+}
+.dcpAttribute__content--docid .k-multiselect-wrap, .dcpArray__content__cell--docid .k-multiselect-wrap,
+.dcpAttribute__content--account .k-multiselect-wrap, .dcpArray__content__cell--account .k-multiselect-wrap,
+.dcpAttribute__content--docid .k-multiselect .k-input,
+.dcpAttribute__content--account .k-multiselect .k-input
+{
+  height: auto;
+}
+
+.dcpAttribute__content--docid .k-multiselect, .dcpArray__content__cell--docid .k-multiselect ,
+.dcpAttribute__content--account .k-multiselect, .dcpArray__content__cell--account .k-multiselect {
+  height:auto;
+  min-height: $attrInputHeight - 2;
+}
+.dcpAttribute__value--single .k-multiselect-wrap .k-delete {
+  visibility: hidden;
+}
+
+.input-group-addon i {
+  cursor:pointer;
+}
+
+.dcpAttribute__content.has-error .k-widget {
+  border-color : $brand-danger transparent $brand-danger $brand-danger;
+}
+
+.dcpAttribute__content .k-multiselect-wrap > .k-input
+{
+  height: auto;
+  margin-top:0.4em;
+}
+
+
+.dcpAttribute__value--flash .k-multiselect-wrap
+{
+  background-color: $brand-info;
+}
+.dcpAttribute__value--flash .k-multiselect-wrap > .k-input
+{
+  background-color: transparent;
+}
+.dcpAttribute__value--endflash .k-multiselect-wrap
+{
+  background-color: inherit;
+  transition: background-color 500ms linear;
+}
+
+.dcpAttribute__value--docid .dcpAttribute__content__link.dcpAttribute__value--multiple::after {
+  content:" ";
+  display:block;
+}
+// No see already selected relation in list
+.dcpAttribute__select--docid li.k-state-selected {
+  display:none;
+}
+
+
+.dcpAttribute__select--docid .k-state-error {
+  padding-left:1em;
+  width: calc(100% - 1em);
+}
+
+.dcpAttribute__content--docid ,
+.dcpAttribute__content--account  {
+  .k-state-focused {
+    input.k-input {
+      color:$gray;
+    }
+  }
+}
