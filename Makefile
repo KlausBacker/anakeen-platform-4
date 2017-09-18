@@ -1,7 +1,6 @@
 VERSION = 1.1.0
 RELEASE = 2.1
 localpub=$(shell pwd)/localpub
-pubDest=$(localpub)/src/public/uiAssets/anakeen
 
 
 stub:
@@ -10,60 +9,45 @@ stub:
 
 
 webinst-selenium:
-	-rm -fr $(localpub)
-	cp -ra Tests $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
-	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
-	-rm -fr $(localpub)
-
+	-mkdir -p $(localpub)/seleniums
+	rsync --delete -azvr Tests $(localpub)/selenium/
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/build.json $(localpub)/selenium/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/selenium/ -o .
 
 webinst-full:
-	-rm -fr $(localpub)
-	cp -ra Document-uis $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/src/Apps/DOCUMENT/DOCUMENT_init.php
-	mkdir -p $(pubDest)
-	cp -r $(localpub)/src/Apps/DOCUMENT/IHM/ $(pubDest)
-	r.js -o $(pubDest)/IHM/build.js
-#	r.js -o $(pubDest)/IHM/widgets/buildWidget.js
-	php ./prepareElementForLight.php --modeFull -f $(localpub)/info.xml
-	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
-	-rm -fr $(localpub)
+	-mkdir -p $(localpub)/webinst
+	rsync --delete -azvr Document-uis $(localpub)/webinst/
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
+	r.js -o $(localpub)/webinst/Document-uis/src/public/uiAssets/anakeen/IHM/build.js
+	php ./prepareElementForLight.php --modeFull -f $(localpub)/webinst/Document-uis/info.xml
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
 
-webinst-light: 
-	-rm -fr $(localpub)
-	cp -ra Document-uis $(localpub)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/build.json $(localpub)/src/Apps/DOCUMENT/DOCUMENT_init.php
-	sed -i -e "s/$(PACKAGE)/$(PACKAGE)-light/" $(localpub)/build.json
-	php ./prepareElementForLight.php -f $(localpub)/info.xml
-	php ./prepareElementForLight.php -f $(localpub)/src/Apps/DOCUMENT/DOCUMENT_init.php
-	php ./prepareElementForLight.php -f $(localpub)/src/Apps/DOCUMENT/DOCUMENT.app
-	find $(localpub)/src/Apps/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
-	find $(localpub)/src/Apps/DOCUMENT/IHM/ -name "*.less" -type f -delete
-	./dynacase-devtool.phar generateWebinst -s $(localpub) -o .
-	-rm -fr $(localpub)
+webinst-light:
+	-mkdir -p $(localpub)/webinst
+	rsync --delete -azvr Document-uis $(localpub)/webinst/
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
+	sed -i -e "s/$(PACKAGE)/$(PACKAGE)-light/" $(localpub)/webinst/Document-uis/build.json
+	php ./prepareElementForLight.php -f $(localpub)/webinst/Document-uis/info.xml
+	php ./prepareElementForLight.php -f $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
+	php ./prepareElementForLight.php -f $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT.app
+	find $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
+	find $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/IHM/ -name "*.less" -type f -delete
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
 webinst-all: webinst webinst-selenium
 
 webinst:
 	cd ui && npm run build
 	# TODO Move some assets to Document-uis/src/public
-	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install; ./mustache.sh  ./vendor ../../../../public/uiAssets/externals
+	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; composer install; ./mustache.sh  ./vendor ../../../../public/uiAssets/externals
 	make webinst-full
 
 po:
 	./dynacase-devtool.phar extractPo -s Document-uis
 
 clean: 
-	/bin/rm -f *.*~ config.* Makefile configure \
-		Document-uis/DOCUMENT/IHM/main-built.js	\
-		Document-uis/DOCUMENT/IHM/main-built.js.map \
-		Document-uis/DOCUMENT/IHM/widgets/mainWidget-min.js \
-		Document-uis/DOCUMENT/IHM/widgets/mainWidget-min.js.map \
-		 *.webinst
-	/bin/rm -fr autom4te.cache
-
-
+	rm -rf $(localpub)
 
 deploy:
 	rm -f *webinst

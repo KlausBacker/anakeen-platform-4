@@ -11,4 +11,4 @@ PACKAGE_VERSION=$(npm view ckeditor version)
 NEW_DIR=$(echo $PACKAGE_VERSION | cut -d'.' -f1)
 FILES_LIST=$(ls $BASE_PATH/ckeditor)
 mkdir -p "$DEST_PATH"/ckeditor/"$NEW_DIR"
-mv "$BASE_PATH"/ckeditor/* "$DEST_PATH"/ckeditor/"$NEW_DIR"
+rsync --delete -azvr "$BASE_PATH"/ckeditor/* "$DEST_PATH"/ckeditor/"$NEW_DIR"

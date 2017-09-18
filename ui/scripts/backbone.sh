@@ -8,5 +8,5 @@ fi
 BASE_PATH=$1/backbone
 DEST_PATH=$2/backbone
 mkdir -p "$DEST_PATH"
-mv $BASE_PATH/README.md "$DEST_PATH"
-mv $BASE_PATH/backbone*.js "$DEST_PATH"
+rsync --delete -azvr $BASE_PATH/README.md "$DEST_PATH"
+rsync --delete -azvr $BASE_PATH/backbone*.js "$DEST_PATH"

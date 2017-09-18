@@ -1,1 +1,6 @@
 *.webinst
+localpub/
+ui/node_modules/
+ui/DataTables/
+Document-uis/src/public/uiAssets/externals/
+.idea/

@@ -8,5 +8,5 @@ fi
 BASE_PATH=$1
 DEST_PATH=$2/jquery
 mkdir -p "$DEST_PATH"
-mv "$BASE_PATH"/jquery/dist/jquery.js "$DEST_PATH"
-mv "$BASE_PATH"/jquery/dist/jquery.min.js "$DEST_PATH"
+rsync --delete -azvr "$BASE_PATH"/jquery/dist/jquery.js "$DEST_PATH"
+rsync --delete -azvr "$BASE_PATH"/jquery/dist/jquery.min.js "$DEST_PATH"

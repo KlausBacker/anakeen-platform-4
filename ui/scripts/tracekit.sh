@@ -6,5 +6,5 @@ fi
 BASE_PATH=$1
 DEST_PATH=$2
 mkdir -p "$DEST_PATH"/TraceKit/
-mv "$BASE_PATH"/tracekit/README.md "$DEST_PATH"/TraceKit/
-mv "$BASE_PATH"/tracekit/tracekit.js "$DEST_PATH"/TraceKit/
+rsync --delete -azvr "$BASE_PATH"/tracekit/README.md "$DEST_PATH"/TraceKit/
+rsync --delete -azvr "$BASE_PATH"/tracekit/tracekit.js "$DEST_PATH"/TraceKit/
