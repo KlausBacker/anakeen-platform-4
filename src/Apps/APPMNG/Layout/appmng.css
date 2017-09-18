@@ -1,0 +1,158 @@
+.title {
+    margin-bottom: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: #0088CC;
+}
+
+.buttonColumn {
+    white-space: nowrap;
+}
+#tabs {
+    min-width: 971px;;
+}
+
+#dataTable {
+    min-width: 940px;
+}
+.values {
+    cursor: pointer;
+}
+
+.ui-icon-empty {
+    visibility: hidden;
+}
+
+.greenlight {
+    background-color: #7cfc00;
+}
+
+.redalert {
+    background-color: red;
+}
+
+.imgappmng {
+    vertical-align: middle;
+    height: 18px;
+}
+
+.deletebutton {
+    height: 18px;
+}
+
+.appHeader {
+    background: url("legacy/jquery-ui/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+    font-weight: bold;
+}
+
+.ui-combobox {
+    position: relative;
+    display: inline-block;
+}
+
+.ui-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0 !important;
+}
+
+.ui-combobox-input {
+    margin: 0;
+    padding: 0.3em;
+}
+
+.searchappbutton {
+    float: right !important;
+    margin-right: 40px !important;
+}
+
+.searchuserbutton {
+    margin-bottom: 3px;
+}
+
+table.dataTable {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table.dataTable thead th {
+    padding: 3px 3px;
+}
+
+table.dataTable tr td {
+    border-bottom: 1px solid #eee;
+}
+
+table.dataTable tr.odd, table.dataTable tr.even {
+    background-color: #fff;
+}
+
+table.dataTable tr.odd td.sorting_1, table.dataTable tr.even td.sorting_1 {
+    background-color: #FFFDF2;
+}
+
+.search {
+    float: left;
+    width: 85%;
+    margin-left: 10px;
+}
+
+.search .ui-icon-search {
+    display: inline;
+    position: absolute;
+    right: auto !important;
+}
+
+.static {
+    cursor: not-allowed;
+    color: #A7A7A7;
+}
+
+.searchField {
+    padding-left: 20px;
+    width: 100%;
+    border-bottom: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-top: 1px solid #DDD !important;
+    border-left: 1px solid #DDD !important;
+    background-color: #F0F0F0;
+}
+
+.loadingImg {
+    background: url('[IMG:loading.gif]') no-repeat left white;
+}
+
+.update, .edit, .delete, #updateAll {
+    height: 2.2em;
+}
+
+.edit {
+    margin-left: -1px;
+}
+
+.delete {
+    margin-left: -2px;
+}
+
+[IF ISIE]
+.ui-menu .ui-menu-item {
+    width:15em;
+}
+.ui-combobox-toggle {
+    height: 20px;
+}
+.ui-dialog-content {
+    height: auto !important;
+}
+[ENDIF ISIE]
+
+
+#appid {
+    width: 205px;
+}
