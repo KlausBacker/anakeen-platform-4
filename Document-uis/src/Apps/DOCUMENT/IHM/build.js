@@ -17,7 +17,7 @@
         "backbone": "../externals/backbone/backbone",
         "mustache": "../externals/mustache.js/mustache",
         "bootstrap": "../externals/bootstrap/js/bootstrap",
-        "tooltip": "../externals/bootstrap/js/tooltip",
+        "tooltip": "../externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/tooltip",
 //        "dcpContextRoot": "empty:",
         "kendo": "../externals/KendoUI/js",
         "kendo-ddui": "../externals/KendoUI/js/kendo-ddui-builded",
