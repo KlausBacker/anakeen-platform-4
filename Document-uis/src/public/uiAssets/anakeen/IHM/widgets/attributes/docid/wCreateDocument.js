@@ -5,8 +5,7 @@ define([
     'dcpDocument/i18n/documentCatalog',
     'dcpDocument/views/document/attributeTemplate',
     'dcpDocument/document'
-], function wCreateDocument(_, $, Mustache, i18n, attributeTemplate)
-{
+], function wCreateDocument(_, $, Mustache, i18n, attributeTemplate) {
     'use strict';
 
     $.widget("dcp.dcpCreateDocument", {
@@ -20,13 +19,11 @@ define([
 
         },
 
-        _create: function wcdCreate()
-        {
+        _create: function wcdCreate() {
             this.element.data("dcpCreateDocument", this);
         },
 
-        open: function wcdOpen()
-        {
+        open: function wcdOpen() {
             var wWidget = this;
             var config = this.options;
             var index = config.index;
@@ -52,8 +49,7 @@ define([
                     height: config.windowHeight,
                     content: url,
                     iframe: true,
-                    close: function wcdClose(event)
-                    {
+                    close: function wcdClose(event) {
                         wWidget.closeDialog(event, true);
                     }
                 }).data('dcpWindow');
@@ -61,8 +57,7 @@ define([
                 dw.open();
 
                 $createDocument = dw.currentWidget;
-                $createDocument.on("documentcreate", function wAttributeCreateDocumentCreation()
-                {
+                $createDocument.on("documentcreate", function wAttributeCreateDocumentCreation() {
                     dw.currentWidget.find("> iframe").addClass("k-content-frame");
                 });
 
@@ -79,115 +74,125 @@ define([
                         withoutResize: true
                     });
                 }
-                $createDocument.document("addEventListener", "ready",
-                    {name: "ddui:create:ready"},
-                    function wDocidCreateDocumentReady(event, documentInfo)
-                    {
-                        var wOrigin = this;
-                        var isPrevented;
-                        wWidget.$document = this;
 
-                        isPrevented = wWidget.proxyTrigger(event, "ready", {});
-                        if (!isPrevented) {
-                            if (documentInfo.viewId === "!defaultCreation") {
-                                // Set form values
-                                isPrevented = wWidget.proxyTrigger(event, "beforeSetFormValues",
-                                    {
-                                        getFormValues: function wcdCustomGetFormValues()
+                $createDocument.on("documentloaded", function () {
+                    $(this).document("addEventListener", "ready",
+                        {name: "ddui:create:ready"},
+                        function wDocidCreateDocumentReady(event, documentInfo) {
+                            var wOrigin = this;
+                            var isPrevented;
+                            var menuItem;
+                            wWidget.$document = this;
+
+                            isPrevented = wWidget.proxyTrigger(event, "ready", {});
+                            if (!isPrevented) {
+                                if (documentInfo.viewId === "!defaultCreation") {
+                                    // Set form values
+                                    isPrevented = wWidget.proxyTrigger(event, "beforeSetFormValues",
                                         {
-                                            return config.formValues;
-                                        },
-                                        setFormValues: function wcdCustomSetFormValues(customFormValues)
-                                        {
-                                            wWidget.setFormValue(customFormValues, wOrigin);
+                                            getFormValues: function wcdCustomGetFormValues() {
+                                                return config.formValues;
+                                            },
+                                            setFormValues: function wcdCustomSetFormValues(customFormValues) {
+                                                wWidget.setFormValue(customFormValues, wOrigin);
+                                            }
                                         }
-                                    }
-                                );
+                                    );
 
-                                if (!isPrevented) {
-                                    wWidget.setFormValue(config.formValues, this);
+                                    if (!isPrevented) {
+                                        wWidget.setFormValue(config.formValues, this);
+                                    }
+                                }
+                                menuItem = this.documentController("getMenu", "createAndClose");
+                                if (menuItem) {
+                                    menuItem.hide();
+                                }
+                                menuItem = this.documentController("getMenu", "saveAndClose");
+                                if (menuItem) {
+                                    menuItem.hide();
+                                }
+                                menuItem = this.documentController("getMenu", "create");
+                                if (menuItem) {
+                                    menuItem.setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
+                                }
+                                menuItem = this.documentController("getMenu", "save");
+                                if (menuItem) {
+                                    menuItem.setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
                                 }
                             }
-                            this.documentController("getMenu", "createAndClose").hide();
-                            this.documentController("getMenu", "saveAndClose").hide();
-                            this.documentController("getMenu", "create").setLabel(Mustache.render(config.createLabel, attributeModel.attributes));
-                            this.documentController("getMenu", "save").setLabel(Mustache.render(config.updateLabel, attributeModel.attributes));
+
+
+                        });
+
+                    $(this).document("addEventListener",
+                        "actionClick",
+                        {
+                            name: "ddui:create:close"
+                        },
+                        function wAttributeCreateDocumentbeforeClose(event, documentObject, options) {
+                            if (options.eventId === "document.close") {
+                                event.preventDefault();
+                                wWidget.closeDialog(event, true);
+                            }
                         }
+                    );
 
-                        this.documentController("addEventListener",
-                            "actionClick",
-                            {
-                                name: "ddui:create:close"
-                            },
-                            function wAttributeCreateDocumentbeforeClose(event, documentObject, options)
-                            {
-                                if (options.eventId === "document.close") {
-                                    event.preventDefault();
-                                    wWidget.closeDialog(event, true);
+                    $(this).document("addEventListener",
+                        "afterSave",
+                        {
+                            name: "ddui:create:record"
+                        },
+                        function wAttributeCreateDocumentRecord(event, currentDocumentObject) {
+                            var newOneValue = {
+                                value: currentDocumentObject.initid,
+                                displayValue: currentDocumentObject.title,
+                                familyRelation: currentDocumentObject.family.name,
+                                icon: currentDocumentObject.icon
+                            };
+                            var newValue;
+                            var isPrevented;
+                            isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue",
+                                {
+                                    attributeValue: newOneValue
                                 }
+                            );
+                            if (isPrevented) {
+                                return;
                             }
-                        );
 
-                        this.documentController("addEventListener",
-                            "afterSave",
-                            {
-                                name: "ddui:create:record"
-                            },
-                            function wAttributeCreateDocumentRecord(event, currentDocumentObject)
-                            {
-                                var newOneValue = {
-                                    value: currentDocumentObject.initid,
-                                    displayValue: currentDocumentObject.title,
-                                    familyRelation: currentDocumentObject.family.name,
-                                    icon: currentDocumentObject.icon
-                                };
-                                var newValue;
-                                var isPrevented;
-                                isPrevented = wWidget.proxyTrigger(event, "beforeSetTargetValue",
-                                    {
-                                        attributeValue: newOneValue
-                                    }
-                                );
-                                if (isPrevented) {
-                                    return;
+                            if (attributeModel.hasMultipleOption()) {
+                                newValue = attributeModel.getValue();
+                                if (index >= 0) {
+                                    newValue = newValue[index];
                                 }
-
-                                if (attributeModel.hasMultipleOption()) {
-                                    newValue = attributeModel.getValue();
-                                    if (index >= 0) {
-                                        newValue = newValue[index];
-                                    }
-                                    if (_.isArray(newValue)) {
-                                        newValue = _.clone(newValue); // need to clone to trigger backbone change
-                                        newValue.push(newOneValue);
-                                    } else {
-                                        newValue = [newOneValue];
-                                    }
+                                if (_.isArray(newValue)) {
+                                    newValue = _.clone(newValue); // need to clone to trigger backbone change
+                                    newValue.push(newOneValue);
                                 } else {
-                                    newValue = newOneValue;
+                                    newValue = [newOneValue];
                                 }
-                                attributeModel.setValue(newValue, index);
-
-                                isPrevented = wWidget.proxyTrigger(event, "beforeClose", {
-                                    attributeValue: newValue
-                                });
-                                if (!isPrevented) {
-                                    dw.close();
-                                }
+                            } else {
+                                newValue = newOneValue;
                             }
-                        );
-                    });
+                            attributeModel.setValue(newValue, index);
 
+                            isPrevented = wWidget.proxyTrigger(event, "beforeClose", {
+                                attributeValue: newValue
+                            });
+                            if (!isPrevented) {
+                                dw.close();
+                            }
+                        }
+                    );
+                });
             }
         },
-        setFormValue: function wcdSetFormValue(formValues, $subDoc)
-        {
+        setFormValue: function wcdSetFormValue(formValues, $subDoc) {
 
             var documentModel = this.options.originDocumentModel;
             var tplData = attributeTemplate.getTemplateModelInfo(documentModel);
             // Set form values
-            _.each(formValues, function wDocidFormValues(attrValue, attrId)
-            {
+            _.each(formValues, function wDocidFormValues(attrValue, attrId) {
                 var rValue;
                 if (_.isObject(attrValue)) {
                     $subDoc.documentController("setValue", attrId, attrValue);
@@ -208,8 +213,7 @@ define([
             });
         },
 
-        proxyTrigger: function wcdTrigger(event, triggerName, options)
-        {
+        proxyTrigger: function wcdTrigger(event, triggerName, options) {
             var listener, args;
             if (this.options[triggerName]) {
                 listener = this.options[triggerName];
@@ -228,11 +232,9 @@ define([
             return false;
         },
 
-        confirmClose: function wcdConfirmClose()
-        {
+        confirmClose: function wcdConfirmClose() {
             var targetProperties = this.$document.documentController("getProperties");
-            return new Promise(function wsdAskConfirmation(resolve, reject)
-            {
+            return new Promise(function wsdAskConfirmation(resolve, reject) {
                 var confirmWindow = $('body').dcpConfirm({
                     title: Mustache.render(i18n.___("Confirm close form \"{{title}}\"", "ddui"), targetProperties),
                     width: "510px",
@@ -251,8 +253,7 @@ define([
             });
         },
 
-        closeDialog: function wcdcloseDialog(event, askConfirm)
-        {
+        closeDialog: function wcdcloseDialog(event, askConfirm) {
             var wWidget = this;
             var isPrevented = false;
             var kDialog = this.$dialog.data("dcpWindow");
@@ -263,8 +264,7 @@ define([
 
                 if (!isPrevented && askConfirm && targetProperties && targetProperties.isModified) {
                     console.log("modified", targetProperties);
-                    wWidget.confirmClose().then(function wcdConfirmClose()
-                    {
+                    wWidget.confirmClose().then(function wcdConfirmClose() {
                         wWidget.closeDialog(event, false);
                     });
                     isPrevented = true;
