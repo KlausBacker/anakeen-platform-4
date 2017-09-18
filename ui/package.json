@@ -19,6 +19,7 @@
     "jquery": "^3.2.1",
     "kendo-ui-core": "https://github.com/telerik/kendo-ui-core/tarball/2017.3.913",
     "mustache": "^2.3.0",
+    "popper.js": "^1.12.5",
     "requirejs": "^2.3.5",
     "requirejs-text": "^2.0.15",
     "tracekit": "^0.4.5",
