@@ -11,34 +11,32 @@ namespace Dcp\Style;
 use Leafo\ScssPhp\Server;
 use Leafo\ScssPhp\Compiler;
 
+require_once 'vendor/Anakeen/Ui/PhpLib/vendor/leafo/scssphp/scss.inc.php';
+
 class dcpScssParser implements ICssParser
 {
-    protected $_srcFiles = null;
+    protected $_srcFile = null;
     protected $_styleConfig = array();
     protected $_options = array();
+    protected $commandMode = false;
     /**
-     * @param string|string[] $srcFiles    path or array of path of source file(s) relative to server root
+     * @param string $srcFile    path or array of path of source file(s) relative to server root
      * @param array           $options     array of options
      * @param array           $styleConfig full style configuration
      */
-    public function __construct($srcFiles, Array $options, Array $styleConfig)
+    public function __construct($srcFile, Array $options, Array $styleConfig)
     {
-        if (is_array($srcFiles)) {
-            $this->_srcFiles = $srcFiles;
-        } else {
-            $this->_srcFiles = array(
-                $srcFiles
-            );
+        if (is_array($srcFile)) {
+            new \Exception("SCSS parser take only one file");
         }
-        $cacheDir = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'scss';
-        if (!is_dir($cacheDir)) {
-            mkdir($cacheDir, 0775, true);
+
+        $this->_srcFile = $srcFile;
+
+        if(`which sassc`) {
+            echo "MODE LIBCSASS ACTIVATED\n";
+            $this->commandMode = true;
         }
-        $this->_options = $options;
-        $this->_options['cache_dir'] = $cacheDir;
-        $this->_options['cache_method'] = 'serialize';
-        $this->_options['sourceMapBasepath'] = DEFAULT_PUBDIR;
-        $this->_styleConfig = $styleConfig;
+
     }
     /**
      * @param string $destFile destination file path relative to server root (if null, parsed result is returned)
@@ -54,34 +52,37 @@ class dcpScssParser implements ICssParser
             throw new Exception("STY0005", "$fullTargetDirname dir could not be created for file $destFile");
         }
 
-        $autoloadFuncs = spl_autoload_functions();
-        foreach ($autoloadFuncs as $unregisterFunc) {
-            //spl_autoload_unregister($unregisterFunc);
-        }
-
         $exception = null;
         try {
-            $compiler = new Compiler();
-            $server = new Server(DEFAULT_PUBDIR, $this->_options['cache_dir'], $compiler);
-            foreach ($this->_srcFiles as $srcPath) {
-                $srcFullPath = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $srcPath;
-                $compiler->addImportPath(dirname($srcFullPath));
-                $css = $server->checkedCachedCompile($srcFullPath, $fullTargetPath);
-                if (false === file_put_contents($fullTargetPath, $css)) {
-                    throw new Exception("STY0005", "$fullTargetPath could not be written for file $destFile");
-                }
+            if ($this->commandMode) {
+                $this->commandGen($fullTargetPath);
+            } else {
+                $this->phpGen($fullTargetPath);
             }
         }
         catch(\Exception $e) {
             $exception = $e;
         }
 
-        foreach ($autoloadFuncs as $registerFunc) {
-            // spl_autoload_register($registerFunc);
-        }
-
         if ($exception !== null) {
             throw $exception;
         }
+    }
+
+    protected function phpGen($fullTargetPath) {
+        $compiler = new Compiler();
+        $compiler->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
+        $server = new Server(DEFAULT_PUBDIR, null, $compiler);
+        $srcFullPath = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $this->_srcFile;
+        $compiler->addImportPath(dirname($srcFullPath));
+        $css = $server->checkedCachedCompile($srcFullPath, $fullTargetPath);
+        if (false === file_put_contents($fullTargetPath, $css)) {
+            throw new Exception("STY0005", "$fullTargetPath could not be written for file $fullTargetPath");
+        }
+    }
+
+    protected function commandGen($fullTargetPath) {
+        $srcFullPath = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $this->_srcFile;
+        shell_exec(sprintf('sassc -m %s %s', $srcFullPath, $fullTargetPath));
     }
 }

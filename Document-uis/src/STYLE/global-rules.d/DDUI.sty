@@ -86,63 +86,27 @@ $generateGlobalScssVarFile();
 $sty_rules = array(
     'css' => array(
         'dcp/document/bootstrap.css' => array(
-            "src" => array(
-                "bootstrap" => "STYLE/DDUI/dduiAssets/scss/bootstrap.scss"
-            ) ,
+            "src" => "STYLE/DDUI/dduiAssets/scss/bootstrap.scss" ,
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser',
-                "options" => array(
-                    "sourceMap" => true,
-                    "sourceMapWriteTo" => 'public/css/dcp/document/bootstrap.map',
-                    "sourceMapURL" => 'bootstrap.map',
-                    "sourceRoot" => '../../../',
-                    "compress" => true
-                )
+                "className" => '\Dcp\Style\dcpScssParser'
             )
         ) ,
         'dcp/document/kendo.css' => array(
-            "src" => array(
-                "kendo-bootstrap" => "STYLE/DDUI/dduiAssets/scss/kendo.bootstrap.scss",
-            ) ,
+            "src" => "STYLE/DDUI/dduiAssets/scss/kendo.bootstrap.scss",
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser',
-                "options" => array(
-                    "sourceMap" => true,
-                    "sourceMapWriteTo" => 'public/css/dcp/document/kendo.map',
-                    "sourceMapURL" => 'kendo.map',
-                    "sourceRoot" => '../../../',
-                    "compress" => true
-                )
+                "className" => '\Dcp\Style\dcpScssParser'
             ) ,
         ) ,
         'dcp/document/document.css' => array(
-            "src" => array(
-                "document" => "STYLE/DDUI/dduiAssets/scss/document.scss"
-            ) ,
+            "src" => "STYLE/DDUI/dduiAssets/scss/document.scss",
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser',
-                "options" => array(
-                    "sourceMap" => true,
-                    "sourceMapWriteTo" => 'public/css/dcp/document/document.map',
-                    "sourceMapURL" => 'document.map',
-                    "sourceRoot" => '../../../',
-                    "compress" => true
-                )
+                "className" => '\Dcp\Style\dcpScssParser'
             )
         ) ,
         'dcp/document/ckeditor.css' => array(
-            "src" => array(
-                "document" => "Apps/DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.scss"
-            ) ,
+            "src" => "Apps/DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.scss",
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser',
-                "options" => array(
-                    "sourceMap" => true,
-                    "sourceMapWriteTo" => 'public/css/dcp/document/ckeditor.map',
-                    "sourceMapURL" => 'ckeditor.map',
-                    "sourceRoot" => '../../../',
-                    "compress" => true
-                )
+                "className" => '\Dcp\Style\dcpScssParser'
             )
         )
     )
