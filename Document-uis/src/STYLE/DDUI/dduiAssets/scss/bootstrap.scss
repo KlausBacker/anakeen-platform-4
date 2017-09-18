@@ -1,6 +1,7 @@
+$fa-font-path: "../../../../uiAssets/externals/font-awesome/fonts";
+@import "../../../../public/uiAssets/externals/font-awesome/scss/font-awesome";
 @import "../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/bootstrap.scss";
 @import "../../../custom-scss-variable.d/global_variables.scss";
-
 .panel-heading {
   padding: $font-size-base/2;
 }
@@ -8,3 +9,4 @@
 .form-group {
   margin-bottom: $font-size-base/2;
 }
+
