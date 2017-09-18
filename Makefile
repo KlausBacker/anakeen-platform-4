@@ -9,10 +9,10 @@ stub:
 
 
 webinst-selenium:
-	-mkdir -p $(localpub)/seleniums
+	-mkdir -p $(localpub)/selenium/
 	rsync --delete -azvr Tests $(localpub)/selenium/
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/build.json $(localpub)/selenium/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/selenium/ -o .
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/Tests/build.json $(localpub)/selenium/Tests/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/selenium/Tests/ -o .
 
 webinst-full:
 	-mkdir -p $(localpub)/webinst
