@@ -1,0 +1,16 @@
+.admin-action {
+    zoom: 1;
+}
+
+.admin-action-label {
+    float: left;
+}
+
+img {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 100);
+    zoom: 1;
+}
+
+.css-user-icon {
+    display: none;
+}

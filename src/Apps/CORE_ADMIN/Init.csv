@@ -1,0 +1,5 @@
+//FAM;Rôle(ROLE);<specid>;<fldid>;Référence;Libellé
+ORDER;ROLE;;;role_login;role_name
+DOC;ROLE;CORE_ADMIN_ROLE_CORE_ADMINISTRATOR;;core_administrator;Administrateurs de la plateforme Dynacase
+;;;;;
+ACCESS;CORE_ADMIN_ROLE_CORE_ADMINISTRATOR;CORE_ADMIN;CORE_ADMIN;;

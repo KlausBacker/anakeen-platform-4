@@ -9,10 +9,19 @@
     </requires>
 
     <post-install>
+
+        <process command="programs/record_application CORE_ADMIN" />
+        <process
+        command="./wsh.php --api=importDocuments --file=./CORE_ADMIN/Data/Init.csv">
+          <label>Initializing CORE_ADMIN roles and ACLs</label>
+        </process>
         <process command="programs/record_application DCPDEVEL"/>
         <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
+        <process command="programs/pre_migration CORE_ADMIN" />
+        <process command="programs/record_application CORE_ADMIN" />
+        <process command="programs/post_migration CORE_ADMIN" />
         <process command="programs/pre_migration DCPDEVEL"/>
         <process command="programs/record_application DCPDEVEL"/>
         <process command="programs/post_migration DCPDEVEL"/>
