@@ -133,10 +133,10 @@ $sty_rules = array(
         ) ,
         'dcp/document/ckeditor.css' => array(
             "src" => array(
-                "document" => "Apps/DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.less"
+                "document" => "Apps/DOCUMENT/IHM/widgets/attributes/htmltext/ckeditor.scss"
             ) ,
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpLessParser',
+                "className" => '\Dcp\Style\dcpScssParser',
                 "options" => array(
                     "sourceMap" => true,
                     "sourceMapWriteTo" => 'public/css/dcp/document/ckeditor.map',

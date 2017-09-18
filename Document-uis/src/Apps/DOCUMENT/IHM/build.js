@@ -1,9 +1,10 @@
 ({
     shim: {
-        "bootstrap": ['jquery'],
+        "bootstrap": ['jquery', 'popper'],
         "kendo": ['jquery'],
         "kendo-culture": ['kendo'],
-        "ckeditor-jquery": ['jquery', 'ckeditor']
+        "ckeditor-jquery": ['jquery', 'ckeditor'],
+        "tooltip": ['jquery', 'bootstrap-utils', 'globalPopper']
     },
     baseUrl: "../",
     paths: {
@@ -17,6 +18,9 @@
         "backbone": "../externals/backbone/backbone",
         "mustache": "../externals/mustache.js/mustache",
         "bootstrap": "../externals/bootstrap/js/bootstrap",
+        "globalPopper": "../externals/popper.js/globalPopper",
+        "popper": "../externals/popper.js/dist/umd/popper",
+        "bootstrap-utils": "../externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/util",
         "tooltip": "../externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/tooltip",
 //        "dcpContextRoot": "empty:",
         "kendo": "../externals/KendoUI/js",

@@ -8,7 +8,7 @@
         // The shim config allows us to configure dependencies for
         // scripts that do not call define() to register a module
         shim: {
-            "tooltip": ['jquery'],
+            "tooltip": ['jquery', 'bootstrap-utils', 'globalPopper'],
             "ckeditor-jquery": ['jquery', 'ckeditor']
         },
         paths: {
@@ -21,7 +21,11 @@
             "backbone": "../uiAssets/externals/backbone/backbone",
             "mustache": "../uiAssets/externals/mustache.js/mustache",
             "bootstrap": "../uiAssets/externals/bootstrap/js/bootstrap",
+            "globalPopper": "../uiAssets/externals/popper.js/globalPopper",
+            "popper": "../uiAssets/externals/popper.js/dist/umd/popper",
+            "popper-utils": "../uiAssets/externals/popper.js/dist/umd/popper-utils",
             "tooltip": "../uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/tooltip",
+            "bootstrap-utils": "../uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/util",
 //          "dcpContextRoot": "empty:",
             "kendo": "../uiAssets/externals/KendoUI/js",
             "kendo-ddui": "../uiAssets/externals/KendoUI/js/kendo-ddui-builded",
