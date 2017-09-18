@@ -40,7 +40,7 @@ webinst-all: webinst webinst-selenium
 webinst:
 	cd ui && npm run build
 	# TODO Move some assets to Document-uis/src/public
-	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; composer install; ./mustache.sh  ./vendor ../../../../public/uiAssets/externals
+	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	make webinst-full
 
 po:
