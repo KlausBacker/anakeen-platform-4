@@ -6,7 +6,7 @@ function develmain(Action & $action)
     $action->parent->addJsRef("legacy/jquery-dataTables/1.10/js/jquery.dataTables.js");
     $action->parent->addJsRef("DCPDEVEL/Layout/develmain.js");
 
-    $action->parent->addCssRef("DCPDEVEL/Layout/develinit.css");
+    $action->parent->addCssRef("admin/adminAssets/adminReset.css");
     $action->parent->addCssRef("DCPDEVEL/Layout/develmain.css");
     $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.css");
     //  $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.structure.css");

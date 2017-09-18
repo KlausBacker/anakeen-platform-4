@@ -1,0 +1,52 @@
+<div  class="fusers-port fusers-export">
+<form target="exportResult"
+
+      method="POST"
+      data-title="[TEXT:Export accounts]"
+        action="?app=FUSERS&amp;action=FUSERS_EXPORTACCOUNTS">
+    <fieldset><legend>[TEXT: Exportation options]</legend>
+    <label><span>[TEXT:Export with Xml Schemas]</span> : <select name="xmlschema">
+        <option value="false">[TEXT:FuserNo]</option>
+        <option [select_exportSchema] value="true">[TEXT:FuserYes]</option>
+    </select></label>
+   [IF crypt]
+    <label><span>[TEXT:Export with crypted passwords]</span> : <select name="cryptPassword">
+        <option value="false">[TEXT:FuserNo]</option>
+        <option  [select_exportPassword] value="true">[TEXT:FuserYes]</option>
+    </select></label>[ENDIF crypt]
+        [IF role]
+    <label><span>[TEXT:Export with relative roles]</span> : <select name="relativeRoles">
+        <option value="false">[TEXT:FuserNo]</option>
+        <option  [select_exportRole] value="true">[TEXT:FuserYes]</option>
+    </select></label>[ENDIF role]
+
+        [IF selectGroup]
+        <label><span>[TEXT:Export subgroup (substitute included)]</span> : <select name="deepGroup">
+            <option value="false">[TEXT:FuserNo]</option>
+            <option  [select_deepGroup] value="true">[TEXT:FuserYes]</option>
+        </select></label>[ENDIF selectGroup]
+
+        [IF group]
+    <label><span>[TEXT:Export with relative groups]</span> : <select name="relativeGroups">
+        <option value="false">[TEXT:FuserNo]</option>
+        <option  [select_exportGroup] value="true">[TEXT:FuserYes]</option>
+    </select></label>[ENDIF group]
+    <label><span>[TEXT:Export with specific document informations]</span> : <select name="documentInfo">
+        <option value="false">[TEXT:FuserNo]</option>
+        <option  [select_exportDocument] value="true">[TEXT:FuserYes]</option>
+    </select></label>
+    </fieldset>
+    <input name="accountType" type="hidden"/>
+    <input name="selectedGroup" type="hidden"/>
+    <input name="filters" type="hidden"/>
+    <input type="hidden" value="[statusKey]" name="statusKey"/>
+
+
+
+    <iframe class="fusers-exportResult" src="about:blank" name="exportResult" />
+    <div class="fusers-export-selection"><span class="fusers-export-selection-label">[TEXT:Export selection] :</span><span class="fusers-export-info"/></div>
+    <input class="fusers-export-submit" type="submit" value="[TEXT:Export accounts]" />
+</form>
+
+<div style="display:none" class="status"><img  src="[IMG:loading.gif]"/><span/><br/><button class="abort">[TEXT:Abort Account Export]</button></div>
+</div>

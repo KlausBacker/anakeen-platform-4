@@ -21,7 +21,7 @@ function documentfamilylist(Action & $action)
     // $action->parent->addJsRef("DCPDEVEL/Layout/combobox.js");
     $action->parent->addJsRef("DCPDEVEL/Layout/documentfamily.js");
 
-    $action->parent->addCssRef("DCPDEVEL/Layout/develinit.css");
+    $action->parent->addCssRef("admin/adminAssets/adminReset.css");
     $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.css");
     $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.structure.css");
     $action->parent->addCssRef("legacy/jquery-ui-1.12.0/jquery-ui.theme.min.css");

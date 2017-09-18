@@ -1,0 +1,101 @@
+[ZONE FDL:HTMLHEAD]
+
+[IF EMPTY]
+<style>
+    body {
+    height:95%;
+    }
+    div.result {
+    height:calc(80% - 4em);
+    padding:2em;
+    background-color: [COLOR_A9];
+    }
+    div.result > fieldset {
+    display: inline;
+    float: right;
+    }
+</style>
+<h1>[TEXT:Select an xml account file]</h1>
+<div class="result">
+<p>[TEXT:Results will be displayed here].</p>
+
+<fieldset><legend><img src="[IMG:info.png|20]"/> [TEXT:Informations about Accounts XML structure]</legend>
+<a href="?app=FUSERS&action=FUSERS_IMPORTXSD">[TEXT:Download Standalone Account XML Schema]</a><br/>
+<a href="?app=FUSERS&action=FUSERS_IMPORTXSD&amp;complete=true">[TEXT:Download Account XML Schema with documents parts]</a>
+</fieldset>
+</div>
+[ENDIF EMPTY]
+[IFNOT EMPTY]
+<style>
+table td, table th {
+  border : solid 1px [COLOR_A4];
+}
+table {
+    border-collapse: collapse;
+    width:calc(100% - 6px);
+}
+table th {
+ text-align:left;
+}
+.fuser-reference {
+  min-width:6em;
+}
+.fuser-message {
+min-width:11em;
+}
+.fuser-error {
+min-width:6em;
+}
+
+td.fuser-node > div {
+  overflow:auto;
+  white-space:pre-wrap;
+  max-width:30em;
+  display:inline-block;
+}
+tr.error, h1.error, h1.error a {
+  color:[CORE_ERRORCOLOR];
+}
+h3.warning {
+  color: orange;
+  display:inline-block;
+}
+h3.success {
+  color: green;
+  display:inline-block;
+}
+h3.normal, p.info {
+  display:inline-block;
+}
+table td {
+  white-space:pre-wrap;
+}
+
+</style>
+[IF ERRORS]
+<h1 class="error"> <a href="#error">[reportMessage]</a> </h1>
+<h3>[TEXT:Import is aborted. No one account updated]</h3>[ENDIF ERRORS]
+
+ [IFNOT ERRORS]
+<h3 class="normal"> [reportMessage].</h3>
+[IF DRYRUN]
+<h3 class="warning">[TEXT:No one import done. Analysis only.]</h3>[ENDIF DRYRUN]
+        [IFNOT DRYRUN]
+<h3 class="success">[TEXT:Import successful done.]</h3>[ENDIF DRYRUN][ENDIF ERRORS]
+<p class="info">[countMessage].</p>
+<table>
+<thead>
+<tr ><th class="fuser-reference">[TEXT:Fusers::AccountReference]</th>
+    <th class="fuser-message">[TEXT:Fusers::AccountMessage]</th>
+    [IF ERRORS]<th class="fuser-error">[TEXT:Fusers::AccountError]</th>[ENDIF ERRORS]
+    <th class="fuser-node">[TEXT:Fusers::AccountNode]</th></tr>
+</thead>
+<tbody>
+[BLOCK REPORT]
+    <tr [IF classError]id="error"[ENDIF classError] class="[action] [classError]"><td>[login]</td><td>[message]</td>
+    [IF ERRORS]<td>[error]</td>[ENDIF ERRORS]<td class="fuser-node"><div>[node]</div></td></tr>
+    [ENDBLOCK REPORT]
+</tbody>
+</table>
+[ENDIF EMPTY]
+[ZONE FDL:HTMLFOOT]

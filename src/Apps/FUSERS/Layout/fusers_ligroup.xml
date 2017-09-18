@@ -1,0 +1,13 @@
+<UL>[BLOCK LI]
+    <LI name="LI[id]" id="LI[id]">
+        <img class="click" title="[TEXT:view detail] ([login])" src="[icon]"
+             width="14px" onclick="[onclickimg]"/>
+        <a onclick="[onclick]" href="#">
+            <span title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname]
+                [lastname]
+            </span>
+        </a>
+        [SUBUL]
+    </LI>
+    [ENDBLOCK LI]
+</UL>

@@ -1,9 +1,2 @@
 /* fonts */
 
-body, .core, P, input, textarea, select, button {
-  font-size: 9pt;
-  font-family : Helvetica, Arial, sans-serif;
-}
-H1 {
-  font-size: 14pt;
-}

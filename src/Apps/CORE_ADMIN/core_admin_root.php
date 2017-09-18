@@ -8,6 +8,7 @@ require_once "FDL/freedom_util.php";
 
 function core_admin_root(Action & $action)
 {
+    $action->parent->addCssRef("admin/adminAssets/adminReset.css");
     $action->parent->addCssRef("css/dcp/jquery-ui.css");
     $action->parent->addCssRef("CORE_ADMIN/Layout/core_admin_root.css");
     
@@ -84,4 +85,4 @@ SQL;
      */
     $action->lay->set('DISPLAY_CHANGE_BUTTON', ("" === $user->canEdit()));
 }
-?>
+

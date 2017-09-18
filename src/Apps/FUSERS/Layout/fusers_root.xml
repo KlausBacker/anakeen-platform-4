@@ -1,0 +1,28 @@
+<html>
+    <head>
+
+        <title>[TEXT:Users Management]</title>
+        <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+        [CSS:CUSTOMREF]
+        [BLOCK JS_LINKS]
+        <script type="text/javascript" src="[src]"></script>
+        [ENDBLOCK JS_LINKS]
+    </head>
+
+    <body>
+        <table name="ffusers" id="fgtop" style="width:100%;height:100%">
+            <tr>
+                <td class="fusers-groups" name="flist"
+                    style="border-right:1px solid  #CCC;width:25%;vertical-align:top;" id="flist">
+                    [ZONE [APPNAME]:FUSERS_LIST]
+                </td>
+                <td class="fusers-info" name="finfo[APPNAME]"
+                    style="vertical-align:top;" id="finfo">
+
+                </td>
+            </tr>
+        </table>
+    </body>
+
+
+</html>

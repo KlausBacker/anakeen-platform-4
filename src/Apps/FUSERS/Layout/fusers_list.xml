@@ -1,0 +1,31 @@
+<div class="do" id="DGroups">
+<UL id="gtreeall" class="mktree">
+    [BLOCK ALL]
+    <LI name="LI[id]">
+        <img title="[TEXT:view detail] ([login])" src="[icon]"
+             width="14px" />
+        <a onclick="[onclick]" href="#">
+            <span title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname]
+            </span>
+        </a>
+    </LI>
+    [ENDBLOCK ALL]
+</UL>
+<div style="width:100%;height:1px;overflow:hidden;clear:both;border-top:#CCC solid 1px"></div>
+<input src="Images/plus.gif" value="+" onclick="window.trees.gtree.expandTree();return false" title="[TEXT:expand all]" type="image" />
+<input src="Images/minus.gif" value="-" onclick="window.trees.gtree.collapseTree();return false" title="[TEXT:collapse all]" type="image" />
+<UL id="gtree" class="mktree" data-init-state="[GTREESTATE]">
+    [BLOCK LI]
+    <LI name="LI[id]" id="LI[id]">
+        <img class="click" title="[TEXT:view detail] ([login])" src="[icon]"
+             width="14px" onclick="[onclickimg]"/>
+        <a onclick="[onclick]" href="#">
+            <span title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname]
+                [lastname]
+            </span>
+        </a>
+        [SUBUL]
+    </LI>
+    [ENDBLOCK LI]
+</UL>
+</div>

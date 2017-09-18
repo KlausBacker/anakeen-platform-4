@@ -1,0 +1,35 @@
+<table class="fusers-port  fusers-import-form">
+    <tr><td class="fusers-import-form-inputs">
+        <form target="importResult"
+              class="fusers-import"
+              method="POST"
+              data-title="[TEXT:Import accounts]"
+              ENCTYPE="multipart/form-data"
+              action="?app=FUSERS&amp;action=FUSERS_IMPORTACCOUNTS">
+            <fieldset><legend>[TEXT: Importation options]</legend>
+                <label><span>[TEXT:Import stop on error]</span> : <select name="stopOnError">
+                    <option value="false">[TEXT:FuserNo]</option>
+                    <option [select_stopOnError] value="true">[TEXT:FuserYes]</option>
+                </select></label>
+                <label><span>[TEXT:Import analyze only]</span> : <select name="analyzeOnly">
+                    <option value="false">[TEXT:FuserNo]</option>
+                    <option [select_dryRun] value="true">[TEXT:FuserYes]</option>
+                </select></label>
+
+                <label><span><b>[TEXT:XML Importfile]</b></span> :
+                    <input name="accountImportFile" type="file" accept="text/xml" /></label>
+            </fieldset>
+            <br/>
+            <input type="hidden" value="[statusKey]" name="statusKey"/>
+            <input class="fusers-import-submit" type="submit" data-analyze-label="[TEXT:Analyze file accounts] &gt;&gt;" data-import-label="[TEXT:Import accounts] &gt;&gt;"/>
+        </form>
+        <div style="display:none" class="status">
+            <img  src="[IMG:loading.gif]"/><span/>
+            <button data-analyze-label="[TEXT:Abort Account Analysing]" data-import-label="[TEXT:Abort Account Import]" class="abort">---</button>
+        </div>
+    </td>
+    <td class="fusers-import-form-result">
+        <iframe class="fusers-importResult" src="?app=FUSERS&amp;action=FUSERS_IMPORTACCOUNTS" name="importResult"/>
+    </td>
+    </tr>
+</table>

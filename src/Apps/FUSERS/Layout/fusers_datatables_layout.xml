@@ -1,0 +1,47 @@
+<input type="hidden" id="fusersType" value="[fuserType]"/>
+<input type="hidden" id="fusersGroup" value="[fuserGroup]"/>
+<input type="hidden" id="fusersDisplayLength" value="[fuserDisplayLength]"/>
+<input type="hidden" id="typeValue" value="[valuetype]"/>
+<div id="buttonset">
+<a href="api/v1/documents/[idmain]/views/!defaultCreation.html"
+   id="mainaction" data-id="[idmain]"><img src="[imgsrcmain]"/> [TEXT:Create ][titlemain]
+</a>
+<button id="otheraction" style="[style]">[TEXT:Select an action]</button>
+<a class="account-import"><img src="[IMG:accountsUpload.png|18]"/>[TEXT:Import accounts]</a>
+<a class="account-export"><img src="[IMG:accountsDownload.png|18]"/>[exportLabel]</a>
+</div>
+
+<table class="dataTable">
+<thead id="header">
+    <tr>
+        <th class="icon" data-label="[TEXT:Fuser::Family]">
+            <button title="[TEXT:filter on type]"
+                    name="type" id="icon">
+                <span class="ui-icon ui-icon-radio-on"><img src="[imgsrc]" class="ui-icon-empty"/></span>
+            </button>
+        </th>
+        [BLOCK thead]
+        <th class="[id]">
+            <div class="search">
+                <span class="ui-icon ui-icon-search"></span>
+                <input type="text" class="searchField" placeholder="[name]"
+                       id="[id]"
+                       value="[value]"/>
+            </div>
+        </th>
+        [ENDBLOCK thead]
+    </tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<ul id="menu">
+[BLOCK urgtype]
+<li>
+    <a href="api/v1/documents/[value]/views/!defaultCreation.html"
+       data-id="[value]"><img src="[imgsrc]"/>[label]
+    </a>
+</li>
+[ENDBLOCK urgtype]
+</ul>
