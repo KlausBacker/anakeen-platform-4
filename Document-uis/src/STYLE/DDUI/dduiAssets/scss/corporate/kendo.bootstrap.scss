@@ -1,0 +1,13 @@
+@import "./variables.corporate";
+
+// Define corporate theme
+
+@import "../../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/scss/all";
+@import "../../../../custom-scss-variable.d/global_variables.scss";
+
+$input-height: $dcp-line-height;
+$header-background-color : transparent;
+
+.k-numerictextbox .k-link {
+  height: $dcp-font-size;
+}

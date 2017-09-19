@@ -1,0 +1,105 @@
+// Anakeen Corporate Theme
+
+@function remy($pxSize) {
+  @return ($pxSize/10)+rem;
+}
+
+// Colors
+$A4-ui-color-link: #78D2FE;
+$A4-ui-color-btn-action: #157EFB;
+$A4-ui-color-btn-creation: #2361DB;
+$A4-ui-color-selected: #00B4FC;
+$A4-ui-color-text: #353535;
+$A4-ui-color-picto: #878787;
+$A4-ui-color-picto-colored: #FFFFFF;
+$A4-ui-color-hovered: #F4F4F4;
+$A4-ui-color-error: #FF542C;
+
+$A4-ui-color-client: #8AE234;
+
+$A4-ui-color-label: #F1EFEF;
+$A4-ui-color-btn-click: #003DB0;
+
+$A4-ui-color-body-background: #DDDDDD;
+$A4-ui-color-frame-background: #FFFFFF;
+
+$A4-ui-color-font-document: #505050;
+$A4-ui-color-font-button: #FFFFFF;
+$A4-ui-color-font-title: #353535;
+$A4-ui-color-font-placeholder: #C8C8C8;
+
+// Fonts
+$A4-ui-font: 'Titillium Web', Helvetica, sans-serif;;
+$A4-ui-title-size: remy(12px);
+$A4-ui-title-font-weight: bold;
+$A4-ui-title-font-line-height: remy(16px);
+$A4-ui-label-font-size: remy(12px);
+$A4-ui-label-font-weight: normal;
+$A4-ui-label-font-variant: 'Titillium Web Light';
+$A4-ui-label-font-line-height: remy(16px);
+$A4-ui-value-font-size: remy(12px);
+$A4-ui-value-font-weight: normal;
+$A4-ui-value-font-variant: 'Titillium Web Semi Bold';
+$A4-ui-value-font-line-height: remy(16px);
+$A4-ui-button-font-size: remy(12px);
+$A4-ui-button-font-weight: normal;
+$A4-ui-button-font-variant: 'Titillium Web Bold';
+$A4-ui-button-font-line-height: remy(16px);
+
+// Button 1
+$A4-ui-button1-width: auto;
+$A4-ui-button1-height: remy(30px);
+$A4-ui-button1-border-radius: remy(2px);
+$A4-ui-button1-padding: remy(30px);
+$A4-ui-button1-disabled-color-background: #C8C8C8;
+$A4-ui-button1-disabled-color-text: #505050;
+$A4-ui-button1-disabled-hover-color-background: $A4-ui-button1-disabled-color-background;
+$A4-ui-button1-disabled-hover-color-text: $A4-ui-button1-disabled-color-text;
+$A4-ui-button1-disabled-opacity: 0.5;
+$A4-ui-button1-hover-color-background: #003DB0;
+$A4-ui-button1-hover-color-text: #FFFFFF;
+$A4-ui-button1-hover-shadow: remy(5px) remy(5px) remy(12px) remy(12px) #1508A5 inset;
+
+// Button 2
+$A4-ui-button2-color-text: #157EFB;
+$A4-ui-button2-color-background: #FFFFFF;
+$A4-ui-button2-color-border: #157EFB;
+
+$A4-ui-button2-color-hover-text: #FFFFFF;
+$A4-ui-button2-color-hover-background: #157EFB;
+
+$A4-ui-button2-width: auto;
+$A4-ui-button2-height: remy(30px);
+$A4-ui-button2-border-radius: remy(2px);
+$A4-ui-button2-padding: remy(30px);
+
+$A4-ui-button2-disabled-color-background: #FFFFFF;
+$A4-ui-button2-disabled-color-text: #C8C8C8;
+$A4-ui-button2-disabled-hover-color-background: $A4-ui-button2-disabled-color-background;
+$A4-ui-button2-disabled-hover-color-text: $A4-ui-button2-disabled-color-text;
+$A4-ui-button2-disabled-color-border: #C8C8C8;
+
+$A4-ui-button3-width: auto;
+$A4-ui-button3-border-radius: O;
+$A4-ui-button3-padding: remy(34px);
+$A4-ui-button3-color-border: #157EFB;
+$A4-ui-button3-disabled-color-background: #FFFFFF;
+$A4-ui-button3-disabled-color-text: #C8C8C8;
+$A4-ui-button3-disabled-hover-color-background: #FFFFFF;
+$A4-ui-button3-disabled-hover-color-text: #C8C8C8;
+$A4-ui-button3-color-text: #157EFB;
+$A4-ui-button3-color-background: #FFFFFF;
+$A4-ui-button3-color-hover-text: #157EFB;
+$A4-ui-button3-color-hover-background: #FFFFFF;
+$A4-ui-doc-edit-label-padding: remy(8px);
+$A4-ui-doc-edit-attribute-height: remy(26px);
+$A4-ui-doc-edit-attribute-border: solid #C8C8C8 remy(1px);
+$A4-ui-doc-edit-attribute-hover-color: #157EFB;
+$A4-ui-doc-edit-attribute-hover-shadow: remy(7px) remy(7px) remy(6px) #157EFB;
+$A4-ui-doc-edit-attribute-error-color: #FF542C;
+$A4-ui-doc-edit-attribute-error-spacing: remy(2px);
+$A4-ui-doc-edit-attribute-error-text-color: #157EFB;
+$A4-ui-doc-read-label-padding: remy(16px);
+$A4-ui-doc-read-attribute-height: auto;
+$A4-ui-doc-read-attribute-border: remy(1px) solid #F1EFEF;
+$A4-ui-doc-read-attribute-link-color: #78D2FE;
