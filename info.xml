@@ -35,6 +35,15 @@
         command="./wsh.php --api=importDocuments --file=./APPMNG/Data/Init.csv">
           <label >Initializing APPMNG roles and ACLs</label>
         </process>
+
+         <process command="programs/record_application ACCESS I">
+            <label >Record access application in database</label>
+        </process>
+        <process
+        command="./wsh.php --api=importDocuments --file=./ACCESS/Data/Init.csv">
+          <label >Initializing ACCESS roles and ACLs</label>
+        </process>
+
         <process command="programs/record_application DCPDEVEL"/>
         <process command="programs/update_catalog"/>
     </post-install>
@@ -51,6 +60,12 @@
         <process command="programs/post_migration FUSERS" />
 
 
+        <process command="programs/pre_migration ACCESS" />
+        <process command="programs/record_application ACCESS U">
+            <label >Update access application in database</label>
+        </process>
+        <process command="programs/post_migration ACCESS" />
+        
         <process command="programs/pre_migration APPMNG" />
         <process command="programs/record_application APPMNG U">
             <label >Update appmng application in database</label>
