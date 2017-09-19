@@ -1,13 +1,13 @@
 
 .dcpAttribute__value--dropzone .dcpAttribute__value--edit {
-  background-color: $brand-primary;
+  background-color: $accent;
   font-weight: bold;
-  color:$btn-primary-color;
+  color:$primary-button-text;
   text-align: center;
 }
 
 .dcpAttribute__value--transferring {
-  background-color: $brand-info;
+  background-color: $info;
 }
 
 /**

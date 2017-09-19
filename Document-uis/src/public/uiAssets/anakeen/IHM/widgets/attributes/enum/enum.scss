@@ -64,7 +64,7 @@
 }
 
 .dcpAttribute__content.has-error .k-dropdown-wrap {
-  border-color: $brand-danger transparent $brand-danger $brand-danger;
+  border-color: $error transparent $error $error;
 }
 
 .k-list-optionlabel {
@@ -347,7 +347,7 @@ label.dcpAttribute__value--enumlabel--text {
 }
 
 .dcpAttribute__content--enum input.dcpAttribute__value--edit:not([aria-activedescendant]) {
-  color:$brand-danger;
+  color:$error;
 
 }
 

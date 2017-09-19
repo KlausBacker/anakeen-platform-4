@@ -29,13 +29,13 @@
 }
 
 .dcpAttribute__content.has-error .k-widget {
-  border-color : $brand-danger transparent $brand-danger $brand-danger;
+  border-color : $error transparent $error $error;
 }
 
 
 .dcpAttribute__value--flash .k-multiselect-wrap
 {
-  background-color: $brand-info;
+  background-color: $info;
 }
 .dcpAttribute__value--flash .k-multiselect-wrap > .k-input
 {

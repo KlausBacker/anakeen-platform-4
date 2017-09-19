@@ -1,9 +1,12 @@
 // Anakeen Corporate Theme
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web:light");
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web:bold");
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web:600");
 
+// Convert pixel unit to rem unit
 @function remy($pxSize) {
-  @return ($pxSize/10)+rem;
+  @return ($pxSize/12)+rem;
 }
-
 // Colors
 $A4-ui-color-link: #78D2FE;
 $A4-ui-color-btn-action: #157EFB;
@@ -29,7 +32,7 @@ $A4-ui-color-font-title: #353535;
 $A4-ui-color-font-placeholder: #C8C8C8;
 
 // Fonts
-$A4-ui-font: 'Titillium Web', Helvetica, sans-serif;;
+$A4-ui-font: 'Titillium Web', 'Helvetica', sans-serif;
 $A4-ui-title-size: remy(12px);
 $A4-ui-title-font-weight: bold;
 $A4-ui-title-font-line-height: remy(16px);
@@ -49,6 +52,8 @@ $A4-ui-button-font-line-height: remy(16px);
 // Button 1
 $A4-ui-button1-width: auto;
 $A4-ui-button1-height: remy(30px);
+$A4-ui-button1-color-background: #157EFB;
+$A4-ui-button1-color-text: #FFFFFF;
 $A4-ui-button1-border-radius: remy(2px);
 $A4-ui-button1-padding: remy(30px);
 $A4-ui-button1-disabled-color-background: #C8C8C8;

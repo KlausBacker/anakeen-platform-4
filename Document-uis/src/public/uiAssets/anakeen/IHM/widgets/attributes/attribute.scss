@@ -95,7 +95,7 @@ $attrInputHeight : 30px;
 .dcpAttribute__value--flash textarea,
 .dcpAttribute__value--flash .k-input,
 iframe.dcpAttribute__value--flash {
-  background-color: $brand-info;
+  background-color: $info;
 }
 
 .k-input.form-control {
@@ -173,13 +173,13 @@ iframe.dcpAttribute__value--endflash {
 }
 
 .dcpAutocomplete--message {
-  background-color: $brand-info;
+  background-color: $info;
 }
 .dcpAutocomplete--warning {
-  background-color: $brand-warning;
+  background-color: $warning;
 }
 .dcpAutocomplete--error {
-  background-color: $brand-danger;
+  background-color: $error;
 }
 
 .dcpCustomTemplate--content .dcpAttribute__content {

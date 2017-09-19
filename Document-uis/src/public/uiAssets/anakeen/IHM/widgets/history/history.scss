@@ -3,11 +3,11 @@
 }
 
 .history-level--error .history-message {
-  color: $brand-danger;
+  color: $error;
 }
 
 .history-level--warning .history-message {
-  color: $brand-warning;
+  color: $warning;
 }
 
 .history-level--notice .history-message {

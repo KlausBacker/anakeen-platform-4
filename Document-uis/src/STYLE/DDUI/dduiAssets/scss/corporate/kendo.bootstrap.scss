@@ -2,6 +2,416 @@
 
 // Define corporate theme
 
+// Fonts
+
+/// Font family across all components.
+$font-family-sans-serif: $A4-ui-font;
+$button-padding-x: $A4-ui-button1-padding;
+
+$input-padding-x: $A4-ui-doc-edit-label-padding;
+
+/// The background of selected items.
+$selected-bg: $A4-ui-color-selected;
+
+$text-color: $A4-ui-color-text;
+$bg-color: $A4-ui-color-body-background;
+
+/// The background of the components' chrome area.
+$base-bg: $A4-ui-color-frame-background;
+
+
+/// The background of hovered items.
+$hovered-bg: $A4-ui-color-hovered;
+
+$error: $A4-ui-color-error;
+
+$accent: $A4-ui-color-btn-action;
+
+// Primary button
+$primary-button-bg: $A4-ui-button1-color-background;
+$primary-button-text: $A4-ui-button1-color-text;
+
+$primary-button-hovered-bg: $A4-ui-button1-hover-color-background;
+$primary-button-hovered-text: $A4-ui-button1-hover-color-text;
+
+$primary-button-pressed-bg: $A4-ui-color-btn-click;
+$primary-button-pressed-text: $A4-ui-color-font-button;
+
+// Input
+$input-text: $A4-ui-color-font-document;
+
+$input-hovered-border: $A4-ui-color-btn-action;
+$input-hovered-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
+
+$input-focused-border: $A4-ui-color-btn-action;
+$input-focused-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
+
+
+
+/*
+// Theme colors
+/// The color that focuses the user attention.
+/// Used for primary buttons and for elements of primary importance across the theme.
+$accent: theme-color("primary") !default;
+
+/// The color used along with the accent color denoted by $accent.
+/// Used to provide contrast between the background and foreground colors.
+$accent-contrast: contrast-wcag( $accent ) !default;
+
+$text-color: $body-color !default;
+$bg-color: $body-bg !default;
+$border-color: darken( $bg-color, 12% ) !default;
+
+/// The background of the components' chrome area.
+$base-bg: darken( $body-bg, 3% ) !default;
+/// The text color of the components' chrome area.
+$base-text: $body-color !default;
+/// The border color of the components' chrome area.
+$base-border: darken( $base-bg, 3% ) !default;
+/// The gradient background of the components' chrome area.
+$base-gradient: none !default;
+
+/// The background of hovered items.
+$hovered-bg: darken( $base-bg, 3% ) !default;
+/// The text color of hovered items.
+$hovered-text: $base-text !default;
+/// The border color of hovered items.
+$hovered-border: darken( $base-border, 12% ) !default;
+/// The gradient background of hovered items.
+$hovered-gradient: none !default;
+
+/// The background of selected items.
+$selected-bg: $accent !default;
+/// The text color of selected items.
+$selected-text: contrast-wcag( $selected-bg ) !default;
+/// The border color of selected items.
+$selected-border: darken( $selected-bg, 12% ) !default;
+/// The gradient background of selected items.
+$selected-gradient: none !default;
+
+$transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease !default;
+
+/// The color for error messages and states.
+$success: theme-color("success") !default;
+/// The color for warning messages and states.
+$info: theme-color("info") !default;
+/// The color for success messages and states.
+$warning: theme-color("warning") !default;
+/// The color for informational messages and states.
+$error: theme-color("danger") !default;
+
+$invalid-border: $error !default;
+
+$gradient-transparent-to-black: rgba( black, 0), black;
+$gradient-transparent-to-white: rgba( white, 0), white;
+$gradient-black-to-transparent: black, rgba( black, 0);
+$gradient-white-to-transparent: white, rgba( white, 0);
+
+$gradient-rainbow: #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000;
+
+
+
+
+// Widget
+$widget-text: $text-color !default;
+$widget-bg: $bg-color !default;
+$widget-border: $border-color !default;
+
+
+// Panel
+$panel-text: $body-color !default;
+$panel-bg: $card-bg !default;
+$panel-border: $card-border-color !default;
+
+
+// Popup
+$popup-text: $dropdown-link-color !default;
+$popup-bg: $dropdown-bg !default;
+$popup-border: $dropdown-border-color !default;
+
+
+// Header
+$header-text: $base-text !default;
+$header-bg: $gray-100 !default;
+$header-border: darken( $header-bg, 9 ) !default;
+$header-gradient: none !default;
+
+$header-hovered-text: $header-text !default;
+$header-hovered-bg: darken( $header-bg, 3 ) !default;
+$header-hovered-border: $header-border !default;
+$header-hovered-gradient: none !default;
+
+$header-selected-text: $selected-text !default;
+$header-selected-bg: $selected-bg !default;
+$header-selected-border: $selected-border !default;
+$header-selected-gradient: none !default;
+
+
+// Button
+
+/// The background of the buttons.
+/// @group buttons
+$button-bg: theme-color("secondary") !default;
+
+/// The text color of the buttons.
+/// @group buttons
+$button-text: contrast-wcag( $button-bg ) !default;
+
+/// The border color of the buttons.
+/// @group buttons
+$button-border: $button-bg !default;
+
+/// The background gradient of the buttons.
+/// @group buttons
+$button-gradient: none !default;
+$button-shadow: none !default;
+
+/// The background of hovered buttons.
+/// @group buttons
+$button-hovered-bg: darken( $button-bg, 7.5% ) !default;
+
+/// The text color of hovered buttons.
+/// @group buttons
+$button-hovered-text: contrast-wcag( $button-hovered-bg ) !default;
+
+/// The border color of hovered buttons.
+/// @group buttons
+$button-hovered-border: darken( $button-border, 10% ) !default;
+
+/// The background gradient of hovered buttons.
+/// @group buttons
+$button-hovered-gradient: none !default;
+$button-hovered-shadow: none !default;
+
+/// The background color of pressed buttons.
+/// @group buttons
+$button-pressed-bg: $button-hovered-bg !default;
+
+/// The text color of pressed buttons.
+/// @group buttons
+$button-pressed-text: $button-hovered-text !default;
+
+/// The border color of pressed buttons.
+/// @group buttons
+$button-pressed-border: $button-hovered-border !default;
+
+/// The background gradient of pressed buttons.
+/// @group buttons
+$button-pressed-gradient: none !default;
+$button-pressed-shadow: none !default;
+
+/// The shadow of focused buttons.
+/// @group buttons
+$button-focused-shadow: 0 0 0 3px rgba($button-border, .5) !default;
+
+
+// Primary button
+$primary-button-bg: $accent !default;
+$primary-button-text: contrast-wcag( $primary-button-bg ) !default;
+$primary-button-border: $primary-button-bg !default;
+$primary-button-gradient: none !default;
+
+$primary-button-hovered-bg: darken( $primary-button-bg, 7.5% ) !default;
+$primary-button-hovered-text: contrast-wcag( $primary-button-hovered-bg ) !default;
+$primary-button-hovered-border: darken( $primary-button-border, 10% ) !default;
+$primary-button-hovered-gradient: none !default;
+
+$primary-button-pressed-bg: $primary-button-hovered-bg !default;
+$primary-button-pressed-text: $primary-button-hovered-text !default;
+$primary-button-pressed-border: $primary-button-hovered-border !default;
+$primary-button-pressed-gradient: none !default;
+
+$primary-button-focused-shadow: 0 0 0 3px rgba($primary-button-border, .5);
+
+
+// Toolbar
+$toolbar-text: $header-text !default;
+$toolbar-bg: $header-bg !default;
+$toolbar-border: $header-border !default;
+$toolbar-gradient: none !default;
+
+
+// Input
+$input-text: $input-color !default;
+$input-bg: $input-bg !default;
+$input-border: $input-border-color !default;
+$input-shadow: none !default;
+
+$input-hovered-text: $input-text !default;
+$input-hovered-bg: $input-bg !default;
+$input-hovered-border: $input-border !default;
+$input-hovered-shadow: none !default;
+
+$input-focused-text: $input-text !default;
+$input-focused-bg: $input-bg !default;
+$input-focused-border: lighten( $accent, 25 ) !default;
+$input-focused-shadow: none !default;
+
+
+// Link
+$link-text: $link-color !default;
+$link-hover-text: $link-hover-color !default;
+
+
+// Node
+$node-text: $base-text !default;
+$node-bg: $base-bg !default;
+$node-border: $base-border !default;
+$node-gradient: none !default;
+
+$node-hovered-text: $list-group-action-hover-color !default;
+$node-hovered-bg: $list-group-hover-bg !default;
+$node-hovered-border: $node-hovered-bg !default;
+$node-hovered-gradient: none !default;
+
+$node-selected-text: $selected-text !default;
+$node-selected-bg: $selected-bg !default;
+$node-selected-border: $selected-border !default;
+$node-selected-gradient: none !default;
+
+
+// List item
+$list-item-text: $panel-text !default;
+$list-item-bg: $panel-bg !default;
+
+$list-item-hovered-text: $dropdown-link-hover-color !default;
+$list-item-hovered-bg: $dropdown-link-hover-bg !default;
+
+$list-item-selected-text: $dropdown-link-active-color !default;
+$list-item-selected-bg: $dropdown-link-active-bg !default;
+
+$list-item-focused-shadow: none;
+
+
+// Tab
+$tab-item-text: $link-text !default;
+$tab-item-bg: transparent !default;
+$tab-item-border: $nav-tabs-border-color !default;
+
+$tab-item-hovered-text: $link-hover-text !default;
+$tab-item-hovered-bg: transparent !default;
+$tab-item-hovered-border: $nav-tabs-link-hover-border-color !default;
+
+$tab-item-selected-text: $nav-tabs-link-active-color !default;
+$tab-item-selected-bg: $nav-tabs-link-active-bg !default;
+$tab-item-selected-border: $nav-tabs-link-active-border-color !default;
+
+
+// Grid
+$grid-bg: $panel-bg !default;
+$grid-text: contrast-wcag( $grid-bg, $gray-900 ) !default;
+$grid-border: $table-border-color !default;
+
+$grid-alt-text: $grid-text !default;
+$grid-alt-bg: rgba( $grid-alt-text, .03) !default;
+$grid-alt-border: $grid-border;
+
+$grid-hovered-text: $grid-text !default;
+$grid-hovered-bg: rgba( $grid-hovered-text, .065) !default;
+$grid-hovered-border: $grid-border !default;
+
+//Pager
+$pager-text: $pagination-color !default;
+$pager-bg: $pagination-bg !default;
+$pager-border: $pagination-border-color !default;
+
+$pager-hover-text: $pagination-hover-color !default;
+$pager-hover-bg: $pagination-hover-bg !default;
+$pager-hover-border: $pagination-hover-border-color !default;
+
+$pager-selected-text: $pagination-active-color !default;
+$pager-selected-bg: $pagination-active-bg !default;
+$pager-selected-border: $pagination-active-border-color !default;
+
+// Notification
+$notification-info-bg: theme-color-level("info", -10) !default;
+$notification-info-text: theme-color-level("info", 6) !default;
+$notification-info-border: theme-color-level("info", -9) !default;
+$notification-success-bg: theme-color-level("success", -10) !default;
+$notification-success-text: theme-color-level("success", 6) !default;
+$notification-success-border: theme-color-level("success", -9) !default;
+$notification-warning-bg: theme-color-level("warning", -10) !default;
+$notification-warning-text: theme-color-level("warning", 6) !default;
+$notification-warning-border: theme-color-level("warning", -9) !default;
+$notification-error-bg: theme-color-level("danger", -10) !default;
+$notification-error-text: theme-color-level("danger", 6) !default;
+$notification-error-border: theme-color-level("danger", -9) !default;
+
+
+// Window
+$window-text: $body-color !default;
+$window-bg: $modal-content-bg !default;
+$window-border: $modal-content-border-color !default;
+
+$window-titlebar-text: $window-text !default;
+$window-titlebar-bg: $window-bg !default;
+$window-titlebar-border: $modal-header-border-color !default;
+
+
+// Progress
+$progress-text: $body-color !default;
+$progress-bg: $progress-bg !default;
+$progress-border: transparent !default;
+$progress-gradient: none !default;
+
+$progress-fill-text: $progress-bar-color !default;
+$progress-fill-bg:  $progress-bar-bg !default;
+$progress-fill-border: transparent !default;
+$progress-fill-gradient: none !default;
+
+
+// Chart
+/// The color of the first series.
+/// @group charts
+$series-a: #0275d8 !default;
+
+/// The color of the second series.
+/// @group charts
+$series-b: #5bc0de !default;
+
+/// The color of the third series.
+/// @group charts
+$series-c: #5cb85c !default;
+
+/// The color of the fourth series.
+/// @group charts
+$series-d: #f0ad4e !default;
+
+/// The color of the fifth series.
+/// @group charts
+$series-e: #e67d4a !default;
+
+/// The color of the sixth series.
+/// @group charts
+$series-f: #d9534f !default;
+
+$chart-font-size: $font-size !default;
+$chart-font-size-sm: 11px !default;
+$chart-font-size-md: 12px !default;
+$chart-font-size-lg: 16px !default;
+
+$chart-inactive: rgba( $text-color, .5 ) !default;
+
+/// The color of the Chart grid lines (major).
+/// @group charts
+$chart-major-lines: rgba(0, 0, 0, .08) !default;
+
+/// The color of the Chart grid lines (minor).
+/// @group charts
+$chart-minor-lines: rgba(0, 0, 0, .04) !default;
+
+$chart-area-opacity: .8 !default;
+
+//Icons
+$icon-size: 16px;
+$icon-size-lg: 32px;
+$icon-spacing: ($spacer / 2) !default;
+
+$disabled-opacity: .65 !default;
+
+// import any default values from kendo-theme-default
+@import "../modules/@progress/kendo-theme-default/scss/variables";
+*/
 @import "../../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/scss/all";
 @import "../../../../custom-scss-variable.d/global_variables.scss";
 

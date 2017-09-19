@@ -1,5 +1,4 @@
-@import "../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/functions.scss";
-@import "../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/variables.scss";
+@import "../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/scss/variables";
 
 //Attribute size
 $dcp-font-size: 12px;
@@ -21,9 +20,9 @@ $grid-float-breakpoint: 480px;
 
 $font-size-base: $dcp-font-size;
 $line-height-base: $dcp-line-height;
-/*$panel-body-padding : $font-size-base/2;
+$panel-body-padding : $font-size-base/2;
 $padding-base-vertical : $font-size-base*0.20;
-$padding-base-horizontal : 2*$padding-base-vertical;*/
+$padding-base-horizontal : 2*$padding-base-vertical;
 
 //$icon-font-path: '../../../public/uiAssets/externals/bootstrap/fonts/';
 
