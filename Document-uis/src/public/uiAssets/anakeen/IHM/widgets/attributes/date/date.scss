@@ -2,7 +2,7 @@
 .dcpAttribute__content .k-picker-wrap,
 .dcpAttribute__content .k-picker-wrap .k-formatted-value,
 .dcpAttribute__content .k-picker-wrap .k-input {
-  height: ($attrInputHeight - 2);
+  height: $attrInputHeight;
   padding-bottom: 0;
   padding-top: 0;
 }

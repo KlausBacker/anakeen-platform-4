@@ -109,7 +109,7 @@ define([
                                 })).render().$el);
                             }
                         } catch (e) {
-                            $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
+                            $content.append('<h1 class="bg-danger"><span class="fa fa-exclamation-triangle" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
                             if (window.dcp.logger) {
                                 window.dcp.logger(e);
                             } else {

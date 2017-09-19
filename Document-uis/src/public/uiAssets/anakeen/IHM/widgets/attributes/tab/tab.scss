@@ -37,7 +37,6 @@ $tabFiwWidth:10em;
   padding:$dcp-set-padding;
 }
 
-
 .dcpDocument__tabs .dcpFrame:last-child,
 .dcpDocument__tabs .dcpFrame .dcpArray:last-child
 {
@@ -46,15 +45,6 @@ $tabFiwWidth:10em;
 
 .k-tabstrip-items .dcpTab__label .k-state-active {
   background-color: transparent;
-}
-
-.dcpTab__content * {
-  box-sizing: border-box;
-}
-
-.dcpTab__content .k-picker-wrap,
-.dcpTab__content .k-numeric-wrap {
-  box-sizing: content-box;
 }
 
 .k-tabstrip:focus {
@@ -71,14 +61,7 @@ $tabFiwWidth:10em;
 .dcpTab__content--loading .fa {
   padding: 1em;
 }
-.dcpDocument__tabs--fixed .dcpDocument__tabs__list {
-  // max-height: 2.7em; // To avoid overflow during resizing
 
-}
-
-.menu__select_container {
-  // margin-top:8px;
-}
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
   //width: 2em;
