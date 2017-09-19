@@ -6,27 +6,31 @@ a, a:link, a:visited { }
 a:hover { background-color:inherit; }
 p { margin:0; padding:0 }
 
+html, body {
+    height: 100vh;
+}
 
-
+body {
+    display: flex;
+    flex-direction: row;
+}
 /* 
  * left block
  */
 .left-block {
    background-color:[COLOR_A9]; 
-   color:[COLOR_A1]; 
-   position: relative;
+   color:[COLOR_A1];
    width:20%;
    top:20px;
    left:0;
-   float:left;
     font-size: 10pt;
+    flex:1;
 }
 /* 
  * right block
 */
-.right-block { 
-   float:left;
-   display:table-cell;
+.right-block {
+    flex:3;
    padding:10px; 
    width:75%;
    background-color:[COLOR_C9]; 
@@ -45,7 +49,7 @@ p { margin:0; padding:0 }
 #hello {  padding: 60px 20%; }
 
 #header { text-align:center;}
-#header .title { font-weight:bold; font-size:400%; }
+#header .title { font-weight:bold; font-size:400%; color: #333 }
 #header div.content { font-weight:bold; font-size:200%; }
 #welcome { text-align:center; margin:50px 0 60px 0px; font-size:200%;  }
 #header .version {  margin:10px 0 0 0; font-size:100%; }
