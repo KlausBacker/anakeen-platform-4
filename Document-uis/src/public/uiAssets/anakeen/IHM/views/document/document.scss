@@ -1,5 +1,5 @@
 //noinspection CssUnknownTarget
-@import "../../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/mixins";
+@import "../../../../externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/mixins";
 @import "menu/menu";
 @import "../attributes/attribute";
 @import "../attributes/attributeDescription";
@@ -26,6 +26,11 @@
 @import "../../widgets/history/revisiondiff";
 @import "../../widgets/properties/properties";
 @import "../../widgets/workflow/transition";
+
+
+html {
+  font-size: 62.5%;
+}
 
 .dcpDocument__body {
   padding: 10px;

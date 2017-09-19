@@ -6,7 +6,7 @@ fi
 BASE_PATH=$1/underscore
 DEST_PATH=$2/underscore
 mkdir -p "$DEST_PATH"
-mv "$BASE_PATH"/*.js "$DEST_PATH"
-mv "$BASE_PATH"/*.map "$DEST_PATH"
-mv "$BASE_PATH"/README.md "$DEST_PATH"
-mv "$BASE_PATH"/LICENSE "$DEST_PATH"
+rsync --delete -azvr "$BASE_PATH"/*.js "$DEST_PATH"
+rsync --delete -azvr "$BASE_PATH"/*.map "$DEST_PATH"
+rsync --delete -azvr "$BASE_PATH"/README.md "$DEST_PATH"
+rsync --delete -azvr "$BASE_PATH"/LICENSE "$DEST_PATH"

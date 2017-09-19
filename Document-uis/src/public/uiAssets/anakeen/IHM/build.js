@@ -1,6 +1,6 @@
 ({
     shim: {
-        "bootstrap": ['jquery', 'popper'],
+        "bootstrap": ['jquery', 'globalPopper'],
         "kendo": ['jquery'],
         "kendo-culture": ['kendo'],
         "ckeditor-jquery": ['jquery', 'ckeditor'],
