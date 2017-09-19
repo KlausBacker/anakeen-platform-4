@@ -1,0 +1,111 @@
+[ZONE FDL:HTMLHEAD]
+<div class="header">
+    [BLOCK PARENTS]
+    <span><a href="?app=DOCADMIN&action=FAMILY_VIEWATTRIBUTES&id=[name]"><img class="icon"
+                                                                              src="[icon]"/>[title]</a></span> &gt;
+    [ENDBLOCK PARENTS]<img class="icon" src="[famIcon]"/>
+    <select class="family-select">
+        [BLOCK SELECTFAMILY]
+        <option VALUE="[idcdoc]" [selected]>[classname] ([name] #[idcdoc])</option>
+        [ENDBLOCK SELECTFAMILY]
+    </select>
+</div>
+
+
+<table class="attributes" rules="row">
+    <thead>
+    <tr class="headers">
+        <th>[TEXT:fva::Identifier]</th>
+        <th>[TEXT:fva::Order]</th>
+        <th>[TEXT:fva::Name]</th>
+        <th>[TEXT:fva::Type]</th>
+        <th>[TEXT:fva::Frame]</th>
+        <th title="[TEXT:fva::Abstract]">[TEXT:fva::A?]</th>
+        <th title="[TEXT:fva::Title]">[TEXT:fva::T?]</th>
+        <th title="[TEXT:fva::Needed]">[TEXT:fva::N?]</th>
+        <th title="[TEXT:fva::Visibility]">[TEXT:fva::Vi]</th>
+        <th>[TEXT:fva::Link]</th>
+        <th>[TEXT:fva::File]</th>
+        <th>[TEXT:fva::Func]</th>
+        <th>[TEXT:fva::Elink]</th>
+        <th>[TEXT:fva::Constraint]</th>
+        <th>[TEXT:fva::Options]</th>
+    </tr>
+    <tr class="filters">
+        <th/>
+        <th/>
+        <th/>
+        <th/>
+        <th/>
+        <th title="[TEXT:fva::Abstract]"/>
+        <th title="[TEXT:fva::Title]"/>
+        <th title="[TEXT:fva::Needed]"/>
+        <th title="[TEXT:fva::Visibility]"/>
+        <th/>
+        <th/>
+        <th/>
+        <th/>
+        <th/>
+        <th/>
+    </tr>
+    </thead>
+    <tbody>
+
+    [BLOCK ATTRIBUTES]
+    <tr class="attribute [simpletype] [inherit] [direct]" data-attrid="[id]" data-famid="[docid]">
+        <td class="pathId">[pathId]</td>
+        <td class="ordered">[ordered]</td>
+        <td class="labeltext">[labeltext]</td>
+        <td class="type">[type]</td>
+        <td class="frameid">[frameid]</td>
+        <td class="abstract">[abstract]</td>
+        <td class="title">[title]</td>
+        <td class="needed">[needed]</td>
+        <td class="visibility">[visibility]</td>
+        <td class="link">[link]</td>
+        <td class="phpfile">[phpfile]</td>
+        <td class="phpfunc">[phpfunc]</td>
+        <td class="elink">[elink]</td>
+        <td class="phpconstraint">[phpconstraint]</td>
+        <td class="options">[options]</td>
+    </tr>
+
+    [ENDBLOCK ATTRIBUTES]
+    </tbody>
+</table>
+
+[IF develMode]
+<script type="text/template" id="tplEdit">
+    <div class="edit-attributes">
+        <p><span class="view-attributes-family">{{{famname}}}</span> : {{pathId.value}}</p>
+        <form id="formModAttribute" method="POST" action="?app=DOCADMIN&action=FAMILY_MODATTRIBUTE">
+            <input type="hidden" name="famid" value="{{famid}}"/>
+            {{#attrs}}
+            <div class="view-attributes-one {{id}}"><label for="i.{{id}}">{{label}}</label> : <input id="i.{{id}}"
+                                                                                                     name="{{id}}"
+                                                                                                     value="{{value}}"/>
+            </div>
+            {{/attrs}}
+        </form>
+        <div class="danger">
+            <div class="danger-header">[TEXT:fva::Danger Zone]</div>
+
+            <p class="danger-content">
+                [TEXT:fva::dangerZone]</p>
+        </div>
+    </div>
+</script>
+[ENDIF develMode]
+<script type="text/template" id="tplView">
+    <div class="view-attributes">
+        <p><span class="view-attributes-family">{{{famname}}}</span>: {{pathId.value}}</p>
+        <div>
+            {{#attrs}}
+            <div class="view-attributes-one {{id}}"><label>{{label}}</label> : <span>{{value}}</span></div>
+            {{/attrs}}
+        </div>
+
+    </div>
+</script>
+<div id="dialogModal"/>
+[ZONE FDL:HTMLFOOT]
