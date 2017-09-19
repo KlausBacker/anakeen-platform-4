@@ -1,4 +1,4 @@
-@import "./public/uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/variables";
+@import "./public/uiAssets/externals/KendoUI/bootstrap-theme/scss/variables";
 
 $dcpNotifierWidth:300px;
 $dcpNotifierHeight:9em;
@@ -7,17 +7,17 @@ $dcpNotifierSymbolWidth:50px;
 /* Error template */
 .k-notification-error.k-widget.k-notification {
   /* background: rgba(100%, 0%, 0%, .7);*/
-  background: fade($brand-danger,90%);
+  background: fade($error,90%);
   color: #ffffff;
 }
 .k-notification-warning.k-widget.k-notification {
   /* background: rgba(255, 128, 0, 0.70);*/
-  background: fade($brand-warning,90%);
+  background: fade($warning,90%);
   color: #ffffff;
 }
 .k-notification-info.k-widget.k-notification {
   /* background: rgba(0, 91, 255, 0.70);*/
-  background: fade($brand-info,90%);
+  background: fade($info,90%);
   color: #ffffff;
 }
 .k-notification-notice.k-widget.k-notification {
@@ -27,7 +27,7 @@ $dcpNotifierSymbolWidth:50px;
 }
 .k-widget.k-notification.k-notification-success {
   /* background: rgba(0, 161, 23, 0.70);*/
-  background: fade($brand-success,90%);
+  background: fade($success,90%);
   color: #ffffff;
 }
 .dcpNotification--content {

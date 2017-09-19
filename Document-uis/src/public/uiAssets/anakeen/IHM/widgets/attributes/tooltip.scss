@@ -9,40 +9,40 @@
 }
 
 .tooltip.dcpAttribute__editlabel .tooltip-inner {
-  background-color: $brand-info;
+  background-color: $info;
   color: #ffffff;
   word-wrap: break-word;
 }
 .tooltip.dcpAttribute__editlabel.tooltip.top .tooltip-arrow {
-  border-top-color: $brand-info;
+  border-top-color: $info;
 }
 .tooltip.dcpAttribute__editlabel.tooltip.bottom .tooltip-arrow {
-  border-bottom-color: $brand-info;
+  border-bottom-color: $info;
 }
 
 
 .tooltip.dcpAttribute__linkvalue .tooltip-inner {
-  background-color: $brand-info;
+  background-color: $info;
   color: #ffffff;
   word-wrap: break-word;
 }
 .tooltip.dcpAttribute__linkvalue.tooltip.top .tooltip-arrow {
-  border-top-color: $brand-info;
+  border-top-color: $info;
 }
 .tooltip.dcpAttribute__linkvalue.tooltip.bottom .tooltip-arrow {
-  border-bottom-color: $brand-info;
+  border-bottom-color: $info;
 }
 
 .tooltip.has-error .tooltip-inner {
-  background-color: $brand-danger;
+  background-color: $error;
   color: #ffffff;
   max-width:400px;
   word-wrap: break-word;
 }
 .tooltip.has-error.tooltip.top .tooltip-arrow {
-  border-top-color: $brand-danger;
+  border-top-color: $error;
 }
 .tooltip.has-error.tooltip.bottom .tooltip-arrow {
-  border-bottom-color: $brand-danger;
+  border-bottom-color: $error;
 }
 

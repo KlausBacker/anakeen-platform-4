@@ -27,7 +27,7 @@
 }
 
 .dcpAttribute__label.has-error {
-  color: $brand-danger;
+  color: $error;
 }
 
 .dcpDocument--edit .dcpAttribute--visibility--W .dcpAttribute__label,
@@ -36,5 +36,5 @@
 }
 
 .dcpLabel__help__link--selected {
-  color:$brand-success;
+  color:$success;
 }

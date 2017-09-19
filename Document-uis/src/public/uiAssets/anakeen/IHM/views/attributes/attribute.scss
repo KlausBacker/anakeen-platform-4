@@ -8,7 +8,7 @@
 .dcpFrame__label.has-warning,
 .dcpArray__label.has-warning,
 .dcpDocument__tabs .dcpDocument__tabs__list > .dcpTab__label.has-warning {
-  background-color: $brand-warning;
+  background-color: $warning;
 }
 
 /**
@@ -17,7 +17,7 @@
 .dcpFrame__label.has-error,
 .dcpArray__label.has-error,
 .dcpDocument__tabs .dcpDocument__tabs__list > .dcpTab__label.has-error {
-  background-color: $brand-danger;
+  background-color: $error;
 }
 
 .dcpFrame__content--close {

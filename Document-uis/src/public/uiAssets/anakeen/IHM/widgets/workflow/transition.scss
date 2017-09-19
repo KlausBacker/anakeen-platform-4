@@ -46,8 +46,8 @@
 }
 
 .dcpTransition--transition--invalid {
-  color: $brand-danger;
-  border-color: $brand-danger;
+  color: $error;
+  border-color: $error;
   border-bottom-style: dashed;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .dcpTransition--success {
-  background-color: $brand-success;
+  background-color: $success;
   color: $btn-success-color;
   padding: 4px 20px;
   border-radius: 4px;
@@ -76,8 +76,8 @@
 
 .dcpTransition--error {
   color: white;
-  border: solid 1px fade($brand-danger, 50%);
-  background-color: $brand-danger;
+  border: solid 1px fade($error, 50%);
+  background-color: $error;
   text-align: center;
   padding: 4px;
   margin-top: 2px;
@@ -92,7 +92,7 @@
 .dcpTransition--message {
   color: white;
   border: none;
-  background-color: $brand-info;
+  background-color: $info;
   text-align: center;
   padding: 4px;
   margin-top: 2px;
@@ -103,11 +103,11 @@
 }
 
 .dcpTransition--message--message {
-  background-color: $brand-info;
+  background-color: $info;
 }
 
 .dcpTransition--message--warning {
-  background-color: $brand-warning;
+  background-color: $warning;
 }
 
 .dcpTransition--message--notice {
@@ -115,7 +115,7 @@
 }
 
 .dcpTransition--message--error {
-  background-color: $brand-danger;
+  background-color: $error;
 }
 
 

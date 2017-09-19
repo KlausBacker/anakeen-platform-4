@@ -1,5 +1,5 @@
 //noinspection CssUnknownTarget
-@import "../../../../externals/KendoUI/bootstrap-theme/modules/bootstrap/scss/mixins";
+@import "../../../../externals/KendoUI/bootstrap-theme/scss/mixins";
 @import "menu/menu";
 @import "../attributes/attribute";
 @import "../attributes/attributeDescription";
@@ -29,6 +29,9 @@
 
 
 html {
+  body {
+    font-family: $A4-ui-font;
+  }
   font-size: $dcp-font-size;
 }
 
@@ -50,6 +53,12 @@ html {
   z-index: 100;
   font-size: $documentHeaderHeight/1.5;
   overflow: hidden;
+}
+
+.dcpDocument__header__title {
+  text-transform: uppercase;
+  color: $text-color;
+  font-weight: bold;
 }
 
 .window-dialog .dcpDocument__header {
@@ -178,7 +187,7 @@ body {
 }
 
 .dcpLoading--header .fa {
-  color: darken($brand-info, 30%);
+  color: darken($info, 30%);
 }
 
 .dcpLoading--header {
@@ -219,15 +228,15 @@ body {
   padding-left: 0.5em;
   font-size: x-small;
   vertical-align: super;
-  color: $brand-warning;
+  color: $warning;
 }
 
 .dcpDocument__header__lock {
-  // color:$brand-success;
+  // color:$success;
 }
 
 .dcpDocument__header--readonly .dcpDocument__header__lock {
-  // color:$brand-danger;
+  // color:$error;
 }
 
 .dcpDocument__emblem__lock--temporary {
@@ -239,11 +248,11 @@ body {
 }
 
 .dcpDocument__header--fixed {
-  background-color: lighten($brand-warning, 20%);
+  background-color: lighten($warning, 20%);
 }
 
 .dcpDocument__header--deleted {
-  background-color: lighten($brand-danger, 20%);
+  background-color: lighten($error, 20%);
 }
 
 .dcpDocument__header--fixed .dcpDocument__header__revision,
