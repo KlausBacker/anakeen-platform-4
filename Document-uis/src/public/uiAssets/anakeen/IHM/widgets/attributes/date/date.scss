@@ -7,16 +7,8 @@
   padding-top: 0;
 }
 
-.dcpAttribute__content .k-datepicker .k-input {
-  padding: 0;
-}
-
 .dcpAttribute__content .k-datepicker {
   padding: 0;
-}
-
-.dcpAttribute__content .k-datepicker .k-i-calendar {
-  margin-top: 6px;
 }
 
 .dcpAttribute__content.has-error .k-picker-wrap {
@@ -31,8 +23,10 @@
 
 // set icon in right
 .dcpAttribute__content .k-picker-wrap .k-select {
+  position: absolute;
   left: 0;
   right: auto;
+  height: 100%;
   border-right-width: 1px;
   border-left-width: 0;
   border-radius: 0;

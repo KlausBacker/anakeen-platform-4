@@ -29,11 +29,11 @@
 
 
 html {
-  font-size: 62.5%;
+  font-size: $dcp-font-size;
 }
 
 .dcpDocument__body {
-  padding: 10px;
+  padding-top: 10px;
 }
 
 .dcpDocument--edit {
