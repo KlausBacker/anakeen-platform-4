@@ -12,7 +12,7 @@
 }
 
 .dcpAttribute__content .k-dropdown-wrap .k-input {
-  height: ($attrInputHeight  - 2);
+  height: $attrInputHeight;
   padding-top: 6px;
   box-sizing: border-box;
 }
@@ -34,7 +34,7 @@
   right: auto;
   border: none;
   padding-top: 4px;
-  height: ($attrInputHeight  - 4);
+  height: ($attrInputHeight  - 2);
 }
 
 .dcpAttribute__content .k-dropdown,

@@ -1,7 +1,7 @@
 .dcpAttribute__content .k-numeric-wrap ,
 .dcpAttribute__content .k-numeric-wrap .k-formatted-value ,
 .dcpAttribute__content .k-numeric-wrap .k-input {
-  height: ($attrInputHeight - 2);
+  height: $attrInputHeight;
   padding-bottom: 0;
   padding-top: 0;
 }
@@ -28,4 +28,5 @@
   border-right-width: 1px;
   border-left-width: 0;
   border-radius: 0;
+  height: ($attrInputHeight  - 2);
 }
