@@ -6,6 +6,7 @@
     <requires>
         <!-- To remove after refactor -->
         <module name="anakeen-legacy"/>
+        <module name="anakeen-document-uis"/>
     </requires>
 
     <pre-install>
@@ -22,19 +23,20 @@
         <process command="programs/record_application FUSERS I">
             <label>Record FUSERS application in database</label>
         </process>
-        <process
-                command="./wsh.php --api=importDocuments --file=./Apps/FUSERS/Data/Init.csv">
-            <label>Initializing FUSERS roles and ACLs</label>
-        </process>
+
         <process
                 command="./wsh.php --api=importDocuments --file=./Apps/CORE_ADMIN/Data/Init.csv">
             <label>Initializing CORE_ADMIN roles and ACLs</label>
+        </process>
+        <process
+                command="./wsh.php --api=importDocuments --file=./Apps/FUSERS/Data/Init.csv">
+            <label>Initializing FUSERS roles and ACLs</label>
         </process>
         <process command="programs/record_application APPMNG I">
             <label>Record appmng application in database</label>
         </process>
         <process
-                command="./wsh.php --api=importDocuments --file=./APPMNG/Data/Init.csv">
+                command="./wsh.php --api=importDocuments --file=./Apps/APPMNG/Data/Init.csv">
             <label>Initializing APPMNG roles and ACLs</label>
         </process>
 
@@ -42,7 +44,7 @@
             <label>Record access application in database</label>
         </process>
         <process
-                command="./wsh.php --api=importDocuments --file=./ACCESS/Data/Init.csv">
+                command="./wsh.php --api=importDocuments --file=./Apps/ACCESS/Data/Init.csv">
             <label>Initializing ACCESS roles and ACLs</label>
         </process>
 
@@ -51,7 +53,7 @@
             <label>Record access application in database</label>
         </process>
         <process
-                command="./wsh.php --api=importDocuments --file=./DOCADMIN/Data/Init.csv">
+                command="./wsh.php --api=importDocuments --file=./Apps/DOCADMIN/Data/Init.csv">
             <label>Initializing DOCADMIN roles and ACLs</label>
         </process>
         <process
