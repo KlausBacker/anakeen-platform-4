@@ -27,7 +27,7 @@
             "tooltip": "../uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/tooltip",
             "bootstrap-utils": "../uiAssets/externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/util",
 //          "dcpContextRoot": "empty:",
-            "kendo": "../uiAssets/externals/KendoUI/js/kendo-ddui-builded",
+            "kendo": "../uiAssets/externals/KendoUI/js",
             "kendo-ddui": "../uiAssets/externals/KendoUI/js/kendo-ddui-builded",
             "kendo-culture-fr": "../uiAssets/externals/KendoUI/js/cultures/kendo.culture.fr-FR",
             "ckeditor": "../uiAssets/externals/ckeditor/4/ckeditor",
