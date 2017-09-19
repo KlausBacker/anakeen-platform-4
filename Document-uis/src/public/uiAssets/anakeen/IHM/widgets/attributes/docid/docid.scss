@@ -3,8 +3,6 @@
   background-color:inherit;
 }
 .dcpAttribute__value--read.dcpAttribute__value--docid .dcpAttribute__value--icon{
-  //width:1.2em;
-  //height: 1.2em;
   vertical-align: top;
 }
 .dcpAttribute__content--docid .k-multiselect-wrap, .dcpArray__content__cell--docid .k-multiselect-wrap,
@@ -20,6 +18,7 @@
   height:auto;
   min-height: $attrInputHeight - 2;
 }
+
 .dcpAttribute__value--single .k-multiselect-wrap .k-delete {
   visibility: hidden;
 }
@@ -32,15 +31,16 @@
   border-color : $error transparent $error $error;
 }
 
-
 .dcpAttribute__value--flash .k-multiselect-wrap
 {
   background-color: $info;
 }
+
 .dcpAttribute__value--flash .k-multiselect-wrap > .k-input
 {
   background-color: transparent;
 }
+
 .dcpAttribute__value--endflash .k-multiselect-wrap
 {
   background-color: inherit;
@@ -51,11 +51,10 @@
   content:" ";
   display:block;
 }
-// No see already selected relation in list
+
 .dcpAttribute__select--docid li.k-state-selected {
   display:none;
 }
-
 
 .dcpAttribute__select--docid .k-state-error {
   padding-left:1em;
@@ -69,4 +68,11 @@
       color:$gray;
     }
   }
+}
+
+.dcpAttribute__value--docid .k-i-loading {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-top: 0;
 }

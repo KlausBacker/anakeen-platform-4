@@ -9,7 +9,8 @@
 .dcpAttribute__label {
   &:after {
     content: ":";
-    padding-left:0.6em;
+    padding-left: 0.3em;
+    padding-right: 0.6em;
     vertical-align: top;
   }
 }
