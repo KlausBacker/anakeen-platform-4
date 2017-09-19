@@ -29,6 +29,7 @@
 
 /* set icon in right */
 .dcpAttribute__content .k-dropdown-wrap .k-select {
+  position: absolute;
   left: 0;
   right: auto;
   border: none;
@@ -46,6 +47,7 @@
   height: auto;
   min-height: $attrInputHeight - 2;
 }
+
 .dcpAttribute__content .k-multiselect .k-button {
   padding-top: 0.2em;
   padding-bottom: 0.2em;

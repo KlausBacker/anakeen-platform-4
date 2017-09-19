@@ -62,8 +62,9 @@ $padding-base-vertical: 6px;
 $nav-link-hover-bg: $gray-lighter;
 // END OLD VARIABLES
 
-$attrInputHeight: 30px;
-$documentHeaderHeight: 30px;
+$attrInputHeight: 2.5rem;
+$documentHeaderHeight: 2.5rem;
+
 @import "../../../custom-scss-variable.d/global_variables.scss";
 @import "../../../../public/uiAssets/anakeen/IHM/views/document/document.scss";
 
