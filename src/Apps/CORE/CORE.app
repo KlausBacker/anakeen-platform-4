@@ -59,6 +59,9 @@ $action_desc = array(
         "layout" => "core.css"
     ),
     array(
+        "name" => "CORE_ASSET",
+    ),
+    array(
         "name" => "SETACTPAR"
     ),
     array(

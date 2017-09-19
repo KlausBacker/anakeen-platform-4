@@ -14,6 +14,7 @@
 /**
  */
 
+include_once ("FDL/freedom_util.php");
 
 function getFirstDir($dbaccess)
 {

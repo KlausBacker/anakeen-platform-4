@@ -98,7 +98,7 @@ try {
     };
     //endRegion initLogger
     //region Authentification
-    if (file_exists('maintenance.lock')) {
+    if (file_exists(DEFAULT_PUBDIR.'/maintenance.lock')) {
         $exception = new Dcp\HttpApi\V1\Api\Exception("Maintenance in progress");
         $exception->setHttpStatus(503, "Service Unavailable");
         $exception->setUserMessage("Maintenance in progress");

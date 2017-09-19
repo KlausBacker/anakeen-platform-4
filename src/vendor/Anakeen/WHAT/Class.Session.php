@@ -120,7 +120,7 @@ class Session extends DbObj
          *     "/var/www/foo/"
          *
         */
-        $contextRoot = realpath(DEFAULT_PUBDIR);
+        $contextRoot = realpath(PUBLIC_DIR);
         if ($contextRoot === false) {
             return false;
         }
@@ -139,10 +139,12 @@ class Session extends DbObj
          *
          * This gives us the script's filename relative to the context's root.
         */
+
         $pos = strpos($scriptFilename, $contextRoot);
         if ($pos !== 0) {
             return false;
         }
+
         $relativeScriptFilename = substr($scriptFilename, strlen($contextRoot));
         /*
          * Remove trailing relative script's filename from script's name by finding the
@@ -158,7 +160,9 @@ class Session extends DbObj
         if ($pos !== $webRootLen) {
             return false;
         }
+
         $webRoot = substr($scriptName, 0, $webRootLen);
+
         return $webRoot;
     }
     function setCookieSession($id, $ttl = 0)
@@ -265,10 +269,11 @@ class Session extends DbObj
         }
         /* Load session's data only once as requested by #4825 */
         $sessionOpened = false;
-        if (!isset($_SESSION)) {
+        if (empty($_SESSION)) {
             session_name($this->name);
             session_id($this->id);
-            @session_start();
+            session_start();
+
             $sessionOpened = true;
         }
         if (isset($_SESSION[$k])) {

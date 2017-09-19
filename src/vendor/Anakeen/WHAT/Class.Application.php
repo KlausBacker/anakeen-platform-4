@@ -177,7 +177,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->rootdir = DEFAULT_PUBDIR. "/Apps";
-        $this->publicdir = DEFAULT_PUBDIR. "/public";
+        $this->publicdir = PUBLIC_DIR;
     }
     /**
      * initialize  Application object
@@ -365,6 +365,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (strstr($ref, '../') !== false) {
             return '';
         }
+        if (strstr($ref, '?app=') !== false) {
+            // no search server file for urls
+            return $ref;
+        }
         /* Resolve through getLayoutFile */
         $location = $this->GetLayoutFile($ref);
         if ($location != '') {
@@ -372,9 +376,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         /* Try "APP:file.extension" notation */
         if (preg_match('/^(?P<appname>[a-z][a-z0-9_-]*):(?P<filename>.*)$/i', $ref, $m)) {
-            $location = sprintf('%s/%s/Layout/%s', $this->rootdir, $m['appname'], $m['filename']);
+            $location = sprintf('%s/%s/Layout/%s', $this->publicdir, $m['appname'], $m['filename']);
             if (is_file($location)) {
                 return sprintf('%s/Layout/%s', $m['appname'], $m['filename']);
+            }
+            // Fallback for legacy : return css/js from Apps/Layout
+            $location = sprintf('%s/%s/Layout/%s', $this->rootdir, $m['appname'], $m['filename']);
+            if (is_file($location)) {
+                return sprintf('?app=CORE&action=CORE_ASSET&ref=%s', urlencode($ref));
             }
         }
         /* Try hardcoded locations */
@@ -426,6 +435,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $wng = sprintf(_("Cannot find %s resource file") , $ref);
             $this->addLogMsg($wng);
             $this->log->warning($wng);
+            $resourceLocation=sprintf("Ressource %s not found", $ref);
         }
         if ($type == 'js') {
             $this->jsref[$resourceLocation] = $resourceLocation;

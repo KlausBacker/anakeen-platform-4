@@ -33,9 +33,11 @@ class htmlAuthenticator extends Authenticator
     public function checkAuthentication()
     {
         $session = $this->getAuthSession();
+
         $this->username = $session->read('username');
+
         if ($this->username != "") return Authenticator::AUTH_OK;
-        
+
         if (!array_key_exists($this->parms['username'], $_POST)) return Authenticator::AUTH_ASK;
         if (!array_key_exists($this->parms['password'], $_POST)) return Authenticator::AUTH_ASK;
         
