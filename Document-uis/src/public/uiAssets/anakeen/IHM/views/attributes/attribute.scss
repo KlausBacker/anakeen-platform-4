@@ -35,8 +35,6 @@
 .dcpAttribute__description.dcpAttribute__left,
 .dcpArray__label.dcpAttribute__left
 {
-  //.make-md-column(3);
-  //.make-sm-column(2);
   // Calculate width based on number of columns available
   @media (min-width: ($grid-float-breakpoint + 1)) {
     float: left;
