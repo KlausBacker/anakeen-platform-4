@@ -49,12 +49,8 @@
 }
 
 .dcpAttribute__content .k-multiselect .k-button {
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  margin-top: 0.3em;
-  margin-left: 0.4em;
+  font-size: 90%;
   margin-bottom: 0.2em;
-  line-height: normal;
 }
 
 .dcpAttribute__content .k-multiselect-wrap {
@@ -141,7 +137,7 @@
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal,
 .dcpAttribute__value--enumbuttons.orientation-bool {
-  width: 100%;
+  width: calc(100% - 2.5rem);
   padding: 0;
   display: table;
 }
@@ -233,6 +229,8 @@
 .dcpAttribute__value--enumbuttons.orientation-vertical {
   width: 100%;
   padding: 0;
+  flex-direction: column;
+  height: 100%;
   .dcpAttribute__value--enumlabel--other {
     padding-top:0;
   }
