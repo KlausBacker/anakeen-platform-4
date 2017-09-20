@@ -5,6 +5,10 @@
 
 // Convert pixel unit to rem unit
 @function remy($pxSize) {
+  @if type-of($pxSize) == 'number' and not unitless($pxSize) {
+    @return (($pxSize / ($pxSize * 0 + 1) )/ 12)+rem;
+  }
+
   @return ($pxSize/12)+rem;
 }
 // Colors
@@ -55,7 +59,7 @@ $A4-ui-button1-height: remy(30px);
 $A4-ui-button1-color-background: #157EFB;
 $A4-ui-button1-color-text: #FFFFFF;
 $A4-ui-button1-border-radius: remy(2px);
-$A4-ui-button1-padding: remy(30px);
+$A4-ui-button1-padding: 2.5rem;
 $A4-ui-button1-disabled-color-background: #C8C8C8;
 $A4-ui-button1-disabled-color-text: #505050;
 $A4-ui-button1-disabled-hover-color-background: $A4-ui-button1-disabled-color-background;
@@ -96,7 +100,7 @@ $A4-ui-button3-color-text: #157EFB;
 $A4-ui-button3-color-background: #FFFFFF;
 $A4-ui-button3-color-hover-text: #157EFB;
 $A4-ui-button3-color-hover-background: #FFFFFF;
-$A4-ui-doc-edit-label-padding: remy(8px);
+$A4-ui-doc-edit-label-padding: 0.66666rem;
 $A4-ui-doc-edit-attribute-height: remy(26px);
 $A4-ui-doc-edit-attribute-border: solid #C8C8C8 remy(1px);
 $A4-ui-doc-edit-attribute-hover-color: #157EFB;
