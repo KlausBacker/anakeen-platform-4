@@ -9,5 +9,4 @@ BASE_PATH=$1/popper.js
 DEST_PATH=$2/popper.js
 mkdir -p "$DEST_PATH"
 rsync --delete -azvr "$BASE_PATH"/* "$DEST_PATH"/
-pwd
 cp $1/../scripts/globalPopper.js "$DEST_PATH"

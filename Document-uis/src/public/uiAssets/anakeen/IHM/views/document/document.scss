@@ -58,7 +58,7 @@ html {
 .dcpDocument__header__title {
   text-transform: uppercase;
   color: $text-color;
-  font-weight: bold;
+  font-family: $A4-ui-title-font-variant;
 }
 
 .window-dialog .dcpDocument__header {
