@@ -1,7 +1,46 @@
 // Anakeen Corporate Theme
-@import url("https://fonts.googleapis.com/css?family=Titillium+Web:light");
-@import url("https://fonts.googleapis.com/css?family=Titillium+Web:bold");
-@import url("https://fonts.googleapis.com/css?family=Titillium+Web:600");
+/* titillium-web-300normal - latin */
+@font-face {
+  font-family: 'Titillium Web Light';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src:
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300.woff2') format('woff2'), /* Super Modern Browsers */
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300.woff') format('woff'); /* Modern Browsers */
+}
+
+/* titillium-web-300italic - latin */
+@font-face {
+  font-family: 'Titillium Web Light';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 300;
+  src:
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300italic.woff2') format('woff2'), /* Super Modern Browsers */
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300italic.woff') format('woff'); /* Modern Browsers */
+}
+
+/* titillium-web-600normal - latin */
+@font-face {
+  font-family: 'Titillium Web Semi Bold';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-600.woff') format('woff'); /* Modern Browsers */
+}
+
+@font-face {
+  font-family: 'Titillium Web Bold';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src:
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-700.woff') format('woff'); /* Modern Browsers */
+}
 
 // Colors
 $A4-ui-color-link: #78D2FE;
@@ -28,10 +67,11 @@ $A4-ui-color-font-title: #353535;
 $A4-ui-color-font-placeholder: #C8C8C8;
 
 // Fonts
-$A4-ui-font: 'Titillium Web', 'Helvetica', sans-serif;
+$A4-ui-font: 'Titillium Web Light', 'Helvetica', sans-serif;
 $A4-ui-title-size: 1rem;
 $A4-ui-title-font-weight: bold;
 $A4-ui-title-font-line-height: 1.333rem;
+$A4-ui-title-font-variant: 'Titillium Web Bold';
 $A4-ui-label-font-size: 1rem;
 $A4-ui-label-font-weight: normal;
 $A4-ui-label-font-variant: 'Titillium Web Light';

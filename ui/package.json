@@ -23,6 +23,7 @@
     "requirejs": "^2.3.5",
     "requirejs-text": "^2.0.15",
     "tracekit": "^0.4.5",
+    "typeface-titillium-web": "0.0.35",
     "underscore": "^1.8.3"
   }
 }
