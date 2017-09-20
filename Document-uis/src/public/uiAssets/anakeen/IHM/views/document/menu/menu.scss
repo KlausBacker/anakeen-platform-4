@@ -103,7 +103,7 @@ $menu-before-width : 12px;
 
 }
 .k-menu .k-item.menu--right {
-  float: right;
+  align-self: flex-end;
   border-left-width: 1px;
   border-right-width: 0;
 }
