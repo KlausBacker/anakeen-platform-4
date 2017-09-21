@@ -12,7 +12,8 @@ function load_renderparameters(Action & $action)
     $usage->setStrictMode(false);
     $usage->verify(true);
     
-    $directory = "./DOCUMENT/customRender.d/";
+    $directory = DEFAULT_PUBDIR."/Apps/DOCUMENT/customRender.d";
+    var_dump($directory);
     if (is_dir($directory)) {
         
         $directoryIterator = new DirectoryIterator($directory);

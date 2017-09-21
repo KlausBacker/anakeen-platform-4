@@ -2,6 +2,24 @@
   "families": {
     "HELPPAGE": {
       "renderAccessClass": "Anakeen\\Ui\\HelppageAccess"
+    },
+    "CVDOC": {
+      "renderAccessClass": "Anakeen\\Ui\\CvdocAccess"
+    },
+    "MAILTEMPLATE": {
+      "renderAccessClass": "Anakeen\\Ui\\TmailAccess"
+    },
+    "WDOC": {
+      "renderAccessClass": "Anakeen\\Ui\\WdocAccess"
+    },
+    "TIMER": {
+      "renderAccessClass": "Anakeen\\Ui\\TimerAccess"
+    },
+    "MASK": {
+      "renderAccessClass": "Anakeen\\Ui\\MaskAccess"
+    },
+    "IGROUP": {
+      "renderAccessClass": "Anakeen\\Ui\\IgroupAccess"
     }
   }
 }
