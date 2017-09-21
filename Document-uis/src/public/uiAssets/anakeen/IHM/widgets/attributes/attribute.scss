@@ -1,5 +1,10 @@
 $attrInputHeight: 30px;
 
+.dcpAttribute {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .dcpAttribute__value--read {
   position: inherit;
 }
@@ -90,6 +95,7 @@ $attrInputHeight: 30px;
 
 .dcpAttribute__content .input-group-addon button:last-child {
   border-right: none;
+  border-radius: 0;
 }
 
 .dcpAttribute__value--flash input,

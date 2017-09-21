@@ -92,7 +92,7 @@
             var scope = this, $table;
             if (this.options.mode === "read" && this.options.nbLines === 0 && this.options.showEmpty !== true) {
                 if (this.options.showEmpty) {
-                    this.element.addClass("panel panel-default");
+                    this.element.addClass("card card-default");
                     // showEmptyCOntent option
                     if (this.options.displayLabel !== false) {
                         this.element.append(Mustache.render(this._getTemplate("label") || "", this.options));
@@ -105,7 +105,7 @@
 
                 }
             } else {
-                this.element.addClass("panel panel-default");
+                this.element.addClass("card card-default");
                 if (this.options.displayLabel !== false) {
                     this.element.append(Mustache.render(this._getTemplate("label") || "", _.extend(this.options, {
                         displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)

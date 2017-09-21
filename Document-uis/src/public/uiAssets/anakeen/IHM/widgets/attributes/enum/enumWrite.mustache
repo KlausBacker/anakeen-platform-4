@@ -1,4 +1,4 @@
-<div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm">
+<div class="{{#hadButtons}}input-group{{/hadButtons}} margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}">
     {{#isMultiple}}
       <span class="input-group-addon">
         <button

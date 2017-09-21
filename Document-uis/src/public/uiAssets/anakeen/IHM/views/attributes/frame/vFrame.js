@@ -13,7 +13,7 @@ define([
 
     return Backbone.View.extend({
 
-        className: "panel panel-default dcpFrame",
+        className: "card card-default dcpFrame",
         customView: false,
         displayLabel: true,
 

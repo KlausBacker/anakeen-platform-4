@@ -7,7 +7,7 @@
 }
 
 .dcpAttribute__content .k-dropdown-wrap {
-  height: ($attrInputHeight );
+  height: ($attrInputHeight);
   box-sizing: border-box;
 }
 
@@ -55,7 +55,6 @@
 
 .dcpAttribute__content .k-multiselect-wrap {
   border-radius: inherit;
-  //padding: 2px;
   min-height: $attrInputHeight - 2;
 }
 
@@ -66,14 +65,14 @@
 .k-list-optionlabel {
   color: $gray-light;
 }
+
 .k-list-optionlabel.placeholder--clear {
   display: none; /* no view place holder choice */
 }
 
 .k-dropdown span.k-input.placeholder,
 .k-multiselect .k-input.k-readonly,
-.k-dropdown .placeholder
-{
+.k-dropdown .placeholder {
   color: $gray-light;
 }
 
@@ -93,7 +92,6 @@
     width: auto;
     background-color: transparent;
     border: none;
-    /*display:none; *//* no see native radio */
   }
 
   input.dcpAttribute__value--enum--other {
@@ -103,7 +101,6 @@
   }
 }
 
-
 .dcpAttribute__value--enumlabel.k-button {
   border-radius: 0;
   border-style: none solid none none;
@@ -111,11 +108,6 @@
   padding-bottom: 2px;
 }
 
-/*
-.dcpAttribute--type--enum .dcpAttribute__value--enumlabel.k-button:first-child {
-  border-radius:4px 0 0 4px;
-}
-*/
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel {
   border-right-style: none;
   border-radius: $border-radius-base;
@@ -127,7 +119,7 @@
 
 .dcpAttribute__value--enumlabel {
   font-weight: normal;
-  height: ($attrInputHeight - 2 );
+  height: ($attrInputHeight - 2);
 }
 
 .dcpAttribute__value--enumlabel.selected {
@@ -171,17 +163,18 @@
   border-top-right-radius: $border-radius-base;
   border-bottom-right-radius: $border-radius-base;
 }
+
 .k-textbox.dcpAttribute__value--enumbuttons {
   &:hover {
-    background-color:unset;
+    background-color: unset;
   }
 }
 
 .dcpAttribute__value--enumlabel.k-button {
   padding: 0 3px 0 3px;
 }
-.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel
-{
+
+.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel {
   display: table-cell;
   white-space: nowrap;
 
@@ -205,7 +198,6 @@
     vertical-align: middle;
   }
 }
-
 
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel {
   display: none;
@@ -232,16 +224,15 @@
   flex-direction: column;
   height: 100%;
   .dcpAttribute__value--enumlabel--other {
-    padding-top:0;
+    padding-top: 0;
   }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
   border-radius: $border-radius-base 0 0 $border-radius-base;
 
-
   label.dcpAttribute__value--enumlabel--text {
-    line-height:2;
+    line-height: 2;
   }
   .k-checkbox-label {
     &:before {
@@ -272,14 +263,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(100% - 1em);
-    margin:0;
+    margin: 0;
   }
 
 }
 
 label.dcpAttribute__value--enumlabel--text {
   font-weight: normal;
-  height:$dcp-input-height - 2;
+  height: $dcp-input-height - 2;
   line-height: $dcp-input-height - 2;
 }
 
@@ -292,15 +283,16 @@ label.dcpAttribute__value--enumlabel--text {
   }
 
 }
+
 .dcpAttribute__value--enumbuttons.input-group .dcpAttribute__value--enumlabel--other.dcpAttribute__value--enumlabel {
   text-overflow: initial;
-  padding-top:0;
+  padding-top: 0;
   .k-checkbox-label {
     &:before {
       top: 7px;
     }
     &:after {
-      top:7px + 3px;
+      top: 7px + 3px;
     }
   }
   .k-radio-label {
@@ -312,18 +304,16 @@ label.dcpAttribute__value--enumlabel--text {
     }
   }
   label.dcpAttribute__value--enumlabel--text {
-    width:0;
+    width: 0;
   }
 
 }
+
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
   margin-left: 0.5em;
   display: inline-block;
   vertical-align: middle;
-  /*width:100%*/
 }
-
-
 
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel--text {
   display: inline-block;
@@ -339,56 +329,54 @@ label.dcpAttribute__value--enumlabel--text {
     width: 100%;
     margin-left: 0;
   }
-  .btn  {
-    float:right;
+  .btn {
+    float: right;
   }
 }
 
 .dcpAttribute__content--enum input.dcpAttribute__value--edit:not([aria-activedescendant]) {
-  color:$error;
+  color: $error;
 
 }
 
-$dcpBoolAnimationDelay:1s;
+$dcpBoolAnimationDelay: 1s;
 .dcpAttribute__value--enumbuttons.orientation-bool {
   .dcpAttribute__value--toggle {
-
-    width:100%;
+    background-color: inherit;
     text-align: left;
-    border:none;
+    border: none;
     padding: 2px 0.5em 0 0.5em;
-    position:relative;
+    position: relative;
     &.unselected {
-      display:none;
+      display: none;
     }
-
 
     .dcpAttribute__value--text {
       width: auto;
       min-width: 10em;
-      display:inline-block;
+      display: inline-block;
       padding: 3px;
       border-radius: 1em;
-      position:relative;
+      position: relative;
     }
 
     &.off {
       .dcpAttribute__value--text {
         color: $gray-light;
-        background-color:$gray-lighter;
-        padding-left:2.5em;
+        background-color: $gray-lighter;
+        padding-left: 2.5em;
         transition: background-color $dcpBoolAnimationDelay, padding-left $dcpBoolAnimationDelay;
 
         &:before {
           transition: left $dcpBoolAnimationDelay;
           content: " ";
           display: inline-block;
-          position:absolute;
-          left:$border-radius-base;
+          position: absolute;
+          left: $border-radius-base;
           box-sizing: border-box;
           width: $dcp-input-height - 13px;
           height: $dcp-input-height - 13px;
-          top: 5px;
+          top: 0.24rem;
           border: 3px solid white;
           border-radius: 50%;
           color: #f5f5f5;
@@ -404,25 +392,24 @@ $dcpBoolAnimationDelay:1s;
 
     &.on {
       .dcpAttribute__value--text {
-        background-color:$enum-selected-button-bg;
-        color:$enum-selected-button-color;
+        background-color: $enum-selected-button-bg;
+        color: $enum-selected-button-color;
         font-weight: bold;
-        padding-left:1em;
+        padding-left: 1em;
         padding-right: 2em;
         transition: background-color $dcpBoolAnimationDelay, padding-left $dcpBoolAnimationDelay;
 
-        &:before  {
+        &:before {
           content: " ";
           display: inline-block;
           box-sizing: border-box;
-          margin-right:0.5em;
+          margin-right: 0.5em;
           transition: left $dcpBoolAnimationDelay;
-
-          position:absolute;
+          position: absolute;
           left: calc(100% - 1em - #{$border-radius-base});
           width: $dcp-input-height - 13px;
           height: $dcp-input-height - 13px;
-          top: 5px;
+          top: 0.24rem;
           border: 3px solid #f5f5f5;
           border-radius: 50%;
           color: #f5f5f5;
@@ -436,4 +423,11 @@ $dcpBoolAnimationDelay:1s;
       }
     }
   }
+}
+
+.dcpAttribute__value--single .dcpAttribute__content--enum  .k-i-loading {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-top: 0;
 }
