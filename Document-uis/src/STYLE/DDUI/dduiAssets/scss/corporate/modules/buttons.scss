@@ -1,0 +1,35 @@
+// Buttons
+.dcpArray__add {
+  color: $A4-ui-button1-color-text;
+  background-color: $A4-ui-button1-color-background;
+  border-radius: $A4-ui-button1-border-radius;
+  font-size: $A4-ui-button-font-size;
+  &:hover {
+    color: $A4-ui-button1-hover-color-text;
+    background-color: $A4-ui-button1-hover-color-background;
+  }
+}
+
+.dcpAttribute__content__button--delete {
+  color: $A4-ui-color-error;
+}
+
+.dcpAttribute__value--enumbuttons.orientation-bool {
+  .dcpAttribute__value--toggle.off {
+    .dcpAttribute__value--text {
+      color: $A4-ui-toggle-color-text-off;
+      background-color: $A4-ui-toggle-color-bg-off;
+      padding-left: $A4-ui-toggle-padding-off;
+      transition: $A4-ui-toggle-transition;
+    }
+  }
+
+  .dcpAttribute__value--toggle.on {
+    .dcpAttribute__value--text {
+      color: $A4-ui-toggle-color-text-on;
+      background-color: $A4-ui-toggle-color-bg-on;
+      padding-left: $A4-ui-toggle-padding-on;
+      transition: $A4-ui-toggle-transition;
+    }
+  }
+}

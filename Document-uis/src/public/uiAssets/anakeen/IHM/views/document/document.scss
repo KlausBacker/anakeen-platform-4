@@ -29,9 +29,6 @@
 
 
 html {
-  body {
-    font-family: $A4-ui-font;
-  }
   font-size: $dcp-font-size;
 }
 
@@ -58,7 +55,7 @@ html {
 .dcpDocument__header__title {
   text-transform: uppercase;
   color: $text-color;
-  font-family: $A4-ui-title-font-variant;
+  font-weight: bold;
 }
 
 .window-dialog .dcpDocument__header {
