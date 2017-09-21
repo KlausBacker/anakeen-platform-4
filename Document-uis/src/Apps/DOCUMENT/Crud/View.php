@@ -630,6 +630,12 @@ class View extends Crud
                         }
                     }
             }
+            if ($this->document->isConfidential()) {
+                $err = "Confidential document";
+                $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                $exception->setHttpStatus("403", "Forbidden");
+                throw $exception;
+            }
             $this->renderConfig = $config;
             $this->renderVid = $vid;
         }
