@@ -1,0 +1,21 @@
+.dcpDocument__menu {
+  background-color: $A4-ui-tab-active-bg;
+  padding: 0;
+  box-shadow: 0 0.416rem 0.5rem rgba(0,0,0,0.15);
+}
+
+.menu__content.k-menu {
+  background-color: $A4-ui-menu-bg;
+  color: $A4-ui-menu-font-color;
+}
+
+.menu--fixed {
+  .menu__content {
+    background-color: $A4-ui-menu-fixed-bg;
+    color: $A4-ui-menu-fixed-font-color;
+  }
+}
+
+.menu__content.k-menu {
+  justify-content: flex-end;
+}

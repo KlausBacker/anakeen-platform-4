@@ -1,4 +1,47 @@
-// Anakeen Corporate Theme
+// Base colors
+$blue-darker: #003DB0;
+$blue-dark: #2361DB;
+$blue: #157EFB;
+$blue-light: #00B4FC;
+$blue-lighter: #78D2FE;
+$orange: #FF542C;
+$gray-darker: #353535;
+$gray-dark: #505050;
+$gray: #878787;
+$gray-light: #C8C8C8;
+$gray-light-alt: #DDDDDD;
+$gray-lighter: #F4F4F4;
+$gray-lighter-alt: #F1EFEF;
+$green-light: #8AE234;
+$white: #FFFFFF;
+
+// Colors
+$A4-ui-color-link: $blue-lighter;
+$A4-ui-color-btn-action: $blue;
+$A4-ui-color-btn-creation: $blue-dark;
+$A4-ui-color-selected: $blue-light;
+$A4-ui-color-error: $orange;
+$A4-ui-color-text: $gray-darker;
+$A4-ui-color-text-colored: $white;
+$A4-ui-color-picto: $gray;
+$A4-ui-color-picto-colored: $white;
+$A4-ui-color-hovered: $gray-lighter;
+$A4-ui-color-font-document: $gray-dark;
+$A4-ui-color-font-placeholder: $gray-light;
+
+$A4-ui-color-client: $green-light;
+
+$A4-ui-color-label: $gray-lighter-alt;
+$A4-ui-color-btn-click: $blue-darker;
+
+$A4-ui-color-body-background: $gray-light-alt;
+$A4-ui-color-frame-background: $white;
+
+$A4-ui-color-font-button: $A4-ui-color-text-colored;
+$A4-ui-color-font-title: $A4-ui-color-text;
+
+
+// Fonts
 /* titillium-web-300normal - latin */
 @font-face {
   font-family: 'Titillium Web Light';
@@ -41,32 +84,6 @@
           url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
           url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-700.woff') format('woff'); /* Modern Browsers */
 }
-
-// Colors
-$A4-ui-color-link: #78D2FE;
-$A4-ui-color-btn-action: #157EFB;
-$A4-ui-color-btn-creation: #2361DB;
-$A4-ui-color-selected: #00B4FC;
-$A4-ui-color-text: #353535;
-$A4-ui-color-picto: #878787;
-$A4-ui-color-picto-colored: #FFFFFF;
-$A4-ui-color-hovered: #F4F4F4;
-$A4-ui-color-error: #FF542C;
-
-$A4-ui-color-client: #8AE234;
-
-$A4-ui-color-label: #F1EFEF;
-$A4-ui-color-btn-click: #003DB0;
-
-$A4-ui-color-body-background: #DDDDDD;
-$A4-ui-color-frame-background: #FFFFFF;
-
-$A4-ui-color-font-document: #505050;
-$A4-ui-color-font-button: #FFFFFF;
-$A4-ui-color-font-title: #353535;
-$A4-ui-color-font-placeholder: #C8C8C8;
-
-// Fonts
 $A4-ui-font: 'Titillium Web Light', 'Helvetica', sans-serif;
 $A4-ui-title-size: 1rem;
 $A4-ui-title-font-weight: bold;
@@ -88,17 +105,17 @@ $A4-ui-button-font-line-height: 1.333rem;
 // Button 1
 $A4-ui-button1-width: auto;
 $A4-ui-button1-height: 2.5rem;
-$A4-ui-button1-color-background: #157EFB;
-$A4-ui-button1-color-text: #FFFFFF;
+$A4-ui-button1-color-background: $A4-ui-color-btn-action;
+$A4-ui-button1-color-text: $A4-ui-color-text-colored;
 $A4-ui-button1-border-radius: 0.166rem;
 $A4-ui-button1-padding: 2.5rem;
-$A4-ui-button1-disabled-color-background: #C8C8C8;
-$A4-ui-button1-disabled-color-text: #505050;
+$A4-ui-button1-disabled-color-background: $A4-ui-color-font-placeholder;
+$A4-ui-button1-disabled-color-text: $A4-ui-color-font-document;
 $A4-ui-button1-disabled-hover-color-background: $A4-ui-button1-disabled-color-background;
 $A4-ui-button1-disabled-hover-color-text: $A4-ui-button1-disabled-color-text;
 $A4-ui-button1-disabled-opacity: 0.5;
-$A4-ui-button1-hover-color-background: #003DB0;
-$A4-ui-button1-hover-color-text: #FFFFFF;
+$A4-ui-button1-hover-color-background: $A4-ui-color-btn-click;
+$A4-ui-button1-hover-color-text: $A4-ui-color-text-colored;
 $A4-ui-button1-hover-shadow: 0.416rem 0.416rem 1rem 1rem #1508A5 inset;
 
 // Button 2
@@ -120,6 +137,7 @@ $A4-ui-button2-disabled-hover-color-background: $A4-ui-button2-disabled-color-ba
 $A4-ui-button2-disabled-hover-color-text: $A4-ui-button2-disabled-color-text;
 $A4-ui-button2-disabled-color-border: #C8C8C8;
 
+// Button 3
 $A4-ui-button3-width: auto;
 $A4-ui-button3-border-radius: O;
 $A4-ui-button3-padding: 2.833rem;
@@ -132,6 +150,17 @@ $A4-ui-button3-color-text: #157EFB;
 $A4-ui-button3-color-background: #FFFFFF;
 $A4-ui-button3-color-hover-text: #157EFB;
 $A4-ui-button3-color-hover-background: #FFFFFF;
+
+// Toggle button
+$A4-ui-toggle-color-bg-off: #EEE;
+$A4-ui-toggle-color-text-off: #777;
+$A4-ui-toggle-padding-off: 0 0 0 2.5rem;
+$A4-ui-toggle-transition: background-color 1s, padding-left 1s;
+$A4-ui-toggle-color-bg-on: #00B4FC;
+$A4-ui-toggle-color-text-on: $white;
+$A4-ui-toggle-padding-on: 0 2rem 0 1rem;
+
+// Attribute
 $A4-ui-doc-edit-label-padding: 0.66666rem;
 $A4-ui-doc-edit-attribute-height: 2.166rem;
 $A4-ui-doc-edit-attribute-border: solid #C8C8C8 0.083rem;
@@ -144,3 +173,20 @@ $A4-ui-doc-read-label-padding: 1.333rem;
 $A4-ui-doc-read-attribute-height: auto;
 $A4-ui-doc-read-attribute-border: 0.083rem solid #F1EFEF;
 $A4-ui-doc-read-attribute-link-color: #78D2FE;
+
+//Frames
+$A4-ui-frame-padding: 0rem 1.166rem 1.666rem;
+$A4-ui-frame-shadow:rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
+$A4-ui-frame-color-title: #878787;
+
+// Tabs
+$A4-ui-tab-active-bg: #FAFAFA;
+$A4-ui-tab-inactive-bg: #ECECEC;
+$A4-ui-tab-space: 0.166rem;
+$A4-ui-tab-padding: 0.833rem 0rem 0.5rem;
+
+// Menu
+$A4-ui-menu-bg: #FAFAFA;
+$A4-ui-menu-fixed-bg: #157EFB;
+$A4-ui-menu-font-color: $A4-ui-color-text;
+$A4-ui-menu-fixed-font-color: #FFFFFF;

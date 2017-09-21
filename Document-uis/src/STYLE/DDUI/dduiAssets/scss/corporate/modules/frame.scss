@@ -1,0 +1,18 @@
+.dcpFrame, .document .dcpFrame:last-child {
+  margin: 0 10px 10px;
+}
+
+.dcpFrame {
+  background: $A4-ui-color-frame-background;
+  padding: $A4-ui-frame-padding;
+  box-shadow: $A4-ui-frame-shadow;
+}
+
+.dcpFrame > .card-header {
+  font-family: $A4-ui-title-font-variant;
+  font-size: $A4-ui-title-size;
+  background-color: transparent;
+  color: $A4-ui-frame-color-title;
+  line-height: $A4-ui-title-font-line-height;
+  border-bottom: 0,083rem solid $A4-ui-frame-color-title;
+}

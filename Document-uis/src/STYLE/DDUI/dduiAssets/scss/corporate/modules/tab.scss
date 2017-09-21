@@ -1,0 +1,54 @@
+.dcpDocument__tabs .dcpTab__label .k-link {
+  padding: $A4-ui-tab-padding;
+}
+
+@mixin dcpTabLabelStyle() {
+  font-family: $A4-ui-label-font-variant;
+  font-size: $A4-ui-label-font-size;
+  line-height: $A4-ui-label-font-line-height;
+  color: $A4-ui-color-font-document;
+  background-color: $A4-ui-tab-inactive-bg;
+  margin-right: $A4-ui-tab-space!important;
+}
+.dcpDocument__tabs .dcpTab__label {
+  @include dcpTabLabelStyle;
+  &:hover {
+    @include dcpTabLabelStyle;
+  }
+  .k-link {
+    height: 100%;
+    justify-content: center;
+  }
+}
+
+.dcpDocument__tabs .dcpTab__label.dcpLabel--active {
+  font-family: $A4-ui-title-font-variant;
+  font-size: $A4-ui-title-size;
+  line-height: $A4-ui-title-font-line-height;
+  color: $A4-ui-color-font-title;
+  background-color: $A4-ui-tab-active-bg;
+  border-bottom: none;
+  &:before {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 15px 15px 0;
+    border-color: transparent $A4-ui-color-client transparent transparent;
+  }
+}
+
+.document .dcpDocument__tabs.k-tabstrip > .dcpTab__content.k-state-active {
+  background-color: $A4-ui-tab-active-bg;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.document .dcpDocument__tabs .dcpDocument__tabs__list.k-tabstrip-items {
+  padding-left: 2rem;
+  height: 2.916rem;
+}

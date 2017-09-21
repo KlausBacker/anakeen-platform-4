@@ -25,8 +25,6 @@ $hovered-bg: $A4-ui-color-hovered;
 
 $error: $A4-ui-color-error;
 
-$accent: $A4-ui-color-btn-action;
-
 // Primary button
 $primary-button-bg: $A4-ui-button1-color-background;
 $primary-button-text: $A4-ui-button1-color-text;
@@ -37,14 +35,12 @@ $primary-button-hovered-text: $A4-ui-button1-hover-color-text;
 $primary-button-pressed-bg: $A4-ui-color-btn-click;
 $primary-button-pressed-text: $A4-ui-color-font-button;
 
+
 // Input
 $input-text: $A4-ui-color-font-document;
 
-$input-hovered-border: $A4-ui-color-btn-action;
-$input-hovered-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
-
-$input-focused-border: $A4-ui-color-btn-action;
-$input-focused-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
+//widget
+$widget-bg: $A4-ui-color-frame-background;
 
 
 
@@ -414,6 +410,7 @@ $disabled-opacity: .65 !default;
 */
 @import "../../../../../public/uiAssets/externals/KendoUI/bootstrap-theme/scss/all";
 @import "../../../../custom-scss-variable.d/global_variables.scss";
+@import "./theme.corporate.scss";
 
 $input-height: $dcp-line-height;
 $header-background-color : transparent;
