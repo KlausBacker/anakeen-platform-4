@@ -24,7 +24,7 @@ function familyViewAttributes(Action & $action)
     } elseif ($family->doctype != 'C') {
         $action->exitError(sprintf(___("document %s is not a family", "docadmin") , $family->getTitle()));
     }
-    $action->parent->addJsRef("legacy/mustache.js/mustache.min.js");
+    $action->parent->addJsRef("admin/adminAssets/mustache.js/mustache.min.js");
     $action->parent->addJsRef("legacy/jquery/jquery.js");
     $action->parent->addJsRef("legacy/jquery-ui/js/jquery-ui.js");
     $action->parent->addJsRef("legacy/jquery-dataTables/1.10/js/jquery.dataTables.js");
