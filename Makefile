@@ -1,7 +1,7 @@
 VERSION = 1.1.0
 RELEASE = 2.1
 localpub=$(shell pwd)/localpub
-
+port=80
 
 stub:
 	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
@@ -13,6 +13,13 @@ webinst-selenium:
 	rsync --delete -azvr Tests $(localpub)/selenium/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/Tests/build.json $(localpub)/selenium/Tests/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/selenium/Tests/ -o .
+
+
+deploy-test:
+	rm -f *webinst
+	make webinst-selenium
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-ui-test*webinst -- --force
+
 
 webinst-full:
 	-mkdir -p $(localpub)/webinst

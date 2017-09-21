@@ -40,7 +40,7 @@ class FamilyView extends RenderDefault
     {
         $templates = parent::getTemplates($document);
         
-        $templates["sections"]["content"]["file"] = "DOCUMENT/IHM/views/document/family__content.mustache";
+        $templates["sections"]["content"]["file"] = PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/family__content.mustache";
         return $templates;
     }
 }
