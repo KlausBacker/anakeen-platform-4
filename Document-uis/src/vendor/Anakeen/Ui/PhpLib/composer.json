@@ -1,6 +1,5 @@
 {
     "require": {
-        "oyejorge/less.php": "v1.7.0.14",
         "leafo/scssphp": "v0.6.7",
         "mustache/mustache": "v2.12.0"
     }
