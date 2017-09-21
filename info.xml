@@ -17,7 +17,7 @@
     <parameters>
         <param name="client_name" label="client name" type="text"/>
         <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y"/>
-        <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic"
+        <param name="authtype" label="authenticate default mode" default="html" type="enum" values="basic|html"
                needed="Y"/>
 
         <param name="core_tmpdir" label="temporary folder" default="./var/tmp" type="text" needed="Y"/>
