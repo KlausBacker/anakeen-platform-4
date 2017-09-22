@@ -20,6 +20,33 @@
     },
     "IGROUP": {
       "renderAccessClass": "Anakeen\\Ui\\IgroupAccess"
+    },
+    "IUSER": {
+      "renderAccessClass": "Anakeen\\Ui\\IuserAccess"
+    },
+    "GROUP": {
+      "renderAccessClass": "Anakeen\\Ui\\GroupAccess"
+    },
+    "SEARCH": {
+      "renderAccessClass": "Anakeen\\Ui\\SearchAccess"
+    },
+    "MSEARCH": {
+      "renderAccessClass": "Anakeen\\Ui\\MSearchAccess"
+    },
+    "SSEARCH": {
+      "renderAccessClass": "Anakeen\\Ui\\SSearchAccess"
+    },
+    "DIR": {
+      "renderAccessClass": "Anakeen\\Ui\\DirAccess"
+    },
+    "EXEC":{
+      "renderAccessClass": "Anakeen\\Ui\\ExecAccess"
+    },
+    "IMAGE":{
+      "renderAccessClass": "Anakeen\\Ui\\ImageAccess"
+    },
+    "ROLE":{
+      "renderAccessClass": "Anakeen\\Ui\\RoleAccess"
     }
   }
 }
