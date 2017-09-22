@@ -22,6 +22,7 @@ class IgroupEditRender extends defaultConfigEditRender
         $roleButton->target= "_dialog";
         $roleButton->class= "add-doc";
         $roleButton->title= "Créer un document Rôle";
+        $roleButton->htmlContent= '<i class="fa fa-plus"></i>';
         $options->docid(myAttributes::grp_roles)->addButton($roleButton);
         return $options;
     }
