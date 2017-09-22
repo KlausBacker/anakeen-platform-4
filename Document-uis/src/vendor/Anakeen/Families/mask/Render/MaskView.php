@@ -6,9 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use \Dcp\AttributeIdentifiers\MASK as myAttributes;
-
-class MaskViewRender extends defaultConfigViewRender
+class MaskViewRender extends DefaultConfigViewRender
 {
     /**
      * @param \Doc $document Document instance

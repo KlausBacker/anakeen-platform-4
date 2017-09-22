@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class SearchViewRender extends defaultConfigViewRender
+class SearchViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

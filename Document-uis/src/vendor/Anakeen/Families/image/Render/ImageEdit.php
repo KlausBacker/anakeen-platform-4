@@ -7,7 +7,7 @@
 namespace Anakeen\Ui;
 use \Dcp\AttributeIdentifiers\IMAGE as myAttributes;
 
-class ImageEditRender extends defaultConfigEditRender
+class ImageEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

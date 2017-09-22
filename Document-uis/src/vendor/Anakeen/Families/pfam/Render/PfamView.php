@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class PfamViewRender extends defaultConfigViewRender
+class PfamViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

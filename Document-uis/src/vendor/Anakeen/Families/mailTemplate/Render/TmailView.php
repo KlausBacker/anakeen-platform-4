@@ -7,7 +7,7 @@
 namespace Anakeen\Ui;
 use Dcp\AttributeIdentifiers\MAILTEMPLATE as myAttributes;
 
-class TmailViewRender extends defaultConfigViewRender
+class TmailViewRender extends DefaultConfigViewRender
 {
     /**
      * @param \Doc $document Document instance

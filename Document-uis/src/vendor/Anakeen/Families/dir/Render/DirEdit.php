@@ -7,7 +7,7 @@
 namespace Anakeen\Ui;
 use \Dcp\AttributeIdentifiers\DIR as myAttributes;
 
-class DirEditRender extends defaultConfigEditRender
+class DirEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

@@ -8,7 +8,7 @@ namespace Anakeen\Ui;
 
 use \Dcp\AttributeIdentifiers\IUSER as myAttributes;
 
-class IuserEditRender extends defaultConfigEditRender
+class IuserEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

@@ -10,7 +10,7 @@ use \Dcp\AttributeIdentifiers\IGROUP as myAttributes;
 use Dcp\Ui\ButtonOptions;
 use Dcp\Ui\CreateDocumentOptions;
 
-class IgroupViewRender extends defaultConfigViewRender
+class IgroupViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

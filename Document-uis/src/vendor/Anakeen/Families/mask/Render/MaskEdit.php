@@ -8,7 +8,7 @@ namespace Anakeen\Ui;
 
 use \Dcp\AttributeIdentifiers\MASK as myAttributes;
 
-class MaskEditRender extends defaultConfigEditRender
+class MaskEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

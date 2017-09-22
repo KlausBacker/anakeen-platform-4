@@ -5,9 +5,8 @@
 */
 
 namespace Anakeen\Ui;
-use \Dcp\AttributeIdentifiers\EXEC as myAttributes;
 
-class ExecViewRender extends defaultConfigViewRender
+class ExecViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

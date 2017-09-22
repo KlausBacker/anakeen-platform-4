@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class defaultConfigEditRender extends \Dcp\Ui\DefaultEdit
+class DefaultConfigEditRender extends \Dcp\Ui\DefaultEdit
 {
     public function getOptions(\Doc $document)
     {
