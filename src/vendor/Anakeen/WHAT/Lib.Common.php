@@ -252,13 +252,15 @@ function getCurrentUser()
 }
 function getLayoutFile($app, $layfile)
 {
+    global $action;
     if (strstr($layfile, '..')) {
         return "";
     }
     if (!strstr($layfile, '.')) $layfile.= ".xml";
     $socStyle = Getparam("CORE_SOCSTYLE");
     $style = Getparam("STYLE");
-    $appDir = DEFAULT_PUBDIR."/Apps";
+    $appDir = $action->parent->rootdir;
+
     if ($socStyle != "") {
         $file = $appDir . "/STYLE/$socStyle/Layout/$layfile";
         if (file_exists($file)) {

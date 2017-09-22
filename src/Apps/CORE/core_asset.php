@@ -17,7 +17,6 @@ function core_asset(Action & $action)
     }
     $assetType = $reg[1];
 
-
     if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $ref, $reg)) {
 
         $lfile = getLayoutFile($reg[1], strtolower($reg[2]));

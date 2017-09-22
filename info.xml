@@ -6,8 +6,8 @@
     <description lang="fr">Anakeen Platform 4</description>
 
     <replaces>
-        <module name="dynacase-platform"/>
-        <module name="dynacase-core-patchset-20170717"/>
+        <module name="dynacase-core"/>
+        <module name="dynacase-httpapi-v1"/>
     </replaces>
 
     <requires>

@@ -566,13 +566,12 @@ create sequence SEQ_ID_ACTION;
         }
         
         $this->log->push("{$this->parent->name}:{$this->name}");
-        $appDir = DEFAULT_PUBDIR."/Apps";
+        $appDir = $this->parent->rootdir;
         if ($this->layout != "") {
             $layout = $this->GetLayoutFile($this->layout);
         } else {
             $layout = "";
         }
-
         $this->lay = new Layout($layout, $this);
         if (isset($this->script) && $this->script != "") {
             $script = $appDir . "/" . $this->parent->name . "/" . $this->script;
