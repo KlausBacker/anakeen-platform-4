@@ -13,12 +13,4 @@ class TimerEditRender extends defaultConfigEditRender
         $options = parent::getOptions($document);
         return $options;
     }
-
-    public function getCssReferences(\Doc $document = null)
-    {
-        $css = parent::getCssReferences();
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $css["dduiTimer"] = "DOCUMENT/Layout/Timer/timer.css?ws=" . $version;
-        return $css;
-    }
 }
