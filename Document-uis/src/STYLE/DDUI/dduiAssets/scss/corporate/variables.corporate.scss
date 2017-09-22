@@ -162,12 +162,16 @@ $A4-ui-toggle-color-bg-on: #00B4FC;
 $A4-ui-toggle-color-text-on: $white;
 $A4-ui-toggle-padding-on: 0 2rem 0 1rem;
 
+// Radio button
+$A4-ui-radio-color-bg: $white;
+$A4-ui-radio-color-checked: $A4-ui-toggle-color-bg-on;
+$A4-ui-check-content: "\2713";
 // Attribute
 $A4-ui-doc-edit-label-padding: 0.66666rem;
 $A4-ui-doc-edit-attribute-bg: $white;
 $A4-ui-doc-edit-attribute-height: 2.166rem;
 $A4-ui-doc-edit-attribute-border: solid #C8C8C8 0.083rem;
-$A4-ui-doc-edit-attribute-hover-color: #157EFB7F;
+$A4-ui-doc-edit-attribute-hover-color: #157EFB;
 $A4-ui-doc-edit-attribute-hover-border: solid $blue 0.083rem;
 $A4-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem fade-out(#157EFB, 0.5);
 $A4-ui-doc-edit-attribute-error-color: #FF542C;

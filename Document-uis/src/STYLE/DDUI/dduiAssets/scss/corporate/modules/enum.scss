@@ -1,3 +1,32 @@
 .dcpAttribute__value--enumlabel {
   background-color: $A4-ui-doc-edit-attribute-bg;
 }
+
+.k-radio-label::before {
+  background-color: $A4-ui-radio-color-bg;
+}
+
+.k-radio:focus + .k-radio-label::before {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #007bff;
+}
+
+.k-radio:checked + .k-radio-label::before {
+  background-color: $A4-ui-radio-color-bg;
+  border-color: transparent;
+  box-shadow: 0 0 1px 0 $A4-ui-color-font-placeholder inset;
+}
+
+.k-radio:checked + .k-radio-label::after {
+  background-color: $A4-ui-radio-color-checked;
+}
+
+.k-checkbox:checked + .k-checkbox-label:before {
+  content: $A4-ui-check-content;
+  background-color: $A4-ui-radio-color-bg;
+  border-color: #ccc;
+  color: $A4-ui-radio-color-checked;
+}
+
+.k-checkbox-label:before {
+  background-color: $A4-ui-radio-color-bg;
+}
