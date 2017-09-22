@@ -27,13 +27,8 @@ class TmailEditRender extends defaultConfigEditRender
                 {{{attributes.tmail_t_attach.htmlView}}}
             </div>
             <hr>
-            <div class="panel-heading dcpArray__label dcpLabel">
-                <span class="dcp__array__caret fa fa-lg fa-caret-down" style="font-family: Helvetica.Arial.sans-serif; font-size:12px">Other</span>
-            </div>
-            <div class="dcpArray__content">
                 {{{attributes.tmail_savecopy.htmlView}}}
                 {{{attributes.tmail_ulink.htmlView}}}
-            </div>
 HTML
         );
         return $options;
