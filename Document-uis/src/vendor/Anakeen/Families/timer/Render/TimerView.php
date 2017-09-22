@@ -5,9 +5,8 @@
 */
 
 namespace Anakeen\Ui;
-use Dcp\AttributeIdentifiers\TIMER as myAttributes;
 
-class TimerViewRender extends defaultConfigViewRender
+class TimerViewRender extends DefaultConfigViewRender
 {
     /**
      * @param \Doc $document Document instance

@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class IuserViewRender extends defaultConfigViewRender
+class IuserViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

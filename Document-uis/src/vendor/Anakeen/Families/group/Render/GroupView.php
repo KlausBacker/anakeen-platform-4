@@ -5,8 +5,7 @@
 */
 
 namespace Anakeen\Ui;
-use \Dcp\AttributeIdentifiers\GROUP as myAttributes;
-class groupViewRender extends defaultConfigViewRender
+class groupViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

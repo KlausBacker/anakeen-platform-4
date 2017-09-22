@@ -6,9 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use \Dcp\AttributeIdentifiers\WDOC as myAttributes;
-
-class WdocEditRender extends defaultConfigEditRender
+class WdocEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

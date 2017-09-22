@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class TimerEditRender extends defaultConfigEditRender
+class TimerEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

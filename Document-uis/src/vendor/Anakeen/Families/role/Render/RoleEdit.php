@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class RoleEditRender extends defaultConfigEditRender
+class RoleEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

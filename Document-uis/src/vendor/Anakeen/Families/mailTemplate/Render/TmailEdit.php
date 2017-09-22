@@ -8,7 +8,7 @@ namespace Anakeen\Ui;
 
 use Dcp\AttributeIdentifiers\MAILTEMPLATE as myAttributes;
 
-class TmailEditRender extends defaultConfigEditRender
+class TmailEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

@@ -8,7 +8,7 @@ namespace Anakeen\Ui;
 
 use Dcp\AttributeIdentifiers\CVDOC as myAttributes;
 
-class CvdocEditRender extends defaultConfigEditRender
+class CvdocEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {
@@ -30,21 +30,21 @@ class CvdocEditRender extends defaultConfigEditRender
                 <tr>
                     {{#attribute.toolsEnabled}}<td>{{{rowTools}}}</td>{{/attribute.toolsEnabled}}
                     <td>
-                        {{{attributes.cv_order.label}}} :{{{content.cv_order.htmlContent}}}<br/>
-                        {{{attributes.cv_idview.label}}} :{{{content.cv_idview.htmlContent}}}<br/>
+                        {{{attributes.cv_order.label}}} :{{{content.cv_order.htmlContent}}}
+                        {{{attributes.cv_idview.label}}} :{{{content.cv_idview.htmlContent}}}
                         {{{attributes.cv_lview.label}}} :{{{content.cv_lview.htmlContent}}}
                     </td>
                     <td>
                         {{{attributes.cv_kview.label}}} :{{{content.cv_kview.htmlContent}}}
                     </td>
                     <td>
-                        {{{attributes.cv_renderconfigclass.label}}} :{{{content.cv_renderconfigclass.htmlContent}}}<br/>
-                        {{{attributes.cv_zview.label}}} :{{{content.cv_zview.htmlContent}}}<br/>
-                        {{{attributes.cv_mskid.label}}} :{{{content.cv_mskid.htmlContent}}}<br/>
+                        {{{attributes.cv_renderconfigclass.label}}} :{{{content.cv_renderconfigclass.htmlContent}}}
+                        {{{attributes.cv_zview.label}}} :{{{content.cv_zview.htmlContent}}}
+                        {{{attributes.cv_mskid.label}}} :{{{content.cv_mskid.htmlContent}}}
                     </td>
                     <td>
-                        {{{attributes.cv_displayed.label}}} :{{{content.cv_displayed.htmlContent}}}<br/>
-                        {{{attributes.cv_menu.label}}} :{{{content.cv_menu.htmlContent}}}<br/>
+                        {{{attributes.cv_displayed.label}}} :{{{content.cv_displayed.htmlContent}}}
+                        {{{attributes.cv_menu.label}}} :{{{content.cv_menu.htmlContent}}}
                     </td>
                 </tr>
                 {{/attribute.rows}}

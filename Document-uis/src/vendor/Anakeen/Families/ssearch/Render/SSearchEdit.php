@@ -8,7 +8,7 @@ namespace Anakeen\Ui;
 
 use \Dcp\AttributeIdentifiers\SSEARCH as myAttributes;
 
-class SSearchEditRender extends defaultConfigEditRender
+class SSearchEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

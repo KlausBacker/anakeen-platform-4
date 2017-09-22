@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class PdocViewRender extends defaultConfigViewRender
+class PdocViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class PdocEditRender extends defaultConfigEditRender
+class PdocEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

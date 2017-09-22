@@ -5,9 +5,8 @@
 */
 
 namespace Anakeen\Ui;
-use \Dcp\AttributeIdentifiers\EXEC as myAttributes;
 
-class ExecEditRender extends defaultConfigEditRender
+class ExecEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {

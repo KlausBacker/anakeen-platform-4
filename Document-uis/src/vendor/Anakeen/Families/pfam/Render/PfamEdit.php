@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class PfamEditRender extends defaultConfigEditRender
+class PfamEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {
