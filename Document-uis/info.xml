@@ -6,6 +6,8 @@
     <!-- //region full -->
     <replaces>
         <module name="dynacase-document-uis-light"/>
+        <module name="dynacase-document-uis"/>
+        <module name="dynacase-less-installer"/>
     </replaces>
     <!-- //endregion full -->
 
