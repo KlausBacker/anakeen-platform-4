@@ -16,6 +16,7 @@ class IgroupEditRender extends defaultConfigEditRender
     {
         $options = parent::getOptions($document);
         $options->enum(myAttributes::grp_hasmail)->setDisplay('bool');
+        $options->enum(myAttributes::grp_hasmail)->displayDeleteButton(false);
         $roleButton = new ButtonOptions();
         $roleButton->url = "?app=FDL&action=OPENDOC&famid=ROLE&updateAttrid=grp_roles&autoclose=yes";
         $roleButton->target= "_dialog";
