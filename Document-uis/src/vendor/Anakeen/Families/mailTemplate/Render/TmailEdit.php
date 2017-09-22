@@ -17,6 +17,7 @@ class TmailEditRender extends defaultConfigEditRender
         $options->enum(myAttributes::tmail_ulink)->setDisplay('bool');
         $options->enum(myAttributes::tmail_savecopy)->displayDeleteButton(false);
         $options->enum(myAttributes::tmail_ulink)->displayDeleteButton(false);
+        $options->arrayAttribute(myAttributes::tmail_t_from)->setRowMinDefault(1);
         $options->frame(myAttributes::tmail_fr_content)->setTemplate(
             <<< 'HTML'
             <div>
