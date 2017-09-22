@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: js_SEARCH_UI_HTML5_fr\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-28 14:46+0200\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: Anakeen Team\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain;  charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "dsearch"
+msgid "Empty attribute"
+msgstr "Vous devez selectionner un attribut."
+
+msgctxt "dsearch"
+msgid "Invalid attribute"
+msgstr "L'attribut n'est pas présent dans la famille courante."
+
+msgctxt "dsearch"
+msgid "Select condition"
+msgstr "Vous devez selectionner une condition groupée."
+
+msgctxt "dsearch"
+msgid "Select keys"
+msgstr "Vous devez selectionner ou saisir un mot-clé."
+
+msgctxt "dsearch"
+msgid "Select operator"
+msgstr "Vous devez selectionner un opérateur."
+
+msgctxt "SEvents"
+msgid "type a title"
+msgstr "Entrez un titre pour le nouveau document"

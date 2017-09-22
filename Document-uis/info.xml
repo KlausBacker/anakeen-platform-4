@@ -37,6 +37,10 @@
             <label>Link js libraries</label>
         </process>
 
+
+        <process command="programs/record_application SEARCH_UI_HTML5"/>
+        <process command="programs/record_application DOCUMENT_GRID_HTML5"/>
+
         <process command="programs/update_catalog"/>
     </post-install>
 
@@ -54,6 +58,15 @@
         <process command="programs/post_migration DOCUMENT">
             <label>Migration</label>
         </process>
+
+        <process command="programs/pre_migration SEARCH_UI_HTML5"/>
+        <process command="programs/record_application SEARCH_UI_HTML5"/>
+        <process command="programs/post_migration SEARCH_UI_HTML5"/>
+
+        <process command="programs/pre_migration DOCUMENT_GRID_HTML5"/>
+        <process command="programs/record_application DOCUMENT_GRID_HTML5"/>
+        <process command="programs/post_migration DOCUMENT_GRID_HTML5"/>
+
         <process command="programs/update_catalog"/>
     </post-upgrade>
 

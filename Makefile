@@ -26,6 +26,7 @@ webinst-full:
 	rsync --delete -azvr Document-uis $(localpub)/webinst/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
 	r.js -o $(localpub)/webinst/Document-uis/src/public/uiAssets/anakeen/IHM/build.js
+	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
 	php ./prepareElementForLight.php --modeFull -f $(localpub)/webinst/Document-uis/info.xml
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
@@ -60,3 +61,4 @@ deploy:
 	rm -f *webinst
 	make webinst
 	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-document-uis-1*webinst -- --force
+	make clean

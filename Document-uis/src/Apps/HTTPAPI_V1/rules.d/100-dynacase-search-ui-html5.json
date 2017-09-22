@@ -1,0 +1,57 @@
+[
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\families",
+    "regExp": "%^/search_UI_HTML5/families/$%",
+    "description": "Families and attributes list",
+    "canonicalURL": "search_UI_HTML5/families/<collectionId>"
+  },
+
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\operators",
+    "regExp": "%^/search_UI_HTML5/operators/$%",
+    "description": "Operands list",
+    "canonicalURL": "search_UI_HTML5/operators/<collectionId>"
+  },
+
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\attributes",
+    "regExp": "%^/search_UI_HTML5/attributes/(?<identifier>[^/]+){0,}$%",
+    "description": "Attributes and properties list",
+    "canonicalURL": "search_UI_HTML5/attributes/<collectionId>"
+  },
+
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\relations",
+    "regExp": "%^/search_UI_HTML5/relations/(?P<familyId>[^/]+)/(?P<attributeId>[^/]+)%",
+    "description": "Documents list from famid and attrid",
+    "canonicalURL": "search_UI_HTML5/relations/<familyId>/<attributeId>"
+  },
+
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\temporaryDoc",
+    "regExp": "%^/search_UI_HTML5/temporaryDoc/(?P<familyId>[^/]+)/$%",
+    "description": "Create temporary document",
+    "canonicalURL": "search_UI_HTML5/temporaryDoc/<familyId>/"
+  },
+
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\resumeAttributes",
+    "regExp": "%^/search_UI_HTML5/resumeAttributes/(?<identifier>[^/]+)%",
+    "description": "Important attributes from a family id",
+    "canonicalURL": "search_UI_HTML5/resumeAttributes/<collectionId>"
+  },
+
+  {
+    "order": 1000,
+    "class": "\\Dcp\\Search\\html5\\searchGridAttributes",
+    "regExp": "%^/search_UI_HTML5/searchAttributes/(?<identifier>[^/]+)%",
+    "description": "Abstract or report attriutes",
+    "canonicalURL": "search_UI_HTML5/searchAttributes/<collectionId>"
+  }
+]

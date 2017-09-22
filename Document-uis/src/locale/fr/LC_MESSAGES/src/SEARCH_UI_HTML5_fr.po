@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SEARCH UI\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-28 14:46+0200\n"
+"PO-Revision-Date: 2017-04-28 14:00+0200\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: Anakeen Team\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Conditions"
+msgstr "Conditions"
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Loading criteria ..."
+msgstr "Chargement des critères..."
+
+msgctxt "searchui"
+msgid "Properties"
+msgstr "Propriétés"
+
+msgid "RESULT:ACTION_NAME"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Results"
+msgstr "Résultats"
+
+msgid "SEARCH_UI_HTML5:Basic ACL"
+msgstr ""
+
+msgid "SEARCH_UI_HTML5:SEARCH_UI_HTML5"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Searching ..."
+msgstr "Recherche en cours"
+
+msgid "activity"
+msgstr "Activité"
+
+msgctxt "searchui"
+msgid "any values"
+msgstr "Une des valeurs"
+
+msgctxt "searchui"
+msgid "cdate"
+msgstr "Date de création"
+
+msgctxt "searchUi"
+msgid "consult"
+msgstr "Lancer la recherche"
+
+msgctxt "searchui"
+msgid "doctitle"
+msgstr "Titre"
+
+msgctxt "searchui"
+msgid "id allocated"
+msgstr "Identifiant utilisateur affecté"
+
+msgctxt "searchui"
+msgid "id locked"
+msgstr "Identifiant verrou"
+
+msgctxt "searchui"
+msgid "id owner"
+msgstr "Identifiant propriétaire"
+
+msgctxt "searchui"
+msgid "revdate"
+msgstr "Date de modification"
+
+msgctxt "searchui"
+msgid "revision"
+msgstr "Révision"
+
+msgid "state"
+msgstr "État"
+
+msgid "step"
+msgstr "Étape"
+
+msgid "workflow"
+msgstr "Cycle de vie"
+
+#~ msgid "MAIN:ACTION_NAME"
+#~ msgstr "Visualisation de la recherche"
+
+#~ msgctxt "SEvents"
+#~ msgid "confirm"
+#~ msgstr "Confirmer"
+
+#~ msgctxt "SEvents"
+#~ msgid "confirm and close"
+#~ msgstr "Confirmer et fermer"
+
+#~ msgid "today"
+#~ msgstr "Aujourd'hui"
+
+#~ msgid "tomorrow"
+#~ msgstr "Demain"
+
+#~ msgid "yesterday"
+#~ msgstr "Hier"

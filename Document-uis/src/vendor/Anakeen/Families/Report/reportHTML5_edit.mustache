@@ -1,0 +1,32 @@
+<div class="panel panel-default dcpFrame">
+    <div class="panel-body dcpFrame_content dcpFrame_content--open">
+        <div class="search-title">
+            {{{document.attributes.ba_title.htmlView}}}
+            {{{document.attributes.se_fam.htmlView}}}
+        </div>
+    </div>
+</div>
+
+
+
+<div id="search-tabstrip" class="dcpDocument__tabs search-tabs">
+    <ul>
+        <li class="k-state-active">[[#i18n]]dsearch::Conditions[[/i18n]]</li>
+        <li>{{document.attributes.se_crit.label}}</li>
+        <li>{{document.attributes.rep_fr_presentation.label}}</li>
+        <li class="result-tab">[[#i18n]]dsearch::Results[[/i18n]]</li>
+    </ul>
+    <div class="dcpTab__content dcpTab--loading">
+        <div class="result-waiting">
+            <div class="result-waiting-text">[[#i18n]]dsearch::Loading criteria ...[[/i18n]]<img src="Images/3pointloading.gif" /></div>
+        </div>
+        {{{document.attributes.se_fr_detail.htmlContent}}}
+    </div>
+    <div class="dcpTab__content">{{{document.attributes.se_crit.htmlView}}}</div>
+    <div class="dcpTab__content">{{{document.attributes.rep_fr_presentation.htmlView}}}</div>
+    <div class="dcpTab__content result--content">
+        <div class="result-waiting">
+            <div class="result-waiting-text">[[#i18n]]dsearch::Searching ...[[/i18n]]<img src="Images/3pointloading.gif" /></div>
+        </div>
+    </div>
+</div>

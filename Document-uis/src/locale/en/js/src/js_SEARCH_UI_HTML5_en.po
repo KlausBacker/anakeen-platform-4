@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: js_SEARCH_UI_HTML5_en\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-28 14:46+0200\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: Anakeen Team\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain;  charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "dsearch"
+msgid "Empty attribute"
+msgstr "You must select an attribute."
+
+msgctxt "dsearch"
+msgid "Invalid attribute"
+msgstr "This attribute is invalid with the current family."
+
+msgctxt "dsearch"
+msgid "Select condition"
+msgstr "You must select a grouped condition."
+
+msgctxt "dsearch"
+msgid "Select keys"
+msgstr "You must select or type a keyword."
+
+msgctxt "dsearch"
+msgid "Select operator"
+msgstr "You must select an operator."
+
+msgctxt "SEvents"
+msgid "type a title"
+msgstr "Type a title for the new document"
