@@ -38,12 +38,4 @@ HTML
         );
         return $options;
     }
-
-    public function getCssReferences(\Doc $document = null)
-    {
-        $css = parent::getCssReferences();
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $css["dduiMailTemplate"] = "DOCUMENT/Layout/MailTemplate/tmail.css?ws=" . $version;
-        return $css;
-    }
 }
