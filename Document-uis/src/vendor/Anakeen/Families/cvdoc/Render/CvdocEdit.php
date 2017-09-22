@@ -56,7 +56,7 @@ class CvdocEditRender extends defaultConfigEditRender
 HTML
         );
         $options->enum(myAttributes::cv_kview)->setDisplay('vertical');
-        $options->enum(myAttributes::cv_displayed)->setDisplay('vertical');
+        $options->enum(myAttributes::cv_displayed)->setDisplay('bool');
         return $options;
     }
     /**
