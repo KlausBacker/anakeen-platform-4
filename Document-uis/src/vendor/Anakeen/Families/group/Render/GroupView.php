@@ -5,7 +5,7 @@
 */
 
 namespace Anakeen\Ui;
-class groupViewRender extends DefaultConfigViewRender
+class GroupViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Doc $document)
     {

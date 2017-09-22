@@ -7,7 +7,7 @@
 namespace Anakeen\Ui;
 use \Dcp\AttributeIdentifiers\GROUP as myAttributes;
 
-class groupEditRender extends DefaultConfigEditRender
+class GroupEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {
