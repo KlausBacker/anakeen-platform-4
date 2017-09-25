@@ -1,5 +1,5 @@
-VERSION = 1.1.0
-RELEASE = 2.1
+VERSION = $(shell cat VERSION)
+RELEASE = $(shell cat RELEASE)
 localpub=$(shell pwd)/localpub
 port=80
 
