@@ -3,20 +3,10 @@
 
     <description>Document Uis</description>
 
-    <!-- //region full -->
-    <replaces>
-        <module name="dynacase-document-uis-light"/>
-        <module name="dynacase-document-uis"/>
-        <module name="dynacase-less-installer"/>
-    </replaces>
-    <!-- //endregion full -->
-
     <requiresOld>
         <installer version="1.5.0" comp="ge"/>
         <module comp='ge' version='3.2.23' name='dynacase-core'/>
-        <!-- //region full -->
         <module name='dynacase-tracekit-installer'/>
-        <!-- //endregion full -->
         <module name='dynacase-jquery-2-installer' comp='eq' version='2.1.4'/>
         <module name='dynacase-underscore-installer'/>
         <module name='dynacase-backbone-installer' comp='ge' version='1.1.2'/>

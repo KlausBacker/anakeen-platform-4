@@ -42,14 +42,12 @@ $action_desc = array(
         "function" => "load_renderparameters",
         "acl" => "ADMIN"
     ),
-    //region full
     array(
         "name" => "COLLECT_ERROR",
         "short_name" => N_("ddui:COLLECT_ERROR"),
         "script" => "action.collect_error.php",
         "function" => "collect_error",
     )
-    //endregion full
 
 );
 
