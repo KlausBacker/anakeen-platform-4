@@ -14,22 +14,17 @@
   color: $A4-ui-color-error;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-bool {
-  .dcpAttribute__value--toggle.off {
-    .dcpAttribute__value--text {
-      color: $A4-ui-toggle-color-text-off;
-      background-color: $A4-ui-toggle-color-bg-off;
-      padding-left: $A4-ui-toggle-padding-off;
-      transition: $A4-ui-toggle-transition;
-    }
-  }
+.dcpAttribute__content .input-group-addon button:last-child {
+  border-right: none;
+}
 
-  .dcpAttribute__value--toggle.on {
-    .dcpAttribute__value--text {
-      color: $A4-ui-toggle-color-text-on;
-      background-color: $A4-ui-toggle-color-bg-on;
-      padding-left: $A4-ui-toggle-padding-on;
-      transition: $A4-ui-toggle-transition;
-    }
-  }
+.dcpAttribute__content .input-group-addon button {
+  border-right: 1px solid #ccc;
+}
+
+.dcpAttribute__content .input-group-addon button, .dcpArray__content__cell .input-group-addon button {
+  border: none;
+  min-width: 2em;
+  height: 100%;
+  padding: 0;
 }
