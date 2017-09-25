@@ -27,27 +27,13 @@ webinst-full:
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
 	r.js -o $(localpub)/webinst/Document-uis/src/public/uiAssets/anakeen/IHM/build.js
 	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
-	php ./prepareElementForLight.php --modeFull -f $(localpub)/webinst/Document-uis/info.xml
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
-
-webinst-light:
-	-mkdir -p $(localpub)/webinst
-	rsync --delete -azvr Document-uis $(localpub)/webinst/
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
-	sed -i -e "s/$(PACKAGE)/$(PACKAGE)-light/" $(localpub)/webinst/Document-uis/build.json
-	php ./prepareElementForLight.php -f $(localpub)/webinst/Document-uis/info.xml
-	php ./prepareElementForLight.php -f $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
-	php ./prepareElementForLight.php -f $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT.app
-	find $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/IHM/ -mindepth 2 -name "*.js" -type f -delete
-	find $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/IHM/ -name "*.less" -type f -delete
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
 webinst-all: webinst webinst-selenium
 
 webinst:
 	cd ui && npm run build
-	# TODO Move some assets to Document-uis/src/public
 	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	make webinst-full
 

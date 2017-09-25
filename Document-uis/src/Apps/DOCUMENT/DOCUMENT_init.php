@@ -10,7 +10,6 @@ JSON;
 $app_const = array(
     "INIT" => "yes",
     "VERSION" => "{{VERSION}}-{{RELEASE}}",
-    //region full
     "LOGGER" => array(
         "descr" => N_("ddui:logging class") ,
         "val" => "$loggerClass"
@@ -33,6 +32,5 @@ $app_const = array(
         "val" => "5000",
         "descr" => N_("ddui:Delay notifications display (in ms)")
     )
-    //endregion full
     
 );
