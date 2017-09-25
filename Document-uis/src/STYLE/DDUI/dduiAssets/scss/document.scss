@@ -41,7 +41,7 @@ $gray: lighten($gray-base, 33.5%); // #555
 $gray-light: lighten($gray-base, 46.7%); // #777
 $gray-lighter: lighten($gray-base, 93.5%); // #eee
 
-$padding-base-vertical: 6px;
+$padding-base-vertical: 0.5rem;
 
 $nav-link-hover-bg: $gray-lighter;
 // END OLD VARIABLES
@@ -50,9 +50,9 @@ $attrInputHeight: 2.5rem;
 $documentHeaderHeight: 2.5rem;
 // Bootstrap variables
 // Gutter between label and content attribute
-$grid-gutter-width: 5px;
+$grid-gutter-width: 0.416rem;
 // Width limit to view label up to content
-$grid-float-breakpoint: 480px;
+$grid-float-breakpoint: 40rem;
 
 $font-size-base: $A4-ui-font-base-size;
 $line-height-base: $dcp-line-height;
