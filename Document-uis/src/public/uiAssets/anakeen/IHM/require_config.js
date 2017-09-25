@@ -34,7 +34,7 @@
             "ckeditor": "../uiAssets/externals/ckeditor/4/ckeditor",
             "ckeditor-jquery": "../uiAssets/externals/ckeditor/4/adapters/jquery",
             "datatables": "../uiAssets/externals/jquery-dataTables/js/jquery.dataTables",
-            "datatables.net": "../uiAssets/uiAssets/externals/jquery-dataTables/js/dataTables.bootstrap",
+            "datatables.net": "../uiAssets/externals/jquery-dataTables/js/dataTables.bootstrap",
             "es6-promise" : "../uiAssets/externals/es6-promise/es6-promise",
             "dcpDocument/libs/promise" : "uiAssets/anakeen/IHM/libs/promise"
         },

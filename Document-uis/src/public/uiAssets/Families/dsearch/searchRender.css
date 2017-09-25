@@ -1,0 +1,240 @@
+.dcpAttribute__content[data-attrid=se_funcs] .k-dropdown-wrap .k-state-default {
+    width: 100%;
+    position: absolute;
+}
+
+.dcpAttribute__content[data-attrid=se_funcs] .k-widget.k-dropdown.k-header {
+    width: 100%;
+}
+
+.dcpAttribute__content[data-attrid=se_keys] .k-widget.k-datepicker.k-header {
+    width: 100%;
+}
+
+/* css rules for icons' position */
+
+.dcpAttribute__content[data-attrid=se_attrids] .k-combobox .k-i-arrow-s {
+    margin-top: -7px;
+    margin-left: -7px;
+}
+
+.dcpAttribute__content[data-attrid=se_funcs] .k-dropdown-wrap .k-i-arrow-s {
+    margin-top: -7px;
+    margin-left: -7px;
+}
+
+.dcpAttribute__content[data-attrid=se_keys] .k-combobox .k-i-arrow-s {
+    margin-top: -7px;
+    margin-left: -7px;
+}
+
+/* css rules @table/column float size */
+
+.dcpArray--not_custom .dcpArray__head__cell[data-attrid=se_attrids] {
+    width : 30%;
+}
+.dcpArray--not_custom .dcpArray__head__cell[data-attrid=se_funcs] {
+    width : 30%;
+}
+
+
+.dcpArray--custom .dcpArray__head__cell[data-attrid=se_attrids] {
+    width : 20%;
+}
+.dcpArray--custom .dcpArray__head__cell[data-attrid=se_funcs] {
+    width : 20%;
+}
+.dcpArray--custom .dcpArray__head__cell[data-attrid=se_ols] {
+    width : 5em;
+}
+
+.dcpArray--custom .dcpArray__head__cell[data-attrid=se_leftp] {
+    width : 6em;
+}
+.dcpAttribute__content[data-attrid=se_leftp] .dcpAttribute__value--enumbuttons{
+    height: 30px;
+}
+.dcpAttribute__content[data-attrid=se_leftp] .selected{
+    height: 28px;
+}
+
+.dcpArray--custom .dcpArray__head__cell[data-attrid=se_rightp] {
+    width : 6em;
+}
+.dcpAttribute__content[data-attrid=se_rightp] .dcpAttribute__value--enumbuttons{
+    height: 30px;
+}
+.dcpAttribute__content[data-attrid=se_rightp] .selected{
+    height: 28px;
+}
+
+.dcpArray__head__cell{
+    min-width: 5em;
+}
+
+/* css rules for key fields with method button */
+
+.dcpAttribute__content[data-attrid=se_keys] .button--on.k-header.k-widget {
+    width : calc(100% - 2em);
+}
+.dcpAttribute__content[data-attrid=se_keys] .button--on.k-textbox {
+    width : calc(100% - 2em);
+}
+
+.dcpAttribute__content[data-attrid=se_keys] .button--off{
+    width:99%;
+}
+
+.funcBtn {
+    height: 30px;
+    padding: 0 5px;
+}
+
+/* css rules for result */
+
+.content--result{
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+
+/* hide se_fam @se_crit */
+
+.dcpFrame__content[data-attrid=se_crit] .dcpAttribute[data-attrid=se_fam]{
+    display: none;
+}
+
+
+/* boolean && operands buttons */
+
+.dcpAttribute__content[data-attrid=se_leftp] .dcpAttribute__content__buttons{
+    display:none;
+}
+.dcpAttribute__content[data-attrid=se_rightp] .dcpAttribute__content__buttons{
+    display:none;
+}
+.dcpAttribute__content[data-attrid=se_ols] .dcpAttribute__content__buttons{
+    display:none;
+}
+
+/* condition radio list */
+
+.dcpAttribute__content[data-attrid=se_ol] .dcpAttribute__value--enumbuttons {
+    border: none;
+}
+.dcpAttribute__content[data-attrid=se_ol] .dcpAttribute__content__buttons {
+    display:none;
+}
+.dcpAttribute__left[data-attrid=se_ol] {
+    width:20%;
+}
+
+
+.dcpArray__body[data-attrid=se_t_detail] .dcpAttribute__value--edit.k-widget {
+    border:0;
+}
+.dcpArray__body[data-attrid=se_t_detail] .dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--toggle .dcpAttribute__value--text {
+    min-width:2em;
+    width:100%;
+}
+
+.dcpArray__body[data-attrid=se_t_detail] .dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--toggle.off .dcpAttribute__value--text {
+    display: list-item;
+}
+/* result border */
+
+.result--grid {
+    border: solid 1px #cecece;
+    margin: 10px;
+}
+.dcpDocument--view .result--grid {
+    border: none;
+
+}
+.result--content {
+    overflow:visible!important;
+}
+.result--waiting.result--grid .dataTables_wrapper {
+    visibility:hidden;
+}
+
+.result-waiting {
+    display: none;
+}
+.dcpTab--loading .result-waiting,
+.result--waiting.result--grid .result-waiting {
+    display: block;
+    background-color: #eaeaea;
+    text-align: center;
+    padding: 10px;
+    font-size: normal;
+   /* position: absolute;*/
+    width: calc(100% - 15px);
+    height: 100%;
+    min-height: 200px;
+}
+.result-waiting-text {
+    border: solid 1px grey;
+    display: inline-block;
+    padding: 0 1em;
+    background-color: white;
+}
+.result-waiting-text img {
+    height: 6em;
+}
+
+li.menu__element.menu__element--item[data-menu-id=view] {
+    background: #5eb4ff;
+}
+li.menu__element.menu__element--item[data-menu-id=view]:hover {
+    background: #5bacf4;
+}
+.search-tabs ul.k-tabstrip-items li {
+    max-width: 15em;
+    width:calc(25% - 2px);
+}
+
+.search-tabs ul.k-tabstrip-items {
+    padding-left:2em;
+}
+
+.search-tabs .k-tabstrip-items .k-loading.k-complete {
+    border: none;
+}
+
+.dcpTab--loading .dcpCustomTemplate--content{
+    visibility: hidden;
+}
+.report-title {
+    font-size: 120%;
+    text-align: center;
+    padding: 0.5em;
+}
+.search-grid.table tr.odd {
+    background-color:#f7f7f7;
+}
+.search-grid.table tbody tr:hover {
+    background-color: rgba(185, 225, 255, 0.5);
+}
+
+thead.tableFloatingHeaderOriginal th {
+    background-color: white;
+}
+.search-grid tfoot td {
+    font-weight: bold;
+}
+.dataTables_wrapper > .row:first-child {
+    display:none;
+}
+
+.row[data-attrid=se_ol] {
+    width:auto;
+}
+.row[data-attrid=se_ol] .dcpAttribute__value--enumlabel {
+    max-width:30em;
+    width:22em;
+}
+.row[data-attrid=se_ol] .dcpAttribute__value--enumbuttons {
+    width:auto;
+}
+

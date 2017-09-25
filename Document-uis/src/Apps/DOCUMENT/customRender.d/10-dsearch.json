@@ -1,0 +1,15 @@
+{
+  "families":
+  {
+    "DSEARCH":
+    {
+      "renderAccessClass": "SearchUi\\DSearchAccess",
+      "disableTag" : true
+    },
+    "REPORT":
+    {
+      "renderAccessClass": "SearchUi\\ReportAccess",
+      "disableTag" : true
+    }
+  }
+}

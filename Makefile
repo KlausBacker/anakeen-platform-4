@@ -1,7 +1,7 @@
 VERSION = 1.1.0
 RELEASE = 2.1
 localpub=$(shell pwd)/localpub
-
+port=80
 
 stub:
 	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
@@ -14,11 +14,19 @@ webinst-selenium:
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/Tests/build.json $(localpub)/selenium/Tests/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/selenium/Tests/ -o .
 
+
+deploy-test:
+	rm -f *webinst
+	make webinst-selenium
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-ui-test*webinst -- --force
+
+
 webinst-full:
 	-mkdir -p $(localpub)/webinst
 	rsync --delete -azvr Document-uis $(localpub)/webinst/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
 	r.js -o $(localpub)/webinst/Document-uis/src/public/uiAssets/anakeen/IHM/build.js
+	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
 	php ./prepareElementForLight.php --modeFull -f $(localpub)/webinst/Document-uis/info.xml
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
@@ -53,3 +61,4 @@ deploy:
 	rm -f *webinst
 	make webinst
 	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-document-uis-1*webinst -- --force
+	make clean

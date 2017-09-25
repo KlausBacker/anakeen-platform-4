@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="[DYNACASE_FAVICO]"/>
+    <link rel="shortcut icon" href="[DYNACASE_FAVICO]"/>
+    <link rel="stylesheet" href="css/dcp/document/bootstrap.css?ws=[WS]">
+    <link rel="stylesheet" href="css/dcp/document/kendo.css?ws=[WS]">
+    <link rel="stylesheet" href="lib/jquery-dataTables/1.10/css/dataTables.bootstrap.css?ws=[WS]">
+    <link rel="stylesheet" type="text/css" href="DOCUMENT_GRID_HTML5/widgets/docGrid.css?ws=[WS]" media="all"/>
+    <title>[TEXT:KITCHEN_SINK:Title]</title>
+</head>
+<body>
+<div class="container-fluid">
+    <table id="docGrid" class="table">
+
+    </table>
+</div>
+
+</body>
+<script type="text/javascript" src="lib/underscore/underscore.js?ws=[WS]"></script>
+<script type="text/javascript" src="lib/jquery/ddui/jquery.min.js?ws=[WS]"></script>
+<script type="text/javascript" src="lib/KendoUI/ddui/js/kendo-ddui-builded.js?ws=[WS]"></script>
+<script type="text/javascript" src="lib/jquery-dataTables/1.10/js/jquery.dataTables.js?ws=[WS]"></script>
+<script type="text/javascript" src="lib/jquery-dataTables/1.10/js/dataTables.bootstrap.js?ws=[WS]"></script>
+<script type="text/javascript" src="DOCUMENT_GRID_HTML5/widgets/documentGrid-built.js"></script>
+<script>
+    $("#docGrid").docGrid({
+        collection: "SSYS_FAMILIES",
+        columnsDef: {
+            "columns": [
+                {type: "openDoc"},
+                {id: "title"}
+            ]
+        }
+    });
+</script>
+</html>

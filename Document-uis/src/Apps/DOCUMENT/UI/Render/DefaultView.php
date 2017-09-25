@@ -152,7 +152,7 @@ class DefaultView extends RenderDefault
     {
         $templates = parent::getTemplates($document);
         if ($document->locked == - 1) {
-            $templates["sections"]["header"]["file"] = "DOCUMENT/IHM/views/document/document__header-fixed.mustache";
+            $templates["sections"]["header"]["file"] = PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/document__header-fixed.mustache";
         }
         return $templates;
     }

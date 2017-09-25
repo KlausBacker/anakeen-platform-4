@@ -69,7 +69,7 @@ class RenderDefault implements IRenderConfig
             "require" => "$pubExternalPath/RequireJS/require.js?ws=" . $version,
             "config" => $modeDebug !== "FALSE" ? "$pubInternalPath/require_config.js?ws=" . $version : "$pubInternalPath/require_config.min.js?ws=" . $version,
             "kendo-ddui" => $modeDebug !== "FALSE" ? "$pubExternalPath/KendoUI/js/kendo-ddui-builded.js?ws=" . $version : "$pubExternalPath/KendoUI/js/kendo-ddui-builded.min.js?ws=" . $version,
-            "document" => $modeDebug !== "FALSE" ? "../public/uiAssets/anakeen/IHM/main.js?ws=" . $version : "$pubInternalPath/main-built.js?ws=" . $version
+            "document" => $modeDebug !== "FALSE" ? PUBLIC_DIR."/uiAssets/anakeen/IHM/main.js?ws=" . $version : "$pubInternalPath/main-built.js?ws=" . $version
         ));*/
     }
     
@@ -77,154 +77,154 @@ class RenderDefault implements IRenderConfig
     {
         return array(
             "body" => array(
-                "file" => "../public/uiAssets/anakeen/IHM/views/document/document.mustache"
+                "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/document.mustache"
             ) ,
             "sections" => array(
                 "header" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/document/document__header.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/document__header.mustache"
                 ) ,
                 "menu" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/document/document__menu.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/document__menu.mustache"
                 ) ,
                 "content" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/document/document__content.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/document__content.mustache"
                 ) ,
                 "footer" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/document/document__footer.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/document/document__footer.mustache"
                 )
             ) ,
             "menu" => array(
                 "menu" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/widgets/menu/menu.mustache",
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/menu/menu.mustache",
                 ) ,
                 "itemMenu" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/widgets/menu/itemMenu.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/menu/itemMenu.mustache"
                 ) ,
                 "listMenu" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/widgets/menu/listMenu.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/menu/listMenu.mustache"
                 ) ,
                 "dynamicMenu" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/widgets/menu/dynamicMenu.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/menu/dynamicMenu.mustache"
                 ) ,
                 "separatorMenu" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/widgets/menu/separatorMenu.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/menu/separatorMenu.mustache"
                 )
             ) ,
             "attribute" => array(
                 "simpleWrapper" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/attributes/singleWrapper.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/attributes/singleWrapper.mustache"
                 ) ,
                 "description" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/attributes/attributeDescription.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/attributes/attributeDescription.mustache"
                 ) ,
                 
                 "default" => array( // use it when no type is defined
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/default/write.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/default/write.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/default/read.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/default/read.mustache"
                     )
                 ) ,
                 "label" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/label/label.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/label/label.mustache"
                 ) ,
                 "longtext" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/longtext/longtextWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/default/read.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/default/read.mustache"
                     )
                 ) ,
                 "file" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/file/fileWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/file/fileWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/file/fileRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/file/fileRead.mustache"
                     )
                 ) ,
                 "enum" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/enum/enumWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/enum/enumWrite.mustache"
                     ) ,
                     "writeRadio" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
                     ) ,
                     "writeToggle" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/enum/enumRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/enum/enumRead.mustache"
                     )
                 ) ,
                 "htmltext" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/longtext/longtextWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
                 ) ,
                 "docid" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/docid/docidWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ) ,
                 "account" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/docid/docidWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ) ,
                 "thesaurus" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/docid/docidWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ) ,
                 "image" => array(
                     "write" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/image/imageWrite.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/image/imageWrite.mustache"
                     ) ,
                     "read" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/image/imageRead.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/image/imageRead.mustache"
                     )
                 ) ,
                 "frame" => array(
                     "label" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/views/attributes/frame/label.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/attributes/frame/label.mustache"
                     ) ,
                     "content" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/views/attributes/frame/content.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/attributes/frame/content.mustache"
                     )
                 ) ,
                 "array" => array(
                     "label" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/array/label.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/array/label.mustache"
                     ) ,
                     "content" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/array/content.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/array/content.mustache"
                     ) ,
                     "line" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/array/line.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/array/line.mustache"
                     ) ,
                     "responsive" => array(
-                        "file" => "../public/uiAssets/anakeen/IHM/widgets/attributes/array/responsive.mustache"
+                        "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/widgets/attributes/array/responsive.mustache"
                     )
                 )
             ) ,
             "window" => array(
                 "confirm" => array(
-                    "file" => "../public/uiAssets/anakeen/IHM/views/window/confirm.mustache"
+                    "file" => PUBLIC_DIR."/uiAssets/anakeen/IHM/views/window/confirm.mustache"
                 )
             )
         );

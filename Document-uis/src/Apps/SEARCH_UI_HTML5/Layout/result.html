@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="[DYNACASE_FAVICO]"/>
+    <link rel="stylesheet" href="css/dcp/document/bootstrap.css?ws=[WS]">
+    <link rel="stylesheet" href="css/dcp/document/kendo.css?ws=[WS]">
+    <link rel="stylesheet" href="uiAssets/externals/jquery-dataTables/css/dataTables.bootstrap.css?ws=[WS]">
+    <link rel="stylesheet" type="text/css" href="DOCUMENT_GRID_HTML5/widgets/docGrid.css?ws=[WS]" media="all"/>
+
+    <title>[TITLE]</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    <table id="grid" class="table table-stripped table-condensed table-bordered">
+    </table>
+</div>
+
+
+<script type="text/javascript" src="uiAssets/externals/underscore/underscore-min.js?ws=[WS]"></script>
+<script type="text/javascript" src="uiAssets/externals/jquery/jquery.min.js?ws=[WS]"></script>
+<script type="text/javascript" src="uiAssets/externals/KendoUI/js/kendo-ddui-builded.js?ws=[WS]"></script>
+<script type="text/javascript" src="uiAssets/externals/jquery-dataTables/js/jquery.dataTables.js?ws=[WS]"></script>
+<script type="text/javascript" src="uiAssets/externals/jquery-dataTables/js/dataTables.bootstrap.js?ws=[WS]"></script>
+<script type="text/javascript" src="uiAssets/anakeen/IHM/widgets/widget.js"></script>
+<script type="text/javascript" src="DOCUMENT_GRID_HTML5/widgets/documentGrid-built.js"></script>
+
+<script type="text/javascript">
+
+    $("#grid").docGrid({
+        collection: "[id]",
+        columnsDef: {
+            "defaultFam": "[famid]",
+            "columns": [
+                {type: "openDoc"},
+                [BLOCK abstract]{id: "[id]"},[ENDBLOCK abstract]
+            ]
+        }
+    });
+</script>
+</body>
+</html>
