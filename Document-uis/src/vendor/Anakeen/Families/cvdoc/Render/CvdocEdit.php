@@ -57,6 +57,7 @@ HTML
         );
         $options->enum(myAttributes::cv_kview)->setDisplay('vertical');
         $options->enum(myAttributes::cv_displayed)->setDisplay('bool');
+        $options->enum(myAttributes::cv_displayed)->displayDeleteButton(false);
         return $options;
     }
     /**
