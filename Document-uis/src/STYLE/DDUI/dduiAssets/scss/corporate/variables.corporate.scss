@@ -12,7 +12,7 @@ $gray: #878787;
 $gray-light: #C8C8C8;
 $gray-light-alt: #DDDDDD;
 $gray-lighter: #F4F4F4;
-$gray-lighter-alt: #F1EFEF;
+$gray-lighter-alt: #F1F1F1;
 $green-light: #8AE234;
 $white: #FFFFFF;
 
@@ -35,7 +35,7 @@ $A4-ui-color-client: $green-light;
 $A4-ui-color-label: $gray-lighter-alt;
 $A4-ui-color-btn-click: $blue-darker;
 
-$A4-ui-color-body-background: $gray-light-alt;
+$A4-ui-color-body-background: $gray-lighter-alt;
 $A4-ui-color-frame-background: $white;
 
 $A4-ui-color-font-button: $A4-ui-color-text-colored;
@@ -196,13 +196,24 @@ $A4-ui-tab-padding: 0.833rem 0rem 0.5rem;
 // Menu
 $A4-ui-menu-bg: #FAFAFA;
 $A4-ui-menu-fixed-bg: #157EFB;
-$A4-ui-menu-font-color: $A4-ui-color-text;
+$A4-ui-menu-fixed-font: $A4-ui-value-font-variant;
+$A4-ui-menu-font-color: $gray;
 $A4-ui-menu-fixed-font-color: #FFFFFF;
+$A4-ui-menu-separator: 1px solid #ccc;
+$A4-ui-menu-height: 2.833rem;
+$A4-ui-menu-item-padding: 0 1.666rem 0 1.666rem;
 
 // Icons
 $A4-ui-icon-size: 1.166rem;
 $A4-ui-icon-color: $gray;
 $A4-ui-icon-spacer: 0.583rem;
+
+// Header
+$A4-ui-header-height: 2.5rem;
+$A4-ui-header-bg: $A4-ui-color-frame-background;
+$A4-ui-header-title-margin: 0.833rem;
+$A4-ui-header-title-line-height: 2;
+
 
 // Define old used variables
 

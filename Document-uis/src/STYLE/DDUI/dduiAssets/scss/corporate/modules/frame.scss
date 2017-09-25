@@ -14,5 +14,9 @@
   background-color: transparent;
   color: $A4-ui-frame-color-title;
   line-height: $A4-ui-title-font-line-height;
-  border-bottom: 0,083rem solid $A4-ui-frame-color-title;
+  border-bottom: 0.083rem solid #d8d9da;
+}
+
+.card-header.css-frame-head.dcpFrame__label.dcp__frame--open.dcpLabel {
+  padding-left: 0;
 }
