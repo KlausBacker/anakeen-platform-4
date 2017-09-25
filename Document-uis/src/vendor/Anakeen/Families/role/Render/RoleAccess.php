@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class IuserAccess implements \Dcp\Ui\IRenderConfigAccess
+class RoleAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
@@ -17,9 +17,9 @@ class IuserAccess implements \Dcp\Ui\IRenderConfigAccess
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return new IuserEditRender();
+                return new RoleEditRender();
             case \Dcp\Ui\RenderConfigManager::ViewMode:
-                return new IuserViewRender();
+                return new RoleViewRender();
         }
         return null;
     }

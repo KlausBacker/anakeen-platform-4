@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class defaultConfigViewRender extends \Dcp\Ui\DefaultView
+class DefaultConfigViewRender extends \Dcp\Ui\DefaultView
 {
     public function getOptions(\Doc $document)
     {
@@ -20,12 +20,4 @@ class defaultConfigViewRender extends \Dcp\Ui\DefaultView
         return parent::getCssReferences();
     }
 
-//    public function getMenu(\Doc $document)
-//    {
-//        $menu = parent::getMenu($document);
-//        $other = new \Dcp\Ui\ListMenu("timer-otherMenu", ___("Autres","ddui timer"));
-//        $menu->appendElement($other);
-//
-//        return $menu;
-//    }
 }

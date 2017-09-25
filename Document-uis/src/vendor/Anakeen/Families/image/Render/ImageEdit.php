@@ -5,16 +5,15 @@
 */
 
 namespace Anakeen\Ui;
+use \Dcp\AttributeIdentifiers\IMAGE as myAttributes;
 
-use \Dcp\AttributeIdentifiers\IGROUP as myAttributes;
-use Dcp\Ui\ButtonOptions;
-use Dcp\Ui\CreateDocumentOptions;
-
-class IgroupViewRender extends DefaultConfigViewRender
+class ImageEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
+        $options->enum(myAttributes::img_catg)->setDisplay('vertical');
         return $options;
     }
+
 }

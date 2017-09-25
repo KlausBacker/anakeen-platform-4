@@ -6,11 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use \Dcp\AttributeIdentifiers\IGROUP as myAttributes;
-use Dcp\Ui\ButtonOptions;
-use Dcp\Ui\CreateDocumentOptions;
-
-class IgroupViewRender extends DefaultConfigViewRender
+class RoleEditRender extends DefaultConfigEditRender
 {
     public function getOptions(\Doc $document)
     {
