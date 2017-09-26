@@ -7,3 +7,23 @@
   padding-top: 0;
   height: 100%;
 }
+
+.dcpLabel {
+  color: $A4-ui-color-label;
+  padding-bottom: $A4-ui-doc-edit-label-padding;
+}
+
+.dcpAttribute {
+  margin-top: 1.6666rem;
+  margin-bottom: 1.6666rem;
+}
+
+// Consultation
+.dcpDocument--view .dcpAttribute__content {
+  border-bottom: 0.083rem solid #f1efef;
+  padding-bottom: 0.666rem;
+}
+
+.dcpAttribute__value--read {
+  font-family: $A4-ui-value-font-variant;
+}
