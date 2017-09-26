@@ -24,9 +24,9 @@ class RenderDefault implements IRenderConfig
     {
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return array(
-            "bootstrap" => "css/dcp/document/bootstrap.css?ws=" . $version,
-            "kendo" => "css/dcp/document/kendo.css?ws=" . $version,
-            "document" => "css/dcp/document/document.css?ws=" . $version,
+            "bootstrap" => "css/a4/document/bootstrap.css?ws=" . $version,
+            "kendo" => "css/a4/document/kendo.css?ws=" . $version,
+            "document" => "css/a4/document/document.css?ws=" . $version,
             "datatable" => "uiAssets/externals/jquery-dataTables/css/dataTables.bootstrap.css?ws=" . $version
         );
     }

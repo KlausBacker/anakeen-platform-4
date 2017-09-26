@@ -1,21 +1,7 @@
 <?xml version="1.0"?>
 <module  name="@moduleName@" release="@release@" version="@version@"  license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
 
-    <description>Document Uis</description>
-
-    <requiresOld>
-        <installer version="1.5.0" comp="ge"/>
-        <module comp='ge' version='3.2.23' name='dynacase-core'/>
-        <module name='dynacase-tracekit-installer'/>
-        <module name='dynacase-jquery-2-installer' comp='eq' version='2.1.4'/>
-        <module name='dynacase-underscore-installer'/>
-        <module name='dynacase-backbone-installer' comp='ge' version='1.1.2'/>
-        <module name='dynacase-mustache.js-installer'/>
-        <module name='dynacase-mustache.php-installer'/>
-        <module name='dynacase-less-installer'/>
-        <module name="dynacase-jquery-dataTables-1.10-installer"/>
-        <module name='dynacase-es6-promise-installer'/>
-    </requiresOld>
+    <description>A4 : document interface</description>
 
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
@@ -25,9 +11,6 @@
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
-        <process command="/bin/bash ./Apps/DOCUMENT/Programs/jsLink">
-            <label>Link js libraries</label>
-        </process>
 
 
         <process command="programs/record_application SEARCH_UI_HTML5"/>
@@ -44,9 +27,6 @@
         </process>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
-        <process command="/bin/bash ./Apps/DOCUMENT/Programs/jsLink">
-            <label>Link js libraries</label>
-        </process>
         <process command="programs/post_migration DOCUMENT">
             <label>Migration</label>
         </process>

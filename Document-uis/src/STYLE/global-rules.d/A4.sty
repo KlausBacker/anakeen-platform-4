@@ -8,43 +8,9 @@ ini_set("pcre.jit", 0); // Need for PHP7.0 to compress big css files
 require_once 'WHAT/Lib.Common.php';
 
 $sty_desc = array(
-    "name" => "DDUI", //Name
-    "description" => "DDUI LESS STYLE", //long description
-    
+    "name" => "A4", //Name
+    "description" => "A4 STYLE", //long description
 );
-//produce global less file
-$generateGlobalVarFile = function ()
-{
-    $globalVarFile = "STYLE/custom-less-variable.d/global_variables.less";
-    $fullContent = "";
-    $files = array();
-    
-    $iterator = new DirectoryIterator("STYLE/custom-less-variable.d/");
-    foreach ($iterator as $fileinfo) {
-        if (!$fileinfo->isFile()) {
-            continue;
-        }
-        if ($fileinfo->getBasename() == 'global_variables.less') {
-            continue;
-        }
-        if ($fileinfo->getExtension() === "less") {
-            $files[$fileinfo->getPathname() ] = $fileinfo->getPathname();
-        }
-    }
-    
-    ksort($files);
-    
-    foreach ($files as $currentFiles) {
-        $fullContent.= "// $currentFiles\n";
-        $fullContent.= file_get_contents($currentFiles) . "\n";
-    }
-    if ((file_exists($globalVarFile) === false) || (($previousContent = file_get_contents($globalVarFile)) === false)) {
-        $previousContent = '';
-    }
-    if ($fullContent !== $previousContent) {
-        file_put_contents($globalVarFile, $fullContent);
-    }
-};
 
 $generateGlobalScssVarFile = function ()
 {
@@ -79,34 +45,32 @@ $generateGlobalScssVarFile = function ()
     }
 };
 
-
-//$generateGlobalVarFile();
 $generateGlobalScssVarFile();
 // global parameters which can be use for other css
 $sty_rules = array(
     'css' => array(
-        'dcp/document/bootstrap.css' => array(
+        'a4/document/bootstrap.css' => array(
             "src" => "STYLE/DDUI/dduiAssets/scss/bootstrap.scss" ,
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser'
+                "className" => '\Dcp\Style\A4ScssParser'
             )
         ) ,
-        'dcp/document/kendo.css' => array(
+        'a4/document/kendo.css' => array(
             "src" => "STYLE/DDUI/dduiAssets/scss/corporate/kendo.bootstrap.scss",
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser'
+                "className" => '\Dcp\Style\A4ScssParser'
             ) ,
         ) ,
-        'dcp/document/document.css' => array(
+        'a4/document/document.css' => array(
             "src" => "STYLE/DDUI/dduiAssets/scss/document.scss",
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser'
+                "className" => '\Dcp\Style\A4ScssParser'
             )
         ) ,
-        'dcp/document/ckeditor.css' => array(
+        'a4/document/ckeditor.css' => array(
             "src" => "public/uiAssets/anakeen/IHM/widgets/attributes/htmltext/ckeditor.scss",
             "deploy_parser" => array(
-                "className" => '\Dcp\Style\dcpScssParser'
+                "className" => '\Dcp\Style\A4ScssParser'
             )
         )
     )

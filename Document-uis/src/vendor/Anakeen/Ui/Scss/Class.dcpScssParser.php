@@ -13,7 +13,7 @@ use Leafo\ScssPhp\Compiler;
 
 require_once 'vendor/Anakeen/Ui/PhpLib/vendor/leafo/scssphp/scss.inc.php';
 
-class dcpScssParser implements ICssParser
+class A4ScssParser implements ICssParser
 {
     protected $_srcFile = null;
     protected $_styleConfig = array();
