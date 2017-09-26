@@ -1,8 +1,36 @@
-body {
+.document {
   font-family: $A4-ui-font;
+  background-color: $A4-ui-color-body-background;
+  color: $A4-ui-color-font-document;
 }
 
 .dcpDocument__body {
   padding-left: 0;
   padding-right: 0;
+}
+
+.dcpDocument__header {
+  height: 3.75rem;
+}
+
+.dcpDocument__header a.dcpDocument__header__title {
+  color: $A4-ui-color-text;
+  margin-top: $A4-ui-header-title-margin;
+  line-height: $A4-ui-header-title-line-height;
+  text-decoration: none;
+}
+
+.dcpDocument__header__family {
+  line-height: 3;
+  font-style: normal !important;
+  font-weight: lighter;
+  margin-right: 1.666rem !important;
+}
+
+.dcpDocument__form.form-horizontal {
+  background-color: #fafafa;
+}
+
+.card-default {
+  border: none;
 }

@@ -1,21 +1,54 @@
 .dcpDocument__menu {
   background-color: $A4-ui-tab-active-bg;
   padding: 0;
-  box-shadow: 0 0.416rem 0.5rem rgba(0,0,0,0.15);
+  box-shadow: 0 0.41666rem 0.5rem rgba(0,0,0,0.15);
+}
+
+.menu__content {
+  padding: 0 !important;
+  margin: 0!important;
+
+  a.k-link:hover, .k-menu:not(.k-context-menu) > .k-item.k-state-hover > .k-link {
+    color: $A4-ui-color-btn-action;
+    cursor: pointer;
+  }
 }
 
 .menu__content.k-menu {
   background-color: $A4-ui-menu-bg;
   color: $A4-ui-menu-font-color;
+  font-family: $A4-ui-menu-fixed-font;
 }
 
 .menu--fixed {
   .menu__content {
     background-color: $A4-ui-menu-fixed-bg;
     color: $A4-ui-menu-fixed-font-color;
+    font-family: $A4-ui-menu-fixed-font;
+
+    .k-menu .menu__element--item.k-item > .k-link {
+      border-right-color: $A4-ui-menu-fixed-font-color;
+    }
+
+    .k-menu .k-item.k-state-hover, .k-menu .k-item.k-state-hover * {
+      background-color: $A4-ui-color-hovered;
+      color: $A4-ui-color-btn-action;
+    }
   }
 }
 
 .menu__content.k-menu {
   justify-content: flex-end;
+  height: $A4-ui-menu-height;
+}
+
+.menu__content .k-menu .menu__element--item.k-item > .k-link {
+  border-right: $A4-ui-menu-separator;
+  padding: $A4-ui-menu-item-padding;
+}
+
+.menu__content .menu__element {
+  height: 100%;
+  padding-top: ($A4-ui-menu-height - 1.666rem)/2;
+  padding-bottom: ($A4-ui-menu-height - 1.666rem)/2;
 }

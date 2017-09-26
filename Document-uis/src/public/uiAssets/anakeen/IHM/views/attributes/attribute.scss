@@ -28,6 +28,12 @@
   width: 1em;
 }
 
+.dcpAttribute {
+  @media (min-width: ($grid-float-breakpoint + 1)) {
+    flex-direction: column;
+  }
+}
+
 /**
  * Manage labelPosition options
  */
@@ -37,14 +43,13 @@
 {
   // Calculate width based on number of columns available
   @media (min-width: ($grid-float-breakpoint + 1)) {
-    float: left;
-    width: percentage((4 / $grid-columns));
-    text-align: right;
+    //width: percentage((4 / $grid-columns));
+    flex-grow: 1;
+    text-align: left;
     margin-bottom: 0;
     padding-top: $dcp-attribute-padding-base-vertical; // Default padding plus a border
   }
 }
-
 
 
 .dcpAttribute__content.dcpAttribute__right,
@@ -56,8 +61,8 @@
     padding-left: 2em;
   }
   @media (min-width: ($grid-float-breakpoint + 1)) {
-    float: left;
-    width: percentage((8 / $grid-columns));
+    //width: percentage((8 / $grid-columns));
+    flex-grow: 1;
   }
 }
 
@@ -79,3 +84,4 @@
   //.make-xs-column(12);
   text-align: left;
 }
+
