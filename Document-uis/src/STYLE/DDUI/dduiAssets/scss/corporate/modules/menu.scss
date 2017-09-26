@@ -30,8 +30,9 @@
       border-right-color: $A4-ui-menu-fixed-font-color;
     }
 
-    .k-menu .k-item.k-state-hover {
+    .k-menu .k-item.k-state-hover, .k-menu .k-item.k-state-hover * {
       background-color: $A4-ui-color-hovered;
+      color: $A4-ui-color-btn-action;
     }
   }
 }
