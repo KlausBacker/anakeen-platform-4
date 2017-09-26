@@ -169,7 +169,9 @@ class TransitionRender
      */
     public function getRenderOptions($transitionId)
     {
-        $options = new RenderOptions();
+        $default = new RenderDefault();
+        
+        $options = $default->getOptions($this->workflow);
         $options->longtext(self::commentAttribute)->setPlaceHolder(___("Add a note to the history", "ddui"))->setLabelPosition(CommonRenderOptions::nonePosition);
         $options->frame(self::commentFrameAttribute)->setLabelPosition(CommonRenderOptions::nonePosition);
         
