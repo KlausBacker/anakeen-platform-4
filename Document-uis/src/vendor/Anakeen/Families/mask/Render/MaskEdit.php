@@ -18,4 +18,12 @@ class MaskEditRender extends DefaultConfigEditRender
         $options->arrayAttribute(myAttributes::msk_t_contain)->disableRowDel(true);
         return $options;
     }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $js = parent::getJsReferences();
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js["dduiMask"] = "uiAssets/Families/mask/mask.js?ws=" . $version;
+        return $js;
+    }
 }
