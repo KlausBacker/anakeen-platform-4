@@ -12,6 +12,7 @@
            {{# renderOptions.maxLength}}maxlength="{{renderOptions.maxLength}}"{{/ renderOptions.maxLength}}
            {{# renderOptions.placeHolder}}placeHolder="{{renderOptions.placeHolder}}"{{/ renderOptions.placeHolder}}
           class="form-control dcpAttribute__value dcpAttribute__value--edit k-textbox">{{attributeValue.value}}</textarea>
+    {{#hadButtons}}
     <span class="dcpAttribute__content__buttons input-group-addon">
         {{#renderOptions.buttons}}
         <button type="button" data-title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">{{{renderHtmlContent}}}</button>
@@ -23,4 +24,5 @@
         </button>
         {{/deleteButton}}
     </span>
+     {{/hadButtons}}
 </div>

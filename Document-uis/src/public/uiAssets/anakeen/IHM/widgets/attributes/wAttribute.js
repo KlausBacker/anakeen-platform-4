@@ -335,16 +335,14 @@
             if (this.options.renderOptions && this.options.renderOptions.labels) {
                 this.options.labels = _.extend(this.options.labels, this.options.renderOptions.labels);
             }
+
             if (this.options.renderOptions && this.options.renderOptions.displayDeleteButton === false) {
                 this.options.deleteButton = false;
             }
             if (this.getMode() !== "hidden") {
                 this._initDom();
 
-                if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
-                    this.element.find(".dcpAttribute__content__buttons").hide();
-                    this.element.find(".dcpAttribute__value").addClass("dcpAttribute__content__nobutton");
-                }
+
 
                 this._initEvent();
             }
@@ -417,6 +415,12 @@
                 }
             }
             this.element.append(Mustache.render(this._getTemplate(this.options.mode) || "", this.options));
+
+
+            if (this.element.find(".dcpAttribute__content__buttons button").length === 0) {
+                this.element.find(".dcpAttribute__content__buttons").hide();
+                this.element.find(".dcpAttribute__value").addClass("dcpAttribute__content__nobutton");
+            }
         },
 
         /**
