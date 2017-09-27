@@ -171,8 +171,9 @@ $A4-ui-radio-border-selected: $gray;
 $A4-ui-radio-border-unselected: fade-out($gray, 0.3);
 $A4-ui-radio-size-checked: 0.6666rem;
 $A4-ui-check-content: "\2713";
+
 // Attribute
-$A4-ui-doc-edit-label-padding: 0.66666rem;
+$A4-ui-doc-edit-label-padding: 0rem 0rem 0.66666rem 0rem;
 $A4-ui-doc-edit-attribute-bg: $white;
 $A4-ui-doc-edit-attribute-height: 2.166rem;
 $A4-ui-doc-edit-attribute-border: solid #C8C8C8 0.083rem;
@@ -182,10 +183,12 @@ $A4-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem fade-out(#157EFB, 0.5
 $A4-ui-doc-edit-attribute-error-color: #FF542C;
 $A4-ui-doc-edit-attribute-error-spacing: 0.166rem;
 $A4-ui-doc-edit-attribute-error-text-color: #157EFB;
-$A4-ui-doc-read-label-padding: 1.333rem;
+$A4-ui-doc-read-label-padding: 0rem 0rem 1.333rem 0rem;
 $A4-ui-doc-read-attribute-height: auto;
 $A4-ui-doc-read-attribute-border: 0.083rem solid #F1EFEF;
+$A4-ui-doc-read-attribute-value-padding: 0 0 0.6666rem 0;
 $A4-ui-doc-read-attribute-link-color: #78D2FE;
+$A4-ui-doc-read-attribute-picto-space: 0.6666rem;
 
 //Frames
 $A4-ui-frame-padding: 0rem 1.166rem 1.666rem;
@@ -193,10 +196,23 @@ $A4-ui-frame-shadow:rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
 $A4-ui-frame-color-title: #878787;
 
 // Tabs
+$A4-ui-tabs-height: 2.1666rem;
 $A4-ui-tab-active-bg: #FAFAFA;
 $A4-ui-tab-inactive-bg: #ECECEC;
 $A4-ui-tab-space: 0.166rem;
 $A4-ui-tab-padding: 0.833rem 0rem 0.5rem;
+
+@mixin A4ClientTabDecoration() {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 1.25rem 1.25rem 0;
+  border-color: transparent $A4-ui-color-client transparent transparent;
+}
 
 // Menu
 $A4-ui-menu-bg: #FAFAFA;
