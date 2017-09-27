@@ -70,13 +70,14 @@ define([
 
     /**
      * Set an option of the current
+     * Add an effect only on beforeRender
      * @param name
      * @param value
      * @constructor
      */
     AttributPrototype.prototype.setOption = function AttributeInterfaceSetOption(name, value)
     {
-        this.setOption(name, value);
+        this._attributeModel.setOption(name, value);
     };
 
     AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(type)
