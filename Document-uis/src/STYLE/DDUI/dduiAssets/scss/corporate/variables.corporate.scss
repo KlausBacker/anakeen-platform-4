@@ -161,25 +161,26 @@ $A4-ui-toggle-transition: background-color 1s, padding-left 1s;
 $A4-ui-toggle-color-bg-on: #00B4FC;
 $A4-ui-toggle-color-text-on: $white;
 $A4-ui-toggle-padding-on: 0 2rem 0 1rem;
+$A4-ui-toggle-line-height: 1.72;
 
 // Radio button
 $A4-ui-radio-color-bg: $white;
 $A4-ui-radio-color-checked: $A4-ui-toggle-color-bg-on;
-$A4-ui-radio-size: 1.16666rem;
-$A4-ui-radio-size-checked: 0.6666rem;
+$A4-ui-radio-size: 1.33333rem;
+$A4-ui-radio-size-checked: 0.83333rem;
 $A4-ui-radio-border-selected: $gray;
 $A4-ui-radio-border-unselected: fade-out($gray, 0.3);
-$A4-ui-radio-size-checked: 0.6666rem;
 $A4-ui-check-content: "\2713";
 
 // Attribute
 $A4-ui-doc-edit-label-padding: 0rem 0rem 0.66666rem 0rem;
 $A4-ui-doc-edit-attribute-bg: $white;
 $A4-ui-doc-edit-attribute-height: 2.166rem;
-$A4-ui-doc-edit-attribute-border: solid #C8C8C8 0.083rem;
-$A4-ui-doc-edit-attribute-hover-color: #157EFB;
-$A4-ui-doc-edit-attribute-hover-border: solid $blue 0.083rem;
-$A4-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem fade-out(#157EFB, 0.5);
+$A4-ui-doc-edit-attribute-color-border: #E6E6E6;
+$A4-ui-doc-edit-attribute-border: solid $A4-ui-doc-edit-attribute-color-border 0.083rem;
+$A4-ui-doc-edit-attribute-hover-color: #76abd9;
+$A4-ui-doc-edit-attribute-hover-border: solid $A4-ui-doc-edit-attribute-hover-color 0.083rem;
+$A4-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem #76abd9;
 $A4-ui-doc-edit-attribute-error-color: #FF542C;
 $A4-ui-doc-edit-attribute-error-spacing: 0.166rem;
 $A4-ui-doc-edit-attribute-error-text-color: #157EFB;
@@ -191,12 +192,25 @@ $A4-ui-doc-read-attribute-link-color: #78D2FE;
 $A4-ui-doc-read-attribute-picto-space: 0.6666rem;
 
 //Frames
+$A4-ui-frame-font-variant: $A4-ui-value-font-variant;
 $A4-ui-frame-padding: 0rem 1.166rem 1.666rem;
 $A4-ui-frame-shadow:rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
 $A4-ui-frame-color-title: #878787;
+$A4-ui-frame-size-title: 1.1rem;
+$A4-ui-frame-header-border-bottom: 0.083rem solid #d8d9da;;
+$A4-ui-frame-header-padding: 0 0 0 1.9166rem;
+$A4-ui-frame-header-line-height: 2.5rem;
+$A4-ui-frame-header-margin: 0 0 1.25rem 0;
+
+// Array
+$A4-ui-array-shadow: $A4-ui-frame-shadow;
+$A4-ui-array-padding: 0 1.1666rem 1.66666rem 1.1666rem;
+$A4-ui-array-border: 1px solid #e8e8e8;
+$A4-ui-array-margin: 0 0.8333rem 0.8333rem;
+$A4-ui-array-border-radius: 0.25rem;
 
 // Tabs
-$A4-ui-tabs-height: 2.1666rem;
+$A4-ui-tabs-height: 3rem;
 $A4-ui-tab-active-bg: #FAFAFA;
 $A4-ui-tab-inactive-bg: #ECECEC;
 $A4-ui-tab-space: 0.166rem;
