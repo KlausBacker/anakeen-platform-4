@@ -1,5 +1,6 @@
 require(['jquery', 'datatables'], function ($, datatables) {
   "use strict";
+  var myTable = [];
   window.dcp.document.documentController("addEventListener", "change", {
       "name": "getMaskAttributes"
     },
@@ -33,7 +34,7 @@ require(['jquery', 'datatables'], function ($, datatables) {
         });
         window.console.log(attrs);
         $(document).ready(function () {
-         /* var table = */$(".dcpArray__table").DataTable({
+          myTable = $(".dcpArray__table").DataTable({
             searching: false, // remove this line to allow searching fields
             info: false,
             paging: false,
@@ -75,7 +76,6 @@ require(['jquery', 'datatables'], function ($, datatables) {
           //     column.search(this.value).draw();
           //   });
           // });
-
          var animationVar = {
            close: {
              effects: "fadeOut",
@@ -86,33 +86,32 @@ require(['jquery', 'datatables'], function ($, datatables) {
              duration: 300
            }
          };
+         var visibilityData = [
+           { value:" ", label:" "},
+           { value:"W" , label:"Lecture et Ecriture"},
+           { value:"R", label:"Lecture seule"},
+           { value:"O", label:"Ecriture seule"},
+           { value:"H", label:"Caché"},
+           { value:"S", label:"Statique"},
+           { value:"U", label:"Tableau statique"},
+           { value:"I", label:"Invisible"}
+         ];
+         var neededData = [
+           { value:" ", label: " "},
+           { value:"Y", label: "O"},
+           { value:"N", label: "N"},
+         ];
           $(".neededBtn").kendoDropDownList({
             animation: animationVar,
             dataTextField: "label",
             dataValueField: "value",
-            dataSource: [
-              { value:" ", label: " "},
-              { value:"Y", label: "O"},
-              { value:"N", label: "N"},
-            ],
-            change: onNeedChange
+            dataSource: neededData
           });
           $(".visibilityBtn").kendoDropDownList({
             animation: animationVar,
             dataTextField: "label",
             dataValueField: "value",
-            dataSource: [
-              { value:" ", label:" "},
-              { value:"W" , label:"Lecture et Ecriture"},
-              { value:"R", label:"Lecture seule"},
-              { value:"O", label:"Ecriture seule"},
-              { value:"H", label:"Caché"},
-              { value:"S", label:"Statique"},
-              { value:"U", label:"Tableau statique"},
-              { value:"I", label:"Invisible"}
-            ],
-            index: 0,
-            change: onVisibilityChange
+            dataSource: visibilityData,
           });
         });
         $(".dcpArray__table").empty();
@@ -152,14 +151,5 @@ require(['jquery', 'datatables'], function ($, datatables) {
           default : return " ";
         }
       }
-      function onNeedChange() {
-        var value = $('.neededBtn').val();
-        window.console.log('NEEDED: ', value);
-      }
-      function onVisibilityChange() {
-        var value = $('.visibilityBtn').val();
-        window.console.log('VISIBLE: ', value);
-      }
     });
 });
-

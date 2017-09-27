@@ -23,7 +23,7 @@ class MaskEditRender extends DefaultConfigEditRender
     {
         $js = parent::getJsReferences();
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $js["dduiMask"] = "uiAssets/Families/mask/mask.js?ws=" . $version;
+        $js["dduiMask"] = "uiAssets/Families/mask/maskEdit.js?ws=" . $version;
         return $js;
     }
 }
