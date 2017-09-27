@@ -485,13 +485,25 @@ class View extends Crud
     
     protected function createDocument($resourceId)
     {
-        $this->document = DocManager::createDocument($resourceId);
+        $this->document = DocManager::createDocument($resourceId, true, false);
         
         if ($this->document === null) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
+        
+        $family = $this->document->getFamilyDocument();
+        // No use default values for column attribute, the ui use structure data to add column default values
+        $attrs = $this->document->getNormalAttributes();
+        foreach ($attrs as $aid => $attr) {
+            if ($attr->type === "array") {
+                $attr->setOption("empty", "yes");
+            }
+        }
+        
+        $this->document->setDefaultValues($family->getDefValues());
+        
         $this->document->title = sprintf(___("%s Creation", "ddui") , $this->document->getFamilyDocument()->getTitle());
         return $this->document;
     }
