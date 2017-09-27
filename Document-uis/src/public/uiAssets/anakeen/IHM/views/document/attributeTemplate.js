@@ -356,7 +356,11 @@ define(function attributeTemplate(require/*, exports, module*/)
                 var templates = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var tool = '';
                 if (templates && templates.line) {
-                    tool = $(Mustache.render(templates.line || "", {tools: true})).find(".dcpArray__toolCell").html();
+                    tool = $(Mustache.render(templates.line || "",
+                        {
+                            tools: true,
+                            lineCid:_.uniqueId(attributeModel.id)
+                        })).find(".dcpArray__toolCell").html();
                 }
                 return tool;
             },
