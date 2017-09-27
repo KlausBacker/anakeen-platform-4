@@ -4,9 +4,28 @@
     min-height: 1.833rem;
   }
 
+  .form-control {
+    border: $A4-ui-doc-edit-attribute-border;
+  }
+
   .dcpAttribute__content .k-dropdown-wrap .k-select {
-    padding-top: 0;
+    padding: 0;
     height: 100%;
+    left: 0;
+    right: auto;
+    border: none;
+    width: 1.9rem;
+  }
+
+  .dcpAttribute__content .input-group-addon button {
+    border: none;
+    min-width: 2rem;
+    height: 100%;
+    padding:0;
+  }
+
+  .input-group .k-multiselect-wrap {
+    border-color: $A4-ui-doc-edit-attribute-color-border;
   }
 
   .dcpLabel {
@@ -16,6 +35,19 @@
 
   .dcpAttribute {
     margin-bottom: 1.6666rem;
+  }
+
+  .dcpAttribute__content .k-dropdown-wrap input.k-input {
+    border: none;
+  }
+
+  .dcpAttribute__content .k-dropdown, .dcpAttribute__content .k-multiselect, .dcpAttribute__content .k-combobox {
+    border: none;
+  }
+
+  .dcpAttribute__content .k-widget > .k-state-default {
+    border-radius: 0.3333rem 0 0 0.3333rem!important;
+    border-color: #e6e6e6;
   }
 }
 
