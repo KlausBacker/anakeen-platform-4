@@ -70,6 +70,8 @@ require(['jquery', 'datatables'], function ($, datatables) {
                   break;
               }
             }
+          }).on("click", "td", function() {
+            cellIdx = table.cell(this).index();
           });
 
          /*
