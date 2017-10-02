@@ -18,4 +18,12 @@ class MaskViewRender extends DefaultConfigViewRender
         $options = parent::getOptions($document);
         return $options;
     }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $js = parent::getJsReferences();
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js["dduiMask"] = "uiAssets/Families/mask/maskView.js?ws=" . $version;
+        return $js;
+    }
 }
