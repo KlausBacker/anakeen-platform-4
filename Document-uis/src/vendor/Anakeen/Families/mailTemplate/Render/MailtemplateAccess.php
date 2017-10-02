@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-class TmailAccess implements \Dcp\Ui\IRenderConfigAccess
+class MailtemplateAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
@@ -17,9 +17,9 @@ class TmailAccess implements \Dcp\Ui\IRenderConfigAccess
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return new TmailEditRender();
+                return new MailtemplateEditRender();
             case \Dcp\Ui\RenderConfigManager::ViewMode:
-                return new TmailViewRender();
+                return new MailtemplateViewRender();
         }
         return null;
     }
