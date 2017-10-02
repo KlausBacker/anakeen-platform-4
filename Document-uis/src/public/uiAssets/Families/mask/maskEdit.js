@@ -8,7 +8,6 @@ require(['jquery', 'datatables'], function ($, datatables) {
     function getMaskAttributes(event, documentObject, attributeObject, values) {
       var attrs = [];
       $.getJSON("api/v1/families/" + values.current.value + "/views/structure", function (data) {
-        window.console.log(data);
         $.each(data.data.family.structure, function () {
           var nneeded = "";
           var nvisibility= "";
@@ -33,7 +32,6 @@ require(['jquery', 'datatables'], function ($, datatables) {
             return 0;
           }
         });
-        window.console.log(attrs);
         $(document).ready(function () {
           myTable = $(".dcpArray__table").DataTable({
             searching: false, // remove this line to allow searching fields
@@ -167,7 +165,6 @@ require(['jquery', 'datatables'], function ($, datatables) {
          * This function needs to addArrayRow to real document's table with myTable's information.
          *
          */
-          window.console.log("MYTABLE: ", myTable);
           myTable.forEach(function (x) {
             window.dcp.document.documentController('setValue', 'msk_attrids', {
               value: x.label, index: x.order
