@@ -8,4 +8,7 @@ Vue.use(VueCustomElement);
 
 // import and register your component(s)
 import Base from './base/base.vue';
+import Collections from './collectionsList/collections.vue';
+
 Vue.customElement('a4-base', Base);
+Vue.customElement('a4-collections', Collections);
