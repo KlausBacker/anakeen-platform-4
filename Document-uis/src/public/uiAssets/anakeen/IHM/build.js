@@ -1,6 +1,5 @@
 ({
     shim: {
-        "bootstrap": ['jquery', 'globalPopper'],
         "kendo": ['jquery'],
         "kendo-culture": ['kendo'],
         "ckeditor-jquery": ['jquery', 'ckeditor'],
@@ -17,7 +16,6 @@
         "underscore": "../externals/underscore/underscore",
         "backbone": "../externals/backbone/backbone",
         "mustache": "../externals/mustache.js/mustache",
-        "bootstrap": "../externals/bootstrap/js/bootstrap",
         "globalPopper": "../externals/popper.js/globalPopper",
         "popper": "../externals/popper.js/dist/umd/popper",
         "bootstrap-utils": "../externals/KendoUI/bootstrap-theme/modules/bootstrap/js/dist/util",
@@ -36,7 +34,7 @@
     generateSourceMaps: true,
     inlineText: true,
     preserveLicenseComments: false,
-    optimize: "uglify2",
+    optimize: "none",
     name: "IHM/main",
     mainConfigFile: "main.js",
     out: "main-built.js"
