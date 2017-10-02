@@ -1,0 +1,9 @@
+[
+  {
+    "order": 1000,
+    "class": "\\Anakeen\\Sample\\Routes\\Collections",
+    "regExp": "%^/sba/collections/?$%",
+    "description": "Get available collections",
+    "canonicalURL": "collections"
+  }
+]
