@@ -26,7 +26,7 @@ $attrInputHeight: 30px;
 @media (min-width: ($grid-float-breakpoint + 1)) {
   .dcpDocument--view
   .dcpAttribute__content {
-    padding-top: $dcp-attribute-padding-base-vertical; // Default padding plus a border
+    //padding-top: $dcp-attribute-padding-base-vertical; // Default padding plus a border
   }
 }
 

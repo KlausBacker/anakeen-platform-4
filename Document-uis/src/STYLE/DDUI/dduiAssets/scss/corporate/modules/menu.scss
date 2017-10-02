@@ -1,3 +1,4 @@
+// Menu
 .dcpDocument__menu {
   background-color: $A4-ui-tab-active-bg;
   padding: 0;
@@ -8,18 +9,22 @@
   padding: 0 !important;
   margin: 0!important;
 
+  &.k-menu {
+    background-color: $A4-ui-menu-bg;
+    color: $A4-ui-menu-font-color;
+    font-family: $A4-ui-menu-fixed-font;
+    justify-content: flex-end;
+    height: $A4-ui-menu-height;
+  }
+
+  // Menu item hovered
   a.k-link:hover, .k-menu:not(.k-context-menu) > .k-item.k-state-hover > .k-link {
     color: $A4-ui-color-btn-action;
     cursor: pointer;
   }
 }
 
-.menu__content.k-menu {
-  background-color: $A4-ui-menu-bg;
-  color: $A4-ui-menu-font-color;
-  font-family: $A4-ui-menu-fixed-font;
-}
-
+// Set style of the fixed (sticky) menu
 .menu--fixed {
   .menu__content {
     background-color: $A4-ui-menu-fixed-bg;
@@ -37,11 +42,7 @@
   }
 }
 
-.menu__content.k-menu {
-  justify-content: flex-end;
-  height: $A4-ui-menu-height;
-}
-
+// Menu item separator
 .menu__content .k-menu .menu__element--item.k-item > .k-link {
   border-right: $A4-ui-menu-separator;
   padding: $A4-ui-menu-item-padding;

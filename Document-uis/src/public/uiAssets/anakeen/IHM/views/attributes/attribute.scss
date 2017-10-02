@@ -46,8 +46,7 @@
     //width: percentage((4 / $grid-columns));
     flex-grow: 1;
     text-align: left;
-    margin-bottom: 0;
-    padding-top: $dcp-attribute-padding-base-vertical; // Default padding plus a border
+    margin: 0;
   }
 }
 

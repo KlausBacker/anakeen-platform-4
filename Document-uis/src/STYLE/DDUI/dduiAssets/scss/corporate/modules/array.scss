@@ -1,0 +1,31 @@
+.dcpDocument--edit, .dcpDocument--create {
+  .dcpArray {
+    border: $A4-ui-array-border;
+    border-bottom: none;
+    margin: $A4-ui-array-margin;
+    padding: $A4-ui-array-padding;
+    border-radius: $A4-ui-array-border-radius;
+    box-shadow: $A4-ui-array-shadow;
+  }
+
+  .dcpArray > .card-header {
+    background-color: transparent;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #878787;
+    padding: 0 0 0 23px;
+    line-height: 2.5em;
+    border-bottom: 1px solid #DDD;
+    margin-bottom: 15px;
+  }
+
+  .table-bordered > thead > tr > th,
+  .table-bordered > tbody > tr > th,
+  .table-bordered > tfoot > tr > th,
+  .table-bordered > thead > tr > td,
+  .table-bordered > tbody > tr > td,
+  .table-bordered > tfoot > tr > td .table > tbody > tr > td,
+  .table-bordered {
+    border-style: none;
+  }
+}

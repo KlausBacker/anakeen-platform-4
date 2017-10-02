@@ -9,14 +9,18 @@
 }
 
 .dcpFrame > .card-header {
-  font-family: $A4-ui-title-font-variant;
-  font-size: $A4-ui-title-size;
+  font-family: $A4-ui-frame-font-variant;
+  font-size: $A4-ui-frame-size-title;
   background-color: transparent;
   color: $A4-ui-frame-color-title;
-  line-height: $A4-ui-title-font-line-height;
-  border-bottom: 0.083rem solid #d8d9da;
-  padding-top: 1.333rem;
-  padding-bottom: 1rem;
+  line-height: $A4-ui-frame-header-line-height;
+  border-bottom: $A4-ui-frame-header-border-bottom;
+  padding: $A4-ui-frame-header-padding;
+  margin: $A4-ui-frame-header-margin;
+}
+
+.card-body.dcpFrame__content--open {
+  padding: 0 1rem;
 }
 
 .card-header.css-frame-head.dcpFrame__label.dcp__frame--open.dcpLabel {

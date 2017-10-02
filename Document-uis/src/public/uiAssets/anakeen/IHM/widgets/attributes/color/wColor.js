@@ -64,7 +64,9 @@
                 this.element.find(".k-picker-wrap").
                     addClass("dcpAttribute__content__nobutton");
             }
-            this.element.find(".dcpAttribute__value--read").css("border-color", this.options.attributeValue.value);
+            var colorTag = $("<div></div>", { "class": "A4-color-tag"});
+            colorTag.css('background-color', this.options.attributeValue.value);
+            this.element.find(".dcpAttribute__value--read").prepend(colorTag);
         },
 
         _initChangeEvent : function wcolInitChangeEvent() {

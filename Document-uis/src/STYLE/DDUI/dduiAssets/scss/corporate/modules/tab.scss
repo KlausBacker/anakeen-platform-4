@@ -2,6 +2,7 @@
   padding: $A4-ui-tab-padding;
 }
 
+// Tab
 @mixin dcpTabLabelStyle() {
   font-family: $A4-ui-label-font-variant;
   font-size: $A4-ui-label-font-size;
@@ -21,6 +22,7 @@
   }
 }
 
+// Active tab
 .dcpDocument__tabs .dcpTab__label.dcpLabel--active {
   font-family: $A4-ui-title-font-variant;
   font-size: $A4-ui-title-size;
@@ -28,16 +30,9 @@
   color: $A4-ui-color-font-title;
   background-color: $A4-ui-tab-active-bg;
   border-bottom: none;
+  //
   &:before {
-    position: absolute;
-    content: "";
-    right: 0;
-    top: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 15px 15px 0;
-    border-color: transparent $A4-ui-color-client transparent transparent;
+    @include A4ClientTabDecoration;
   }
 }
 
@@ -50,5 +45,5 @@
 
 .document .dcpDocument__tabs .dcpDocument__tabs__list.k-tabstrip-items {
   padding-left: 2rem;
-  height: 2.916rem;
+  height: $A4-ui-tabs-height;
 }
