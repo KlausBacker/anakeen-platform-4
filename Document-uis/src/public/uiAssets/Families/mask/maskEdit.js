@@ -55,7 +55,21 @@ require(['jquery', 'datatables'], function ($, datatables) {
               }},
               {title: "Visibilité par défaut", data:"visibility"},
               {title: "Obligation par défaut", data:"needed"}
-            ]
+            ],
+            fnRowCallback: function (nRow, aData) {
+              switch(aData.type){
+                case 'frame': $(nRow).css('background-color','#6EB9D5')
+                  break;
+                case 'menu': $(nRow).css('background-color','#A4DEA8')
+                  break;
+                case 'array': $(nRow).css('background-color','#F3CC81')
+                  break;
+                case 'action': $(nRow).css('background-color','#E9EEDA')
+                  break;
+                default: $(nRow).css('background-color','#FFFFFF')
+                  break;
+              }
+            }
           });
 
          /*
