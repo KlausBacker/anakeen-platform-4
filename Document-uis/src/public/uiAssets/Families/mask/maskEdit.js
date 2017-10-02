@@ -151,5 +151,46 @@ require(['jquery', 'datatables'], function ($, datatables) {
           default : return " ";
         }
       }
-    });
+      function onNeededChange(arg){
+        myTable[cellIdx.row].nneeded = arg.target.value;
+      }
+      function onVisibilityChange(arg){
+        myTable[cellIdx.row].nvisibility = arg.target.value;
+      }
+      this.documentController("addEventListener", "beforeSave", {
+          "name": "beforeSave.mask",
+        },
+        function beforeSaveMask(event, currentDocumentObject){
+        /*
+         *
+         * This function needs to addArrayRow to real document's table with myTable's information.
+         *
+         */
+          window.console.log("MYTABLE: ", myTable);
+          myTable.forEach(function (x) {
+            window.dcp.document.documentController('setValue', 'msk_attrids', {
+              value: x.label, index: x.order
+            });
+            if (x.nneeded === ""){
+              window.dcp.document.documentController('setValue', 'msk_needeeds', {
+                value: x.needed, index: x.order
+              });
+            } else {
+              window.dcp.document.documentController('setValue', 'msk_needeeds', {
+                value: "* " + x.nneeded, index: x.order
+              });
+            }
+            if (x.nvisibility === "") {
+              window.dcp.document.documentController('setValue', 'msk_visibilities', {
+                value: x.visibility, index: x.order
+              });
+            } else {
+              window.dcp.document.documentController('setValue', 'msk_visibilities', {
+                value: "* " + visibilityValue(x.nvisibility), index: x.order
+              });
+            }
+          });
+        }
+      );
+  });
 });
