@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
+    <description>sample-BusinessApp</description>
+
+
+    <post-install>
+        <process command="programs/record_application BUSINESS_APP"/>
+        <process command="programs/update_catalog"/>
+    </post-install>
+    <post-upgrade>
+        <process command="programs/pre_migration BUSINESS_APP"/>
+        <process command="programs/record_application BUSINESS_APP"/>
+        <process command="programs/post_migration BUSINESS_APP"/>
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+</module>
