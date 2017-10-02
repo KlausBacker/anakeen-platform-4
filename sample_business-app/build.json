@@ -1,0 +1,24 @@
+{
+  "moduleName": "sample-BusinessApp",
+  "version": "1.0.0",
+  "release": "0",
+  "includedPath": [
+    "Apps",
+    "locale",
+    "public",
+    "STYLE"
+  ],
+  "lang": [
+    "fr",
+    "en"
+  ],
+  "csvParam": {
+    "enclosure": "\"",
+    "delimiter": ";"
+  },
+  "dynacase-devtool": {
+    "uri": "git@github.com:Anakeen/development-tools.git",
+    "tag": "3.2"
+  },
+  "permission_masks": {}
+}

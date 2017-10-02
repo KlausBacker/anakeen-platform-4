@@ -29,6 +29,12 @@ webinst-full:
 	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
+webinst-business:
+	-mkdir -p $(localpub)/sample_business-app
+	rsync --delete -azvr sample_business-app $(localpub)/sample_business-app/
+	cd $(localpub)/sample_business-app/sample_business-app/ && npm install && npm run build
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/sample_business-app/sample_business-app/ -o .
+
 
 webinst-all: webinst webinst-selenium
 
