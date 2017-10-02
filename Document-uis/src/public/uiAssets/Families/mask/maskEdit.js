@@ -23,6 +23,7 @@ require(['jquery', 'datatables'], function ($, datatables) {
           }
         });
       }).done(function () {
+
         attrs.sort(function (a,b){
           if (a.order > b.order){
             return 1;
@@ -33,7 +34,7 @@ require(['jquery', 'datatables'], function ($, datatables) {
           }
         });
         $(document).ready(function () {
-          myTable = $(".dcpArray__table").DataTable({
+          var table = $(".dcpArray__table").DataTable({
             searching: false, // remove this line to allow searching fields
             info: false,
             paging: false,
@@ -72,8 +73,10 @@ require(['jquery', 'datatables'], function ($, datatables) {
             }
           }).on("click", "td", function() {
             cellIdx = table.cell(this).index();
+          }).rows().every( function (rowIdx, tableLoop, rowLoop){
+            var data = this.data();
+            myTable.push(data);
           });
-
          /*
           *
           * Columns searching fields
