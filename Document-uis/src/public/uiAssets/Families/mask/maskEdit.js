@@ -1,6 +1,7 @@
 require(['jquery', 'datatables'], function ($, datatables) {
   "use strict";
   var myTable = [];
+  var cellIdx = 0;
   window.dcp.document.documentController("addEventListener", "change", {
       "name": "getMaskAttributes"
     },
@@ -106,13 +107,13 @@ require(['jquery', 'datatables'], function ($, datatables) {
             dataTextField: "label",
             dataValueField: "value",
             dataSource: neededData
-          });
+          }).bind("change", onNeededChange);
           $(".visibilityBtn").kendoDropDownList({
             animation: animationVar,
             dataTextField: "label",
             dataValueField: "value",
             dataSource: visibilityData,
-          });
+          }).bind("change", onVisibilityChange);
         });
         $(".dcpArray__table").empty();
       });
@@ -131,12 +132,12 @@ require(['jquery', 'datatables'], function ($, datatables) {
         }
       }
       function neededValue(needAttr){
-        if (needAttr) {
+        if (needAttr === 'Y' || needAttr) {
           return 'Obligatoire';
-        } else if (needAttr === 'undefined') {
-          return ' ';
-        } else {
+        } else if (needAttr ==='N' || !needAttr){
           return 'Optionnel';
+        } else {
+            return ' ';
         }
       }
       function visibilityValue(visibilityAttr){
