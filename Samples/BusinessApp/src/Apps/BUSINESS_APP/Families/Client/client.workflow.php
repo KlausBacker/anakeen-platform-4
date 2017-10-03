@@ -12,18 +12,18 @@ class WClient extends \Dcp\Family\Wdoc
     public $attrPrefix = "WCLI";
 
 
-    const E_BA_INIT = "e_cstb_init"; # N_("e_cstb_init")
-    const E_BA_SENDED = "e_cstb_sended"; # N_("e_cstb_sended")
-    const E_BA_CONTROL = "e_cstb_control"; # N_("e_cstb_control")
-    const E_BA_SENDEDTOP = "e_cstb_sendedtop"; # N_("e_cstb_sendedtop")
-    const E_BA_ACCORD = "e_cstb_accord"; # N_("e_cstb_accord")
+    const E_BA_INIT = "e_ba_init"; # N_("e_ba_init")
+    const E_BA_SENDED = "e_ba_sended"; # N_("e_ba_sended")
+    const E_BA_CONTROL = "e_ba_control"; # N_("e_ba_control")
+    const E_BA_SENDEDTOP = "e_ba_sendedtop"; # N_("e_ba_sendedtop")
+    const E_BA_ACCORD = "e_ba_accord"; # N_("e_ba_accord")
 
     // Liste des transitions
-    const T_BA_SEND = "t_cstb_send"; # N_("t_cstb_send")
-    const T_BA_CONTROL= "t_cstb_control"; # N_("t_cstb_control")
-    const T_BA_INCOMPLETE = "t_cstb_incomplete"; # N_("t_cstb_incomplete")
-    const T_BA_COMPLETERETURN= "t_cstb_completereturn"; # N_("t_cstb_completereturn")
-    const T_BA_ACCORD= "t_cstb_accord"; # N_("t_cstb_accord")
+    const T_BA_SEND = "t_ba_send"; # N_("t_ba_send")
+    const T_BA_CONTROL= "t_ba_control"; # N_("t_ba_control")
+    const T_BA_INCOMPLETE = "t_ba_incomplete"; # N_("t_ba_incomplete")
+    const T_BA_COMPLETERETURN= "t_ba_completereturn"; # N_("t_ba_completereturn")
+    const T_BA_ACCORD= "t_ba_accord"; # N_("t_ba_accord")
 
 
 
@@ -101,7 +101,7 @@ class WClient extends \Dcp\Family\Wdoc
 
 
         DocManager::cache()->addDocument($this->doc);
-        $pass=uniqid("cstb");
+        $pass=uniqid("ba");
         $this->doc->fields[]='tmppass';
         $this->doc->tmppass=$pass;
 

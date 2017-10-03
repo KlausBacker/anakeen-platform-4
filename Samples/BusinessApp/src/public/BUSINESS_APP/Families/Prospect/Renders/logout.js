@@ -1,9 +1,9 @@
 window.dcp.document.documentController("addEventListener",
   "ready",
   {
-      "name": "CSTB_PROSPECT::logout",
+      "name": "BA_PROSPECT::logout",
       "documentCheck": function (document) {
-          return document.family.name === "CSTB_PROSPECT"
+          return document.family.name === "BA_PROSPECT"
       }
   },
   function (event, currentDocumentObject) {

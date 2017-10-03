@@ -21,7 +21,7 @@ class CommonEdit extends \Dcp\Ui\DefaultEdit
     public function getJsReferences(\Doc $document = null)
     {
         $js = parent::getJsReferences($document);
-        $js["cstb-common"] = "BUSINESS_APP/Families/Common/Renders/common.js";
+        $js["ba-common"] = "BUSINESS_APP/Families/Common/Renders/common.js";
         return $js;
     }
 }

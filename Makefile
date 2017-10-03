@@ -59,5 +59,5 @@ deploy:
 deploy-business:
 	rm -f sample*webinst
 	make webinst-business
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample-BusinessApp-*webinst -- --force
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample-business-*webinst -- --force
 	make clean

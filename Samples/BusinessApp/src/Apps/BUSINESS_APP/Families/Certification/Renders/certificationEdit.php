@@ -18,19 +18,19 @@ class CertificationEdit extends CommonEdit
         $options->arrayAttribute()->setRowMinDefault(1);
 
 
-        $timeline = '<iframe class="timeline timeline--audit" src="?app=CSTB&action=BA_TIMELINEAUDIT" />';
+        $timeline = '<iframe class="timeline timeline--audit" src="?app=BUSINESS_APP&action=BA_TIMELINEAUDIT" />';
         $options->frame(MyAttr::cert_fr_timeline)->setTemplate($timeline)->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
 
         $addButton = '{{{attribute.htmlContent}}} <a class="btn btn-primary">Rechercher</a>';
         $options->frame(MyAttr::cert_fr_rd)->setTemplate($addButton);
 
-        $timeline = '<iframe class="timeline timeline--essai" src="?app=CSTB&action=BA_TIMELINEESSAI" />';
+        $timeline = '<iframe class="timeline timeline--essai" src="?app=BUSINESS_APP&action=BA_TIMELINEESSAI" />';
         $options->frame(MyAttr::cert_efr_timeline)->setTemplate($timeline)->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $addButton = '{{{attribute.htmlContent}}} <a class="btn btn-primary">Rechercher</a>';
         $options->frame(MyAttr::cert_efr_rd)->setTemplate($addButton);
 
 
-        $timeline = '<iframe class="timeline timeline--comite" src="?app=CSTB&action=BA_TIMELINECOMITE" />';
+        $timeline = '<iframe class="timeline timeline--comite" src="?app=BUSINESS_APP&action=BA_TIMELINECOMITE" />';
         $options->frame(MyAttr::cert_cfr_timeline)->setTemplate($timeline)->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $addButton = '{{{attribute.htmlContent}}} <a class="btn btn-primary">Rechercher</a>';
         $options->frame(MyAttr::cert_cfr_rd)->setTemplate($addButton);

@@ -10,7 +10,7 @@ PARAM;WCLI_CMPMSG;WCLI_FR_ASK;Message à envoyer;N;N;longtext;::auto;W;Y;;;;;;
 PARAM;WCLI_ASSIGN;WCLI_FR_ASK;Assigné à;N;N;account;::auto;W;Y;;;;;;
 PARAM;WCLI_CHECKLIST;WCLI_FR_ASK;Check list;N;N;enum;::auto;W;;;;A|Adresse postale vérifiée,B|Identification confirmé,C|Numéro SIREN;;;multiple=yes
 ;;;;;;;;;;;;;;;
-ATTR;WCLI_COURRIER;wcli_trans_frt_cstb_accord;Modèle de courrier;N;N;file;::auto;W;;;;;;;
+ATTR;WCLI_COURRIER;wcli_trans_frt_ba_accord;Modèle de courrier;N;N;file;::auto;W;;;;;;;
 ;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;

@@ -4,9 +4,9 @@
 window.dcp.document.documentController("addEventListener",
   "change",
   {
-      "name": "CSTB_PROSPECT::pr_mail",
+      "name": "BA_PROSPECT::pr_mail",
       "documentCheck": function(documentObject) {
-          return documentObject.family.name === "CSTB_PROSPECT"
+          return documentObject.family.name === "BA_PROSPECT"
       },
       "attributeCheck" : function isTitle(attribute) {
           if (attribute.id === "pr_mail") {
@@ -29,9 +29,9 @@ window.dcp.document.documentController("addEventListener",
 window.dcp.document.documentController("addEventListener",
   "change",
   {
-      "name": "CSTB_PROSPECT::pr_postalcode",
+      "name": "BA_PROSPECT::pr_postalcode",
       "documentCheck": function(documentObject) {
-          return documentObject.family.name === "CSTB_PROSPECT"
+          return documentObject.family.name === "BA_PROSPECT"
       },
       "attributeCheck" : function isTitle(attribute) {
           if (attribute.id === "pr_postalcode") {
@@ -54,9 +54,9 @@ window.dcp.document.documentController("addEventListener",
 window.dcp.document.documentController("addEventListener",
   "afterSave",
   {
-      "name": "CSTB_PROSPECT::afterSave",
+      "name": "BA_PROSPECT::afterSave",
       "documentCheck": function (document) {
-          return document.family.name === "CSTB_PROSPECT"
+          return document.family.name === "BA_PROSPECT"
       }
   },
   function (event, currentDocumentObject, oldDocObject) {

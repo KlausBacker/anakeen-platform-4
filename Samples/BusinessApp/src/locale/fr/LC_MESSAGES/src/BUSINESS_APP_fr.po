@@ -13,3 +13,42 @@ msgstr ""
 
 msgid "BUSINESS_APP:BUSINESS_APP"
 msgstr ""
+
+msgid "e_ba_accord"
+msgstr "Approuvé"
+
+
+msgid "e_ba_control"
+msgstr "Contrôlé"
+
+
+msgid "e_ba_init"
+msgstr "Initialisation"
+
+
+msgid "e_ba_sended"
+msgstr "Envoyé"
+
+
+msgid "e_ba_sendedtop"
+msgstr "Complété"
+
+
+msgid "t_ba_accord"
+msgstr "Accord de recevabilité"
+
+
+msgid "t_ba_completereturn"
+msgstr "Retour de compléments"
+
+
+msgid "t_ba_control"
+msgstr "Assigner"
+
+
+msgid "t_ba_incomplete"
+msgstr "Demande de compléments"
+
+
+msgid "t_ba_send"
+msgstr "Envoi de la demande"

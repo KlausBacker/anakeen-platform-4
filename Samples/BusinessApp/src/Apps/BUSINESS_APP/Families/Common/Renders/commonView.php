@@ -24,7 +24,7 @@ class CommonView extends \Dcp\Ui\DefaultView
     {
         $js = parent::getJsReferences($document);
         $ws=\ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $js["cstb-common"] = "BUSINESS_APP/Families/Common/Renders/common.js"."?ws=$ws";
+        $js["ba-common"] = "BUSINESS_APP/Families/Common/Renders/common.js"."?ws=$ws";
         return $js;
     }
 
