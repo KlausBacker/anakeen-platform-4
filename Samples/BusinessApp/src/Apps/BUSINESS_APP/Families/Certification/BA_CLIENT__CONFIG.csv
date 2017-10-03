@@ -1,0 +1,6 @@
+//BEGIN;"Parent family";"Family title";;;"Family name"
+BEGIN;;"Dossier client";;;BA_CLIENT
+ICON;BA_Client.png
+USEFOR;N
+CLASS;"Sample\BusinessApp\Client"
+END;;;;;

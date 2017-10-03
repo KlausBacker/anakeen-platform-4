@@ -1,0 +1,17 @@
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;WDOC;Cycle certification;;;BA_WCERTIFICATION;;;;;;;;;;
+RESET;enums;;;;;;;;;;;;;;
+ICON;workflow.png;;;;;;;;;;;;;;
+CLASS;Sample\BusinessApp\WCertification;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
+;;;;;;;;;;;;;;;
+PARAM;WCERT_FR_ASK;;Demande;N;N;frame;::auto;W;;;;;;;
+PARAM;WCERT_CMPMSG;WCERT_FR_ASK;Pièces manquantes;N;N;longtext;::auto;W;Y;;;;;;
+PARAM;WCERT_ASSIGN;WCERT_FR_ASK;Assigné à;N;N;account;::auto;W;Y;;;;;;
+PARAM;WCERT_CHECKLIST;WCERT_FR_ASK;Check list;N;N;enum;::auto;W;;;;A|Conflit d’intérêt, 2|Recherche évaluation antérieure, 3|Fiche suiveuse, 4|Échantillon;;;multiple=yes
+;;;;;;;;;;;;;;;
+ATTR;WCERT_COURRIER;WCERT_trans_frt_ba_accord;Modèle de courrier;N;N;file;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;

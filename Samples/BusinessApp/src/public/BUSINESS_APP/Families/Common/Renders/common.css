@@ -1,0 +1,5 @@
+/* common document css rules */
+
+.dcpAttribute__content--longtext {
+    text-align: justify;
+}

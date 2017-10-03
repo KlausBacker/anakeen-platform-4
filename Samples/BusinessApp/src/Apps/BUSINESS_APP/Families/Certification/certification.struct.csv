@@ -1,0 +1,112 @@
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;;Dossier de certification;;;BA_CERTIFICATION;;;;;;;;;;
+RESET;enums;;;;;;;;;;;;;;
+RESET;structure;;;;;;;;;;;;;;
+ICON;BA_Certification.png;;;;;;;;;;;;;;
+CLASS;Sample\BusinessApp\Certification;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
+ATTR;CERT_FR_IDENT;;Identification;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_NAME;CERT_FR_IDENT;Nom de la société;Y;N;text;::auto;W;Y;;;;;;
+ATTR;CERT_ADDR;CERT_FR_IDENT;Adresse du siège social;N;N;longtext;::auto;W;;;;;;;
+ATTR;CERT_MAIL;CERT_FR_IDENT;Courriel principal;N;N;text;::auto;W;;;;;;;
+ATTR;CERT_PHONE;CERT_FR_IDENT;Téléphone;N;N;text;::auto;W;;;;;;;
+ATTR;CERT_WEB;CERT_FR_IDENT;Site web;N;N;text;::auto;W;;;;;;;
+ATTR;CERT_ASSIGN;CERT_FR_IDENT;Assigné à;N;N;account;::auto;R;;;;;;;
+ATTR;CERT_CLIENT;CERT_FR_IDENT;Dossier client;N;N;"docid(""BA_CLIENT"")";::auto;R;;;;;;;
+ATTR;CERT_TAB_ECHANGE;;Admission;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_FR_INFO;CERT_TAB_ECHANGE;Information;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_PROSPECT;CERT_FR_INFO;Demande d'origine;N;N;"docid(""BA_PROSPECT"")";::auto;R;;;;;;;
+ATTR;CERT_PNAME;CERT_FR_INFO;Nom du demandeur;N;N;text;::auto;R;;;;;;;
+ATTR;CERT_SUBJECT;CERT_FR_INFO;Object;N;N;text;::auto;R;;;;;;;
+ATTR;CERT_QUESTION;CERT_FR_INFO;Question;N;N;longtext;::auto;R;;;;;;;
+ATTR;CERT_FR_FOLLOW;CERT_TAB_ECHANGE;Suivi;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_F1;CERT_FR_FOLLOW;Produits présentés;N;N;enum;::auto;W;;;;1|Marque commerciale,2|Classement A*E*V* revendiqué,3|Dimensions certifiées demandées.;;;multiple=yes
+ATTR;CERT_F2;CERT_FR_FOLLOW;Constituants des produits;N;N;enum;::auto;W;;;;"1|Nomenclature et caractéristiques des constituants incorporés pour les différentes fenêtres faisant l’objet de la
+Demande (profilés PVC -  profilés aluminium -  profils de renforts...) - 
+,2| Désignations des profilés d’ouvrant utilisés (largeur de battement central pour les fenêtres à 2 vantaux)
+,3| Cahier des charges des produits utilisés - 
+,4|Quincailleries utilisées (ferrage -  organe de rotation...) - 
+,5| Vitrages certifiés mis en œuvre -  avec identification des couches faiblement émissives et des intercalaires
+(attestation nominative)
+,6| Grilles de ventilations utilisés et certificats de qualification";;;multiple=yes
+ATTR;CERT_F3;CERT_FR_FOLLOW;Conditions de fabrication;N;N;enum;::auto;W;;;;"4| Limites dimensionnelles en fonction des profilés d’ouvrant - 
+,5| Schémas de renforcement en fonction des profilés PVC (dossier fenêtres et blocs-baies PVC) - 
+,6| Procédure de montage des assemblages mécaniques - 
+,7| Procédure de montage des seuils aluminium - 
+,8| Procédure de parachèvement des fenêtres - 
+,9| Dispositions relatives au profilés dont le L*<82 -  (plan de ventilation et disposition de renforcement) - 
+,10| Plans d’usinage d’entrée d’air réalisés sur les profils de la gamme - 
+1|Organisation générale de la production -  moyens de production -  description schématique du processus de
+fabrication (avec description des différents postes de fabrication) - 
+,2| Description du conditionnement et des conditions de stockage - 
+,3|Pour une demande de certification Blocs Baies -  schémas de mise en œuvre et dispositions d’étanchéité et le
+cas échéant modes opératoires de fixation du coffre sur la traverse -  coulisses sur dormant -  traitement pièce
+d’appui/coulisses... - ";;;multiple=yes
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_T_ANX;CERT_FR_INFO;Fichiers joints;N;N;array;::auto;R;;;;;;;
+ATTR;CERT_FILEDESC;CERT_T_ANX;Description;N;N;text;::auto;R;;;;;;;
+ATTR;CERT_FILES;CERT_T_ANX;Fichier;N;N;file;::auto;R;;;;;;;
+ATTR;CERT_FILESDATE;CERT_T_ANX;Date de dépôt;N;N;date;::auto;R;;;;::getFileInfo(CERT_FILES, mdate);;;
+ATTR;CERT_T_CMPMSG;CERT_FR_INFO;Information;N;N;array;::auto;W;;;;;;;
+ATTR;CERT_CMPMSG;CERT_T_CMPMSG;Message envoyé au demandeur;N;N;longtext;::auto;R;;;;;;;
+ATTR;CERT_CMPMSGDATE;CERT_T_CMPMSG;Date;N;N;timestamp;::auto;R;;;;;;;
+ATTR;CERT_LASTMSG;CERT_FR_INFO;Dernier message;N;N;longtext;::auto;H;;;;;;;
+ATTR;CERT_FR_COURRIER;CERT_TAB_ECHANGE;Courrier recevabilité avéré;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_COURRIER;CERT_FR_COURRIER;Courrier pour accord;N;N;file;::auto;H;;;;;;;
+ATTR;CERT_COURRIERPDF;CERT_FR_COURRIER;Courrier pour accord (pdf);N;N;file;::auto;R;;;;"::convertVaultFile(CERT_COURRIER, ""pdf"")";;;
+ATTR;CERT_TAB_DEVIS;;Barèmes;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_FR_DEVIS;CERT_TAB_DEVIS;Information;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_T_DEVIS;CERT_FR_DEVIS;Information;N;N;array;::auto;W;;;;;;;
+ATTR;CERT_DEVIS;CERT_T_DEVIS;Proposition technique et commerciale;;;text;::auto;W;;;;;;;
+ATTR;CERT_DEVIS_DATE;CERT_T_DEVIS;Date;;;date;::auto;W;;;;;;;
+ATTR;CERT_TAB_SAMPLES;;Échantillons;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_FR_SAMPLE;CERT_TAB_SAMPLES;Information;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_SAMPLEINFO;CERT_FR_SAMPLE;Description;N;N;htmltext;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_TAB_RD;;Planification audit;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_FR_RD;CERT_TAB_RD;Critères;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_DATEBEG;CERT_FR_RD;Période cible;;;date;::auto;W;;;;;;;
+ATTR;CERT_DATEEND;CERT_FR_RD;Date de fin;;;date;::auto;W;;;;;;;
+ATTR;CERT_ADDRAUDIT;CERT_FR_RD;Adresse de l'audit;N;N;text;::auto;W;;;;;;;
+ATTR;CERT_TYPEAUDIT;CERT_FR_RD;Type de certification;N;N;enum;::auto;W;;;;E|Enveloppe,S|Structure,ER|Equipement et réseau,R|Revêtement,A|Eau;;;
+ATTR;CERT_PRFAUDIT;CERT_FR_RD;Profil d'audit;N;N;enum;::auto;W;;;;B|Baies - portes - vérandas et accessoires, C|Couvertures et produits connexes,O|Ouvrages d'isolation thermique,R|Revêtements de façade;;;
+ATTR;CERT_FR_TIMELINE;CERT_TAB_RD;Time line;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_TL;CERT_FR_TIMELINE;TA;N;N;text;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_ETAB_RD;;Planification essai;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_EFR_RD;CERT_ETAB_RD;Critères;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_EDATEBEG;CERT_EFR_RD;Période cible;;;date;::auto;W;;;;;;;
+ATTR;CERT_EDATEEND;CERT_EFR_RD;Date de fin;;;date;::auto;W;;;;;;;
+ATTR;CERT_ETYPEAUDIT;CERT_EFR_RD;Type de certification;N;N;enum;::auto;W;;;;E|Enveloppe,S|Structure,ER|Equipement et réseau,R|Revêtement,A|Eau;;;
+ATTR;CERT_EPRFAUDIT;CERT_EFR_RD;Type d'essai;N;N;enum;::auto;W;;;;A|Acoustique,E|éclairage et électromagnétisme,D|Adaptabilité, 2|Air, 3|Eau, 4|Énergie, 5|Enveloppe, 6|Numérique, 7|Structure et sécurité incendie;;;
+ATTR;CERT_EPRFMAT;CERT_EFR_RD;Matériel;N;N;enum;::auto;W;;;;1|Banc d'essai 1,2|Banc d'essai 2, 3|Banc d'essai 3;;;
+ATTR;CERT_EPRFCONSO;CERT_EFR_RD;Consommable;N;N;enum;::auto;W;;;;1|Éprouvette, 2|Pipette, 3|Gants, 4|Charlotte;;;
+ATTR;CERT_EESP;CERT_EFR_RD;Espace de stockage;N;N;int;::auto;W;;;;;;;
+ATTR;CERT_EFR_TIMELINE;CERT_ETAB_RD;Time line;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_ETL;CERT_EFR_TIMELINE;TE;N;N;text;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_CTAB_RD;;Planification comité;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_CFR_RD;CERT_CTAB_RD;Critères;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_CDATEBEG;CERT_CFR_RD;Période cible;;;date;::auto;W;;;;;;;
+ATTR;CERT_CDATEEND;CERT_CFR_RD;Date de fin;;;date;::auto;W;;;;;;;
+ATTR;CERT_CPART;CERT_CFR_RD;Participants;N;N;account;::auto;W;;;;;;;multiple=yes
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_CFR_TIMELINE;CERT_CTAB_RD;Time line;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_CTL;CERT_CFR_TIMELINE;TC;N;N;text;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_TAB_EVAL;;Audit;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_FR_EVAL;CERT_TAB_EVAL;Information;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_T_EVAL;CERT_FR_EVAL;Information;N;N;array;::auto;W;;;;;;;
+ATTR;CERT_EVAL;CERT_T_EVAL;Évaluation;;;text;::auto;W;;;;;;;
+ATTR;CERT_EVAL_DATE;CERT_T_EVAL;Résultat;;;longtext;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CERT_TAB_TRY;;Essai;N;N;tab;::auto;W;;;;;;;
+ATTR;CERT_FR_TRY;CERT_TAB_TRY;Information;N;N;frame;::auto;W;;;;;;;
+ATTR;CERT_TRY;CERT_FR_TRY;Évaluation;;;htmltext;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;

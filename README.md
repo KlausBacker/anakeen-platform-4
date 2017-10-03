@@ -1,18 +1,9 @@
-# Dynacase Document UIs
+# Anakeen UI
 
 ## Description
 
 New user interfaces to view and edit document in web browser.
 
-The JS can be minified and optimized by [require js optimizer](http://www.requirejs.org/docs/optimization.html#download).
-
-* You have to download it (see links),
-* And launch the command `r.js -o ./DOCUMENT/IHM/build.js`
-* The JS will be concatened, minified and a source map generated
-
-## Documentation
-
-* [Manuel de référence](https://docs.anakeen.com/dynacase/3.2/dynacase-doc-document-uis-reference/website/book/index.html)
 
 ## Licence
 
