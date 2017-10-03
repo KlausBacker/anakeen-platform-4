@@ -1,4 +1,11 @@
 @import "../../public/uiAssets/externals/KendoUI/bootstrap-theme/scss/variables";
+@import "../DDUI/dduiAssets/scss/fontawesome";
 @import "../DDUI/dduiAssets/scss/corporate/variables.corporate";
 
 @import "../../public/BUSINESS_APP/src/components/base/base";
+@import "../../public/BUSINESS_APP/src/components/collectionsList/collections";
+
+html, body {
+  font-size: 12px;
+  font-family: $A4-ui-font;
+}

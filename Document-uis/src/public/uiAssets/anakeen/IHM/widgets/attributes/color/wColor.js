@@ -64,7 +64,7 @@
                 this.element.find(".k-picker-wrap").
                     addClass("dcpAttribute__content__nobutton");
             }
-            var colorTag = $("<div></div>", { "class": "A4-color-tag"});
+            var colorTag = $("<div></div>", { "class": "dcpAttribute__content__color__tag"});
             colorTag.css('background-color', this.options.attributeValue.value);
             this.element.find(".dcpAttribute__value--read").prepend(colorTag);
         },
