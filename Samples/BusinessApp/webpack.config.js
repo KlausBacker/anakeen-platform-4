@@ -2,9 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './public/BUSINESS_APP/src/components/main.js',
+  entry: './src/public/BUSINESS_APP/src/components/main.js',
   output: {
-    path: path.resolve(__dirname, 'public/BUSINESS_APP/dist/'),
+    path: path.resolve(__dirname, 'src/public/BUSINESS_APP/dist/'),
     filename: 'a4-business-app-components.js'
   },
   module: {

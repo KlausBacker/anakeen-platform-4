@@ -30,17 +30,12 @@ webinst-full:
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
 webinst-business:
-	-mkdir -p $(localpub)/sample_business-app
-	rsync --delete -azvr sample_business-app $(localpub)/sample_business-app/
-	cd $(localpub)/sample_business-app/sample_business-app/ && npm install && npm run build
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/sample_business-app/sample_business-app/ -o .
+	-mkdir -p $(localpub)/Samples
+	rsync --delete -azvr Samples $(localpub)
+	cd $(localpub)/Samples/BusinessApp && npm install && npm run build
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
 
 
-
-deploy-business:
-	rm -f *webinst
-	make webinst-business
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample*webinst -- --force
 
 webinst-all: webinst webinst-selenium
 
