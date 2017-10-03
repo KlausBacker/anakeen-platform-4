@@ -9,7 +9,7 @@
 namespace Anakeen\Sample\Routes;
 
 use Dcp\HttpApi\V1\Crud\Crud;
-use Dcp\HttpApi\V1\Crud\Exception;
+use Anakeen\Sample\Routes\Exception;
 
 class Collections extends Crud
 {
@@ -52,8 +52,6 @@ class Collections extends Crud
      */
     public function read($resourceId)
     {
-        $return = parent::read($resourceId);
-
 //        $bdlConfig = Utils::getBdlConfig($this->_bdlInstance);
         if(null !== $this->_collectionRef)
         {
@@ -61,7 +59,7 @@ class Collections extends Crud
         }
 
         return array(
-            "data" => "Hello world"
+            "collections" => "Hello world"
         );
     }
 
