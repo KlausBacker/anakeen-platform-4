@@ -1,0 +1,17 @@
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;WDOC;Cycle client;;;BA_WCLIENT;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ICON;workflow.png;;;;;;;;;;;;;;
+CLASS;Sample\BusinessApp\WClient;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
+;;;;;;;;;;;;;;;
+PARAM;WCLI_FR_ASK;;Demande;N;N;frame;::auto;W;;;;;;;
+PARAM;WCLI_CMPMSG;WCLI_FR_ASK;Message à envoyer;N;N;longtext;::auto;W;Y;;;;;;
+PARAM;WCLI_ASSIGN;WCLI_FR_ASK;Assigné à;N;N;account;::auto;W;Y;;;;;;
+PARAM;WCLI_CHECKLIST;WCLI_FR_ASK;Check list;N;N;enum;::auto;W;;;;A|Adresse postale vérifiée,B|Identification confirmé,C|Numéro SIREN;;;multiple=yes
+;;;;;;;;;;;;;;;
+ATTR;WCLI_COURRIER;wcli_trans_frt_cstb_accord;Modèle de courrier;N;N;file;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;

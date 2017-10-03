@@ -36,6 +36,12 @@ webinst-business:
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/sample_business-app/sample_business-app/ -o .
 
 
+
+deploy-business:
+	rm -f *webinst
+	make webinst-business
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample*webinst -- --force
+
 webinst-all: webinst webinst-selenium
 
 webinst:

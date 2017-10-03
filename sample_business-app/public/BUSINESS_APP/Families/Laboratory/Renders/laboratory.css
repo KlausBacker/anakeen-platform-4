@@ -1,0 +1,12 @@
+.dcpDocument--view .dcpAttribute__content[data-attrid=csl_alerte_acteur],
+.dcpDocument--view .dcpAttribute__content[data-attrid=csl_notification_montants],
+.dcpDocument--view .dcpAttribute__content[data-attrid=csl_type_soutien],
+.dcpDocument--view .dcpAttribute__content[data-attrid=csl_notification_statut]
+{
+    color:red;
+    font-weight: bold;
+}
+
+.dcpFrame__content > .dcpAttribute[data-attrid=csl_contexte] {
+    width: 100%;
+}

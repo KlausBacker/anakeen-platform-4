@@ -1,0 +1,33 @@
+{
+    "families": {
+        "BA_LABORATORY": {
+            "renderAccessClass": "Sample\\BusinessApp\\Renders\\LaboratoryAccess",
+            "applyRefresh": false,
+            "disableEtag": false
+        },
+
+        "BA_PROSPECT": {
+            "renderAccessClass": "Sample\\BusinessApp\\Renders\\ProspectAccess",
+            "applyRefresh": false,
+            "disableEtag": false
+        },
+
+        "BA_CLIENT": {
+            "renderAccessClass": "Sample\\BusinessApp\\Renders\\ClientAccess",
+            "applyRefresh": false,
+            "disableEtag": false
+        },
+        "BA_WCLIENT": {
+            "renderTransitionClass": "Sample\\BusinessApp\\Renders\\ClientTransitionsAccess"
+        },
+        "BA_CERTIFICATION": {
+            "renderAccessClass": "Sample\\BusinessApp\\Renders\\CertificationAccess",
+            "applyRefresh": false,
+            "disableEtag": false
+        },
+
+        "BA_WCERTIFICATION": {
+            "renderTransitionClass": "Sample\\BusinessApp\\Renders\\CertificationTransitionsAccess"
+        }
+    }
+}

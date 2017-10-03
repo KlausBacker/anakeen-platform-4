@@ -1,0 +1,4 @@
+//BEGIN;"Parent family";"Family title";;;"Family name"
+BEGIN;;;;;BA_CLIENT
+//PARAM;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
+END;;;;;

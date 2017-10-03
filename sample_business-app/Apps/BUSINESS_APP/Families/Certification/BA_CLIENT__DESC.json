@@ -1,0 +1,11 @@
+{
+    "name": "BA_CLIENT",
+    "parent": null,
+    "Struct": "BA_CLIENT__STRUCT.csv",
+    "Param": "BA_CLIENT__PARAM.csv",
+    "Icon": "BA_Client.png",
+    "Config": "BA_CLIENT__CONFIG.csv",
+    "Workflow": "BA_CLIENT__WORKFLOW.csv",
+    "wfam": "BA_WCLIENT-Cycle_du_certif",
+    "Infoxml": "BA_CLIENT__info.xml"
+}
