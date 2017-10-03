@@ -4,6 +4,8 @@
 
 .documentsList__collections__wrapper,
 .documentsList__collections {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 25vw;
 }
@@ -58,6 +60,10 @@
   line-height: 2.95;
   background-color: #e7e7e7;
   text-align: center;
+  .fa {
+    font-size: 1.5rem;
+    color: #FFF;
+  }
 }
 
 .documentsList__collections,
@@ -116,6 +122,8 @@
 }
 
 .documentsList__collections_button {
+  display: flex;
+  align-items: center;
   padding: 0px;
   height: 35px;
   vertical-align: middle;
@@ -164,7 +172,6 @@
   background: transparent;
   .fa {
     color: #eee;
-    font-size: 2rem;
   }
 }
 
@@ -183,24 +190,11 @@
   text-align: left;
 }
 
-.documentsList__collections_button_icon.documentsList__collections_button_icon--notif {
-  background-color: #646464;
-  background-size: 31px;
-}
-
-.documentsList__collections_button_icon.documentsList__collections_button_icon--settings {
-  background-color: #646464;
-  background-size: 23px;
-}
-
-.documentsList__collections_button_icon.documentsList__collections_button_icon--state {
-  background-color: #646464;
-  background-size: 20px;
-}
-
+.documentsList__collections_button_icon.documentsList__collections_button_icon--notif,
+.documentsList__collections_button_icon.documentsList__collections_button_icon--settings,
+.documentsList__collections_button_icon.documentsList__collections_button_icon--state,
 .documentsList__collections_button_icon.documentsList__collections_button_icon--disconnect {
   background-color: #646464;
-  background-size: 23px;
 }
 
 .documentsList__collections_button_title {
@@ -217,4 +211,100 @@
   margin-left: 10px;
   color: #fff;
   padding-right: 38px;
+}
+
+.documentsList__documentCard__body,
+.documentsList__collectionCard {
+  border-bottom: 1px solid #ccc;
+}
+
+.documentsList__collectionCard {
+  margin-top: 0px;
+}
+
+.documentsList__collectionCard,
+.documentsList__documentCard {
+  position: relative;
+  margin-top: 1px;
+  border: none;
+  cursor: pointer;
+  line-height: 1.3em;
+  color: #505050;
+}
+
+.documentsList__collectionCard {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.documentsList__collectionCard:first-child,
+.documentsList__documentCard:first-child,
+.documentsList__collectionCard:last-child,
+.documentsList__documentCard:last-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.documentsList__collections,
+.documentsList__collections .list-group-item,
+.documentsList__collections_button_icon {
+  background-color: #f9f9f9;
+}
+
+.list-group .documentsList__collectionCard {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  height: auto;
+}
+
+.documentsList__collectionCard .documentsList__collectionCard__heading__content,
+.documentsList__documentCard .documentsList__collectionCard__heading__content,
+.documentsList__collectionCard .documentsList__documentCard__heading__content,
+.documentsList__documentCard .documentsList__documentCard__heading__content {
+  line-height: 1.3em;
+  font-weight: 600;
+  color: #505050;
+  text-transform: uppercase;
+}
+
+.documentsList__collections--expanded .documentsList__collectionCard__heading__content_icon,
+.documentsList__collections--expanded .documentsList__collections_button_icon {
+  left: 0px;
+}
+
+.documentsList__collectionCard__heading__content_icon {
+  width: 43px;
+}
+
+.documentsList__collectionCard__heading__content_icon {
+  width: 48px;
+  left: calc(100% - 50px);
+  position: relative;
+  text-align: center;
+  transition: left 1s;
+}
+
+.documentsList__collectionCard__heading__content_label,
+.documentsList__collectionCard__heading__content_icon {
+  display: inline-block;
+}
+
+.documentsList__collectionCard__heading__content_label {
+  text-align: center;
+  width: calc(100% - 89px);
+}
+
+.documentsList__documentCard--opened .documentsList__documentCard__heading__content,
+.documentsList__documentCard__heading__state,
+.documentsList__documentCard .documentsList__documentCard__heading__content,
+.documentsList__collectionCard__heading__content_label {
+  color: #505050;
+  font-weight: 400;
+}
+
+.documentsList__collections__list {
+  overflow-y: auto;
+  height: 100%;
 }

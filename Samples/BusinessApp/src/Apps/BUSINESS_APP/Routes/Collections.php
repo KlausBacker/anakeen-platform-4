@@ -57,10 +57,7 @@ class Collections extends Crud
         {
             $return['data'] = $this->_collection;
         }
-
-        return array(
-            "collections" => "Hello world"
-        );
+        return json_decode(\ApplicationParameterManager::getParameterValue("BUSINESS_APP", "SAMPLE_CONFIG"));
     }
 
     /**
