@@ -11,26 +11,24 @@ export default {
     return {
       login: '',
       pwd: '',
+      showPasswordIsChecked: false,
     };
   },
   mounted() {
     "use strict";
-    $('.AuthentForm').submit(createSession);
-    $('.AuthentLogin').kendoMaskedTextBox({
-      mask: 'LOL'
-    });
+    this.$kendo.jQuery('.AuthentButton').kendoButton(
+      {
+        click: this.createSession
+      }
+    );
   },
   methods: {
-    createSession() {
+    createSession(event) {
+      event.preventDefault();
+      window.console.log('Im creating a session here');
       "use strict";
       this.$http.post(`/authent/${this.login}`, {
         password: this.pwd
-      }).then(function (response) {
-        if (response.status === 201) {
-          // get home page or previous page
-        } else {
-          // display login or password is incorrect
-        }
       });
     }
   }
