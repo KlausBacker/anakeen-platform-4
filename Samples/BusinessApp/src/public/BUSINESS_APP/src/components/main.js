@@ -11,6 +11,7 @@ Vue.http = Vue.prototype.$http = axios.create({
   timeout: 1000
 });
 
+
 // import and register your component(s)
 // import Base from './base/base.vue';
 import Splitter from './splitter/splitter.vue';

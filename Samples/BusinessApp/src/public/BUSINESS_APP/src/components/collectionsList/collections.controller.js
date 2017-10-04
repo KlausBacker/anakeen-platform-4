@@ -4,6 +4,11 @@ export default {
       .then((response) => {
         this.collections = response.data.data.collections;
       });
+    const store = document.getElementById('a4-store');
+    store.addEventListener('store-change', (event) => {
+      const storeData = event.detail && event.detail.length ? event.detail[0] : null;
+      this.onStoreChange(storeData)
+    });
   },
   data() {
     return {
@@ -35,7 +40,14 @@ export default {
   },
   methods: {
     onToggleCollections() {
-      this.showCollections = !this.showCollections;
+      this.$emit('store-save', {action: 'toggleCollections', data: !this.showCollections });
+    },
+    onStoreChange(storeData) {
+      if (storeData) {
+        if (storeData.type === 'TOGGLE_COLLECTIONS') {
+          this.showCollections = storeData.data;
+        }
+      }
     }
   }
 }
