@@ -1,3 +1,3 @@
 export default {
-  toggleCollections: false
+  toggleCollections: true
 }

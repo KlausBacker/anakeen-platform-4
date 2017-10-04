@@ -14,6 +14,7 @@ export default {
           this.sendAction(action);
         })
       }
+      this.sendAction({ action: 'toggleCollections', data: false});
     });
   },
   methods: {

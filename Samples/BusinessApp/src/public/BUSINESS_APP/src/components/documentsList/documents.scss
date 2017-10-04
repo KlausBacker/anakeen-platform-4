@@ -1,0 +1,79 @@
+.documentsList__documents__wrapper {
+  margin-left: 50px;
+  background-color: #FFFFFF;
+}
+
+.documentsList__documents__wrapper,
+.documentsList__documents {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: calc(25vw - 50px);
+}
+
+.documentsList__documents__logo {
+  height: 43px;
+  width: 100%;
+  //background: url(../../api/v1/images/assets/sizes/x30/dyn-W300.png);
+  //background-size: auto 30px;
+  //background-repeat: no-repeat;
+  //background-position: center;
+  margin-bottom: 0px;
+}
+
+.documentsList__documents__header__label {
+  line-height: 3em;
+}
+
+.documentsList__documents__header__label {
+  height: 37px;
+  overflow-x: hidden;
+  line-height: 1.3em;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: #353535;
+  border-top: 1px solid #e6e6e6;
+}
+
+.documentsList__documents__search__wrapper {
+  background-color: #eee;
+  padding-top: 7px;
+}
+
+.documentsList__documents__search {
+  padding: 10px 20px;
+}
+
+.form-control, .btn-default, .btn-default:hover {
+  border: 1px solid #e6e6e6;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.documentsList__documents__summary__wrapper {
+  padding-bottom: 8px;
+  background-color: #eee;
+}
+
+.form-inline.documentsList__documents__summary {
+  justify-content: center;
+}
+
+.documentsList__documents__summary {
+  padding-right: 10px;
+  text-align: right;
+}
+
+.documentsList__documents__summary__nav {
+  margin-left: 10px;
+  color: #23527c;
+  display: inline-block;
+}
+
+.documentsList__documents__list__container {
+  height: 100%;
+}
