@@ -1,0 +1,37 @@
+{
+  "name": "Document-uis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production webpack",
+    "dev": "webpack --watch"
+  },
+  "browserslist": "last 2 versions, ie 10",
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kartsims/vue-customelement-bundler.git"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.6.0",
+    "css-loader": "^0.26.2",
+    "file-loader": "^0.11.1",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony",
+    "vue": "^2.2.6",
+    "vue-custom-element": "^1.0.13",
+    "vue-loader": "^11.3.4",
+    "vue-style-loader": "^2.0.5",
+    "vue-template-compiler": "^2.2.6",
+    "webpack": "^2.3.3",
+    "document-register-element": "^1.7.0"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "vuex": "^2.4.0"
+  }
+}
