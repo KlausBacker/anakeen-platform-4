@@ -291,6 +291,12 @@ define([
                     $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
 
                 }
+                if (tabPlacement === "top" && this.kendoTabs) {
+                    this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
+                    $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.scrollTabList, this), 100, false));
+                    _.delay(_.bind(this.scrollTabList, this), 500);
+
+                }
 
                 if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
                     var selectTab = 'li[data-attrid=' + this.selectedTab + ']';
@@ -376,6 +382,12 @@ define([
                     }
                 }
             }
+        },
+
+        scrollTabList: function vDocumentScrollTabList()
+        {
+             var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
+            kendoTabStrip.resize();
         },
         /**
          * Add menu if needed in topFix placement tab
