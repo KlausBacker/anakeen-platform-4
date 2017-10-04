@@ -1,4 +1,5 @@
 import Vue from 'vue';
+
 import axios from 'axios';
 import 'document-register-element/build/document-register-element';
 
@@ -10,8 +11,7 @@ Vue.http = Vue.prototype.$http = axios.create({
   baseURL: '/api/v1',
   timeout: 1000
 });
-
-
+Vue.kendo = Vue.prototype.$kendo = kendo.jQuery;
 // import and register your component(s)
 // import Base from './base/base.vue';
 import Splitter from './splitter/splitter.vue';
