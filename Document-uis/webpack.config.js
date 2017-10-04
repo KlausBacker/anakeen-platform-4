@@ -2,9 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './public/BUSINESS_APP/src/components/main.js',
+  entry: {
+    app: path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js'),
+    externals: [
+      'kendo'
+    ]
+  },
   output: {
-    path: path.resolve(__dirname, 'public/BUSINESS_APP/dist/'),
+    path: path.resolve(__dirname, 'src/public/login/dist/'),
     filename: 'a4-business-app-components.js'
   },
   module: {
@@ -15,14 +20,21 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        include: [ path.resolve(__dirname, 'src/vendor/Anakeen/Components/')],
         use: {
-            loader: 'babel-loader',
-            options: {
-                presets: ['env']
-            }
+          loader: 'babel-loader',
+          options: {
+            presets: ['env']
+          }
         }
       }
     ]
+  },
+  resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, 'src/public/uiAssets/externals/KendoUI/js/jquery.js'),
+      kendo: path.resolve(__dirname, 'src/public/uiAssets/externals/KendoUI/js/kendo-ddui-builded.js')
+    }
   }
 };
 
@@ -44,6 +56,12 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
+    }),
+    new webpack.ProvidePlugin({
+      "jQuery": "jquery",
+      "$": "jquery",
+      "window.jQuery": "jquery"
+    }),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'externals', filename: 'a4-externals.bundle.js'})
   ])
 }
