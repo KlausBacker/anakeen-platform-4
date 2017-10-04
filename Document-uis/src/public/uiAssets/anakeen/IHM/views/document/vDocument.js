@@ -137,6 +137,7 @@ define([
             $(window).off(".v" + this.model.cid);
 
             $(window).on("resize.v" + this.model.cid, _.bind(this.resizeForFooter, this));
+            $(window).on("scroll.v" + this.model.cid, _.bind(this.fixedTab, this));
             kendo.culture(locale);
             //add document base
             try {
@@ -356,7 +357,26 @@ define([
                 }
             }
         },
+        fixedTab: function vDocumentfixedTab()
+        {
+            var $tabs = this.$el.find(".dcpDocument__tabs");
+            if ($tabs.length > 0) {
+                var menuHeight = this.$el.find(".menu__content").height();
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > ($tabs.offset().top - menuHeight)) {
+                    $tabs.addClass("tab--fixed");
+                    $tabs.css("top", menuHeight + "px");
+                } else {
+                    var $tabContent = this.$el.find(".dcpTab__content.k-state-active").first();
+                    var $tabList = this.$el.find(".dcpDocument__tabs__list");
 
+                    if (scrollTop < ($tabContent.offset().top - menuHeight - $tabList.height())) {
+                        $tabs.removeClass("tab--fixed");
+                        $tabs.css("top", "");
+                    }
+                }
+            }
+        },
         /**
          * Add menu if needed in topFix placement tab
          */
