@@ -97,11 +97,10 @@ class Session extends DbObj
                 
             }
         }
+
         // set cookie session
         if (!empty($_SERVER['HTTP_HOST'])) {
-            if (empty($_SERVER["REDIRECT_URL"])) {
-                $this->setCookieSession($this->id, $this->SetTTL());
-            }
+           $this->setCookieSession($this->id, $this->SetTTL());
         }
         return true;
     }

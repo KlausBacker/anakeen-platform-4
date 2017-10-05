@@ -107,7 +107,9 @@ class htmlAuthenticator extends Authenticator
         /* Force removal of username if it already exists on the session */
         $session->register('username', '');
         $session->setuid(Account::ANONYMOUS_ID);
+        $args=[];
         if (!isset($args['redirect_uri'])) {
+            if (!empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== "/")
             $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
         }
         
@@ -125,17 +127,19 @@ class htmlAuthenticator extends Authenticator
         if (empty($this->parms['auth']['app'])) {
             throw new \Dcp\Exception("Missing html/auth/app config.");
         }
+        $hasArgs=false;
         $location = Session::getWebRootPath();
-        $location.= 'authent.php?app=' . $this->parms['auth']['app'];
-        if (!empty($this->parms['auth']['action'])) {
-            $location.= '&action=' . $this->parms['auth']['action'];
-        }
+        $location.= "./login/";
+
         if (!empty($this->parms['auth']['args'])) {
-            $location.= '&' . $this->parms['auth']['args'];
+            $location.= '?' . $this->parms['auth']['args'];
+            $hasArgs=true;
         }
         $sargs = '';
         foreach ($extendedArg as $k => $v) {
-            $sargs.= sprintf("&%s=%s", $k, urlencode($v));
+            $sargs.= sprintf("%s%s=%s", $hasArgs?'&':'?', $k, urlencode($v));
+            $hasArgs=true;
+
         }
         return $location . $sargs;
     }
