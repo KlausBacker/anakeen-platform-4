@@ -4,4 +4,4 @@ ui/node_modules/
 ui/DataTables/
 Document-uis/src/public/uiAssets/externals/
 .idea/
-sample_business-app/node_modules/
+Samples/BusinessApp/node_modules/

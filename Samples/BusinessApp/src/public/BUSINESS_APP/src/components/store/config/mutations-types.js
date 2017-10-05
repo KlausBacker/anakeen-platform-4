@@ -1,0 +1,3 @@
+export default {
+  TOGGLE_COLLECTIONS: "TOGGLE_COLLECTIONS"
+}

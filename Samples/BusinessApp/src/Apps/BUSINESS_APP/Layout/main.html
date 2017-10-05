@@ -8,17 +8,19 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/a4/business-app/business-app.css">
     <link rel="stylesheet" type="text/css" href="css/a4/document/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/a4/document/kendo.css"/>
 </head>
 <body>
 
-<a4-store></a4-store>
-
-<a4-splitter>
-    <a4-collections></a4-collections>
-    <a4-documents></a4-documents>
+<a4-store id="a4-store"></a4-store>
+<div>
+<a4-splitter class="a4-component">
+    <a4-collections class="a4-component"></a4-collections>
+    <a4-documents class="a4-component"></a4-documents>
 </a4-splitter>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.4.1/document-register-element.js"></script>
+<a4-open-document class="a4-component"></a4-open-document>
+</div>
+<script src="BUSINESS_APP/dist/a4-externals.bundle.js"></script>
 <script src="BUSINESS_APP/dist/a4-business-app-components.js"></script>
 
 </body>

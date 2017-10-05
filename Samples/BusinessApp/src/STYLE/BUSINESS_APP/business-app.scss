@@ -1,11 +1,15 @@
+@import "../DDUI/dduiAssets/scss/corporate/variables.corporate";
+$font-family-base: $A4-ui-font;
 @import "../../public/uiAssets/externals/KendoUI/bootstrap-theme/scss/variables";
 @import "../DDUI/dduiAssets/scss/fontawesome";
-@import "../DDUI/dduiAssets/scss/corporate/variables.corporate";
 
 @import "../../public/BUSINESS_APP/src/components/base/base";
 @import "../../public/BUSINESS_APP/src/components/collectionsList/collections";
+@import "../../public/BUSINESS_APP/src/components/documentsList/documents";
+@import "../../public/BUSINESS_APP/src/components/splitter/splitter.scss";
+@import "../../public/BUSINESS_APP/src/components/openDocument/openDocument.scss";
 
 html, body {
   font-size: 12px;
-  font-family: $A4-ui-font;
+  font-family: $font-family-base;
 }
