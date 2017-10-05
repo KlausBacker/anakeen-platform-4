@@ -20,7 +20,9 @@ require([
       "kendo.slider",
       "kendo.colorpicker",
       "kendo.tabstrip",
-      "kendo.button"
+      "kendo.button",
+      "kendo.listview",
+      "kendo.pager"
     ], function require_kendo()
     {
     }, function onError(err) {
