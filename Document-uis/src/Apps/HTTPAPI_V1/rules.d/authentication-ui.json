@@ -1,0 +1,10 @@
+[
+  {
+    "order": 300,
+    "class": "\\Anakeen\\Routes\\Authent\\Login",
+    "regExp": "%^/authent/(?P<login>[^/]+)$%",
+    "description": "Login <login>",
+    "canonicalURL": "authent/<login>",
+    "standalone": true
+  }
+]

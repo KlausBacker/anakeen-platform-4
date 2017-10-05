@@ -7,7 +7,7 @@
 namespace Anakeen\Ui;
 use Dcp\AttributeIdentifiers\MAILTEMPLATE as myAttributes;
 
-class TmailViewRender extends DefaultConfigViewRender
+class MailtemplateViewRender extends DefaultConfigViewRender
 {
     /**
      * @param \Doc $document Document instance
@@ -34,12 +34,5 @@ class TmailViewRender extends DefaultConfigViewRender
 HTML
         );
         return $options;
-    }
-    public function getCssReferences(\Doc $document = null)
-    {
-        $css = parent::getCssReferences();
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $css["dduiMailTemplate"] = "DOCUMENT/Layout/MailTemplate/tmail.css?ws=" . $version;
-        return $css;
     }
 }
