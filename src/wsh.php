@@ -13,7 +13,7 @@
  */
 
 ini_set("max_execution_time", "0");
-require_once 'vendor/Anakeen/WHAT/Lib.Prefix.php';
+require_once __DIR__.'/vendor/Anakeen/WHAT/Lib.Prefix.php';
 require_once 'Class.Action.php';
 require_once 'Class.Application.php';
 require_once 'Class.Session.php';
