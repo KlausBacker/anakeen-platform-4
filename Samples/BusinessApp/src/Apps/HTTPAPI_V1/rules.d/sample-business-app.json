@@ -1,9 +1,23 @@
 [
   {
-    "order": 1000,
+    "order": 500,
     "class": "\\Anakeen\\Sample\\Routes\\Collections",
     "regExp": "%^/sba/collections/?$%",
     "description": "Get available collections",
-    "canonicalURL": "collections"
+    "canonicalURL": "sba/collections/"
+  },
+  {
+    "order": 1000,
+    "class": "\\Anakeen\\Sample\\Routes\\Collections",
+    "regExp": "%^/sba/collections/(?P<collectionRef>[^/]+)/?$%",
+    "description": "Get collection",
+    "canonicalURL": "sba/collections/<collectionRef>/"
+  },
+  {
+    "order": 1000,
+    "class": "\\Anakeen\\Sample\\Routes\\DocumentsList",
+    "regExp": "%^/sba/collections/(?P<collectionRef>[^/]+)/documentsList/?$%",
+    "description": "Get available documents from collection",
+    "canonicalURL": "sba/collections/<collectionRef>/documentsList/"
   }
 ]

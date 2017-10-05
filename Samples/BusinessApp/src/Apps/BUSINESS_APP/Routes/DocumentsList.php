@@ -2,20 +2,21 @@
 /**
  * Created by PhpStorm.
  * User: aurelien
- * Date: 02/10/17
- * Time: 16:10
+ * Date: 05/10/17
+ * Time: 11:50
  */
 
 namespace Anakeen\Sample\Routes;
 
-use Dcp\HttpApi\V1\Crud\Crud;
+use Dcp\HttpApi\V1\Crud\DocumentCollection;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Anakeen\Sample\Routes\Exception;
 
-class Collections extends Crud
+class DocumentsList extends DocumentCollection
 {
+
     /**
-     * @var \Doc current dcp collection
+     * @var \Doc current anakeen platform collection
      */
     protected $_apCollection = null;
 
@@ -23,17 +24,19 @@ class Collections extends Crud
      * @var string reference of current collection
      */
     protected $_collectionRef;
-
     /**
      * @var array definition of current collection
      */
     protected $_collection;
+    /**
+     * @var string default value for order
+     */
+    protected $_defaultOrder = 'title asc';
+
 
     /**
      * Create new ressource
-     *
      * @return mixed
-     * @throws Exception
      */
     public function create()
     {
@@ -46,31 +49,41 @@ class Collections extends Crud
 
     /**
      * Read a ressource
-     *
      * @param string|int $resourceId Resource identifier
      * @return mixed
-     * @throws Exception
      */
     public function read($resourceId)
     {
-//        $bdlConfig = Utils::getBdlConfig($this->_bdlInstance);
-        $return = [];
-        if(null !== $this->_collectionRef)
-        {
-            $return['sample'] = $this->_collection;
-        } else {
-            $return['sample'] = json_decode(\ApplicationParameterManager::getParameterValue("BUSINESS_APP", "SAMPLE_CONFIG"));
+        $return = parent::read($resourceId);
+
+        $return["resultMax"] = $this->_searchDoc->onlyCount();
+        $return["uri"] = $this->generateURL(sprintf("sba/collections/%s/documentsList/", $this->_collectionRef));
+        unset($return["properties"]);
+
+//        $return['state'] = $this->getPaginationState();
+
+        $return['user'] = ["id"=>intval(getCurrentUser()->id), "fid"=>intval(getCurrentUser()->fid)];
+
+
+        if ($this->_apCollection) {
+            $familyId=$this->_apCollection->getRawValue("se_famid");
+            if ($familyId) {
+                $family=DocManager::getFamily($familyId);
+                if ($family) {
+                    $return["workflow"]=intval($family->wid);
+                }
+            }
         }
+        $searchDoc = new \SearchDoc("", $this->_collectionRef);
+        $return['sample'] = $searchDoc->search();
         return $return;
+
     }
 
     /**
      * Update the ressource
-     *
      * @param string|int $resourceId Resource identifier
-     *
      * @return mixed
-     * @throws Exception
      */
     public function update($resourceId)
     {
@@ -83,11 +96,8 @@ class Collections extends Crud
 
     /**
      * Delete ressource
-     *
      * @param string|int $resourceId Resource identifier
-     *
      * @return mixed
-     * @throws Exception
      */
     public function delete($resourceId)
     {
@@ -101,12 +111,19 @@ class Collections extends Crud
     public function setUrlParameters(array $parameters)
     {
         parent::setUrlParameters($parameters);
-        if (isset($this->urlParameters['collectionRef'])) {
+        $collections = json_decode(\ApplicationParameterManager::getParameterValue('BUSINESS_APP', 'SAMPLE_CONFIG'), TRUE);
+        if ($collections === null) {
+            $collections = [];
+        }
+        if (!isset($this->urlParameters['collectionRef'])) {
+            $exception = new Exception(("FIXME"));
+            $exception->setHttpStatus("400", "collectionRef parameter is required");
+            throw $exception;
+        } else {
             $this->_collectionRef = $this->urlParameters['collectionRef'];
-            $collections = json_decode(\ApplicationParameterManager::getParameterValue('BUSINESS_APP', 'SAMPLE_CONFIG'), TRUE);
             if (isset($collections['collections'])) {
                 foreach ($collections['collections'] as $collection) {
-                    if ($collection['ref'] === $this->_collectionRef) {
+                    if ($this->_collectionRef === $collection['ref']) {
                         $this->_collection = $collection;
                         break;
                     }
@@ -116,14 +133,10 @@ class Collections extends Crud
                 }
                 if ((null === $this->_apCollection) || ('' !== $this->_apCollection->control('open'))) {
                     //FIXME: error message when collection does not exists
-                    $exception = new Exception("FIXME");
+                    $exception = new Exception("collection $this->_collectionRef does not exists.");
                     $exception->setHttpStatus("404", "collection $this->_collectionRef does not exists.");
                     throw $exception;
                 }
-            } else {
-                $exception = new Exception("FIXME");
-                $exception->setHttpStatus("404", "collections not found");
-                throw $exception;
             }
         }
     }
