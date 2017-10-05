@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'src/public/login/dist/'),
-    filename: 'a4-business-app-components.js'
+    filename: 'a4-login-components.js'
   },
   module: {
     rules: [
