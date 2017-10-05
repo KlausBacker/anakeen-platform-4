@@ -1,12 +1,12 @@
 <template>
     <div class="documentsList__documents__wrapper">
-        <div class="documentsList__documents">
+        <div class="documentsList__documents" v-show="collection">
             <div class="documentsList__documents__logo">LOGO</div>
 
             <div class="documentsList__documents__header__wrapper">
                 <div class="documentsList__documents__header">
                     <div class="documentsList__documents__header__label">
-                        (Nom collection)
+                        {{collection ? collection.html_label : ''}}
                     </div>
                 </div>
             </div>
@@ -16,7 +16,7 @@
                     <div class="input-group">
                         <span class="input-group-btn">
                             <button class="btn btn-default documentsList__documents__search__reset__button">
-                                <span class="k-icon k-i-close"></span>
+                                <span class="fa fa-times"></span>
                             </button>
                         </span>
                         <input type="text"
@@ -24,7 +24,7 @@
                                placeholder="Mot clé" value="">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default documentsList__documents__search__button">
-                                            <span class="k-icon k-i-search"></span>
+                                            <span class="fa fa-search"></span>
                                         </button>
                                     </span>
                     </div>
@@ -49,9 +49,11 @@
                 </div>
             </div>
 
-            <div class="documentsList__documents__list__container"></div>
+            <div class="documentsList__documents__list__container" ref="listView"></div>
 
-            <div class="documentsList__documents__pagination__wrapper dropup">
+            <div class="documentsList__documents__list__pager" ref="pager"></div>
+
+            <!--<div class="documentsList__documents__pagination__wrapper dropup">
                 <nav class="documentsList__documents__pagination">
                     <div class="input-group">
                         <div class="input-group-btn">
@@ -94,11 +96,11 @@
                                     </a>
                                 </li>
                             </ul>
-                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item--first"
+                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item&#45;&#45;first"
                                     data-page="first" disabled="disabled">
                                 <span class="fa fa-fast-backward"></span>
                             </button>
-                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item--previous"
+                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item&#45;&#45;previous"
                                     data-page="prev" disabled="disabled">
                                 <span class="fa fa-backward"></span>
                             </button>
@@ -109,18 +111,19 @@
                             /&nbsp;
                         </span>
                         <div class="input-group-btn">
-                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item--next"
+                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item&#45;&#45;next"
                                     data-page="next">
                                 <span class="fa fa-forward"></span>
                             </button>
-                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item--last"
+                            <button class="btn btn-default documentsList__documents__pagination__item documentsList__documents__pagination__item&#45;&#45;last"
                                     data-page="last">
                                 <span class="fa fa-fast-forward"></span>
                             </button>
                         </div>
                     </div>
                 </nav>
-            </div>
+            </div>-->
         </div>
     </div>
 </template>
+<script src="./documents.controller.js"></script>
