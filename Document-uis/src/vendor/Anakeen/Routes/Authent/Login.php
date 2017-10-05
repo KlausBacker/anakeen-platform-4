@@ -24,6 +24,7 @@ class Login extends Crud
         }
         $user = new \Account();
         $user->setLoginName($login);
+        $result=false;
         if ($user->isAffected()) {
             try {
                 $result=$user->checkpassword($password);
@@ -45,6 +46,7 @@ class Login extends Crud
         $_SERVER['PHP_AUTH_USER']=$login;
         $session = new \Session();
         $session->set();
+        $session->register('username', $login);
         return [];
     }
 
