@@ -16,7 +16,7 @@ class DocumentRenderOptions extends BaseRenderOptions
     const tabLeftPlacement = "left";
     const tabTopProportionalPlacement = "topProportional";
     const tabTopFixPlacement = "topFix"; // fix width and display
-    const tabTopScrollPlacement = "top"; // fix width and display
+    const tabTopScrollPlacement = "top"; // fix width and horizontal scroll
     
     protected $scope = "document";
     /**
