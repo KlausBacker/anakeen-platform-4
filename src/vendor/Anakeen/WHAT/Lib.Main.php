@@ -408,17 +408,11 @@ function handleActionException($e)
     }
     errorLogException($e);
     if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
-        
-        if ($action->root === "Y" && $action->parent->name === ApplicationParameterManager::getParameterValue("CORE", "CORE_START_APP")) {
-            $action->parent->session->Close();
-            $action->exitError(_("You don't have access to any content. Please contact your administrator."));
-        } else {
             if (php_sapi_name() === 'cli') {
                 fwrite(STDERR, $e->getMessage() . "\n");
             } else {
                 $action->exitError($e->getMessage());
             }
-        }
     } else {
         if (php_sapi_name() === 'cli') {
             fwrite(STDERR, $e->getMessage());
