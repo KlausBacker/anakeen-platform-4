@@ -6,3 +6,4 @@ Document-uis/src/public/uiAssets/externals/
 .idea/
 sample_business-app/node_modules/
 Document-uis/node_modules/
+Document-uis/src/public/login/dist/
