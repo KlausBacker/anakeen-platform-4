@@ -1,112 +1,123 @@
-html { background-color:[COLOR_A9]; padding:0; margin:0px; }
-body { font-family:Ubuntu, Trebuchet MS, Helvetica, sans-serif; background-color:[COLOR_A9]; padding:0px; margin:0px; color:[COLOR_A4]; }
-
-img { border:0; }
-a, a:link, a:visited { }
-a:hover { background-color:inherit; }
-p { margin:0; padding:0 }
-
-html, body {
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+html {
+    padding:0;
+    margin:0;
     height: 100vh;
+    font-size:13px;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color:white;
+    padding:0;
+    margin:0;
+    min-height: 100vh;
+
+    display:flex;
+    flex-direction: row;
 }
 
-body {
+.left {
+    flex-grow: 0;
+    background: #e7e7e7;
+    width: 270px;
+    min-width:270px;
+    display:flex;
+    flex-direction: column;
+}
+
+.version {
+    flex-grow: 0;
+    font-weight: bold;
+    margin: 20px 50px 0 50px;
+    font-size: 1.4rem;
+
+}
+.info {
+    margin: 50px;
+    text-align: justify;
+    line-height: 1.3rem;
+    flex-grow: 1;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+.logo img {
+    width:200px;
+    flex-grow: 0;
+}
+.right {
+    flex-grow: 1;
+    display:flex;
+    flex-direction: column;
+}
+.top {
+    flex-grow:0;
+    font-size: 1.6rem;
+    padding-left: 4rem;
     display: flex;
     flex-direction: row;
 }
-/* 
- * left block
- */
-.left-block {
-   background-color:[COLOR_A9]; 
-   color:[COLOR_A1];
-   width:20%;
-   top:20px;
-   left:0;
-    font-size: 10pt;
-    flex:1;
+.welcome {
+    flex-grow:1;
+    padding-right: 1rem;
 }
-/* 
- * right block
-*/
-.right-block {
-    flex:3;
-   padding:10px; 
-   width:75%;
-   background-color:[COLOR_C9]; 
-}
-#apropos { padding:10px; }
-#apropos em { font-style:normal; font-weight: bold; }
-#apropos ul { margin-left:0; padding-left: 20px; }
-#apropos li { }
-#apropos div.fr, #apropos div.en { padding:20px 15px 0 15px; }
-#apropos a, #apropos a:link, #apropos a:visited   { color:#06F; text-decoration:underline ; }
-#apropos a:hover { text-decoration:none; background-color:[COLOR_A6]; }
-#apropos p { margin-bottom:10px; }
-#apropos a.anakeen, #apropos a.anakeen:visited, #apropos a.anakeen:hover { font-weight:bold; text-decoration:none; }
-
-.right-block .intro { display:block; text-align:right; font-size:80%; font-weight:bold; }
-#hello {  padding: 60px 20%; }
-
-#header { text-align:center;}
-#header .title { font-weight:bold; font-size:400%; color: #333 }
-#header div.content { font-weight:bold; font-size:200%; }
-#welcome { text-align:center; margin:50px 0 60px 0px; font-size:200%;  }
-#header .version {  margin:10px 0 0 0; font-size:100%; }
-#header .version span {  color:[COLOR_A0]; }
-
-
-
-
-.links { text-align:center; padding: 60px 40px; }
-.links > div { width:48%; float:left;}
-.links a { margin-bottom: 30px; display:block; }
-.links .label { max-width:50%; margin: 1em auto 0 auto; font-size:150%; }
-.links img { }
-
-div.manual {
-    margin-top:20px;
-}
-a.manual {
-    background-image: url([IMG:mime-pdf.png|16]);
-    padding-left:17px;
-    background-repeat: no-repeat;
-}
-#footer { 
-    padding-top:10px;
-    text-align:center;
-}
-
-
-.clear { clear:both; }
-
-.documentation {
-    text-align: center;
-    font-size: 200%;
-}
-
-.admin-link {
-    text-align: center;
-}
-.admin-link a {
-    color: [COLOR_C7];
-    font-size: 150%;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 0.5em 1em;
-    color: #fff;
-    background-color: #3E8FA8;
-}
-.admin-link a:hover{
-    background-color: #FF620A;
+.admin a {
+    background-color: #007aff;
+    border-radius: 0.2rem;
+    border: solid 1px #007aff;
+    padding: 0.3rem 2rem;
+    font-weight: bold;
+    color: white;
     text-decoration: none;
-    border-color: 1px solid #777;
+    display: block;
+    text-align: center;
+    font-size: 1rem;
 }
 
-.para {
-    margin-top: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.6);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+
+.admin a:hover {
+
+    background-color: #0066cb;
+}
+
+.admin {
+    flex-grow:0;
+    margin-right: 2rem;
+}
+
+.bottom {
+    flex-grow:1;
+    padding-top: 5rem;
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+
+.product {
+    color: #9ecd63;
+    font-style: italic;
+    font-size: 2.5rem;
+}
+.summary {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #484848;
+    font-weight: bold;
+}
+.description {
+    font-size: 1.7rem;
+    color: #8e8e8e;
+    font-weight: bold;
+}
+
+@media (max-width:768px){
+    body {
+        flex-direction: column;
+        flex-flow: column-reverse;
+    }
+    .left {
+        width:100%;
+    }
 }

@@ -3,84 +3,43 @@
     <head>
         <title>Welcome - [CORE_CLIENT]</title>
         <meta charset='utf-8'/>
-        [CSS:REF]
+        [CSS:CUSTOMREF]
 
     </head>
-    <body id="body" class="fr">
+    <body>
 
-            <div class="left-block">
-                <!-- block dynacase -->
-                <div id="apropos">
-                    <div class="en">
-                        <div class="para">
-                            Anakeen Platform est distribué sous licence
-                            <a target="_blank" href="http://www.gnu.org/licenses/lgpl-3.0.html">GNU Lesser General
-                                Public License V3 - LGPL V3
-                            </a>
-                            .
-                        </div>
-                        <div class="para">
-                            <div>
-                                La
-                                <em>version entreprise</em>
-                                est supportée par Anakeen et permet d'accéder à ses services :
-                                consulting, expertise, support, patch correctifs, etc.
-                            </div>
-                            <div>
-                                Elle donne accès à des modules complémentaires : DocumentGrid, SearchCriteria,
-                                Dashboard, Tags, etc.
-                            </div>
-                            <div>
-                                Elle permet le changement de licence en accord avec
-                                <a href="http://www.anakeen.com" target="_blank">Anakeen</a>.
-                            </div>
-                        </div>
-                        <div class="para">
-                            <a href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            et les logos associés sont des marques déposées
-                            <a href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                            .
-                        </div>
 
-                    </div>
-                </div>
-                <div id="footer">
-                    <div class="copy">&copy; 2010-[thisyear]
-                        <a href="http://www.anakeen.com" target="_blank">Anakeen</a>
-                    </div>
-                </div>
-            </div>          <!-- block apropos -->
+       <section class="left">
 
-        <!-- enf of block left-block -->
-        <div class="right-block">
-            <a class="intro" href="authent.php?action=LOGOUT">&rarr; Se déconnecter</a>
-            <div id="hello">
-                <!-- block hello -->
-                <div id="header">
-                    <div class="title">Anakeen Platform 4</div>
-                    <div class="content">
-                        Simplifie &amp; accélère le développement | Facilite &amp; sécurise l'exécution
-                    </div>
-                    <div class="version">
-                        Version installée
-                        <span>[version]</span>
-                    </div>
-                </div>
-                <div id="welcome">Félicitations, Anakeen Platform est prêt à fonctionner.</div>
+           <div class="version">Version : [version]</div>
+           <div class="info">
+               <p>Community edition released under GNU Lesser General Public License V3 - LGPLV3. </p>
+                  <p> Enterprise edition is built with packages under Anakeen License and maybe supported by Anakeen SAS an Independant Software Vendor Based in Paris, France. </p>
+              <p> Anakeen SAS provides professionnal services, feel free to ask our experts some advices for the succes of your business application. </p>
+               <p>Anakeen and the Anakeen’s logo are registred trademarks own by Anakeen SAS.</p>
+           </div>
+
+           <div class="logo">
+           <img class="logo" src="CORE/Images/anakeen-logo.svg" />
+           </div>
+
+       </section>
+
+        <section class="right">
+            <div class="top">
+                <p class="welcome">Congratulations ! Anakeen Platform is up and running</p>
+                [IF isAdmin]<p class="admin"><a href="admin/">Access to Anakeen Admin Center</a></p>[ENDIF isAdmin]
+            </div>
+            <div class="bottom">
+                <p class="product">ANAKEEN PLATFORM</p>
+
+                <p class="summary">LOW-CODE PLATFORM FOR HTML5 BUSINESS APPS</p>
+
+                <p class="description">Build process-based applications<br/> to solve everyday business challenges</p>
 
             </div>
-            [IF isAdmin]
-            <div class="admin-link">
-                <a class="admin-link" href="admin/index.php" target="_blank">Accès au centre d'administration
-                </a>
-            </div>
-            [ENDIF isAdmin]
 
-
-        </div>
-        <!-- block hello -->
-        <div class="clear"></div>
-        <!-- page -->
+        </section>
 
     </body>
 </html>
