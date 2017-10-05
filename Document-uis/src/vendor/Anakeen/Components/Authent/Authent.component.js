@@ -12,25 +12,27 @@ export default {
       login: '',
       pwd: '',
       wrongPassword: false,
+      hidePassword: false,
     };
   },
   mounted() {
     "use strict";
-    this.$kendo.jQuery('.AuthentButton').kendoButton(
-      {
-        click: this.createSession
+    this.$kendo.jQuery('.AuthentButton').kendoButton();
+    $('.AuthentForm').on('submit', this.createSession);
+    $('.btn-reveal').on('click', function() {
+      if($('.AuthentPwd').attr('type') === 'password'){
+        this.hidePassword = false;
+        $('.AuthentPwd').attr('type', 'text');
+      } else if ($('.AuthentPwd').attr('type') === 'text') {
+        this.hidePassword = true;
+        $('.AuthentPwd').attr('type', 'password');
       }
-    );
-    $('.reveal').on('click', function() {
-      var $pwd = $('.AuthentPwd');
-      ($pwd.attr('type') === 'password') ? $pwd.attr('type', 'text') : $pwd.attr('type', 'password');
     });
   }
   ,
   methods: {
     createSession(event) {
       event.preventDefault();
-      window.console.log('Im creating a session here');
       "use strict";
       this.$http.post(`/authent/${this.login}`, {
         password: this.pwd
