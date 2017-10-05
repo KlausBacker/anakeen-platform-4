@@ -28,7 +28,7 @@
 
             <div class="list-group documentsList__collections__list">
                 <div v-for="c in collections">
-                    <div class="list-group-item documentsList__collectionCard " data-collection-ref="CSTB_CLIENT">
+                    <div :class="`list-group-item documentsList__collectionCard${selectedCollection && selectedCollection.ref === c.ref ? ' documentsList__collectionCard--active': ''}`" @click="onClickCollection($event, c)">
                         <div class="list-group-item-heading documentsList__collectionCard__heading">
                             <div class="documentsList__collectionCard__heading__content">
                                 <div class="documentsList__collectionCard__heading__content_icon">
