@@ -304,3 +304,17 @@
   overflow-y: auto;
   height: 100%;
 }
+
+.list-group .documentsList__collectionCard--active {
+  height: auto;
+  background-color: #e7e7e7;
+  color: #505050;
+  font-weight: 600;
+  box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+
+  .documentsList__collectionCard__heading__content_label {
+    color: #157EFB;
+    font-weight: bold;
+  }
+
+}

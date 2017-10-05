@@ -1,3 +1,4 @@
 export default {
-  toggleCollections: true
+  toggleCollections: true,
+  selectedCollection: null
 }
