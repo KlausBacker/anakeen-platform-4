@@ -45,7 +45,7 @@ $app_const = array(
     "INIT" => "yes",
     "CORE_LOGLEVEL" => "WEF",
     "VERSION" => array(
-        "val" => "3.2.23-2",
+        "val" => "4.0.0-0",
         "descr" => N_("application version") ,
         "kind" => "static"
     ) ,
@@ -55,7 +55,7 @@ $app_const = array(
         "kind" => "text"
     ) ,
     "WVERSION" => array(
-        "val" => "3.2.23-2",
+        "val" => "4.0.0-0",
         "descr" => N_("version identificator") ,
         "kind" => "static",
         "global" => "Y"
