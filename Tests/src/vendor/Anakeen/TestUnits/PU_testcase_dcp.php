@@ -15,7 +15,7 @@ namespace Dcp\Pu;
 require_once __DIR__."/../WHAT/Lib.Prefix.php";
 require_once 'WHAT/autoload.php';
 include_once ("FDL/Class.Doc.php"); // to include some libraries
-class TestCaseDcp extends \PHPUnit_Framework_TestCase
+class TestCaseDcp extends \PHPUnit\Framework\TestCase
 {
     /**
      * DbAccess string
