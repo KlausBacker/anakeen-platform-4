@@ -38,18 +38,28 @@ export default {
 
     mounted()
     {
-      this.$kendo.jQuery('.authent-login-button').kendoButton();
-      this.$kendo.jQuery('.authent-form').on('submit', this.createSession);
-      this.$kendo.jQuery('.btn-reveal').on('click', function revealPassword()
-    {
-        let $pwd = $('.authent-pwd');
-        if ($pwd.attr('type') === 'password') {
-          this.hidePassword = false;
-          $pwd.attr('type', 'text');
-        } else
-            if ($pwd.attr('type') === 'text') {
-          this.hidePassword = true;
-          $pwd.attr('type', 'password');
+      let $ = this.$kendo.jQuery;
+      $('.authent-login-button').kendoButton();
+      $('.authent-form').on('submit', this.createSession);
+      $('.btn-reveal').on('click', function revealPassword()
+        {
+            let $pwd = $('.authent-pwd');
+            if ($pwd.attr('type') === 'password') {
+              this.hidePassword = false;
+              $pwd.attr('type', 'text');
+            } else
+                if ($pwd.attr('type') === 'text') {
+              this.hidePassword = true;
+              $pwd.attr('type', 'password');
+            }
+          });
+
+      $('.form-control').on('change', function requireMessage() {
+        let msg = $(this).data('validationmessage');
+        if (this.value === '' && msg) {
+          this.setCustomValidity(msg);
+        } else {
+          this.setCustomValidity('');
         }
       });
     },
