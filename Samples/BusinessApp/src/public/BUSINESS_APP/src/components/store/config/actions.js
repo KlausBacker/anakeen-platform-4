@@ -6,5 +6,11 @@ export default {
   },
   selectCollection({ commit }, collection) {
     commit(types.SELECT_COLLECTION, collection);
+  },
+  openDocument({ commit }, document) {
+    commit(types.OPEN_DOCUMENT, document);
+  },
+  selectDocument({ commit }, document) {
+    commit(types.SELECT_DOCUMENT, document);
   }
 }

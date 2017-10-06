@@ -3,6 +3,7 @@ export default {
     this.$http.get('/sba/collections')
       .then((response) => {
         this.collections = response.data.data.sample.collections;
+        this.updateKendoData();
         this.selectCollection(this.collections[0]);
       });
     const store = document.getElementById('a4-store');
@@ -10,12 +11,14 @@ export default {
       const storeData = event.detail && event.detail.length ? event.detail[0] : null;
       this.onStoreChange(storeData);
     });
+    this.initKendo();
   },
   data() {
     return {
       showCollections: true,
       selectedCollection: null,
       collections: [],
+      dataSources: null,
       buttons: [
         {
           id: 'notif',
@@ -56,12 +59,37 @@ export default {
         }
       }
     },
-    onClickCollection(event, collection) {
-      this.selectCollection(collection);
-    },
-    selectCollection(collection) {
-      this.$emit('store-save', { action: 'selectCollection', data: collection});
+    selectCollection(c) {
+      this.$emit('store-save', { action: 'selectCollection', data: c});
       this.$emit('store-save', { action: 'toggleCollections', data: false});
+    },
+    initKendo() {
+      const self = this;
+      this.dataSource = new this.$kendo.data.DataSource({
+        data: [],
+        pageSize: 10
+      });
+
+      this.$(this.$refs.listView).kendoListView({
+        dataSource: this.dataSource,
+        template: this.$kendo.template('<div class="documentsList__collectionCard"><div class="documentsList__collectionCard__body"><div class="documentsList__collectionCard__heading">'+
+          '<div class="documentsList__collectionCard__heading__content_icon"><img src="#: image_url#"  alt="#: html_label# image"/></div>'+
+          '<span class="documentsList__collectionCard__heading__content_label">#:html_label#</span>' +
+          '</div></div></div>'),
+        selectable: 'single',
+        change: onChange
+      })
+      function onChange() {
+        const data = this.dataSource.view(),
+          selected = $.map(this.select(), function(item) {
+            return data[$(item).index()];
+          });
+        self.selectCollection(selected[0])
+      }
+      this.updateKendoData();
+    },
+    updateKendoData() {
+      this.dataSource.data(this.collections);
     }
   }
 }

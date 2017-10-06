@@ -1,4 +1,6 @@
 export default {
   toggleCollections: true,
-  selectedCollection: null
+  selectedCollection: null,
+  openedDocuments: [],
+  selectedDocument: null,
 }
