@@ -22,7 +22,8 @@ require([
       "kendo.tabstrip",
       "kendo.button",
       "kendo.listview",
-      "kendo.pager"
+      "kendo.pager",
+      "kendo.splitter"
     ], function require_kendo()
     {
     }, function onError(err) {

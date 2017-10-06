@@ -8,6 +8,7 @@ export default {
       });
     });
     this.initKendo();
+    console.log($);
   },
   data() {
     return {
@@ -17,8 +18,9 @@ export default {
     };
   },
   methods: {
-    onClickDocument(event, document) {
-      this.$emit('store-save', {action: 'openDocument', data: document });
+    onSelectDocument(...arg) {
+      // this.$emit('store-save', {action: 'openDocument', data: document });
+      console.log(...arg);
     },
     onStoreChange(storeData) {
       if (storeData) {
@@ -39,22 +41,45 @@ export default {
     },
     initKendo() {
       this.dataSource = new this.$kendo.data.DataSource({
-        data: this.documents,
-        pageSize: 21
+        data: [],
+        pageSize: 10
       });
       this.$(this.$refs.listView).kendoListView({
         dataSource: this.dataSource,
         template: this.$kendo.template('<div class="documentsList__documentCard"><div class="documentsList__documentCard__body"><div class="documentsList__documentCard__heading">'+
-          (this.collection ? `<img src="${this.collection.image_url}" />` : '')+
-          '<span>#:title#</span></div></div></div>')
+          '<img class="documentsList__documentCard__heading__content_icon" src="#: collection.image_url#"  alt="#: title# image"/>'+
+          '<span>#:title#</span>' +
+          '</div></div></div>'),
+        selectable: 'multiple',
+        change: this.onSelectDocument
       });
 
       this.$(this.$refs.pager).kendoPager({
-        dataSource: this.dataSource
+        dataSource: this.dataSource,
+        numeric: false,
+        input: true,
+        info: false,
+        messages: {
+          page: '',
+          of: '/ {0}'
+        }
       });
+      this.$(this.$refs.summaryPager).kendoPager({
+        dataSource: this.dataSource,
+        numeric: false,
+        input: false,
+        info: true,
+        messages: {
+          display: "{0} - {1} sur {2}",
+        }
+      });
+      this.updateKendoData();
     },
     updateKendoData() {
-      this.dataSource.data(this.documents);
+      this.dataSource.data(this.documents.map((d) => {
+        d.collection = this.collection;
+        return d;
+      }));
     }
   }
 }

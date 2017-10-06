@@ -11,6 +11,11 @@
   width: calc(25vw - 50px);
 }
 
+.documentsList__documents,
+.documentsList__documents__list {
+  background-color: #FFFFFF;
+}
+
 .documentsList__documents__logo {
   height: 43px;
   width: 100%;
@@ -34,7 +39,9 @@
   position: relative;
   white-space: nowrap;
   text-overflow: ellipsis;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #353535;
   border-top: 1px solid #e6e6e6;
 }
@@ -59,7 +66,7 @@
   background-color: #eee;
 }
 
-.form-inline.documentsList__documents__summary {
+.documentsList__documents__summary {
   justify-content: center;
 }
 
@@ -68,17 +75,32 @@
   text-align: right;
 }
 
-.documentsList__documents__summary__nav {
-  margin-left: 10px;
-  color: #23527c;
-  display: inline-block;
-}
-
-.documentsList__documents__list__container {
+.documentsList__documents__list {
   height: 100%;
+  border: none;
 }
+.documentsList__documentCard {
+  height: 45px;
+  &:hover {
+    color: #00b4fc;
+  }
 
+  &.k-state-selected {
+    box-shadow: inset 4px 0px 0px 0px #8AE234;
+    background-color: #F4F4F4;
+    color: #00b4fc;
+    font-weight: 600;
+  }
+}
 .documentsList__documentCard__body {
   border-bottom: 1px solid #ccc;
   padding: 10px 15px 10px 20px;
+}
+
+.documentsList__documentCard__heading {
+
+}
+
+.documentsList__documentCard__heading__content_icon {
+  padding: 0 1em 0 0;
 }
