@@ -21,7 +21,7 @@ export default {
       collections: [],
       dataSources: null,
       buttons: [
-        {
+        /*{
           id: 'notif',
           icon: 'fa fa-bell',
           title: 'Notifications',
@@ -34,8 +34,8 @@ export default {
         {
           id: 'state',
           icon: 'fa fa-refresh',
-          title: 'Synchronisé',
-        },
+          title: 'Synchronisé'
+        },*/
         {
           id: 'disconnect',
           icon: 'fa fa-power-off',
@@ -72,18 +72,10 @@ export default {
     },
 
     initKendo() {
-      const _this = this;
       this.dataSource = new this.$kendo.data.DataSource({
         data: [],
         pageSize: 10,
       });
-
-      let changeCollection = function onChange() {// jscs:ignore disallowFunctionDeclarations
-          const data = this.dataSource.view();
-          let   selected = $.map(this.select(),  (item) => data[$(item).index()]);
-
-          _this.selectCollection(selected[0]);
-        };
 
       this.$(this.$refs.listView).kendoListView({
         dataSource: this.dataSource,
@@ -95,7 +87,7 @@ export default {
             '<span class="documentsList__collectionCard__heading__content_label">#:html_label#</span>' +
             '</div></div></div>'),
         selectable: 'single',
-        change: changeCollection,
+        change: this.onSelectItemList,
       });
 
       this.updateKendoData();
@@ -103,6 +95,13 @@ export default {
 
     updateKendoData() {
       this.dataSource.data(this.collections);
+    },
+
+    onSelectItemList() {
+      const data = this.dataSource.view();
+      const listView = this.$(this.$refs.listView).data('kendoListView');
+      const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
+      this.selectCollection(selected[0]);
     },
   },
 };
