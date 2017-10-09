@@ -199,7 +199,7 @@ class UpdateAttribute
         $uid = $u->id;
         $uname = trim($u->firstname . ' ' . $u->lastname);
         $date = Doc::getTimeDate(0, true);
-        $level = HISTO_MESSAGE;
+        $level = DocHisto::MESSAGE;
         $code = "UPDATE";
         foreach ($ids as $id => $initid) {
             $vs[] = sprintf("(%d,%d,%d,'%s','%s',%d,'%s','%s')", $id, $initid, $uid, pg_escape_string($uname) , pg_escape_string($date) , $level, pg_escape_string($code) , pg_escape_string($this->historyComment));

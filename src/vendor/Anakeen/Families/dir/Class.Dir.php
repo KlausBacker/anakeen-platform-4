@@ -347,7 +347,7 @@ class Dir extends PDir
             if ($err == "") {
                 AddLogMsg(sprintf(_("Add %s in %s folder") , $doc->title, $this->title));
                 $this->addHistoryEntry(sprintf(_("Document %s inserted") , $doc->title));
-                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder") , $this->title, HISTO_INFO, "MOVEADD"));
+                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder") , $this->title, DocHisto::INFO, "MOVEADD"));
                 
                 $this->addLog('addcontent', array(
                     "insert" => array(
@@ -518,7 +518,7 @@ class Dir extends PDir
                     $insertOne = $qf->Add();
                     if ($insertOne == "") {
                         AddLogMsg(sprintf(_("Add %s in %s folder") , $tdoc["title"], $this->title));
-                        $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , HISTO_INFO, "MODCONTAIN");
+                        $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , DocHisto::INFO, "MODCONTAIN");
                         
                         $this->addLog('addcontent', array(
                             "insert" => array(
@@ -711,8 +711,8 @@ class Dir extends PDir
                 "title" => $doc->title
             )
         ));
-        $this->addHistoryEntry(sprintf(_("Document %s umounted") , $doc->title) , HISTO_INFO, "MODCONTAIN");
-        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder") , $this->title, HISTO_INFO, "MOVEUNLINK"));
+        $this->addHistoryEntry(sprintf(_("Document %s umounted") , $doc->title) , DocHisto::INFO, "MODCONTAIN");
+        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder") , $this->title, DocHisto::INFO, "MOVEUNLINK"));
         // use post virtual method
         if (!$noprepost) {
             $this->updateFldRelations();
@@ -975,7 +975,7 @@ class Dir extends PDir
             }
             if ($coulddelete) $terr[$doc->id] = $doc->delete();
         }
-        $this->addHistoryEntry(_("Folder cleared") , HISTO_INFO, "MODCONTAIN");
+        $this->addHistoryEntry(_("Folder cleared") , DocHisto::INFO, "MODCONTAIN");
         return $terr;
     }
     /**

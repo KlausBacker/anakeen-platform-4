@@ -590,7 +590,7 @@ class Fdl_Document
                         $keys[] = $oa->getLabel();
                     }
                     $skeys = implode(",", $keys);
-                    $this->doc->addHistoryEntry(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                    $this->doc->addHistoryEntry(sprintf(_("change %s") , $skeys) , DocHisto::INFO, "MODIFY");
                 }
             }
         }

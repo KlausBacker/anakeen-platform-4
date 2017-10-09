@@ -247,7 +247,7 @@ class ExecProcessus extends \Dcp\Family\Document
                 $err = $doc->modify();
             }
         } else {
-            $doc->addHistoryEntry($err, HISTO_ERROR);
+            $doc->addHistoryEntry($err, DocHisto::ERROR);
         }
         
         if ($err != "") return 1;
