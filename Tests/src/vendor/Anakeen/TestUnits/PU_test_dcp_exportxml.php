@@ -162,6 +162,9 @@ class TestExportXml extends TestCaseDcpCommonFamily
      */
     function testExportTitleLimits($folderId)
     {
+        if (file_exists("/.dockerenv")) {
+            $this->markTestSkipped(sprintf("Skipping test because Docker's AUFS has a NAME_LEN < 255 (see #2399 and #6336)"));
+        }
         $export = new \exportXmlFolder();
         $catchedMessage = '';
         try {
