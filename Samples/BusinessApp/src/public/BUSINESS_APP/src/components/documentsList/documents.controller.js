@@ -1,27 +1,58 @@
 export default {
   mounted() {
-    document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener('DOMContentLoaded', (event) => {
       const store = document.getElementById('a4-store');
       store.addEventListener('store-change', (event) => {
         const storeData = event.detail && event.detail.length ? event.detail[0] : null;
         this.onStoreChange(storeData);
       });
     });
+
+    // this.$http.get('sba/appconfig')
+    //   .then((response) => {
+    //     this.appConfig = response.data.data;
+    //   });
     this.initKendo();
-    console.log($);
   },
+
   data() {
     return {
       collection: null,
       documents: [],
+      appConfig: null,
       dataSource: null,
+      filterInput: '',
+      pageSizeOptions: [
+        {
+          text: '5',
+          value: 5,
+        },
+        {
+          text: '10',
+          value: 10,
+        },
+        {
+          text: '25',
+          value: 25,
+        },
+        {
+          text: '50',
+          value: 50,
+        },
+        {
+          text: '100',
+          value: 100,
+        },
+      ],
     };
   },
+
   methods: {
     onSelectDocument(...arg) {
       // this.$emit('store-save', {action: 'openDocument', data: document });
       console.log(...arg);
     },
+
     onStoreChange(storeData) {
       if (storeData) {
         switch (storeData.type) {
@@ -36,22 +67,24 @@ export default {
         }
       }
     },
+
     onClickCollection(event, collection) {
-      this.$emit('store-save', { action: 'selectCollection', data: collection});
+      this.$emit('store-save', { action: 'selectCollection', data: collection });
     },
+
     initKendo() {
       this.dataSource = new this.$kendo.data.DataSource({
         data: [],
-        pageSize: 10
+        pageSize: this.pageSizeOptions[1].value,
       });
       this.$(this.$refs.listView).kendoListView({
         dataSource: this.dataSource,
-        template: this.$kendo.template('<div class="documentsList__documentCard"><div class="documentsList__documentCard__body"><div class="documentsList__documentCard__heading">'+
-          '<img class="documentsList__documentCard__heading__content_icon" src="#: collection.image_url#"  alt="#: title# image"/>'+
+        template: this.$kendo.template('<div class="documentsList__documentCard"><div class="documentsList__documentCard__body"><div class="documentsList__documentCard__heading">' +
+          '<img class="documentsList__documentCard__heading__content_icon" src="#: collection.image_url#"  alt="#: title# image"/>' +
           '<span>#:title#</span>' +
           '</div></div></div>'),
         selectable: 'multiple',
-        change: this.onSelectDocument
+        change: this.onSelectDocument,
       });
 
       this.$(this.$refs.pager).kendoPager({
@@ -61,8 +94,8 @@ export default {
         info: false,
         messages: {
           page: '',
-          of: '/ {0}'
-        }
+          of: '/ {0}',
+        },
       });
       this.$(this.$refs.summaryPager).kendoPager({
         dataSource: this.dataSource,
@@ -70,16 +103,45 @@ export default {
         input: false,
         info: true,
         messages: {
-          display: "{0} - {1} sur {2}",
-        }
+          display: '{0} - {1} sur {2}',
+        },
+      });
+
+      this.$(this.$refs.pagerCounter).kendoDropDownList({
+        dataSource: this.pageSizeOptions,
+        dataTextField: 'text',
+        dataValueField: 'value',
+        index: 1,
+        change: this.onSelectPageSize,
+        headerTemplate: '<li>Eléments par page</li>',
       });
       this.updateKendoData();
     },
+
     updateKendoData() {
       this.dataSource.data(this.documents.map((d) => {
         d.collection = this.collection;
         return d;
       }));
-    }
-  }
-}
+    },
+
+    onSelectPageSize(e) {
+      const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
+      const newPageSize = counter.dataItem(e.item).value;
+      this.dataSource.pageSize(newPageSize);
+    },
+
+    onSearchClick() {
+      this.dataSource.filter({ field: 'title', operator: 'contains', value: this.filterInput });
+    },
+
+    onRemoveClick() {
+      this.filterInput = '';
+      this.dataSource.filter(null);
+    },
+
+    onFilterInput(event) {
+      this.filterInput = event.target.value;
+    },
+  },
+};
