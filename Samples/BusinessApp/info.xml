@@ -13,6 +13,7 @@
 
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Laboratory/laboratory.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Prospect/prospect.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Prospect/prospect.param.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Client/client.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Certification/certification.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Certification/certification.workflow.csv --csv-enclosure='&quot;'" />

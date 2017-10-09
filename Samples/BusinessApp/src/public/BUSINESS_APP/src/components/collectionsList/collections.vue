@@ -51,7 +51,8 @@
                         <i class="fa fa-caret-down"></i>
                     </div>
                 </div>
-                <div v-for="b in buttons" :class="`documentsList__collections_button documentsList__collections_button--${b.id}`">
+                <div v-for="b in buttons" :class="`documentsList__collections_button documentsList__collections_button--${b.id}`"
+                @click="b.click">
                     <div :class="`documentsList__collections_button_icon documentsList__collections_button_icon--${b.id}`">
                         <i :class="b.icon"></i>
                     </div>
