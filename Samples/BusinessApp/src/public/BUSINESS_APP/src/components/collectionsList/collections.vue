@@ -3,10 +3,10 @@
         <div class="documentsList__collections">
             <div class="user-info">
                 <div class="documentsList__collections_button_icon documentsList__collections_button_icon--user">
-                    Dp
+                    {{userInitial}}
                 </div>
                 <div class="documentsList__collections_button_title documentsList__collections_button_title--user">
-                    Dynacase platform Master
+                    {{userFullName}}
                 </div>
             </div>
 

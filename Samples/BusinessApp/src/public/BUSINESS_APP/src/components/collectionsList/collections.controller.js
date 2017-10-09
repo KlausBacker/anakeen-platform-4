@@ -6,6 +6,12 @@ export default {
         this.updateKendoData();
         this.selectCollection(this.collections[0]);
       });
+    this.$http.get('/sba/currentUser')
+      .then((response) => {
+        console.log(response);
+        this.currentUser = response.data.data.user;
+        console.log(this.currentUser);
+      });
     const store = document.getElementById('a4-store');
     store.addEventListener('store-change', (event) => {
       const storeData = event.detail && event.detail.length ? event.detail[0] : null;
@@ -19,6 +25,7 @@ export default {
       showCollections: true,
       selectedCollection: null,
       collections: [],
+      currentUser: null,
       dataSources: null,
       buttons: [
         /*{
@@ -46,6 +53,29 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    userInitial() {
+      if (this.currentUser) {
+        const fullName = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        const initials = fullName.match(/\b(\w)/g).join('');
+        if (initials.length > 2) {
+          return initials.slice(0, 2);
+        } else {
+          return initials;
+        }
+      } else {
+        return '';
+      }
+    },
+    userFullName() {
+      if (this.currentUser)  {
+        return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+      } else {
+        return "";
+      }
+    }
   },
 
   methods: {
