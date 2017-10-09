@@ -41,7 +41,7 @@ webinst-all: webinst webinst-selenium
 
 webinst:
 	cd ui && npm run build
-	cd Document-uis && npm run build
+	cd Document-uis && npm install && npm run build
 	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	make webinst-full
 

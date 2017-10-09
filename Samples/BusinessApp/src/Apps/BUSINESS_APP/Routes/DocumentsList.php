@@ -1,0 +1,144 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: aurelien
+ * Date: 05/10/17
+ * Time: 11:50
+ */
+
+namespace Anakeen\Sample\Routes;
+
+use Dcp\HttpApi\V1\Crud\DocumentCollection;
+use Dcp\HttpApi\V1\DocManager\DocManager;
+use Anakeen\Sample\Routes\Exception;
+
+class DocumentsList extends DocumentCollection
+{
+
+    /**
+     * @var \Doc current anakeen platform collection
+     */
+    protected $_apCollection = null;
+
+    /**
+     * @var string reference of current collection
+     */
+    protected $_collectionRef;
+    /**
+     * @var array definition of current collection
+     */
+    protected $_collection;
+    /**
+     * @var string default value for order
+     */
+    protected $_defaultOrder = 'title asc';
+
+
+    /**
+     * Create new ressource
+     * @return mixed
+     */
+    public function create()
+    {
+        $exception = new Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus(
+            "405", "You cannot create"
+        );
+        throw $exception;
+    }
+
+    /**
+     * Read a ressource
+     * @param string|int $resourceId Resource identifier
+     * @return mixed
+     */
+    public function read($resourceId)
+    {
+        $return = parent::read($resourceId);
+
+        $return["resultMax"] = $this->_searchDoc->onlyCount();
+        $return["uri"] = $this->generateURL(sprintf("sba/collections/%s/documentsList/", $this->_collectionRef));
+        unset($return["properties"]);
+
+//        $return['state'] = $this->getPaginationState();
+
+        $return['user'] = ["id"=>intval(getCurrentUser()->id), "fid"=>intval(getCurrentUser()->fid)];
+
+
+        if ($this->_apCollection) {
+            $familyId=$this->_apCollection->getRawValue("se_famid");
+            if ($familyId) {
+                $family=DocManager::getFamily($familyId);
+                if ($family) {
+                    $return["workflow"]=intval($family->wid);
+                }
+            }
+        }
+        $searchDoc = new \SearchDoc("", $this->_collectionRef);
+        $return['sample'] = $searchDoc->search();
+        return $return;
+
+    }
+
+    /**
+     * Update the ressource
+     * @param string|int $resourceId Resource identifier
+     * @return mixed
+     */
+    public function update($resourceId)
+    {
+        $exception = new Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus(
+            "405", "You cannot update"
+        );
+        throw $exception;
+    }
+
+    /**
+     * Delete ressource
+     * @param string|int $resourceId Resource identifier
+     * @return mixed
+     */
+    public function delete($resourceId)
+    {
+        $exception = new Exception("CRUD0103", __METHOD__);
+        $exception->setHttpStatus(
+            "405", "You cannot delete"
+        );
+        throw $exception;
+    }
+
+    public function setUrlParameters(array $parameters)
+    {
+        parent::setUrlParameters($parameters);
+        $collections = json_decode(\ApplicationParameterManager::getParameterValue('BUSINESS_APP', 'SAMPLE_CONFIG'), TRUE);
+        if ($collections === null) {
+            $collections = [];
+        }
+        if (!isset($this->urlParameters['collectionRef'])) {
+            $exception = new Exception(("FIXME"));
+            $exception->setHttpStatus("400", "collectionRef parameter is required");
+            throw $exception;
+        } else {
+            $this->_collectionRef = $this->urlParameters['collectionRef'];
+            if (isset($collections['collections'])) {
+                foreach ($collections['collections'] as $collection) {
+                    if ($this->_collectionRef === $collection['ref']) {
+                        $this->_collection = $collection;
+                        break;
+                    }
+                }
+                if (null !== $this->_collection) {
+                    $this->_apCollection = DocManager::getDocument($this->_collection['initid']);
+                }
+                if ((null === $this->_apCollection) || ('' !== $this->_apCollection->control('open'))) {
+                    //FIXME: error message when collection does not exists
+                    $exception = new Exception("collection $this->_collectionRef does not exists.");
+                    $exception->setHttpStatus("404", "collection $this->_collectionRef does not exists.");
+                    throw $exception;
+                }
+            }
+        }
+    }
+
+}

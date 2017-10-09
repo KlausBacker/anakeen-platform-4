@@ -26,9 +26,9 @@
                 </div>
             </div>
 
-            <div class="list-group documentsList__collections__list">
-                <div v-for="c in collections">
-                    <div class="list-group-item documentsList__collectionCard " data-collection-ref="CSTB_CLIENT">
+            <div class="documentsList__collections__list" ref="listView">
+                <!--<div v-for="c in collections">
+                    <div :class="`list-group-item documentsList__collectionCard${selectedCollection && selectedCollection.ref === c.ref ? ' documentsList__collectionCard&#45;&#45;active': ''}`" @click="onClickCollection($event, c)">
                         <div class="list-group-item-heading documentsList__collectionCard__heading">
                             <div class="documentsList__collectionCard__heading__content">
                                 <div class="documentsList__collectionCard__heading__content_icon">
@@ -42,7 +42,7 @@
                         <div class="list-group-item-text documentsList__collectionCard__text">
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
 
             <div class="documentsList__collections_buttons documentsList__collections_buttons--bottom">
