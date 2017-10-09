@@ -231,7 +231,7 @@ class Timer extends \Dcp\Family\Document
                         
                         if ($err) {
                             $gerr.= "$err\n";
-                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $level, $err) , HISTO_ERROR);
+                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s") , $this->title, $level, $err) , DocHisto::ERROR);
                         }
                     }
                 }
