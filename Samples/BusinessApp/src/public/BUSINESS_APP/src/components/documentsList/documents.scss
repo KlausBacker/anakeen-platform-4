@@ -17,6 +17,9 @@
 }
 
 .documentsList__documents__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 43px;
   width: 100%;
   //background: url(../../api/v1/images/assets/sizes/x30/dyn-W300.png);
@@ -103,4 +106,14 @@
 
 .documentsList__documentCard__heading__content_icon {
   padding: 0 1em 0 0;
+}
+
+.documentsList__documents__logo__img {
+  width: 103px;
+  height: 21px;
+}
+
+.documentsList__documents__list__pager_wraper {
+  display: flex;
+  flex-direction: row;
 }
