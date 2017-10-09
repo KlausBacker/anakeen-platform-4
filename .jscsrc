@@ -7,5 +7,6 @@
   "disallowMultipleLineBreaks": true,
   "requireCommaBeforeLineBreak": true,
   //"requireDollarBeforejQueryAssignment": true,
-  "requireSemicolons": true
+  "requireSemicolons": true,
+  "maximumLineLength" : 120
 }

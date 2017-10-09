@@ -13,6 +13,7 @@ export default {
     });
     this.initKendo();
   },
+
   data() {
     return {
       showCollections: true,
@@ -23,30 +24,35 @@ export default {
         {
           id: 'notif',
           icon: 'fa fa-bell',
-          title: 'Notifications'
+          title: 'Notifications',
         },
         {
           id: 'settings',
           icon: 'fa fa-cog',
-          title: 'Paramètres'
+          title: 'Paramètres',
         },
         {
           id: 'state',
           icon: 'fa fa-refresh',
-          title: 'Synchronisé'
+          title: 'Synchronisé',
         },
         {
           id: 'disconnect',
           icon: 'fa fa-power-off',
-          title: 'Déconnexion'
+          title: 'Déconnexion',
+          click: () => {
+            window.location.href = '?app=CORE&action=LOGOUT';
+          },
         },
-      ]
+      ],
     };
   },
+
   methods: {
     onToggleCollections() {
-      this.$emit('store-save', {action: 'toggleCollections', data: !this.showCollections });
+      this.$emit('store-save', { action: 'toggleCollections', data: !this.showCollections });
     },
+
     onStoreChange(storeData) {
       if (storeData) {
         switch (storeData.type) {
@@ -59,37 +65,44 @@ export default {
         }
       }
     },
+
     selectCollection(c) {
-      this.$emit('store-save', { action: 'selectCollection', data: c});
-      this.$emit('store-save', { action: 'toggleCollections', data: false});
+      this.$emit('store-save', { action: 'selectCollection', data: c });
+      this.$emit('store-save', { action: 'toggleCollections', data: false });
     },
+
     initKendo() {
-      const self = this;
+      const _this = this;
       this.dataSource = new this.$kendo.data.DataSource({
         data: [],
-        pageSize: 10
+        pageSize: 10,
       });
+
+      let changeCollection = function onChange() {// jscs:ignore disallowFunctionDeclarations
+          const data = this.dataSource.view();
+          let   selected = $.map(this.select(),  (item) => data[$(item).index()]);
+
+          _this.selectCollection(selected[0]);
+        };
 
       this.$(this.$refs.listView).kendoListView({
         dataSource: this.dataSource,
-        template: this.$kendo.template('<div class="documentsList__collectionCard"><div class="documentsList__collectionCard__body"><div class="documentsList__collectionCard__heading">'+
-          '<div class="documentsList__collectionCard__heading__content_icon"><img src="#: image_url#"  alt="#: html_label# image"/></div>'+
-          '<span class="documentsList__collectionCard__heading__content_label">#:html_label#</span>' +
-          '</div></div></div>'),
+        template: this.$kendo.template('<div class="documentsList__collectionCard">' +
+            '<div class="documentsList__collectionCard__body">' +
+            '<div class="documentsList__collectionCard__heading">' +
+            '<div class="documentsList__collectionCard__heading__content_icon">' +
+            '<img src="#: image_url#"  alt="#: html_label# image"/></div>' +
+            '<span class="documentsList__collectionCard__heading__content_label">#:html_label#</span>' +
+            '</div></div></div>'),
         selectable: 'single',
-        change: onChange
-      })
-      function onChange() {
-        const data = this.dataSource.view(),
-          selected = $.map(this.select(), function(item) {
-            return data[$(item).index()];
-          });
-        self.selectCollection(selected[0])
-      }
+        change: changeCollection,
+      });
+
       this.updateKendoData();
     },
+
     updateKendoData() {
       this.dataSource.data(this.collections);
-    }
-  }
-}
+    },
+  },
+};
