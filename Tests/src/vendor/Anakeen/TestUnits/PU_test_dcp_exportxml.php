@@ -162,6 +162,9 @@ class TestExportXml extends TestCaseDcpCommonFamily
      */
     function testExportTitleLimits($folderId)
     {
+        if (file_exists("/.dockerenv")) {
+            $this->markTestSkipped(sprintf("Skipping test because Docker's AUFS has a NAME_LEN < 255 (see #2399 and #6336)"));
+        }
         $export = new \exportXmlFolder();
         $catchedMessage = '';
         try {
@@ -175,7 +178,8 @@ class TestExportXml extends TestCaseDcpCommonFamily
         catch(\Exception $e) {
             $catchedMessage = $e->getMessage();
         }
-        $this->assertNotNull($this->dom->documentElement, sprintf("Invalid XML export for folder '%s': %s", $folderId, ($catchedMessage != '') ? $catchedMessage : '<no-error-message>'));
+        $this->assertEmpty($catchedMessage, sprintf("Export thrown an unexpected exception: %s", $catchedMessage));
+        $this->assertTrue((is_object($this->dom) && isset($this->dom->documentElement) && $this->dom->documentElement !== null) , sprintf("Invalid XML export for folder '%s': %s", $folderId, ($catchedMessage != '') ? $catchedMessage : '<no-error-message>'));
     }
     /**
      * Test that exported documents have no param columns

@@ -12,7 +12,7 @@ namespace Dcp\Pu;
 $pubdir = ".";
 set_include_path(get_include_path() . PATH_SEPARATOR . "$pubdir/DCPTEST:$pubdir/WHAT");
 include_once ("FDL/Class.Doc.php");
-class FrameworkDcp extends \PHPUnit_Framework_TestSuite
+class FrameworkDcp extends \PHPUnit\Framework\TestSuite
 {
     protected function setUp()
     {
