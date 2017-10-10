@@ -7,11 +7,6 @@ export default {
         this.onStoreChange(storeData);
       });
     });
-
-    // this.$http.get('sba/appconfig')
-    //   .then((response) => {
-    //     this.appConfig = response.data.data;
-    //   });
     this.initKendo();
   },
 
@@ -58,7 +53,7 @@ export default {
         switch (storeData.type) {
           case 'SELECT_COLLECTION':
             this.collection = storeData.data;
-            this.$http.get(`/sba/collections/${this.collection.ref}/documentsList`)
+            this.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`)
               .then((response) => {
               this.documents = response.data.data.sample;
               this.updateKendoData();
@@ -111,9 +106,11 @@ export default {
         dataSource: this.pageSizeOptions,
         dataTextField: 'text',
         dataValueField: 'value',
+        animation: false,
         index: 1,
         change: this.onSelectPageSize,
         headerTemplate: '<li>Eléments par page</li>',
+        valueTemplate: '<span class="fa fa-list-ol"></span>'
       });
       this.updateKendoData();
     },
@@ -143,5 +140,20 @@ export default {
     onFilterInput(event) {
       this.filterInput = event.target.value;
     },
+
+    sendGetRequest(url) {
+      const element = this.$(this.$refs.wrapper);
+      this.$kendo.ui.progress(element, true);
+      return new Promise((resolve, reject) => {
+        this.$http.get(url)
+          .then((response) => {
+            this.$kendo.ui.progress(element, false);
+            resolve(response);
+          }).catch((error) => {
+            this.$kendo.ui.progress(element, false);
+            reject(error);
+        });
+      })
+    }
   },
 };

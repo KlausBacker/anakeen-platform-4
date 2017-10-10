@@ -1,5 +1,5 @@
 <template>
-    <div class="documentsList__documents__wrapper">
+    <div class="documentsList__documents__wrapper" ref="wrapper">
         <div class="documentsList__documents" v-show="collection">
             <div class="documentsList__documents__logo">
                 <img class="documentsList__documents__logo__img" src="api/v1/images/assets/original/logo-cstb-trans.png"/>
