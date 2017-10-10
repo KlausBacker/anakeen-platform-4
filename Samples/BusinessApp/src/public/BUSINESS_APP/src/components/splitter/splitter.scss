@@ -29,6 +29,16 @@
   box-shadow: 2px 0 2px rgba(0, 0, 0, 0.15);
 }
 
+.documentsList__collapsible__handler::before, .documentsList__collapsible__handler::after {
+  font: normal normal normal 14px/1 FontAwesome;
+  content: "\f142";
+  padding: 0 5px;
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 10px;
+}
+
 .documentsList__collapsible__handler__label {
   transform: translateX(-50%) translateY(-50%) rotateZ(-90deg);
   position: relative;
@@ -38,6 +48,18 @@
   float: left;
 }
 
-.documentsList__panel__wrapper {
-  width: calc(25vw + 24px);
+.documentsList__splitter__wrapper {
+  display: flex;
+  flex-direction: row;
+
+  .mainPane {
+    flex: 1;
+    & > * {
+      height: 100%;
+    }
+  }
+
+  .leftPane.leftPane--collapsed {
+    left: 0;
+  }
 }

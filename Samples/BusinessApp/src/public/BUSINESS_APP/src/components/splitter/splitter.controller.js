@@ -1,6 +1,7 @@
 export default {
   data() {
     return {
+      collapseSplitter: false,
       collection: null,
     };
   },
@@ -27,5 +28,9 @@ export default {
         }
       }
     },
+
+    onCollapseSplitter(event) {
+      this.collapseSplitter = !this.collapseSplitter;
+    }
   }
 }
