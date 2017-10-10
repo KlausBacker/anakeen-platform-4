@@ -7,10 +7,18 @@ export default {
         this.onStoreChange(storeData);
       });
     });
+    this.sendGetRequest('sba/collections')
+      .then((response) => {
+        this.updateKendoData(response.data.data.sample.collections);
+      });
+    this.initKendo();
   },
   data() {
     return {
-      urlDocument: null
+      urlDocument: null,
+      openedDocuments: [],
+      activeTab: null,
+      newActionsSource: null
     }
   },
   methods: {
@@ -20,6 +28,48 @@ export default {
 
         }
       }
+    },
+
+    initKendo() {
+      this.newActionsSource = new this.$kendo.data.DataSource({
+        data: []
+      });
+      this.$(this.$refs.newActionButton).kendoDropDownList({
+        dataSource: this.newActionsSource,
+        dataTextField: 'html_label',
+        dataValueField: 'ref',
+        animation: false,
+        change: this.onClickNewAction,
+        valueTemplate: '<span class="documentsList__openDocuments__button__label">Nouveau</span>',
+        template: this.$kendo.template(
+          '<span class="documentsList__openDocuments__button__option">' +
+          '<img class="documentsList__openDocuments__button__option__img" src="#: image_url#" alt="#: html_label# image"/>' +
+          '<span class="documentsList__openDocuments__button__option__label">#= html_label#</span>' +
+          '</span>')
+      });
+    },
+
+    onClickNewAction() {
+
+    },
+
+    updateKendoData(data) {
+      this.newActionsSource.data(data);
+    },
+
+    sendGetRequest(url) {
+      const element = this.$(this.$refs.wrapper);
+      this.$kendo.ui.progress(element, true);
+      return new Promise((resolve, reject) => {
+        this.$http.get(url)
+          .then((response) => {
+            this.$kendo.ui.progress(element, false);
+            resolve(response);
+          }).catch((error) => {
+          this.$kendo.ui.progress(element, false);
+          reject(error);
+        });
+      })
     }
   }
 }

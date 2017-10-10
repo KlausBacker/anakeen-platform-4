@@ -2,4 +2,53 @@
   background-color: #DCDCDC;
   width: 100%;
   height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+
+  .documentsList__openDocuments__empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+
+    .documentsList__openDocuments__empty__img {
+      width: 225px;
+    }
+  }
+}
+
+.documentsList__openDocuments__button__newAction.k-dropdown {
+  .k-dropdown-wrap {
+    background-color: #157EFB;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    .k-input {
+      height: 32px;
+      width: 80px;
+      text-align: center;
+      border-right: 2px solid #E8E8E8;
+    }
+
+    .k-select {
+      width: 26px;
+      height: 32px;
+      text-align: center;
+
+      .k-icon {
+        color: #FFFFFF;
+      }
+    }
+
+    &:hover {
+      background-color: #003DB0;
+      cursor: pointer;
+    }
+  }
+}
+
+.documentsList__openDocuments__button__option {
+  padding: 10px;
 }
