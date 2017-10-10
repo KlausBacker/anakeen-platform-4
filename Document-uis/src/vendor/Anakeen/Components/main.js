@@ -14,4 +14,7 @@ Vue.prototype.$kendo = kendo;
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
+import Document from './Document/Document.vue';
+
 Vue.customElement('a4-authent', Authent);
+Vue.customElement('a4-document', Document);
