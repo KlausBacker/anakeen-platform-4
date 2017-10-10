@@ -1,5 +1,5 @@
 <template>
-    <div :class="`documentsList__collections__wrapper${showCollections ? ' documentsList__collections--expanded': ''}`">
+    <div :class="`documentsList__collections__wrapper${showCollections ? ' documentsList__collections--expanded': ''}`" ref="wrapper">
         <div class="documentsList__collections">
             <div class="user-info">
                 <div class="documentsList__collections_button_icon documentsList__collections_button_icon--user">

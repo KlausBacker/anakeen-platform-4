@@ -1,16 +1,14 @@
 export default {
   mounted() {
-    this.$http.get('/sba/collections')
+    this.sendGetRequest('/sba/collections')
       .then((response) => {
         this.collections = response.data.data.sample.collections;
         this.updateKendoData();
         this.selectCollection(this.collections[0]);
       });
-    this.$http.get('/sba/currentUser')
+    this.sendGetRequest('/sba/currentUser')
       .then((response) => {
-        console.log(response);
         this.currentUser = response.data.data.user;
-        console.log(this.currentUser);
       });
     const store = document.getElementById('a4-store');
     store.addEventListener('store-change', (event) => {
@@ -133,5 +131,20 @@ export default {
       const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
       this.selectCollection(selected[0]);
     },
+
+    sendGetRequest(url) {
+      const element = this.$(this.$refs.wrapper);
+      this.$kendo.ui.progress(element, true);
+      return new Promise((resolve, reject) => {
+        this.$http.get(url)
+          .then((response) => {
+            this.$kendo.ui.progress(element, false);
+            resolve(response);
+        }).catch((error) => {
+          this.$kendo.ui.progress(element, false);
+          reject(error);
+        });
+      })
+    }
   },
 };
