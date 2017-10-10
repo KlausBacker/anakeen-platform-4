@@ -1,25 +1,40 @@
+import Vue from 'vue';
+
 export default {
-    name: 'Authent', props: {
+    name: 'Authent',
+    props: {
         appUrl: {
             type: String, default: '',
           },
-      }, data()
+      },
+    data()
     {
       return {
-          login: '', pwd: '', wrongPassword: false, hidePassword: false,
+          login: '',
+          pwd: '',
+          wrongPassword: false,
+          hidePassword: true,
+          translations: {
+              loginPlaceHolder: this.$pgettext('Authent', 'Enter your identifier'),
+              passwordPlaceHolder: this.$pgettext('Authent', 'Enter your password'),
+              validationMessagePassword: this.$pgettext('Authent', 'You must enter your password'),
+              validationMessageIdentifier: this.$pgettext('Authent', 'You must enter your identifier'),
+            },
         };
     },
 
     computed: {
         redirectUri: () =>
         {
-            let getSearchArg = (key) => {
+            let getSearchArg = (key) =>
+            {
                 let result = null;
-                let    tmp = [];
+                let tmp = [];
                 location.search
                     .substr(1)
                     .split('&')
-                    .forEach((item) => {
+                    .forEach((item) =>
+                    {
                         tmp = item.split('=');
                         if (tmp[0] === key) result = decodeURIComponent(tmp[1]);
                       });
@@ -39,22 +54,33 @@ export default {
     mounted()
     {
       let $ = this.$kendo.jQuery;
-      $('.authent-login-button').kendoButton();
-      $('.authent-form').on('submit', this.createSession);
-      $('.btn-reveal').on('click', function revealPassword()
-        {
-            let $pwd = $('.authent-pwd');
-            if ($pwd.attr('type') === 'password') {
-              this.hidePassword = false;
-              $pwd.attr('type', 'text');
-            } else
-                if ($pwd.attr('type') === 'text') {
-              this.hidePassword = true;
-              $pwd.attr('type', 'password');
-            }
-          });
+      let $form = $(this.$refs.authentForm);
 
-      $('.form-control').on('change', function requireMessage() {
+      $(this.$refs.authentHelpButton).kendoButton();
+      $(this.$refs.loginButton).kendoButton();
+      $form.on('submit', this.createSession);
+      $form.find('.btn-reveal').on('click', () =>
+    {
+        let $pwd = $(this.$refs.authentPassword);
+        if ($pwd.attr('type') === 'password') {
+          this.hidePassword = false;
+          $pwd.attr('type', 'text');
+        } else {
+          if ($pwd.attr('type') === 'text') {
+            this.hidePassword = true;
+            $pwd.attr('type', 'password');
+          }
+        }
+      });
+
+      $(this.$refs.authentLocale).kendoDropDownList({
+          change: function changeLocale(e) {
+              Vue.config.language =  this.value();
+            },
+        });
+
+      $form.find('input').on('change', function requireMessage()
+    {
         let msg = $(this).data('validationmessage');
         if (this.value === '' && msg) {
           this.setCustomValidity(msg);
@@ -65,6 +91,7 @@ export default {
     },
 
     methods: {
+
         createSession(event)
         {
           event.preventDefault();

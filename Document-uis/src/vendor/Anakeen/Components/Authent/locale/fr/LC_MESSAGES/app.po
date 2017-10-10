@@ -1,0 +1,53 @@
+# French translations for Document-uis package.
+# Copyright (C) 2017 THE Document-uis'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Document-uis package.
+# Automatically generated, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Document-uis 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-10 16:44+0200\n"
+"PO-Revision-Date: 2017-10-10 16:54+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:21
+msgctxt "Authent"
+msgid "Authentication error"
+msgstr "Échec de l'authentification"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:3
+msgctxt "Authent"
+msgid "Identifier :"
+msgstr "Identifiant : "
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:9
+msgctxt "Authent"
+msgid "Password :"
+msgstr "Mot de passe :"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:24
+msgctxt "Authent"
+msgid "Sign in"
+msgstr "Se connecter"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:16
+msgctxt "Authent"
+msgid "Enter your identifier"
+msgstr "Entrez votre identifiant"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:17
+msgctxt "Authent"
+msgid "You must enter your password"
+msgstr "Vous devez saisir votre mot de passe"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:18
+msgctxt "Authent"
+msgid "You must enter your identifier"
+msgstr "Vous devez saisir votre identifiant"

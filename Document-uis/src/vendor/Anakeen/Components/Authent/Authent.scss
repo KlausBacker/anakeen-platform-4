@@ -2,16 +2,13 @@
 
 .authent-form {
  padding: 4rem;
- width:40rem;
- margin-right:auto;
- margin-left:auto;
 }
 
 .authent-buttons {
  text-align: center;
 }
 .authent-login-button {
- top: 15px;
+ margin:1rem;
  align-self: center;
 }
 
@@ -22,4 +19,20 @@
 
 .msgerr {
  text-align: center;
+}
+
+.authent-bottom {
+ display: flex;
+ align-items: center;  
+ justify-content: space-between;
+ background-color: transparent;
+ .k-dropdown-wrap {
+    background-color: transparent;
+ }
+ > button, > select {
+   flex-grow: 1;
+ }
+ .authent-help-button {
+  margin-right: 0;
+ }
 }

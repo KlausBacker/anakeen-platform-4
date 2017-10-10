@@ -49,6 +49,12 @@ po:
 clean: 
 	rm -rf $(localpub)
 
+deploy-cool:
+	rm -f *webinst
+	cd Document-uis &&  npm run build
+	make webinst-full
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-document-uis-*webinst -- --force
+	make clean
 deploy:
 	rm -f *webinst
 	make webinst
