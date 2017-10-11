@@ -1,5 +1,3 @@
-$attrInputHeight: 30px;
-
 .dcpAttribute {
   margin-right: 0;
   margin-left: 0;
@@ -23,15 +21,8 @@ $attrInputHeight: 30px;
   float: right;
 }
 
-@media (min-width: ($grid-float-breakpoint + 1)) {
-  .dcpDocument--view
-  .dcpAttribute__content {
-    //padding-top: $dcp-attribute-padding-base-vertical; // Default padding plus a border
-  }
-}
-
 .dcpAttribute__content .input-group .k-autocomplete input {
-  height: ($attrInputHeight - 2);
+  height: $A4-ui-input-height;
 }
 
 .dcpAttribute__content .input-group {
@@ -43,13 +34,13 @@ $attrInputHeight: 30px;
 }
 
 .dcpAttribute__value {
-  height: $attrInputHeight;
+  height: $A4-ui-input-height;
 }
 
 .dcpDocument--edit {
   .dcpAttribute__label.dcpAttribute__left,
   .dcpAttribute--visibility--S .dcpAttribute__right {
-    min-height: $attrInputHeight;
+    min-height:$A4-ui-input-height;
   }
 
   .dcpAttribute--visibility--S .dcpAttribute__right {
@@ -73,7 +64,7 @@ $attrInputHeight: 30px;
 .dcpAttribute__content .input-group input,
 .dcpArray__content__cell .input-group input,
 .dcpAttribute__content .input-group .k-autocomplete {
-  height: $attrInputHeight;
+  height: $A4-ui-input-height;
 }
 
 .dcpAttribute__content .input-group-addon,
@@ -90,7 +81,7 @@ $attrInputHeight: 30px;
 }
 
 .dcpAttribute__content .input-group-addon button {
-  border-right: 1px solid $btn-default-border;
+  border-right: 0.0833333rem solid $btn-default-border;
 }
 
 .dcpAttribute__content .input-group-addon button:last-child {

@@ -35,8 +35,6 @@ webinst-business:
 	cd $(localpub)/Samples/BusinessApp && npm install && npm run build
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
 
-
-
 webinst-all: webinst webinst-selenium
 
 webinst:

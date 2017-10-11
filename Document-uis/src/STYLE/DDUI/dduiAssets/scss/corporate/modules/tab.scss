@@ -9,7 +9,7 @@
   line-height: $A4-ui-label-font-line-height;
   color: $A4-ui-color-font-document;
   background-color: $A4-ui-tab-inactive-bg;
-  margin-right: $A4-ui-tab-space!important;
+  margin-right: $A4-ui-tab-space;
 }
 .dcpDocument__tabs .dcpTab__label {
   @include dcpTabLabelStyle;

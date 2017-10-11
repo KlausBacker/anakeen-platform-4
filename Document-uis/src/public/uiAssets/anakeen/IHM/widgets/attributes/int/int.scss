@@ -1,9 +1,10 @@
 .dcpAttribute__content .k-numeric-wrap ,
 .dcpAttribute__content .k-numeric-wrap .k-formatted-value ,
 .dcpAttribute__content .k-numeric-wrap .k-input {
-  height: $attrInputHeight;
+  height: calc(#{$A4-ui-input-height} - 0.16666rem);
   padding-bottom: 0;
   padding-top: 0;
+  border: 0;
 }
 
 .dcpAttribute__content .k-numerictextbox {
@@ -28,5 +29,5 @@
   border-right-width: 1px;
   border-left-width: 0;
   border-radius: 0;
-  height: ($attrInputHeight  - 2);
+  height: $A4-ui-input-height;
 }

@@ -16,7 +16,7 @@
 .dcpAttribute__content--docid .k-multiselect, .dcpArray__content__cell--docid .k-multiselect ,
 .dcpAttribute__content--account .k-multiselect, .dcpArray__content__cell--account .k-multiselect {
   height:auto;
-  min-height: $attrInputHeight - 2;
+  min-height: $A4-ui-input-height - 2;
 }
 
 .dcpAttribute__value--single .k-multiselect-wrap .k-delete {

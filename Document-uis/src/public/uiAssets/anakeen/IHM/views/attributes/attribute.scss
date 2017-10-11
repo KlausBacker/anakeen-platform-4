@@ -43,7 +43,6 @@
 {
   // Calculate width based on number of columns available
   @media (min-width: ($grid-float-breakpoint + 1)) {
-    //width: percentage((4 / $grid-columns));
     flex-grow: 1;
     text-align: left;
     margin: 0;

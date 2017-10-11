@@ -1,4 +1,4 @@
-@import "./STYLE/DDUI/dduiAssets/scss/variables";
+@import "./STYLE/custom-scss-variable.d/global_variables.scss";
 
 .dcpAttribute--type--enum .dcpAttribute__value--multiple .dcpAttribute__content__value {
   display: block;
@@ -7,23 +7,16 @@
 }
 
 .dcpAttribute__content .k-dropdown-wrap {
-  height: ($attrInputHeight);
-  box-sizing: border-box;
+  height: calc(#{$A4-ui-input-height} - 0.16666rem);;
 }
 
 .dcpAttribute__content .k-dropdown-wrap .k-input {
-  height: $attrInputHeight;
-  padding-top: 6px;
-  box-sizing: border-box;
+  height: calc(#{$A4-ui-input-height} - 0.3rem);
+  padding-top: 0.5rem;
 }
 
 .dcpAttribute__content .k-dropdown .k-dropdown-wrap .k-input {
   background-color: white;
-  /* padding-left: 0; */
-}
-
-.dcpAttribute__content .k-dropdown-wrap input.k-input {
-  padding-top: 4px;
 }
 
 /* set icon in right */
@@ -38,8 +31,8 @@
   left: 0;
   right: auto;
   border: none;
-  padding-top: 4px;
-  height: ($attrInputHeight  - 2);
+  padding-top: 0.3333rem;
+  height: $A4-ui-input-height;
 }
 
 .dcpAttribute__content .k-dropdown,
@@ -50,7 +43,7 @@
 
 .dcpAttribute__content .k-multiselect {
   height: auto;
-  min-height: $attrInputHeight - 2;
+  min-height: $A4-ui-input-height;
 }
 
 .dcpAttribute__content .k-multiselect .k-button {
@@ -60,7 +53,7 @@
 
 .dcpAttribute__content .k-multiselect-wrap {
   border-radius: inherit;
-  min-height: $attrInputHeight - 2;
+  min-height: $A4-ui-input-height;
 }
 
 .dcpAttribute__content.has-error .k-dropdown-wrap {
@@ -88,7 +81,7 @@
 }
 
 .dcpAttribute__content--enum .k-multiselect .k-button:active {
-  box-shadow: inset 0 0 10px 3px darken($gray-lighter, 8%);
+  box-shadow: inset 0 0 0.83333rem 0.25rem darken($gray-lighter, 8%);
 }
 
 .dcpAttribute__content .dcpAttribute__value--enumlabel {
@@ -100,7 +93,7 @@
   }
 
   input.dcpAttribute__value--enum--other {
-    height: $attrInputHeight - 6px;
+    height: $A4-ui-input-height;
     width: calc(100% - 2.5em);
 
   }
@@ -124,12 +117,12 @@
 
 .dcpAttribute__value--enumlabel {
   font-weight: normal;
-  height: ($attrInputHeight - 2);
+  height: $A4-ui-input-height;
 }
 
 .dcpAttribute__value--enumlabel.selected {
-  background-color: $enum-selected-button-bg;
-  color: $enum-selected-button-color;
+  background-color: $A4-ui-color-selected;
+  color: $A4-ui-color-text-colored;
 }
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal,
@@ -275,8 +268,8 @@
 
 label.dcpAttribute__value--enumlabel--text {
   font-weight: normal;
-  height: $dcp-input-height - 2;
-  line-height: $dcp-input-height - 2;
+  height: $A4-ui-input-height;
+  line-height: $A4-ui-input-height;
 }
 
 .dcpAttribute__value--enumbuttons.input-group {
@@ -327,9 +320,6 @@ label.dcpAttribute__value--enumlabel--text {
 .dcpAttribute__value--enum-other {
   border: none;
   padding: 1em;
-  .dcpAttribute__value--enum-other-content {
-
-  }
   input {
     width: 100%;
     margin-left: 0;
@@ -379,8 +369,8 @@ $dcpBoolAnimationDelay: 1s;
           position: absolute;
           left: $border-radius-base;
           box-sizing: border-box;
-          width: $dcp-input-height - 13px;
-          height: $dcp-input-height - 13px;
+          width: $A4-ui-input-height - 1rem;
+          height: $A4-ui-input-height - 1rem;
           top: 0.24rem;
           border: 3px solid white;
           border-radius: 50%;
@@ -397,8 +387,8 @@ $dcpBoolAnimationDelay: 1s;
 
     &.on {
       .dcpAttribute__value--text {
-        background-color: $enum-selected-button-bg;
-        color: $enum-selected-button-color;
+        background-color: $A4-ui-color-text-colored;
+        color: $A4-ui-color-text-colored;
         font-weight: bold;
         padding-left: 1em;
         padding-right: 2em;
@@ -412,8 +402,8 @@ $dcpBoolAnimationDelay: 1s;
           transition: left $dcpBoolAnimationDelay;
           position: absolute;
           left: calc(100% - 1em - #{$border-radius-base});
-          width: $dcp-input-height - 13px;
-          height: $dcp-input-height - 13px;
+          width: $A4-ui-input-height - 1rem;
+          height: $A4-ui-input-height - 1rem;
           top: 0.24rem;
           border: 3px solid #f5f5f5;
           border-radius: 50%;

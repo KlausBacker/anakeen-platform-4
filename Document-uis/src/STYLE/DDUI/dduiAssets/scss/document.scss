@@ -1,7 +1,4 @@
 @import "../../../custom-scss-variable.d/global_variables.scss";
-// Removed Boostrap 3 variables
-// #TODO Define new variables
-// The Bootstrap 3 removed variables used in sources are temporarly defined
 
 $panel-default-border: #ddd;
 
@@ -45,8 +42,6 @@ $padding-base-vertical: 0.5rem;
 
 $nav-link-hover-bg: $gray-lighter;
 // END OLD VARIABLES
-
-$attrInputHeight: 2.5rem;
 $documentHeaderHeight: 2.5rem;
 // Bootstrap variables
 // Gutter between label and content attribute
@@ -55,7 +50,7 @@ $grid-gutter-width: 0.416rem;
 $grid-float-breakpoint: 40rem;
 
 $font-size-base: $A4-ui-font-base-size;
-$line-height-base: $dcp-line-height;
+$line-height-base: $A4-ui-line-height;
 $panel-body-padding : $font-size-base/2;
 $padding-base-vertical : $font-size-base*0.20;
 $padding-base-horizontal : 2*$padding-base-vertical;

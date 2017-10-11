@@ -1,3 +1,7 @@
+$roboto-font-path: '../../../../../uiAssets/externals/roboto-fontface/fonts/';
+
+@import "../../../../../public/uiAssets/externals/roboto-fontface/css/roboto/sass/roboto-fontface-bold.scss";
+@import "../../../../../public/uiAssets/externals/roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss";
 
 // Base colors
 $blue-darker: #003DB0;
@@ -42,66 +46,26 @@ $A4-ui-color-font-button: $A4-ui-color-text-colored;
 $A4-ui-color-font-title: $A4-ui-color-text;
 $A4-ui-color-btn-tool-bg: #E4E4E4;
 
-// Fonts
-/* titillium-web-300normal - latin */
-@font-face {
-  font-family: 'Titillium Web Light';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 300;
-  src:
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300.woff2') format('woff2'), /* Super Modern Browsers */
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300.woff') format('woff'); /* Modern Browsers */
-}
+$A4-ui-font-size: 12px;
+$A4-ui-line-height: 1.2;
 
-/* titillium-web-300italic - latin */
-@font-face {
-  font-family: 'Titillium Web Light';
-  font-style: italic;
-  font-display: swap;
-  font-weight: 300;
-  src:
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300italic.woff2') format('woff2'), /* Super Modern Browsers */
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-300italic.woff') format('woff'); /* Modern Browsers */
-}
-
-/* titillium-web-600normal - latin */
-@font-face {
-  font-family: 'Titillium Web Semi Bold';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 600;
-  src:
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-600.woff') format('woff'); /* Modern Browsers */
-}
-
-@font-face {
-  font-family: 'Titillium Web Bold';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src:
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
-          url('../../../../../uiAssets/externals/titillium-web-font/titillium-web-latin-700.woff') format('woff'); /* Modern Browsers */
-}
-$A4-ui-font: 'Titillium Web Light', 'Helvetica', sans-serif;
+$A4-ui-font: 'Roboto-Regular', 'Helvetica', sans-serif;
 $A4-ui-font-base-size: 1rem;
 $A4-ui-title-size: 1rem;
 $A4-ui-title-font-weight: bold;
 $A4-ui-title-font-line-height: 1.333rem;
-$A4-ui-title-font-variant: 'Titillium Web Bold';
+$A4-ui-title-font-variant: 'Roboto-Bold';
 $A4-ui-label-font-size: 1rem;
 $A4-ui-label-font-weight: normal;
-$A4-ui-label-font-variant: 'Titillium Web Light';
+$A4-ui-label-font-variant: 'Robot';
 $A4-ui-label-font-line-height: 1.333rem;
 $A4-ui-value-font-size: 1rem;
 $A4-ui-value-font-weight: normal;
-$A4-ui-value-font-variant: 'Titillium Web Semi Bold';
+$A4-ui-value-font-variant: 'Roboto-bold';
 $A4-ui-value-font-line-height: 1.333rem;
 $A4-ui-button-font-size: 1rem;
 $A4-ui-button-font-weight: normal;
-$A4-ui-button-font-variant: 'Titillium Web Bold';
+$A4-ui-button-font-variant: 'Roboto-bold';
 $A4-ui-button-font-line-height: 1.333rem;
 
 // Button 1
@@ -190,6 +154,7 @@ $A4-ui-doc-read-attribute-border: 0.083rem solid #F1EFEF;
 $A4-ui-doc-read-attribute-value-padding: 0 0 0.6666rem 0;
 $A4-ui-doc-read-attribute-link-color: #78D2FE;
 $A4-ui-doc-read-attribute-picto-space: 0.6666rem;
+$A4-ui-input-height: 2.5rem;
 
 //Frames
 $A4-ui-frame-font-variant: $A4-ui-value-font-variant;
@@ -250,23 +215,10 @@ $A4-ui-header-title-margin: 0.833rem;
 $A4-ui-header-title-line-height: 2;
 
 
-// Define old used variables
-
-$dcp-font-size: 12px;
-$dcp-line-height: 1.2;
-$dcp-input-height: 30px;
-
-//Document size
-$dcp-header-height: 30px;
-
-// Enum color
-$enum-selected-button-bg: $A4-ui-color-selected;
-$enum-selected-button-color: $A4-ui-color-text-colored;
 
 $dcp-set-padding: 10px;
 $dcp-attribute-padding-base-vertical: 6px + 1;
 
 // Attribute decription field
 $dcpAttributeDescriptionArrowSize: 8px;
-$dcpAttributeDescriptionBorderColor: $A4-ui-doc-edit-attribute-hover-color;
 $dcpAttributeDescriptionBackgroundColor: #f5f5f5;
