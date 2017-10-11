@@ -1,10 +1,14 @@
 export default {
   mounted() {
-    this.$http.get('/sba/collections')
+    this.sendGetRequest('/sba/collections')
       .then((response) => {
         this.collections = response.data.data.sample.collections;
         this.updateKendoData();
         this.selectCollection(this.collections[0]);
+      });
+    this.sendGetRequest('/sba/currentUser')
+      .then((response) => {
+        this.currentUser = response.data.data.user;
       });
     const store = document.getElementById('a4-store');
     store.addEventListener('store-change', (event) => {
@@ -19,9 +23,10 @@ export default {
       showCollections: true,
       selectedCollection: null,
       collections: [],
+      currentUser: null,
       dataSources: null,
       buttons: [
-        {
+        /*{
           id: 'notif',
           icon: 'fa fa-bell',
           title: 'Notifications',
@@ -34,8 +39,8 @@ export default {
         {
           id: 'state',
           icon: 'fa fa-refresh',
-          title: 'Synchronisé',
-        },
+          title: 'Synchronisé'
+        },*/
         {
           id: 'disconnect',
           icon: 'fa fa-power-off',
@@ -46,6 +51,29 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    userInitial() {
+      if (this.currentUser) {
+        const fullName = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        const initials = fullName.match(/\b(\w)/g).join('');
+        if (initials.length > 2) {
+          return initials.slice(0, 2);
+        } else {
+          return initials;
+        }
+      } else {
+        return '';
+      }
+    },
+    userFullName() {
+      if (this.currentUser)  {
+        return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+      } else {
+        return "";
+      }
+    }
   },
 
   methods: {
@@ -72,18 +100,10 @@ export default {
     },
 
     initKendo() {
-      const _this = this;
       this.dataSource = new this.$kendo.data.DataSource({
         data: [],
         pageSize: 10,
       });
-
-      let changeCollection = function onChange() {// jscs:ignore disallowFunctionDeclarations
-          const data = this.dataSource.view();
-          let   selected = $.map(this.select(),  (item) => data[$(item).index()]);
-
-          _this.selectCollection(selected[0]);
-        };
 
       this.$(this.$refs.listView).kendoListView({
         dataSource: this.dataSource,
@@ -95,7 +115,7 @@ export default {
             '<span class="documentsList__collectionCard__heading__content_label">#:html_label#</span>' +
             '</div></div></div>'),
         selectable: 'single',
-        change: changeCollection,
+        change: this.onSelectItemList,
       });
 
       this.updateKendoData();
@@ -104,5 +124,27 @@ export default {
     updateKendoData() {
       this.dataSource.data(this.collections);
     },
+
+    onSelectItemList() {
+      const data = this.dataSource.view();
+      const listView = this.$(this.$refs.listView).data('kendoListView');
+      const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
+      this.selectCollection(selected[0]);
+    },
+
+    sendGetRequest(url) {
+      const element = this.$(this.$refs.wrapper);
+      this.$kendo.ui.progress(element, true);
+      return new Promise((resolve, reject) => {
+        this.$http.get(url)
+          .then((response) => {
+            this.$kendo.ui.progress(element, false);
+            resolve(response);
+        }).catch((error) => {
+          this.$kendo.ui.progress(element, false);
+          reject(error);
+        });
+      })
+    }
   },
 };

@@ -7,6 +7,14 @@
 }
 
 .documentsList__collections__wrapper {
+  .k-loading-mask {
+    background: #000000;
+    opacity: 0.7;
+    z-index: 2000;
+  }
+}
+
+.documentsList__collections__wrapper {
   z-index: 900;
   background-color: #FFFFFF;
   position: absolute;
@@ -271,7 +279,7 @@
 
 .documentsList__collections__list {
   overflow-y: auto;
-  height: 100%;
+  flex: 1;
 }
 
 .documentsList__collectionCard {

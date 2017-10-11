@@ -19,7 +19,9 @@
         <a4-collections class="a4-component"></a4-collections>
         <a4-documents class="a4-component"></a4-documents>
     </div>
-    <a4-open-document class="a4-component"></a4-open-document>
+    <div vue-slot="mainPane">
+        <a4-open-document class="a4-component"></a4-open-document>
+    </div>
 </a4-splitter>
 </div>
 <script src="BUSINESS_APP/dist/a4-externals.bundle.js"></script>

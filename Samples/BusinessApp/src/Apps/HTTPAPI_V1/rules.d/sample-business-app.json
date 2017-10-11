@@ -19,5 +19,12 @@
     "regExp": "%^/sba/collections/(?P<collectionRef>[^/]+)/documentsList/?$%",
     "description": "Get available documents from collection",
     "canonicalURL": "sba/collections/<collectionRef>/documentsList/"
+  },
+  {
+    "order": 1000,
+    "class": "\\Anakeen\\Sample\\Routes\\User",
+    "regExp": "%^/sba/currentUser/?$%",
+    "description": "Get user information",
+    "canonicalURL": "sba/currentUser"
   }
 ]

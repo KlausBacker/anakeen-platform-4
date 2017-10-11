@@ -9,7 +9,7 @@ import VueCustomElement from 'vue-custom-element';
 Vue.use(VueCustomElement);
 Vue.http = Vue.prototype.$http = axios.create({
   baseURL: '/api/v1',
-  timeout: 1000
+  timeout: 5000
 });
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.kendo = Vue.prototype.$kendo = kendo;

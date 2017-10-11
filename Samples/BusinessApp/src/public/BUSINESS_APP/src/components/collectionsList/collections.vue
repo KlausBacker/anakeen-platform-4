@@ -1,12 +1,12 @@
 <template>
-    <div :class="`documentsList__collections__wrapper${showCollections ? ' documentsList__collections--expanded': ''}`">
+    <div :class="`documentsList__collections__wrapper${showCollections ? ' documentsList__collections--expanded': ''}`" ref="wrapper">
         <div class="documentsList__collections">
             <div class="user-info">
                 <div class="documentsList__collections_button_icon documentsList__collections_button_icon--user">
-                    Dp
+                    {{userInitial}}
                 </div>
                 <div class="documentsList__collections_button_title documentsList__collections_button_title--user">
-                    Dynacase platform Master
+                    {{userFullName}}
                 </div>
             </div>
 
@@ -26,24 +26,7 @@
                 </div>
             </div>
 
-            <div class="documentsList__collections__list" ref="listView">
-                <!--<div v-for="c in collections">
-                    <div :class="`list-group-item documentsList__collectionCard${selectedCollection && selectedCollection.ref === c.ref ? ' documentsList__collectionCard&#45;&#45;active': ''}`" @click="onClickCollection($event, c)">
-                        <div class="list-group-item-heading documentsList__collectionCard__heading">
-                            <div class="documentsList__collectionCard__heading__content">
-                                <div class="documentsList__collectionCard__heading__content_icon">
-                                    <img :src="c.image_url" class="documentsList__collectionCard__heading__content_icon_img">
-                                </div>
-                                <div class="documentsList__collectionCard__heading__content_label">
-                                    {{c.html_label}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item-text documentsList__collectionCard__text">
-                        </div>
-                    </div>
-                </div>-->
-            </div>
+            <div class="documentsList__collections__list" ref="listView"></div>
 
             <div class="documentsList__collections_buttons documentsList__collections_buttons--bottom">
                 <div class="documentsList__collections_button documentsList__collections_button--down">
