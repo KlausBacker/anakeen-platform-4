@@ -45,7 +45,14 @@ export default {
   methods: {
     onSelectDocument(...arg) {
       // this.$emit('store-save', {action: 'openDocument', data: document });
-      console.log(...arg);
+      const data = this.dataSource.view();
+      const listView = this.$(this.$refs.listView).data('kendoListView');
+      const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
+      this.selectDocument(selected[0]);
+    },
+
+    selectDocument(document) {
+      this.$emit('store-save', { action: 'openDocument', data: document });
     },
 
     onStoreChange(storeData) {
@@ -61,10 +68,6 @@ export default {
             break;
         }
       }
-    },
-
-    onClickCollection(event, collection) {
-      this.$emit('store-save', { action: 'selectCollection', data: collection });
     },
 
     initKendo() {
@@ -110,7 +113,7 @@ export default {
         index: 1,
         change: this.onSelectPageSize,
         headerTemplate: '<li>Eléments par page</li>',
-        valueTemplate: '<span class="fa fa-list-ol"></span>'
+        valueTemplate: '<span class="fa fa-list-ol"></span>',
       });
       this.updateKendoData();
     },
@@ -152,8 +155,8 @@ export default {
           }).catch((error) => {
             this.$kendo.ui.progress(element, false);
             reject(error);
-        });
-      })
-    }
+          });
+      });
+    },
   },
 };

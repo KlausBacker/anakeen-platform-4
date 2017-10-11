@@ -37,10 +37,6 @@ $leftPaneSize: 25vw;
   align-items: center;
   height: 43px;
   width: 100%;
-  //background: url(../../api/v1/images/assets/sizes/x30/dyn-W300.png);
-  //background-size: auto 30px;
-  //background-repeat: no-repeat;
-  //background-position: center;
   margin-bottom: 0px;
 }
 
@@ -50,8 +46,8 @@ $leftPaneSize: 25vw;
 
 .documentsList__documents__header__label {
   height: 37px;
+  line-height: 3em;
   overflow-x: hidden;
-  line-height: 1.3em;
   font-weight: 700;
   text-transform: uppercase;
   position: relative;
@@ -71,12 +67,6 @@ $leftPaneSize: 25vw;
 
 .documentsList__documents__search {
   padding: 10px 20px;
-}
-
-.form-control, .btn-default, .btn-default:hover {
-  border: 1px solid #e6e6e6;
-  box-shadow: none;
-  -webkit-box-shadow: none;
 }
 
 .documentsList__documents__summary__wrapper {
@@ -123,9 +113,6 @@ $leftPaneSize: 25vw;
   padding: 10px 15px 10px 20px;
 }
 
-.documentsList__documentCard__heading {
-
-}
 
 .documentsList__documentCard__heading__content_icon {
   padding: 0 1em 0 0;
