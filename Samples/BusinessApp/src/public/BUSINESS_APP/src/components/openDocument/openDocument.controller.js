@@ -1,6 +1,6 @@
 export default {
   mounted() {
-    document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener('DOMContentLoaded', (event) => {
       const store = document.getElementById('a4-store');
       store.addEventListener('store-change', (event) => {
         const storeData = event.detail && event.detail.length ? event.detail[0] : null;
@@ -13,26 +13,31 @@ export default {
       });
     this.initKendo();
   },
+
   data() {
     return {
       urlDocument: null,
       openedDocuments: [],
       activeTab: null,
-      newActionsSource: null
-    }
+      newActionsSource: null,
+    };
   },
+
   methods: {
     onStoreChange(storeData) {
       if (storeData) {
         switch (storeData.type) {
-
+          case 'OPEN_DOCUMENT':
+            this.openedDocuments.push(storeData.data);
+            this.activeTab = storeData.data.initid;
+            break;
         }
       }
     },
 
     initKendo() {
       this.newActionsSource = new this.$kendo.data.DataSource({
-        data: []
+        data: [],
       });
       this.$(this.$refs.newActionButton).kendoDropDownList({
         dataSource: this.newActionsSource,
@@ -45,8 +50,9 @@ export default {
           '<span class="documentsList__openDocuments__button__option">' +
           '<img class="documentsList__openDocuments__button__option__img" src="#: image_url#" alt="#: html_label# image"/>' +
           '<span class="documentsList__openDocuments__button__option__label">#= html_label#</span>' +
-          '</span>')
+          '</span>'),
       });
+      this.$(this.$refs.tabStrip).kendoTabStrip();
     },
 
     onClickNewAction() {
@@ -69,7 +75,7 @@ export default {
           this.$kendo.ui.progress(element, false);
           reject(error);
         });
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
