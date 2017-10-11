@@ -14,3 +14,13 @@ La licence s'applique à l'ensemble des codes source du module.
 
 Elle prévaut sur toutes licences qui pourraient être mentionnées dans certains
 fichiers.
+
+
+## Build
+
+Requirement :
+*  node > 4
+*  npm
+*  easygettext (npm install -g easygettext)
+*  xgettext (apt install gettext)
+

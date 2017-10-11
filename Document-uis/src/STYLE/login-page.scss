@@ -2,6 +2,10 @@
 @import "DDUI/dduiAssets/scss/corporate/variables.corporate";
 
 
+html {
+ font-size: 12px;
+}
+
 .login-page {
 
  font-family: $A4-ui-font;
@@ -35,6 +39,7 @@
   border-radius: 0.5rem;
   margin-top: 1rem;
   background-color: white;
+  box-shadow: #dddddd 0 4px 10px;
  }
  .msgerr {
   color: $error;

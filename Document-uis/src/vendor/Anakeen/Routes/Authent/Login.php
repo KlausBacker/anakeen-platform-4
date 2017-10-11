@@ -9,15 +9,19 @@ use Dcp\HttpApi\V1\Crud\Crud;
 
 class Login extends Crud
 {
+    const failDelay=2;
     /**
      * Create new ressource
      * @return mixed
      */
     public function create()
     {
+
         $login=$this->urlParameters["login"];
         $password=isset($this->contentParameters["password"])?$this->contentParameters["password"]:null;
+        $language=isset($this->contentParameters["language"])?$this->contentParameters["language"]:null;
         if (!isset($password)) {
+            sleep(self::failDelay);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
             throw $e;
@@ -29,16 +33,20 @@ class Login extends Crud
             try {
                 $result=$user->checkpassword($password);
             } catch (Exception $e) {
+
+                sleep(self::failDelay);
                 $e = new Exception('AUTH0001', __METHOD__);
                 $e->setHttpStatus('403', 'Forbidden');
                 throw $e;
             }
         } else if (!$user->isAffected()){
+            sleep(self::failDelay);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
             throw $e;
         }
         if(!$result){
+            sleep(self::failDelay);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
             throw $e;
@@ -47,6 +55,11 @@ class Login extends Crud
         $session = new \Session();
         $session->set();
         $session->register('username', $login);
+        if ($language) {
+            \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
+            \ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG",$language );
+        }
+
         return [];
     }
 

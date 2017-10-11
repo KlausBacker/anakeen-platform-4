@@ -23,10 +23,11 @@
 
 .authent-bottom {
  display: flex;
- align-items: center;  
+ align-items: center;
  justify-content: space-between;
  background-color: transparent;
- .k-dropdown-wrap {
+
+ .k-dropdown-wrap, .k-button {
     background-color: transparent;
  }
  > button, > select {
@@ -35,4 +36,8 @@
  .authent-help-button {
   margin-right: 0;
  }
+}
+.authent-help {
+ width: 40rem;
+ white-space: pre-line;
 }

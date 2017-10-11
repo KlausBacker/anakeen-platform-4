@@ -28,7 +28,7 @@ Vue.use(GetTextPlugin, {
 
 Vue.use(VueCustomElement);
 Vue.prototype.$http = axios.create({
-  baseURL: '/api/v1'
+  baseURL: '/api/v1',
 });
 Vue.prototype.$kendo = kendo;
 

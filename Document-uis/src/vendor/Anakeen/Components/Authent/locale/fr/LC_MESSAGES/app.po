@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Document-uis 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-10 16:44+0200\n"
-"PO-Revision-Date: 2017-10-10 16:54+0200\n"
+"POT-Creation-Date: 2017-10-11 12:45+0200\n"
+"PO-Revision-Date: 2017-10-11 17:07+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -17,37 +17,64 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:21
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:25
 msgctxt "Authent"
 msgid "Authentication error"
 msgstr "Échec de l'authentification"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:3
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:40
+msgctxt "Authent"
+msgid "Help"
+msgstr "Aide"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:44
+msgctxt "Authent"
+msgid "Help Content"
+msgstr ""
+"Cette fenêtre permet de vous identifier.\n"
+"\n"
+"Ceci est nécessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-même. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en possédez pas adressez-vous au gestionnaire du site).\n"
+"\n"
+"Attention, ce mot de passe est le garant de votre identification : conservez le précieusement et ne le diffusez pas !\n"
+"\n"
+"Il est important de respecter la casse (utilisation des caractères majuscules et minuscules) lors de la saisie de votre nom d'utilisateur et mot de passe."
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:4
 msgctxt "Authent"
 msgid "Identifier :"
 msgstr "Identifiant : "
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:9
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:10
 msgctxt "Authent"
 msgid "Password :"
 msgstr "Mot de passe :"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:24
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:30
 msgctxt "Authent"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:16
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:17
 msgctxt "Authent"
 msgid "Enter your identifier"
 msgstr "Entrez votre identifiant"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:17
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:18
+msgctxt "Authent"
+msgid "Enter your password"
+msgstr "Entrez votre mot de passe"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:19
 msgctxt "Authent"
 msgid "You must enter your password"
 msgstr "Vous devez saisir votre mot de passe"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:18
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:20
 msgctxt "Authent"
 msgid "You must enter your identifier"
 msgstr "Vous devez saisir votre identifiant"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:21
+msgctxt "Authent"
+msgid "Help to sign in"
+msgstr "Aide pour la connection"

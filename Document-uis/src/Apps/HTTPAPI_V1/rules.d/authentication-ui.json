@@ -5,6 +5,7 @@
     "regExp": "%^/authent/(?P<login>[^/]+)$%",
     "description": "Login <login>",
     "canonicalURL": "authent/<login>",
+    "acceptExtensions" : ["*"],
     "standalone": true
   }
 ]
