@@ -3,4 +3,4 @@ export default {
   selectedCollection: null,
   openedDocuments: [],
   selectedDocument: null,
-}
+};
