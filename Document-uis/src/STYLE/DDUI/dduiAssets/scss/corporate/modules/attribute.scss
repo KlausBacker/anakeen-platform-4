@@ -46,7 +46,7 @@
   }
 
   .dcpAttribute__content .k-widget > .k-state-default {
-    border-radius: 0.3333rem 0 0 0.3333rem!important;
+    border-radius: 0.3333rem 0 0 0.3333rem;
     border-color: #e6e6e6;
   }
 }
@@ -65,7 +65,7 @@
   .dcpAttribute__value--read {
     font-family: $A4-ui-value-font-variant;
     .dcpAttribute__value--icon {
-      vertical-align: middle!important;
+      vertical-align: middle;
       margin-right: $A4-ui-doc-read-attribute-picto-space;
     }
   }
