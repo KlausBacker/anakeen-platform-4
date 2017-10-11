@@ -13,4 +13,4 @@ export default {
   selectDocument({ commit }, document) {
     commit(types.SELECT_DOCUMENT, document);
   }
-}
+};

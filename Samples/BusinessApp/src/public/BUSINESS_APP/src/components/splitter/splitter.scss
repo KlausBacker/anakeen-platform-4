@@ -30,7 +30,7 @@
 }
 
 .documentsList__collapsible__handler::before, .documentsList__collapsible__handler::after {
-  font: normal normal normal 14px/1 FontAwesome;
+  font-family: FontAwesome;
   content: "\f142";
   padding: 0 5px;
   display: block;

@@ -5,8 +5,9 @@ export default {
       collection: null,
     };
   },
+
   mounted() {
-    document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener('DOMContentLoaded', (event) => {
       const store = document.getElementById('a4-store');
       store.addEventListener('store-change', (event) => {
         const storeData = event.detail && event.detail.length ? event.detail[0] : null;
@@ -15,10 +16,12 @@ export default {
     });
     this.initKendo();
   },
+
   methods: {
     initKendo() {
 
     },
+
     onStoreChange(storeData) {
       if (storeData) {
         switch (storeData.type) {
@@ -31,6 +34,6 @@ export default {
 
     onCollapseSplitter(event) {
       this.collapseSplitter = !this.collapseSplitter;
-    }
-  }
-}
+    },
+  },
+};
