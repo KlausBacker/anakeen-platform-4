@@ -8,6 +8,8 @@
         <module name="dynacase-admin-access-ui"/>
         <module name="dynacase-admin-appmng-ui" />
         <module name="dynacase-admin-docadmin-ui"/>
+        <module name="dynacase-admin-httpapi-v1"/>
+        <module name="dynacase-admin-authent-ui"/>
         <module name="dynacase-admin-uis"/>
         <module name="dynacase-admin"/>
     </replaces>
@@ -70,7 +72,10 @@
             <label>Init DOCADMIN searches</label>
         </process>
 
-        <process command="programs/record_application DCPDEVEL"/>
+        <process command="programs/record_application AUTHENTUI I"/>
+        <process command="programs/record_application HTTPAPI_V1_ADMIN I"/>
+        <process command="programs/record_application DCPDEVEL I"/>
+        <process command="programs/record_application DCPDEVEL I"/>
         <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
@@ -108,6 +113,8 @@
             <label>Update DOCADMIN searches</label>
         </process>
 
+        <process command="programs/record_application AUTHENTUI U"/>
+        <process command="programs/record_application HTTPAPI_V1_ADMIN U"/>
         <process command="programs/record_application DCPDEVEL"/>
         <process command="programs/post_migration DCPDEVEL"/>
         <process command="programs/update_catalog"/>
