@@ -119,8 +119,18 @@ export default {
         animation: false,
         index: 1,
         change: this.onSelectPageSize,
-        headerTemplate: '<li>Eléments par page</li>',
+        headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
         valueTemplate: '<span class="fa fa-list-ol"></span>',
+        template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
+      });
+
+      this.$(this.$refs.removeFilterButton).kendoButton({
+        icon: 'close',
+        click: this.onRemoveClick,
+      });
+      this.$(this.$refs.searchFilterButton).kendoButton({
+        icon: 'search',
+        click: this.onSearchClick,
       });
       this.updateKendoData();
     },
