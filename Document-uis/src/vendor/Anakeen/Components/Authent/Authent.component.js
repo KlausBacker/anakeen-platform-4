@@ -1,5 +1,6 @@
 import Vue from 'vue';
 
+// noinspection JSUnusedGlobalSymbols
 export default {
     name: 'Authent',
     props: {
@@ -18,33 +19,33 @@ export default {
     },
     data() {
         return {
+            authentError: 'Error',
+            forgetError: 'Error',
+            forgetStatusFailed: false,
             wrongPassword: false,
             hidePassword: true,
-            translations__: {
-                loginPlaceHolder: this.$pgettext('Authent', 'Enter your identifier'),
-                passwordPlaceHolder: this.$pgettext('Authent', 'Enter your password'),
-                validationMessagePassword: this.$pgettext('Authent', 'You must enter your password'),
-                validationMessageIdentifier: this.$pgettext('Authent', 'You must enter your identifier'),
-                helpContentTitle: this.$pgettext('Authent', 'Help to sign in'),
-            },
         };
     },
 
     computed: {
-        translations: function translations() {
+        translations() {
             return {
                 loginPlaceHolder: this.$pgettext('Authent', 'Enter your identifier'),
                 passwordPlaceHolder: this.$pgettext('Authent', 'Enter your password'),
                 validationMessagePassword: this.$pgettext('Authent', 'You must enter your password'),
                 validationMessageIdentifier: this.$pgettext('Authent', 'You must enter your identifier'),
                 helpContentTitle: this.$pgettext('Authent', 'Help to sign in'),
+                authentError: this.$pgettext('Authent', 'Authentication error'),
+                forgetContentTitle: this.$pgettext('Authent', 'Form to reset password'),
+                forgetPlaceHolder: this.$pgettext('Authent', 'Identifier or email address'),
             };
         },
 
-        availableLanguages: function availableLanguages()  {
+        availableLanguages() {
 
             let languages = this.authentLanguages.split(',');
-            return languages.map((lang) => {
+
+            return languages.map((lang) => {// jscs:ignore requireShorthandArrowFunctions
                 return {
                     key: lang.trim(),
                     label: this.$language.available[lang.trim()],
@@ -52,7 +53,7 @@ export default {
             });
         },
 
-        redirectUri: () => {
+        redirectUri() {
             let getSearchArg = (key) => {
                 let result = null;
                 let tmp = [];
@@ -80,28 +81,47 @@ export default {
         Vue.config.language = this.defaultLanguage;
     },
 
+    created() {
+        this._protected = {};
+
+        this._protected.initForgetElements = () => {
+
+            let $forgetForm = $(this.$refs.authentForgetForm);
+            let forgetWindow;
+            console.log('protected', this);
+
+            forgetWindow = $(this.$refs.authentForgetForm).kendoWindow({
+                visible: false,
+                actions: [
+                    'Maximize',
+                    'Close',
+                ],
+            }).data('kendoWindow');
+
+            $(this.$refs.authentForgetButton).kendoButton({
+                click: () => {
+                    forgetWindow.title(this.translations.forgetContentTitle).center().open();
+                },
+            });
+            $forgetForm.kendoButton();
+            $forgetForm.on('submit', this.askResetPassword);
+        };
+    },
+
     mounted() {
         let $ = this.$kendo.jQuery;
-        let $form = $(this.$refs.authentForm);
+        let $connectForm = $(this.$refs.authentForm);
         let helpWindow;
 
-        console.log('FT3', this.availableLanguages, this.defaultLanguage);
-
-        //Vue.config.language = this.defaultLanguage;
         $(this.$refs.authentHelpButton).kendoButton({
             click: () => {
-                console.log('open', this.translations);
                 helpWindow.title(this.translations.helpContentTitle).center().open();
             },
         });
-        $(this.$refs.authentForgetButton).kendoButton({
-            click: () => {
-                window.alert('No Yet');
-            },
-        });
+
         $(this.$refs.loginButton).kendoButton();
-        $form.on('submit', this.createSession);
-        $form.find('.btn-reveal').on('click', () => {
+        $connectForm.on('submit', this.createSession);
+        $connectForm.find('.btn-reveal').on('click', () => {
             let $pwd = $(this.$refs.authentPassword);
             if ($pwd.attr('type') === 'password') {
                 this.hidePassword = false;
@@ -115,7 +135,7 @@ export default {
         });
 
         $(this.$refs.authentLocale).kendoDropDownList({
-            change: function changeLocale(e) {
+            change: function changeLocale() {
                 Vue.config.language = this.value();
             },
         });
@@ -128,8 +148,10 @@ export default {
             ],
         }).data('kendoWindow');
 
-        $form.find('input').on('change', function requireMessage() {
-            console.log('Change', this);
+        /**
+         * Special custom warning if required fields are empty
+         */
+        $connectForm.find('input').on('change', function requireMessage() {
             let msg = $(this).data('validationmessage');
             if (this.value === '' && msg) {
                 this.setCustomValidity(msg);
@@ -137,6 +159,8 @@ export default {
                 this.setCustomValidity('');
             }
         });
+
+        this._protected.initForgetElements();
 
     },
 
@@ -149,14 +173,27 @@ export default {
 
             let login = encodeURIComponent(this.login);
             event.preventDefault();
-            this.$http.post(`/authent/${login}`, {
+            this.$http.post(`/authent/sessions/${login}`, {
                 password: this.pwd,
                 language: this.$language.current,
             }).then(() => {
                 window.location.href = this.redirectUri;
                 this.wrongPassword = false;
 
-            }).catch(() => {
+            }).catch((e) => {
+                console.log('Error', e);
+                if (e.response && e.response.data && e.response.data.exceptionMessage) {
+                    let info = e.response.data;
+                    if (info.messages && info.messages.length > 0 && info.messages[0].code === 'AUTH0001') {
+                        // Normal authentication error
+                        this.authentError = this.translations.authentError;
+                    } else {
+                        this.authentError = e.response.data.exceptionMessage;
+                    }
+                } else {
+                    this.authentError = this.translations.authentError;
+                }
+
                 this.wrongPassword = true;
 
                 kendo.ui.progress($(this.$refs.authentForm), false);
@@ -164,6 +201,42 @@ export default {
             });
 
             $(this.$refs.loginButton).prop('disabled', true);
+        },
+
+        askResetPassword(event) {
+            let $ = this.$kendo.jQuery;
+
+            kendo.ui.progress($(this.$refs.authentForm), true);
+
+            let login = encodeURIComponent(this.login);
+            event.preventDefault();
+            this.$http.post(`/authent/mailPassword/${login}`, {
+                password: this.pwd,
+                language: this.$language.current,
+            }).then(() => {
+                window.location.href = this.redirectUri;
+                this.forgetStatusFailed = false;
+            }).catch((e) => {
+                console.log('Error', e);
+                if (e.response && e.response.data && e.response.data.exceptionMessage) {
+                    let info = e.response.data;
+                    if (info.messages && info.messages.length > 0 && info.messages[0].code === 'AUTH0001') {
+                        // Normal authentication error
+                        this.forgetError = this.translations.authentError;
+                    } else {
+                        this.forgetError = e.response.data.exceptionMessage;
+                    }
+                } else {
+                    this.forgetError = this.translations.authentError;
+                }
+
+                this.forgetStatusFailed = true;
+
+                kendo.ui.progress($(this.$refs.authentForm), false);
+                $(this.$refs.authentForgetSubmit).prop('disabled', false);
+            });
+
+            $(this.$refs.authentForgetSubmit).prop('disabled', true);
         },
     },
 };

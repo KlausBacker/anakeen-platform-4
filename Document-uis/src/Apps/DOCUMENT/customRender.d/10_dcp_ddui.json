@@ -7,7 +7,7 @@
       "renderAccessClass": "Anakeen\\Ui\\CvdocAccess"
     },
     "MAILTEMPLATE": {
-      "renderAccessClass": "Anakeen\\Ui\\TmailAccess"
+      "renderAccessClass": "Anakeen\\Ui\\MailtemplateAccess"
     },
     "WDOC": {
       "renderAccessClass": "Anakeen\\Ui\\WdocAccess"

@@ -10,25 +10,25 @@ import GetTextPlugin from 'vue-gettext';
 import translations from './Authent/translation.json';
 
 Vue.use(GetTextPlugin, {
-  availableLanguages: {
-    en_US: 'English',
-    fr_FR: 'Français',
-  },
-  defaultLanguage: 'fr_FR',
-  languageVmMixin: {
-    computed: {
-      currentKebabCase: function adjustCulture() {
-        return this.current.toLowerCase().replace('_', '-');
-      },
+    availableLanguages: {
+        en_US: 'English',
+        fr_FR: 'Français',
     },
-  },
-  translations: translations,
-  silent: true,
+    defaultLanguage: 'fr_FR',
+    languageVmMixin: {
+        computed: {
+            currentKebabCase: function adjustCulture() {
+                return this.current.toLowerCase().replace('_', '-');
+            },
+        },
+    },
+    translations: translations,
+    silent: true,
 });
 
 Vue.use(VueCustomElement);
 Vue.prototype.$http = axios.create({
-  baseURL: '/api/v1',
+    baseURL: '/api/v1',
 });
 Vue.prototype.$kendo = kendo;
 

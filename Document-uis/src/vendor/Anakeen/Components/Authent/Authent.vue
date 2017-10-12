@@ -22,8 +22,8 @@
                 <button class="btn btn-reveal btn-secondary" type="button" v-if="!hidePassword"><i
                         class="fa fa-eye-slash"></i></button>
             </span>
-            <div id="msgerr" class="message msgerr" v-if="wrongPassword" translate-context="Authent" v-translate>
-                Authentication error
+            <div class="message msgerr" v-if="wrongPassword" >
+                {{ authentError }}
             </div>
             <div class="authent-buttons">
                 <button ref="loginButton" class="authent-login-button k-primary" type="submit">
@@ -46,6 +46,24 @@
         <div class="authent-help" ref="authentHelpContent" style="display:none">
             <p class="label" for="password" translate-context="Authent" v-translate>Help Content</p>
         </div>
+        <form ref="authentForgetForm" class="authent-form authent-form--forget" style="display:none">
+            <p class="forget-description" translate-context="Authent" v-translate>Ask a new password</p>
+            <label class="label" for="forgetlogin" translate-context="Authent" v-translate>Enter identifier or email address :</label>
+            <input id="forgetlogin" class="authent-login form-control k-textbox" type="text"
+                   v-model="login"
+                   required autocapitalize="off" autocorrect="off" spellcheck="false"
+                   :placeholder="translations.forgetPlaceHolder" />
+
+
+            <div class="message msgerr" v-if="forgetStatusFailed" >
+                {{ forgetError }}
+            </div>
+            <div class="authent-buttons">
+                <button ref="authentForgetSubmit" class="authent-login-button k-primary" type="submit">
+                    <translate translate-context="Authent">Send ask</translate>
+                </button>
+            </div>
+        </form>
     </section>
 </template>
 <script src="./Authent.component.js"></script>

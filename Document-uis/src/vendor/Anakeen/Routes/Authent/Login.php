@@ -10,9 +10,11 @@ use Dcp\HttpApi\V1\Crud\Crud;
 class Login extends Crud
 {
     const failDelay=2;
+
     /**
      * Create new ressource
      * @return mixed
+     * @throws Exception
      */
     public function create()
     {
@@ -64,9 +66,24 @@ class Login extends Crud
     }
 
     /**
-     * Read a ressource
+     * Close session to logout
      * @param string|int $resourceId Resource identifier
      * @return mixed
+     */
+    public function delete($resourceId)
+    {
+        $session = new \Session();
+        $session->set();
+        $session->close();
+        return [];
+    }
+
+    /**
+     * Read a ressource
+     * @param int|string $ressourceId
+     * @return mixed
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @internal param int|string $resourceId Resource identifier
      */
     public function read($ressourceId)
     {
@@ -79,6 +96,7 @@ class Login extends Crud
      * Update the ressource
      * @param string|int $resourceId Resource identifier
      * @return mixed
+     * @throws \Dcp\HttpApi\V1\Crud\Exception
      */
     public function update($resourceId)
     {
@@ -87,16 +105,4 @@ class Login extends Crud
         throw $e;
     }
 
-    /**
-     * Delete ressource
-     * @param string|int $resourceId Resource identifier
-     * @return mixed
-     */
-    public function delete($resourceId)
-    {
-        $session = new \Session();
-        $session->set();
-        $session->close();
-        return [];
-    }
 }
