@@ -1,4 +1,11 @@
 export default {
+  props: {
+    logoUrl: {
+      type: String,
+      default: 'CORE/Images/anakeen-logo.svg',
+    },
+  },
+
   mounted() {
     document.addEventListener('DOMContentLoaded', (event) => {
       const store = document.getElementById('a4-store');
