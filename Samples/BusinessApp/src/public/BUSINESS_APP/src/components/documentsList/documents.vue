@@ -17,16 +17,14 @@
                 <div class="documentsList__documents__search">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default documentsList__documents__search__reset__button" @click="onRemoveClick">
-                                <span class="fa fa-times"></span>
+                            <button class="documentsList__documents__search__reset__button" ref="removeFilterButton">
                             </button>
                         </span>
                         <input type="text"
                                class="form-control documentsList__documents__search__keyword"
                                placeholder="Mot clé" :value="filterInput" @input="onFilterInput">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default documentsList__documents__search__button" @click="onSearchClick">
-                                            <span class="fa fa-search"></span>
+                                        <button class="documentsList__documents__search__button" ref="searchFilterButton">
                                         </button>
                                     </span>
                     </div>
