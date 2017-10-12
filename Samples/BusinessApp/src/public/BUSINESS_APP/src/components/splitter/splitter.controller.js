@@ -34,6 +34,7 @@ export default {
 
     onCollapseSplitter(event) {
       this.collapseSplitter = !this.collapseSplitter;
+      this.$emit('store-save', { action: 'toggleCollections', data: false });
     },
   },
 };

@@ -1,3 +1,4 @@
+// Not Expanded style
 .documentsList__collections__wrapper,
 .documentsList__collections {
   display: flex;
@@ -20,9 +21,6 @@
   position: absolute;
   left: calc(-25vw + 50px);
   transition: left 1s;
-  &.documentsList__collections--expanded {
-    left: 0;
-  }
 }
 
 .documentsList__collections {
@@ -46,11 +44,7 @@
   text-transform: uppercase;
   font-size: 1.2em;
   background-size: 35px;
-}
-
-.documentsList__collections--expanded .documentsList__collectionCard__heading__content_icon,
-.documentsList__collections--expanded .documentsList__collections_button_icon {
-  left: 0px;
+  font-weight: 600;
 }
 
 .documentsList__collections_button_icon {
@@ -84,22 +78,13 @@
   font-weight: 400;
 }
 
-.documentsList__collections--expanded {
-  .documentsList__collections_button_title,
-  .documentsList__collectionCard__heading__content_label {
-    opacity: 1;
-    transition: opacity 1s;
-    transition-timing-function: ease-in;
-  }
-}
-
 .documentsList__collections_button_title {
   text-align: center;
   width: calc(100% - 50px);
 }
 
 .documentsList__collections_button_title,
-.documentsList__collectionCard__heading__content_label {
+.documentsList__collectionCard__heading__content__label {
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -131,11 +116,6 @@
   color: #fff;
 }
 
-/*.documentsList__collections_button--collapse,
-.documentsList__collections_button_icon--collapse {
-  background-color: lightgrey;
-}*/
-
 .documentsList__collections_button_icon--collapse {
   background-color: #646464!important;
   background-size: 24px;
@@ -150,13 +130,6 @@
 .documentsList__collections_button.documentsList__collections_button--down {
   background-color: #c1c1c1;
   height: 30px;
-}
-
-.documentsList__collections--expanded {
-  .documentsList__collections_button_icon.documentsList__collections_button_icon--up,
-  .documentsList__collections_button_icon.documentsList__collections_button_icon--down {
-    left: calc(50% - 25px);
-  }
 }
 
 .documentsList__collections_button_icon.documentsList__collections_button_icon--up,
@@ -209,10 +182,8 @@
   margin-top: 0px;
 }
 
-.documentsList__collectionCard,
-.documentsList__documentCard {
+.documentsList__collectionCard {
   position: relative;
-  margin-top: 1px;
   border: none;
   cursor: pointer;
   line-height: 1.3em;
@@ -242,16 +213,11 @@
   text-transform: uppercase;
 }
 
-.documentsList__collections--expanded .documentsList__collectionCard__heading__content_icon,
-.documentsList__collections--expanded .documentsList__collections_button_icon {
-  left: 0px;
-}
-
-.documentsList__collectionCard__heading__content_icon {
+.documentsList__collectionCard__heading__content__icon {
   width: 43px;
 }
 
-.documentsList__collectionCard__heading__content_icon {
+.documentsList__collectionCard__heading__content__icon {
   width: 48px;
   left: calc(100% - 50px);
   position: relative;
@@ -259,12 +225,12 @@
   transition: left 1s;
 }
 
-.documentsList__collectionCard__heading__content_label,
-.documentsList__collectionCard__heading__content_icon {
+.documentsList__collectionCard__heading__content__label,
+.documentsList__collectionCard__heading__content__icon {
   display: inline-block;
 }
 
-.documentsList__collectionCard__heading__content_label {
+.documentsList__collectionCard__heading__content__label {
   text-align: center;
   width: calc(100% - 89px);
 }
@@ -272,29 +238,77 @@
 .documentsList__documentCard--opened .documentsList__documentCard__heading__content,
 .documentsList__documentCard__heading__state,
 .documentsList__documentCard .documentsList__documentCard__heading__content,
-.documentsList__collectionCard__heading__content_label {
+.documentsList__collectionCard__heading__content__label {
   color: #505050;
   font-weight: 400;
 }
 
 .documentsList__collections__list {
+  border: none;
+  margin: 0;
   overflow-y: auto;
   flex: 1;
 }
 
 .documentsList__collectionCard {
+  margin:0;
   border-bottom: 1px solid #ccc;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 41px;
+  transition: height 1s;
 }
 
 .documentsList__collectionCard.k-state-selected {
   background-color: #e7e7e7;
   font-weight: 600;
-  box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
 
-  .documentsList__collectionCard__heading__content_label {
-    color: #157EFB;
+  .documentsList__collectionCard__heading__content__label {
+    color: #00B4FC;
     font-weight: bold;
+  }
+
+  .documentsList__collectionCard__heading__content__icon {
+    box-shadow: inset 8px 0px 0px 0px $A4-ui-color-client;
+  }
+}
+
+.documentsList__collectionCard__heading__content__icon__img {
+  padding: 10px 0 10px;
+  width: 20px;
+  height: 40px;
+}
+
+// Expanded style
+
+.documentsList__collections__wrapper.documentsList__collections--expanded {
+  left: 0;
+
+  .documentsList__collectionCard__heading__content__icon,
+  .documentsList__collections_button_icon {
+    left: 0px;
+  }
+
+  .documentsList__collectionCard__heading__content__icon {
+    box-shadow: none;
+  }
+
+  .documentsList__collectionCard {
+    height: 51px;
+    &.k-state-selected {
+      box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+    }
+  }
+
+  .documentsList__collections_button_title,
+  .documentsList__collectionCard__heading__content__label {
+    opacity: 1;
+    transition: opacity 1s;
+    transition-timing-function: ease-in;
+  }
+
+  .documentsList__collections_button_icon.documentsList__collections_button_icon--up,
+  .documentsList__collections_button_icon.documentsList__collections_button_icon--down {
+    left: calc(50% - 25px);
   }
 }
