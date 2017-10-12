@@ -1,10 +1,12 @@
 export default {
   mounted() {
+    this.initKendo();
     this.sendGetRequest('/sba/collections')
       .then((response) => {
         this.collections = response.data.data.sample.collections;
         this.updateKendoData();
-        this.selectCollection(this.collections[0]);
+        const listView = this.$(this.$refs.listView).data('kendoListView');
+        listView.select(listView.element.children().first());
       });
     this.sendGetRequest('/sba/currentUser')
       .then((response) => {
@@ -15,7 +17,6 @@ export default {
       const storeData = event.detail && event.detail.length ? event.detail[0] : null;
       this.onStoreChange(storeData);
     });
-    this.initKendo();
   },
 
   data() {
@@ -67,13 +68,14 @@ export default {
         return '';
       }
     },
+
     userFullName() {
       if (this.currentUser)  {
         return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
       } else {
-        return "";
+        return '';
       }
-    }
+    },
   },
 
   methods: {
@@ -110,9 +112,10 @@ export default {
         template: this.$kendo.template('<div class="documentsList__collectionCard">' +
             '<div class="documentsList__collectionCard__body">' +
             '<div class="documentsList__collectionCard__heading">' +
-            '<div class="documentsList__collectionCard__heading__content_icon">' +
-            '<img src="#: image_url#"  alt="#: html_label# image"/></div>' +
-            '<span class="documentsList__collectionCard__heading__content_label">#:html_label#</span>' +
+            '<div class="documentsList__collectionCard__heading__content__icon">' +
+            '<img class="documentsList__collectionCard__heading__content__icon__img" src="#: image_url#"  alt="#: html_label# image"/></div>' +
+            '<span class="documentsList__collectionCard__heading__content__label">#:html_label#</span>' +
+            '<span class=".documentsList__documentCard__heading__state"></span>' +
             '</div></div></div>'),
         selectable: 'single',
         change: this.onSelectItemList,
@@ -140,11 +143,11 @@ export default {
           .then((response) => {
             this.$kendo.ui.progress(element, false);
             resolve(response);
-        }).catch((error) => {
+          }).catch((error) => {
           this.$kendo.ui.progress(element, false);
           reject(error);
         });
-      })
-    }
+      });
+    },
   },
 };
