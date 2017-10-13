@@ -11,17 +11,12 @@ class RestOpenAuthenticator extends \OpenAuthenticator
         if (!empty($_GET[self::openGetId])) {
             return $_GET[self::openGetId];
         }
-        
-        $headers = apache_request_headers();
-        if (!empty($headers["Authorization"])) {
-            $hAuthorization=$headers["Authorization"];
-        } elseif (!empty($headers["authorization"])) {
-            $hAuthorization=$headers["authorization"];
-        }
+
+        $hAuthorization = \AuthenticatorManager::getAuthorizationValue();
+
         if (!empty($hAuthorization)) {
-            
-            if (preg_match(sprintf("/%s\\s+(.*)$/", self::openAuthorizationScheme) , $hAuthorization, $reg)) {
-                return trim($reg[1]);
+            if ($hAuthorization["scheme"] === self::openAuthorizationScheme) {
+                return $hAuthorization["token"];
             }
         }
         
@@ -47,13 +42,13 @@ class RestOpenAuthenticator extends \OpenAuthenticator
         
         $relativeUrl = substr($url, strpos($url, "api/v1/") + strlen("api/v1"));
         $context = unserialize($rawContext);
+
         if (is_array($context)) {
             $allow = false;
             foreach ($context as $k => $rules) {
                 if (is_array($rules)) {
                     if (!empty($rules["route"])) {
                         $route = $rules["route"];
-                        
                         if (preg_match($route, $relativeUrl)) {
                             $allow = true;
                             break;

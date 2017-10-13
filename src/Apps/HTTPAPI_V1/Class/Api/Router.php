@@ -120,6 +120,13 @@ class Router
         return self::$extension;
     }
     /**
+     * @return null
+     */
+    public static function setExtension($extension)
+    {
+        self::$extension = $extension;
+    }
+    /**
      * Extract the extension of the current request path
      *
      * Remove the extension of the path
