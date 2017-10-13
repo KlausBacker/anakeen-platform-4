@@ -14,22 +14,21 @@ namespace {
          * @errorCode in case of POST
          */
         const AUTH0001 = 'Error, access forbidden';
-    }
-}
-namespace Anakeen\Routes\Authent {
-    class Exception extends \Dcp\Exception
-    {
-        protected $httpStatus = 400;
-        protected $httpMessage = "Dcp Exception";
         /**
-         *
-         * @param int $httpStatus
-         * @param string $httpMessage
+         * @errorCode when mail template for ask password not found
          */
-        public function setHttpStatus($httpStatus, $httpMessage = "")
-        {
-            $this->httpStatus = $httpStatus;
-            $this->httpMessage = $httpMessage;
-        }
+        const AUTH0010 = 'Cannot find mail template "%s"';
+        /**
+         * @errorCode
+         */
+        const AUTH0011 = 'Several user use same email address "%s". You must use your login identifier';
+        /**
+         * @errorCode when send ask mail
+         */
+        const AUTH0012 = 'Cannot send email "%s"';
+        /**
+         * @errorCode user with email or login
+         */
+        const AUTH0013 = 'Cannot find user "%s"';
     }
 }

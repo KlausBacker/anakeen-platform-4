@@ -8,5 +8,6 @@
   "requireCommaBeforeLineBreak": true,
   //"requireDollarBeforejQueryAssignment": true,
   "requireSemicolons": true,
-  "maximumLineLength" : 120
+  "maximumLineLength" : 120,
+  "validateIndentation": 4
 }

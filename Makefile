@@ -38,13 +38,18 @@ webinst-business:
 webinst-all: webinst webinst-selenium
 
 webinst:
-	cd ui && npm run build
-	cd Document-uis && npm install && npm run build
+	cd ui && yarn run build
+	cd Document-uis && yarn install && yarn run build
 	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
+	make -f pojs.make compile
 	make webinst-full
 
 po:
 	./dynacase-devtool.phar extractPo -s Document-uis
+
+
+pojs:
+	make -f pojs.make
 
 clean: 
 	rm -rf $(localpub)

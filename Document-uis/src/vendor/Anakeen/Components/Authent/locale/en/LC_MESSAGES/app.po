@@ -1,0 +1,82 @@
+# English translations for Document-uis package.
+# Copyright (C) 2017 THE Document-uis'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Document-uis package.
+# Automatically generated, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Document-uis 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-11 12:45+0200\n"
+"PO-Revision-Date: 2017-10-11 12:48+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:25
+msgctxt "Authent"
+msgid "Authentication error"
+msgstr "Authentication error"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:40
+msgctxt "Authent"
+msgid "Help"
+msgstr ""
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:44
+msgctxt "Authent"
+msgid "Help Content"
+msgstr ""
+"This window allows you to log on the application, that is indicate to the applications whom you are.\n"
+"\n"
+"This is necessary to guarantee that yours informations are accessible only by you. To log on, it is necessary to fill the login and password (If you do not possess it contact your administrator).\n"
+"\n"
+"Pay attention, this password is your identification : be sure to keep it safe and do not spread it !\n"
+"\n"
+"Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:4
+msgctxt "Authent"
+msgid "Identifier :"
+msgstr ""
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:10
+msgctxt "Authent"
+msgid "Password :"
+msgstr ""
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:30
+msgctxt "Authent"
+msgid "Sign in"
+msgstr ""
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:17
+msgctxt "Authent"
+msgid "Enter your identifier"
+msgstr "Enter your identifier"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:18
+#, fuzzy
+msgctxt "Authent"
+msgid "Enter your password"
+msgstr "Enter your identifier"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:19
+msgctxt "Authent"
+msgid "You must enter your password"
+msgstr ""
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:20
+#, fuzzy
+msgctxt "Authent"
+msgid "You must enter your identifier"
+msgstr "Enter your identifier"
+
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:21
+msgctxt "Authent"
+msgid "Help to sign in"
+msgstr ""
