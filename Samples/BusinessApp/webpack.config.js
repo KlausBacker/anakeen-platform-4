@@ -58,7 +58,7 @@ if (process.env.NODE_ENV !== 'production') {
             openPage: '?app=BUSINESS_APP',
             hot: true,
             proxy: {
-            "!/BUSINESS_APP/dist/a4-business-app-components.js": {
+            "!/BUSINESS_APP/dist/*.js": {
                 "target": confPerso.devServerURL
             }
         }
