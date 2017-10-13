@@ -1,0 +1,96 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
+"PO-Revision-Date: 2016-07-26 09:50+0200\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#ba_title"
+msgstr "Title"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#fld_fr_prof"
+msgstr "Default profile"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#fld_fr_rest"
+msgstr "Restrictions"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#fld_tfam"
+msgstr ""
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#fr_basic"
+msgstr "Basic"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_adduser"
+msgstr "Members' management"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_fr"
+msgstr "Groups"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_fr_ident"
+msgstr "Identification"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_hasmail"
+msgstr "Without group adress mail"
+
+msgid "GROUP#grp_hasmail#[bool]yes"
+msgstr "Mail regrouped"
+
+msgid "GROUP#grp_hasmail#elabel"
+msgstr "Skip mail calculation for group with a lot of members"
+
+msgid "GROUP#grp_hasmail#no"
+msgstr "Without mail adress"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_idgroup"
+msgstr "Subgroups"
+
+msgid "GROUP#grp_idgroup#showempty"
+msgstr "No subgroups"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_idpgroup"
+msgstr "Parent groups"
+
+msgid "GROUP#grp_idpgroup#showempty"
+msgstr "No parent groups"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_isrefreshed"
+msgstr "Is refreshed"
+
+msgid "GROUP#grp_isrefreshed#0"
+msgstr "no"
+
+msgid "GROUP#grp_isrefreshed#1"
+msgstr "yes"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_mail"
+msgstr "Mail"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_name"
+msgstr "Name"
+
+#: App/Fusers/account.ods.csv
+msgid "GROUP#grp_refresh"
+msgstr "Refresh"
+
+msgid "GROUP#title"
+msgstr "Group of people"

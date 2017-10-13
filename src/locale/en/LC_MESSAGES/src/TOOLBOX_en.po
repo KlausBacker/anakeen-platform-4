@@ -1,0 +1,9066 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-06 16:47+0200\n"
+"PO-Revision-Date: 2016-11-18 15:26+0100\n"
+"Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
+"Language-Team: English team <>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid " Change password for"
+msgstr ""
+
+msgid " Choose an existing document profil"
+msgstr ""
+
+msgid " Choose an existing family profil"
+msgstr ""
+
+msgid " Modify acls for transitions"
+msgstr ""
+
+msgid " No privilege to change acl for document access"
+msgstr ""
+
+msgid " No privilege to change acl for familly access"
+msgstr ""
+
+msgid " Please, see your manager"
+msgstr "Please, see your manager"
+
+msgid " any familly"
+msgstr ""
+
+msgid " cancel"
+msgstr ""
+
+msgid " change icon"
+msgstr ""
+
+msgid " change title"
+msgstr ""
+
+msgid " comment for revision"
+msgstr ""
+
+msgid " familly"
+msgstr ""
+
+msgid " folder containt"
+msgstr ""
+
+msgid " from current folder"
+msgstr ""
+
+msgid " history"
+msgstr ""
+
+msgid " input not found"
+msgstr ""
+
+msgid " lauch importation"
+msgstr ""
+
+msgid " match"
+msgstr ""
+
+msgid " only latest revision"
+msgstr ""
+
+msgid " profile access"
+msgstr ""
+
+msgid " revise document"
+msgstr ""
+
+msgid " search for"
+msgstr ""
+
+msgid " search words"
+msgstr ""
+
+msgid " send search"
+msgstr ""
+
+msgid " view files"
+msgstr ""
+
+#, php-format
+msgid "%d answer"
+msgstr ""
+
+#, php-format
+msgid "%d answers"
+msgstr ""
+
+#, php-format
+msgid "%d day"
+msgstr ""
+
+#, php-format
+msgid "%d days"
+msgstr ""
+
+#, php-format
+msgid "%d document detected"
+msgid_plural "%d documents detected"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%d document processed"
+msgid_plural "%d documents processed"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%d documents"
+msgstr ""
+
+#, php-format
+msgid "%d documents are updated"
+msgstr ""
+
+#, php-format
+msgid "%d documents linked to the profil"
+msgstr ""
+
+#, php-format
+msgid "%d group(s) to update\n"
+msgstr ""
+
+#, php-format
+msgid "%d hour"
+msgstr ""
+
+#, php-format
+msgid "%d hours"
+msgstr ""
+
+#, php-format
+msgid "%d minute"
+msgstr ""
+
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#, php-format
+msgid "%d/%d profiling done"
+msgstr ""
+
+#, php-format
+msgid "%d/%d revision done"
+msgstr ""
+
+#, php-format
+msgid "%s (as substitute)"
+msgstr ""
+
+#, php-format
+msgid "%s : file %s has been replaced by new file %s"
+msgstr ""
+
+#, php-format
+msgid "%s Authentification"
+msgstr "%s Authentication"
+
+#, php-format
+msgid "%s activity"
+msgstr ""
+
+#, php-format
+msgid "%s affectation"
+msgstr ""
+
+#, php-format
+msgid "%s affectation type"
+msgstr ""
+
+#, php-format
+msgid "%s affected user"
+msgstr ""
+
+#, php-format
+msgid "%s all of %s"
+msgstr ""
+
+#, php-format
+msgid "%s application has no aclss"
+msgstr ""
+
+#, php-format
+msgid "%s application not exists"
+msgstr ""
+
+#, php-format
+msgid "%s attribute"
+msgstr ""
+
+#, php-format
+msgid "%s autolock"
+msgstr ""
+
+#, php-format
+msgid "%s automail"
+msgstr ""
+
+#, php-format
+msgid "%s cannot be sent"
+msgstr ""
+
+#, php-format
+msgid "%s color"
+msgstr ""
+
+#, php-format
+msgid "%s cv"
+msgstr ""
+
+#, php-format
+msgid "%s directory not found"
+msgstr ""
+
+#, php-format
+msgid "%s directory not writable"
+msgstr ""
+
+#, php-format
+msgid "%s document it is not a folder and cannot support recursive deletion"
+msgstr ""
+
+#, php-format
+msgid "%s group"
+msgstr ""
+
+#, php-format
+msgid "%s has be sended"
+msgstr ""
+
+#, php-format
+msgid "%s has been added in %s folder"
+msgstr ""
+
+#, php-format
+msgid "%s has been created"
+msgstr ""
+
+#, php-format
+msgid "%s has been deleted"
+msgstr ""
+
+#, php-format
+msgid "%s has been locked"
+msgstr ""
+
+#, php-format
+msgid "%s has been modified"
+msgstr ""
+
+#, php-format
+msgid "%s has been removed in %s folder"
+msgstr ""
+
+#, php-format
+msgid "%s has been unlocked"
+msgstr ""
+
+#, php-format
+msgid "%s has no email address"
+msgstr ""
+
+#, php-format
+msgid "%s igroup created\n"
+msgstr ""
+
+#, php-format
+msgid "%s inserted"
+msgstr ""
+
+#, php-format
+msgid "%s is not a family"
+msgstr ""
+
+#, php-format
+msgid "%s is not an array attribute"
+msgstr ""
+
+#, php-format
+msgid "%s iuser aborded\n"
+msgstr ""
+
+#, php-format
+msgid "%s iuser created\n"
+msgstr ""
+
+#, php-format
+msgid "%s mail template"
+msgstr ""
+
+#, php-format
+msgid "%s mask"
+msgstr ""
+
+#, php-format
+msgid "%s needed\n"
+msgstr ""
+
+#, php-format
+msgid "%s new revision %d"
+msgstr ""
+
+#, php-format
+msgid "%s new state %s"
+msgstr ""
+
+#, php-format
+msgid "%s persistent timer"
+msgstr ""
+
+#, php-format
+msgid "%s profile"
+msgstr ""
+
+#, php-format
+msgid "%s timer"
+msgstr ""
+
+#, php-format
+msgid "%s to be add"
+msgstr ""
+
+#, php-format
+msgid "%s unattach timer"
+msgstr ""
+
+#, php-format
+msgid "%s updated\n"
+msgstr ""
+
+#, php-format
+msgid "%s wask"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "&gt; or equal"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "&lt; or equal"
+msgstr ""
+
+msgid "(Other input)"
+msgstr ""
+
+msgid "(Other)"
+msgstr ""
+
+msgid "(file not found)"
+msgstr ""
+
+msgid "(free item)"
+msgstr ""
+
+msgid "(new item)"
+msgstr ""
+
+msgid "(only)"
+msgstr ""
+
+#, php-format
+msgid "(substitute of %s) : "
+msgstr ""
+
+msgid "(title)"
+msgstr ""
+
+msgid "<it's a message>"
+msgstr ""
+
+#, php-format
+msgid "API %s is deprecated. You should use %s instead."
+msgstr ""
+
+#, php-format
+msgid "API file %s not found\n"
+msgstr ""
+
+msgid "A_Copy"
+msgstr ""
+
+msgid "A_Link"
+msgstr ""
+
+msgid "Access Action Library"
+msgstr ""
+
+msgid "Access Batch Management"
+msgstr ""
+
+msgid "Access Families Management"
+msgstr ""
+
+msgid "Access Generic Master Management"
+msgstr ""
+
+msgid "Access Path Folder List"
+msgstr ""
+
+msgid "Access To Generic Management"
+msgstr ""
+
+msgid "Access To My Own account"
+msgstr ""
+
+msgid "Access To Read Card"
+msgstr ""
+
+msgid "Access To Read Only"
+msgstr ""
+
+msgid "Access explanation"
+msgstr ""
+
+msgid "Access for exchange documents"
+msgstr ""
+
+msgid "Access name"
+msgstr ""
+
+msgid "Access path list"
+msgstr ""
+
+msgid "Access to document history"
+msgstr ""
+
+msgid "Access to edit action"
+msgstr ""
+
+msgid "Access to old enum interface"
+msgstr ""
+
+msgid "Access to system documents"
+msgstr ""
+
+msgid "Accord"
+msgstr ""
+
+#, php-format
+msgid "Account Type \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Acl [%s] not available for App %s"
+msgstr ""
+
+msgid "Acls not activated"
+msgstr ""
+
+msgid "Acls not initialize"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Action to do"
+msgstr ""
+
+msgid "Activate acls"
+msgstr ""
+
+msgid "Activity"
+msgstr ""
+
+#, php-format
+msgid "Add %d document(s)"
+msgstr ""
+
+#, php-format
+msgid "Add %s in %s folder"
+msgstr ""
+
+#, php-format
+msgid "Add acl %s for %s"
+msgstr ""
+
+#, php-format
+msgid "Add atags \"%s\""
+msgstr ""
+
+msgid "Add filter"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Add group reference"
+msgstr ""
+
+#, php-format
+msgid "Add it in %s folder"
+msgstr ""
+
+msgid "Add new document (similar document)"
+msgstr ""
+
+msgid "Add new entry"
+msgstr ""
+
+msgid "Add new enum choice: "
+msgstr ""
+
+msgid "Add postit"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Add role reference"
+msgstr ""
+
+msgid "Add search engine"
+msgstr ""
+
+msgid "Add search engine to your browser"
+msgstr ""
+
+msgid "Add section"
+msgstr ""
+
+msgid "Add section popup"
+msgstr ""
+
+msgid "Add to basket"
+msgstr ""
+
+msgid "Add top folder"
+msgstr ""
+
+msgid "Adding button to submit"
+msgstr ""
+
+msgid "Additionnals informations about import document"
+msgstr ""
+
+msgctxt "authent"
+msgid "Address not configured"
+msgstr ""
+
+msgid "Affectation"
+msgstr ""
+
+msgid "Affectation aborded"
+msgstr ""
+
+msgid "Affectation aborded : user not know"
+msgstr ""
+
+#, php-format
+msgid "Affectation for %s"
+msgstr ""
+
+#, php-format
+msgid "Affected for %s"
+msgstr ""
+
+#, php-format
+msgid "Affected to %s %s"
+msgstr ""
+
+msgid "All To basket"
+msgstr ""
+
+msgid "All css in one for consultation"
+msgstr "Concatenate all CSS for consultation"
+
+msgid "All js in one for consultation"
+msgstr "Concatenate all JS scripts for consultation"
+
+msgid "All js in one for edition"
+msgstr "Concatenate all JS scripts for edition"
+
+msgid "All set only"
+msgstr ""
+
+msgid "Allocate"
+msgstr ""
+
+msgid "Allow guest access"
+msgstr ""
+
+msgid "Analyse fdl.csv"
+msgstr ""
+
+msgid "Analysis Results"
+msgstr ""
+
+msgid "Analyze"
+msgstr ""
+
+msgid "Analyze Archive"
+msgstr ""
+
+msgid "Analyze error occured, check the details for more information"
+msgstr ""
+
+msgid "Analyze in progress"
+msgstr ""
+
+msgid "Analyze only"
+msgstr ""
+
+msgid "Answers"
+msgstr ""
+
+msgid "Application Id"
+msgstr ""
+
+#, php-format
+msgid "Application [%s] not found. Error message: [%s]"
+msgstr ""
+
+#, php-format
+msgid "Application not found: [%s]"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Apply my preferences"
+msgstr ""
+
+msgid "Apply name"
+msgstr ""
+
+msgid "April"
+msgstr ""
+
+msgid "Archive import"
+msgstr ""
+
+msgid "Archive import in progress"
+msgstr ""
+
+msgid "Archive menu"
+msgstr ""
+
+msgid "Archives"
+msgstr ""
+
+#, php-format
+msgid "Archiving into %s"
+msgstr ""
+
+msgid "Attribut"
+msgstr ""
+
+msgid "Attribut relation"
+msgstr ""
+
+msgid "Attribute"
+msgstr ""
+
+#, php-format
+msgid ""
+"Attribute %s found is not alone\n"
+"Must precise request with appname arguments\n"
+msgstr ""
+
+#, php-format
+msgid "Attribute %s modified to %s"
+msgstr ""
+
+#, php-format
+msgid "Attribute %s not found\n"
+msgstr ""
+
+#, php-format
+msgid "Attribute %s not modified : %s\n"
+msgstr ""
+
+#, php-format
+msgid "Attribute '%s' could not be found in family '%s'."
+msgstr ""
+
+#, php-format
+msgid "Attribute '%s' should reference a docid attribute in family '%s'."
+msgstr ""
+
+#, php-format
+msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
+msgstr ""
+
+#, php-format
+msgid ""
+"Attribute Error: impossible to found the family for docid attribute '%s'"
+msgstr ""
+
+#, php-format
+msgid "Attribute [%s] is not found"
+msgstr ""
+
+#, php-format
+msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
+msgstr ""
+
+msgid "Attribute identifier"
+msgstr ""
+
+msgid "Attribute label"
+msgstr ""
+
+msgid "Attribute not found"
+msgstr ""
+
+msgid "Attributes"
+msgstr ""
+
+msgid "August"
+msgstr ""
+
+msgid "Authentication failures before account deactivation"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgctxt "authentOpen"
+msgid "Authorization Required"
+msgstr ""
+
+msgid "Automatic profil creation not possible for this kind of family"
+msgstr ""
+
+msgid "Background Import"
+msgstr ""
+
+msgid "Basket to here"
+msgstr ""
+
+msgid "Batch Action Choose"
+msgstr ""
+
+msgid "Batch Choose"
+msgstr ""
+
+msgid "BatchProcess"
+msgstr ""
+
+msgid "Be carreful, this transition is not defined in workflow"
+msgstr ""
+
+msgid "Be carreful."
+msgstr ""
+
+msgid "Binary file layout"
+msgstr ""
+
+msgid "Bookmarks"
+msgstr ""
+
+msgid "CHANGE_PASSWORD:The old password is not good"
+msgstr "The old password is not good"
+
+#, php-format
+msgid "CHANGE_PASSWORD:The provided password is not good (%s)"
+msgstr "The provided password is not good (%s)"
+
+#, php-format
+msgid "CHANGE_PASSWORD:Unable to change password (%s)"
+msgstr "Unable to change password (%s)"
+
+msgid "CHANGE_PASSWORD:You can't modify your account"
+msgstr "You can't modify your account"
+
+msgid "CSV"
+msgstr ""
+
+msgid "CSV specification file"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:display"
+msgstr "display"
+
+msgid "CVDOC_ARRAY_VIEW:idview"
+msgstr "identification"
+
+msgid "CVDOC_ARRAY_VIEW:type"
+msgstr "type"
+
+msgid "CVDOC_ARRAY_VIEW:view"
+msgstr "view"
+
+#, php-format
+msgid "CVID : %s"
+msgstr ""
+
+#, php-format
+msgid "CVID : view control '%s' not found"
+msgstr ""
+
+msgid "Call method"
+msgstr ""
+
+msgid "Can't delete already created row"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cancel changes and close window"
+msgstr ""
+
+msgid "Cancel changes and quit edit mode"
+msgstr ""
+
+msgid "Cancel the change step"
+msgstr ""
+
+msgid "Cannot access interface to change password"
+msgstr ""
+
+#, php-format
+msgid "Cannot access to vault file system"
+msgstr ""
+
+#, php-format
+msgid ""
+"Cannot add %s in %s folder, restriction set to add this kind of document"
+msgstr ""
+
+#, php-format
+msgid "Cannot add in %s folder, doc id (%d) unknown"
+msgstr ""
+
+#, php-format
+msgid "Cannot copy file %s to %s"
+msgstr ""
+
+msgid "Cannot do this action. Parent window is closed"
+msgstr ""
+
+msgid "Cannot do this action. The function of parent window is not found"
+msgstr ""
+
+#, php-format
+msgid "Cannot find %s resource file"
+msgstr ""
+
+#, php-format
+msgid "Cannot find help function %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Cannot import document because the ORDER line for family '%s' is incorrect: "
+"%s"
+msgstr ""
+
+#, php-format
+msgid "Cannot include '%s'"
+msgstr ""
+
+msgid "Cannot open document"
+msgstr ""
+
+#, php-format
+msgid "Cannot see attribute %s"
+msgstr ""
+
+#, php-format
+msgid "Cannot write to log %s"
+msgstr ""
+
+msgid "Certain attribute can be not use for import"
+msgstr ""
+
+msgid "Change State"
+msgstr "Next step"
+
+msgid "Change content"
+msgstr ""
+
+#, php-format
+msgid ""
+"Change control :\n"
+" %s"
+msgstr ""
+
+#, php-format
+msgid "Change control for %s user. No one privilege"
+msgstr ""
+
+#, php-format
+msgid "Change control for %s user. Set %s privileges"
+msgstr ""
+
+#, php-format
+msgid "Change creation profil to %s [%d]"
+msgstr ""
+
+msgid "Change creation profile"
+msgstr ""
+
+#, php-format
+msgid "Change creation view control to %s [%d]"
+msgstr ""
+
+msgid "Change current folder"
+msgstr ""
+
+msgid "Change default folder"
+msgstr ""
+
+msgid "Change default search"
+msgstr ""
+
+msgid "Change default value"
+msgstr ""
+
+msgid "Change default value for family"
+msgstr ""
+
+msgid "Change icon"
+msgstr ""
+
+msgid "Change logical name"
+msgstr ""
+
+msgid "Change my ask"
+msgstr ""
+
+msgid "Change password"
+msgstr ""
+
+msgid "Change password by token"
+msgstr ""
+
+msgid "Change privilege"
+msgstr ""
+
+#, php-format
+msgid "Change profil to %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "Change profil to default document profil : %d"
+msgstr ""
+
+#, php-format
+msgid "Change profil to default subfolder profil : %d"
+msgstr ""
+
+msgid "Change profile"
+msgstr ""
+
+msgid "Change profile for new documents"
+msgstr ""
+
+msgid "Change profile of family document"
+msgstr ""
+
+msgid "Change root folder"
+msgstr ""
+
+msgid "Change state"
+msgstr "Next step"
+
+msgid "Change state to"
+msgstr "Next step to"
+
+msgid "Change step"
+msgstr ""
+
+msgid "Change the document state to"
+msgstr ""
+
+msgid "Change title"
+msgstr ""
+
+msgid "Change user"
+msgstr ""
+
+#, php-format
+msgid "Change view control  to %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "ChangeState :: the initial state '%s' is not known"
+msgstr ""
+
+#, php-format
+msgid ""
+"ChangeState :: the new state '%s' is not known or is not allowed from %s"
+msgstr ""
+
+msgid "Changes will be loosed if you continue"
+msgstr ""
+
+msgid "Characteristic"
+msgstr ""
+
+msgid "Choose Archive"
+msgstr ""
+
+msgid "Choose Archive Type"
+msgstr ""
+
+msgid "Choose User"
+msgstr ""
+
+msgid "Choose Worflow"
+msgstr ""
+
+msgid "Choose a family to import only set of attributes"
+msgstr ""
+
+msgid "Choose an attribute"
+msgstr ""
+
+msgid "Choose another family document"
+msgstr ""
+
+msgid "Choose column export"
+msgstr ""
+
+msgid "Choose columns"
+msgstr ""
+
+msgid "Choose export column"
+msgstr ""
+
+msgid "Choose family"
+msgstr ""
+
+msgid "Choose file"
+msgstr ""
+
+msgid "Choose image"
+msgstr ""
+
+msgid "Choose in icon list"
+msgstr ""
+
+msgid "Choose mask family"
+msgstr ""
+
+msgid "Choose report columns"
+msgstr ""
+
+msgid "Choose workflow"
+msgstr ""
+
+msgid "Circular layout graphs"
+msgstr ""
+
+#, php-format
+msgid "Class %s from file %s already declared in autoload with file %s"
+msgstr ""
+
+msgid "Clear Folder"
+msgstr ""
+
+msgid "Clear preferences"
+msgstr ""
+
+msgid "Clear this translation"
+msgstr ""
+
+msgid "Click on attribute to modify <b>{{aid}}</b> default value"
+msgstr ""
+
+msgid "Click to access to the document"
+msgstr ""
+
+msgid "Click to clear button to change value"
+msgstr ""
+
+msgid "Click to clear message"
+msgstr ""
+
+msgid "Click to update document"
+msgstr ""
+
+msgid "Click to view menu"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+#, php-format
+msgid "Close archive"
+msgstr ""
+
+msgid "Close help"
+msgstr ""
+
+msgid "Close message"
+msgstr ""
+
+#, php-format
+msgid "Column type '%s' is not managed for export."
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "Comment for change state"
+msgstr ""
+
+msgid "Common function for FREEDOM client API"
+msgstr "Common function for Dynacase Platform client API"
+
+msgid "Common functions"
+msgstr ""
+
+msgid "Complete (cluster)"
+msgstr ""
+
+msgid "Composing the email"
+msgstr ""
+
+msgid "Computed from profil"
+msgstr ""
+
+msgid "Conditions"
+msgstr ""
+
+msgid "Confidential Document"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : attribute name not set"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : family name [%s] not match a know family"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : family name not set"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : unknow attribute name %s"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Confirm password"
+msgstr ""
+
+msgid "Connect now"
+msgstr ""
+
+#, php-format
+msgid "Connection to freedom pg service '%s' OK !"
+msgstr "Connection to pg service '%s' OK!"
+
+#, php-format
+msgid "Connection to temporary pg service '%s' OK !"
+msgstr ""
+
+msgid "Constraint test"
+msgstr ""
+
+msgid "Constraints"
+msgstr ""
+
+#, php-format
+msgid "Content managing of %s"
+msgstr ""
+
+msgid "Control characters are not allowed"
+msgstr ""
+
+msgid "Control view for new document"
+msgstr ""
+
+#, php-format
+msgid "Conversion as %s has failed "
+msgstr ""
+
+msgid "Copy reference"
+msgstr ""
+
+msgid "Copy the containt of folder in batch document"
+msgstr ""
+
+msgid "Copy the reference of folder in batch document"
+msgstr ""
+
+msgid "Core"
+msgstr "Platform Core"
+
+msgid "Core Application Manager"
+msgstr ""
+
+#, php-format
+msgid "Could not find attribute '%s' in family '%s'."
+msgstr ""
+
+msgid "Could not find pg_dump command in PATH."
+msgstr ""
+
+msgid "Could not find psql command in PATH."
+msgstr ""
+
+#, php-format
+msgid "Could not generate output file name for node '%s'."
+msgstr ""
+
+#, php-format
+msgid "Could not get family id for '%s'."
+msgstr ""
+
+#, php-format
+msgid "Could not open '%s' for reading."
+msgstr ""
+
+#, php-format
+msgid ""
+"Could not perform transition because the document is being edited by '%s'"
+msgstr ""
+
+#, php-format
+msgid "Could not perform transition because the document is locked by '%s'"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+#, php-format
+msgid "Create %s"
+msgstr ""
+
+msgid "Create New"
+msgstr ""
+
+#, php-format
+msgid "Create Schema '%s' ..."
+msgstr ""
+
+#, php-format
+msgid "Create Table '%s'"
+msgstr ""
+
+msgid "Create Tables ..."
+msgstr ""
+
+msgid "Create a batch"
+msgstr ""
+
+msgid "Create a new  process document"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Create account"
+msgstr ""
+
+msgid "Create new family"
+msgstr ""
+
+msgid "Create subfolder"
+msgstr ""
+
+msgid "Creation"
+msgstr ""
+
+#, php-format
+msgid "Creation aborded : no family specified"
+msgstr ""
+
+#, php-format
+msgid "Creation aborded : unknow family %s"
+msgstr ""
+
+msgid "Current_state"
+msgstr "Current step"
+
+msgid "Data cannot be saved"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Dav"
+msgstr ""
+
+#, php-format
+msgid "DbObj::Adds error in multiple insertion"
+msgstr ""
+
+msgid "December"
+msgstr ""
+
+msgid "Default Raw value"
+msgstr ""
+
+msgid "Default Values and Parameters"
+msgstr ""
+
+msgid "Default delay for account expiration (days)"
+msgstr "Default delay for account expiration (days)"
+
+msgid "Default search"
+msgstr ""
+
+#, php-format
+msgid "Default value erased"
+msgstr ""
+
+#, php-format
+msgid "Default value recorded"
+msgstr ""
+
+#, php-format
+msgid "Del atags \"%s\""
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+#, php-format
+msgid "Delete %d in %s folder"
+msgstr ""
+
+#, php-format
+msgid "Delete acl %s for %s"
+msgstr ""
+
+msgid "Delete selected search"
+msgstr ""
+
+msgid "Delete this section"
+msgstr ""
+
+msgid "Desactivate acls"
+msgstr ""
+
+#, php-format
+msgid "Destroyed by action %s/%s from %s"
+msgstr ""
+
+msgid "Detail Permissions"
+msgstr ""
+
+msgid "DetailSearch:malformed timestamp"
+msgstr "malformed timestamp"
+
+msgid "DetailSearch:unbalanced parenthesis"
+msgstr "unbalanced parenthesis"
+
+msgid "Diff"
+msgstr ""
+
+#, php-format
+msgid "Dir::insertFolder identifier [%s] must be numeric"
+msgstr ""
+
+#, php-format
+msgid "Direct set through document itself \"%s\""
+msgstr ""
+
+msgid "Directed graph"
+msgstr ""
+
+msgid "Directory already exists"
+msgstr ""
+
+msgid "Display available choices"
+msgstr ""
+
+msgid "Do choice"
+msgstr "Select"
+
+msgid "Do connection"
+msgstr "Connect"
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical "
+"name"
+msgstr ""
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : importation not "
+"support revision links without identifiers"
+msgstr ""
+
+#, php-format
+msgid "Doc Render %d/%d"
+msgstr ""
+
+msgid "DocProperties"
+msgstr "Properties"
+
+msgid "Docs admin"
+msgstr ""
+
+msgid "Document"
+msgstr ""
+
+#, php-format
+msgid "Document %s has been destroyed."
+msgstr ""
+
+#, php-format
+msgid "Document %s in %s state not found"
+msgstr ""
+
+#, php-format
+msgid "Document %s inserted"
+msgstr ""
+
+#, php-format
+msgid "Document %s is in edition by %s."
+msgstr ""
+
+#, php-format
+msgid "Document %s is not alive"
+msgstr ""
+
+#, php-format
+msgid "Document %s not found"
+msgstr ""
+
+#, php-format
+msgid "Document %s umounted"
+msgstr ""
+
+msgid "Document Profile"
+msgstr ""
+
+msgid "Document Properties"
+msgstr ""
+
+msgid "Document basket"
+msgstr ""
+
+#, php-format
+msgid ""
+"Document cannot be created.\n"
+"The upload size limit is %s bytes."
+msgstr ""
+
+msgid "Document context menu"
+msgstr ""
+
+msgid "Document creation"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Document creation"
+msgstr ""
+
+msgid "Document destroyed"
+msgstr ""
+
+#, php-format
+msgid "Document inserted in %s folder"
+msgstr ""
+
+msgid "Document relations"
+msgstr ""
+
+#, php-format
+msgid "Document unlinked of %s folder"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Document update"
+msgstr ""
+
+#, php-format
+msgid "Document with id '%s' is not a folder or search."
+msgstr ""
+
+#, php-format
+msgid "Document with id '%s' not found."
+msgstr ""
+
+msgid "Documents administration"
+msgstr ""
+
+msgid "Doing csv render"
+msgstr ""
+
+msgid "Doing render"
+msgstr ""
+
+msgid "Doing search request"
+msgstr ""
+
+msgid "Don't care preferences"
+msgstr ""
+
+msgid "Dot"
+msgstr ""
+
+#, php-format
+msgid "Doucment [%s] not found"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Download file"
+msgstr ""
+
+msgid "Download image"
+msgstr ""
+
+msgid "Draw graph"
+msgstr ""
+
+#, php-format
+msgid "Dump pgservice '%s' ..."
+msgstr ""
+
+#, php-format
+msgid "Dump to '%s' returned with exitcode %s"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Dynacase frontpage description"
+msgstr ""
+
+msgid "Dynacase pages favico"
+msgstr ""
+
+#, php-format
+msgid "Dynamic template %s not an odt file "
+msgstr ""
+
+#, php-format
+msgid "Dynamic template %s not found "
+msgstr ""
+
+msgid "EDIT Zones for FOOTER"
+msgstr ""
+
+#, php-format
+msgid "ERROR %s\n"
+msgstr ""
+
+msgid "ERROR :"
+msgstr ""
+
+msgid "EXPORT_CSV : identifiant unique"
+msgstr "id (unique identifier)"
+
+msgid "EXPORT_CSV CSV options :"
+msgstr "CSV options: "
+
+msgid "EXPORT_CSV Click to show options"
+msgstr "View CSV options"
+
+msgid "EXPORT_CSV Date format :"
+msgstr "Date Format :"
+
+msgid "EXPORT_CSV Date format FR"
+msgstr "Date format FR"
+
+msgid "EXPORT_CSV Date format ISO"
+msgstr "Date format ISO"
+
+msgid "EXPORT_CSV Date format US"
+msgstr "Date format US"
+
+msgid "EXPORT_CSV Decimal separator :"
+msgstr "Decimal separator: "
+
+msgid "EXPORT_CSV Definition of the export param :"
+msgstr "Definition of export parameters"
+
+msgid "EXPORT_CSV Delimiter :"
+msgstr "Field delimiter: "
+
+msgid "EXPORT_CSV Enclosure :"
+msgstr "Text delimiter: "
+
+msgid "EXPORT_CSV Encoding :"
+msgstr "Charset: "
+
+msgid "EXPORT_CSV Exporter"
+msgstr "Export"
+
+msgid "EXPORT_CSV ISO-8859-15 (european)"
+msgstr "ISO-8859-15 (european)"
+
+msgid "EXPORT_CSV Kind of export :"
+msgstr "Export type: "
+
+msgid "EXPORT_CSV Linebreak :"
+msgstr ""
+
+msgid "EXPORT_CSV Numeric render :"
+msgstr "Numeric Render"
+
+msgid "EXPORT_CSV Select export kind :"
+msgstr "Select export type"
+
+msgid "EXPORT_CSV Select pivot :"
+msgstr "Select pivot: "
+
+msgid "EXPORT_CSV Simple"
+msgstr "Simple"
+
+msgid "EXPORT_CSV formatted numbers "
+msgstr "Formatted number"
+
+msgid "EXPORT_CSV help"
+msgstr "Help"
+
+msgid "EXPORT_CSV pivot"
+msgstr "Pivot"
+
+msgid "EXPORT_CSV raw numbers"
+msgstr "Raw number"
+
+msgid "EXPORT_CSV utf8"
+msgstr "UTF-8"
+
+msgid "Edit"
+msgstr "Modify"
+
+msgid "Edit Enum Items"
+msgstr ""
+
+msgid "Edit attributes"
+msgstr ""
+
+msgid "Edit enum attributes"
+msgstr ""
+
+msgid "Edit help"
+msgstr ""
+
+msgid "Edit in new window"
+msgstr "Modify in new window"
+
+msgid "Edit state bar menu"
+msgstr ""
+
+msgid "Edit translations"
+msgstr ""
+
+msgid "EditEnumHelpMessage"
+msgstr ""
+"<p> An enumerated value is characterized by: </p>\n"
+"<ul>\n"
+"<li> its rank : it allows you to organize the values ​​</li>\n"
+"<li> its key : unique identifier of the value </li>\n"
+"<li> its label : the untranslated text used in the absence of translation </"
+"li>\n"
+"<li> its translations : in all languages ​​as configured for your application. "
+"</li>\n"
+"</ul>\n"
+"<p>\n"
+"Changes in the characteristics-the key is non-modifiable are by clicking on "
+"the feature. At the end of editing, press the [Enter] key or clicking "
+"outside the edit field, commits the change. </p>\n"
+"<p>\n"
+"The ranks of the values ​​are even numbers. If you want to edit a row, you "
+"simply enter an odd integer. The value will be moved directly between peers "
+"rank lower and upper. The modified rank is recalculated. </p>\n"
+"<p>\n"
+"Adding value is made using the form at the bottom of the page. </p>\n"
+"<p>\n"
+"All changes of values ​​are highlighted by a color change of the row. </p>\n"
+"<p>\n"
+"Changes remain local. Record on the server and use by applications is "
+"effective only upon record via the [Save] button. </p>"
+
+msgid "Editor value"
+msgstr ""
+
+#, php-format
+msgid ""
+"Element can't be perfectly analyze, some error might occur or be corrected "
+"when importing"
+msgstr ""
+
+msgid "Empty Post-It"
+msgstr ""
+
+#, php-format
+msgid "Emptying temporary database '%s' ..."
+msgstr ""
+
+msgid "Enclosure character"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "Enter your email"
+msgstr ""
+
+msgid "Enter your login"
+msgstr ""
+
+msgid "Enter your password"
+msgstr ""
+
+#, php-format
+msgid "Enum attributes for %s"
+msgstr ""
+
+msgid "EnumWidget:Add"
+msgstr "Add"
+
+msgid "EnumWidget:Cancel"
+msgstr "Cancel"
+
+msgid "EnumWidget:Cancel change"
+msgstr "Cancel change"
+
+msgid "EnumWidget:Key"
+msgstr "Key"
+
+msgid "EnumWidget:Label"
+msgstr "Label"
+
+msgid "EnumWidget:No translation"
+msgstr "No translation"
+
+msgid "EnumWidget:OFF"
+msgstr "OFF"
+
+msgid "EnumWidget:ON"
+msgstr "ON"
+
+msgid "EnumWidget:Rank"
+msgstr "Rank"
+
+msgid "EnumWidget:Reload"
+msgstr "Reload"
+
+msgid "EnumWidget:Reload data"
+msgstr "Reload data"
+
+msgid "EnumWidget:Remove"
+msgstr "Remove"
+
+msgid "EnumWidget:Save change"
+msgstr "Save change"
+
+msgid "EnumWidget:Translate"
+msgstr "Translate"
+
+msgid "EnumWidget:tooltip order"
+msgstr "Display rank for item"
+
+msgid "Error"
+msgstr ""
+
+#, php-format
+msgid "Error : %s"
+msgstr ""
+
+#, php-format
+msgid "Error : %s\n"
+msgstr ""
+
+#, php-format
+msgid "Error : Process %s [%d]: status %d"
+msgstr ""
+
+#, php-format
+msgid "Error : Process %s [%d]: status %d in %.03f seconds"
+msgstr ""
+
+#, php-format
+msgid "Error : User [%s] doesn't exists\n"
+msgstr ""
+
+#, php-format
+msgid "Error : User account [%s] is desactivated\n"
+msgstr ""
+
+#, php-format
+msgid "Error : need edit privilege to execute"
+msgstr ""
+
+#, php-format
+msgid "Error converting HTML from attribute '%s' from document '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Error could not open output log file '%s' for writing."
+msgstr ""
+
+#, php-format
+msgid "Error could not open sql log file '%s' for writing."
+msgstr ""
+
+#, php-format
+msgid "Error creating directory '%s': %s"
+msgstr ""
+
+msgid "Error creating new default folder."
+msgstr ""
+
+msgid "Error creating temp file for pg_dump output."
+msgstr ""
+
+msgid "Error creating temp file for sql log output."
+msgstr ""
+
+#, php-format
+msgid "Error creating temporary file in '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error deleting directory '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Error extracting archive '%s' in '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Error in portfolio : folder %s not exists"
+msgstr ""
+
+#, php-format
+msgid "Error opening %s file '%s'"
+msgstr ""
+
+#, php-format
+msgid "Error opening directory '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error reading from file '%s'"
+msgstr ""
+
+#, php-format
+msgid "Error renaming '%s' to '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing content to '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing content to file '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing to ouput file '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error: No column found in array '%s'"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: at least one of those parameters is mandatory --outputsql --"
+"outputpgservice"
+msgstr ""
+
+#, php-format
+msgid "Error: config file '%s' is not a file."
+msgstr ""
+
+msgid "Error: empty action->dbaccess"
+msgstr ""
+
+#, php-format
+msgid "Error: missing or empty --tmppgservice"
+msgstr ""
+
+#, php-format
+msgid "Error: missing or empty --tmpschemaname"
+msgstr ""
+
+#, php-format
+msgid "Error: parameter tmpemptydb '%s' is not allowed."
+msgstr ""
+
+msgid "Expiration delay must not be 0 to keep expiration date"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Export 1NF done"
+msgstr ""
+
+msgctxt "fuserexport"
+msgid "Export Aborted"
+msgstr ""
+
+msgid "Export Documents from"
+msgstr ""
+
+msgid "Export Done"
+msgstr ""
+
+msgid "Export Folder"
+msgstr ""
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export accounts (%d/%d)"
+msgstr ""
+
+msgid "Export archive file with data file - fdl.csv- and attached files"
+msgstr ""
+
+msgid ""
+"Export as administrator. Attributes with invisibility access are exported."
+msgstr ""
+
+msgid "Export done"
+msgstr ""
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export relative document (%d/%d)"
+msgstr ""
+
+msgid "Export:Warnings"
+msgstr "Export warnings :"
+
+msgid "FGSEARCH:Add search engine"
+msgstr "Add search engine"
+
+msgid "FGSEARCH:Add search engine to your browser"
+msgstr "Add search engine to your browser"
+
+msgid "FGSEARCH:Advanced search"
+msgstr "Advanced search"
+
+msgid "FGSEARCH:Basic search"
+msgstr "Basic search"
+
+msgid "FGSEARCH:Close"
+msgstr "Close"
+
+msgid "FGSEARCH:Open in new window"
+msgstr "Open in new window"
+
+msgid "FGSEARCH:ToSearch"
+msgstr "Search"
+
+msgid "FGSEARCH:any familly"
+msgstr "Any familly"
+
+msgid "FGSEARCH:close search online help"
+msgstr "Close search online help"
+
+msgid "FGSEARCH:help (intro)"
+msgstr ""
+"<h1>General search</h1>\n"
+"<p>\n"
+"    General search allows to search across all documets.\n"
+"    Search is done across document content and attached files.\n"
+"    To start a search, enter wanted words in the input, choose a family if "
+"needed, and launch it.<br/>\n"
+"    Search is launched by pressing [Enter] key or by clicking on the "
+"[Search] button.\n"
+"</p>"
+
+msgid "FGSEARCH:help characters search"
+msgstr ""
+"<h2>Search input</h2>\n"
+"\n"
+"<h3><em>Characters</em> search</h3>\n"
+"\n"
+"<p>\n"
+"    This input must be filled with keywords.\n"
+"</p>\n"
+"\n"
+"<p>\n"
+"    Search use following rules :\n"
+"</p>\n"
+"<ul>\n"
+"    <li>\n"
+"        Search is performed with accent characters.\n"
+"    </li>\n"
+"    <li>\n"
+"        When there are multiple keywords, search will look for documents\n"
+"        containing all of the keywords.\n"
+"    </li>\n"
+"</ul>\n"
+"<h2>Using <em>operators</em></h2>\n"
+"\n"
+"<p>\n"
+"    When a more precise search is required, one can use operators.\n"
+"</p>\n"
+"<ul>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">AND</em> and <em class=\"help-operator"
+"\">OR</em><br/>\n"
+"        These operators make keywords combination.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">horse AND turtle</em> will find\n"
+"                documents containing both <em class=\"help-keyword\">horse</"
+"em>\n"
+"                and <em class=\"help-keyword\">turtle</em> .\n"
+"            </li>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">horse OR turtle</em> will find\n"
+"                documents containing either <em class=\"help-keyword"
+"\">horse</em>\n"
+"                or <em class=\"help-keyword\">turtle</em> or both.\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+"\">)</em><br/>\n"
+"        Parenthesis express priorities between operators.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">(horse OR turtle) AND white</em>\n"
+"                will find documents containing\n"
+"                <ul>\n"
+"                    <li>\n"
+"                        either <em class=\"help-keyword\">horse</em> and\n"
+"                        <em class=\"help-keyword\">white</em> ;\n"
+"                    </li>\n"
+"                    <li>\n"
+"                        either <em class=\"help-keyword\">turtle</em> and\n"
+"                        <em class=\"help-keyword\">white</em> ;\n"
+"                    </li>\n"
+"                    <li>\n"
+"                        either <em class=\"help-keyword\">horse</em> and\n"
+"                        <em class=\"help-keyword\">turtle</em> and\n"
+"                        <em class=\"help-keyword\">white</em>.\n"
+"                    </li>\n"
+"                </ul>\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">\"</em><br/>\n"
+"        Quotes express <em>characters sequence</em>.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">\"white horse\"</em> will find\n"
+"                documents containing the characters sequence <em class="
+"\"help-keyword\">\n"
+"                white horse</em> (be careful, <em class=\"help-keyword"
+"\">horse</em> must be\n"
+"                immediately after <em class=\"help-keyword\">white</em>).\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">*</em><br/>\n"
+"        Star express partial <em>words</em>.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">cheva*</em> will find\n"
+"                documents containig words begining with\n"
+"                <em class=\"help-keyword\">cheva</em>, like\n"
+"                <em class=\"help-keyword\">chevalet</em>,\n"
+"                <em class=\"help-keyword\">chevron</em>,\n"
+"                <em class=\"help-keyword\">chevaliers</em>,\n"
+"                etc.\n"
+"            </li>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">*vage</em> will find\n"
+"                documents containig words ending with\n"
+"                <em class=\"help-keyword\">vage</em>, like\n"
+"                <em class=\"help-keyword\">sauvage</em>,\n"
+"                <em class=\"help-keyword\">lavage</em>,\n"
+"                <em class=\"help-keyword\">rivage</em>,\n"
+"                etc.\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"</ul>\n"
+"<p>\n"
+"    Of course, these operators can be combined to make a more precise "
+"search.\n"
+"</p>"
+
+msgid "FGSEARCH:help for advanced search"
+msgstr ""
+"<h2>Advanced search</h2>\n"
+"\n"
+"<p>\n"
+"    When search is more precise, and does not involve all documents content, "
+"but only several attributes,\n"
+"    one can use advanced search. It allows to enter conditions like <em "
+"class=\"help-keyword\">title contains cheval</em>, etc.\n"
+"</p>"
+
+msgid "FGSEARCH:help for family selection"
+msgstr ""
+"<h2>Family selection</h2>\n"
+"\n"
+"<p>\n"
+"    If search must only be done on a single family, choose it in the list.\n"
+"    results will then be restricted to documents from selected family.\n"
+"</p>"
+
+msgid "FGSEARCH:help words search"
+msgstr ""
+"<h2>Search input</h2>\n"
+"\n"
+"<h3><em>Words</em> search</h3>\n"
+"\n"
+"<p>\n"
+"    This input must be filled with keywords.\n"
+"</p>\n"
+"\n"
+"<p>\n"
+"    Search can correct input words. For example :\n"
+"</p>\n"
+"<ul>\n"
+"    <li>\n"
+"        Search is done by using singular and plural forms. So when the "
+"keyword is\n"
+"        <em class=\"help-keyword\">cheval</em>, documents containing <em "
+"class=\"help-keyword\">cheval</em>,\n"
+"        or <em class=\"help-keyword\">chevaux</em> will be found.\n"
+"    </li>\n"
+"    <li>\n"
+"        Stop words are ignored (<em class=\"help-keyword\">le</em>, <em "
+"class=\"help-keyword\">la</em>…).\n"
+"        So when keywords are <em class=\"help-keyword\">le cheval</em>,\n"
+"        only <em class=\"help-keyword\">cheval</em> (and its plurals) will "
+"be looked for.\n"
+"    </li>\n"
+"    <li>\n"
+"        When there are multiple keywords, search will look for documents\n"
+"        containing all of the keywords (and their plural forms).\n"
+"    </li>\n"
+"</ul>\n"
+"<h2>Using <em>operators</em></h2>\n"
+"\n"
+"<p>\n"
+"    When a more precise search is required, one can use operators.\n"
+"</p>\n"
+"<ul>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">AND</em> and <em class=\"help-operator"
+"\">OR</em><br/>\n"
+"        These operators make keywords combination.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">cheval AND chèvre</em> will find\n"
+"                documents containing both <em class=\"help-keyword\">cheval</"
+"em>\n"
+"                and <em class=\"help-keyword\">chèvre</em> (or their plural "
+"forms).\n"
+"            </li>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">cheval OR chèvre</em> will find\n"
+"                documents containing either <em class=\"help-keyword"
+"\">cheval</em>\n"
+"                or <em class=\"help-keyword\">chèvre</em> or both (or their "
+"plural forms).\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+"\">)</em><br/>\n"
+"        Parenthesis express priorities between operators.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">(cheval OR chèvre) AND blanc</"
+"em>\n"
+"                will find documents containing\n"
+"                <ul>\n"
+"                    <li>\n"
+"                        either <em class=\"help-keyword\">cheval</em> and\n"
+"                        <em class=\"help-keyword\">blanc</em> (or their "
+"plural forms) ;\n"
+"                    </li>\n"
+"                    <li>\n"
+"                        either <em class=\"help-keyword\">chèvre</em> and\n"
+"                        <em class=\"help-keyword\">blanc</em> (or their "
+"plural forms) ;\n"
+"                    </li>\n"
+"                    <li>\n"
+"                        either <em class=\"help-keyword\">cheval</em> and\n"
+"                        <em class=\"help-keyword\">chèvre</em> and\n"
+"                        <em class=\"help-keyword\">blanc</em>  (or their "
+"plural forms).\n"
+"                    </li>\n"
+"                </ul>\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">\"</em><br/>\n"
+"        Quotes express <em>exact search</em>.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">\"cheval\"</em> will find\n"
+"                documents containing the exact word\n"
+"                <em class=\"help-keyword\">cheval</em>, but won't find "
+"those\n"
+"                containing <em class=\"help-keyword\">chevaux</em> ;\n"
+"            </li>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">\"cheval blanc\"</em> will find\n"
+"                documents containing the exact words <em class=\"help-keyword"
+"\">cheval\n"
+"                blanc</em> (be careful, <em class=\"help-keyword\">blanc</"
+"em> must be\n"
+"                immediately after <em class=\"help-keyword\">cheval</em>).\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"    <li>\n"
+"        <em class=\"help-operator\">*</em><br/>\n"
+"        Star express partial <em>words</em>.\n"
+"        <ul>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">cheva*</em> will find\n"
+"                documents containig words begining with\n"
+"                <em class=\"help-keyword\">cheva</em>, like\n"
+"                <em class=\"help-keyword\">cheval</em>,\n"
+"                <em class=\"help-keyword\">chevalier</em>,\n"
+"                <em class=\"help-keyword\">chevaux</em>,\n"
+"                etc.\n"
+"            </li>\n"
+"            <li>\n"
+"                <em class=\"help-keyword\">*vage</em> will find\n"
+"                documents containig words ending with\n"
+"                <em class=\"help-keyword\">vage</em>, like\n"
+"                <em class=\"help-keyword\">élevage</em>,\n"
+"                <em class=\"help-keyword\">gavage</em>,\n"
+"                <em class=\"help-keyword\">pavage</em>,\n"
+"                etc.\n"
+"            </li>\n"
+"        </ul>\n"
+"    </li>\n"
+"</ul>\n"
+"<p>\n"
+"    Of course, these operators can be combined to make a more precise "
+"search.\n"
+"</p>"
+
+msgid "FGSEARCH:search online help"
+msgstr "Search's online help"
+
+msgid "FGSEARCH:switch search mode (basic/advanced)"
+msgstr "Switch search mode (basic/advanced)"
+
+#, php-format
+msgid "Failed to copy %s to %s"
+msgstr ""
+
+#, php-format
+msgid "Failed to copy %s to vault"
+msgstr ""
+
+#, php-format
+msgid "Failed to create directory \"%s\" in vault"
+msgstr ""
+
+msgid "Familly Document"
+msgstr ""
+
+msgid "Family"
+msgstr ""
+
+#, php-format
+msgctxt "fusersimport"
+msgid "Family %s"
+msgstr ""
+
+#, php-format
+msgid "Family %s not exist"
+msgstr ""
+
+#, php-format
+msgid "Family '%s' does not implements IMailRecipient interface."
+msgstr ""
+
+#, php-format
+msgid "Family '%s' is not valid or alive."
+msgstr ""
+
+#, php-format
+msgid "Family (#%s) not exists"
+msgstr ""
+
+msgid "Family Creation"
+msgstr ""
+
+#, php-format
+msgid "Family [%s] not found"
+msgstr ""
+
+msgid "Family preferences"
+msgstr ""
+
+msgid "February"
+msgstr ""
+
+#, php-format
+msgid "File %s is valid, and was successfully uploaded."
+msgstr ""
+
+msgid "File System already exists"
+msgstr ""
+
+#, php-format
+msgid "File not found at index '%s'"
+msgstr ""
+
+msgid "File:: Processing"
+msgstr ""
+
+msgid "File:: Waiting"
+msgstr ""
+
+msgid "File:: converted"
+msgstr ""
+
+msgid "File:: failed"
+msgstr ""
+
+#, php-format
+msgid "Filename '%s' cannot be transmitted (%d)."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted completly.\n"
+"May be saturation of server disk."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"A PHP extension stopped the file upload."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"Failed to write file to disk."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"Missing a temporary folder."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"No file was uploaded."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"The Size Limit is %s bytes."
+msgstr ""
+
+#, php-format
+msgid ""
+"Filename '%s' cannot be transmitted.\n"
+"The Size Limit was specified in the HTML form."
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Fill Tables ..."
+msgstr ""
+
+#, php-format
+msgid "Filling enum table '%s'"
+msgstr ""
+
+#, php-format
+msgid "Filling family table '%s' and relatives"
+msgstr ""
+
+msgid "Filter import message"
+msgstr ""
+
+#, php-format
+msgid "Filter on %s"
+msgstr ""
+
+msgid "First page"
+msgstr ""
+
+msgid "Firstname"
+msgstr ""
+
+msgid "Fit to screen"
+msgstr ""
+
+#, php-format
+msgid "Fix multiple alive document #%s"
+msgstr ""
+
+#, php-format
+msgid "Fix multiple alive document for \"%s\" #%s"
+msgstr ""
+
+#, php-format
+msgid "Fix multiple alive revision for \"%s\""
+msgstr ""
+
+msgid "Folder"
+msgstr ""
+
+msgid "Folder cleared"
+msgstr ""
+
+#, php-format
+msgid "For %s of %s"
+msgstr ""
+
+msgid "For Account"
+msgstr ""
+
+msgid ""
+"For each imported document, if a document with same title is found, then"
+msgstr ""
+
+msgid "For export functions"
+msgstr ""
+
+msgctxt "authent"
+msgid "Forget password"
+msgstr ""
+
+msgid "Format export"
+msgstr ""
+
+msgid "Formated data"
+msgstr ""
+
+msgid "Formated value"
+msgstr ""
+
+#, php-format
+msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
+msgstr ""
+
+msgid "Freedom accessibilities"
+msgstr "Dynacase rights management"
+
+msgid "Freedom deletion"
+msgstr "Deletion of documents"
+
+msgid "Freedom group accessibilities"
+msgstr "Dynacase group rights"
+
+msgid "Freedom modification"
+msgstr "Modify document"
+
+msgid "Freedom modify accessibilities"
+msgstr "Modify rights"
+
+msgid "Freedoms RSS syndication"
+msgstr "Dynacase RSS"
+
+msgid "Freedoms card"
+msgstr "View as card"
+
+msgid "Freedoms detail list"
+msgstr "Detailed list"
+
+msgid "Freedoms icon list"
+msgstr "Icon list"
+
+msgid "Freedoms lib"
+msgstr "Dynacase library"
+
+msgid "Freedoms library"
+msgstr "Dynacase library"
+
+msgid "Freedoms list"
+msgstr "List"
+
+msgid "Freedoms list by column"
+msgstr ""
+
+msgid "Freedoms view folder"
+msgstr "View as folder"
+
+msgid "French"
+msgstr ""
+
+msgid "Friday"
+msgstr ""
+
+#, php-format
+msgid "From %s state to"
+msgstr ""
+
+msgid "Full search"
+msgstr ""
+
+msgid "General search"
+msgstr ""
+
+msgid "Generic"
+msgstr ""
+
+msgid "Get XML schema to compose XML document import file"
+msgstr ""
+
+msgid "Get Xml schema"
+msgstr ""
+
+msgid "Go to Archives"
+msgstr ""
+
+#, php-format
+msgid "Group \"%s\""
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Group reference already added"
+msgstr ""
+
+msgid "Handle my searches"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Help description"
+msgstr ""
+
+msgid "Help name"
+msgstr ""
+
+msgid "Help search"
+msgstr ""
+
+msgid "Help to the connection"
+msgstr ""
+
+msgid "Helps"
+msgstr ""
+
+msgid "Hide group access"
+msgstr ""
+
+msgid "Histo:Comment"
+msgstr "Comment"
+
+msgid "Histo:Date"
+msgstr "Date"
+
+msgid "Histo:User"
+msgstr "User"
+
+msgid "History"
+msgstr ""
+
+msgid "History for"
+msgstr ""
+
+msgid "Icons view"
+msgstr ""
+
+msgid "Identificators"
+msgstr ""
+
+msgid ""
+"If an attribut is a multiline string, use the \\ n characters to specify the "
+"new line"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+#, php-format
+msgid ""
+"Import %s is in progress. When update will be finished an email to &lt;"
+"%s&gt; will be sended with result rapport"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Import Aborted"
+msgstr ""
+
+msgid "Import Archive"
+msgstr ""
+
+msgid "Import CSV"
+msgstr ""
+
+msgid "Import Direct"
+msgstr ""
+
+msgid "Import Documents"
+msgstr ""
+
+msgid "Import Result"
+msgstr ""
+
+msgid "Import Tar"
+msgstr ""
+
+msgid "Import Warning are occured"
+msgstr ""
+
+msgid "Import after analyze done"
+msgstr ""
+
+msgid "Import description file"
+msgstr ""
+
+msgid "Import document description now"
+msgstr ""
+
+msgid "Import documents"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Import end"
+msgstr ""
+
+msgid "Import error occured, check the details for more information"
+msgstr ""
+
+msgid "Import file (CSV, ODS, XML, ZIP, TGZ)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import group (%d/%d)"
+msgstr ""
+
+msgid "Import in progress"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import role (%d/%d)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import user (%d/%d)"
+msgstr ""
+
+msgid "Importation data"
+msgstr ""
+
+msgid "Impossible to have several identical names"
+msgstr ""
+
+msgid "Impossible to name a view like a control acl"
+msgstr ""
+
+#, php-format
+msgid "Incoherent column type '%s' in array '%s'."
+msgstr ""
+
+#, php-format
+msgid "Incorrect filter %s"
+msgstr ""
+
+#, php-format
+msgid "Incorrect specification of special menu : %s"
+msgstr ""
+
+msgid "Inherit value"
+msgstr ""
+
+msgid "Initialize acls"
+msgstr ""
+
+#, php-format
+msgid ""
+"Input variables exceeded %s. To increase the limit change max_input_vars in "
+"php.ini."
+msgstr ""
+"Input variables exceeded %s. Please contact your system administrator to "
+"increase max_input_vars in php.ini."
+
+#, php-format
+msgid "Insert all into %s archive"
+msgstr ""
+
+msgid "Insert documents"
+msgstr ""
+
+#, php-format
+msgid "Insert in %s"
+msgstr ""
+
+#, php-format
+msgid "Insert the content in %s"
+msgstr ""
+
+msgid "Inserted in a domain"
+msgstr ""
+
+#, php-format
+msgid "Invalid condition for attribute '%s' with value '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Invalid directory '%s'."
+msgstr ""
+
+msgid "Invert all columns"
+msgstr ""
+
+msgid "It cannot be empty"
+msgstr ""
+
+msgid "It is not the latest document"
+msgstr ""
+
+#, php-format
+msgid "It must contains at least %d characters (total length)"
+msgstr ""
+
+msgid "Item cannot be empty"
+msgstr ""
+
+msgid "January"
+msgstr ""
+
+msgid "July"
+msgstr ""
+
+msgid "June"
+msgstr ""
+
+msgid "Just activities"
+msgstr ""
+
+msgid "Just states"
+msgstr ""
+
+msgid "Keep original document"
+msgstr ""
+
+msgid "Key already exists, must be unique"
+msgstr ""
+
+#, php-format
+msgid "LDAP Attribute added to %s %s"
+msgstr ""
+
+#, php-format
+msgid "LDAP Attribute modified to %s %s"
+msgstr ""
+
+msgid "LDAP activated"
+msgstr ""
+
+msgid "LDAP admin identificatot"
+msgstr ""
+
+msgid "LDAP admin passord"
+msgstr ""
+
+msgid "LDAP server name"
+msgstr ""
+
+msgid "LDAP server port"
+msgstr ""
+
+msgid "LDAP server root"
+msgstr ""
+
+#, php-format
+msgid "LEX_GENERAL_FILTER:Unable to parse %s"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Label must not be empty"
+msgstr ""
+
+msgid "Label of submit button"
+msgstr ""
+
+msgid "Large undirected graphs"
+msgstr ""
+
+msgid "Last History"
+msgstr ""
+
+msgid "Last log"
+msgstr ""
+
+msgid "Last page"
+msgstr ""
+
+#, php-format
+msgid "Last traces of %s document : %s"
+msgstr ""
+
+msgid "Lastname"
+msgstr ""
+
+msgid "Lauch Import"
+msgstr ""
+
+#, php-format
+msgid "Layout \"%s\" : Controller not allowed"
+msgstr ""
+
+msgid "Left Right"
+msgstr ""
+
+msgid "Legend"
+msgstr ""
+
+msgid "Legend:Acl set"
+msgstr "Acl set"
+
+msgid "Legend:Acl's type"
+msgstr "Acl's type"
+
+msgid "Legend:Actors"
+msgstr "Actors"
+
+msgid "Legend:Dynamic"
+msgstr "Account attribute"
+
+msgid "Legend:Dynamic multiple"
+msgstr "Account multpile attribute"
+
+msgid "Legend:Groups"
+msgstr "Groups"
+
+msgid "Legend:Legacy"
+msgstr "Acl inherited"
+
+msgid "Legend:Roles"
+msgstr "Roles"
+
+msgid "Legend:Users"
+msgstr "Users"
+
+msgid "Limit of text size (in Ko) for highlight text"
+msgstr ""
+
+msgid "Linked from profil"
+msgstr ""
+
+msgid "List view"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Load XML file"
+msgstr ""
+
+#, php-format
+msgid "Load dump file into '%s' ..."
+msgstr ""
+
+msgid "Loading enum data ..."
+msgstr ""
+
+msgid "Loading menu"
+msgstr "Loading menu"
+
+#, php-format
+msgid "Loading of dump '%s' returned with exitcode %s"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Lock"
+msgstr ""
+
+msgid "Log:Code"
+msgstr ""
+
+msgid "Log:Comment"
+msgstr ""
+
+msgid "Log:Date"
+msgstr ""
+
+msgid "Log:User"
+msgstr ""
+
+#, php-format
+msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
+msgstr ""
+
+#, php-format
+msgid "Logical name %s already use in document %s"
+msgstr ""
+
+msgid "Logical name must not be empty."
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "MB_Cc"
+msgstr ""
+
+msgid "MB_To"
+msgstr ""
+
+#, php-format
+msgid "Mail %s sent to %s"
+msgstr ""
+
+msgid "Mail action URL"
+msgstr "Mail action URL"
+
+msgid "Mail address"
+msgstr ""
+
+msgid "Mail template document reference to ask new password"
+msgstr ""
+
+msgid "Make references ..."
+msgstr ""
+
+#, php-format
+msgid "Malformed HTML in attribute '%s' from document '%s': %s"
+msgstr ""
+
+msgid "Malformed HTML:"
+msgstr ""
+
+msgid "Manage families"
+msgstr ""
+
+msgid "March"
+msgstr ""
+
+msgid "Mask title"
+msgstr ""
+
+#, php-format
+msgid "Max display limit %s reached. Use export to see all"
+msgstr ""
+
+msgid "Maximum number of revision"
+msgstr ""
+
+msgid "May"
+msgstr ""
+
+msgid "Message to indicate invalid configuration"
+msgstr ""
+
+#, php-format
+msgid "Method %s cannot be call by client. Must be exposable method"
+msgstr ""
+
+#, php-format
+msgid "Method [%s] not exists"
+msgstr ""
+
+msgid "Minimum character length needed for user password"
+msgstr ""
+
+msgid "Minimum digit number needed for user password"
+msgstr ""
+
+msgid "Minimum lowercase alpha needed for user password"
+msgstr ""
+
+msgid "Minimum symbol (no alpha, no digit) needed for user password"
+msgstr ""
+
+msgid "Minimum uppercase alpha needed for user password"
+msgstr ""
+
+#, php-format
+msgid "Missing 'phpfile' in 'autocompletion.%s'."
+msgstr ""
+
+#, php-format
+msgid "Missing 'phpfunc' in 'autocompletion.%s'."
+msgstr ""
+
+#, php-format
+msgid "Missing or empty 'acid'."
+msgstr ""
+
+#, php-format
+msgid "Missing value for 'autocompletion.%s'."
+msgstr ""
+
+msgid "Modification date"
+msgstr ""
+
+msgid "Modify"
+msgstr ""
+
+msgid "Modify acls"
+msgstr ""
+
+msgid "Modify acls for documents"
+msgstr ""
+
+msgid "Modify acls for familly"
+msgstr ""
+
+msgid "Modify default Values"
+msgstr ""
+
+msgid "Modify default value"
+msgstr ""
+
+msgid "Modify default values"
+msgstr ""
+
+msgid "Modify enum items"
+msgstr ""
+
+msgid "Modify one default value"
+msgstr ""
+
+msgid "Modify parameters Values"
+msgstr ""
+
+msgid "Modify table"
+msgstr ""
+
+msgid "Monday"
+msgstr ""
+
+msgid "More options"
+msgstr ""
+
+#, php-format
+msgid "Move file from %s to %s"
+msgstr ""
+
+msgid "Move reference"
+msgstr ""
+
+#. _COMMENT Search Label
+msgid "My system user id"
+msgstr ""
+
+#. _COMMENT Search Label
+msgid "My user account id"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "NOT Clear"
+msgstr ""
+
+msgid "Name of table cannot be empty"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "New password"
+msgstr ""
+
+msgid "New report"
+msgstr ""
+
+msgid "New search"
+msgstr ""
+
+msgid "New section"
+msgstr ""
+
+msgid "New state"
+msgstr ""
+
+msgid "New value which be set to server"
+msgstr ""
+
+msgid "New visibility / mandatory"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+#, php-format
+msgid "No Icon specified"
+msgstr ""
+
+msgid "No acl for family"
+msgstr ""
+
+msgid "No acl for new documents of this family"
+msgstr ""
+
+msgid "No columns has been defined"
+msgstr "No column had been selected for report presentation."
+
+msgid "No default value"
+msgstr ""
+
+msgid "No description import file"
+msgstr ""
+
+msgid "No direct import : limit is reached"
+msgstr ""
+
+#, php-format
+msgid "No document found for <strong>%s</strong>%s"
+msgstr ""
+
+msgid "No editable enums"
+msgstr ""
+
+msgid "No identificator"
+msgstr ""
+
+#, php-format
+msgid "No identifier found for relation '%s' %s in %s file"
+msgstr ""
+
+msgid "No one default values"
+msgstr ""
+
+msgid "No one parameters"
+msgstr ""
+
+msgid "No privilege to change acls"
+msgstr ""
+
+msgid "No privilege to set private profil"
+msgstr ""
+
+msgid "No result"
+msgstr ""
+
+msgid "No results"
+msgstr ""
+
+msgid "No strip Html tags"
+msgstr ""
+
+msgid "No workflow"
+msgstr ""
+
+msgid "Normal view"
+msgstr ""
+
+#, php-format
+msgid "Not a family [%s]"
+msgstr ""
+
+#, php-format
+msgid ""
+"Not all users can be vieved.\n"
+"limit %d has been reached"
+msgstr ""
+
+msgid "Not enough access to define privileges"
+msgstr ""
+
+msgid "Not enough characters."
+msgstr ""
+
+msgid "Not enough digits."
+msgstr ""
+
+msgid "Not enough lowercase characters."
+msgstr ""
+
+msgid "Not enough special characters."
+msgstr ""
+
+msgid "Not enough uppercase characters."
+msgstr ""
+
+msgid "Not supported file format"
+msgstr ""
+
+msgid "November"
+msgstr ""
+
+msgid "OP_AND"
+msgstr "and"
+
+msgid "OP_GLOB"
+msgstr "global"
+
+msgid "OP_OR"
+msgstr "or"
+
+msgid "October"
+msgstr ""
+
+msgid "Offline menu"
+msgstr ""
+
+#, php-format
+msgid "One document for <strong>%s</strong>%s"
+msgstr ""
+
+msgid "Online help"
+msgstr ""
+
+#, php-format
+msgid "Only %s %s can view and edit"
+msgstr ""
+
+msgid "Only one line by document is authorized"
+msgstr ""
+
+msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
+msgstr ""
+
+msgid "Open in folio"
+msgstr ""
+
+msgid "Opt"
+msgstr ""
+
+msgid "Options for csv import"
+msgstr ""
+
+msgid "Options import"
+msgstr ""
+
+msgid "Or upload a new icon"
+msgstr ""
+
+msgid "Order must be an odd number"
+msgstr ""
+
+msgid "Original visibility / mandatory"
+msgstr ""
+
+msgid "Other Archive"
+msgstr ""
+
+msgid "Other..."
+msgstr ""
+
+msgid "Others"
+msgstr ""
+
+#, php-format
+msgid "Output file '%s' already exists."
+msgstr ""
+
+#, php-format
+msgid "Output file '%s' is already opened."
+msgstr ""
+
+msgid "Own Default Value"
+msgstr ""
+
+msgid "Own Parameter Value"
+msgstr ""
+
+#, php-format
+msgid "PDF conversion failed for %s"
+msgstr ""
+
+#, php-format
+msgid "PDF conversion not found"
+msgstr ""
+
+#, php-format
+msgid "PG Error: Connection to freedom pg service '%s' failed !"
+msgstr "PG Error: Connection to pg service '%s' failed!"
+
+#, php-format
+msgid "PG Error: Connection to temporary pg service '%s' failed !"
+msgstr ""
+
+msgid "POST_IT:Blue"
+msgstr "Blue"
+
+msgid "POST_IT:Green"
+msgstr "Green"
+
+msgid "POST_IT:Orange"
+msgstr "Orange"
+
+msgid "POST_IT:Purple"
+msgstr "Purple"
+
+msgid "POST_IT:Red"
+msgstr "Red"
+
+msgid "POST_IT:Yellow"
+msgstr "Yellow"
+
+msgid "Page"
+msgstr ""
+
+msgid "Parameter"
+msgstr ""
+
+#, php-format
+msgid "Parameter [%s] is not global, an apllication muste be given"
+msgstr ""
+
+#, php-format
+msgid "Parameter [%s] not found"
+msgstr ""
+
+#, php-format
+msgid "Parameter [%s] not found in family [%s]"
+msgstr ""
+
+#, php-format
+msgid "Parameter [%s] not found. Error message: [%s]"
+msgstr ""
+
+msgid "Parameter identifier"
+msgstr ""
+
+msgid "Parameter label"
+msgstr ""
+
+msgid "Parameter name does not include spaces"
+msgstr ""
+
+msgid "Parameter's id"
+msgstr ""
+
+msgid "Parameters"
+msgstr ""
+
+msgid "Parameters for"
+msgstr ""
+
+msgid "Parameters values"
+msgstr ""
+
+msgid "Parametre cycle"
+msgstr ""
+
+msgid "Password has been cnanged"
+msgstr ""
+
+msgid "Past Revisions"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+#, php-format
+msgid "Personal profile for %s %s"
+msgstr ""
+
+#, php-format
+msgid "Pivot rendering %d/%d"
+msgstr ""
+
+msgid "Policy if same title"
+msgstr ""
+
+msgid "PortFolio"
+msgstr ""
+
+msgid "PortFolio search"
+msgstr ""
+
+msgid "Possible file upload attack!  Here's some debugging info:\n"
+msgstr ""
+
+#, php-format
+msgid "Possible file upload attack: filename '%s'."
+msgstr ""
+
+msgid "Prefer choose Latin if you are under microsoft else use UTF-8"
+msgstr ""
+
+msgid "Preferences"
+msgstr ""
+
+msgid "Preferences for"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Print"
+msgstr ""
+
+msgctxt "authentOpen"
+msgid "Private key identifier is not valid"
+msgstr ""
+
+msgid "Privilege input"
+msgstr ""
+
+msgid "Privilege view"
+msgstr ""
+
+#, php-format
+msgid "Process %s [%d] executed"
+msgstr ""
+
+#, php-format
+msgid "Process %s [%d] executed in %.03f seconds"
+msgstr ""
+
+msgid "Processes plan"
+msgstr ""
+
+msgid "Processes to exec"
+msgstr ""
+
+#, php-format
+msgid "Profil for document's archive %s"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Profile of"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Properties:"
+msgstr ""
+
+#, php-format
+msgid "Property '%s' is not valid (family '%s')."
+msgstr ""
+
+msgid "PubliPreview"
+msgstr ""
+
+#, php-format
+msgid "Purge archive"
+msgstr ""
+
+msgid "REPORT_pivot"
+msgstr ""
+
+msgid "RSS link"
+msgstr ""
+
+msgid "Radial layouts graphs"
+msgstr ""
+
+msgid "Raw archive"
+msgstr ""
+
+msgid "Raw data only"
+msgstr ""
+
+msgid ""
+"Raw data set database value. Formated data : data are exported like can see "
+"it in navigator."
+msgstr ""
+
+msgid "Raw value"
+msgstr ""
+
+msgid "Re-export report"
+msgstr ""
+
+msgid "Reaffect"
+msgstr ""
+
+msgid "Reason for change state"
+msgstr ""
+
+msgid "Recomputing profiled documents"
+msgstr ""
+
+#, php-format
+msgid "Record documents %d/%d"
+msgstr ""
+
+msgid "Record new value to server"
+msgstr ""
+
+msgid "Redo export"
+msgstr ""
+
+msgid "Ref"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Referenced from"
+msgstr ""
+
+msgid "Refresh folder"
+msgstr ""
+
+msgid "Relation cycle"
+msgstr ""
+
+msgid "Relation document"
+msgstr ""
+
+msgid "Relation parametre"
+msgstr ""
+
+msgid "Reload page"
+msgstr ""
+
+#, php-format
+msgid "Remove duplicate attribute '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid "Remove duplicate property '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid "Remove duplicate reference '%s' in family '%s'"
+msgstr ""
+
+msgid "Rename"
+msgstr ""
+
+#, php-format
+msgid "Rename file as %s"
+msgstr ""
+
+#, php-format
+msgid "Reopen archive"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Reset all direct associated roles"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Reset all group attachment"
+msgstr ""
+
+#, php-format
+msgid "Reset attribute structure"
+msgstr ""
+
+#, php-format
+msgid "Reset defaults values"
+msgstr ""
+
+#, php-format
+msgid "Reset enums definition"
+msgstr ""
+
+#, php-format
+msgid "Reset parameters values"
+msgstr ""
+
+msgid "Restore original file"
+msgstr ""
+
+msgid "Restricted Access"
+msgstr ""
+
+msgid "Result Analyze Documents"
+msgstr ""
+
+msgid "Result Import Documents"
+msgstr ""
+
+msgid "Result Import TAR Documents"
+msgstr ""
+
+msgid "Result value"
+msgstr ""
+
+msgctxt "fuserexport"
+msgid "Retrieve Account data"
+msgstr ""
+
+msgid "Retrieve documents from database"
+msgstr ""
+
+msgid "Return to reference document"
+msgstr ""
+
+msgid "Rev"
+msgstr ""
+
+msgid "Revise"
+msgstr ""
+
+#, php-format
+msgid "Role \"%s\""
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Role reference already added"
+msgstr ""
+
+msgid "Root folder"
+msgstr ""
+
+msgid "SMTP default from if not"
+msgstr ""
+
+msgid "SMTP host"
+msgstr ""
+
+msgid "SMTP login"
+msgstr ""
+
+msgid "SMTP sender"
+msgstr ""
+
+msgid "SMTP password"
+msgstr ""
+
+msgid "SMTP port"
+msgstr ""
+
+msgctxt "authent"
+msgid "SMTP server not configured"
+msgstr ""
+
+msgid "SVG"
+msgstr ""
+
+msgid "Saturday"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save and quit edit mode"
+msgstr ""
+
+msgid "Save and stay in edition"
+msgstr ""
+
+msgid "Save changes ?"
+msgstr ""
+
+msgid "Save default values"
+msgstr ""
+
+msgid "Save in progress"
+msgstr ""
+
+msgid "Save parameters"
+msgstr ""
+
+msgid "Save preferences"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#, php-format
+msgid "Search : %s"
+msgstr ""
+
+msgctxt "generic"
+msgid "Search characters"
+msgstr ""
+
+msgid "Search criteria"
+msgstr ""
+
+msgid "Search document"
+msgstr ""
+
+msgid "Search in current revision"
+msgstr ""
+
+msgid "Search in past revision"
+msgstr ""
+
+msgid "Search linked documents"
+msgstr ""
+
+msgid "Search to insert"
+msgstr ""
+
+msgctxt "generic"
+msgid "Search words"
+msgstr ""
+
+msgid "Section free key"
+msgstr ""
+
+msgid "Section key"
+msgstr ""
+
+msgid "Section name"
+msgstr ""
+
+msgid "Section text"
+msgstr ""
+
+msgid "Sections"
+msgstr ""
+
+msgid "Security"
+msgstr ""
+
+msgid "See below information about conversion"
+msgstr ""
+
+msgid "See detail for "
+msgstr ""
+
+msgid "See latest information about it."
+msgstr ""
+
+msgid "See members detail"
+msgstr ""
+
+msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
+msgstr ""
+
+msgid "Select a family"
+msgstr ""
+
+msgid "Select all columns"
+msgstr ""
+
+msgid "Select group appartenance"
+msgstr ""
+
+msgid ""
+"Select identifier to set the second column -specid- this file can only "
+"reimport in the same database"
+msgstr ""
+
+msgid "Select search"
+msgstr ""
+
+msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
+msgstr ""
+
+msgid "Send Analyze"
+msgstr ""
+
+msgid "Send document searches"
+msgstr ""
+
+msgid "Send mail"
+msgstr ""
+
+#, php-format
+msgid "Send mail error : Attribute %s not found"
+msgstr ""
+
+#, php-format
+msgid "Send mail error : Attribute %s not found."
+msgstr ""
+
+#, php-format
+msgid "Send mail error : Parameter %s doesn't exists"
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Incorrect relation "
+"key: %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Relation key %s "
+"does'nt link to a document"
+msgstr ""
+
+#, php-format
+msgid "Send mail error: recipient document '%s' does not exists."
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error: recipient document '%s' does not implements IMailRecipient "
+"interface."
+msgstr ""
+
+#, php-format
+msgid "Send mail info : can't send mail %s: no sendee found"
+msgstr ""
+
+msgid "Send mail with template"
+msgstr ""
+
+msgid "Send report to"
+msgstr ""
+
+msgid "Send search"
+msgstr ""
+
+msgid "Send the email and change document state to"
+msgstr ""
+
+msgid "Sending input on change?"
+msgstr ""
+
+msgid "Separator character"
+msgstr ""
+
+msgid "September"
+msgstr ""
+
+msgid "Session authentication log facility"
+msgstr "Session authentication log facility"
+
+#, php-format
+msgid "Set atags \"%s\""
+msgstr ""
+
+msgid "Set autonome profil"
+msgstr ""
+
+#, php-format
+msgid "Set by \"%s\" attribute (%s) from template profil \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Set by %s from template profil \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Set by %s through \"%s\" linked profil"
+msgstr ""
+
+#, php-format
+msgid "Set by %s through document itself \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Set by %s through template profil \"%s\""
+msgstr ""
+
+msgid "Set default values"
+msgstr ""
+
+#, php-format
+msgid "Set from template profil \"%s\""
+msgstr ""
+
+msgid "Set new entry"
+msgstr ""
+
+msgid "Set private"
+msgstr ""
+
+msgid "Set public"
+msgstr ""
+
+#, php-format
+msgid "Set through \"%s\" linked profil"
+msgstr ""
+
+#, php-format
+msgid "SetBlock:error [%s]"
+msgstr ""
+
+msgid "Show a notification when a mail is sent"
+msgstr ""
+
+msgid "Showing %br to %er of %nd documents%t%t%p%n"
+msgstr ""
+
+#, php-format
+msgid "Showing %d document"
+msgstr ""
+
+#, php-format
+msgid "Showing %d documents"
+msgstr ""
+
+#, php-format
+msgid "Showing %d of %d documents"
+msgstr ""
+
+#, php-format
+msgid "Skip already added property '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid ""
+"Some change in the enum '%s > %e' are not saved do you really wish to quit?"
+msgstr ""
+
+msgid "Some changes are not saved, do you really wish to reload?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Some characters are not authorized for file name %s. They are replaced by -"
+msgstr ""
+
+msgid ""
+"Some constraint attribute are not respected.\n"
+"You must correct these values before save document."
+msgstr ""
+
+msgid ""
+"Some element couldn't be fully analyze, warnings can become errors or be "
+"corrected when importing"
+msgstr ""
+
+#, php-format
+msgid "Something wrong. No acl found in %s (user #%d)"
+msgstr ""
+
+msgid "Sorry but this section key already exists !"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Special edit"
+msgstr ""
+
+msgid "Special view"
+msgstr ""
+
+msgid "Specific import in csv format"
+msgstr ""
+
+msgid "State"
+msgstr ""
+
+msgid "StateConfirm"
+msgstr "Confirm"
+
+#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
+#. _COMMENT Sharp Label
+msgid "States"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Status for sending mail"
+msgstr ""
+
+#, php-format
+msgid "Steps"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Stopped on first error"
+msgstr ""
+
+msgid "Strip HTML tags :"
+msgstr ""
+
+msgid "Strip Html tags"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Suggestion"
+msgstr ""
+
+msgid "Sunday"
+msgstr ""
+
+msgid "Supported format"
+msgstr ""
+
+#, php-format
+msgid "Suppress %d document(s)"
+msgstr ""
+
+#, php-format
+msgid "Sure %s ?"
+msgstr ""
+
+#, php-format
+msgid "Sure delete %s ?"
+msgstr ""
+
+#, php-format
+msgid "Sure duplicate %s ?"
+msgstr ""
+
+msgid "Sure duplicate ?"
+msgstr ""
+
+msgid "Switch Expert Mode"
+msgstr ""
+
+msgid "Switch Normal Mode"
+msgstr ""
+
+#, php-format
+msgid "Syntax error in file '%s': %s"
+msgstr ""
+
+msgid "System document"
+msgstr ""
+
+msgid "TE engine activate but TE-CLIENT not found"
+msgstr ""
+
+msgid "TE engine is not activate"
+msgstr ""
+
+msgid "TE not activated"
+msgstr ""
+
+#, php-format
+msgid "Table '%s' unknown !"
+msgstr ""
+
+#, php-format
+msgid "Template [%s] not found"
+msgstr ""
+
+msgid ""
+"The apache configuration seems incorrect. I cannot read .htaccess file. May "
+"be parameter allowOverride is not set to All"
+msgstr ""
+
+#, php-format
+msgid "The current activity is \"%s\"."
+msgstr ""
+
+#, php-format
+msgid "The current state is \"%s\"."
+msgstr ""
+
+#, php-format
+msgid "The document <%s> is not a folder"
+msgstr ""
+
+msgid "The document can become inconsistent and can not be used properly"
+msgstr ""
+
+#, php-format
+msgid "The document will be stored with \"%s\" state."
+msgstr ""
+
+#, php-format
+msgid "The file %s cannot be extracted: %s"
+msgstr ""
+
+#, php-format
+msgid "The file %s has been correctly extracted"
+msgstr ""
+
+msgid ""
+"The first four fields must not be change, they identified the card structure"
+msgstr ""
+
+#, php-format
+msgid "The latest document %s waiting for a answer"
+msgstr ""
+
+#, php-format
+msgid "The next activity will be \"%s\"."
+msgstr ""
+
+#, php-format
+msgid "The next state will be \"%s\"."
+msgstr ""
+
+msgid "The separator field is the semicolon(;)"
+msgstr ""
+
+msgid ""
+"The submitted file does not comes from the latest version of the document "
+"and might have been modified by other users. If you continue, theses changes "
+"will be lost.- Select 'Ok' to continue and replace the file with your "
+"version.- Select 'Cancel' to go back to the document without changing the "
+"file (you'll be able to download the latest version of the file and "
+"integrate your changes in it)"
+msgstr ""
+
+msgid "This account has expired."
+msgstr "This account has expired."
+
+msgid "This account is deactivated."
+msgstr "This account is deactivated."
+
+msgid "This action requires the installation of Dynacase Extui module"
+msgstr ""
+
+msgid "This document has been deleted"
+msgstr ""
+
+msgid "This revision has been deleted"
+msgstr ""
+
+#, php-format
+msgid "This search cannot be executed"
+msgstr ""
+
+msgid "Thursday"
+msgstr ""
+
+msgid "Timer infinity date"
+msgstr ""
+
+msgid "Timers prevision"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "ToSearch"
+msgstr ""
+
+msgid "Too many files. The maximum accepted is"
+msgstr ""
+"Too many files. Please contact your system administrator to increase "
+"max_file_uploads in php.ini. The maximum accepted is"
+
+msgid "Too many incorrect password attempts."
+msgstr "Too many incorrect password attempts."
+
+msgid "Tools"
+msgstr ""
+
+msgid "Top Bottom"
+msgstr ""
+
+msgid "Transitions"
+msgstr ""
+
+msgid "Tuesday"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "Twprocess_private"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "Twprocess_public"
+msgstr ""
+
+msgid "Unable to store the file"
+msgstr ""
+
+msgid "Unallocate aborded"
+msgstr ""
+
+#, php-format
+msgid "Unallocated of %s %s : %s"
+msgstr ""
+
+#, php-format
+msgid "Unallocated of %s %s: %s"
+msgstr ""
+
+#, php-format
+msgid "Unarchiving from %s"
+msgstr ""
+
+msgid "Undirected graphs"
+msgstr ""
+
+#, php-format
+msgid "Unexpected transition error on workflow %s [%d] : %s"
+msgstr ""
+
+#, php-format
+msgid "Unknown logical name '%s' in attribute '%s'."
+msgstr ""
+
+#, php-format
+msgid "Unlabeled menu (%s)"
+msgstr ""
+
+#, php-format
+msgid "Unlabeled view (%s)"
+msgstr ""
+
+msgid "Unlock"
+msgstr ""
+
+#, php-format
+msgid "Unsupported archive format '%s' for archive '%s'."
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Update Access in progress"
+msgstr ""
+
+msgid "Update access"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Update account"
+msgstr ""
+
+msgid "Update by importation"
+msgstr ""
+
+msgid "Update document if has permission else ignored"
+msgstr ""
+
+#, php-format
+msgid "Update history done"
+msgstr ""
+
+#, php-format
+msgid "Update profiling is in progress."
+msgstr ""
+
+#, php-format
+msgid "Update profiling of %d documents is in progress."
+msgstr ""
+
+msgctxt "dcp:import"
+msgid "Updated values"
+msgstr ""
+
+msgid "Upload archive"
+msgstr ""
+
+msgid "Use Ctrl-S to save and stay in edit mode"
+msgstr ""
+
+msgid "Use account reference"
+msgstr ""
+
+msgid "Use another import interface for a specific family"
+msgstr ""
+
+msgid "Use document reference"
+msgstr ""
+
+msgid "Use old file inputs compatibity form"
+msgstr ""
+
+msgid "Use this input to set special value like method description"
+msgstr ""
+
+#, php-format
+msgid "Use your home folder instead <%s>"
+msgstr ""
+
+msgid "User must be authenticate"
+msgstr "User must be authenticated"
+
+msgid "User to affect"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Utilisateur fixe"
+msgstr ""
+
+msgid "Validate"
+msgstr ""
+
+msgid "Value actualy recorded in server"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "View Archive"
+msgstr ""
+
+msgid "View Archives"
+msgstr ""
+
+msgid "View XML"
+msgstr ""
+
+msgid "View Xml Schema"
+msgstr ""
+
+msgid "View Zones for FOOTER"
+msgstr ""
+
+msgid "View all attributes ?"
+msgstr ""
+
+msgid "View all properties"
+msgstr ""
+
+msgid "View all rows"
+msgstr ""
+
+msgid "View answers"
+msgstr ""
+
+msgid "View attributes"
+msgstr ""
+
+msgid "View color legend"
+msgstr ""
+
+msgid "View cycle graph"
+msgstr ""
+
+msgid "View default values and parameters"
+msgstr ""
+
+msgid "View document reference"
+msgstr ""
+
+msgid "View family"
+msgstr ""
+
+msgid "View folder content"
+msgstr ""
+
+msgid "View folder properties"
+msgstr ""
+
+msgid "View group access"
+msgstr ""
+
+msgid "View historique"
+msgstr ""
+
+msgid "View inherit family"
+msgstr ""
+
+msgid "View latest"
+msgstr ""
+
+msgid "View my ask"
+msgstr ""
+
+msgid "View my searches"
+msgstr ""
+
+msgid "View next results"
+msgstr ""
+
+msgid "View only access set. Green flag"
+msgstr ""
+
+msgid "View postit"
+msgstr ""
+
+msgid "View revision"
+msgstr ""
+
+msgid "View selection"
+msgstr ""
+
+msgid "View tab letters"
+msgstr ""
+
+msgid ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
+msgstr ""
+
+#, php-format
+msgid "WID : %s"
+msgstr ""
+
+#, php-format
+msgid "WID : workflow '%s' is not a workflow"
+msgstr ""
+
+#, php-format
+msgid "WID : workflow '%s' not found"
+msgstr ""
+
+msgid "WIDGET_CHANGE_PASSWORD:Change"
+msgstr "Change"
+
+msgid "WIDGET_CHANGE_PASSWORD:Loading..."
+msgstr "Loading..."
+
+msgid "WIDGET_CHANGE_PASSWORD:New password"
+msgstr "New password"
+
+msgid "WIDGET_CHANGE_PASSWORD:New passwords are not identical"
+msgstr "New passwords are not identical"
+
+msgid "WIDGET_CHANGE_PASSWORD:Old password"
+msgstr "Old password"
+
+msgid "WIDGET_CHANGE_PASSWORD:Password updated"
+msgstr "Password updated"
+
+msgid "WIDGET_CHANGE_PASSWORD:Verify new password"
+msgstr "Verify new password"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide a new password"
+msgstr "You need to provide a new password"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide the old password"
+msgstr "You need to provide the old password"
+
+msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
+msgstr "You need to provide twice the new password"
+
+msgid "WSH error mail recipients (comma-separated list of mail addresses)"
+msgstr ""
+
+msgid "WSH error mail subject"
+msgstr ""
+
+#, php-format
+msgid "Warning : %s"
+msgstr ""
+
+msgid "WebDav FREEDOM system file"
+msgstr "Dynacase WebDAV file system"
+
+msgid "Wednesday"
+msgstr ""
+
+msgid "With States and activities"
+msgstr ""
+
+msgid "With conditions"
+msgstr ""
+
+msgid "With files"
+msgstr ""
+
+msgid "With identificators"
+msgstr ""
+
+msgid "With profil"
+msgstr ""
+
+msgid "Without files"
+msgstr ""
+
+msgid "Without identificators"
+msgstr ""
+
+msgid "Without profil"
+msgstr ""
+
+msgid "Workflow"
+msgstr ""
+
+msgid "Workflow - parameters"
+msgstr ""
+
+msgid "XML Archive"
+msgstr ""
+
+msgid "XML Error: no 'family' attribute on <table/> node."
+msgstr ""
+
+msgid "XML Error: no <database/> root node."
+msgstr ""
+
+msgid "XML Error: no property or attribute on <column/> node."
+msgstr ""
+
+msgid "XML Error: no table defined."
+msgstr ""
+
+msgid "XML Error: only one <database/> root node allowed."
+msgstr ""
+
+#, php-format
+msgid "XML Root node is not a '%s' node (root node is '%s')."
+msgstr ""
+
+msgid "XML config parsed OK !"
+msgstr ""
+
+msgid "XML data (Zip with one xml by document)"
+msgstr ""
+
+msgid "XML data (only one xml file)"
+msgstr ""
+
+#, php-format
+msgid "XML error %s at line %d"
+msgstr ""
+
+msgid "Xml file cannot be created"
+msgstr ""
+
+#, php-format
+msgid "Xml import : Cannot create file %s"
+msgstr ""
+
+#, php-format
+msgid "Xml import file %s not found"
+msgstr ""
+
+msgid "Y"
+msgstr ""
+
+msgid "You can close window now or waiting the end of processing"
+msgstr ""
+
+msgid ""
+"You don't have access to any content. Please contact your administrator."
+msgstr ""
+
+#, php-format
+msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Your password is not secure."
+msgstr ""
+
+msgid "Zip Archive cannot be created"
+msgstr ""
+
+msgid "Zip File"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be a integer"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be a number"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be between %s and %s"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be greater than %s"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be lower than %s"
+msgstr ""
+
+#, php-format
+msgid "[%s] must match /%s/"
+msgstr ""
+
+msgid "access date"
+msgstr ""
+
+msgid "access path folder list"
+msgstr ""
+
+msgid "access path folder list:"
+msgstr ""
+
+msgid "access path list"
+msgstr ""
+
+#. _COMMENT Search Label
+msgid "account attribute"
+msgstr ""
+
+msgid "acking detection : clear token"
+msgstr ""
+
+msgid "action"
+msgstr ""
+
+#, php-format
+msgid "action %s is not declared to be access in open mode"
+msgstr ""
+
+msgid "activity"
+msgstr ""
+
+#, php-format
+msgid "activity for %s"
+msgstr ""
+
+msgid "add"
+msgstr ""
+
+#, php-format
+msgid "add %s for %s"
+msgstr ""
+
+#, php-format
+msgid "add %s id [%d]  "
+msgstr ""
+
+#, php-format
+msgid "add %s search"
+msgstr ""
+
+#, php-format
+msgid "add acl %s"
+msgstr ""
+
+msgid "add batch document"
+msgstr ""
+
+msgid "add column"
+msgstr ""
+
+msgid "add comment before revise document"
+msgstr ""
+
+#, php-format
+msgid "add default value %s %s"
+msgstr ""
+
+msgid "add document from directories file import"
+msgstr ""
+
+msgid "add document import"
+msgstr ""
+
+msgid "add document import from XML"
+msgstr ""
+
+msgid "add enum html input attribute"
+msgstr ""
+
+msgid "add file query into directory"
+msgstr ""
+
+msgid "add folder in bookmark"
+msgstr ""
+
+#, php-format
+msgid "add id [%d] "
+msgstr ""
+
+msgid "add inputs"
+msgstr ""
+
+#, php-format
+msgid "add negative acl %s"
+msgstr ""
+
+#, php-format
+msgid "add new profil %s"
+msgstr ""
+
+msgid "add to bookmarks"
+msgstr ""
+
+msgid "addactivity"
+msgstr "Activity"
+
+msgid "addcond"
+msgstr "Add condition"
+
+#. _COMMENT Sharp Label
+msgid "added"
+msgstr ""
+
+msgid "address"
+msgstr ""
+
+msgid "address of the webdav server for authenticate server"
+msgstr ""
+
+msgid "address of the webdav server for freedav"
+msgstr ""
+
+msgid "addstate"
+msgstr ""
+
+msgid "affect auto lock"
+msgstr ""
+
+msgid "affect auto mail"
+msgstr ""
+
+msgid "affect no lock"
+msgstr ""
+
+msgid "affect no mail"
+msgstr ""
+
+msgid "affect user to a document"
+msgstr ""
+
+#, php-format
+msgid "all columns are hiddens"
+msgstr ""
+
+msgid "allocated"
+msgstr ""
+
+msgid "allocated to"
+msgstr ""
+
+#, php-format
+msgid "allocation for %s document"
+msgstr ""
+
+msgid "already deleted"
+msgstr ""
+
+#, php-format
+msgid "an error has occured: %s"
+msgstr ""
+
+msgid "analyze archive file"
+msgstr ""
+
+msgid "anchor color"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "and"
+msgstr ""
+
+#, php-format
+msgid "and add in %s folder "
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "answer"
+msgstr ""
+
+msgid "any families"
+msgstr ""
+
+msgid "any familly"
+msgstr "any familiy"
+
+#. _COMMENT Sharp Label
+msgid "any value include"
+msgstr ""
+
+msgid "any values"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "any values include {right}"
+msgstr ""
+
+msgid "application version"
+msgstr ""
+
+msgid "apply a method to a document"
+msgstr ""
+
+#, php-format
+msgid "apply method %s"
+msgstr ""
+
+msgid "archieve status must be open to modify content"
+msgstr ""
+
+#, php-format
+msgid "archive %s not found and cannot be removed"
+msgstr ""
+
+#, php-format
+msgid "archive file %s has been deleted"
+msgstr ""
+
+msgid "archived"
+msgstr ""
+
+#, php-format
+msgid "argument %s=>%s"
+msgstr ""
+
+msgid "ask"
+msgstr ""
+
+msgid "ask for a new file revision"
+msgstr ""
+
+msgid "assigned workflow is not alive"
+msgstr ""
+
+#, php-format
+msgid "at least %d digits"
+msgstr ""
+
+#, php-format
+msgid "at least %d lowercase alpha characters"
+msgstr ""
+
+#, php-format
+msgid "at least %d symbol characters"
+msgstr ""
+
+#, php-format
+msgid "at least %d uppercase alpha characters"
+msgstr ""
+
+#, php-format
+msgid "at least one digit"
+msgstr ""
+
+#, php-format
+msgid "at least one lowercase alpha character"
+msgstr ""
+
+#, php-format
+msgid "at least one symbol character"
+msgstr ""
+
+#, php-format
+msgid "at least one uppercase alpha character"
+msgstr ""
+
+#, php-format
+msgid "attach timer %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "attachTimer : the timer parameter is not a document of TIMER family"
+msgstr ""
+
+#, php-format
+msgid "attr key is empty"
+msgstr ""
+
+#, php-format
+msgid "attribut %s not found for document %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "attribute \"%s\" is not a part of array \"%s\""
+msgstr ""
+
+#, php-format
+msgid "attribute %s"
+msgstr ""
+
+#, php-format
+msgid "attribute %s : %s type is not allowed with %s operator"
+msgstr ""
+
+#, php-format
+msgid "attribute %s : cannot detect title attribute"
+msgstr ""
+
+#, php-format
+msgid "attribute %s is not a file attribute"
+msgstr ""
+
+#, php-format
+msgid "attribute %s is not int a array"
+msgstr ""
+
+#, php-format
+msgid "attribute %s not an array"
+msgstr ""
+
+#, php-format
+msgid "attribute %s not found"
+msgstr ""
+
+#, php-format
+msgid "attribute %s not found [%s]"
+msgstr ""
+
+#, php-format
+msgid "attribute %s unknow in document \"%s\" [%s]"
+msgstr ""
+
+#, php-format
+msgid "attribute %s unknow in family \"%s\""
+msgstr ""
+
+msgid "attribute id"
+msgstr ""
+
+msgid "attributes"
+msgstr ""
+
+msgid "attrname"
+msgstr ""
+
+msgid "atype"
+msgstr ""
+
+msgid "auth_failure"
+msgstr "Authentication failed : try again"
+
+msgid "authent reqpassword"
+msgstr "Lost password?"
+
+msgid "author"
+msgstr ""
+
+msgid "auto revision"
+msgstr ""
+
+#, php-format
+msgid ""
+"automaticaly by change state of %s\n"
+"%s"
+msgstr ""
+
+msgid "background color for table cells"
+msgstr ""
+
+msgid "background color or image"
+msgstr ""
+
+msgid "background color or image in security mode"
+msgstr ""
+
+msgid "background document import"
+msgstr ""
+
+msgid "background image for bar"
+msgstr ""
+
+msgid "background image for menu"
+msgstr ""
+
+msgid "bar menu"
+msgstr ""
+
+#, php-format
+msgid "basket of %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"batcexec aborted\n"
+"document [%s] not found"
+msgstr ""
+
+msgid "batch execution"
+msgstr ""
+
+#, php-format
+msgid "batch from %s folder"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "begin by"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "between"
+msgstr ""
+
+msgid "bookmark folders"
+msgstr ""
+
+msgid "callbackreqpasswd_mail_hello"
+msgstr "Hello"
+
+msgid "callbackreqpasswd_mail_password"
+msgstr ""
+"<p>You new password is now:</p>\n"
+"<pre>\n"
+"[PASSWORD]\n"
+"</pre>\n"
+"<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a></"
+"p>"
+
+msgid "can't access file"
+msgstr ""
+
+msgid "cancel"
+msgstr ""
+
+#, php-format
+msgid "cannot access edit template file %s"
+msgstr ""
+
+#, php-format
+msgid "cannot access to vault file system"
+msgstr ""
+
+#, php-format
+msgid "cannot change state of document #%d to %s"
+msgstr ""
+
+#, php-format
+msgid "cannot compare two document which comes from two different family"
+msgstr ""
+
+msgid "cannot contact server"
+msgstr ""
+
+#, php-format
+msgid "cannot create %s: %s\n"
+msgstr ""
+
+#, php-format
+msgid ""
+"cannot create directory %s\n"
+"Parent directory must be create before"
+msgstr ""
+
+#, php-format
+msgid "cannot create document for family [%s]"
+msgstr ""
+
+#, php-format
+msgid "cannot create from family [%s]"
+msgstr ""
+
+#, php-format
+msgid "cannot create user %s: %s"
+msgstr ""
+
+msgid "cannot delete family"
+msgstr ""
+
+#, php-format
+msgid "cannot delete link : initial query not found for doc %d in folder %d"
+msgstr ""
+
+#, php-format
+msgid ""
+"cannot delete link for doc %d in folder %d : the document comes from a user "
+"query. Delete initial query if you want delete this document"
+msgstr ""
+
+msgid "cannot detach : document id is not set"
+msgstr ""
+
+msgid "cannot detach : origin id is not set"
+msgstr ""
+
+msgid "cannot detach : timer id is not set"
+msgstr ""
+
+#, php-format
+msgid "cannot execute : document %s is not found"
+msgstr ""
+
+#, php-format
+msgid "cannot execute timer : timer %s is not found"
+msgstr ""
+
+#, php-format
+msgid "cannot extend vault: %s"
+msgstr ""
+
+#, php-format
+msgid "cannot extract archive %s: status : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot extract archive file %s: %s"
+msgstr ""
+
+#, php-format
+msgid "cannot get image transformation for %s"
+msgstr ""
+
+#, php-format
+msgid "cannot lauch <b>%s</b> transformation"
+msgstr ""
+
+#, php-format
+msgid "cannot load xml %s layout file"
+msgstr ""
+
+#, php-format
+msgid "cannot load xml layout file : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot load xml template : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot open %s layout file"
+msgstr ""
+
+#, php-format
+msgid "cannot open layout file : %s"
+msgstr ""
+
+msgid "cannot produce sql request"
+msgstr ""
+
+msgid "cannot see unknow folder"
+msgstr ""
+
+#, php-format
+msgid "cannot see unknow reference %s"
+msgstr ""
+
+#, php-format
+msgid "cannot send mail %s"
+msgstr ""
+
+#, php-format
+msgid "cannot send mail %s to %s : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot send mail %s with template %s : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot set free state for document %s: document cannot be revised"
+msgstr ""
+
+#, php-format
+msgid "cannot set free state for document %s: workflow not allowed"
+msgstr ""
+
+#, php-format
+msgid "cannot set free state in workflow controlled document %s"
+msgstr ""
+
+#, php-format
+msgid "cannot set substitute %s id not found"
+msgstr ""
+
+#, php-format
+msgid "cannot set substitute %s login not found"
+msgstr ""
+
+#, php-format
+msgid "cannot set substitute account object not affected"
+msgstr ""
+
+#, php-format
+msgid "cannot substitute itself"
+msgstr ""
+
+#, php-format
+msgid "cannot suppress archive file %s"
+msgstr ""
+
+#, php-format
+msgid "cannot suppress extract directory for archive file %s"
+msgstr ""
+
+msgid "cannot unlock"
+msgstr ""
+
+#, php-format
+msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
+msgstr ""
+
+msgid "cannot update inconsistent document"
+msgstr ""
+
+msgid "cannot update no initialized document"
+msgstr ""
+
+#, php-format
+msgid "cannot write  %s"
+msgstr ""
+
+#, php-format
+msgid "cannot write log in %s"
+msgstr ""
+
+msgid "case sensitive"
+msgstr ""
+
+msgid "cdate"
+msgstr "Revision creation date"
+
+msgid "change"
+msgstr ""
+
+#, php-format
+msgid "change %s"
+msgstr ""
+
+#, php-format
+msgid "change application tag to '%s'"
+msgstr ""
+
+msgid "change creation profile"
+msgstr ""
+
+#, php-format
+msgid "change default creation profile id  to '%s'"
+msgstr ""
+
+msgid "change default folder"
+msgstr ""
+
+msgid "change icon document"
+msgstr ""
+
+msgid "change icon of document"
+msgstr ""
+
+#, php-format
+msgid "change methods to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change profil %s"
+msgstr ""
+
+msgid "change profile"
+msgstr ""
+
+msgid "change profile access"
+msgstr ""
+
+#, php-format
+msgid "change profile id  to '%s'"
+msgstr ""
+
+msgid "change root folder"
+msgstr ""
+
+#, php-format
+msgid "change special use to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change state : %s to %s"
+msgstr ""
+
+#, php-format
+msgid "change state to %s"
+msgstr ""
+
+#, php-format
+msgid "change state to %s : %s"
+msgstr ""
+
+msgid "change state transition"
+msgstr ""
+
+#, php-format
+msgid "change tagable parameter to '%s'"
+msgstr ""
+
+msgid "change title family"
+msgstr ""
+
+msgid "change user password"
+msgstr ""
+
+#, php-format
+msgid "change version to %s"
+msgstr ""
+
+msgid "changeCheckBoolClasses Error"
+msgstr ""
+
+msgid "changes"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "chgstates"
+msgstr "Steps"
+
+msgid "choose action from batch document"
+msgstr ""
+
+#, php-format
+msgid "choose inputs for %s"
+msgstr ""
+
+msgid "choose workflow"
+msgstr ""
+
+msgid "ck image browser"
+msgstr ""
+
+msgid "ck image upload"
+msgstr ""
+
+msgid "clear containt of a folder"
+msgstr ""
+
+msgid "clear file"
+msgstr ""
+
+msgid "clear inputs"
+msgstr ""
+
+msgid "clear selected inputs"
+msgstr ""
+
+msgid "clic to the ... button to link document correctly"
+msgstr ""
+
+msgid "clic to the [...] button to link document correctly"
+msgstr ""
+
+msgid "client logo"
+msgstr ""
+
+msgid "client name"
+msgstr ""
+
+msgid "collapse all"
+msgstr ""
+
+#, php-format
+msgid "collection %s not exists"
+msgstr ""
+
+msgid "color picker"
+msgstr ""
+
+msgid "column"
+msgstr ""
+
+msgid "column order"
+msgstr ""
+
+#, php-format
+msgid "comparison between<br>%s (rev %d) and %s (rev %d)"
+msgstr ""
+
+msgid "compressed tar"
+msgstr ""
+
+msgid "concat stylecss+sizecss"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "confidential"
+msgstr ""
+
+#, php-format
+msgid "confidential document"
+msgstr ""
+
+#, php-format
+msgid "config file %s not found"
+msgstr ""
+
+msgid "confirm mail sended before change state"
+msgstr ""
+
+msgid "confirm manually send"
+msgstr ""
+
+#, php-format
+msgid "conflict %s [%s]: referer=%s, modified=%s"
+msgstr ""
+
+msgid "connection type"
+msgstr ""
+
+#, php-format
+msgid "connexion to %s has failed"
+msgstr ""
+
+#, php-format
+msgid "constraint broken %s"
+msgstr ""
+
+msgid "constraint error"
+msgstr ""
+
+#, php-format
+msgid "constraint not validated for %s attribute"
+msgstr ""
+
+msgid "construct batch document"
+msgstr ""
+
+msgid "containt of searches cannot be modified"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "content file expression"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "content file word"
+msgstr ""
+
+msgid "control :: user identifier is null"
+msgstr ""
+
+msgid "control view"
+msgstr ""
+
+#, php-format
+msgid "conversion %s in progress"
+msgstr ""
+
+msgid "conversion error"
+msgstr ""
+
+#, php-format
+msgid "conversion failed for %s: "
+msgstr ""
+
+#, php-format
+msgid "conversion of %s in progress"
+msgstr ""
+
+#, php-format
+msgid "conversion png not found for %s"
+msgstr ""
+
+#, php-format
+msgid "convert file %s as %s failed"
+msgstr ""
+
+#, php-format
+msgid "convert file %s as %s failed : %s"
+msgstr ""
+
+#, php-format
+msgid "convertion from %s to %s family"
+msgstr ""
+
+msgid "cookies seem to be blocked"
+msgstr ""
+
+#, php-format
+msgid "copy attribute %s from %s"
+msgstr ""
+
+#, php-format
+msgid "copy from document #%d -%s-"
+msgstr ""
+
+msgid "core_guest_sessionttl"
+msgstr "Guest session lifetime (in seconds)"
+
+msgid "core_layout_execute_recursion_limit"
+msgstr "Recursion limit for the Layout execute function"
+
+msgid "core_session_byte_length"
+msgstr "Session's identifier length in bytes (at least 16 bytes)"
+
+msgid "core_sessiongcprobability"
+msgstr ""
+"Probability of running the suppression of unused sessions (expressed as a "
+"percentage by a number between 0 and 1)"
+
+msgid "core_sessionmaxage"
+msgstr "Maximum time after which an unused session is eligible for suppression"
+
+msgid "core_sessionttl"
+msgstr "Session lifetime (in seconds)"
+
+msgid "core_tmpdir_maxage"
+msgstr ""
+"Maximum time (in days) after which the temporary files and directories are "
+"deleted"
+
+msgid "core_tmpdoc_maxage"
+msgstr "Maximum time (in days) after which the temporary documents are deleted"
+
+#, php-format
+msgid "create %s family %s"
+msgstr ""
+
+#, php-format
+msgid "create a %s document"
+msgstr ""
+
+msgid "create a new session id"
+msgstr ""
+
+#, php-format
+msgid "create default folder (id [%d])\n"
+msgstr ""
+
+#, php-format
+msgid "create directory %s\n"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "create doc"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "create doc manually"
+msgstr ""
+
+msgid "create family"
+msgstr ""
+
+msgid "create help"
+msgstr ""
+
+msgid "create profile access"
+msgstr ""
+
+msgid "createdate"
+msgstr "Creation date"
+
+msgid "creation"
+msgstr ""
+
+#, php-format
+msgid "creation %s"
+msgstr ""
+
+#, php-format
+msgid "creation : document %s is not a workflow"
+msgstr ""
+
+#, php-format
+msgid "creation : workflow %s not exists"
+msgstr ""
+
+msgid "creation date"
+msgstr ""
+
+msgid "creation of document family"
+msgstr ""
+
+msgid "creation processes"
+msgstr ""
+
+#, php-format
+msgctxt "CVDOC"
+msgid "creation view '%s' does not exists"
+msgstr ""
+
+#, php-format
+msgid "csv file <%s> wroted"
+msgstr ""
+
+msgid "csv, ods, xml, zip (xml) supported import files"
+msgstr "supported file types: csv, ods, xml, zip (xml)"
+
+msgid "csv-comma"
+msgstr "Comma"
+
+msgid "csv-custom : "
+msgstr "Custom"
+
+msgid "csv-doublequote"
+msgstr "Quotation mark"
+
+msgid "csv-noenclosure"
+msgstr "No enclosures"
+
+msgid "csv-other-enclosure"
+msgstr "Other enclosure"
+
+msgid "csv-other-separator"
+msgstr "Other separator"
+
+msgid "csv-semicolon"
+msgstr "Semicolon"
+
+msgid "csv-simplequote"
+msgstr "Quote"
+
+#, php-format
+msgid "current (<em>%s</em>)"
+msgstr ""
+
+msgid "current user cannot deactivate account"
+msgstr ""
+
+msgid "cycle family must be defined"
+msgstr ""
+
+#, php-format
+msgid "data:document %s is not a family"
+msgstr ""
+
+#, php-format
+msgid "data:family %s not alive"
+msgstr ""
+
+msgid "date"
+msgstr ""
+
+#, php-format
+msgid "declaration syntax does not match special help input '%s'"
+msgstr ""
+
+msgid "default delay before expiration of password in day"
+msgstr ""
+
+msgid "default document family"
+msgstr ""
+
+msgid "default file family"
+msgstr ""
+
+msgid "default folder"
+msgstr ""
+
+#, php-format
+msgid "default folder already set. Auto ignored"
+msgstr ""
+
+msgid "default folder family"
+msgstr ""
+
+msgid "default import values"
+msgstr ""
+
+msgid "default sort by family"
+msgstr ""
+
+msgid "default start application"
+msgstr ""
+
+msgid "default style"
+msgstr ""
+
+msgid "default value"
+msgstr ""
+
+msgid "default values"
+msgstr ""
+
+#, php-format
+msgid "default values for %s"
+msgstr ""
+
+msgid "default visibility"
+msgstr ""
+
+msgid "define sort attribute"
+msgstr ""
+
+msgid "defval New value"
+msgstr ""
+
+msgid "defval Server value"
+msgstr ""
+
+msgid "delconfirm"
+msgstr ""
+
+#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
+#. _COMMENT Sharp Label
+msgid "delete"
+msgstr "Delete"
+
+#, php-format
+msgid "delete %s for %s"
+msgstr ""
+
+msgid "delete archive"
+msgstr ""
+
+#, php-format
+msgid "delete by action %s/%s from %s"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "delete document"
+msgstr ""
+
+msgid "delete file query into directory"
+msgstr ""
+
+msgid "delete imported tar"
+msgstr ""
+
+msgid "delete link"
+msgstr ""
+
+msgid "delete selected"
+msgstr ""
+
+#, php-format
+msgid "destroyed by archive purge from %s"
+msgstr ""
+
+msgid "detail"
+msgstr ""
+
+msgid "detailled"
+msgstr ""
+
+msgid "detailled search"
+msgstr ""
+
+msgid "difference between 2 documents"
+msgstr ""
+
+msgid "differents view mode by family"
+msgstr ""
+
+msgid "directory to upload archive"
+msgstr ""
+
+msgid "display a confidential doc"
+msgstr ""
+
+msgid "display logo"
+msgstr ""
+
+#, php-format
+msgid "doc %d indexed"
+msgstr ""
+
+msgid "doctitle"
+msgstr "Title"
+
+msgid "document"
+msgstr ""
+
+#, php-format
+msgid "document #%s not found. Affectation aborded"
+msgstr ""
+
+#, php-format
+msgid "document #%s not found. Unaffectation aborded"
+msgstr ""
+
+#, php-format
+msgid "document %d deleted"
+msgstr ""
+
+#, php-format
+msgid "document %d inserted"
+msgstr ""
+
+#, php-format
+msgid "document %d moved"
+msgstr ""
+
+#, php-format
+msgid "document %d unlinked"
+msgstr ""
+
+#, php-format
+msgid "document %s : set icon to '%s'"
+msgstr ""
+
+#, php-format
+msgid "document %s [%d] is not destroyed"
+msgstr ""
+
+#, php-format
+msgid "document %s [%d] is not in the trash"
+msgstr ""
+
+#, php-format
+msgid "document %s [%d] is strange"
+msgstr ""
+
+#, php-format
+msgid "document %s has been allocate to %s"
+msgstr ""
+
+#, php-format
+msgid "document %s has been unaffected"
+msgstr ""
+
+#, php-format
+msgid "document %s has the new state %s"
+msgstr ""
+
+#, php-format
+msgid "document %s is not a family"
+msgstr ""
+
+#, php-format
+msgid "document %s is not a folder"
+msgstr ""
+
+#, php-format
+msgid "document %s not exist"
+msgstr ""
+
+#, php-format
+msgid "document %s not exists"
+msgstr ""
+
+#, php-format
+msgid "document '%s' [revision %d] has no state"
+msgstr ""
+
+#, php-format
+msgid "document [%s] not found"
+msgstr ""
+
+msgid "document already revised"
+msgstr ""
+
+msgid "document creation"
+msgstr ""
+
+msgid "document deleted"
+msgstr ""
+
+msgid "document differences"
+msgstr ""
+
+msgid "document id"
+msgstr ""
+
+#, php-format
+msgid "document id %d not found"
+msgstr ""
+
+#, php-format
+msgid "document is booked in domain %s"
+msgstr ""
+
+msgid "document is not controlled by a workflow"
+msgstr ""
+
+#, php-format
+msgid "document not alive %s"
+msgstr ""
+
+#, php-format
+msgid "document not exists yet"
+msgstr ""
+
+#, php-format
+msgid "document not initialized"
+msgstr ""
+
+msgid "document not referenced"
+msgstr ""
+
+#, php-format
+msgid "document not set"
+msgstr ""
+
+#, php-format
+msgid "document too big (%dKo): no highlight"
+msgstr ""
+
+msgid "document(s)"
+msgstr ""
+
+msgid "documents"
+msgstr ""
+
+msgid "documents to examine"
+msgstr ""
+
+msgid "domain locked"
+msgstr ""
+
+msgid "done\n"
+msgstr ""
+
+msgid "dotFormat"
+msgstr ""
+
+msgid "dotNoSize"
+msgstr ""
+
+msgid "dotOrient"
+msgstr ""
+
+msgid "dotRatio"
+msgstr ""
+
+msgid "dotSize"
+msgstr ""
+
+msgid "dotTool"
+msgstr ""
+
+msgid "dotType"
+msgstr ""
+
+msgid "drag to move"
+msgstr ""
+
+msgid "duplicate"
+msgstr ""
+
+msgid "duplicate document"
+msgstr ""
+
+msgid "duplication"
+msgstr ""
+
+msgid "duplication of"
+msgstr ""
+
+msgid "duration for log conservation (in days)"
+msgstr ""
+
+msgid "dynacase cron try execute"
+msgstr ""
+
+msgid "dynamic control"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "edit"
+msgstr "Edit"
+
+msgid "edit attribute inline"
+msgstr ""
+
+msgid "edit create family"
+msgstr ""
+
+msgid "edit default document properties"
+msgstr ""
+
+msgid "edit default folder"
+msgstr ""
+
+#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
+#. _COMMENT Sharp Label
+msgid "edit document"
+msgstr ""
+
+msgid "edit document in extjs"
+msgstr ""
+
+msgid "edit document properties"
+msgstr ""
+
+msgid "edit family preference"
+msgstr ""
+
+msgid "edit import vcard"
+msgstr ""
+
+msgid "edit mail"
+msgstr ""
+
+msgid "edit one enum items"
+msgstr ""
+
+msgid "edit profile access"
+msgstr ""
+
+msgid "edit specific ask"
+msgstr ""
+
+msgid "edit state "
+msgstr ""
+
+msgid "edition"
+msgstr ""
+
+msgid "edition to affect user"
+msgstr ""
+
+msgid "edition: "
+msgstr ""
+
+msgid "electronic messages cannot be modified"
+msgstr ""
+
+#, php-format
+msgid "elinkEncode::attribute not found %s in %s : %s"
+msgstr ""
+
+msgid "email sended"
+msgstr ""
+
+msgid "emailing"
+msgstr ""
+
+msgid "enavpreview"
+msgstr ""
+
+msgid "enumerate input not found"
+msgstr ""
+
+msgid "epreview"
+msgstr ""
+
+msgid "eprinting"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "equal"
+msgstr ""
+
+msgid "err"
+msgstr ""
+
+#, php-format
+msgid ""
+"errldapadd:%s\n"
+"%s\n"
+"%d\n"
+msgstr ""
+
+msgid "errldapconnect"
+msgstr "LDAP server cannot be contacted"
+
+msgid "errldaporginit"
+msgstr ""
+
+msgid "errno_bug_639_message"
+msgstr ""
+"<p>You must re-initialize your password.</p>\n"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Re-initialize my "
+"password</a></p>"
+
+msgid "error"
+msgstr ""
+
+msgid "error color"
+msgstr ""
+
+#, php-format
+msgid ""
+"error in calling function %s\n"
+"%s"
+msgstr ""
+
+msgid "error in filename"
+msgstr ""
+
+#, php-format
+msgid "error in import keys : %s"
+msgstr ""
+
+#, php-format
+msgid "error in pzone format %s"
+msgstr ""
+
+msgid "error sending text conversion"
+msgstr ""
+
+#, php-format
+msgid "error storing configuration property (%s, %s, %s)"
+msgstr ""
+
+msgid "exec plan"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "execute"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "execute search"
+msgstr ""
+
+#, php-format
+msgid "execute timer %s (level %d) : %s"
+msgstr ""
+
+#, php-format
+msgid "execution by %s done %s"
+msgstr ""
+
+#, php-format
+msgid "existing key item %s"
+msgstr ""
+
+msgid "expand all"
+msgstr ""
+
+msgid "expand folder tree"
+msgstr ""
+
+#, php-format
+msgid "explicit privilege"
+msgstr ""
+
+#, php-format
+msgid "export Xml : cannot unzip %s : %s"
+msgstr ""
+
+msgid "export a report"
+msgstr ""
+
+msgid "export file to consulting"
+msgstr ""
+
+msgid "export first file to consulting"
+msgstr ""
+
+msgid "export folder"
+msgstr ""
+
+msgid "export folder in xml format"
+msgstr ""
+
+msgid "export preferences"
+msgstr ""
+
+msgid "export preferences are saved"
+msgstr ""
+
+msgid "export preferences has been cleared"
+msgstr ""
+
+msgid "familly"
+msgstr ""
+
+#, php-format
+msgid "family %s does not implement IMailRecipent - missing getMail method"
+msgstr ""
+
+#, php-format
+msgid ""
+"family %s does not implement IMailRecipent - missing getMailAttribute method"
+msgstr ""
+
+#, php-format
+msgid ""
+"family %s does not implement IMailRecipient - missing getMailTitle method"
+msgstr ""
+
+#, php-format
+msgid "family %s not exists"
+msgstr ""
+
+#, php-format
+msgid "family %s not found"
+msgstr ""
+
+msgid "family id"
+msgstr ""
+
+msgid "family logical name"
+msgstr ""
+
+msgid "family manual"
+msgstr ""
+
+msgid "family must be defined"
+msgstr ""
+
+msgid "family search result"
+msgstr ""
+
+msgid "family title"
+msgstr ""
+
+msgid "familyname"
+msgstr ""
+
+#, php-format
+msgid "fdl_pubedit error: family %s not found"
+msgstr ""
+
+msgid "fgsearch"
+msgstr "Global search"
+
+msgid "fieldset"
+msgstr ""
+
+#, php-format
+msgid "file %d"
+msgstr ""
+
+#, php-format
+msgid "file %s : %s"
+msgstr ""
+
+#, php-format
+msgid "file %s not found"
+msgstr ""
+
+msgid "file conversion failed"
+msgstr ""
+
+msgid "file conversion not supported"
+msgstr ""
+
+msgid "file does not exist in vault"
+msgstr ""
+
+#, php-format
+msgid "file for %s not found."
+msgstr ""
+
+msgid "file must be controlled : read permission needed"
+msgstr ""
+
+msgid "file not expected : possible attack : update aborted"
+msgstr ""
+
+#, php-format
+msgid "file not found : %s"
+msgstr ""
+
+msgid "file status"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "file {left} contain the expression {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "file {left} contain the word {right}"
+msgstr ""
+
+msgid "filename"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "filename or type include"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "filename or type not include"
+msgstr ""
+
+msgid "filter attributes"
+msgstr ""
+
+msgid "filter parameters"
+msgstr ""
+
+#, php-format
+msgid "find %s more than one, created aborded\n"
+msgstr ""
+
+msgid "fixed"
+msgstr ""
+
+msgid "fixstate"
+msgstr ""
+
+msgid "folder"
+msgstr ""
+
+#, php-format
+msgid "folder %s as been added in your bookmark"
+msgstr ""
+
+msgid "folder identifier for root"
+msgstr ""
+
+#, php-format
+msgid "folder is locked. Cannot containt modification"
+msgstr ""
+
+#, php-format
+msgid "folder is not valid: bookmark unchanged"
+msgstr ""
+
+msgid "folder tree"
+msgstr ""
+
+#, php-format
+msgid "folder/search %s not found"
+msgstr ""
+
+msgid "foldername"
+msgstr ""
+
+msgid "folders"
+msgstr ""
+
+msgid "folio icon list"
+msgstr ""
+
+msgid "folio params ajax request"
+msgstr ""
+
+msgid "folio select doc"
+msgstr ""
+
+msgid "font size"
+msgstr ""
+
+msgid "for"
+msgstr ""
+
+msgid "founded"
+msgstr ""
+
+msgid "frame border size"
+msgstr ""
+
+msgid "frame size"
+msgstr ""
+
+#, php-format
+msgid "free item %s"
+msgstr ""
+
+msgid "freedom global search"
+msgstr "Global search"
+
+msgid "french"
+msgstr ""
+
+msgid "from current folder"
+msgstr ""
+
+msgid "fromdate"
+msgstr ""
+
+msgid "fulltext"
+msgstr ""
+
+msgid "fulltext index mode"
+msgstr ""
+
+#, php-format
+msgid "function '%s' declared in %s is not found"
+msgstr ""
+
+#, php-format
+msgid "function [%s] not exists"
+msgstr ""
+
+#, php-format
+msgid "generate version '%s'"
+msgstr ""
+
+msgid "generating file"
+msgstr ""
+
+msgid "generic Management"
+msgstr ""
+
+msgid "generic home page"
+msgstr ""
+
+msgid "geometry of mini view"
+msgstr ""
+
+#, php-format
+msgid "geometry saved : %s"
+msgstr ""
+
+msgid "get a value for a set of document"
+msgstr ""
+
+msgid "get all properties of document"
+msgstr ""
+
+msgid "get all values of document"
+msgstr ""
+
+msgid "get attribute for fck toobar"
+msgstr ""
+
+msgid "get enum items definition"
+msgstr ""
+
+msgid "get enum label from key"
+msgstr ""
+
+msgid "get family import schema"
+msgstr ""
+
+msgid "get search methods"
+msgstr ""
+
+msgid "get value for an attribute of document"
+msgstr ""
+
+msgid "get value of an attribute"
+msgstr ""
+
+msgid "global edit detail search"
+msgstr ""
+
+msgid "global search"
+msgstr ""
+
+msgid "global search detail results"
+msgstr ""
+
+msgid "global search results"
+msgstr ""
+
+msgid "goaccess"
+msgstr "Control access"
+
+#, php-format
+msgid "goto latest %s"
+msgstr ""
+
+msgid "goto latest specific ask"
+msgstr ""
+
+#, php-format
+msgid "group #%d does not exist"
+msgstr ""
+
+#, php-format
+msgid "group %d does not exist"
+msgstr ""
+
+msgid "group cannot be revived"
+msgstr ""
+
+msgid "group has not identificator"
+msgstr ""
+
+msgid "height of the frame for abstract card"
+msgstr ""
+
+msgid "help"
+msgstr "Help"
+
+#, php-format
+msgid "help for %s"
+msgstr ""
+
+msgid "help inline"
+msgstr ""
+
+msgid "help manual for family"
+msgstr ""
+
+msgid "hidden"
+msgstr ""
+
+msgid "highlight background color"
+msgstr ""
+
+msgid "histoError"
+msgstr "Error"
+
+msgid "histoInfo"
+msgstr "Info"
+
+msgid "histoMessage"
+msgstr "Message"
+
+msgid "histoNotice"
+msgstr "Notice"
+
+msgid "histoWarning"
+msgstr "Warning"
+
+msgid "horizontal size for secondary windows"
+msgstr ""
+
+msgid "hour number where timer can be execute until date is reached"
+msgstr ""
+
+msgid "icon"
+msgstr ""
+
+#, php-format
+msgid "icon already set. No update allowed"
+msgstr ""
+
+msgid "icon size"
+msgstr "icon size"
+
+#. _COMMENT Sharp Label
+msgid "icreate"
+msgstr ""
+
+msgid "id"
+msgstr ""
+
+msgid "id allocated"
+msgstr ""
+
+msgid "id locked"
+msgstr ""
+
+msgid "id of the basket folder"
+msgstr ""
+
+msgid "id owner"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "identificator equal"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "identificator not equal"
+msgstr ""
+
+msgid "if you want to change order of column"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "ignored"
+msgstr ""
+
+#, php-format
+msgid "import <I>%s</I> documents from"
+msgstr ""
+
+msgid "import analysis result"
+msgstr ""
+
+msgid "import archive file"
+msgstr ""
+
+msgid "import csv"
+msgstr ""
+
+msgid "import edition"
+msgstr ""
+
+#, php-format
+msgid "import file %s not found"
+msgstr ""
+
+#, php-format
+msgid "import file '%s' is not a valid file"
+msgstr ""
+
+msgid "import file:"
+msgstr ""
+
+msgid "import keys"
+msgstr ""
+
+msgid "import results"
+msgstr ""
+
+msgid "impossible conversion"
+msgstr ""
+
+#, php-format
+msgid "in domain %s"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "include"
+msgstr ""
+
+#, php-format
+msgid "incorrect conversion HTML to ODT %s"
+msgstr ""
+
+#, php-format
+msgid "incorrect global filter %s"
+msgstr ""
+
+msgid "information access deny"
+msgstr ""
+
+msgid "informations"
+msgstr ""
+
+msgid "inherit from"
+msgstr ""
+
+msgid "init workflow profile attributes"
+msgstr ""
+
+msgid "initial reference"
+msgstr ""
+
+msgid "input color bg"
+msgstr ""
+
+msgid "insert containt of a folder into another"
+msgstr ""
+
+msgid "insert converted file"
+msgstr ""
+
+msgid "insert document in a folder"
+msgstr ""
+
+msgid "interface insert document in a folder"
+msgstr ""
+
+msgid "interface to change state"
+msgstr ""
+
+msgid "interface to choose column export documents"
+msgstr ""
+
+msgid "interface to export documents"
+msgstr ""
+
+msgid "interface to modify default values documents"
+msgstr ""
+
+msgid "interface to modify one default"
+msgstr ""
+
+msgid "interface to save choice of column export documents"
+msgstr ""
+
+#, php-format
+msgid "invalid freestate document %s"
+msgstr ""
+
+msgid "invalid regular expression"
+msgstr ""
+
+#, php-format
+msgid "invalid syntax for [%s] for enum attribute [%s]"
+msgstr ""
+
+msgid "inverse video background color"
+msgstr ""
+
+msgid "inverse video color text"
+msgstr ""
+
+msgid "inverted search"
+msgstr ""
+
+msgid "invisible"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "is empty"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "is not empty"
+msgstr ""
+
+msgid "it is the first"
+msgstr ""
+
+msgid "it is the last"
+msgstr ""
+
+msgid "item already set"
+msgstr ""
+
+msgid "keyword"
+msgstr ""
+
+msgid "keyword filter"
+msgstr ""
+
+msgid "language"
+msgstr "lang"
+
+msgid "last modification date"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "last or first name include"
+msgstr ""
+
+msgid "last search text typed"
+msgstr ""
+
+msgid "level"
+msgstr ""
+
+#, php-format
+msgid "limit reached, only %d members has been displayed"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "link document"
+msgstr ""
+
+msgid "list"
+msgstr ""
+
+#, php-format
+msgid "local config for date not found"
+msgstr ""
+
+#, php-format
+msgid "local config for timestamp not found"
+msgstr ""
+
+msgid "lock file to edit"
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
+msgid "locked by"
+msgstr ""
+
+msgid "locked document of "
+msgstr ""
+
+#, php-format
+msgid "log file %s not writable"
+msgstr ""
+
+msgid "login must not be empty"
+msgstr ""
+
+msgid "login yet use"
+msgstr ""
+
+msgid "loginform:help"
+msgstr "Help"
+
+msgid "logo of our society"
+msgstr ""
+
+msgid "loop detected. You must undo this selection"
+msgstr ""
+
+msgid "mail"
+msgstr ""
+
+msgid "mail dest is empty"
+msgstr ""
+
+msgid "mail edition"
+msgstr ""
+
+msgid "mailstatus"
+msgstr ""
+
+msgid "main interface document import"
+msgstr ""
+
+msgid "make a new document revision"
+msgstr ""
+
+msgid "manage bookmarks"
+msgstr ""
+
+msgctxt "mask"
+msgid "mandatory"
+msgstr ""
+
+msgid "manual date"
+msgstr ""
+
+msgid "max items return when open a folder"
+msgstr ""
+
+#, php-format
+msgid "max revision '%d'"
+msgstr ""
+
+msgid "maximum document can be imported directly"
+msgstr ""
+
+msgid "mdoc close all docs"
+msgstr ""
+
+msgid "mdoc show next docs"
+msgstr ""
+
+msgid "mdoc: open in a new window"
+msgstr ""
+
+msgid "mdoc: remove doc"
+msgstr ""
+
+msgid "memorisation of pref search"
+msgstr ""
+
+msgid "memory max for PHP in Mo"
+msgstr "minimum value for memory_limit (in Mo)"
+
+msgid "memosearch"
+msgstr ""
+
+msgid "menuctrlkey"
+msgstr ""
+
+msgid "message"
+msgstr ""
+
+#, php-format
+msgid "method %s applied to document %s #%d"
+msgstr ""
+
+#, php-format
+msgid "method %s executed"
+msgstr ""
+
+#, php-format
+msgid "method %s executed for %s "
+msgstr ""
+
+#, php-format
+msgid "method %s not executed : %s"
+msgstr ""
+
+#, php-format
+msgid "method %s not found"
+msgstr ""
+
+msgid "mode to navigate in folders"
+msgstr ""
+
+msgid "modification or creation"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "modify"
+msgstr "Content"
+
+#, php-format
+msgid "modify %s family"
+msgstr ""
+
+#, php-format
+msgid "modify [%s] attribute"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "modify acl"
+msgstr ""
+
+msgid "modify application parameter"
+msgstr ""
+
+msgid "modify associated worflow"
+msgstr ""
+
+msgid "modify attribute inline"
+msgstr ""
+
+msgid "modify default values :"
+msgstr ""
+
+#, php-format
+msgid "modify document"
+msgstr ""
+
+msgid "modify enum items"
+msgstr ""
+
+msgid "modify enum items definition"
+msgstr ""
+
+msgid "modify family help"
+msgstr ""
+
+msgid "modify family parameter"
+msgstr ""
+
+msgid "modify family preference"
+msgstr ""
+
+#, php-format
+msgid "modify file %s"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "modify folder"
+msgstr ""
+
+msgid "modify parameters :"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "modifyacl"
+msgstr ""
+
+msgid "mot of the day"
+msgstr ""
+
+msgid "move file query into directory"
+msgstr ""
+
+msgid "multiple document"
+msgstr ""
+
+#, php-format
+msgid "my search %s"
+msgstr ""
+
+#, php-format
+msgid "my searches about %s"
+msgstr ""
+
+msgid "name and address of our society"
+msgstr ""
+
+#, php-format
+msgid ""
+"name must begin with a letter and contain only alphanumeric characters or - "
+"and _: invalid  [%s]"
+msgstr ""
+
+msgid "name of our society"
+msgstr ""
+
+msgid "navigate between relations"
+msgstr ""
+
+msgid "navigate between relations next"
+msgstr ""
+
+msgid "need answer"
+msgstr ""
+
+#, php-format
+msgid "need privilege delete to restore %s"
+msgstr ""
+
+#, php-format
+msgid "need to select family"
+msgstr ""
+
+msgid "need to select the document with the list"
+msgstr ""
+
+#, php-format
+msgid "need to select workflow"
+msgstr ""
+
+#, php-format
+msgid "new %s"
+msgstr ""
+
+msgid "new card"
+msgstr ""
+
+#, php-format
+msgid "new column order %s"
+msgstr ""
+
+msgid "new document"
+msgstr ""
+
+#, php-format
+msgid "new duplicate document is named : %s"
+msgstr ""
+
+msgid "new familly document"
+msgstr ""
+
+msgid "new guide-card"
+msgstr ""
+
+#, php-format
+msgid "new import keys : %s"
+msgstr ""
+
+#, php-format
+msgid "new item %s"
+msgstr ""
+
+msgid "new needed"
+msgstr ""
+
+#, php-format
+msgid "new profil %d"
+msgstr ""
+
+msgid "new profile document"
+msgstr ""
+
+msgid "new search "
+msgstr ""
+
+msgid "new search guide-card"
+msgstr ""
+
+#, php-format
+msgid "new title for %s"
+msgstr ""
+
+#, php-format
+msgid "new user # %d"
+msgstr ""
+
+msgid "new visibility"
+msgstr ""
+
+msgid "next"
+msgstr ""
+
+msgid "no access control"
+msgstr ""
+
+#, php-format
+msgid "no action found for %s document"
+msgstr ""
+
+msgid "no alive document reference"
+msgstr ""
+
+msgid "no allocate"
+msgstr ""
+
+msgid "no attribute file found"
+msgstr ""
+
+msgid "no available persons found"
+msgstr ""
+
+#, php-format
+msgid "no change icon : document %s not found"
+msgstr ""
+
+#, php-format
+msgid "no columns specified"
+msgstr ""
+
+msgid "no comment"
+msgstr ""
+
+#, php-format
+msgid "no compatible type with operator %s"
+msgstr ""
+
+msgid "no control"
+msgstr ""
+
+msgid "no csv import file specified"
+msgstr ""
+
+msgid "no cycle defined"
+msgstr ""
+
+msgid "no document family"
+msgstr ""
+
+#, php-format
+msgid "no document match '%s'"
+msgstr ""
+
+msgid "no document reference"
+msgstr ""
+
+msgid "no document type"
+msgstr ""
+
+msgid "no empty vault file system found"
+msgstr ""
+
+msgid "no export folder specified"
+msgstr ""
+
+msgid "no family"
+msgstr ""
+
+msgid "no family identificator"
+msgstr ""
+
+msgid "no file"
+msgstr ""
+
+#, php-format
+msgid "no file referenced for %s document"
+msgstr ""
+
+msgid "no file specified : change icon aborted"
+msgstr ""
+
+msgid "no filename"
+msgstr "No file"
+
+msgid "no files"
+msgstr ""
+
+msgid "no folder"
+msgstr ""
+
+msgid "no freedom DB access"
+msgstr "No access to Dynacase database"
+
+msgid "no image"
+msgstr ""
+
+msgid "no key2"
+msgstr ""
+
+msgid "no label"
+msgstr ""
+
+#, php-format
+msgid "no level 0 specified in timer %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "no match for %s"
+msgstr ""
+
+msgid "no message : post-it creation aborted"
+msgstr ""
+
+#, php-format
+msgid "no operator detected"
+msgstr ""
+
+#, php-format
+msgid "no permission to modify this attribute %s"
+msgstr ""
+
+#, php-format
+msgid "no privilege %s for %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "no privilege %s for document with id %d"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create interactivaly this kind (%s) of document"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create this kind (%d) of document"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create this kind (%s) of document"
+msgstr ""
+
+#, php-format
+msgid "no privilege view for %d"
+msgstr ""
+
+#, php-format
+msgid "no processes specified in timer %s [%d]"
+msgstr ""
+
+msgid "no profile"
+msgstr ""
+
+msgid "no referer url found"
+msgstr ""
+
+msgid "no revisable"
+msgstr ""
+
+msgid "no search"
+msgstr ""
+
+msgid "no sort"
+msgstr ""
+
+msgid "no state"
+msgstr ""
+
+msgid "no state specified"
+msgstr ""
+
+msgid "no subject"
+msgstr ""
+
+msgid "no task identificator"
+msgstr ""
+
+msgid "no task identifier found"
+msgstr ""
+
+msgid "no template defined"
+msgstr ""
+
+msgid "no user tag specified"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "no value include"
+msgstr ""
+
+msgid "no vault directory found"
+msgstr ""
+
+msgid "no vault file system found"
+msgstr ""
+
+msgid "no view control"
+msgstr ""
+
+msgid "no workflow"
+msgstr ""
+
+#, php-format
+msgid "no workflow for this document"
+msgstr ""
+
+msgid "no zone specified"
+msgstr ""
+
+#, php-format
+msgid "none families are described to be used as recipient"
+msgstr ""
+
+msgid "noone document"
+msgstr ""
+
+#, php-format
+msgid "not a freestate document %s"
+msgstr ""
+
+#, php-format
+msgid "not a static folder %s"
+msgstr ""
+
+msgid "not added"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "not equal"
+msgstr ""
+
+#, php-format
+msgid "not in XML format"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "not include"
+msgstr ""
+
+msgid "not locked"
+msgstr ""
+
+msgid "not perm for admin"
+msgstr ""
+
+msgid "nothing action"
+msgstr ""
+
+#, php-format
+msgid "nothing to export. Do export before"
+msgstr ""
+
+msgid "number of card by page"
+msgstr ""
+
+#, php-format
+msgid "number of waiting answers %d"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "one id equal"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "one of the titles include"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "one of the titles {left} include {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "one value equal"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "one value include"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "one value of {left} include {right}"
+msgstr ""
+
+msgid "only latest revision"
+msgstr ""
+
+msgid "only one document linked to the profil"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "open"
+msgstr ""
+
+msgid "open document to edit or view it"
+msgstr ""
+
+msgid "open file with your editor"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "open folder"
+msgstr ""
+
+msgid "open in new window"
+msgstr ""
+
+msgid "open portfolio"
+msgstr ""
+
+#, php-format
+msgid "operator [%s] not allowed"
+msgstr ""
+
+msgctxt "mask"
+msgid "optional"
+msgstr ""
+
+#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
+#. _COMMENT Sharp Label
+msgid "or"
+msgstr ""
+
+msgid "other folders"
+msgstr ""
+
+msgid "others..."
+msgstr ""
+
+#, php-format
+msgid "output file [%s] not found"
+msgstr ""
+
+msgid "override constraints"
+msgstr ""
+
+msgid "owner"
+msgstr ""
+
+#, php-format
+msgid "parameters for %s step"
+msgstr ""
+
+#, php-format
+msgid "parameters for %s transition"
+msgstr ""
+
+msgid "parameters values"
+msgstr ""
+
+#, php-format
+msgid "parenthesis number mismatch : %d left, %d right"
+msgstr ""
+
+#, php-format
+msgid "parse error config file %s : %s"
+msgstr ""
+
+msgid "password must not be empty"
+msgstr ""
+
+msgid "passwords must not be empty"
+msgstr ""
+
+#, php-format
+msgid "period from %s to %s"
+msgstr ""
+
+msgid "phone of our society"
+msgstr ""
+
+#, php-format
+msgid "php file %s needed for request not found"
+msgstr ""
+
+msgid "plug inserted in footer"
+msgstr ""
+
+msgid "policy"
+msgstr ""
+
+msgid "policy if same keys"
+msgstr ""
+
+msgid "popup in generic list"
+msgstr ""
+
+msgid "popup menu"
+msgstr ""
+
+msgid "portfolio tab"
+msgstr ""
+
+#, php-format
+msgid "possible incorrect conversion HTML to ODT %s: %s"
+msgstr ""
+
+#, php-format
+msgid "postit of %s"
+msgstr ""
+
+msgid "precise search"
+msgstr ""
+
+msgid "prefered search"
+msgstr ""
+
+msgid "prev"
+msgstr ""
+
+msgid "primary folder"
+msgstr ""
+
+msgid "printed view card"
+msgstr ""
+
+msgid "proceed background import"
+msgstr ""
+
+#, php-format
+msgid "proceed background import of %d documents"
+msgstr ""
+
+#, php-format
+msgid "process %s"
+msgstr ""
+
+#, php-format
+msgid "process addValue for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process history for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process removeValue for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process replaceValue for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process revision done"
+msgstr ""
+
+#, php-format
+msgid "process revision for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process search comes from %s"
+msgstr ""
+
+#, php-format
+msgid "process setValue for %d documents"
+msgstr ""
+
+msgid "processes execution plan"
+msgstr ""
+
+#, php-format
+msgid "processing <b>%s</b> transformation"
+msgstr ""
+
+msgid "processing...\n"
+msgstr ""
+
+msgid "produce link for"
+msgstr ""
+
+#, php-format
+msgid "profil id unknow %s"
+msgstr ""
+
+#, php-format
+msgid "profil id unkonow %s"
+msgstr ""
+
+msgid "profile access"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "prop_adate"
+msgstr "access date"
+
+#. _COMMENT Sharp Label
+msgid "prop_allocated"
+msgstr "allocate"
+
+#. _COMMENT Sharp Label
+msgid "prop_atags"
+msgstr "application tags"
+
+#. _COMMENT Sharp Label
+msgid "prop_cdate"
+msgstr "revision creation date"
+
+#. _COMMENT Sharp Label
+msgid "prop_classname"
+msgstr "class name"
+
+#. _COMMENT Sharp Label
+msgid "prop_comment"
+msgstr "comment"
+
+#. _COMMENT Sharp Label
+msgid "prop_confidential"
+msgstr "confidential"
+
+#. _COMMENT Sharp Label
+msgid "prop_cvid"
+msgstr "view control"
+
+#. _COMMENT Sharp Label
+msgid "prop_doctype"
+msgstr "doctype"
+
+#. _COMMENT Sharp Label
+msgid "prop_domainid"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "prop_dprofid"
+msgstr "template profil"
+
+#. _COMMENT Sharp Label
+msgid "prop_fromid"
+msgstr "family"
+
+#. _COMMENT Sharp Label
+msgid "prop_icon"
+msgstr "icon"
+
+#. _COMMENT Sharp Label
+msgid "prop_id"
+msgstr "identificator"
+
+#. _COMMENT Sharp Label
+msgid "prop_initid"
+msgstr "initial identificator"
+
+#. _COMMENT Sharp Label
+msgid "prop_ldapdn"
+msgstr "ldap DN"
+
+#. _COMMENT Sharp Label
+msgid "prop_lmodify"
+msgstr "is modified"
+
+#. _COMMENT Sharp Label
+msgid "prop_lockdomainid"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "prop_locked"
+msgstr "lock"
+
+#. _COMMENT Sharp Label
+msgid "prop_name"
+msgstr "logical name"
+
+#. _COMMENT Sharp Label
+msgid "prop_owner"
+msgstr "owner"
+
+#. _COMMENT Sharp Label
+msgid "prop_postitid"
+msgstr "note"
+
+#. _COMMENT Sharp Label
+msgid "prop_prelid"
+msgstr "primary relation"
+
+#. _COMMENT Sharp Label
+msgid "prop_profid"
+msgstr "profil"
+
+#. _COMMENT Sharp Label
+msgid "prop_revdate"
+msgstr "modfication date"
+
+#. _COMMENT Sharp Label
+msgid "prop_revision"
+msgstr "revision"
+
+#. _COMMENT Sharp Label
+msgid "prop_state"
+msgstr "state"
+
+#. _COMMENT Sharp Label
+msgid "prop_svalues"
+msgstr "search values"
+
+#. _COMMENT Sharp Label
+msgid "prop_title"
+msgstr "title"
+
+#. _COMMENT Sharp Label
+msgid "prop_usefor"
+msgstr "use for"
+
+#. _COMMENT Sharp Label
+msgid "prop_version"
+msgstr "version"
+
+#. _COMMENT Sharp Label
+msgid "prop_wid"
+msgstr "workflow"
+
+#, php-format
+msgid "query %s has failed"
+msgstr ""
+
+msgid "query document import"
+msgstr ""
+
+msgid "query icon"
+msgstr ""
+
+msgid "query tar document import"
+msgstr ""
+
+msgid "quick save not possible"
+msgstr ""
+
+msgid "read disabled"
+msgstr ""
+
+msgid "read only"
+msgstr ""
+
+msgid "read write"
+msgstr ""
+
+msgid "read-only"
+msgstr ""
+
+msgid "real value to set"
+msgstr ""
+
+msgid "realm name for http authenticate"
+msgstr ""
+
+msgid "reference"
+msgstr ""
+
+msgid "reference for this revision"
+msgstr ""
+
+#, php-format
+msgid "refreshing %s"
+msgstr ""
+
+#, php-format
+msgid "regeneration of file template %s"
+msgstr ""
+
+#, php-format
+msgid "reinit all attributes"
+msgstr ""
+
+#, php-format
+msgid "reinit all properties"
+msgstr ""
+
+#, php-format
+msgid "related documents of %s"
+msgstr ""
+
+msgid "related search aborted : no parameter found"
+msgstr ""
+
+#, php-format
+msgid "remove state : %s"
+msgstr ""
+
+msgid "report to (mail address)"
+msgstr ""
+
+msgid "report unknow column"
+msgstr ""
+
+msgid "report:docid"
+msgstr "id"
+
+msgid "reqpasswd_email"
+msgstr "E-mail address"
+
+msgid "reqpasswd_login"
+msgstr "Login"
+
+msgid "reqpasswd_or"
+msgstr "or"
+
+msgid "reqpasswd_submit"
+msgstr "Submit"
+
+msgid "request not found"
+msgstr ""
+
+#, php-format
+msgid "reset profil %s"
+msgstr ""
+
+#, php-format
+msgid "reset version"
+msgstr ""
+
+msgid "rest delay"
+msgstr ""
+
+msgid "restore"
+msgstr ""
+
+msgid "restore document"
+msgstr ""
+
+msgid "restore document from trash"
+msgstr ""
+
+#, php-format
+msgid "result of archive import  %s"
+msgstr ""
+
+#, php-format
+msgid "result of import  %s"
+msgstr ""
+
+msgid "retrieve file converted"
+msgstr ""
+
+msgid "retrieve task status"
+msgstr ""
+
+msgid "retry file conversion"
+msgstr ""
+
+msgid "revdate"
+msgstr "Revision date"
+
+msgid "revised by"
+msgstr ""
+
+msgid "revision"
+msgstr ""
+
+msgid "revision date"
+msgstr ""
+
+msgid "revision of document"
+msgstr ""
+
+msgid "revival document"
+msgstr ""
+
+#, php-format
+msgid "role %s id is already used"
+msgstr ""
+
+msgid "role cannot be revived"
+msgstr ""
+
+msgid "root folder id"
+msgstr ""
+
+#, php-format
+msgid "root for %s"
+msgstr ""
+
+#, php-format
+msgid "roweditzone syntax %s is invalid"
+msgstr ""
+
+msgid "rss avaible for users"
+msgstr ""
+
+msgid "rss unavaible for users"
+msgstr ""
+
+msgid "save document"
+msgstr ""
+
+msgid "save geometry of mini view"
+msgstr ""
+
+msgid "save query in current folder"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+#, php-format
+msgid "search  contains %s in all state"
+msgstr ""
+
+#, php-format
+msgid "search %s"
+msgstr ""
+
+#, php-format
+msgid "search %s is %s"
+msgstr ""
+
+#, php-format
+msgid "search %s is %s in %s"
+msgstr ""
+
+msgid "search a generict"
+msgstr ""
+
+#, php-format
+msgid "search contains %s in %s"
+msgstr ""
+
+msgid "search document"
+msgstr ""
+
+msgid "search document to insert in a folder"
+msgstr ""
+
+msgid "search dynacase documents"
+msgstr "search documents"
+
+msgid "search fulltext"
+msgstr ""
+
+msgid "search in inherited family by family"
+msgstr ""
+
+#, php-format
+msgid "search join syntax error : %s"
+msgstr ""
+
+msgid "search methods"
+msgstr "Search methods"
+
+msgid "search mode"
+msgstr ""
+
+msgid "search processes"
+msgstr ""
+
+#, php-format
+msgid "search result"
+msgstr ""
+
+msgid "search time"
+msgstr ""
+
+msgid "search title"
+msgstr ""
+
+msgid "search with kind criteria"
+msgstr ""
+
+msgid "searchdate prefix"
+msgstr "at "
+
+msgid "second background color"
+msgstr ""
+
+msgid "security"
+msgstr ""
+
+#, php-format
+msgid "semaphore block"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "send"
+msgstr ""
+
+msgid "send a document"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "send document"
+msgstr ""
+
+msgid "send mail"
+msgstr ""
+
+#, php-format
+msgid "send mail %s"
+msgstr ""
+
+#, php-format
+msgid "send mail %s with template %s"
+msgstr ""
+
+msgid "send mail copy"
+msgstr ""
+
+#, php-format
+msgid "send mail with template %s [%d]"
+msgstr ""
+
+msgid "send search"
+msgstr ""
+
+msgid "senddoc"
+msgstr ""
+
+#, php-format
+msgid "sended to %s"
+msgstr ""
+
+#, php-format
+msgid "sending %s to %s"
+msgstr ""
+
+#, php-format
+msgid "sendmailbcc %s"
+msgstr ""
+
+#, php-format
+msgid "sendmailcc %s"
+msgstr ""
+
+#, php-format
+msgid "sendmailto %s"
+msgstr ""
+
+msgid "set RSS usable"
+msgstr ""
+
+#, php-format
+msgid "set default folder to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set default view control to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set default workflow to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set doctype to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set for %s, unset for %s"
+msgstr ""
+
+#, php-format
+msgid "set icon to '%s'"
+msgstr ""
+
+msgid "set logical name"
+msgstr ""
+
+msgid "set logical name identificator"
+msgstr ""
+
+#, php-format
+msgid "set logical name to %s"
+msgstr ""
+
+#, php-format
+msgid "set primary folder to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set profile %s"
+msgstr ""
+
+#, php-format
+msgid "set special characteristics to '%s'"
+msgstr ""
+
+msgid "set specific ask"
+msgstr ""
+
+msgid "set user parameter"
+msgstr ""
+
+msgid "set user tag to a document"
+msgstr ""
+
+msgid "setWaskAnswer::invalid parameters"
+msgstr ""
+
+msgid "show language selection"
+msgstr "Show language selection in login panel"
+
+msgid "show request for password"
+msgstr "Show password request link in login panel"
+
+#, php-format
+msgid "similar document %s found. keep similar"
+msgstr ""
+
+msgid "simple"
+msgstr ""
+
+msgid "society style"
+msgstr ""
+
+msgid "specialedit"
+msgstr ""
+
+#. _COMMENT Sharp Label
+#, php-format
+msgid "specialedit %s"
+msgstr ""
+
+msgid "specialview"
+msgstr ""
+
+#. _COMMENT Sharp Label
+#, php-format
+msgid "specialview %s"
+msgstr ""
+
+msgid "specific control"
+msgstr ""
+
+msgid "specmessage"
+msgstr ""
+
+msgid "speed"
+msgstr ""
+
+msgid "split view mode by family"
+msgstr ""
+
+msgid "state"
+msgstr ""
+
+msgid "static array"
+msgstr ""
+
+msgid "step"
+msgstr ""
+
+msgid "stop on sql error"
+msgstr ""
+
+msgid "string limit for popup enum"
+msgstr ""
+
+msgid "submitreqpasswd_form_multiplemail"
+msgstr ""
+"<p>The email address is used by several users.</p>\n"
+"<p>In this case, you need to use login identifier</p>"
+
+msgid "submitreqpasswd_form_send_error_external_auth"
+msgstr ""
+"<p>Your account uses an external authentication.</p>\n"
+"<p>You cannot change your password from this application.</p>\n"
+"<p>Please use the application dedicated to your authentication system.</p>"
+
+msgid "submitreqpasswd_form_send_error_invalid_args"
+msgstr "<p>The login or e-mail address is not valid</p>"
+
+msgid "submitreqpasswd_form_send_error_unknown"
+msgstr ""
+"<p>The server accountered an error processing your request</p>\n"
+"<p>Retry your request, and if the problem persist, please contact <a href="
+"\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
+"\">[ON_ERROR_CONTACT]</a></p>"
+
+msgid "submitreqpasswd_form_send_ok"
+msgstr ""
+"<p>Your request has been taken into account.</p>\n"
+"<p>You'll receive a mail containing instructions to follow in order to "
+"complete your password reinitialization.</p>"
+
+msgid "suggestions"
+msgstr ""
+
+msgid "suppress column"
+msgstr ""
+
+msgid "suppress document"
+msgstr ""
+
+msgid "suppression date"
+msgstr ""
+
+msgid ""
+"system id already set in database\n"
+"This kind of document can not be duplicated"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "system identifiant equal"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "system identifier not equal"
+msgstr ""
+
+#. _COMMENT Search Label
+msgid "tag"
+msgstr ""
+
+#, php-format
+msgid "target folder [%s] is not a folder"
+msgstr ""
+
+#, php-format
+msgid "target folder [%s] is not set"
+msgstr ""
+
+#, php-format
+msgid "task %s is not done correctly"
+msgstr ""
+
+#, php-format
+msgid "task %s is not recorded"
+msgstr ""
+
+#, php-format
+msgid "template %s no document found"
+msgstr ""
+
+#, php-format
+msgid "template file (layout [%s]) not found"
+msgstr ""
+
+msgid "text color"
+msgstr ""
+
+#, php-format
+msgid "text conversion done for file %s"
+msgstr ""
+
+msgid "the 2 passwords are not the same"
+msgstr ""
+
+#, php-format
+msgid "the attribute %s"
+msgstr ""
+
+#, php-format
+msgid "the date %s is in the past: today is %s"
+msgstr ""
+
+msgid "the date syntax must be like : AAAA-MM-DD"
+msgstr ""
+
+#, php-format
+msgid ""
+"the document %s has not be sended :\n"
+" %s"
+msgstr ""
+
+#, php-format
+msgid "the document %s has not been sended : no recipient"
+msgstr ""
+
+#, php-format
+msgid "the document %s is not a container"
+msgstr ""
+
+#, php-format
+msgid "the document %s is not related to a workflow"
+msgstr ""
+
+#, php-format
+msgid "the document id [%s] for this attribute is not valid"
+msgstr ""
+
+msgid "the document id is empty"
+msgstr ""
+
+msgid ""
+"the document is not referenced: cannot apply profile access modification"
+msgstr ""
+
+msgid "the document is not referenced: cannot apply state modification"
+msgstr ""
+
+#, php-format
+msgid "the document of %s family cannot be revised"
+msgstr ""
+
+msgid "the document title is empty"
+msgstr ""
+
+msgid "the email must containt the @ character"
+msgstr ""
+
+msgid "the email syntax  is like : john.doe@anywhere.org"
+msgstr ""
+
+#, php-format
+msgid "the end date (%s) is before the begin date (%s)"
+msgstr ""
+
+#, php-format
+msgid "the external pluggin file %s cannot be read"
+msgstr ""
+
+msgid "the login must not be empty"
+msgstr ""
+
+#, php-format
+msgid "the method '%s' is not known for the object class %s"
+msgstr ""
+
+#, php-format
+msgid "the pluggins function description '%s' is not conform for %s attribut"
+msgstr ""
+
+msgid "the state will be removed"
+msgstr ""
+
+msgid "the state will be unchanged"
+msgstr ""
+
+#, php-format
+msgid "the title of document [%s] is not conform to original [%s]"
+msgstr ""
+
+msgid "the two passwords must be the same"
+msgstr ""
+
+msgid "these needed attributes are empty"
+msgstr ""
+
+msgid "this groups must be refreshed"
+msgstr ""
+
+msgid "this kind of document cannot be duplicate"
+msgstr ""
+
+msgid "this login exists"
+msgstr ""
+
+msgid "this system user cannot be deleted"
+msgstr ""
+
+msgid "timer"
+msgstr ""
+
+msgid "timer already set"
+msgstr ""
+
+msgid "timeraction"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "title include"
+msgstr ""
+
+#, php-format
+msgid "to %s"
+msgstr ""
+
+msgid "to be add"
+msgstr ""
+
+#, php-format
+msgid "to be update %s [%d] "
+msgstr ""
+
+msgid "to choose value from input help"
+msgstr ""
+
+msgid "to choose value from special interface"
+msgstr ""
+
+msgid "to insert document in sub folder"
+msgstr ""
+
+#, php-format
+msgid "to the %s activity"
+msgstr ""
+
+#, php-format
+msgid "to the %s state"
+msgstr ""
+
+msgid "todate"
+msgstr ""
+
+#. #-#-#-#-#  TOOLBOX_app_.pot (PACKAGE VERSION)  #-#-#-#-#
+#. _COMMENT Search Label
+msgid "today"
+msgstr ""
+
+msgid "tomorrow"
+msgstr ""
+
+msgid "top url to find help documentation"
+msgstr ""
+
+msgid "total count"
+msgstr ""
+
+msgid "town of our society"
+msgstr ""
+
+#, php-format
+msgid "try add acl %s"
+msgstr ""
+
+msgid "type characters to filter document on it's title"
+msgstr ""
+
+msgid "unaffect user to a document"
+msgstr ""
+
+#, php-format
+msgid "unattach %d timers associated to %s"
+msgstr ""
+
+#, php-format
+msgid "unattach all timers [%s]"
+msgstr ""
+
+#, php-format
+msgid "unattach timer %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "unattachTimer : the timer parameter is not a document of TIMER family"
+msgstr ""
+
+msgid "unchanged state"
+msgstr ""
+
+msgid "uncomplete request"
+msgstr ""
+
+msgid "unit:GB"
+msgstr "GB"
+
+msgid "unit:MB"
+msgstr "MB"
+
+msgid "unit:TB"
+msgstr "TB"
+
+msgid "unit:byte"
+msgid_plural "unit:bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
+
+msgid "unit:kB"
+msgstr "kB"
+
+#, php-format
+msgid "unknow %s file property"
+msgstr ""
+
+#, php-format
+msgid "unknow acl %s"
+msgstr ""
+
+msgid "unknow attribute"
+msgstr ""
+
+#, php-format
+msgid "unknow attribute %s"
+msgstr ""
+
+#, php-format
+msgid "unknow attribute %s (family %s)"
+msgstr ""
+
+#, php-format
+msgid "unknow attribute '%s'"
+msgstr ""
+
+#, php-format
+msgid "unknow document reference '%s'"
+msgstr ""
+
+#, php-format
+msgid "unknow item %s"
+msgstr ""
+
+#, php-format
+msgid "unknow logical reference '%s'"
+msgstr ""
+
+msgid "unknow operator"
+msgstr ""
+
+#, php-format
+msgid "unknow privilege %s"
+msgstr ""
+
+#, php-format
+msgid "unknow set for attribute %s %s"
+msgstr ""
+
+#, php-format
+msgid "unknow user #%s"
+msgstr ""
+
+#, php-format
+msgid "unknown attribute %s"
+msgstr ""
+
+#, php-format
+msgid "unknown attribute %s for document %s"
+msgstr ""
+
+#, php-format
+msgid "unknown batch document %s"
+msgstr ""
+
+#, php-format
+msgid "unknown document id %s"
+msgstr ""
+
+#, php-format
+msgid "unknown file state %s"
+msgstr ""
+
+#, php-format
+msgid "unknown folder document %s"
+msgstr ""
+
+msgid "unlimited revisions"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "unlock"
+msgstr ""
+
+msgid "unlock file to discard edit"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "unlock unowner locked doc"
+msgstr ""
+
+msgid "unreferenced document"
+msgstr ""
+
+msgid "unselect"
+msgstr ""
+
+msgid "unset default view control"
+msgstr ""
+
+msgid "unset default workflow"
+msgstr ""
+
+#, php-format
+msgid "untitle %s %d"
+msgstr ""
+
+msgid "untitle document"
+msgstr ""
+
+msgid "untitle family"
+msgstr ""
+
+#, php-format
+msgid "update %s [%d] "
+msgstr ""
+
+#, php-format
+msgid "update %s attribute"
+msgstr ""
+
+#, php-format
+msgid "update %s family %s"
+msgstr ""
+
+#, php-format
+msgid "update %s search"
+msgstr ""
+
+#, php-format
+msgid "update id [%d] "
+msgstr ""
+
+#, php-format
+msgid "update logical name from %s to %s"
+msgstr ""
+
+#, php-format
+msgid "update of %s catalogue has failed,"
+msgstr ""
+
+#, php-format
+msgid "update of %s in progress"
+msgstr ""
+
+msgid "update text file for fulltext"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "updated"
+msgstr ""
+
+#, php-format
+msgid "updated by import"
+msgstr ""
+
+msgid "url to reach http server index"
+msgstr ""
+
+msgid "url to reach http server index in open mode"
+msgstr ""
+
+msgid "use ctrl key in popup menu"
+msgstr ""
+
+msgid "use dynacase user management"
+msgstr ""
+
+#, php-format
+msgid "user #%d does not exist"
+msgstr ""
+
+#, php-format
+msgid "user #%s has not a real account. Affectation aborded"
+msgstr ""
+
+#, php-format
+msgid "user #%s not found. Affectation aborded"
+msgstr ""
+
+#, php-format
+msgid "user %d does not exist"
+msgstr ""
+
+msgid "user cannot be revived"
+msgstr ""
+
+msgid "user csv enclosure preferences when export documents"
+msgstr ""
+
+msgid "user csv enclosure preferences when import documents"
+msgstr ""
+
+msgid "user csv line break preferences when import documents"
+msgstr ""
+
+msgid "user csv separator preferences when export documents"
+msgstr ""
+
+msgid "user csv separator preferences when import documents"
+msgstr ""
+
+msgid "user has not identificator"
+msgstr ""
+
+msgid "user is deactivated"
+msgstr ""
+
+msgid "user not know"
+msgstr ""
+
+msgid "user preferences when export family"
+msgstr ""
+
+msgid "username"
+msgstr "Name"
+
+#, php-format
+msgid "value [%s] is not a integer"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a number"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a valid date"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a valid time"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a valid timestamp"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is out of limit time"
+msgstr ""
+
+msgid "value for empty field"
+msgstr ""
+
+msgid "value in field"
+msgstr ""
+
+msgid "values use for new document (not for update)"
+msgstr ""
+
+#, php-format
+msgid "vault %s created.\n"
+msgstr ""
+
+#, php-format
+msgid "vault already created %s: aborted\n"
+msgstr ""
+
+msgid "vault file error"
+msgstr ""
+
+msgid "vault file is not initialized"
+msgstr ""
+
+msgid "verify files status"
+msgstr ""
+
+msgid "version identificator"
+msgstr ""
+
+msgid "vertical size for secondary windows"
+msgstr ""
+
+#, php-format
+msgid "vid %s stored"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "view"
+msgstr ""
+
+msgid "view a part of list"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "view acl"
+msgstr ""
+
+msgid "view all columns"
+msgstr ""
+
+msgid "view altern color in document fieldset"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "view answers"
+msgstr ""
+
+msgid "view card"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "view confidential"
+msgstr ""
+
+msgid "view constraints"
+msgstr ""
+
+msgid "view control"
+msgstr ""
+
+msgid "view detail"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "view document"
+msgstr ""
+
+msgid "view document in extjs"
+msgstr ""
+
+msgid "view equality attributes"
+msgstr ""
+
+msgid "view graph of workflow"
+msgstr ""
+
+msgid "view hidden attributes"
+msgstr ""
+
+msgid "view history revision"
+msgstr ""
+
+msgid "view imported tar"
+msgstr ""
+
+msgid "view last historic items for a destroyed document"
+msgstr ""
+
+msgid "view list"
+msgstr ""
+
+msgid "view properties"
+msgstr ""
+
+msgid "view specific ask"
+msgstr ""
+
+msgid "view standalone card"
+msgstr ""
+
+msgid "view tab letter by family"
+msgstr ""
+
+msgid "view timers attached to a document"
+msgstr ""
+
+msgid "view xml"
+msgstr ""
+
+#, php-format
+msgid "viewDoc did not returned a valid file"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "viewacl"
+msgstr ""
+
+#, php-format
+msgid "visibility %s does not allow modify attribute %s for document %s"
+msgstr ""
+
+#, php-format
+msgid "waiting : document not set"
+msgstr ""
+
+msgid "waiting conversion file"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "warning"
+msgstr ""
+
+msgid "warning_name"
+msgstr "Your name is required"
+
+msgid "warning_pass"
+msgstr "Your password is required"
+
+#. _COMMENT Sharp Label
+msgid "wask"
+msgstr ""
+
+msgid "welcome"
+msgstr "Welcome !"
+
+msgid "width of the abstract card"
+msgstr ""
+
+msgid "width of the frame for abstract card"
+msgstr ""
+
+#, php-format
+msgid "with these conditions"
+msgstr ""
+
+msgid "wordedit"
+msgstr ""
+
+msgid "workflow"
+msgstr ""
+
+msgid "workflow has been recomposed"
+msgstr ""
+
+#, php-format
+msgid "workflow_init :: id %s is not a workflow"
+msgstr ""
+
+msgid "workflow_init :: id is empty"
+msgstr ""
+
+#, php-format
+msgid "workflow_init :: workflow id %s not found"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "wprocess_private"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "wprocess_qualified"
+msgstr ""
+
+msgid "write only"
+msgstr ""
+
+msgid "yesterday"
+msgstr ""
+
+#, php-format
+msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
+msgstr ""
+
+#, php-format
+msgid "you cannot create this kind [%s] of document"
+msgstr ""
+
+#, php-format
+msgid "you cannot create this kind [%s] of folder"
+msgstr ""
+
+msgid "yourpassword"
+msgstr "Password :"
+
+msgid "yourusername"
+msgstr "Login :"
+
+#. _COMMENT Sharp Label
+msgid "{left} begin by {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} filename or type include {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} filename or type not include {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} greater or equal to {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} greater than {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} identifier equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} identifier not equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} include no value of {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} include {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} is between {min} and {max}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} is not empty"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} is not equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} is null"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} last or first name include {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} lesser or equal to {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} lesser than {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} not include {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} one id equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} one value equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} system identifier equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} system identifier not equal {right}"
+msgstr ""
+
+#. _COMMENT Sharp Label
+msgid "{left} title include {right}"
+msgstr ""
+
+#~ msgid "Access to change password function"
+#~ msgstr "Access to change password function"
+
+#~ msgid "Admin edit"
+#~ msgstr "Edit as admin"
+
+#~ msgid "Advanced search"
+#~ msgstr "Advanced search"
+
+#~ msgid "Basic search"
+#~ msgstr "basic search"
+
+#~ msgid "FGSEARCH:help for input"
+#~ msgstr ""
+#~ "<h2>Search input</h2>\n"
+#~ "\n"
+#~ "<h3><em>Words</em> search</h3>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    This input must be filled with keywords.\n"
+#~ "</p>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    Search can correct input words. For example :\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        Search is done by using singular and plural forms. So when the "
+#~ "keyword is\n"
+#~ "        <em class=\"help-keyword\">cheval</em>, documents containing <em "
+#~ "class=\"help-keyword\">cheval</em>,\n"
+#~ "        or <em class=\"help-keyword\">chevaux</em> will be found.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        Stop words are ignored (<em class=\"help-keyword\">le</em>, <em "
+#~ "class=\"help-keyword\">la</em>…).\n"
+#~ "        So when keywords are <em class=\"help-keyword\">le cheval</em>,\n"
+#~ "        only <em class=\"help-keyword\">cheval</em> (and its plurals) "
+#~ "will be looked for.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        When there are multiple keywords, search will look for documents\n"
+#~ "        containing all of the keywords (and their plural forms).\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<h2>Using <em>operators</em></h2>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    When a more precise search is required, one can use operators.\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">AND</em> and <em class=\"help-operator"
+#~ "\">OR</em><br/>\n"
+#~ "        These operators make keywords combination.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheval AND chèvre</em> will "
+#~ "find\n"
+#~ "                documents containing both <em class=\"help-keyword"
+#~ "\">cheval</em>\n"
+#~ "                and <em class=\"help-keyword\">chèvre</em> (or their "
+#~ "plural forms).\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheval OR chèvre</em> will "
+#~ "find\n"
+#~ "                documents containing either <em class=\"help-keyword"
+#~ "\">cheval</em>\n"
+#~ "                or <em class=\"help-keyword\">chèvre</em> or both (or "
+#~ "their plural forms).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+#~ "\">)</em><br/>\n"
+#~ "        Parenthesis express priorities between operators.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">(cheval OR chèvre) AND blanc</"
+#~ "em>\n"
+#~ "                will find documents containing\n"
+#~ "                <ul>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">cheval</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em> (or their "
+#~ "plural forms) ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">chèvre</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em> (or their "
+#~ "plural forms) ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">cheval</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">chèvre</em> and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em>  (or their "
+#~ "plural forms).\n"
+#~ "                    </li>\n"
+#~ "                </ul>\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">\"</em><br/>\n"
+#~ "        Quotes express <em>exact search</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"cheval\"</em> will find\n"
+#~ "                documents containing the exact word\n"
+#~ "                <em class=\"help-keyword\">cheval</em>, but won't find "
+#~ "those\n"
+#~ "                containing <em class=\"help-keyword\">chevaux</em> ;\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"cheval blanc\"</em> will "
+#~ "find\n"
+#~ "                documents containing the exact words <em class=\"help-"
+#~ "keyword\">cheval\n"
+#~ "                blanc</em> (be careful, <em class=\"help-keyword\">blanc</"
+#~ "em> must be\n"
+#~ "                immediately after <em class=\"help-keyword\">cheval</"
+#~ "em>).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">*</em><br/>\n"
+#~ "        Star express partial <em>words</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheva*</em> will find\n"
+#~ "                documents containig words begining with\n"
+#~ "                <em class=\"help-keyword\">cheva</em>, like\n"
+#~ "                <em class=\"help-keyword\">cheval</em>,\n"
+#~ "                <em class=\"help-keyword\">chevalier</em>,\n"
+#~ "                <em class=\"help-keyword\">chevaux</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">*vage</em> will find\n"
+#~ "                documents containig words ending with\n"
+#~ "                <em class=\"help-keyword\">vage</em>, like\n"
+#~ "                <em class=\"help-keyword\">élevage</em>,\n"
+#~ "                <em class=\"help-keyword\">gavage</em>,\n"
+#~ "                <em class=\"help-keyword\">pavage</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<p>\n"
+#~ "    Of course, these operators can be combined to make a more precise "
+#~ "search.\n"
+#~ "</p>"
+
+#~ msgid "Freedom"
+#~ msgstr "Dynacase"
+
+#~ msgid "Freedom imodification"
+#~ msgstr "Modify virtual document"
+
+#~ msgid "Freedom initialisation"
+#~ msgstr "Dynacase initialization"
+
+#~ msgid "description"
+#~ msgstr "Description"
+
+#~ msgid "forum_id"
+#~ msgstr "forum"
+
+#~ msgid "freedom database"
+#~ msgstr "Dynacase database"
+
+#~ msgid "generic#search"
+#~ msgstr "Search"
+
+#~ msgid "generic:search placeholder"
+#~ msgstr "Search"
+
+#~ msgid "name"
+#~ msgstr "Name"
+
+#~ msgid "no"
+#~ msgstr "No"
+
+#~ msgid "search online help"
+#~ msgstr "Start search"
+
+#~ msgid "short_name"
+#~ msgstr "Short Name"
+
+#~ msgid "switch search mode (basic/advanced)"
+#~ msgstr "basic/advanced mode"
+
+#~ msgid "updateldap"
+#~ msgstr "Update LDAP server"
+
+#~ msgid "updatetitle"
+#~ msgstr "Update Title Cards"
+
+#~ msgid "yes"
+#~ msgstr "Yes"
