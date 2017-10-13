@@ -32,7 +32,7 @@ webinst-full:
 webinst-business:
 	-mkdir -p $(localpub)/Samples
 	rsync --delete -azvr Samples $(localpub)
-	cd $(localpub)/Samples/BusinessApp && npm install && npm run build
+	cd $(localpub)/Samples/BusinessApp && yarn install && yarn run build
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
 
 webinst-all: webinst webinst-selenium
