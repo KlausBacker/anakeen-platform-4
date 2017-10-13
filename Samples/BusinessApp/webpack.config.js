@@ -38,7 +38,6 @@ module.exports = {
             kendo: path.resolve(__dirname, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/kendo-ddui-builded.js')
         }
     },
-    devtool: 'inline-source-map',
     plugins: [
         new webpack.LoaderOptionsPlugin({
             minimize: true
@@ -53,6 +52,7 @@ module.exports = {
 };
 
 if (process.env.NODE_ENV !== 'production') {
+    module.exports.devtool = "#cheap-module-eval-source-map";
     module.exports.devServer = {
         contentBase: path.resolve(__dirname, 'src/public/'),
             openPage: '?app=BUSINESS_APP',
@@ -69,6 +69,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (process.env.NODE_ENV === 'production') {
+    module.exports.devtool = '#source-map';
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {
