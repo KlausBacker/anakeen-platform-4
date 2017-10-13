@@ -191,9 +191,7 @@
 }
 
 .documentsList__collectionCard:first-child,
-.documentsList__documentCard:first-child,
-.documentsList__collectionCard:last-child,
-.documentsList__documentCard:last-child {
+.documentsList__collectionCard:last-child {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -235,9 +233,6 @@
   width: calc(100% - 89px);
 }
 
-.documentsList__documentCard--opened .documentsList__documentCard__heading__content,
-.documentsList__documentCard__heading__state,
-.documentsList__documentCard .documentsList__documentCard__heading__content,
 .documentsList__collectionCard__heading__content__label {
   color: #505050;
   font-weight: 400;
@@ -269,7 +264,7 @@
   }
 
   .documentsList__collectionCard__heading__content__icon {
-    box-shadow: inset 8px 0px 0px 0px $A4-ui-color-client;
+    box-shadow: inset 8px 0px 0px 0px #8AE234;
   }
 }
 
@@ -296,7 +291,7 @@
   .documentsList__collectionCard {
     height: 51px;
     &.k-state-selected {
-      box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+      box-shadow: inset 4px 0px 0px 0px #8AE234;
     }
   }
 

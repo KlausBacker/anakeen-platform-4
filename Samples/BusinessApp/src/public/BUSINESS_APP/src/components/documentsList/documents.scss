@@ -132,6 +132,20 @@ $leftPaneSize: 25vw;
   padding: 10px 15px 10px 20px;
 }
 
+.documentsList__documentCard:first-child,
+.documentsList__documentCard:last-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.documentsList__documentCard--opened .documentsList__documentCard__heading__content,
+.documentsList__documentCard__heading__state,
+.documentsList__documentCard .documentsList__documentCard__heading__content {
+  color: #505050;
+  font-weight: 400;
+}
 
 .documentsList__documentCard__heading__content_icon {
   padding: 0 1em 0 0;

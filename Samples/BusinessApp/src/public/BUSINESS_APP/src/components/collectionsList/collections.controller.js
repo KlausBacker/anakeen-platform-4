@@ -13,10 +13,12 @@ export default {
         this.currentUser = response.data.data.user;
       });
     const store = document.getElementById('a4-store');
-    store.addEventListener('store-change', (event) => {
-      const storeData = event.detail && event.detail.length ? event.detail[0] : null;
-      this.onStoreChange(storeData);
-    });
+    if (store) {
+      store.addEventListener('store-change', (event) => {
+        const storeData = event.detail && event.detail.length ? event.detail[0] : null;
+        this.onStoreChange(storeData);
+      });
+    }
   },
 
   data() {
