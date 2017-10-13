@@ -1,3 +1,3 @@
 module.exports = {
-    "devServerURL": "http://172.31.253.41"
+    "devServerURL": "http://192.168.1.46:8082"
 };

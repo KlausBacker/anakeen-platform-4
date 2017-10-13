@@ -1,4 +1,7 @@
 import Vue from 'vue';
+import axios from 'axios';
+
+import a4Password from './AuthentPassword.vue';
 
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -21,12 +24,22 @@ export default {
         return {
             authentError: 'Error',
             forgetError: 'Error',
+            forgetSuccess: '',
             forgetStatusFailed: false,
+            resetError: '',
+            resetSuccess: '',
+            resetStatusFailed: true,
             wrongPassword: false,
-            hidePassword: true,
+            resetPassword: false,
+            pwd: '',
+            resetPwd1: '',
+            resetPwd2: '',
         };
     },
 
+    components: {
+        'a4-password': a4Password,
+    },
     computed: {
         translations() {
             return {
@@ -36,8 +49,13 @@ export default {
                 validationMessageIdentifier: this.$pgettext('Authent', 'You must enter your identifier'),
                 helpContentTitle: this.$pgettext('Authent', 'Help to sign in'),
                 authentError: this.$pgettext('Authent', 'Authentication error'),
+                unexpectedError: this.$pgettext('Authent', 'Unexpected error'),
                 forgetContentTitle: this.$pgettext('Authent', 'Form to reset password'),
                 forgetPlaceHolder: this.$pgettext('Authent', 'Identifier or email address'),
+                passwordLabel: this.$pgettext('Authent', 'Password :'),
+                resetPasswordLabel: this.$pgettext('Authent', 'New password :'),
+                confirmPasswordLabel: this.$pgettext('Authent', 'Confirm password :'),
+                confirmPasswordError: this.$pgettext('Authent', 'Confirm password are not same as new password'),
             };
         },
 
@@ -54,21 +72,7 @@ export default {
         },
 
         redirectUri() {
-            let getSearchArg = (key) => {
-                let result = null;
-                let tmp = [];
-                location.search
-                    .substr(1)
-                    .split('&')
-                    .forEach((item) => {
-                        tmp = item.split('=');
-                        if (tmp[0] === key) result = decodeURIComponent(tmp[1]);
-                    });
-
-                return result;
-            };
-
-            let uri = getSearchArg('redirect_uri');
+            let uri = this._protected.getSearchArg('redirect_uri');
             if (!uri) {
                 uri = '/';
             }
@@ -78,11 +82,42 @@ export default {
     },
 
     beforeMount() {
-        Vue.config.language = this.defaultLanguage;
+        let passKey = this._protected.getSearchArg('passkey');
+        let currentLanguage = this.defaultLanguage;
+        if (this.defaultLanguage === 'auto') {
+            let navLanguage = navigator.language || navigator.userLanguage;
+            if (navLanguage === 'fr') {
+                currentLanguage = 'fr_FR';
+            } else {
+                currentLanguage = 'en_US';
+            }
+        }
+
+        Vue.config.language = currentLanguage;
+
+        if (passKey) {
+            this.resetPassword = true;
+            this.login = this._protected.getSearchArg('uid');
+            this.authToken = passKey;
+        }
     },
 
     created() {
         this._protected = {};
+
+        this._protected.getSearchArg = (key) => {
+            let result = null;
+            let tmp = [];
+            location.search
+                .substr(1)
+                .split('&')
+                .forEach((item) => {
+                    tmp = item.split('=');
+                    if (tmp[0] === key) result = decodeURIComponent(tmp[1]);
+                });
+
+            return result;
+        };
 
         this._protected.initForgetElements = () => {
 
@@ -106,7 +141,17 @@ export default {
             });
 
             $(this.$refs.authentForgetSubmit).kendoButton();
-            $forgetForm.on('submit', this.askResetPassword);
+            $forgetForm.on('submit', this.forgetPassword);
+        };
+
+        this._protected.initResetPassword = () => {
+
+            let $ = this.$kendo.jQuery;
+            let $resetForm = $(this.$refs.authentResetPasswordForm);
+
+            $(this.$refs.authentResetSubmit).kendoButton();
+
+            $resetForm.on('submit', this.applyResetPassword);
         };
     },
 
@@ -123,15 +168,15 @@ export default {
 
         $(this.$refs.loginButton).kendoButton();
         $connectForm.on('submit', this.createSession);
-        $connectForm.find('.btn-reveal').on('click', () => {
-            let $pwd = $(this.$refs.authentPassword);
+        $(this.$refs.authentComponent).find('.btn-reveal').on('click', function revealPass() {
+            let $pwd = $(this).closest('.input-group-btn').find('input');
             if ($pwd.attr('type') === 'password') {
-                this.hidePassword = false;
                 $pwd.attr('type', 'text');
+                $(this).find('.fa').removeClass('fa-eye').addClass('fa-eye-slash');
             } else {
                 if ($pwd.attr('type') === 'text') {
-                    this.hidePassword = true;
                     $pwd.attr('type', 'password');
+                    $(this).find('.fa').addClass('fa-eye').removeClass('fa-eye-slash');
                 }
             }
         });
@@ -153,16 +198,12 @@ export default {
         /**
          * Special custom warning if required fields are empty
          */
-        $connectForm.find('input').on('change', function requireMessage() {
-            let msg = $(this).data('validationmessage');
-            if (this.value === '' && msg) {
-                this.setCustomValidity(msg);
-            } else {
-                this.setCustomValidity('');
-            }
-        });
 
-        this._protected.initForgetElements();
+        if (this.resetPassword) {
+            this._protected.initResetPassword();
+        } else {
+            this._protected.initForgetElements();
+        }
 
     },
 
@@ -205,7 +246,7 @@ export default {
             $(this.$refs.loginButton).prop('disabled', true);
         },
 
-        askResetPassword(event) {
+        forgetPassword(event) {
             let $ = this.$kendo.jQuery;
 
             kendo.ui.progress($(this.$refs.authentForgetForm), true);
@@ -215,20 +256,25 @@ export default {
             this.$http.post(`/authent/mailPassword/${login}`, {
                 password: this.pwd,
                 language: this.$language.current,
-            }).then(() => {
+            }).then((response) => {
+                console.log('Success', response);
                 this.forgetStatusFailed = false;
+                kendo.ui.progress($(this.$refs.authentForgetForm), false);
+                this.forgetSuccess = response.data.data.message;
+                $(this.$refs.authentForgetSubmit).prop('disabled', true).hide();
             }).catch((e) => {
                 console.log('Error', e);
                 if (e.response && e.response.data && e.response.data.exceptionMessage) {
                     let info = e.response.data;
-                    if (info.messages && info.messages.length > 0 && info.messages[0].code === 'AUTH0001') {
-                        // Normal authentication error
-                        this.forgetError = this.translations.authentError;
+
+                    if (info.messages && info.messages.length > 0) {
+                        this.forgetError = info.messages[0].contentText;
                     } else {
                         this.forgetError = e.response.data.exceptionMessage;
                     }
+
                 } else {
-                    this.forgetError = this.translations.authentError;
+                    this.forgetError = this.translations.unexpectedError;
                 }
 
                 this.forgetStatusFailed = true;
@@ -237,7 +283,65 @@ export default {
                 $(this.$refs.authentForgetSubmit).prop('disabled', false);
             });
 
-            $(this.$refs.authentForgetSubmit).prop('disabled', true);
+        },
+
+        applyResetPassword(event) {
+            let $ = this.$kendo.jQuery;
+
+            event.preventDefault();
+
+            if (!this.resetPwd1 || this.resetPwd1 !== this.resetPwd2) {
+                this.resetStatusFailed = true;
+                this.resetError = this.translations.confirmPasswordError;
+                return;
+            }
+
+            let httpAuth = axios.create({
+                baseURL: '/api/v1',
+                headers: {
+                    Authorization: 'DcpOpen ' + this.authToken,
+                },
+            });
+
+            kendo.ui.progress($(this.$refs.authentResetPasswordForm), true);
+
+            let login = encodeURIComponent(this.login);
+            httpAuth.put(`/authent/password/${login}`, {
+                password: this.resetPwd1,
+                language: this.$language.current,
+
+            }).then((response) => {
+                console.log('Success', response);
+                this.resetStatusFailed = false;
+                kendo.ui.progress($(this.$refs.authentResetPasswordForm), false);
+                this.resetSuccess = response.data.data.message;
+                window.setTimeout(() => {
+                    $(this.$refs.authentGoHome).kendoButton({
+                        click: () => {
+                            window.location.href = '../';
+                        },
+                    });
+                }, 10);
+            }).catch((e) => {
+                if (e.response && e.response.data && e.response.data.exceptionMessage) {
+                    let info = e.response.data;
+
+                    if (info.messages && info.messages.length > 0) {
+                        this.resetError = info.messages[0].contentText;
+                    } else {
+                        this.resetError = e.response.data.exceptionMessage;
+                    }
+                } else {
+                    this.resetError = this.translations.unexpectedError;
+                }
+
+                this.resetStatusFailed = true;
+
+                kendo.ui.progress($(this.$refs.authentResetPasswordForm), false);
+                $(this.$refs.authentForgetSubmit).prop('disabled', false);
+            });
+
+            $(this.$refs.authentForgetSubmit).prop('disabled', true).hide();
         },
     },
 };
