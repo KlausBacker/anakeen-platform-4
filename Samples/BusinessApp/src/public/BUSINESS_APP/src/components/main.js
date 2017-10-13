@@ -8,11 +8,12 @@ import VueCustomElement from 'vue-custom-element';
 
 Vue.use(VueCustomElement);
 Vue.http = Vue.prototype.$http = axios.create({
-  baseURL: '/api/v1',
-  timeout: 10000
+    baseURL: '/api/v1',
+    timeout: 10000,
 });
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.kendo = Vue.prototype.$kendo = kendo;
+
 // import and register your component(s)
 // import Base from './base/base.vue';
 import Splitter from './splitter/splitter.vue';
