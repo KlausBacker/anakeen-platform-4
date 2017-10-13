@@ -7,7 +7,6 @@
                    required autocapitalize="off" autocorrect="off" spellcheck="false"
                    :placeholder="translations.loginPlaceHolder"
                    :data-validationmessage="translations.validationMessageIdentifier"/>
-
             <label class="label" for="password" translate-context="Authent" v-translate>Password :</label>
             <span class="input-group-btn">
                 <input id="password" ref="authentPassword"
