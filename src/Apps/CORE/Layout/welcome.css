@@ -87,6 +87,19 @@ body {
     margin-right: 2rem;
 }
 
+
+.logout a:hover {
+
+    background-color: #9c9c9c;
+}
+
+.logout a {
+    background-color: #b1b1b1;
+    border: solid 1px #808080;
+
+}
+
+
 .bottom {
     flex-grow:1;
     padding-top: 5rem;
