@@ -38,8 +38,8 @@ webinst-business:
 webinst-all: webinst webinst-selenium
 
 webinst:
-	cd ui && npm run build
-	cd Document-uis && npm install && npm run build
+	cd ui && yarn run build
+	cd Document-uis && yarn install && yarn run build
 	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	make -f pojs.make compile
 	make webinst-full
@@ -54,12 +54,6 @@ pojs:
 clean: 
 	rm -rf $(localpub)
 
-deploy-cool:
-	rm -f *webinst
-	cd Document-uis &&  npm run build
-	make webinst-full
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-document-uis-*webinst -- --force
-	make clean
 deploy:
 	rm -f *webinst
 	make webinst

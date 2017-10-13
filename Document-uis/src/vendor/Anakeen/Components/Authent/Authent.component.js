@@ -86,6 +86,7 @@ export default {
 
         this._protected.initForgetElements = () => {
 
+            let $ = this.$kendo.jQuery;
             let $forgetForm = $(this.$refs.authentForgetForm);
             let forgetWindow;
             console.log('protected', this);
@@ -103,7 +104,8 @@ export default {
                     forgetWindow.title(this.translations.forgetContentTitle).center().open();
                 },
             });
-            $forgetForm.kendoButton();
+
+            $(this.$refs.authentForgetSubmit).kendoButton();
             $forgetForm.on('submit', this.askResetPassword);
         };
     },
@@ -206,7 +208,7 @@ export default {
         askResetPassword(event) {
             let $ = this.$kendo.jQuery;
 
-            kendo.ui.progress($(this.$refs.authentForm), true);
+            kendo.ui.progress($(this.$refs.authentForgetForm), true);
 
             let login = encodeURIComponent(this.login);
             event.preventDefault();
@@ -214,7 +216,6 @@ export default {
                 password: this.pwd,
                 language: this.$language.current,
             }).then(() => {
-                window.location.href = this.redirectUri;
                 this.forgetStatusFailed = false;
             }).catch((e) => {
                 console.log('Error', e);
@@ -232,7 +233,7 @@ export default {
 
                 this.forgetStatusFailed = true;
 
-                kendo.ui.progress($(this.$refs.authentForm), false);
+                kendo.ui.progress($(this.$refs.authentForgetForm), false);
                 $(this.$refs.authentForgetSubmit).prop('disabled', false);
             });
 

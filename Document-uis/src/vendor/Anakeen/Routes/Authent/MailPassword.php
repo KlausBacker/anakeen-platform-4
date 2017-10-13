@@ -7,6 +7,7 @@ namespace Anakeen\Routes\Authent;
 
 use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\HttpApi\V1\Api\Exception;
 
 class MailPassword extends Crud
 {
@@ -31,29 +32,30 @@ class MailPassword extends Crud
         $user->setLoginName($login);
 
         if (!$user->isAffected()) {
-            $s = new \SearchDoc("IUSER");
+            $s = new \SearchAccount();
 
-                $s->addFilter("us_mail = '%s'", $login);
+            $s->setTypeFilter(\SearchAccount::userType);
+            $s->addFilter("mail = '%s'", $login);
 
 
-            $s->setObjectReturn();
             $s->overrideViewControl();
-            $s->search();
-            if ($s->count() === 1) {
-                $userDocument=$s->getNextDoc();
-                $user->setLoginName($userDocument->getRawValue("us_login"));
+            /**
+             * @var \AccountList $accounts
+             */
+            $accounts=$s->search();
+            if ($accounts->count() === 1) {
+                $user=$accounts->current();
             }
-            if ($s->count() > 1) {
+            if ($accounts->count() > 1) {
                  throw new Exception('AUTH0011', $login);
             }
-        } else {
-            $userDocument=DocManager::getDocument($user->fid);
         }
 
         if ($user->isAffected()) {
             $_SERVER['PHP_AUTH_USER']=$user->login;
             \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
 
+            $userDocument=DocManager::getDocument($user->fid);
             $mailTemplateId="AUTH_TPLMAILASKPWD";
             /**
              * @var \Dcp\Family\Mailtemplate $mailTemplate
@@ -79,7 +81,9 @@ class MailPassword extends Crud
             }
         } else {
             sleep(self::failDelay);
-            throw new Exception('AUTH0013', $login);
+            $e= new Exception('AUTH0013', $login);
+            $e->setUserMessage(sprintf(___("Cannot find user \"%s\".", "authent"),$login ));
+            throw $e;
         }
 
         return [];

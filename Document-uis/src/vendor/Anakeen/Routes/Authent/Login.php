@@ -6,6 +6,7 @@
 namespace Anakeen\Routes\Authent;
 
 use Dcp\HttpApi\V1\Crud\Crud;
+use Dcp\HttpApi\V1\Api\Exception;
 
 class Login extends Crud
 {

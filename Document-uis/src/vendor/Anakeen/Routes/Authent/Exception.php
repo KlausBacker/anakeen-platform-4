@@ -32,20 +32,3 @@ namespace {
         const AUTH0013 = 'Cannot find user "%s"';
     }
 }
-namespace Anakeen\Routes\Authent {
-    class Exception extends \Dcp\Exception
-    {
-        protected $httpStatus = 400;
-        protected $httpMessage = "Dcp Exception";
-        /**
-         *
-         * @param int $httpStatus
-         * @param string $httpMessage
-         */
-        public function setHttpStatus($httpStatus, $httpMessage = "")
-        {
-            $this->httpStatus = $httpStatus;
-            $this->httpMessage = $httpMessage;
-        }
-    }
-}

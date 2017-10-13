@@ -47,7 +47,7 @@
             <p class="label" for="password" translate-context="Authent" v-translate>Help Content</p>
         </div>
         <form ref="authentForgetForm" class="authent-form authent-form--forget" style="display:none">
-            <p class="forget-description" translate-context="Authent" v-translate>Ask a new password</p>
+
             <label class="label" for="forgetlogin" translate-context="Authent" v-translate>Enter identifier or email address :</label>
             <input id="forgetlogin" class="authent-login form-control k-textbox" type="text"
                    v-model="login"
@@ -60,7 +60,7 @@
             </div>
             <div class="authent-buttons">
                 <button ref="authentForgetSubmit" class="authent-login-button k-primary" type="submit">
-                    <translate translate-context="Authent">Send ask</translate>
+                    <translate translate-context="Authent">Send reset password ask</translate>
                 </button>
             </div>
         </form>
