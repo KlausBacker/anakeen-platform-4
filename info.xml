@@ -51,6 +51,14 @@
             <label>Initializing APPMNG roles and ACLs</label>
         </process>
 
+        <process command="programs/record_application VAULT I">
+            <label>Record vault application in database</label>
+        </process>
+        <process
+                command="./wsh.php --api=importDocuments --file=./VAULT/Data/Init.csv">
+            <label>Initializing VAULT roles and ACLs</label>
+        </process>
+
         <process command="programs/record_application ACCESS I">
             <label>Record access application in database</label>
         </process>
@@ -113,6 +121,11 @@
             <label>Update DOCADMIN searches</label>
         </process>
 
+        <process command="programs/pre_migration VAULT" />
+        <process command="programs/record_application VAULT U">
+            <label>Update VAULT application in database</label>
+        </process>
+        <process command="programs/post_migration VAULT" />
         <process command="programs/record_application AUTHENTUI U"/>
         <process command="programs/record_application HTTPAPI_V1_ADMIN U"/>
         <process command="programs/record_application DCPDEVEL"/>
