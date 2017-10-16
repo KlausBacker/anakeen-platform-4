@@ -58,7 +58,7 @@ msgstr "Identifiant : "
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:78
 msgctxt "Authent"
 msgid "Send reset password ask"
-msgstr "Envoyer la demande de réinitialisation du mot de passe"
+msgstr "Réinitialiser le mot de passe"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:26
 msgctxt "Authent"
@@ -103,7 +103,7 @@ msgstr "Erreur inconnue"
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:53
 msgctxt "Authent"
 msgid "Form to reset password"
-msgstr "Formulaire de réinitialisation du mot de passe"
+msgstr "Réinitialisation du mot de passe"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:54
 msgctxt "Authent"

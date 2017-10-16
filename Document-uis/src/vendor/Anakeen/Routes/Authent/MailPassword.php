@@ -56,7 +56,7 @@ class MailPassword extends Crud
             \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
 
             $userDocument=DocManager::getDocument($user->fid);
-            $mailTemplateId="AUTH_TPLMAILASKPWD";
+            $mailTemplateId=\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
             /**
              * @var \Dcp\Family\Mailtemplate $mailTemplate
              */

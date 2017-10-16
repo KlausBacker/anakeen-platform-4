@@ -77,7 +77,7 @@ export default {
                 uri = '/';
             }
 
-            return uri;
+            return uri.replace(/(https?:\/\/)|(\/)+/g, '$1$2');
         },
     },
 
