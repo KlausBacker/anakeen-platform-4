@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 html {
     padding:0;
     margin:0;
@@ -90,13 +91,17 @@ body {
 
 .logout a:hover {
 
-    background-color: #9c9c9c;
+    background-color: #eee;
 }
 
 .logout a {
-    background-color: #b1b1b1;
-    border: solid 1px #808080;
-
+    background: none;
+    border: none;
+    color:#9c9c9c;
+    padding: 0.3rem 1rem;
+}
+.logout a i {
+    font-size:1.5rem;
 }
 
 

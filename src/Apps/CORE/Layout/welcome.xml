@@ -31,7 +31,7 @@
             <div class="top">
                 <p class="welcome">Congratulations ! Anakeen Platform is up and running</p>
                 [IF isAdmin]<p class="admin"><a href="admin/">Access to Anakeen Admin Center</a></p>[ENDIF isAdmin]
-               <p class="admin logout"><a href="?app=CORE&action=LOGOUT">Logout</a></p>
+               <p class="admin logout" title="Logout"><a href="?app=CORE&action=LOGOUT"><i class="material-icons">power_settings_new</i></a></p>
             </div>
             <div class="bottom">
                 <p class="product">ANAKEEN PLATFORM</p>
