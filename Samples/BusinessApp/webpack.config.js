@@ -17,8 +17,23 @@ module.exports = {
     module: {
         rules: [
             {
+              test:    /\.js$/,
+              include: [path.resolve(__dirname, 'src/public/BUSINESS_APP/src')],
+              loader: 'jscs-loader',
+              enforce: 'pre'
+            },
+            {
                 test: /\.vue$/,
-                use: 'vue-loader'
+                use: {
+                  loader: 'vue-loader',
+                  options: {
+                    extractCSS: process.env.NODE_ENV === 'production',
+                    loaders: {
+                      sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
+                      scss: 'vue-style-loader!css-loader!sass-loader'
+                    }
+                  }
+                }
             },
             {
                 test: /\.js$/,

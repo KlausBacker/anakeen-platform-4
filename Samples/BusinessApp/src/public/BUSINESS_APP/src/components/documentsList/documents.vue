@@ -2,7 +2,7 @@
     <div class="documentsList__documents__wrapper" ref="wrapper">
         <div class="documentsList__documents" v-show="collection">
             <div class="documentsList__documents__logo">
-                <img class="documentsList__documents__logo__img" src="api/v1/images/assets/original/logo-cstb-trans.png"/>
+                <img class="documentsList__documents__logo__img" :src="logoUrl"/>
             </div>
 
             <div class="documentsList__documents__header__wrapper">
@@ -17,16 +17,14 @@
                 <div class="documentsList__documents__search">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default documentsList__documents__search__reset__button" @click="onRemoveClick">
-                                <span class="fa fa-times"></span>
+                            <button class="documentsList__documents__search__reset__button" ref="removeFilterButton">
                             </button>
                         </span>
                         <input type="text"
                                class="form-control documentsList__documents__search__keyword"
                                placeholder="Mot clé" :value="filterInput" @input="onFilterInput">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default documentsList__documents__search__button" @click="onSearchClick">
-                                            <span class="fa fa-search"></span>
+                                        <button class="documentsList__documents__search__button" ref="searchFilterButton">
                                         </button>
                                     </span>
                     </div>
