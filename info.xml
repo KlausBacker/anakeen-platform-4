@@ -82,8 +82,6 @@
 
         <process command="programs/record_application AUTHENTUI I"/>
         <process command="programs/record_application HTTPAPI_V1_ADMIN I"/>
-        <process command="programs/record_application DCPDEVEL I"/>
-        <process command="programs/record_application DCPDEVEL I"/>
         <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
@@ -128,8 +126,6 @@
         <process command="programs/post_migration VAULT" />
         <process command="programs/record_application AUTHENTUI U"/>
         <process command="programs/record_application HTTPAPI_V1_ADMIN U"/>
-        <process command="programs/record_application DCPDEVEL"/>
-        <process command="programs/post_migration DCPDEVEL"/>
         <process command="programs/update_catalog"/>
     </post-upgrade>
 </module>
