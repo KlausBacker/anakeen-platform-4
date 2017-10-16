@@ -30,5 +30,17 @@ namespace {
          * @errorCode user with email or login
          */
         const AUTH0013 = 'Cannot find user "%s"';
+        /**
+         * @errorCode mistmatch between login and token
+         */
+        const AUTH0020 = 'Invalid access.';
+        /**
+         * @errorCode Error when change password
+         */
+        const AUTH0021 = 'Password not changed : %s';
+        /**
+         * @errorCode Error password not strong enough
+         */
+        const AUTH0022 = 'Password not changed : %s';
     }
 }

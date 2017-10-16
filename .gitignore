@@ -1,4 +1,6 @@
 *.webinst
+*~
+*#
 localpub/
 ui/node_modules/
 ui/DataTables/

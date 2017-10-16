@@ -24,7 +24,7 @@ class MailPassword extends Crud
         $login=$this->urlParameters["identifier"];
         $language=isset($this->contentParameters["language"])?$this->contentParameters["language"]:null;
 
-
+        \Dcp\HttpApi\V1\Api\Router::setExtension("json");
 
 
 
@@ -50,7 +50,7 @@ class MailPassword extends Crud
                  throw new Exception('AUTH0011', $login);
             }
         }
-
+        $output=[];
         if ($user->isAffected()) {
             $_SERVER['PHP_AUTH_USER']=$user->login;
             \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
@@ -69,16 +69,17 @@ class MailPassword extends Crud
             $description="Reset password";
             $context=array([
                 "methods"=>["PUT"],
-                "route"=>"%authent/password$%"
+                "route"=>"%authent/password/%"
             ]);
             $expire=3600*24; // One day
             $tokenKey = \Dcp\HttpApi\V1\AuthenticatorManager::getAuthorizationToken($user, $context, $expire, true , $description);
 
-            $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user));
+            $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user->login));
             $err=$mailTemplate->sendDocument($userDocument, $key);
             if ($err) {
                  throw new Exception('AUTH0012', $err);
             }
+
         } else {
             sleep(self::failDelay);
             $e= new Exception('AUTH0013', $login);
@@ -86,7 +87,9 @@ class MailPassword extends Crud
             throw $e;
         }
 
-        return [];
+        // $output["debugurlpass"]=$key["LINK_CHANGE_PASSWORD"];
+        $output["message"]=sprintf(___("An email has been sended to user \"%s\"", "authent"), $login);
+        return $output;
     }
 
     /**

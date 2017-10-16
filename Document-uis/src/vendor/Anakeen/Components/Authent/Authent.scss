@@ -23,8 +23,14 @@
  padding-top: 1rem;
 }
 
-.msgerr {
+.message--error {
  text-align: center;
+ color:red;
+}
+
+.message--success {
+ color: #099408;
+
 }
 
 .authent-bottom {
