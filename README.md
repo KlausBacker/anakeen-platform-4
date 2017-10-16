@@ -1,4 +1,3 @@
-dynacase-devel-uis
-==================
+# Anakeen Admin Center
 
-User interfaces to developpement
+Web interfaces to admin applications and configure family documents
