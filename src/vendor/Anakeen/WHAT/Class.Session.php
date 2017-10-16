@@ -246,7 +246,7 @@ class Session extends DbObj
             return $this->status;
         }
         global $_SERVER; // use only cache with HTTP
-        if (!empty($_SERVER['HTTP_HOST'])) {
+        if (!empty($_SERVER['HTTP_HOST']) && $this->name) {
             session_name($this->name);
             session_id($this->id);
             @session_start();
@@ -263,7 +263,7 @@ class Session extends DbObj
     // --------------------------------
     function read($k = "", $d = "")
     {
-        if (empty($_SERVER['HTTP_HOST'])) {
+        if (empty($_SERVER['HTTP_HOST']) || ! $this->name) {
             return ($d);
         }
         /* Load session's data only once as requested by #4825 */

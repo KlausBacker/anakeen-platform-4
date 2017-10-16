@@ -207,16 +207,30 @@ class AuthenticatorManager
         
         return trim($freedom_authtype);
     }
-    
-    protected static function getAuthorizationScheme()
+
+
+
+    public static function getAuthorizationValue()
     {
         if (php_sapi_name() !== 'cli') {
             $headers = apache_request_headers();
-            if (!empty($headers["Authorization"])) {
-                if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $headers["Authorization"], $reg)) {
-                    return trim($reg[1]);
+
+            foreach ($headers as $k=>$v) {
+                if (strtolower($k) === "authorization") {
+                     if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $v, $reg)) {
+
+                    return ["scheme"=>trim($reg[1]), "token"=>trim($reg[2])];
+                }
                 }
             }
+        }
+        return false;
+    }
+    protected static function getAuthorizationScheme()
+    {
+        $authValue=self::getAuthorizationValue();
+        if ($authValue) {
+            return $authValue["scheme"];
         }
         return "";
     }

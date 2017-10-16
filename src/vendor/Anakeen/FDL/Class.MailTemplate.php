@@ -327,7 +327,7 @@ class MailTemplate extends \Dcp\Family\Document
         
         if (trim($to . $cc . $bcc) == "") {
             $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
-            $doc->addHistoryEntry(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject) , DocHisto::NOTICE);
+            $doc->addHistoryEntry(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject) , \DocHisto::NOTICE);
             return "";
         } //nobody to send data
         if ($this->sendercopy && getParam("FDL_BCC") == "yes") {
@@ -401,13 +401,13 @@ class MailTemplate extends \Dcp\Family\Document
         }
         
         if ($err == "") {
-            $doc->addHistoryEntry(sprintf(_("send mail %s with template %s") , $recip, $this->title) , DocHisto::INFO, "SENDMAIL");
+            $doc->addHistoryEntry(sprintf(_("send mail %s with template %s") , $recip, $this->title) , \DocHisto::INFO, "SENDMAIL");
             $action->log->info(sprintf(_("Mail %s sent to %s") , $subject, $recip));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail) {
                 addWarningMsg(sprintf(_("send mail %s") , $recip));
             }
         } else {
-            $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , DocHisto::ERROR);
+            $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , \DocHisto::ERROR);
             $action->log->error(sprintf(_("cannot send mail %s to %s : %s") , $subject, $recip, $err));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail || self::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail) {
                 addWarningMsg(sprintf(_("cannot send mail %s") , $err));

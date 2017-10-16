@@ -19,7 +19,7 @@ include_once ('WHAT/Class.Authenticator.php');
 
 class openAuthenticator extends Authenticator
 {
-    
+    const waitDelayError=1;
     const openAuthorizationScheme = "DcpOpen";
     const openGetId = "dcpopen-authorization";
     private $privatelogin = false;
@@ -32,9 +32,12 @@ class openAuthenticator extends Authenticator
     {
         include_once ('WHAT/Lib.Http.php');
         $privatekey = static::getTokenId();
-        if (!$privatekey) return Authenticator::AUTH_NOK;
+        if (!$privatekey) {
+            return Authenticator::AUTH_NOK;
+        }
         $this->privatelogin = $this->getLoginFromPrivateKey($privatekey);
         if ($this->privatelogin === false) {
+            sleep(self::waitDelayError);
             return Authenticator::AUTH_NOK;
         }
         
@@ -53,17 +56,11 @@ class openAuthenticator extends Authenticator
     {
         $tokenId = getHttpVars(self::openGetId, getHttpVars("privateid"));
         if (!$tokenId) {
-            $headers = apache_request_headers();
+            $hAuthorization = \AuthenticatorManager::getAuthorizationValue();
 
-            if (!empty($headers["Authorization"])) {
-                $hAuthorization=$headers["Authorization"];
-            } elseif (!empty($headers["authorization"])) {
-                $hAuthorization=$headers["authorization"];
-            }
             if (!empty($hAuthorization)) {
-                
-                if (preg_match(sprintf("/%s\\s+(.*)$/", self::openAuthorizationScheme) , $hAuthorization, $reg)) {
-                    $tokenId = trim($reg[1]);
+                if ($hAuthorization["scheme"] === self::openAuthorizationScheme) {
+                    $tokenId = $hAuthorization["token"];
                 }
             }
         }
