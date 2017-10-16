@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Document-uis 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-13 17:41+0200\n"
-"PO-Revision-Date: 2017-10-11 12:48+0200\n"
+"PO-Revision-Date: 2017-10-16 13:23+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -26,7 +26,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Authent"
 msgid "Forget password ?"
-msgstr "Enter your identifier"
+msgstr ""
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:81
 msgctxt "Authent"
@@ -53,23 +53,23 @@ msgstr ""
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:7
 msgctxt "Authent"
 msgid "Identifier :"
-msgstr ""
+msgstr "Username"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:50
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:78
 msgctxt "Authent"
 msgid "Send reset password ask"
-msgstr ""
+msgstr "Send"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.vue:26
 msgctxt "Authent"
 msgid "Sign in"
-msgstr ""
+msgstr "Log in"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:46
 msgctxt "Authent"
 msgid "Enter your identifier"
-msgstr "Enter your identifier"
+msgstr "Enter your username"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:47
 #, fuzzy
@@ -91,7 +91,7 @@ msgstr "Enter your identifier"
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:50
 msgctxt "Authent"
 msgid "Help to sign in"
-msgstr ""
+msgstr "Help to log in"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:51
 msgctxt "Authent"
@@ -104,10 +104,9 @@ msgid "Unexpected error"
 msgstr ""
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:53
-#, fuzzy
 msgctxt "Authent"
 msgid "Form to reset password"
-msgstr "Enter your identifier"
+msgstr "Reset password"
 
 #: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:54
 msgctxt "Authent"

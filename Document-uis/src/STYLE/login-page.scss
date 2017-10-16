@@ -47,4 +47,20 @@ html {
   .message--error {
     color: $error;
   }
+
+  .authent-buttons {
+    margin-top: 1rem;
+  }
+  .login-page .authent-form {
+    padding-bottom: 1rem;
+  }
+  .authent-password {
+    margin-top: 0.5rem;
+  }
+  .k-input:invalid, .k-textbox:invalid, .k-input.k-textbox:invalid {
+    border-color: $A4-ui-doc-edit-attribute-color-border;
+  }
+  .k-input:focus, .k-textbox:focus, .k-input.k-textbox:focus {
+    border-color: $A4-ui-doc-edit-attribute-hover-color;
+  }
 }

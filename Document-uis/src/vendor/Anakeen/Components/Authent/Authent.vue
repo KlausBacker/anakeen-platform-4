@@ -31,7 +31,7 @@
             <div class="authent-help" ref="authentHelpContent" style="display:none">
                 <p class="label" for="password" translate-context="Authent" v-translate>Help Content</p>
             </div>
-            <form ref="authentForgetForm" class="authent-form authent-form--forget" style="display:none">
+            <form ref="authentForgetForm" class="authent-form authent-form--forget" style="display:none" >
 
                 <label class="label" for="forgetlogin" translate-context="Authent" v-translate>Enter identifier or email address :</label>
                 <input id="forgetlogin" class="authent-login form-control k-textbox" type="text"
