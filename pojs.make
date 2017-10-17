@@ -43,4 +43,4 @@ compile: $(OUTPUT_DIR)/translation.json
 
 $(OUTPUT_DIR)/translation.json: $(LOCALE_FILES)
 	mkdir -p  $(dir $@)
-	gettext-compile --output $@ $(LOCALE_FILES)
+	./Document-uis/node_modules/.bin/gettext-compile --output $@ $(LOCALE_FILES)

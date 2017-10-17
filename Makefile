@@ -38,9 +38,10 @@ webinst-business:
 webinst-all: webinst webinst-selenium
 
 webinst:
-	make -f pojs.make compile
 	cd ui && yarn run build
-	cd Document-uis && yarn install && yarn run build
+	cd Document-uis && yarn install
+	make -f pojs.make compile
+	cd Document-uis && yarn run build
 	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 
 	make webinst-full
