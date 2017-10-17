@@ -9,7 +9,6 @@
             'jquery',
             'underscore',
             'mustache',
-            'kendo/kendo.colorpicker',
             'dcpDocument/widgets/attributes/text/wText'
         ], factory);
     } else {

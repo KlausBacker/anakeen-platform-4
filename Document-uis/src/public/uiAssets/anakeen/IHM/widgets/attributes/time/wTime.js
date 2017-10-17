@@ -6,7 +6,6 @@
         define([
             'jquery',
             'underscore',
-            'kendo/kendo.timepicker',
             'dcpDocument/widgets/attributes/date/wDate'
         ], factory);
     } else {

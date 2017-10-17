@@ -2,9 +2,8 @@
 require([
     'dcpDocument/widgets/attributes/date/loaderDate',
     'dcpDocument/widgets/attributes/suiteDefaultTestAttribute',
-    'dcpDocument/widgets/attributes/date/dateTestAttribute',
-    'kendo/kendo.core'
-], function (widget, defaultTestSuite, dateTestSuite, kendo) {
+    'dcpDocument/widgets/attributes/date/dateTestAttribute'
+], function (widget, defaultTestSuite, dateTestSuite) {
     "use strict";
 
     kendo.culture("fr-FR");

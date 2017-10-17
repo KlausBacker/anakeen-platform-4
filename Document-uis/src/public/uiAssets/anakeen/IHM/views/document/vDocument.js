@@ -14,14 +14,12 @@ define([
     'dcpDocument/views/document/attributeTemplate',
     'dcpDocument/models/mTransitionGraph',
     'dcpDocument/views/workflow/vTransitionGraph',
-    'kendo/kendo.core',
     'dcpDocument/i18n/documentCatalog',
-    'kendo/kendo.tabstrip',
     'dcpDocument/widgets/history/wHistory',
     'dcpDocument/widgets/properties/wProperties'
 ], function vDocument(_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
                       ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-                      attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, kendo, i18n)
+                      attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, i18n)
 {
     'use strict';
 

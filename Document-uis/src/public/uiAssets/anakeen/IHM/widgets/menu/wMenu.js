@@ -3,8 +3,6 @@ define([
     'underscore',
     'mustache',
     'dcpDocument/i18n/documentCatalog',
-    "kendo/kendo.menu",
-    "kendo/kendo.window",
     'dcpDocument/widgets/widget'
 ], function wMenu($, _, Mustache, i18n)
 {

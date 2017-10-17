@@ -2,12 +2,10 @@ define([
     'jquery',
     'underscore',
     'mustache',
-    'kendo/kendo.core',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/history/wRevisionDiff',
-    'kendo/kendo.window',
     'dcpDocument/widgets/window/wDialog'
-], function require_whistory($, _, Mustache, kendo)
+], function require_whistory($, _, Mustache)
 {
     'use strict';
 

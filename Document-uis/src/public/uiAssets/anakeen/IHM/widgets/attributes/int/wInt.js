@@ -8,15 +8,14 @@
             'jquery',
             'underscore',
             'mustache',
-            'kendo/kendo.numerictextbox',
             'dcpDocument/widgets/attributes/text/wText',
             'kendo-culture-fr'
         ], factory);
     } else {
         //noinspection JSUnresolvedVariable
-        factory(window.jQuery, window._, window.Mustache, window.kendo);
+        factory(window.jQuery, window._, window.Mustache);
     }
-}(window, function requireWint($, _, Mustache, kendo)
+}(window, function requireWint($, _, Mustache)
 {
     'use strict';
 

@@ -2,7 +2,6 @@ define([
     'jquery',
     'underscore',
     'mustache',
-    'kendo/kendo.core',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wDialog'
 ], function require_revisiondiff($, _, Mustache) {

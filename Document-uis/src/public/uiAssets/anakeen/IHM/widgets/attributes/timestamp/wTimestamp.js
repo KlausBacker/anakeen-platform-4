@@ -5,7 +5,6 @@
     if (typeof define === 'function' && define.amd) {
         define([
             'jquery',
-            'kendo/kendo.datetimepicker',
             'dcpDocument/widgets/attributes/date/wDate'
         ], factory);
     } else {

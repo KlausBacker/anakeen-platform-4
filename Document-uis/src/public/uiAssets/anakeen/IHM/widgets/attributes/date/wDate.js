@@ -9,7 +9,6 @@
             'jquery',
             'underscore',
             'mustache',
-            'kendo/kendo.datepicker',
             'dcpDocument/widgets/attributes/text/wText',
             'kendo-culture-fr'
         ], factory);

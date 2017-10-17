@@ -8,10 +8,7 @@
             'jquery',
             'underscore',
             'mustache',
-            'dcpDocument/widgets/attributes/wAttribute',
-            'kendo/kendo.multiselect',
-            'kendo/kendo.combobox',
-            'kendo/kendo.dropdownlist'
+            'dcpDocument/widgets/attributes/wAttribute'
         ], factory);
     } else {
         //noinspection JSUnresolvedVariable

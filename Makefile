@@ -20,32 +20,18 @@ deploy-test:
 	make webinst-selenium
 	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-ui-test*webinst -- --force
 
+webinst-all: webinst webinst-selenium
 
-webinst-full:
+webinst:
+	cd Document-uis && yarn install && yarn buildAsset && yarn build
+	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
+	make -f pojs.make compile
 	-mkdir -p $(localpub)/webinst
-	rsync --delete -azvr Document-uis $(localpub)/webinst/
+	rsync --delete -azvr --exclude 'node_modules' Document-uis $(localpub)/webinst/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
 	r.js -o $(localpub)/webinst/Document-uis/src/public/uiAssets/anakeen/IHM/build.js
 	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
-
-webinst-business:
-	cd ui && yarn install && yarn run build
-	-mkdir -p $(localpub)/Samples
-	rsync --delete -azvr Samples $(localpub)
-	cd $(localpub)/Samples/BusinessApp && yarn install && yarn run build
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
-
-webinst-all: webinst webinst-selenium
-
-webinst:
-	cd ui && yarn install && yarn run build
-	cd Document-uis && yarn install
-	make -f pojs.make compile
-	cd Document-uis && yarn run build
-	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
-
-	make webinst-full
 
 po:
 	./dynacase-devtool.phar extractPo -s Document-uis
