@@ -30,6 +30,7 @@ webinst-full:
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
 webinst-business:
+	cd ui && yarn run build
 	-mkdir -p $(localpub)/Samples
 	rsync --delete -azvr Samples $(localpub)
 	cd $(localpub)/Samples/BusinessApp && yarn install && yarn run build
