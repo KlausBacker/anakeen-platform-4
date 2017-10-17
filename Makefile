@@ -30,7 +30,7 @@ webinst-full:
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
 webinst-business:
-	cd ui && yarn run build
+	cd ui && yarn install && yarn run build
 	-mkdir -p $(localpub)/Samples
 	rsync --delete -azvr Samples $(localpub)
 	cd $(localpub)/Samples/BusinessApp && yarn install && yarn run build
@@ -39,7 +39,7 @@ webinst-business:
 webinst-all: webinst webinst-selenium
 
 webinst:
-	cd ui && yarn run build
+	cd ui && yarn install && yarn run build
 	cd Document-uis && yarn install
 	make -f pojs.make compile
 	cd Document-uis && yarn run build
