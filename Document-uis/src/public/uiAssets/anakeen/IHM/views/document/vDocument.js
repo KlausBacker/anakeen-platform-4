@@ -367,7 +367,7 @@ define([
                 }
             }
         },
-        fixedTab: function vDocumentfixedTab()
+        fixedTab: function vDocumentfixedTab(event)
         {
             var $tabs = this.$el.find(".dcpDocument__tabs");
             var $ul;
@@ -375,31 +375,51 @@ define([
                 var tabPlacement = this.model.getOption("tabPlacement");
                 var menuHeight = this.$el.find(".menu__content").height();
                 var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
+                var isAlreadyFixed= $tabs.hasClass("tab--fixed");
+                var $liActive=$tabs.find("li.k-state-active");
                 var scrollTop = $(window).scrollTop();
+                var $navButtons=$tabs.find(".k-button-bare");
+                var resizeMode = (event.type === "resize");
                 if (scrollTop > ($tabs.offset().top - menuHeight)) {
                     $tabs.addClass("tab--fixed");
                     $tabs.css("top", menuHeight + "px");
                     if (tabPlacement === "top") {
                         // Special case for scrolling tabs
                         $ul = $tabs.find(".dcpDocument__tabs__list");
-                        $ul.css("width", "");
-                        kendoTabStrip.resize();
+                        if (resizeMode) {
+                              kendoTabStrip.resize();
+                        }
+                        var $navButtonsVisible=$tabs.find(".k-button-bare:visible");
+                        if ($navButtonsVisible.length > 0) {
 
-                        var $navButtons=$tabs.find(".k-button-bare:visible");
-                        if ($navButtons.length > 0) {
-                            if ($ul.data("margins")) {
-                                $ul.css("margin-left",$ul.data("margins").left);
-                                $ul.css("margin-right",$ul.data("margins").right);
-                            } else {
-                                if (parseInt($ul.css("margin-left")) > 0) {
-                                    $ul.data("margins", {left:$ul.css("margin-left"), right:$ul.css("margin-right")});
+                            if (!isAlreadyFixed || resizeMode) {
+                                $ul.css("width", "");
+                                if (!$ul.data("margins"))  {
+                                    if (parseInt($navButtonsVisible.width()) > 0) {
+                                        $ul.data("fixMargins",
+                                            {left: $navButtonsVisible.width(), right: $navButtonsVisible.width()});
+                                        $ul.data("originalMargins",
+                                            {left:  $ul.css("margin-left"), right:  $ul.css("margin-right")});
+                                    }
+                                }
+                                if ($ul.data("fixMargins")) {
+                                    $ul.css("margin-left", $ul.data("fixMargins").left);
+                                    $ul.css("margin-right", $ul.data("fixMargins").right);
+                                }
+
+
+                                var ulWidth = $tabs.width() - parseInt($ul.css("margin-right")) - parseInt($ul.css(
+                                    "margin-left"));
+                                $ul.css("width", ulWidth + "px");
+                                $navButtons.css("height", $ul.outerHeight() + "px");
+
+                                $ul.css("top", (menuHeight) + "px");
+                                $tabs.find(".k-button-bare").css("top", (menuHeight + 0) + "px");
+
+                                if ($liActive.length === 1 ) {
+                                    kendoTabStrip.activateTab($liActive);
                                 }
                             }
-
-                            var ulWidth = $tabs.width() - parseInt($ul.css("margin-right")) -
-                                parseInt($ul.css("margin-left"));
-                            $ul.css("width", ulWidth + "px");
-                            $tabs.find(".k-button-bare").css("top", (menuHeight + 8) + "px");
                         } else {
                             if (parseInt($ul.css("margin-left")) > 0) {
                                 $ul.data("margins", {left:$ul.css("margin-left"), right:$ul.css("margin-right")});
@@ -412,13 +432,21 @@ define([
                     var $tabList = this.$el.find(".dcpDocument__tabs__list");
 
                     if (scrollTop < ($tabContent.offset().top - menuHeight - $tabList.height())) {
-                        if ($tabs.hasClass("tab--fixed")) {
+                        if (isAlreadyFixed) {
                             $tabs.removeClass("tab--fixed");
                             $tabs.css("top", "");
                             if (tabPlacement === "top") {
+                                $navButtons.css("height","");
                                 $ul = $tabs.find(".dcpDocument__tabs__list");
-                                $ul.css("width", "");
+                                $ul.css("width", "").css("top", "");
                                 $tabs.find(".k-button-bare").css("top", "");
+                                if ($ul.data("originalMargins")) {
+                                    $ul.css("margin-left", $ul.data("originalMargins").left);
+                                    $ul.css("margin-right", $ul.data("originalMargins").right);
+                                }
+                                if ($liActive.length === 1 ) {
+                                    kendoTabStrip.activateTab($liActive);
+                                }
                                 kendoTabStrip.resize();
                             }
                         }
@@ -427,14 +455,14 @@ define([
             }
         },
 
-        scrollTabList: function vDocumentScrollTabList()
+        scrollTabList: function vDocumentScrollTabList(event)
         {
             var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
             var $tabs = this.$el.find(".dcpDocument__tabs");
 
             if ($tabs.hasClass("tab--fixed")) {
 
-                _.defer(_.bind(this.fixedTab, this));
+                _.defer(_.bind(this.fixedTab, this, event));
             } else {
 
                 kendoTabStrip.resize();
