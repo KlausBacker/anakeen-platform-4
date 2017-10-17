@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const confPerso = require("./webpack-perso.js");
-
+const localpub = process.env.NODE_ENV === 'production' ? '..' : '.';
 module.exports = {
     entry: {
         app: './src/public/BUSINESS_APP/src/components/main.js',
@@ -49,8 +49,10 @@ module.exports = {
     },
     resolve: {
         alias: {
-            jquery: path.resolve(__dirname, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/jquery.js'),
-            kendo: path.resolve(__dirname, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/kendo-ddui-builded.js')
+            jquery: path.resolve(__dirname, localpub, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/jquery.js'),
+            kendo: path.resolve(__dirname, localpub, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/kendo-ddui-builded.js'),
+            '@': path.resolve(__dirname, 'src/public/BUSINESS_APP/src/components'),
+            '@~': path.resolve(__dirname, localpub, '../../Document-uis/src/vendor/Anakeen/Components')
         }
     },
     plugins: [
