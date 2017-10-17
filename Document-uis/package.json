@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack && ",
     "dev": "webpack --watch",
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "buildAsset": "NODE_ENV=production webpack --config ./webpack.deps.config.js"
+    "buildAsset": "NODE_ENV=production webpack --config ./webpack.deps.config.js && r.js -convert ./src/public/uiAssets/externals/KendoUI/messages/ ./src/public/uiAssets/externals/KendoUI/messages && r.js -convert ./src/public/uiAssets/externals/KendoUI/cultures/ ./src/public/uiAssets/externals/KendoUI/cultures"
   },
   "browserslist": "last 2 versions, ie 10",
   "author": "",
