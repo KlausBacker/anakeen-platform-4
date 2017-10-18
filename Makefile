@@ -33,6 +33,14 @@ webinst:
 	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
 	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
+webinst-business:
+	cd Document-uis && yarn install && yarn buildAsset
+	cd Samples/BusinessApp && yarn install && yarn build
+	-mkdir -p $(localpub)/Samples
+	rsync --delete -azvr --exclude 'node_modules' Samples $(localpub)
+	./dynacase-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
+
+
 po:
 	./dynacase-devtool.phar extractPo -s Document-uis
 
@@ -42,6 +50,11 @@ pojs:
 
 clean: 
 	rm -rf $(localpub)
+
+mrproper: clean
+	rm -rf Document-uis/node_modules
+	rm -rf Samples/BusinessApp/node_modules
+	rm -f *.webinst
 
 deploy:
 	rm -f *webinst
