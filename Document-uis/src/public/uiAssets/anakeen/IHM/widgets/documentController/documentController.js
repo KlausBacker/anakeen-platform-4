@@ -3,7 +3,6 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'dcpDocument/libs/promise',
     'dcpDocument/routers/router',
     'dcpDocument/models/mDocument',
     'dcpDocument/controllerObjects/attributeInterface',
@@ -18,7 +17,7 @@ define([
     'dcpDocument/widgets/window/wConfirm',
     'dcpDocument/widgets/window/wLoading',
     'dcpDocument/widgets/window/wNotification'
-], function documentController($, _, Backbone, Promise, Router, DocumentModel,
+], function documentController($, _, Backbone, Router, DocumentModel,
                                AttributeInterface, MenuInterface, TransitionInterface,
                                DocumentView, TransitionModel, TransitionView, MenuModel, i18n)
 {

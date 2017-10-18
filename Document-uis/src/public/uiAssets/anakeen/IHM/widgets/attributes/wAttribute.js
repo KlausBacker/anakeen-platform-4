@@ -719,7 +719,9 @@
                     trigger: "hover"
                 }).each(function wAttributeInitLinkTooltip()
                 {
-                    $(this).data("bs.tooltip").tip().addClass("dcpAttribute__linkvalue");
+                    if ($(this).data("bs.tooltip").tip) {
+                        $(this).data("bs.tooltip").tip().addClass("dcpAttribute__linkvalue");
+                    }
                 });
             }
             return this;

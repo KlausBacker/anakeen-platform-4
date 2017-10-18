@@ -2,8 +2,7 @@ define([
     'jquery',
     'underscore',
     'mustache',
-    'dcpDocument/widgets/window/wWindow',
-    'kendo/kendo.button'
+    'dcpDocument/widgets/window/wWindow'
 ], function wConfirm($, _, Mustache) {
     'use strict';
 

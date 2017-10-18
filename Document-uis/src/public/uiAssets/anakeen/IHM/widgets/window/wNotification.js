@@ -1,8 +1,7 @@
 define([
     'jquery',
     'underscore',
-    'dcpDocument/widgets/widget',
-    'kendo/kendo.notification'
+    'dcpDocument/widgets/widget'
 ], function wNotification($, _)
 {
     'use strict';

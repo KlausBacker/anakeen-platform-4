@@ -18,18 +18,17 @@ $screen-sm-min: $screen-sm;
 $screen-md: 992px;
 $screen-md-min: $screen-md;
 
-$screen-xs:                  480px;
+$screen-xs: 480px;
 //** Deprecated `$screen-xs-min` as of v3.2.0
-$screen-xs-min:              $screen-xs;
+$screen-xs-min: $screen-xs;
 
 // Small screen / tablet
 //** Deprecated `$screen-sm` as of v3.0.1
-$screen-sm:                  768px;
-$screen-sm-min:              $screen-sm;
+$screen-sm: 768px;
+$screen-sm-min: $screen-sm;
 
 // So media queries don't overlap when required, provide a maximum
-$screen-xs-max:              ($screen-sm-min - 1);
-
+$screen-xs-max: ($screen-sm-min - 1);
 
 $gray-base: #000;
 $gray-darker: lighten($gray-base, 13.5%); // #222
@@ -51,8 +50,8 @@ $grid-float-breakpoint: 40rem;
 
 $font-size-base: $A4-ui-font-base-size;
 $line-height-base: $A4-ui-line-height;
-$panel-body-padding : $font-size-base/2;
-$padding-base-vertical : $font-size-base*0.20;
-$padding-base-horizontal : 2*$padding-base-vertical;
+$panel-body-padding: $font-size-base/2;
+$padding-base-vertical: $font-size-base*0.20;
+$padding-base-horizontal: 2*$padding-base-vertical;
 @import "../../../../public/uiAssets/anakeen/IHM/views/document/document.scss";
 

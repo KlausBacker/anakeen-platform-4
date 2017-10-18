@@ -1,8 +1,7 @@
 define([
     'jquery',
     'underscore',
-    'dcpDocument/widgets/widget',
-    'kendo/kendo.window'
+    'dcpDocument/widgets/widget'
 ], function wDialog($, _)
 {
     'use strict';

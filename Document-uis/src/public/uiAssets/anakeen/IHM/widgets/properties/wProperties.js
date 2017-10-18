@@ -2,10 +2,9 @@ define([
     'jquery',
     'underscore',
     'mustache',
-    'kendo/kendo.core',
     'dcpDocument/widgets/widget',
     'dcpDocument/widgets/window/wDialog'
-], function require_wProperties($, _, Mustache, kendo)
+], function require_wProperties($, _, Mustache)
 {
     'use strict';
 

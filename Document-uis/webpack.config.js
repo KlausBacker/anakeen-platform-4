@@ -4,15 +4,16 @@ const confPerso = require("./webpack-perso.js");
 
 module.exports = {
     entry: {
-        app: path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js'),
-        externals: [
-            'kendo'
-        ]
+        app: path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js')
     },
     output: {
         path: path.resolve(__dirname, 'src/public/login/dist/'),
         publicPath: "/login/dist/",
         filename: 'a4-login-components.js'
+    },
+    externals: {
+        kendo: 'kendo',
+        jquery: 'jQuery'
     },
     module: {
         rules: [
@@ -42,21 +43,9 @@ module.exports = {
     },
     resolve: {
         alias: {
-            jquery: path.resolve(__dirname, 'src/public/uiAssets/externals/KendoUI/js/jquery.js'),
-            kendo: path.resolve(__dirname, 'src/public/uiAssets/externals/KendoUI/js/kendo-ddui-builded.js')
+            kendo: path.resolve(__dirname, 'webpack/kendo.js')
         }
-    },
-    plugins: [
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
-        }),
-        new webpack.ProvidePlugin({
-            "jQuery": "jquery",
-            "$": "jquery",
-            "window.jQuery": "jquery"
-        }),
-        new webpack.optimize.CommonsChunkPlugin({name: 'externals', filename: 'a4-externals.bundle.js'})
-    ]
+    }
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -80,6 +69,9 @@ if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map';
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        }),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'

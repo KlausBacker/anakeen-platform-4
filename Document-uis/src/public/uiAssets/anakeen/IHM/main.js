@@ -5,7 +5,8 @@
 require([
     'underscore',
     'jquery',
-    'dcpDocument/widgets/documentController/documentController'
+    'dcpDocument/widgets/documentController/documentController',
+    'kendo'
 ], function require_main(_, $)
 {
     'use strict';

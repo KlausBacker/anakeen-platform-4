@@ -27,7 +27,7 @@ class RenderDefault implements IRenderConfig
             "bootstrap" => "css/a4/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/a4/document/kendo.css?ws=" . $version,
             "document" => "css/a4/document/document.css?ws=" . $version,
-            "datatable" => "uiAssets/externals/jquery-dataTables/css/dataTables.bootstrap.css?ws=" . $version
+            "datatable" => "uiAssets/externals/datatables/css/dataTables.bootstrap4.css?ws=" . $version
         );
     }
     
@@ -42,15 +42,17 @@ class RenderDefault implements IRenderConfig
         $pubInternalPath = "uiAssets/anakeen/IHM";
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
+        $jsRef = [
+        ];
         if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
-            $jsRef = array(
-                "traceKit" => "$pubExternalPath/TraceKit/tracekit.js?ws=" . $version,
+            $jsRef = array_merge($jsRef, array(
+                "traceKit" => "$pubExternalPath/traceKit/traceKit.js?ws=" . $version,
                 "traceError" => "$pubInternalPath/dynacaseReport.js?ws=" . $version
-            );
+            ));
         } else {
-            $jsRef = array(
+            $jsRef = array_merge($jsRef, array(
                 "traceError" => "$pubInternalPath/dynacaseReportLight.js?ws=" . $version
-            );
+            ));
         }
         if ($modeDebug !== "FALSE") {
             return $jsRef = array_merge($jsRef, array(
@@ -65,12 +67,6 @@ class RenderDefault implements IRenderConfig
                 "document" => "$pubInternalPath/main-built.js?ws=" . $version
             ));
         }
-        /*return $jsRef = array_merge($jsRef, array(
-            "require" => "$pubExternalPath/RequireJS/require.js?ws=" . $version,
-            "config" => $modeDebug !== "FALSE" ? "$pubInternalPath/require_config.js?ws=" . $version : "$pubInternalPath/require_config.min.js?ws=" . $version,
-            "kendo-ddui" => $modeDebug !== "FALSE" ? "$pubExternalPath/KendoUI/js/kendo-ddui-builded.js?ws=" . $version : "$pubExternalPath/KendoUI/js/kendo-ddui-builded.min.js?ws=" . $version,
-            "document" => $modeDebug !== "FALSE" ? PUBLIC_DIR."/uiAssets/anakeen/IHM/main.js?ws=" . $version : "$pubInternalPath/main-built.js?ws=" . $version
-        ));*/
     }
     
     public function getTemplates(\Doc $document = null)

@@ -3,14 +3,13 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'dcpDocument/libs/promise',
     'dcpDocument/models/mDocumentProperties',
     'dcpDocument/models/mDocumentLock',
     'dcpDocument/models/mFamilyStructure',
     'dcpDocument/collections/attributes',
     'dcpDocument/collections/menus',
     'dcpDocument/i18n/documentCatalog'
-], function mDocument($, _, Backbone, Promise, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
+], function mDocument($, _, Backbone, DocumentProperties, DocumentLock, FamilyStructure, CollectionAttributes, CollectionMenus, i18n)
 {
     'use strict';
 

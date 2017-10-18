@@ -1,0 +1,23 @@
+define(["jquery",
+    "kendo-ui-core/js/kendo.core",
+    "kendo-ui-core/js/kendo.popup",
+    "kendo-ui-core/js/kendo.notification",
+    "kendo-ui-core/js/kendo.menu",
+    "kendo-ui-core/js/kendo.window",
+    "kendo-ui-core/js/kendo.autocomplete",
+    "kendo-ui-core/js/kendo.numerictextbox",
+    "kendo-ui-core/js/kendo.calendar",
+    "kendo-ui-core/js/kendo.datepicker",
+    "kendo-ui-core/js/kendo.timepicker",
+    "kendo-ui-core/js/kendo.datetimepicker",
+    "kendo-ui-core/js/kendo.multiselect",
+    "kendo-ui-core/js/kendo.combobox",
+    "kendo-ui-core/js/kendo.dropdownlist",
+    "kendo-ui-core/js/kendo.color",
+    "kendo-ui-core/js/kendo.slider",
+    "kendo-ui-core/js/kendo.colorpicker",
+    "kendo-ui-core/js/kendo.tabstrip",
+    "kendo-ui-core/js/kendo.button",
+    "kendo-ui-core/js/kendo.listview"], function ($, kendo) {
+    return kendo.jQuery;
+});
