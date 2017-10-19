@@ -55,7 +55,7 @@
             <label>Record vault application in database</label>
         </process>
         <process
-                command="./wsh.php --api=importDocuments --file=./VAULT/Data/Init.csv">
+                command="./wsh.php --api=importDocuments --file=./Apps/VAULT/Data/Init.csv">
             <label>Initializing VAULT roles and ACLs</label>
         </process>
 
