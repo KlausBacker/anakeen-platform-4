@@ -172,6 +172,6 @@ if ($query->nb > 0) {
     $doc->exec_query("update doc127 set name='GDEFAULT'   where us_whatid='2'");
     $doc->exec_query("update doc128 set name='USER_ADMIN' where us_whatid='1'");
     $doc->exec_query("update doc128 set name='USER_GUEST' where us_whatid='3'");
-    $doc->exec_query("update doc128 set cvid=508          where us_whatid='1'");
-    $doc->exec_query("update doc128 set cvid=508          where us_whatid='3'");
+    $doc->exec_query("update doc128 set cvid=(select id from family.cvdoc where name='CV_IUSER_ACCOUNT')          where us_whatid='1'");
+    $doc->exec_query("update doc128 set cvid=(select id from family.cvdoc where name='CV_IUSER_ACCOUNT')          where us_whatid='3'");
 }
