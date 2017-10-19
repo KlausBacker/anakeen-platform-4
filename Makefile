@@ -23,9 +23,11 @@ deploy-test:
 webinst-all: webinst webinst-selenium
 
 webinst:
-	cd Document-uis && yarn install && yarn buildAsset && yarn build
-	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
+	cd Document-uis && yarn install
 	make -f pojs.make compile
+	cd Document-uis && yarn buildAsset && yarn build
+	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
+
 	-mkdir -p $(localpub)/webinst
 	rsync --delete -azvr --exclude 'node_modules' Document-uis $(localpub)/webinst/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
