@@ -78,7 +78,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
             $export->setOutputFormat(\exportXmlFolder::xmlFormat);
             $export->useIdentificator(false);
             $export->exportFromSearch($s);
-            
+
             $this->dom = new \DOMDocument();
             $this->dom->load($export->getOutputFile());
             @unlink($export->getOutputFile());

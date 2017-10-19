@@ -25,6 +25,7 @@ class TestExportRevision extends TestCaseDcpCommonFamily
         $d4 = new_doc(self::$dbaccess, "TST_EREV4");
         $d5 = new_doc(self::$dbaccess, "TST_EREV5");
         $d6 = new_doc(self::$dbaccess, "TST_EREV6");
+
         
         $d1 = new_doc(self::$dbaccess, "TST_EREV1");
         $d1->revise();

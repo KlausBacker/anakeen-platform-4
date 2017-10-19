@@ -122,6 +122,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "id" => $dM->id,
             "title" => $dM->getTitle()
         );
+
         // Need to reset cause phpunit reset dbid when clone global objects
         self::resetDocumentCache();
     }

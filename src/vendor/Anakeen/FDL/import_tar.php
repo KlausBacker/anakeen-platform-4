@@ -381,4 +381,88 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
         }
         return '';
     }
-    
+
+function extractTar($tar, $untardir, $mime = "")
+{
+    $tar = realpath($tar);
+    $mime = trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))));
+    $mime = substr($mime, 0, strpos($mime, " "));
+
+    $err = '';
+    try {
+        switch ($mime) {
+            case "gzip":
+            case "application/x-compressed-tar":
+            case "application/x-gzip":
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("tar -C %s -zxf %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                }
+                break;
+
+            case "bzip2":
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("tar -C %s -jxf %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                }
+                break;
+
+            case "Zip":
+            case "application/x-zip-compressed":
+            case "application/x-zip":
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                }
+                exec(sprintf("unzip -d %s %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                if ($status !== 0) {
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                }
+                break;
+
+            default:
+                throw new Exception(sprintf(_("Unsupported archive format '%s' for archive '%s'.") , $mime, $tar));
+        }
+    }
+    catch(Exception $e) {
+        $err = $e->getMessage();
+    }
+    return $err;
+}
+
+
+function hasfdlpointcsv($dir)
+{
+    $found = file_exists("$dir/fdl.csv");
+    if (!$found) {
+        if ($handle = opendir($dir)) {
+            while ((!$found) && (false !== ($file = readdir($handle)))) {
+                if (is_dir("$dir/$file")) {
+                    $found = file_exists("$dir/$file/fdl.csv");
+                }
+            }
+            closedir($handle);
+        }
+    }
+    return $found;
+}

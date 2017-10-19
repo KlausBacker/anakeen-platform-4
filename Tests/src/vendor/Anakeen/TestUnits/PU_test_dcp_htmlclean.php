@@ -12,7 +12,6 @@ namespace Dcp\Pu;
 
 require_once 'PU_testcase_dcp.php';
 
-include_once 'FREEDOM/freedom_import_xml.php';
 /**
  * Test class for splitXmlDocument() function.
  */

@@ -49,6 +49,8 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     {
         $this->log(sprintf("========== %s ========", $this->getName()));
         $this->connectUser("admin");
+        \Dcp\Autoloader::resetRegenerate();
+
         $this->beginTransaction();
     }
     protected function tearDown()

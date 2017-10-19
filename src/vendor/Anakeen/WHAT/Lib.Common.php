@@ -292,8 +292,8 @@ function getLayoutFile($app, $layfile)
     if (file_exists($file)) {
         return ($file);
     }
-    
-    return "";
+
+    throw new Exception(sprintf("Cannot find Layout \"%s:%s\"", $app, $layfile));
 }
 
 function microtime_diff($a, $b)

@@ -796,7 +796,7 @@ class OOoLayout extends Layout
                     $fileInfo->path = "Images/noimage.png";
                 }
             }
-            if ($fileInfo->path) {
+            if (!empty($fileInfo->path)) {
                 $href = sprintf('Pictures/dcp%s', basename($fileInfo->path));
                 $img->setAttribute('xlink:href', $href);
                 $this->added_images[] = $href;

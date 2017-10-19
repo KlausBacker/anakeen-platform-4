@@ -15,10 +15,9 @@
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 
-$appl = new Application();
-$appl->Set("FDL", $core);
 
-$dbaccess = $appl->dbaccess;
+
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
     print "Database not found : appl->dbaccess";
     exit;

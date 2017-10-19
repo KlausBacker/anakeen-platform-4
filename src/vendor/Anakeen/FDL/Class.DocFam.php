@@ -886,7 +886,7 @@ create unique index idx_idfam on docfam(id);";
      */
     function getXmlSchema($linkInclude = false)
     {
-        $lay = new Layout(getLayoutFile("FDL", "family_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/family_schema.xml", DEFAULT_PUBDIR));
         $lay->set("famname", strtolower($this->name));
         $lay->set("famtitle", strtolower($this->getTitle()));
         $lay->set("include", $linkInclude);
@@ -894,7 +894,7 @@ create unique index idx_idfam on docfam(id);";
             $lay->set("includefdlxsd", "");
         } else {
             $xsd = new DOMDocument();
-            $xsd->load(getLayoutFile("FDL", "fdl.xsd"));
+            $xsd->load(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR));
             $xsd->preserveWhiteSpace = false;
             $xsd->formatOutput = true;
             $innerXml = '';
