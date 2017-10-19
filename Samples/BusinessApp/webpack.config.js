@@ -4,16 +4,17 @@ const confPerso = require("./webpack-perso.js");
 const localpub = process.env.NODE_ENV === 'production' ? '..' : '.';
 module.exports = {
     entry: {
-        app: './src/public/BUSINESS_APP/src/components/main.js',
-        externals: [
-            'kendo'
-        ]
+        app: path.resolve(__dirname, 'src/public/BUSINESS_APP/src/components/main.js')
     },
     output: {
         path: path.resolve(__dirname, 'src/public/BUSINESS_APP/dist/'),
         publicPath: "/BUSINESS_APP/dist/",
         filename: 'a4-business-app-components.js'
     },
+      externals: {
+        kendo: 'kendo',
+        jquery: 'jQuery'
+      },
     module: {
         rules: [
             {
@@ -49,23 +50,11 @@ module.exports = {
     },
     resolve: {
         alias: {
-            jquery: path.resolve(__dirname, localpub, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/jquery.js'),
-            kendo: path.resolve(__dirname, localpub, '../../Document-uis/src/public/uiAssets/externals/KendoUI/js/kendo-ddui-builded.js'),
+            kendo: path.resolve(__dirname, '../../Document-uis/webpack/kendo.js'),
             '@': path.resolve(__dirname, 'src/public/BUSINESS_APP/src/components'),
-            '@~': path.resolve(__dirname, localpub, '../../Document-uis/src/vendor/Anakeen/Components')
+            '@~': path.resolve(__dirname, '../../Document-uis/src/vendor/Anakeen/Components')
         }
-    },
-    plugins: [
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
-        }),
-        new webpack.ProvidePlugin({
-            "jQuery": "jquery",
-            "$": "jquery",
-            "window.jQuery": "jquery"
-        }),
-        new webpack.optimize.CommonsChunkPlugin({name: 'externals', filename: 'a4-externals.bundle.js'})
-    ]
+    }
 };
 
 if (process.env.NODE_ENV !== 'production') {

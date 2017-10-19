@@ -6,7 +6,6 @@ ui/node_modules/
 ui/DataTables/
 Document-uis/src/public/uiAssets/externals/
 .idea/
-Samples/BusinessApp/node_modules/
 Document-uis/node_modules/
 Document-uis/src/public/login/dist/
 Document-uis/src/vendor/Anakeen/Components/Authent/translation.json
