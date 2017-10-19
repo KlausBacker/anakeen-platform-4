@@ -61,7 +61,7 @@ mrproper: clean
 deploy:
 	rm -f *webinst
 	make webinst
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-document-uis-*webinst -- --force
+	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-ui-*webinst -- --force
 	make clean
 
 deploy-business:
