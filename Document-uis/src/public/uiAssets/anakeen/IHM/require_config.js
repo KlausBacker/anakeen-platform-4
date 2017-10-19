@@ -7,7 +7,8 @@
         baseUrl: "..",
         shim: {
             "kendo-culture-fr": ['kendo'],
-            "ckeditor-jquery": ['jquery', 'ckeditor']
+            "ckeditor-jquery": ['jquery', 'ckeditor'],
+            "tooltip": ['jquery']
         },
         paths: {
             "dcpContextRoot": "..",
