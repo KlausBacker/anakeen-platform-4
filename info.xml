@@ -17,7 +17,7 @@
     <requires>
         <!-- To remove after refactor -->
         <module name="anakeen-legacy"/>
-        <module name="anakeen-document-uis"/>
+        <module name="anakeen-ui"/>
     </requires>
 
     <pre-install>
