@@ -1,0 +1,9 @@
+{
+    "moduleName" : "anakeen-workflow",
+    "version" : "1.0.0",
+    "release" : "0",
+    "application" : [],
+    "includedPath" : ["src/*"],
+    "lang" : ["fr","en"],
+    "csvParam" : {"enclosure" : "\"", "delimiter": ";"}
+}

@@ -1,0 +1,20 @@
+// famille cycle;;;id;class;name;;;;;;;;;;
+BEGIN;1;Cycle de vie;20;WDoc;WDOC;;;;;;;;;;
+TYPE;C;;;;;;;;;;;;;;
+ICON;workflow.png;;;;;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+USEFOR;SW;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;options
+ATTR;WF_DESC;FR_BASIC;description;N;Y;longtext;20;W;;;;;;;
+ATTR;WF_INIT;;Initialisation;N;N;menu;30;W;;%S%app=FDL&action=WORKFLOW_INIT&id=%I%;;::canExecute(FDL,WORKFLOW_INIT);;;ltarget=_self
+ATTR;WF_FAMID;FR_BASIC;Famille;N;N;"docid(""-1"")";40;W;;;fdl.php;lfamilies(D,CT):WF_FAMID,CT;;;
+ATTR;WF_FAM;FR_BASIC;Famille (titre);Y;N;text;50;H;;;;::getTitle(WF_FAMID);;;elabel=famille compatible avec ce cycle
+ATTR;DPDOC_FR_DYN;;Profil dynamique;N;N;frame;100;W;;;;;;;
+ATTR;DPDOC_FAMID;DPDOC_FR_DYN;Famille;N;N;"docid(""-1"")";110;W;;;fdl.php;lfamilies(D,CT):DPDOC_FAMID,CT;;;
+ATTR;DPDOC_FAM;DPDOC_FR_DYN;Famille (titre);N;N;text;120;H;;;;::getTitle(DPDOC_FAMID);;;elabel=famille utilisée pour le profil dynamique
+ATTR;WF_GRAPH;;Voir le graphe;N;N;action;10;R;;;FDL;WORKFLOW_GRAPH&id=%I%;;;mwidth=900px|mheight=400px
+ATTR;WF_TAB_STATES;;Étapes;N;N;tab;200;W;;;;;;;
+ATTR;WF_TAB_TRANSITIONS;;Transitions;N;N;tab;200;W;;;;;;;
+ATTR;WF_GRAPHC;;Voir le graphe complet;N;N;action;15;H;;;FDL;VIEW_WORKFLOW_GRAPH&type=complet&id=%I%;;;
+END;;;;;;;;;;;;;;;
