@@ -2767,7 +2767,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getExportAttributes($withfile = false, $forcedefault = false)
     {
-        include_once ("GENERIC/generic_util.php");
         global $action;
         
         if ($this->doctype == 'C') $famid = $this->id;
@@ -2775,7 +2774,11 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->_maskApplied) $this->ApplyMask();
         $tsa = array();
         if (isset($this->attributes->attr)) {
-            $pref = getFamilyParameter($action, $famid, "FREEDOM_EXPORTCOLS");
+            $pref="";
+            if (file_exists(sprintf("%s/Apps/GENERIC/generic_util.php", DEFAULT_PUBDIR))) {
+                include_once ("GENERIC/generic_util.php");
+                $pref = getFamilyParameter($action, $famid, "FREEDOM_EXPORTCOLS");
+            }
             if ((!$forcedefault) && ($pref != "")) {
                 
                 $tpref = explode(";", $pref);
@@ -8244,6 +8247,7 @@ create unique index i_docir on doc(initid, revision);";
             $exd->setIncludeSchemaReference(!$flat);
             $exd->setAttributeToExport($exportAttributes);
             
+
             if ($outfile) {
                 $exd->writeTo($outfile);
             } else {

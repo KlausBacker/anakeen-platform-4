@@ -83,30 +83,10 @@ class TestGetParam extends TestCaseDcp
         return array(
             array(
                 'name' => 'CORE_NON_EXISTING_PARAM',
-                'app' => 'FDL',
+                'app' => 'CORE',
                 'expected' => ''
             ) ,
-            array(
-                'name' => 'AUTHENT_SHOW_LANG_SELECTION',
-                'app' => 'FDL',
-                'expected' => ''
-            ) ,
-            array(
-                'name' => 'AUTHENT_SHOW_LANG_SELECTION',
-                'app' => 'AUTHENT',
-                'expected' => array(
-                    "name" => "AUTHENT_SHOW_LANG_SELECTION",
-                    "isglob" => "N"
-                )
-            ) ,
-            array(
-                'name' => 'VERSION',
-                'app' => 'AUTHENT',
-                'expected' => array(
-                    "name" => "VERSION",
-                    "isglob" => "N"
-                )
-            ) ,
+
             array(
                 'name' => 'CORE_CLIENT',
                 'app' => 'CORE',
@@ -136,30 +116,6 @@ class TestGetParam extends TestCaseDcp
                 'app' => 'FDL',
                 'expected' => array(
                     "name" => "CORE_CLIENT",
-                    "isglob" => "Y"
-                )
-            ) ,
-            array(
-                'name' => 'SMTP_HOST',
-                'app' => '',
-                'expected' => array(
-                    "name" => "SMTP_HOST",
-                    "isglob" => "Y"
-                )
-            ) ,
-            array(
-                'name' => 'SMTP_HOST',
-                'app' => 'FDL',
-                'expected' => array(
-                    "name" => "SMTP_HOST",
-                    "isglob" => "Y"
-                )
-            ) ,
-            array(
-                'name' => 'SMTP_HOST',
-                'app' => 'APPMNG',
-                'expected' => array(
-                    "name" => "SMTP_HOST",
                     "isglob" => "Y"
                 )
             )

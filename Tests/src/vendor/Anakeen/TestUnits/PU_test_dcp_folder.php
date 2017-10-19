@@ -143,12 +143,6 @@ class TestFolder extends TestCaseDcpCommonFamily
             ) ,
             array(
                 'TST_FOLDER1'
-            ) ,
-            array(
-                11
-            ) ,
-            array(
-                12
             )
         );
     }
@@ -167,13 +161,10 @@ class TestFolder extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                11
+                "HELP_REPORT"
             ) ,
             array(
-                12
-            ) ,
-            array(
-                13
+                "USER_ADMIN"
             )
         );
     }

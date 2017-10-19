@@ -318,12 +318,6 @@ class TestDocument extends TestCaseDcpCommonFamily
                 9
             ) ,
             array(
-                11
-            ) ,
-            array(
-                12
-            ) ,
-            array(
                 'TST_FOLDER1',
                 'TST_BASE1'
             )

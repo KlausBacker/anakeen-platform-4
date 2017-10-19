@@ -259,7 +259,7 @@ class BasicAttribute
     function common_getXmlSchema(&$play)
     {
         
-        $lay = new Layout(getLayoutFile("FDL", "infoattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
@@ -478,7 +478,7 @@ class NormalAttribute extends BasicAttribute
     function common_getXmlSchema(&$play)
     {
         
-        $lay = new Layout(getLayoutFile("FDL", "infoattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
@@ -663,7 +663,7 @@ class NormalAttribute extends BasicAttribute
      */
     function text_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "textattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "textattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         
         $lay->set("maxlength", false);
@@ -677,7 +677,7 @@ class NormalAttribute extends BasicAttribute
      */
     function enum_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "enumattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "enumattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         
         $la = $this->getEnum();
@@ -698,7 +698,7 @@ class NormalAttribute extends BasicAttribute
      */
     function docid_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "docidattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "docidattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         
         $lay->set("famid", $this->format);
@@ -711,7 +711,7 @@ class NormalAttribute extends BasicAttribute
      */
     function date_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "dateattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "dateattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -722,7 +722,7 @@ class NormalAttribute extends BasicAttribute
      */
     function timestamp_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "timestampattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "timestampattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -733,7 +733,7 @@ class NormalAttribute extends BasicAttribute
      */
     function color_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "colorattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "colorattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -744,7 +744,7 @@ class NormalAttribute extends BasicAttribute
      */
     function int_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "intattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "intattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -755,7 +755,7 @@ class NormalAttribute extends BasicAttribute
      */
     function longtext_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "longtextattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "longtextattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -766,7 +766,7 @@ class NormalAttribute extends BasicAttribute
      */
     function float_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "floatattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "floatattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -777,7 +777,7 @@ class NormalAttribute extends BasicAttribute
      */
     function time_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "timeattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "timeattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -788,7 +788,7 @@ class NormalAttribute extends BasicAttribute
      */
     function file_getXmlSchema()
     {
-        $lay = new Layout(getLayoutFile("FDL", "fileattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "fileattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -800,7 +800,7 @@ class NormalAttribute extends BasicAttribute
      */
     function array_getXmlSchema(&$la)
     {
-        $lay = new Layout(getLayoutFile("FDL", "arrayattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "arrayattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         $lay->set("minOccurs", "0");
         $lay->set("maxOccurs", "unbounded");
@@ -1423,7 +1423,7 @@ class FieldSetAttribute extends BasicAttribute
      */
     function getXmlSchema($la)
     {
-        $lay = new Layout(getLayoutFile("FDL", "fieldattribute_schema.xml"));
+        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "fieldattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $this->common_getXmlSchema($lay);
         

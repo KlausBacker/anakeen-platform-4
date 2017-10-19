@@ -296,12 +296,17 @@
         </process>
 
         <process
-                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cv_init.csv --csv-separator=';' --csv-enclosure='&quot;'">
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cvdoc/cvdoc.init.csv --csv-separator=';' --csv-enclosure='&quot;'">
             <label>Add config in view control families</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/workflows.ods">
-            <label>Import workflow system families</label>
+
+
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mask/mask.struct.csv  --csv-enclosure='&quot;'">
+            <label>MASK Family</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cvdoc/cvdoc.struct.csv  --csv-enclosure='&quot;'">
+            <label>CVDOC Family</label>
         </process>
 
         <process
@@ -328,6 +333,12 @@
                 command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/report/report.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Report family</label>
         </process>
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/image/image.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Image family</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/file/file.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add File family</label>
+        </process>
 
 
         <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/account.ods">
@@ -337,22 +348,10 @@
         <process command="./wsh.php --api=refreshUserAccount">
             <label>Update user account documents</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/accountinit.ods">
-            <label>Create admin profil</label>
-        </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/accountprofil.ods">
-            <label>Profiling accounts</label>
-        </process>
-        <process command="programs/account_init">
-            <label>Initialize account families</label>
-        </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/accountcv.ods">
-            <label>Set view control for accounts</label>
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/igroup/igroup.init.csv --csv-enclosure='&quot;'">
+            <label>Create system groups</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/defaultprofil.ods">
-            <label>Profiling system families</label>
-        </process>
 
 
         <process
@@ -360,13 +359,13 @@
             <label>Help Documents</label>
         </process>
 
-        <process command="wsh.php --api=vault_init"/>
+        <process command="./wsh.php --api=vault_init"/>
 
-        <process command="wsh.php --api=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
+        <process command="./wsh.php --api=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
 
 
         <process command="programs/record_application HTTPAPI_V1"/>
-        <process command="wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
+        <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
 
         <process command="programs/update_catalog"/>
     </post-install>
@@ -605,9 +604,22 @@ This can be solved by:<br/>
         </process>
 
 
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mask/mask.struct.csv  --csv-enclosure='&quot;'">
+            <label>MASK Family</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cvdoc/cvdoc.struct.csv  --csv-enclosure='&quot;'">
+            <label>CVDOC Family</label>
+        </process>
         <process
                 command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.struct.csv  --csv-enclosure='&quot;'">
             <label>Update Helpage family</label>
+        </process>
+
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/image/image.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Image family</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/file/file.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add File family</label>
         </process>
 
         <process command="programs/post_migration CORE">

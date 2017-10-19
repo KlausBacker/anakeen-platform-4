@@ -98,7 +98,7 @@ class ImportDocument
         $this->fileName = $file;
         try {
             if ($archive) {
-                include_once ("FREEDOM/freedom_ana_tar.php");
+                include_once ("FDL/import_tar.php");
                 $untardir = getTarExtractDir($action, basename($file));
                 $mime = getSysMimeFile($file, basename($file));
                 //print_r(array($untardir, $file, $mime));
@@ -220,7 +220,7 @@ class ImportDocument
                 addWarningMsg(sprintf(_("cannot write log in %s") , $log));
             } else {
                 global $action;
-                $lay = new Layout(getLayoutFile("FREEDOM", "freedom_import.xml") , $action);
+                $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s",DEFAULT_PUBDIR, "reportImport.xml") , $action);
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);

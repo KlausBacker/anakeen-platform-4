@@ -41,9 +41,11 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
         
         $htmlImage = new_doc(self::$dbaccess, "TST_OOOS5");
         self::assertTrue($htmlImage->isAlive() , "no found reference html");
-        $imgInfo = $img->getFileInfo($img->getRawValue("img_file"));
+        $imgInfo = $img->getFileInfo($img->getRawValue("tst_img"));
+
         $htmlImage->setValue("tst_html", str_replace("1234567", $imgInfo["id_file"], $htmlImage->getRawValue("tst_html")));
         $htmlImage->modify();
+
     }
     
     public static function tearDownAfterClass()

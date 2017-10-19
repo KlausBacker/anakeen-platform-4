@@ -28,10 +28,8 @@ if (!$force) {
 }
 $usage->verify();
 
-$appl = new Application();
-$appl->Set("FDL", $core);
 
-$dbaccess = $appl->dbaccess;
+$dbaccess = $action->dbaccess;
 if ($dbaccess == "") {
     $action->exitError("Database not found : appl->dbaccess");
 }

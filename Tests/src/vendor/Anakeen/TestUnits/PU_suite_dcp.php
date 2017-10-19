@@ -29,30 +29,22 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestSearchHighlight');
         $suite->addTestSuite('Dcp\Pu\TestSearchJoin');
         $suite->addTestSuite('Dcp\Pu\TestSearchFamilies');
-        $suite->addTestSuite('Dcp\Pu\TestFormatCollection');
-        $suite->addTestSuite('Dcp\Pu\TestFormatInvisibleCollection');
         $suite->addTestSuite('Dcp\Pu\TestSimpleQuery');
         $suite->addTestSuite('Dcp\Pu\TestProfil');
         $suite->addTestSuite('Dcp\Pu\TestTag');
-        $suite->addTestSuite('Dcp\Pu\TestReport');
         $suite->addTestSuite('Dcp\Pu\TestLink');
         $suite->addTestSuite('Dcp\Pu\TestDocRel');
         $suite->addTestSuite('Dcp\Pu\TestUpdateAttribute');
         $suite->addTestSuite('Dcp\Pu\TestGetDocValue');
         $suite->addTestSuite('Dcp\Pu\TestSplitXmlDocument');
         $suite->addTestSuite('Dcp\Pu\TestImportFamily');
-        $suite->addTestSuite('Dcp\Pu\TestImportFamilyProperty');
-        $suite->addTestSuite('Dcp\Pu\TestImportWorkflow');
         $suite->addTestSuite('Dcp\Pu\TestImportXmlDocuments');
         $suite->addTestSuite('Dcp\Pu\TestImportDocuments');
         $suite->addTestSuite('Dcp\Pu\TestImportArchive');
         $suite->addTestSuite('Dcp\Pu\TestImportProfid');
-        $suite->addTestSuite('Dcp\Pu\TestImportAccess');
         $suite->addTestSuite('Dcp\Pu\TestImportProfil');
         $suite->addTestSuite('Dcp\Pu\TestImportCsvDocuments');
-        $suite->addTestSuite('Dcp\Pu\TestImportDocumentsExtra');
         $suite->addTestSuite('Dcp\Pu\TestImportCVDOC');
-        $suite->addTestSuite('Dcp\Pu\TestExtendProfil');
         $suite->addTestSuite('Dcp\Pu\TestExportXml');
         $suite->addTestSuite('Dcp\Pu\TestExportCollection');
         $suite->addTestSuite('Dcp\Pu\TestExportRevision');
@@ -77,6 +69,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestAffect');
         $suite->addTestSuite('Dcp\Pu\TestDocVaultIndex');
         $suite->addTestSuite('Dcp\Pu\TestHtmlclean');
+
         // ...
         return $suite;
     }
