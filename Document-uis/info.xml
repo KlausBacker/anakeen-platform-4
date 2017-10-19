@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <module  name="@moduleName@" release="@release@" version="@version@"  license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
 
-    <description>A4 : document interface</description>
+    <description>A4 : Document interfaces</description>
     <replaces>
         <module name="dynacase-document-uis-light"/>
         <module name="dynacase-document-uis"/>
         <module name="dynacase-less-installer"/>
         <module name="dynacase-search-ui-html5"/>
+        <module name="anakeen-document-uis"/>
     </replaces>
     <post-install>
         <process command="programs/record_application DOCUMENT"/>

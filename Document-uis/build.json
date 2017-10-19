@@ -1,5 +1,5 @@
 {
-  "moduleName": "anakeen-document-uis",
+  "moduleName": "anakeen-ui",
   "version": "{{VERSION}}",
   "release": "{{RELEASE}}",
   "licence":"http://docs.anakeen.com/licenses/anakeen-1.0/licence.html Licence Anakeen",

@@ -3,7 +3,7 @@
     <description>Sample Business App</description>
 
     <requires>
-        <module name="anakeen-document-uis"/>
+        <module name="anakeen-ui"/>
     </requires>
     <replaces>
         <module name="sample-BusinessApp"/>

@@ -3,7 +3,7 @@
     <description>Selenium Test for Document Uis</description>
 
     <requires>
-
+        <module name="anakeen-ui"/>
     </requires>
 
     <post-install>
