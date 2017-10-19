@@ -6,6 +6,7 @@
     var config = {
         baseUrl: "..",
         shim: {
+            "kendo-culture-fr": ['kendo'],
             "ckeditor-jquery": ['jquery', 'ckeditor']
         },
         paths: {

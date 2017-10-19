@@ -1,7 +1,18 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
-const confPerso = require("./webpack-perso.js");
+let confPerso;
 
+if (fs.existsSync('./webpack-perso.js')) {
+    confPerso = require('./webpack-perso.js');
+} else {
+    confPerso = require('./webpack-perso.js.sample');
+    console.error('\n============= WARNING =============\n' +
+        'By default, "webpack-perso.js.sample" is used but ' +
+        '\nyou must define your own "webpack-perso.js" file' +
+        '\nin order to configure the anakeen server host' +
+        '\n===================================\n');
+}
 module.exports = {
     entry: {
         app: path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js')

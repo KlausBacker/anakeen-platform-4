@@ -1,0 +1,5 @@
+// Create a file "webpack-perso.js" based on this sample
+module.exports = {
+  // Define the Anakeen Platform server
+  devServerURL: 'localhost',
+};

@@ -9,3 +9,4 @@ Document-uis/src/public/uiAssets/externals/
 Document-uis/node_modules/
 Document-uis/src/public/login/dist/
 Document-uis/src/vendor/Anakeen/Components/Authent/translation.json
+Document-uis/webpack-perso.js
