@@ -2,7 +2,9 @@
 <module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
     <description>Sample Business App</description>
 
-
+    <requires>
+        <module name="anakeen-document-uis"/>
+    </requires>
     <replaces>
         <module name="sample-BusinessApp"/>
     </replaces>
@@ -20,6 +22,7 @@
         
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
+        <process command="./wsh.php --api=setApplicationParameter --appname=CORE --param=CORE_START_APP --value=BUSINESS_APP"/>
         <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
