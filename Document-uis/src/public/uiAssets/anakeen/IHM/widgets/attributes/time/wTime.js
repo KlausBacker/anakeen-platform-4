@@ -10,9 +10,9 @@
         ], factory);
     } else {
         //noinspection JSUnresolvedVariable
-        factory(window.jQuery, window._, window.kendo);
+        factory(window.jQuery, window._);
     }
-}(window,  function ($, _, kendo) {
+}(window,  function ($, _) {
     'use strict';
 
     $.widget("dcp.dcpTime", $.dcp.dcpDate, {

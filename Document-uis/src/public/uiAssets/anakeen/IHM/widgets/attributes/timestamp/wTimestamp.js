@@ -9,9 +9,9 @@
         ], factory);
     } else {
         //noinspection JSUnresolvedVariable
-        factory(window.jQuery, window.kendo);
+        factory(window.jQuery);
     }
-}(window,  function requireTimestamp($, kendo) {
+}(window,  function requireTimestamp($) {
     'use strict';
 
     $.widget("dcp.dcpTimestamp", $.dcp.dcpDate, {

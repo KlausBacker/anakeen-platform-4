@@ -13,9 +13,9 @@
         ], factory);
     } else {
         //noinspection JSUnresolvedVariable
-        factory(window.jQuery, window._, window.Mustache, window.kendo);
+        factory(window.jQuery, window._, window.Mustache);
     }
-}(window, function require_wColor($, _, Mustache, kendo) {
+}(window, function require_wColor($, _, Mustache) {
     'use strict';
 
     $.widget("dcp.dcpColor", $.dcp.dcpText, {
