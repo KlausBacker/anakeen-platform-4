@@ -27,7 +27,6 @@ export default {
   data() {
     return {
       tabstripEl: null,
-      newActionsSource: null,
       openedDocuments : [],
     };
   },
@@ -50,20 +49,6 @@ export default {
             break;
         }
       }
-    },
-
-    configureCloseTab() {
-      tabstrip.tabGroup.on("click", "[data-type='remove']", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const item = this.$(e.target).closest(".k-item");
-        tabstrip.remove(item.index());
-
-        if (tabstrip.items().length > 0 && item.hasClass('k-state-active')) {
-          tabstrip.select(0);
-        }
-      });
     },
 
     initKendo() {
