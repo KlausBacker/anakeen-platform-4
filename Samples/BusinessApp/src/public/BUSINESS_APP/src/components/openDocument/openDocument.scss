@@ -16,39 +16,61 @@
       width: 225px;
     }
   }
-}
 
-.documentsList__openDocuments__button__newAction.k-dropdown {
-  .k-dropdown-wrap {
-    background-color: #157EFB;
-    color: #FFFFFF;
-    font-weight: bold;
-    text-transform: uppercase;
+  .k-menu .documentsList__openDocuments__new__menu {
 
-    .k-input {
-      height: 32px;
-      width: 80px;
-      text-align: center;
-      border-right: 2px solid #E8E8E8;
+    .k-menu-group {
+      padding: 0;
     }
-
-    .k-select {
-      width: 26px;
-      height: 32px;
-      text-align: center;
+    margin-right: 5px;
+    width: 110px;
+    height: 35px;
+    & > .k-link {
+      background-color: #157EFB;
+      color: #FFFFFF;
+      font-weight: bold;
+      justify-content: space-between;
+      flex: 1;
+      text-transform: uppercase;
 
       .k-icon {
+        display: flex;
+        justify-content: center;
+        margin-right: 0;
+        padding-left: 3px;
+        align-items: center;
+        width: 26px;
+        height: 32px;
         color: #FFFFFF;
+        border-left: 2px solid #E8E8E8;
+      }
+
+      &:hover, &.k-state-active {
+        background-color: #003DB0;
+        color: #FFFFFF;
+        cursor: pointer;
+      }
+
+
+    }
+
+    .documentsList__openDocuments__new__menu__item {
+      border-bottom: 1px solid #e6e6e6;
+      .k-link {
+        padding: 10px;
+        text-transform: uppercase;
+        font-weight: 300;
+        color: #505050;
+        background-color: #FFFFFF;
+      }
+
+      &.k-state-hover {
+        .k-link {
+          background-color: #F4F4F4;
+          color: #505050;
+          font-weight: 400;
+        }
       }
     }
-
-    &:hover {
-      background-color: #003DB0;
-      cursor: pointer;
-    }
   }
-}
-
-.documentsList__openDocuments__button__option {
-  padding: 10px;
 }

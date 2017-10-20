@@ -1,4 +1,11 @@
+import A4Tabs from '@/documentsTabs/documentsTabs.vue';
+import A4Document from '@~/Document/Document.vue';
+// import A4OtherTabs from '@/otherDocumentsTabs/documentsTabs.vue';
 export default {
+  components: {
+    "a4-documents-tabs": A4Tabs,
+    "a4-vue-document": A4Document,
+  },
   mounted() {
     document.addEventListener('DOMContentLoaded', (event) => {
       const store = document.getElementById('a4-store');
@@ -9,20 +16,29 @@ export default {
         });
       }
     });
-    this.sendGetRequest('sba/collections')
-      .then((response) => {
-        this.updateKendoData(response.data.data.sample.collections);
-      });
-    this.initKendo();
+    this.initKendo().then(() => {
+      this.sendGetRequest('sba/collections')
+        .then((response) => {
+          this.updateNewActionsItems(response.data.data.sample.collections);
+        });
+    });
   },
 
   data() {
     return {
-      urlDocument: null,
-      openedDocuments: [],
-      activeTab: null,
+      tabstripEl: null,
       newActionsSource: null,
+      openedDocuments : [],
     };
+  },
+
+  computed: {
+    emptyData() {
+      return !this.openedDocuments.length;
+    },
+    tabstrip() {
+      return this.tabstripEl ? this.tabstripEl.data('kendoTabStrip') : null;
+    }
   },
 
   methods: {
@@ -31,38 +47,69 @@ export default {
         switch (storeData.type) {
           case 'OPEN_DOCUMENT':
             this.openedDocuments.push(storeData.data);
-            this.activeTab = storeData.data.initid;
             break;
         }
       }
     },
 
+    configureCloseTab() {
+      tabstrip.tabGroup.on("click", "[data-type='remove']", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const item = this.$(e.target).closest(".k-item");
+        tabstrip.remove(item.index());
+
+        if (tabstrip.items().length > 0 && item.hasClass('k-state-active')) {
+          tabstrip.select(0);
+        }
+      });
+    },
+
     initKendo() {
-      this.newActionsSource = new this.$kendo.data.DataSource({
-        data: [],
+      return new Promise((resolve) => {
+        this.$(this.$refs.newActionButton).kendoMenu({
+            animation: false,
+            select: this.onClickNewAction,
+            openOnClick: true,
+            dataSource: [
+                {
+                    text: 'Nouveau',
+                    cssClass: 'documentsList__openDocuments__new__menu',
+                    items: [],
+                },
+            ],
+        });
+        resolve();
       });
-      this.$(this.$refs.newActionButton).kendoDropDownList({
-        dataSource: this.newActionsSource,
-        dataTextField: 'html_label',
-        dataValueField: 'ref',
-        animation: false,
-        change: this.onClickNewAction,
-        valueTemplate: '<span class="documentsList__openDocuments__button__label">Nouveau</span>',
-        template: this.$kendo.template(
-          '<span class="documentsList__openDocuments__button__option">' +
-          '<img class="documentsList__openDocuments__button__option__img" src="#: image_url#" alt="#: html_label# image"/>' +
-          '<span class="documentsList__openDocuments__button__option__label">#= html_label#</span>' +
-          '</span>'),
-      });
-      this.$(this.$refs.tabStrip).kendoTabStrip();
     },
 
-    onClickNewAction() {
-
+    onClickNewAction(e) {
+        if (e.item.getAttribute('initid') && e.item.getAttribute('html_label')) {
+            this.openedDocuments.push({
+                title: `Création ${e.item.getAttribute('html_label')}`,
+                initid: e.item.getAttribute('initid'),
+                viewId: '!defaultCreation',
+            });
+        }
     },
 
-    updateKendoData(data) {
-      this.newActionsSource.data(data);
+    updateNewActionsItems(data) {
+        const items = data.map((c) => {
+            return {
+                text: c.html_label,
+                cssClass: 'documentsList__openDocuments__new__menu__item',
+                imageAttr: {
+                    alt: 'Image',
+                    height: '16px',
+                    width: '16px',
+                },
+                imageUrl: c.image_url,
+                attr: c,
+            };
+        });
+        const menu = this.$(this.$refs.newActionButton).data('kendoMenu');
+        menu.append(items, '.documentsList__openDocuments__new__menu');
     },
 
     sendGetRequest(url) {
@@ -79,5 +126,13 @@ export default {
         });
       });
     },
+
+    onDocumentActionClick(event, document, options) {
+      console.log(event, document, options);
+    },
+
+    onAttributeAnchorClick(event, document ,options) {
+      console.log(event, document, options);
+    }
   },
 };
