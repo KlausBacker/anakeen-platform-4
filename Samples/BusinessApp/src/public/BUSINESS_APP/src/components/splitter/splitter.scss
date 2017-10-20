@@ -29,7 +29,8 @@
   box-shadow: 2px 0 2px rgba(0, 0, 0, 0.15);
 }
 
-.documentsList__collapsible__handler::before, .documentsList__collapsible__handler::after {
+.documentsList__collapsible__handler::before,
+.documentsList__collapsible__handler::after {
   font-family: FontAwesome;
   content: "\f142";
   padding: 0 5px;
@@ -57,9 +58,5 @@
     & > * {
       height: 100%;
     }
-  }
-
-  .leftPane.leftPane--collapsed {
-    left: 0;
   }
 }
