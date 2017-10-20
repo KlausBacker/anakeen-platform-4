@@ -21,13 +21,14 @@ export default {
 
     methods: {
         initKendo() {
-            // this.$(this.$refs.splitter).kendoSplitter({
-            //     panes: [
-            //         { collapsible: true, resizable: false, collapsedSize: '50px', size: '25%', scrollable: false },
-            //         { collapsible: false, resizable: false}
-            //     ],
-            //
-            // });
+            this.$(this.$refs.splitter).kendoSplitter({
+                panes: [
+                    { collapsible: true, resizable: false, collapsedSize: '50px', size: '25%', scrollable: false },
+                    { collapsible: false, resizable: false, size: '24px' },
+                    { collapsible: false, resizable: false }
+                ],
+
+            });
         },
 
         onStoreChange(storeData) {
@@ -42,7 +43,9 @@ export default {
 
         onCollapseSplitter(event) {
             this.collapseSplitter = !this.collapseSplitter;
+            const splitter = this.$(this.$refs.splitter).data('kendoSplitter');
             this.$emit('store-save', { action: 'toggleCollections', data: false });
+            splitter.toggle('#leftPane', !this.collapseSplitter);
         },
     },
 };

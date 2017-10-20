@@ -5,9 +5,10 @@ $font-family-base: $A4-ui-font;
 @import "../../public/BUSINESS_APP/src/components/base/base";
 @import "../../public/BUSINESS_APP/src/components/collectionsList/collections";
 @import "../../public/BUSINESS_APP/src/components/documentsList/documents";
-@import "../../public/BUSINESS_APP/src/components/splitter/splitter.scss";
+@import "../../public/BUSINESS_APP/src/components/splitter/splitter";
 
 html, body {
   font-size: 12px;
+  height: 100vh;
   font-family: $font-family-base;
 }
