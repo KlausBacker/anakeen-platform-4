@@ -19,7 +19,10 @@
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Client/client.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Certification/certification.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Certification/certification.workflow.csv --csv-enclosure='&quot;'" />
-        
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Certification/BA_CERTIFICATION-exports.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Client/BA_CLIENT-exports.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Prospect/BA_PROSPECT-exports.csv --csv-enclosure='&quot;'" />
+
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
         <process command="./wsh.php --api=setApplicationParameter --appname=CORE --param=CORE_START_APP --value=BUSINESS_APP"/>
