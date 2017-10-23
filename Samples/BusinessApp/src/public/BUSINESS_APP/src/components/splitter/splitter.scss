@@ -10,12 +10,8 @@
   color: #505050;
 }
 
-.documentsList__collapsible__handler--panel {
-  left: 25%;
-  transition: left 1s;
-}
-
 .documentsList__collapsible__handler {
+  right: 0;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -23,13 +19,15 @@
   width: 24px;
   text-align: center;
   cursor: pointer;
-  z-index: 800;
+  z-index: 700;
   background-color: #FFFFFF;
   text-transform: uppercase;
   box-shadow: 2px 0 2px rgba(0, 0, 0, 0.15);
+  transition: left 1s;
 }
 
-.documentsList__collapsible__handler::before, .documentsList__collapsible__handler::after {
+.documentsList__collapsible__handler::before,
+.documentsList__collapsible__handler::after {
   font-family: FontAwesome;
   content: "\f142";
   padding: 0 5px;
@@ -51,15 +49,20 @@
 .documentsList__splitter__wrapper {
   display: flex;
   flex-direction: row;
-
+  height: 100%;
   .mainPane {
     flex: 1;
+    transition: left 1s, width 1s;
     & > * {
       height: 100%;
     }
   }
 
-  .leftPane.leftPane--collapsed {
-    left: 0;
+  .k-splitbar {
+    display: none;
+  }
+
+  .leftPane {
+    transition: overflow 1s;
   }
 }

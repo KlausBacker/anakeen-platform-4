@@ -60,14 +60,18 @@ export default {
     userInitial() {
       if (this.currentUser) {
         const fullName = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-        const initials = fullName.match(/\b(\w)/g).join('');
-        if (initials.length > 2) {
-          return initials.slice(0, 2);
-        } else {
+        const words = fullName.split(' ');
+        let initials = '';
+        if (words.length >= 2) {
+          for (let i = 0; i < 2; i++) {
+            initials += words[i].trim().charAt(0).toUpperCase();
+          }
           return initials;
+        } else if (words.length) {
+          return words[0].trim().substring(0, 2);
+        } else {
+          return '';
         }
-      } else {
-        return '';
       }
     },
 
