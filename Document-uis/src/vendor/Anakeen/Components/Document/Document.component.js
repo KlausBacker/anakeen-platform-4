@@ -41,7 +41,7 @@ export default {
       type: [Object],
       default: null,
     },
-    viewId: {
+    viewid: {
       type: String,
       default: '!defaultConsultation',
     },
@@ -78,8 +78,8 @@ export default {
       }
       if (this.documentValue.viewId !== '!defaultConsultation') {
         initialData.viewId = this.documentValue.viewId;
-      } else if (this.viewId !== '!defaultConsultation') {
-        initialData.viewId = this.viewId;
+      } else if (this.viewid !== '!defaultConsultation') {
+        initialData.viewId = this.viewid;
       }
 
       dUrl += 'api/v1/documents/0.html';
