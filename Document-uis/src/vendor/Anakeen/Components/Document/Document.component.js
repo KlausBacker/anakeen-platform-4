@@ -127,7 +127,6 @@ export default {
       const localListener = this.$options._parentListeners || {};
 
       eventNames.forEach((eventName) => {
-        if (localListener[eventName]) {
           this.documentWidget.addEventListener(
             eventName,
             {
@@ -140,7 +139,6 @@ export default {
               this.$emit(eventName, event, documentObject, ...others);
             },
           );
-        }
       });
 
       Object.keys(localListener).forEach((key) => {

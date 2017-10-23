@@ -1,11 +1,4 @@
-import A4Tabs from '@/documentsTabs/documentsTabs.vue';
-import A4Document from '@~/Document/Document.vue';
 export default {
-    components: {
-        'a4-documents-tabs': A4Tabs,
-        'a4-vue-document': A4Document,
-    },
-
     created() {
         this.privateScope = {
             configureCloseTab: (tab) => {
@@ -19,12 +12,10 @@ export default {
             },
 
             bindDocumentEvents: (tabContent) => {
-                console.log(tabContent);
                 const documentInstance = this.$(tabContent).find('a4-document');
                 if (documentInstance && documentInstance.length) {
-                    console.log(documentInstance[0]);
-                    documentInstance[0].addEventListener('actionClick', () => {
-                        console.log('coucou');
+                    documentInstance.on('actionClick', (e) => {
+                        console.log(e);
                     });
                 }
             },
@@ -165,7 +156,7 @@ export default {
         contentTemplate(data) {
             let option = `${data.initid ? `initid="${data.initid}"` : ''}`;
             option += `${data.viewId ? ` viewid="${data.viewId}"` : ''}`;
-            return `<a4-document ${option}></a4-document>`;
+            return `<a4-document ${option} ></a4-document>`;
         },
 
         addTab(data) {
