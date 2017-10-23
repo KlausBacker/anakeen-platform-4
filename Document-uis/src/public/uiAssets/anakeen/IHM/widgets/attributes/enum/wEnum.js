@@ -14,7 +14,7 @@
         //noinspection JSUnresolvedVariable
         factory(window.jQuery, window._, window.Mustache);
     }
-}(window, function require_wenum($, _, Mustache, dcpAttribute, kendo)
+}(window, function require_wenum($, _, Mustache, dcpAttribute)
 {
     'use strict';
 

@@ -14,9 +14,9 @@
         ], factory);
     } else {
         //noinspection JSUnresolvedVariable
-        factory(window.jQuery, window._, window.Mustache, window.kendo);
+        factory(window.jQuery, window._, window.Mustache);
     }
-}(window, function wDate($, _, Mustache, kendo)
+}(window, function wDate($, _, Mustache)
 {
     'use strict';
 
