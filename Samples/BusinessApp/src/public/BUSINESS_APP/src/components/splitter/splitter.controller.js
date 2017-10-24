@@ -24,8 +24,8 @@ export default {
             this.$(this.$refs.splitter).kendoSplitter({
                 panes: [
                     { collapsible: true, resizable: false, collapsedSize: '50px', size: '25%', scrollable: false },
-                    { collapsible: false, resizable: false, size: '24px' },
-                    { collapsible: false, resizable: false }
+                    { collapsible: false, resizable: false, size: '25px' },
+                    { collapsible: false, resizable: false, scrollable: false },
                 ],
 
             });
