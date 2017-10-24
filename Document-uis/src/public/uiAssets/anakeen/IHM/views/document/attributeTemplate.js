@@ -324,7 +324,7 @@ define(function attributeTemplate(require/*, exports, module*/)
              */
             getCustomTemplate: function attributeTemplategetCustomTemplate(attributeModel, displayLabel)
             {
-                return '<div class="dcpCustomTemplate--content" data-displaylabel="' + (displayLabel ? "true" : "false") + '" data-attrid="' + attributeModel.id + '"/>';
+                return '<div class="dcpCustomTemplate--content '+(displayLabel ? "dcpCustomTemplate--content--view" : "dcpCustomTemplate--content--value")+'" data-displaylabel="' + (displayLabel ? "true" : "false") + '" data-attrid="' + attributeModel.id + '"/>';
             },
 
             /**
