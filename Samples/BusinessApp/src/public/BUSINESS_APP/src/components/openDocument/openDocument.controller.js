@@ -95,6 +95,18 @@ export default {
                 });
                 const buttons = this.$(this.$refs.tabsPaginator).find('button').kendoButton();
                 this.privateScope.bindTabsPaginatorEvents(buttons);
+                const tabList = this.$(this.$refs.tabsPaginator).find('ul').kendoMenu({
+                    animation: false,
+                    select: this.onSelectTab,
+                    openOnClick: true,
+                    dataSource: [
+                        {
+                            text: '<span class="k-icon k-i-menu"></span>',
+                            encoded: false,
+                            items: [],
+                        },
+                    ],
+                });
 
                 resolve();
             });
@@ -110,6 +122,9 @@ export default {
             }
         },
 
+        onSelectTab(e) {
+            console.log(e);
+        },
         updateNewActionsItems(data) {
             const items = data.map((c) => {
                 return {
