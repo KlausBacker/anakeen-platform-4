@@ -52,7 +52,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                     templateInfo.attributes[attributeId].htmlView = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, true);
                     templateInfo.attributes[attributeId].isReadMode = (currentAttributeModel.get("mode") === "read");
                     templateInfo.attributes[attributeId].isWriteMode = (currentAttributeModel.get("mode") === "write");
-
+                    templateInfo.attributes[attributeId].renderOptions =  currentAttributeModel.getOptions();
                     if (currentAttributeModel.get("type") === "array") {
                         templateInfo.attributes[attributeId].toolsEnabled = templateInfo.attributes[attributeId].isWriteMode &&
                             (currentAttributeModel.get("visibility") !== "U") &&
