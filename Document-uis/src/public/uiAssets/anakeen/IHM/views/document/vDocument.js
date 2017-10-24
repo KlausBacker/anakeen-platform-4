@@ -431,7 +431,7 @@ define([
                     var $tabContent = this.$el.find(".dcpTab__content.k-state-active").first();
                     var $tabList = this.$el.find(".dcpDocument__tabs__list");
 
-                    if (scrollTop < ($tabContent.offset().top - menuHeight - $tabList.height())) {
+                    if ($tabContent.length > 0 && scrollTop < ($tabContent.offset().top - menuHeight - $tabList.height())) {
                         if (isAlreadyFixed) {
                             $tabs.removeClass("tab--fixed");
                             $tabs.css("top", "");
