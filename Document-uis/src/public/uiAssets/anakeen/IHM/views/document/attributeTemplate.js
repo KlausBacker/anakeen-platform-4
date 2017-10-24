@@ -35,7 +35,6 @@ define(function attributeTemplate(require/*, exports, module*/)
                 _.each(documentData.attributeLabels, function attributeTemplategetTemplateModelInfoEach(attributeLabel, attributeId)
                 {
                     var currentAttributeModel = documentModel.get('attributes').get(attributeId);
-                    var attrValue = currentAttributeModel.get("attributeValue");
                     if (currentAttributeModel.getOption("attributeLabel")) {
                         attributeLabel = currentAttributeModel.getOption("attributeLabel");
                     }
@@ -203,8 +202,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 model: currentAttributeModel,
                                 originalView: originalView,
                                 initializeContent: (config && config.initializeContent) || false,
-                                displayLabel: displayLabel,
-                                secondView: true
+                                displayLabel: displayLabel
                             });
                             attrContent = view.render().$el;
                         }
