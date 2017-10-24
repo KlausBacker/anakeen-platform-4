@@ -62,16 +62,41 @@ export default {
         tabstrip() {
             return this.tabstripEl ? this.tabstripEl.data('kendoTabStrip') : null;
         },
+
+    },
+
+    watch: {
+        openedDocuments(newValue) {
+            const items = newValue.map((d) => {
+                return {
+                    text: `<div class="documentsList__documentsTabs__tabs__paginator__list__item__content">
+                    <span class="documentsList__documentsTabs__tabs__paginator__list__item__title">
+                        ${d.title}
+                    </span>
+                    <span class="k-icon k-i-x"></span></div>`,
+                    encoded: false,
+                    cssClass: 'documentsList__documentsTabs__tabs__paginator__list__item',
+                };
+            });
+            const menu = this.$(this.$refs.tabsList).data('kendoMenu');
+            menu.remove('.documentsList__documentsTabs__tabs__paginator__list__item');
+            menu.append(items, '.documentsList__documentsTabs__tabs__paginator__list__root');
+            if (!items.length) {
+                menu.enable('.documentsList__documentsTabs__tabs__paginator__list__root', false);
+            } else {
+                menu.enable('.documentsList__documentsTabs__tabs__paginator__list__root', true);
+            }
+        },
     },
 
     methods: {
         onStoreChange(storeData) {
             if (storeData) {
                 switch (storeData.type) {
-                case 'OPEN_DOCUMENT':
-                    this.addTab(storeData.data);
-                break;
-            }
+                    case 'OPEN_DOCUMENT':
+                        this.addTab(storeData.data);
+                        break;
+                }
             }
         },
 
@@ -81,13 +106,11 @@ export default {
                     animation: false,
                     select: this.onClickNewAction,
                     openOnClick: true,
-                    dataSource: [
-                        {
+                    dataSource: {
                             text: 'Nouveau',
                             cssClass: 'documentsList__openDocuments__new__menu',
                             items: [],
                         },
-                    ],
                 });
                 this.tabstripEl = this.$(this.$refs.tabstrip).kendoTabStrip({
                     animation: false,
@@ -99,13 +122,12 @@ export default {
                     animation: false,
                     select: this.onSelectTab,
                     openOnClick: true,
-                    dataSource: [
-                        {
+                    dataSource: {
                             text: '<span class="k-icon k-i-menu"></span>',
                             encoded: false,
+                            cssClass: 'documentsList__documentsTabs__tabs__paginator__list__root',
                             items: [],
                         },
-                    ],
                 });
 
                 resolve();
@@ -125,6 +147,7 @@ export default {
         onSelectTab(e) {
             console.log(e);
         },
+
         updateNewActionsItems(data) {
             const items = data.map((c) => {
                 return {

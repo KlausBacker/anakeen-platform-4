@@ -1,7 +1,7 @@
 <template>
     <div class="documentsList__openDocuments__wrapper" ref="wrapper">
         <div class="documentsList__documentsTabs__tabs__buttons">
-            <ul ref="newActionButton"></ul>
+            <ul ref="newActionButton" class="documentsList__documentsTabs__tabs__new"></ul>
             <div ref="tabsPaginator" class="documentsList__documentsTabs__tabs__paginator">
                 <button class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__prev">
                     <span class="k-icon k-i-arrow-left"></span>
@@ -9,7 +9,7 @@
                 <button class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__next">
                     <span class="k-icon k-i-arrow-right"></span>
                 </button>
-                <ul class="documentsList__documentsTabs__tabs__paginator__dropdown__button documentsList__documentsTabs__tabs__paginator__list">
+                <ul class="documentsList__documentsTabs__tabs__paginator__dropdown__button documentsList__documentsTabs__tabs__paginator__list" ref="tabsList">
                 </ul>
                 <button class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__close">
                     <span class="k-icon k-i-x"></span>
