@@ -9,9 +9,8 @@
                 <button class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__next">
                     <span class="k-icon k-i-arrow-right"></span>
                 </button>
-                <button class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__list">
-                    <span class="k-icon k-i-menu"></span>
-                </button>
+                <ul class="documentsList__documentsTabs__tabs__paginator__dropdown__button documentsList__documentsTabs__tabs__paginator__list">
+                </ul>
                 <button class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__close">
                     <span class="k-icon k-i-x"></span>
                 </button>

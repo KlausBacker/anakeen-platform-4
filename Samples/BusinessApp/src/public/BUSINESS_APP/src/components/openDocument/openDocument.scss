@@ -108,6 +108,27 @@
         color: #157EFB;
       }
     }
+
+    .documentsList__documentsTabs__tabs__paginator__dropdown__button {
+      border: 0;
+      border-radius: 0;
+      height: 35px;
+      width: 24.3px;
+      background-color: #F4F4F4;
+      padding: 0;
+      color: #878787;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & > .k-item {
+        width: 100%;
+        height: 100%;
+        .k-menu-expand-arrow {
+          display: none;
+        }
+      }
+    }
   }
 }
 
@@ -188,6 +209,7 @@
   }
 
   & > .k-content {
+    overflow: hidden;
     padding: 0;
     display: flex;
     flex-direction: column;
