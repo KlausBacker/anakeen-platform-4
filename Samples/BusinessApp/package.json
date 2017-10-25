@@ -27,6 +27,7 @@
     "jscs": "^3.0.7",
     "jscs-loader": "^0.3.0",
     "node-sass": "^4.5.3",
+    "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony",
     "vue": "^2.2.6",

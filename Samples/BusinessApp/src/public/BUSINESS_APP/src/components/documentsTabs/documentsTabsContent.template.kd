@@ -1,0 +1,2 @@
+<a4-document initid="#: initid#" # if (data.viewId) { #viewid="#= data.viewId#"# }#>
+</a4-document>

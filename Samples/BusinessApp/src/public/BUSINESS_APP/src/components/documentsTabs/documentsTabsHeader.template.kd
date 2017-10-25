@@ -1,0 +1,6 @@
+<span>
+    <span class="documentsList__documentsTabs__tabs__tab__title">#= title#</span>
+    <span class="documentsList__documentsTabs__tabs__tab__close" data-type="remove" >
+        <span class="k-icon k-i-x"></span>
+    </span>
+</span>
