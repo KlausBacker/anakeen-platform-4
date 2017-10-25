@@ -56,7 +56,12 @@ module.exports = {
                         presets: ['env']
                     }
                 }
-            }
+            },
+            {
+                test: /\.template.kd$/,
+                include: [path.resolve(__dirname, 'src/public/BUSINESS_APP/src')],
+                use: 'raw-loader'
+            },
         ]
     },
     resolve: {
