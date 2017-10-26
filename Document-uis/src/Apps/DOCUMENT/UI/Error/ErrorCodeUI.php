@@ -164,6 +164,14 @@ namespace {
          */
         const UI0212 = 'Incorrect size "%s" : must be a number or 2 numbers separate by x';
         /**
+         * @errorCode the collapse may be true, false ou null
+         */
+        const UI0213 = 'Value "%s" for Frame option "collapse" is invalid : allowed are : %s';
+        /**
+         * @errorCode the collapse may be true, false ou null
+         */
+        const UI0214 = 'Value "%s" for Array option "collapse" is invalid : allowed are : %s';
+        /**
          * @errorCode Only view,edit, create are allowed
          */
         const UI0300 = 'Mode "%s" is not a valid render mode';
