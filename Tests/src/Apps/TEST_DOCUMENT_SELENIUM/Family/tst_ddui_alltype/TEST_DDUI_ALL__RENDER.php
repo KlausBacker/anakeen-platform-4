@@ -67,3 +67,49 @@ class AllRenderConfigView extends \Dcp\Ui\DefaultView
         return "All View";
     }
 }
+class AllRenderCollapseView extends \Dcp\Ui\DefaultView
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->frame()->setCollapse(true);
+
+        return $options;
+    }
+
+}
+
+class AllRenderNoneCollapseView extends \Dcp\Ui\DefaultView
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->frame()->setCollapse(\Dcp\Ui\FrameRenderOptions::collapseNone);
+
+        return $options;
+    }
+
+}
+
+class AllRenderNoneArrayCollapseView extends \Dcp\Ui\DefaultView
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->arrayAttribute()->setCollapse(\Dcp\Ui\ArrayRenderOptions::collapseNone);
+        return $options;
+    }
+}
+class AllRenderCollapeArrayView extends \Dcp\Ui\DefaultView
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->arrayAttribute()->setCollapse(\Dcp\Ui\ArrayRenderOptions::collapseCollapsed);
+        return $options;
+    }
+}
