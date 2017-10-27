@@ -3,6 +3,7 @@ $tabFiwWidth:10em;
 
 .dcpDocument__tabs .dcpDocument__tabs__list {
   white-space: nowrap;
+  border-bottom: solid 1px $A4-ui-doc-edit-attribute-color-border;
 }
 .dcpDocument__tabs .dcpDocument__tabs__list > li {
   max-width: 200px;
@@ -12,13 +13,15 @@ $tabFiwWidth:10em;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  padding: 10px 0.5em 0 0.5em;
+  //padding: 10px 0.5em 0 0.5em;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
 }
 
-
+.k-tabstrip .k-item.k-state-active {
+  margin-bottom : -1px;
+}
 
 .dcpDocument__tabs.k-tabstrip > .k-content {
   padding: $dcp-set-padding;
@@ -26,6 +29,11 @@ $tabFiwWidth:10em;
 
 .dcpDocument__tabs .dcpFrame {
   margin-bottom:$dcp-set-padding;
+}
+
+.dcpDocument__tabs .dcpFrame:first-child {
+  margin-top:$dcp-set-padding;
+
 }
 .dcpDocument__tabs .dcpFrame .dcpArray {
   margin-bottom:$dcp-set-padding;
@@ -37,7 +45,6 @@ $tabFiwWidth:10em;
   padding:$dcp-set-padding;
 }
 
-.dcpDocument__tabs .dcpFrame:last-child,
 .dcpDocument__tabs .dcpFrame .dcpArray:last-child
 {
   margin-bottom:0;
@@ -141,6 +148,9 @@ $tabFiwWidth:10em;
 
 
 .dcpDocument__tabs.k-tabstrip {
+  .dcpTab__label.k-item.k-state-hover {
+    background-color: lighten($nav-link-hover-bg, 10%);
+  }
   .k-bare.k-tabstrip-next,
   .k-bare.k-tabstrip-prev {
     height: 3rem;
@@ -161,7 +171,7 @@ $tabFiwWidth:10em;
     position: fixed;
     z-index: 3;
     top: 30px;
-    padding: $dcp-set-padding/2 $dcp-set-padding 0 $dcp-set-padding;
+    //padding: $dcp-set-padding/2 $dcp-set-padding 0 $dcp-set-padding;
     left: 0;
     background: $body-bg;
 

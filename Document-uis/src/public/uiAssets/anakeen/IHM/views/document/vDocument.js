@@ -103,7 +103,7 @@ define([
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
-            var tabPlacement = this.model.getOption("tabPlacement") || "topFix";
+            var tabPlacement = this.model.getOption("tabPlacement") || "top";
             var event = {prevent: false};
 
             this.$el.removeClass("dcpTouch");
@@ -372,7 +372,7 @@ define([
             var $tabs = this.$el.find(".dcpDocument__tabs");
             var $ul;
             if ($tabs.length > 0) {
-                var tabPlacement = this.model.getOption("tabPlacement");
+                var tabPlacement = this.model.getOption("tabPlacement") || "top";
                 var menuHeight = this.$el.find(".menu__content").height();
                 var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
                 var isAlreadyFixed= $tabs.hasClass("tab--fixed");
