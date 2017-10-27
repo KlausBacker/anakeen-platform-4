@@ -378,7 +378,7 @@ define([
                 var isAlreadyFixed= $tabs.hasClass("tab--fixed");
                 var $liActive=$tabs.find("li.k-state-active");
                 var scrollTop = $(window).scrollTop();
-                var $navButtons=$tabs.find(".k-button-bare");
+                var $navButtons=$tabs.find(".k-bare");
                 var resizeMode = (event.type === "resize");
                 if (scrollTop > ($tabs.offset().top - menuHeight)) {
                     $tabs.addClass("tab--fixed");
@@ -389,7 +389,7 @@ define([
                         if (resizeMode) {
                               kendoTabStrip.resize();
                         }
-                        var $navButtonsVisible=$tabs.find(".k-button-bare:visible");
+                        var $navButtonsVisible=$tabs.find(".k-bare:visible");
                         if ($navButtonsVisible.length > 0) {
 
                             if (!isAlreadyFixed || resizeMode) {
@@ -414,7 +414,7 @@ define([
                                 $navButtons.css("height", $ul.outerHeight() + "px");
 
                                 $ul.css("top", (menuHeight) + "px");
-                                $tabs.find(".k-button-bare").css("top", (menuHeight + 0) + "px");
+                                $tabs.find(".k-bare").css("top", (menuHeight + 0) + "px");
 
                                 if ($liActive.length === 1 ) {
                                     kendoTabStrip.activateTab($liActive);
@@ -439,7 +439,7 @@ define([
                                 $navButtons.css("height","");
                                 $ul = $tabs.find(".dcpDocument__tabs__list");
                                 $ul.css("width", "").css("top", "");
-                                $tabs.find(".k-button-bare").css("top", "");
+                                $tabs.find(".k-bare").css("top", "");
                                 if ($ul.data("originalMargins")) {
                                     $ul.css("margin-left", $ul.data("originalMargins").left);
                                     $ul.css("margin-right", $ul.data("originalMargins").right);
@@ -679,7 +679,7 @@ define([
 
                 if (!$tabs.data("selectFixOn")) {
                     // Add callback only one time
-                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick()
+                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick(event)
                     {
                         var selectedTab = $kendoTabs.select().data("attrid");
                         var selectedItem = $tabs.data("selectFixOn").data("kendoComboBox").value();
