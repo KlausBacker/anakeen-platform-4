@@ -62,6 +62,7 @@ export default {
 
     selectDocument(document) {
       this.$emit('store-save', { action: 'openDocument', data: document });
+      this.$emit('document-selected', document);
     },
 
     onStoreChange(storeData) {
