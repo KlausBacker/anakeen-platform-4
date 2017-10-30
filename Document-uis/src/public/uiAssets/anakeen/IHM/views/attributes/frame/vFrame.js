@@ -18,7 +18,7 @@ define([
         displayLabel: true,
 
         events: {
-            "click .dcpFrame__label": "toggle",
+            "click .dcpFrame--collapsable": "toggle",
             'click a[href^="#action/"], a[data-action], button[data-action]': 'externalLinkSelected'
         },
 
@@ -61,6 +61,8 @@ define([
             if (this.model.getOption("attributeLabel")) {
                 contentData.label = this.model.getOption("attributeLabel");
             }
+            contentData.collapsable = (contentData.renderOptions.collapse !== "none");
+
             this.templateLabel = this.model.getTemplates().attribute.frame.label;
             labelElement = $(Mustache.render(this.templateLabel || "", contentData));
 
@@ -122,7 +124,7 @@ define([
                 attributeTemplate.insertDescription(this);
             }
 
-            if (this.model.getOption("collapse") === true) {
+            if (this.model.getOption("collapse") === "collapse") {
                 this.toggle(null, true);
             }
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});

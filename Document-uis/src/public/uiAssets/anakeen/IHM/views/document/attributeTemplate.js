@@ -35,7 +35,6 @@ define(function attributeTemplate(require/*, exports, module*/)
                 _.each(documentData.attributeLabels, function attributeTemplategetTemplateModelInfoEach(attributeLabel, attributeId)
                 {
                     var currentAttributeModel = documentModel.get('attributes').get(attributeId);
-                    var attrValue = currentAttributeModel.get("attributeValue");
                     if (currentAttributeModel.getOption("attributeLabel")) {
                         attributeLabel = currentAttributeModel.getOption("attributeLabel");
                     }
@@ -49,11 +48,13 @@ define(function attributeTemplate(require/*, exports, module*/)
                     templateInfo.attributes[attributeId].id = attributeId;
                     templateInfo.attributes[attributeId].isEmpty = currentTemplate._isEmptyAttribute(currentAttributeModel);
 
-                    templateInfo.attributes[attributeId].htmlContent = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, false);
-                    templateInfo.attributes[attributeId].htmlView = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, true);
+                    templateInfo.attributes[attributeId].htmlContent = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, false, false);
+                    templateInfo.attributes[attributeId].htmlView = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, true, false);
+                    templateInfo.attributes[attributeId].htmlDefaultContent = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, false, true);
+                    templateInfo.attributes[attributeId].htmlDefaultView = _.bind(currentTemplate.getCustomTemplate, currentTemplate, currentAttributeModel, true, true);
                     templateInfo.attributes[attributeId].isReadMode = (currentAttributeModel.get("mode") === "read");
                     templateInfo.attributes[attributeId].isWriteMode = (currentAttributeModel.get("mode") === "write");
-
+                    templateInfo.attributes[attributeId].renderOptions =  currentAttributeModel.getOptions();
                     if (currentAttributeModel.get("type") === "array") {
                         templateInfo.attributes[attributeId].toolsEnabled = templateInfo.attributes[attributeId].isWriteMode &&
                             (currentAttributeModel.get("visibility") !== "U") &&
@@ -168,7 +169,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                         attrContent = "NO VIEW FOR " + attrId,
                         view = '',
                         BackView = null,
-                        originalView = null;
+                        originalView = ($(this).data("originalview") === true);
 
                     if (currentAttributeModel) {
 
@@ -177,36 +178,46 @@ define(function attributeTemplate(require/*, exports, module*/)
                             callBackView.apply($(this));
                             attrContent = '';
                         } else {
-                            switch (currentAttributeModel.get("type")) {
-                                case "array":
-                                    BackView = require.apply(require, ['dcpDocument/views/attributes/array/vArray']);
-                                    break;
-                                case "tab":
-                                    BackView = require.apply(require, ['dcpDocument/views/attributes/tab/vTabContent']);
-                                    break;
-                                case "frame":
-                                    BackView = require.apply(require, ['dcpDocument/views/attributes/frame/vFrame']);
-                                    break;
-                                default:
-                                    BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
-                            }
-
-                            originalView = true;
-                            if (currentAttributeModel.getOption("template")) {
-                                if (config && config.useCustomAttribute) {
-                                    // when use custom template in another custom template
-                                    originalView = false;
+                            try {
+                                switch (currentAttributeModel.get("type")) {
+                                    case "array":
+                                        BackView = require.apply(require,
+                                            ['dcpDocument/views/attributes/array/vArray']);
+                                        break;
+                                    case "tab":
+                                        BackView = require.apply(require,
+                                            ['dcpDocument/views/attributes/tab/vTabContent']);
+                                        break;
+                                    case "frame":
+                                        BackView = require.apply(require,
+                                            ['dcpDocument/views/attributes/frame/vFrame']);
+                                        break;
+                                    default:
+                                        BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
                                 }
-                            }
 
-                            view = new BackView({
-                                model: currentAttributeModel,
-                                originalView: originalView,
-                                initializeContent: (config && config.initializeContent) || false,
-                                displayLabel: displayLabel,
-                                secondView: true
-                            });
-                            attrContent = view.render().$el;
+
+                                if (!currentAttributeModel.getOption("template")) {
+                                    originalView = true;
+                                }
+
+                                if (originalView === false && currentAttributeModel.customViewRended === true) {
+                                    throw new Error("Cannot use \"htmlView\" / \"htmlContent\" for itself on own custom view for " + currentAttributeModel.id+ ". Use \"htmlDefaultView\" / \"htmlDefaultContent\" instead");
+                                }
+                                if (originalView === false) {
+                                    currentAttributeModel.customViewRended = true;
+                                }
+
+                                view = new BackView({
+                                    model: currentAttributeModel,
+                                    originalView: originalView,
+                                    initializeContent: (config && config.initializeContent) || false,
+                                    displayLabel: displayLabel
+                                });
+                                attrContent = view.render().$el;
+                            } catch (e) {
+                                attrContent= $("<div/>").addClass("bg-danger").text(e.message);
+                            }
                         }
                     }
                     $(this).append(attrContent);
@@ -321,12 +332,16 @@ define(function attributeTemplate(require/*, exports, module*/)
              * Get element where custom template will be inserted (htmlContent and htmlView)
              * @param attributeModel
              * @param displayLabel
+             * @param originalView
              * @private
              * @returns {string}
              */
-            getCustomTemplate: function attributeTemplategetCustomTemplate(attributeModel, displayLabel)
+            getCustomTemplate: function attributeTemplategetCustomTemplate(attributeModel, displayLabel, originalView)
             {
-                return '<div class="dcpCustomTemplate--content" data-displaylabel="' + (displayLabel ? "true" : "false") + '" data-attrid="' + attributeModel.id + '"/>';
+                return '<div class="dcpCustomTemplate--content '+(displayLabel ? "dcpCustomTemplate--content--view" : "dcpCustomTemplate--content--value")+
+                    '" data-displaylabel="' + (displayLabel ? "true" : "false") +
+                    '" data-originalview="' + (originalView ? "true" : "false") +
+                    '" data-attrid="' + attributeModel.id + '"/>';
             },
 
             /**
@@ -356,7 +371,11 @@ define(function attributeTemplate(require/*, exports, module*/)
                 var templates = attributeModel.getTemplates().attribute[attributeModel.get("type")];
                 var tool = '';
                 if (templates && templates.line) {
-                    tool = $(Mustache.render(templates.line || "", {tools: true})).find(".dcpArray__toolCell").html();
+                    tool = $(Mustache.render(templates.line || "",
+                        {
+                            tools: true,
+                            lineCid:_.uniqueId(attributeModel.id)
+                        })).find(".dcpArray__toolCell").html();
                 }
                 return tool;
             },

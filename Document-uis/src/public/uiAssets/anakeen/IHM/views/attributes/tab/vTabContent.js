@@ -55,12 +55,12 @@ define([
 
             if (!hasOneContent || !this.initializeContent) {
                 this.$el.append(this.model.getOption('showEmptyContent'));
+                this.$el.removeClass("dcpTab__content--loading");
+                this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             } else {
                 this.renderContent();
             }
 
-            this.$el.removeClass("dcpTab__content--loading");
-            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             this.propageShowTab();
 
             return this;
@@ -99,6 +99,9 @@ define([
                     });
                     attributeTemplate.insertDescription(this);
                 }
+
+                this.$el.removeClass("dcpTab__content--loading");
+                this.model.trigger("renderDone", {model: this.model, $el: this.$el});
                 this.initialized = true;
             }
             $(window.document).trigger("redrawErrorMessages");

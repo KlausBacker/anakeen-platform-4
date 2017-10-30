@@ -30,6 +30,7 @@
                 rowMinLimit: -1,
                 rowMinDefault: 0,
                 rowMaxLimit: -1,
+                collapse: false,
                 arrayBreakPoints: {
                     transpositionRule: "@media (max-width: 768px)",
                     upRule: "@media (max-width: 1200px)"
@@ -84,6 +85,9 @@
             this._initDom();
             this._initActionClickEvent();
             this._bindEvents();
+            if (this.options.renderOptions.collapse === "collapse") {
+                this.toggleCollapse(null, true);
+            }
             this.initializing = false;
         },
 
@@ -108,6 +112,7 @@
                 this.element.addClass("card card-default");
                 if (this.options.displayLabel !== false) {
                     this.element.append(Mustache.render(this._getTemplate("label") || "", _.extend(this.options, {
+                        collapsable : (this.options.renderOptions.collapse !== "none"),
                         displayCount: (this.options.renderOptions.rowCountThreshold >= 0 && this.options.nbLines >= this.options.renderOptions.rowCountThreshold)
                     })));
                 }
@@ -391,14 +396,22 @@
                 currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
 
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray__label", function toogleTable()
+            this.element.on("click" + this.eventNamespace, ".dcpArray--collapsable", function toogleTable()
             {
-                currentWidget._hideTooltips();
-                var $contentElement = currentWidget.element.find(".dcpArray__content");
-                currentWidget.element.find(".dcp__array__caret").toggleClass("fa-caret-right fa-caret-down");
-                $contentElement.toggleClass("dcpArray__content--open dcpArray__content--close");
-                $contentElement.slideToggle(200);
+                currentWidget.toggleCollapse.apply(currentWidget);
             });
+        },
+
+        toggleCollapse: function toggleCollapse(event, hideNow) {
+            this._hideTooltips();
+            var $contentElement = this.element.find(".dcpArray__content");
+            this.element.find(".dcp__array__caret").toggleClass("fa-caret-right fa-caret-down");
+            $contentElement.toggleClass("dcpArray__content--open dcpArray__content--close");
+            if (hideNow) {
+                $contentElement.hide();
+            } else {
+                $contentElement.slideToggle(200);
+            }
         },
 
         /**

@@ -103,7 +103,7 @@ define([
                 '<div style="display:none" class="dcpDocument__tabs">' +
                 '<ul class="dcpDocument__tabs__list"></ul></div></div>';
             var $body;
-            var tabPlacement = this.model.getOption("tabPlacement") || "topFix";
+            var tabPlacement = this.model.getOption("tabPlacement") || "top";
             var event = {prevent: false};
 
             this.$el.removeClass("dcpTouch");
@@ -137,6 +137,7 @@ define([
             $(window).off(".v" + this.model.cid);
 
             $(window).on("resize.v" + this.model.cid, _.bind(this.resizeForFooter, this));
+            $(window).on("scroll.v" + this.model.cid, _.bind(this.fixedTab, this));
             kendo.culture(locale);
             //add document base
             try {
@@ -251,6 +252,7 @@ define([
                     show: function vDocumentShowTab(event)
                     {
                         var tabId = $(event.item).data("attrid");
+                        var scrollY=$(window).scrollTop();
                         currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
                         currentView.$('.dcpLabel[data-attrid="' + tabId + '"]').addClass("dcpLabel--active").removeClass("dcpLabel--default");
                         if (documentView.selectedTab !== tabId) {
@@ -266,6 +268,9 @@ define([
                                     currentView.$el.find("[aria-describedby*='tooltip']").tooltip("hide");
                                     tab.trigger("showTab");
                                     viewMenu.refresh();
+                                    _.defer(function () {
+                                        $(window).scrollTop(scrollY);
+                                    });
                                 }
                             }
                         });
@@ -288,6 +293,12 @@ define([
                     this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
 
                     $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.responsiveTabMenu, this), 100, false));
+
+                }
+                if (tabPlacement === "top" && this.kendoTabs) {
+                    this.$(".dcpDocument__tabs").addClass("dcpDocument__tabs--fixed");
+                    $(window).on("resize.v" + this.model.cid, _.debounce(_.bind(this.scrollTabList, this), 100, false));
+                    _.delay(_.bind(this.scrollTabList, this), 500);
 
                 }
 
@@ -356,7 +367,108 @@ define([
                 }
             }
         },
+        fixedTab: function vDocumentfixedTab(event)
+        {
+            var $tabs = this.$el.find(".dcpDocument__tabs");
+            var $ul;
+            if ($tabs.length > 0) {
+                var tabPlacement = this.model.getOption("tabPlacement") || "top";
+                var menuHeight = this.$el.find(".menu__content").height();
+                var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
+                var isAlreadyFixed= $tabs.hasClass("tab--fixed");
+                var $liActive=$tabs.find("li.k-state-active");
+                var scrollTop = $(window).scrollTop();
+                var $navButtons=$tabs.find(".k-bare");
+                var resizeMode = (event.type === "resize");
+                if (scrollTop > ($tabs.offset().top - menuHeight)) {
+                    $tabs.addClass("tab--fixed");
+                    $tabs.css("top", menuHeight + "px");
+                    if (tabPlacement === "top") {
+                        // Special case for scrolling tabs
+                        $ul = $tabs.find(".dcpDocument__tabs__list");
+                        if (resizeMode) {
+                              kendoTabStrip.resize();
+                        }
+                        var $navButtonsVisible=$tabs.find(".k-bare:visible");
+                        if ($navButtonsVisible.length > 0) {
 
+                            if (!isAlreadyFixed || resizeMode) {
+                                $ul.css("width", "");
+                                if (!$ul.data("margins"))  {
+                                    if (parseInt($navButtonsVisible.width()) > 0) {
+                                        $ul.data("fixMargins",
+                                            {left: $navButtonsVisible.width(), right: $navButtonsVisible.width()});
+                                        $ul.data("originalMargins",
+                                            {left:  $ul.css("margin-left"), right:  $ul.css("margin-right")});
+                                    }
+                                }
+                                if ($ul.data("fixMargins")) {
+                                    $ul.css("margin-left", $ul.data("fixMargins").left);
+                                    $ul.css("margin-right", $ul.data("fixMargins").right);
+                                }
+
+
+                                var ulWidth = $tabs.width() - parseInt($ul.css("margin-right")) - parseInt($ul.css(
+                                    "margin-left"));
+                                $ul.css("width", ulWidth + "px");
+                                $navButtons.css("height", $ul.outerHeight() + "px");
+
+                                $ul.css("top", (menuHeight) + "px");
+                                $tabs.find(".k-bare").css("top", (menuHeight + 0) + "px");
+
+                                if ($liActive.length === 1 ) {
+                                    kendoTabStrip.activateTab($liActive);
+                                }
+                            }
+                        } else {
+                            if (parseInt($ul.css("margin-left")) > 0) {
+                                $ul.data("margins", {left:$ul.css("margin-left"), right:$ul.css("margin-right")});
+                            }
+                            $ul.css("width", "").css("margin-right","").css("margin-left","");
+                        }
+                    }
+                } else {
+                    var $tabContent = this.$el.find(".dcpTab__content.k-state-active").first();
+                    var $tabList = this.$el.find(".dcpDocument__tabs__list");
+
+                    if ($tabContent.length > 0 && scrollTop < ($tabContent.offset().top - menuHeight - $tabList.height())) {
+                        if (isAlreadyFixed) {
+                            $tabs.removeClass("tab--fixed");
+                            $tabs.css("top", "");
+                            if (tabPlacement === "top") {
+                                $navButtons.css("height","");
+                                $ul = $tabs.find(".dcpDocument__tabs__list");
+                                $ul.css("width", "").css("top", "");
+                                $tabs.find(".k-bare").css("top", "");
+                                if ($ul.data("originalMargins")) {
+                                    $ul.css("margin-left", $ul.data("originalMargins").left);
+                                    $ul.css("margin-right", $ul.data("originalMargins").right);
+                                }
+                                if ($liActive.length === 1 ) {
+                                    kendoTabStrip.activateTab($liActive);
+                                }
+                                kendoTabStrip.resize();
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        scrollTabList: function vDocumentScrollTabList(event)
+        {
+            var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
+            var $tabs = this.$el.find(".dcpDocument__tabs");
+
+            if ($tabs.hasClass("tab--fixed")) {
+
+                _.defer(_.bind(this.fixedTab, this, event));
+            } else {
+
+                kendoTabStrip.resize();
+            }
+
+        },
         /**
          * Add menu if needed in topFix placement tab
          */
@@ -567,7 +679,7 @@ define([
 
                 if (!$tabs.data("selectFixOn")) {
                     // Add callback only one time
-                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick()
+                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick(event)
                     {
                         var selectedTab = $kendoTabs.select().data("attrid");
                         var selectedItem = $tabs.data("selectFixOn").data("kendoComboBox").value();

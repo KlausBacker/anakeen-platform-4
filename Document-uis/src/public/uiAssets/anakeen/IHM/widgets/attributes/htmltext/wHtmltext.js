@@ -260,6 +260,9 @@
                         }
                     });
                     if (isNotPrevented) {
+                        var $base = $("base");
+                        var isAbsUrl = new RegExp('^(?:[a-z]+:)?//', 'i');
+
                         anchorsTarget = anchorsConfig.target || "_blank";
                         href = anchor.href;
 
@@ -292,9 +295,6 @@
                                 break;
                             case "_self":
                                 // For IE : Not honor base href in this case
-                                var $base = $("base");
-                                var isAbsUrl = new RegExp('^(?:[a-z]+:)?//', 'i');
-
                                 if (!isAbsUrl.test(href)) {
                                     window.location.href = $base.attr("href") + href;
                                 } else {
@@ -310,6 +310,9 @@
                                         wFeature += "height=" + parseInt(anchorsConfig.windowHeight, 10) + ",";
                                     }
                                     wFeature += "resizable=yes,scrollbars=yes";
+                                }
+                                if (!isAbsUrl.test(href)) {
+                                    href= $base.attr("href") + href;
                                 }
                                 window.open(href, anchorsTarget, wFeature);
                                 break;

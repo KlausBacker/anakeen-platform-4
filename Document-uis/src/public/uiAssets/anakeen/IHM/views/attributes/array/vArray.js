@@ -130,12 +130,8 @@ define([
             }
 
             try {
-                if (this.customView && !this.customRowView) {
-                    this.$el.append(this.customView);
-                } else {
-                    this.$el.dcpArray(data);
-                    attributeTemplate.insertDescription(this);
-                }
+                this.$el.dcpArray(data);
+                attributeTemplate.insertDescription(this);
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);

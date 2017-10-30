@@ -21,6 +21,21 @@ $action_desc = array(
         "layout" => "testmain.html",
         "function" => "testmain",
         "root" => "Y"
+    ),
+    array(
+        "name" => "TESTRENDER",
+        "short_name" => "Render test interface",
+        "script" => "action.testrender.php",
+        "layout" => "testrender.html",
+        "function" => "testrender",
+
+    ),
+    array(
+        "name" => "EXPORTRENDER",
+        "short_name" => "Render test interface",
+        "script" => "action.exporttestrender.php",
+        "function" => "exportTestRender",
+
     )
 );
 

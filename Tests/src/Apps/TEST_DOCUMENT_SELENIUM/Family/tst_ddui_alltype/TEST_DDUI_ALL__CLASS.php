@@ -15,10 +15,10 @@ class AllType extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAcces
     public function getRenderConfig($mode, \Doc $document)
     {
         if ($mode === \Dcp\Ui\RenderConfigManager::EditMode || $mode === \Dcp\Ui\RenderConfigManager::CreateMode) {
-            return new AllRenderConfigEdit($this);
+            return new AllRenderConfigEdit();
         }
         if ($mode === \Dcp\Ui\RenderConfigManager::ViewMode) {
-            return new AllRenderConfigView($this);
+            return new AllRenderConfigView();
         }
         return null;
     }

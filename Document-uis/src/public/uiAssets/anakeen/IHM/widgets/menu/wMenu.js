@@ -90,6 +90,9 @@ define([
                                     options: eventContent
                                 });
                             } else {
+                                var $base = $("base");
+                                var isAbsUrl = new RegExp('^(?:[a-z]+:)?//', 'i');
+
                                 target = $elementA.attr("target") || '_self';
 
                                 if ($elementA.attr("href") && $elementA.attr("href").substring(0, 1) === "#") {
@@ -103,8 +106,6 @@ define([
 
                                 if (target === "_self") {
                                     // For IE : Not honor base href in this case
-                                    var $base = $("base");
-                                    var isAbsUrl = new RegExp('^(?:[a-z]+:)?//', 'i');
 
                                     if (!isAbsUrl.test(href)) {
                                         window.location.href = $base.attr("href") + href;
@@ -138,6 +139,10 @@ define([
                                                 wFeature += "height=" + parseInt(targetOptions.windowHeight, 10) + ",";
                                             }
                                             wFeature += "resizable=yes,scrollbars=yes";
+                                        }
+                                        if (!isAbsUrl.test(href)) {
+                                            // For IE : Not honor base href in this case
+                                            href = $base.attr("href") + href;
                                         }
                                         window.open(href, target, wFeature);
                                     }

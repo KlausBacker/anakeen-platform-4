@@ -11,10 +11,10 @@
   background-color: $A4-ui-tab-inactive-bg;
   margin-right: $A4-ui-tab-space;
 }
-.dcpDocument__tabs .dcpTab__label {
+.dcpDocument__tabs .dcpTab__label.k-item {
   @include dcpTabLabelStyle;
   &:hover {
-    @include dcpTabLabelStyle;
+
   }
   .k-link {
     height: 100%;

@@ -17,7 +17,7 @@ define([
     AttributPrototype.prototype.getProperties = function AttributeInterfaceGetProperties()
     {
         var properties = _.clone(this._attributeModel.attributes), content = properties.content;
-        properties = _.omit(properties, "isValueAttribute", "title", "options", "attributeValue", "content");
+        properties = _.omit(properties, "isValueAttribute", "title", "attributeValue", "content");
         properties.content = [];
         if (content && content.length) {
             properties.content = content.map(function attributeInterface_convertChild(currentAttribute) {
@@ -70,13 +70,14 @@ define([
 
     /**
      * Set an option of the current
+     * Add an effect only on beforeRender
      * @param name
      * @param value
      * @constructor
      */
     AttributPrototype.prototype.setOption = function AttributeInterfaceSetOption(name, value)
     {
-        this.setOption(name, value);
+        this._attributeModel.setOption(name, value);
     };
 
     AttributPrototype.prototype.getValue = function AttributeInterfaceGetValue(type)

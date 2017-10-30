@@ -3,6 +3,7 @@ $tabFiwWidth:10em;
 
 .dcpDocument__tabs .dcpDocument__tabs__list {
   white-space: nowrap;
+  border-bottom: solid 1px $A4-ui-doc-edit-attribute-color-border;
 }
 .dcpDocument__tabs .dcpDocument__tabs__list > li {
   max-width: 200px;
@@ -12,13 +13,15 @@ $tabFiwWidth:10em;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  padding: 10px 0.5em 0 0.5em;
+  //padding: 10px 0.5em 0 0.5em;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
 }
 
-
+.k-tabstrip .k-item.k-state-active {
+  margin-bottom : -1px;
+}
 
 .dcpDocument__tabs.k-tabstrip > .k-content {
   padding: $dcp-set-padding;
@@ -26,6 +29,11 @@ $tabFiwWidth:10em;
 
 .dcpDocument__tabs .dcpFrame {
   margin-bottom:$dcp-set-padding;
+}
+
+.dcpDocument__tabs .dcpFrame:first-child {
+  margin-top:$dcp-set-padding;
+
 }
 .dcpDocument__tabs .dcpFrame .dcpArray {
   margin-bottom:$dcp-set-padding;
@@ -37,7 +45,6 @@ $tabFiwWidth:10em;
   padding:$dcp-set-padding;
 }
 
-.dcpDocument__tabs .dcpFrame:last-child,
 .dcpDocument__tabs .dcpFrame .dcpArray:last-child
 {
   margin-bottom:0;
@@ -52,7 +59,7 @@ $tabFiwWidth:10em;
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label {
-  width: $tabFiwWidth;
+  min-width: $tabFiwWidth;
 }
 .dcpTab__content--loading {
   text-align:center;
@@ -65,14 +72,14 @@ $tabFiwWidth:10em;
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
   //width: 2em;
-  padding-right: 1px;
-  width: calc(#{$tabFiwWidth} + 2.2em + 2px);
+  //padding-right: 1px;
+  min-width: calc(#{$tabFiwWidth} + 2.2em + 2px);
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select {
   .k-input {
     padding:0;
-    width: $tabFiwWidth;
+    min-width: $tabFiwWidth;
     text-align: left;
 
   }
@@ -138,6 +145,53 @@ $tabFiwWidth:10em;
   margin-top: 2px;
 
 }
+
+
+.dcpDocument__tabs.k-tabstrip {
+  .dcpTab__label.k-item.k-state-hover {
+    background-color: lighten($nav-link-hover-bg, 10%);
+  }
+  .k-bare.k-tabstrip-next,
+  .k-bare.k-tabstrip-prev {
+    height: 3rem;
+    background: $body-bg! important;
+
+  }
+  .k-bare.k-tabstrip-next {
+    right: 1rem;
+  }
+
+  .k-bare.k-tabstrip-prev {
+    left: 1rem;
+  }
+}
+
+.dcpDocument__tabs.tab--fixed {
+  .dcpDocument__tabs__list {
+    position: fixed;
+    z-index: 3;
+    top: 30px;
+    //padding: $dcp-set-padding/2 $dcp-set-padding 0 $dcp-set-padding;
+    left: 0;
+    background: $body-bg;
+
+    box-shadow: 0 $dcp-set-padding $dcp-set-padding * 2 0 $nav-tabs-border-color;
+    width:  100%;
+    border-bottom: solid 1px $nav-tabs-border-color;
+
+    &.k-tabstrip-items .k-item.k-state-active {
+      background:unset;
+    }
+  }
+  .k-bare.k-tabstrip-next,
+  .k-bare.k-tabstrip-prev {
+    position: fixed;
+    z-index: 4;
+    box-shadow: 0 $dcp-set-padding $dcp-set-padding * 2 0 $nav-tabs-border-color;
+    background: $body-bg !important;
+  }
+}
+
 .menu__select_container {
   // select list container for select tab
 }
@@ -160,7 +214,7 @@ $tabFiwWidth:10em;
 
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select:hover {
-  background-color: $nav-link-hover-bg;
+  //background-color: $nav-link-hover-bg;
 }
 
 .dcpDocument__tabs--fixed .dcpTab__label.dcpLabel--select .k-combobox .k-input {

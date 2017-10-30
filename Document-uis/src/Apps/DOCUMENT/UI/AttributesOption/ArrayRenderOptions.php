@@ -22,6 +22,34 @@ class ArrayRenderOptions extends CommonRenderOptions
     
     const transpositionRule = "@media only screen and (max-width: 768px),(min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)";
     const upRule = "@media (max-width: 1200px)";
+
+
+    const collapseOption = "collapse";
+    const collapseNone = "none";
+    const collapseExpanded = "expand";
+    const collapseCollapsed = "collapse";
+
+    /**
+     * Expand / Collapse frame content
+     *
+     * @param bool $expand false to collapse, true (default) to expand
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setCollapse($expand)
+    {
+        $allow = array(
+            self::collapseNone,
+            self::collapseExpanded,
+            self::collapseCollapsed
+        );
+        if (!in_array($expand, $allow)) {
+            throw new Exception("UI0214", $expand, implode(', ', $allow));
+        }
+        return $this->setOption(self::collapseOption, $expand);
+    }
+
     /**
      * Display row count if row number is greater than $since
      * @param int $since : limit to see row numbers (if zero always see count) if (-1) never see count

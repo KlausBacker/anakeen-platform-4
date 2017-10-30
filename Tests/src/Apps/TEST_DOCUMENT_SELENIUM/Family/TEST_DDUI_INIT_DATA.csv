@@ -1,0 +1,178 @@
+//FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Famille (id);Famille;Identifiant de la vue;Label;Type;Zone (Layout);Classe de configuration de rendu (HTML5);Masque;Masque(titre);Ordre de sélection;Affichable;Menu;Id création vues par défaut;Création vue;Classe d'accès au rendu (HTML5);Famille pour le profil;Famille pour le profil (titre);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv_zview;cv_renderconfigclass;cv_mskid;cv_msk;cv_order;cv_displayed;cv_menu;cv_idcview;cv_lcview;cv_renderaccessclass;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;CVDOC;TST_DDUI_RENDER_ENUM;;Rendus d'énumérés;;TST_DDUI_ENUM;Test énumérés;"C1
+E1
+E2
+E3
+E4";"Défaut
+Modifier les énumérés
+Vertical
+Horizontal
+Autre";"VCONS
+VEDIT
+VEDIT
+VEDIT
+VEDIT";"
+
+
+
+";"Dcp\Test\Ddui\EnumRenderConfigView
+Dcp\Test\Ddui\EnumRenderConfigEdit
+Dcp\Test\Ddui\EnumRenderConfigEditVertical
+Dcp\Test\Ddui\EnumRenderConfigEditHorizontal
+Dcp\Test\Ddui\EnumRenderConfigEditOther";"
+
+
+
+";"
+
+
+
+";"1
+1
+0
+0
+0";"no
+no
+yes
+yes
+yes";"
+
+Tests
+Tests
+Tests";E1;Modifier les énumérés (E1);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;CVDOC;TST_DDUI_RENDER_DOCID;;Rendus de relations;;TST_DDUI_DOCID;Test Docid;"C1
+E1";"Défaut
+Modifier les relations";"VCONS
+VEDIT";"
+";"Dcp\Test\Ddui\DOCIDRenderConfigView
+Dcp\Test\Ddui\DOCIDRenderConfigEdit";"
+";"
+";"1
+1";"no
+no";"
+";E1;Modifier les relations (E1);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;CVDOC;;;"Cycle de vue par défaut pour la famille ""Employé""";;TST_DDUI_EMPLOYEE;Employé;CUSTOM2;Custom;VCONS;	;Dcp\Test\Ddui\EmployeeCustomRender;	;	;	;yes;	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;CVDOC;;;"Contrôle de vue pour la famille ""Test tout type""";;TST_DDUI_ALLTYPE;Test tout type;"COLLAPSE
+NOCOLLAPSE
+NOARRAYCOLLAPSE
+ARRAYCOLLAPSE";"Collapse Frame
+No Collapsable
+Array No Collapsable
+Array Collapsable";"VCONS
+VCONS
+VCONS
+VCONS";"
+
+
+";"Dcp\Test\DDUi\AllRenderCollapseView
+Dcp\Test\DDUi\AllRenderNoneCollapseView
+Dcp\Test\DDUi\AllRenderNoneArrayCollapseView
+Dcp\Test\DDUi\AllRenderCollapeArrayView";"
+
+
+";"
+
+
+";"
+
+
+";"no
+no
+no
+no";"
+
+
+";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Test tout type(TST_DDUI_ALLTYPE);<specid>;<fldid>;Le titre;Un compte;Des comptes;Un document;Des documents;Une date;Une heure;Une date avec  une heure;Un entier;Un décimal;Un sous;Un mot de passe;Une couleur;Un texte formaté;Un texte multiligne;Un texte simple;Un énuméré liste;Un énuméré auto;Un énuméré vertical;Un énuméré horizontal;Un énuméré booléen;Un énuméré liste;Un énuméré auto;Un énuméré vertical;Un énuméré horizontal;Un énuméré booléen;Des énumérés liste;Des énumérés auto;Des énumérés verticaux;Des énumérés horizontaux;Des énumérés liste;Des énumérés auto;Des énumérés verticaux;Des énumérés horizontaux;Des dates;Des heures;Des dates avec l'heure;Des documents;Encore plus de documents;Des comptes;Encore plus de comptes;Des décimaux;Des entiers;Des sous;Des couleurs;Des mots de passe;Des textes;Des textes multiligne;Des textes formatés;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_DDUI_ALLTYPE;;;test_ddui_all__title;test_ddui_all__account;test_ddui_all__account_multiple;test_ddui_all__docid;test_ddui_all__docid_multiple;test_ddui_all__date;test_ddui_all__time;test_ddui_all__timestamp;test_ddui_all__integer;test_ddui_all__double;test_ddui_all__money;test_ddui_all__password;test_ddui_all__color;test_ddui_all__htmltext;test_ddui_all__longtext;test_ddui_all__text;test_ddui_all__enumlist;test_ddui_all__enumauto;test_ddui_all__enumvertical;test_ddui_all__enumhorizontal;test_ddui_all__enumbool;test_ddui_all__enumserverlist;test_ddui_all__enumserverauto;test_ddui_all__enumserververtical;test_ddui_all__enumserverhorizontal;test_ddui_all__enumserverbool;test_ddui_all__enumslist;test_ddui_all__enumsauto;test_ddui_all__enumsvertical;test_ddui_all__enumshorizontal;test_ddui_all__enumsserverlist;test_ddui_all__enumsserverauto;test_ddui_all__enumsserververtical;test_ddui_all__enumsserverhorizontal;test_ddui_all__date_array;test_ddui_all__time_array;test_ddui_all__timestamp_array;test_ddui_all__docid_array;test_ddui_all__docid_multiple_array;test_ddui_all__account_array;test_ddui_all__account_multiple_array;test_ddui_all__double_array;test_ddui_all__integer_array;test_ddui_all__money_array;test_ddui_all__color_array;test_ddui_all__password_array;test_ddui_all__text_array;test_ddui_all__longtext_array;test_ddui_all__htmltext_array;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_ALLTYPE;TST_ALL_COMPLET;;Tout complet;TST_DDUI_USER1;TST_DDUI_USER3;;;2017-10-04;;;12;12.34;124;secret;#8FFFCB;;;;AD;AD;0;red;N;AD;AD;red;0;N;"DK
+DM";;;;;;;;2017-10-12;	;	;;;;;12.567;244;34.6;"#FFBDBD
+#CCA6FF";"sec
+vilet";L'ours;	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Test énumérés(TST_DDUI_ENUM);<specid>;<fldid>;Référence;Le titre;Un pays;Un chiffre;Une couleur;Un choix binaire;Des pays;Des chiffres;Des couleurs;Un pays;Un chiffre;Une couleur;Un choix binaire;Des pays;Des chiffres;Des couleurs;Une ville;Un chiffre;Une note;Un choix binaire;Des villes;Des chiffres;Des notes;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_DDUI_ENUM;;;test_ddui_enum__titleref;test_ddui_enum__title;test_ddui_enum__enumcountry;test_ddui_enum__enumnumber;test_ddui_enum__enumtext;test_ddui_enum__enumbool;test_ddui_enum__enumscountry;test_ddui_enum__enumsnumber;test_ddui_enum__enumstext;test_ddui_enum__srvcountry;test_ddui_enum__srvnumber;test_ddui_enum__srvtext;test_ddui_enum__srvbool;test_ddui_enum__srvscountry;test_ddui_enum__srvsnumber;test_ddui_enum__srvstext;test_ddui_enum__enumtown_array;test_ddui_enum__enumnumber_array;test_ddui_enum__enumtext_array;test_ddui_enum__enumbool_array;test_ddui_enum__enumstown_array;test_ddui_enum__enumsnumber_array;test_ddui_enum__enumstext_array;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_ENUM;TST_ENUM_COMPLET;;Enum complet;yellow;AL;30;blue;C;"AN
+ZW
+CH";"0
+70";"blue
+lightblue";AF;50;blue;C;"AI
+ES";"0
+30
+70";"green
+blue
+navyblue";"BRATISLAVA
+BUDAPEST";"66.6667
+33.3333";"Bb
+Cd";"S
+S";"BERLIN<BR>RIGA<BR>LUXEMBOURG
+BUDAPEST<BR>STOCKHOLM";"33.3333<BR>100
+33.3333<BR>66.6667";"B<BR>Cd<BR>Eb
+A<BR>D<BR>G<BR>B<BR>E";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_ENUM;TST_ENUM_OTHER;;Enum other;green;Corescant;45;Pourpre;C;"AN
+CH
+ZW
+Tatouine";"0
+70
+73";"blue
+lightblue
+Verdâtre
+Marronasse";AF;3/8;Rose saumon;C;"AI
+ES";"0
+30
+70
+76
+78";"green
+blue
+navyblue
+Jaune pâle";"BRATISLAVA
+Gatacca";"66.6667
+33.3333";"Bb
+Ut";"S
+S";"BERLIN<BR>RIGA<BR>LUXEMBOURG<BR>Centropolis
+BUDAPEST<BR>STOCKHOLM<BR>New Delhi";"33.3333<BR>100
+33.3333<BR>66.6667<BR>2/5";"B<BR>Eb<BR>UT1<BR>Fd<BR>UT3
+A<BR>D<BR>G<BR>B<BR>E<BR>U5";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Test Docid(TST_DDUI_DOCID);<specid>;<fldid>;Référence;Le titre;Une première relation;Voir l'historique;Une deuxième relation;Une troisième relation;Des premières relations;Des secondes relations;Des troisièmes relations;Une autre relation;D'autres relations;Un lien particulier;Voir l'historique;D'autres liaisons spécifique;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_DDUI_DOCID;;;test_ddui_docid__titleref;test_ddui_docid__title;test_ddui_docid__single1;test_ddui_docid__histo1;test_ddui_docid__single2;test_ddui_docid__single3;test_ddui_docid__multiple1;test_ddui_docid__multiple2;test_ddui_docid__multiple3;test_ddui_docid__single_array;test_ddui_docid__multiple_array;test_ddui_docid__single_link;test_ddui_docid__link_histo;test_ddui_docid__multiple_link;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID1;;Premier document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID2;;Deuxième document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID3;;Troisième document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID4;;Quatrième document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Employé(TST_DDUI_EMPLOYEE);<specid>;<fldid>;Civilité;Nom;Nom;Nom de naissance;Prénom;Prénom;Courriel de correspondance principal;Courriel de correspondance secondaire;Date de naissance;Nationalité;Statut;Depuis quand;Pays d'exercice;Secteur d'activité;Votre situation professionnelle a évolué;Date de fin du poste précédent;Corps/Grade;Titre;Établissement de rattachement référencé;Établissement de rattachement si non référencé;Établissement de rattachement;Depuis (année);Laboratoire de rattachement;Acronyme du laboratoire;Adresse professionnelle (ligne 1);Adresse professionnelle (ligne 2);Adresse professionnelle (ligne 3);Code postal professionnel;Ville professionnelle;Pays professionnel;Type;Numéro;Langue;Lu;Écrit;Parlé;Disciplines;Pourcentage;Sections CNU;Sections CNRS;CSS Inserm;CSS Inra;CSS IRD;Mot-clé;Année de début;Année de fin;Titre;Établissement;Année de début;Année de fin;Responsabilité;Structure;Adresse (ligne 1);Adresse (ligne 2);Adresse (ligne 3);Code postal;Ville;Pays;Type;Numéro;Numéro de sécurité sociale;Situation famille;Communication du bulletin;Mois et année du bulletin déposé;Domiciliation bancaire;Code établissement/Banque;Code Guichet;Numéro de compte;Clé numéro de compte;IBAN;BIC (Swift Code);Titulaire;Adresse 1;Adresse 2;Adresse 3;Code postal;Ville;Pays;Libellé du compte;Etablissement code;Bank address;Account number;Rounting number / ABA / Primary account;Bic (Swift Code);Type de carte;N° Carte;Date de validité;Type
+ORDER;TST_DDUI_EMPLOYEE;;;tst_civilite;tst_nom;tst_nom_translit;tst_nom_naissance;tst_prenom;tst_prenom_translit;tst_mail_principal;tst_mail_secondaire;tst_nais_date;tst_nationalite;tst_statut;tst_statut_since;tst_stranger;tst_emp_pubpriv;tst_emp_evo;tst_emp_date_fin_pre;tst_emp_corps;tst_emp_titre;tst_emp_idetab;tst_emp_etab;tst_emp_etab_mixed;tst_exp_since;tst_exp_labo_rat;tst_exp_labo_acro;tst_adw_adresse1;tst_adw_adresse2;tst_adw_adresse3;tst_adw_codepostal;tst_adw_localite;tst_adw_pays;tst_emp_tel_type;tst_emp_tel_number;tst_lang;tst_lang_lu;tst_lang_ecrit;tst_lang_parle;tst_cd_erc;tst_cd_erc_pc;tst_cd_cnu;tst_cd_cnrs;tst_cd_inserm;tst_cd_inra;tst_cd_ird;tst_key_word;tst_parc_pro_begin_date;tst_parc_pro_end_date;tst_parc_pro_title;tst_parc_pro_etab;tst_responsabilite_begin_date;tst_responsabilite_end_date;tst_responsabilite_responsable;tst_responsabilite_struct;tst_adp_adresse1;tst_adp_adresse2;tst_adp_adresse3;tst_adp_codepostal;tst_adp_localite;tst_adp_pays;tst_adp_phone_type;tst_adp_phone_num;tst_secusociale;tst_situation_fam;tst_use_bs;tst_finance_bs_date;tst_ban_agence;tst_ban_etablissement;tst_ban_guichet;tst_ban_numcompte;tst_ban_clecompte;tst_ban_iban;tst_ban_bic;tst_dest_nom;tst_dest_adresse1;tst_dest_adresse2;tst_dest_adresse3;tst_dest_codep;tst_dest_ville;tst_dest_pays;tst_ban_libcompte;tst_st_etablissment;tst_st_guichet;tst_st_numcompte;tst_st_clecompte;tst_st_bic;tst_red_type;tst_red_ref;tst_red_date_fin;tst_pj_label
+DOC;TST_DDUI_EMPLOYEE;TST_EMPLOYE_DOE;;;Doe;;;John;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Test de rendu de document(TST_RENDER);<specid>;<fldid>;Le titre;Description;Nom logique;Identifiant de vue;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_RENDER;;;tst_title;tst_desc;tst_docname;tst_docviewid;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_1;;Enum::setDisplay ::useSourceUri;<p>Option setDisplay et useSourceUri (donnée dynamique)</p>;TST_DDUI_ENUM;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_2;;Docid::addCreateDocumentButton;"<p>Test des attributs ""docid"".</p>
+
+<p>Prise en compte de l'option de création de documents liés.</p>";TST_DDUI_DOCID;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_3;;Enum::addCssRef;<p>Prise en compte de la css pour mettre du content personalisé (ville, note de musiques, couleur)</p>;TST_ENUM_COMPLET;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_4;;Enum::useOtherChoice;<p>Prise en compte du choix autre. Visible en marron.</p>;TST_ENUM_OTHER;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_5;;Enum::setDisplay(vertical);"<p>Prise en compte de la disposition verticale.</p>
+
+<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_6;;Enum::setDisplay(horizontal);"<p>Prise en compte de la disposition horizontale.</p>
+
+<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_7;;Common::setDescription;"<p>Prise en compte de l'option Description? Voir le cadre ""Information Administrative""</p>";TST_DDUI_EMPLOYEE;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_8;;Common::setTemplate Imbriqué;"<p>Le nom,  prénom et le cadre identité ont un template spécifique.</p>
+
+<ol>
+	<li>Le prénom est entouré de vert (utilisation <em>htmlDefaultContent</em>)</li>
+	<li>cadre identité est entouré de rouge.</li>
+	<li>Le nom est entouré en bleu (utilisation htmlDefaultView)</li>
+</ol>";TST_EMPLOYE_DOE;CUSTOM2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_9;;Frame::collapse(collapsed);"<p>Test du l'option collapse.</p>
+
+<p>Tous les cadres doivent être pliés.</p>";TST_ALL_COMPLET;COLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_10;;Frame::collapse(collapseNone);"<p>Test du l'option collapse.</p>
+
+<p>Aucun cadre ne peut être repliable</p>";TST_ALL_COMPLET;NOCOLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_11;;Array::collapse(collapseNone);"<p>Test du l'option collapse.</p>
+
+<p>Tous les <strong>tableaux</strong> ne peuvent pas être repliés</p>";TST_ALL_COMPLET;NOARRAYCOLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_DATA_12;;Array::collapse(collapse);"<p>Test du l'option collapse.</p>
+
+<p>Tous les <strong>tableaux</strong> doivent être repliés</p>";TST_ALL_COMPLET;ARRAYCOLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

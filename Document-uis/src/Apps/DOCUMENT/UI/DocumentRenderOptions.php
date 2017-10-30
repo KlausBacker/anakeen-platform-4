@@ -16,6 +16,7 @@ class DocumentRenderOptions extends BaseRenderOptions
     const tabLeftPlacement = "left";
     const tabTopProportionalPlacement = "topProportional";
     const tabTopFixPlacement = "topFix"; // fix width and display
+    const tabTopScrollPlacement = "top"; // fix width and horizontal scroll
     
     protected $scope = "document";
     /**
@@ -67,7 +68,8 @@ class DocumentRenderOptions extends BaseRenderOptions
         $allowPlacement = array(
             self::tabLeftPlacement,
             self::tabTopProportionalPlacement,
-            self::tabTopFixPlacement
+            self::tabTopFixPlacement,
+            self::tabTopScrollPlacement
         );
         if (!in_array($tabPlacement, $allowPlacement)) {
             throw new Exception("UI0107", $tabPlacement, implode(', ', $allowPlacement));

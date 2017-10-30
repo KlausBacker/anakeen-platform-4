@@ -1,0 +1,70 @@
+<?php
+/*
+ * @author Anakeen
+ * @package FDL
+*/
+/**
+ * Created by PhpStorm.
+ * User: eric
+ * Date: 16/09/14
+ * Time: 11:22
+ */
+
+namespace Dcp\Test\Ddui;
+
+use Dcp\AttributeIdentifiers\TST_RENDER as myAttributes;
+
+class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
+{
+    public function getLabel(\Doc $document = null)
+    {
+        return __METHOD__;
+    }
+    
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+        
+
+        $options->htmltext(myAttributes::tst_desc)->setToolbar(\Dcp\Ui\HtmltextRenderOptions::basicToolbar);
+
+        
+        return $options;
+    }
+
+}
+
+class RenderConfigView extends \Dcp\Ui\DefaultView
+{
+    public function getLabel(\Doc $document = null)
+    {
+        return __METHOD__;
+    }
+
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+$options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.htmlContent}}}')->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+
+        $options->frame(myAttributes::tst_fr_config)->setTemplate('<div class="test-document" />')
+        ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+
+
+        return $options;
+    }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $js=parent::getJsReferences();
+        $js["tstrender"]= "TEST_DOCUMENT_SELENIUM/Family/TestRender/testRender.js";
+        return $js;
+    }
+    public function getCssReferences(\Doc $document = null)
+    {
+        $css=parent::getCssReferences();
+        $css["tstrender"]= "TEST_DOCUMENT_SELENIUM/Family/TestRender/testRender.css";
+        return $css;
+    }
+
+}
