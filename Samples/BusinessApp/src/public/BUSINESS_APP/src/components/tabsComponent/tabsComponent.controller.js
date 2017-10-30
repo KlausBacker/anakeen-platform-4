@@ -24,17 +24,28 @@ export default {
             // Init the model and view kendo element
             initKendoComponents: () => {
                 this.openedTabs = new this.$kendo.data.ObservableArray([]);
+                this.listViewModel = this.$kendo.observable({
+                    tabsList: this.openedTabs,
+                });
+                this.$kendo.bind(this.$refs.tabsPaginator, this.listViewModel);
                 this.tabstripElement = this.$(this.$refs.tabstrip).kendoTabStrip({
                     animation: false,
                 });
                 this.privateScope.bindDataChange(this.openedTabs);
                 const observer = new MutationObserver((mutations) => {
                     mutations.forEach((m) => {
-                        const addedNodes = m.addedNodes;
-                        if (addedNodes.length > 1 && addedNodes[0].classList.contains('k-tabstrip-prev')) {
-                            this.privateScope.replacePaginatorButtons();
-                            observer.disconnect();
+                        switch (m.type) {
+                            case 'childList':
+                                const addedNodes = m.addedNodes;
+                                if (addedNodes.length > 1 && addedNodes[0].classList.contains('k-tabstrip-prev')) {
+                                    this.privateScope.replacePaginatorButtons();
+                                }
+
+                                break;
+                            default:
+                                break;
                         }
+
                     });
                 });
                 observer.observe(this.tabstripElement[0], { attributes: false, childList: true, characterData: false });
@@ -78,19 +89,34 @@ export default {
             // Bind documents events to tabs system
             bindDocumentEvents: (tabContent, index) => {
                 this.$(tabContent).find('a4-document').on('ready', (e) => {
-                    console.log('DOCUMENT READY', e.detail[1], index);
                     this.openedTabs[index].set('icon', e.detail[1].icon);
                     this.openedTabs[index].set('title', e.detail[1].title);
                 });
             },
 
-            // Expose public methods to event
+            // Expose public methods (from method sections) in DOM props
             bindPublicMethods: () => {
                 // Bind exposed methods to events
+                const _this = this;
                 Object.keys(this.$options.methods).forEach((methodName) => {
+                    const method = {
+                        [methodName]: (...args) => new Promise((resolve, reject) => {
+                            try {
+                                const ret = _this[methodName].call(_this, ...args);
+                                resolve(ret);
+                            } catch (e) {
+                                reject(e);
+                            }
+                        }),
+                    };
                     if (methodName !== '$emit') {
-                        this.$(this.$el).closest('a4-document-tabs').on(methodName, (event, ...arg) => {
-                            this[methodName].call(this, ...arg);
+                        // Set a subtree prop for the object
+                        this.$(this.$el).closest('a4-document-tabs').prop('publicMethods', (index, oldPropVal) => {
+                            if (!oldPropVal) {
+                                return method;
+                            } else {
+                                return Object.assign({}, oldPropVal, method);
+                            }
                         });
                     }
                 });
@@ -100,7 +126,6 @@ export default {
             bindDataChange: (data) => {
                 if (data.bind) {
                     data.bind('change', (e) => {
-                        console.log('CHANGE', e.action, e.field);
                         switch (e.action) {
                             // Add new document
                             case 'add':
@@ -149,16 +174,23 @@ export default {
 
     mounted() {
         this.privateScope.initKendoComponents();
-        this.$slots.default.forEach((s) => {
-            this.addDocument(s.data.attrs);
-        });
         this.privateScope.bindPublicMethods();
+        const ready = () => {
+            this.$emit('document-tabs-ready', this.$el);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', ready);
+        } else {
+            ready();
+        }
     },
 
     data() {
         return {
             openedTabs: [],
             tabstripElement: null,
+            listViewModel: null,
         };
     },
 
