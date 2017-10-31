@@ -18,9 +18,9 @@ module.exports = {
         app: path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js')
     },
     output: {
-        path: path.resolve(__dirname, 'src/public/login/dist/'),
-        publicPath: "/login/dist/",
-        filename: 'a4-login-components.js'
+        path: path.resolve(__dirname, 'src/public/components/dist/'),
+        publicPath: "/components/dist/",
+        filename: 'a4-components.js'
     },
     externals: {
         kendo: 'kendo',
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV !== 'production') {
         openPage: '?app=BUSINESS_APP',
         hot: true,
         proxy: {
-            "!/src/public/login/dist/*.js": {
+            "!/src/public/components/dist/*.js": {
                 "target": confPerso.devServerURL
             }
         }
