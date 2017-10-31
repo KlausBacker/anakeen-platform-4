@@ -1,5 +1,7 @@
+import anakeenComponentOptions from '../componentBase';
 
 export default {
+  mixins: [anakeenComponentOptions],
   props: {
     logoUrl: {
       type: String,

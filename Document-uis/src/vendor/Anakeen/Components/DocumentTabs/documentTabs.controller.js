@@ -1,5 +1,6 @@
 // jscs:disable requirePaddingNewLinesBeforeLineComments
 import contentTemplate from './documentTabsContent.template.kd';
+import abstractAnakeenComponent from '../componentBase';
 
 export default {
 
@@ -13,6 +14,7 @@ export default {
             type: String,
             default: 'CORE/Images/anakeen-logo.svg',
         },
+
     },
 
     watch: {
