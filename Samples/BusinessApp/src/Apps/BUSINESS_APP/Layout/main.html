@@ -16,7 +16,10 @@
 <a4-splitter class="a4-component">
     <div vue-slot="leftPane">
         <a4-collections class="a4-component"></a4-collections>
-        <a4-documents-list id="documentsList" class="a4-component" logo-url="CORE/Images/anakeen-logo.svg"></a4-documents-list>
+        <a4-document-list id="documentsList"
+                           logo-url="CORE/Images/anakeen-logo.svg"
+                           bind-event="document-selected: #documentsTabs.publicMethods.addDocument"
+        ></a4-document-list>
     </div>
     <div vue-slot="mainPane">
         <a4-document-tabs id="documentsTabs">
@@ -29,11 +32,6 @@
 <script src="BUSINESS_APP/dist/a4-business-app-components.js"></script>
 <script src="components/dist/a4-components.js"></script>
 <script>
-    const list = document.getElementById('documentsList');
-    const tabs = document.getElementById('documentsTabs');
-    list.addEventListener('document-selected', (e) => {
-        tabs.publicMethods.addDocument(e.detail[0]);
-    });
 </script>
 </body>
 </html>
