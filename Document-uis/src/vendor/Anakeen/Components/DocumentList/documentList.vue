@@ -46,4 +46,7 @@
         </div>
     </div>
 </template>
-<script src="./documents.controller.js"></script>
+<style lang="scss">
+    @import './documentList.scss';
+</style>
+<script src="./documentList.controller.js"></script>
