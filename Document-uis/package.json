@@ -40,6 +40,7 @@
     "mustache": "^2.3.0",
     "node-sass": "^4.5.0",
     "popper.js": "^1.12.5",
+    "raw-loader": "^0.5.1",
     "requirejs": "^2.3.5",
     "requirejs-text": "^2.0.15",
     "roboto-fontface": "^0.8.0",

@@ -13,7 +13,7 @@
                 </div>
         </div>
         <div class="documentsList__documentsTabs__empty" v-if="emptyState">
-            <img class="documentsList__documentsTabs__empty__img" src="CORE/Images/anakeen-logo.svg"/>
+            <img class="documentsList__documentsTabs__empty__img" :src="emptyImg"/>
         </div>
         <div v-show="!emptyState" class="documentsList__documentsTabs__tabs__wrapper">
             <div  ref="tabstrip" class="documentsList__documentsTabs__tabs"></div>
@@ -23,9 +23,9 @@
 </template>
 <!-- CSS to this component only -->
 <style lang="scss">
-    @import "./tabsComponent.scss";
+    @import "./documentTabs.scss";
 </style>
 <!-- Global CSS -->
 <style lang="scss">
 </style>
-<script src="./tabsComponent.controller.js"></script>
+<script src="./documentTabs.controller.js"></script>
