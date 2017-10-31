@@ -49,7 +49,12 @@ module.exports = {
                         presets: ['env']
                     }
                 }
-            }
+            },
+            {
+                test: /\.template.kd$/,
+                include: [path.resolve(__dirname, 'src/vendor/Anakeen/Components/')],
+                use: 'raw-loader'
+            },
         ]
     },
     resolve: {

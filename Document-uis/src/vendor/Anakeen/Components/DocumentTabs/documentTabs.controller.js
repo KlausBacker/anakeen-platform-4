@@ -1,11 +1,17 @@
 // jscs:disable requirePaddingNewLinesBeforeLineComments
-import contentTemplate from './documentsTabsContent.template.kd';
+import contentTemplate from './documentTabsContent.template.kd';
+
 export default {
 
     props: {
         closable: {
             type: Boolean,
             default: true,
+        },
+
+        'empty-img': {
+            type: String,
+            default: 'CORE/Images/anakeen-logo.svg',
         },
     },
 
@@ -100,17 +106,15 @@ export default {
                 const _this = this;
                 Object.keys(this.$options.methods).forEach((methodName) => {
                     const method = {
-                        [methodName]: (...args) => new Promise((resolve, reject) => {
+                        [methodName]: (...args) => {
                             try {
                                 const ret = _this[methodName].call(_this, ...args);
-                                resolve(ret);
                             } catch (e) {
-                                reject(e);
+
                             }
-                        }),
+                        },
                     };
                     if (methodName !== '$emit') {
-                        // Set a subtree prop for the object
                         this.$(this.$el).closest('a4-document-tabs').prop('publicMethods', (index, oldPropVal) => {
                             if (!oldPropVal) {
                                 return method;
@@ -255,6 +259,7 @@ export default {
         },
 
         debugAddTab() {
+            console.log('Click on add button');
             this.openedTabs.push({ initid: 1106 });
             this.selectDocument(this.openedTabs.length - 1);
         },

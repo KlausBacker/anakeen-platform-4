@@ -27,14 +27,18 @@ Vue.use(GetTextPlugin, {
 });
 
 Vue.use(VueCustomElement);
-Vue.prototype.$http = axios.create({
+Vue.http = Vue.prototype.$http = axios.create({
     baseURL: '/api/v1',
+    timeout: 10000,
 });
+Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.prototype.$kendo = kendo;
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
 import Document from './Document/Document.vue';
+import DocumentTabs from './DocumentTabs/documentTabs.vue';
 
 Vue.customElement('a4-authent', Authent);
 Vue.customElement('a4-document', Document);
+Vue.customElement('a4-document-tabs', DocumentTabs);
