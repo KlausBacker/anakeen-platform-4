@@ -18,11 +18,9 @@ Vue.kendo = Vue.prototype.$kendo = kendo;
 // import and register your component(s)
 import Splitter from '@/splitter/splitter.vue';
 import Collections from '@/collectionsList/collections.vue';
-import Documents from '@/documentsList/documents.vue';
 import Store from '@/store/store.vue';
 
 Vue.customElement('a4-store', Store);
 Vue.customElement('a4-splitter', Splitter);
 Vue.customElement('a4-collections', Collections);
-Vue.customElement('a4-documents-list', Documents);
 
