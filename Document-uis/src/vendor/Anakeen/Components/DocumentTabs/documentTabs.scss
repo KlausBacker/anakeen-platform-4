@@ -11,8 +11,11 @@
     background-color: #E6E6E6;
     color: #ff542c;
     &:hover {
-      color: #FFFFFF;
+      cursor: pointer;
       background-color: #FF542C;
+      .k-icon {
+        color: #FFFFFF;
+      }
     }
   }
 
@@ -22,6 +25,7 @@
 }
 
 .documentsList__documentsTabs__wrapper {
+  background-color: #DDDDDD;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -83,6 +87,80 @@
 
         & > .k-tabstrip-prev {
           left: auto;
+        }
+
+        & > .k-tabstrip-items {
+          & > .k-item {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            height: 35px;
+            margin-right: 5px;
+            background-color: #F4F4F4;
+            border: none;
+            border-radius: 0;
+
+            &.k-state-active {
+              box-shadow: inset 0 4px 0px 0px #8ae234;
+
+              .tab__document__title {
+                font-weight: 700;
+              }
+
+              & > .k-link[data-type=remove] {
+                box-shadow: inset 0 4px 0px 0px #8ae234;
+                background-color: #E6E6E6;
+                .k-icon {
+                  color: #ff542c;
+                }
+              }
+            }
+
+            &.k-state-hover {
+
+              & > .k-link {
+                .tab__document__title {
+                  color: #00b4fc;
+                }
+
+                &.k-link[data-type=remove] {
+                  background-color: #E6E6E6;
+                  .k-icon {
+                    color: #ff542c;
+                  }
+                }
+              }
+
+            }
+
+            &.k-link:first-of-type {
+              padding-left: 10px;
+            }
+
+            & > .k-link {
+              .tab__document__icon {
+                width: 16px;
+                height: 16px;
+                margin-right: 5px;
+              }
+
+              .tab__document__title {
+                color: #505050;
+                width: 120px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-transform: uppercase;
+              }
+
+              &.k-link[data-type=remove]:hover {
+                background-color: #ff542c;
+                .k-icon {
+                  color: #ffffff;
+                }
+              }
+            }
+          }
         }
 
       }
