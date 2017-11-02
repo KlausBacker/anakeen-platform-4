@@ -96,9 +96,12 @@ export default {
 
             // Bind documents events to tabs system
             bindDocumentEvents: (tabContent, index) => {
+                const tab = this.openedTabs[index];
                 this.$(tabContent).find('a4-document').on('ready', (e) => {
-                    this.openedTabs[index].set('icon', e.detail[1].icon);
-                    this.openedTabs[index].set('title', e.detail[1].title);
+                    tab.set('title', '');
+                    tab.set('icon', '');
+                    tab.set('title', e.detail[1].title);
+                    tab.set('icon', e.detail[1].icon);
                 });
             },
 
@@ -258,12 +261,6 @@ export default {
 
         closeAllDocuments() {
             this.openedTabs.splice(0, this.openedTabs.length);
-        },
-
-        debugAddTab() {
-            console.log('Click on add button');
-            this.openedTabs.push({ initid: 1106 });
-            this.selectDocument(this.openedTabs.length - 1);
         },
     },
 };
