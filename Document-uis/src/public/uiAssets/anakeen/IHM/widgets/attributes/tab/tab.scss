@@ -10,13 +10,17 @@ $tabFiwWidth:10em;
 }
 .dcpDocument__tabs .dcpLabel--select .k-dropdown-wrap,
 .dcpDocument__tabs .dcpTab__label .k-link {
-  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   //padding: 10px 0.5em 0 0.5em;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
+}
+
+.dcpLabel__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .k-tabstrip .k-item.k-state-active {
