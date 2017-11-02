@@ -63,41 +63,42 @@
             stroke: #000;
         }
 
-        .loader-container {
+        .dcpLoading--logo {
             width: 20%;
             padding: 3em;
             overflow: hidden;
+            margin-top: 10rem;
         }
 
-        .loader-container .text-logo, .loader-container .main-logo {
+        .dcpLoading--logo .text-logo, .dcpLoading--logo .main-logo {
             margin: 0 auto;
             width: 100%;
         }
 
-        .loader-container .text-logo svg, .loader-container .main-logo svg {
+        .dcpLoading--logo .text-logo svg, .dcpLoading--logo .main-logo svg {
             overflow: visible;
             width: 100%;
         }
 
-        .loader-container .text-logo _:-ms-input-placeholder, :root .loader-container .text-logo {
+        .dcpLoading--logo .text-logo _:-ms-input-placeholder, :root .dcpLoading--logo .text-logo {
             margin-bottom: -2.2rem;
         }
 
-        .loader-container.isotype {
+        .dcpLoading--logo.isotype {
             height: 20%;
         }
 
-        .loader-container.isotype .main-logo {
+        .dcpLoading--logo.isotype .main-logo {
             height: 100%;
         }
 
-        .loader-container.isotype .main-logo svg.bounce {
+        .dcpLoading--logo.isotype .main-logo svg.bounce {
             width: 20%;
             margin: 0 auto;
             display: block;
         }
 
-        .loader-container.isotype .main-logo svg.bounce > * {
+        .dcpLoading--logo.isotype .main-logo svg.bounce > * {
             animation: bounce-isotype infinite 800ms alternate ease-in-out;
         }
 
@@ -207,17 +208,33 @@
             margin: 0;
         }
 
-        .flex-container {
+        .dcpLoading--content {
             background-color: #FFF;
             width: 100%;
-            height: calc(50vh - 1px);
             display: flex;
-            align-items: center;
+            flex-grow: 1;
             justify-content: center;
         }
 
-        .flex-container + .flex-container {
+        .dcpLoading--content + .dcpLoading--content {
             margin-top: 2px;
+        }
+
+        .dcpLoading {
+            padding: 0;
+            border: none;
+            text-align: center;
+            position: fixed;
+            display:flex;
+            flex-direction: column;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            line-height: 1px;
+            z-index: 11;
+            background-color: white;
         }
     </style>
     [BLOCK CSS]
@@ -235,10 +252,10 @@
     <div class="progress active dcpLoading--progressbar">
         <div class="progress-bar progress-bar-striped" style="width: 10%"></div>
     </div>
-    <div class="flex-container">
+    <div class="dcpLoading--content">
 
+         <div class="dcpLoading--logo black-logo">
         <!-- Start main logo - Anakeen -->
-        <div class="loader-container black-logo">
             <!-- Powered by -->
             <div class="text-logo">
                 <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="poweredby" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 580.8 99.1" style="enable-background:new 0 0 580.8 99.1;" xml:space="preserve">
@@ -297,9 +314,8 @@
                             c-0.1-15.1,1.1-33.4,20.9-33.4c16.7,0,17.8,12.2,17.9,25.8l0.2,47.6h14.4l-0.2-50.1C579.4,47.2,573.9,30.3,550.6,30.3"></path>
                     </svg>
                 <div class="moving-path"></div>
-
             </div>
-        </div>
+         </div>
         <!-- End main logo - Anakeen -->
 
     </div>

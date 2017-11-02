@@ -13,36 +13,41 @@
   color: #ffffff;
   word-wrap: break-word;
 }
-.tooltip.dcpAttribute__editlabel.tooltip.top .tooltip-arrow {
+.tooltip.dcpAttribute__editlabel.bs-tooltip-top .arrow::before {
   border-top-color: $info;
 }
-.tooltip.dcpAttribute__editlabel.tooltip.bottom .tooltip-arrow {
+.tooltip.dcpAttribute__editlabel.bs-tooltip-bottom .arrow::before {
   border-bottom-color: $info;
 }
 
 
 .tooltip.dcpAttribute__linkvalue .tooltip-inner {
   background-color: $info;
-  color: #ffffff;
+  color: $A4-ui-color-picto-colored;
   word-wrap: break-word;
 }
-.tooltip.dcpAttribute__linkvalue.tooltip.top .tooltip-arrow {
+.tooltip.dcpAttribute__linkvalue.tooltip.top .arrow {
   border-top-color: $info;
 }
-.tooltip.dcpAttribute__linkvalue.tooltip.bottom .tooltip-arrow {
+.tooltip.dcpAttribute__linkvalue.tooltip.bottom .arrow {
   border-bottom-color: $info;
 }
 
 .tooltip.has-error .tooltip-inner {
   background-color: $error;
-  color: #ffffff;
+  color: $A4-ui-color-picto-colored;
   max-width:400px;
   word-wrap: break-word;
 }
-.tooltip.has-error.tooltip.top .tooltip-arrow {
+.tooltip.has-error.bs-tooltip-top .arrow::before {
   border-top-color: $error;
 }
-.tooltip.has-error.tooltip.bottom .tooltip-arrow {
+
+.tooltip.bs-tooltip-top .arrow {
+  bottom: 5px;
+}
+
+.tooltip.has-error.bs-tooltip-bottom .arrow::before {
   border-bottom-color: $error;
 }
 

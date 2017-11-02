@@ -121,27 +121,30 @@
                         scope.element.addClass("has-error");
                         // need to use sub element because tooltip add a div after element
                         scope.element.find(".input-group").tooltip({
-                            placement: "auto bottom",
+                            placement: "bottom",
                             html: true,
                             animation: false,
-                            container: scope.element, //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
+                            //container: scope.element, //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<span title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</span>' + rawMessage + '</div>';
                             },
                             trigger: "manual"
-                        }).each(function wAttributErrorLinkTooltip()
-                        {
-                            $(this).data("bs.tooltip").tip().addClass("has-error");
+                        }).on("shown.bs.tooltip", function wErrorTooltip () {
+                            var tipElement = $(this).data("bs.tooltip").tip;
+                            if (tipElement) {
+                                $(tipElement).addClass("has-error");
+                            }
                         });
                         scope.element.data("hasErrorTooltip", true);
                         scope.element.find(".input-group").tooltip("show");
                         // Need to refresh to update position after possible change on element value
                         _.delay(function wAttributeSetErrorDelay()
                         {
-                            scope.element.find(".input-group").tooltip("hide").tooltip("show");
-                        }, 100);
+                            var $input=scope.element.find(".input-group");
+                            //$input.tooltip("hide").tooltip("show");
+                        }, 1);
                     }
                 });
             } else {
@@ -275,9 +278,13 @@
                         trigger: "manual",
                         html: true,
                         title: scope.options.renderOptions.inputHtmlTooltip,
-                        placement: "bottom",
-                        template: '<div class="tooltip dcpAttribute__editlabel" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-                    });
+                        placement: "bottom"
+                    }).on("shown.bs.tooltip", function wErrorTooltip () {
+                        var tipElement = $(this).data("bs.tooltip").tip;
+                        if (tipElement) {
+                            $(tipElement).addClass("dcpAttribute__editlabel");
+                        }
+                    });;
                     $ktTarger.data("hasTooltip", true);
                 }
                 $ktTarger.tooltip("show");

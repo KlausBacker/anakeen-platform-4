@@ -26,3 +26,7 @@
 .card-header.css-frame-head.dcpFrame__label.dcp__frame--open.dcpLabel {
   padding-left: 0;
 }
+.dcpDocument__frames {
+  display: flex;
+  flex-direction: column;
+}

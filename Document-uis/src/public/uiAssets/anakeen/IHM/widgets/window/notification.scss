@@ -4,32 +4,6 @@ $dcpNotifierWidth:300px;
 $dcpNotifierHeight:9em;
 $dcpNotifierSymbolWidth:50px;
 
-/* Error template */
-.k-notification-error.k-widget.k-notification {
-  /* background: rgba(100%, 0%, 0%, .7);*/
-  background: fade($error,90%);
-  color: #ffffff;
-}
-.k-notification-warning.k-widget.k-notification {
-  /* background: rgba(255, 128, 0, 0.70);*/
-  background: fade($warning,90%);
-  color: #ffffff;
-}
-.k-notification-info.k-widget.k-notification {
-  /* background: rgba(0, 91, 255, 0.70);*/
-  background: fade($info,90%);
-  color: #ffffff;
-}
-.k-notification-notice.k-widget.k-notification {
-  /* background: rgba(0, 91, 255, 0.70);*/
-  background: fade($gray,90%);
-  color: #ffffff;
-}
-.k-widget.k-notification.k-notification-success {
-  /* background: rgba(0, 161, 23, 0.70);*/
-  background: fade($success,90%);
-  color: #ffffff;
-}
 .dcpNotification--content {
   width: $dcpNotifierWidth;
   height: $dcpNotifierHeight;
@@ -77,7 +51,7 @@ $dcpNotifierSymbolWidth:50px;
   width:($dcpNotifierWidth + 16);
   max-height: 80%;
   overflow: auto;
-  z-index: 2;
+  z-index: 4;
   @media (max-width: $screen-sm-min) {
     right: 0;
   }

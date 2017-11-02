@@ -47,10 +47,6 @@ class RenderAttributeNeeded implements \JsonSerializable
             throw new Exception("UI0105", $attributeId, $this->document->getTitle());
         }
         
-        if ($oa->inArray()) {
-            throw new Exception("UI0106", $attributeId, $this->document->getTitle());
-        }
-        
         $this->needed[$oa->id] = $isNeeded;
         $this->document->mid = - 1; // set mask id to -1 to signal that specific need is applied
         return $this;

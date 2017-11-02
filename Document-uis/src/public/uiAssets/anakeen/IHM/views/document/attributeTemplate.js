@@ -425,6 +425,30 @@ define(function attributeTemplate(require/*, exports, module*/)
                 return rows;
             },
 
+            renderClickDesc: function ($tip, nsOn) {
+                $tip.on("click" + nsOn, function vAttributeShowDesc(event)
+                {
+                    event.stopPropagation();
+                    $(this).tooltip("toggle");
+                }).one("show.bs.tooltip", function wDescTooltip () {
+                    var tipElement = $(this).data("bs.tooltip").tip;
+                    if (tipElement) {
+                        $(tipElement).addClass("dcpAttribute__description-info");
+                    }
+                }).one("shown.bs.tooltip", function wDescTooltip () {
+                    var tipElement = $(this).data("bs.tooltip").tip;
+                    if (tipElement) {
+                        $(tipElement).find(".tooltip-inner").prepend('<span class="btn btn-secondary button-close-error"><span class="fa fa-times" />&nbsp;</span>');
+
+                        $(tipElement).on("click" + nsOn, ".button-close-error", function vAttributeCloseDesc(event)
+                        {
+                            event.stopPropagation();
+                            $(tipElement).tooltip("hide");
+                        });
+                    }
+                });
+            },
+
             /**
              * Insert attribute description
              * @param attributeView Backbone view
@@ -492,18 +516,13 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 title: $descriptionElement,
                                 placement: "auto",
                                 trigger: "manual"
-                            }).on("click" + nsOn, function vAttributeShowDesc(event)
-                            {
-                                event.stopPropagation();
-                                $(this).tooltip("toggle");
-                            }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                            $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                            $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                            {
-                                event.stopPropagation();
-                                $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                             });
+
+                            this.renderClickDesc($tip, nsOn);
+
+
+
+
                     }
                 }
                 if (isTabContent || isTabLabel) {
@@ -531,18 +550,11 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     title: $descriptionElement,
                                     placement: "auto",
                                     trigger: "manual"
-                                }).on("click" + nsOn, function vAttributeShowDesc(event)
-                                {
-                                    event.stopPropagation();
-                                    $(this).tooltip("toggle");
-                                }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                                $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                                {
-                                    event.stopPropagation();
-                                    $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                                 });
+
+                                this.renderClickDesc($tip, nsOn);
+
+
                             }
                             break;
 
@@ -583,18 +595,10 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 title: $descriptionElement,
                                 placement: "auto",
                                 trigger: "manual"
-                            }).on("click" + nsOn, function vAttributeShowDesc(event)
-                            {
-                                event.stopPropagation();
-                                $(this).tooltip("toggle");
-                            }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                            $viewElement.find("> .dcpAttribute__description .dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                            $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                            {
-                                event.stopPropagation();
-                                $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                             });
+
+                            this.renderClickDesc($tip, nsOn);
+
                             break;
 
                         case "left":
@@ -643,17 +647,10 @@ define(function attributeTemplate(require/*, exports, module*/)
                                 placement: "auto",
                                 title: $descriptionElement,
                                 trigger: "manual"
-                            }).on("click" + nsOn, function vAttributeShowDesc()
-                            {
-                                $(this).tooltip("toggle");
-                            }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                            $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                            $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                            {
-                                event.stopPropagation();
-                                $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                             });
+
+                            this.renderClickDesc($tip, nsOn);
+
 
                     }
                 }
@@ -693,17 +690,10 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     placement: "auto",
                                     title: $viewElement.find("> .dcpAttribute__description"),
                                     trigger: "manual"
-                                }).on("click" + nsOn, function vAttributeShowDesc()
-                                {
-                                    $(this).tooltip("toggle");
-                                }).data("bs.tooltip").tip().addClass("dcpAttribute__description-info");
-
-                                $viewElement.find(".dcpAttribute__description__title").prepend('<span class="btn fa fa-times button-close-error">&nbsp;</span>');
-                                $tip.on("click" + nsOn, ".dcpAttribute__description__title .button-close-error", function vAttributeCloseDesc(event)
-                                {
-                                    event.stopPropagation();
-                                    $viewElement.find(".dcpAttribute__label_description").tooltip("hide");
                                 });
+
+                                this.renderClickDesc($tip, nsOn);
+
                             }
                             break;
                         case "left":

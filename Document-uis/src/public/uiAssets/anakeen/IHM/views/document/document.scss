@@ -31,7 +31,9 @@
 html {
   font-size: $A4-ui-font-size;
 }
-
+.dcpDocument {
+    min-height: 100vh;
+}
 .dcpDocument__body {
   padding-top: 10px;
 }
@@ -159,20 +161,6 @@ body {
   opacity: 0;
 }
 
-.dcpLoading {
-  padding: 0;
-  border: none;
-  text-align: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  line-height: 1px;
-  z-index: 11;
-  background-color: fade($gray, 10%);
-}
 
 .dcpLoading .progress {
   width: 100%;
@@ -183,31 +171,9 @@ body {
   background: $body-bg;
 }
 
-.dcpLoading--header .fa {
-  color: darken($info, 30%);
-}
 
-.dcpLoading--header {
-  height: 100%;
-  display: inline-block;
-  padding: 4px;
-  border-radius: 0 0 4px 4px;
-}
 
-.dcpLoading--title {
-  background: $body-bg;
-  display: inline-block;
-  line-height: normal;
-  padding: 0.5em;
-  border: solid 1px $gray-lighter;
-  min-width: 10em;
-}
 
-.dcpLoading--init .dcpLoading--title {
-  font-size: 1.4em;
-  top: 30%;
-  position: relative;
-}
 
 .k-window .dcpLoading {
   top: auto;
