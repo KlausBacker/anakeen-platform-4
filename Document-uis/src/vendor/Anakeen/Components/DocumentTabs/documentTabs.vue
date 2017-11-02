@@ -18,7 +18,6 @@
         <div v-show="!emptyState" class="documentsList__documentsTabs__tabs__wrapper">
             <div  ref="tabstrip" class="documentsList__documentsTabs__tabs"></div>
         </div>
-        <button @click="debugAddTab" style="position: absolute; bottom: 0; z-index: 200;">Add tab</button>
     </div>
 </template>
 <!-- CSS to this component only -->
