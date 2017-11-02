@@ -109,9 +109,11 @@ iframe.dcpAttribute__value--endflash {
 }
 
 .button-close-error {
-  padding-right: 0;
-  padding-top: 0;
-  float: right;
+  padding: 0.2rem;
+  position: absolute;
+  cursor: pointer;
+    right: -1.7rem;
+    top: -2px;
 }
 
 .dcpAttribute__content .k-autocomplete .k-loading {

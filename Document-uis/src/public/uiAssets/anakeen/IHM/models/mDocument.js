@@ -419,7 +419,7 @@ define([
                     console.error(e);
                 }
                 properties = currentModel.getServerProperties();
-                if (!properties.initid) {
+                if (!properties || !properties.initid) {
                     //First loading, unable to load display reload iframe panel
                     currentModel.trigger("displayNetworkError");
                     return;

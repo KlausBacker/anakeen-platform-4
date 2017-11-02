@@ -664,7 +664,7 @@
                         var rawMessage = $('<div/>').text(message).html();
                         return '<div>' + '<span title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</span>' + rawMessage + '</div>';
                     },
-                    template: '<div class="tooltip has-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+                    template: '<div class="tooltip has-error" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
 
                 }).tooltip("show").addClass("dcpArray--error");
             } else {

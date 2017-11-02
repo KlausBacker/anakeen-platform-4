@@ -1,77 +1,9 @@
 @import "../../../../custom-scss-variable.d/global_variables.scss";
 
-// Fonts
-
-/// Font family across all components.
-$font-family-sans-serif: $A4-ui-font;
-$button-padding-x: $A4-ui-button1-padding;
-
-//$input-padding-y: $A4-ui-doc-edit-label-padding;
-
-/// The background of selected items.
-$selected-bg: $A4-ui-color-selected;
-$selected-text: $A4-ui-color-text-colored;
-
-$text-color: $A4-ui-color-text;
-$bg-color: $A4-ui-color-body-background;
-
-/// The background of the components' chrome area.
-$base-bg: $A4-ui-color-frame-background;
-$base-text: $A4-ui-color-font-document;
 
 
-/// The background of hovered items.
-$hovered-bg: $A4-ui-color-hovered;
 
-$error: $A4-ui-color-error;
-
-// Primary button
-$primary-button-bg: $A4-ui-button1-color-background;
-$primary-button-text: $A4-ui-button1-color-text;
-
-$primary-button-hovered-bg: $A4-ui-button1-hover-color-background;
-$primary-button-hovered-text: $A4-ui-button1-hover-color-text;
-
-$primary-button-pressed-bg: $A4-ui-color-btn-click;
-$primary-button-pressed-text: $A4-ui-color-font-button;
-
-// Widget
-$widget-bg: $A4-ui-color-frame-background;
-$widget-text: $text-color;
-$widget-bg: $bg-color;
-$widget-border: $border-color;
-
-// Panel
-$panel-text: $text-color;
-
-// Header
-$header-text: $A4-ui-color-font-title;
-$header-bg: transparent;
-
-// Input
-$input-height: $A4-ui-doc-edit-attribute-height;
-$input-text: $A4-ui-color-font-document;
-$input-bg: $A4-ui-doc-edit-attribute-bg;
-$input-border: $A4-ui-color-font-placeholder;
-$input-shadow: none;
-
-$input-hovered-border: $A4-ui-doc-edit-attribute-hover-color;
-$input-hovered-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
-
-$input-focused-border: $input-hovered-border;
-$input-focused-shadow: $input-hovered-shadow;
-
-
-// Link
-$link-text: $A4-ui-color-link;
-$link-hover-text: $A4-ui-color-link;
-
-//Icons
-$icon-size: $A4-ui-icon-size;
-$icon-size-lg: 2.666666rem;
-$icon-spacing: $A4-ui-icon-spacer;
-
-
+@import "./kendo.variables.scss";
 @import "../../../../../public/uiAssets/externals/KendoUI/scss/all";
 @import "./theme.corporate.scss";
 
