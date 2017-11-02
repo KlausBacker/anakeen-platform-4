@@ -113,3 +113,122 @@ class AllRenderCollapeArrayView extends \Dcp\Ui\DefaultView
         return $options;
     }
 }
+class AllRenderTabLeft extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabLeftPlacement);
+        return $options;
+    }
+}
+class AllRenderTabTopScroll extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopScrollPlacement);
+        return $options;
+    }
+}
+class AllRenderTabTopFix extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopFixPlacement);
+        return $options;
+    }
+}
+class AllRenderTabProportial extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        return $options;
+    }
+}
+class AllRenderAllNeeded extends \Dcp\Ui\DefaultEdit
+{
+    public function getNeeded(\Doc $document)
+    {
+        $need=parent::getNeeded($document);
+        $attrs=$document->getNormalAttributes();
+        foreach ($attrs as $attrid => $attr) {
+        if ($attr->type !== "array") {
+            $need->setNeeded($attrid, true);
+        }
+        }
+        return $need;
+    }
+}
+class AllRenderVisibilityRead extends \Dcp\Ui\DefaultEdit
+{
+    public function getVisibilities(\Doc $document)
+    {
+        $visibilities =parent::getVisibilities($document);
+        $attrs=$document->getFieldAttributes();
+        foreach ($attrs as $attrid => $attr) {
+
+                $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::ReadOnlyVisibility);
+
+        }
+        return $visibilities;
+    }
+}
+class AllRenderVisibilityStatic extends \Dcp\Ui\DefaultEdit
+{
+    public function getVisibilities(\Doc $document)
+    {
+        $visibilities =parent::getVisibilities($document);
+        $attrs=$document->getFieldAttributes();
+        foreach ($attrs as $attrid => $attr) {
+
+                $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::StaticWriteVisibility);
+
+        }
+        return $visibilities;
+    }
+}
+class AllRenderVisibilityHidden extends \Dcp\Ui\DefaultView
+{
+    public function getVisibilities(\Doc $document)
+    {
+        $visibilities =parent::getVisibilities($document);
+        $attrs=$document->getFieldAttributes();
+        foreach ($attrs as $attrid => $attr) {
+
+                $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+
+        }
+        return $visibilities;
+    }
+}
+
+
+class AllRenderSetInput extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->commonOption()->setInputTooltip("<b>Veuillez saisir une valeur</b>");
+        return $options;
+    }
+}
+class AllRenderNotification extends \Dcp\Ui\DefaultView
+{
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $jsReferences = parent::getJsReferences($document);
+        $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=".$version;
+        return $jsReferences;
+    }
+}

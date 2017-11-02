@@ -30,7 +30,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
+        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
         return $css;
     }
 }
@@ -272,7 +272,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumhorizontal.css";
+        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumhorizontal.css";
         return $css;
     }
 }
@@ -296,7 +296,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumvertical.css";
+        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";
         return $css;
     }
 }
@@ -331,7 +331,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tsteditverticalenum"] = "TEST_DOCUMENT_SELENIUM/Layout/tstenumvertical.css?ws=".$version;
+        $css["tsteditverticalenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css?ws=".$version;
         return $css;
     }
 }
@@ -357,15 +357,15 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testViewEnum.css?ws=".$version;
-        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
+        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.css?ws=".$version;
+        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
         return $css;
     }
     public function getJsReferences(\Doc $document = null)
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getJsReferences($document);
-        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testViewEnum.js?ws=".$version;
+        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.js?ws=".$version;
         return $css;
     }
 }
