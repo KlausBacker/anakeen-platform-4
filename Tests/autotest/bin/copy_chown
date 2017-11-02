@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -o pipefail
+
+function usage {
+	cat <<EOF
+
+Usage
+-----
+
+  $0 [--user|--uid <uid>] [--group|--gid <gid>] <src> <dst>
+
+EOF
+}
+
+function main {
+	local SHARE_USER=""
+	local SHARE_GROUP=""
+	while [ $# -ne 0 ]; do
+		local OPT=$1
+		case "${OPT}" in
+			-h|--help)
+				usage
+				return 1
+				;;
+			--user|--uid)
+				shift
+				SHARE_USER=$1
+				shift
+				;;
+			--group|--gid)
+				shift
+				SHARE_GROUP=$1
+				shift
+				;;
+			--)
+				shift
+				break
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+	local SRC=$1
+	local DST=$2
+
+	if [ ! -d "${SRC}" ]; then
+		echo "Error: '${SRC}' does not exists or is not a valid directory!" 1>&2
+		return 1
+	fi
+	if [ ! -d "${DST}" ]; then
+		mkdir -p "${DST}" || true
+	fi
+	if [ ! -d "${DST}" ]; then
+		echo "Error: '${DST}' does not exists or is not a valid directory!" 1>&2
+		return 1
+	fi
+
+	tar -C "${SRC}" -cf - . | tar -C "${DST}" -xf -
+	if [ -n "${SHARE_USER}" -a -n "${SHARE_GROUP}" ]; then
+		chown -R "${SHARE_USER}:${SHARE_GROUP}" "${DST}"
+	fi
+}
+
+main "$@"

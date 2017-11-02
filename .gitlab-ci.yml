@@ -3,6 +3,11 @@ image:
 
 autotest:
   script: "./Tests/autotest/autotest.sh"
+  artifacts:
+    paths:
+    - outputs/
+    expire_in: 1 week
+    when: always
   only:
     - branches
     - tags
