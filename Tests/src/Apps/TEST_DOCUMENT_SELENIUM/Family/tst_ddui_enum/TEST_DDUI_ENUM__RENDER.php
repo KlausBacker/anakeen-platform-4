@@ -30,7 +30,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
+        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
         return $css;
     }
 }
@@ -364,8 +364,8 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Doc $document = null)
     {
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
-        $css = parent::getJsReferences($document);
-        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.js?ws=".$version;
-        return $css;
+        $jsReferences = parent::getJsReferences($document);
+        $jsReferences["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.js?ws=".$version;
+        return $jsReferences;
     }
 }

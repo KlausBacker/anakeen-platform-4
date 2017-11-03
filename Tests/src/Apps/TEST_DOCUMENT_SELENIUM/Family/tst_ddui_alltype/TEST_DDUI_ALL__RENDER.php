@@ -24,8 +24,7 @@ class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+
         // Inhibit enum toolips
         $options->enum()->setTranslations(array(
             "invertSelection" => "",
@@ -53,7 +52,7 @@ class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
         $options->enum(myAttributes::test_ddui_all__enumsserververtical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(false);
         $options->enum(myAttributes::test_ddui_all__enumsserverhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(false);
         
-        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+
         
         return $options;
     }
@@ -65,6 +64,13 @@ class AllRenderConfigView extends \Dcp\Ui\DefaultView
     public function getLabel(\Doc $document = null)
     {
         return "All View";
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        return $options;
     }
 }
 class AllRenderCollapseView extends \Dcp\Ui\DefaultView
@@ -230,5 +236,93 @@ class AllRenderNotification extends \Dcp\Ui\DefaultView
         $jsReferences = parent::getJsReferences($document);
         $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=".$version;
         return $jsReferences;
+    }
+}
+
+
+class AllRenderCssColor extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $cssReferences = parent::getCssReferences($document);
+        $cssReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testColor.css?ws=".$version;
+        return $cssReferences;
+    }
+}
+
+class AllRenderButtons extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+    $viewDoc=new \Dcp\Ui\ButtonOptions();
+    $viewDoc->htmlContent='<i class="fa fa-eye"></i>';
+    $viewDoc->url=sprintf("api/v1/documents/{{value}}.html" );
+    $viewDoc->target="_dialog";
+    $viewDoc->windowWidth="400px";
+
+        $options->docid()->addButton($viewDoc);
+
+
+        $viewDoc=new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent='<i class="fa fa-cog"></i>';
+        $options->text()->addButton($viewDoc);
+
+
+
+        $viewDoc=new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent='<i class="fa fa-superpowers"></i>';
+        $options->commonOption()->addButton($viewDoc);
+
+        return $options;
+    }
+}
+
+
+class AllRenderLeftLabel extends AllRenderConfigEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::leftPosition);
+        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::leftPosition);
+
+        return $options;
+    }
+}
+
+
+class AllRenderUpLabel extends AllRenderConfigEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+
+        return $options;
+    }
+}
+
+
+class AllRenderAutoLabel extends AllRenderConfigEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
+        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
+
+        return $options;
     }
 }

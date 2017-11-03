@@ -54,6 +54,22 @@ $options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.
         return $options;
     }
 
+    public function getMenu(\Doc $document)
+    {
+        $menu= parent::getMenu($document);
+
+        $myItem = new \Dcp\Ui\ItemMenu(
+            "openWindow",
+            ___("Open in new window", "tst")
+        );
+        $myItem->setBeforeContent('<div class="fa fa-external-link-square" />');
+        $myItem->setUrl("#action/tst:openWindow");
+
+        $menu->appendElement($myItem);
+        return $menu;
+
+    }
+
     public function getJsReferences(\Doc $document = null)
     {
         $js=parent::getJsReferences();
