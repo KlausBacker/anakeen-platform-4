@@ -77,6 +77,7 @@ define([
             if (this.displayLabel === true) {
                 this.$el.append(labelElement);
             }
+
             this.$el.append(contentElement);
             this.$el.attr("data-attrid", this.model.id);
 

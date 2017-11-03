@@ -9,3 +9,11 @@
 .dcpAttribute__content--htmltext.has-error .cke {
   border-color: $error transparent $error $error;
 }
+
+
+.dcpAttribute__content.dcpAttribute__content--htmltext .input-group-addon {
+  .dcpAttribute__content__button--delete {
+    height:3rem;
+    left: -4rem;
+  }
+}

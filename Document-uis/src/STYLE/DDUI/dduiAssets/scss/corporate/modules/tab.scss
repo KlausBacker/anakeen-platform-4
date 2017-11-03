@@ -36,8 +36,11 @@
   }
 }
 
-.document .dcpDocument__tabs.k-tabstrip > .dcpTab__content.k-state-active {
+.dcpDocument__tabs  > .dcpTab__content.k-state-active {
   background-color: $A4-ui-tab-active-bg;
+}
+
+.document .dcpDocument__tabs.k-tabstrip > .dcpTab__content.k-state-active {
   border: none;
   margin: 0;
   padding: 0;

@@ -5,7 +5,7 @@
   }
 
   .form-control {
-    border: $A4-ui-doc-edit-attribute-border;
+    //border: $A4-ui-doc-edit-attribute-border;
   }
 
   .dcpAttribute__content .k-dropdown-wrap .k-select {
@@ -25,7 +25,7 @@
   }
 
   .input-group .k-multiselect-wrap {
-    border-color: $A4-ui-doc-edit-attribute-color-border;
+    // border-color: $A4-ui-doc-edit-attribute-color-border;
   }
 
   .dcpLabel {
@@ -35,6 +35,9 @@
 
   .dcpAttribute {
     margin-bottom: 1.6666rem;
+    &:last-child {
+       margin-bottom:0;
+    }
   }
 
   .dcpAttribute__content .k-dropdown-wrap input.k-input {
@@ -45,9 +48,7 @@
     border: none;
   }
 
-  .dcpAttribute__content .k-widget > .k-state-default {
-    border-color: #e6e6e6;
-  }
+
 }
 
 // Consultation

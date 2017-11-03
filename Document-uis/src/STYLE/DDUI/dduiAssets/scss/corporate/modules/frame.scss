@@ -4,7 +4,8 @@
 
 .dcpFrame {
   background: $A4-ui-color-frame-background;
-  padding: $A4-ui-frame-padding;
+  margin: $A4-ui-frame-padding;
+  padding:  $A4-ui-frame-padding;
   box-shadow: $A4-ui-frame-shadow;
 }
 
@@ -19,9 +20,6 @@
   margin: $A4-ui-frame-header-margin;
 }
 
-.card-body.dcpFrame__content--open {
-  padding: 0 1rem;
-}
 
 .card-header.css-frame-head.dcpFrame__label.dcp__frame--open.dcpLabel {
   padding-left: 0;

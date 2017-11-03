@@ -11,3 +11,11 @@
   padding-left : 1em;
   padding-top : 0.4em;
 }
+
+
+.dcpAttribute__content.dcpAttribute__content--longtext .input-group-addon {
+  .dcpAttribute__content__button--delete {
+    height:2rem;
+    left: -2rem;
+  }
+}

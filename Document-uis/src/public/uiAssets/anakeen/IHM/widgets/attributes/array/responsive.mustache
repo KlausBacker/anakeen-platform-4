@@ -81,7 +81,7 @@
     {{/useTransposition}}
 {{renderOptions.arrayBreakPoints.upRule}} {
     .dcpArray__label[data-attrid={{id}}].dcpAttribute__left.dcpAttribute__labelPosition--auto {
-        background-color: #eee;
+
         border-bottom-style: solid;
         text-align: left;
         width: 100%;
@@ -92,8 +92,16 @@
          padding-left: 0;
     }
     .dcpArray--left[data-attrid={{id}}].dcpAttribute__labelPosition--auto {
-        border-style: solid;
+        border-style: solid solid none solid;
+        flex-direction:column;
       }
+
+
+
+     .dcpArray--left[data-attrid={{id}}].dcpAttribute__labelPosition--auto .dcpArray__label{
+        flex:0;
+    }
+
     .dcpArray__content[data-attrid={{id}}].dcpAttribute__labelPosition--auto > .table-bordered {
         border-style: none;
     }

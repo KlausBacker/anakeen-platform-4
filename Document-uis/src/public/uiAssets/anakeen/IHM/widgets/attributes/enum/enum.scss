@@ -16,7 +16,9 @@
 }
 
 .dcpAttribute__content .k-dropdown .k-dropdown-wrap .k-input {
-  background-color: white;
+  background-color: $white;
+  border-radius:  0 $border-radius-base $border-radius-base 0;
+
 }
 
 /* set icon in right */
@@ -120,7 +122,7 @@
 
 .dcpAttribute__value--enumlabel {
   font-weight: normal;
-  height: $A4-ui-input-height;
+
 }
 
 .dcpAttribute__value--enumlabel.selected {
@@ -128,17 +130,31 @@
   color: $A4-ui-color-text-colored;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-horizontal,
 .dcpAttribute__value--enumbuttons.orientation-bool {
   width: 100%;
   padding: 0 2rem 0  0;
-  display: table;
+  .dcpAttribute__value--toggle {
+    height:auto;
+  }
+
 }
+
+
+
+.dcpAttribute__value--enumbuttons.orientation-horizontal {
+  width: 100%;
+  padding: 0 2rem 0  0;
+  display: flex;
+  flex-direction: row;
+
+  .dcpAttribute__value--enumlabel {
+    flex-grow:1;
+  }
+}
+
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal.input-group,
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group {
-  display: table;
-  table-layout: fixed; /* same width for each item */
   border-top-right-radius: $border-radius-base;
   border-bottom-right-radius: $border-radius-base;
   .k-checkbox-label {
@@ -230,7 +246,7 @@
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
-  border-radius: $border-radius-base 0 0 $border-radius-base;
+  border-radius: $border-radius-base;
 
   label.dcpAttribute__value--enumlabel--text {
     line-height: 2;
@@ -342,8 +358,9 @@ $dcpBoolAnimationDelay: 1s;
   .dcpAttribute__value--toggle {
     background-color: inherit;
     text-align: left;
+    line-height: 1.5;
     border: none;
-    padding: 2px 0.5em 0 0.5em;
+    padding: 1px 0.5em 1px 0.5em;
     position: relative;
     &.unselected {
       display: none;
@@ -376,7 +393,7 @@ $dcpBoolAnimationDelay: 1s;
           box-sizing: border-box;
           width: $A4-ui-input-height - 1rem;
           height: $A4-ui-input-height - 1rem;
-          top: 0.24rem;
+          top: 0.1rem;
           border: none;
           border-radius: 50%;
           color: #f5f5f5;
@@ -409,7 +426,7 @@ $dcpBoolAnimationDelay: 1s;
           left: calc(100% - 1em - #{$border-radius-base});
           width: $A4-ui-input-height - 1rem;
           height: $A4-ui-input-height - 1rem;
-          top: 0.24rem;
+          top: 0.1rem;
           border: none;
           border-radius: 50%;
           color: #f5f5f5;

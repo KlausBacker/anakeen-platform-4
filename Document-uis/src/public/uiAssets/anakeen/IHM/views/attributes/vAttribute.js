@@ -152,6 +152,7 @@ define([
                     this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
                     this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
                 }
+                this.$el.addClass("dcpAttribute__labelPosition--"+this.model.getOption("labelPosition"));
                 this.$el.find(".dcpAttribute__label").dcpLabel(data);
             }
 

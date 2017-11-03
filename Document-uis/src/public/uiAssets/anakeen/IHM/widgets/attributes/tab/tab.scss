@@ -44,7 +44,8 @@ $tabFiwWidth:10em;
   margin-left:0;
   margin-right: 0;
 }
-.dcpDocument__tabs .dcpFrame__content
+.dcpDocument__tabs .dcpFrame__content,
+.dcpFrame__content
 {
   padding:$dcp-set-padding;
 }
@@ -173,7 +174,7 @@ $tabFiwWidth:10em;
 .dcpDocument__tabs.tab--fixed {
   .dcpDocument__tabs__list {
     position: fixed;
-    z-index: 3;
+    z-index: 4;
     top: 30px;
     //padding: $dcp-set-padding/2 $dcp-set-padding 0 $dcp-set-padding;
     left: 0;
@@ -190,7 +191,7 @@ $tabFiwWidth:10em;
   .k-bare.k-tabstrip-next,
   .k-bare.k-tabstrip-prev {
     position: fixed;
-    z-index: 4;
+    z-index: 5;
     box-shadow: 0 $dcp-set-padding $dcp-set-padding * 2 0 $nav-tabs-border-color;
     background: $body-bg !important;
   }
