@@ -18,35 +18,6 @@ Build image(s):
 The docker image is run with:
 - `/autotest/work`: current working directory with a checkout of the source
   code.
-- `/autotest/share`: link to `Tests/autotest/share` on the local workstation
-  (used to share content between the workstation and the docker image).
-
-## Override default autotest
-
-You can override the default test by creating (but not committing) a
-`./Tests/autotest/autotest.override.sh` executable file with your custom
-directives and use the `--autotest-override` option when calling
-`local-run.sh`.
-
-Example for opening an interactive shell:
-
-    $ cat <<'EOF' > ./Tests/autotest/autotest.override.sh
-    #!/bin/bash
-    
-    exec /bin/bash
-    EOF
-    $ chmod a+x ./Tests/autotest/autotest.override.sh
-    $ ./Tests/autotest/local-run.sh --autotest-override php71pg96
-
-The `autotest-override.sh` is executed with the current working directory to
-`/autotest/work`.
-
-## Sharing files between workstation and docker image
-
-If you need to share files between your workstation and the docker image used
-during the test, you can put your files in `Tests/autotest/share` on your
-workstation, and the files will be available in `/autotest/share` from inside
-the docker image.
 
 ## Setup docker DNS
 

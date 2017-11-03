@@ -2,10 +2,10 @@
 <module name="@moduleName@" disabled="no" version="@version@" release="@release@"
         basecomponent="no">
     <description>Test case for Anakeen Core.</description>
-    <require>
 
+    <requires>
         <module name="anakeen-core"/>
-    </require>
+    </requires>
 
     <pre-install>
         <check type="syscommand" command="xmllint">
