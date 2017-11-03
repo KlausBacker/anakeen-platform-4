@@ -581,7 +581,7 @@ define([
 
             _.each(this._tooltips, function wMenuDestroyTooltip(currentTooltip)
             {
-                currentTooltip.tooltip("destroy");
+                currentTooltip.tooltip("dispose");
             });
             this.element.empty();
             this._super();

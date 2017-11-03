@@ -34,4 +34,6 @@ body {
     margin:0.2em;
     text-align: left;
     margin-left: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

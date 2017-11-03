@@ -11,9 +11,8 @@
     height: 100%;
     width:100%
 }
-.document .dcpFrame[data-attrid="tst_fr_config"] {
+.dcpFrame[data-attrid="tst_fr_config"] {
     margin:0;
-    padding-bottom: 0;
 }
 
 

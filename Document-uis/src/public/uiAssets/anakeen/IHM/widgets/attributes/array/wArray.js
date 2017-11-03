@@ -242,7 +242,7 @@
                 }
                 this.element.on("click" + this.eventNamespace, ".button-close-error", function destroyTable(/*event*/)
                 {
-                    scope.element.find(".dcpArray__content table.table").tooltip("destroy");
+                    scope.element.find(".dcpArray__content table.table").tooltip("hide");
                 });
             }
             _.delay(_.bind(this._initCSSResponsive, this), 10);
@@ -659,13 +659,18 @@
                     trigger: "manual",
                     animation: false,
                     html: true,
+                    container: scope.element,
                     title: function dcpArray_computeTitleError()
                     {
                         var rawMessage = $('<div/>').text(message).html();
-                        return '<div>' + '<span title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</span>' + rawMessage + '</div>';
-                    },
-                    template: '<div class="tooltip has-error" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
+                        return '<div>' + '<span title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error"> XY &nbsp;</span>' + scope.options.id +  rawMessage + '</div>';
+                    }
 
+                }).one("shown.bs.tooltip", function wErrorTooltip () {
+                    var tipElement = $(this).data("bs.tooltip").tip;
+                    if (tipElement) {
+                        $(tipElement).addClass("has-error");
+                    }
                 }).tooltip("show").addClass("dcpArray--error");
             } else {
                 $target.tooltip("hide").removeClass("dcpArray--error");

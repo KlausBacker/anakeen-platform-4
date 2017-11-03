@@ -6,6 +6,15 @@
   margin-bottom: 0.2rem;
   padding: 0.2rem;
   background: $dcpAttributeDescriptionBackgroundColor;
+
+
+  .button-close-error {
+    padding: 0.2rem;
+    position: absolute;
+    cursor: pointer;
+    right: -1.7rem;
+    top: -2px;
+  }
 }
 
 .dcpAttribute__description--top {

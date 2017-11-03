@@ -124,14 +124,14 @@
                             placement: "bottom",
                             html: true,
                             animation: false,
-                            //container: scope.element, //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
+                            container: scope.element.parent(), //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
                                 return '<div>' + '<span title="' + scope.options.labels.closeErrorMessage + '" class="btn fa fa-times button-close-error">&nbsp;</span>' + rawMessage + '</div>';
                             },
                             trigger: "manual"
-                        }).on("shown.bs.tooltip", function wErrorTooltip () {
+                        }).one("shown.bs.tooltip", function wErrorTooltip () {
                             var tipElement = $(this).data("bs.tooltip").tip;
                             if (tipElement) {
                                 $(tipElement).addClass("has-error");
@@ -597,7 +597,7 @@
                     var attrValue = currentWidget.getValue();
                     return Mustache.render(title || "", attrValue);
                 },
-                container: this.element
+                container: this.element.parent()
             });
 
             return this;
@@ -615,7 +615,7 @@
             this.element.parent().on("click" + this.eventNamespace, ".button-close-error", function closeError(/*event*/)
             {
                 if (scope.element.data("hasErrorTooltip")) {
-                    scope.element.find(".input-group").tooltip("destroy");
+                    scope.element.find(".input-group").tooltip("hide");
                     scope.element.data("hasErrorTooltip", false);
                 }
             });

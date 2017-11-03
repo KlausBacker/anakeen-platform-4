@@ -283,7 +283,7 @@ class RenderDefault implements IRenderConfig
         $opt->account()->setTranslations(array(
             "allSelectedDocument" => ___("No more matching", "ddui-docid")
         ));
-        $opt->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $opt->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
         
         $selectedTab = $document->getUTag("lasttab");
         if ($selectedTab) {

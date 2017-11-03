@@ -69,9 +69,7 @@ define([
                                             }
                                             if (newTitle !== currentTitle) {
                                                 currentTitle = newTitle;
-                                                kendoWindow.setOptions({
-                                                    title: currentTitle
-                                                });
+                                                $(kendoWindow.element).closest(".k-window").find(".k-window-title").html(newTitle);
                                             }
                                         }
                                     } catch (exp) {

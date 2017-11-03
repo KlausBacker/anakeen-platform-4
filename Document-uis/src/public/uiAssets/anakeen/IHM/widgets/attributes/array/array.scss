@@ -9,6 +9,10 @@
   .k-radio-label {
     padding-left: 1.2em;
   }
+  .btn {
+    padding: 0.1rem 0.6rem;
+    background-color: transparent;
+  }
 }
 
 .dcpArray__content__toolCell .dcpArray__content__toolCell__check{
@@ -17,6 +21,11 @@
   }
 }
 
+.dcpArray {
+  .dcpLabel {
+    padding: 0.4rem 0.7rem;
+  }
+}
 
 .dcpArray__head__cell {
   overflow: hidden;

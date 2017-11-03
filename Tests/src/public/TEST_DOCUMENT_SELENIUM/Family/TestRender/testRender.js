@@ -19,8 +19,26 @@ require([ "dcpDocument/document"], function testMain()
             });
 
             $(window).trigger("resize");
-            $target.height("calc(100vh - " + ($target.offset().top + 25) + "px)");
+            $target.height("calc(100vh - " + ($target.offset().top +25) + "px)");
         }
+    });
 
-    })
+    window.dcp.document.documentController(
+        "addEventListener",
+        "actionClick",
+        {
+            "name": "tst.openWindow",
+            "documentCheck": function (documentObject) {
+                return (documentObject.family.name === "TST_RENDER");
+            }
+        },
+        function(event, documentObject, data) {
+            if (data.eventId === "tst") {
+                if (data.options.length > 0 && data.options[0] === "openWindow" ) {
+                     var $target = $(".test-document");
+                     window.open($target.document("getProperties").url);
+                }
+            }
+        }
+    );
 });

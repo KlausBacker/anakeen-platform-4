@@ -17,6 +17,7 @@
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__DATA.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TEST_DDUI_EMPLOYEE__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
         <process command="programs/update_catalog"/>
@@ -33,6 +34,7 @@
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__DATA.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TEST_DDUI_EMPLOYEE__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
         <process command="programs/update_catalog"/>

@@ -3,7 +3,7 @@ $fa-font-path: "../../../../uiAssets/externals/font-awesome/fonts";
 @import "../../../../public/uiAssets/externals/KendoUI/scss/bootstrap_dist";
 @import "../../../custom-scss-variable.d/global_variables.scss";
 
-
+$border-radius-base: $A4-ui-doc-edit-attribute-border-radius;
 
 .form-group {
   margin-bottom: $font-size-base/2;
@@ -15,3 +15,4 @@ $fa-font-path: "../../../../uiAssets/externals/font-awesome/fonts";
   background-color:$A4-ui-color-error;
   color:$A4-ui-color-picto-colored;
 }
+

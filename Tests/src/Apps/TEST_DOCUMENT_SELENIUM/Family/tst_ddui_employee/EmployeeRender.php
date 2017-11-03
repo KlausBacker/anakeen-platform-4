@@ -81,6 +81,9 @@ class EmployeeEditRender extends \Dcp\Ui\DefaultEdit
             . "<p>Le code BIC <i>(Business Identifier Code)</i> représenté par une série de <b>11 ou 8</b> lettres .</p>",
             \Dcp\Ui\CommonRenderOptions::bottomPosition);
 
+        $options->frame(myAttribute::tst_f_adresseperso)->setDescription($displayPosition
+            . "<p>Compléter ici vos informations personnelles</p>",
+            \Dcp\Ui\CommonRenderOptions::clickPosition);
         return $options;
     }
 }

@@ -14,15 +14,16 @@
           class="form-control dcpAttribute__value dcpAttribute__value--edit k-textbox">{{attributeValue.value}}</textarea>
     {{#hadButtons}}
     <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#deleteButton}}
+            <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                    class="btn btn-default btn-xs dcpAttribute__content__button--delete">
+            <span class="char-close"></span>
+        </button>
+        {{/deleteButton}}
         {{#renderOptions.buttons}}
         <button type="button" data-title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">{{{renderHtmlContent}}}</button>
         {{/renderOptions.buttons}}
-        {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
-            class="btn btn-default btn-xs dcpAttribute__content__button--delete">
-            <span class="fa fa-times fa-fw"></span>
-        </button>
-        {{/deleteButton}}
+
     </span>
      {{/hadButtons}}
 </div>
