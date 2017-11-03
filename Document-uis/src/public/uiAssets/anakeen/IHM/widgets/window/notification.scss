@@ -89,3 +89,10 @@ $dcpNotifierSymbolWidth:50px;
 .k-window-title {
   padding-right:2em;
 }
+.k-window-iframecontent {
+  display:flex;
+  flex-direction: column;
+  >iframe {
+    flex-grow: 1;
+  }
+}

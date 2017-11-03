@@ -15,6 +15,11 @@
            class="form-control dcpAttribute__value dcpAttribute__value--edit"
            value="{{attributeValue.displayValue}}"/>
     <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#deleteButton}}<button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                                 class="btn btn-default btn-xs dcpAttribute__content__button--delete">
+            <span class="char-close"></span>
+        </button>
+        {{/deleteButton}}
         <button type="button" data-index="{{index}}" class="dcpAttribute__content__button--file btn btn-default btn-xs"
                 tabindex="-1">
             <span class="dcpAttribute__value--filethumb"
@@ -22,11 +27,7 @@
             <span class="fa fa-download fa-fw dcpAttribute__value--filethumb-download"></span>
         </button><!-- avoid white spaces
         -->{{#renderOptions.buttons}}<button type="button" data-title="{{title}}" tabindex="-1" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button><!-- avoid white spaces
-        -->{{/renderOptions.buttons}}<!-- avoid white spaces
-        -->{{#deleteButton}}<button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
-                class="btn btn-default btn-xs dcpAttribute__content__button--delete">
-            <span class="fa fa-times fa-fw"></span>
-        </button>
-        {{/deleteButton}}
+        -->{{/renderOptions.buttons}}
+
     </span>
 </div>

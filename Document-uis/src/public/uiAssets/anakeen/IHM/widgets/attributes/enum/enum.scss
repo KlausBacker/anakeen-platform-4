@@ -47,13 +47,16 @@
 }
 
 .dcpAttribute__content .k-multiselect .k-button {
-  font-size: 90%;
-  margin-bottom: 0.2em;
+
 }
 
 .dcpAttribute__content .k-multiselect-wrap {
   border-radius: inherit;
-  min-height: $A4-ui-input-height;
+  min-height: calc( #{$A4-ui-input-height} - 0px);
+
+  .k-button {
+    padding: 0.125rem 1.25rem;
+  }
 }
 
 .dcpAttribute__content.has-error .k-dropdown-wrap {
@@ -127,8 +130,8 @@
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal,
 .dcpAttribute__value--enumbuttons.orientation-bool {
-  width: calc(100% - 2.5rem);
-  padding: 0;
+  width: 100%;
+  padding: 0 2rem 0  0;
   display: table;
 }
 
@@ -136,8 +139,8 @@
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group {
   display: table;
   table-layout: fixed; /* same width for each item */
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  border-top-right-radius: $border-radius-base;
+  border-bottom-right-radius: $border-radius-base;
   .k-checkbox-label {
     &:before {
       top: 6px;
@@ -357,9 +360,11 @@ $dcpBoolAnimationDelay: 1s;
 
     &.off {
       .dcpAttribute__value--text {
-        color: $gray-light;
+        color: $gray;
         background-color: $gray-lighter;
         padding-left: 2.5em;
+        text-align: right;
+        padding-right: 1.2rem;
         transition: background-color $dcpBoolAnimationDelay, padding-left $dcpBoolAnimationDelay;
 
         &:before {
@@ -372,13 +377,13 @@ $dcpBoolAnimationDelay: 1s;
           width: $A4-ui-input-height - 1rem;
           height: $A4-ui-input-height - 1rem;
           top: 0.24rem;
-          border: 3px solid white;
+          border: none;
           border-radius: 50%;
           color: #f5f5f5;
           text-align: center;
           text-decoration: none;
-          background: transparent;
-          box-shadow: 0 0 3px gray;
+          background: $gray-light-alt;
+          box-shadow: 0 3px 3px $gray-light;
           font-size: 20px;
           font-weight: bold;
         }
@@ -387,7 +392,7 @@ $dcpBoolAnimationDelay: 1s;
 
     &.on {
       .dcpAttribute__value--text {
-        background-color: $A4-ui-color-text-colored;
+        background-color: $A4-ui-color-selected;
         color: $A4-ui-color-text-colored;
         font-weight: bold;
         padding-left: 1em;
@@ -405,13 +410,13 @@ $dcpBoolAnimationDelay: 1s;
           width: $A4-ui-input-height - 1rem;
           height: $A4-ui-input-height - 1rem;
           top: 0.24rem;
-          border: 3px solid #f5f5f5;
+          border: none;
           border-radius: 50%;
           color: #f5f5f5;
           text-align: center;
           text-decoration: none;
-          background: transparent;
-          box-shadow: 0 0 3px gray;
+          background: $blue;
+          box-shadow: 0 3px 3px $blue-dark;
           font-size: 20px;
           font-weight: bold;
         }

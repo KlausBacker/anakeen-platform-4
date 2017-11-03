@@ -5,11 +5,13 @@
 }
 
 .dcpAttribute__value--filethumb {
-  width:48px;
+  width:4rem;
+  display: flex;
   height: 100%;
-  display: inline-block;
-  vertical-align: middle;
-  line-height: $A4-ui-input-height;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
 }
 
 .dcpAttribute__value--filethumb-download {

@@ -13,16 +13,17 @@
     </input>
     {{#hadButtons}}
     <span class="dcpAttribute__content__buttons input-group-addon">
+         {{#deleteButton}}
+             <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" class="dcpAttribute__content__button--delete btn btn-default btn-xs" tabindex="-1">
+            <span class="char-close"></span>
+        </button>
+         {{/deleteButton}}
         {{#renderOptions.buttons}}
         <button type="button" data-index="{{index}}" data-title="{{title}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">
          {{{renderHtmlContent}}}
         </button>
         {{/renderOptions.buttons}}
-        {{#deleteButton}}
-        <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" class="dcpAttribute__content__button--delete btn btn-default btn-xs" tabindex="-1">
-            <span class="fa fa-times fa-fw"></span>
-        </button>
-        {{/deleteButton}}
+
     </span>
     {{/hadButtons}}
 </div>

@@ -17,6 +17,7 @@
   }
 }
 
+
 .dcpDocument--view .dcpAttribute__content .dcpAttribute__content__buttons {
   float: right;
 }
@@ -61,17 +62,50 @@
   border-top-right-radius: $border-radius-base;
 }
 
-.dcpAttribute__content .input-group input,
-.dcpArray__content__cell .input-group input,
+.dcpAttribute__content .input-group input.form-control,
+.dcpArray__content__cell .input-group input.form-control,
 .dcpAttribute__content .input-group .k-autocomplete {
-  height: $A4-ui-input-height;
+  height: calc( #{$A4-ui-input-height} - 2px);
+  border-bottom-right-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
 }
 
 .dcpAttribute__content .input-group-addon,
 .dcpArray__content__cell .input-group-addon {
   padding: 0;
+  border-right: 0;
 }
 
+.dcpAttribute__content,
+.dcpArray__content__cell {
+  .input-group-addon:first-child {
+    border-radius: $border-radius-base 0 0 $border-radius-base;
+    > button.btn {
+      border-top-left-radius: $border-radius-base;
+      border-bottom-left-radius: $border-radius-base;
+
+    }
+  }
+  .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-dropdown-wrap {
+      border-radius: $border-radius-base;
+
+  }
+}
+
+.dcpAttribute__content--widget {
+
+  .k-dropdown-wrap,
+   .input-group > .k-widget {
+    border-radius: $border-radius-base;
+  }
+  .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-multiselect-wrap,
+  .k-widget.form-control > .k-multiselect-wrap,
+  .k-widget > .k-state-default {
+    border-top-right-radius:  $border-radius-base;
+    border-bottom-right-radius:  $border-radius-base;
+
+  }
+}
 .dcpAttribute__content .input-group-addon button,
 .dcpArray__content__cell .input-group-addon button {
   border: none;
@@ -110,10 +144,7 @@ iframe.dcpAttribute__value--endflash {
 
 .button-close-error {
   padding: 0.2rem;
-  position: absolute;
   cursor: pointer;
-    right: -1.7rem;
-    top: -2px;
 }
 
 .dcpAttribute__content .k-autocomplete .k-loading {
@@ -143,6 +174,41 @@ iframe.dcpAttribute__value--endflash {
 .dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {
   padding-left: 4px;
   padding-right: 4px;
+}
+
+.dcpAttribute__content__buttons {
+  position: relative;
+  .dcpAttribute__content__button--delete {
+    color: $gray-light;
+    background-color:transparent;
+    position: absolute;
+    left: -2rem;
+    z-index: 3;
+    top: 0;
+
+    .char-close {
+      border-radius:50%;
+      height:1rem;
+      width:1rem;
+      line-height: 1rem;
+      vertical-align: middle;
+      display: inline-block;
+
+      &.char-close::before {
+        font-family: "WebComponentsIcons";
+        content: '\e11b';
+      }
+    }
+
+    cursor:pointer;
+
+    &:hover {
+      .char-close {
+        background-color: $error;
+        color:$A4-ui-color-text-colored;
+      }
+    }
+  }
 }
 
 /**
