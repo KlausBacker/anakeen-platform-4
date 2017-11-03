@@ -64,5 +64,6 @@
 
   .leftPane {
     transition: overflow 1s;
+    overflow: initial !important;
   }
 }

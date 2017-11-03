@@ -1,4 +1,7 @@
+import anakeenComponentOptions from '../componentBase';
+
 export default {
+  mixins: [anakeenComponentOptions],
   props: {
     logoUrl: {
       type: String,
@@ -62,6 +65,7 @@ export default {
 
     selectDocument(document) {
       this.$emit('store-save', { action: 'openDocument', data: document });
+      this.$emit('document-selected', document);
     },
 
     onStoreChange(storeData) {

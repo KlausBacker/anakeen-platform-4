@@ -63,6 +63,7 @@ $leftPaneSize: 25vw;
 .documentsList__documents__search__wrapper {
   background-color: #eee;
   padding-top: 7px;
+  z-index: 0;
 }
 
 .documentsList__documents__search__button,
@@ -83,6 +84,7 @@ $leftPaneSize: 25vw;
 .documentsList__documents__summary__wrapper {
   padding-bottom: 8px;
   background-color: #eee;
+  z-index: 0;
 }
 
 
@@ -130,6 +132,7 @@ $leftPaneSize: 25vw;
   height: 45px;
   border-bottom: 1px solid #ccc;
   padding: 10px 15px 10px 20px;
+  text-transform: uppercase;
 }
 
 .documentsList__documentCard:first-child,
@@ -159,6 +162,7 @@ $leftPaneSize: 25vw;
 }
 
 .documentsList__documents__list__pager_wraper {
+  z-index: 0;
   display: flex;
   flex-direction: row;
   height: 28px;

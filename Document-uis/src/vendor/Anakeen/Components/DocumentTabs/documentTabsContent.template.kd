@@ -1,0 +1,4 @@
+<a4-document initid="#: initid#"
+             # if (data.viewid) { #viewid="#= viewid#"# }#
+             # if (data.revision) { #revision="#=revision#"#}#>
+</a4-document>

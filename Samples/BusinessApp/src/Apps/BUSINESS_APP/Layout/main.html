@@ -16,16 +16,22 @@
 <a4-splitter class="a4-component">
     <div vue-slot="leftPane">
         <a4-collections class="a4-component"></a4-collections>
-        <a4-documents class="a4-component" logo-url="api/v1/images/assets/original/logo-cstb-trans.png"></a4-documents>
+        <a4-document-list id="documentsList"
+                           logo-url="CORE/Images/anakeen-logo.svg"
+                           bind-event="document-selected: #documentsTabs.publicMethods.addDocument"
+        ></a4-document-list>
     </div>
     <div vue-slot="mainPane">
-        <a4-open-document class="a4-component"></a4-open-document>
+        <a4-document-tabs id="documentsTabs">
+        </a4-document-tabs>
     </div>
 </a4-splitter>
 
 <script src="../uiAssets/externals/jquery/jquery.min.js"></script>
 <script src="../uiAssets/externals/KendoUI/KendoUI.js"></script>
 <script src="BUSINESS_APP/dist/a4-business-app-components.js"></script>
-
+<script src="components/dist/a4-components.js"></script>
+<script>
+</script>
 </body>
 </html>
