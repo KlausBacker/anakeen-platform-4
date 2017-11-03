@@ -8,13 +8,6 @@
   background: $dcpAttributeDescriptionBackgroundColor;
 
 
-  .button-close-error {
-    padding: 0.2rem;
-    position: absolute;
-    cursor: pointer;
-    right: -1.7rem;
-    top: -2px;
-  }
 }
 
 .dcpAttribute__description--top {
@@ -431,6 +424,14 @@
   box-shadow: none;
 }
 
+.dcpAttribute__description-info .button-close-error {
+  padding: 0.2rem;
+  position: absolute;
+  cursor: pointer;
+  right: -1.7rem;
+  top: -2px;
+}
+
 .dcpAttribute__description-info.tooltip[x-placement=top] .arrow::before {
   border-top-color: $A4-ui-doc-edit-attribute-hover-color;
 }
@@ -447,4 +448,6 @@
 .dcpAttribute__label_description {
   padding-right: 0.5em;
   cursor: pointer;
+  vertical-align: top;
+  display: inline-block;
 }

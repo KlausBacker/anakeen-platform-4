@@ -1,10 +1,12 @@
+
+
 .dcpFrame, .document .dcpFrame:last-child {
-  margin: 0 10px 10px;
+
 }
 
 .dcpFrame {
   background: $A4-ui-color-frame-background;
-  margin: $A4-ui-frame-padding;
+  margin: 0 1.166rem 1.166rem 1.166rem;
   padding:  $A4-ui-frame-padding;
   box-shadow: $A4-ui-frame-shadow;
 }
