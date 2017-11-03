@@ -11,5 +11,8 @@
         </div>
     </div>
 </template>
+<style lang="scss">
+    @import './splitter.scss';
+</style>
 <script src="./splitter.controller.js"></script>
 
