@@ -8,6 +8,7 @@
     </replaces>
 
     <requires>
+        <module name="anakeen-core"/>
         <module name="anakeen-security"/>
     </requires>
 
