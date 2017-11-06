@@ -36,6 +36,9 @@ html {
     }
   }
 
+  .authent-locale {
+    width:auto;
+  }
   .authent-form {
     padding: 2rem 4rem 1rem 4rem;
     border-radius: 0.5rem;
@@ -60,13 +63,24 @@ html {
   }
 
 
-  .k-input:invalid, .k-textbox:invalid, .k-input.k-textbox:invalid, input {
+
+  input {
     border-color: $A4-ui-doc-edit-attribute-color-border;
-    color: $A4-ui-color-font-placeholder;
     box-shadow: none;
+
+    &.k-input:invalid, &.k-textbox:invalid, &.k-input.k-textbox:invalid {
+      color: $A4-ui-color-font-placeholder;
+      border-color: $A4-ui-doc-edit-attribute-color-border;
+
+      &:focus {
+        border-color: $A4-ui-doc-edit-attribute-hover-color;
+        box-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
+      }
+    }
   }
 
-  .k-input:focus, .k-textbox:focus, .k-input.k-textbox:focus {
+  .k-input:focus, .k-textbox:focus, .k-input.k-textbox:focus, input:focus {
     border-color: $A4-ui-doc-edit-attribute-hover-color;
+    box-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
   }
 }

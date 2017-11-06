@@ -105,7 +105,7 @@ class EmployeeViewRender extends \Dcp\Ui\DefaultView
     {
         $options = parent::getOptions($document);
 
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
 
         $originalLabel = '<p><b>{{label}}</b></p>';
 
@@ -154,9 +154,12 @@ class EmployeeCustomRender extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
+
+
+        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
         $tplIdent
             = <<< 'HTML'
-        <div class="Bof" style="outline:dashed 1px red">
+        <div class="Bof" style="outline:dashed 1px red; margin: 1rem">
            
            {{{attributes.tst_prenom.htmlView}}} {{{attributes.tst_nom.htmlView}}}
           </div>
