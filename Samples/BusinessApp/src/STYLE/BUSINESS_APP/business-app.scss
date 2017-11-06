@@ -2,7 +2,7 @@
 $font-family-base: $A4-ui-font;
 @import "../../public/uiAssets/externals/KendoUI/scss/variables";
 
-@import "../../public/BUSINESS_APP/src/components/collectionsList/collections";
+@import '../../public/BUSINESS_APP/src/components/collectionsList/main.scss';
 
 html, body {
   font-size: 12px;

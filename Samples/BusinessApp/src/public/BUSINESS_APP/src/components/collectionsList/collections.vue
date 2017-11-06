@@ -47,4 +47,7 @@
         </div>
     </div>
 </template>
+<style lang="scss">
+    @import './collections.scss';
+</style>
 <script src="./collections.controller.js"></script>
