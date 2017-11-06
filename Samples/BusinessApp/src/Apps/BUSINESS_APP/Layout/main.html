@@ -13,7 +13,7 @@
 <body>
 
 <a4-splitter id="splitter" bind-event="close: #collectionsList.publicMethods.closeCollections">
-    <div vue-slot="leftPane">
+    <div vue-slot="leftPane" style="height: 100%">
         <a4-collections id="collectionsList"
                         bind-event="open: #splitter.publicMethods.openSplitter,
                                     collection-selected: #splitter.publicMethods.setCollection,

@@ -1,5 +1,4 @@
 $collapsedSize: 4.16666rem;
-$leftPaneSize: 25vw;
 
 .documentsList__documents__wrapper {
   margin-left: $collapsedSize;
@@ -22,8 +21,7 @@ $leftPaneSize: 25vw;
 .documentsList__documents {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: calc(#{$leftPaneSize} - #{$collapsedSize});
+  height: 100%;
 }
 
 .documentsList__documents,
