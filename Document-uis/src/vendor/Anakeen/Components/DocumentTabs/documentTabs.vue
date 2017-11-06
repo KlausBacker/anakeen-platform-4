@@ -1,12 +1,11 @@
 <template>
-    <div class="documentsList__documentsTabs__wrapper">
+    <div class="documentsList__documentsTabs__wrapper" ref="tabsWrapper">
         <div class="documentsList__documentsTabs__tabs__buttons">
+                <div class="documentsList__documentsTabs__tabs__custom__slot" ref="slotContent">
+                    <slot name="left-content"></slot>
+                </div>
                 <div ref="tabsPaginator" class="documentsList__documentsTabs__tabs__paginator">
-                    <ul class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__dropdown__button" data-role="menu">
-                        <li>
-                            <span class="k-icon k-i-menu"></span>
-                        </li>
-                    </ul>
+                    <input class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__dropdown__button" ref="tabsList"/>
                     <button @click="closeAllDocuments" class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__close">
                         <span class="k-icon k-i-x"></span>
                     </button>

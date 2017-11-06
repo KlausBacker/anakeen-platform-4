@@ -1,6 +1,13 @@
-<span>
-    <span class="documentsList__documentsTabs__tabs__tab__title"># if (data.title) { # #= title# # } else {# Chargement en cours...#}#</span>
-    <span class="documentsList__documentsTabs__tabs__tab__close" data-type="remove" >
+<span class="documentsList__documentsTabs__tabsList__item">
+    <span class="documentsList__documentsTabs__tabsList__item__content">
+        # if (data.icon) { #
+        <img class="documentsList__documentsTabs__tabsList__item__icon" src="#= icon#" />
+        # } else { #
+        <i class="fa fa-spinner fa-pulse documentsList__documentsTabs__tabsList__item__icon"></i>
+        #}#
+        <span class="documentsList__documentsTabs__tabsList__item__title"># if (data.title) { # #= title# # } else {# Chargement en cours...#}#</span>
+    </span>
+    <span class="documentsList__documentsTabs__tabsList__item__close" data-type="remove" >
         <span class="k-icon k-i-x"></span>
     </span>
 </span>

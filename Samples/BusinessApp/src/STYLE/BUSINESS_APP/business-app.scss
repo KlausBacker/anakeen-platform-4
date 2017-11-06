@@ -7,5 +7,6 @@ $font-family-base: $A4-ui-font;
 html, body {
   font-size: 12px;
   height: 100vh;
+  overflow: hidden;
   font-family: $font-family-base;
 }
