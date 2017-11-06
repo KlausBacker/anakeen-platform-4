@@ -12,10 +12,14 @@
 </head>
 <body>
 
-<a4-store id="a4-store"></a4-store>
-<a4-splitter class="a4-component">
+<a4-splitter id="splitter" bind-event="close: #collectionsList.publicMethods.closeCollections">
     <div vue-slot="leftPane">
-        <a4-collections class="a4-component"></a4-collections>
+        <a4-collections id="collectionsList"
+                        bind-event="open: #splitter.publicMethods.openSplitter,
+                                    collection-selected: #splitter.publicMethods.setCollection,
+                                    collection-selected: #documentsList.publicMethods.setCollection">
+
+        </a4-collections>
         <a4-document-list id="documentsList"
                            logo-url="CORE/Images/anakeen-logo.svg"
                            bind-event="document-selected: #documentsTabs.publicMethods.addDocument"
@@ -23,15 +27,17 @@
     </div>
     <div vue-slot="mainPane">
         <a4-document-tabs id="documentsTabs">
+            <a4-button
+                    vue-slot="left-content"
+                    families-list-url="api/v1/sba/collections"
+                    bind-event="create-document: #documentsTabs.publicMethods.addDocument">
+            </a4-button>
         </a4-document-tabs>
     </div>
 </a4-splitter>
-
 <script src="../uiAssets/externals/jquery/jquery.min.js"></script>
 <script src="../uiAssets/externals/KendoUI/KendoUI.js"></script>
 <script src="BUSINESS_APP/dist/a4-business-app-components.js"></script>
 <script src="components/dist/a4-components.js"></script>
-<script>
-</script>
 </body>
 </html>

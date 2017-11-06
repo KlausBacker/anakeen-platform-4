@@ -1,5 +1,6 @@
 // jscs:disable requirePaddingNewLinesBeforeLineComments
 import contentTemplate from './documentTabsContent.template.kd';
+import headerTemplate from './documentTabsHeader.template.kd';
 import abstractAnakeenComponent from '../componentBase';
 
 export default {
@@ -32,31 +33,30 @@ export default {
             // Init the model and view kendo element
             initKendoComponents: () => {
                 this.openedTabs = new this.$kendo.data.ObservableArray([]);
-                this.listViewModel = this.$kendo.observable({
-                    tabsList: this.openedTabs,
-                });
-                this.$kendo.bind(this.$refs.tabsPaginator, this.listViewModel);
                 this.tabstripElement = this.$(this.$refs.tabstrip).kendoTabStrip({
                     animation: false,
                 });
-                this.privateScope.bindDataChange(this.openedTabs);
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((m) => {
-                        switch (m.type) {
-                            case 'childList':
-                                const addedNodes = m.addedNodes;
-                                if (addedNodes.length > 1 && addedNodes[0].classList.contains('k-tabstrip-prev')) {
-                                    this.privateScope.replacePaginatorButtons();
-                                }
-
-                                break;
-                            default:
-                                break;
-                        }
-
-                    });
+                this.tabsListElement = this.$(this.$refs.tabsList).kendoDropDownList({
+                    animation: false,
+                    dataSource: this.openedTabs,
+                    template: this.$kendo.template(headerTemplate),
+                    valueTemplate: this.$kendo.template('<span class="k-icon k-i-menu"></span>'),
+                    autoWidth: true,
+                    select: this.privateScope.onClickTabList,
                 });
-                observer.observe(this.tabstripElement[0], { attributes: false, childList: true, characterData: false });
+                this.privateScope.bindDataChange(this.openedTabs);
+                this.$(window).resize(() => {
+                    this.privateScope.resizeComponents();
+                });
+                this.$(this.$refs.tabsWrapper).bind('resize', () => {
+                    console.log("I'm resizing");
+                });
+
+                this.privateScope.resizeComponents();
+            },
+
+            onClickTabList: (e) => {
+                this.selectDocument(e.sender.dataItem(e.item));
             },
 
             formatTabContentData: (data) => this.$kendo.template(contentTemplate)(data),
@@ -80,28 +80,60 @@ export default {
                 }
             },
 
-            replacePaginatorButtons: () => {
+            resizeComponents: () => {
+                this.tabstrip.resize();
+                this.privateScope.computeTabstripMargin();
+            },
+
+            // Compute the tabstrip left and right margin depending on the displayed buttons (paginator, slot)
+            computeTabstripMargin: () => {
+                const paginatorWidth = this.$(this.$refs.tabsPaginator).outerWidth(true);
+                let marginLeft = 0;
+                let marginRight = paginatorWidth || 0;
+                let tabMargin = this.tabstrip.tabGroup.children().first().css('margin-right') || 0;
+                const leftSlot = this.$(this.$refs.slotContent);
+                if (leftSlot) {
+                    marginLeft = leftSlot.outerWidth(true);
+                    if (marginLeft) {
+                        this.tabstrip.tabGroup.css('margin-left', `calc(${marginLeft}px  + ${tabMargin})`);
+                    } else {
+                        this.tabstrip.tabGroup.css('margin-left', 0);
+                    }
+                }
+
                 const prev = this.tabstripElement.find('.k-tabstrip-prev');
                 const next = this.tabstripElement.find('.k-tabstrip-next');
                 if (prev.length && next.length) {
-                    const paginatorWidth = this.$(this.$refs.tabsPaginator).outerWidth(true);
                     const nextWidth = next.outerWidth(true);
                     const prevWidth = prev.outerWidth(true);
-                    this.tabstrip.tabGroup.css('margin-right', `${paginatorWidth + (2 * prevWidth) + nextWidth}px`);
-                    this.tabstrip.tabGroup.css('margin-left', 0);
                     next.css('right', `${paginatorWidth +  nextWidth}px`);
                     prev.css('right', `${paginatorWidth + nextWidth + prevWidth}px`);
+                    marginRight = marginRight + (2 * prevWidth) + nextWidth;
                 }
+
+                this.tabstrip.tabGroup.css('margin-right', `calc(${marginRight}px + ${tabMargin})`);
             },
 
             // Bind documents events to tabs system
             bindDocumentEvents: (tabContent, index) => {
                 const tab = this.openedTabs[index];
-                this.$(tabContent).find('a4-document').on('ready', (e) => {
+                const documentComponent = this.$(tabContent).find('a4-document');
+                documentComponent.on('ready', (e) => {
                     tab.set('title', '');
                     tab.set('icon', '');
                     tab.set('title', e.detail[1].title);
                     tab.set('icon', e.detail[1].icon);
+                });
+                documentComponent.on('actionClick', (e) => {
+                    if (e.detail.length > 2 && e.detail[2].options) {
+                        console.log(e.detail[2]);
+                        if (e.detail[2].eventId === 'document.load') {
+                            e.detail[0].preventDefault();
+                            const initid = e.detail[2].options[0];
+                            const viewid = e.detail[2].options[1];
+                            this.addDocument({ initid, viewid });
+                        }
+                    }
                 });
             },
 
@@ -115,7 +147,7 @@ export default {
                             try {
                                 const ret = _this[methodName].call(_this, ...args);
                             } catch (e) {
-
+                                console.error(`From ${methodName} : ${e}`);
                             }
                         },
                     };
@@ -148,6 +180,7 @@ export default {
                                     .configureCloseTab(this.tabstrip.items()[e.index]);
                                 this.privateScope
                                     .bindDocumentEvents(this.tabstrip.contentElement(e.index), e.index);
+                                this.privateScope.computeTabstripMargin();
                                 break;
                             // Remove document
                             case 'remove':
@@ -157,6 +190,7 @@ export default {
                                     this.tabstrip.remove('li');
                                 }
 
+                                this.privateScope.computeTabstripMargin();
                                 break;
                             // Modify a tab
                             case 'itemchange':
@@ -199,7 +233,7 @@ export default {
         return {
             openedTabs: [],
             tabstripElement: null,
-            listViewModel: null,
+            tabsListElement: null,
         };
     },
 
@@ -214,6 +248,10 @@ export default {
 
         tabstrip() {
             return this.tabstripElement.data('kendoTabStrip');
+        },
+
+        tabslist() {
+            return this.tabsListElement.data('kendoDropDownList');
         },
     },
 
@@ -233,12 +271,13 @@ export default {
             if (typeof documentId === 'number') {
                 index = documentId;
             } else if (typeof documentId === 'object') {
-                index = this.tabsArray.toJSON().findIndex((d) => d.initid === document.initid);
+                index = this.tabsArray.findIndex((d) => d.initid === documentId.initid);
                 if (index < 0) {
                     index = 0;
                 }
             }
 
+            this.tabslist.select(index);
             this.tabstrip.select(index);
         },
 
@@ -247,7 +286,7 @@ export default {
             if (typeof documentId === 'number') {
                 index = documentId;
             } else if (typeof documentId === 'object') {
-                index = this.openedTabs.toJSON().findIndex((d) => d.initid === document.initid);
+                index = this.tabsArray.findIndex((d) => d.initid === documentId.initid);
             }
 
             if (index >= 0) {

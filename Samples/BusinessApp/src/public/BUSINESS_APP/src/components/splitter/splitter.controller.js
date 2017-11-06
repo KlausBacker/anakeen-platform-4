@@ -1,4 +1,6 @@
+import mixin from '../componentBase';
 export default {
+    mixins: [mixin],
     data() {
         return {
             collapseSplitter: false,
@@ -7,15 +9,6 @@ export default {
     },
 
     mounted() {
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const store = document.getElementById('a4-store');
-            if (store) {
-                store.addEventListener('store-change', (event) => {
-                    const storeData = event.detail && event.detail.length ? event.detail[0] : null;
-                    this.onStoreChange(storeData);
-                });
-            }
-        });
         this.initKendo();
     },
 
@@ -31,21 +24,35 @@ export default {
             });
         },
 
-        onStoreChange(storeData) {
-            if (storeData) {
-                switch (storeData.type) {
-                case 'SELECT_COLLECTION':
-                    this.collection = storeData.data;
-                break;
-            }
+        onCollapseSplitter(event) {
+            this.toggleSplitter(!this.collapseSplitter);
+        },
+
+        toggleSplitter(collapse) {
+            if (collapse) {
+                this.closeSplitter();
+            } else {
+                this.openSplitter();
             }
         },
 
-        onCollapseSplitter(event) {
-            this.collapseSplitter = !this.collapseSplitter;
+        openSplitter() {
+            this.collapseSplitter = false;
             const splitter = this.$(this.$refs.splitter).data('kendoSplitter');
-            this.$emit('store-save', { action: 'toggleCollections', data: false });
-            splitter.toggle('#leftPane', !this.collapseSplitter);
+            splitter.toggle('#leftPane', true);
+            this.$emit('open');
         },
+
+        closeSplitter() {
+            this.collapseSplitter = true;
+            const splitter = this.$(this.$refs.splitter).data('kendoSplitter');
+            splitter.toggle('#leftPane', false);
+            this.$emit('close');
+        },
+
+        setCollection(c) {
+            this.collection = c;
+        },
+
     },
 };

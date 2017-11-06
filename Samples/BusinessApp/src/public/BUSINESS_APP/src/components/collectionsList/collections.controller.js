@@ -1,4 +1,6 @@
+import mixin from '../componentBase';
 export default {
+  mixins: [mixin],
   mounted() {
     this.initKendo();
     this.sendGetRequest('/sba/collections')
@@ -11,14 +13,7 @@ export default {
     this.sendGetRequest('/sba/currentUser')
       .then((response) => {
         this.currentUser = response.data.data.user;
-      });
-    const store = document.getElementById('a4-store');
-    if (store) {
-      store.addEventListener('store-change', (event) => {
-        const storeData = event.detail && event.detail.length ? event.detail[0] : null;
-        this.onStoreChange(storeData);
-      });
-    }
+    });
   },
 
   data() {
@@ -86,25 +81,28 @@ export default {
 
   methods: {
     onToggleCollections() {
-      this.$emit('store-save', { action: 'toggleCollections', data: !this.showCollections });
-    },
-
-    onStoreChange(storeData) {
-      if (storeData) {
-        switch (storeData.type) {
-          case 'TOGGLE_COLLECTIONS':
-            this.showCollections = storeData.data;
-            break;
-          case 'SELECT_COLLECTION':
-            this.selectedCollection = storeData.data;
-            break;
-        }
+      if (this.showCollections) {
+        this.closeCollections();
+      } else {
+        this.openCollections();
       }
     },
 
+    openCollections() {
+      this.showCollections = true;
+      this.$emit('open');
+    },
+
+    closeCollections() {
+      this.showCollections = false;
+      this.$emit('close');
+    },
+
     selectCollection(c) {
-      this.$emit('store-save', { action: 'selectCollection', data: c });
-      this.$emit('store-save', { action: 'toggleCollections', data: false });
+      this.$emit('collection-selected', c);
+      if (this.showCollections) {
+          this.closeCollections();
+      }
     },
 
     initKendo() {
