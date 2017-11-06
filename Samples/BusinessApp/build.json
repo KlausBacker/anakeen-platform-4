@@ -1,7 +1,7 @@
 {
   "moduleName": "sample-business-app",
   "version": "1.0.0",
-  "release": "0.0",
+  "release": "0",
   "includedPath": ["src/*"],
   "lang": [
     "fr",
