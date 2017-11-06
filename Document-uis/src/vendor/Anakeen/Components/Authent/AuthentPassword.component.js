@@ -42,7 +42,7 @@ export default {
             }
         });
 
-        $input.on('input', function requireMessage() {
+        $input.on('input, invalid', function requireMessage() {
             if (this.value === '' && _this.validationMessage) {
                 this.setCustomValidity(_this.validationMessage);
             } else {
