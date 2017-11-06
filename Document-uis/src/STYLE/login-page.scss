@@ -60,10 +60,12 @@ html {
   }
 
 
-  .k-input:invalid, .k-textbox:invalid, .k-input.k-textbox:invalid {
+  .k-input:invalid, .k-textbox:invalid, .k-input.k-textbox:invalid, input {
     border-color: $A4-ui-doc-edit-attribute-color-border;
     color: $A4-ui-color-font-placeholder;
+    box-shadow: none;
   }
+
   .k-input:focus, .k-textbox:focus, .k-input.k-textbox:focus {
     border-color: $A4-ui-doc-edit-attribute-hover-color;
   }
