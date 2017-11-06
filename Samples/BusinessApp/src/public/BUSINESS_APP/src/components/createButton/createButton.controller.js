@@ -69,7 +69,6 @@ export default {
 
     mounted() {
         this.privateScope.initKendoComponents();
-        debugger;
         if (this.familiesListUrl) {
             this.privateScope.sendGetRequest(this.familiesListUrl)
                 .then((result) => {
