@@ -22,6 +22,7 @@ export default {
     },
     data() {
         return {
+            login: '',
             authentError: 'Error',
             forgetError: 'Error',
             forgetSuccess: '',
@@ -124,7 +125,6 @@ export default {
             let $ = this.$kendo.jQuery;
             let $forgetForm = $(this.$refs.authentForgetForm);
             let forgetWindow;
-            console.log('protected', this);
 
             forgetWindow = $(this.$refs.authentForgetForm).kendoWindow({
                 visible: false,

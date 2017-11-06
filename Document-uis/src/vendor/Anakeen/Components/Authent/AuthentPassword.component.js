@@ -26,7 +26,8 @@ export default {
 
     mounted() {
         let $ = this.$kendo.jQuery;
-        let validationMessage = this.validationMessage;
+        let $input = $(this.$refs.authentPassword).find('input');
+        let _this = this;
 
         $(this.$refs.authentReveal).on('click', function revealPass() {
             let $pwd = $(this).closest('.input-group-btn').find('input');
@@ -41,13 +42,15 @@ export default {
             }
         });
 
-        $(this.$refs.authentPassword).find('input').on('change', function requireMessage() {
-            if (this.value === '' && validationMessage) {
-                this.setCustomValidity(validationMessage);
+        $input.on('input', function requireMessage() {
+            if (this.value === '' && _this.validationMessage) {
+                this.setCustomValidity(_this.validationMessage);
             } else {
                 this.setCustomValidity('');
             }
         });
+
+        $input.trigger('input');
     },
 
     methods: {
