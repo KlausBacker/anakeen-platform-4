@@ -27,6 +27,11 @@
     </div>
     <div vue-slot="mainPane">
         <a4-document-tabs id="documentsTabs">
+            <a4-button
+                    vue-slot="left-content"
+                    families-list-url="api/v1/sba/collections"
+                    bind-event="create-document: #documentsTabs.publicMethods.addDocument">
+            </a4-button>
         </a4-document-tabs>
     </div>
 </a4-splitter>
