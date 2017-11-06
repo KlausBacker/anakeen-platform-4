@@ -103,7 +103,8 @@ export default {
                 headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
                 valueTemplate: '<span class="fa fa-list-ol"></span>',
                 template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
-            });
+            }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
+
 
             this.$(this.$refs.removeFilterButton).kendoButton({
                 icon: 'close',

@@ -197,9 +197,9 @@
   }
 }
 
-.k-list-container {
+.documentsList__documentsTabs__tabsList__list {
     padding: 0;
-  .k-list-scroller {
+  & > .k-list-scroller {
     overflow-x: hidden;
     width: auto;
     .k-item {
