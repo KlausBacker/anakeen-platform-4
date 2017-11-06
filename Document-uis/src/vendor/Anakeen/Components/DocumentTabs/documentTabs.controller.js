@@ -44,6 +44,7 @@ export default {
                     autoWidth: true,
                     select: this.privateScope.onClickTabList,
                 });
+                this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
                 this.privateScope.bindDataChange(this.openedTabs);
                 this.$(window).resize(() => {
                     this.privateScope.resizeComponents();
