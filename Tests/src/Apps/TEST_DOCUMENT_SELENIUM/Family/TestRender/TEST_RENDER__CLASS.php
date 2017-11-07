@@ -6,6 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
+use \Dcp\AttributeIdentifiers\tst_render as MyAttr;
 class Render extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
@@ -24,5 +25,9 @@ class Render extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAccess
     }
 
 
+    public function getCustomTitle()
+    {
+        return sprintf("%04d %s", $this->getRawValue(MyAttr::tst_ref), $this->getRawValue(MyAttr::tst_title));
+    }
 
 }

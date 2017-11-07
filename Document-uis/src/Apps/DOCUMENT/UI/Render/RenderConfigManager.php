@@ -155,6 +155,9 @@ class RenderConfigManager
                  */
                 $access = new $renderTransitionClass();
                 $render = $access->getTransitionRender($transitionId, $workflow);
+                if (! $render) {
+                    $render=new TransitionRender();
+                }
                 $render->setWorkflow($workflow);
             } else {
                 $render = new TransitionRender();
