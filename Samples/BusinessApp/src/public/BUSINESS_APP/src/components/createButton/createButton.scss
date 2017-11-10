@@ -4,13 +4,21 @@
   background-color: #157EFB;
   padding: 0 !important;
 
+  &.k-menu:not(.k-context-menu) > .k-item > .k-link.k-state-active {
+    color: #FFFFFF;
+  }
+
+  &.k-menu:not(.k-context-menu) > .k-item.k-state-hover > .k-link {
+    color: #FFFFFF;
+  }
+
   .documentsList__createButton__button {
     width: 100%;
     height: 100%;
-   & > .k-link {
-      padding-right: 0 !important;
-      padding-top: 0!important;
-      padding-bottom: 0!important;
+
+    & > .k-link {
+      font-family: 'Roboto-Bold';
+      padding: 0 0 0 1rem !important;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -28,7 +36,7 @@
         margin-right: 0;
         flex: .75;
         color: white;
-        border-left: 2px solid white;
+        border-left: 1px solid white;
         height: 100%;
       }
     }

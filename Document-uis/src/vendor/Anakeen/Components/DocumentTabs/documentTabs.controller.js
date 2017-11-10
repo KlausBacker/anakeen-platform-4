@@ -40,7 +40,7 @@ export default {
                     animation: false,
                     dataSource: this.openedTabs,
                     template: this.$kendo.template(headerTemplate),
-                    valueTemplate: this.$kendo.template('<span class="k-icon k-i-menu"></span>'),
+                    valueTemplate: this.$kendo.template('<i class="material-icons">menu</span>'),
                     autoWidth: true,
                     select: this.privateScope.onClickTabList,
                 });
@@ -120,6 +120,7 @@ export default {
                 const tab = this.openedTabs[index];
                 const documentComponent = this.$(tabContent).find('a4-document');
                 documentComponent.on('ready', (e) => {
+                    e.detail[0].target.find('header.dcpDocument__header').hide();
                     tab.set('title', '');
                     tab.set('icon', '');
                     tab.set('title', e.detail[1].title);
