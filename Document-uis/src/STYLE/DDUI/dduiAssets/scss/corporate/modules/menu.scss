@@ -2,12 +2,12 @@
 .dcpDocument__menu {
   background-color: $A4-ui-tab-active-bg;
   padding: 0;
-  box-shadow: 0 0.41666rem 0.5rem rgba(0,0,0,0.15);
+  box-shadow: 0 0.41666rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .menu__content {
   padding: 0 !important;
-  margin: 0!important;
+  margin: 0 !important;
 
   &.k-menu {
     background-color: $A4-ui-menu-bg;
@@ -21,6 +21,22 @@
   a.k-link:hover, .k-menu:not(.k-context-menu) > .k-item.k-state-hover > .k-link {
     color: $A4-ui-color-btn-action;
     cursor: pointer;
+  }
+
+  .menu__element {
+    height: 100%;
+    padding-top: ($A4-ui-menu-height - 1.666rem)/2;
+    padding-bottom: ($A4-ui-menu-height - 1.666rem)/2;
+
+    &.menu__element--item.menu--important.k-item {
+      font-weight: bold;
+    }
+
+    &.menu__element--item:last-of-type {
+      .k-link {
+        border-right: 0;
+      }
+    }
   }
 }
 
@@ -43,13 +59,9 @@
 }
 
 // Menu item separator
-.menu__content .k-menu .menu__element--item.k-item > .k-link {
-  border-right: $A4-ui-menu-separator;
-  padding: $A4-ui-menu-item-padding;
-}
-
-.menu__content .menu__element {
-  height: 100%;
-  padding-top: ($A4-ui-menu-height - 1.666rem)/2;
-  padding-bottom: ($A4-ui-menu-height - 1.666rem)/2;
+.menu__content .k-menu .menu__element--item.k-item {
+  & > .k-link {
+    border-right: $A4-ui-menu-separator;
+    padding: $A4-ui-menu-item-padding;
+  }
 }
