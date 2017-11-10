@@ -104,16 +104,6 @@ export default {
                 valueTemplate: '<span class="fa fa-list-ol"></span>',
                 template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
             }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
-
-
-            this.$(this.$refs.removeFilterButton).kendoButton({
-                icon: 'close',
-                click: this.onRemoveClick,
-            });
-            this.$(this.$refs.searchFilterButton).kendoButton({
-                icon: 'search',
-                click: this.onSearchClick,
-            });
             this.updateKendoData();
         },
 

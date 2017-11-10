@@ -117,6 +117,15 @@ module.exports = {
                         '*.css'
                     ]
                 },
+                // Material Icons
+                {
+                    from: './node_modules/material-design-icons-iconfont/dist/fonts/',
+                    to: path.resolve(__dirname, 'src/public/uiAssets/externals/material-design-icons/fonts')
+                },
+                {
+                    from: './node_modules/material-design-icons-iconfont/dist/material-design-icons.scss',
+                    to: path.resolve(__dirname, 'src/public/uiAssets/externals/material-design-icons/material-design-icons.scss'),
+                },
                 //RequireJS
                 {
                     context: './node_modules/requirejs/',
