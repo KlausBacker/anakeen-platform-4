@@ -28,6 +28,7 @@
   }
 
   .k-checkbox:checked + .k-checkbox-label:before {
+    font-family: $A4-ui-check-font;
     content: $A4-ui-check-content;
     background-color: $A4-ui-radio-color-bg;
     border-color: #ccc;

@@ -126,8 +126,11 @@
 }
 
 .dcpAttribute__value--enumlabel.selected {
-  background-color: $A4-ui-color-selected;
-  color: $A4-ui-color-text-colored;
+  //background-color: $A4-ui-color-selected;
+  //color: $A4-ui-color-text-colored;
+  .dcpAttribute__value--enumlabel--text {
+    font-weight: bold;
+  }
 }
 
 .dcpAttribute__value--enumbuttons.orientation-bool {
