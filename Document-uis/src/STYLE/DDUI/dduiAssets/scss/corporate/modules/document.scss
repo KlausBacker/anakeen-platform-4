@@ -11,14 +11,22 @@
 
 .dcpDocument__header {
   height: 3.75rem;
+  display: flex;
+  align-items: center;
+
+  img.dcpDocument__header__icon {
+    height: 1.666rem/1.5;
+    width: auto;
+  }
 }
 
 .dcpDocument__header a.dcpDocument__header__title {
   color: $A4-ui-color-text;
-  margin-top: $A4-ui-header-title-margin;
+  margin: $A4-ui-header-title-margin;
   line-height: $A4-ui-header-title-line-height;
   text-decoration: none;
   font-family: $A4-ui-title-font-variant;
+  flex: 1;
 }
 
 .dcpDocument__header__family {
