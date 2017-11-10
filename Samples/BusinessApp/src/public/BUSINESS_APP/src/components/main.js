@@ -1,7 +1,12 @@
 import Vue from 'vue';
 
 import axios from 'axios';
-import 'document-register-element/build/document-register-element';
+const installCE = require('document-register-element/pony');
+
+installCE(window, {
+    type: 'auto',
+    noBuiltIn: true
+});
 
 // include vue-custom-element plugin to Vue
 import VueCustomElement from 'vue-custom-element';
