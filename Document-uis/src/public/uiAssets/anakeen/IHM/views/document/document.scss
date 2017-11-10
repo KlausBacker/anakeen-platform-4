@@ -169,6 +169,9 @@ body {
   border: none;
   margin: 0;
   background: $body-bg;
+  .progress-bar {
+    background-color: $A4-ui-color-client;
+  }
 }
 
 
