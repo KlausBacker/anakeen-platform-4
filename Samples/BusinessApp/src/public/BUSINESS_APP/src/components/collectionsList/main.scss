@@ -1,0 +1,115 @@
+.documentsList__collections__wrapper {
+  background-color: #FFFFFF;
+
+  .user-info {
+    background: #6c7989;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--user {
+    background-color: #435366;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+
+  .documentsList__collections__button__title.documentsList__collections__button__title--user {
+    font-weight: 400;
+  }
+
+  .documentsList__collections__button__title.documentsList__collections__button__title--collapse {
+    font-weight: 400;
+  }
+
+  .documentsList__collections__button__icon {
+    height: 100%;
+    background-color: #e7e7e7;
+    .fa {
+      font-size: 1.5rem;
+      color: #FFF;
+    }
+  }
+
+  .documentsList__collections__button__icon {
+    background-color: #FFFFFF;
+  }
+
+  .documentsList__collections__button--collapse {
+    text-transform: uppercase;
+  }
+
+  .documentsList__collections__button--collapse,
+  .documentsList__collections__button--collapse .documentsList__collections__button__icon {
+    background-color: #7a7a7a;
+    color: #fff;
+  }
+
+  .documentsList__collections__button__icon--collapse {
+    background-color: #646464 !important;
+  }
+
+  .documentsList__collections__button.documentsList__collections__button--up,
+  .documentsList__collections__button.documentsList__collections__button--down {
+    background-color: #c1c1c1;
+  }
+
+  .documentsList__collections__button--settings,
+  .documentsList__collections__button--notif,
+  .documentsList__collections__button--state,
+  .documentsList__collections__button--disconnect {
+    background-color: #7a7a7a;
+  }
+
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--notif,
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--settings,
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--state,
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--disconnect {
+    background-color: #646464;
+  }
+
+  .documentsList__collectionCard {
+    color: #505050;
+    line-height: 1.3em;
+  }
+
+  .documentsList__collections,
+  .documentsList__collections__list,
+  .documentsList__collections__button__icon {
+    background-color: #f9f9f9;
+  }
+
+
+  .documentsList__collectionCard {
+
+    .documentsList__collectionCard__heading__content__label {
+      color: $A4-ui-color-label;
+      font-weight: 400;
+    }
+
+    &.k-state-selected {
+      background-color: #e7e7e7;
+      font-weight: 600;
+
+      .documentsList__collectionCard__heading__content__label {
+        color: $A4-ui-color-selected;
+        font-weight: bold;
+      }
+
+      .documentsList__collectionCard__heading__content__icon {
+        box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+      }
+    }
+  }
+  // Expanded style
+  &.documentsList__collections--expanded {
+    .documentsList__collectionCard.k-state-selected {
+      box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+    }
+
+    .documentsList__collectionCard.k-state-selected {
+      .documentsList__collectionCard__heading__content__icon {
+        box-shadow: none;
+      }
+    }
+  }
+}

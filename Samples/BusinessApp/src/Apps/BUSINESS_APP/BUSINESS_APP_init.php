@@ -12,19 +12,19 @@ $initialConfig = [
         [
             "ref"=>"BA_CLIENT",
             "initid"=>"BA_CLIENT",
-            "image_url"=>"api/v1/images/assets/sizes/24x24c/BA_Client.png",
+            "image_url"=>"api/v1/images/assets/original/BA_Client.png",
             "html_label"=>"Dossier client"
         ],
         [
             "ref"=>"BA_CERTIFICATION",
             "initid"=>"BA_CERTIFICATION",
-            "image_url"=>"api/v1/images/assets/sizes/24x24c/BA_Certification.png",
+            "image_url"=>"api/v1/images/assets/original/BA_Certification.png",
             "html_label"=>"Dossier de certification"
         ],
         [
             "ref"=>"BA_PROSPECT",
             "initid"=>"BA_PROSPECT",
-            "image_url"=>"api/v1/images/assets/sizes/24x24c/BA_Prospect.png",
+            "image_url"=>"api/v1/images/assets/original/BA_Prospect.png",
             "html_label"=>"Prospect"
         ]
     ]

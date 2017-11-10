@@ -13,7 +13,7 @@
 <body>
 
 <a4-splitter id="splitter" bind-event="close: #collectionsList.publicMethods.closeCollections">
-    <div vue-slot="leftPane">
+    <div vue-slot="leftPane" style="height: 100%">
         <a4-collections id="collectionsList"
                         bind-event="open: #splitter.publicMethods.openSplitter,
                                     collection-selected: #splitter.publicMethods.setCollection,
@@ -26,12 +26,7 @@
         ></a4-document-list>
     </div>
     <div vue-slot="mainPane">
-        <a4-document-tabs id="documentsTabs">
-            <a4-button
-                    vue-slot="left-content"
-                    families-list-url="api/v1/sba/collections"
-                    bind-event="create-document: #documentsTabs.publicMethods.addDocument">
-            </a4-button>
+        <a4-document-tabs id="documentsTabs" empty-img="/api/v1/images/assets/original/logo_anakeen_fondgris_M.png">
         </a4-document-tabs>
     </div>
 </a4-splitter>

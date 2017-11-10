@@ -30,12 +30,25 @@
 
 html {
   font-size: $A4-ui-font-size;
+  &::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 1.2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 0.5rem rgba(0,0,0,0.3);
+    border-radius: 1.2rem;
+  }
+
 }
 .dcpDocument {
     min-height: 100vh;
 }
 .dcpDocument__body {
-  padding-top: 10px;
+  padding-top: 1.166rem;
 }
 
 .dcpDocument--edit {
@@ -169,6 +182,9 @@ body {
   border: none;
   margin: 0;
   background: $body-bg;
+  .progress-bar {
+    background-color: $A4-ui-color-client;
+  }
 }
 
 

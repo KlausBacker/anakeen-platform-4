@@ -24,17 +24,26 @@
   text-transform: uppercase;
   box-shadow: 2px 0 2px rgba(0, 0, 0, 0.15);
   transition: left 1s;
+  border-left: 1px dotted lightgray;
 }
 
 .documentsList__collapsible__handler::before,
 .documentsList__collapsible__handler::after {
-  font-family: FontAwesome;
-  content: "\f142";
+  font-family: 'Material Icons';
+  content: "\E5D4";
   padding: 0 5px;
   display: block;
   position: absolute;
   width: 100%;
+  font-size: 1.2rem;
+}
+
+.documentsList__collapsible__handler::before {
   top: 10px;
+}
+
+.documentsList__collapsible__handler::after {
+  bottom: 10px;
 }
 
 .documentsList__collapsible__handler__label {
@@ -47,6 +56,7 @@
 }
 
 .documentsList__splitter__wrapper {
+  border: 0;
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -63,7 +73,6 @@
   }
 
   .leftPane {
-    transition: overflow 1s;
     overflow: initial !important;
   }
 }

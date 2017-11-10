@@ -30,6 +30,7 @@ export default {
                         cssClass: 'documentsList__createButton__button',
                         items: [],
                     },
+                    openOnClick: true,
                 });
             },
 

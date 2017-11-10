@@ -3,7 +3,7 @@
         <div id="leftPane" class="leftPane">
             <slot name="leftPane"></slot>
         </div>
-        <div class="documentsList__collapsible__handler" @click="onCollapseSplitter">
+        <div class="documentsList__collapsible__handler" @click="toggleSplitter(!collapseSplitter)">
             <div class="documentsList__collapsible__handler__label">{{collection ? collection.html_label : ''}}</div>
         </div>
         <div id="mainPane" class="mainPane">

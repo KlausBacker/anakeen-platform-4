@@ -37,6 +37,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "kendo-ui-core": "^2017.3.927",
+    "material-design-icons-iconfont": "^3.0.3",
     "mustache": "^2.3.0",
     "node-sass": "^4.5.0",
     "popper.js": "^1.12.5",

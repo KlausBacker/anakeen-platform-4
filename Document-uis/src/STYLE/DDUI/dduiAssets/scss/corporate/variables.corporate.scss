@@ -57,15 +57,15 @@ $A4-ui-title-font-line-height: 1.333rem;
 $A4-ui-title-font-variant: 'Roboto-Bold';
 $A4-ui-label-font-size: 1rem;
 $A4-ui-label-font-weight: normal;
-$A4-ui-label-font-variant: 'Roboto';
+$A4-ui-label-font-variant: 'Roboto-Regular';
 $A4-ui-label-font-line-height: 1.333rem;
 $A4-ui-value-font-size: 1rem;
 $A4-ui-value-font-weight: normal;
-$A4-ui-value-font-variant: 'Roboto-bold';
+$A4-ui-value-font-variant: 'Roboto-Bold';
 $A4-ui-value-font-line-height: 1.333rem;
 $A4-ui-button-font-size: 1rem;
 $A4-ui-button-font-weight: normal;
-$A4-ui-button-font-variant: 'Roboto-bold';
+$A4-ui-button-font-variant: 'Roboto-Bold';
 $A4-ui-button-font-line-height: 1.333rem;
 
 // Button 1
@@ -134,10 +134,11 @@ $A4-ui-radio-size: 1.33333rem;
 $A4-ui-radio-size-checked: 0.83333rem;
 $A4-ui-radio-border-selected: $gray;
 $A4-ui-radio-border-unselected: fade-out($gray, 0.3);
-$A4-ui-check-content: "\2713";
+$A4-ui-check-font: 'Material Icons';
+$A4-ui-check-content: "\E5CA";
 
 // Attribute
-$A4-ui-doc-edit-label-padding: 0rem 0rem 0.66666rem 0rem;
+$A4-ui-doc-edit-label-padding: 0;
 $A4-ui-doc-edit-attribute-bg: $white;
 $A4-ui-doc-edit-attribute-height: 2.166rem;
 $A4-ui-doc-edit-attribute-color-border: #E6E6E6;
@@ -149,7 +150,7 @@ $A4-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem $A4-ui-doc-edit-attri
 $A4-ui-doc-edit-attribute-error-color: $A4-ui-color-error;
 $A4-ui-doc-edit-attribute-error-spacing: 0.166rem;
 $A4-ui-doc-edit-attribute-error-text-color: $white;
-$A4-ui-doc-read-label-padding: 0rem 0rem 1.333rem 0rem;
+$A4-ui-doc-read-label-padding: 0;
 $A4-ui-doc-read-attribute-height: auto;
 $A4-ui-doc-read-attribute-border: 0.083rem solid #F1EFEF;
 $A4-ui-doc-read-attribute-value-padding: 0 0 0.6666rem 0;
@@ -164,7 +165,7 @@ $A4-ui-frame-shadow:rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
 $A4-ui-frame-color-title: #878787;
 $A4-ui-frame-size-title: 1.1rem;
 $A4-ui-frame-header-border-bottom: 0.083rem solid #d8d9da;;
-$A4-ui-frame-header-padding: 0 0 0 1.9166rem;
+$A4-ui-frame-header-padding: 0 0 0 1.2rem;
 $A4-ui-frame-header-line-height: 2.5rem;
 $A4-ui-frame-header-margin: 0 0 1.25rem 0;
 
@@ -197,7 +198,7 @@ $A4-ui-tab-padding: 0.833rem 0rem 0.5rem;
 // Menu
 $A4-ui-menu-bg: #FAFAFA;
 $A4-ui-menu-fixed-bg: #157EFB;
-$A4-ui-menu-fixed-font: $A4-ui-value-font-variant;
+$A4-ui-menu-fixed-font: $A4-ui-font;
 $A4-ui-menu-font-color: $gray;
 $A4-ui-menu-fixed-font-color: #FFFFFF;
 $A4-ui-menu-separator: 1px solid #ccc;
@@ -212,7 +213,7 @@ $A4-ui-icon-spacer: 0.583rem;
 // Header
 $A4-ui-header-height: 2.5rem;
 $A4-ui-header-bg: $A4-ui-color-frame-background;
-$A4-ui-header-title-margin: 0.833rem;
+$A4-ui-header-title-margin: 0;
 $A4-ui-header-title-line-height: 2;
 
 
