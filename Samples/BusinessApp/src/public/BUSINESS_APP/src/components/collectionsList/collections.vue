@@ -1,45 +1,33 @@
 <template>
     <div :class="`documentsList__collections__wrapper${showCollections ? ' documentsList__collections--expanded': ''}`" ref="wrapper">
         <div class="documentsList__collections">
-            <div class="user-info">
-                <div class="documentsList__collections_button_icon documentsList__collections_button_icon--user">
-                    {{userInitial}}
+            <div class="user-info" @click.capture="onToggleCollections">
+                <div class="documentsList__collections__button__icon documentsList__collections__button__icon--user">
+                    <i class="documentsList__collections__button__icon--user__icon material-icons">account_circle</i>
+                    <span class="documentsList__collections__button__icon--user__initial">{{userInitial}}</span>
                 </div>
-                <div class="documentsList__collections_button_title documentsList__collections_button_title--user">
+                <div class="documentsList__collections__button__title documentsList__collections__button__title--user">
                     {{userFullName}}
                 </div>
             </div>
 
-            <div class="documentsList__collections_buttons documentsList__collections_buttons--top">
-                <div class="documentsList__collections_button documentsList__collections_button--collapse" @click="onToggleCollections">
-                    <div class="documentsList__collections_button_icon documentsList__collections_button_icon--collapse">
-                        <i :class="`fa fa-angle-double-${showCollections ? 'left': 'right'}`"></i>
-                    </div>
-                    <div class="documentsList__collections_button_title documentsList__collections_button_title--collapse">
-                        Réduire
-                    </div>
-                </div>
-                <div class="documentsList__collections_button documentsList__collections_button--up">
-                    <div class="documentsList__collections_button_icon documentsList__collections_button_icon--up">
-                        <i class="fa fa-caret-up"></i>
+            <div class="documentsList__collections__buttons documentsList__collections__buttons--top">
+                <div class="documentsList__collections__button documentsList__collections__button--collapse" @click="onToggleCollections">
+                    <div class="documentsList__collections__button__icon documentsList__collections__button__icon--collapse">
+                        <i class="material-icons">keyboard_arrow_{{showCollections ? 'left': 'right'}}</i>
                     </div>
                 </div>
             </div>
 
             <div class="documentsList__collections__list" ref="listView"></div>
 
-            <div class="documentsList__collections_buttons documentsList__collections_buttons--bottom">
-                <div class="documentsList__collections_button documentsList__collections_button--down">
-                    <div class="documentsList__collections_button_icon documentsList__collections_button_icon--down">
-                        <i class="fa fa-caret-down"></i>
-                    </div>
-                </div>
-                <div v-for="b in buttons" :class="`documentsList__collections_button documentsList__collections_button--${b.id}`"
+            <div class="documentsList__collections_buttons documentsList__collections__buttons--bottom">
+                <div v-for="b in buttons" :class="`documentsList__collections__button documentsList__collections__button--${b.id}`"
                 @click="b.click">
-                    <div :class="`documentsList__collections_button_icon documentsList__collections_button_icon--${b.id}`">
+                    <div :class="`documentsList__collections__button__icon documentsList__collections__button__icon--${b.id}`">
                         <i :class="b.icon"></i>
                     </div>
-                    <div :class="`documentsList__collections_button_title documentsList__collections_button_title--${b.id}`">
+                    <div :class="`documentsList__collections__button__title documentsList__collections__button__title--${b.id}`">
                         {{b.title}}
                     </div>
                 </div>

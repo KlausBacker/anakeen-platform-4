@@ -8,18 +8,17 @@
 }
 
 .documentsList__collections__wrapper {
+  z-index: 900;
+  position: absolute;
+  left: calc(-100vw + 50px);
+  transition: left 1s;
+  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
+
   .k-loading-mask {
     background: #000000;
     opacity: 0.7;
     z-index: 2000;
   }
-}
-
-.documentsList__collections__wrapper {
-  z-index: 900;
-  position: absolute;
-  left: calc(-100vw + 50px);
-  transition: left 1s;
 }
 
 @media screen and (min-width: 958px) {
@@ -37,7 +36,6 @@
 }
 
 .documentsList__collections {
-  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
   .fa {
     vertical-align: middle;
   }
@@ -46,54 +44,51 @@
 .user-info {
   display: flex;
   align-items: center;
+  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
+  &:hover {
+    cursor: pointer;
+  }
 }
 
-.documentsList__collections_button_icon.documentsList__collections_button_icon--user {
+.documentsList__collections__button__icon.documentsList__collections__button__icon--user {
+  display: flex;
+  flex-direction: column;
   width: 50px;
   height: 44px;
-  background-size: 35px;
+
+  .documentsList__collections__button__icon--user__initial {
+    font-size: 0.95rem;
+  }
+
 }
 
-.documentsList__collections_button_icon {
+.documentsList__collections__button__icon {
   width: 50px;
-  text-align: center;
-}
-
-.documentsList__collections_button_title,
-.documentsList__collections_button_icon {
-  display: inline-block;
-}
-
-.documentsList__collections_button_icon {
-  width: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   left: calc(100% - 50px);
   position: relative;
-  text-align: center;
   transition: left 1s;
 }
 
-.documentsList__collections_button_title.documentsList__collections_button_title--user {
-  text-align: center;
+.documentsList__collections__button__title {
+  text-align: left;
   padding-right: 20px;
-}
-
-.documentsList__collections_button_title {
-  text-align: center;
+  padding-left: 20px;
+  text-transform: capitalize;
   width: calc(100% - 50px);
+  color: #fff;
 }
 
-.documentsList__collections_button_title,
+.documentsList__collections__button__title,
 .documentsList__collectionCard__heading__content__label {
   opacity: 0;
   transition: opacity 0.2s;
 }
 
-.documentsList__collections_button_title {
-  width: calc(100% - 60px);
-  text-align: center;
-}
-
-.documentsList__collections_button {
+.documentsList__collections__button {
   display: flex;
   align-items: center;
   padding: 0px;
@@ -105,12 +100,16 @@
   }
 }
 
+.documentsList__collections__buttons--top,
+.documentsList__collections__buttons--bottom {
+  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
+}
 
-.documentsList__collections_button_icon--collapse {
+.documentsList__collections__button__icon--collapse {
   background-size: 24px;
 }
 
-.documentsList__collections_button_title.documentsList__collections_button_title--collapse {
+.documentsList__collections__button__title.documentsList__collections__button__title--collapse {
   padding-right: 42px;
 }
 
@@ -119,46 +118,44 @@
   height: 30px;
 }
 
-.documentsList__collections_button_icon.documentsList__collections_button_icon--up,
-.documentsList__collections_button_icon.documentsList__collections_button_icon--down {
+.documentsList__collections__button__icon.documentsList__collections__button__icon--up,
+.documentsList__collections__button__icon.documentsList__collections__button__icon--down {
   background: transparent;
   .fa {
     color: #eee;
   }
 }
 
-.documentsList__collections_button--notif,
-.documentsList__collections_button--settings,
-.documentsList__collections_button--state,
-.documentsList__collections_button--disconnect {
+.documentsList__collections__button--notif,
+.documentsList__collections__button--settings,
+.documentsList__collections__button--state,
+.documentsList__collections__button--disconnect {
   line-height: 2;
   text-align: left;
 }
 
-.documentsList__collections_button_title {
-  text-align: center;
-  width: calc(100% - 50px);
-}
-
-.documentsList__collections_button_title--notif,
-.documentsList__collections_button_title--settings,
-.documentsList__collections_button_title--state,
-.documentsList__collections_button_title--disconnect {
+.documentsList__collections__button__title--notif,
+.documentsList__collections__button__title--settings,
+.documentsList__collections__button__title--state,
+.documentsList__collections__button__title--disconnect {
   font-weight: 400;
-  text-transform: uppercase;
-  margin-left: 10px;
-  color: #fff;
-  padding-right: 38px;
-}
-
-.documentsList__collectionCard {
-  margin-top: 0px;
 }
 
 .documentsList__collectionCard {
   position: relative;
   border: none;
   cursor: pointer;
+  margin:0;
+  border-bottom: 1px solid #ccc;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 41px;
+  transition: height 1s;
+  opacity: 0.66;
+
+  &.k-state-selected {
+    opacity: 1;
+  }
 }
 
 .documentsList__collectionCard:first-child,
@@ -185,7 +182,8 @@
   left: calc(100% - 50px);
   position: relative;
   text-align: center;
-  transition: left 1s;
+  transition: left 1s, padding 1s;
+  padding: 0;
 }
 
 .documentsList__collectionCard__heading__content__label,
@@ -194,8 +192,10 @@
 }
 
 .documentsList__collectionCard__heading__content__label {
-  text-align: center;
+  text-align: left;
+  padding-left: 20px;
   width: calc(100% - 89px);
+  letter-spacing: 1px;
 }
 
 .documentsList__collections__list {
@@ -206,12 +206,7 @@
 }
 
 .documentsList__collectionCard {
-  margin:0;
-  border-bottom: 1px solid #ccc;
-  padding-top: 0;
-  padding-bottom: 0;
-  height: 41px;
-  transition: height 1s;
+
 }
 
 .documentsList__collectionCard__heading__content__icon__img {
@@ -226,27 +221,28 @@
   left: 0;
 
   .documentsList__collectionCard__heading__content__icon,
-  .documentsList__collections_button_icon {
+  .documentsList__collections__button__icon {
     left: 0px;
   }
 
   .documentsList__collectionCard__heading__content__icon {
     box-shadow: none;
+    padding: 5px 0px 5px;
   }
 
   .documentsList__collectionCard {
     height: 51px;
   }
 
-  .documentsList__collections_button_title,
+  .documentsList__collections__button__title,
   .documentsList__collectionCard__heading__content__label {
     opacity: 1;
     transition: opacity 1s;
     transition-timing-function: ease-in;
   }
 
-  .documentsList__collections_button_icon.documentsList__collections_button_icon--up,
-  .documentsList__collections_button_icon.documentsList__collections_button_icon--down {
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--up,
+  .documentsList__collections__button__icon.documentsList__collections__button__icon--down {
     left: calc(50% - 25px);
   }
 }
