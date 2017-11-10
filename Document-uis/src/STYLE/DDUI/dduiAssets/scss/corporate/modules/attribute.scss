@@ -53,13 +53,19 @@
 
 // Consultation
 .dcpDocument--view {
+
+  .dcpAttribute {
+    margin-bottom: 1.6666rem;
+  }
+
+
   .dcpAttribute__content {
     border-bottom: $A4-ui-doc-read-attribute-border;
     padding: $A4-ui-doc-read-attribute-value-padding;
   }
 
   .dcpAttribute__content__link {
-    color: $A4-ui-color-link;
+    color:$A4-ui-color-text;
   }
 
   .dcpAttribute__value--read {
