@@ -52,6 +52,7 @@ pojs:
 
 clean: 
 	rm -rf $(localpub)
+	rm -f *webinst
 
 mrproper: clean
 	rm -rf Document-uis/node_modules

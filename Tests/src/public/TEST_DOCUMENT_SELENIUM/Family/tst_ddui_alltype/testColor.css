@@ -1,11 +1,12 @@
 .document {
     background-color: #5b7cdc;
 }
-
 .dcpDocument__tabs > .dcpTab__content.k-state-active {
     background-color: #fcff85;
 }
 
+
+.dcpDocument__tabs.tab--fixed.dcpDocument__tabs .dcpTab__label.k-state-active,
 .dcpDocument__tabs .dcpTab__label.k-state-active {
     background: #fcff85;
 }

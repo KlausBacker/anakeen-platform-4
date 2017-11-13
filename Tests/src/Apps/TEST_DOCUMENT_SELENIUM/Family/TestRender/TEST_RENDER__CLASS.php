@@ -30,4 +30,10 @@ class Render extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAccess
         return sprintf("%04d %s", $this->getRawValue(MyAttr::tst_ref), $this->getRawValue(MyAttr::tst_title));
     }
 
+    public function postStore() {
+        if (! $this->name) {
+            $this->setLogicalName(sprintf("TST_RENDER_%04d",  $this->getRawValue(MyAttr::tst_ref)));
+        }
+    }
+
 }

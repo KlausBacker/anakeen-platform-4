@@ -1,0 +1,8 @@
+//FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Famille (id);;;;;;;;;
+ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;;;;;;;;;
+DOC;CVDOC;CVDOC_TST_COLOR;;"Contrôle de vue pour la famille ""Color""";;TST_DDUI_COLOR;;;;;;;;;
+//BEGIN;Parent family;Family title;;;Family name;;;;;;;;;;
+BEGIN;;Color;;;TST_DDUI_COLOR;;;;;;;;;;
+CVID;CVDOC_TST_COLOR;;;;;;;;;;;;;;
+//PARAM;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
+END;;;;;;;;;;;;;;;
