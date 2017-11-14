@@ -36,17 +36,16 @@
   }
 }
 
-.dcpDocument__tabs  > .dcpTab__content.k-state-active {
-  background-color: $A4-ui-tab-active-bg;
-}
-
-.document .dcpDocument__tabs.k-tabstrip > .dcpTab__content.k-state-active {
+.document .dcpDocument__tabs.k-tabstrip > .dcpTab__content {
   border: none;
-  margin: 0;
+  margin: 0 1.166rem 0 1.166rem;
+  background-color: $A4-ui-tab-active-bg;
+  box-shadow: $A4-ui-frame-shadow;
   padding: 0;
 }
 
 .document .dcpDocument__tabs .dcpDocument__tabs__list.k-tabstrip-items {
-  padding-left: 2rem;
+  margin-left: 1.166rem;
+  margin-right: 1.166rem;
   height: $A4-ui-tabs-height;
 }
