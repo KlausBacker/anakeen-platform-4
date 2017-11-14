@@ -3,14 +3,20 @@
         <div class="documentsList__collections">
             <div class="user-info" @click.capture="onToggleCollections">
                 <div class="documentsList__collections__button__icon documentsList__collections__button__icon--user" @click="openAccount">
-                    <i class="documentsList__collections__button__icon--user__icon material-icons">account_circle</i>
-                    <span class="documentsList__collections__button__icon--user__initial">
-                        {{userInitial}}
-                    </span>
+                    <transition name="fade" mode="out-in">
+                        <div key="collapsed" class="documentsList__collections__button__icon--user__icon--collapsed" v-if="!showCollections">
+                            <i  class="documentsList__collections__button__icon--user__icon material-icons">account_circle</i>
+                            <span class="documentsList__collections__button__icon--user__initial">
+                                {{userInitial}}
+                            </span>
+                        </div>
+                        <div class="documentsList__collections__button__icon--user__icon--expanded" v-else="true" key="expanded">
+                            <i class="documentsList__collections__button__icon--user__icon material-icons">settings</i>
+                        </div>
+                    </transition>
                 </div>
                 <div class="documentsList__collections__button__title documentsList__collections__button__title--user">
                     {{userFullName}}
-                    <i class="documentsList__collections__button__title--user__cogs material-icons" @click.prevent.stop="openAccount">settings</i>
                 </div>
             </div>
 
