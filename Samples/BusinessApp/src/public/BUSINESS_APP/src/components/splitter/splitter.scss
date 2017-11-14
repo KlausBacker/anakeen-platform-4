@@ -22,7 +22,7 @@
   z-index: 700;
   background-color: #FFFFFF;
   text-transform: uppercase;
-  box-shadow: 2px 0 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 0 2px rgb(175, 175, 175);
   transition: left 1s;
   border-left: 1px dotted lightgray;
 }
@@ -78,6 +78,12 @@
       width: calc(100vw - 2rem);
     }
   }
+
+  .mainPane {
+    padding-top: 1.25rem;
+    background-color: #FAFAFA;
+  }
+
   @media screen and (min-width: 958px) {
     .leftPane > * {
       width: 25vw;
