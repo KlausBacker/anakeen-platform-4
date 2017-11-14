@@ -181,7 +181,7 @@ $A4-ui-tabs-height: 3rem;
 $A4-ui-tab-active-bg: #FAFAFA;
 $A4-ui-tab-inactive-bg: #ECECEC;
 $A4-ui-tab-space: 0.166rem;
-$A4-ui-tab-padding: 0.833rem 0rem 0.5rem;
+$A4-ui-tab-padding: 0.833rem 0rem;
 
 @mixin A4ClientTabDecoration() {
   position: absolute;
