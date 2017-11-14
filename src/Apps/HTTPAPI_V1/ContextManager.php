@@ -45,24 +45,19 @@ class ContextManager
     
     public static function initCoreApplication()
     {
-        
-        global $action;
-        WhatInitialisation(AuthenticatorManager::$session);
-        initMainVolatileParam($action->parent);
-        $action->name = "HTTPAPI_V1";
+        $u=new \Account();
+
         if (!empty($_SERVER['PHP_AUTH_USER'])) {
-            setSystemLogin($_SERVER['PHP_AUTH_USER']);
+            $u->setLoginName($_SERVER['PHP_AUTH_USER']);
         }
-        return $action;
+
+        \Dcp\Core\ContextManager::initContext($u, "HTTPAPI_V1", "", \AuthenticatorManager::$session);
     }
     /**
      * @return \Action
      */
     public static function getCoreAction()
     {
-        
-        global $action;
-        
-        return $action;
+        return \Dcp\Core\ContextManager::getCurrentAction();
     }
 }

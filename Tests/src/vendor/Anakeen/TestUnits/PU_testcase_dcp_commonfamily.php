@@ -43,6 +43,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         
         self::connectUser();
         self::beginTransaction();
+        \Dcp\Core\DocManager::cache()->clear();
         
         $cf = static::getCommonImportFile();
         if ($cf) {

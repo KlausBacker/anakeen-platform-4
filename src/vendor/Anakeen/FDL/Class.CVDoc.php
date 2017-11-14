@@ -338,7 +338,7 @@ class CVDoc extends \Dcp\Family\Base
     /**
      * retrieve first compatible view
      * @param bool $edition if true edition view else consultation view
-     * @return string view definition "cv_idview", "cv_mskid"
+     * @return string[] view definition "cv_idview", "cv_mskid"
      */
     function getPrimaryView($edition = false)
     {

@@ -7,6 +7,8 @@
 
 namespace Dcp;
 
+use phpDocumentor\Reflection\Types\Resource;
+
 class Autoloader
 {
     private static function getAutoloader()
@@ -176,6 +178,9 @@ class DirectoriesAutoloader
      * @var \dcp\ClassHunterForPHP5_3
      */
     private $_classHunterStrategy;
+    /**
+     * @var Resource
+     */
     private $_lockfd = false;
     //--- Singleton
     
@@ -635,15 +640,20 @@ class DirectoriesAutoloader
      */
     public function addFamilies($genDirectory)
     {
-        include_once ("Lib.Common.php");
+        // Need include because autoloader not running yet
+        include_once ("Core/Settings.php");
+        include_once ("Core/ContextManager.php");
+        include_once ("Core/DbManager.php");
         $sql = "select * from pg_tables where tablename = 'docfam'";
-        $err = \simpleQuery('', $sql, $exists);
+        \Dcp\Core\DbManager::query( $sql, $exists);
         if (count($exists) > 0) {
             $sql = 'select id, "name" from docfam where name is not null order by id';
-            $err = \simpleQuery('', $sql, $famNames);
-            if ($err) {
-                throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');
+            try {
+                \Dcp\Core\DbManager::query($sql, $famNames);
+            } catch (\Dcp\Db\Exception $e) {
+                throw new DirectoriesAutoloaderException('Cannot access family name [' . $e->getMessage() . ']');
             }
+
             foreach ($famNames as $aFam) {
                 $aFamName = $aFam["name"];
                 $aFamId = $aFam["id"];

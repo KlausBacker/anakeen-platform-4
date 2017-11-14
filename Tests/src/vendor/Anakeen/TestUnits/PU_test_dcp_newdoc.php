@@ -10,6 +10,9 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
+use Dcp\Core\ContextManager;
+use Dcp\Core\DocManager;
+
 require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestNewDoc extends TestCaseDcpCommonFamily
@@ -19,14 +22,14 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     
     public static function getCommonImportFile()
     {
-        setLanguage("fr_FR");
+        ContextManager::setLanguage("fr_FR");
         return "PU_data_dcp_newdoc.ods";
     }
     
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $d = createDoc(self::$dbaccess, \Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x1-" . $d->revision);
         $d->store();
         
@@ -36,7 +39,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         
-        $d = createDoc(self::$dbaccess, \Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x2-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X2");
@@ -53,7 +56,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         
-        $d = createDoc(self::$dbaccess, \Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x3-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X3");
@@ -77,7 +80,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
         $d->store();
         
-        $d = createDoc(self::$dbaccess, \Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x4-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X4");
@@ -102,7 +105,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $d->store();
         $d->locked = - 1;
         $d->modify(); // close document
-        $dM = createDoc(self::$dbaccess, \Dcp\Family\Dir::familyName);
+        $dM = DocManager::createDocument(\Dcp\Family\Dir::familyName);
         // need to change its family BASE to DIR
         $dM->initid = $d->initid;
         $dM->name = $d->name;
@@ -143,7 +146,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
      */
     public function testSharedNewDoc($docName, $expectedTitle, $someValues)
     {
-        $nd = createDoc(self::$dbaccess, "TST_ND");
+        $nd = DocManager::createDocument("TST_ND");
         $this->assertEquals("no", $nd->getrawValue("tst_shared"));
         $nd->store();
         $this->assertEquals("yes", $nd->getrawValue("tst_shared"));

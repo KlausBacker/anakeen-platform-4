@@ -101,7 +101,6 @@ class TestSimpleQuery extends TestCaseDcpDocument
         $result = array();
         $sql = vsprintf($query, $arg);
         $err = simpleQuery(self::$dbaccess, $sql, $result, false, false, $useStrict = false);
-        
         $this->assertNotEmpty($err, sprintf("No error found in simple query %s", $sql));
         foreach ($expectedErrors as $errors) {
             $this->assertContains($errors, $err, sprintf("Not correct error for %s", $sql));

@@ -5,6 +5,7 @@
 */
 namespace Dcp\HttpApi\V1\Crud;
 
+use Dcp\Core\DbManager;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 use Dcp\HttpApi\V1\Api\RecordReturnMessage as RecordReturnMessage;
 
@@ -342,7 +343,7 @@ class Document extends Crud
      * Get document data
      *
      * @throws Exception
-     * @return string
+     * @return array
      */
     protected function getDocumentData()
     {
@@ -537,7 +538,7 @@ class Document extends Crud
     /**
      * Compute etag from an id
      *
-     * @param $id
+     * @param int $id
      *
      * @return string
      * @throws \Dcp\Db\Exception
@@ -546,7 +547,7 @@ class Document extends Crud
     {
         $result = array();
         $sql = sprintf("select id, revdate, views from docread where id = %d", $id);
-        simpleQuery(getDbAccess() , $sql, $result, false, true);
+        DbManager::query( $sql, $result, false, true);
         $user = getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;

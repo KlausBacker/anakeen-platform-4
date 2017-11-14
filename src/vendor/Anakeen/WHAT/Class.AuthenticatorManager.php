@@ -278,7 +278,7 @@ class AuthenticatorManager
     
     public static function clearGDocs()
     {
-        \Dcp\Core\SharedDocuments::clear();
+        \Dcp\Core\DocManager::cache()->clear();
     }
     
     public static function getAccount()

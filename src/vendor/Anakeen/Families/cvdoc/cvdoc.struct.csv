@@ -1,5 +1,5 @@
 // famille contrôle de vues;;;id;class;name;;;;;;;;;;
-BEGIN;1;Contrôle de vues;28;;CVDOC;;;;;;;;;;
+BEGIN;BASE;Contrôle de vues;28;;CVDOC;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option

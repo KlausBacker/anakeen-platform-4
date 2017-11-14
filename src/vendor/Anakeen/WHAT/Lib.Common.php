@@ -182,6 +182,8 @@ function getTmpDir($def = '/tmp')
 /**
  * return value of parameters
  *
+ * @deprecated  use \Dcp\Core\ContextManager::getApplicationParam
+ * @see \Dcp\Core\ContextManager::getApplicationParam
  * @brief must be in core or global type
  * @param string $name param name
  * @param string $def default value if value is empty
@@ -190,14 +192,12 @@ function getTmpDir($def = '/tmp')
  */
 function getParam($name, $def = "")
 {
-    global $action;
-    if ($action) return $action->getParam($name, $def);
-    // if context not yet initialized
-    return getCoreParam($name, $def);
+    return \Dcp\Core\ContextManager::getApplicationParam($name, $def );
 }
 /**
  * return value of a parameter
  *
+ * @deprecated use Dcp\Core\ContextManager::getCoreParam
  * @brief must be in core or global type
  * @param string $name param name
  * @param string $def default value if value is empty
@@ -206,28 +206,7 @@ function getParam($name, $def = "")
  */
 function getCoreParam($name, $def = "")
 {
-    require_once ('WHAT/Class.ApplicationParameterManager.php');
-    
-    static $params = null;
-    
-    if (($value = ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
-        return $value;
-    }
-    if (empty($params)) {
-        $params = array();
-        $tparams = array();
-        $err = simpleQuery("", "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));", $tparams, false, false, false);
-        if ($err == "") {
-            foreach ($tparams as $p) {
-                $params[$p['name']] = $p['val'];
-            }
-        }
-    }
-    if (array_key_exists($name, $params) == false) {
-        error_log(sprintf("parameter %s not found use %s instead", $name, $def));
-        return $def;
-    }
-    return ($params[$name] === null) ? $def : $params[$name];
+    return \Dcp\Core\ContextManager::getCoreParam($name, $def );
 }
 /**
  *
@@ -243,12 +222,12 @@ function getSessionValue($name, $def = "")
 }
 /**
  * return current log in user
+ * @deprecated use Dcp\Core\ContextManager::getCurrentUser
  * @return Account
  */
 function getCurrentUser()
 {
-    global $action;
-    return $action->user;
+    return \Dcp\Core\ContextManager::getCurrentUser();
 }
 function getLayoutFile($app, $layfile)
 {
@@ -257,8 +236,8 @@ function getLayoutFile($app, $layfile)
         return "";
     }
     if (!strstr($layfile, '.')) $layfile.= ".xml";
-    $socStyle = Getparam("CORE_SOCSTYLE");
-    $style = Getparam("STYLE");
+    $socStyle = \Dcp\Core\ContextManager::getApplicationParam("CORE_SOCSTYLE");
+    $style = \Dcp\Core\ContextManager::getApplicationParam("STYLE");
     $appDir = $action->parent->rootdir;
 
     if ($socStyle != "") {
@@ -341,24 +320,24 @@ function logDebugStack($slice = 1)
         error_log(sprintf('%d) %s:%s %s::%s()', $k, isset($t["file"]) ? $t["file"] : 'closure', isset($t["line"]) ? $t["line"] : 0, isset($t["class"]) ? $t["class"] : '', $t["function"]));
     }
 }
+
+
+/**
+ * @deprecated use Dcp\Core\DbManager::getDbid()
+ * @return null|string
+ */
 function getDbid($dbaccess)
 {
-    global $CORE_DBID;
-    if (!$dbaccess) $dbaccess = getDbAccess();
-    if (!isset($CORE_DBID) || !($CORE_DBID[$dbaccess])) {
-        $CORE_DBID[$dbaccess] = pg_connect($dbaccess);
-        if (!$CORE_DBID[$dbaccess]) {
-            // fatal error
-            header('HTTP/1.0 503 DB connection unavalaible');
-            throw new \Dcp\Db\Exception('DB0101', $dbaccess);
-        }
-    }
-    return $CORE_DBID[$dbaccess];
+    return \Dcp\Core\DbManager::getDbid();
 }
 
+/**
+ * @deprecated use Dcp\Core\DbManager::getDbAccess()
+ * @return null|string
+ */
 function getDbAccess()
 {
-    return getDbAccessCore();
+    return  \Dcp\Core\DbManager::getDbAccess();
 }
 
 function getDbAccessCore()
@@ -369,28 +348,6 @@ function getDbAccessCore()
 function getDbAccessFreedom()
 {
     return "service='" . getServiceFreedom() . "'";
-}
-/**
- * @deprecated context notion are be deleted
- * @return string
- */
-function getDbEnv()
-{
-    error_log("Deprecated call to getDbEnv() : not necessary");
-    /** @noinspection PhpDeprecationInspection */
-    return getFreedomContext();
-}
-/**
- * @deprecated context notion are be deleted
- * @return string
- */
-function getFreedomContext()
-{
-    $freedomctx = getenv("freedom_context");
-    if ($freedomctx == false || $freedomctx == "") {
-        return "default";
-    }
-    return $freedomctx;
 }
 
 function getServiceCore()
@@ -459,7 +416,8 @@ function getServiceName($dbaccess)
 }
 /**
  * send simple query to database
- * @param string $dbaccess access database coordonates
+ * @deprecated use \Dcp\Core\DbManager::query
+ * @param string $dbaccess access database coordonates (not used)
  * @param string $query sql query
  * @param string|bool|array &$result  query result
  * @param bool $singlecolumn  set to true if only one field is return
@@ -470,59 +428,21 @@ function getServiceName($dbaccess)
  */
 function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false, $useStrict = null)
 {
-    global $SQLDEBUG;
     static $sqlStrict = null;
-    
-    $dbid = getDbid($dbaccess);
-    $err = '';
-    if ($dbid) {
-        $result = array();
-        $sqlt1 = 0;
-        if ($SQLDEBUG) $sqlt1 = microtime();
-        $r = @pg_query($dbid, $query);
-        if ($r) {
-            if (pg_numrows($r) > 0) {
-                if ($singlecolumn) $result = pg_fetch_all_columns($r, 0);
-                else $result = pg_fetch_all($r);
-                if ($singleresult) $result = $result[0];
-            } else {
-                if ($singleresult && $singlecolumn) {
-                    $result = false;
-                }
-            }
-            if ($SQLDEBUG) {
-                global $TSQLDELAY, $SQLDELAY;
-                $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
-                $TSQLDELAY[] = array(
-                    "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
-                    "s" => str_replace(array(
-                        "from",
-                        'where'
-                    ) , array(
-                        "\nfrom",
-                        "\nwhere"
-                    ) , $query) ,
-                    "st" => getDebugStack(1)
-                );
-            }
-        } else {
-            $err = ErrorCode::getError('DB0100', pg_last_error($dbid) , $query);
-        }
-    } else {
-        $err = ErrorCode::getError('DB0102', $dbaccess, $err, $query);
-    }
-    if ($err) {
-        logDebugStack();
-        error_log($err);
+    try {
+        \Dcp\Core\DbManager::query($query, $result , $singlecolumn, $singleresult );
+    } catch (\Dcp\Db\Exception $e) {
         if ($useStrict !== false) {
-            if ($sqlStrict === null) $sqlStrict = (getParam("CORE_SQLSTRICT") != "no");
+            if ($sqlStrict === null) {
+                $sqlStrict = (\Dcp\Core\ContextManager::getApplicationParam("CORE_SQLSTRICT") !== "no");
+            }
             if ($useStrict === true || $sqlStrict) {
-                throw new \Dcp\Db\Exception($err);
+                throw $e;
             }
         }
+            return $e->getMessage();
     }
-    
-    return $err;
+    return "";
 }
 /**
  * @param string $freedomctx
@@ -594,8 +514,10 @@ function getWshCmd($nice = false, $userid = 0, $sudo = false)
  */
 function getUserId()
 {
-    global $action;
-    if ($action) return $action->user->id;
+    $u=\Dcp\Core\ContextManager::getCurrentUser();
+    if ($u) {
+        return $u->id;
+    }
     
     return 0;
 }
@@ -685,7 +607,7 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
     if ($forcelink == "mailto") {
         $target = $forcelink;
     } else {
-        $target = strtolower(GetParam("CORE_MAIL_LINK", "optimal"));
+        $target = strtolower(\Dcp\Core\ContextManager::getApplicationParam("CORE_MAIL_LINK", "optimal"));
         if ($target == "optimal") {
             $target = "mailto";
         }
@@ -749,6 +671,7 @@ function seems_utf8($Str)
 }
 /**
  * Initialise WHAT : set global $action whithout an authorized user
+ * @deprecated use ContextManager::initContext
  *
  */
 function WhatInitialisation($session = null)
@@ -770,6 +693,10 @@ function WhatInitialisation($session = null)
     setLanguage($lang);
 }
 
+/**
+ * @deprecated use ContextManager::sudo
+ * @param $login
+ */
 function setSystemLogin($login)
 {
     global $action;
@@ -835,23 +762,12 @@ function getLcdate()
 /**
  *
  * @param string $core_lang
+ * @deprecated use Dcp\Core\ContextManager::getLocaleConfig
  * @return bool|array
  */
 function getLocaleConfig($core_lang = '')
 {
-    if (empty($core_lang)) {
-        $core_lang = getParam("CORE_LANG", "fr_FR");
-    }
-    $lng = substr($core_lang, 0, 2);
-    if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang) && file_exists(DEFAULT_PUBDIR."/locale/" . $lng . "/lang.php")) {
-        include (DEFAULT_PUBDIR."/locale/" . $lng . "/lang.php");
-    } else {
-        include (DEFAULT_PUBDIR."/locale/fr/lang.php");
-    }
-    if (!isset($lang) || !isset($lang[$core_lang]) || !is_array($lang[$core_lang])) {
-        return false;
-    }
-    return $lang[$core_lang];
+    return \Dcp\Core\ContextManager::getLocaleConfig($core_lang);
 }
 
 function getLocales()
@@ -867,49 +783,13 @@ function getLocales()
 }
 /**
  * use new locale language
+ * @deprecated use Dcp\Core\ContextManager::setLanguage
  * @param string $lang like fr_FR, en_US
  * @throws \Dcp\Core\Exception
  */
 function setLanguage($lang)
 {
-    global $action;
-
-    if (!$lang) {
-        return;
-    }
-    if ($action) {
-        $action->parent->param->SetVolatile("CORE_LANG", $lang);
-        $action->parent->setVolatileParam("CORE_LANG", $lang);
-    }
-    $lang.= ".UTF-8";
-    if (setlocale(LC_MESSAGES, $lang) === false) {
-        throw new Dcp\Core\Exception(sprintf(ErrorCodeCORE::CORE0011, $lang));
-    }
-    setlocale(LC_CTYPE, $lang);
-    setlocale(LC_MONETARY, $lang);
-    setlocale(LC_TIME, $lang);
-    //print $action->Getparam("CORE_LANG");
-    $number = 0;
-    $numberFile = sprintf("%s/locale/.gettextnumber", DEFAULT_PUBDIR);
-    
-    if (is_file($numberFile)) {
-        $number = trim(@file_get_contents($numberFile));
-        if ($number == "") {
-            $number = 0;
-        }
-    }
-    // Reset enum traduction cache
-    $a = null;
-    $enumAttr = new \NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
-    $enumAttr->resetEnum();
-    
-    $td = "main-catalog$number";
-    putenv("LANG=" . $lang); // needed for old Linux kernel < 2.4
-    putenv("LANGUAGE="); // no use LANGUAGE variable
-    bindtextdomain($td, sprintf("%s/locale", DEFAULT_PUBDIR));
-    bind_textdomain_codeset($td, 'utf-8');
-    textdomain($td);
-    mb_internal_encoding('UTF-8');
+    \Dcp\Core\ContextManager::setLanguage($lang);
 }
 // use UTF-8 by default
 mb_internal_encoding('UTF-8');

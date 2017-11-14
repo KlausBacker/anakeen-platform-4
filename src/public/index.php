@@ -70,5 +70,6 @@ if (ActionRouter::inMaintenance()) {
         exit(0);
     }
 }
+
 $actionRouter = new ActionRouter($account, AuthenticatorManager::$auth);
 $actionRouter->executeAction();

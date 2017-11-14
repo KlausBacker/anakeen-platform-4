@@ -21,6 +21,7 @@ class ActionRouter
         $this->action = null;
         $_SERVER['PHP_AUTH_USER'] = $account->login;
         getMainAction($auth, $this->action);
+        \Dcp\Core\ContextManager::recordContext($account, $this->action);
         $action = $this->action;
     }
     

@@ -1,12 +1,12 @@
 <?php
 namespace Dcp\Family {
 	/** Contrôle de vues  */
-	class Cvdoc extends 1 { const familyName="CVDOC";}
+	class Cvdoc extends Base { const familyName="CVDOC";}
 }
 
 namespace Dcp\AttributeIdentifiers {
 	/** Contrôle de vues  */
-	class Cvdoc extends 1 {
+	class Cvdoc extends Base {
 		/** [longtext] Description */
 		const cv_desc='cv_desc';
 		/** [docid] Famille (id) */
