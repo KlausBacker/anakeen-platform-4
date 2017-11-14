@@ -1,4 +1,5 @@
 import anakeenComponentOptions from '../componentBase';
+import DocumentTemplate from './documentItem.template.kd';
 
 export default {
     mixins: [anakeenComponentOptions],
@@ -65,10 +66,7 @@ export default {
             });
             this.$(this.$refs.listView).kendoListView({
                 dataSource: this.dataSource,
-                template: this.$kendo.template('<div class="documentsList__documentCard"><div class="documentsList__documentCard__body"><div class="documentsList__documentCard__heading">' +
-                  '<img class="documentsList__documentCard__heading__content_icon" src="api/v1/images/assets/original/#: icon#"  alt="#: title# image"/>' +
-                  '<span>#:title#</span>' +
-                  '</div></div></div>'),
+                template: this.$kendo.template(DocumentTemplate),
                 selectable: 'multiple',
                 change: this.onSelectDocument,
             });
@@ -101,7 +99,6 @@ export default {
                 index: 1,
                 change: this.onSelectPageSize,
                 headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
-                valueTemplate: '<span class="fa fa-list-ol"></span>',
                 template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
             }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
             this.updateKendoData();

@@ -1,0 +1,14 @@
+<div class="documentsList__documentCard">
+    <div class="documentsList__documentCard__body">
+        <div class="documentsList__documentCard__heading">
+            <img class="documentsList__documentCard__heading__content_icon" src="api/v1/images/assets/original/#: icon#"
+                 alt="#: title# image"/>
+            <span>#:title#</span>
+        </div>
+        # if (data.stateProperties) {#
+            <div class="documentsList__documentCard__heading__state">
+                <span>#: stateProperties.label#</span>
+            </div>
+        #}#
+    </div>
+</div>
