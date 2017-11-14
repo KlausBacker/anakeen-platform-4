@@ -21,6 +21,12 @@
     font-weight: 400;
   }
 
+  .documentsList__collections__button__title--user__cogs {
+    &:hover {
+      color: $A4-ui-color-selected;
+    }
+  }
+
   .documentsList__collections__button__icon {
     height: 100%;
     background-color: #e7e7e7;
@@ -96,14 +102,14 @@
       }
 
       .documentsList__collectionCard__heading__content__icon {
-        box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+        box-shadow: inset 2px 0px 0px 0px $A4-ui-color-client;
       }
     }
   }
   // Expanded style
   &.documentsList__collections--expanded {
     .documentsList__collectionCard.k-state-selected {
-      box-shadow: inset 4px 0px 0px 0px $A4-ui-color-client;
+      box-shadow: inset 2px 0px 0px 0px $A4-ui-color-client;
     }
 
     .documentsList__collectionCard.k-state-selected {

@@ -2,12 +2,15 @@
     <div :class="`documentsList__collections__wrapper${showCollections ? ' documentsList__collections--expanded': ''}`" ref="wrapper">
         <div class="documentsList__collections">
             <div class="user-info" @click.capture="onToggleCollections">
-                <div class="documentsList__collections__button__icon documentsList__collections__button__icon--user">
+                <div class="documentsList__collections__button__icon documentsList__collections__button__icon--user" @click="openAccount">
                     <i class="documentsList__collections__button__icon--user__icon material-icons">account_circle</i>
-                    <span class="documentsList__collections__button__icon--user__initial">{{userInitial}}</span>
+                    <span class="documentsList__collections__button__icon--user__initial">
+                        {{userInitial}}
+                    </span>
                 </div>
                 <div class="documentsList__collections__button__title documentsList__collections__button__title--user">
                     {{userFullName}}
+                    <i class="documentsList__collections__button__title--user__cogs material-icons" @click.prevent.stop="openAccount">settings</i>
                 </div>
             </div>
 
