@@ -16,7 +16,7 @@
   top: 0;
   bottom: 0;
   height: 100%;
-  width: 24px;
+  width: 2rem;
   text-align: center;
   cursor: pointer;
   z-index: 700;
@@ -74,5 +74,13 @@
 
   .leftPane {
     overflow: initial !important;
+    & > * {
+      width: calc(100vw - 2rem);
+    }
+  }
+  @media screen and (min-width: 958px) {
+    .leftPane > * {
+      width: 25vw;
+    }
   }
 }
