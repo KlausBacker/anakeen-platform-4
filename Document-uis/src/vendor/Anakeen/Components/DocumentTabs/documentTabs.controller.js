@@ -107,9 +107,9 @@ export default {
                 if (prev.length && next.length) {
                     const nextWidth = next.outerWidth(true);
                     const prevWidth = prev.outerWidth(true);
-                    next.css('right', `${paginatorWidth +  nextWidth}px`);
-                    prev.css('right', `${paginatorWidth + nextWidth + prevWidth}px`);
-                    marginRight = marginRight + (2 * prevWidth) + nextWidth;
+                    next.css('right', `${paginatorWidth}px`);
+                    prev.css('right', `${paginatorWidth + nextWidth}px`);
+                    marginRight = marginRight + prevWidth + nextWidth;
                 }
 
                 this.tabstrip.tabGroup.css('margin-right', `calc(${marginRight}px + ${tabMargin})`);
