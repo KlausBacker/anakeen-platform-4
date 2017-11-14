@@ -103,9 +103,11 @@ $menu-before-width : 12px;
 
 }
 .k-menu .k-item.menu--right {
-  align-self: flex-end;
-  border-left-width: 1px;
+  align-self: flex-start;
+  border-left-width: 0;
   border-right-width: 0;
+  position: absolute;
+  left: 10px;
 }
 
 .k-menu .menu_element--hamburger  .k-item.menu--right {
