@@ -261,7 +261,7 @@ export default {
         addDocument(document) {
             const index = this.tabsArray.findIndex((d) => d.initid === document.initid);
             if (index < 0) {
-                this.openedTabs.push(document);
+                this.openedTabs.push(Object.assign({}, document));
                 this.selectDocument(this.openedTabs.length - 1);
             } else {
                 this.selectDocument(index);
