@@ -1,32 +1,36 @@
+.dcpDocument--view, .dcpDocument--edit, .dcpDocument--create {
 
+  .dcpFrame, .document .dcpFrame:last-child {
 
-.dcpFrame, .document .dcpFrame:last-child {
+  }
 
-}
+  .dcpFrame {
+    background: $A4-ui-color-frame-background;
+    margin: 0 1.166rem 1.166rem 1.166rem;
+    padding: $A4-ui-frame-padding;
+    box-shadow: $A4-ui-frame-shadow;
+  }
 
-.dcpFrame {
-  background: $A4-ui-color-frame-background;
-  margin: 0 1.166rem 1.166rem 1.166rem;
-  padding:  $A4-ui-frame-padding;
-  box-shadow: $A4-ui-frame-shadow;
-}
+  .dcpFrame > .card-header {
+    font-family: $A4-ui-frame-font-variant;
+    font-size: $A4-ui-frame-size-title;
+    background-color: transparent;
+    color: $A4-ui-frame-color-title;
+    line-height: $A4-ui-frame-header-line-height;
+    border-bottom: $A4-ui-frame-header-border-bottom;
+    padding: $A4-ui-frame-header-padding;
+    margin: $A4-ui-frame-header-margin;
+  }
 
-.dcpFrame > .card-header {
-  font-family: $A4-ui-frame-font-variant;
-  font-size: $A4-ui-frame-size-title;
-  background-color: transparent;
-  color: $A4-ui-frame-color-title;
-  line-height: $A4-ui-frame-header-line-height;
-  border-bottom: $A4-ui-frame-header-border-bottom;
-  padding: $A4-ui-frame-header-padding;
-  margin: $A4-ui-frame-header-margin;
-}
+  .card-header.css-frame-head.dcpFrame__label.dcp__frame--open.dcpLabel {
+    padding-left: 0;
+  }
+  .dcpDocument__frames {
+    display: flex;
+    flex-direction: column;
+  }
 
-
-.card-header.css-frame-head.dcpFrame__label.dcp__frame--open.dcpLabel {
-  padding-left: 0;
-}
-.dcpDocument__frames {
-  display: flex;
-  flex-direction: column;
+  .dcpFrame__content {
+    padding-left: 1.6667rem;
+  }
 }
