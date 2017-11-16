@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="[HTML_LANG]">
+<head>
+    <meta charset="utf-8">
+    <title>[TEXT:tengine_client:action:tengine_client_params]</title>
+    [CSS:CUSTOMREF]
+    [JS:REF]
+    <style>
+    .editapplicationparameter label.modified:after { content:" ([TEXT:te:modified])"; }
+    </style>
+</head>
+<body>
+
+  <div class="page">
+    
+    <h1>[TEXT:tengine_client:description]</h1>
+    
+    <div class="panel">
+      <div class="parameter-list">
+	[ZONE FDL:EDITAPPLICATIONPARAMETER?appId=TENGINE_CLIENT&parameterId=TE_ACTIVATE]
+	[ZONE FDL:EDITAPPLICATIONPARAMETER?appId=TENGINE_CLIENT&parameterId=TE_FULLTEXT]
+	[ZONE FDL:EDITAPPLICATIONPARAMETER?appId=TENGINE_CLIENT&parameterId=TE_HOST]
+	[ZONE FDL:EDITAPPLICATIONPARAMETER?appId=TENGINE_CLIENT&parameterId=TE_PORT]
+	[ZONE FDL:EDITAPPLICATIONPARAMETER?appId=TENGINE_CLIENT&parameterId=TE_URLINDEX]
+	[ZONE FDL:EDITAPPLICATIONPARAMETER?appId=TENGINE_CLIENT&parameterId=TE_TIMEOUT]
+      </div>
+    </div>
+    
+    
+    <div id="test-zone" class="panel">
+      
+      <button id="checkconnection" class="ui-button ui-corner-all ui-state-default" >
+	[TEXT:tengine_client:action:tengine_client_param:Check server connexion]&nbsp;
+      </button>
+
+		<table id="param-validation">
+			<tr id="pv-testConnect">
+				<td>1.</td>
+				<td>[TEXT:tengine_client:Check connection to server:]</td>
+				<td>
+					<span class="pv-msg"></span>
+					<img src="Images/tengine_client_wait.gif" class="throbber"/>
+				</td>
+			</tr>
+			<tr id="pv-newTask">
+				<td>2.</td>
+				<td>[TEXT:tengine_client:Create new task:]</td>
+				<td>
+					<span class="pv-msg"></span>
+					<img src="Images/tengine_client_wait.gif" class="throbber"/>
+				</td>
+			</tr>
+			<tr id="pv-waitForTaskDone">
+				<td>3.</td>
+				<td>[TEXT:tengine_client:Wait for task to be proccessed:]</td>
+				<td>
+					<span class="pv-msg"></span>
+					<img src="Images/tengine_client_wait.gif" class="throbber"/>
+				</td>
+			</tr>
+			<tr id="pv-waitForCallback">
+				<td>4.</td>
+				<td>[TEXT:tengine_client:Wait for task's callback:]</td>
+				<td>
+					<span class="pv-msg"></span>
+					<img src="Images/tengine_client_wait.gif" class="throbber"/>
+				</td>
+			</tr>
+			<tr id="pv-clearTask">
+				<td>5.</td>
+				<td>[TEXT:tengine_client:Clear task:]</td>
+				<td>
+					<span class="pv-msg"></span>
+					<img src="Images/tengine_client_wait.gif" class="throbber"/>
+				</td>
+			</tr>
+		</table>
+    </div>
+    
+  </div>
+
+</body>
+</html>

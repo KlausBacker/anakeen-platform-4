@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf8"?>
+<module name="@moduleName@" version="@version@" release="@release@" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+    <description lang="en">Transformation Engine Client Library</description>
+  <requires>
+    <module name="anakeen-admin" />
+  </requires>
+  <post-install>
+    <process command="programs/record_application TENGINE_CLIENT I">
+      <label lang="en">Record application TENGINE_CLIENT in database</label>
+    </process>
+    <process command="programs/update_catalog"/>
+  </post-install>
+  <post-upgrade>
+    <process command="programs/pre_migration TENGINE_CLIENT"/>
+    <process command="programs/record_application TENGINE_CLIENT U">
+      <label lang="en">Update application TENGINE_CLIENT in database</label>
+    </process>
+    <process command="programs/post_migration TENGINE_CLIENT"/>
+    <process command="programs/update_catalog"/>
+  </post-upgrade>
+</module>
