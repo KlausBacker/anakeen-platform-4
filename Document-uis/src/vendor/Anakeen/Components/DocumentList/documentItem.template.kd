@@ -1,13 +1,17 @@
-<div class="documentsList__documentCard">
+<div class="documentsList__documentCard#if (data.properties.state){# documentsList__documentCard__full#}#">
     <div class="documentsList__documentCard__body">
         <div class="documentsList__documentCard__heading">
-            <img class="documentsList__documentCard__heading__content_icon" src="api/v1/images/assets/original/#: icon#"
-                 alt="#: title# image"/>
-            <span>#:title#</span>
+            <img class="documentsList__documentCard__heading__content_icon" src="#: properties.icon#"
+                 alt="#: properties.title# image"/>
+            <span>#: properties.title#</span>
         </div>
-        # if (data.stateProperties) {#
+        # if (data.properties.state) {#
             <div class="documentsList__documentCard__heading__state">
-                <span>#: stateProperties.label#</span>
+                <span class="documentsList__documentCard__heading__state--color"
+                      style="background-color: #= properties.state.color#"></span>
+                <span class="documentsList__documentCard__heading__state--label">
+                    #: properties.state.displayValue#
+                </span>
             </div>
         #}#
     </div>

@@ -133,7 +133,7 @@ export default {
         },
 
         selectDocument(document) {
-            this.$emit('document-selected', document);
+            this.$emit('document-selected', this.$.extend(true, {}, document.properties));
         },
 
         onSelectPageSize(e) {
@@ -157,9 +157,9 @@ export default {
 
         setCollection(c) {
             this.collection = c;
-            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`)
+            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList?fields=document.properties.state,document.properties.icon`)
                 .then((response) => {
-                    this.documents = response.data.data.sample;
+                    this.documents = response.data.data.documents;
                     this.privateScope.updateKendoData();
                 });
         },

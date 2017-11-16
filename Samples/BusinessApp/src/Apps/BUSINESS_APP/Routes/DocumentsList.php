@@ -8,11 +8,11 @@
 
 namespace Anakeen\Sample\Routes;
 
-use Dcp\HttpApi\V1\Crud\DocumentCollection;
+use Dcp\HttpApi\V1\Crud\FamilyDocumentCollection;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Anakeen\Sample\Routes\Exception;
 
-class DocumentsList extends DocumentCollection
+class DocumentsList extends FamilyDocumentCollection
 {
 
     /**
@@ -54,28 +54,27 @@ class DocumentsList extends DocumentCollection
      */
     public function read($resourceId)
     {
+
         $return = parent::read($resourceId);
 
         $return["resultMax"] = $this->_searchDoc->onlyCount();
-        $return["uri"] = $this->generateURL(sprintf("sba/collections/%s/documentsList/", $this->_collectionRef));
-        unset($return["properties"]);
+        //$return["uri"] = $this->generateURL(sprintf("sba/collections/%s/documentsList/", $this->_collectionRef));
 
 //        $return['state'] = $this->getPaginationState();
 
         $return['user'] = ["id"=>intval(getCurrentUser()->id), "fid"=>intval(getCurrentUser()->fid)];
 
-
-        if ($this->_apCollection) {
-            $familyId=$this->_apCollection->getRawValue("se_famid");
-            if ($familyId) {
-                $family=DocManager::getFamily($familyId);
-                if ($family) {
-                    $return["workflow"]=intval($family->wid);
-                }
-            }
-        }
-        $searchDoc = new \SearchDoc("", $this->_collectionRef);
-        $return['sample'] = $searchDoc->search();
+//        if ($this->_apCollection) {
+//            $familyId=$this->_apCollection->getRawValue("se_famid");
+//            if ($familyId) {
+//                $family=DocManager::getFamily($familyId);
+//                if ($family) {
+//                    $return["workflow"]=intval($family->wid);
+//                }
+//            }
+//        }
+//        $searchDoc = new \SearchDoc("", $this->_collectionRef);
+//        $return['sample'] = $searchDoc->search();
         return $return;
 
     }
@@ -108,37 +107,37 @@ class DocumentsList extends DocumentCollection
         throw $exception;
     }
 
-    public function setUrlParameters(array $parameters)
-    {
-        parent::setUrlParameters($parameters);
-        $collections = json_decode(\ApplicationParameterManager::getParameterValue('BUSINESS_APP', 'SAMPLE_CONFIG'), TRUE);
-        if ($collections === null) {
-            $collections = [];
-        }
-        if (!isset($this->urlParameters['collectionRef'])) {
-            $exception = new Exception(("FIXME"));
-            $exception->setHttpStatus("400", "collectionRef parameter is required");
-            throw $exception;
-        } else {
-            $this->_collectionRef = $this->urlParameters['collectionRef'];
-            if (isset($collections['collections'])) {
-                foreach ($collections['collections'] as $collection) {
-                    if ($this->_collectionRef === $collection['ref']) {
-                        $this->_collection = $collection;
-                        break;
-                    }
-                }
-                if (null !== $this->_collection) {
-                    $this->_apCollection = DocManager::getDocument($this->_collection['initid']);
-                }
-                if ((null === $this->_apCollection) || ('' !== $this->_apCollection->control('open'))) {
-                    //FIXME: error message when collection does not exists
-                    $exception = new Exception("collection $this->_collectionRef does not exists.");
-                    $exception->setHttpStatus("404", "collection $this->_collectionRef does not exists.");
-                    throw $exception;
-                }
-            }
-        }
-    }
+//    public function setUrlParameters(array $parameters)
+//    {
+//        parent::setUrlParameters($parameters);
+//        $collections = json_decode(\ApplicationParameterManager::getParameterValue('BUSINESS_APP', 'SAMPLE_CONFIG'), TRUE);
+//        if ($collections === null) {
+//            $collections = [];
+//        }
+//        if (!isset($this->urlParameters['collectionRef'])) {
+//            $exception = new Exception(("FIXME"));
+//            $exception->setHttpStatus("400", "collectionRef parameter is required");
+//            throw $exception;
+//        } else {
+//            $this->_collectionRef = $this->urlParameters['familyId'];
+//            if (isset($collections['collections'])) {
+//                foreach ($collections['collections'] as $collection) {
+//                    if ($this->_collectionRef === $collection['ref']) {
+//                        $this->_collection = $collection;
+//                        break;
+//                    }
+//                }
+//                if (null !== $this->_collection) {
+//                    $this->_apCollection = DocManager::getDocument($this->_collection['initid']);
+//                }
+//                if ((null === $this->_apCollection) || ('' !== $this->_apCollection->control('open'))) {
+//                    //FIXME: error message when collection does not exists
+//                    $exception = new Exception("collection $this->_collectionRef does not exists.");
+//                    $exception->setHttpStatus("404", "collection $this->_collectionRef does not exists.");
+//                    throw $exception;
+//                }
+//            }
+//        }
+//    }
 
 }
