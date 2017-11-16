@@ -3,14 +3,13 @@
     .k-tabstrip-wrapper {
       .documentsList__documentsTabs__tabs {
         & > .k-tabstrip-items {
-          box-shadow: 0 -2px 4px rgb(203, 203, 203) inset;
           & > .k-item {
-            box-shadow: 0 -2px 4px rgb(203, 203, 203) inset;
+            box-shadow: -1px 0 4px #cbcbcb inset;
             transform: perspective(100px) rotateX(25deg);
             background-color: #FFFFFF !important;
             margin-right: 0;
             &.k-state-active {
-              background-color: #E6E6E6!important;
+              background-color: #F3F3F3!important;
             }
 
             & > * {

@@ -1,8 +1,10 @@
 .document {
+  background-color: #FBFBFB;
   .dcpDocument--view, .dcpDocument--edit, .dcpDocument--create {
     .dcpDocument__menu {
+      max-height: none!important;
       ul.menu__content {
-        background-color: #E6E6E6;
+        background-color: #F3F3F3;
         .menu__element {
           color: #304159;
         }
