@@ -3,6 +3,7 @@ $font-family-base: $A4-ui-font;
 @import "../../public/uiAssets/externals/KendoUI/scss/variables";
 
 @import '../../public/BUSINESS_APP/src/components/collectionsList/main.scss';
+@import '../../public/BUSINESS_APP/src/components/documentsList/documentsList.scss';
 @import '../../public/BUSINESS_APP/src/components/documentsTabs/documentsTabs.scss';
 
 html, body {
