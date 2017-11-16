@@ -4,7 +4,7 @@ import headerTemplate from './documentTabsHeader.template.kd';
 import abstractAnakeenComponent from '../componentBase';
 
 export default {
-
+    mixins: [abstractAnakeenComponent],
     props: {
         closable: {
             type: Boolean,
@@ -149,32 +149,6 @@ export default {
                 });
             },
 
-            // Expose public methods (from method sections) in DOM props
-            bindPublicMethods: () => {
-                // Bind exposed methods to events
-                const _this = this;
-                Object.keys(this.$options.methods).forEach((methodName) => {
-                    const method = {
-                        [methodName]: (...args) => {
-                            try {
-                                const ret = _this[methodName].call(_this, ...args);
-                            } catch (e) {
-                                console.error(`From ${methodName} : ${e}`);
-                            }
-                        },
-                    };
-                    if (methodName !== '$emit') {
-                        this.$(this.$el).closest('a4-document-tabs').prop('publicMethods', (index, oldPropVal) => {
-                            if (!oldPropVal) {
-                                return method;
-                            } else {
-                                return Object.assign({}, oldPropVal, method);
-                            }
-                        });
-                    }
-                });
-            },
-
             // Listen model changes and update view
             bindDataChange: (data) => {
                 if (data.bind) {
@@ -234,7 +208,6 @@ export default {
 
     mounted() {
         this.privateScope.initKendoComponents();
-        this.privateScope.bindPublicMethods();
         const ready = () => {
             this.$emit('document-tabs-ready', this.$el);
         };
