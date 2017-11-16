@@ -1,7 +1,10 @@
 /**
  * Dynacase document component object ***
  */
+
+import AbstractComponent from '../componentBase';
 export default {
+  mixins: [AbstractComponent],
   name: 'a4-document',
   data() {
     return {
@@ -284,6 +287,9 @@ export default {
     tryToDestroy() {
       return this.documentWidget.tryToDestroy();
     },
+    injectCSS(cssToInject) {
+      return this.documentWidget.injectCSS(cssToInject);
+    }
   },
 
 
