@@ -1,0 +1,45 @@
+.documentsList__documentsTabs__wrapper {
+  .documentsList__documentsTabs__tabs__wrapper {
+    .k-tabstrip-wrapper {
+      .documentsList__documentsTabs__tabs {
+        & > .k-tabstrip-items {
+          box-shadow: 0 -2px 4px rgb(203, 203, 203) inset;
+          & > .k-item {
+            box-shadow: 0 -2px 4px rgb(203, 203, 203) inset;
+            transform: perspective(100px) rotateX(25deg);
+            background-color: #FFFFFF !important;
+            margin-right: 0;
+            &.k-state-active {
+              background-color: #E6E6E6!important;
+            }
+
+            & > * {
+              transform: perspective(120px) rotateX(-25deg);
+            }
+
+            &.k-first {
+              margin-left: 2rem;
+            }
+
+            & > .k-link {
+              padding: 0.5rem 1rem!important;
+              .tab__document__header__content {
+                & > .k-link[data-type=remove] {
+                  padding: 0;
+                  border-radius: 50%;
+                  height: auto !important;
+                  &:hover {
+                    background-color: #ff542c;
+                    .k-icon {
+                      color: #ffffff;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

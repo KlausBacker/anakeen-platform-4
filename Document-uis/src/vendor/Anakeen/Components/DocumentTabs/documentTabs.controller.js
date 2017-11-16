@@ -13,7 +13,9 @@ export default {
 
         'empty-img': {
             type: String,
-            default: 'CORE/Images/anakeen-logo.svg',
+            default: 'CORE/Images/anakeenplatform-logo-fondblanc.svg',
+        },
+
         },
 
     },
@@ -67,7 +69,7 @@ export default {
                 const $tab = this.$(tab);
                 const closable = forceClose !== undefined ? forceClose : this.closable;
                 if (closable) {
-                    $tab.append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
+                    $tab.find('.tab__document__header__content').append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
                     $tab.on('click', "[data-type='remove']", (e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -123,8 +125,10 @@ export default {
                     e.detail[0].target.find('header.dcpDocument__header').hide();
                     tab.set('title', '');
                     tab.set('icon', '');
+                    tab.set('url', '');
                     tab.set('title', e.detail[1].title);
                     tab.set('icon', e.detail[1].icon);
+                    tab.set('url', e.detail[1].url);
                 });
                 documentComponent.on('actionClick', (e) => {
                     if (e.detail.length > 2 && e.detail[2].options) {
@@ -173,8 +177,10 @@ export default {
                             // Add new document
                             case 'add':
                                 this.tabstrip.append({
-                                    text: `<i class="fa fa-spinner fa-pulse tab__document__icon"></i>
-                                            <span class="tab__document__title">Chargement en cours...</span>`,
+                                    text: `<a class="tab__document__header__content">
+                                                <i class="fa fa-spinner fa-pulse tab__document__icon"></i>
+                                                <span class="tab__document__title">Chargement en cours...</span>
+                                           </a>`,
                                     encoded: false,
                                     content: this.privateScope.formatTabContentData(e.items[0]),
                                 });
@@ -206,6 +212,9 @@ export default {
                                     case 'icon':
                                         $indexedItem.find('.tab__document__icon')
                                             .replaceWith(`<img class="tab__document__icon" src="${newValue}"/>`);
+                                        break;
+                                    case 'url':
+                                        $indexedItem.find('.tab__document__header__content').prop('href', newValue);
                                         break;
                                 }
 

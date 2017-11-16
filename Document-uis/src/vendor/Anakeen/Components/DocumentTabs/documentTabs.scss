@@ -3,7 +3,7 @@
   border-radius: 0;
   height: $height;
   width: $height;
-  background-color: #F4F4F4 !important;
+  background-color: #e6e6e6 !important;
   padding: 0;
 
   &.documentsList__documentsTabs__tabs__paginator__close {
@@ -22,9 +22,7 @@
   }
 }
 
-
 .documentsList__documentsTabs__wrapper {
-  background-color: #DDDDDD;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -39,7 +37,6 @@
     .documentsList__documentsTabs__tabs__custom__slot {
       z-index: 200;
     }
-
 
     .documentsList__documentsTabs__tabs__paginator {
       position: absolute;
@@ -127,28 +124,26 @@
 
         & > .k-tabstrip-items {
           height: 3.5rem;
-          box-shadow: 0 -2px 4px rgb(203, 203, 203) inset;
           & > .k-item {
             display: flex;
             justify-content: space-between;
             width: 200px;
             //margin-right: 2px;
-            background-color: #FFFFFF;
-            border: 0;
-            box-shadow: 0 -2px 4px rgb(203, 203, 203) inset;
+            background-color: #E6E6E6;
+            margin-right: 2px;
+            border: 1px solid lightgrey;
             border-radius: 0;
-            opacity: 0.6;
 
             &.k-state-active {
               box-shadow: inset 0 2px 0px 0px #8ae234;
-              background-color: #E6E6E6;
               opacity: 1;
+              background-color: #FFFFFF;
               border-bottom-color: transparent;
               .tab__document__title {
                 font-weight: 700;
               }
 
-              & > .k-link[data-type=remove] {
+              & > .tab__document__header__content > .k-link[data-type=remove] {
                 box-shadow: inset 0 2px 0px 0px #8ae234;
                 .k-icon {
                   color: #ff542c;
@@ -158,7 +153,7 @@
 
             &.k-state-hover {
 
-              & > .k-link {
+              & > .k-link > .tab__document__header__content {
                 .tab__document__title {
                   color: #00b4fc;
                 }
@@ -170,34 +165,45 @@
                   }
                 }
               }
-
-            }
-
-            &.k-link:first-of-type {
-              padding-left: 10px;
             }
 
             & > .k-link {
-              .tab__document__icon {
-                width: auto;
-                height: 1.3rem;
-                margin-right: 5px;
-              }
+              padding: 0 0 0 1rem;
+              .tab__document__header__content {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                &:hover {
+                  text-decoration: none;
+                }
 
-              .tab__document__title {
-                color: #505050;
-                width: 120px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                text-transform: uppercase;
-                padding-top: 2px;
-              }
+                .tab__document__icon {
+                  width: auto;
+                  height: 1.3rem;
+                  margin-right: 5px;
+                }
 
-              &.k-link[data-type=remove]:hover {
-                background-color: #ff542c;
-                .k-icon {
-                  color: #ffffff;
+                .tab__document__title {
+                  color: #505050;
+                  width: 120px;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  text-transform: uppercase;
+                  padding-top: 2px;
+                }
+
+                & > .k-link[data-type=remove] {
+                  height: 100%;
+
+                  &:hover {
+                    background-color: #ff542c;
+                    .k-icon {
+                      color: #ffffff;
+                    }
+                  }
                 }
               }
             }
@@ -274,16 +280,16 @@
       &.k-state-hover {
         background-color: #F4F4F4;
 
-          .documentsList__documentsTabs__tabsList__item__title {
-            color: #00b4fc;
-          }
+        .documentsList__documentsTabs__tabsList__item__title {
+          color: #00b4fc;
+        }
 
-          .documentsList__documentsTabs__tabsList__item__close {
-            background-color: #E6E6E6;
-            .k-icon {
-              color: #ff542c;
-            }
+        .documentsList__documentsTabs__tabsList__item__close {
+          background-color: #E6E6E6;
+          .k-icon {
+            color: #ff542c;
           }
+        }
       }
     }
   }
