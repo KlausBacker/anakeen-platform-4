@@ -16,6 +16,9 @@ export default {
             default: 'CORE/Images/anakeenplatform-logo-fondblanc.svg',
         },
 
+        'document-css': {
+            type: String,
+            default: '',
         },
 
     },
@@ -122,7 +125,10 @@ export default {
                 const tab = this.openedTabs[index];
                 const documentComponent = this.$(tabContent).find('a4-document');
                 documentComponent.on('ready', (e) => {
-                    e.detail[0].target.find('header.dcpDocument__header').hide();
+                    e.detail[0].target.find('.dcpDocument__header').hide();
+                    if (this.documentCss) {
+                        documentComponent.prop('publicMethods').injectCSS(this.documentCss);
+                    }
                     tab.set('title', '');
                     tab.set('icon', '');
                     tab.set('url', '');
