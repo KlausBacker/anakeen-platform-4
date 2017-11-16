@@ -143,7 +143,7 @@ class Revision extends Document
             $id = $this->urlParameters["identifier"];
             if (!is_numeric($id)) {
                 $id = DocManager::getIdFromName($this->urlParameters["identifier"]);
-                $this->urlParameters["identifier"] = $id;
+                $this->urlParameters["identifier"] = (empty($id))?null:$id;
             }
             $id = DocManager::getRevisedDocumentId($id, $this->urlParameters["revision"]);
             return $this->extractEtagDataFromId($id);

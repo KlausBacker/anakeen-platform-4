@@ -73,6 +73,15 @@ namespace {
          */
         const CORE0015 = 'Fail to find application file : %s';
         /**
+         * @errorCode The dbaccess.php cannot be included
+         */
+        const CORE0016 = 'Cannot load dbaccess file : %s';
+        /**
+         * @errorCode DMust call initContext before
+         * @see \Dcp\Core\ContextManager::initContext()
+         */
+        const CORE0017 = "Context not initialized yet";
+        /**
          * @errorCode
          * for beautifier
          */

@@ -15,6 +15,10 @@
  */
 
 include_once ("FDL/Lib.Util.php");
+
+use Dcp\Core\DocManager;
+use Dcp\Core\DbManager;
+
 //
 // ------------------------------------------------------
 // construction of a sql disjonction
@@ -71,32 +75,19 @@ function notEmpty($a)
 {
     return (!empty($a));
 }
-/**
- * function use by Doc::getOOoValue()
- * use to trap XML parsing error : raise exception
- * @param int $errno error number
- * @param string $errstr error message
- * @param string $errfile
- * @param string $errline error line
- * @return bool
- */
-function HandleXmlError($errno, $errstr, $errfile, $errline)
-{
-    if ($errno == E_WARNING && (substr_count($errstr, "DOMDocument::loadXML()") > 0)) {
-        throw new DOMException($errstr);
-    } else return false;
-}
+
 /**
  * clear all cache used by new_doc function
+ * @deprecated use DocManager::cache()
  * @param int $id document identifier : limit to destroy cache of only this document
  * @return void
  */
 function clearCacheDoc($id = 0)
 {
     if ($id == 0) {
-        \Dcp\Core\SharedDocuments::clear();
+        DocManager::cache()->clear();
     } else {
-        \Dcp\Core\SharedDocuments::remove($id);
+        DocManager::cache()->removeDocumentById($id);
     }
 }
 /**
@@ -104,6 +95,7 @@ function clearCacheDoc($id = 0)
  * @param string $dbaccess database specification
  * @param int|string $id identifier of the object
  * @param bool $latest if true set to latest revision of doc
+ * @deprecated use DocManager::getDocument
  *
  * @code
  * $myDoc=new_doc("", $myIdentifier);
@@ -116,89 +108,37 @@ function clearCacheDoc($id = 0)
  *
  * @return Doc object
  */
-function new_Doc($dbaccess, $id = '', $latest = false)
-{
-    if ($dbaccess == "") {
-        // don't test if file exist or must be searched in include_path
-        $dbaccess = getDbAccess();
-    }
-    //    print("doctype:".$res["doctype"]);
-    $classname = "";
-    if (($id == '')) {
+function new_Doc($dbaccess, $id = '', $latest = false) {
+    $doc=DocManager::getDocument($id, $latest);
+    if (! $doc) {
         $doc = new \Dcp\Family\Document($dbaccess);
-        
-        return ($doc);
-    }
-    $fromid = "";
-    $gen = ""; // path GEN or not
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
-    elseif ($latest) {
-        $lid = getLatestDocId($dbaccess, $id);
-        if ($lid > 0) {
-            $id = $lid;
-            $latest = false;
-        }
-    }
-    $id = intval($id);
-    if ($id > 0) {
-        $sharedDoc = Dcp\Core\SharedDocuments::get($id);
-        if (isset($sharedDoc) && ((!$latest) || ($sharedDoc->locked != - 1))) {
-            if (($sharedDoc->doctype != 'W') || (!isset($sharedDoc->doc))) {
-                if ($sharedDoc->id == $id) {
-                    $sharedDoc->cached = 1;
-                    return $sharedDoc;
-                } else {
-                    Dcp\Core\SharedDocuments::remove($id);
-                }
-            }
-        }
-        
-        $fromid = getFromId($dbaccess, $id);
-        if ($fromid > 0) {
-            $classname = "Doc$fromid";
-            $gen = getGen($dbaccess);
-        } else if ($fromid == - 1) $classname = "DocFam";
-    }
-    
-    if ($classname != "") {
-        if (!include_once ("FDL$gen/Class.$classname.php")) {
-            AddWarningMsg(sprintf("cannot include %s class", $classname));
-            return null;
-        }
-        /* @var Doc $doc */
-        $doc = new $classname($dbaccess, $id);
-        
-        if ($latest && $doc->locked == - 1) {
-            $tl = getLatestTDoc($dbaccess, $doc->initid);
-            $doc->affect($tl);
-            $id = $doc->id;
-        }
-        
-        if ($id > 0) {
-            if (($doc->doctype != 'C') || (count($doc->attributes->attr) > 0)) {
-                Dcp\Core\SharedDocuments::set($id, $doc);
-                $doc->iscached = 1;
-            }
-            //print_r2("<b>use cache $id /".$doc->id."</b>");
-            
-        }
-        return ($doc);
     } else {
-        $doc = new \Dcp\Family\Document($dbaccess, $id);
-        
-        return ($doc);
+        if (count(\Dcp\Core\SharedDocuments::getKeys()) < \Dcp\Core\SharedDocuments::getLimit()){
+            DocManager::cache()->addDocument($doc);
+
+           // var_dump([memory_get_usage(), count(\Dcp\Core\SharedDocuments::getKeys()),  \Dcp\Core\SharedDocuments::getLimit()]);
+        }
     }
+
+    return ($doc);
 }
+
 /**
  * create a new document object in type concordance
  *
  * the document is set with default values and default profil of the family
- * @param string $dbaccess database specification
- * @param string $fromid identifier of the family document (the number or internal name)
- * @param bool $control if false don't control the user hability to create this kind of document
- * @param bool $defaultvalues  if false not affect default values
- * @param bool $temporary  if true create document as temporary doc (use Doc::createTmpDoc instead)
- * @see createTmpDoc to create temporary/working document
+ *
+ * @deprecated use DocManager::createDocument
+ *
+ * @param string $dbaccess      database specification
+ * @param string $fromid        identifier of the family document (the number or internal name)
+ * @param bool   $control       if false don't control the user hability to create this kind of document
+ * @param bool   $defaultvalues if false not affect default values
+ * @param bool   $temporary     if true create document as temporary doc (use Doc::createTmpDoc instead)
+ *
+ * @return Doc|false may be return false if no hability to create the document
+ * @throws \Dcp\Core\Exception
+ * @see        createTmpDoc to create temporary/working document
  * @code
  * $myDoc=createDoc("", "SOCIETY");
  * if ($myDoc) {
@@ -206,54 +146,29 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  *     $err=$myDoc->store();
  * }
  * @endcode
- * @return Doc may be return false if no hability to create the document
  */
 function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $temporary = false)
 {
-    
-    if (!is_numeric($fromid)) $fromid = getFamIdFromName($dbaccess, $fromid);
-    if ($fromid > 0) {
-        include_once ("FDL/Class.DocFam.php");
-        /**
-         * @var DocFam $cdoc
-         */
-        $cdoc = new_doc($dbaccess, $fromid);
-        
-        if (!$cdoc->isAffected()) return false;
-        if ($control) {
-            $err = $cdoc->control('create');
-            if ($err != "") return false;
+    try {
+        if ($temporary) {
+            $doc = DocManager::createTemporaryDocument($fromid, $defaultvalues);
+        } else {
+            $doc = DocManager::createDocument($fromid, $control, $defaultvalues);
         }
-        
-        $classname = "Doc" . $fromid;
-        $GEN = getGen($dbaccess);
-        include_once ("FDL$GEN/Class.$classname.php");
-        /* @var DocFam $doc */
-        $doc = new $classname($dbaccess);
-        
-        $doc->revision = "0";
-        $doc->doctype = $doc->defDoctype; // it is a new  document (not a familly)
-        $doc->cprofid = "0"; // NO CREATION PROFILE ACCESS
-        $doc->fromid = $fromid;
-        if (!$temporary) {
-            $err = $doc->setProfil($cdoc->cprofid); // inherit from its familly
-            $doc->setCvid($cdoc->ccvid); // inherit from its familly
-            $doc->wid = $cdoc->wid;
+    } catch (\Dcp\Core\Exception $e) {
+        if ($e->getCode() === "APIDM0003") {
+            return false;
         }
-        $doc->icon = $cdoc->icon; // inherit from its familly
-        $doc->usefor = $cdoc->usefor; // inherit from its familly
-        $doc->atags = $cdoc->atags;
-        if ($defaultvalues) $doc->setDefaultValues($cdoc->getDefValues());
-        $doc->ApplyMask();
-        return ($doc);
+        throw $e;
     }
-    return new_Doc($dbaccess);
+    return $doc;
 }
 /**
  * create a temporary  document object in type concordance
  *
  * the document is set with default values and has no profil
  * the create privilege is not tested in this case
+ * @deprecated use DocManager::createTemporaryDocument
  * @param string $dbaccess database specification
  * @param string $fromid identifier of the family document (the number or internal name)
  * @param bool $defaultvalue set to false to not set default values
@@ -265,36 +180,32 @@ function createTmpDoc($dbaccess, $fromid, $defaultvalue = true)
     if ($d) {
         $d->doctype = 'T'; // tag has temporary document
         $d->profid = 0; // no privilege
-        
     }
     return $d;
 }
 /**
  * return from id for document (not for family (use @see getFamFromId() instead)
+ * @deprecated use DocManager::getFromId(
  * @param string $dbaccess database specification
  * @param int $id identifier of the object
  *
- * @return int false if error occured (return -1 if family document )
+ * @return int|false false if error occured (return -1 if family document )
  */
 function getFromId($dbaccess, $id)
 {
     if (!($id > 0)) return false;
     if (!is_numeric($id)) return false;
-    $dbid = getDbid($dbaccess);
-    $fromid = false;
-    
-    $result = pg_query($dbid, sprintf("select fromid from docfrom where id=%d", $id));
-    if ($result) {
-        if (pg_num_rows($result) > 0) {
-            $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
-            $fromid = $arr["fromid"];
-        }
+
+    $fromid=DocManager::getFromId($id);
+    if (!$fromid) {
+        return false;
     }
     
     return $fromid;
 }
 /**
  * return from name for document (not for family (use @see getFamFromId() instead)
+ * @deprecated use DocManager::getFromName()
  * @param string $dbaccess database specification
  * @param int $id identifier of the object
  *
@@ -305,13 +216,10 @@ function getFromName($dbaccess, $id)
     
     if (!($id > 0)) return false;
     if (!is_numeric($id)) return false;
-    $dbid = getDbid($dbaccess);
-    $fromname = false;
-    $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d)", $id));
-    
-    if (pg_num_rows($result) > 0) {
-        $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
-        $fromname = $arr["name"];
+
+    $fromname=DocManager::getFromName($id);
+    if (!$fromname) {
+        return false;
     }
     
     return $fromname;
@@ -328,7 +236,7 @@ function getFamFromId($dbaccess, $id)
     
     if (!($id > 0)) return false;
     if (!is_numeric($id)) return false;
-    $dbid = getDbid($dbaccess);
+    $dbid = DbManager::getDbId();
     $fromid = false;
     $result = pg_query($dbid, "select  fromid from docfam where id=$id;");
     
@@ -353,7 +261,7 @@ function getDocTitle($id, $latest = true)
         
         if (!$latest) $sql = sprintf("select title, doctype, locked, initid, name from docread where id=%d", $id);
         else $sql = sprintf("select title, doctype, locked, initid, name from docread where initid=(select initid from docread where id=%d) order by id desc limit 1", $id);
-        simpleQuery($dbaccess, $sql, $t, false, true);
+        DbManager::query( $sql, $t, false, true);
         
         if (!$t) return '';
         if ($t["doctype"] == 'C') return getFamTitle($t);
@@ -379,7 +287,7 @@ function getDocProperties($id, $latest = true, array $prop = array(
         $sProps = implode(',', $prop);
         if (!$latest) $sql = sprintf("select %s, doctype, locked, initid from docread where id=%d", $sProps, $id);
         else $sql = sprintf("select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1", $sProps, $id);
-        simpleQuery($dbaccess, $sql, $t, false, true);
+        DbManager::query( $sql, $t, false, true);
         
         if (!$t) return null;
         return $t;
@@ -388,6 +296,7 @@ function getDocProperties($id, $latest = true, array $prop = array(
 }
 /**
  * return document table value
+ * @deprecated use Dcp\Core\DocManager::getRawDocument(), Dcp\Core\DocManager::getRawData()
  * @param string $dbaccess database specification
  * @param int $id identifier of the object
  * @param array $sqlfilters add sql supply condition
@@ -399,10 +308,10 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
 {
     global $action;
     global $SQLDELAY, $SQLDEBUG;
-    
+
     if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
     if (!($id > 0)) return false;
-    $dbid = getDbid($dbaccess);
+    $dbid = DbManager::getDbId();
     $table = "doc";
     $fromid = getFromId($dbaccess, $id);
     if ($fromid > 0) $table = "doc$fromid";
@@ -526,7 +435,7 @@ function controlTdoc(&$tdoc, $aclname)
     if (($tdoc["profid"] <= 0) || ($action->user->id == 1)) return true;
     if (!isset($tdoc["uperm"])) {
         $sql = sprintf("select getaperm('%s',%d) as uperm", $_memberOf, $tdoc['profid']);
-        $err = simpleQuery($action->dbaccess, $sql, $uperm, true, true);
+        $err = DbManager::query($sql, $uperm, true, true);
         if (!$err) $tdoc["uperm"] = $uperm;
     }
     $err = $_ODocCtrol->ControlUp($tdoc["uperm"], $aclname);
@@ -535,6 +444,7 @@ function controlTdoc(&$tdoc, $aclname)
 }
 /** 
  * get document object from array document values
+ * @deprecated use DocManager::getDocumentFromRawDocument
  * @param string $dbaccess database specification
  * @param array $v values of document
  * @return Doc the document object
@@ -600,35 +510,14 @@ function countDocs(&$tres)
 /**
  * return the identifier of a family from internal name
  *
+ * @deprecated use DocManager::getFamilyIdFromName
  * @param string $dbaccess database specification
  * @param string $name internal family name
  * @return int 0 if not found
  */
 function getFamIdFromName($dbaccess, $name)
 {
-    include_once ("FDL/Class.DocFam.php");
-    global $tFamIdName;
-    if (!isset($tFamIdName)) {
-        $tFamIdName = array();
-        $q = new QueryDb($dbaccess, "DocFam");
-        $ql = $q->Query(0, 0, "TABLE");
-        foreach ($ql as $k => $v) {
-            if ($v["name"] != "") $tFamIdName[$v["name"]] = $v["id"];
-        }
-    }
-    if (isset($tFamIdName[$name])) {
-        return $tFamIdName[$name];
-    }
-    if (isset($tFamIdName[strtoupper($name) ])) {
-        return $tFamIdName[strtoupper($name) ];
-    }
-    $name = strtolower($name);
-    foreach ($tFamIdName as $famName => $famId) {
-        if (strtolower($famName) === $name) {
-            return $famId;
-        }
-    }
-    return 0;
+    return DocManager::getFamilyIdFromName($name);
 }
 /**
  * return the identifier of a document from a search with title
@@ -641,12 +530,12 @@ function getFamIdFromName($dbaccess, $name)
  */
 function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 {
-    if ($famid && (!is_numeric($famid))) $famid = getFamIdFromName($dbaccess, $famid);
+    if ($famid && (!is_numeric($famid))) $famid = DocManager::getFamilyIdFromName( $famid);
     if ($famid > 0) {
         $fromonly = ($only) ? "only" : "";
-        $err = simpleQuery($dbaccess, sprintf("select id from $fromonly doc%d where title='%s' and locked != -1", $famid, pg_escape_string($title)) , $id, true, true);
+        $err = DbManager::query( sprintf("select id from $fromonly doc%d where title='%s' and locked != -1", $famid, pg_escape_string($title)) , $id, true, true);
     } else {
-        $err = simpleQuery($dbaccess, sprintf("select id from docread where title='%s' and locked != -1", pg_escape_string($title)) , $id, true, true);
+        $err = DbManager::query( sprintf("select id from docread where title='%s' and locked != -1", pg_escape_string($title)) , $id, true, true);
     }
     
     return $id;
@@ -654,49 +543,36 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 /**
  * return the latest identifier of a document from its logical name
  *
+ * @deprecated use DocManager::getIdFromName
  * @param string $dbaccess database specification
  * @param string $name logical name
- * @return int|false return numeric id, false if not found, if revision (name must be unique) return the latest id
+ * @return string|false return numeric id, false if not found, if revision (name must be unique) return the latest id
  */
 function getIdFromName($dbaccess, $name)
 {
-    static $first = true;
-    
-    $name = trim($name);
-    if (!$name || strpos($name, "\n") !== false) {
-        return false;
-    }
-    $dbid = getDbid($dbaccess);
-    $id = false;
-    
-    if ($first) {
-        pg_prepare($dbid, "getidfromname", 'select id from docname where name=$1');
-        $first = false;
-    }
-    //  $result = pg_query($dbid,"select id from docname where name='$name';");
-    $result = pg_execute($dbid, "getidfromname", array(
-        $name
-    ));
-    $n = pg_num_rows($result);
-    if ($n > 0) {
-        $arr = pg_fetch_array($result, ($n - 1) , PGSQL_ASSOC);
-        $id = $arr["id"];
+    try {
+        $id = (string)DocManager::getIdFromName($name);
+        if ($id === "0") $id=false;
+    } catch (Exception $e) {
+        $id=false;
     }
     return $id;
 }
+
 /**
  * return the initial identifier of a document from its logical name
+ * @deprecated use DocManager::getInitIdFromName
  * @param string $name
  * @return int
  */
 function getInitidFromName($name)
 {
-    simpleQuery(getDbAccess() , sprintf("select initid from docread, docname  where docread.id=docname.id and docname.name= '%s';", pg_escape_string($name)) , $initid, true, true);
-    return $initid;
+    return DocManager::getInitIdFromName($name);
 }
 /**
  * return the logical name of a document from its initial identifier
  *
+ * @deprecated use DocManager::getNameFromId
  * @param string $dbaccess database specification
  * @param string $id initial identifier
  *
@@ -704,37 +580,9 @@ function getInitidFromName($name)
  */
 function getNameFromId($dbaccess, $id)
 {
-    static $first = true;
-    $dbid = getDbid($dbaccess);
-    $id = intval($id);
-    $name = '';
-    //  $result = pg_query($dbid,"select name from docname where id=$id;");
-    if ($first) {
-        @pg_prepare($dbid, "getNameFromId", 'select name from docread where id=$1');
-        $first = false;
-    }
-    $result = pg_execute($dbid, "getNameFromId", array(
-        $id
-    ));
-    $n = pg_num_rows($result);
-    if ($n > 0) {
-        $arr = pg_fetch_array($result, ($n - 1) , PGSQL_ASSOC);
-        $name = $arr["name"];
-    }
-    return $name;
+    return DocManager::getNameFromId($id);
 }
-function setFamidInLayout(Action & $action)
-{
-    
-    global $tFamIdName;
-    
-    if (!isset($tFamIdName)) getFamIdFromName($action->dbaccess, "-");
-    
-    reset($tFamIdName);
-    foreach ($tFamIdName as $k => $v) {
-        $action->lay->set("IDFAM_$k", $v);
-    }
-}
+
 /**
  * return freedom user document in concordance with what user id
  * @param string $dbaccess database specification
@@ -752,12 +600,12 @@ function getDocFromUserId($dbaccess, $userid)
         $filter = array(
             "us_whatid = '$userid'"
         );
-        $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IGROUP"));
+        $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", DocManager::getFamilyIdFromName( "IGROUP"));
     } else {
         $filter = array(
             "us_whatid = '$userid'"
         );
-        $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
+        $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", DocManager::getFamilyIdFromName( "IUSER"));
     }
     if (count($tdoc) == 0) return false;
     return $tdoc[0];
@@ -789,12 +637,12 @@ function isFixedDoc($dbaccess, $id)
 function fixMultipleAliveDocument(Doc & $doc)
 {
     if ($doc->id && $doc->fromid > 0) {
-        simpleQuery($doc->dbaccess, sprintf("select id from only doc%d where initid=%d and locked != -1 order by id", $doc->fromid, $doc->initid) , $r);
+       DbManager::query(sprintf("select id from only doc%d where initid=%d and locked != -1 order by id", $doc->fromid, $doc->initid) , $r);
         array_pop($r); // last stay alive
         if (count($r) > 0) {
             $rid = array();
             foreach ($r as $docInfo) {
-                simpleQuery($doc->dbaccess, sprintf("update doc set locked= -1 where id=%d", $docInfo["id"]));
+               DbManager::query(sprintf("update doc set locked= -1 where id=%d", $docInfo["id"]));
                 $rid[] = $docInfo["id"];
                 if ($docInfo["id"] == $doc->id) {
                     $doc->locked = - 1;
@@ -829,6 +677,7 @@ function ComputeVisibility($vis, $fvis, $ffvis = '')
 /**
  * return doc array of latest revision of initid
  *
+ * @deprecated use DocManager::getRawDocument()
  * @param string $dbaccess database specification
  * @param string $initid initial identifier of the  document
  * @param array $sqlfilters add sql supply condition
@@ -839,10 +688,10 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     global $action;
     
     if (!($initid > 0)) return false;
-    getDbid($dbaccess);
+    DbManager::getDbId();
     $table = "doc";
     if (!$fromid) {
-        simpleQuery($dbaccess, sprintf("select fromid from docread where initid=%d order by id desc", $initid) , $tf, true);
+        DbManager::query( sprintf("select fromid from docread where initid=%d order by id desc", $initid) , $tf, true);
         if (count($tf) > 0) {
             $fromid = $tf[0];
         }
@@ -857,11 +706,11 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     if ($userid) {
         $userMember = DocPerm::getMemberOfVector();
         $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 %s", $userMember, $table, $initid, $sqlcond);
-        simpleQuery($dbaccess, $sql, $result);
+        DbManager::query( $sql, $result);
         if (!$result) {
             // zombie doc ?
             $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' %s order by id desc limit 1", $userMember, $table, $initid, $sqlcond);
-            simpleQuery($dbaccess, $sql, $result);
+            DbManager::query( $sql, $result);
         }
         
         if ($result && (count($result) > 0)) {
@@ -886,7 +735,7 @@ function getLatestDocIds($dbaccess, $ids)
 {
     if (!is_array($ids)) return null;
     
-    $dbid = getDbid($dbaccess);
+    $dbid = DbManager::getDbId();
     foreach ($ids as $k => $v) $ids[$k] = intval($v);
     $sids = implode($ids, ",");
     $sql = sprintf("SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;", $sids);
@@ -910,13 +759,13 @@ function getLatestDocId($dbaccess, $initid)
 {
     if (is_array($initid)) return null;
     // first more quick if alive
-    simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' and locked != -1", $initid) , $id, true, true);
+    DbManager::query( sprintf("select id from docread where initid='%d' and locked != -1", $initid) , $id, true, true);
     if ($id > 0) return $id;
     // second for zombie document
-    simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid) , $id, true, true);
+    DbManager::query( sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid) , $id, true, true);
     if ($id > 0) return $id;
     // it is not really on initid
-    simpleQuery($dbaccess, sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid) , $id, true, true);
+    DbManager::query( sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid) , $id, true, true);
     if ($id > 0) return $id;
     return null;
 }
@@ -936,13 +785,13 @@ function getRevTDoc($dbaccess, $initid, $rev)
     $table = "docread";
     $fromid = getFromId($dbaccess, $initid);
     $sql = sprintf("select fromid from docread where initid=%d and revision=%d", $initid, $rev);
-    simpleQuery($dbaccess, $sql, $fromid, true, true);
+    DbManager::query( $sql, $fromid, true, true);
     if ($fromid > 0) $table = "doc$fromid";
     else if ($fromid == - 1) $table = "docfam";
     
     $userMember = DocPerm::getMemberOfVector();
     $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where initid=%d and revision=%d ", $userMember, $table, $initid, $rev);
-    simpleQuery($dbaccess, $sql, $result, false, true);
+    DbManager::query( $sql, $result, false, true);
     if ($result) {
         return $result;
     }
@@ -963,7 +812,7 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
     
     $initid = intval($initid);
     if (!($initid > 0)) return false;
-    $dbid = getDbid($dbaccess);
+    $dbid = DbManager::getDbId();
     $table = "docread";
     if ($fromid == - 1) $table = "docfam";
     
@@ -982,14 +831,14 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
  */
 function createAutoFolder(&$doc)
 {
-    $dir = createDoc($doc->dbaccess, getFamIdFromName($doc->dbaccess, "DIR"));
+    $dir = createDoc($doc->dbaccess, DocManager::getFamilyIdFromName( "DIR"));
     $err = $dir->Add();
     if ($err != "") return false;
     $dir->setValue("BA_TITLE", sprintf(_("root for %s") , $doc->title));
     $dir->setValue("BA_DESC", _("default folder"));
     $dir->setValue("FLD_ALLBUT", "1");
     $dir->setValue("FLD_FAM", $doc->title . "\n" . _("folder") . "\n" . _("search"));
-    $dir->setValue("FLD_FAMIDS", $doc->id . "\n" . getFamIdFromName($doc->dbaccess, "DIR") . "\n" . getFamIdFromName($doc->dbaccess, "SEARCH"));
+    $dir->setValue("FLD_FAMIDS", $doc->id . "\n" . DocManager::getFamilyIdFromName( "DIR") . "\n" . DocManager::getFamilyIdFromName( "SEARCH"));
     $dir->setValue("FLD_SUBFAM", "yes\nyes\nyes");
     $dir->Modify();
     $fldid = $dir->id;

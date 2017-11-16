@@ -1,16 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
 /**
  * Document Object Definition
  *
  * @author Anakeen
- * @version $Id: Class.Doc.php,v 1.562 2009/01/14 09:18:05 eric Exp $
- * @package FDL
- */
-/**
  */
 
 include_once ("Class.QueryDb.php");
@@ -47,6 +40,13 @@ define("MAXGDOCS", 20);
 
 define("REGEXPFILE", "([^\|]*)\|([0-9]*)\|?(.*)?");
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
+
+
+use \Dcp\Core\DbManager;
+use \Dcp\Core\ContextManager;
+use \Dcp\Core\DocManager;
+
+
 /**
  * Document Class
  */
@@ -366,7 +366,7 @@ class Doc extends DocCtrl
     public $lockdomainid;
     /**
      * domain where document is attached
-     * @var array
+     * @var string
      */
     public $domainid;
     /**
@@ -788,7 +788,7 @@ create unique index i_docir on doc(initid, revision);";
             // increment family sequence
             $this->nextSequence();
             $famDoc = $this->getFamilyDocument();
-            $incumbentName = getCurrentUser()->getIncumbentPrivilege($famDoc, 'create');
+            $incumbentName = ContextManager::getCurrentUser()->getIncumbentPrivilege($famDoc, 'create');
             $createComment = _("document creation");
             if ($incumbentName) $createComment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $createComment;
             $this->addHistoryEntry($createComment, DocHisto::INFO, "CREATE");
@@ -818,7 +818,7 @@ create unique index i_docir on doc(initid, revision);";
         ) , true); // to force also execute sql trigger
         if ($this->doctype != 'C') {
             // set to shared : because comes from createDoc
-            \Dcp\Core\SharedDocuments::set($this->id, $this);
+            \Dcp\Core\DocManager::cache()->addDocument($this);
         }
         if ($this->doctype != "T") {
             $err = $this->PostCreated();
@@ -958,7 +958,7 @@ create unique index i_docir on doc(initid, revision);";
     private function docIsCleanToModify()
     {
         if ($this->initid > 0 && $this->fromid > 0) {
-            simpleQuery($this->dbaccess, sprintf("select initid, id, revision, locked from only doc%d where initid=%d", $this->fromid, $this->initid) , $r);
+            DbManager::query(sprintf("select initid, id, revision, locked from only doc%d where initid=%d", $this->fromid, $this->initid) , $r);
             
             $cAlive = 0;
             $imAlive = false;
@@ -1194,9 +1194,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function convert($fromid, $prevalues = array())
     {
-        
-        $cdoc = createDoc($this->dbaccess, $fromid);
-        if (!$cdoc) return false;
+        $cdoc = DocManager::createDocument($fromid);
+
         if ($this->fromid == $cdoc->fromid) return false; // no convert if not needed
         if ($this->locked == - 1) return false; // not revised document
         if ($cdoc->fromid == 0) return false;
@@ -1218,7 +1217,7 @@ create unique index i_docir on doc(initid, revision);";
         
         $values = $this->getValues();
         $point = "dcp:convert" . $this->id;
-        $this->savePoint($point); // begin transaction in case of fail add
+        DbManager::savePoint($point); // begin transaction in case of fail add
         $err = $this->delete(true, false, true); // delete before add to avoid double id (it is not authorized)
         if ($err != "") return $err;
         
@@ -1227,7 +1226,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $err = $cdoc->Add(true, true);
         if ($err != "") {
-            $this->rollbackPoint($point);
+            DbManager::rollbackPoint($point);
             return $err;
         }
         
@@ -1245,9 +1244,9 @@ create unique index i_docir on doc(initid, revision);";
         
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family") , $f1from, $f2from));
         
-        $this->commitPoint($point);
-        if (\Dcp\Core\SharedDocuments::exists($this->id)) {
-            \Dcp\Core\SharedDocuments::set($this->id, $cdoc);
+        DbManager::commitPoint($point);
+        if (\Dcp\Core\DocManager::cache()->isDocumentIdInCache($this->id)) {
+            \Dcp\Core\DocManager::cache()->addDocument($cdoc);
         }
         
         return $cdoc;
@@ -1792,8 +1791,8 @@ create unique index i_docir on doc(initid, revision);";
             if (!$this->isAlive()) {
                 $err = $this->preUndelete();
                 if ($err) return $err;
-                $err = simpleQuery($this->dbaccess, sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
-                if ($err == "") {
+                DbManager::query( sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
+               
                     if (!$latestId) $err = sprintf(_("document %s [%d] is strange") , $this->title, $this->id);
                     else {
                         $previousName = $this->name;
@@ -1831,7 +1830,7 @@ create unique index i_docir on doc(initid, revision);";
                             $this->setLogicalName($previousName);
                         }
                     }
-                }
+                
             } else {
                 $err = sprintf(_("document %s [%d] is not in the trash") , $this->getTitle() , $this->id);
             }
@@ -2200,11 +2199,11 @@ create unique index i_docir on doc(initid, revision);";
             // special controlled view
             
             /**
-             * @var \Dcp\Family\CVDoc $cvdoc
+             * @var \Dcp\Core\CVDoc $cvdoc
              */
             $cvdoc = new_Doc($this->dbaccess, $this->cvid);
             $cvdoc = clone $cvdoc;
-            $cvdoc->Set($this);
+            $cvdoc->set($this);
             
             $view = $cvdoc->getPrimaryView($edition);
             
@@ -2262,7 +2261,7 @@ create unique index i_docir on doc(initid, revision);";
         if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return '';
         // modify visibilities if needed
         if ((!is_numeric($mid)) && ($mid != "")) {
-            $imid = getIdFromName($this->dbaccess, $mid);
+            $imid = DocManager::getIdFromName($mid);
             if (!$imid) {
                 $err = ErrorCode::getError('DOC1004', $argMid, $this->getTitle());
                 return $err;
@@ -2275,7 +2274,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) {
             if ($this->cvid) {
                 /**
-                 * @var \Dcp\Family\CVDoc $cvdoc
+                 * @var \Dcp\Core\CVDoc $cvdoc
                  */
                 $cvdoc = new_Doc($this->dbaccess, $this->cvid);
                 if ($cvdoc->isAlive()) {
@@ -2305,7 +2304,7 @@ create unique index i_docir on doc(initid, revision);";
                         $wdoc->set($this);
                     }
                     $mid = $wdoc->getStateMask($this->state);
-                    if ((!is_numeric($mid)) && ($mid != "")) $mid = getIdFromName($this->dbaccess, $mid);
+                    if ((!is_numeric($mid)) && ($mid != "")) $mid = DocManager::getIdFromName( $mid);
                 }
             }
         }
@@ -2321,7 +2320,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                     $maskFam = $mdoc->getRawValue("msk_famid");
                     if (!in_array($maskFam, $this->getFromDoc())) {
-                        $err = ErrorCode::getError('DOC1002', $argMid, $this->getTitle() , getNameFromId($this->dbaccess, $maskFam));
+                        $err = ErrorCode::getError('DOC1002', $argMid, $this->getTitle() , DocManager::getNameFromId( $maskFam));
                     } else {
                         $tvis = $mdoc->getVisibilities();
                         foreach ($tvis as $k => $v) {
@@ -2565,7 +2564,7 @@ create unique index i_docir on doc(initid, revision);";
         $tvid = $dvi->getVaultIds($this->id);
         if (count($tvid) == 0) return false;
         $sql = sprintf("select id_file from vaultdiskstorage where teng_state=%d and %s limit 1", \Dcp\TransformationEngine\Client::status_waiting, getSqlCond($tvid, "id_file", true));
-        simpleQuery($this->dbaccess, $sql, $waiting, true, true);
+        DbManager::query( $sql, $waiting, true, true);
         return ($waiting != false);
     }
     /**
@@ -2614,7 +2613,7 @@ create unique index i_docir on doc(initid, revision);";
         $value = '';
         if (is_array($va)) return "";
         $err = '';
-        if (getParam("TE_ACTIVATE") == "yes" && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if (ContextManager::getApplicationParam("TE_ACTIVATE") == "yes" && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
@@ -2777,6 +2776,7 @@ create unique index i_docir on doc(initid, revision);";
             $pref="";
             if (file_exists(sprintf("%s/Apps/GENERIC/generic_util.php", DEFAULT_PUBDIR))) {
                 include_once ("GENERIC/generic_util.php");
+                /** @noinspection PhpUndefinedFunctionInspection */
                 $pref = getFamilyParameter($action, $famid, "FREEDOM_EXPORTCOLS");
             }
             if ((!$forcedefault) && ($pref != "")) {
@@ -3504,7 +3504,7 @@ create unique index i_docir on doc(initid, revision);";
      * @api affect value for an attribute
      * @see Doc::setAttributeValue
      * @param string $attrid attribute identifier
-     * @param string $value new value for the attribute
+     * @param string|array $value new value for the attribute
      * @param int $index only for array values affect value in a specific row
      * @param int &$kvalue in case of error the index of error (for arrays)
      * @return string error message, if no error empty string
@@ -3703,7 +3703,7 @@ create unique index i_docir on doc(initid, revision);";
                                                 return sprintf(_("value [%s] is not a valid date") , $avalue);
                                             }
                                             
-                                            $localeconfig = getLocaleConfig();
+                                            $localeconfig = ContextManager::getLocaleConfig();
                                             if ($localeconfig !== false) {
                                                 $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateFormat']);
                                             } else {
@@ -3722,7 +3722,7 @@ create unique index i_docir on doc(initid, revision);";
                                                 return sprintf(_("value [%s] is not a valid timestamp") , $avalue);
                                             }
                                             
-                                            $localeconfig = getLocaleConfig();
+                                            $localeconfig = ContextManager::getLocaleConfig();
                                             if ($localeconfig !== false) {
                                                 $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
                                             } else {
@@ -4443,7 +4443,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($missingAttrIds) {
-                    $missingValues = getTDoc($this->dbaccess, $this->id, array() , $missingAttrIds);
+                    $missingValues = Dcp\Core\DocManager::getRawData( $this->id, $missingAttrIds, false);
                     foreach ($missingValues as $attrid => $value) {
                         $this->$attrid = $value;
                     }
@@ -4991,7 +4991,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function searchUTags($tag = "", $allrevision = true, $allusers = false)
     {
-        if (!$this->initid) return "";
+        if (!$this->initid) return [];
         include_once ("FDL/Class.DocUTag.php");
         $q = new QueryDb($this->dbaccess, "docUTag");
         if (!$allusers) $q->addQuery("uid=" . intval($this->userid));
@@ -5020,7 +5020,7 @@ create unique index i_docir on doc(initid, revision);";
                 $waskids = $wdoc->getDocumentWasks($this->state, $control);
                 foreach ($waskids as $k => $waskid) {
                     /**
-                     * @var \Dcp\Family\WASK $wask
+                     * @var \Dcp\Family\Wask $wask
                      */
                     $wask = new_doc($this->dbaccess, $waskid);
                     if ($wask->isAlive()) {
@@ -5136,11 +5136,11 @@ create unique index i_docir on doc(initid, revision);";
         $date = gettimeofday();
         $this->revdate = $date['sec']; // change rev date
         $point = "dcp:revision" . $this->id;
-        $this->savePoint($point);
+        DbManager::savePoint($point);
         if ($comment != '') $this->addHistoryEntry($comment, DocHisto::MESSAGE, "REVISION");
         $err = $this->modify();
         if ($err != "") {
-            $this->rollbackPoint($point);
+            DbManager::rollbackPoint($point);
             //$this->exec_query("rollback;");
             $this->select($this->id); // reset db values
             return $err;
@@ -5149,7 +5149,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isFixed()) {
             $err = sprintf("track error revision [%s]", pg_last_error($this->dbid));
             $this->addHistoryEntry($err, DocHisto::ERROR, "REVERROR");
-            $this->commitPoint($point);
+            DbManager::commitPoint($point);
             return $err;
         }
         
@@ -5172,18 +5172,20 @@ create unique index i_docir on doc(initid, revision);";
         $this->allocated = $allocated; // report the allocate
         $this->revision = $this->revision + 1;
         $this->postitid = $postitid;
-        
+
+        // Remove last revision from cache to have coherent index.
+        \Dcp\Core\DocManager::cache()->removeDocumentById($olddocid);
         $err = $this->Add();
         if ($err != "") {
             // restore last revision
             // $this->exec_query("rollback;");
-            $this->rollbackPoint($point);
+            DbManager::rollbackPoint($point);
             
             $this->select($olddocid); // reset db values
             return $err;
         }
         
-        $this->commitPoint($point);
+        DbManager::commitPoint($point);
         
         $this->refresh(); // to recompute possible dynamic profil variable
         if ($this->dprofid > 0) $this->setProfil($this->dprofid); // recompute profil if needed
@@ -5211,7 +5213,7 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
-                        $d = getDocObject($this->dbaccess, $revs[$i]);
+                        $d = Dcp\Core\DocManager::getDocumentFromRawDocument( $revs[$i]);
                         if ($d) $d->_destroy(true);
                     }
                 }
@@ -5409,25 +5411,34 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->duplicate($temporary, $control, $linkfld, $copyfile);
     }
+
     /**
      * return the copy (duplication) of the document
      * the copy is created to the database
      * the profil of the copy is the default profil according to his family
      * the copy is not locked and if it is related to a workflow, his state is the first state
+     *
      * @api duplicate document
+     *
      * @param bool $temporary if true the document create it as temporary document
-     * @param bool $control if false don't control acl create (generaly use when temporary is true)
-     * @param bool $linkfld if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
-     * @param bool $copyfile if true duplicate files of the document
+     * @param bool $control   if false don't control acl create (generaly use when temporary is true)
+     * @param bool $linkfld   if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
+     * @param bool $copyfile  if true duplicate files of the document
+     *
      * @return Doc|string in case of error return a string that indicate the error
+     * @throws \Dcp\Exception
      */
     final public function duplicate($temporary = false, $control = true, $linkfld = false, $copyfile = false)
     {
         if ($this->fromid == '') {
             throw new Dcp\Exception(ErrorCode::getError('DOC0203'));
         }
-        $copy = createDoc($this->dbaccess, $this->fromid, $control);
-        if (!is_object($copy)) return false;
+        try {
+            $copy = DocManager::createDocument($this->fromid, $control);
+        } catch (\Dcp\Core\Exception $e) {
+             return false;
+        }
+
         /**
          * @var Doc $copy
          */
@@ -5542,7 +5553,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Put document in an archive
-     * @param \Dcp\Family\ARCHIVING $archive the archive document
+     * @param \Doc $archive the archive document
      * @return string error message
      */
     final public function archive(&$archive)
@@ -5575,7 +5586,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * Delete document in an archive
-     * @param \Dcp\Family\ARCHIVING $archive the archive document
+     * @param \Doc $archive the archive document
      *
      * @return string error message
      */
@@ -5796,6 +5807,7 @@ create unique index i_docir on doc(initid, revision);";
      * if no icon found return doc.png
      * @param string $idicon
      * @param int $size width size
+     * @param int $otherId icon for other document id
      * @return string icon url
      */
     final public function getIcon($idicon = "", $size = null, $otherId = null)
@@ -5831,9 +5843,8 @@ create unique index i_docir on doc(initid, revision);";
     final public function changeIcon($icon)
     {
         $point = "dcp:changeIcon";
-        if (($err = $this->savePoint($point)) != '') {
-            return $err;
-        }
+
+        DbManager::savePoint($point);
         
         if (preg_match(PREGEXPFILE, $icon, $reg)) {
             $fileData = \Dcp\VaultManager::getFileInfo($reg["vid"]);
@@ -5852,28 +5863,19 @@ create unique index i_docir on doc(initid, revision);";
                 $qt[] = sprintf("UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))", pg_escape_identifier($tableName) , pg_escape_literal($icon) , pg_escape_literal($fromid) , pg_escape_literal($this->icon));
                 $qt[] = sprintf("ALTER TABLE %s ENABLE TRIGGER ALL", pg_escape_identifier($tableName));
                 $qt[] = sprintf("UPDATE DOCREAD SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))", pg_escape_literal($icon) , pg_escape_literal($fromid) , pg_escape_literal($this->icon));
-                if (($err = simpleQuery($this->dbaccess, implode("; ", $qt) , $res, false, false, false)) != '') {
-                    $this->rollbackPoint($point);
-                    return $err;
-                }
+                DbManager::query( implode("; ", $qt));
             } else {
                 $q = sprintf("UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND (icon IS NULL)", pg_escape_identifier($tableName) , pg_escape_literal($icon) , pg_escape_literal($fromid));
-                if (($err = simpleQuery($this->dbaccess, $q, $res, false, false, false)) != '') {
-                    $this->rollbackPoint($point);
-                    return $err;
-                }
+                DbManager::query( $q);
             }
         }
         //    $this->title = AddSlashes($this->title);
         $this->icon = $icon;
         if (($err = $this->Modify()) != '') {
-            $this->rollbackPoint($point);
+            DbManager::rollbackPoint($point);
             return $err;
         }
-        if (($err = $this->commitPoint($point)) != '') {
-            $this->rollbackPoint($point);
-            return $err;
-        }
+        DbManager::commitPoint($point);
         
         $this->UpdateVaultIndex();
         return '';
@@ -6348,7 +6350,7 @@ create unique index i_docir on doc(initid, revision);";
                 switch ($target) {
                     case "mail":
                         $js = false;
-                        $mUrl = getParam("CORE_MAILACTIONURL");
+                        $mUrl = ContextManager::getApplicationParam("CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
                                 $mDoc = new_doc($this->dbaccess, $id);
@@ -6358,7 +6360,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ul = htmlspecialchars($mDoc->urlWhatEncode($mUrl));
                             $specialUl = true;
                         } else {
-                            $ul = htmlspecialchars(GetParam("CORE_MAILACTIONURL"));
+                            $ul = htmlspecialchars(ContextManager::getApplicationParam("CORE_MAILACTIONURL"));
                             $ul.= "&amp;id=$id";
                         }
                         break;
@@ -6376,7 +6378,7 @@ create unique index i_docir on doc(initid, revision);";
                     $jslatest = ($latest) ? 'true' : 'false';
                     $ec = getHttpVars("ext:targetRelation", 'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:' . $jslatest . '})');
                     if ($ec) {
-                        if (!is_numeric($id)) $id = getIdFromName($this->dbaccess, $id);
+                        if (!is_numeric($id)) $id = DocManager::getIdFromName( $id);
                         else if ($latest) {
                             $lid = getLatestDocId($this->dbaccess, $id);
                             if ($lid) $id = $lid;
@@ -6385,10 +6387,12 @@ create unique index i_docir on doc(initid, revision);";
                         $ecu = str_replace("'", '"', $ec);
                         $ajs = "";
                         if ($viewIcon) {
-                            simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
+                            DbManager::query( sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                             $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                         }
-                        $a = "<a $ajs onclick='parent.$ecu'>$title</a>";
+                        $afmt='<a %s '; // Need to cut to avoid PHPStorm warning
+                        $afmt .="onclick='%s.parent'>%s</a>";
+                        $a = sprintf($afmt, $ajs, $ecu, $title);
                     } else {
                         if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                         elseif ($docrev != "fixed") {
@@ -6415,7 +6419,7 @@ create unique index i_docir on doc(initid, revision);";
                     
                     $ajs.= sprintf(' documentId="%s" ', $id);
                     if ($viewIcon) {
-                        simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
+                        DbManager::query( sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
                         $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
                     }
                     $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
@@ -6459,16 +6463,21 @@ create unique index i_docir on doc(initid, revision);";
         $this->formaterLevel--;
         return $r;
     }
+
     /**
      * return an html anchor to a document
+     *
      * @see Doc::getHtmlValue
+     *
      * @param string $attrid attribute identifier
      * @param string $target html target in case of link
-     * @param int $htmllink
-     * @param $index
-     * @param bool $entities
-     * @param bool $abstract
+     * @param int    $htmllink
+     * @param int    $index
+     * @param bool   $entities
+     * @param bool   $abstract
+     *
      * @return string
+     * @throws \Dcp\Exception
      */
     final public function getHtmlAttrValue($attrid, $target = "_self", $htmllink = 2, $index = - 1, $entities = true, $abstract = false)
     {
@@ -6760,7 +6769,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!empty($v["using"])) {
                 
                 if ($v["using"][0] == "@") {
-                    $v["using"] = getParam(substr($v["using"], 1));
+                    $v["using"] = ContextManager::getApplicationParam(substr($v["using"], 1));
                 }
                 $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
             } else {
@@ -6904,9 +6913,6 @@ create unique index i_docir on doc(initid, revision);";
                             
                         }
                     }
-                } else {
-                    // TODO raise exception
-                    
                 }
             }
         }
@@ -6947,14 +6953,14 @@ create unique index i_docir on doc(initid, revision);";
         
         if ($this->prelid > 0) {
             
-            $d = getTDoc($this->dbaccess, $this->prelid);
+            $d = DocManager::getRawData( $this->prelid, ["initid", "title", "prelid", "profid"]);
             $fini = false;
             while (!$fini) {
                 if ($d) {
                     if (controlTDoc($d, "view")) {
                         if (!in_array($d["initid"], array_keys($tr))) {
                             $tr[$d["initid"]] = $d["title"];
-                            if ($d["prelid"] > 0) $d = getTDoc($this->dbaccess, $d["prelid"]);
+                            if ($d["prelid"] > 0) $d = DocManager::getRawData( $d["prelid"], ["initid", "title", "prelid", "profid"]);
                             else $fini = true;
                         } else $fini = true;
                     } else $fini = true;
@@ -7501,8 +7507,8 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * to sort answer by response
-     * @param string $a
-     * @param string $b
+     * @param string[] $a
+     * @param string[] $b
      * @return int
      */
     static function _cmpanswers($a, $b)
@@ -7562,7 +7568,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->doctype == 'Z') $this->lay->eSet("moddatelabel", _("suppression date"));
             else $this->lay->eSet("moddatelabel", _("revision date"));
         }
-        if (GetParam("CORE_LANG") == "fr_FR") { // date format depend of locale
+        if (ContextManager::getApplicationParam("CORE_LANG") == "fr_FR") { // date format depend of locale
             $this->lay->eSet("revdate", strftime("%a %d %b %Y %H:%M", $this->revdate));
         } else {
             $this->lay->eSet("revdate", strftime("%x %T", $this->revdate));
@@ -7739,9 +7745,6 @@ create unique index i_docir on doc(initid, revision);";
                             $v->setOption("multiple", "yes");
                             //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
                             $this->lay->setColumn("V_" . strtoupper($v->id) , $ovalues);
-                        } else {
-                            //$this->lay->Set("V_" . strtoupper($v->id), $this->GetOOoValue($v, $value));
-                            
                         }
                     }
                 } else $this->lay->Set("V_" . strtoupper($v->id) , $this->GetHtmlValue($v, $value, $target, $ulink));
@@ -7823,22 +7826,22 @@ create unique index i_docir on doc(initid, revision);";
             return (sprintf(_("Logical name %s already set for %s. Use reset parameter to overhide it") , $name, $this->title));
         } else {
             // verify not use yet
-            $d = getTDoc($this->dbaccess, $name);
+            $d = DocManager::getRawDocument($name);
+
             if ($d && $d["doctype"] != 'Z') {
                 return sprintf(_("Logical name %s already use in document %s") , $name, $d["title"]);
             } elseif (!$verifyOnly) {
                 
                 if ($this->name) {
-                    simpleQuery($this->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
+                    DbManager::query( sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
                 }
-                $this->name = $name;
-                
-                simpleQuery("", sprintf("update %s set name='%s' where initid=%d", pg_escape_string($this->dbtable) , pg_escape_string($name) , $this->initid));
-                simpleQuery("", sprintf("select name from docname where id=%d", $this->id) , $dbdocname, true, true);
+		$this->name = $name;
+                DbManager::query( sprintf("update %s set name='%s' where initid=%d", pg_escape_string($this->dbtable) , pg_escape_string($name) , $this->initid));
+                DbManager::query( sprintf("select name from docname where id=%d", $this->id) , $dbdocname, true, true);
                 
                 if (!$dbdocname) {
                     $sql = sprintf("delete from docname where name='%s';insert into docname (id,fromid,name) select id, fromid, name from docread where name='%s' and locked != -1", pg_escape_string($name) , pg_escape_string($name));
-                    simpleQuery("", $sql);
+                    DbManager::query( $sql);
                 }
             }
         }
@@ -8112,12 +8115,11 @@ create unique index i_docir on doc(initid, revision);";
     final public function setFamidInLayout()
     {
         // add IDFAM_ attribute in layout
-        global $tFamIdName;
-        
-        if (!isset($tFamIdName)) getFamIdFromName($this->dbaccess, "-");
-        
-        reset($tFamIdName);
-        foreach ($tFamIdName as $k => $v) {
+        DbManager::query( "select id, name from docfam", $famids);
+
+        foreach ($famids as $famid) {
+            $k=$famid["name"];
+            $v=$famid["id"];
             $this->lay->set("IDFAM_$k", $v);
         }
     }
@@ -8366,8 +8368,9 @@ create unique index i_docir on doc(initid, revision);";
                         // $value=htmlspecialchars($this->GetValue($i));
                         $value = $this->getRawValue($i);
                         $textlist = $this->rawValueToArray($value);
-                        
-                        while ($text = each($textlist)) {
+
+
+                        foreach($textlist as $text) {
                             $currentFrameId = $listattr[$i]->fieldSet->id;
                             $tableframe[$v]["id"] = $listattr[$i]->id;
                             $tableframe[$v]["value"] = $text[1];
@@ -8642,7 +8645,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getParam($param, $defv = "")
     {
         deprecatedFunction();
-        return getParam($param, $defv);
+        return ContextManager::getApplicationParam($param, $defv);
     }
     //----------------------------------------------------------------------
     //   USUAL METHODS USE FOR CALCULATED ATTRIBUTES OR FUNCTION SEARCHES
@@ -8689,7 +8692,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             return implode("\n", $ttitle);
         } else {
-            if (!is_numeric($id)) $id = getIdFromName($this->dbaccess, $id);
+            if (!is_numeric($id)) $id = DocManager::getIdFromName( $id);
             if ($id > 0) {
                 $title = getDocTitle($id, $latest);
                 if (!$title) return " "; // delete title
@@ -8826,39 +8829,16 @@ create unique index i_docir on doc(initid, revision);";
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
         if ((!is_numeric($docid)) && ($docid != "")) {
-            $docid = getIdFromName($this->dbaccess, $docid);
+            $docid = DocManager::getIdFromName( $docid);
         }
         if (intval($docid) > 0) {
             if (strpos(':', $attrid) === false) {
                 $attrid = strtolower($attrid);
-                if ($latest) {
-                    $rawDoc = getTDoc($this->dbaccess, $docid, array() , array(
-                        "initid",
-                        "id",
-                        "locked",
-                        $attrid
-                    ));
-                    if ($rawDoc["locked"] == - 1) {
-                        $docid = getLatestDocId($this->dbaccess, $rawDoc["initid"]);
-                        $rawDoc = getTDoc($this->dbaccess, $docid, array() , array(
-                            $attrid
-                        ));
-                    }
-                } else {
-                    $rawDoc = getTDoc($this->dbaccess, $docid, array() , array(
-                        $attrid
-                    ));
-                }
-                if ($rawDoc) {
-                    return $rawDoc[$attrid];
-                }
+                return DocManager::getRawValue($docid, $attrid, $latest);
             } else {
-                $doc = new_Doc($this->dbaccess, $docid);
-                if ($doc->isAlive()) {
-                    if ($latest && ($doc->locked == - 1)) {
-                        $ldocid = $doc->getLatestId();
-                        if ($ldocid != $doc->id) $doc = new_Doc($this->dbaccess, $ldocid);
-                    }
+                $doc = DocManager::getDocument( $docid, $latest);
+                if ($doc) {
+                    DocManager::cache()->addDocument($doc);
                     return $doc->getRValue($attrid, $def, $latest);
                 }
             }
@@ -8875,10 +8855,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getDocProp($docid, $propid, $latest = false)
     {
-        if (intval($docid) > 0) {
-            if ($latest) $tdoc = getTDoc($this->dbaccess, $docid);
-            else $tdoc = getLatestTDoc($this->dbaccess, $docid);
-            return $tdoc[strtolower($propid) ];
+        if ($docid) {
+            $propid=strtolower($propid);
+            $data = DocManager::getRawData($docid,[$propid], $latest );
+            return $data[$propid];
         }
         return "";
     }
@@ -8889,9 +8869,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function getUserName($withfirst = false)
     {
-        global $action;
-        if ($withfirst) return $action->user->firstname . " " . $action->user->lastname;
-        return $action->user->lastname;
+        $user=ContextManager::getCurrentUser();
+        if ($withfirst) return $user->firstname . " " . $user->lastname;
+        return $user->lastname;
     }
     /**
      * return the user document identifier associated to the current account
@@ -8899,9 +8879,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function userDocId()
     {
-        global $action;
-        if ($action) {
-            return $action->user->fid;
+        $user=ContextManager::getCurrentUser();
+        if ($user) {
+            return $user->fid;
         }
         return 0;
     }
@@ -8936,8 +8916,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function getSystemUserId()
     {
-        global $action;
-        return $action->user->id;
+        return ContextManager::getCurrentUser()->id;
     }
     /**
      * return a specific attribute of the current user document
@@ -8947,7 +8926,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getMyAttribute($idattr)
     {
-        $mydoc = new_Doc($this->dbaccess, $this->getUserId());
+        $mydoc = DocManager::getDocument( $this->getUserId());
+        DocManager::cache()->addDocument($mydoc);
         
         return $mydoc->getRawValue($idattr);
     }
@@ -8983,8 +8963,8 @@ create unique index i_docir on doc(initid, revision);";
         $dvi = new DocVaultIndex($this->dbaccess);
         
         $point = uniqid("dcp:updateVaultIndex");
-        $this->savePoint($point);
-        $this->lockPoint($this->initid, "UPVI");
+        DbManager::savePoint($point);
+        DbManager::lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $dvi->DeleteDoc($this->id);
         
@@ -8999,7 +8979,7 @@ create unique index i_docir on doc(initid, revision);";
                 $vids[] = intval($vid);
             }
         }
-        $this->commitPoint($point);
+        DbManager::commitPoint($point);
         if (count($vids) > 0) {
             \Dcp\VaultManager::setFilesPersitent($vids);
         }
@@ -9073,15 +9053,15 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var Dcp\Family\Timer $t
                  */
-                $t = new_doc($this->dbaccess, $v["timerid"]);
-                if ($t->isAlive()) {
+                $t = DocManager::getDocument( $v["timerid"]);
+                if ($t && $t->isAlive()) {
                     $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate") , " "));
                     if ($dynDateAttr) {
                         $execdate = $this->getRawValue($dynDateAttr);
                         $previousExecdate = $this->getOldRawValue($dynDateAttr);
                         // detect if need reset timer : when date has changed
                         if ($previousExecdate !== false && ($execdate != $previousExecdate)) {
-                            if ($v["originid"]) $ori = new_doc($this->dbaccess, $v["originid"]);
+                            if ($v["originid"]) $ori = DocManager::getDocument( $v["originid"]);
                             else $ori = null;
                             $this->unattachTimer($t);
                             $this->attachTimer($t, $ori);
@@ -9104,7 +9084,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Dcp\Family\TIMER $timer
          */
-        $timer = createTmpDoc($this->dbaccess, "TIMER");
+        $timer = Dcp\Core\DocManager::createTemporaryDocument( "TIMER");
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {
@@ -9218,7 +9198,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getParentFolderIds()
     {
         $fldids = array();
-        simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
+        DbManager::query( sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
         return $fldids;
     }
     /**
@@ -9233,7 +9213,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
             else {
                 if ($this->locked > 0) {
-                    simpleQuery($this->dbaccess, sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
+                    DbManager::query( sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
                     
                     if ($lockUserId && (!$this->isInDomain(true, $lockUserId))) {
                         $this->lockdomainid = '';
@@ -9358,7 +9338,7 @@ create unique index i_docir on doc(initid, revision);";
             $helpId = $help[0]["id"];
         }
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return new_Doc($this->dbaccess, $helpId);
+        return DocManager::getDocument( $helpId);
     }
     /**
      * Get the list of compatible search methods for a given attribute type
@@ -9518,11 +9498,11 @@ create unique index i_docir on doc(initid, revision);";
         if (!is_numeric($avalue)) {
             if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
                 if ($oattr->getOption("docrev", "latest") == "latest") {
-                    $res = getInitidFromName($avalue);
+                    $res = DocManager::getInitidFromName($avalue);
                 } else {
-                    $res = getIdFromName($this->dbaccess, $avalue);
+                    $res = DocManager::getIdFromName( $avalue);
                 }
-                if ($res == '' && !in_array($avalue, $knownLogicalNames)) {
+                if (!$res && !in_array($avalue, $knownLogicalNames)) {
                     $unknownLogicalNames[] = $avalue;
                 }
             } else {
@@ -9535,11 +9515,11 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($mids as $llname) {
                         if (!is_numeric($llname)) {
                             if ($oattr->getOption("docrev", "latest") == "latest") {
-                                $llid = getInitidFromName($llname);
+                                $llid = DocManager::getInitidFromName($llname);
                             } else {
-                                $llid = getIdFromName($this->dbaccess, $llname);
+                                $llid = DocManager::getIdFromName( $llname);
                             }
-                            if ($llid == '' && !in_array($llname, $knownLogicalNames)) {
+                            if (!$llid && !in_array($llname, $knownLogicalNames)) {
                                 $unknownLogicalNames[] = $llname;
                             }
                             $tlids[] = $llid ? $llid : $llname;
@@ -9591,7 +9571,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($oneAttributeAtLeast) {
             $datesValues = array_unique($datesValues);
             if ($withLocale) {
-                $currentLocale = getParam("CORE_LANG", "fr_FR");
+                $currentLocale = ContextManager::getApplicationParam("CORE_LANG", "fr_FR");
                 $lang = getLocales();
 
                 $locales = array_keys($lang);
@@ -9605,7 +9585,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             foreach ($locales as $klang) {
                 if ($withLocale) {
-                    setLanguage($klang);
+                    ContextManager::setLanguage($klang);
                 }
                 $moreSearchValues[] = $this->getTitle();
                 $r = $fmt->render();
@@ -9647,7 +9627,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     /**
      * @api Hook to add values used in general searches
-     * @return string
+     * @return string[]
      */
     protected function getCustomSearchValues()
     {

@@ -1,0 +1,23 @@
+{
+    "requestParameters" : {
+        "slice" :   10,
+        "offset" :  0,
+        "length" :  1,
+        "orderBy" : "revision desc, id desc"
+    },
+    "uri" :               "%baseURL%documents/TST_APIBASE_TEST_1/revisions/",
+    "revisions" :         [
+        {
+            "properties" : {
+                "id" :       "%test1Initid%",
+                "title" :    "test 1",
+                "icon" :     "api/v1/images/assets/sizes/24x24c/doc.png",
+                "initid" :   "%test1Initid%",
+                "name" :     "TST_APIBASE_TEST_1",
+                "revision" : 0
+            },
+
+            "uri" :        "%baseURL%documents/%test1Initid%/revisions/0.json"
+        }
+    ]
+}

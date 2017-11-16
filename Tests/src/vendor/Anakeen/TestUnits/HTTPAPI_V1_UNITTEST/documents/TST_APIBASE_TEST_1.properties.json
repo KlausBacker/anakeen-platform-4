@@ -1,0 +1,13 @@
+{
+    "document" : {
+        "properties" : {
+            "id" :       %test1Id%,
+            "title" :    "test 1",
+            "icon" :     "api/v1/images/assets/sizes/24x24c/doc.png",
+            "initid" :   %test1Id%,
+            "name" :     "TST_APIBASE_TEST_1",
+            "revision" : 0
+        },
+        "uri" :        "%baseURL%documents/%test1Id%.json"
+    }
+}

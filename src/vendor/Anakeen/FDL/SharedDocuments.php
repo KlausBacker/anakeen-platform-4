@@ -7,6 +7,7 @@
 namespace Dcp\Core;
 /**
  * Manage Shared documents through the global array $gdocs
+ * @deprecated use Dcp\Core\DocManager::cache()
  */
 class SharedDocuments
 {
@@ -49,6 +50,7 @@ class SharedDocuments
 
     /**
      * Add or update an object
+     * @deprecated use Dcp\Core\DocManager::cache()->addDocument
      * @param string $key object identifier
      * @param \Doc $item object to add or update
      * @param bool $force set to true to add without limits
@@ -61,9 +63,12 @@ class SharedDocuments
             return false;
         }
         if (count($gdocs) < self::$limit || $force === true) {
+
+            \Dcp\Core\DocManager::cache()->addDocument($item);
             $gdocs[$key] = & $item;
             return true;
         }
+
         
         return false;
     }
@@ -83,6 +88,7 @@ class SharedDocuments
     }
     /**
      * unset all objects referenced in shared object
+     * @deprecated use  \Dcp\Core\SharedDocuments::clear();
      * @return bool
      */
     public static function clear()

@@ -7,6 +7,8 @@
 namespace Dcp\Pu;
 
 use Dcp\ApiUsage\Exception;
+use Dcp\Core\DocManager;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -73,12 +75,15 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
      */
     public function testHtmlFormat($docName, array $setValues, array $expectedValues, $target = "_self", $htmllink = true, $index = - 1, $useEntitities = true, $abstractMode = false)
     {
+
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
-        $d = new_doc(self::$dbaccess, $docName);
+        $d = DocManager::getDocument($docName, true, false);
+
         $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $docName));
         foreach ($setValues as $attrid => $newValue) {
             $d->setAttributeValue($attrid, $newValue);
         }
+
         $d->store(); // verify database record
         $ht = new \DocHtmlFormat($d);
         foreach ($expectedValues as $attrid => $expectedValue) {

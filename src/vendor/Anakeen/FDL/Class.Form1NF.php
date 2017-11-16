@@ -176,7 +176,7 @@ class Form1NF
         if ($this->freedom_dbaccess == "") {
             $action->error(_("Error: empty action->dbaccess"));
         }
-        $this->freedom_pgservice = getServiceFreedom();
+        $this->freedom_pgservice = getServiceCore();
         
         $this->tmp_dbaccess = sprintf("service=%s", $this->params['tmppgservice']);
     }

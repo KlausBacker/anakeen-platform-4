@@ -1,0 +1,18 @@
+{
+    "document" : {
+        "properties" : {
+            "id" :       %updatedId%,
+            "title" :    "Updated",
+            "icon" :     "api/v1/images/assets/sizes/24x24c/doc.png",
+            "initid" :   %updatedInitid%,
+            "name" :     "TST_APIBASE_UPDATED",
+            "revision" : 0
+        },
+        "attributes" : {
+            "tst_apibase_title" : {
+                "value" :        "Updated",
+                "displayValue" : "Updated"
+            }
+        }
+    }
+}

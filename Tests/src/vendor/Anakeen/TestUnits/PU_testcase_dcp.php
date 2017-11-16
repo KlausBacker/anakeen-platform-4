@@ -12,6 +12,10 @@ namespace Dcp\Pu;
 
 
 
+use Dcp\Core\ContextManager;
+use Dcp\Core\DbManager;
+use Dcp\Core\DocManager;
+
 require_once __DIR__."/../WHAT/Lib.Prefix.php";
 require_once 'WHAT/autoload.php';
 include_once ("FDL/Class.Doc.php"); // to include some libraries
@@ -32,7 +36,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     /**
      * User keep in cache during the sudo
      *
-     * @var string
+     * @var \Account
      */
     protected static $user = null;
     /**
@@ -102,10 +106,11 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function connectUser($login = "admin")
     {
-        global $action;
+        $action=ContextManager::getCurrentAction();
         if (!$action) {
-            WhatInitialisation();
-            setSystemLogin($login);
+            $u=new \Account();
+            $u->setLoginName($login);
+            \Dcp\Core\ContextManager::initContext($u);
         }
     }
     /**
@@ -145,8 +150,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected function _DBGetValue($sql)
     {
-        $err = simpleQuery(self::$dbaccess, $sql, $sval, true, true);
-        $this->assertEquals("", $err, sprintf("database select error", $sql));
+        DbManager::query($sql, $sval, true, true);
         return $sval;
     }
     /**
@@ -156,7 +160,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function resetDocumentCache()
     {
-        \Dcp\Core\SharedDocuments::clear();
+        \Dcp\Core\DocManager::cache()->clear();
     }
     /**
      * use another user
@@ -171,10 +175,11 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         if (!$u->setLoginName($login)) {
             throw new \Dcp\Exception("login $login not exist");
         }
-        
-        global $action;
-        self::$user = $action->user;
-        $action->user = $u;
+
+        self::$user = ContextManager::getCurrentUser();
+
+
+        ContextManager::sudo($u);
         self::resetDocumentCache();
         return $u;
     }
@@ -185,16 +190,15 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function exitSudo()
     {
-        global $action;
         if (self::$user) {
-            $action->user = self::$user;
+            ContextManager::sudo(self::$user);
             self::$user = null;
         }
     }
     /**
      * Import a file document description
      *
-     * @param string $file file path
+     * @param string|string[] $file file path
      * @return array
      * @throws \Dcp\Exception
      */
@@ -297,7 +301,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     public function requiresCoreParamEquals($paramName, $requiredValue, $markTestIncomplete = true)
     {
-        $value = getParam($paramName, '');
+        $value = ContextManager::getApplicationParam($paramName, '');
         if ($value === $requiredValue) {
             return true;
         }
@@ -322,7 +326,7 @@ class LateNameResolver
     }
     private function resolve($value)
     {
-        $id = getIdFromName('', $value);
+        $id = DocManager::getIdFromName( $value);
         if (is_numeric($id)) {
             return (string)$id;
         }

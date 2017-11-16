@@ -221,6 +221,7 @@ class Dir extends PDir
      */
     function preRemoveDocument($docid, $multiple = false)
     {
+        return "";
     }
     /**
      * hook method use after unlink document in folder

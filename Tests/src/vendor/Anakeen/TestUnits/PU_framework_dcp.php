@@ -9,19 +9,21 @@ namespace Dcp\Pu;
 //require_once 'PHPUnit/Framework.php';
 
 
+use Dcp\Core\ContextManager;
+
 $pubdir = ".";
 set_include_path(get_include_path() . PATH_SEPARATOR . "$pubdir/DCPTEST:$pubdir/WHAT");
 include_once ("FDL/Class.Doc.php");
-class FrameworkDcp extends \PHPUnit\Framework\TestSuite
+class FrameworkDcp extends \PHPUnit_Framework_TestSuite
 {
     protected function setUp()
     {
-        
-        global $action;
+        $action=ContextManager::getCurrentAction();
 
         if (!$action) {
-            WhatInitialisation();
-            setSystemLogin("admin");
+            $u=new \Account();
+            $u->setLoginName("admin");
+            \Dcp\Core\ContextManager::initContext($u);
         }
     }
     
@@ -32,4 +34,4 @@ class FrameworkDcp extends \PHPUnit\Framework\TestSuite
     
 
 }
-?>
+

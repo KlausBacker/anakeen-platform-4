@@ -18,7 +18,6 @@
 include_once ('Class.Log.php');
 include_once ('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.58 2008/12/29 17:05:38 eric Exp $';
 /**
  * This class is a generic DB Class that can be used to create objects
  * based on the description of a DB Table. More Complex Objects will
@@ -112,7 +111,7 @@ class DbObj
      */
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        if (!$dbaccess) $dbaccess = getDbAccess();
+        if (!$dbaccess) $dbaccess = \Dcp\Core\DbManager::getDbAccess();
         $this->dbaccess = $dbaccess;
         $this->init_dbid();
         //global ${$this->oname};
@@ -137,7 +136,7 @@ class DbObj
         }
         $this->selectstring = substr($this->selectstring, 0, strlen($this->selectstring) - 1);
         if (self::$sqlStrict === null) {
-            self::$sqlStrict = (getParam('CORE_SQLSTRICT') != 'no');
+            self::$sqlStrict = (\Dcp\Core\ContextManager::getApplicationParam('CORE_SQLSTRICT') != 'no');
         }
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {
@@ -194,8 +193,7 @@ class DbObj
             }
         } else {
             if (isset($this->id_fields[0])) {
-                $k = $this->id_fields[0];
-                //$this->$k = $id;
+
                 $wherestr = "where " . $this->dbtable . "." . $this->id_fields[0] . "=E'" . pg_escape_string($id) . "'";
             } else {
                 $wherestr = "";
@@ -212,7 +210,7 @@ class DbObj
         
         $sql = $sql . " " . $wherestr;
         
-        $resultat = $this->exec_query($sql);
+        $this->exec_query($sql);
         
         if ($this->numrows() > 0) {
             $res = $this->fetch_array(0);
@@ -261,7 +259,7 @@ class DbObj
         
         $sql = "select $sqlselect from $fromstr where $sqlwhere";
         
-        $resultat = $this->exec_query($sql);
+        $this->exec_query($sql);
         
         if ($this->numrows() > 0) {
             $res = $this->fetch_array(0);
@@ -538,8 +536,6 @@ class DbObj
         if ($this->dbid == - 1) return FALSE;
         if (!is_array($tcopy)) return FALSE;
         $msg = '';
-        $sfields = implode(",", $this->fields);
-        $sql = "copy " . $this->dbtable . "($sfields) from STDIN;\n";
         
         $trow = array();
         foreach ($tcopy as $kc => $vc) {
@@ -608,9 +604,9 @@ class DbObj
         
         if ($this->dbaccess == "") {
             // don't test if file exist or must be searched in include_path
-            $this->dbaccess = getDbAccess();
+            $this->dbaccess = \Dcp\Core\DbManager::getDbAccess();
         }
-        $this->dbid = getDbid($this->dbaccess);
+        $this->dbid = Dcp\Core\DbManager::getDbid();
         if ($this->dbid == 0) error_log(__METHOD__ . "null dbid");
         return $this->dbid;
     }
@@ -907,39 +903,18 @@ class DbObj
     /**
      * set a database transaction save point
      * @param string $point point identifier
+     * @deprecated use \Dcp\Core\DbManager::savePoint
      * @throws \Dcp\Exception
      * @return string error message
      */
     public function savePoint($point)
     {
-        if (!$this->dbid) {
-            $err = sprintf("dbid is null cannot save point %s", $point);
-            error_log(__METHOD__ . ":$err");
-            return $err;
+        try {
+            \Dcp\Core\DbManager::savePoint($point);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        if ($this->debug) error_log('[DBG]' . 'BEFORE' . __METHOD__ . $this->dbid);
-        $err = '';
-        
-        $idbid = intval($this->dbid);
-        
-        if (empty(self::$savepoint[$idbid])) {
-            self::$savepoint[$idbid] = array(
-                $point
-            );
-            $err = $this->exec_query("begin");
-            if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(1) $point");
-        } else {
-            self::$savepoint[$idbid][] = $point;
-            if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(2) $point");
-        }
-        
-        if (!$err) {
-            $err = $this->exec_query(sprintf('savepoint "%s"', pg_escape_string($point)));
-        }
-        
-        if ($this->debug) error_log('[DBG]' . 'AFTER' . __METHOD__ . $idbid . ":$point:" . implode(',', self::$savepoint[$idbid]));
-        if ($err) error_log(__METHOD__ . ":$err");
-        return $err;
+        return "";
     }
     /**
      * Set a database transaction advisory lock
@@ -953,134 +928,67 @@ class DbObj
      * @param int $exclusiveLock Lock's identifier as a signed integer in the int32 range
      *                           (i.e. in the range [-2147483648, 2147483647]).
      * @param string $exclusiveLockPrefix Lock's prefix string limited up to 4 bytes.
+     * @deprecated use \Dcp\Core\DbManager::lockPoint
      * @see Dbobj::savePoint()
      * @throws \Dcp\Exception DB0010, DB0011, and DB0012
      * @return string error message
      */
     public function lockPoint($exclusiveLock, $exclusiveLockPrefix = '')
     {
-        if (($exclusiveLock_int32 = \Dcp\Utils\Types::to_int32($exclusiveLock)) === false) {
-            throw new \Dcp\Db\Exception("DB0012", var_export($exclusiveLock, true));
+        try {
+            \Dcp\Core\DbManager::lockPoint($exclusiveLock, $exclusiveLockPrefix);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        $exclusiveLock = $exclusiveLock_int32;
-        if (!$this->dbid) {
-            $err = sprintf("dbid is null cannot add lock %s-%s", $exclusiveLock, $exclusiveLockPrefix);
-            error_log(__METHOD__ . ":$err");
-            return $err;
-        }
-        $err = '';
-        
-        $idbid = intval($this->dbid);
-        if (empty(self::$savepoint[$idbid])) {
-            throw new \Dcp\Db\Exception("DB0011", $exclusiveLock, $exclusiveLockPrefix);
-        }
-        
-        if ($exclusiveLockPrefix) {
-            if (strlen($exclusiveLockPrefix) > 4) {
-                throw new \Dcp\Db\Exception("DB0010", $exclusiveLockPrefix);
-            }
-            $prefixLockId = unpack("i", str_pad($exclusiveLockPrefix, 4)) [1];
-        } else {
-            $prefixLockId = 0;
-        }
-        if (self::$masterLock === false) {
-            $err = $this->exec_query(sprintf('select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);', $exclusiveLock, $prefixLockId));
-        }
-        if ($err) {
-            return $err;
-        }
-        self::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix) ] = array(
-            $exclusiveLock,
-            $prefixLockId
-        );
-        
-        return $err;
+        return "";
     }
     /**
      * set a database  master lock
      * the lock is free when explicit call with false parameter.
      * When a master lock is set,
      * @param bool $useLock set lock (true) or unlock (false)
+     * @deprecated use \Dcp\Core\DbManager::setMasterLock
      * @see Dbobj::lockPoint()
      * @return string error message
      */
     public function setMasterLock($useLock)
     {
-        if (!$this->dbid) {
-            $err = sprintf("dbid is null cannot add master lock ");
-            error_log(__METHOD__ . ":$err");
-            return $err;
+        try {
+            \Dcp\Core\DbManager::setMasterLock($useLock);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        
-        if ($useLock) {
-            $err = $this->exec_query('select pg_advisory_lock(0)');
-        } else {
-            $err = $this->exec_query('select pg_advisory_unlock(0)');
-        }
-        if ($err) {
-            return $err;
-        }
-        self::$masterLock = (bool)$useLock;
-        return '';
+        return "";
     }
     /**
      * revert to transaction save point
      * @param string $point revert point
+     * @deprecated use \Dcp\Core\DbManager::rollbackPoint
      * @return string error message
      */
     public function rollbackPoint($point)
     {
-        if (!$this->dbid) {
-            $err = sprintf("dbid is null cannot save point %s", $point);
-            error_log(__METHOD__ . ":$err");
-            return $err;
+        try {
+            \Dcp\Core\DbManager::rollbackPoint($point);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        $idbid = intval($this->dbid);
-        if (isset(self::$savepoint[$idbid])) $lastPoint = array_search($point, self::$savepoint[$idbid]);
-        else $lastPoint = false;
-        if ($lastPoint !== false) {
-            
-            self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
-            $err = $this->exec_query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
-            if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
-                $err = $this->exec_query("commit");
-            }
-        } else {
-            $err = sprintf("cannot rollback unsaved point : %s", $point);
-        }
-        
-        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$idbid]));
-        if ($err) error_log(__METHOD__ . ":$err");
-        return $err;
+        return "";
     }
     /**
      * commit transaction save point
      * @param string $point
+     * @deprecated use \Dcp\Core\DbManager::commitPoint
      * @return string error message
      */
     public function commitPoint($point)
     {
-        if (!$this->dbid) {
-            $err = sprintf("dbid is null cannot save point %s", $point);
-            error_log(__METHOD__ . ":$err");
-            return $err;
+        try {
+            \Dcp\Core\DbManager::commitPoint($point);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        $idbid = intval($this->dbid);
-        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$idbid]));
-        
-        $lastPoint = array_search($point, self::$savepoint[$idbid]);
-        
-        if ($lastPoint !== false) {
-            self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
-            $err = $this->exec_query(sprintf('release savepoint "%s"', pg_escape_string($point)));
-            if ((!$err) && (count(self::$savepoint[$idbid]) == 0)) {
-                $err = $this->exec_query("commit");
-            }
-        } else {
-            $err = sprintf("cannot commit unsaved point : %s", $point);
-        }
-        if ($err) error_log(__METHOD__ . ":$err");
-        return $err;
+        return "";
     }
     // FIN DE CLASSE
     
