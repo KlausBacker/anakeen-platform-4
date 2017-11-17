@@ -30,19 +30,6 @@
 
 html {
   font-size: $A4-ui-font-size;
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 1.2rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 0.5rem rgba(0,0,0,0.3);
-    border-radius: 1.2rem;
-  }
-
 }
 .dcpDocument {
     min-height: 100vh;
@@ -129,11 +116,13 @@ body {
 }
 
 .confirm--buttons {
-  text-align: right;
+  //text-align: right;
   position: absolute;
   bottom: 0;
   width: 90%;
   padding: 10px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .confirm--body {

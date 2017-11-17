@@ -31,12 +31,6 @@
     &.menu__element--item.menu--important.k-item {
       font-weight: bold;
     }
-
-    &.menu__element--item:last-of-type {
-      .k-link {
-        border-right: 0;
-      }
-    }
   }
 }
 
@@ -48,7 +42,7 @@
     font-family: $A4-ui-menu-fixed-font;
 
     .k-menu .menu__element--item.k-item > .k-link {
-      border-right-color: $A4-ui-menu-fixed-font-color;
+      border-left-color: $A4-ui-menu-fixed-font-color;
     }
 
     .k-menu .k-item.k-state-hover, .k-menu .k-item.k-state-hover * {
@@ -61,7 +55,7 @@
 // Menu item separator
 .menu__content .k-menu .menu__element--item.k-item {
   & > .k-link {
-    border-right: $A4-ui-menu-separator;
+    border-left: $A4-ui-menu-separator;
     padding: $A4-ui-menu-item-padding;
   }
 }

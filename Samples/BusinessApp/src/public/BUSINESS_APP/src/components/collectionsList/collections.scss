@@ -12,7 +12,7 @@
   position: absolute;
   left: calc(-100vw + 50px);
   transition: left 1s;
-  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 0 2px rgb(175, 175, 175);
 
   .k-loading-mask {
     background: #000000;
@@ -44,7 +44,8 @@
 .user-info {
   display: flex;
   align-items: center;
-  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
+  height: 4.1667rem;
+  text-transform: uppercase;
   &:hover {
     cursor: pointer;
   }
@@ -54,11 +55,44 @@
   display: flex;
   flex-direction: column;
   width: 50px;
-  height: 44px;
+  height: 100%;
 
-  .documentsList__collections__button__icon--user__initial {
-    font-size: 0.95rem;
+  .documentsList__collections__button__icon--user__icon--collapsed,
+  .documentsList__collections__button__icon--user__icon--expanded {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
+
+  .documentsList__collections__button__icon--user__icon--collapsed {
+    .documentsList__collections__button__icon--user__initial {
+      font-size: 0.8rem;
+      position: relative;
+      top: -1.8rem;
+      text-align: center;
+    }
+
+    .documentsList__collections__button__icon--user__icon {
+      padding-top: 1.8rem - 0.8rem;
+      font-size: 4rem;
+    }
+  }
+
+  .documentsList__collections__button__icon--user__icon--expanded {
+    .documentsList__collections__button__icon--user__initial {
+      font-size: 0.8rem;
+      position: relative;
+      top: -1.8rem;
+      text-align: center;
+    }
+
+    .documentsList__collections__button__icon--user__icon {
+      //padding-top: 1.8rem - 0.8rem;
+      font-size: 2rem;
+    }
+  }
+
 
 }
 
@@ -74,12 +108,19 @@
 }
 
 .documentsList__collections__button__title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   text-align: left;
-  padding-right: 20px;
+  text-transform: uppercase;
   padding-left: 20px;
-  text-transform: capitalize;
   width: calc(100% - 50px);
   color: #fff;
+
+  .documentsList__collections__button__title--user__cogs {
+    width: 50px;
+    text-align: center;
+  }
 }
 
 .documentsList__collections__button__title,
@@ -98,11 +139,6 @@
     color: #fff;
     cursor: pointer;
   }
-}
-
-.documentsList__collections__buttons--top,
-.documentsList__collections__buttons--bottom {
-  box-shadow: 3px 0 2px rgba(0, 0, 0, 0.15);
 }
 
 .documentsList__collections__button__icon--collapse {
@@ -167,18 +203,15 @@
 }
 
 .documentsList__collectionCard .documentsList__collectionCard__heading {
-  line-height: 1.3em;
   font-weight: 600;
   color: #505050;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
 }
 
 .documentsList__collectionCard__heading__content__icon {
-  width: 43px;
-}
-
-.documentsList__collectionCard__heading__content__icon {
-  width: 48px;
+  width: 50px;
   left: calc(100% - 50px);
   position: relative;
   text-align: center;
@@ -194,7 +227,7 @@
 .documentsList__collectionCard__heading__content__label {
   text-align: left;
   padding-left: 20px;
-  width: calc(100% - 89px);
+  flex: 1;
   letter-spacing: 1px;
 }
 
@@ -221,7 +254,7 @@
   left: 0;
 
   .documentsList__collectionCard__heading__content__icon,
-  .documentsList__collections__button__icon {
+  .documentsList__collections__button__icon:not(.documentsList__collections__button__icon--collapse) {
     left: 0px;
   }
 
@@ -245,4 +278,15 @@
   .documentsList__collections__button__icon.documentsList__collections__button__icon--down {
     left: calc(50% - 25px);
   }
+}
+
+.fade-enter-active {
+  transition: opacity .2s ease;
+}
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter, .fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }

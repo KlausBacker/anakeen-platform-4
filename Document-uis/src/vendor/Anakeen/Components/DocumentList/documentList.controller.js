@@ -1,4 +1,5 @@
 import anakeenComponentOptions from '../componentBase';
+import DocumentTemplate from './documentItem.template.kd';
 
 export default {
     mixins: [anakeenComponentOptions],
@@ -9,8 +10,85 @@ export default {
         },
     },
 
+    created() {
+        this.privateScope = {
+            replaceTopPagerButton: () => {
+                const $pager = this.$(this.$refs.summaryPager);
+                const buttons = $pager.find('.k-pager-nav:not(.k-pager-last):not(.k-pager-first)');
+                const label = $pager.find('span.k-pager-info');
+                label.insertBefore(buttons[1]);
+            },
+
+            initKendo: () => {
+                this.dataSource = new this.$kendo.data.DataSource({
+                    data: [],
+                    pageSize: this.pageSizeOptions[1].value,
+                });
+                this.$(this.$refs.listView).kendoListView({
+                    dataSource: this.dataSource,
+                    template: this.$kendo.template(DocumentTemplate),
+                    selectable: 'multiple',
+                    change: this.onSelectDocument,
+                });
+
+                this.$(this.$refs.pager).kendoPager({
+                    dataSource: this.dataSource,
+                    numeric: false,
+                    input: true,
+                    info: false,
+                    messages: {
+                        page: '',
+                        of: '/ {0}',
+                    },
+                });
+                this.$(this.$refs.summaryPager).kendoPager({
+                    dataSource: this.dataSource,
+                    numeric: false,
+                    input: false,
+                    info: true,
+                    messages: {
+                        display: '{0} - {1} sur {2}',
+                    },
+                });
+
+                this.$(this.$refs.pagerCounter).kendoDropDownList({
+                    dataSource: this.pageSizeOptions,
+                    dataTextField: 'text',
+                    dataValueField: 'value',
+                    animation: false,
+                    index: 1,
+                    change: this.onSelectPageSize,
+                    // valueTemplate: '<span class="fa fa-list-ol"></span>',
+                    headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
+                    template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
+                }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
+                this.privateScope.updateKendoData();
+            },
+
+            updateKendoData: () => {
+                this.dataSource.data(this.documents);
+            },
+
+            sendGetRequest: (url) => {
+                const element = this.$(this.$refs.wrapper);
+                this.$kendo.ui.progress(element, true);
+                return new Promise((resolve, reject) => {
+                    this.$http.get(url)
+                        .then((response) => {
+                            this.$kendo.ui.progress(element, false);
+                            resolve(response);
+                        }).catch((error) => {
+                        this.$kendo.ui.progress(element, false);
+                        reject(error);
+                    });
+                });
+            },
+        };
+    },
+
     mounted() {
-        this.initKendo();
+        this.privateScope.initKendo();
+        this.privateScope.replaceTopPagerButton();
     },
 
     data() {
@@ -55,60 +133,7 @@ export default {
         },
 
         selectDocument(document) {
-            this.$emit('document-selected', document);
-        },
-
-        initKendo() {
-            this.dataSource = new this.$kendo.data.DataSource({
-                data: [],
-                pageSize: this.pageSizeOptions[1].value,
-            });
-            this.$(this.$refs.listView).kendoListView({
-                dataSource: this.dataSource,
-                template: this.$kendo.template('<div class="documentsList__documentCard"><div class="documentsList__documentCard__body"><div class="documentsList__documentCard__heading">' +
-                  '<img class="documentsList__documentCard__heading__content_icon" src="api/v1/images/assets/original/#: icon#"  alt="#: title# image"/>' +
-                  '<span>#:title#</span>' +
-                  '</div></div></div>'),
-                selectable: 'multiple',
-                change: this.onSelectDocument,
-            });
-
-            this.$(this.$refs.pager).kendoPager({
-                dataSource: this.dataSource,
-                numeric: false,
-                input: true,
-                info: false,
-                messages: {
-                    page: '',
-                    of: '/ {0}',
-                },
-            });
-            this.$(this.$refs.summaryPager).kendoPager({
-                dataSource: this.dataSource,
-                numeric: false,
-                input: false,
-                info: true,
-                messages: {
-                    display: '{0} - {1} sur {2}',
-                },
-            });
-
-            this.$(this.$refs.pagerCounter).kendoDropDownList({
-                dataSource: this.pageSizeOptions,
-                dataTextField: 'text',
-                dataValueField: 'value',
-                animation: false,
-                index: 1,
-                change: this.onSelectPageSize,
-                headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
-                valueTemplate: '<span class="fa fa-list-ol"></span>',
-                template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
-            }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
-            this.updateKendoData();
-        },
-
-        updateKendoData() {
-            this.dataSource.data(this.documents);
+            this.$emit('document-selected', this.$.extend(true, {}, document.properties));
         },
 
         onSelectPageSize(e) {
@@ -132,26 +157,11 @@ export default {
 
         setCollection(c) {
             this.collection = c;
-            this.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`)
+            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList?fields=document.properties.state,document.properties.icon`)
                 .then((response) => {
-                    this.documents = response.data.data.sample;
-                    this.updateKendoData();
+                    this.documents = response.data.data.documents;
+                    this.privateScope.updateKendoData();
                 });
-        },
-
-        sendGetRequest(url) {
-            const element = this.$(this.$refs.wrapper);
-            this.$kendo.ui.progress(element, true);
-            return new Promise((resolve, reject) => {
-                this.$http.get(url)
-                  .then((response) => {
-                    this.$kendo.ui.progress(element, false);
-                    resolve(response);
-                }).catch((error) => {
-                    this.$kendo.ui.progress(element, false);
-                    reject(error);
-                });
-            });
         },
     },
 };

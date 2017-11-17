@@ -16,9 +16,9 @@
   {
     "order": 1000,
     "class": "\\Anakeen\\Sample\\Routes\\DocumentsList",
-    "regExp": "%^/sba/collections/(?P<collectionRef>[^/]+)/documentsList/?$%",
+    "regExp": "%^/sba/collections/(?P<familyId>[^/]+)/documentsList/?$%",
     "description": "Get available documents from collection",
-    "canonicalURL": "sba/collections/<collectionRef>/documentsList/"
+    "canonicalURL": "sba/collections/<familyId>/documentsList/"
   },
   {
     "order": 1000,

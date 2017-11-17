@@ -165,7 +165,7 @@ $A4-ui-frame-shadow:rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
 $A4-ui-frame-color-title: #878787;
 $A4-ui-frame-size-title: 1.1rem;
 $A4-ui-frame-header-border-bottom: 0.083rem solid #d8d9da;;
-$A4-ui-frame-header-padding: 0 0 0 1.2rem;
+$A4-ui-frame-header-padding: 0 0 0 0rem;
 $A4-ui-frame-header-line-height: 2.5rem;
 $A4-ui-frame-header-margin: 0 0 1.25rem 0;
 
@@ -179,9 +179,9 @@ $A4-ui-array-border-radius: 0.25rem;
 // Tabs
 $A4-ui-tabs-height: 3rem;
 $A4-ui-tab-active-bg: #FAFAFA;
-$A4-ui-tab-inactive-bg: #ECECEC;
+$A4-ui-tab-inactive-bg: #E6E6E6;
 $A4-ui-tab-space: 0.166rem;
-$A4-ui-tab-padding: 0.833rem 0rem 0.5rem;
+$A4-ui-tab-padding: 0.833rem 0rem;
 
 @mixin A4ClientTabDecoration() {
   position: absolute;

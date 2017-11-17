@@ -4,7 +4,7 @@ import headerTemplate from './documentTabsHeader.template.kd';
 import abstractAnakeenComponent from '../componentBase';
 
 export default {
-
+    mixins: [abstractAnakeenComponent],
     props: {
         closable: {
             type: Boolean,
@@ -13,7 +13,12 @@ export default {
 
         'empty-img': {
             type: String,
-            default: 'CORE/Images/anakeen-logo.svg',
+            default: 'CORE/Images/anakeenplatform-logo-fondblanc.svg',
+        },
+
+        'document-css': {
+            type: String,
+            default: '',
         },
 
     },
@@ -67,7 +72,7 @@ export default {
                 const $tab = this.$(tab);
                 const closable = forceClose !== undefined ? forceClose : this.closable;
                 if (closable) {
-                    $tab.append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
+                    $tab.find('.tab__document__header__content').append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
                     $tab.on('click', "[data-type='remove']", (e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -107,9 +112,9 @@ export default {
                 if (prev.length && next.length) {
                     const nextWidth = next.outerWidth(true);
                     const prevWidth = prev.outerWidth(true);
-                    next.css('right', `${paginatorWidth +  nextWidth}px`);
-                    prev.css('right', `${paginatorWidth + nextWidth + prevWidth}px`);
-                    marginRight = marginRight + (2 * prevWidth) + nextWidth;
+                    next.css('right', `${paginatorWidth}px`);
+                    prev.css('right', `${paginatorWidth + nextWidth}px`);
+                    marginRight = marginRight + prevWidth + nextWidth;
                 }
 
                 this.tabstrip.tabGroup.css('margin-right', `calc(${marginRight}px + ${tabMargin})`);
@@ -120,11 +125,16 @@ export default {
                 const tab = this.openedTabs[index];
                 const documentComponent = this.$(tabContent).find('a4-document');
                 documentComponent.on('ready', (e) => {
-                    e.detail[0].target.find('header.dcpDocument__header').hide();
+                    e.detail[0].target.find('.dcpDocument__header').hide();
+                    if (this.documentCss) {
+                        documentComponent.prop('publicMethods').injectCSS(this.documentCss);
+                    }
                     tab.set('title', '');
                     tab.set('icon', '');
+                    tab.set('url', '');
                     tab.set('title', e.detail[1].title);
                     tab.set('icon', e.detail[1].icon);
+                    tab.set('url', e.detail[1].url);
                 });
                 documentComponent.on('actionClick', (e) => {
                     if (e.detail.length > 2 && e.detail[2].options) {
@@ -139,32 +149,6 @@ export default {
                 });
             },
 
-            // Expose public methods (from method sections) in DOM props
-            bindPublicMethods: () => {
-                // Bind exposed methods to events
-                const _this = this;
-                Object.keys(this.$options.methods).forEach((methodName) => {
-                    const method = {
-                        [methodName]: (...args) => {
-                            try {
-                                const ret = _this[methodName].call(_this, ...args);
-                            } catch (e) {
-                                console.error(`From ${methodName} : ${e}`);
-                            }
-                        },
-                    };
-                    if (methodName !== '$emit') {
-                        this.$(this.$el).closest('a4-document-tabs').prop('publicMethods', (index, oldPropVal) => {
-                            if (!oldPropVal) {
-                                return method;
-                            } else {
-                                return Object.assign({}, oldPropVal, method);
-                            }
-                        });
-                    }
-                });
-            },
-
             // Listen model changes and update view
             bindDataChange: (data) => {
                 if (data.bind) {
@@ -173,8 +157,10 @@ export default {
                             // Add new document
                             case 'add':
                                 this.tabstrip.append({
-                                    text: `<i class="fa fa-spinner fa-pulse tab__document__icon"></i>
-                                            <span class="tab__document__title">Chargement en cours...</span>`,
+                                    text: `<a class="tab__document__header__content">
+                                                <i class="fa fa-spinner fa-pulse tab__document__icon"></i>
+                                                <span class="tab__document__title">Chargement en cours...</span>
+                                           </a>`,
                                     encoded: false,
                                     content: this.privateScope.formatTabContentData(e.items[0]),
                                 });
@@ -207,6 +193,9 @@ export default {
                                         $indexedItem.find('.tab__document__icon')
                                             .replaceWith(`<img class="tab__document__icon" src="${newValue}"/>`);
                                         break;
+                                    case 'url':
+                                        $indexedItem.find('.tab__document__header__content').prop('href', newValue);
+                                        break;
                                 }
 
                                 break;
@@ -219,7 +208,6 @@ export default {
 
     mounted() {
         this.privateScope.initKendoComponents();
-        this.privateScope.bindPublicMethods();
         const ready = () => {
             this.$emit('document-tabs-ready', this.$el);
         };
@@ -261,7 +249,7 @@ export default {
         addDocument(document) {
             const index = this.tabsArray.findIndex((d) => d.initid === document.initid);
             if (index < 0) {
-                this.openedTabs.push(document);
+                this.openedTabs.push(Object.assign({}, document));
                 this.selectDocument(this.openedTabs.length - 1);
             } else {
                 this.selectDocument(index);

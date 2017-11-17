@@ -16,13 +16,13 @@
   top: 0;
   bottom: 0;
   height: 100%;
-  width: 24px;
+  width: 2rem;
   text-align: center;
   cursor: pointer;
   z-index: 700;
   background-color: #FFFFFF;
   text-transform: uppercase;
-  box-shadow: 2px 0 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 0 2px rgb(175, 175, 175);
   transition: left 1s;
   border-left: 1px dotted lightgray;
 }
@@ -74,5 +74,19 @@
 
   .leftPane {
     overflow: initial !important;
+    & > * {
+      width: calc(100vw - 2rem);
+    }
+  }
+
+  .mainPane {
+    padding-top: 0.6667rem;
+    background-color: #F7F7F7;
+  }
+
+  @media screen and (min-width: 958px) {
+    .leftPane > * {
+      width: 25vw;
+    }
   }
 }
