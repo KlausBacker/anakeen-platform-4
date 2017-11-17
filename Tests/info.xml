@@ -8,15 +8,26 @@
 
     <post-install>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TEST_DDUI_ALL__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TEST_DDUI_ENUM__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TEST_DDUI_ENUM__PARAM.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__PARAM.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__DATA.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TEST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALL__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__DATA.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
+
+
+        <process
+                command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__STRUCT.csv"/>
+        <process
+                command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__CVDOC.xml"/>
+        <process
+                command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__PARAM.csv"/>
+
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
@@ -25,15 +36,26 @@
     <post-upgrade>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
 
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TEST_DDUI_ALL__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TEST_DDUI_ENUM__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TEST_DDUI_ENUM__PARAM.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure=auto --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__STRUCT.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__PARAM.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TEST_DDUI_DOCID__DATA.csv"/>
-        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TEST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALL__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__DATA.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
+
+        <process
+                command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__STRUCT.csv"/>
+        <process
+                command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__CVDOC.xml"/>
+        <process
+                command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__PARAM.csv"/>
+
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
+
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>

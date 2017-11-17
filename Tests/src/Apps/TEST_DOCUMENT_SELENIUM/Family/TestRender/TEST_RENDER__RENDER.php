@@ -58,14 +58,26 @@ $options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.
     {
         $menu= parent::getMenu($document);
 
-        $myItem = new \Dcp\Ui\ItemMenu(
+        $menuItem = new \Dcp\Ui\ItemMenu(
             "openWindow",
             ___("Open in new window", "tst")
         );
-        $myItem->setBeforeContent('<div class="fa fa-external-link-square" />');
-        $myItem->setUrl("#action/tst:openWindow");
+        $menuItem->setBeforeContent('<div class="fa fa-external-link-square" />');
+        $menuItem->setUrl("#action/tst:openWindow");
+        $menu->appendElement($menuItem);
 
-        $menu->appendElement($myItem);
+        $menuItem = new \Dcp\Ui\ItemMenu(
+            "exportData",
+            ___("Export Data", "tst")
+        );
+        $menuItem->setBeforeContent('<div class="fa fa-database" />');
+        $menuItem->setTarget("_self");
+        $menuItem->setUrl("?app=TEST_DOCUMENT_SELENIUM&action=EXPORTRENDER");
+
+
+        $menu->appendElement($menuItem);
+
+
         return $menu;
 
     }

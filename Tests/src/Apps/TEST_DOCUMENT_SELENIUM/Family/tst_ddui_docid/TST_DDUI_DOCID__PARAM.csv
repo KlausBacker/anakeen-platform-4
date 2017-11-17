@@ -1,17 +1,6 @@
 //FAM;Contrôle de rendu(CVDOC);<specid>;<fldid>;titre;description;family id;famille;Identifiant de la vue;Label;Type;Zone (Layout);Classe de configuration de rendu;Masque;Masque(titre);Ordre de sélection;Affichable;Menu;id création vues par défaut;Famille pour le profil;Famille pour le profil (titre);création vue;Classe d'accès au rendu
-ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv_zview;cv_renderconfigclass;cv_mskid;cv_msk;cv_order;cv_displayed;cv_menu;cv_idcview;dpdoc_famid;dpdoc_fam;cv_lcview;cv_renderaccessclass
-DOC;CVDOC;TST_DDUI_RENDER_DOCID;;Rendus de relations;;TST_DDUI_DOCID;Test docid;"C1
-E1";"Défaut
-Modifier les relations";"VCONS
-VEDIT";"
-";"Dcp\Test\Ddui\DOCIDRenderConfigView
-Dcp\Test\Ddui\DOCIDRenderConfigEdit";"
-
-";"
-
-";"1
-1";"no
-no";;E1;;;Modifier;
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;
 BEGIN;;;;;TST_DDUI_DOCID;;;;;;;;;;;;;;;;;

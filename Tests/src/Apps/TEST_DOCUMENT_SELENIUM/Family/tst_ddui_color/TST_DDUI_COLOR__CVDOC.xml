@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2017-11-09T09:29:07" author="Dynacase Platform Master" name="">
+    <cvdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cvdoc.xsd"
+           name="CVDOC_TST_COLOR" title="Contrôle de vue pour la famille &quot;Color&quot; Color" revision="0"
+           modification-date="2017-11-09T09:24:18" version="" state="">
+        <fr_basic>
+            <ba_title>Contrôle de vue pour la famille "Color"</ba_title>
+            <cv_desc xsi:nil="true"/>
+            <cv_famid name="TST_DDUI_COLOR">Color</cv_famid>
+            <cv_fam>Color</cv_fam>
+            <cv_t_views>
+                <cv_idview>INIT</cv_idview>
+                <cv_lview>Init</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\DdUi\ColorViewRender</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk xsi:nil="true"/>
+                <cv_order xsi:nil="true"/>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu xsi:nil="true"/>
+            </cv_t_views>
+        </fr_basic>
+        <cv_fr_default>
+            <cv_idcview xsi:nil="true"/>
+            <cv_lcview xsi:nil="true"/>
+            <cv_renderaccessclass xsi:nil="true"/>
+        </cv_fr_default>
+        <dpdoc_fr_dyn>
+            <dpdoc_famid xsi:nil="true"/>
+            <dpdoc_fam xsi:nil="true"/>
+        </dpdoc_fr_dyn>
+
+    </cvdoc>
+</documents>

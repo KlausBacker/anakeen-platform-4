@@ -1,0 +1,12 @@
+BEGIN;;;;;TST_DDUI_COLOR;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option;Commentaires
+ATTR;tst_fr_identification;;Identification;N;N;frame;::auto;W;;;;;;;;
+ATTR;tst_title;tst_fr_identification;Identité;Y;N;text;::auto;W;;;;;;;;
+ATTR;tst_color1;tst_fr_identification;Couleur par défaut;N;N;color;::auto;W;;;;;;;;
+ATTR;tst_color2;tst_fr_identification;RGB;N;N;color;::auto;W;;;;;;;;
+ATTR;tst_color3;tst_fr_identification;CMJ;N;N;color;::auto;W;;;;;;;;
+ATTR;tst_t_colors;tst_fr_identification;Couleurs;N;N;array;::auto;W;;;;;;;;
+ATTR;tst_colors1;tst_t_colors;Couleur à confirmer;N;N;color;::auto;W;;;;;;;;
+ATTR;tst_colors2;tst_t_colors;RGB/CMJ;N;N;color;::auto;W;;;;;;;;
+ATTR;tst_colors3;tst_t_colors;12 couleurs;N;N;color;::auto;W;;;;;;;;
+END;;;;;;;;;;;;;;;;

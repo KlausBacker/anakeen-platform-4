@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2017-11-09T09:35:48" author="Dynacase Platform Master" name="Custom &#039;&quot;export">
+    <cvdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           name="CVDOC_TST_ALLTYPE"
+           revision="0" modification-date="2017-11-08T12:04:48" version="" state="">
+        <fr_basic>
+            <ba_title>Contrôle de vue pour la famille "Test tout type"</ba_title>
+            <cv_desc xsi:nil="true"/>
+            <cv_famid name="TST_DDUI_ALLTYPE">Test tout type</cv_famid>
+            <cv_fam>Test tout type</cv_fam>
+            <cv_t_views>
+                <cv_idview>COLLAPSE</cv_idview>
+                <cv_lview>Collapse Frame</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderCollapseView</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>NOCOLLAPSE</cv_idview>
+                <cv_lview>No Collapsable</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderNoneCollapseView</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>NOARRAYCOLLAPSE</cv_idview>
+                <cv_lview>Array No Collapsable</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderNoneArrayCollapseView</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ARRAYCOLLAPSE</cv_idview>
+                <cv_lview>Array Collapsable</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderCollapeArrayView</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>TABLEFT</cv_idview>
+                <cv_lview>Tab left</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderTabLeft</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>TABTOPSCROLL</cv_idview>
+                <cv_lview>Tab scroll</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderTabTopScroll</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>TABTOPFIX</cv_idview>
+                <cv_lview>Tab scroll</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderTabTopFix</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>TABPROPORTIONAL</cv_idview>
+                <cv_lview>Tab scroll</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderTabProportial</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ALLNEEDED</cv_idview>
+                <cv_lview>Tout obligatoire</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderAllNeeded</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ALLVISR</cv_idview>
+                <cv_lview>Lecture seule</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderVisibilityRead</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ALLVISH</cv_idview>
+                <cv_lview>Attribut caché</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderVisibilityHidden</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ALLVISS</cv_idview>
+                <cv_lview>Attribut static</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderVisibilityStatic</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETINPUT</cv_idview>
+                <cv_lview>Setinput</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderSetInput</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>NOTIFS</cv_idview>
+                <cv_lview>Notifications</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderNotification</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>BUTTONS</cv_idview>
+                <cv_lview>BUTTONS</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderButtons</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>LABELLEFT</cv_idview>
+                <cv_lview>Label left</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderLeftLabel</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>LABELUP</cv_idview>
+                <cv_lview>Label up</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderUpLabel</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>LABELAUTO</cv_idview>
+                <cv_lview>Label auto</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderAutoLabel</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>LABELNONE</cv_idview>
+                <cv_lview>Label none</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderNoneLabel</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>CSSCOLOR</cv_idview>
+                <cv_lview>Colorisation</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderCssColor</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SHOWEMPTY</cv_idview>
+                <cv_lview>Valeur vide</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AllRenderShowEmpty</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DISPLAYDELETEBUTTON</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\hideDeleteButton</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+        </fr_basic>
+        <cv_fr_default>
+            <cv_idcview xsi:nil="true"/>
+            <cv_lcview xsi:nil="true"/>
+            <cv_renderaccessclass xsi:nil="true"/>
+        </cv_fr_default>
+        <dpdoc_fr_dyn>
+            <dpdoc_famid xsi:nil="true"/>
+            <dpdoc_fam xsi:nil="true"/>
+        </dpdoc_fr_dyn>
+
+    </cvdoc>
+</documents>

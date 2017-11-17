@@ -1,6 +1,6 @@
 //FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Famille (id);Famille;Identifiant de la vue;Label;Type;Zone (Layout);Classe de configuration de rendu (HTML5);Masque;Masque(titre);
-ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;;;;;;;;
-DOC;CVDOC;CVDOC_TST_EMPLOYEE;;"Contrôle de vue pour la famille ""Test tout type""";;TST_DDUI_EMPLOYEE;Employé;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
 //BEGIN;Parent family;Family title;;;Family name;;;;;;;;;;
 BEGIN;;;;;TST_DDUI_EMPLOYEE;;;;;;;;;;
 CVID;CVDOC_TST_EMPLOYEE;;;;;;;;;;;;;;

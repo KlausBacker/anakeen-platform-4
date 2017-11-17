@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2017-11-09T11:29:47" author="Dynacase Platform Master" name="Custom &#039;&quot;export">
+    <cvdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cvdoc.xsd"
+           name="TST_DDUI_RENDER_ENUM" title="Rendus d&#039;énumérés Test énumérés" revision="0"
+           modification-date="2017-11-09T09:42:42" version="" state="">
+        <fr_basic>
+            <ba_title>Rendus d'énumérés</ba_title>
+            <cv_desc xsi:nil="true"/>
+            <cv_famid name="TST_DDUI_ENUM">Test énumérés</cv_famid>
+            <cv_fam>Test énumérés</cv_fam>
+            <cv_t_views>
+                <cv_idview>C1</cv_idview>
+                <cv_lview>Défaut</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EnumRenderConfigView</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order>1</cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>E1</cv_idview>
+                <cv_lview>Modifier les énumérés</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EnumRenderConfigEdit</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order>1</cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>E2</cv_idview>
+                <cv_lview>Vertical</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EnumRenderConfigEditVertical</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order>0</cv_order>
+                <cv_displayed>yes</cv_displayed>
+                <cv_menu>Tests</cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>E3</cv_idview>
+                <cv_lview>Horizontal</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EnumRenderConfigEditHorizontal</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order>0</cv_order>
+                <cv_displayed>yes</cv_displayed>
+                <cv_menu>Tests</cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>E4</cv_idview>
+                <cv_lview>Autre</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EnumRenderConfigEditOther</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order>0</cv_order>
+                <cv_displayed>yes</cv_displayed>
+                <cv_menu>Tests</cv_menu>
+            </cv_t_views>
+        </fr_basic>
+        <cv_fr_default>
+            <cv_idcview>E1</cv_idcview>
+            <cv_lcview>Modifier les énumérés (E1)</cv_lcview>
+            <cv_renderaccessclass xsi:nil="true"/>
+        </cv_fr_default>
+        <dpdoc_fr_dyn>
+            <dpdoc_famid xsi:nil="true"/>
+            <dpdoc_fam xsi:nil="true"/>
+        </dpdoc_fr_dyn>
+
+    </cvdoc>
+</documents>
