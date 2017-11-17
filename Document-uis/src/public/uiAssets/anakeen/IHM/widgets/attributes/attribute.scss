@@ -50,7 +50,7 @@
 }
 
 .dcpAttribute__content .k-widget > .k-state-default {
-  border-radius: $border-radius-base 0 0 $border-radius-base;
+  //border-radius: $border-radius-base 0 0 $border-radius-base;
 }
 
 .dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
@@ -66,8 +66,34 @@
 .dcpArray__content__cell .input-group input.form-control,
 .dcpAttribute__content .input-group .k-autocomplete {
   height: calc( #{$A4-ui-input-height} - 2px);
-  border-bottom-right-radius: $border-radius-base;
-  border-top-right-radius: $border-radius-base;
+  border:none;
+}
+
+
+
+.dcpAttribute__content > .input-group {
+  border:$A4-ui-doc-edit-attribute-border;
+  border-radius: $A4-ui-doc-edit-attribute-border-radius;
+  overflow:hidden;
+
+  &:hover {
+    border:$A4-ui-doc-edit-attribute-hover-border;
+    box-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
+
+  }
+}
+
+
+.dcpAttribute--focus {
+  &.dcpAttribute__content > .input-group {
+    border-color:$A4-ui-doc-edit-attribute-focus-color;
+
+    box-shadow: $A4-ui-doc-edit-attribute-focus-shadow;
+  }
+
+  .k-state-focused {
+    box-shadow: none;
+  }
 }
 
 .dcpAttribute__content .input-group-addon,
@@ -82,13 +108,14 @@
   .input-group-addon:first-child {
     border-radius: $border-radius-base 0 0 $border-radius-base;
     > button.btn {
-      border-top-left-radius: $border-radius-base;
-      border-bottom-left-radius: $border-radius-base;
+      border-top-left-radius: $border-radius-inset;
+      border-bottom-left-radius: $border-radius-inset;
 
     }
   }
   .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-dropdown-wrap {
-      border-radius: $border-radius-base;
+     // border-radius: $border-radius-base;
+      border:none;
 
   }
 }
@@ -97,13 +124,14 @@
 
   .k-dropdown-wrap,
    .input-group > .k-widget {
-    border-radius: $border-radius-base;
+    //border-radius: $border-radius-base;
   }
   .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-multiselect-wrap,
   .k-widget.form-control > .k-multiselect-wrap,
   .k-widget > .k-state-default {
-    border-top-right-radius:  $border-radius-base;
-    border-bottom-right-radius:  $border-radius-base;
+    border:none;
+    //border-top-right-radius:  $border-radius-base;
+    //border-bottom-right-radius:  $border-radius-base;
 
   }
 }
@@ -161,15 +189,8 @@ iframe.dcpAttribute__value--endflash {
   display: inline-block;
 }
 
-.k-textbox:hover,
-.k-autocomplete.k-state-hover,
-.k-picker-wrap.k-state-hover,
-.k-numeric-wrap.k-state-hover,
-.k-multiselect.k-header.k-state-hover,
-.k-dropdown-wrap.k-state-hover {
 
-  border-color: $input-border-focus;
-}
+
 
 .dcpAttribute__content .input-group-addon button.dcpAttribute__content__button--extra,
 .dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {

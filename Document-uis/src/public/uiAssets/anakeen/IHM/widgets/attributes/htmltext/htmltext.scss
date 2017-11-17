@@ -1,7 +1,15 @@
 .dcpAttribute__content--htmltext .cke {
   width: 100%;
+  border:none;
 }
 
+
+.dcpAttribute__content--htmltext .cke_inner {
+  border-radius: $border-radius-inset;
+  .cke_top {
+     border-radius: $border-radius-inset $border-radius-inset 0 0;
+  }
+}
 .dcpAttribute__content--htmltext .cke.k-state-focused {
   border-color: $input-border-focus;
 }

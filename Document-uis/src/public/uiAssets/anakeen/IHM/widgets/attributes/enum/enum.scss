@@ -7,7 +7,7 @@
 }
 
 .dcpAttribute__content .k-dropdown-wrap {
-  height: calc(#{$A4-ui-input-height} - 0.16666rem);;
+  height: $A4-ui-input-height;
 }
 
 .dcpAttribute__content .k-dropdown-wrap .k-input {
@@ -37,6 +37,35 @@
   height: $A4-ui-input-height;
 }
 
+
+.input-group.dcpAttribute__value--multiple {
+  border-radius: $A4-ui-doc-edit-attribute-border-radius;
+  &:hover {
+   // border: $A4-ui-doc-edit-attribute-hover-border;
+   // box-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
+  }
+  .input-group-addon, .k-multiselect-wrap {
+    border:none;
+  }
+
+  .k-multiselect-wrap, .k-multiselect.k-widget {
+    border-radius: $A4-ui-doc-edit-attribute-border-radius 0 0 $A4-ui-doc-edit-attribute-border-radius;
+
+    &.k-state-hover {
+     //  border-radius: 0 $A4-ui-doc-edit-attribute-border-radius $A4-ui-doc-edit-attribute-border-radius 0;
+    }
+
+    &.k-state-focused {
+      border-radius: 0 $A4-ui-doc-edit-attribute-border-radius $A4-ui-doc-edit-attribute-border-radius 0;
+      border-style:none;
+      box-shadow: none;
+      .k-multiselect-wrap {
+        box-shadow: none;
+      }
+    }
+  }
+
+}
 .dcpAttribute__content .k-dropdown,
 .dcpAttribute__content .k-multiselect,
 .dcpAttribute__content .k-combobox {
@@ -160,6 +189,8 @@
 .dcpAttribute__value--enumbuttons.orientation-bool.input-group {
   border-top-right-radius: $border-radius-base;
   border-bottom-right-radius: $border-radius-base;
+
+  border:none;
   .k-checkbox-label {
     &:before {
       top: 6px;
@@ -250,6 +281,7 @@
 
 .dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
   border-radius: $border-radius-base;
+  border:none;
 
   label.dcpAttribute__value--enumlabel--text {
     line-height: 2;
