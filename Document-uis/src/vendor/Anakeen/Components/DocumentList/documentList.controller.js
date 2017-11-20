@@ -24,38 +24,38 @@ export default {
                 this.dataSource = new this.$kendo.data.DataSource({
                     transport: {
                         read: (options) => {
-                                if (options.data.collection) {
-                                    const params = {
-                                        fields: 'document.properties.state,document.properties.icon',
-                                        page: options.data.page,
-                                        offset: (options.data.page - 1) * options.data.take,
-                                        slice: options.data.take,
-                                    };
-                                    if (this.filterInput) {
-                                        params.filter = this.filterInput;
-                                    }
-
-                                    _this.privateScope
-                                        .sendGetRequest(`api/v1/sba/collections/${options.data.collection}/documentsList`,
-                                            {
-                                                params,
-                                            })
-                                        .then((response) => {
-                                            options.success(response);
-                                        }).catch((response) => {
-                                        options.error(response);
-                                    });
-                                } else {
-                                    options.error();
+                            if (options.data.collection) {
+                                const params = {
+                                    fields: 'document.properties.state,document.properties.icon',
+                                    page: options.data.page,
+                                    offset: (options.data.page - 1) * options.data.take,
+                                    slice: options.data.take,
+                                };
+                                if (this.filterInput) {
+                                    params.filter = this.filterInput;
                                 }
-                            },
+
+                                _this.privateScope
+                                    .sendGetRequest(`api/v1/sba/collections/${options.data.collection}/documentsList`,
+                                        {
+                                            params,
+                                        })
+                                    .then((response) => {
+                                        options.success(response);
+                                    }).catch((response) => {
+                                    options.error(response);
+                                });
+                            } else {
+                                options.error();
+                            }
+                        },
                     },
                     pageSize: this.pageSizeOptions[1].value,
                     serverPaging: true,
                     schema: {
                         total: (response) => response.data.data.resultMax,
 
-                        data: (response) =>  response.data.data.documents,
+                        data: (response) => response.data.data.documents,
                     },
 
                 });
@@ -106,7 +106,7 @@ export default {
 
             onPagerChange: (e) => {
                 this.dataSource.page(e.index);
-                this.privateScope.updateList();
+                this.refreshDocumentsList();
             },
 
             sendGetRequest: (url, conf) => {
@@ -128,7 +128,7 @@ export default {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
                 this.dataSource.pageSize(newPageSize);
-                this.privateScope.updateList();
+                this.refreshDocumentsList();
             },
 
             onSelectDocument: (...arg) => {
@@ -138,15 +138,6 @@ export default {
                 const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
                 this.selectDocument(selected[0]);
             },
-
-
-            updateList: () => new Promise((resolve, reject) => {
-                    if (this.collection && this.dataSource) {
-                        this.dataSource.read({ collection: this.collection.initid }).then(resolve).catch(reject);
-                    } else {
-                        reject();
-                    }
-                }),
         };
     },
 
@@ -163,26 +154,26 @@ export default {
             dataSource: null,
             filterInput: '',
             pageSizeOptions: [
-              {
-                text: '5',
-                value: 5,
-            },
-              {
-                text: '10',
-                value: 10,
-            },
-              {
-                text: '25',
-                value: 25,
-            },
-              {
-                text: '50',
-                value: 50,
-            },
-              {
-                text: '100',
-                value: 100,
-            },
+                {
+                    text: '5',
+                    value: 5,
+                },
+                {
+                    text: '10',
+                    value: 10,
+                },
+                {
+                    text: '25',
+                    value: 25,
+                },
+                {
+                    text: '50',
+                    value: 50,
+                },
+                {
+                    text: '100',
+                    value: 100,
+                },
             ],
         };
     },
@@ -196,7 +187,7 @@ export default {
         filterDocumentsList(filterValue) {
             this.filterInput = filterValue;
             if (filterValue) {
-                this.privateScope.updateList();
+                this.refreshDocumentsList();
             } else {
                 this.clearDocumentsListFilter();
             }
@@ -204,12 +195,23 @@ export default {
 
         clearDocumentsListFilter() {
             this.filterInput = '';
-            this.privateScope.updateList();
+            this.refreshDocumentsList();
         },
 
         setCollection(c) {
             this.collection = c;
-            this.privateScope.updateList();
+            this.dataSource.page(1);
+            this.refreshDocumentsList();
+        },
+
+        refreshDocumentsList() {
+            return new Promise((resolve, reject) => {
+                if (this.collection && this.dataSource) {
+                    this.dataSource.read({ collection: this.collection.initid }).then(resolve).catch(reject);
+                } else {
+                    reject();
+                }
+            });
         },
     },
 };
