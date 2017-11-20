@@ -69,11 +69,11 @@ export default {
                 this.dataSource.data(this.documents);
             },
 
-            sendGetRequest: (url) => {
+            sendGetRequest: (url, conf) => {
                 const element = this.$(this.$refs.wrapper);
                 this.$kendo.ui.progress(element, true);
                 return new Promise((resolve, reject) => {
-                    this.$http.get(url)
+                    this.$http.get(url, conf)
                         .then((response) => {
                             this.$kendo.ui.progress(element, false);
                             resolve(response);
@@ -145,7 +145,12 @@ export default {
         onSearchClick() {
             if (this.filterInput) {
                 this.privateScope
-                    .sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList/filter=${this.filterInput}`)
+                    .sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`, {
+                        params: {
+                            fields: 'document.properties.state,document.properties.icon',
+                            filter: this.filterInput,
+                        },
+                    })
                     .then((response) => {
                         this.documents = response.data.data.documents;
                         this.privateScope.updateKendoData();
@@ -169,7 +174,11 @@ export default {
 
         setCollection(c) {
             this.collection = c;
-            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList?fields=document.properties.state,document.properties.icon`)
+            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`, {
+                params: {
+                    fields: 'document.properties.state,document.properties.icon',
+                },
+            })
                 .then((response) => {
                     this.documents = response.data.data.documents;
                     this.privateScope.updateKendoData();
