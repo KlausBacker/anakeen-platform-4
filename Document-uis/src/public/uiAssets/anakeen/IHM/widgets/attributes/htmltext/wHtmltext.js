@@ -209,6 +209,7 @@
                     var ktTarget = currentWidget.element.find(".input-group");
                     currentWidget.showInputTooltip(ktTarget);
                     currentWidget.element.find(".cke").addClass("k-state-focused");
+                    currentWidget.element.closest(".dcpAttribute__content").addClass("dcpAttribute--focus");
                 });
 
                 this.ckEditorInstance.on("blur", function wHtmltext_blur()
@@ -216,6 +217,7 @@
                     var ktTarget = currentWidget.element.find(".input-group");
                     currentWidget.hideInputTooltip(ktTarget);
                     currentWidget.element.find(".cke").removeClass("k-state-focused");
+                    currentWidget.element.closest(".dcpAttribute__content").removeClass("dcpAttribute--focus");
                 });
 
                 this.ckEditorInstance.on("loaded", function wHtmltext_loaded()

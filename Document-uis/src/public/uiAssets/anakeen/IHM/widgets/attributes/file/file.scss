@@ -30,9 +30,15 @@
   border-radius:0;
 }
 
+.dcpAttribute__dragTarget {
+  border-radius:$border-radius-base;
+  border:$A4-ui-doc-edit-attribute-border;
+}
+
 .dcpAttribute__content--file .form-control.dcpAttribute__value.dcpAttribute__value--edit {
   border-bottom-left-radius: $border-radius-base;
   border-top-left-radius: $border-radius-base;
+  border:none;
 }
 
 

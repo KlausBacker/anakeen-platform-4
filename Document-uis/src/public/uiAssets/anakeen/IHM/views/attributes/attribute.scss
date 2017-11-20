@@ -34,7 +34,9 @@
   }
 }
 
-
+.row.dcpAttribute {
+  flex-wrap: initial;
+}
 .row.dcpAttribute.dcpAttribute__labelPosition--auto,
 .row.dcpArray--left,
 .row.dcpAttribute.dcpAttribute__labelPosition--left {

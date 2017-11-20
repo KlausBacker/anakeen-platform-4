@@ -502,6 +502,17 @@
                     scope.hideInputTooltip(ktTarget);
                 });
             }
+            this._getFocusInput().on("focus" + this.eventNamespace, function wAttributeFocus(event)
+            {
+                var $content = $(event.currentTarget).closest(".dcpAttribute__content");
+                $content.addClass("dcpAttribute--focus");
+            });
+            this._getFocusInput().on("blur" + this.eventNamespace, function wAttributeFocus(event)
+            {
+                var $content = $(event.currentTarget).closest(".dcpAttribute__content");
+                $content.removeClass("dcpAttribute--focus");
+            });
+
             return this;
         },
         /**

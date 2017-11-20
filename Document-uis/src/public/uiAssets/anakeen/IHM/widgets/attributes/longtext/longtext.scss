@@ -4,6 +4,7 @@
 .dcpAttribute__content--longtext textarea {
   resize:vertical;
   min-height: $A4-ui-input-height;
+  border:none;
 }
 
 .dcpAttribute__content--longtext textarea.form-control.k-textbox {
