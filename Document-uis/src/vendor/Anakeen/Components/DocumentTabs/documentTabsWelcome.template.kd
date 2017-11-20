@@ -1,0 +1,64 @@
+<div class="documentsList__documentsTabs__welcome">
+    <div class="documentsList__documentsTabs__welcome__header">
+        <h1 class="documentsList__documentsTabs__welcome__header__title">
+            <span class="documentsList__documentsTabs__welcome__user">
+                #: user#,
+            </span>
+            # if (data.welcomeMessage) {#
+            <span class="documentsList__documentsTabs__welcome__message">
+               #= welcomeMessage #
+            </span>
+            #}#
+        </h1>
+    </div>
+    <div class="documentsList__documentsTabs__welcome__content">
+
+        <div class="documentsList__documentsTabs__welcome__content__inner">
+            <div class="documentsList__documentsTabs__welcome__content__inner--label">
+                <i class="material-icons">remove_red_eye</i> Consultation
+            </div>
+            <div class="documentsList__documentsTabs__welcome__content__open">
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Rechercher"/>
+                    <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--remove">
+                        close
+                    </i>
+                    <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--search">
+                        search
+                    </i>
+                </div>
+            </div>
+        </div>
+        <div class="documentsList__documentsTabs__welcome__content__inner">
+            <div class="documentsList__documentsTabs__welcome__content__inner--label">
+                <i class="material-icons">create_new_folder</i> Création
+            </div>
+            <div class="documentsList__documentsTabs__welcome__content__creation">
+                <i class="material-icons">keyboard_arrow_left</i>
+                <div class="btn-group">
+                # for (var i = 0; i < data.collections.length; i++) {
+                    var collection = data.collections[i];#
+                    <button class="documentsList__documentsTabs__welcome__collection__button btn-default" data-famid="#=collection.initid#">
+                        <img src="#=collection.image_url#">
+                        <span>#=collection.html_label#</span>
+                    </button>
+                #}#
+                </div>
+                <i class="material-icons">keyboard_arrow_right</i>
+            </div>
+        </div>
+        <div class="documentsList__documentsTabs__welcome__content__inner">
+            <div class="documentsList__documentsTabs__welcome__content__inner--label">
+                <i class="material-icons">view_carousel</i> Dernières consultations
+            </div>
+            <div class="documentsList__documentsTabs__welcome__content__recommended">
+
+            </div>
+        </div>
+    </div>
+    <div class="documentsList__documentsTabs__welcome__footer">
+        <img class="documentsList__documentsTabs__welcome__footer__icon" src="CORE/Images/anakeenplatform-logo-fondblanc.svg"/>
+    </div>
+</div>
