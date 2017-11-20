@@ -20,7 +20,7 @@
             <div class="documentsList__documentsTabs__welcome__content__open">
                 <div class="input-group">
                     <input type="text"
-                           class="form-control"
+                           class="form-control documentsList__documentsTabs__welcome__content__open__input"
                            placeholder="Rechercher"/>
                     <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--remove">
                         close

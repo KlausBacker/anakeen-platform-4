@@ -3,6 +3,8 @@
     .k-tabstrip-wrapper {
       .documentsList__documentsTabs__tabs {
         & > .k-tabstrip-items {
+          padding-left: 2rem;
+          margin-left: 0 !important;
           & > .k-item {
             box-shadow: -1px 0 4px #cbcbcb inset;
             transform: perspective(100px) rotateX(25deg);
@@ -14,10 +16,6 @@
 
             & > * {
               transform: perspective(112px) rotateX(-25deg) scaleY(1.1);
-            }
-
-            &.k-first {
-              margin-left: 2rem;
             }
 
             & > .k-link {

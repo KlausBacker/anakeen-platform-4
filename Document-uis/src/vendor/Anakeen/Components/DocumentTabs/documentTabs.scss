@@ -145,7 +145,7 @@
                 border: 1px solid lightgray;
                 background: #FFFFFF;
                 position: absolute;
-                bottom: -5px;
+                bottom: -3px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -288,9 +288,10 @@
             box-shadow: 2px 2px 2px rgb(203, 203, 203);
             .input-group {
               width: calc(70% + 1rem);
+              height: 45px;
             }
 
-            .documentsList__documents__search__keyword {
+            .documentsList__documentsTabs__welcome__content__open__input {
               flex: 1;
             }
 
@@ -318,6 +319,11 @@
               &.documentsList__documentsTabs__welcome__content__open--search {
                 position: relative;
                 left: -1rem;
+                width: 45px;
+                dipslay: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.3rem;
                 border-left: 0;
               }
             }
