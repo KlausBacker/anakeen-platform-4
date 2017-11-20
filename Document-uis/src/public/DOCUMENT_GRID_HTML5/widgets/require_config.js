@@ -21,7 +21,7 @@
             "datatables" :           "../uiAssets/externals/jquery-dataTables/js/jquery.dataTables.min",
             "datatables.net" :       "../uiAssets/externals/jquery-dataTables/js/jquery.dataTables.min",
             "datatables-bootstrap" : "../uiAssets/externals/jquery-dataTables/js/dataTables.bootstrap.min",
-            "mustache":              "../uiAssets/externals/mustache.js/mustache.min"
+            "mustache":              "../uiAssets/externals/mustache/mustache.min"
         },
         "waitSeconds" : 60
     };
