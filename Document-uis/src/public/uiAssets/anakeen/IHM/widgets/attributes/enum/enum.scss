@@ -185,8 +185,8 @@
 }
 
 
-.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group,
-.dcpAttribute__value--enumbuttons.orientation-bool.input-group {
+.dcpAttribute__value--enumbuttons.orientation-horizontal,
+.dcpAttribute__value--enumbuttons.orientation-bool {
   border-top-right-radius: $border-radius-base;
   border-bottom-right-radius: $border-radius-base;
 
@@ -209,8 +209,8 @@
   }
 }
 
-.dcpAttribute__value--enumbuttons.dcpAttribute__content__nobutton.orientation-horizontal.input-group,
-.dcpAttribute__value--enumbuttons.dcpAttribute__content__nobutton.orientation-bool.input-group {
+.dcpAttribute__value--enumbuttons.dcpAttribute__content__nobutton.orientation-horizontal,
+.dcpAttribute__value--enumbuttons.dcpAttribute__content__nobutton.orientation-bool {
   border-top-right-radius: $border-radius-base;
   border-bottom-right-radius: $border-radius-base;
 }
@@ -221,11 +221,11 @@
   }
 }
 
-.dcpAttribute__value--enumlabel.k-button {
+.dcpAttribute__value--enumlabel {
   padding: 0 3px 0 3px;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-horizontal.input-group .dcpAttribute__value--enumlabel {
+.dcpAttribute__value--enumbuttons.orientation-horizontal .dcpAttribute__value--enumlabel {
   display: table-cell;
   white-space: nowrap;
 
@@ -250,13 +250,13 @@
   }
 }
 
-.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel {
+.dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel {
   display: none;
   width: 100%;
   text-align: left;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel span {
+.dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel span {
   padding-left: 1em;
 }
 
@@ -272,6 +272,7 @@
 .dcpAttribute__value--enumbuttons.orientation-vertical {
   width: 100%;
   padding: 0;
+  display:flex;
   flex-direction: column;
   height: 100%;
   .dcpAttribute__value--enumlabel--other {
@@ -279,7 +280,7 @@
   }
 }
 
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group {
+.dcpAttribute__value--enumbuttons.orientation-vertical {
   border-radius: $border-radius-base;
   border:none;
 
@@ -291,7 +292,7 @@
       top: 4px;
     }
     &:after {
-      top: 4px + 3px;
+      top: 4px + 2px;
     }
   }
   .k-radio-label {
@@ -304,7 +305,7 @@
   }
 }
 
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel {
+.dcpAttribute__value--enumbuttons.orientation-vertical .dcpAttribute__value--enumlabel {
   display: block;
   text-align: left;
   white-space: nowrap;
@@ -326,7 +327,7 @@ label.dcpAttribute__value--enumlabel--text {
   line-height: $A4-ui-input-height;
 }
 
-.dcpAttribute__value--enumbuttons.input-group {
+.dcpAttribute__value--enumbuttons {
   .k-radio, .k-checkbox {
     display: inline;
     width: 0;
@@ -336,7 +337,7 @@ label.dcpAttribute__value--enumlabel--text {
 
 }
 
-.dcpAttribute__value--enumbuttons.input-group .dcpAttribute__value--enumlabel--other.dcpAttribute__value--enumlabel {
+.dcpAttribute__value--enumbuttons .dcpAttribute__value--enumlabel--other.dcpAttribute__value--enumlabel {
   text-overflow: initial;
   padding-top: 0;
   .k-checkbox-label {
@@ -361,13 +362,13 @@ label.dcpAttribute__value--enumlabel--text {
 
 }
 
-.dcpAttribute__value--enumbuttons.orientation-vertical.input-group .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
+.dcpAttribute__value--enumbuttons.orientation-vertical .dcpAttribute__value--enumlabel .dcpAttribute__value--enumlabel--text {
   margin-left: 0.5em;
-  display: inline-block;
+  display: block;
   vertical-align: middle;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-bool.input-group .dcpAttribute__value--enumlabel--text {
+.dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel--text {
   display: inline-block;
 }
 
