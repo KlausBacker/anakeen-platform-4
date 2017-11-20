@@ -20,15 +20,51 @@ export default {
             },
 
             initKendo: () => {
+                const _this = this;
                 this.dataSource = new this.$kendo.data.DataSource({
-                    data: [],
+                    transport: {
+                        read: (options) => {
+                                if (options.data.collection) {
+                                    const params = {
+                                        fields: 'document.properties.state,document.properties.icon',
+                                        page: options.data.page,
+                                        offset: (options.data.page - 1) * options.data.take,
+                                        slice: options.data.take,
+                                    };
+                                    if (this.filterInput) {
+                                        params.filter = this.filterInput;
+                                    }
+
+                                    _this.privateScope
+                                        .sendGetRequest(`api/v1/sba/collections/${options.data.collection}/documentsList`,
+                                            {
+                                                params,
+                                            })
+                                        .then((response) => {
+                                            options.success(response);
+                                        }).catch((response) => {
+                                        options.error(response);
+                                    });
+                                } else {
+                                    options.error();
+                                }
+                            },
+                    },
                     pageSize: this.pageSizeOptions[1].value,
+                    serverPaging: true,
+                    schema: {
+                        total: (response) => response.data.data.resultMax,
+
+                        data: (response) =>  response.data.data.documents,
+                    },
+
                 });
                 this.$(this.$refs.listView).kendoListView({
                     dataSource: this.dataSource,
                     template: this.$kendo.template(DocumentTemplate),
                     selectable: 'multiple',
-                    change: this.onSelectDocument,
+                    change: this.privateScope.onSelectDocument,
+                    scrollable: true,
                 });
 
                 this.$(this.$refs.pager).kendoPager({
@@ -36,9 +72,12 @@ export default {
                     numeric: false,
                     input: true,
                     info: false,
+                    pageSizes: false,
+                    change: this.privateScope.onPagerChange,
                     messages: {
                         page: '',
                         of: '/ {0}',
+                        itemsPerPage: 'Éléments par page',
                     },
                 });
                 this.$(this.$refs.summaryPager).kendoPager({
@@ -46,6 +85,7 @@ export default {
                     numeric: false,
                     input: false,
                     info: true,
+                    change: this.privateScope.onPagerChange,
                     messages: {
                         display: '{0} - {1} sur {2}',
                     },
@@ -57,16 +97,16 @@ export default {
                     dataValueField: 'value',
                     animation: false,
                     index: 1,
-                    change: this.onSelectPageSize,
+                    change: this.privateScope.onSelectPageSize,
                     // valueTemplate: '<span class="fa fa-list-ol"></span>',
                     headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
                     template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
                 }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
-                this.privateScope.updateKendoData();
             },
 
-            updateKendoData: () => {
-                this.dataSource.data(this.documents);
+            onPagerChange: (e) => {
+                this.dataSource.page(e.index);
+                this.privateScope.updateList();
             },
 
             sendGetRequest: (url, conf) => {
@@ -83,6 +123,30 @@ export default {
                     });
                 });
             },
+
+            onSelectPageSize: (e) => {
+                const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
+                const newPageSize = counter.dataItem(e.item).value;
+                this.dataSource.pageSize(newPageSize);
+                this.privateScope.updateList();
+            },
+
+            onSelectDocument: (...arg) => {
+                // this.$emit('store-save', {action: 'openDocument', data: document });
+                const data = this.dataSource.view();
+                const listView = this.$(this.$refs.listView).data('kendoListView');
+                const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
+                this.selectDocument(selected[0]);
+            },
+
+
+            updateList: () => new Promise((resolve, reject) => {
+                    if (this.collection && this.dataSource) {
+                        this.dataSource.read({ collection: this.collection.initid }).then(resolve).catch(reject);
+                    } else {
+                        reject();
+                    }
+                }),
         };
     },
 
@@ -124,65 +188,28 @@ export default {
     },
 
     methods: {
-        onSelectDocument(...arg) {
-            // this.$emit('store-save', {action: 'openDocument', data: document });
-            const data = this.dataSource.view();
-            const listView = this.$(this.$refs.listView).data('kendoListView');
-            const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
-            this.selectDocument(selected[0]);
-        },
 
         selectDocument(document) {
             this.$emit('document-selected', Object.assign({}, document.properties));
         },
 
-        onSelectPageSize(e) {
-            const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
-            const newPageSize = counter.dataItem(e.item).value;
-            this.dataSource.pageSize(newPageSize);
-        },
-
-        onSearchClick() {
-            if (this.filterInput) {
-                this.privateScope
-                    .sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`, {
-                        params: {
-                            fields: 'document.properties.state,document.properties.icon',
-                            filter: this.filterInput,
-                        },
-                    })
-                    .then((response) => {
-                        this.documents = response.data.data.documents;
-                        this.privateScope.updateKendoData();
-                    });
+        filterDocumentsList(filterValue) {
+            this.filterInput = filterValue;
+            if (filterValue) {
+                this.privateScope.updateList();
+            } else {
+                this.clearDocumentsListFilter();
             }
-
         },
 
-        onRemoveClick() {
+        clearDocumentsListFilter() {
             this.filterInput = '';
-            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`)
-                .then((response) => {
-                    this.documents = response.data.data.documents;
-                    this.privateScope.updateKendoData();
-                });
-        },
-
-        onFilterInput(event) {
-            this.filterInput = event.target.value;
+            this.privateScope.updateList();
         },
 
         setCollection(c) {
             this.collection = c;
-            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`, {
-                params: {
-                    fields: 'document.properties.state,document.properties.icon',
-                },
-            })
-                .then((response) => {
-                    this.documents = response.data.data.documents;
-                    this.privateScope.updateKendoData();
-                });
+            this.privateScope.updateList();
         },
     },
 };

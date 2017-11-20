@@ -18,11 +18,11 @@
                     <div class="input-group">
                         <input type="text"
                                class="form-control documentsList__documents__search__keyword"
-                               placeholder="Rechercher" :value="filterInput" @input="onFilterInput"/>
-                        <i class="input-group-addon material-icons documentsList__documents__search__keyword__remove" @click="onRemoveClick">
+                               placeholder="Rechercher" v-model="filterInput" @change="filterDocumentsList(filterInput)"/>
+                        <i class="input-group-addon material-icons documentsList__documents__search__keyword__remove" @click="clearDocumentsListFilter">
                             close
                         </i>
-                        <i class="input-group-addon material-icons documentsList__documents__search__button" @click="onSearchClick">
+                        <i class="input-group-addon material-icons documentsList__documents__search__button" @click="filterDocumentsList(filterInput)">
                             search
                         </i>
                     </div>
