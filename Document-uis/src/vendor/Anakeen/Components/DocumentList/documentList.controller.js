@@ -133,7 +133,7 @@ export default {
         },
 
         selectDocument(document) {
-            this.$emit('document-selected', this.$.extend(true, {}, document.properties));
+            this.$emit('document-selected', Object.assign({}, document.properties));
         },
 
         onSelectPageSize(e) {
@@ -143,12 +143,24 @@ export default {
         },
 
         onSearchClick() {
-            this.dataSource.filter({ field: 'title', operator: 'contains', value: this.filterInput });
+            if (this.filterInput) {
+                this.privateScope
+                    .sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList/filter=${this.filterInput}`)
+                    .then((response) => {
+                        this.documents = response.data.data.documents;
+                        this.privateScope.updateKendoData();
+                    });
+            }
+
         },
 
         onRemoveClick() {
             this.filterInput = '';
-            this.dataSource.filter(null);
+            this.privateScope.sendGetRequest(`/sba/collections/${this.collection.ref}/documentsList`)
+                .then((response) => {
+                    this.documents = response.data.data.documents;
+                    this.privateScope.updateKendoData();
+                });
         },
 
         onFilterInput(event) {

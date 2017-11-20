@@ -1,6 +1,7 @@
 // jscs:disable requirePaddingNewLinesBeforeLineComments
 import contentTemplate from './documentTabsContent.template.kd';
 import headerTemplate from './documentTabsHeader.template.kd';
+import welcomeTemplate from './documentTabsWelcome.template.kd';
 import abstractAnakeenComponent from '../componentBase';
 
 export default {
@@ -37,28 +38,97 @@ export default {
         this.privateScope = {
             // Init the model and view kendo element
             initKendoComponents: () => {
-                this.openedTabs = new this.$kendo.data.ObservableArray([]);
                 this.tabstripElement = this.$(this.$refs.tabstrip).kendoTabStrip({
                     animation: false,
                 });
+                this.openedTabs = new this.$kendo.data.ObservableArray([]);
+                this.privateScope.bindDataChange(this.openedTabs);
                 this.tabsListElement = this.$(this.$refs.tabsList).kendoDropDownList({
                     animation: false,
-                    dataSource: this.openedTabs,
+                    dataSource: this.tabsArray,
                     template: this.$kendo.template(headerTemplate),
                     valueTemplate: this.$kendo.template('<i class="material-icons">menu</span>'),
                     autoWidth: true,
                     select: this.privateScope.onClickTabList,
                 });
                 this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
-                this.privateScope.bindDataChange(this.openedTabs);
+                this.privateScope.sendGetRequest('sba/collections')
+                    .then((response) => {
+                        this.collections = response.data.data.sample.collections;
+                        this.privateScope.initTabs();
+                    });
                 this.$(window).resize(() => {
                     this.privateScope.resizeComponents();
                 });
-                this.$(this.$refs.tabsWrapper).bind('resize', () => {
-                    console.log("I'm resizing");
-                });
-
                 this.privateScope.resizeComponents();
+            },
+
+            sendGetRequest: (url) => {
+                const element = this.$(this.$refs.tabsWrapper);
+                this.$kendo.ui.progress(element, true);
+                return new Promise((resolve, reject) => {
+                    this.$http.get(url)
+                        .then((response) => {
+                            this.$kendo.ui.progress(element, false);
+                            resolve(response);
+                        }).catch((error) => {
+                        this.$kendo.ui.progress(element, false);
+                        reject(error);
+                    });
+                });
+            },
+
+            initTabs: () => {
+                this.openedTabs.push({
+                    tabId: 'welcome_tab',
+                    headerTemplate: `<span class="tab__document__header__content">
+                                        <img src="api/v1/images/assets/original/BA.png" class="app_logo" style="width:auto; height:2rem; padding-right: 1rem;"/> 
+                                        BIENVENUE
+                                        <span class="tab__new__button"><i class="material-icons">add</i></span>
+                                     </span>`,
+                    contentTemplate: welcomeTemplate,
+                    data: {
+                        user: 'Anakeen',
+                        welcomeMessage: 'bienvenue sur  Business App.<br/> Que voulez-vous faire ?',
+                        collections: this.collections,
+                    },
+                });
+                /*this.$('.documentsList__documentsTabs__welcome__collection__button').on('click', (e) => {
+                    const id = e.target.dataset.famid;
+                    const coll = this.collections.find((c) => c.initid === id);
+                    this.openedTabs.push({
+                        tabId: coll.initid,
+                        headerTemplate,
+                        contentTemplate,
+                        data: {
+                            initid: coll.initid,
+                            viewid: '!defaultCreation',
+                            title: coll.html_label,
+                            icon: coll.image_url,
+                        },
+                    });
+                    this.selectDocument(this.openedTabs.length - 1);
+                });*/
+
+                this.selectDocument(0);
+            },
+
+            onClickNewTabButton: (e) => {
+                this.openedTabs.push({
+                    tabId: 'new_tab',
+                    headerTemplate: `<span class="tab__document__header__content">
+                                        <i class="material-icons">crop_square</i>
+                                        NOUVEL ONGLET
+                                        <span class="tab__new__button"><i class="material-icons">add</i></span>
+                                     </span>`,
+                    contentTemplate: welcomeTemplate,
+                    data: {
+                        user: 'Anakeen',
+                        welcomeMessage: '<br/>Que voulez-vous faire ?',
+                        collections: this.collections,
+                    },
+                });
+                this.selectDocument(this.openedTabs.length - 1);
             },
 
             onClickTabList: (e) => {
@@ -79,6 +149,12 @@ export default {
 
                         const item = this.$(e.target).closest('.k-item');
                         this.closeDocument(item.index());
+                    });
+                    $tab.on('click', '.tab__new__button', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        this.privateScope.onClickNewTabButton();
                     });
                 } else {
                     $tab.off('click', "[data-type='remove']");
@@ -129,6 +205,7 @@ export default {
                     if (this.documentCss) {
                         documentComponent.prop('publicMethods').injectCSS(this.documentCss);
                     }
+
                     tab.set('title', '');
                     tab.set('icon', '');
                     tab.set('url', '');
@@ -156,13 +233,13 @@ export default {
                         switch (e.action) {
                             // Add new document
                             case 'add':
+                                const item = e.items[0];
+                                const header = this.$kendo.template(item.headerTemplate)(item.data);
+                                const content = this.$kendo.template(item.contentTemplate)(item.data);
                                 this.tabstrip.append({
-                                    text: `<a class="tab__document__header__content">
-                                                <i class="fa fa-spinner fa-pulse tab__document__icon"></i>
-                                                <span class="tab__document__title">Chargement en cours...</span>
-                                           </a>`,
+                                    text: header,
                                     encoded: false,
-                                    content: this.privateScope.formatTabContentData(e.items[0]),
+                                    content: content,
                                 });
                                 this.privateScope
                                     .configureCloseTab(this.tabstrip.items()[e.index]);
@@ -182,21 +259,21 @@ export default {
                                 break;
                             // Modify a tab
                             case 'itemchange':
-                                const index = this.tabsArray.findIndex((d) => d.initid === e.items[0].initid);
-                                const newValue = e.items[0][e.field];
-                                const $indexedItem = this.$(this.tabstrip.items()[index]);
-                                switch (e.field) {
-                                    case 'title':
-                                        $indexedItem.find('.tab__document__title').text(newValue);
-                                        break;
-                                    case 'icon':
-                                        $indexedItem.find('.tab__document__icon')
-                                            .replaceWith(`<img class="tab__document__icon" src="${newValue}"/>`);
-                                        break;
-                                    case 'url':
-                                        $indexedItem.find('.tab__document__header__content').prop('href', newValue);
-                                        break;
-                                }
+                                // const index = this.tabsArray.findIndex((d) => d.initid === e.items[0].initid);
+                                // const newValue = e.items[0][e.field];
+                                // const $indexedItem = this.$(this.tabstrip.items()[index]);
+                                // switch (e.field) {
+                                //     case 'title':
+                                //         $indexedItem.find('.tab__document__title').text(newValue);
+                                //         break;
+                                //     case 'icon':
+                                //         $indexedItem.find('.tab__document__icon')
+                                //             .replaceWith(`<img class="tab__document__icon" src="${newValue}"/>`);
+                                //         break;
+                                //     case 'url':
+                                //         $indexedItem.find('.tab__document__header__content').prop('href', newValue);
+                                //         break;
+                                // }
 
                                 break;
                         }
@@ -247,9 +324,14 @@ export default {
 
     methods: {
         addDocument(document) {
-            const index = this.tabsArray.findIndex((d) => d.initid === document.initid);
+            const index = this.tabsArray.findIndex((d) => d.tabId === document.initid);
             if (index < 0) {
-                this.openedTabs.push(Object.assign({}, document));
+                this.openedTabs.push({
+                    tabId: document.initid,
+                    headerTemplate: headerTemplate,
+                    contentTemplate: contentTemplate,
+                    data: Object.assign({}, document, { onClickNewTab: this.privateScope.onClickNewTabButton }),
+                });
                 this.selectDocument(this.openedTabs.length - 1);
             } else {
                 this.selectDocument(index);
@@ -261,13 +343,13 @@ export default {
             if (typeof documentId === 'number') {
                 index = documentId;
             } else if (typeof documentId === 'object') {
-                index = this.tabsArray.findIndex((d) => d.initid === documentId.initid);
+                index = this.tabsArray.findIndex((d) => d.tabId === documentId.initid);
                 if (index < 0) {
                     index = 0;
                 }
             }
 
-            this.tabslist.select(index);
+            // this.tabslist.select(index);
             this.tabstrip.select(index);
         },
 
@@ -276,7 +358,7 @@ export default {
             if (typeof documentId === 'number') {
                 index = documentId;
             } else if (typeof documentId === 'object') {
-                index = this.tabsArray.findIndex((d) => d.initid === documentId.initid);
+                index = this.tabsArray.findIndex((d) => d.tabId === documentId.initid);
             }
 
             if (index >= 0) {

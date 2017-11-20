@@ -13,7 +13,7 @@
             }
 
             & > * {
-              transform: perspective(120px) rotateX(-25deg);
+              transform: perspective(112px) rotateX(-25deg) scaleY(1.1);
             }
 
             &.k-first {
