@@ -16,7 +16,7 @@
 }
 .k-state-focused, li.k-state-hover:hover > .k-link {
     box-shadow:none;
-    background-color: transparent;
+   // background-color: transparent;
     color:#157EFB;
 }
 .k-menu .k-state-default .k-state-border-down {
