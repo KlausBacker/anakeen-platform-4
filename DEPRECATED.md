@@ -149,3 +149,9 @@ Alternative `Dcp\Core\DbManager::rollbackPoint()`
 ## DbObj::commitPoint
 
 Alternative `Dcp\Core\DbManager::commitPoint()`
+
+
+# Deleted previous deprecated
+
+* Doc::toXml()
+* Doc::toDtd()
