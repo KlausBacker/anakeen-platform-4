@@ -905,9 +905,9 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = new_Doc($this->dbaccess, $this->wid);
+            $wdoc = DocManager::getDocument($this->wid);
             $this->wdoc = $wdoc;
-            if ($this->wdoc->isAlive()) {
+            if ($this->wdoc && $this->wdoc->isAlive()) {
                 if ($this->wdoc->doctype != 'W') $err = sprintf(_("creation : document %s is not a workflow") , $this->wid);
                 else $this->wdoc->Set($this); // set first state
                 
@@ -1479,7 +1479,10 @@ create unique index i_docir on doc(initid, revision);";
          * @var DocFam $famdoc
          */
         static $famdoc = null;
-        if (($famdoc === null) || ($famdoc->id != $this->fromid)) $famdoc = new_Doc($this->dbaccess, $this->fromid);
+        if (($famdoc === null) || ($famdoc->id != $this->fromid)) $famdoc = DocManager::getFamily($this->fromid);
+        if (!$famdoc) {
+            $famdoc=new \DocFam();
+        }
         return $famdoc;
     }
     /**
@@ -2201,7 +2204,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Dcp\Core\CVDoc $cvdoc
              */
-            $cvdoc = new_Doc($this->dbaccess, $this->cvid);
+            $cvdoc = DocManager::getDocument($this->cvid);
             $cvdoc = clone $cvdoc;
             $cvdoc->set($this);
             
@@ -2276,8 +2279,8 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Dcp\Core\CVDoc $cvdoc
                  */
-                $cvdoc = new_Doc($this->dbaccess, $this->cvid);
-                if ($cvdoc->isAlive()) {
+                $cvdoc = DocManager::getDocument($this->cvid);
+                if ($cvdoc && $cvdoc->isAlive()) {
                     $cvdoc = clone $cvdoc;
                     $cvdoc->Set($this);
                     $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT) , "id");
@@ -2298,8 +2301,8 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var $wdoc WDoc
                  */
-                $wdoc = new_Doc($this->dbaccess, $this->wid);
-                if ($wdoc->isAlive()) {
+                $wdoc = DocManager::getDocument($this->wid);
+                if ($wdoc && $wdoc->isAlive()) {
                     if ($this->id == 0) {
                         $wdoc->set($this);
                     }
@@ -2314,8 +2317,8 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Dcp\Family\MASK $mdoc
              */
-            $mdoc = new_Doc($this->dbaccess, $mid);
-            if ($mdoc->isAlive()) {
+            $mdoc = DocManager::getDocument($mid);
+            if ($mdoc && $mdoc->isAlive()) {
                 if (is_a($mdoc, '\Dcp\Family\Mask')) {
                     
                     $maskFam = $mdoc->getRawValue("msk_famid");
@@ -4322,15 +4325,9 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($tattrid as $k => $v) {
             $docid = $doc->getRawValue($v);
             if ($docid == "") return $def;
-            $doc = new_Doc($this->dbaccess, $docid);
-            
-            if ($latest) {
-                if ($doc->locked == - 1) { // it is revised document
-                    $ldocid = $doc->getLatestId();
-                    if ($ldocid != $doc->id) $doc = new_Doc($this->dbaccess, $ldocid);
-                }
-            }
-            if (!$doc->isAlive()) return $def;
+            $doc = DocManager::getDocument( $docid, $latest);
+
+            if (!$doc) return $def;
         }
         if ($html) return $doc->getHtmlAttrValue($lattrid, $def);
         else return $doc->getRawValue($lattrid, $def);
@@ -5014,16 +5011,16 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = new_doc($this->dbaccess, $this->wid);
-            if ($wdoc->isAlive()) {
+            $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+            if ($wdoc && $wdoc->isAlive()) {
                 $wdoc->set($this);
                 $waskids = $wdoc->getDocumentWasks($this->state, $control);
                 foreach ($waskids as $k => $waskid) {
                     /**
                      * @var \Dcp\Family\Wask $wask
                      */
-                    $wask = new_doc($this->dbaccess, $waskid);
-                    if ($wask->isAlive()) {
+                    $wask = Dcp\Core\DocManager::getDocument($waskid);
+                    if ($wask && $wask->isAlive()) {
                         $ut = $this->getUTag("ASK_" . $wask->id, false);
                         if ($ut) $answer = $ut->comment;
                         else $answer = "";
@@ -5079,8 +5076,8 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var WDoc $wdoc
          */
-        $wdoc = new_doc($this->dbaccess, $this->wid);
-        if ($wdoc->isAlive()) {
+        $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+        if ($wdoc && $wdoc->isAlive()) {
             $wdoc->set($this);
             foreach ($ldoc as $k => $v) {
                 $aask = $wdoc->attrPrefix . "_ASKID" . ($v["state"]);
@@ -5264,8 +5261,8 @@ create unique index i_docir on doc(initid, revision);";
             }
         } else {
             
-            $state = new_doc($this->dbaccess, $newstateid);
-            if (!$state->isAlive()) return sprintf(_("invalid freestate document %s") , $newstateid);
+            $state = Dcp\Core\DocManager::getDocument($newstateid);
+            if (!$state || !$state->isAlive()) return sprintf(_("invalid freestate document %s") , $newstateid);
             if ($state->fromid != 39) return sprintf(_("not a freestate document %s") , $state->title);
             
             $this->state = $state->id;
@@ -5304,8 +5301,8 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var WDoc $wdoc
          */
-        $wdoc = new_doc($this->dbaccess, $this->wid);
-        if (!$wdoc->isAlive()) return _("assigned workflow is not alive");
+        $wdoc = Dcp\Core\DocManager::getDocument( $this->wid);
+        if (!$wdoc || !$wdoc->isAlive()) return _("assigned workflow is not alive");
         try {
             $wdoc->Set($this);
             $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
@@ -5348,8 +5345,8 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = new_Doc($this->dbaccess, $this->wid);
-            if ($wdoc->isAffected()) return $wdoc->getColor($this->state, $def);
+            $wdoc = Dcp\Core\DocManager::getDocument( $this->wid);
+            if ($wdoc && $wdoc->isAffected()) return $wdoc->getColor($this->state, $def);
         } else {
             if (is_numeric($this->state) && ($this->state > 0)) {
                 $state = $this->getDocValue($this->state, "frst_color", $def);
@@ -5372,7 +5369,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = new_Doc($this->dbaccess, $this->wid);
+            $wdoc = DocManager::getDocument($this->wid);
             if ($wdoc->isAffected()) return $wdoc->getActivity($this->state, $def);
         } else {
             if (is_numeric($this->state) && ($this->state > 0)) {
@@ -5544,8 +5541,8 @@ create unique index i_docir on doc(initid, revision);";
     
     final public function translate($docid, $translate)
     {
-        $doc = new_Doc($this->dbaccess, $docid);
-        if ($doc->isAlive()) {
+        $doc = DocManager::getDocument($docid);
+        if ($doc && $doc->isAlive()) {
             foreach ($translate as $afrom => $ato) {
                 $this->setValue($ato, $doc->getRawValue($afrom));
             }
@@ -6353,7 +6350,7 @@ create unique index i_docir on doc(initid, revision);";
                         $mUrl = ContextManager::getApplicationParam("CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
-                                $mDoc = new_doc($this->dbaccess, $id);
+                                $mDoc = DocManager::getDocument($id);
                             } else {
                                 $mDoc = $this;
                             }
@@ -7444,7 +7441,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Dcp\Family\WASK $wask
              */
-            $wask = new_doc($this->dbaccess, $ans["waskid"]);
+            $wask = DocManager::getDocument($ans["waskid"]);
             $wask->set($this);
             
             $taguid = array();
@@ -7940,8 +7937,8 @@ create unique index i_docir on doc(initid, revision);";
                     $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
                     $oaf = $this->getAttribute($oaf->id);
                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                    $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
-                    $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
+                    $frames[$k]["ehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
+                    $frames[$k]["ehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
                     if ($oaf && $oaf->fieldSet && ($oaf->fieldSet->id != "") && ($oaf->fieldSet->id != Adoc::HIDDENFIELD)) {
                         $frames[$k]["tag"] = "TAG" . $oaf->fieldSet->id;
                         $frames[$k]["TAB"] = true;
@@ -7993,8 +7990,8 @@ create unique index i_docir on doc(initid, revision);";
                     $elabel = $listattr[$i]->getoption("elabel");
                     $elabel = str_replace("'", "&rsquo;", $elabel);
                     $tableframe[$v]["elabel"] = mb_ucfirst(str_replace('"', "&rquot;", $elabel));
-                    $tableframe[$v]["aehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
-                    $tableframe[$v]["aehelpid"] = ($help->isAlive()) ? $help->id : false;
+                    $tableframe[$v]["aehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
+                    $tableframe[$v]["aehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
                     
                     $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
                     $tableframe[$v]["atype"] = $attr->type;
@@ -8262,305 +8259,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         return '';
     }
-    // =====================================================================================
-    // ================= Methods use for XML ======================
-    
-    /**
-     * @deprecated use exportXml instead
-     * @param bool $withdtd
-     * @param string $id_doc
-     * @return string
-     */
-    final public function toxml($withdtd = false, $id_doc = "")
-    {
-        deprecatedFunction();
-        /**
-         * @var Action $action
-         */
-        global $action;
-        
-        $docid = intval($this->id);
-        if ($id_doc == "") {
-            $id_doc = $docid;
-        }
-        
-        $title = $this->title;
-        $fam_doc = new_Doc($this->dbaccess, $this->fromid);
-        $name = str_replace(" ", "_", $fam_doc->title);
-        
-        if ($withdtd == true) {
-            $dtd = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
-            $dtd.= "<!DOCTYPE $name [";
-            /* @noinspection PhpDeprecationInspection */
-            $dtd.= $this->todtd();
-            $dtd.= "]>";
-        } else {
-            $dtd = "";
-        }
-        
-        $this->lay = new Layout("FDL/Layout/viewxml.xml", $action);
-        $this->lay->Set("DTD", $dtd);
-        $this->lay->Set("NOM_FAM", $name);
-        $this->lay->Set("id_doc", $id_doc);
-        $this->lay->Set("TITRE", $title);
-        $this->lay->Set("ID_FAM", $fam_doc->name);
-        $this->lay->Set("revision", $this->revision);
-        $this->lay->Set("revdate", $this->revdate);
-        //$this->lay->Set("IDOBJECT",$docid);
-        //$this->lay->Set("IDFAM",$fromid);
-        //$idfam=$fam_doc->classname;
-        //$this->lay->Set("TYPEOBJECT",$doctype);
-        ////debut
-        $listattr = $this->GetNormalAttributes();
-        
-        $frames = array();
-        
-        $nattr = count($listattr); // attributes list count
-        $k = 0; // number of frametext
-        $v = 0; // number of value in one frametext
-        $currentFrameId = "";
-        
-        $changeframe = false; // is true when need change frame
-        $tableframe = array();
-        
-        $iattr = 0;
-        
-        foreach ($listattr as $i => $attr) {
-            $iattr++;
-            
-            if ((chop($listattr[$i]->id) != "") && ($listattr[$i]->id != Adoc::HIDDENFIELD)) {
-                //------------------------------
-                // Compute value elements
-                if ($currentFrameId != $listattr[$i]->fieldSet->id) {
-                    if ($currentFrameId != "") $changeframe = true;
-                }
-                //------------------------------
-                // change frame if needed
-                if ( // to generate  fiedlset
-                $changeframe) {
-                    $changeframe = false;
-                    if ($v > 0) // one value detected
-                    {
-                        
-                        $frames[$k]["FIELD"] = $currentFrameId;
-                        $frames[$k]["ARGUMENT"] = "ARGUMENT_$k";
-                        
-                        $this->lay->SetBlockData($frames[$k]["ARGUMENT"], $tableframe);
-                        $frames[$k]["nom_fieldset"] = $this->GetLabel($currentFrameId);
-                        unset($tableframe);
-                        $tableframe = array();
-                        $k++;
-                    }
-                    $v = 0;
-                }
-                // Set the table value elements
-                if (($iattr <= $nattr) && ($this->getRawValue($i) != "")) {
-                    $attrtype_list = false;
-                    
-                    if (strstr($listattr[$i]->type, "textlist") != false) {
-                        $attrtype_list = true;
-                    }
-                    if ($listattr[$i]->inArray()) {
-                        $attrtype_list = true;
-                    }
-                    
-                    if ($attrtype_list) {
-                        // $value=htmlspecialchars($this->GetValue($i));
-                        $value = $this->getRawValue($i);
-                        $textlist = $this->rawValueToArray($value);
 
-
-                        foreach($textlist as $text) {
-                            $currentFrameId = $listattr[$i]->fieldSet->id;
-                            $tableframe[$v]["id"] = $listattr[$i]->id;
-                            $tableframe[$v]["value"] = $text[1];
-                            $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
-                            $tableframe[$v]["labelText"] = (str_replace(array(
-                                "%",
-                                "\""
-                            ) , array(
-                                "",
-                                "\\\""
-                            ) , $listattr[$i]->getLabel()));
-                            //$tableframe[$v]["type"]=$listattr[$i]->type;
-                            //$tableframe[$v]["visibility"]=$listattr[$i]->visibility;
-                            //$tableframe[$v]["needed"]=$listattr[$i]->needed;
-                            $v++;
-                        }
-                    } else {
-                        $value = htmlspecialchars($this->getRawValue($i));
-                        $tableframe[$v]["type"] = base64_encode($listattr[$i]->type);
-                        
-                        $currentFrameId = $listattr[$i]->fieldSet->id;
-                        $tableframe[$v]["id"] = $listattr[$i]->id;
-                        $tableframe[$v]["value"] = $value;
-                        $tableframe[$v]["labelText"] = addslashes($listattr[$i]->getLabel());
-                        //$tableframe[$v]["type"]=$listattr[$i]->type;
-                        //$tableframe[$v]["visibility"]=$listattr[$i]->visibility;
-                        //$tableframe[$v]["needed"]=$listattr[$i]->needed;
-                        $v++;
-                    }
-                }
-            }
-        }
-        
-        if ($v > 0) // last fieldset
-        {
-            
-            $frames[$k]["FIELD"] = $currentFrameId;
-            $frames[$k]["ARGUMENT"] = "ARGUMENT_$k";
-            
-            $this->lay->SetBlockData($frames[$k]["ARGUMENT"], $tableframe);
-            $frames[$k]["nom_fieldset"] = $this->GetLabel($currentFrameId);
-            unset($tableframe);
-        }
-        
-        $this->lay->SetBlockData("FIELDSET", $frames);
-        return $this->lay->gen();
-    }
-    /**
-     * @deprecated use exportXml instead
-     * @return string
-     */
-    final public function todtd()
-    {
-        deprecatedFunction();
-        global $action;
-        $this->lay = new Layout("FDL/Layout/viewdtd.xml", $action);
-        
-        $fam_doc = $this->getFamilyDocument();
-        $name = str_replace(" ", "_", $fam_doc->title);
-        $this->lay->Set("doctype", $this->doctype);
-        $this->lay->Set("idfam", $this->fromid);
-        $this->lay->Set("nom_fam", $name);
-        $this->lay->Set("id_fam", $name);
-        
-        $listattr = $this->GetNormalAttributes();
-        
-        $frames = $elements = array();
-        
-        $nattr = count($listattr); // attributes list count
-        $k = 0; // number of frametext
-        $v = 0; // number of value in one frametext
-        $currentFrameId = "";
-        
-        $changeframe = false; // is true when need change frame
-        $needed = false;
-        $tableattrs = array();
-        $tablesetting = array();
-        $iattr = 0;
-        
-        foreach ($listattr as $i => $attr) {
-            $iattr++;
-            //------------------------------
-            // Compute value elements
-            if ($currentFrameId != $listattr[$i]->fieldSet->id) {
-                if ($currentFrameId != "") $changeframe = true;
-            }
-            //------------------------------
-            // change frame if needed
-            if ( // to generate  fiedlset
-            $changeframe) {
-                $changeframe = false;
-                
-                if ($v > 0) // one value detected
-                {
-                    
-                    $frames[$k]["name"] = $currentFrameId;
-                    $elements[$k]["name"] = $currentFrameId;
-                    if ($needed) {
-                        $elements[$k]["name"].= ", ";
-                    } else {
-                        $elements[$k]["name"].= "?, ";
-                    }
-                    $needed = false;
-                    
-                    $frames[$k]["ATTRIBUT_NAME"] = "ATTRIBUT_NAME_$k";
-                    $frames[$k]["ATTRIBUT_SETTING"] = "ATTRIBUT_SETTING_$k";
-                    
-                    $this->lay->SetBlockData($frames[$k]["ATTRIBUT_NAME"], $tableattrs);
-                    
-                    $this->lay->SetBlockData($frames[$k]["ATTRIBUT_SETTING"], $tablesetting);
-                    unset($tableattrs);
-                    unset($tablesetting);
-                    $tableattrs = array();
-                    $tablesetting = array();
-                    
-                    $k++;
-                }
-                $v = 0;
-            }
-            // Set the table value elements
-            if ($iattr <= $nattr) {
-                
-                $currentFrameId = $listattr[$i]->fieldSet->id;
-                $tablesetting[$v]["name_attribut"] = $listattr[$i]->id;
-                $tablesetting[$v]["labelText"] = addslashes(str_replace("%", "", $listattr[$i]->getLabel()));
-                $tablesetting[$v]["type"] = base64_encode($listattr[$i]->type);
-                $tablesetting[$v]["visibility"] = $listattr[$i]->visibility;
-                if ($listattr[$i]->needed) {
-                    $needed = true;
-                }
-                
-                if ($v == 0) {
-                    $insert = $listattr[$i]->id;
-                    if ($listattr[$i]->type == "textlist") {
-                        if ($listattr[$i]->needed) {
-                            $insert.= "+";
-                            $tableattrs[$v]["name_attribut"] = $insert;
-                        } else {
-                            $insert.= "*";
-                            $tableattrs[$v]["name_attribut"] = $insert;
-                        }
-                    } else {
-                        if ($listattr[$i]->needed) {
-                            $tableattrs[$v]["name_attribut"] = $insert;
-                        } else {
-                            $tableattrs[$v]["name_attribut"] = ($insert . "?");
-                        }
-                    }
-                } else {
-                    $insert = (", " . $listattr[$i]->id);
-                    if ($listattr[$i]->type == "textlist") {
-                        if ($listattr[$i]->needed) {
-                            $insert.= "+";
-                        } else {
-                            $insert.= "*";
-                        }
-                        $tableattrs[$v]["name_attribut"] = $insert;
-                    } else {
-                        if ($listattr[$i]->needed) {
-                            $tableattrs[$v]["name_attribut"] = $insert;
-                        } else {
-                            $tableattrs[$v]["name_attribut"] = ($insert . "?");
-                        }
-                    }
-                }
-                $v++;
-            }
-        }
-        
-        if ($v > 0) // last fieldset
-        {
-            $frames[$k]["name"] = $currentFrameId;
-            if ($needed) {
-                $elements[$k]["name"] = $currentFrameId;
-            } else {
-                $elements[$k]["name"] = ($currentFrameId . "?");
-            }
-            $frames[$k]["ATTRIBUT_NAME"] = "ATTRIBUT_NAME_$k";
-            $frames[$k]["ATTRIBUT_SETTING"] = "ATTRIBUT_SETTING_$k";
-            $this->lay->SetBlockData($frames[$k]["ATTRIBUT_NAME"], $tableattrs);
-            
-            $this->lay->SetBlockData($frames[$k]["ATTRIBUT_SETTING"], $tablesetting);
-            unset($tableattrs);
-            unset($tablesetting);
-        }
-        
-        $this->lay->SetBlockData("FIELDSET", $frames);
-        $this->lay->SetBlockData("ELEMENT", $elements);
-        return $this->lay->gen();
-    }
     /**
      * define custom title used to set title propert when update or create document
      * @api hook called in refresh title
@@ -8589,8 +8288,8 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
         $this->AddParamRefresh("$nameId", "$nameTitle");
-        $doc = new_Doc($this->dbaccess, $this->getRawValue($nameId));
-        if ($doc->isAlive()) $this->setValue($nameTitle, $doc->title);
+        $doc = DocManager::getDocument($this->getRawValue($nameId));
+        if ($doc && $doc->isAlive()) $this->setValue($nameTitle, $doc->title);
         else {
             // suppress
             if (!$doc->isAffected()) $this->clearValue($nameId);
