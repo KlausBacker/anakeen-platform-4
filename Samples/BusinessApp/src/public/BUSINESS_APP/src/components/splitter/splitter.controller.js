@@ -1,4 +1,5 @@
 import mixin from '../componentBase';
+const thresholdWidth = 958;
 export default {
     mixins: [mixin],
     data() {
@@ -11,9 +12,15 @@ export default {
     created() {
         this.privateScope = {
             initKendo: () => {
+                const windowWidth = this.$(window).width();
+                let collapsedSize  = '50px';
+                if (windowWidth < thresholdWidth) {
+                    collapsedSize = '0px';
+                }
+
                 this.$(this.$refs.splitter).kendoSplitter({
                     panes: [
-                        { collapsible: true, resizable: false, collapsedSize: '50px', size: '25%', scrollable: false },
+                        { collapsible: true, resizable: false, collapsedSize, size: '25%', scrollable: false },
                         { collapsible: false, resizable: false, size: '25px' },
                         { collapsible: false, resizable: false, scrollable: false },
                     ],
@@ -27,7 +34,7 @@ export default {
 
             resizeSplitter: (e) => {
                 const windowWidth = this.$(window).width();
-                if (windowWidth <= 958) {
+                if (windowWidth < thresholdWidth) {
                     const splitter = this.$(this.$refs.splitter).data('kendoSplitter');
                     const collapseButtonWidth = this.$('.documentsList__collapsible__handler').width();
                     const newLeftPaneWidthPercent = 100 - ((collapseButtonWidth * 100) / windowWidth);

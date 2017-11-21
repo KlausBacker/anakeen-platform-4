@@ -1,7 +1,4 @@
-$collapsedSize: 4.16666rem;
-
 .documentsList__documents__wrapper {
-  margin-left: $collapsedSize;
   background-color: #FBFBFB;
 
   .k-loading-mask {
@@ -134,7 +131,7 @@ $collapsedSize: 4.16666rem;
   }
 
   .k-pager-nav {
-    background-color: #E0E0E0;
+    background-color: none;
   }
 }
 
@@ -201,15 +198,17 @@ $collapsedSize: 4.16666rem;
   align-items: center;
   padding-left: 2.5rem;
   .documentsList__documentCard__heading__state--label {
-
+    margin-top: 1%;
   }
 
+
   .documentsList__documentCard__heading__state--color {
-      border-radius: 50%;
-      width: 0.95rem;
-      height: 0.95rem;
-      background-color: black;
-      margin-right: 1%;
+    border-radius: 20%;
+    width: 0.6rem;
+    height: 0.7rem;
+    background-color: black;
+    margin-right: 3%;
+    margin-top: 1%;
   }
 }
 
@@ -240,7 +239,7 @@ $flexRatioButton: 0.13;
     margin-top: -0.0833rem;
     flex: $flexRatioButton;
     .k-dropdown-wrap {
-      background-color: #969696;
+      background-color: #BFBFBF;
       color: #FFFFFF;
       border: 0;
       border-radius: 0;
