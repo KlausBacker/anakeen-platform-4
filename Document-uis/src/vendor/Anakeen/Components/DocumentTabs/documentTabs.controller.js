@@ -57,7 +57,8 @@ export default {
                 this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
                 this.privateScope.sendGetRequest('sba/collections')
                     .then((response) => {
-                        this.collections = response.data.data.sample.collections;
+                        this.collections = response.data.data.collections;
+                        this.currentUser = response.data.data.user;
                         this.privateScope.initTabs();
                     });
                 this.$(window).resize(() => {
@@ -109,7 +110,7 @@ export default {
                                      </span>`,
                     contentTemplate: welcomeTemplate,
                     data: {
-                        user: 'Anakeen',
+                        user: this.currentUser.firstName,
                         promptMessage: 'Que voulez-vous faire ?',
                         collections: this.collections,
                     },

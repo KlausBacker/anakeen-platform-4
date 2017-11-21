@@ -10,6 +10,7 @@ namespace Anakeen\Sample\Routes;
 
 use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\Core\ContextManager;
 use Anakeen\Sample\Routes\Exception;
 
 class Collections extends Crud
@@ -57,10 +58,12 @@ class Collections extends Crud
         $return = [];
         if(null !== $this->_collectionRef)
         {
-            $return['sample'] = $this->_collection;
+            $return['collection'] = $this->_collection;
         } else {
-            $return['sample'] = json_decode(\ApplicationParameterManager::getParameterValue("BUSINESS_APP", "SAMPLE_CONFIG"));
+            $return['collections'] = json_decode(\ApplicationParameterManager::getParameterValue("BUSINESS_APP", "SAMPLE_CONFIG"))->collections;
         }
+        $user = ContextManager::getCurrentUser();
+        $return['user'] = [ 'id' => $user->id, 'firstName' => $user->firstname, 'lastName' => $user->lastname, 'fid' => $user->fid];
         return $return;
     }
 
