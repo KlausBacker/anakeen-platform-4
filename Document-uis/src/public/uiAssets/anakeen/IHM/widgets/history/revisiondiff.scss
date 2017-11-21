@@ -19,3 +19,9 @@ $dcp-revision-diff-bg-after : #c6ffcc;
 .revision-diff-not-equal .revision-diff-second {
   background-color: $dcp-revision-diff-bg-after;
 }
+
+.revision-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
