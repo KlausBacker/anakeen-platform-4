@@ -1280,8 +1280,8 @@ class DocFormFormat
                         "aneeded" => $v->needed,
                         "astyle" => $v->getOption("cellheadstyle") ,
                         "ahclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute",
-                        "aehelp" => ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,
-                        "aehelpid" => ($help->isAlive()) ? $help->id : false
+                        "aehelp" => ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,
+                        "aehelpid" => ($help && $help->isAlive()) ? $help->id : false
                     );
                     
                     $tvale = $ddoc->getRawValue($tad[$k]->id) === "\t" ? "" : $ddoc->getRawValue($tad[$k]->id);
@@ -1399,8 +1399,8 @@ class DocFormFormat
                 $lay->set("readonly", ($oattr->mvisibility == 'U'));
                 $lay->set("thspan", "1");
                 $lay->set("aehelp", false);
-                $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($oattr->id) : false);
-                $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
+                $lay->set("ehelp", ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oattr->id) : false);
+                $lay->set("ehelpid", ($help && $help->isAlive()) ? $help->id : false);
                 if (($zone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $zone, $reg)) {
                     $attrid = $oattr->id;
                     $ta = $doc->attributes->getArrayElements($attrid);
