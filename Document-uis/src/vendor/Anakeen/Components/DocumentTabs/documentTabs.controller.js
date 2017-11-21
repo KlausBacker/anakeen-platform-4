@@ -84,15 +84,15 @@ export default {
             initTabs: () => {
                 this.openedTabs.push({
                     tabId: Constants.WELCOME_TAB_ID,
-                    headerTemplate: `<span class="tab__document__header__content">
-                                        <img src="api/v1/images/assets/original/BA.png" class="app_logo" style="width:auto; height:2rem; padding-right: 1rem;"/> 
-                                        BIENVENUE
+                    headerTemplate: `<span class="tab__document__header__content">                            
+                                        <span>BIENVENUE</span>
                                         <span class="tab__new__button"><i class="material-icons">add</i></span>
                                      </span>`,
                     contentTemplate: welcomeTemplate,
                     data: {
-                        user: 'Anakeen',
-                        welcomeMessage: 'bienvenue sur  Business App.<br/> Que voulez-vous faire ?',
+                        user: this.currentUser.firstName,
+                        welcomeMessage: 'bienvenue sur  Business App.',
+                        promptMessage: 'Que voulez-vous faire ?',
                         collections: this.collections,
                     },
                 });
@@ -110,7 +110,7 @@ export default {
                     contentTemplate: welcomeTemplate,
                     data: {
                         user: 'Anakeen',
-                        welcomeMessage: '<br/>Que voulez-vous faire ?',
+                        promptMessage: 'Que voulez-vous faire ?',
                         collections: this.collections,
                     },
                 });
@@ -257,6 +257,10 @@ export default {
                                     this.tabstrip.remove(e.index);
                                 } else if (e.items.length > 1) {
                                     this.tabstrip.remove('li');
+                                }
+
+                                if (!this.openedTabs.length) {
+                                    this.privateScope.initTabs();
                                 }
 
                                 this.privateScope.computeTabstripMargin();
