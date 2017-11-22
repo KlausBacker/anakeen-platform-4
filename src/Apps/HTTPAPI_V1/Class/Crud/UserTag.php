@@ -6,6 +6,7 @@
 
 namespace Dcp\HttpApi\V1\Crud;
 
+use Dcp\Core\ContextManager;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
 class UserTag extends Crud
@@ -37,12 +38,18 @@ class UserTag extends Crud
         $resourceId = $this->urlParameters["identifier"];
         $this->setDocument($resourceId);
         $userTag = $this->_document->getUTag($this->tagIdentifier, false);
+
         if ($userTag) {
             $exception = new Exception("CRUD0225", $this->tagIdentifier);
             throw $exception;
         }
-        
-        $err = $this->_document->addUTag(getCurrentUser()->id, $this->tagIdentifier, $this->contentParameters["tagValue"]);
+
+        $tagValue=$this->contentParameters["tagValue"];
+        if (is_object($tagValue)) {
+            $tagValue=json_encode($tagValue);
+        }
+
+        $err = $this->_document->addUTag(ContextManager::getCurrentUser()->id, $this->tagIdentifier, $tagValue);
         if ($err) {
             $exception = new Exception("CRUD0224", $this->tagIdentifier, $err);
             throw $exception;
