@@ -309,35 +309,35 @@
             }
 
             .input-group-addon.material-icons {
-              &.documentsList__documentsTabs__welcome__content__open--remove {
-                border: 0;
-                margin: auto;
-                width: 1rem;
-                height: 1rem;
-                line-height: 1rem;
-                vertical-align: middle;
-                display: inline-block;
-                border-radius: 50%;
-                background: transparent;
-                position: relative;
-                z-index: 200;
-                padding: 0;
-                left: -1.5rem;
-                &:hover {
-                  background-color: #FF542C;
-                  color: #FFFFFF;
-                  cursor: pointer;
-                }
-              }
+              //&.documentsList__documentsTabs__welcome__content__open--remove {
+              //  border: 0;
+              //  margin: auto;
+              //  width: 1rem;
+              //  height: 1rem;
+              //  line-height: 1rem;
+              //  vertical-align: middle;
+              //  display: inline-block;
+              //  border-radius: 50%;
+              //  background: transparent;
+              //  position: relative;
+              //  z-index: 200;
+              //  padding: 0;
+              //  left: -1.5rem;
+              //  &:hover {
+              //    background-color: #FF542C;
+              //    color: #FFFFFF;
+              //    cursor: pointer;
+              //  }
+              //}
               &.documentsList__documentsTabs__welcome__content__open--search {
-                position: relative;
-                left: -1rem;
+                //position: relative;
+                //left: -1rem;
                 width: 45px;
                 dipslay: flex;
                 justify-content: center;
                 align-items: center;
                 font-size: 1.3rem;
-                border-left: 0;
+                //border-left: 0;
               }
             }
           }

@@ -129,7 +129,8 @@ export default {
                 const $tab = this.$(tab);
                 const closable = forceClose !== undefined ? forceClose : this.closable;
                 if (closable) {
-                    $tab.find('.tab__document__header__content').append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
+                    $tab.find('.tab__document__header__content')
+                        .append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
                     $tab.on('click', "[data-type='remove']", (e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -206,30 +207,31 @@ export default {
             },
 
             bindNewTabEvents: (tabContent, index) => {
-                this.$(tabContent).find('.documentsList__documentsTabs__welcome__collection__button').on('click', (e) => {
-                    const newId = e.target.dataset.famid;
-                    const collection = this.collections.find((c) => c.initid === newId);
-                    if (collection) {
-                        this.openedTabs.splice(index, 1, {
-                            tabId: newId,
-                            headerTemplate: headerTemplate,
-                            contentTemplate: contentTemplate,
-                            data: Object.assign({}, {
-                                initid: collection.initid,
-                                viewid: '!defaultCreation',
-                                title: `Création ${collection.html_label}`,
-                                icon: collection.image_url,
-                            }),
-                        });
-                        this.selectDocument(index);
-                    }
-                });
+                this.$(tabContent).find('.documentsList__documentsTabs__welcome__collection__button')
+                    .on('click', (e) => {
+                        const newId = e.target.dataset.famid;
+                        const collection = this.collections.find((c) => c.initid === newId);
+                        if (collection) {
+                            this.openedTabs.splice(index, 1, {
+                                tabId: newId,
+                                headerTemplate: headerTemplate,
+                                contentTemplate: contentTemplate,
+                                data: Object.assign({}, {
+                                    initid: collection.initid,
+                                    viewid: '!defaultCreation',
+                                    title: `Création ${collection.html_label}`,
+                                    icon: collection.image_url,
+                                }),
+                            });
+                            this.selectDocument(index);
+                        }
+                    });
             },
 
             createAutocompleteSearch: (tabContent, index) => {
                 const $input = this.$(tabContent).find('.documentsList__documentsTabs__welcome__content__open__input');
                 $input.kendoAutoComplete({
-                    clearButton: false,
+                    clearButton: true,
                     select: (e) => this.setDocument(e.dataItem.properties, index),
                     dataTextField: 'properties.title',
                     template: `<div style="display: flex; align-items: center;">
@@ -238,7 +240,12 @@ export default {
                                </div>`,
                     serverFiltering: true,
                     noDataTemplate: 'Aucune correspondance',
-                    footerTemplate: '<div style="display: flex; justify-content: center; padding-top: 1rem; border-top: 1px solid lightgrey"><span><strong>#: instance.dataSource.total() #</strong> documents trouvés</span></div>',
+                    footerTemplate: `<div style="display: flex; 
+                                                justify-content: center; 
+                                                padding-top: 1rem; 
+                                                border-top: 1px solid lightgrey">
+                                        <span><strong>#: instance.dataSource.total() #</strong> documents trouvés</span>
+                                    </div>`,
                     autoWidth: true,
                     dataSource: {
                         transport: {
@@ -284,7 +291,8 @@ export default {
                                 if (item.tabId === Constants.WELCOME_TAB_ID
                                     || item.tabId === Constants.NEW_TAB_ID) {
                                     this.privateScope.bindNewTabEvents(this.tabstrip.contentElement(e.index), e.index);
-                                    this.privateScope.createAutocompleteSearch(this.tabstrip.contentElement(e.index), e.index);
+                                    this.privateScope
+                                        .createAutocompleteSearch(this.tabstrip.contentElement(e.index), e.index);
                                 }
 
                                 break;
