@@ -279,6 +279,28 @@ export default {
                 });
             },
 
+            createRecentConsultationsList: (tabContent, index) => {
+                const $list = this.$(tabContent).find('.documentsList__documentsTabs__welcome__content__recommended');
+                $list.kendoAutoComplete({
+                    dataSource: {
+                        transport: {
+                            read: (options) => {
+                                this.$http.get('sba/documentsSearch', {
+                                    params: {
+                                        collections: this.collections.map(c => c.initid).join(','),
+                                        slice: 'all',
+                                        utag: 'open_document',
+                                    },
+                                }).then(options.success).catch(options.error);
+                            },
+                        },
+                        schema: {
+                            data: (response) => response.data.data.dates,
+                        },
+                    },
+                });
+            },
+
             // Listen model changes and update view
             bindDataChange: (data) => {
                 if (data.bind) {
@@ -304,6 +326,8 @@ export default {
                                     this.privateScope.bindNewTabEvents(this.tabstrip.contentElement(e.index), e.index);
                                     this.privateScope
                                         .createAutocompleteSearch(this.tabstrip.contentElement(e.index), e.index);
+                                    this.privateScope
+                                        .createRecentConsultationsList(this.tabstrip.contentElement(e.index), e.index);
                                 }
 
                                 break;
