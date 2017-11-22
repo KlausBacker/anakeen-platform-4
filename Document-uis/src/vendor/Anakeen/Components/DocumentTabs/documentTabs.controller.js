@@ -173,6 +173,17 @@ export default {
                 this.tabstrip.tabGroup.css('margin-right', `calc(${marginRight}px + ${tabMargin})`);
             },
 
+            // Tag visited document
+            setTagToDocument: (document) => {
+                this.$http.put(`documents/${document.initid}/usertags/open_document`, {
+                    counter: 1,
+                }).then((response) => {
+                        console.log(response);
+                    }).catch((error) => {
+                    console.error(error);
+                });
+            },
+
             // Bind documents events to tabs system
             bindDocumentEvents: (tabContent, index) => {
                 const tab = this.openedTabs[index];
@@ -388,6 +399,7 @@ export default {
                     data: Object.assign({}, document),
                 });
                 this.selectDocument(this.openedTabs.length - 1);
+                this.privateScope.setTagToDocument(document);
             } else {
                 this.selectDocument(index);
             }
