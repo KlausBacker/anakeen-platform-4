@@ -304,7 +304,6 @@ define([
         {
             var widgetMenu = this;
             if (!widgetMenu.element.data("menu-opening") && this.element.css("overflow") !== "hidden") {
-                this.element.css("max-height", this.element.find(".menu__content li").height() + 2).css("overflow", "hidden");
                 this.element.find("li.k-state-border-down").each(function wMenuInhibitBarMenuClose()
                 {
                     widgetMenu.kendoMenuWidget.close($(this));
