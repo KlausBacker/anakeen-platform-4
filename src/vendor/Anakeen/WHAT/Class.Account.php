@@ -30,9 +30,10 @@ define("GADMIN_ID", 4);
  */
 class Account extends DbObj
 {
-    const ANONYMOUS_ID = ANONYMOUS_ID;
-    const GALL_ID = GALL_ID;
-    const GADMIN_ID = GADMIN_ID;
+    const ANONYMOUS_ID = "3";
+    const GALL_ID = "2";
+    const GADMIN_ID = "4";
+    const ADMIN_ID="1";
     
     const USER_TYPE = "U";
     const GROUP_TYPE = "G";
@@ -54,7 +55,10 @@ class Account extends DbObj
         "mail",
         "fid"
     );
-    
+
+    /**
+     * @var string numeric id
+     */
     public $id;
     public $lastname;
     public $firstname;
