@@ -44,12 +44,9 @@ class UserTag extends Crud
             throw $exception;
         }
 
-        $tagValue=$this->contentParameters["tagValue"];
-        if (is_object($tagValue)) {
-            $tagValue=json_encode($tagValue);
-        }
 
-        $err = $this->_document->addUTag(ContextManager::getCurrentUser()->id, $this->tagIdentifier, $tagValue);
+
+        $err = $this->_document->addUTag(ContextManager::getCurrentUser()->id, $this->tagIdentifier, $this->contentParameters["tagValue"]);
         if ($err) {
             $exception = new Exception("CRUD0224", $this->tagIdentifier, $err);
             throw $exception;
@@ -234,8 +231,15 @@ class UserTag extends Crud
     
     public function analyseJSON($jsonString)
     {
+
+        $tagValue=json_decode($jsonString);
+        if (!$tagValue) {
+            $tagValue=$jsonString;
+        } else if (is_object($tagValue)) {
+            $tagValue=json_encode($tagValue);
+        }
         return array(
-            "tagValue" => json_decode($jsonString)
+            "tagValue" => $tagValue
         );
     }
     /**
