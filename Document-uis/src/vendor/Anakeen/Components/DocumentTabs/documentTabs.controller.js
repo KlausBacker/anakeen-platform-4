@@ -226,6 +226,41 @@ export default {
                 });
             },
 
+            createAutocompleteSearch: (tabContent, index) => {
+                const $input = this.$(tabContent).find('.documentsList__documentsTabs__welcome__content__open__input');
+                $input.kendoAutoComplete({
+                    clearButton: false,
+                    select: (e) => this.setDocument(e.dataItem.properties, index),
+                    dataTextField: 'properties.title',
+                    template: `<div style="display: flex; align-items: center;">
+                                    <img style="margin-right: 1rem" src="#= properties.icon#"/>
+                                    <span>#= properties.title#</span>
+                               </div>`,
+                    serverFiltering: true,
+                    noDataTemplate: 'Aucune correspondance',
+                    footerTemplate: '<div style="display: flex; justify-content: center; padding-top: 1rem; border-top: 1px solid lightgrey"><span><strong>#: instance.dataSource.total() #</strong> documents trouvés</span></div>',
+                    autoWidth: true,
+                    dataSource: {
+                        transport: {
+                            read: (options) => {
+                                this.$http.get('sba/documentsSearch', {
+                                    params: {
+                                        collections: this.collections.map(c => c.initid).join(','),
+                                        filter: $input.val(),
+                                        fields: 'document.properties.icon,document.properties.title',
+                                        slice: 'all',
+                                        offset: 0,
+                                    },
+                                }).then(options.success).catch(options.error);
+                            },
+                        },
+                        schema: {
+                            data: (response) => response.data.data.documents,
+                        },
+                    },
+                });
+            },
+
             // Listen model changes and update view
             bindDataChange: (data) => {
                 if (data.bind) {
@@ -249,6 +284,7 @@ export default {
                                 if (item.tabId === Constants.WELCOME_TAB_ID
                                     || item.tabId === Constants.NEW_TAB_ID) {
                                     this.privateScope.bindNewTabEvents(this.tabstrip.contentElement(e.index), e.index);
+                                    this.privateScope.createAutocompleteSearch(this.tabstrip.contentElement(e.index), e.index);
                                 }
 
                                 break;
@@ -346,6 +382,25 @@ export default {
                 this.selectDocument(this.openedTabs.length - 1);
             } else {
                 this.selectDocument(index);
+            }
+        },
+
+        setDocument(document, position) {
+            if (position === undefined) {
+                this.addDocument(document);
+            } else {
+                const index = this.tabsArray.findIndex((d) => d.tabId === document.initid);
+                if (index < 0) {
+                    this.openedTabs.splice(position, 1, {
+                        tabId: document.initid,
+                        headerTemplate: headerTemplate,
+                        contentTemplate: contentTemplate,
+                        data: Object.assign({}, document),
+                    });
+                    this.selectDocument(position);
+                } else {
+                    this.selectDocument(index);
+                }
             }
         },
 
