@@ -114,7 +114,7 @@ class History extends Crud
                         "reference" => $revision->getState() ,
                         "stateLabel" => ($revision->state) ? _($revision->state) : '',
                         "activity" => ($revision->getStateActivity() ? _($revision->getStateActivity()) : ($revision->state ? _($revision->state) : '')) ,
-                        "color" => ($revision->state) ? _($revision->getStateColor()) : ''
+                        "color" => ($revision->state) ? $revision->getStateColor() : ''
                     ) ,
                     
                     "version" => $revision->version,

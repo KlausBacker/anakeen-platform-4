@@ -193,7 +193,7 @@
     {
         "order" :        100,
         "class" :        "\\Dcp\\HttpApi\\V1\\Crud\\UserTag",
-        "regExp" :       "%^/families/(?P<familyId>[^/]+)/documents/(?P<identifier>[^/]+)/usertags//(?P<tagIdentifier>[^/]+)$%",
+        "regExp" :       "%^/families/(?P<familyId>[^/]+)/documents/(?P<identifier>[^/]+)/usertags/(?P<tagIdentifier>[^/]+)$%",
         "description" :  "User Tag <tag> of the document <documentId> of the family <familyId>",
         "canonicalURL" : "families/<familyId>/documents/<documentId>/usertags/<tag>"
     },

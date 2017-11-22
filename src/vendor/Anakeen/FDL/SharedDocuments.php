@@ -104,7 +104,10 @@ class SharedDocuments
     public static function getKeys()
     {
         global $gdocs;
-        return array_keys($gdocs);
+        if (is_array($gdocs)) {
+            return array_keys($gdocs);
+        }
+        return [];
     }
     /**
      * Verify if a key is referenced in shared object
