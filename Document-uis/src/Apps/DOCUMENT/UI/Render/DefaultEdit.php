@@ -6,6 +6,8 @@
 
 namespace Dcp\Ui;
 
+use Dcp\Core\ContextManager;
+
 class DefaultEdit extends RenderDefault
 {
     
@@ -25,17 +27,19 @@ class DefaultEdit extends RenderDefault
     public function getMenu(\Doc $document)
     {
         $menu = new BarMenu();
-        $user = getCurrentUser();
-        
-        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#action/document.saveAndClose");
-        $item->setBeforeContent('<div class="fa fa-save" />');
-        if ($this->displayDefaultMenuTooltip) {
-            $item->setTooltipLabel(___("Record to server and view document", "UiMenu"));
+        $user = ContextManager::getCurrentUser();
+
+        if ($document->wid > 0) {
+            $workflowMenu = new SeparatorMenu("workflow", _($document->getStateActivity($document->getState())));
+            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--letf");
+            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+
+            $menu->appendElement($workflowMenu);
         }
-        if (empty($document->id)) {
-            $item->setVisibility($item::VisibilityHidden);
-        }
-        $menu->appendElement($item);
+
+        $this->setEmblemMenu($document, $menu);
+
+
         
         $item = new ItemMenu("save", ___("Save", "UiMenu") , "#action/document.save");
         $item->setBeforeContent('<div class="fa fa-save" />');
@@ -60,12 +64,7 @@ class DefaultEdit extends RenderDefault
         
         if (empty($document->id)) {
             
-            $item = new ItemMenu("createAndClose", ___("Create and close", "UiMenu") , "#action/document.createAndClose");
-            $item->setBeforeContent('<div class="fa fa-save" />');
-            if ($this->displayDefaultMenuTooltip) {
-                $item->setTooltipLabel(___("Create to server and view document", "UiMenu"));
-            }
-            $menu->appendElement($item);
+
             
             $item = new ItemMenu("create", ___("Create", "UiMenu") , "#action/document.create");
             $item->setBeforeContent('<div class="fa fa-save" />');
@@ -92,18 +91,43 @@ class DefaultEdit extends RenderDefault
             }
             $menu->appendElement($item);
         }
-        if ($document->wid > 0) {
-            $workflowMenu = new SeparatorMenu("workflow", _($document->getStateActivity($document->getState())));
-            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
-            $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
-            
-            $menu->appendElement($workflowMenu);
-        }
-        
-        $this->setEmblemMenu($document, $menu);
+
         $this->addHelpMenu($document, $menu);
         return $menu;
     }
+
+    /**
+     * @param \Doc $document
+     * @param Barmenu|ListMenu $menu
+     */
+    public function appendSaveAndCloseMenu($document, $menu) {
+
+        $item = new ItemMenu("saveAndClose", ___("Save and close", "UiMenu") , "#action/document.saveAndClose");
+        $item->setBeforeContent('<div class="fa fa-save" />');
+        if ($this->displayDefaultMenuTooltip) {
+            $item->setTooltipLabel(___("Record to server and view document", "UiMenu"));
+        }
+        if (empty($document->id)) {
+            $item->setVisibility($item::VisibilityHidden);
+        }
+        $menu->appendElement($item);
+    }
+
+
+    /**
+     * @param \Doc $document
+     * @param Barmenu|ListMenu $menu
+     */
+    public function appendCreateAndCloseMenu($document, $menu) {
+
+        $item = new ItemMenu("createAndClose", ___("Create and close", "UiMenu") , "#action/document.createAndClose");
+        $item->setBeforeContent('<div class="fa fa-save" />');
+        if ($this->displayDefaultMenuTooltip) {
+            $item->setTooltipLabel(___("Create to server and view document", "UiMenu"));
+        }
+        $menu->appendElement($item);
+    }
+
     /**
      * @param \Doc $document Document instance
      *

@@ -34,6 +34,7 @@ define([
             $content.kendoMenu({
                 openOnClick: true,
                 closeOnClick: true,
+
                 select: function wMenuSelect(event)
                 {
                     var $menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
@@ -259,6 +260,8 @@ define([
                 }
             });
 
+
+             this.element.find(".menu--left").last().addClass("menu--lastLeft");
             /**
              * Fix menu when no see header
              */

@@ -7,16 +7,33 @@ $menu-before-width : 12px;
   border-left: 0;
   border-right: 0;
   border-radius: 0;
+  flex-grow: 1;
+
+  .menu__element.k-menu-horizontal {
+    padding: 0.5rem 0 0.5rem 0;
+  }
+
+  .menu__element:not(.menu--separator) {
+     cursor:pointer;
+  }
 }
 
 .menu__content li.menu--workflow:last-child {
   border-right:none;
 }
 
-.menu__content .k-menu .k-item > .k-link {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+.menu__content .k-menu .k-item {
+
+  > .k-link {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    }
+
+
+
 }
+
+
 
 
 .menu__content .k-menu .k-item.emblem > .k-link {
@@ -84,13 +101,12 @@ $menu-before-width : 12px;
 
 .menu--transition-unknow .fa {
   color: red;
-  position: absolute;
-  right: 0;
+  float:right;
 }
 
 .menu--transition-unknow {
   position: relative;
-  width: calc(100% - 15px);
+  width: 100%;
   display: inline-block;
   padding-right: 15px;
 }
@@ -102,10 +118,15 @@ $menu-before-width : 12px;
 .k-menu .k-item.menu_element--hamburger {
 
 }
-.k-menu .k-item.menu--right {
-  align-self: flex-start;
+
+
+.k-menu .k-item.menu--right:last-child {
+  margin-left: auto;
   border-left-width: 0;
   border-right-width: 0;
+}
+.menu--lastLeft {
+  margin-right: auto;
 }
 
 .k-menu .menu_element--hamburger  .k-item.menu--right {

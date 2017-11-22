@@ -10,7 +10,7 @@
 }
 
 .dcpDocument__header {
-  height: 3.75rem;
+  min-height: 3.75rem;
   display: flex;
   align-items: center;
 
@@ -23,9 +23,9 @@
 .dcpDocument__header a.dcpDocument__header__title {
   color: $A4-ui-color-text;
   margin: $A4-ui-header-title-margin;
-  line-height: $A4-ui-header-title-line-height;
   text-decoration: none;
   font-family: $A4-ui-title-font-variant;
+  font-weight: normal;
   flex: 1;
 }
 

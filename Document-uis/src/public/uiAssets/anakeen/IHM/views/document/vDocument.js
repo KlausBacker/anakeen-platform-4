@@ -464,8 +464,9 @@ define([
 
                 _.defer(_.bind(this.fixedTab, this, event));
             } else {
-
-                kendoTabStrip.resize();
+                if (kendoTabStrip) {
+                    kendoTabStrip.resize();
+                }
             }
 
         },

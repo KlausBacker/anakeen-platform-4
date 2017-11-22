@@ -372,7 +372,7 @@ class RenderDefault implements IRenderConfig
     {
         
         $item = new SeparatorMenu("EmblemLock", "");
-        $item->setHtmlAttribute("class", "menu--right emblem emblem--lock" . ((abs($document->locked) == getCurrentUser()->id) ? " emblem-lock--my" : ""));
+        $item->setHtmlAttribute("class", "menu--left emblem emblem--lock" . ((abs($document->locked) == getCurrentUser()->id) ? " emblem-lock--my" : ""));
         $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
         
         if ($document->locked == - 1) {
@@ -388,7 +388,7 @@ class RenderDefault implements IRenderConfig
         $menu->appendElement($item);
         
         $item = new SeparatorMenu("EmblemReadOnly", "");
-        $item->setHtmlAttribute("class", "menu--right emblem emblem--readonly");
+        $item->setHtmlAttribute("class", "menu--left emblem emblem--readonly");
         $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa-stack fa-lg">
         <i class="fa fa-ban fa-stack-1x fa-rotate-90 text-danger"></i>
         <i class="fa fa-pencil fa-stack-1x"></i>
@@ -399,7 +399,7 @@ class RenderDefault implements IRenderConfig
         $menu->appendElement($item);
         if ($document->confidential > 0) {
             $item = new SeparatorMenu("EmblemConfidential", "");
-            $item->setHtmlAttribute("class", "menu--right emblem emblem--confidential");
+            $item->setHtmlAttribute("class", "menu--left emblem emblem--confidential");
             $item->setHtmlLabel('<i  class="fa fa-eye-slash"></i>');
             
             $item->setTooltipLabel(___("Confidential document", "ddui"));
