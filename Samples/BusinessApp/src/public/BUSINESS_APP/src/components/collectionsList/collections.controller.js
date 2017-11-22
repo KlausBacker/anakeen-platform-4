@@ -6,14 +6,11 @@ export default {
         this.initKendo();
         this.sendGetRequest('/sba/collections')
             .then((response) => {
-                this.collections = response.data.data.sample.collections;
+                this.collections = response.data.data.collections;
+                this.currentUser = response.data.data.user;
                 this.updateKendoData();
                 const listView = this.$(this.$refs.listView).data('kendoListView');
                 listView.select(listView.element.children().first());
-            });
-        this.sendGetRequest('/sba/currentUser')
-            .then((response) => {
-                this.currentUser = response.data.data.user;
             });
     },
 

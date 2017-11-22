@@ -21,13 +21,6 @@
     "canonicalURL": "sba/collections/<familyId>/documentsList/"
   },
   {
-    "order": 1500,
-    "class": "\\Anakeen\\Sample\\Routes\\DocumentsList",
-    "regExp": "%^/sba/collections/(?P<familyId>[^/]+)/documentsList/filter=(?P<filterValue>[^/]+)/?$%",
-    "description": "Get filter available documents from collection",
-    "canonicalURL": "sba/collections/<familyId>/documentsList/"
-    },
-  {
     "order": 1000,
     "class": "\\Anakeen\\Sample\\Routes\\User",
     "regExp": "%^/sba/currentUser/?$%",

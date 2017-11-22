@@ -36,7 +36,7 @@
 
 // Set style of the fixed (sticky) menu
 .menu--fixed {
-  .menu__content {
+  ul.menu__content {
     background-color: $A4-ui-menu-fixed-bg;
     color: $A4-ui-menu-fixed-font-color;
     font-family: $A4-ui-menu-fixed-font;

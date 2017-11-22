@@ -3,7 +3,10 @@ import contentTemplate from './documentTabsContent.template.kd';
 import headerTemplate from './documentTabsHeader.template.kd';
 import welcomeTemplate from './documentTabsWelcome.template.kd';
 import abstractAnakeenComponent from '../componentBase';
-
+const Constants = {
+    WELCOME_TAB_ID: 'welcome_tab',
+    NEW_TAB_ID: 'new_tab',
+};
 export default {
     mixins: [abstractAnakeenComponent],
     props: {
@@ -54,7 +57,8 @@ export default {
                 this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
                 this.privateScope.sendGetRequest('sba/collections')
                     .then((response) => {
-                        this.collections = response.data.data.sample.collections;
+                        this.collections = response.data.data.collections;
+                        this.currentUser = response.data.data.user;
                         this.privateScope.initTabs();
                     });
                 this.$(window).resize(() => {
@@ -80,42 +84,25 @@ export default {
 
             initTabs: () => {
                 this.openedTabs.push({
-                    tabId: 'welcome_tab',
-                    headerTemplate: `<span class="tab__document__header__content">
-                                        <img src="api/v1/images/assets/original/BA.png" class="app_logo" style="width:auto; height:2rem; padding-right: 1rem;"/> 
-                                        BIENVENUE
+                    tabId: Constants.WELCOME_TAB_ID,
+                    headerTemplate: `<span class="tab__document__header__content">                            
+                                        <span>BIENVENUE</span>
                                         <span class="tab__new__button"><i class="material-icons">add</i></span>
                                      </span>`,
                     contentTemplate: welcomeTemplate,
                     data: {
-                        user: 'Anakeen',
-                        welcomeMessage: 'bienvenue sur  Business App.<br/> Que voulez-vous faire ?',
+                        user: this.currentUser.firstName,
+                        welcomeMessage: 'bienvenue sur  Business App.',
+                        promptMessage: 'Que voulez-vous faire ?',
                         collections: this.collections,
                     },
                 });
-                /*this.$('.documentsList__documentsTabs__welcome__collection__button').on('click', (e) => {
-                    const id = e.target.dataset.famid;
-                    const coll = this.collections.find((c) => c.initid === id);
-                    this.openedTabs.push({
-                        tabId: coll.initid,
-                        headerTemplate,
-                        contentTemplate,
-                        data: {
-                            initid: coll.initid,
-                            viewid: '!defaultCreation',
-                            title: coll.html_label,
-                            icon: coll.image_url,
-                        },
-                    });
-                    this.selectDocument(this.openedTabs.length - 1);
-                });*/
-
                 this.selectDocument(0);
             },
 
             onClickNewTabButton: (e) => {
                 this.openedTabs.push({
-                    tabId: 'new_tab',
+                    tabId: Constants.NEW_TAB_ID,
                     headerTemplate: `<span class="tab__document__header__content">
                                         <i class="material-icons">crop_square</i>
                                         NOUVEL ONGLET
@@ -123,8 +110,8 @@ export default {
                                      </span>`,
                     contentTemplate: welcomeTemplate,
                     data: {
-                        user: 'Anakeen',
-                        welcomeMessage: '<br/>Que voulez-vous faire ?',
+                        user: this.currentUser.firstName,
+                        promptMessage: 'Que voulez-vous faire ?',
                         collections: this.collections,
                     },
                 });
@@ -170,19 +157,8 @@ export default {
             // Compute the tabstrip left and right margin depending on the displayed buttons (paginator, slot)
             computeTabstripMargin: () => {
                 const paginatorWidth = this.$(this.$refs.tabsPaginator).outerWidth(true);
-                let marginLeft = 0;
                 let marginRight = paginatorWidth || 0;
                 let tabMargin = this.tabstrip.tabGroup.children().first().css('margin-right') || 0;
-                const leftSlot = this.$(this.$refs.slotContent);
-                if (leftSlot) {
-                    marginLeft = leftSlot.outerWidth(true);
-                    if (marginLeft) {
-                        this.tabstrip.tabGroup.css('margin-left', `calc(${marginLeft}px  + ${tabMargin})`);
-                    } else {
-                        this.tabstrip.tabGroup.css('margin-left', 0);
-                    }
-                }
-
                 const prev = this.tabstripElement.find('.k-tabstrip-prev');
                 const next = this.tabstripElement.find('.k-tabstrip-next');
                 if (prev.length && next.length) {
@@ -206,22 +182,46 @@ export default {
                         documentComponent.prop('publicMethods').injectCSS(this.documentCss);
                     }
 
-                    tab.set('title', '');
-                    tab.set('icon', '');
-                    tab.set('url', '');
-                    tab.set('title', e.detail[1].title);
-                    tab.set('icon', e.detail[1].icon);
-                    tab.set('url', e.detail[1].url);
+                    tab.set('data.url', e.detail[1].url);
                 });
                 documentComponent.on('actionClick', (e) => {
                     if (e.detail.length > 2 && e.detail[2].options) {
-                        console.log(e.detail[2]);
                         if (e.detail[2].eventId === 'document.load') {
                             e.detail[0].preventDefault();
                             const initid = e.detail[2].options[0];
                             const viewid = e.detail[2].options[1];
                             this.addDocument({ initid, viewid });
                         }
+                    }
+                });
+                documentComponent.on('afterSave', (e) => {
+                    tab.set('tabId', e.detail[1].initid);
+                    tab.set('data.title', e.detail[1].title);
+                    tab.set('data.icon', e.detail[1].icon);
+                    this.$emit('document-modified', e.detail);
+                });
+                documentComponent.on('afterDelete', (e) => {
+                    this.$emit('document-deleted', e.detail);
+                });
+            },
+
+            bindNewTabEvents: (tabContent, index) => {
+                this.$(tabContent).find('.documentsList__documentsTabs__welcome__collection__button').on('click', (e) => {
+                    const newId = e.target.dataset.famid;
+                    const collection = this.collections.find((c) => c.initid === newId);
+                    if (collection) {
+                        this.openedTabs.splice(index, 1, {
+                            tabId: newId,
+                            headerTemplate: headerTemplate,
+                            contentTemplate: contentTemplate,
+                            data: Object.assign({}, {
+                                initid: collection.initid,
+                                viewid: '!defaultCreation',
+                                title: `Création ${collection.html_label}`,
+                                icon: collection.image_url,
+                            }),
+                        });
+                        this.selectDocument(index);
                     }
                 });
             },
@@ -246,6 +246,11 @@ export default {
                                 this.privateScope
                                     .bindDocumentEvents(this.tabstrip.contentElement(e.index), e.index);
                                 this.privateScope.computeTabstripMargin();
+                                if (item.tabId === Constants.WELCOME_TAB_ID
+                                    || item.tabId === Constants.NEW_TAB_ID) {
+                                    this.privateScope.bindNewTabEvents(this.tabstrip.contentElement(e.index), e.index);
+                                }
+
                                 break;
                             // Remove document
                             case 'remove':
@@ -255,26 +260,32 @@ export default {
                                     this.tabstrip.remove('li');
                                 }
 
+                                if (!this.openedTabs.length) {
+                                    this.privateScope.initTabs();
+                                }
+
                                 this.privateScope.computeTabstripMargin();
                                 break;
                             // Modify a tab
                             case 'itemchange':
-                                // const index = this.tabsArray.findIndex((d) => d.initid === e.items[0].initid);
-                                // const newValue = e.items[0][e.field];
-                                // const $indexedItem = this.$(this.tabstrip.items()[index]);
-                                // switch (e.field) {
-                                //     case 'title':
-                                //         $indexedItem.find('.tab__document__title').text(newValue);
-                                //         break;
-                                //     case 'icon':
-                                //         $indexedItem.find('.tab__document__icon')
-                                //             .replaceWith(`<img class="tab__document__icon" src="${newValue}"/>`);
-                                //         break;
-                                //     case 'url':
-                                //         $indexedItem.find('.tab__document__header__content').prop('href', newValue);
-                                //         break;
-                                // }
-
+                                const index = this.tabsArray.findIndex((d) => d.tabId === e.items[0].tabId);
+                                const props = e.field.split('.');
+                                let newValue;
+                                const $indexedItem = this.$(this.tabstrip.items()[index]);
+                                switch (e.field) {
+                                    case 'data.title':
+                                        newValue = e.items[0][props[0]][props[1]];
+                                        $indexedItem.find('span.tab__document__title').text(newValue);
+                                        break;
+                                    case 'data.icon':
+                                        newValue = e.items[0][props[0]][props[1]];
+                                        $indexedItem.find('img.tab__document__icon').prop('src', newValue);
+                                        break;
+                                    case 'data.url':
+                                        newValue = e.items[0][props[0]][props[1]];
+                                        $indexedItem.find('a.tab__document__header__content').prop('href', newValue);
+                                        break;
+                                }
                                 break;
                         }
                     });
@@ -330,7 +341,7 @@ export default {
                     tabId: document.initid,
                     headerTemplate: headerTemplate,
                     contentTemplate: contentTemplate,
-                    data: Object.assign({}, document, { onClickNewTab: this.privateScope.onClickNewTabButton }),
+                    data: Object.assign({}, document),
                 });
                 this.selectDocument(this.openedTabs.length - 1);
             } else {
