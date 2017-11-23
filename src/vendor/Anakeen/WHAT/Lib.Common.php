@@ -690,7 +690,7 @@ function WhatInitialisation($session = null)
     $action->Set("", $core);
     // i18n
     $lang = $action->Getparam("CORE_LANG");
-    setLanguage($lang);
+    \Dcp\Core\ContextManager::setLanguage($lang);
 }
 
 /**

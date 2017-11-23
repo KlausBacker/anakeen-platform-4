@@ -271,7 +271,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
      */
     public static function changeLocale($famId, $attrid, $enumId, $lang, $label)
     {
-        setLanguage($lang);
+        \Dcp\Core\ContextManager::setLanguage($lang);
         $fam = new_Doc("", $famId);
         $oa = $fam->getAttribute($attrid);
         if (!$oa) {

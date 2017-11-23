@@ -128,7 +128,7 @@ function getMainAction($auth, &$action)
     
     initExplorerParam($core);
     // init for gettext
-    setLanguage($action->Getparam("CORE_LANG"));
+    \Dcp\Core\ContextManager::setLanguage($action->Getparam("CORE_LANG"));
     
     $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
 }

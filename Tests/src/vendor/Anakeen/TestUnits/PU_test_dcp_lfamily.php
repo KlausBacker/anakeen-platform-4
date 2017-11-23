@@ -16,7 +16,7 @@ class TestLFamily extends TestCaseDcpCommonFamily
 {
     public static function getCommonImportFile()
     {
-        setLanguage("fr_FR");
+        \Dcp\Core\ContextManager::setLanguage("fr_FR");
         return "PU_data_dcp_lfamily.ods";
     }
     /**
