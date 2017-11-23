@@ -129,7 +129,8 @@ export default {
                 const $tab = this.$(tab);
                 const closable = forceClose !== undefined ? forceClose : this.closable;
                 if (closable) {
-                    $tab.find('.tab__document__header__content').append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
+                    $tab.find('.tab__document__header__content')
+                        .append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
                     $tab.on('click', "[data-type='remove']", (e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -172,6 +173,17 @@ export default {
                 this.tabstrip.tabGroup.css('margin-right', `calc(${marginRight}px + ${tabMargin})`);
             },
 
+            // Tag visited document
+            setTagToDocument: (document) => {
+                this.$http.put(`documents/${document.initid}/usertags/open_document`, {
+                    counter: 1,
+                }).then((response) => {
+                        console.log(response);
+                    }).catch((error) => {
+                    console.error(error);
+                });
+            },
+
             // Bind documents events to tabs system
             bindDocumentEvents: (tabContent, index) => {
                 const tab = this.openedTabs[index];
@@ -206,23 +218,64 @@ export default {
             },
 
             bindNewTabEvents: (tabContent, index) => {
-                this.$(tabContent).find('.documentsList__documentsTabs__welcome__collection__button').on('click', (e) => {
-                    const newId = e.target.dataset.famid;
-                    const collection = this.collections.find((c) => c.initid === newId);
-                    if (collection) {
-                        this.openedTabs.splice(index, 1, {
-                            tabId: newId,
-                            headerTemplate: headerTemplate,
-                            contentTemplate: contentTemplate,
-                            data: Object.assign({}, {
-                                initid: collection.initid,
-                                viewid: '!defaultCreation',
-                                title: `Création ${collection.html_label}`,
-                                icon: collection.image_url,
-                            }),
-                        });
-                        this.selectDocument(index);
-                    }
+                this.$(tabContent).find('.documentsList__documentsTabs__welcome__collection__button')
+                    .on('click', (e) => {
+                        const newId = e.target.dataset.famid;
+                        const collection = this.collections.find((c) => c.initid === newId);
+                        if (collection) {
+                            this.openedTabs.splice(index, 1, {
+                                tabId: newId,
+                                headerTemplate: headerTemplate,
+                                contentTemplate: contentTemplate,
+                                data: Object.assign({}, {
+                                    initid: collection.initid,
+                                    viewid: '!defaultCreation',
+                                    title: `Création ${collection.html_label}`,
+                                    icon: collection.image_url,
+                                }),
+                            });
+                            this.selectDocument(index);
+                        }
+                    });
+            },
+
+            createAutocompleteSearch: (tabContent, index) => {
+                const $input = this.$(tabContent).find('.documentsList__documentsTabs__welcome__content__open__input');
+                $input.kendoAutoComplete({
+                    clearButton: true,
+                    select: (e) => this.setDocument(e.dataItem.properties, index),
+                    dataTextField: 'properties.title',
+                    template: `<div style="display: flex; align-items: center;">
+                                    <img style="margin-right: 1rem" src="#= properties.icon#"/>
+                                    <span>#= properties.title#</span>
+                               </div>`,
+                    serverFiltering: true,
+                    noDataTemplate: 'Aucune correspondance',
+                    footerTemplate: `<div style="display: flex; 
+                                                justify-content: center; 
+                                                padding-top: 1rem; 
+                                                border-top: 1px solid lightgrey">
+                                        <span><strong>#: instance.dataSource.total() #</strong> documents trouvés</span>
+                                    </div>`,
+                    autoWidth: true,
+                    dataSource: {
+                        transport: {
+                            read: (options) => {
+                                this.$http.get('sba/documentsSearch', {
+                                    params: {
+                                        collections: this.collections.map(c => c.initid).join(','),
+                                        filter: $input.val(),
+                                        fields: 'document.properties.icon,document.properties.title',
+                                        slice: 'all',
+                                        offset: 0,
+                                    },
+                                }).then(options.success).catch(options.error);
+                            },
+                        },
+                        schema: {
+                            data: (response) => response.data.data.documents,
+                        },
+                    },
                 });
             },
 
@@ -249,6 +302,8 @@ export default {
                                 if (item.tabId === Constants.WELCOME_TAB_ID
                                     || item.tabId === Constants.NEW_TAB_ID) {
                                     this.privateScope.bindNewTabEvents(this.tabstrip.contentElement(e.index), e.index);
+                                    this.privateScope
+                                        .createAutocompleteSearch(this.tabstrip.contentElement(e.index), e.index);
                                 }
 
                                 break;
@@ -344,8 +399,28 @@ export default {
                     data: Object.assign({}, document),
                 });
                 this.selectDocument(this.openedTabs.length - 1);
+                this.privateScope.setTagToDocument(document);
             } else {
                 this.selectDocument(index);
+            }
+        },
+
+        setDocument(document, position) {
+            if (position === undefined) {
+                this.addDocument(document);
+            } else {
+                const index = this.tabsArray.findIndex((d) => d.tabId === document.initid);
+                if (index < 0) {
+                    this.openedTabs.splice(position, 1, {
+                        tabId: document.initid,
+                        headerTemplate: headerTemplate,
+                        contentTemplate: contentTemplate,
+                        data: Object.assign({}, document),
+                    });
+                    this.selectDocument(position);
+                } else {
+                    this.selectDocument(index);
+                }
             }
         },
 
