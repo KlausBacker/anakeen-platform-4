@@ -4,7 +4,7 @@
  * @package Dcp\Pu
  */
 
-namespace Dcp\Pu\HttpApi\V1\Test;
+namespace Dcp\Pu;
 
 use Dcp\HttpApi\V1\Crud\Exception;
 use Dcp\HttpApi\V1\DocManager\DocManager;

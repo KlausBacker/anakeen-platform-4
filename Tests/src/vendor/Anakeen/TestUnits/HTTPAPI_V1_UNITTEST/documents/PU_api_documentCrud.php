@@ -20,7 +20,7 @@ class TestDocumentCrud extends TestCaseApi
     /**
      * import TST_APIBASE family
      * @static
-     * @return string
+     * @return string|string[]
      */
     protected static function getCommonImportFile()
     {
