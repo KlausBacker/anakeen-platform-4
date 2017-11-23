@@ -633,7 +633,7 @@ create sequence seq_id_users start 10;";
                 if ($err == '') {
                     if ($this->id == 1) $this->setSupervisorHtpasswd($pass);
                     $log = new Log("", "Session", "Authentication");
-                    $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
+                    $facility = constant(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
                     $log->wlog("S", sprintf('User %s password crypted with salted SHA256 algorithm.', $this->login) , NULL, $facility);
                 }
             }

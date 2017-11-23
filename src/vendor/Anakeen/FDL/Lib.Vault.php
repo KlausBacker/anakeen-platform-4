@@ -34,14 +34,14 @@ function initVaultAccess()
 function getOpenTeUrl($context = array())
 {
     global $action;
-    $urlindex = getParam("TE_URLINDEX");
+    $urlindex = \Dcp\Core\ContextManager::getApplicationParam("TE_URLINDEX");
     if ($urlindex == "") { //case DAV
-        $au = getParam("CORE_URLINDEX");
-        if ($au != "") $urlindex = getParam("CORE_URLINDEX");
+        $au = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
+        if ($au != "") $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
         else {
-            $scheme = getParam("CORE_ABSURL");
+            $scheme = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
             if ($scheme == "") $urlindex = '/freedom/';
-            else $urlindex = getParam("CORE_ABSURL");
+            else $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
         }
     }
     $token = $action->user->getUserToken(3600 * 24, true, $context);
@@ -64,7 +64,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
 {
     $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
-        $tea = getParam("TE_ACTIVATE");
+        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
         if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
         global $action;
         include_once ("FDL/Class.TaskRequest.php");
@@ -77,7 +77,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
         
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
-        $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST") , \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation($engine, $vidout, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -182,9 +182,9 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
     $err = '';
     if (($docid > 0) && ($vid > 0)) {
         
-        $tea = getParam("TE_ACTIVATE");
+        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
         if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
-        $tea = getParam("TE_FULLTEXT");
+        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
         if ($tea != "yes") return '';
         
         global $action;
@@ -193,7 +193,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
         $filename = $of->getPath();
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-        $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST") , \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -221,10 +221,10 @@ function convertFile($infile, $engine, $outfile, &$info)
     global $action;
     $err = '';
     if (file_exists($infile) && ($engine != "")) {
-        $tea = getParam("TE_ACTIVATE");
+        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
         if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return _("TE not activated");
         $callback = "";
-        $ot = new \Dcp\TransformationEngine\Client(getParam("TE_HOST") , getParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST") , \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {

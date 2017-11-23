@@ -151,7 +151,7 @@ function getTmpDir($def = '/tmp')
     if (isset($tmp) && !empty($tmp)) {
         return $tmp;
     }
-    $tmp = getParam('CORE_TMPDIR', $def);
+    $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
     if (empty($tmp)) {
         if (empty($def)) {
             $tmp = './var/tmp';

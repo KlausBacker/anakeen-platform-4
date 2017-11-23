@@ -567,7 +567,7 @@ class NormalAttribute extends BasicAttribute
                     }
                     $mime = $reg[1];
                     $name = $reg[3];
-                    $base = getParam("CORE_EXTERNURL");
+                    $base = \Dcp\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($this->id));
                     if ($opt->withFile) {
                         $path = $doc->vault_filename_fromvalue($v, true);
@@ -1541,7 +1541,7 @@ class ActionAttribute extends BasicAttribute
     }
     function getLink($docid)
     {
-        $l = getParam("CORE_STANDURL");
+        $l = \Dcp\Core\ContextManager::getApplicationParam("CORE_STANDURL");
         $batch = ($this->getOption("batchfolder") == "yes");
         if ($batch) {
             $l.= "&app=FREEDOM&action=BATCHEXEC&sapp=" . $this->wapplication;

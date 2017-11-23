@@ -17,7 +17,7 @@
 require_once __DIR__."/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 include_once ('WHAT/Class.ActionRouter.php');
 
-$allowGuest = getParam('CORE_ALLOW_GUEST', 'no');
+$allowGuest = \Dcp\Core\ContextManager::getApplicationParam('CORE_ALLOW_GUEST', 'no');
 if ($allowGuest != 'yes') {
     $e = new Dcp\Core\Exception("CORE0010");
     $e->addHttpHeader('HTTP/1.0 503 Guest access not allowed');

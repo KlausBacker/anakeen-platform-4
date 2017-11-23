@@ -295,19 +295,19 @@ class Message
         $mail->Timeout = 10;
         $mail->setLanguage($lcConfig['locale']);
         $mail->isSMTP();
-        $host = getParam('SMTP_HOST', 'localhost');
-        $port = getParam('SMTP_PORT', 25);
+        $host = \Dcp\Core\ContextManager::getApplicationParam('SMTP_HOST', 'localhost');
+        $port = \Dcp\Core\ContextManager::getApplicationParam('SMTP_PORT', 25);
         $mail->Host = $host;
         $mail->Port = $port;
-        $login = getParam('SMTP_LOGIN');
+        $login = \Dcp\Core\ContextManager::getApplicationParam('SMTP_LOGIN');
         if ($login) {
             $mail->SMTPAuth = true;
-            $password = getParam('SMTP_PASSWORD');
+            $password = \Dcp\Core\ContextManager::getApplicationParam('SMTP_PASSWORD');
             $mail->Username = $login;
             $mail->Password = $password;
         }
         if (!isset($this->sender)) {
-            $sender = getParam('SMTP_SENDER', '');
+            $sender = \Dcp\Core\ContextManager::getApplicationParam('SMTP_SENDER', '');
             if ($sender !== '') {
                 $parsedMail = $this->stringToAddress($sender);
                 if (count($parsedMail) > 0) {

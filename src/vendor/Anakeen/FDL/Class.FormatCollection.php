@@ -1187,7 +1187,7 @@ class DoubleAttributeValue extends FormatAttributeValue
     public function __construct(NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
-        $lang = getParam("CORE_LANG");
+        $lang = \Dcp\Core\ContextManager::getApplicationParam("CORE_LANG");
         if ($lang == "fr_FR") {
             if (is_array($this->displayValue)) {
                 foreach ($this->displayValue as $k => $v) {
@@ -1215,7 +1215,7 @@ class MoneyAttributeValue extends FormatAttributeValue
     {
         parent::__construct($oa, $v);
         
-        $lang = getParam("CORE_LANG");
+        $lang = \Dcp\Core\ContextManager::getApplicationParam("CORE_LANG");
         if ($lang == "fr_FR") {
         }
         if (is_array($this->displayValue)) {

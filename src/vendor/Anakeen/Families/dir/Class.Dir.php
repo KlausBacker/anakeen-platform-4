@@ -73,7 +73,7 @@ class Dir extends PDir
             $home->insertDocument($privlocked->id);
         }
         // add basket in home
-        if (getParam("FREEDOM_IDBASKET") == "") {
+        if (\Dcp\Core\ContextManager::getApplicationParam("FREEDOM_IDBASKET") == "") {
             
             $bas = createDoc($this->dbaccess, "BASKET");
             if (!$bas) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("BASKET")));

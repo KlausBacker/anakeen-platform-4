@@ -463,11 +463,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         static $firstPack = array();
         $resourceLocation = '';
         
-        $key = isset($this->session) ? $this->session->getUKey(getParam("WVERSION")) : uniqid(getParam("WVERSION"));
+        $key = isset($this->session) ? $this->session->getUKey(\Dcp\Core\ContextManager::getApplicationParam("WVERSION")) : uniqid(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
         if ($packName) {
             
             $resourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;ukey=%s&amp;pack=%s", $type, $key, $packName);
-            $resourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, getParam("WVERSION"));
+            $resourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, \Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
             
             if (!isset($firstPack[$packName])) {
                 $packSession = array();
@@ -509,7 +509,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         } else {
             $location = $this->resolveResourceLocation($ref);
             if ($location != '') {
-                $resourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . getParam("WVERSION");
+                $resourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . \Dcp\Core\ContextManager::getApplicationParam("WVERSION");
             }
         }
         

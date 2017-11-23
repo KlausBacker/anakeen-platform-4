@@ -179,7 +179,7 @@ class Log
     public function getLogLevel()
     {
         if ($this->logLevel === null) {
-            $this->logLevel = getParam("CORE_LOGLEVEL", "IWEF");
+            $this->logLevel = \Dcp\Core\ContextManager::getApplicationParam("CORE_LOGLEVEL", "IWEF");
         }
         return $this->logLevel;
     }

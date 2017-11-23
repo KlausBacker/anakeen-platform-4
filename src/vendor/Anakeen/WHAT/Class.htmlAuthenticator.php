@@ -193,7 +193,7 @@ class htmlAuthenticator extends Authenticator
                 header('Location: ' . $this->getAuthUrl());
                 return TRUE;
             }
-            $redir_uri = GetParam("CORE_BASEURL");
+            $redir_uri = \Dcp\Core\ContextManager::getApplicationParam("CORE_BASEURL");
         }
         header('Location: ' . $redir_uri);
         return TRUE;

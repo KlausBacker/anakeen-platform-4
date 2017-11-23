@@ -323,7 +323,7 @@ class Session extends DbObj
     function newId()
     {
         $this->log->debug("newId");
-        $byteLength = (int)getParam('CORE_SESSION_BYTE_LENGTH');
+        $byteLength = (int)\Dcp\Core\ContextManager::getApplicationParam('CORE_SESSION_BYTE_LENGTH');
         if ($byteLength < self::SESSION_MIN_BYTE_LENGTH) {
             $byteLength = self::SESSION_MIN_BYTE_LENGTH;
         }
@@ -392,12 +392,12 @@ class Session extends DbObj
                 $ttlParamName = 'CORE_SESSIONTTL';
             }
         }
-        return intval(getParam($ttlParamName, $default));
+        return intval(\Dcp\Core\ContextManager::getApplicationParam($ttlParamName, $default));
     }
     
     function getSessionGcProbability($default = "0.01")
     {
-        return getParam("CORE_SESSIONGCPROBABILITY", $default);
+        return \Dcp\Core\ContextManager::getApplicationParam("CORE_SESSIONGCPROBABILITY", $default);
     }
     
     function touch()
@@ -427,7 +427,7 @@ class Session extends DbObj
     
     function deleteMaxAgedSessions()
     {
-        $maxage = getParam('CORE_SESSIONMAXAGE', '');
+        $maxage = \Dcp\Core\ContextManager::getApplicationParam('CORE_SESSIONMAXAGE', '');
         if ($maxage != '') {
             return $this->exec_query(sprintf("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'", pg_escape_string($maxage)));
         }

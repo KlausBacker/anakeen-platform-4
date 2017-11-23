@@ -171,7 +171,7 @@ if ($to) {
     $message->setBody(new \Dcp\Mail\Body(file_get_contents($logfile) , (($htmlmode == 'yes') ? 'text/html' : 'text/plain')));
     
     $from = getMailAddr($action->user->id);
-    if ($from == "") $from = getParam('SMTP_FROM');
+    if ($from == "") $from = \Dcp\Core\ContextManager::getApplicationParam('SMTP_FROM');
     if ($from == "") $from = $action->user->login . '@' . php_uname('n');
     
     $subject = sprintf(_("result of import  %s") , basename(GetHttpVars("file")));

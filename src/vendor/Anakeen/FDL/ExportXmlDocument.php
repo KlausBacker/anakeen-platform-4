@@ -225,7 +225,7 @@ class ExportXmlDocument
                     }
                     $mime = $reg[1];
                     $name = htmlspecialchars($reg[3], ENT_QUOTES);
-                    $base = getParam("CORE_EXTERNURL");
+                    $base = \Dcp\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($attribute->id));
                     if ($this->exportFiles) {
                         $path = $doc->vault_filename_fromvalue($v, true);
