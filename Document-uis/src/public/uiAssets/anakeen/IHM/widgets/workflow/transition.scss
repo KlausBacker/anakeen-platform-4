@@ -1,8 +1,11 @@
-.dcpTransition * {
-  box-sizing: border-box;
+.dcpTransition  {
+  &.dcpDocument {
+    min-height: unset;
+  }
+
 }
 .dcpTransition .k-widget, .dcpTransition .k-widget * {
-  box-sizing: content-box;
+  //box-sizing: content-box;
 }
 .dcpTransition--activity {
   /* border: solid 1px;
@@ -68,6 +71,10 @@
 .dcpTransition--buttons {
   padding-top: 1em;
   text-align: right;
+
+  button {
+    margin:0.3rem;
+  }
 }
 
 .dcpTransition-button-ok .fa {

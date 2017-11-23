@@ -199,6 +199,7 @@ define([
             this.element.find('.history-main').dataTable({
                 "autoWidth": false,
                 "ordering": false,
+                "dom": "<'history-head'<'history-buttons'>f>rtip",
                 "paging": false,
                 // "scrollY": "200px",
                 "scrollCollapse": false,
@@ -230,9 +231,9 @@ define([
                             if (_.isObject(data)) {
                                 if (data.state.reference) {
 
-                                    return '<div><span class="history-state-color" style="background-color:' + data.state.color + '" >&nbsp;</span>' +
+                                    return '<div class="history-state"><span class="history-state-color" style="background-color:' + data.state.color + '" >&nbsp;</span>' + '<span class="history-state-label">' +
                                         (data.status === "fixed" ? data.state.stateLabel : data.state.activity) +
-                                        '</div>';
+                                        '</span></div>';
                                 }
                                 return $("<div/>").text(data.title).html();
                             } else {
@@ -382,19 +383,19 @@ define([
                     historyWidget.element.find(".history-comment").hide();
                     historyWidget.element.find(".odd").removeClass("odd");
                     historyWidget.element.find(".even").removeClass("even");
+                    historyWidget.element.find(".dataTables_filter input").addClass("form-control form-control-sm");
 
                     if (historyWidget.element.find('.history-button-shownotice').length === 0) {
-                        var firstHeadCell = historyWidget.element.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
-                        historyWidget.element.find(".dataTables_filter").each(function whistory_filter()
-                        {
-                            firstHeadCell.append($('<button class="history-button-showdetail btn btn-default btn-sm" >' + historyWidget.options.labels.showDetail + '</button>'));
+                        var $buttons=historyWidget.element.find(".history-buttons");
 
-                            firstHeadCell.append($('<button disabled="disabled" class="history-button-shownotice btn btn-default btn-sm" >' + historyWidget.options.labels.showNotice + '</button>'));
+                            $buttons.append($('<button class="history-button-showdetail btn btn-secondary btn-sm" >' + historyWidget.options.labels.showDetail + '</button>'));
+                            $buttons.append($('<button disabled="disabled" class="history-button-shownotice btn btn-outline-secondary btn-sm" >' + historyWidget.options.labels.showNotice + '</button>'));
 
-                        });
+
                         historyWidget.element.find(".dataTables_filter input").attr("placeholder", historyWidget.options.labels.filterMessages);
-                        historyWidget.element.find(".row:nth-child(1) .col-sm-6").addClass("col-xs-6");
                     }
+
+
 
                 },
 

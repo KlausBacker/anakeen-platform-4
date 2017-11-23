@@ -25,12 +25,12 @@ define([
             '<span class="dcpTransition--success" >{{labels.success}}</span>' +
             '</div>',
 
-            htmlStateButtons: '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-default btn-sm">' +
+            htmlStateButtons: '<button title="{{labels.close}}" class="dcpTransition-button-close btn btn-outline-secondary btn-sm">' +
             '{{labels.close}} </button>',
 
             htmlLoading: '<div class="dcpTransition--loading"><span class="fa fa-2x fa-spinner fa-spin"></span> {{labels.inprogress}}</div>',
 
-            htmlButtons: '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-default btn-sm">{{labels.cancel}}</button>' +
+            htmlButtons: '{{#hasAttributes}}<button class="dcpTransition-button-cancel btn btn-outline-secondary btn-sm">{{labels.cancel}}</button>' +
             '<button title="{{transition.label}}" ' +
             'class="dcpTransition-button-ok btn {{#transition.id}}btn-primary{{/transition.id}}  {{^transition.id}}btn-danger{{/transition.id}} btn-sm">' +
             '{{labels.confirm}}</button>{{/hasAttributes}}'

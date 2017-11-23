@@ -92,6 +92,7 @@ define([
                 "autoWidth" :      false,
                 "ordering" :       false,
                 "paging" :         false,
+                "dom": "<'revision-head'<'revision-diff-buttons'>f>rtip",
                 // "scrollY": "200px",
                 "scrollCollapse" : false,
                 "info" :           false,
@@ -149,9 +150,11 @@ define([
                     $(api.columns('second:name').header()).html(revisionDiffWidget._getDocHeader(revisionDiffWidget.secondDocument));
                     revisionDiffWidget.element.find(".dataTables_filter input").attr("placeholder", revisionDiffWidget.options.labels.filterMessages);
 
-                    var firstHeadCell = revisionDiffWidget.element.find(".row:nth-child(1) .col-sm-6:nth-child(1)");
+                    revisionDiffWidget.element.find(".dataTables_filter input").addClass("form-control form-control-sm");
+
+                    var firstHeadCell = revisionDiffWidget.element.find(".revision-diff-buttons");
                     if (firstHeadCell.find('.revision-diff-button-showonlydiff').length === 0) {
-                        firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-default btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
+                        firstHeadCell.append($('<button class="revision-diff-button-showonlydiff btn btn-secondary btn-sm" >' + revisionDiffWidget.options.labels.showOnlyDiff + '</button>'));
                     }
                 },
 

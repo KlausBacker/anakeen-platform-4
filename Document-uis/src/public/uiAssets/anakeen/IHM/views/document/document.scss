@@ -46,12 +46,13 @@ html {
 }
 
 .dcpDocument__header {
-  line-height: $documentHeaderHeight;
-  background-color: $body-bg;
+  background-color: $A4-ui-menu-bg;
+  border-bottom: solid 1px darken($A4-ui-menu-bg, 30);
   width: 100%;
   z-index: 100;
-  font-size: $documentHeaderHeight/1.5;
+  font-size: $A4-ui-header-title-size;
   overflow: hidden;
+  align-items: baseline;
 }
 
 .dcpDocument__header__title {
@@ -65,14 +66,14 @@ html {
 }
 
 .dcpDocument__header__icon {
-  height: $documentHeaderHeight;
+  height: $A4-ui-header-title-size;
   padding-right: 1em;
   padding-left: 0.5em;
 }
 
 .dcpDocument__header__family {
   display: inline;
-  font-size: $documentHeaderHeight/2;
+  font-size: 1rem;
   float: right;
   font-style: italic;
   margin-right: 10px;
@@ -112,25 +113,26 @@ body {
 }
 
 .confirm--content {
-  padding: 10px;
+  padding: 1.2rem;
+  flex-grow: 1;
 }
 
 .confirm--buttons {
-  //text-align: right;
-  position: absolute;
-  bottom: 0;
-  width: 90%;
-  padding: 10px;
+  padding: 1.5rem;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .confirm--body {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .confirm--buttons button {
-  min-width: 6em;
+  min-width: 12rem;
+  margin-left:1rem;
 }
 
 .dcpDocument {
@@ -177,7 +179,14 @@ body {
 }
 
 
-
+.k-widget.k-window.k-window-maximized {
+    max-width: 100vw;
+    max-height: 100vh;
+  // Bug of Kendo Ui Maximize ?
+    height: 100vh ! important;
+    width: 100vw ! important;
+    border: none;
+}
 
 
 .k-window .dcpLoading {
@@ -193,9 +202,10 @@ body {
 }
 
 .dcpDocument__header__modified {
-  padding-left: 0.5em;
-  font-size: x-small;
-  vertical-align: super;
+  padding-right: 0.5em;
+  font-size: 1rem;
+  align-self: flex-start;
+  padding-top: 0.4rem;
   color: $warning;
 }
 
@@ -228,14 +238,14 @@ body {
 {
   padding-right: 2em;
   padding-left: 2em;
-  font-size: $documentHeaderHeight/2;
+  font-size: $A4-ui-header-title-size;
 }
 
 .dcpDocument__header--fixed .dcpDocument__header__revdate,
 .dcpDocument__header--deleted .dcpDocument__header__revdate
 {
   padding-right: 2em;
-  font-size: $documentHeaderHeight/2;
+  font-size: $A4-ui-header-title-size;
 }
 
 //static error message

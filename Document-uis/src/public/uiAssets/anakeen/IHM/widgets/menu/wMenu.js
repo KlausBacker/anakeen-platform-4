@@ -34,6 +34,7 @@ define([
             $content.kendoMenu({
                 openOnClick: true,
                 closeOnClick: true,
+
                 select: function wMenuSelect(event)
                 {
                     var $menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
@@ -259,6 +260,8 @@ define([
                 }
             });
 
+
+             this.element.find(".menu--left").last().addClass("menu--lastLeft");
             /**
              * Fix menu when no see header
              */
@@ -301,7 +304,6 @@ define([
         {
             var widgetMenu = this;
             if (!widgetMenu.element.data("menu-opening") && this.element.css("overflow") !== "hidden") {
-                this.element.css("max-height", this.element.find(".menu__content li").height() + 2).css("overflow", "hidden");
                 this.element.find("li.k-state-border-down").each(function wMenuInhibitBarMenuClose()
                 {
                     widgetMenu.kendoMenuWidget.close($(this));

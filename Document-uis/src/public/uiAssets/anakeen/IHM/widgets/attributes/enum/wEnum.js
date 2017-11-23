@@ -1081,10 +1081,10 @@
 
             if (scope.options.renderOptions.useOtherChoice === true) {
                 // add "other" input in header list
-                defaultOptions.headerTemplate = $('<div class="dcpAttribute__value--enum-other"><div class="input-group dcpAttribute__value--enum-other-content">' +
+                defaultOptions.headerTemplate = $('<div><div class="dcpAttribute__value--enum-other"><div class="input-group dcpAttribute__value--enum-other-content">' +
                     '<input class="form-control" type="text" placeholder="' + scope.options.labels.chooseAnotherChoice + '"/>' +
                     '<span class="input-group-btn"><button class="btn btn-primary dcpAttribute__value--enum-other-select">' + scope.options.labels.selectAnotherChoice + '</button></span> ' +
-                    '</div></div>');
+                    '</div></div></div>').html();
             }
 
             if (this.options.renderOptions.useSourceUri) {

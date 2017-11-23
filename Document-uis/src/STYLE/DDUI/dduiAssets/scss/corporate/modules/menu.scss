@@ -18,9 +18,8 @@
   }
 
   // Menu item hovered
-  a.k-link:hover, .k-menu:not(.k-context-menu) > .k-item.k-state-hover > .k-link {
+  a.k-link:hover, .k-menu:not(.k-context-menu) > .k-item.k-state-hover:not(.menu--separator) > .k-link {
     color: $A4-ui-color-btn-action;
-    cursor: pointer;
   }
 
   .menu__element {
@@ -28,9 +27,22 @@
     padding-top: ($A4-ui-menu-height - 1.666rem)/2;
     padding-bottom: ($A4-ui-menu-height - 1.666rem)/2;
 
+    &.k-menu-horizontal.k-menu {
+      padding-top: ($A4-ui-menu-height - 1.666rem)/2;
+      padding-bottom: ($A4-ui-menu-height - 1.666rem)/2;
+
+    }
+
+
     &.menu__element--item.menu--important.k-item {
       font-weight: bold;
     }
+  }
+}
+
+.k-state-focused {
+  .k-link {
+    box-shadow: none ! important;
   }
 }
 
@@ -41,7 +53,7 @@
     color: $A4-ui-menu-fixed-font-color;
     font-family: $A4-ui-menu-fixed-font;
 
-    .k-menu .menu__element--item.k-item > .k-link {
+    .k-menu .menu__element.k-item > .k-link {
       border-left-color: $A4-ui-menu-fixed-font-color;
     }
 
@@ -53,9 +65,17 @@
 }
 
 // Menu item separator
-.menu__content .k-menu .menu__element--item.k-item {
-  & > .k-link {
+.menu__content .k-menu .menu__element.k-item {
+   > .k-link {
     border-left: $A4-ui-menu-separator;
     padding: $A4-ui-menu-item-padding;
+
+
+  }
+  &.menu--left {
+     > .k-link {
+       border-left: none;
+       border-right: $A4-ui-menu-separator;
+     }
   }
 }

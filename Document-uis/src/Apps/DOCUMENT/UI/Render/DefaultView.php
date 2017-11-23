@@ -6,6 +6,7 @@
 
 namespace Dcp\Ui;
 
+use Dcp\Core\ContextManager;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use \Dcp\AttributeIdentifiers\Cvdoc as CvAttributes;
 
@@ -80,7 +81,11 @@ class DefaultView extends RenderDefault
     public function getMenu(\Doc $document)
     {
         $menu = new BarMenu();
-        
+
+        $this->appendWorkflowMenu($document, $menu);
+
+        $this->setEmblemMenu($document, $menu);
+
         $item = new ItemMenu("modify", ___("Modify", "UiMenu") , "#action/document.edit");
         if ($this->displayDefaultMenuTooltip) {
             $item->setTooltipLabel(___("Display document form", "UiMenu"));
@@ -96,8 +101,8 @@ class DefaultView extends RenderDefault
         $confirmOption = new MenuConfirmOptions();
         $confirmOption->title = ___("Confirm deletion of {{{document.properties.title}}}");
         $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
-        $confirmOption->windowWidth = "350px";
-        $confirmOption->windowHeight = "150px";
+        $confirmOption->windowWidth = "35rem";
+        $confirmOption->windowHeight = "12rem";
         $item->useConfirm(sprintf(___("Sure delete %s ?", "UiMenu") , $document->getHTMLTitle()) , $confirmOption);
         $item->setBeforeContent('<div class="fa fa-trash-o" />');
         $menu->appendElement($item);
@@ -107,45 +112,71 @@ class DefaultView extends RenderDefault
             $item->setTooltipLabel(___("Restore document from the trash", "UiMenu"));
         }
         $menu->appendElement($item);
-        
-        $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#action/document.history");
-        $item->setBeforeContent('<div class="fa fa-history" />');
-        $menu->appendElement($item);
-        
-        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#action/document.properties");
-        $item->setBeforeContent('<div class="fa fa-info" />');
-        $menu->appendElement($item);
-        
-        if ($document->wid > 0) {
-            if ($document->locked != - 1) {
-                $workflowMenu = new DynamicMenu("workflow");
-                $workflowMenu->setHtmlLabel(sprintf('<i style="color:%s" class="menu--workflow-color fa fa-square" /> %s', $document->getStateColor("transparent") , htmlspecialchars(_($document->getStateActivity($document->getState())))));
-                $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
-                {
-                    $this->getWorkflowMenu($document, $menu);
-                });
-                $workflowMenu->setBeforeContent(sprintf('<div class="fa fa-sitemap" />', $document->getStateColor("transparent")));
-                $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
-                if ($this->displayDefaultMenuTooltip) {
-                    $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu") , "left");
-                }
-                $workflowMenu->setImportant(true);
-                $menu->appendElement($workflowMenu);
-            } else {
-                $workflowMenu = new SeparatorMenu("workflow", _($document->getState()));
-                
-                $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
-                $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
-                $menu->appendElement($workflowMenu);
-            }
+
+
+        if (ContextManager::getCurrentUser()->id === \Account::ADMIN_ID) {
+            self::appendSystemMenu($document, $menu);
         }
         
-        $this->setEmblemMenu($document, $menu);
+
+
         
         $this->addCvMenu($document, $menu);
         $this->addFamilyMenu($document, $menu);
         $this->addHelpMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);
+    }
+
+
+    /**
+     * @param \Doc $document
+     * @param BarMenu $menu
+     */
+     public function appendWorkflowMenu($document, $menu) {
+         if ($document->wid > 0) {
+             if ($document->locked != - 1) {
+                 $workflowMenu = new DynamicMenu("workflow");
+                 $workflowMenu->setHtmlLabel(sprintf('<i style="color:%s" class="menu--workflow-color fa fa-square" /> %s', $document->getStateColor("transparent") , htmlspecialchars(_($document->getStateActivity($document->getState())))));
+                 $workflowMenu->setContent(function (ListMenu & $menu) use ($document)
+                 {
+                     $this->getWorkflowMenu($document, $menu);
+                 });
+                 $workflowMenu->setBeforeContent(sprintf('<div class="fa fa-sitemap" />', $document->getStateColor("transparent")));
+                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--left");
+                 if ($this->displayDefaultMenuTooltip) {
+                     $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu") , "left");
+                 }
+                 $workflowMenu->setImportant(true);
+                 $menu->appendElement($workflowMenu);
+             } else {
+                 $workflowMenu = new SeparatorMenu("workflow", _($document->getState()));
+
+                 $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
+                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
+                 $menu->appendElement($workflowMenu);
+             }
+         }
+
+     }
+
+    /**
+     * @param $document
+     * @param Barmenu $menu
+     */
+    public static function appendSystemMenu($document, $menu) {
+        $systemList=new ListMenu('system', ___("System", "UiMenu"));
+        $systemList->setBeforeContent('<div class="fa fa-cogs" />');
+
+        $item = new ItemMenu("historic", ___("Historic", "UiMenu") , "#action/document.history");
+        $item->setBeforeContent('<div class="fa fa-history" />');
+        $systemList->appendElement($item);
+
+        $item = new ItemMenu("properties", ___("Properties", "UiMenu") , "#action/document.properties");
+        $item->setBeforeContent('<div class="fa fa-info" />');
+        $systemList->appendElement($item);
+
+        $menu->appendElement($systemList);
+
     }
     
     public function getTemplates(\Doc $document = null)

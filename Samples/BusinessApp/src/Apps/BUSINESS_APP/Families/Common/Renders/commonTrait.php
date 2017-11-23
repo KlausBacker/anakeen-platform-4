@@ -15,7 +15,7 @@ trait Common {
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopScrollPlacement);
 
         return $options;
     }
