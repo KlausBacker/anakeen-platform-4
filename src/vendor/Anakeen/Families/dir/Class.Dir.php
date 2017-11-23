@@ -54,7 +54,7 @@ class Dir extends PDir
             /** @var Dir $home */
             $home = createDoc($this->dbaccess, "DIR");
             
-            if (!$home) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($this->dbaccess, "DIR")));
+            if (!$home) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("DIR")));
             
             $home->owner = - $this->userid;
             $user = new Account("", $this->userid);
@@ -65,7 +65,7 @@ class Dir extends PDir
             $home->Add();
             /** @var DocSearch $privlocked */
             $privlocked = createDoc($this->dbaccess, "SEARCH");
-            if (!$privlocked) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($this->dbaccess, "SEARCH")));
+            if (!$privlocked) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("SEARCH")));
             
             $privlocked->title = (_("locked document of ") . $home->title);
             $privlocked->Add();
@@ -76,7 +76,7 @@ class Dir extends PDir
         if (getParam("FREEDOM_IDBASKET") == "") {
             
             $bas = createDoc($this->dbaccess, "BASKET");
-            if (!$bas) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , getFamIdFromName($this->dbaccess, "BASKET")));
+            if (!$bas) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("BASKET")));
             
             $query = new QueryDb($this->dbaccess, "_BASKET");
             $query->AddQuery("owner = " . $this->userid);

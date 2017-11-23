@@ -180,7 +180,7 @@ class importXml
         }
         
         $family = $root->tagName;
-        $famid = getFamIdFromName($dbaccess, $family);
+        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($family);
         if (!isset($families[$famid])) {
             $families[$famid] = new_doc($dbaccess, $famid);
         }

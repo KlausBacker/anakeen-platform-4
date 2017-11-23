@@ -278,7 +278,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
 
                 case "ORDER":
                     if (is_numeric($data[1])) $orfromid = $data[1];
-                    else $orfromid = getFamIdFromName($dbaccess, $data[1]);
+                    else $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
                     
                     $tcolorder[$orfromid] = getOrder($data);
                     $tr[$index]["action"] = sprintf(_("new column order %s") , implode(" - ", $tcolorder[$orfromid]));
@@ -286,7 +286,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
 
                 case "KEYS":
                     if (is_numeric($data[1])) $orfromid = $data[1];
-                    else $orfromid = getFamIdFromName($dbaccess, $data[1]);
+                    else $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
                     
                     $tkeys[$orfromid] = getOrder($data);
                     if (($tkeys[$orfromid][0] == "") || (count($tkeys[$orfromid]) == 0)) {
@@ -300,7 +300,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
 
                 case "DOC":
                     if (is_numeric($data[1])) $fromid = $data[1];
-                    else $fromid = getFamIdFromName($dbaccess, $data[1]);
+                    else $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
                     if (isset($tkeys[$fromid])) $tk = $tkeys[$fromid];
                     else $tk = array(
                         "title"

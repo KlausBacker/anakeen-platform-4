@@ -56,7 +56,7 @@ class UpdateAttribute
         $this->famid = '';
         if ($search) {
             $famName = $search->fromid;
-            if (!is_numeric($famName)) $this->famid = getFamIdFromName($this->dbaccess, $famName);
+            if (!is_numeric($famName)) $this->famid = \Dcp\Core\DocManager::getFamilyIdFromName($famName);
             else $this->famid = $famName;
         }
         return $this->famid;

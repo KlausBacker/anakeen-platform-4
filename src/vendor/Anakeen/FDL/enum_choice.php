@@ -251,7 +251,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
 function getAttr($dbaccess, $aid)
 {
     $r = GetParam($aid);
-    if ($r == "") $r = getFamIdFromName($dbaccess, $aid);
+    if ($r == "") $r = \Dcp\Core\DocManager::getFamilyIdFromName($aid);
     
     return $r;
 }

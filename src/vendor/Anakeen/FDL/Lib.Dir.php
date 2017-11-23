@@ -109,7 +109,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     
     if (($fromid != "") && (!is_numeric($fromid))) {
         preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
-        $fromid = $m['sign'] . getFamIdFromName($dbaccess, $m['fromid']);
+        $fromid = $m['sign'] . \Dcp\Core\DocManager::getFamilyIdFromName($m['fromid']);
     }
     $table = "doc";
     $qsql = array();
@@ -138,7 +138,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     $maintable = $table; // can use join only on search
     if ($join) {
         if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
-            $joinid = getFamIdFromName($dbaccess, $reg[3]);
+            $joinid = \Dcp\Core\DocManager::getFamilyIdFromName($reg[3]);
             $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
             
             $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
@@ -429,7 +429,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function _internalGetDocCollection($returnSqlOnly = false, $dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
         // query to find child documents
-        if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
+        if (($fromid != "") && (!is_numeric($fromid))) $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($fromid);
         if ($fromid == 0) $fromid = "";
         if (($fromid == "") && ($dirid != 0) && ($qtype == "TABLE")) {
             /**
@@ -437,7 +437,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
              */
             $fld = new_Doc($dbaccess, $dirid);
             
-            if ($fld->fromid == getFamIdFromName($dbaccess, "SSEARCH")) {
+            if ($fld->fromid == \Dcp\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                 /**
                  * @var \Dcp\Family\SSEARCH $fld
                  */
@@ -742,7 +742,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         if ($userid == 0) $userid = $action->user->id;
         
-        $famid = getFamIdFromName($dbaccess, $famname);
+        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famname);
         $fdoc = new_Doc($dbaccess, $famid);
         // searches for all fathers kind
         
@@ -770,7 +770,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         if ($name != "") $sqlfilter[] = "title ~* '$name'";
         
-        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", getFamIdFromName($dbaccess, $famname) , false, "title");
+        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Dcp\Core\DocManager::getFamilyIdFromName($famname) , false, "title");
     }
     function sqlval2array($sqlvalue)
     {
@@ -1078,7 +1078,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function familyNeedDocread($dbaccess, $id)
     {
-        if (!is_numeric($id)) $id = getFamIdFromName($dbaccess, $id);
+        if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getFamilyIdFromName($id);
         $id = abs(intval($id));
         if ($id == 0) return false;
         $dbid = getDbid($dbaccess);

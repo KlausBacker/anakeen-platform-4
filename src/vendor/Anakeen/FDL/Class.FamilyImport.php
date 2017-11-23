@@ -297,7 +297,7 @@ class FamilyImport
                             $aformat = $reg[2];
                             if ($atype == "idoc") {
                                 if (!is_numeric($aformat)) {
-                                    $aformat = getFamIdFromName($dbaccess, $aformat);
+                                    $aformat = \Dcp\Core\DocManager::getFamilyIdFromName($aformat);
                                 }
                             }
                         } else {

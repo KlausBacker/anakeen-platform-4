@@ -290,14 +290,14 @@ class Fdl_Collection extends Fdl_Document
             // multi family search
             $tfamids = explode('|', $famid);
             foreach ($tfamids as $fid) {
-                if (!is_numeric($fid)) $fid = getFamidFromName($this->dbaccess, $fid);
+                if (!is_numeric($fid)) $fid = \Dcp\Core\DocManager::getFamilyIdFromName($fid);
                 if ($fid > 0) $tfid[] = $fid;
             }
             
             $famid = 0;
         }
         if (preg_match('/([\w:]*)\s?strict/', trim($famid) , $reg)) {
-            if (!is_numeric($reg[1])) $reg[1] = getFamIdFromName($this->dbaccess, $reg[1]);
+            if (!is_numeric($reg[1])) $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
             $famid = '-' . $reg[1];
         }
         $s = new SearchDoc($this->dbaccess, $famid);
@@ -413,7 +413,7 @@ class Fdl_Collection extends Fdl_Document
             
             $content = array();
             $fld = new Dir($this->dbaccess);
-            if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
+            if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
             $tfam = $fld->GetChildFam($famid, $controlcreate);
             if (count($tfam) > 0) {
                 $tmpdoc = new Fdl_Document();

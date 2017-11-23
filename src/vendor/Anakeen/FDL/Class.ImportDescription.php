@@ -500,7 +500,7 @@ class importDocumentDescription
                 return;
             }
             if ($this->tcr[$this->nLine]["err"] == "") {
-                if (($data[3] == "") || ($data[3] == "-")) $this->doc = new DocFam($this->dbaccess, getFamIdFromName($this->dbaccess, $data[5]) , '', 0, false);
+                if (($data[3] == "") || ($data[3] == "-")) $this->doc = new DocFam($this->dbaccess, \Dcp\Core\DocManager::getFamilyIdFromName($data[5]) , '', 0, false);
                 else $this->doc = new DocFam($this->dbaccess, $data[3], '', 0, false);
                 
                 $this->familyIcon = "";
@@ -512,7 +512,7 @@ class importDocumentDescription
                         
                         if (isset($data[3]) && ($data[3] > 0)) $this->doc->id = $data[3]; // static id
                         if (is_numeric($data[1])) $this->doc->fromid = $data[1];
-                        else $this->doc->fromid = getFamIdFromName($this->dbaccess, $data[1]);
+                        else $this->doc->fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
                         if (isset($data[5])) $this->doc->name = $data[5]; // internal name
                         $err = $this->doc->Add();
                     }
@@ -525,7 +525,7 @@ class importDocumentDescription
                 if ($data[1] && ($data[1] != '-')) {
                     if ($data[1] == '--') $this->doc->fromid = 0;
                     else if (is_numeric($data[1])) $this->doc->fromid = $data[1];
-                    else $this->doc->fromid = getFamIdFromName($this->dbaccess, $data[1]);
+                    else $this->doc->fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
                 }
                 if ($data[2] && ($data[2] != '-')) $this->doc->title = $data[2];
                 if ($data[4] && ($data[4] != '-')) $this->doc->classname = $data[4]; // new classname for familly
@@ -821,7 +821,7 @@ class importDocumentDescription
         }
         // case of specific order
         if (is_numeric($data[1])) $fromid = $data[1];
-        else $fromid = getFamIdFromName($this->dbaccess, $data[1]);
+        else $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
         
         if (isset($tkeys[$fromid])) $tk = $tkeys[$fromid];
         else $tk = array(
@@ -1655,7 +1655,7 @@ class importDocumentDescription
             return;
         }
         if (is_numeric($data[1])) $orfromid = $data[1];
-        else $orfromid = getFamIdFromName($this->dbaccess, $data[1]);
+        else $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
         
         $tkeys[$orfromid] = getOrder($data);
         if (($tkeys[$orfromid][0] == "") || (count($tkeys[$orfromid]) == 0)) {
@@ -1691,7 +1691,7 @@ class importDocumentDescription
             unset($this->badOrderErrors[$famName]);
         }
         if (is_numeric($data[1])) $orfromid = $data[1];
-        else $orfromid = getFamIdFromName($this->dbaccess, $data[1]);
+        else $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
         
         $this->colOrders[$orfromid] = getOrder($data);
         $this->tcr[$this->nLine]["msg"] = sprintf(_("new column order %s") , implode(" - ", $this->colOrders[$orfromid]));
@@ -1704,7 +1704,7 @@ class importDocumentDescription
     {
         $err = '';
         if (is_numeric($data[1])) $fid = $data[1];
-        else $fid = getFamIdFromName($this->dbaccess, $data[1]);
+        else $fid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
         $aid = (trim($data[2]));
         $index = $data[5];
         $oa = new DocAttrLDAP($this->dbaccess, array(
@@ -1928,7 +1928,7 @@ class importDocumentDescription
         // import attribute definition from another family
         $err = '';
         $fiid = $data[3];
-        if (!is_numeric($fiid)) $fiid = getFamIdFromName($this->dbaccess, $fiid);
+        if (!is_numeric($fiid)) $fiid = \Dcp\Core\DocManager::getFamilyIdFromName($fiid);
         $fi = new_Doc($this->dbaccess, $fiid);
         if ($fi->isAffected()) {
             $fa = $fi->getAttribute($data[1]);

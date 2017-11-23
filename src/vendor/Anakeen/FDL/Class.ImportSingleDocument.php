@@ -184,7 +184,7 @@ class importSingleDocument
         $this->folderId = isset($data[3]) ? trim($data[3]) : '';
         
         if (is_numeric($this->famId)) $fromid = $this->famId;
-        else $fromid = getFamIdFromName($this->dbaccess, $this->famId);
+        else $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($this->famId);
         if ($fromid == 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
             $this->tcr["action"] = "ignored";

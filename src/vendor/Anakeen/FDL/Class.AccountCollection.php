@@ -138,7 +138,7 @@ class AccountCollection extends \Dcp\Family\Dir
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
+        $tgroup = internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Dcp\Core\DocManager::getFamilyIdFromName("GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();
