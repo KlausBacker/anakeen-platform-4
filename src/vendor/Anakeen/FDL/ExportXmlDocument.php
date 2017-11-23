@@ -306,7 +306,7 @@ class ExportXmlDocument
                             $mId = array();
                             $foundName = false;
                             foreach ($tids as $id) {
-                                $lName = getNameFromId($doc->dbaccess, $id);
+                                $lName = \Dcp\Core\DocManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
                                 if ($lName) $foundName = true;

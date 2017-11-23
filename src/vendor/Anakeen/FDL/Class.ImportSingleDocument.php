@@ -231,7 +231,7 @@ class importSingleDocument
             if ($this->doc->fromid != $fromid) {
                 
                 $this->tcr["id"] = $this->doc->id;
-                $this->setError("DOC0008", $this->doc->getTitle() , $this->doc->fromname, getNameFromId($this->dbaccess, $fromid));
+                $this->setError("DOC0008", $this->doc->getTitle() , $this->doc->fromname, \Dcp\Core\DocManager::getNameFromId($fromid));
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {

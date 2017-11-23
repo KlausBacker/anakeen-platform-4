@@ -419,7 +419,7 @@ class NormalAttribute extends BasicAttribute
         if ($this->type == "htmltext") {
             $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches)
             {
-                $name = getNameFromId(getDbAccess() , $matches[2]);
+                $name = \Dcp\Core\DocManager::getNameFromId($matches[2]);
                 return $matches[1] . ($name ? $name : $matches[2]);
             }
             , $value);
@@ -634,7 +634,7 @@ class NormalAttribute extends BasicAttribute
                             $mId = array();
                             $foundName = false;
                             foreach ($tids as $id) {
-                                $lName = getNameFromId($doc->dbaccess, $id);
+                                $lName = \Dcp\Core\DocManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
                                 if ($lName) $foundName = true;

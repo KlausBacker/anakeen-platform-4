@@ -124,7 +124,7 @@ class CheckBegin extends CheckData
                     $me = getTdoc('', $this->famName);
                     if ($me) {
                         $fromId = $me['fromid'];
-                        $fromName = getNameFromId(getDbAccess() , $fromId);
+                        $fromName = \Dcp\Core\DocManager::getNameFromId($fromId);
                         if ($fromName == '') {
                             throw new \Dcp\Exception("FAM0603", $fromId, $this->famName);
                         }
