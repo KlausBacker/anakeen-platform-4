@@ -53,7 +53,7 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         $resid = $tdoc["id"];
         $resname = $tdoc["name"];
         print "Destroying [" . $tdoc["title"] . "(" . $tdoc["name"] . ")]\n";
-        $dbid = getDbId($dbaccess);
+        $dbid = \Dcp\Core\DbManager::getDbId();
         $tsql = array();
         if (!$force) $tsql[] = "BEGIN;";
         $tsql+= array(

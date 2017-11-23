@@ -253,7 +253,8 @@ class SearchDoc
                     if ($userid != 1) {
                         $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
                     }
-                    $dbid = getDbid($this->dbaccess);
+
+                    $dbid = \Dcp\Core\DbManager::getDbId();
                     $mb = microtime(true);
                     try {
                         simpleQuery($this->dbaccess, $sql, $result, false, true, true);

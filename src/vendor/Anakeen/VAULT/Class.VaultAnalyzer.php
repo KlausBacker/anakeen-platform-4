@@ -337,7 +337,7 @@ EOF;
     
     protected function sqlConnect()
     {
-        $this->_conn = getDbId('');
+        $this->_conn = \Dcp\Core\DbManager::getDbId();
         $this->sqlPrepare(self::STMT_DELETE_ID_FILE, 'DELETE FROM vaultdiskstorage WHERE id_file = $1 RETURNING *');
     }
     

@@ -378,7 +378,7 @@ create sequence seq_id_users start 10;";
         $uid = intval($uid);
         if ($uid > 0) {
             if (isset($tdn[$uid])) return $tdn[$uid];
-            $dbid = getDbId(getDbAccess());
+            $dbid = \Dcp\Core\DbManager::getDbId();
             $res = pg_query($dbid, "select firstname, lastname  from users where id=$uid");
             if (pg_num_rows($res) > 0) {
                 $arr = pg_fetch_array($res, 0);

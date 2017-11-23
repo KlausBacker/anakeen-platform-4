@@ -1081,7 +1081,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getFamilyIdFromName($id);
         $id = abs(intval($id));
         if ($id == 0) return false;
-        $dbid = getDbid($dbaccess);
+        $dbid = \Dcp\Core\DbManager::getDbId();
         $fromid = false;
         $result = pg_query($dbid, "select id from docfam where id=$id and usedocread=1");
         if (pg_numrows($result) > 0) {
