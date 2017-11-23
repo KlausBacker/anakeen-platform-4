@@ -90,7 +90,7 @@ class TestDocRel extends TestCaseDcpCommonFamily
                     if (isset($this->base[$single])) {
                         $tids[] = $this->base[$single];
                     } else {
-                        $tids[] = getIdFromName(self::$dbaccess, $single);
+                        $tids[] = \Dcp\Core\DocManager::getIdFromName($single);
                     }
                 }
                 
@@ -101,7 +101,7 @@ class TestDocRel extends TestCaseDcpCommonFamily
             if (isset($this->base[$val])) {
                 return $this->base[$val];
             } else {
-                return getIdFromName(self::$dbaccess, $val);
+                return \Dcp\Core\DocManager::getIdFromName($val);
             }
         }
     }

@@ -117,7 +117,7 @@ $s->start = $start;
 if ($docid != '') {
     if (!is_numeric($docid)) {
         $docName = $docid;
-        $docid = getIdFromName($dbaccess, $docName);
+        $docid = \Dcp\Core\DocManager::getIdFromName($docName);
         if ($docid === false) {
             $action->exitError(sprintf("document with name '%s' not found", $docName));
         }

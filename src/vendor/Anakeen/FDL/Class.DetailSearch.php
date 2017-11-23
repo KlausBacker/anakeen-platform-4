@@ -695,7 +695,7 @@ class DetailSearch extends \Dcp\Family\Search
 
                     default:
                         if ($atype == "docid") {
-                            if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
+                            if (!is_numeric($val)) $val = \Dcp\Core\DocManager::getIdFromName($val);
                         }
                         $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {

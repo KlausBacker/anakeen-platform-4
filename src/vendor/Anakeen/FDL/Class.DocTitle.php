@@ -29,7 +29,7 @@ class DocTitle
         $isAdmin = ($uid == 1);
         
         if ($docid && !is_numeric($docid)) {
-            $docid = getIdFromName(getDbAccess() , $docid);
+            $docid = \Dcp\Core\DocManager::getIdFromName($docid);
         }
         if (!$docid) return null;
         if ($docrevOption === "") {

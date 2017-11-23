@@ -36,12 +36,12 @@ class TestGetDocTitle extends TestCaseDcpCommonFamily
             $expectedValues = array();
             $expetedArray = explode(" ", $expectValue);
             foreach ($expetedArray as $expected) {
-                $expectedValues[] = getIdFromName(self::$dbaccess, $expected);
+                $expectedValues[] = \Dcp\Core\DocManager::getIdFromName($expected);
             }
             $expectValue = implode(" ", $expectedValues);
         }
         
-        $value = $d->getTitle(getIdFromName(self::$dbaccess, $docName));
+        $value = $d->getTitle(\Dcp\Core\DocManager::getIdFromName($docName));
         $this->assertEquals($expectValue, $value, "getTitle wrong value");
     }
     

@@ -30,7 +30,7 @@ function PU_data_dcp_getResPhpFunc_getTitle_title($dbaccess, $title)
 function PU_data_dcp_getResPhpFunc_getTitle_fam_title($dbaccess, $famId, $title)
 {
     if (!is_numeric($famId)) {
-        $famId = getIdFromName($dbaccess, $famId);
+        $famId = \Dcp\Core\DocManager::getIdFromName($famId);
     }
     $s = new SearchDoc($dbaccess, $famId);
     $s->setObjectReturn();

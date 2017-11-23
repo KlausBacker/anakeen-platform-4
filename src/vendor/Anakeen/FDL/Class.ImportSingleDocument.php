@@ -209,7 +209,7 @@ class importSingleDocument
         } elseif (trim($this->specId) != "") {
             if (!is_numeric(trim($this->specId))) {
                 $tmpDoc->name = trim($this->specId); // logical name
-                $docid = getIdFromName($this->dbaccess, $tmpDoc->name, $fromid);
+                $docid = \Dcp\Core\DocManager::getIdFromName($tmpDoc->name, $fromid);
                 if ($docid > 0) {
                     $tmpDoc->id = $docid;
                     $tmpDoc->initid = $docid;

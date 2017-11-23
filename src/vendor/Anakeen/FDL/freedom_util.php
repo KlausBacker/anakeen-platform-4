@@ -256,7 +256,7 @@ function getFamFromId($dbaccess, $id)
 function getDocTitle($id, $latest = true)
 {
     $dbaccess = getDbAccess();
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getIdFromName($id);
     if ($id > 0) {
         
         if (!$latest) $sql = sprintf("select title, doctype, locked, initid, name from docread where id=%d", $id);
@@ -282,7 +282,7 @@ function getDocProperties($id, $latest = true, array $prop = array(
 ))
 {
     $dbaccess = getDbAccess();
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getIdFromName($id);
     if (($id > 0) && count($prop) > 0) {
         $sProps = implode(',', $prop);
         if (!$latest) $sql = sprintf("select %s, doctype, locked, initid from docread where id=%d", $sProps, $id);
@@ -309,7 +309,7 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     global $action;
     global $SQLDELAY, $SQLDEBUG;
 
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getIdFromName($id);
     if (!($id > 0)) return false;
     $dbid = DbManager::getDbId();
     $table = "doc";

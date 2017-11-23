@@ -89,7 +89,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $this->assertTrue($doc->isAlive() , sprintf("cannot import %s document", $docName));
         $folders = $doc->getParentFolderIds();
         foreach ($folderNames as $folder) {
-            $fid = getIdFromName(self::$dbaccess, $folder);
+            $fid = \Dcp\Core\DocManager::getIdFromName($folder);
             $this->assertTrue(in_array($fid, $folders) , sprintf("folder %s not found in %s", $folder, print_r($folders, true)));
         }
     }

@@ -234,11 +234,11 @@ class importXml
                                     $names = explode(',', $name);
                                     $lids = array();
                                     foreach ($names as $lname) {
-                                        $lids[] = getIdFromName($dbaccess, $lname);
+                                        $lids[] = \Dcp\Core\DocManager::getIdFromName($lname);
                                     }
                                     $id = implode(",", $lids);
                                 } else {
-                                    $id = getIdFromName($dbaccess, $name);
+                                    $id = \Dcp\Core\DocManager::getIdFromName($name);
                                 }
                             }
                             if (!$id) {

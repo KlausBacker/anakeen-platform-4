@@ -1051,7 +1051,7 @@ class importDocumentDescription
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("default folder already set. Auto ignored"));
                 }
             } elseif (is_numeric($data[1])) $fldid = $data[1];
-            else $fldid = getIdFromName($this->dbaccess, $data[1], 2);
+            else $fldid = \Dcp\Core\DocManager::getIdFromName($data[1], 2);
             $this->doc->dfldid = $fldid;
             $this->tcr[$this->nLine]["msg"].= sprintf(_("set default folder to '%s'") , $data[1]);
         } else {
@@ -1075,7 +1075,7 @@ class importDocumentDescription
         }
         if (!$this->tcr[$this->nLine]["err"]) {
             if (is_numeric($data[1])) $cfldid = $data[1];
-            else $cfldid = getIdFromName($this->dbaccess, $data[1]);
+            else $cfldid = \Dcp\Core\DocManager::getIdFromName($data[1]);
             $this->doc->cfldid = $cfldid;
             $this->tcr[$this->nLine]["msg"] = sprintf(_("set primary folder to '%s'") , $data[1]);
         } else {
@@ -1102,7 +1102,7 @@ class importDocumentDescription
             return;
         }
         if (is_numeric($data[1])) $wid = $data[1];
-        else $wid = getIdFromName($this->dbaccess, $data[1], 20);
+        else $wid = \Dcp\Core\DocManager::getIdFromName($data[1], 20);
         if ($data[1]) {
             try {
                 $wdoc = new_doc($this->dbaccess, $wid);
@@ -1147,7 +1147,7 @@ class importDocumentDescription
         }
         
         if (is_numeric($data[1])) $cvid = $data[1];
-        else $cvid = getIdFromName($this->dbaccess, $data[1], 28);
+        else $cvid = \Dcp\Core\DocManager::getIdFromName($data[1], 28);
         
         if ($data[1]) {
             try {
@@ -1260,7 +1260,7 @@ class importDocumentDescription
         }
         
         if (is_numeric($data[1])) $pid = $data[1];
-        else $pid = getIdFromName($this->dbaccess, $data[1], 3);
+        else $pid = \Dcp\Core\DocManager::getIdFromName($data[1], 3);
         $this->doc->cprofid = $pid;
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'") , $data[1]);
     }
@@ -1284,7 +1284,7 @@ class importDocumentDescription
             return;
         }
         if (is_numeric($data[1])) $pid = $data[1];
-        else $pid = getIdFromName($this->dbaccess, $data[1], 3);
+        else $pid = \Dcp\Core\DocManager::getIdFromName($data[1], 3);
         $this->doc->setProfil($pid); // change profile
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'") , $data[1]);
     }
@@ -1388,7 +1388,7 @@ class importDocumentDescription
         }
         if (ctype_digit(trim($data[1]))) $wid = trim($data[1]);
         else {
-            $pid = getIdFromName($this->dbaccess, trim($data[1]));
+            $pid = \Dcp\Core\DocManager::getIdFromName(trim($data[1]));
             $tdoc = getTDoc($this->dbaccess, $pid);
             $wid = getv($tdoc, "us_whatid");
         }
@@ -1500,22 +1500,26 @@ class importDocumentDescription
         }
         
         if (ctype_digit(trim($data[1]))) $pid = trim($data[1]);
-        else $pid = getIdFromName($this->dbaccess, trim($data[1]));
+        else $pid = \Dcp\Core\DocManager::getIdFromName(trim($data[1]));
         
         if (!($pid > 0)) $this->tcr[$this->nLine]["err"] = sprintf(_("profil id unkonow %s") , $data[1]);
         else {
-            clearCacheDoc(); // need to reset computed acls
-            
+
+            \Dcp\Core\DocManager::cache()->clear();
             /**
              * @var PDoc $pdoc
              */
-            $pdoc = new_Doc($this->dbaccess, $pid);
-            if ($pdoc->isAlive()) {
+            $pdoc = Dcp\Core\DocManager::getDocument( $pid);
+            if ($pdoc && $pdoc->isAlive()) {
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("change profil %s") , $data[1]);
                 $this->tcr[$this->nLine]["action"] = "modprofil";
                 if ($this->analyze) return;
                 $fpid = $data[2];
-                if (($fpid != "") && (!is_numeric($fpid))) $fpid = getIdFromName($this->dbaccess, $fpid);
+                if (preg_match("/:use/", $fpid)) {
+                    $fpid = "";
+                }
+
+                if (($fpid != "") && (!is_numeric($fpid))) $fpid = \Dcp\Core\DocManager::getIdFromName($fpid);
                 if ($fpid != "") {
                     // profil related of other profil
                     $pdoc->setProfil($fpid);

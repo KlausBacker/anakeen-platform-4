@@ -190,15 +190,15 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                 if (is_array($docName)) {
                     $expectDocId2 = array();
                     foreach ($docName as $docName2) {
-                        $expectDocId2[] = $docName2 ? getIdFromName(self::$dbaccess, $docName2) : null;
+                        $expectDocId2[] = $docName2 ? \Dcp\Core\DocManager::getIdFromName($docName2) : null;
                     }
                     $expectedDocId[] = $expectDocId2;
                 } else {
-                    $expectedDocId[] = $docName ? getIdFromName(self::$dbaccess, $docName) : null;
+                    $expectedDocId[] = $docName ? \Dcp\Core\DocManager::getIdFromName($docName) : null;
                 }
             }
         } else {
-            $expectedDocId = $docNames ? getIdFromName(self::$dbaccess, $docNames) : null;
+            $expectedDocId = $docNames ? \Dcp\Core\DocManager::getIdFromName($docNames) : null;
         }
         return $expectedDocId;
     }

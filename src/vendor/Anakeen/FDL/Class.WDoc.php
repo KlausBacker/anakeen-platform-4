@@ -110,7 +110,7 @@ class WDoc extends Doc
         $err = '';
         if ($newstate != "") {
             $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
-            if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
+            if (!is_numeric($profid)) $profid = \Dcp\Core\DocManager::getIdFromName($profid);
             if ($profid > 0) {
                 // change only if new profil
                 $err = $this->doc->setProfil($profid);
@@ -199,7 +199,7 @@ class WDoc extends Doc
         
         if ($newstate != "") {
             $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
-            if (!is_numeric($cvid)) $cvid = getIdFromName($this->dbaccess, $cvid);
+            if (!is_numeric($cvid)) $cvid = \Dcp\Core\DocManager::getIdFromName($cvid);
             if ($cvid > 0) {
                 // change only if set
                 $this->doc->cvid = $cvid;
