@@ -655,8 +655,8 @@ class importDocumentDescription
             $this->doc->addHistoryEntry(_("Update by importation"));
             
             $this->nbDoc++;
-            
-            clearCacheDoc($this->doc->id);
+
+            \Dcp\Core\DocManager::cache()->removeDocumentById($this->doc->id);
             if ($this->tcr[$this->nLine]["err"]) {
                 $this->tcr[$this->beginLine]["action"] = "ignored";
                 $this->tcr[$this->nLine]["action"] = "ignored";

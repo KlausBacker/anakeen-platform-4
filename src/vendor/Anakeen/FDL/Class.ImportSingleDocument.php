@@ -600,7 +600,7 @@ class importSingleDocument
             }
         }
         if ($this->doc->id) {
-            clearCacheDoc($this->doc->id);
+            \Dcp\Core\DocManager::cache()->removeDocumentById($this->doc->id);
         } // clear cache to clean unused
         return $this;
     }
