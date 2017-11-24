@@ -115,9 +115,14 @@ Alternative `Dcp\Core\DocManager::getFamilyIdFromName()`
 Alternative `Dcp\Core\DocManager::getIdFromName()`
 **Changement**: Plus de paramètre DbAccess. Seules des requêtes sur la base Anakeen Platform peuvent être effectuées.
 
+**Changement**: Retourne un entier et non plus une chaine de caractère.
+**Changement**: Retourne `0` su pas trouvé au lieu de `false`.
+
 ## getInitidFromName
 Alternative `Dcp\Core\DocManager::getInitIdFromName()`
 **Changement**: Plus de paramètre DbAccess. Seules des requêtes sur la base Anakeen Platform peuvent être effectuées.
+
+**Changement**: Retourne un entier et non plus une chaine de caractère.
 
 ## getNameFromId
 Alternative `Dcp\Core\DocManager::getNameFromId()`

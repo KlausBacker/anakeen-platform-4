@@ -40,6 +40,7 @@ class TestSearchesCrud extends TestDocumentsCollectionCrud
         );
     }
     /**
+     * @param array $modifiers
      * @param array $fields
      * @param array $expectedData
      * @dataProvider dataReadDocument
@@ -56,9 +57,7 @@ class TestSearchesCrud extends TestDocumentsCollectionCrud
             $crud->setDefaultFields($fieldsString);
         }
         $data = $crud->read(null);
-        
         $data = json_decode(json_encode($data) , true);
-        
         $expectedData = $this->prepareData($expectedData);
         $this->verifyData($data, $expectedData);
         $this->checkProperties($data["documents"], $fields);
@@ -99,7 +98,7 @@ class TestSearchesCrud extends TestDocumentsCollectionCrud
                 array(
                     "orderBy" => "adate",
                     "slice" => "1",
-                    "offset" => "1"
+                    "offset" => "0"
                 ) ,
                 array() ,
                 file_get_contents("HTTPAPI_V1_UNITTEST/searches/searches.custom.json")

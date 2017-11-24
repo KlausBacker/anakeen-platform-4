@@ -31,7 +31,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     {
         $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
-        $docid = getIdFromName(self::$dbaccess, $docName);
+        $docid = \Dcp\Core\DocManager::getIdFromName($docName);
         $value = $d->getDocValue($docid, $attrid);
         
         $this->assertEquals($expectValue, $value, "getDocValue $attrid wrong value");

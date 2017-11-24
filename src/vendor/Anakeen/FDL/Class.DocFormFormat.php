@@ -439,8 +439,8 @@ class DocFormFormat
             $lay->set("downloadUrl", "");
             $lay->set("imageUrl", "");
             $lay->set("checkPfc", "");
-            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
-            $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+            $lay->set("ISIE678", \Dcp\Core\ContextManager::getApplicationParam("ISIE6") || \Dcp\Core\ContextManager::getApplicationParam("ISIE7") || \Dcp\Core\ContextManager::getApplicationParam("ISIE8"));
+            $lay->set("hideInput", \Dcp\Core\ContextManager::getApplicationParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -492,8 +492,8 @@ class DocFormFormat
             $lay->set("downloadUrl", "");
             $lay->set("checkPfc", "");
             $lay->set("DAV", false);
-            $lay->set("hideInput", getParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
-            $lay->set("ISIE678", getParam("ISIE6") || getParam("ISIE7") || getParam("ISIE8"));
+            $lay->set("hideInput", \Dcp\Core\ContextManager::getApplicationParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+            $lay->set("ISIE678", \Dcp\Core\ContextManager::getApplicationParam("ISIE6") || \Dcp\Core\ContextManager::getApplicationParam("ISIE7") || \Dcp\Core\ContextManager::getApplicationParam("ISIE8"));
             if (preg_match(PREGEXPFILE, $value, $reg)) {
                 $dbaccess = getDbAccess();
                 $vf = newFreeVaultFile($dbaccess);
@@ -503,7 +503,7 @@ class DocFormFormat
                 $info = null;
                 if ($vf->Show($reg[2], $info) == "") {
                     $vid = $reg[2];
-                    $DAV = getParam("FREEDAV_SERVEUR", false);
+                    $DAV = \Dcp\Core\ContextManager::getApplicationParam("FREEDAV_SERVEUR", false);
                     
                     global $action;
                     if ($DAV) {
@@ -1096,11 +1096,11 @@ class DocFormFormat
                             
                             switch ($sattrid) {
                                 case "B": // baseurl
-                                    $urllink.= GetParam("CORE_BASEURL");
+                                    $urllink.= \Dcp\Core\ContextManager::getApplicationParam("CORE_BASEURL");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink.= GetParam("CORE_STANDURL");
+                                    $urllink.= \Dcp\Core\ContextManager::getApplicationParam("CORE_STANDURL");
                                     break;
 
                                 case "K":
@@ -1151,7 +1151,7 @@ class DocFormFormat
                                     $i++;
                                 }
                                 //	  print "attr=$sattrid";
-                                $ovalue = GetParam($sattrid, getFamIdFromName($doc->dbaccess, $sattrid));
+                                $ovalue = \Dcp\Core\ContextManager::getApplicationParam($sattrid, \Dcp\Core\DocManager::getFamilyIdFromName($sattrid));
                                 
                                 $urllink.= $ovalue;
                                 

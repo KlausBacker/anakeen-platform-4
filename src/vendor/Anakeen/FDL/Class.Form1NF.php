@@ -1195,13 +1195,13 @@ class Form1NF
         try {
             foreach ($this->config as $family) {
                 // load the family object
-                $famId = getFamIdFromName($this->tmp_dbaccess, $family->name);
+                $famId = \Dcp\Core\DocManager::getFamilyIdFromName($family->name);
                 if ($famId === 0) {
                     // try to lower the name
-                    $famId = getFamIdFromName($this->tmp_dbaccess, strtolower($family->name));
+                    $famId = \Dcp\Core\DocManager::getFamilyIdFromName(strtolower($family->name));
                     if ($famId === 0) {
                         // try to upper the name
-                        $famId = getFamIdFromName($this->tmp_dbaccess, strtoupper($family->name));
+                        $famId = \Dcp\Core\DocManager::getFamilyIdFromName(strtoupper($family->name));
                         if ($famId === 0) {
                             $this->stdError(_("Could not get family id for '%s'.") , $family->name);
                         }

@@ -449,7 +449,7 @@ class WStart extends WStartInternals
     {
         $this->verbose(1, sprintf("[+] Configuring CORE_DBCONNECT.\n"));
         require_once sprintf('%s/vendor/Anakeen/WHAT/Lib.Common.php', $this->contextRoot);
-        $CORE_DBCONNECT = getParam('CORE_DBCONNECT');
+        $CORE_DBCONNECT = \Dcp\Core\ContextManager::getApplicationParam('CORE_DBCONNECT');
         if ($CORE_DBCONNECT == 'persistent') {
             $this->sedFile($this->absolutize('WHAT/Lib.Common.php') , function ($content)
             {

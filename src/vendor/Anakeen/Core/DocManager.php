@@ -535,10 +535,12 @@ class DocManager
         if (empty($documentName)) {
             return 0;
         }
-
+        if (! is_string($documentName)) {
+            throw new Exception("APIDM0101", print_r($documentName, true));
+        }
 
         if (!preg_match('/^[a-z][a-z0-9_-]{1,63}$/i', $documentName)) {
-            throw new Exception("APIDM0101", print_r($documentName, true));
+            return 0;
         }
 
         $dbid = DbManager::getDbid();

@@ -33,7 +33,7 @@ class SearchHighlight
     
     public function __construct()
     {
-        $this->dbid = getDbId(getDbAccess());
+        $this->dbid = \Dcp\Core\DbManager::getDbId();
     }
     
     public function setLimit($limit)

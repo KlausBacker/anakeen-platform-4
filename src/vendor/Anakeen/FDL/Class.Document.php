@@ -137,7 +137,7 @@ class Fdl_Document
             } else {
                 $nattr = $this->doc->getNormalAttributes();
                 if ($this->onlyAttributes === null) $this->doc->applyMask();
-                $isoDate = (getParam("DATA_LCDATE") == 'iso');
+                $isoDate = (\Dcp\Core\ContextManager::getApplicationParam("DATA_LCDATE") == 'iso');
                 foreach ($nattr as $k => $v) {
                     if ($this->onlyAttributes !== null && (!in_array($v->id, $this->onlyAttributes))) continue;
                     

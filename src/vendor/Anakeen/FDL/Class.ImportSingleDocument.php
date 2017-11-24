@@ -184,7 +184,7 @@ class importSingleDocument
         $this->folderId = isset($data[3]) ? trim($data[3]) : '';
         
         if (is_numeric($this->famId)) $fromid = $this->famId;
-        else $fromid = getFamIdFromName($this->dbaccess, $this->famId);
+        else $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($this->famId);
         if ($fromid == 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
             $this->tcr["action"] = "ignored";
@@ -209,7 +209,7 @@ class importSingleDocument
         } elseif (trim($this->specId) != "") {
             if (!is_numeric(trim($this->specId))) {
                 $tmpDoc->name = trim($this->specId); // logical name
-                $docid = getIdFromName($this->dbaccess, $tmpDoc->name, $fromid);
+                $docid = \Dcp\Core\DocManager::getIdFromName($tmpDoc->name, $fromid);
                 if ($docid > 0) {
                     $tmpDoc->id = $docid;
                     $tmpDoc->initid = $docid;
@@ -231,7 +231,7 @@ class importSingleDocument
             if ($this->doc->fromid != $fromid) {
                 
                 $this->tcr["id"] = $this->doc->id;
-                $this->setError("DOC0008", $this->doc->getTitle() , $this->doc->fromname, getNameFromId($this->dbaccess, $fromid));
+                $this->setError("DOC0008", $this->doc->getTitle() , $this->doc->fromname, \Dcp\Core\DocManager::getNameFromId($fromid));
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
@@ -600,7 +600,7 @@ class importSingleDocument
             }
         }
         if ($this->doc->id) {
-            clearCacheDoc($this->doc->id);
+            \Dcp\Core\DocManager::cache()->removeDocumentById($this->doc->id);
         } // clear cache to clean unused
         return $this;
     }

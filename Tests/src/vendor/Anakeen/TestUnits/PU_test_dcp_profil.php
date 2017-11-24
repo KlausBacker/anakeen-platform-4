@@ -209,7 +209,7 @@ class TestProfil extends TestCaseDcpCommonFamily
     }
     private function getViews($famid)
     {
-        $famid = getFamIdFromName(self::$dbaccess, $famid);
+        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
         simpleQuery(self::$dbaccess, "select id, name, profid, views from doc$famid", $r);
         return $r;
     }

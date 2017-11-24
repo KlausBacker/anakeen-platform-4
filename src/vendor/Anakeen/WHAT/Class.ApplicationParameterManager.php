@@ -297,7 +297,7 @@ class ApplicationParameterManager
      */
     public static function getScopedParameterValue($parameter)
     {
-        return getParam($parameter);
+        return \Dcp\Core\ContextManager::getApplicationParam($parameter);
     }
     /**
      * Get a parameter object (object that describe the parameter)

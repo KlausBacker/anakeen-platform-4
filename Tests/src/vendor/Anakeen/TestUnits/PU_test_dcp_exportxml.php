@@ -41,7 +41,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
             );
             $config = array();
             foreach ($selNames as $name) {
-                $id = getIdFromName(self::$dbaccess, $name);
+                $id = \Dcp\Core\DocManager::getIdFromName($name);
                 if ($id) $config["selectionItems"][] = $id;
             }
             

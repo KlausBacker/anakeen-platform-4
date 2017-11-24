@@ -108,7 +108,7 @@ if ($query->nb > 0) {
             else $filter = array(
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
-            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", getFamIdFromName($dbaccess, "IUSER"));
+            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Dcp\Core\DocManager::getFamilyIdFromName("IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n") , $title);
@@ -130,7 +130,7 @@ if ($query->nb > 0) {
             } else {
                 // create new card
                 if ($v["isgroup"] == "Y") {
-                    $iuser = createDoc($dbaccess, getFamIdFromName($dbaccess, "IGROUP"));
+                    $iuser = createDoc($dbaccess, \Dcp\Core\DocManager::getFamilyIdFromName("IGROUP"));
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $iuser->Add();
                     $iuser->refresh();
@@ -139,7 +139,7 @@ if ($query->nb > 0) {
                     print "$reste)";
                     printf(_("%s igroup created\n") , $title);
                 } else {
-                    $iuser = createDoc($dbaccess, getFamIdFromName($dbaccess, "IUSER"));
+                    $iuser = createDoc($dbaccess, \Dcp\Core\DocManager::getFamilyIdFromName("IUSER"));
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $err = $iuser->Add();
                     if ($err == "") {

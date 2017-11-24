@@ -20,7 +20,7 @@ class TestSuiteApi extends \Dcp\Pu\TestSuiteDcp
         self::$allInProgress = true;
         $suite = new FrameworkDcp('Api');
 
-        $suite->addTest(SuiteApi::suite());
+        $suite->addTest(\Dcp\Pu\SuiteApi::suite());
 
         printf("\nerror log in %s, messages in %s\n", self::logFile, self::msgFile);
         return $suite;

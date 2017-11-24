@@ -338,7 +338,7 @@ class ExportDocument
                             $brtid = explode("<BR>", $did);
                             $tnbr = array();
                             foreach ($brtid as $brid) {
-                                $n = getNameFromId($dbaccess, $brid);
+                                $n = \Dcp\Core\DocManager::getNameFromId($brid);
                                 if ($n) {
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
@@ -354,7 +354,7 @@ class ExportDocument
                         }
                         $value = implode("\n", $tn);
                     } else {
-                        $n = getNameFromId($dbaccess, $value);
+                        $n = \Dcp\Core\DocManager::getNameFromId($value);
                         if ($n) {
                             if ($docrevOption === "latest") {
                                 $value = $n;
@@ -416,7 +416,7 @@ class ExportDocument
             if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
             } else if ($profid > 0) {
-                $name = getNameFromId($dbaccess, $profid);
+                $name = \Dcp\Core\DocManager::getNameFromId($profid);
                 $dname = $doc->name;
                 if (!$dname) $dname = $doc->id;
                 if (!$name) $name = $profid;

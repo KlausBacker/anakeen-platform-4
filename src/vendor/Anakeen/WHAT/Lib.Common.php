@@ -151,7 +151,7 @@ function getTmpDir($def = '/tmp')
     if (isset($tmp) && !empty($tmp)) {
         return $tmp;
     }
-    $tmp = getParam('CORE_TMPDIR', $def);
+    $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
     if (empty($tmp)) {
         if (empty($def)) {
             $tmp = './var/tmp';
@@ -690,7 +690,7 @@ function WhatInitialisation($session = null)
     $action->Set("", $core);
     // i18n
     $lang = $action->Getparam("CORE_LANG");
-    setLanguage($lang);
+    \Dcp\Core\ContextManager::setLanguage($lang);
 }
 
 /**

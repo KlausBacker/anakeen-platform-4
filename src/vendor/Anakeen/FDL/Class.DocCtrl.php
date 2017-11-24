@@ -263,7 +263,7 @@ class DocCtrl extends DocLDAP
     function setProfil($profid, $fromdocidvalues = null)
     {
         $err = '';
-        if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
+        if ($profid && !is_numeric($profid)) $profid = \Dcp\Core\DocManager::getIdFromName($profid);
         if (empty($profid)) {
             $profid = 0;
             $this->dprofid = 0;
@@ -595,7 +595,7 @@ class DocCtrl extends DocLDAP
             if (strpos($accountReference, importDocumentDescription::documentPrefix) === 0) {
                 $accountReference = substr($accountReference, strlen(importDocumentDescription::documentPrefix));
             }
-            $uiid = getIdFromName($this->dbaccess, $accountReference);
+            $uiid = \Dcp\Core\DocManager::getIdFromName($accountReference);
             if ($uiid) {
                 $udoc = new_Doc($this->dbaccess, $uiid);
                 if ($udoc->isAlive()) $accountReference = $udoc->getRawValue("us_whatid");
@@ -704,7 +704,7 @@ class DocCtrl extends DocLDAP
      */
     function setCvid($cvid)
     {
-        if (!is_numeric($cvid)) $cvid = getIdFromName($this->dbaccess, $cvid);
+        if ($cvid && !is_numeric($cvid)) $cvid = \Dcp\Core\DocManager::getIdFromName($cvid);
         $this->cvid = $cvid;
     }
     /**

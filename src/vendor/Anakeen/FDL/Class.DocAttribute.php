@@ -419,7 +419,7 @@ class NormalAttribute extends BasicAttribute
         if ($this->type == "htmltext") {
             $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches)
             {
-                $name = getNameFromId(getDbAccess() , $matches[2]);
+                $name = \Dcp\Core\DocManager::getNameFromId($matches[2]);
                 return $matches[1] . ($name ? $name : $matches[2]);
             }
             , $value);
@@ -567,7 +567,7 @@ class NormalAttribute extends BasicAttribute
                     }
                     $mime = $reg[1];
                     $name = $reg[3];
-                    $base = getParam("CORE_EXTERNURL");
+                    $base = \Dcp\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($this->id));
                     if ($opt->withFile) {
                         $path = $doc->vault_filename_fromvalue($v, true);
@@ -634,7 +634,7 @@ class NormalAttribute extends BasicAttribute
                             $mId = array();
                             $foundName = false;
                             foreach ($tids as $id) {
-                                $lName = getNameFromId($doc->dbaccess, $id);
+                                $lName = \Dcp\Core\DocManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
                                 if ($lName) $foundName = true;
@@ -1541,7 +1541,7 @@ class ActionAttribute extends BasicAttribute
     }
     function getLink($docid)
     {
-        $l = getParam("CORE_STANDURL");
+        $l = \Dcp\Core\ContextManager::getApplicationParam("CORE_STANDURL");
         $batch = ($this->getOption("batchfolder") == "yes");
         if ($batch) {
             $l.= "&app=FREEDOM&action=BATCHEXEC&sapp=" . $this->wapplication;

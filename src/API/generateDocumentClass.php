@@ -29,7 +29,7 @@ $usage->verify();
 
 if (($docid !== 0) && (!is_numeric($docid))) {
     $odocid = $docid;
-    $docid = getFamIdFromName($dbaccess, $docid);
+    $docid = \Dcp\Core\DocManager::getFamilyIdFromName($docid);
     if (!$docid) {
         print sprintf(_("family %s not found") . "\n", $odocid);
         exit(1);

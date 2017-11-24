@@ -17,7 +17,7 @@ class TestGetText extends TestCaseDcp
      */
     public function testUnderscore($text, $lang, $expectedText)
     {
-        setLanguage($lang);
+        \Dcp\Core\ContextManager::setLanguage($lang);
         $this->assertEquals($expectedText, _($text));
     }
     /**
@@ -25,7 +25,7 @@ class TestGetText extends TestCaseDcp
      */
     public function test3Underscore($text, $textp, $lang, $num, $expectedText)
     {
-        setLanguage($lang);
+        \Dcp\Core\ContextManager::setLanguage($lang);
         $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num) , $num));
     }
     /**
@@ -33,7 +33,7 @@ class TestGetText extends TestCaseDcp
      */
     public function testContext($text, $ctx, $lang, $expectedText)
     {
-        setLanguage($lang);
+        \Dcp\Core\ContextManager::setLanguage($lang);
         $this->assertEquals($expectedText, ___($text, $ctx));
     }
     /**
@@ -41,7 +41,7 @@ class TestGetText extends TestCaseDcp
      */
     public function testPluralContext($text, $textp, $ctx, $lang, $num, $expectedText)
     {
-        setLanguage($lang);
+        \Dcp\Core\ContextManager::setLanguage($lang);
         $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num, $ctx) , $num));
     }
     /**
@@ -49,7 +49,7 @@ class TestGetText extends TestCaseDcp
      */
     public function testTextlayout($text, $lang, $expectedText)
     {
-        setLanguage($lang);
+        \Dcp\Core\ContextManager::setLanguage($lang);
         $lay = new \Layout("", self::getAction());
         $lay->template = $text;
         $genText = $lay->gen();

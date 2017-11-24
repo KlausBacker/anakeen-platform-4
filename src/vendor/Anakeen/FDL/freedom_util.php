@@ -256,7 +256,7 @@ function getFamFromId($dbaccess, $id)
 function getDocTitle($id, $latest = true)
 {
     $dbaccess = getDbAccess();
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getIdFromName($id);
     if ($id > 0) {
         
         if (!$latest) $sql = sprintf("select title, doctype, locked, initid, name from docread where id=%d", $id);
@@ -282,7 +282,7 @@ function getDocProperties($id, $latest = true, array $prop = array(
 ))
 {
     $dbaccess = getDbAccess();
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getIdFromName($id);
     if (($id > 0) && count($prop) > 0) {
         $sProps = implode(',', $prop);
         if (!$latest) $sql = sprintf("select %s, doctype, locked, initid from docread where id=%d", $sProps, $id);
@@ -309,11 +309,11 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     global $action;
     global $SQLDELAY, $SQLDEBUG;
 
-    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getIdFromName($id);
     if (!($id > 0)) return false;
     $dbid = DbManager::getDbId();
     $table = "doc";
-    $fromid = getFromId($dbaccess, $id);
+    $fromid = \Dcp\Core\DocManager::getFromId($id);
     if ($fromid > 0) $table = "doc$fromid";
     else if ($fromid == - 1) $table = "docfam";
     if ($fromid == 0) return false; // no document can be found
@@ -783,7 +783,7 @@ function getRevTDoc($dbaccess, $initid, $rev)
     
     if (!($initid > 0)) return false;
     $table = "docread";
-    $fromid = getFromId($dbaccess, $initid);
+    $fromid = \Dcp\Core\DocManager::getFromId($initid);
     $sql = sprintf("select fromid from docread where initid=%d and revision=%d", $initid, $rev);
     DbManager::query( $sql, $fromid, true, true);
     if ($fromid > 0) $table = "doc$fromid";

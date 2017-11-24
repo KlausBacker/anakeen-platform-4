@@ -375,7 +375,7 @@ class DocCollection extends Doc
     {
         if (!empty($of->family)) {
             if (preg_match('/([\w:]*)\s?(strict)?/', trim($of->family) , $reg)) {
-                if (!is_numeric($reg[1])) $reg[1] = getFamIdFromName($this->dbaccess, $reg[1]);
+                if (!is_numeric($reg[1])) $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
                 if (isset($reg[2]) && ($reg[2] == "strict")) $famid = '-' . $reg[1];
                 else $famid = $reg[1];
             }

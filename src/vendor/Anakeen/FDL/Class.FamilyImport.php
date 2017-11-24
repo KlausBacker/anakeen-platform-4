@@ -79,7 +79,7 @@ class FamilyImport
             $tdoc["classname"] = '\\' . $tdoc["classname"];
         }
         if ($tdoc["fromid"] > 0) {
-            $fromName = getNameFromId($dbaccess, $tdoc["fromid"]);
+            $fromName = \Dcp\Core\DocManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
                 throw new \Dcp\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
             }
@@ -297,7 +297,7 @@ class FamilyImport
                             $aformat = $reg[2];
                             if ($atype == "idoc") {
                                 if (!is_numeric($aformat)) {
-                                    $aformat = getFamIdFromName($dbaccess, $aformat);
+                                    $aformat = \Dcp\Core\DocManager::getFamilyIdFromName($aformat);
                                 }
                             }
                         } else {
@@ -535,7 +535,7 @@ class FamilyImport
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');
         } else {
-            $fromName = getNameFromId($dbaccess, $tdoc["fromid"]);
+            $fromName = \Dcp\Core\DocManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
                 throw new \Dcp\Exception("FAM0602", $tdoc["fromid"], $tdoc["name"]);
             }

@@ -36,7 +36,7 @@ if ($dbaccess == "") {
 
 if (($docid !== 0) && (!is_numeric($docid))) {
     $odocid = $docid;
-    $docid = getFamIdFromName($dbaccess, $docid);
+    $docid = \Dcp\Core\DocManager::getFamilyIdFromName($docid);
     if (!$docid) {
         $action->exitError(sprintf(_("family %s not found") . "\n", $odocid));
     }
@@ -53,7 +53,7 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         $resid = $tdoc["id"];
         $resname = $tdoc["name"];
         print "Destroying [" . $tdoc["title"] . "(" . $tdoc["name"] . ")]\n";
-        $dbid = getDbId($dbaccess);
+        $dbid = \Dcp\Core\DbManager::getDbId();
         $tsql = array();
         if (!$force) $tsql[] = "BEGIN;";
         $tsql+= array(

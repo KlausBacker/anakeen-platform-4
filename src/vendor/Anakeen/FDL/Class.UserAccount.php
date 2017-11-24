@@ -483,11 +483,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     }
     public function testForcePassword($pwd)
     {
-        $minLength = intval(getParam("AUTHENT_PWDMINLENGTH"));
-        $minDigitLength = intval(getParam("AUTHENT_PWDMINDIGITLENGTH"));
-        $minUpperLength = intval(getParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
-        $minLowerLength = intval(getParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
-        $minSymbolLength = intval(getParam("AUTHENT_PWDMINSYMBOLLENGTH"));
+        $minLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINLENGTH"));
+        $minDigitLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINDIGITLENGTH"));
+        $minUpperLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
+        $minLowerLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
+        $minSymbolLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINSYMBOLLENGTH"));
         
         if (preg_match('/[\p{C}]/u', $pwd)) {
             return _("Control characters are not allowed");

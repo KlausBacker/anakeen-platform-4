@@ -44,7 +44,7 @@ class DetailSearch extends \Dcp\Family\Search
         if ($latest == "lastfixed") $distinct = true;
         if ($cond != "") $filters[] = $cond;
         if ($this->getRawValue("se_famonly") == "yes") {
-            if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
+            if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
             $only = "only";
         }
         $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
@@ -115,7 +115,7 @@ class DetailSearch extends \Dcp\Family\Search
                 if ($std->family) {
                     if (!is_numeric($std->family)) {
                         if (preg_match("/([\w:]*)\s?(strict)?/", trim($std->family) , $reg)) {
-                            if (!is_numeric($reg[1])) $reg[1] = getFamIdFromName($this->dbaccess, $reg[1]);
+                            if (!is_numeric($reg[1])) $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
                             if ($reg[2] == "strict") $famid = '-' . $reg[1];
                             else $famid = $reg[1];
                         }
@@ -579,7 +579,7 @@ class DetailSearch extends \Dcp\Family\Search
                                     $err = sprintf(_("no compatible type with operator %s") , $op);
                                 } else {
                                     if (!is_numeric($fid)) {
-                                        $fid = getFamidFromName($this->dbaccess, $fid);
+                                        $fid = \Dcp\Core\DocManager::getFamilyIdFromName($fid);
                                     }
                                     $err = simpleQuery($this->dbaccess, sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)) , $ids, true);
                                     if ($err == "") {
@@ -695,7 +695,7 @@ class DetailSearch extends \Dcp\Family\Search
 
                     default:
                         if ($atype == "docid") {
-                            if (!is_numeric($val)) $val = getIdFromName($this->dbaccess, $val);
+                            if (!is_numeric($val)) $val = \Dcp\Core\DocManager::getIdFromName($val);
                         }
                         $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {
@@ -1160,7 +1160,7 @@ class DetailSearch extends \Dcp\Family\Search
             }
         } else {
             if ($onlysubfam) {
-                if (!is_numeric($onlysubfam)) $onlysubfam = getFamIdFromName($this->dbaccess, $onlysubfam);
+                if (!is_numeric($onlysubfam)) $onlysubfam = \Dcp\Core\DocManager::getFamilyIdFromName($onlysubfam);
                 $cdoc = \new_Doc($this->dbaccess, $onlysubfam);
                 $tsub = $cdoc->GetChildFam($cdoc->id, false);
                 $tclassdoc[$classid] = array(
