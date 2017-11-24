@@ -21,6 +21,20 @@ module.exports = {
     externals: {
         jquery: 'jQuery'
     },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env'],
+                        babelrc:false // No use bootstrap .babelrc
+                    }
+                }
+            },
+        ]
+    },
     plugins: [
         new CopyWebpackPlugin(
             [
