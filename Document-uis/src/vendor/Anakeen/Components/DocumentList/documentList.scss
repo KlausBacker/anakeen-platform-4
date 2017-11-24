@@ -122,12 +122,20 @@
   border: none;
   height: 28px;
 
+  &.k-pager-wrap {
+    overflow: visible;
+  }
+
   .k-pager-first, .k-pager-last {
     display: none;
   }
   .k-pager-info.k-label {
     font-weight:bold;
     flex: 0 1 auto;
+  }
+
+  .k-pager-nav + .k-pager-nav {
+    border-right: 0;
   }
 
   .k-pager-nav {
@@ -154,6 +162,7 @@
   background-size: 100% 100%;
   opacity: 0.80;
   border-bottom: 1px solid #ccc;
+  overflow: hidden;
 
   &.documentsList__documentCard__full {
     height: 60px;
@@ -182,10 +191,11 @@
 }
 
 .documentsList__documentCard__heading {
-  display: table-cell;
-  vertical-align: middle;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 
-  span {
+  & > span {
     position: relative;
     bottom: -2px;
   }
