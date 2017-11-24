@@ -76,9 +76,10 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $docName));
         foreach ($expectedValues as $attrid => $expectedValue) {
             $value = $d->getAttributeValue($attrid);
+
             // convert docName to docId
             $expectedDocId = $this->docNames2docIds($expectedValue);
-            $this->assertTrue($expectedDocId === $value, sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId) , $this->getDump($value, true) , $d->getRawValue($attrid)));
+            $this->assertTrue($expectedDocId === $value, sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId) , $this->getDump($value) , $d->getRawValue($attrid)));
         }
     }
     /**
@@ -190,16 +191,17 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                 if (is_array($docName)) {
                     $expectDocId2 = array();
                     foreach ($docName as $docName2) {
-                        $expectDocId2[] = $docName2 ? \Dcp\Core\DocManager::getIdFromName($docName2) : null;
+                        $expectDocId2[] = $docName2 ? (string)\Dcp\Core\DocManager::getIdFromName($docName2) : null;
                     }
                     $expectedDocId[] = $expectDocId2;
                 } else {
-                    $expectedDocId[] = $docName ? \Dcp\Core\DocManager::getIdFromName($docName) : null;
+                    $expectedDocId[] = $docName ?  (string)\Dcp\Core\DocManager::getIdFromName($docName) : null;
                 }
             }
         } else {
-            $expectedDocId = $docNames ? \Dcp\Core\DocManager::getIdFromName($docNames) : null;
+            $expectedDocId = $docNames ?  (string)\Dcp\Core\DocManager::getIdFromName($docNames) : null;
         }
+
         return $expectedDocId;
     }
     

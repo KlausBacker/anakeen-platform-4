@@ -8,6 +8,7 @@ namespace Dcp\Pu\HttpApi\V1\Test;
 
 use Dcp\HttpApi\V1\DocManager\DocManager;
 
+require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestCaseApi extends \Dcp\Pu\TestCaseDcpCommonFamily
 {
