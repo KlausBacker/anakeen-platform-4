@@ -375,7 +375,7 @@
                 if (this.getMode() === "read") {
                     this.getContentElements().html(value.displayValue);
                 } else {
-                    throw new Error("Attribute " + this.options.id + " unkown mode " + this.getMode());
+                    throw new Error("Attribute " + this.options.id + " unknown mode " + this.getMode());
                 }
 
             // call wAttribute::setValue()

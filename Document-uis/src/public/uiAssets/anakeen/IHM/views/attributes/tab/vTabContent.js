@@ -32,86 +32,97 @@ define([
             this.listenTo(this.model, 'haveView', this._identifyView);
             this.initializeContent = options.initializeContent;
             this.initialized = false;
-            if (options.originalView !== true) {
-                if (this.model.getOption("template")) {
-                    this.customView = attributeTemplate.customView(this.model);
-                }
-            }
             this.options = options;
         },
 
         render: function vTabContentRender()
         {
-            var hasOneContent;
-            this.$el.empty().append($('<div class="dcpTab__content--loading"><span class="fa fa-spinner fa-spin"></span>'+
-            i18n.___("Displaying","ddui")+'</div>'));
-            this.$el.attr("id", this.model.id);
-            this.$el.attr("data-attrid", this.model.id);
+            var currentView = this;
+            return (new Promise(_.bind(function vTabContentRender_Promise(resolve, reject) {
+                var hasOneContent;
+                currentView.$el.empty().append($('<div class="dcpTab__content--loading"><span class="fa fa-spinner fa-spin"></span>'+
+                    i18n.___("Displaying","ddui")+'</div>'));
+                currentView.$el.attr("id", currentView.model.id);
+                currentView.$el.attr("data-attrid", currentView.model.id);
 
-            hasOneContent = this.model.get("content").some(function vTabContentIsDisplayable(value)
-            {
-                return value.isDisplayable();
-            });
+                hasOneContent = currentView.model.get("content").some(function vTabContentIsDisplayable(value)
+                {
+                    return value.isDisplayable();
+                });
 
-            if (!hasOneContent || !this.initializeContent) {
-                this.$el.append(this.model.getOption('showEmptyContent'));
-                this.$el.removeClass("dcpTab__content--loading");
-                this.model.trigger("renderDone", {model: this.model, $el: this.$el});
-            } else {
-                this.renderContent();
-
-            }
-
-            this.propageShowTab();
-
-
-            return this;
-        },
-
-        renderContent: function vTabContentRenderContent()
-        {
-            var $content = this.$el, model = this.model;
-            if (this.initialized === false) {
-                this.$el.empty();
-                if (this.customView) {
-                    $content.append(this.customView);
+                if (!hasOneContent || !currentView.initializeContent) {
+                    currentView.$el.append(currentView.model.getOption('showEmptyContent'));
+                    currentView.$el.removeClass("dcpTab__content--loading");
+                    currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
+                    currentView.propageShowTab();
+                    resolve();
                 } else {
-                    this.model.get("content").each(function vTabContentRenderContent(currentAttr)
-                    {
-                        var view;
-                        try {
-                            if (!currentAttr.isDisplayable()) {
-                                return;
-                            }
-                            if (currentAttr.get("type") === "frame") {
-                                view = new ViewAttributeFrame({model: currentAttr});
-                                $content.append(view.render().$el);
-
-                            } else {
-                                //noinspection ExceptionCaughtLocallyJS
-                                throw new Error("unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id);
-                            }
-                        } catch (e) {
-                            if (window.dcp.logger) {
-                                window.dcp.logger(e);
-                            } else {
-                                console.error(e);
-                            }
-                        }
-                    });
-                    attributeTemplate.insertDescription(this);
-                    if (this.model.getOption("responsiveColumns")) {
-                        this.responsiveColumns();
-                    }
+                    currentView.renderContent().then(resolve);
                 }
+            }, this)));
 
-                this.$el.removeClass("dcpTab__content--loading");
-                this.model.trigger("renderDone", {model: this.model, $el: this.$el});
-                this.initialized = true;
-            }
-            $(window.document).trigger("redrawErrorMessages");
-             this.model.get("content").propageEvent('resize');
         },
+
+        renderContent: function vTabContentRenderContent(options)
+        {
+            var currentView = this;
+            return (new Promise(_.bind(function vTabContentRenderContent_Promise(resolve, reject) {
+                var customRender,
+                    $content = currentView.$el,
+                    model = currentView.model,
+                    promisesFrame = [];
+                if (currentView.initialized === false) {
+                    currentView.$el.empty();
+                    if (currentView.originalView !== true) {
+                        if (currentView.model.getOption("template")) {
+                            customRender = attributeTemplate.renderCustomView(currentView.model);
+                            currentView.customView = customRender.$el;
+                            promisesFrame.push(customRender.promise);
+                        }
+                    }
+                    if (currentView.customView) {
+                        $content.append(currentView.customView);
+                    } else {
+                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr)
+                        {
+                            var view;
+                            try {
+                                if (!currentAttr.isDisplayable()) {
+                                    return;
+                                }
+                                if (currentAttr.get("type") === "frame") {
+                                    view = new ViewAttributeFrame({model: currentAttr});
+                                    promisesFrame.push(view.render());
+                                    $content.append(view.$el);
+                                } else {
+                                    //noinspection ExceptionCaughtLocallyJS
+                                    throw new Error("unkown type " + currentAttr.get("type") + " for id " + currentAttr.id + " for tab " + model.id);
+                                }
+                            } catch (e) {
+                                if (window.dcp.logger) {
+                                    window.dcp.logger(e);
+                                } else {
+                                    console.error(e);
+                                }
+                            }
+                        });
+                        attributeTemplate.insertDescription(this);
+                        if (currentView.model.getOption("responsiveColumns")) {
+                            currentView.responsiveColumns();
+                        }
+                    }
+
+                    Promise.all(promisesFrame).then(function tabAllFramesRenderDone() {
+                        currentView.$el.removeClass("dcpTab__content--loading");
+                        currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
+                        currentView.initialized = true;
+                        resolve();
+                    }).catch(reject);
+
+                }
+                $(window.document).trigger("redrawErrorMessages");
+                currentView.model.get("content").propageEvent('resize');
+            }, this)));
 
 
         /**

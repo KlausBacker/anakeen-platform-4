@@ -95,6 +95,7 @@ define([
         render: function vDocumentRender()
         {
             console.time("render document view");
+            var renderPromises = [];
             var $content, model = this.model, $el = this.$el, currentView = this;
             var locale = this.model.get('locale');
             var documentView = this;
@@ -146,7 +147,6 @@ define([
                 renderData.document = attributeTemplate.getTemplateModelInfo(this.model);
                 this.$el.append($(Mustache.render(this.template || "", renderData, this.partials)));
                 attributeTemplate.completeCustomContent(this.$el, this.model, null, {initializeContent: true});
-
                 $body = this.$el.find(".dcpDocument__body").append(htmlBody).addClass("container-fluid");
             } catch (e) {
                 if (window.dcp.logger) {
@@ -166,10 +166,12 @@ define([
             //add menu
             try {
                 this.$el.find(".dcpDocument__menu").each(function vDocumentAddMenu() {
-                    viewMenus.push(new ViewDocumentMenu({
+                   var viewMenu = new ViewDocumentMenu({
                         model: currentView.model,
                         el: this
-                    }).render());
+                    });
+                   renderPromises.push(viewMenu.render());
+                   viewMenus.push(viewMenu.$el);
                 });
             } catch (e) {
                 if (window.dcp.logger) {
@@ -180,10 +182,10 @@ define([
             }
             try {
                 this.$el.find(".dcpDocument__header").each(function vDocumentAddHeader() {
-                new ViewDocumentHeader({
+                renderPromises.push((new ViewDocumentHeader({
                     model: currentView.model,
                     el: this
-                }).render();
+                }).render());
                 });
             } catch (e) {
                 if (window.dcp.logger) {
@@ -210,7 +212,8 @@ define([
                             view = new ViewAttributeFrame({
                                 model: model.get("attributes").get(currentAttr.id)
                             });
-                            $content.append(view.render().$el);
+                            renderPromises.push(view.render());
+                            $content.append(view.$el);
 
                         } catch (e) {
                             if (window.dcp.logger) {
@@ -229,7 +232,9 @@ define([
                             viewTabContent = new ViewAttributeTabContent({
                                 model: tabModel
                             });
-                            tabContent = viewTabContent.render().$el;
+                            renderPromises.push(viewTabContent.render());
+
+                            tabContent = viewTabContent.$el;
 
                             $el.find(".dcpDocument__tabs__list").append(viewTabLabel.render().$el);
 
@@ -352,7 +357,9 @@ define([
 
             this.resizeForFooter();
             console.timeEnd("render document view");
-            this.trigger("renderDone");
+            Promise.all(renderPromises).then(_.bind(function vDocumentRenderDone() {
+                this.trigger("renderDone");
+            }, this));
             this.$el.show();
             if (tabPlacement === "topFix" && this.kendoTabs) {
                 _.defer(_.bind(this.responsiveTabMenu, this)); // need to call here to have good dimensions

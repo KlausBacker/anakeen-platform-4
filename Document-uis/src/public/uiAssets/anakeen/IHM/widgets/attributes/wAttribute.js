@@ -348,9 +348,6 @@
             }
             if (this.getMode() !== "hidden") {
                 this._initDom();
-
-
-
                 this._initEvent();
             }
 

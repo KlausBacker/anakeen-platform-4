@@ -137,19 +137,20 @@ define(function attributeTemplate(require/*, exports, module*/)
              * @returns {*|HTMLElement}
              * @param config
              */
-            customView: function attributeTemplateCustomView(attrModel, callBackView, config)
+            renderCustomView: function attributeTemplateCustomView(attrModel, callBackView, config)
             {
                 var customTemplate = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
                 var templateInfo = this.getTemplateInfo(attrModel);
                 var $render;
+                var completePromise;
 
                 if (config && !_.isUndefined(config.index) && config.index >= 0) {
                     templateInfo.attribute.attributeValue = templateInfo.attribute.attributeValue[config.index];
                 }
                 $render = $(Mustache.render(customTemplate || "", templateInfo));
-                this.completeCustomContent($render, attrModel.getDocumentModel(), callBackView, config);
-                return $render;
+                completePromise = this.completeCustomContent($render, attrModel.getDocumentModel(), callBackView, config);
+                return {"$el" : $render, "promise": completePromise} ;
             },
 
             /**
@@ -161,6 +162,7 @@ define(function attributeTemplate(require/*, exports, module*/)
              */
             completeCustomContent: function attributeTemplateCompleteCustomContent($el, documentModel, callBackView, config)
             {
+                var renderElementPromises = [];
                 $el.find(".dcpCustomTemplate--content").each(function attributeTemplatecompleteCustomContentEach()
                 {
                     var attrId = $(this).data("attrid"),
@@ -196,7 +198,6 @@ define(function attributeTemplate(require/*, exports, module*/)
                                         BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
                                 }
 
-
                                 if (!currentAttributeModel.getOption("template")) {
                                     originalView = true;
                                 }
@@ -214,7 +215,8 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     initializeContent: (config && config.initializeContent) || false,
                                     displayLabel: displayLabel
                                 });
-                                attrContent = view.render().$el;
+                                renderElementPromises.push(view.render());
+                                attrContent = view.$el;
                             } catch (e) {
                                 attrContent= $("<div/>").addClass("bg-danger").text(e.message);
                             }
@@ -222,6 +224,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                     }
                     $(this).append(attrContent);
                 });
+                return Promise.all(renderElementPromises);
             },
 
             /**

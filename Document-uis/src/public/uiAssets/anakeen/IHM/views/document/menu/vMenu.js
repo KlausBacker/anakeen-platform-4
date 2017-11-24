@@ -35,9 +35,12 @@ define([
 
         render: function vMenuRender()
         {
-            this.$el.dcpMenu(this.model.toData());
-            this.refresh();
-            return this;
+            var currentView = this;
+            return (new Promise(_.bind(function vMenuRenderPromise(resolve, reject) {
+                currentView.$el.dcpMenu(currentView.model.toData());
+                currentView.refresh();
+                return resolve(currentView);
+            }, this)));
         },
 
         externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
