@@ -4,6 +4,7 @@ import headerTemplate from './documentTabsHeader.template.kd';
 import welcomeTemplate from './documentTabsWelcome.template.kd';
 import recentConsultTemplate from './documentTabsRecentConsultItem.template.kd';
 import abstractAnakeenComponent from '../componentBase';
+
 const Constants = {
     WELCOME_TAB_ID: 'welcome_tab',
     NEW_TAB_ID: 'new_tab',
@@ -356,11 +357,19 @@ export default {
                                 const item = e.items[0];
                                 const header = this.$kendo.template(item.headerTemplate)(item.data);
                                 const content = this.$kendo.template(item.contentTemplate)(item.data);
-                                this.tabstrip.append({
+                                const tabAdded = {
                                     text: header,
                                     encoded: false,
                                     content: content,
-                                });
+                                };
+                                if (e.index === this.openedTabs.length - 1) {
+                                    this.tabstrip.append(tabAdded);
+                                } else if (e.index === 0) {
+                                    this.tabstrip.insertBefore(tabAdded, this.tabstrip.items()[0]);
+                                } else {
+                                    this.tabstrip.insertAfter(tabAdded, this.tabstrip.items()[e.index - 1]);
+                                }
+
                                 this.privateScope
                                     .configureCloseTab(this.tabstrip.items()[e.index]);
                                 this.privateScope
@@ -502,7 +511,6 @@ export default {
                     index = 0;
                 }
             }
-
             // this.tabslist.select(index);
             this.tabstrip.select(index);
         },
