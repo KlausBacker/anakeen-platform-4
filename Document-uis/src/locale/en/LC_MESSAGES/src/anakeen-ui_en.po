@@ -1,24 +1,20 @@
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: DOCUMENT\n"
+"Project-Id-Version: ANAKEEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-04 14:10+0200\n"
-"PO-Revision-Date: 2016-06-28 15:01+0200\n"
+"POT-Creation-Date: 2017-11-24 14:34+0100\n"
+"PO-Revision-Date: 2017-11-24 13:42+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, php-format
 msgctxt "ddui"
 msgid "%s Creation"
-msgstr ""
-
-msgctxt "ddui"
-msgid "Abstract view"
 msgstr ""
 
 #, php-format
@@ -50,6 +46,11 @@ msgid "Advanced"
 msgstr ""
 
 #, php-format
+msgctxt "authent"
+msgid "An email has been sended to user \"%s\""
+msgstr ""
+
+#, php-format
 msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
 msgstr ""
@@ -76,6 +77,11 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Cancel transition"
+msgstr ""
+
+#, php-format
+msgctxt "authent"
+msgid "Cannot find user \"%s\"."
 msgstr ""
 
 msgctxt "ddui-enum"
@@ -128,6 +134,17 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Close message"
+msgstr ""
+
+#, php-format
+msgctxt "docgrid"
+msgid "Collection \"%s\" not found"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Conditions"
 msgstr ""
 
 msgctxt "ddui"
@@ -184,6 +201,54 @@ msgstr ""
 msgctxt "UiMenu"
 msgid "Create to server and view document"
 msgstr ""
+
+msgid "DCOGRIDHTML5: Document_grid_ui"
+msgstr "Document grid UI"
+
+msgid "DCOGRIDHTML5:KITCHEN_SINK"
+msgstr "Kitchen Sink"
+
+msgid "DOCGRID: Access to document grid element"
+msgstr "Access to document grid element"
+
+msgid "DOCGRIDHTML5: sFirst"
+msgstr "First"
+
+msgid "DOCGRIDHTML5: sInfo"
+msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
+
+msgid "DOCGRIDHTML5: sInfoEmpty"
+msgstr "Showing 0 to 0 of 0 entries"
+
+msgid "DOCGRIDHTML5: sInfoFiltered"
+msgstr "(filtered from _MAX_ total entries)"
+
+msgid "DOCGRIDHTML5: sInfoPostFix"
+msgstr " "
+
+msgid "DOCGRIDHTML5: sLast"
+msgstr "Last"
+
+msgid "DOCGRIDHTML5: sLengthMenu"
+msgstr "Show _MENU_ entries"
+
+msgid "DOCGRIDHTML5: sLoadingRecords"
+msgstr "Loading..."
+
+msgid "DOCGRIDHTML5: sNext"
+msgstr "Next"
+
+msgid "DOCGRIDHTML5: sPrevious"
+msgstr "Previous"
+
+msgid "DOCGRIDHTML5: sProcessing"
+msgstr "Processing..."
+
+msgid "DOCGRIDHTML5: sSearch"
+msgstr "Search:"
+
+msgid "DOCGRIDHTML5: sZeroRecords"
+msgstr "No matching records found"
 
 msgctxt "ddui"
 msgid "Default Edit"
@@ -265,6 +330,22 @@ msgctxt "ddui"
 msgid "Family View"
 msgstr ""
 
+#, php-format
+msgctxt "docgrid"
+msgid ""
+"Filter \"%s\" is not a date value.\n"
+"You can use date operator \"contains\" or filter like \"> 23/11/2015\" , \"< "
+"23/11/2015\" or \"= 23/11/2015\" or \"> 2015\" or \"< 2015\""
+msgstr ""
+
+#, php-format
+msgctxt "docgrid"
+msgid ""
+"Filter \"%s\" is not a numeric value.\n"
+"You can use single numeric for operator \"contains\" or filter like \"> "
+"1234\" , \"< 1234\" or \"= 1234\""
+msgstr ""
+
 msgctxt "ddui"
 msgid "Force transition"
 msgstr ""
@@ -305,12 +386,22 @@ msgctxt "ddui-enum"
 msgid "Invalid entry"
 msgstr ""
 
+msgctxt "authent"
+msgid "Invalid key to update password"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Invalid transition"
 msgstr ""
 
 msgctxt "ddui helppage"
 msgid "Lang"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Loading criteria ..."
 msgstr ""
 
 msgctxt "ddui"
@@ -351,12 +442,24 @@ msgctxt "ddui:notification"
 msgid "Notification"
 msgstr ""
 
+#, php-format
+msgctxt "authent"
+msgid "Password has been reset for \"%s\""
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Properties"
 msgstr ""
 
+msgctxt "searchui"
+msgid "Properties"
+msgstr "Properties"
+
 msgctxt "UiMenu"
 msgid "Put document to the trash"
+msgstr ""
+
+msgid "RESULT:ACTION_NAME"
 msgstr ""
 
 msgctxt "ddui"
@@ -385,6 +488,12 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Restore document from the trash"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Results"
 msgstr ""
 
 msgctxt "ddui"
@@ -416,6 +525,12 @@ msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
 msgstr ""
 
+msgid "SEARCH_UI_HTML5:Basic ACL"
+msgstr ""
+
+msgid "SEARCH_UI_HTML5:SEARCH_UI_HTML5"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Save"
 msgstr ""
@@ -430,6 +545,12 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Save and update \"{{label}}\""
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Searching ..."
 msgstr ""
 
 msgctxt "ddui:notification"
@@ -449,6 +570,10 @@ msgstr ""
 #, php-format
 msgctxt "UiMenu"
 msgid "Sure delete %s ?"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "System"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -475,6 +600,9 @@ msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr ""
 
+msgid "Visible columns by family"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid "Workflow Parameters : %s"
@@ -484,14 +612,23 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr ""
 
-msgid "ddui::Initialisation"
-msgstr "Initialization"
+msgid "activity"
+msgstr "Activity"
+
+msgctxt "searchui"
+msgid "any values"
+msgstr "Any values"
+
+msgctxt "searchui"
+msgid "cdate"
+msgstr "Creation date"
+
+msgctxt "searchUi"
+msgid "consult"
+msgstr "Launch the research"
 
 msgid "ddui:Admin"
 msgstr "Admin"
-
-msgid "ddui:Autocomplete attributes"
-msgstr "Autocomplete attributes"
 
 msgid "ddui:COLLECT_ERROR"
 msgstr "Collect errors"
@@ -515,9 +652,6 @@ msgstr ""
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
 msgstr "Form is modified"
-
-msgid "ddui:Get dynamic sub menu"
-msgstr "Get dynamic sub menu"
 
 msgid "ddui:Get some template"
 msgstr "Get some template"
@@ -546,9 +680,42 @@ msgstr "Loggionf class"
 msgid "ddui:render parameters"
 msgstr "Render parameters"
 
+msgctxt "searchui"
+msgid "doctitle"
+msgstr "Title"
+
+msgctxt "searchui"
+msgid "id allocated"
+msgstr "Allocated user id"
+
+msgctxt "searchui"
+msgid "id locked"
+msgstr "Lock id"
+
+msgctxt "searchui"
+msgid "id owner"
+msgstr "Owner's id"
+
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "kB"
+
+msgctxt "searchui"
+msgid "revdate"
+msgstr "Last modif. date"
+
+msgctxt "searchui"
+msgid "revision"
+msgstr "Revision"
+
+msgid "state"
+msgstr "State"
+
+msgid "step"
+msgstr "Step"
+
+msgid "workflow"
+msgstr "Workflow"
 
 #, php-format
 msgctxt "ddui"
@@ -560,3 +727,15 @@ msgstr ""
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr ""
+
+#~ msgid "KITCHEN_SINK:Title"
+#~ msgstr "Kitchen Sink"
+
+#~ msgid "ddui::Initialisation"
+#~ msgstr "Initialization"
+
+#~ msgid "ddui:Autocomplete attributes"
+#~ msgstr "Autocomplete attributes"
+
+#~ msgid "ddui:Get dynamic sub menu"
+#~ msgstr "Get dynamic sub menu"

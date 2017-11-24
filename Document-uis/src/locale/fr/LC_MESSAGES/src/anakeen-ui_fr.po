@@ -1,13 +1,9 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: DOCUMENT\n"
+"Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-04 14:10+0200\n"
-"PO-Revision-Date: 2017-05-17 09:15+0200\n"
+"POT-Creation-Date: 2017-11-24 14:34+0100\n"
+"PO-Revision-Date: 2017-11-24 13:39+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -19,10 +15,6 @@ msgstr ""
 msgctxt "ddui"
 msgid "%s Creation"
 msgstr "Création %s"
-
-msgctxt "ddui"
-msgid "Abstract view"
-msgstr "Vue abstraite"
 
 #, php-format
 msgctxt "ddui"
@@ -53,6 +45,11 @@ msgid "Advanced"
 msgstr "Autres"
 
 #, php-format
+msgctxt "authent"
+msgid "An email has been sended to user \"%s\""
+msgstr ""
+
+#, php-format
 msgctxt "ddui"
 msgid "Attribute \"%s\" not found "
 msgstr "Attribut \"%s\" non trouvé"
@@ -80,6 +77,11 @@ msgstr "Annuler"
 msgctxt "ddui"
 msgid "Cancel transition"
 msgstr "Annuler"
+
+#, php-format
+msgctxt "authent"
+msgid "Cannot find user \"%s\"."
+msgstr ""
 
 msgctxt "ddui-enum"
 msgid "Choose"
@@ -132,6 +134,17 @@ msgstr "Quitter le formulaire"
 msgctxt "ddui"
 msgid "Close message"
 msgstr "Fermer le message"
+
+#, php-format
+msgctxt "docgrid"
+msgid "Collection \"%s\" not found"
+msgstr "Collection \"%s\" non trouvée"
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Conditions"
+msgstr "Conditions"
 
 msgctxt "ddui"
 msgid "Confidential document"
@@ -187,6 +200,54 @@ msgstr "Créer un nouveau document sur le serveur"
 msgctxt "UiMenu"
 msgid "Create to server and view document"
 msgstr "Créer sur le serveur et quitter le formulaire "
+
+msgid "DCOGRIDHTML5: Document_grid_ui"
+msgstr ""
+
+msgid "DCOGRIDHTML5:KITCHEN_SINK"
+msgstr ""
+
+msgid "DOCGRID: Access to document grid element"
+msgstr "Accès à document Grid"
+
+msgid "DOCGRIDHTML5: sFirst"
+msgstr "Premier"
+
+msgid "DOCGRIDHTML5: sInfo"
+msgstr "Affichage des éléments _START_ à _END_ sur _TOTAL_"
+
+msgid "DOCGRIDHTML5: sInfoEmpty"
+msgstr "Aucun élément à afficher"
+
+msgid "DOCGRIDHTML5: sInfoFiltered"
+msgstr "(filtré sur _MAX_ éléments au total)"
+
+msgid "DOCGRIDHTML5: sInfoPostFix"
+msgstr " "
+
+msgid "DOCGRIDHTML5: sLast"
+msgstr "Dernier"
+
+msgid "DOCGRIDHTML5: sLengthMenu"
+msgstr "Afficher _MENU_ éléments"
+
+msgid "DOCGRIDHTML5: sLoadingRecords"
+msgstr "Chargement..."
+
+msgid "DOCGRIDHTML5: sNext"
+msgstr "Suivant"
+
+msgid "DOCGRIDHTML5: sPrevious"
+msgstr "Précédent"
+
+msgid "DOCGRIDHTML5: sProcessing"
+msgstr "Traitement en cours..."
+
+msgid "DOCGRIDHTML5: sSearch"
+msgstr "Rechercher&nbsp;:"
+
+msgid "DOCGRIDHTML5: sZeroRecords"
+msgstr "Aucun élément à afficher"
 
 msgctxt "ddui"
 msgid "Default Edit"
@@ -268,6 +329,39 @@ msgctxt "ddui"
 msgid "Family View"
 msgstr "Vue de famille"
 
+#, php-format
+msgctxt "docgrid"
+msgid ""
+"Filter \"%s\" is not a date value.\n"
+"You can use date operator \"contains\" or filter like \"> 23/11/2015\" , \"< "
+"23/11/2015\" or \"= 23/11/2015\" or \"> 2015\" or \"< 2015\""
+msgstr ""
+"Le filtre \"%s\" ne correspond pas à une date.\n"
+"Vous pouvez utiliser les opérateurs suivants :\n"
+"  * \"> 23/11/2015\"  : dates supérieures au 23 novembre 2015\n"
+"  * \"< 23/11/2015\"  : dates inférieures  au 23 novembre 2015\n"
+"  * \"= 23/11/2015\"  : dates égales au 23 novembre 2015\n"
+"  * \"23/11/2015\"    : dates égales au 23 novembre 2015\n"
+"  * \"> 2015\"        : dates supérieures au 31 décembre 2015\n"
+"  * \"< 2015\"        : dates inférieures au 1er janvier 2015\n"
+"  * 23              : dates contenant le chiffre 23\n"
+"  "
+
+#, php-format
+msgctxt "docgrid"
+msgid ""
+"Filter \"%s\" is not a numeric value.\n"
+"You can use single numeric for operator \"contains\" or filter like \"> "
+"1234\" , \"< 1234\" or \"= 1234\""
+msgstr ""
+"Le filtre \"%s\" ne correspond pas à un chiffre.\n"
+"Vous pouvez utiliser les filtres suivants :\n"
+"\n"
+"  *   \"1234\"         : nombre contenant 1234\n"
+"  *   \"= 1234\"       : nombre égal à 1234\n"
+"  *   \"> 1234\"       : nombre supérieur à 1234\n"
+"  *   \"< 1234\"       : nombre inférieur à 1234"
+
 msgctxt "ddui"
 msgid "Force transition"
 msgstr "Forcer la transition"
@@ -308,6 +402,10 @@ msgctxt "ddui-enum"
 msgid "Invalid entry"
 msgstr "Entrée invalide"
 
+msgctxt "authent"
+msgid "Invalid key to update password"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Invalid transition"
 msgstr "Transition invalide"
@@ -315,6 +413,12 @@ msgstr "Transition invalide"
 msgctxt "ddui helppage"
 msgid "Lang"
 msgstr "Langue"
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Loading criteria ..."
+msgstr "Chargement des critères..."
 
 msgctxt "ddui"
 msgid "Locked by"
@@ -354,13 +458,25 @@ msgctxt "ddui:notification"
 msgid "Notification"
 msgstr "Notification"
 
+#, php-format
+msgctxt "authent"
+msgid "Password has been reset for \"%s\""
+msgstr ""
+
 msgctxt "UiMenu"
+msgid "Properties"
+msgstr "Propriétés"
+
+msgctxt "searchui"
 msgid "Properties"
 msgstr "Propriétés"
 
 msgctxt "UiMenu"
 msgid "Put document to the trash"
 msgstr "Mettre le document à la poubelle"
+
+msgid "RESULT:ACTION_NAME"
+msgstr ""
 
 msgctxt "ddui"
 msgid "Read only document"
@@ -389,6 +505,12 @@ msgstr "Restaurer"
 msgctxt "UiMenu"
 msgid "Restore document from the trash"
 msgstr "Retirer le document de la poubelle"
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Results"
+msgstr "Résultats"
 
 msgctxt "ddui"
 msgid "Retry transition"
@@ -419,6 +541,12 @@ msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
 msgstr "Le nombre maximum de rangée est de {{limit}}"
 
+msgid "SEARCH_UI_HTML5:Basic ACL"
+msgstr ""
+
+msgid "SEARCH_UI_HTML5:SEARCH_UI_HTML5"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Save"
 msgstr "Enregistrer"
@@ -434,6 +562,12 @@ msgstr "Enregistrer et fermer"
 msgctxt "ddui"
 msgid "Save and update \"{{label}}\""
 msgstr "Enregistrer et mettre à jour \"{{label}}\""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Searching ..."
+msgstr "Recherche en cours"
 
 msgctxt "ddui:notification"
 msgid "See more ..."
@@ -453,6 +587,10 @@ msgstr "Sélectionner la ligne"
 msgctxt "UiMenu"
 msgid "Sure delete %s ?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" ?"
+
+msgctxt "UiMenu"
+msgid "System"
+msgstr "Système"
 
 msgctxt "ddui-file"
 msgid "Transferring"
@@ -478,6 +616,9 @@ msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr "Graphique du processus"
 
+msgid "Visible columns by family"
+msgstr "Colonnes visibles par familles"
+
 #, php-format
 msgctxt "ddui"
 msgid "Workflow Parameters : %s"
@@ -487,14 +628,23 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr "Commentaire de transition du cycle de vie"
 
-msgid "ddui::Initialisation"
-msgstr "Initialisation"
+msgid "activity"
+msgstr "Activité"
+
+msgctxt "searchui"
+msgid "any values"
+msgstr "Une des valeurs"
+
+msgctxt "searchui"
+msgid "cdate"
+msgstr "Date de création"
+
+msgctxt "searchUi"
+msgid "consult"
+msgstr "Lancer la recherche"
 
 msgid "ddui:Admin"
 msgstr "Administration"
-
-msgid "ddui:Autocomplete attributes"
-msgstr "Attribut autocomplete"
 
 msgid "ddui:COLLECT_ERROR"
 msgstr "Récupération des erreurs clients"
@@ -518,9 +668,6 @@ msgstr "Rendu HTML5 en One Page Application"
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
 msgstr "Formulaire en cours de modification"
-
-msgid "ddui:Get dynamic sub menu"
-msgstr "Action de sous-menu"
 
 msgid "ddui:Get some template"
 msgstr "Récupération unitaire de template"
@@ -549,9 +696,42 @@ msgstr "Classes de log"
 msgid "ddui:render parameters"
 msgstr "Paramétrages des rendus"
 
+msgctxt "searchui"
+msgid "doctitle"
+msgstr "Titre"
+
+msgctxt "searchui"
+msgid "id allocated"
+msgstr "Identifiant utilisateur affecté"
+
+msgctxt "searchui"
+msgid "id locked"
+msgstr "Identifiant verrou"
+
+msgctxt "searchui"
+msgid "id owner"
+msgstr "Identifiant propriétaire"
+
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "ko"
+
+msgctxt "searchui"
+msgid "revdate"
+msgstr "Date de modification"
+
+msgctxt "searchui"
+msgid "revision"
+msgstr "Révision"
+
+msgid "state"
+msgstr "État"
+
+msgid "step"
+msgstr "Étape"
+
+msgid "workflow"
+msgstr "Cycle de vie"
 
 #, php-format
 msgctxt "ddui"
@@ -566,104 +746,18 @@ msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr "{{value}} (autre choix)"
 
-#~ msgctxt "ddui-enum"
-#~ msgid "Click to answer \"{{displayValue}}\""
-#~ msgstr "Cliquer pour répondre \"{{displayValue}}\""
-
 #~ msgctxt "ddui"
-#~ msgid "Document identifier \"%s\" must be a family in create mode"
-#~ msgstr ""
-#~ "L'identifiant de document \"%s\" doit indiquer une famille dans le mode "
-#~ "création"
+#~ msgid "Abstract view"
+#~ msgstr "Vue abstraite"
 
-#~ msgctxt "ddui-enum"
-#~ msgid "Invalid date"
-#~ msgstr "Date invalide"
+#~ msgid "KITCHEN_SINK:Title"
+#~ msgstr "Kitchen Sink : Document Grid"
 
-#~ msgctxt "UiMenu"
-#~ msgid "Lock"
-#~ msgstr "Verrouiller"
+#~ msgid "ddui::Initialisation"
+#~ msgstr "Initialisation"
 
-#~ msgctxt "ddui"
-#~ msgid "Lock document"
-#~ msgstr "Verrouiller le document"
+#~ msgid "ddui:Autocomplete attributes"
+#~ msgstr "Attribut autocomplete"
 
-#~ msgctxt "UiMenu"
-#~ msgid "Old Properties"
-#~ msgstr "Anciennes propriétés"
-
-#~ msgctxt "UiMenu"
-#~ msgid "Profil access"
-#~ msgstr "Accès au profil"
-
-#~ msgctxt "ddui"
-#~ msgid "Revision \"%s\" must be a number "
-#~ msgstr "La révision \"%s\" doit être un nombre"
-
-#~ msgctxt "UiMenu"
-#~ msgid "Security"
-#~ msgstr "Sécurité"
-
-#~ msgctxt "ddui-enum"
-#~ msgid "Select"
-#~ msgstr "Sélectionner"
-
-#~ msgctxt "ddui-enum"
-#~ msgid "Select {{displayValue}}"
-#~ msgstr "Sélectionner {{displayValue}}"
-
-#~ msgctxt "UiMenu"
-#~ msgid "Unlock"
-#~ msgstr "Déverrouiller"
-
-#~ msgctxt "ddui"
-#~ msgid "Unlock document"
-#~ msgstr "Déverrouiller le document"
-
-#~ msgctxt "ddui-enum"
-#~ msgid "Unselect"
-#~ msgstr "Désélectionner"
-
-#~ msgctxt "ddui-enum"
-#~ msgid "Unselect {{displayValue}}"
-#~ msgstr "Désélectionner {{displayValue}}"
-
-#~ msgctxt "ddui"
-#~ msgid "View {{{displayValue}}}"
-#~ msgstr "Voir {{{displayValue}}}"
-
-#~ msgid "ddui::Delete : "
-#~ msgstr "Suppression de : "
-
-#~ msgid "ddui::DocumentDeleted"
-#~ msgstr "Supprimée le"
-
-#~ msgid "ddui::Revision :"
-#~ msgstr "Révision n°"
-
-#~ msgid "ddui::RevisionCreated"
-#~ msgstr "Créée le"
-
-#~ msgid "ddui:Add new line"
-#~ msgstr "Ajouter une nouvelle ligne"
-
-#~ msgid "ddui:Delete line"
-#~ msgstr "Supprimer la ligne"
-
-#~ msgid "ddui:Drag to move line"
-#~ msgstr "Cliquer pour déplacer la ligne"
-
-#~ msgid "ddui:Duplicate selected row"
-#~ msgstr "Dupliquer la ligne sélectionnée"
-
-#~ msgid "ddui:Locked by"
-#~ msgstr "Verrouillé par"
-
-#~ msgid "ddui:Read only"
-#~ msgstr "Lecture seule"
-
-#~ msgid "ddui:Select line"
-#~ msgstr "Sélectionner la ligne"
-
-#~ msgid "ddui:Wrap kendo"
-#~ msgstr "Action include kendo ui"
+#~ msgid "ddui:Get dynamic sub menu"
+#~ msgstr "Action de sous-menu"

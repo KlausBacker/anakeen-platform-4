@@ -44,7 +44,7 @@ webinst-business:
 
 
 po:
-	./dynacase-devtool.phar extractPo -s Document-uis
+	./dynacase-devtool.phar extractPo -s Document-uis -o Document-uis/src
 
 
 pojs:
