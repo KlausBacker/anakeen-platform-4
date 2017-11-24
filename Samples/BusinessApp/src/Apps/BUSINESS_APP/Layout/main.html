@@ -17,7 +17,8 @@
         <a4-collections id="collectionsList"
                         bind-event="open: #splitter.publicMethods.openSplitter,
                                     collection-selected: #splitter.publicMethods.setCollection,
-                                    collection-selected: #documentsList.publicMethods.setCollection">
+                                    collection-selected: #documentsList.publicMethods.setCollection,
+                                    collection-selected: #splitter.publicMethods.openSplitter">
 
         </a4-collections>
         <a4-document-list id="documentsList"
@@ -37,5 +38,21 @@
 <script src="../uiAssets/externals/KendoUI/KendoUI.js"></script>
 <script src="BUSINESS_APP/dist/a4-business-app-components.js"></script>
 <script src="components/dist/a4-components.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        var list = document.getElementById('documentsList');
+        var splitter = document.getElementById('splitter');
+        list.addEventListener('document-selected', () => {
+           onDocumentSelected();
+        });
+    });
+    function onDocumentSelected() {
+        var width = window.innerWidth || document.body.clientWidth;
+        if (width < 958) {
+            var splitter = document.getElementById('splitter');
+            splitter.publicMethods.closeSplitter();
+        }
+    }
+</script>
 </body>
 </html>
