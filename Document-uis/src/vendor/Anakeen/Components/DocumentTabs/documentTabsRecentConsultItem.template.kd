@@ -1,0 +1,9 @@
+<div class="documentsList__documentsTabs__recentConsult">
+    <img class="documentsList__documentsTabs__recentConsult__icon" src="#=utag.icon#"/>
+    <span class="documentsList__documentsTabs__recentConsult__title">#= properties.title#</span>
+    <div class="documentsList__documentsTabs__recentConsult__date">
+        <span class="documentsList__documentsTabs__recentConsult__date--content">
+            #=utag.date#
+        </span>
+    </div>
+</div>

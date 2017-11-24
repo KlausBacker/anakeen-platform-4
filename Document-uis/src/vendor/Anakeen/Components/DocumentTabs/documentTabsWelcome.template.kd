@@ -17,11 +17,11 @@
             #= promptMessage #
         </h1>
         #}#
-        <div class="documentsList__documentsTabs__welcome__content__inner">
+        <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__open">
             <div class="documentsList__documentsTabs__welcome__content__inner--label">
                 <i class="material-icons">remove_red_eye</i> Consultation
             </div>
-            <div class="documentsList__documentsTabs__welcome__content__open">
+            <div class="documentsList__documentsTabs__welcome__content__inner--content">
                 <div class="input-group">
                     <input type="text"
                            class="form-control documentsList__documentsTabs__welcome__content__open__input"
@@ -29,17 +29,17 @@
                     <!--<i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--remove">
                         close
                     </i>-->
-                    <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--search">
+                    <button class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--search">
                         search
-                    </i>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="documentsList__documentsTabs__welcome__content__inner">
+        <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__creation">
             <div class="documentsList__documentsTabs__welcome__content__inner--label">
                 <i class="material-icons">create_new_folder</i> Création
             </div>
-            <div class="documentsList__documentsTabs__welcome__content__creation">
+            <div class="documentsList__documentsTabs__welcome__content__inner--content">
                 <i class="material-icons">keyboard_arrow_left</i>
                 <div class="btn-group">
                 # for (var i = 0; i < data.collections.length; i++) {
@@ -53,11 +53,11 @@
                 <i class="material-icons">keyboard_arrow_right</i>
             </div>
         </div>
-        <div class="documentsList__documentsTabs__welcome__content__inner">
+        <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__recommended">
             <div class="documentsList__documentsTabs__welcome__content__inner--label">
                 <i class="material-icons">view_carousel</i> Dernières consultations
             </div>
-            <div class="documentsList__documentsTabs__welcome__content__recommended">
+            <div class="documentsList__documentsTabs__welcome__content__inner--content">
                 Aucune consultation récente
             </div>
         </div>
