@@ -83,6 +83,7 @@
 
 
     &.k-pane.k-state-collapsed {
+      width: 0px !important;
       .documentsList__collections__wrapper {
         left: -100vw;
       }
@@ -109,6 +110,7 @@
 
     .leftPane {
       &.k-pane.k-state-collapsed {
+        width: 50px !important;
         .documentsList__collections__wrapper {
           left: calc(-25vw + 50px);
         }

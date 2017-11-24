@@ -62,7 +62,7 @@ export default {
                 this.$(this.$refs.listView).kendoListView({
                     dataSource: this.dataSource,
                     template: this.$kendo.template(DocumentTemplate),
-                    selectable: 'multiple',
+                    selectable: 'single',
                     change: this.privateScope.onSelectDocument,
                     scrollable: true,
                 });

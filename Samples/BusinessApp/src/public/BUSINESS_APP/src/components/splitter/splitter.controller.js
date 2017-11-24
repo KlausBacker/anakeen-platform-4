@@ -12,15 +12,9 @@ export default {
     created() {
         this.privateScope = {
             initKendo: () => {
-                const windowWidth = this.$(window).width();
-                let collapsedSize  = '50px';
-                if (windowWidth < thresholdWidth) {
-                    collapsedSize = '0px';
-                }
-
                 this.$(this.$refs.splitter).kendoSplitter({
                     panes: [
-                        { collapsible: true, resizable: false, collapsedSize, size: '25%', scrollable: false },
+                        { collapsible: true, resizable: false, size: '25%', scrollable: false },
                         { collapsible: false, resizable: false, size: '25px' },
                         { collapsible: false, resizable: false, scrollable: false },
                     ],
