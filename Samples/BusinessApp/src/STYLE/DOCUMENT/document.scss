@@ -19,14 +19,14 @@
 
     .dcpDocument__tabs .dcpTab__label {
       //border-bottom: none;
-      background-color: #F7F7F7;
+      background-color: #F3F3F3;
     }
 
     // Active tab
     .dcpDocument__tabs .dcpTab__label.dcpLabel--active {
       border-bottom: none;
       box-shadow: none;
-      background-color: white;
+      background-color: #FAFAFA;
     }
   }
 }
