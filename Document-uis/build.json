@@ -13,6 +13,10 @@
     "fr",
     "en"
   ],
+  "po": {
+    "php" : ["src"],
+    "layout": ["src/Apps/DOCUMENT/Layout"]
+  },
   "csvParam": {
     "enclosure": "\"",
     "delimiter": ";"
