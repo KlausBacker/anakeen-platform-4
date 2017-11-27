@@ -1,0 +1,5 @@
+//BEGIN;Parent family;Family title;;;Family name;;;;;;;;;;
+BEGIN;WDOC;Cycle Alltype;;;TST_DDUI_W_ALLTYPE;;;;;;;;;;
+CLASS;Dcp\Test\Ddui\WflAlltype;;;;;;;;;;;;;;
+//PARAM;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
+END;;;;;;;;;;;;;;;

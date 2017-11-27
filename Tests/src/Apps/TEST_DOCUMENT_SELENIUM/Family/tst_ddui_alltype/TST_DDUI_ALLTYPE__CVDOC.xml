@@ -272,6 +272,186 @@
                 <cv_displayed>no</cv_displayed>
                 <cv_menu></cv_menu>
             </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETLINKTARGET_SELF</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setLinkTarget_self</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETLINKTARGET_DIALOG</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setLinkTarget_dialog</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETLINKTARGET_BLANK</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setLinkTarget_blank</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SET_AUTOCOMPLETE_HTML_LABEL</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setAutoCompleteHtmlLabel</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ADDBUTTONEDITTARGET_SELF</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\addButtonEditTarget_self</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ADDBUTTONEDITTARGET_DIALOG</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\addButtonEditTarget_dialog</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ADDBUTTONCONSTARGET_SELF</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\addButtonConsTarget_self</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>ADDBUTTONCONSTARGET_DIALOG</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\addButtonConsTarget_dialog</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETATTRIBUTELABEL</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setAttributeLabel</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>EVENTREADY</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\eventReady</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>EVENTCHANGE</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\eventChange</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>GETVALUEEDITION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\getValueEdition</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>GETVALUECONSULTATION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\getValueConsultation</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETVALUEEDITION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setValueEdition</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETVALUECONSULTATION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setValueConsultation</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
         </fr_basic>
         <cv_fr_default>
             <cv_idcview xsi:nil="true"/>
