@@ -2,11 +2,11 @@
 <module name="@moduleName@" disabled="no" version="@version@" release="@release@"
         basecomponent="no">
     <description>Test case for Anakeen Legacy.</description>
-    <require>
 
-        <module name="anakeen-core-test"/>
+    <requires>
         <module name="anakeen-workflow"/>
-    </require>
+        <module name="anakeen-core-test"/>
+    </requires>
 
     <pre-install>
         <check type="syscommand" command="xmllint">
