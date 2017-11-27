@@ -105,6 +105,7 @@ define([
             var $body;
             var tabPlacement = this.model.getOption("tabPlacement") || "top";
             var event = {prevent: false};
+            var viewMenus=[];
 
             this.$el.removeClass("dcpTouch");
             if (checkTouchEvents()) {
@@ -164,10 +165,12 @@ define([
             this.trigger("loading", 10);
             //add menu
             try {
-                var viewMenu = new ViewDocumentMenu({
-                    model: this.model,
-                    el: this.$el.find(".dcpDocument__menu:first")[0]
-                }).render();
+                this.$el.find(".dcpDocument__menu").each(function vDocumentAddMenu() {
+                    viewMenus.push(new ViewDocumentMenu({
+                        model: currentView.model,
+                        el: this
+                    }).render());
+                });
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
@@ -176,10 +179,12 @@ define([
                 }
             }
             try {
+                this.$el.find(".dcpDocument__header").each(function vDocumentAddHeader() {
                 new ViewDocumentHeader({
-                    model: this.model,
-                    el: this.$el.find(".dcpDocument__header:first")[0]
+                    model: currentView.model,
+                    el: this
                 }).render();
+                });
             } catch (e) {
                 if (window.dcp.logger) {
                     window.dcp.logger(e);
@@ -267,7 +272,9 @@ define([
                                     // Hide parasite tooltip if any
                                     currentView.$el.find("[aria-describedby*='tooltip']").tooltip("hide");
                                     tab.trigger("showTab");
-                                    viewMenu.refresh();
+                                    _.each(viewMenus, function (viewMenu) {
+                                        viewMenu.refresh();
+                                    });
                                     _.defer(function () {
                                         $(window).scrollTop(scrollY);
                                     });
@@ -369,6 +376,8 @@ define([
         },
         fixedTab: function vDocumentfixedTab(event)
         {
+            // @TODO Need a decision to delete this option or not
+            return;
             var $tabs = this.$el.find(".dcpDocument__tabs");
             var $ul;
             if ($tabs.length > 0) {
