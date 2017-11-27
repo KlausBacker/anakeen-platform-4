@@ -4,26 +4,29 @@
     width:11rem;
 }
 
-.dcpAttribute__content--color[data-attrid=tst_color3] .dcpAttribute__content__color__tag,
-.dcpAttribute__content--color[data-attrid=tst_color2] .dcpAttribute__content__color__tag {
-
+.dcpAttribute__content--color[data-attrid=tst_color2]  .dcpAttribute__value {
+    border-style: solid;
     border-radius: 50%;
-    width: 6rem;
-    height: 6rem;
-    display: inline-block;
+    width: 1rem;
+    display: block;
     overflow: hidden;
+    border-width: 3rem;
     animation:blinkcolor 3.5s infinite;
 }
-.dcpAttribute__content--color[data-attrid=tst_color2]  .dcpAttribute__value {
-}
-.dcpAttribute__content--color[data-attrid=tst_color3]  .dcpAttribute__content__color__tag {
-    border-radius: 0;
+.dcpAttribute__content--color[data-attrid=tst_color3]  .dcpAttribute__value {
+    border-style: solid;
+    border-radius: 1rem;
+    width: 1rem;
+    display: block;
+    overflow: hidden;
+    border-width: 3rem;
     animation:blinkcolor 7s infinite;
+
 }
 
 
 @keyframes blinkcolor {
     50% {
-        background-color: white;
+        border-color: white;
     }
 }
