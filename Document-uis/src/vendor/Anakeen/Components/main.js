@@ -43,7 +43,9 @@ import Authent from './Authent/Authent.vue';
 import Document from './Document/Document.vue';
 import DocumentList from './DocumentList/documentList.vue';
 import DocumentTabs from './DocumentTabs/documentTabs.vue';
+import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
 
+Vue.customElement('a4-loading', AnakeenLoading);
 Vue.customElement('a4-authent', Authent);
 Vue.customElement('a4-document', Document);
 Vue.customElement('a4-document-list', DocumentList);

@@ -107,8 +107,19 @@
           padding: 0;
           border-top: none;
           background-color: #F3F3F3;
-          iframe {
+          .documentsList__documentsTabs__tab__content__wrapper {
             height: 100%;
+            .documentsList__documentsTabs__tab__content--document > iframe {
+              height: 100%;
+            }
+
+            .documentsList__documentsTabs__tab__content--loading > div {
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
           }
         }
 
@@ -157,13 +168,21 @@
               }
             }
 
+            .tab__document__header__content {
+              .tab__document__title {
+                color: #505050;
+              }
+            }
+
+
             &.k-state-active {
               box-shadow: inset 0 2px 0px 0px #8ae234;
               opacity: 1;
               background-color: #FFFFFF;
               border-bottom-color: transparent;
-              .tab__document__title {
+              .tab__document__header__content .tab__document__title {
                 font-weight: 700;
+                color: #00b4fc;
               }
 
               & > .tab__document__header__content > .k-link[data-type=remove] {
@@ -209,7 +228,6 @@
                 }
 
                 .tab__document__title {
-                  color: #505050;
                   width: 120px;
                   overflow: hidden;
                   white-space: nowrap;
@@ -484,76 +502,28 @@
     overflow-x: hidden;
     width: auto;
     .k-item {
-      width: 200px;
-      height: 35px;
+      padding: 0;
       border-bottom: 1px solid #e6e6e6;
       background-color: #FFFFFF;
       text-transform: uppercase;
-      padding: 0 0 0 25px !important;
+      color: black;
 
-      .documentsList__documentsTabs__tabsList__item {
+      .documentTabs__openedTab__listItem {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 100%;
-        height: 100%;
-        color: #505050;
-        & > .documentsList__documentsTabs__tabsList__item__content {
-          & > .documentsList__documentsTabs__tabsList__item__icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 5px;
-          }
+        width: 200px;
+        height: 40px;
+        .documentTabs__openedTab__listItem__heading {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          .documentTabs__openedTab__listItem__heading--title {
 
-          & > .documentsList__documentsTabs__tabsList__item__title {
-            width: 120px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-transform: uppercase;
-          }
-        }
-        & > .documentsList__documentsTabs__tabsList__item__close {
-          height: 100%;
-          padding: 0.5rem;
-
-          &:hover {
-            background-color: #ff542c;
-            .k-icon {
-              color: #ffffff;
-            }
           }
         }
       }
 
-      &.k-state-selected {
-        background-color: #FFFFFF;
-        .documentsList__documentsTabs__tabsList__item__title {
-          font-weight: bold;
-          color: #353535;
-        }
-
-        .documentsList__documentsTabs__tabsList__item__close {
-          .k-icon {
-            color: #ff542c;
-          }
-        }
-      }
-
-      &.k-state-hover {
-        background-color: #F4F4F4;
-
-        .documentsList__documentsTabs__tabsList__item__title {
-          color: #00b4fc;
-        }
-
-        .documentsList__documentsTabs__tabsList__item__close {
-          background-color: #E6E6E6;
-          .k-icon {
-            color: #ff542c;
-          }
-        }
-      }
     }
   }
 }
