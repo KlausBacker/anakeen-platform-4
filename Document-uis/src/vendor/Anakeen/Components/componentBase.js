@@ -84,15 +84,22 @@ export default {
     },
 
     mounted() {
-        if (this.bindData) {
-            this._protected.parseProps('bindData', this.bindData);
-        }
+        const ready = () => {
+            if (this.bindData) {
+                this._protected.parseProps('bindData', this.bindData);
+            }
 
-        if (this.bindEvent) {
-            this._protected.parseProps('bindEvent', this.bindEvent);
-        }
+            if (this.bindEvent) {
+                this._protected.parseProps('bindEvent', this.bindEvent);
+            }
 
-        this._protected.bindPublicMethods();
+            this._protected.bindPublicMethods();
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', ready);
+        } else {
+            ready();
+        }
     },
 
     destroyed() {

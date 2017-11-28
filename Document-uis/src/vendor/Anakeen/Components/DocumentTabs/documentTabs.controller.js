@@ -65,13 +65,12 @@ export default {
                     animation: false,
                     select: (e) => {
                         const i = this.$(e.item).index();
-                        const selectedTab = this.tabsArray[i];
+                        const selectedTab = this.openedTabs[i];
                         if (selectedTab.tabId === Constants.NEW_TAB_ID ||
                             selectedTab.tabId === Constants.WELCOME_TAB_ID) {
                             const element = this.tabstrip.contentElement(i);
                             const welcomeTab = this.$(element).find('a4-welcome-tab');
                             if (welcomeTab) {
-                                console.log(welcomeTab.prop('publicMethods'));
                                 welcomeTab.prop('publicMethods').refresh();
                             }
                         }
