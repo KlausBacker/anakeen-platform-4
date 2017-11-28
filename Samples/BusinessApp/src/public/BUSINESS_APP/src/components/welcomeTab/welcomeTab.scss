@@ -3,7 +3,6 @@
   overflow-y: auto;
   flex-direction: column;
   padding: 3rem 2rem 2rem 2rem;
-
   height: 100%;
   justify-content: space-between;
   .documentsList__documentsTabs__welcome__header {
@@ -146,95 +145,30 @@
 
       &.documentsList__documentsTabs__welcome__content__recommended {
         .documentsList__documentsTabs__welcome__content__inner--content {
-          min-height: 160px;
-          padding: 0 3rem;
-          overflow-y: auto;
+          min-height: 180px;
+          padding: 0;
           position: relative;
+          font-size: 1rem;
+          overflow-y: auto;
         }
 
         .documentsList__documentsTabs__welcome__content__inner--table-content {
           width: 100%;
           height: 100%;
+          overflow-y: auto;
           thead {
-            position: sticky;
-            top: 0;
-          }
-          tr {
-            cursor: pointer;
-            &:hover {
-              background: #F1F1F1;
+            th {
+              position: sticky;
+              top: -1px;
+              z-index: 100;
+              background-color: #E0E0E0;
             }
           }
-        }
-
-        .documentsList__documentsTabs__recentConsult + .documentsList__documentsTabs__recentConsult {
-          margin-left: .5rem;
-        }
-        .documentsList__documentsTabs__recentConsult {
-          display: flex;
-          flex-direction: column;
-          flex: 1/8;
-          justify-content: space-between;
-          cursor: pointer;
-          float: left;
-          position: relative;
-          width: 111px;
-          height: 145px;
-          margin: 0;
-          padding: 0 0 .8rem 0;
-          border: 1px solid lightgrey;
-
-          &.k-state-selected {
-            background-color: inherit;
-          }
-
-          .documentsList__documentsTabs__recentConsult__icon {
-            width: 110px;
-            height: 110px;
-            pointer-events: none;
-            opacity: 0.85;
-          }
-
-          .documentsList__documentsTabs__recentConsult__title {
-            text-align: center;
-            margin: 0;
-            padding: 3px 5px 0 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            line-height: 1.1em;
-            font-size: .9em;
-            font-weight: normal;
-            text-transform: uppercase;
-            color: #555;
-            pointer-events: none;
-          }
-
-          .documentsList__documentsTabs__recentConsult__date {
-            display: none;
-            pointer-events: none;
-          }
-
-          &:hover .documentsList__documentsTabs__recentConsult__date {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            width: 110px;
-            height: 110px;
-            top: 0;
-            left: 0;
-            margin: 0;
-            padding: .2rem;
-            text-align: center;
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.75);
-            transition: background .2s linear, color .2s linear;
-            -moz-transition: background .2s linear, color .2s linear;
-            -webkit-transition: background .2s linear, color .2s linear;
-            -o-transition: background .2s linear, color .2s linear;
-
-            .documentsList__documentsTabs__recentConsult__date--content {
-
+          tbody {
+            overflow-y: auto;
+            overflow-x: hidden;
+            tr {
+              cursor: pointer;
             }
           }
         }

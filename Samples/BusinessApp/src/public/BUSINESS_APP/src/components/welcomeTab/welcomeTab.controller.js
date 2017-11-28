@@ -93,9 +93,9 @@ export default {
                         fields: 'document.properties.title,document.properties.icon,document.properties.state',
                         slice: '5',
                         utag: 'open_document',
-                        iconSize: '32x32',
+                        iconSize: '24x24c',
                     },
-                }, this.$refs.recentConsult).then((response) => {
+                }, this.$refs.recentConsultLoading).then((response) => {
                     const utags = response.data.data.utags;
                     const documents = response.data.data.documents;
                     const result = documents.map((d) => {

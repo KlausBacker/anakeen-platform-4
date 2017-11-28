@@ -51,11 +51,11 @@
                 <div class="documentsList__documentsTabs__welcome__content__inner--label">
                     <i class="material-icons">view_carousel</i> Dernières consultations
                 </div>
-                <div class="documentsList__documentsTabs__welcome__content__inner--content">
-                    <table class="documentsList__documentsTabs__welcome__content__inner--table-content table" ref="recentConsult">
+                <div class="documentsList__documentsTabs__welcome__content__inner--content" ref="recentConsultLoading">
+                    <table v-if="lastConsultations.length" class="documentsList__documentsTabs__welcome__content__inner--table-content table table-bordered table-hover table-responsive" ref="recentConsult">
                         <thead>
                         <tr>
-                            <th>Icône</th>
+                            <th>Collection</th>
                             <th>Titre</th>
                             <th>Etat</th>
                             <th>Dernière Modification</th>
@@ -71,6 +71,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div v-else="true">Aucune consultations récentes</div>
                 </div>
 
             </div>
