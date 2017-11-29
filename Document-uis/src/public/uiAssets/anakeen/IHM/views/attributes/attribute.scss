@@ -41,6 +41,7 @@
 .row.dcpArray--left,
 .row.dcpAttribute.dcpAttribute__labelPosition--left {
   flex-direction: row;
+  align-items: center;
   .dcpAttribute__left {
     flex-grow:0;
     flex-basis: 20rem;
@@ -54,6 +55,7 @@
   .dcpAttribute__right {
     flex-grow:1;
     flex-basis: 0;
+    padding-bottom: 0.2rem;
   }
 }
 

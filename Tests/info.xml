@@ -18,6 +18,7 @@
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__PARAM.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__DATA.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
 
@@ -48,6 +49,8 @@
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__PARAM.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__DATA.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
+
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
 
         <process

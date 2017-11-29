@@ -12,6 +12,7 @@ class TabRenderOptions extends CommonRenderOptions
     const type = "tab";
     const tabTooltipLabel = "tooltipLabel";
     const tabTooltipHtml = "tooltipHtml";
+    const responsiveColumnsOption = "responsiveColumns";
     /**
      * Set tooltip on a tab
      * @param string $label tooltip text
@@ -23,5 +24,31 @@ class TabRenderOptions extends CommonRenderOptions
     {
         $this->setOption(self::tabTooltipLabel, $label);
         return $this->setOption(self::tabTooltipHtml, (bool)$html);
+    }
+
+
+
+
+    /**
+     * Set interval length condition to divide frame attributes in column
+     * @param array $responsives
+     */
+    public function setResponsiveColumns(array $responsives)
+    {
+        $columns = array();
+        $previousMax="0";
+        foreach ($responsives as $responsive) {
+            if (!$responsive["minWidth"]) {
+                $responsive["minWidth"]=$previousMax;
+            }
+            $columns[] = [
+                "number" => $responsive["number"],
+                "minWidth" => $responsive["minWidth"],
+                "maxWidth" => $responsive["maxWidth"],
+                "grow" => $responsive["grow"],
+            ];
+            $previousMax=$responsive["maxWidth"];
+        }
+        $this->setOption(self::responsiveColumnsOption, $columns);
     }
 }

@@ -59,9 +59,11 @@ define([
                 this.model.trigger("renderDone", {model: this.model, $el: this.$el});
             } else {
                 this.renderContent();
+
             }
 
             this.propageShowTab();
+
 
             return this;
         },
@@ -98,6 +100,9 @@ define([
                         }
                     });
                     attributeTemplate.insertDescription(this);
+                    if (this.model.getOption("responsiveColumns")) {
+                        this.responsiveColumns();
+                    }
                 }
 
                 this.$el.removeClass("dcpTab__content--loading");
@@ -105,6 +110,71 @@ define([
                 this.initialized = true;
             }
             $(window.document).trigger("redrawErrorMessages");
+        },
+
+
+
+
+        responsiveColumns: function vTab_responsiveColumns() {
+            var responseColumnsDefs=this.model.getOption("responsiveColumns") || [];
+            var _this=this;
+            var $fake=$("<div/>").css({position:"absolute", top:0, overflow:"hidden"});
+            var $fakeWidth=$("<div/>");
+            var setResponsiveClasse=function vTab_setResponsiveClasses() {
+                var fWidth=$(_this.$el).width();
+                var matchesResponsive=0;
+
+                _.each(responseColumnsDefs, function vTab_setResponsiveClasses(responseColumnsInfo) {
+                    if (fWidth >= responseColumnsInfo.minAbsWidth && fWidth < responseColumnsInfo.maxAbsWidth) {
+                        _this.$el.addClass("dcp-column--"+responseColumnsInfo.number);
+                        matchesResponsive=responseColumnsInfo.number;
+                        if (responseColumnsInfo.grow === true) {
+                            _this.$el.addClass("dcp-column--grow");
+                        } else {
+                            _this.$el.removeClass("dcp-column--grow");
+                        }
+                    } else {
+                        _this.$el.removeClass("dcp-column--"+responseColumnsInfo.number);
+                    }
+                });
+
+                if (matchesResponsive > 1) {
+                    _this.$el.addClass("dcp-column");
+                } else {
+                    _this.$el.removeClass("dcp-column");
+                }
+                if (matchesResponsive !== _this.frameIsResized) {
+                    _this.frameIsResized=matchesResponsive;
+                    _this.model.get('content').each(function (ma) {
+                        // Send resize to frame in case they have also responsive.
+                        ma.trigger("resize");
+                    });
+                }
+            };
+
+            $("body").append($fake.append($fakeWidth));
+
+            // Compute absolute width
+            _.each(responseColumnsDefs, function vTab_computeResponsiveWidth(responseColumnsInfo) {
+                if (! responseColumnsInfo.minWidth) {
+                    responseColumnsInfo.minAbsWidth = 0;
+                } else {
+                    $fakeWidth.width(responseColumnsInfo.minWidth);
+                    responseColumnsInfo.minAbsWidth = $fakeWidth.width();
+                }
+
+                if (! responseColumnsInfo.maxWidth) {
+                    responseColumnsInfo.maxAbsWidth = Infinity;
+                } else {
+                    $fakeWidth.width(responseColumnsInfo.maxWidth);
+                    responseColumnsInfo.maxAbsWidth = $fakeWidth.width();
+                }
+            });
+
+            $fake.remove();
+            console.log("Add RESIZE Tab", _this.model.id, this.model.cid, responseColumnsDefs);
+            $(window).on("resize."+this.model.cid, setResponsiveClasse);
+            _.defer(setResponsiveClasse);
         },
 
         propageShowTab: function vTabContentPropageShowTab()

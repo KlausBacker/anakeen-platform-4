@@ -35,6 +35,7 @@ define([
             this.listenTo(this.model, 'errorMessage', this.setError);
             this.listenTo(this.model, 'change:errorMessage', this.setError);
             this.listenTo(this.model, 'destroy', this.remove);
+            this.listenTo(this.model, 'resize', this.setResponsiveClasse);
             this.listenTo(this.model, 'cleanView', this.remove);
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
@@ -129,7 +130,73 @@ define([
                 this.toggle(null, true);
             }
             this.model.trigger("renderDone", {model: this.model, $el: this.$el});
+            if (this.model.getOption("responsiveColumns")) {
+                this.responsiveColumns();
+            }
             return this;
+        },
+
+        setResponsiveClasse: function vFrame_setResponsiveClasse() {
+            var _this=this;
+            var fWidth=0;
+            var matchesResponsive=false;
+            var responseColumnsDefs=this.model.getOption("responsiveColumns") || [];
+
+            if (responseColumnsDefs.length > 0) {
+                fWidth=$(this.$el).width();
+
+                _.each(responseColumnsDefs, function vFrame_setResponsiveClasses(responseColumnsInfo) {
+                    if (fWidth >= responseColumnsInfo.minAbsWidth && fWidth < responseColumnsInfo.maxAbsWidth) {
+                        _this.$el.addClass("dcp-column--" + responseColumnsInfo.number);
+                        matchesResponsive = true;
+                        if (responseColumnsInfo.grow === true) {
+                            _this.$el.addClass("dcp-column--grow");
+                        } else {
+                            _this.$el.removeClass("dcp-column--grow");
+                        }
+                    } else {
+                        _this.$el.removeClass("dcp-column--" + responseColumnsInfo.number);
+                    }
+                });
+
+                if (matchesResponsive) {
+                    _this.$el.addClass("dcp-column");
+                } else {
+                    _this.$el.removeClass("dcp-column");
+                    _this.$el.removeClass("dcp-column--grow");
+                }
+            }
+        },
+
+        responsiveColumns: function vFrame_responsiveColumns() {
+            var responseColumnsDefs=this.model.getOption("responsiveColumns") || [];
+            var _this=this;
+            var $fake=$("<div/>").css({position:"absolute", top:0, overflow:"hidden"});
+            var $fakeWidth=$("<div/>");
+
+
+            $("body").append($fake.append($fakeWidth));
+
+            // Compute absolute width
+            _.each(responseColumnsDefs, function vFrame_computeResponsiveWidth(responseColumnsInfo) {
+                if (! responseColumnsInfo.minWidth) {
+                    responseColumnsInfo.minAbsWidth = 0;
+                } else {
+                    $fakeWidth.width(responseColumnsInfo.minWidth);
+                    responseColumnsInfo.minAbsWidth = $fakeWidth.width();
+                }
+
+                if (! responseColumnsInfo.maxWidth) {
+                    responseColumnsInfo.maxAbsWidth = Infinity;
+                } else {
+                    $fakeWidth.width(responseColumnsInfo.maxWidth);
+                    responseColumnsInfo.maxAbsWidth = $fakeWidth.width();
+                }
+            });
+
+            $fake.remove();
+            $(window).on("resize."+this.model.cid, _.bind(this.setResponsiveClasse, this));
+            _.defer(_.bind(this.setResponsiveClasse, this));
         },
 
         getAttributeModel: function vFrame_getAttributeModel(attributeId)
@@ -218,6 +285,19 @@ define([
             event.haveView = true;
             //Add the pointer to the current jquery element to a list passed by the event
             event.elements = event.elements.add(this.$el);
+        },
+
+        /**
+         * Destroy the associated widget and suppress event listener before remov the dom
+         *
+         * @returns {*}
+         */
+        remove: function vFrame_Remove()
+        {
+            $(window).off("." + this.model.cid);
+
+            console.log("REMOVE", this.model.id)
+            return Backbone.View.prototype.remove.call(this);
         }
     });
 

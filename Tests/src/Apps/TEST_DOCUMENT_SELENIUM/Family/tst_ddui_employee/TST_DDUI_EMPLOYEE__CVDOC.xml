@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents date="2017-11-09T11:22:26" author="Dynacase Platform Master" name="Custom &#039;&quot;export">
-<cvdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cvdoc.xsd"   name="CVDOC_TST_EMPLOYEE" title="Cycle de vue par défaut pour la famille &quot;Employé&quot; Employé" revision="0" modification-date="2017-11-09T09:42:44" version="" state=""> 
-<fr_basic><ba_title>Cycle de vue par défaut pour la famille "Employé"</ba_title>
-<cv_desc xsi:nil="true"/>
-<cv_famid name="TST_DDUI_EMPLOYEE">Employé</cv_famid>
-<cv_fam>Employé</cv_fam>
-<cv_t_views><cv_idview>CUSTOM2</cv_idview>
-<cv_lview>Custom</cv_lview>
-<cv_kview>VCONS</cv_kview>
-<cv_zview xsi:nil="true"/>
-<cv_renderconfigclass>Dcp\Test\Ddui\EmployeeCustomRender</cv_renderconfigclass>
-<cv_mskid xsi:nil="true"/>
-<cv_msk xsi:nil="true"/>
-<cv_order xsi:nil="true"/>
-<cv_displayed>yes</cv_displayed>
-<cv_menu xsi:nil="true"/></cv_t_views></fr_basic>
-<cv_fr_default><cv_idcview xsi:nil="true"/>
-<cv_lcview xsi:nil="true"/>
-<cv_renderaccessclass xsi:nil="true"/></cv_fr_default>
-<dpdoc_fr_dyn><dpdoc_famid xsi:nil="true"/>
-<dpdoc_fam xsi:nil="true"/></dpdoc_fr_dyn>
+    <cvdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cvdoc.xsd"
+           name="CVDOC_TST_EMPLOYEE" title="Contrôle de vue pour la famille &quot;Employé&quot; Employé"
+           revision="0" modification-date="2017-11-09T09:42:44" version="" state="">
+        <fr_basic>
+            <ba_title>Cycle de vue par défaut pour la famille "Employé"</ba_title>
+            <cv_desc xsi:nil="true"/>
+            <cv_famid name="TST_DDUI_EMPLOYEE">Employé</cv_famid>
+            <cv_fam>Employé</cv_fam>
+            <cv_t_views>
+                <cv_idview>CUSTOM2</cv_idview>
+                <cv_lview>Custom</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeCustomRender</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk xsi:nil="true"/>
+                <cv_order xsi:nil="true"/>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu xsi:nil="true"/>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>FRAMEVIEWCOLUMN</cv_idview>
+                <cv_lview>Responsive View</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameViewRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>FRAMEEDITCOLUMN</cv_idview>
+                <cv_lview>Responsive Edit</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameEditRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>TABVIEWCOLUMN</cv_idview>
+                <cv_lview>Responsive View</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeTabViewRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>TABEDITCOLUMN</cv_idview>
+                <cv_lview>Responsive Edit</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeTabEditRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+        </fr_basic>
+        <cv_fr_default>
+            <cv_idcview xsi:nil="true"/>
+            <cv_lcview xsi:nil="true"/>
+            <cv_renderaccessclass xsi:nil="true"/>
+        </cv_fr_default>
+        <dpdoc_fr_dyn>
+            <dpdoc_famid xsi:nil="true"/>
+            <dpdoc_fam xsi:nil="true"/>
+        </dpdoc_fr_dyn>
 
-</cvdoc>
+    </cvdoc>
 </documents>
