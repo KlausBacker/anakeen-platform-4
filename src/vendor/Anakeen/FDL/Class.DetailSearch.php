@@ -1124,7 +1124,6 @@ class DetailSearch extends \Dcp\Family\Search
         $alsosub = getHttpVars("alsosub") == "Y";
         $this->lay->set("ACTION", urlencode($action->name));
         $tclassdoc = array();
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
         

@@ -104,7 +104,7 @@ class Report extends \Dcp\Family\Dsearch
     {
         global $action;
         
-        $action->parent->addJsRef("lib/jquery/jquery.js");
+        $action->parent->addJsRef("legacy/jquery/jquery.js");
         
         $doc = new_doc($this->dbaccess, $this->getRawValue(MyAttributes::se_famid));
         $toa = $doc->getNormalAttributes();
