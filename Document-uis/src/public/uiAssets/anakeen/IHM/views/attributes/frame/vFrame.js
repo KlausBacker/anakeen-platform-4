@@ -139,31 +139,75 @@ define([
         setResponsiveClasse: function vFrame_setResponsiveClasse() {
             var _this=this;
             var fWidth=0;
-            var matchesResponsive=false;
+            var matchesResponsive=0;
             var responseColumnsDefs=this.model.getOption("responsiveColumns") || [];
+            var isTopBottom=false;
+            var isGrow=false;
 
             if (responseColumnsDefs.length > 0) {
                 fWidth=$(this.$el).width();
 
+                if (fWidth <= 0 ) {
+                    return;
+                }
+                var $vattrs=this.$el.find("> .dcpFrame__content > .row");
+
                 _.each(responseColumnsDefs, function vFrame_setResponsiveClasses(responseColumnsInfo) {
                     if (fWidth >= responseColumnsInfo.minAbsWidth && fWidth < responseColumnsInfo.maxAbsWidth) {
-                        _this.$el.addClass("dcp-column--" + responseColumnsInfo.number);
-                        matchesResponsive = true;
+
+                        matchesResponsive = responseColumnsInfo.number;
                         if (responseColumnsInfo.grow === true) {
                             _this.$el.addClass("dcp-column--grow");
+                            isGrow=true;
                         } else {
                             _this.$el.removeClass("dcp-column--grow");
+                            isGrow=false;
+                        }
+                        isTopBottom=responseColumnsInfo.direction === "topBottom";
+
+                        if (isGrow) {
+                            if ($vattrs.length < matchesResponsive) {
+                                matchesResponsive = $vattrs.length;
+                            } else if (isTopBottom) {
+                                var rowNumber=Math.ceil($vattrs.length / matchesResponsive);
+                                for (var i=matchesResponsive; i--; i>1) {
+                                    if (Math.ceil($vattrs.length / i) === rowNumber) {
+                                        // Decrease column number if not enough data to avoid empty columns
+                                        matchesResponsive=i;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (matchesResponsive > 1) {
+                            _this.$el.addClass("dcp-column--" + matchesResponsive);
                         }
                     } else {
                         _this.$el.removeClass("dcp-column--" + responseColumnsInfo.number);
                     }
                 });
 
-                if (matchesResponsive) {
+
+                if (matchesResponsive > 1) {
                     _this.$el.addClass("dcp-column");
+                    if (matchesResponsive !== this.frameColumnNumber) {
+
+                        this.frameColumnNumber=matchesResponsive;
+
+                        if (isTopBottom) {
+                            this.$el.addClass("dcp-column--topbottom");
+                            this.$el.removeClass("dcp-column--leftright");
+                        } else {
+                            this.$el.removeClass("dcp-column--topbottom");
+                            this.$el.addClass("dcp-column--leftright");
+                        }
+                    }
                 } else {
-                    _this.$el.removeClass("dcp-column");
-                    _this.$el.removeClass("dcp-column--grow");
+                    this.frameColumnNumber=matchesResponsive;
+                    this.$el.removeClass("dcp-column");
+                    this.$el.removeClass("dcp-column--topbottom");
+                    this.$el.removeClass("dcp-column--leftright");
+                    this.$el.removeClass("dcp-column--grow");
                 }
             }
         },
@@ -195,7 +239,7 @@ define([
             });
 
             $fake.remove();
-            $(window).on("resize."+this.model.cid, _.bind(this.setResponsiveClasse, this));
+            $(window).on("resize.v"+this.model.cid, _.bind(this.setResponsiveClasse, this));
             _.defer(_.bind(this.setResponsiveClasse, this));
         },
 
@@ -294,9 +338,8 @@ define([
          */
         remove: function vFrame_Remove()
         {
-            $(window).off("." + this.model.cid);
+            $(window).off(".v" + this.model.cid);
 
-            console.log("REMOVE", this.model.id)
             return Backbone.View.prototype.remove.call(this);
         }
     });

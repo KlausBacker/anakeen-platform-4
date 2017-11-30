@@ -192,31 +192,32 @@ HTML;
     }
 }
 
-class EmployeeFrameViewRender  extends \Dcp\Ui\DefaultView
+class EmployeeFrameViewSRCLRRender  extends \Dcp\Ui\DefaultView
 {
-    public static function setColumn(\Dcp\Ui\RenderOptions &$options) {
+    public static function setColumn(\Dcp\Ui\RenderOptions &$options, $direction=\Dcp\Ui\FrameRenderOptions::leftRightDirection) {
 
-        $options->frame()->setResponsiveColumns([["number" => 2, "minWidth" => "70rem", "grow" => true]]);
+        $options->frame()->setResponsiveColumns([["number" => 2, "minWidth" => "70rem", "grow" => true, "direction" => $direction]]);
 
 
+        
         $options->frame(myAttribute::tst_f_identite)->setResponsiveColumns([
-            ["number" => 2, "minWidth" => "70rem"  , "maxWidth" => "100rem"],
-            ["number" => 3, "minWidth" => "100rem" , "maxWidth" => "110rem"],
-            ["number" => 4, "minWidth" => "110rem" , "maxWidth" => "120rem"],
-            ["number" => 5, "minWidth" => "120rem" , "maxWidth" => "130rem"],
-            ["number" => 6, "minWidth" => "130rem" ]
+            ["number" => 2, "minWidth" => "70rem"  , "maxWidth" => "100rem", "direction" => $direction],
+            ["number" => 3, "minWidth" => "100rem" , "maxWidth" => "110rem", "direction" => $direction],
+            ["number" => 4, "minWidth" => "110rem" , "maxWidth" => "120rem", "direction" => $direction],
+            ["number" => 5, "minWidth" => "120rem" , "maxWidth" => "130rem", "direction" => $direction, "grow"=>false],
+            ["number" => 6, "minWidth" => "130rem" , "direction" => $direction, "grow"=>false]
         ]);
 
         $options->frame(myAttribute::tst_f_adresseperso)->setResponsiveColumns([
-            ["number" => 2, "minWidth" => "600px"  , "maxWidth" => "800px"],
-            ["number" => 3, "minWidth" => "800px" , "maxWidth" => "1000px"],
-            ["number" => 4, "minWidth" => "1000px" ]
+            ["number" => 2, "minWidth" => "600px"  , "maxWidth" => "800px", "direction" => $direction],
+            ["number" => 3, "minWidth" => "800px" , "maxWidth" => "1000px", "direction" => $direction],
+            ["number" => 4, "minWidth" => "1000px" , "direction" => $direction]
         ]);
         $options->frame(myAttribute::tst_f_dombancaire)->setResponsiveColumns([
-            ["number" => 2, "minWidth" => "500px"  , "maxWidth" => "700px"],
-            ["number" => 3, "maxWidth" => "800px"],
-            ["number" => 4, "maxWidth" => "1900px"],
-            ["number" => 6, "maxWidth" => "2200px"],
+            ["number" => 2, "minWidth" => "500px"  , "maxWidth" => "700px", "direction" => $direction],
+            ["number" => 3, "maxWidth" => "800px", "direction" => $direction],
+            ["number" => 4, "maxWidth" => "1900px", "direction" => $direction],
+            ["number" => 6, "maxWidth" => "2200px", "direction" => $direction],
             ["number" => 12 ]
         ]);
 
@@ -232,13 +233,37 @@ class EmployeeFrameViewRender  extends \Dcp\Ui\DefaultView
         return $options;
     }
 }
-class EmployeeFrameEditRender  extends \Dcp\Ui\DefaultEdit
+class EmployeeFrameEditSRCLRRender  extends \Dcp\Ui\DefaultEdit
 {
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
 
-        EmployeeFrameViewRender::setColumn($options);
+        EmployeeFrameViewSRCLRRender::setColumn($options);
+
+        return $options;
+    }
+}
+
+
+class EmployeeFrameViewSRCTBRender  extends \Dcp\Ui\DefaultView
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        EmployeeFrameViewSRCLRRender::setColumn($options,\Dcp\Ui\FrameRenderOptions::topBottomDirection);
+
+        return $options;
+    }
+}
+class EmployeeFrameEditSRCTBRender  extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        EmployeeFrameViewSRCLRRender::setColumn($options,\Dcp\Ui\FrameRenderOptions::topBottomDirection);
 
         return $options;
     }

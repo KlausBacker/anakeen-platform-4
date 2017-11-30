@@ -23,3 +23,8 @@
 .dcpDocument__body {
     padding-bottom: 0;
 }
+
+
+.dcpDocument--view .dcpAttribute__value--read{
+    font-family: inherit;
+}

@@ -27,10 +27,14 @@ class TabRenderOptions extends CommonRenderOptions
     }
 
 
-
-
     /**
-     * Set interval length condition to divide frame attributes in column
+     * Set interval length condition to divide tab frame's in column
+     * Direction is left to right
+     * number : column number between 2 to 12
+     * minWidth : min width of frame div to use (included)
+     * maxWidth : max width of frame div to use (excluded)
+     * grow : grow width in last row is missing attributes to complete row
+     *
      * @param array $responsives
      */
     public function setResponsiveColumns(array $responsives)

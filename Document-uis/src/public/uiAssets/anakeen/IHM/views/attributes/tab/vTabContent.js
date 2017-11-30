@@ -110,11 +110,13 @@ define([
                 this.initialized = true;
             }
             $(window.document).trigger("redrawErrorMessages");
+             this.model.get("content").propageEvent('resize');
         },
 
 
-
-
+        /**
+         * Add responsive column classes according to responsiveColumns render option
+         */
         responsiveColumns: function vTab_responsiveColumns() {
             var responseColumnsDefs=this.model.getOption("responsiveColumns") || [];
             var _this=this;
@@ -145,10 +147,9 @@ define([
                 }
                 if (matchesResponsive !== _this.frameIsResized) {
                     _this.frameIsResized=matchesResponsive;
-                    _this.model.get('content').each(function (ma) {
-                        // Send resize to frame in case they have also responsive.
-                        ma.trigger("resize");
-                    });
+                    // Send resize to frame in case they have also responsive.
+                    _this.model.get("content").propageEvent('resize');
+
                 }
             };
 
@@ -172,8 +173,7 @@ define([
             });
 
             $fake.remove();
-            console.log("Add RESIZE Tab", _this.model.id, this.model.cid, responseColumnsDefs);
-            $(window).on("resize."+this.model.cid, setResponsiveClasse);
+            $(window).on("resize.v"+this.model.cid, setResponsiveClasse);
             _.defer(setResponsiveClasse);
         },
 
@@ -202,6 +202,12 @@ define([
             event.haveView = true;
             //Add the pointer to the current jquery element to a list passed by the event
             event.elements = event.elements.add(this.$el);
+        },
+        remove: function vFrame_Remove()
+        {
+            $(window).off(".v" + this.model.cid);
+
+            return Backbone.View.prototype.remove.call(this);
         }
     });
 

@@ -1,46 +1,74 @@
 $spaceBeetween:1rem;
 
-.dcpFrame.dcp-column {
 
-  > .dcpFrame__content {
+// ---------------------
+// FRAME LEFT - RIGHT
+// ---------------------
+.dcp-column--leftright {
+  &.dcpFrame.dcp-column {
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    //justify-content: space-between;
+    > .dcpFrame__content {
 
-    > .row {
-      //flex-grow: 1; // Set to 1 to grow the last line to the end
-      margin-left:($spaceBeetween /2);
-      margin-right:($spaceBeetween /2);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      //justify-content: space-between;
+
+      > .row {
+        //flex-grow: 1; // Set to 1 to grow the last line to the end
+        margin-left: ($spaceBeetween /2);
+        margin-right: ($spaceBeetween /2);
+      }
     }
   }
-}
 
-.dcp-column--grow {
-  > .dcpFrame__content {
-    > .row {
-      flex-grow: 1;
-    }
-  }
-  &.dcpTab__content {
-     > .dcpFrame {
-      flex-grow: 1;
-     }
-  }
-}
-
-
-
-@for $column from 2 through 12 {
-  .dcpFrame.dcp-column--#{$column} {
+  &.dcp-column--grow {
     > .dcpFrame__content {
       > .row {
-        flex-basis: calc(#{(100/$column)}% - #{$spaceBeetween});
+        flex-grow: 1;
+      }
+    }
+
+  }
+
+  @for $column from 2 through 12 {
+    &.dcpFrame.dcp-column--#{$column} {
+      > .dcpFrame__content {
+        > .row {
+          flex-basis: calc(#{(100/$column)}% - #{$spaceBeetween});
+        }
       }
     }
   }
 }
+
+
+// ---------------------
+// FRAME TOP - BOTTOM
+// ---------------------
+.dcp-column--topbottom {
+  &.dcpFrame.dcp-column {
+    > .dcpFrame__content {
+      column-rule: solid 1px $A4-ui-doc-edit-attribute-color-border;
+      > .row {
+        break-inside: avoid;
+      }
+    }
+  }
+
+  @for $column from 2 through 12 {
+    &.dcpFrame.dcp-column--#{$column} {
+      > .dcpFrame__content {
+        column-count: $column;
+      }
+    }
+  }
+}
+
+
+// ---------------------
+// Tab Responsive
+// ---------------------
 .dcpTab__content.dcp-column.k-content {
     display: flex;
     flex-direction: row;
@@ -59,6 +87,15 @@ $spaceBeetween:1rem;
   .dcpTab__content.dcp-column--#{$column} {
     > .dcpFrame  {
         flex-basis: calc(#{(100/$column)}% - #{$spaceBeetween});
+    }
+  }
+}
+
+
+.dcp-column--grow {
+  &.dcpTab__content {
+    > .dcpFrame {
+      flex-grow: 1;
     }
   }
 }

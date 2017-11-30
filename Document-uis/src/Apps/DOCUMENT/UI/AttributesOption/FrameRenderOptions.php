@@ -16,6 +16,8 @@ class FrameRenderOptions extends CommonRenderOptions
     const collapseExpanded = "expand";
     const collapseCollapsed = "collapse";
     const responsiveColumnsOption = "responsiveColumns";
+    const topBottomDirection="topBottom";
+    const leftRightDirection="leftRight";
 
     /**
      * Expand / Collapse frame content
@@ -48,6 +50,12 @@ class FrameRenderOptions extends CommonRenderOptions
 
     /**
      * Set interval length condition to divide frame attributes in column
+     * number : column number between 2 to 12
+     * minWidth : min width of frame div to use (included)
+     * maxWidth : max width of frame div to use (excluded)
+     * direction : leftRight  or topBottom
+     * grow : in leftRight : grow width in last row is missing attributes to complete row
+     *     in topBottom : decrease column number if last columns are empty
      * @param array $responsives
      */
     public function setResponsiveColumns(array $responsives)
@@ -63,6 +71,7 @@ class FrameRenderOptions extends CommonRenderOptions
                 "minWidth" => $responsive["minWidth"],
                 "maxWidth" => $responsive["maxWidth"],
                 "grow" => $responsive["grow"],
+                "direction" => $responsive["direction"],
             ];
             $previousMax=$responsive["maxWidth"];
         }

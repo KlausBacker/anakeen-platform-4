@@ -25,7 +25,7 @@
                 <cv_lview>Responsive View</cv_lview>
                 <cv_kview>VCONS</cv_kview>
                 <cv_zview xsi:nil="true"/>
-                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameViewRender</cv_renderconfigclass>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameViewSRCLRRender</cv_renderconfigclass>
                 <cv_displayed>no</cv_displayed>
             </cv_t_views>
             <cv_t_views>
@@ -33,7 +33,23 @@
                 <cv_lview>Responsive Edit</cv_lview>
                 <cv_kview>VEDIT</cv_kview>
                 <cv_zview xsi:nil="true"/>
-                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameEditRender</cv_renderconfigclass>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameEditSRCLRRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>FRAMEVIEWTBCOLUMN</cv_idview>
+                <cv_lview>Responsive View</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameViewSRCTBRender</cv_renderconfigclass>
+                <cv_displayed>no</cv_displayed>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>FRAMEEDITTBCOLUMN</cv_idview>
+                <cv_lview>Responsive Edit</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview xsi:nil="true"/>
+                <cv_renderconfigclass>Dcp\Test\Ddui\EmployeeFrameEditSRCTBRender</cv_renderconfigclass>
                 <cv_displayed>no</cv_displayed>
             </cv_t_views>
             <cv_t_views>
