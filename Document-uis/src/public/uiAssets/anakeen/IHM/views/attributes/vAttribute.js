@@ -148,7 +148,7 @@ define([
                 }
 
                 //If there is a template render it
-                if (currentView.model.getOption("template")) {
+                if (currentView.options.originalView !== true && currentView.model.getOption("template")) {
                     customRender = attributeTemplate.renderCustomView(currentView.model);
                     currentView.customView = customRender.$el;
                     currentView.$el.find(".dcpAttribute__content").append(currentView.customView);
