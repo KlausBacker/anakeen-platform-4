@@ -154,6 +154,7 @@ define([
                 Promise.all(promisesColumn).then(function renderDone() {
                     currentView.$el.attr("data-attrid", currentView.model.id);
                     currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
+                    resolve(currentView);
                 });
 
                 return this;
