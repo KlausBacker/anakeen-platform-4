@@ -59,6 +59,14 @@
   }
 }
 
+.row.dcpArray--left {
+  align-items: start;
+  .dcpAttribute__left {
+    padding-top:0;
+    font-size:1em;
+    line-height: 2.2;
+  }
+}
 
 .row.dcpAttribute.dcpAttribute__labelPosition--up {
   flex-direction: column;
