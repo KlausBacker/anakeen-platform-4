@@ -220,7 +220,7 @@
                     currentWidget.element.closest(".dcpAttribute__content").removeClass("dcpAttribute--focus");
                 });
 
-                this.ckEditorInstance.on("loaded", function wHtmltext_loaded()
+                this.ckEditorInstance.on("instanceReady", function wHtmltext_loaded()
                 {
                     currentWidget._trigger("widgetReady");
                 });
@@ -368,7 +368,6 @@
 
                     // Modify value only if different
                     this.getContentElements().val(value.value);
-                    // this.ckEditorInstance.setData(value.value);
                     this.flashElement(this.element.find('iframe'));
                 }
             } else
