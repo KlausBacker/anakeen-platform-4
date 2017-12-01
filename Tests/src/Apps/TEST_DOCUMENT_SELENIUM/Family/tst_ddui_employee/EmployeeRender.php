@@ -210,8 +210,7 @@ class EmployeeFrameViewSRCLRRender  extends \Dcp\Ui\DefaultView
 
         $options->frame(myAttribute::tst_f_adresseperso)->setResponsiveColumns([
             ["number" => 2, "minWidth" => "600px"  , "maxWidth" => "800px", "direction" => $direction],
-            ["number" => 3, "minWidth" => "800px" , "maxWidth" => "1000px", "direction" => $direction],
-            ["number" => 4, "minWidth" => "1000px" , "direction" => $direction]
+            ["number" => 3, "direction" => $direction],
         ]);
         $options->frame(myAttribute::tst_f_dombancaire)->setResponsiveColumns([
             ["number" => 2, "minWidth" => "500px"  , "maxWidth" => "700px", "direction" => $direction],
