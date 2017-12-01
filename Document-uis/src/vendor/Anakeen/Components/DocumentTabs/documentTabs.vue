@@ -6,9 +6,9 @@
                 </div>
                 <div ref="tabsPaginator" class="documentsList__documentsTabs__tabs__paginator">
                     <input class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__dropdown__button" ref="tabsList"/>
-                    <button @click="closeAllDocuments" class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__close">
-                        <span class="k-icon k-i-x"></span>
-                    </button>
+                    <!--<button @click="closeAllDocuments" class="documentsList__documentsTabs__tabs__paginator__button documentsList__documentsTabs__tabs__paginator__close">-->
+                        <!--<span class="k-icon k-i-x"></span>-->
+                    <!--</button>-->
                 </div>
         </div>
         <div class="documentsList__documentsTabs__empty" v-if="emptyState">

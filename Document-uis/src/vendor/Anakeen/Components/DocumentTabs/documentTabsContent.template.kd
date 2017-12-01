@@ -1,4 +1,7 @@
-<a4-document initid="#: initid#"
-             # if (data.viewid) { #viewid="#= viewid#" # }#
-             # if (data.revision) { #revision="#=revision#" #}#>
-</a4-document>
+<div class="documentsList__documentsTabs__tab__content__wrapper">
+    <a4-document class="documentsList__documentsTabs__tab__content--document" style="display: none" initid="#: initid#"
+                 # if (data.viewid) { #viewid="#= viewid#" # }#
+                 # if (data.revision) { #revision="#=revision#" #}#>
+    </a4-document>
+    <a4-loading class="documentsList__documentsTabs__tab__content--loading" width="auto" height="5rem" color="black"></a4-loading>
+</div>

@@ -2,6 +2,7 @@
 import contentTemplate from './documentTabsContent.template.kd';
 import headerTemplate from './documentTabsHeader.template.kd';
 import welcomeTemplate from './documentTabsWelcome.template.kd';
+import openedTabListItemTemplate from './documentOpenedTabListItem.template.kd';
 import recentConsultTemplate from './documentTabsRecentConsultItem.template.kd';
 import abstractAnakeenComponent from '../componentBase';
 
@@ -41,71 +42,59 @@ export default {
 
     created() {
         this.privateScope = {
-            // Init the model and view kendo element
-            initKendoComponents: () => {
-                this.recentConsultationsSource = new this.$kendo.data.DataSource({
-                    transport: {
-                        read: (options) => {
-                            this.$http.get('sba/documentsSearch', {
-                                params: {
-                                    collections: this.collections.map(c => c.initid).join(','),
-                                    slice: '8',
-                                    utag: 'open_document',
-                                    iconSize: '110x110',
-                                },
-                            }).then((response) => {
-                                options.success(response);
-                            }).catch((error) => {
-                                options.error(error);
-                            });
-                        },
-                    },
-                    schema: {
-                        data: (response) => {
-                            const utags = response.data.data.utags;
-                            const documents = response.data.data.documents;
-                            return documents.map((d) => {
-                                d.utag = utags[d.properties.id];
-                                return d;
-                            });
-                        },
-                    },
+
+            initKendoOpenedTabsList: () => {
+                this.tabsListSource = new this.$kendo.data.DataSource({
+                    data: [],
                 });
+                this.tabsListElement = this.$(this.$refs.tabsList).kendoDropDownList({
+                    animation: false,
+                    dataSource: this.tabsListSource,
+                    template: this.$kendo.template(openedTabListItemTemplate),
+                    valueTemplate: '<i class="material-icons">list</span>',
+                    autoWidth: true,
+                    select: this.privateScope.onClickTabList,
+                    noDataTemplate: 'Aucun document ouvert',
+                    headerTemplate: '<button>Fermer tous les onglets</button>',
+                });
+                this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
+            },
+
+            initKendoTabStrip: () => {
                 this.tabstripElement = this.$(this.$refs.tabstrip).kendoTabStrip({
                     animation: false,
                     select: (e) => {
-                        const selectedTab = this.tabsArray[this.$(e.item).index()];
+                        const i = this.$(e.item).index();
+                        const selectedTab = this.openedTabs[i];
                         if (selectedTab.tabId === Constants.NEW_TAB_ID ||
                             selectedTab.tabId === Constants.WELCOME_TAB_ID) {
-                            if (this.recentConsultationsSource) {
-                                this.recentConsultationsSource.read();
+                            const element = this.tabstrip.contentElement(i);
+                            const welcomeTab = this.$(element).find('a4-welcome-tab');
+                            if (welcomeTab) {
+                                welcomeTab.prop('publicMethods').refresh();
                             }
                         }
                     },
                 });
                 this.openedTabs = new this.$kendo.data.ObservableArray([]);
                 this.privateScope.bindDataChange(this.openedTabs);
-                this.tabsListElement = this.$(this.$refs.tabsList).kendoDropDownList({
-                    animation: false,
-                    dataSource: [],
-                    template: this.$kendo.template(headerTemplate),
-                    valueTemplate: this.$kendo.template('<i class="material-icons">list</span>'),
-                    autoWidth: true,
-                    select: this.privateScope.onClickTabList,
-                    noDataTemplate: 'Aucun document ouvert',
-                });
-                this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
+            },
+            // Init the model and view kendo element
+            initKendoComponents: () => new Promise((resolve) => {
+                this.privateScope.initKendoTabStrip();
+                this.privateScope.initKendoOpenedTabsList();
                 this.privateScope.sendGetRequest('sba/collections')
                     .then((response) => {
                         this.collections = response.data.data.collections;
                         this.currentUser = response.data.data.user;
-                        this.privateScope.initTabs();
+                        this.privateScope.initTabsData();
                     });
                 this.$(window).resize(() => {
                     this.privateScope.resizeComponents();
                 });
                 this.privateScope.resizeComponents();
-            },
+                resolve();
+            }),
 
             sendGetRequest: (url) => {
                 const element = this.$(this.$refs.tabsWrapper);
@@ -122,11 +111,11 @@ export default {
                 });
             },
 
-            initTabs: () => {
+            initTabsData: () => {
                 this.openedTabs.push({
                     tabId: Constants.WELCOME_TAB_ID,
                     headerTemplate: `<span class="tab__document__header__content">                            
-                                        <span>BIENVENUE</span>
+                                        <span class="tab__document__title">BIENVENUE</span>
                                         <span class="tab__new__button"><i class="material-icons">add</i></span>
                                      </span>`,
                     contentTemplate: welcomeTemplate,
@@ -134,7 +123,7 @@ export default {
                         user: this.currentUser.firstName,
                         welcomeMessage: 'bienvenue sur  Business App.',
                         promptMessage: 'Que voulez-vous faire ?',
-                        collections: this.collections,
+                        collections: JSON.stringify(this.collections),
                     },
                 });
                 this.selectDocument(0);
@@ -144,15 +133,14 @@ export default {
                 this.openedTabs.push({
                     tabId: Constants.NEW_TAB_ID,
                     headerTemplate: `<span class="tab__document__header__content">
-                                        <i class="material-icons">crop_square</i>
-                                        NOUVEL ONGLET
+                                        <span class="tab__document__title">NOUVEL ONGLET</span>
                                         <span class="tab__new__button"><i class="material-icons">add</i></span>
                                      </span>`,
                     contentTemplate: welcomeTemplate,
                     data: {
                         user: this.currentUser.firstName,
                         promptMessage: 'Que voulez-vous faire ?',
-                        collections: this.collections,
+                        collections: JSON.stringify(this.collections),
                     },
                 });
                 this.selectDocument(this.openedTabs.length - 1);
@@ -161,8 +149,6 @@ export default {
             onClickTabList: (e) => {
                 this.selectDocument(e.sender.dataItem(e.item));
             },
-
-            formatTabContentData: (data) => this.$kendo.template(contentTemplate)(data),
 
             // Enable or disable close tab button
             configureCloseTab: (tab, forceClose) => {
@@ -199,7 +185,6 @@ export default {
             computeTabstripMargin: () => {
                 const paginatorWidth = this.$(this.$refs.tabsPaginator).outerWidth(true);
                 let marginRight = paginatorWidth || 0;
-                let tabMargin = this.tabstrip.tabGroup.children().first().css('margin-right') || 0;
                 const prev = this.tabstripElement.find('.k-tabstrip-prev');
                 const next = this.tabstripElement.find('.k-tabstrip-next');
                 if (prev.length && next.length) {
@@ -210,7 +195,7 @@ export default {
                     marginRight = marginRight + prevWidth + nextWidth;
                 }
 
-                this.tabstrip.tabGroup.css('margin-right', `calc(${marginRight}px + ${tabMargin})`);
+                this.tabstrip.tabGroup.css('padding-right', `${marginRight}px`);
             },
 
             // Tag visited document
@@ -234,8 +219,8 @@ export default {
                         documentComponent.prop('publicMethods').injectCSS(this.documentCss);
                     }
 
-                    this.$(tabContent).find('div.documentContent').show();
-                    this.$(tabContent).find('div.loading').hide();
+                    this.$(tabContent).find('.documentsList__documentsTabs__tab__content--document').show();
+                    this.$(tabContent).find('.documentsList__documentsTabs__tab__content--loading').hide();
                     this.$(tabItem).find('a.tab__document__header__content').prop('href', e.detail[1].url);
                 });
                 documentComponent.on('actionClick', (e) => {
@@ -260,9 +245,10 @@ export default {
             },
 
             bindNewTabEvents: (tabContent, index) => {
-                this.$(tabContent).find('.documentsList__documentsTabs__welcome__collection__button')
-                    .on('click', (e) => {
-                        const newId = e.target.dataset.famid;
+                const $newTab = this.$(tabContent).find('a4-welcome-tab');
+                $newTab.on('document-creation', (e) => {
+                        const newId = e.detail[0].initid;
+                        console.log(newId);
                         const collection = this.collections.find((c) => c.initid === newId);
                         if (collection) {
                             this.openedTabs.splice(index, 1, {
@@ -279,72 +265,13 @@ export default {
                             this.selectDocument(index);
                         }
                     });
-            },
-
-            createAutocompleteSearch: (tabContent, index) => {
-                const $input = this.$(tabContent).find('.documentsList__documentsTabs__welcome__content__open__input');
-                const kendoInput = $input.kendoAutoComplete({
-                    clearButton: true,
-                    autoBind: false,
-                    select: (e) => this.setDocument(e.dataItem.properties, index),
-                    dataTextField: 'properties.title',
-                    dataValueField: 'properties.id',
-                    template: `<div style="display: flex; align-items: center;">
-                                    <img style="margin-right: 1rem" src="#= properties.icon#"/>
-                                    <span>#= properties.title#</span>
-                               </div>`,
-                    serverFiltering: true,
-                    noDataTemplate: 'Aucune correspondance',
-                    footerTemplate: `<div style="display: flex; 
-                                                justify-content: center; 
-                                                padding-top: 1rem; 
-                                                border-top: 1px solid lightgrey">
-                                        <span><strong>#: instance.dataSource.total() #</strong> documents trouvés</span>
-                                    </div>`,
-                    autoWidth: true,
-                    dataSource: {
-                        transport: {
-                            read: (options) => {
-                                const params = {
-                                        collections: this.collections.map(c => c.initid).join(','),
-                                        fields: 'document.properties.icon,document.properties.title',
-                                        slice: 'all',
-                                    };
-                                if (kendoInput.value()) {
-                                    params.filter = kendoInput.value();
-                                }
-
-                                this.$http.get('sba/documentsSearch', {
-                                    params,
-                                }).then(options.success).catch(options.error);
-                            },
-                        },
-                        schema: {
-                            data: (response) => response.data.data.documents,
-                        },
-                    },
-                }).data('kendoAutoComplete');
-                const searchButton = this.$(tabContent)
-                    .find('.documentsList__documentsTabs__welcome__content__open--search');
-                searchButton.kendoButton();
-            },
-
-            createRecentConsultationsList: (tabContent, index) => {
-                const $list = this.$(tabContent)
-                    .find('.documentsList__documentsTabs__welcome__content__recommended .documentsList__documentsTabs__welcome__content__inner--content');
-                $list.kendoListView({
-                    dataSource: this.recentConsultationsSource,
-                    dataTextField: 'properties.title',
-                    template: this.$kendo.template(recentConsultTemplate),
-                    change: (e) => {
-                        const data = this.recentConsultationsSource.view();
-                        const selected = this.$.map(e.sender.select(), (item) => data[$(item).index()]);
-                        this.setDocument(selected[0].properties, index);
-                    },
-
-                    selectable: 'single',
+                $newTab.on('document-selected', (e) => {
+                    this.setDocument(e.detail[0], index);
                 });
+            },
 
+            configureWelcomeTab: (tabContent, index) => {
+                this.privateScope.bindNewTabEvents(tabContent, index);
             },
 
             // Listen model changes and update view
@@ -379,11 +306,8 @@ export default {
                                 this.privateScope.computeTabstripMargin();
                                 if (item.tabId === Constants.WELCOME_TAB_ID
                                     || item.tabId === Constants.NEW_TAB_ID) {
-                                    this.privateScope.bindNewTabEvents(this.tabstrip.contentElement(e.index), e.index);
                                     this.privateScope
-                                        .createAutocompleteSearch(this.tabstrip.contentElement(e.index), e.index);
-                                    this.privateScope
-                                        .createRecentConsultationsList(this.tabstrip.contentElement(e.index), e.index);
+                                        .configureWelcomeTab(this.tabstrip.contentElement(e.index), e.index);
                                 }
 
                                 break;
@@ -396,7 +320,7 @@ export default {
                                 }
 
                                 if (!this.openedTabs.length) {
-                                    this.privateScope.initTabs();
+                                    this.privateScope.initTabsData();
                                 }
 
                                 this.privateScope.computeTabstripMargin();
@@ -419,6 +343,7 @@ export default {
                                 }
                                 break;
                         }
+                        this.tabsListSource.data(this.tabsArray.filter(t => t.tabId !== Constants.NEW_TAB_ID && t.tabId !== Constants.WELCOME_TAB_ID));
                     });
                 }
             },
@@ -426,9 +351,10 @@ export default {
     },
 
     mounted() {
-        this.privateScope.initKendoComponents();
         const ready = () => {
-            this.$emit('document-tabs-ready', this.$el);
+            this.privateScope.initKendoComponents().then(() => {
+                this.$emit('document-tabs-ready', this.$el);
+            });
         };
 
         if (document.readyState === 'loading') {
