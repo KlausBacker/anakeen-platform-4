@@ -23,12 +23,12 @@
                         <input type="text"
                                class="form-control documentsList__documentsTabs__welcome__content__open__input"
                                placeholder="Rechercher" ref="documentsSearch"/>
-                        <!--<i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--remove">
+                        <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--remove" @click="onRemoveSearch">
                             close
-                        </i>-->
-                        <button class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--search" ref="searchButton">
+                        </i>
+                        <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--search">
                             search
-                        </button>
+                        </i>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <i class="material-icons">view_carousel</i> Dernières consultations
                 </div>
                 <div class="documentsList__documentsTabs__welcome__content__inner--content" ref="recentConsultLoading">
-                    <table v-if="lastConsultations.length" class="documentsList__documentsTabs__welcome__content__inner--table-content table table-bordered table-hover table-responsive" ref="recentConsult">
+                    <table v-if="lastConsultations.length" class="documentsList__documentsTabs__welcome__content__inner--table-content table-bordered table-hover table-responsive" ref="recentConsult">
                         <thead>
                         <tr>
                             <th>Collection</th>
@@ -63,7 +63,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="c in lastConsultations" @click.capture="onRecentDocumentClick(c.properties)">
-                                <td><img :src="c.utag.icon"/></td>
+                                <td><img :src="c.utag.icon"/> {{c.properties.family.title}}</td>
                                 <td>{{c.properties.title}}</td>
                                 <td v-if="c.properties.state"><div :style="getStateTag(c.properties.state.color)"></div>{{c.properties.state.displayValue}}</td>
                                 <td v-else="true"></td>

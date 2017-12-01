@@ -36,7 +36,7 @@ export default {
             createAutocompleteSearch: () => {
                 const $input = this.$(this.$refs.documentsSearch);
                 const kendoInput = $input.kendoAutoComplete({
-                    clearButton: true,
+                    clearButton: false,
                     autoBind: false,
                     select: (e) => this.$emit('document-selected', e.dataItem.properties),
                     dataTextField: 'properties.title',
@@ -76,8 +76,6 @@ export default {
                         },
                     },
                 }).data('kendoAutoComplete');
-                const searchButton = this.$(this.$refs.searchButton);
-                searchButton.kendoButton();
             },
 
             configureWelcomeTab: () => {
@@ -90,7 +88,7 @@ export default {
                 this.privateScope.sendGetRequest('sba/documentsSearch', {
                     params: {
                         collections: this.collectionsArray.map(c => c.initid).join(','),
-                        fields: 'document.properties.title,document.properties.icon,document.properties.state',
+                        fields: 'document.properties.title,document.properties.icon,document.properties.state,document.properties.family',
                         slice: '5',
                         utag: 'open_document',
                         iconSize: '24x24c',
@@ -153,6 +151,10 @@ export default {
 
         onRecentDocumentClick(document) {
             this.$emit('document-selected', document)
+        },
+
+        onRemoveSearch() {
+            this.$(this.$refs.documentsSearch).data('kendoAutoComplete').value('');
         },
 
         getStateTag(color) {
