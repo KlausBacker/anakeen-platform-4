@@ -3,15 +3,25 @@ import mixin from '../componentBase';
 export default {
     mixins: [mixin],
     mounted() {
-        this.initKendo();
-        this.sendGetRequest('/sba/collections')
-            .then((response) => {
-                this.collections = response.data.data.collections;
-                this.currentUser = response.data.data.user;
-                this.updateKendoData();
-                const listView = this.$(this.$refs.listView).data('kendoListView');
-                listView.select(listView.element.children().first());
-            });
+        this.$kendo.ui.progress(this.$(this.$refs.wrapper), true);
+        const ready = () => {
+            this.initKendo();
+            this.sendGetRequest('/sba/collections')
+                .then((response) => {
+                    this.collections = response.data.data.collections;
+                    this.currentUser = response.data.data.user;
+                    this.updateKendoData();
+                    const listView = this.$(this.$refs.listView).data('kendoListView');
+                    listView.select(listView.element.children().first());
+                });
+            this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', ready);
+        } else {
+            ready();
+        }
     },
 
     data() {

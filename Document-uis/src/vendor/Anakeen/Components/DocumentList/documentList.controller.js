@@ -142,8 +142,18 @@ export default {
     },
 
     mounted() {
-        this.privateScope.initKendo();
-        this.privateScope.replaceTopPagerButton();
+        this.$kendo.ui.progress(this.$(this.$refs.wrapper), true);
+        const ready = () => {
+            this.privateScope.initKendo();
+            this.privateScope.replaceTopPagerButton();
+            this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', ready);
+        } else {
+            ready();
+        }
     },
 
     data() {
