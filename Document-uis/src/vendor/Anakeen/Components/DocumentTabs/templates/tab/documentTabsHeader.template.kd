@@ -5,5 +5,4 @@
     <i class="fa fa-spinner fa-pulse tab__document__icon"></i>
     #}#
     <span class="tab__document__title"># if (data.title) { # #= title# # } else {# Chargement en cours...#}#</span>
-    <button class="tab__new__button"><i class="material-icons">add</i></button>
 </a>
