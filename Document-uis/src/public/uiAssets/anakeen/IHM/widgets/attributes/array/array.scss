@@ -26,7 +26,9 @@
     padding: 0.4rem 0.7rem;
   }
 }
-
+.dcpArray__head {
+  background-color: $A4-ui-array-header-background;
+}
 .dcpArray__head__cell {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -154,10 +156,7 @@ table.responsive {
   border: none;
   text-align: right;
   clear: both;
-  &:after {
-    content: ":";
-    padding-left: 0.6em;
-  }
+
 }
 
 .dcpArray__tools {
@@ -173,14 +172,12 @@ table.responsive {
   border-style: none;
   text-align: right;
   clear: both;
-  &:after {
-    content: ":";
-    padding-left: 0.6em;
-  }
+
 }
 
 .dcpArray--left.dcpAttribute__labelPosition--auto {
   border-style: none;
+  padding-left: 0;
 }
 
 .dcpArray.dcpAttribute__labelPosition--up .dcpArray__content > .table-bordered {

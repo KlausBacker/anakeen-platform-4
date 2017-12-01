@@ -1,11 +1,12 @@
-.dcpAttribute__label label{
+.dcpAttribute__label label {
   font-weight: normal;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: inline-block;
   margin-bottom: 0;
 }
-
+,
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left,
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto,
 .dcpAttribute__label {
   &:after {
     content: ":";

@@ -26,6 +26,9 @@ class EmployeeEditRender extends \Dcp\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
         $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+
+
+
         //$options->frame()->setCollapse(true);
         //$options->frame(myAttribute::tst_f_dombancaire)->setCollapse(false);
         $options->tab(myAttribute::tst_t_infos_administratives)->setDescription("<p>Section contenant les informations nécessaires pour le paiement des notes de frais.</p>
@@ -184,6 +187,125 @@ HTML;
 HTML;
         $options->text(myAttribute::tst_nom)->setTemplate($tplIdent)
         ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+
+        return $options;
+    }
+}
+
+class EmployeeFrameViewSRCLRRender  extends \Dcp\Ui\DefaultView
+{
+    public static function setColumn(\Dcp\Ui\RenderOptions &$options, $direction=\Dcp\Ui\FrameRenderOptions::leftRightDirection) {
+
+        $options->frame()->setResponsiveColumns([["number" => 2, "minWidth" => "70rem", "grow" => true, "direction" => $direction]]);
+
+
+        
+        $options->frame(myAttribute::tst_f_identite)->setResponsiveColumns([
+            ["number" => 2, "minWidth" => "70rem"  , "maxWidth" => "100rem", "direction" => $direction],
+            ["number" => 3, "minWidth" => "100rem" , "maxWidth" => "110rem", "direction" => $direction],
+            ["number" => 4, "minWidth" => "110rem" , "maxWidth" => "120rem", "direction" => $direction],
+            ["number" => 5, "minWidth" => "120rem" , "maxWidth" => "130rem", "direction" => $direction, "grow"=>false],
+            ["number" => 6, "minWidth" => "130rem" , "direction" => $direction, "grow"=>false]
+        ]);
+
+        $options->frame(myAttribute::tst_f_adresseperso)->setResponsiveColumns([
+            ["number" => 2, "minWidth" => "600px"  , "maxWidth" => "800px", "direction" => $direction],
+            ["number" => 3, "direction" => $direction],
+        ]);
+        $options->frame(myAttribute::tst_f_dombancaire)->setResponsiveColumns([
+            ["number" => 2, "minWidth" => "500px"  , "maxWidth" => "700px", "direction" => $direction],
+            ["number" => 3, "maxWidth" => "800px", "direction" => $direction],
+            ["number" => 4, "maxWidth" => "1900px", "direction" => $direction],
+            ["number" => 6, "maxWidth" => "2200px", "direction" => $direction],
+            ["number" => 12 ]
+        ]);
+
+    }
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->commonOption()->showEmptyContent("Pas d'information");
+        self::setColumn($options);
+
+
+        return $options;
+    }
+}
+class EmployeeFrameEditSRCLRRender  extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        EmployeeFrameViewSRCLRRender::setColumn($options);
+
+        return $options;
+    }
+}
+
+
+class EmployeeFrameViewSRCTBRender  extends \Dcp\Ui\DefaultView
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        EmployeeFrameViewSRCLRRender::setColumn($options,\Dcp\Ui\FrameRenderOptions::topBottomDirection);
+
+        return $options;
+    }
+}
+class EmployeeFrameEditSRCTBRender  extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        EmployeeFrameViewSRCLRRender::setColumn($options,\Dcp\Ui\FrameRenderOptions::topBottomDirection);
+
+        return $options;
+    }
+}
+
+
+class EmployeeTabViewRender  extends \Dcp\Ui\DefaultView
+{
+    public static function setColumn(\Dcp\Ui\RenderOptions &$options) {
+
+        $options->tab()->setResponsiveColumns([
+            ["number" => 2, "minWidth" => "100rem", "grow" => true]
+
+        ]);
+
+        $options->tab(myAttribute::tst_t_infos_administratives)->setResponsiveColumns([
+            ["number" => 2, "minWidth" => "70rem"  , "maxWidth" => "100rem"],
+            ["number" => 3, "maxWidth" => "130rem"],
+            ["number" => 4]
+        ]);
+
+        $options->frame()->setResponsiveColumns([["number" => 2, "minWidth" => "400px", "grow" => true]]);
+    }
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->commonOption()->showEmptyContent("Pas d'information");
+
+        self::setColumn($options);
+
+
+        return $options;
+    }
+}
+class EmployeeTabEditRender  extends \Dcp\Ui\DefaultEdit
+{
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        EmployeeTabViewRender::setColumn($options);
+
 
         return $options;
     }

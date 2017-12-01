@@ -56,7 +56,7 @@ class BaseRenderOptions
     /**
      * add custom option to be propagated to client
      * @param string $optName option name
-     * @param string $optValue option value
+     * @param string|array $optValue option value
      * @return $this
      */
     public function setOption($optName, $optValue)
