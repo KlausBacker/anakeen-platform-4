@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Document-uis 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-13 17:41+0200\n"
+"POT-Creation-Date: 2017-12-01 18:36+0100\n"
 "PO-Revision-Date: 2017-10-13 17:41+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -65,67 +65,67 @@ msgctxt "Authent"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:46
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:47
 msgctxt "Authent"
 msgid "Enter your identifier"
 msgstr "Entrez votre identifiant"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:47
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:48
 msgctxt "Authent"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:48
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:49
 msgctxt "Authent"
 msgid "You must enter your password"
 msgstr "Vous devez saisir votre mot de passe"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:49
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:50
 msgctxt "Authent"
 msgid "You must enter your identifier"
 msgstr "Vous devez saisir votre identifiant"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:50
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:51
 msgctxt "Authent"
 msgid "Help to sign in"
 msgstr "Aide pour la connection"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:51
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:52
 msgctxt "Authent"
 msgid "Authentication error"
 msgstr "Échec de l'authentification"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:52
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:53
 msgctxt "Authent"
 msgid "Unexpected error"
 msgstr "Erreur inconnue"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:53
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:54
 msgctxt "Authent"
 msgid "Form to reset password"
 msgstr "Réinitialisation du mot de passe"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:54
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:55
 msgctxt "Authent"
 msgid "Identifier or email address"
 msgstr "Identifiant ou adresse email"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:55
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:56
 msgctxt "Authent"
 msgid "Password :"
 msgstr "Mot de passe :"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:56
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:57
 msgctxt "Authent"
 msgid "New password :"
 msgstr "Nouveau mot de passe :"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:57
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:58
 msgctxt "Authent"
 msgid "Confirm password :"
 msgstr "Confirmation du mot de passe :"
 
-#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:58
+#: Document-uis/src/vendor/Anakeen/Components/Authent/Authent.component.js:59
 msgctxt "Authent"
 msgid "Confirm password are not same as new password"
 msgstr "Les mots des passes indiqués sont différents"

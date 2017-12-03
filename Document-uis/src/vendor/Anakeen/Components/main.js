@@ -11,7 +11,7 @@ installCE(window, {
 import VueCustomElement from 'vue-custom-element';
 
 import GetTextPlugin from 'vue-gettext';
-import translations from './Authent/translation.json';
+import translations from './translation.json';
 
 Vue.use(GetTextPlugin, {
     availableLanguages: {

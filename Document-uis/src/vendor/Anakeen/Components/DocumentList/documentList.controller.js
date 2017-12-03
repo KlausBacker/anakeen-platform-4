@@ -77,7 +77,7 @@ export default {
                     messages: {
                         page: '',
                         of: '/ {0}',
-                        itemsPerPage: 'Éléments par page',
+                        itemsPerPage: this.$pgettext('DocumentList', 'Items per page'),
                     },
                 });
                 this.$(this.$refs.summaryPager).kendoPager({
@@ -87,7 +87,7 @@ export default {
                     info: true,
                     change: this.privateScope.onPagerChange,
                     messages: {
-                        display: '{0} - {1} sur {2}',
+                        display: `{0} - {1} ${this.$pgettext('DocumentList', 'of')} {2}`,
                     },
                 });
 
@@ -99,7 +99,7 @@ export default {
                     index: 1,
                     change: this.privateScope.onSelectPageSize,
                     // valueTemplate: '<span class="fa fa-list-ol"></span>',
-                    headerTemplate: '<li class="dropdown-header">Eléments par page</li>',
+                    headerTemplate: `<li class="dropdown-header">${this.$pgettext('DocumentList', 'Items per page')}</li>`,
                     template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
                 }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
             },
@@ -186,6 +186,14 @@ export default {
                 },
             ],
         };
+    },
+
+    computed: {
+        translations() {
+            return {
+                searchPlaceholder: this.$pgettext('DocumentList', `Search in `) + (this.collection ? this.collection.html_label : ''),
+            };
+        },
     },
 
     methods: {
