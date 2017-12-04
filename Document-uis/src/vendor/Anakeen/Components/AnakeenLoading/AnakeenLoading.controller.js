@@ -16,4 +16,10 @@ export default {
             default: 'auto',
         },
     },
+    computed: {
+        viewBox() {
+            return '0 0 400 120';
+
+        },
+    },
 };

@@ -4,7 +4,7 @@
         <!-- Powered by -->
         <div :style="{width: width, height: height}">
             <div class="text-logo">
-                <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="poweredby" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 580.8 99.1" style="enable-background:new 0 0 580.8 99.1;" xml:space="preserve">
+                <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="poweredby" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :viewBox="viewBox" xml:space="preserve" :style="{width: width, height: height}">
                         <path class="st0" d="M115.5,34.1H99.7v18.5h-2.6V2.2h18.4c5.2,0,9,1.3,11.3,3.8c2.4,2.5,3.6,6.4,3.6,11.7
                             C130.4,28.6,125.4,34.1,115.5,34.1z M99.7,31.6h15.8c8.1,0,12.2-4.7,12.2-14c0-4.4-1-7.7-2.9-9.8c-1.9-2.1-5-3.2-9.3-3.2H99.7V31.6z
                             "></path>
@@ -39,7 +39,7 @@
             </div>
             <!-- Logo ANAKEEN -->
             <div class="main-logo">
-                <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="logo" class="bounce" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 580.8 119.3" enable-background="new 0 0 580.8 119.3" xml:space="preserve" preserveAspectRatio="xMidYMin">
+                <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="logo" class="bounce" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :viewBox="viewBox"xml:space="preserve" preserveAspectRatio="xMidYMin" :style="{width: width, height: height}">
                         <path id="A1" class="main-letter" d="M42.1,43.6c17.8,0,28.4,13.7,28.5,30.5c0.1,17-9.6,32-28.1,32c-18,0-27.7-15.6-27.7-32.1
                             C14.7,58.1,25.4,43.6,42.1,43.6 M40.5,30.3C15.1,30.3-0.1,50.9,0,75c0.1,23.3,15.8,44.3,40.6,44.3c11.9,0,21.7-4.6,29-14H70l0,11.6
                             h14.4l-0.3-84.3H69.7l0.1,12h-0.4C62.4,35.7,52,30.3,40.5,30.3"></path>
