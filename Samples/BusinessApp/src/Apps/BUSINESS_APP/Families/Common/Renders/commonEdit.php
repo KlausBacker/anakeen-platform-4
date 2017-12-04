@@ -24,4 +24,10 @@ class CommonEdit extends \Dcp\Ui\DefaultEdit
         $js["ba-common"] = "BUSINESS_APP/Families/Common/Renders/common.js";
         return $js;
     }
+
+    public function getTemplates(\Doc $document = null) {
+        $templates=parent::getTemplates($document);
+        $templates["body"]["content"]="{{> header}}{{> menu}}{{> content}}{{> menu}}{{> footer}}";
+        return $templates;
+    }
 }
