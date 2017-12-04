@@ -1,5 +1,5 @@
 <template>
-    <iframe style="visibility:hidden" ref="iDocument" v-bind:src="initialDocumentUrl" class="apDocumentWrapper"></iframe>
+    <iframe style="visibility:hidden" ref="iDocument" src="api/v1/documents/0.html" class="apDocumentWrapper"></iframe>
 </template>
 
 <script src="./Document.component.js" ></script>

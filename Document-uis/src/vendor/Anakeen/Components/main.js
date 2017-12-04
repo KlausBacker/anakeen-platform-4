@@ -36,7 +36,7 @@ Vue.http = Vue.prototype.$http = axios.create({
     timeout: 10000,
 });
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
-Vue.prototype.$kendo = kendo;
+Vue.prototype.$kendo = Vue.kendo = kendo;
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';

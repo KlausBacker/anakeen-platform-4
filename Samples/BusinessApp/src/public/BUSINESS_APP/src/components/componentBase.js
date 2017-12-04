@@ -62,6 +62,7 @@ export default {
                             [methodName]: (...args) => {
                                 try {
                                     const ret = _this[methodName].call(_this, ...args);
+                                    return ret;
                                 } catch (e) {
 
                                 }
@@ -94,7 +95,8 @@ export default {
             }
 
             this._protected.bindPublicMethods();
-        }
+        };
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', ready);
         } else {
