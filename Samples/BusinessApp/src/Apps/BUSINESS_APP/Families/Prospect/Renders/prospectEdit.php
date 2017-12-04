@@ -14,8 +14,11 @@ class ProspectEdit extends CommonEdit
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
         $options->text(MyAttr::pr_postalcode)->setMaxLength(5);
         $options->longtext(MyAttr::pr_question)->setMaxDisplayedLineNumber(20);
-
-
+        $options->frame(MyAttr::pr_fr_ident)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => "70rem"  , "maxWidth" => "100rem"],
+                ["number" => 3]
+        ]);
         return $options;
     }
 

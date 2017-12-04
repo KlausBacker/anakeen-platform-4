@@ -58,14 +58,12 @@ class CertificationView extends CommonView
             $items = $listMenu->getElements();
             foreach ($items as $item) {
                 if ($item->getId() !== "workflowSep" && $item->getId() !== "workflowGraph" && $item->getId() !== "workflowDraw")
-                    $menu->appendElement($item);
+                    $menu->insertBefore("workflow", $item);
             }
 
             $menu->removeElement("workflow");
 
-            $menu->removeElement("historic");
             $menu->removeElement("delete");
-            $menu->removeElement("properties");
         }
 
 

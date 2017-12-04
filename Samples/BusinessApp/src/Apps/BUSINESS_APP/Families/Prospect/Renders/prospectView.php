@@ -7,7 +7,17 @@ class ProspectView extends CommonView
 {
 
 
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
 
+        $options->frame(MyAttr::pr_fr_ident)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => "70rem"  , "maxWidth" => "100rem"],
+                ["number" => 3]
+            ]);
+        return $options;
+    }
 
     public function getCssReferences(\Doc $document = null)
     {
