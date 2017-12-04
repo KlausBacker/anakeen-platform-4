@@ -55,9 +55,11 @@ define([
                     currentView.$el.removeClass("dcpTab__content--loading");
                     currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
                     currentView.propageShowTab();
-                    resolve();
+                    resolve(currentView);
                 } else {
-                    currentView.renderContent().then(resolve);
+                    currentView.renderContent().then(function vTabContentRender_renderContent() {
+                        resolve(currentView);
+                    });
                 }
             }, this)));
 

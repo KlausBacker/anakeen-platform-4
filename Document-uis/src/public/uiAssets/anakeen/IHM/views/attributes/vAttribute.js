@@ -193,29 +193,27 @@ define([
             if (options.notUpdateArray) {
                 return this;
             }
-            if (this.model.isInArray()) {
-                // adjust line number to column length
-                arrayWrapper = this.$el;
-                arrayWrapper.dcpArray("setLines", values.length, options);
-            }
 
             allWrapper = this.getDOMElements();
 
             if (this.model.isInArray()) {
-                values = _.toArray(values);
-                _.each(values, function analyzeValues(currentValue, index)
-                {
-                    if (_.isUndefined(currentValue)) {
-                        return;
-                    }
-                    var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
-                    $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
-                        function vAttributeRefreshOneValue(index, element)
-                        {
-                            scope.widgetApply($(element), "setValue", currentValue);
-                        });
-                });
-
+                // adjust line number to column length
+                arrayWrapper = this.$el;
+                arrayWrapper.dcpArray("setLines", values.length, options).then(_.bind(function setValue() {
+                    values = _.toArray(values);
+                    _.each(values, function analyzeValues(currentValue, index)
+                    {
+                        if (_.isUndefined(currentValue)) {
+                            return;
+                        }
+                        var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
+                        $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
+                            function vAttributeRefreshOneValue(index, element)
+                            {
+                                scope.widgetApply($(element), "setValue", currentValue);
+                            });
+                    });
+                }, this));
             } else {
                 this.widgetApply(allWrapper.find('.dcpAttribute__content--widget[data-attrid="' + model.id + '"]'), "setValue", values);
             }
