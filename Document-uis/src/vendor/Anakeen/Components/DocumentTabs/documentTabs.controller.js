@@ -183,7 +183,7 @@ export default {
                     marginRight = marginRight + prevWidth + nextWidth;
                 }
 
-                this.tabstrip.tabGroup.css('padding-right', `${marginRight}px`);
+                this.tabstrip.tabGroup.css('margin-right', `${marginRight}px`);
             },
 
             initTabModel: () => {
@@ -340,7 +340,7 @@ export default {
             },
 
             onModelItemChange: (event, model) => {
-                const index = this.tabsArray.findIndex((d) => d.tabId === event.items[0].tabId);
+                const index = this.tabModel.findIndex((d) => d.tabId === event.items[0].tabId);
                 const props = event.field.split('.');
                 let newValue;
                 const $indexedItem = this.$(this.tabstrip.items()[index]);
