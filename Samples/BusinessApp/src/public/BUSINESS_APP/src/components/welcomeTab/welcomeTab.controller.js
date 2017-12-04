@@ -167,5 +167,16 @@ export default {
                 display: 'inline-block',
             };
         },
+        getFormattedDate(isoDate) {
+            const date = new Date(isoDate);
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            });
+        }
     },
 };
