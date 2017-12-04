@@ -18,7 +18,7 @@
                     <div class="input-group">
                         <input type="text"
                                class="form-control documentsList__documents__search__keyword"
-                               placeholder="Rechercher" v-model="filterInput" @change="filterDocumentsList(filterInput)"/>
+                               :placeholder="`Rechercher${collection ? ' dans '+collection.html_label:''}`" v-model="filterInput" @change="filterDocumentsList(filterInput)"/>
                         <i class="input-group-addon material-icons documentsList__documents__search__keyword__remove" @click="clearDocumentsListFilter">
                             close
                         </i>

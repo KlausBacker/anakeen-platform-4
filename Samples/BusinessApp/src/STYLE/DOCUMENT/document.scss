@@ -2,7 +2,7 @@
   background-color: #FBFBFB;
   .dcpDocument--view, .dcpDocument--edit, .dcpDocument--create {
     .dcpDocument__menu {
-      max-height: none!important;
+      max-height: none !important;
       ul.menu__content {
         background-color: #F3F3F3;
         .menu__element {
@@ -32,13 +32,10 @@
 
   .dcpDocument--edit {
     nav.dcpDocument__menu:last-of-type {
-
-      &.menu--fixed {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        width: 100%;
-      }
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      width: 100%;
     }
   }
 }
