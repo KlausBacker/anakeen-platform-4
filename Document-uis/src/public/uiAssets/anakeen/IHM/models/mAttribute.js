@@ -115,7 +115,7 @@ define([
         hasValueChanged: function mAttributehasReallyChanged() {
             return (this.get("attributeValue") &&
             ((this.get("attributeValue").value !== undefined &&
-            ((this._initialAttributeValue.value || '') !== (this.get("attributeValue").value || ''))) || !_.isEqual(_.pluck(_.flatten(this._initialAttributeValue), "value"),
+            (((this._initialAttributeValue || {}).value || '') !== (this.get("attributeValue").value || ''))) || !_.isEqual(_.pluck(_.flatten(this._initialAttributeValue), "value"),
                 _.pluck(_.flatten(this.get("attributeValue")), "value")))
             );
         },
