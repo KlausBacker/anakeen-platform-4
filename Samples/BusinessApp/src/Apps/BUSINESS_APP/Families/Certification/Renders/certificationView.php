@@ -57,8 +57,11 @@ class CertificationView extends CommonView
             $this->getWorkflowMenu($document, $listMenu);
             $items = $listMenu->getElements();
             foreach ($items as $item) {
-                if ($item->getId() !== "workflowSep" && $item->getId() !== "workflowGraph" && $item->getId() !== "workflowDraw")
+                if ($item->getId() !== "workflowSep" && $item->getId() !== "workflowGraph" && $item->getId() !== "workflowDraw") {
+                    $item->setHtmlAttribute("class", "menu--left");
                     $menu->insertBefore("workflow", $item);
+                }
+
             }
 
             $menu->removeElement("workflow");
