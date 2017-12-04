@@ -55,10 +55,10 @@
                     <table v-if="lastConsultations.length" class="documentsList__documentsTabs__welcome__content__inner--table-content table-bordered table-hover table-responsive" ref="recentConsult">
                         <thead>
                         <tr>
-                            <th>Collection</th>
+                            <th>Smart Structure</th>
                             <th>Titre</th>
-                            <th>Etat</th>
-                            <th>Dernière Modification</th>
+                            <th>Étape</th>
+                            <th>Dernière Consultation</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -67,7 +67,7 @@
                                 <td>{{c.properties.title}}</td>
                                 <td v-if="c.properties.state"><div :style="getStateTag(c.properties.state.color)"></div>{{c.properties.state.displayValue}}</td>
                                 <td v-else="true"></td>
-                                <td>{{c.utag.date}}</td>
+                                <td>{{getFormattedDate(c.utag.date)}}</td>
                             </tr>
                         </tbody>
                     </table>
