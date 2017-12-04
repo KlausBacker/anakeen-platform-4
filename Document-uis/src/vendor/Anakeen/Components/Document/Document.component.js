@@ -25,7 +25,7 @@ export default {
             type: [String],
             default: () => JSON.stringify({
                 initid: 0,
-                viewId: '!defaultConsultation',
+                viewid: '!defaultConsultation',
                 revision: -1,
                 customClientData: null,
             }),

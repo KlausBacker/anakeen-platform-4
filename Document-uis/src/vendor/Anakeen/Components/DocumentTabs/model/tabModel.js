@@ -44,7 +44,7 @@ export default class TabModel {
             return null;
         } else if (typeof identifier === 'object' && identifier !== null) {
             if (identifier.tabId !== undefined) {
-                return this.find((item => item.tabId === identifier.tabId));
+                return this.find((item => item.tabId == identifier.tabId));
             }
         }
 
@@ -78,7 +78,7 @@ export default class TabModel {
             }
         } else if (typeof identifier === 'object' && identifier !== null) {
             if (identifier.tabId !== undefined) {
-                const index = this.findIndex(t => t.tabId === identifier.tabId);
+                const index = this.findIndex(t => t.tabId == identifier.tabId);
                 if (index > -1) {
                     return this.openedTabs.splice(index, 1)[0];
                 }
@@ -99,7 +99,7 @@ export default class TabModel {
             }
         } else if (typeof identifier === 'object' && identifier !== null) {
             if (identifier.tabId !== undefined) {
-                const index = this.findIndex(t => t.tabId === identifier.tabId);
+                const index = this.findIndex(t => t.tabId == identifier.tabId);
                 if (index > -1) {
                     return this.openedTabs.splice(index, 1, newItem)[0];
                 }

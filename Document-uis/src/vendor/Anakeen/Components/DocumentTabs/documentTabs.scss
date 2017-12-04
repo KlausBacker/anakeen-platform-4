@@ -297,6 +297,10 @@
             justify-content: center;
             align-items: center;
           }
+          .documentTabs__openedTab__listItem__heading--icon {
+            width: 2rem;
+            height: 2rem;
+          }
         }
         .documentTabs__openedTab__listItem__close {
           height: 100%;

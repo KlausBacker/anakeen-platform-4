@@ -268,6 +268,7 @@ export default {
                 this.$(this.tabstrip.items()[this.privateScope.getLazyTabIndex()]).show();
                 this.$(this.lazyTabDocument).prop('documentvalue', JSON.stringify(data.data));
                 this.tabModel.get(this.privateScope.getLazyTabIndex()).tabId = data.tabId;
+                this.tabsListSource.add(data);
             },
 
             bindWelcomeTabEvents: ($newTab, index) => {
@@ -442,11 +443,18 @@ export default {
             },
 
             onOpenedTabsListDataBound: (e) => {
-
+                e.sender.list.find('.documentTabs__openedTab__listItem__close').off('click');
+                e.sender.list.find('.documentTabs__openedTab__listItem__close').on('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.closeDocument({
+                        tabId: e.target.parentElement.dataset.docid,
+                    });
+                });
             },
 
             onOpenedTabsListItemClick: (e) => {
-
+                this.selectDocument(e.dataItem.data);
             },
 
             onDocumentReady: (readyEvent, tabPosition) => {
@@ -462,11 +470,11 @@ export default {
                         .find('a.tab__document__header__content').prop('href', readyEvent.detail[1].url);
                 }
 
-                if (this.privateScope.getLazyTabIndex() === -1) {
-                    this.tabModel.add(this.newLazyTab);
-                } else {
-
+                const lazyIndex = this.privateScope.getLazyTabIndex();
+                if (lazyIndex != -1) {
+                    this.tabModel.remove(lazyIndex);
                 }
+                this.tabModel.add(this.newLazyTab);
             },
 
             onDocumentActionClick: (e, tabPosition) => {
@@ -546,7 +554,8 @@ export default {
                         contentTemplate,
                         data: Object.assign({}, document),
                     };
-                    if (this.privateScope.canUseLazyTab()) {
+                    this.tabModel.replace(position, tabData);
+                    /*if (this.privateScope.canUseLazyTab()) {
                         console.log('USE LAZY LOAD');
                         this.tabModel.replace(position, this.tabModel.remove(this.lazyTabIndex));
                         this.privateScope.loadLazyTabDocument(tabData);
@@ -554,7 +563,8 @@ export default {
                     } else {
                         console.log("DON'T USE LAZY LOAD");
                         this.tabModel.replace(position, tabData);
-                    }
+                    }*/
+                    this.selectDocument(document);
                 } else {
                     this.selectDocument(index);
                 }
