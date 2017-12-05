@@ -416,7 +416,6 @@ class DocSearch extends PDocSearch
         if ($farch) $this->lay->set("archive", ($farch->control("view") == ""));
         $this->lay->eset("thekey", $this->getRawValue("se_key"));
         $dirid = GetHttpVars("dirid"); // to set restriction family
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
         $famid = $this->getRawValue("se_famid");

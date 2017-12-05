@@ -8040,8 +8040,8 @@ create unique index i_docir on doc(initid, revision);";
                 $frames[$k]["TAB"] = false;
                 $frames[$k]["edittpl"] = ($frametpl != "");
                 $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
-                $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
-                $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
+                $frames[$k]["ehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
+                $frames[$k]["ehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
                 
                 $oaf = $this->getAttribute($oaf->id);
                 $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
