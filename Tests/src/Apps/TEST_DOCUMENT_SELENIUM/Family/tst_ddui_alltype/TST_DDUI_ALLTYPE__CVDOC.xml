@@ -405,11 +405,11 @@
                 <cv_menu></cv_menu>
             </cv_t_views>
             <cv_t_views>
-                <cv_idview>GETVALUEEDITION</cv_idview>
+                <cv_idview>ATTRIBUTEMODELGETVALUEEDITION</cv_idview>
                 <cv_lview>empty label</cv_lview>
                 <cv_kview>VEDIT</cv_kview>
                 <cv_zview></cv_zview>
-                <cv_renderconfigclass>Dcp\Test\DDUi\getValueEdition</cv_renderconfigclass>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AttributeModel_getValueEdition</cv_renderconfigclass>
                 <cv_mskid xsi:nil="true"/>
                 <cv_msk></cv_msk>
                 <cv_order></cv_order>
@@ -417,11 +417,11 @@
                 <cv_menu></cv_menu>
             </cv_t_views>
             <cv_t_views>
-                <cv_idview>GETVALUECONSULTATION</cv_idview>
+                <cv_idview>ATTRIBUTEMODELGETVALUECONSULTATION</cv_idview>
                 <cv_lview>empty label</cv_lview>
                 <cv_kview>VCONS</cv_kview>
                 <cv_zview></cv_zview>
-                <cv_renderconfigclass>Dcp\Test\DDUi\getValueConsultation</cv_renderconfigclass>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AttributeModel_getValueConsultation</cv_renderconfigclass>
                 <cv_mskid xsi:nil="true"/>
                 <cv_msk></cv_msk>
                 <cv_order></cv_order>
@@ -429,11 +429,11 @@
                 <cv_menu></cv_menu>
             </cv_t_views>
             <cv_t_views>
-                <cv_idview>SETVALUEEDITION</cv_idview>
+                <cv_idview>ATTRIBUTEMODELSETVALUEEDITION</cv_idview>
                 <cv_lview>empty label</cv_lview>
                 <cv_kview>VEDIT</cv_kview>
                 <cv_zview></cv_zview>
-                <cv_renderconfigclass>Dcp\Test\DDUi\setValueEdition</cv_renderconfigclass>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AttributeModel_setValueEdition</cv_renderconfigclass>
                 <cv_mskid xsi:nil="true"/>
                 <cv_msk></cv_msk>
                 <cv_order></cv_order>
@@ -441,11 +441,263 @@
                 <cv_menu></cv_menu>
             </cv_t_views>
             <cv_t_views>
-                <cv_idview>SETVALUECONSULTATION</cv_idview>
+                <cv_idview>ATTRIBUTEMODELSETVALUECONSULTATION</cv_idview>
                 <cv_lview>empty label</cv_lview>
                 <cv_kview>VCONS</cv_kview>
                 <cv_zview></cv_zview>
-                <cv_renderconfigclass>Dcp\Test\DDUi\setValueConsultation</cv_renderconfigclass>
+                <cv_renderconfigclass>Dcp\Test\DDUi\AttributeModel_setValueConsultation</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLERGETVALUEEDITION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getValueEdition</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLERGETVALUECONSULTATION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getValueConsultation</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLERSETVALUEEDITION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_setValueEdition</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLERSETVALUECONSULTATION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VCONS</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_setValueConsultation</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETTRANSLATION</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setTranslation</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETLINKHELP</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setLinkHelp</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>SETTEMPLATE</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\setTemplate</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_REINITDOCUMENT</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_reinitDocument</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_FETCHDOCUMENT</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_fetchDocument</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_SAVEDOCUMENT</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_saveDocument</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_CHANGESTATEDOCUMENTCLASS</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_changeStateDocumentclass</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCON_ROLLER_DELETEDOCUMENT</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentCon_roller_deleteDocument</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_RESTOREDOCUMENT</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_restoreDocument</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_GETPROPERTY</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getProperty</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_GETPROPERTIES</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getProperties</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_HASATTRIBUTE</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_hasAttribute</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_GETATTRIBUTE</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getAttribute</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_GETATTRIBUTES</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getAttributes</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_HASMENU</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_hasMenu</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_GETMENU</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getMenu</cv_renderconfigclass>
+                <cv_mskid xsi:nil="true"/>
+                <cv_msk></cv_msk>
+                <cv_order></cv_order>
+                <cv_displayed>no</cv_displayed>
+                <cv_menu></cv_menu>
+            </cv_t_views>
+            <cv_t_views>
+                <cv_idview>DOCUMENTCONTROLLER_GETMENUS</cv_idview>
+                <cv_lview>empty label</cv_lview>
+                <cv_kview>VEDIT</cv_kview>
+                <cv_zview></cv_zview>
+                <cv_renderconfigclass>Dcp\Test\DDUi\DocumentController_getMenus</cv_renderconfigclass>
                 <cv_mskid xsi:nil="true"/>
                 <cv_msk></cv_msk>
                 <cv_order></cv_order>

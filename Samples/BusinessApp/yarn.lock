@@ -4623,6 +4623,10 @@ vue-custom-element@^1.0.13:
     vue "^2.3.4"
     vue-router "^2.5.3"
 
+vue-gettext@^2.0.25:
+  version "2.0.25"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.0.25.tgz#ee3e7d3a608bc1f0d950d27dee150346b47c9978"
+
 vue-hot-reload-api@^2.0.11:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.2.0.tgz#9a21b35ced3634434a43ee80efb7350ea8fb206d"

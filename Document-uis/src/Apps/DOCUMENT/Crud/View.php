@@ -208,7 +208,11 @@ class View extends Crud
             $documentData->setContentParameters($this->contentParameters);
             $documentData->update($resourceId);
         }
-        
+        if ($this->document->canEdit() != "") {
+            $this->viewIdentifier= self::defaultViewConsultationId;
+        }
+
+        $this->revision=-1;
         $this->document = null;
         return $this->read($resourceId);
     }

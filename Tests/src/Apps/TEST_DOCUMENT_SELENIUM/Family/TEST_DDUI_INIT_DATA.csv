@@ -1,45 +1,11 @@
-//FAM;"Test tout type(TST_DDUI_ALLTYPE)";<specid>;<fldid>;"Le titre";"Un compte";"Des comptes";"Un document";"Des documents";"Une date";"Une heure";"Une date avec  une heure";"Un entier";"Un décimal";"Un sous";"Un mot de passe";"Une couleur";"Un texte formaté";"Un texte multiligne";"Un texte simple";"Un énuméré liste";"Un énuméré auto";"Un énuméré vertical";"Un énuméré horizontal";"Un énuméré booléen";"Un énuméré liste";"Un énuméré auto";"Un énuméré vertical";"Un énuméré horizontal";"Un énuméré booléen";"Des énumérés liste";"Des énumérés auto";"Des énumérés verticaux";"Des énumérés horizontaux";"Des énumérés liste";"Des énumérés auto";"Des énumérés verticaux";"Des énumérés horizontaux";"Des dates";"Des heures";"Des dates avec l'heure";"Des documents";"Encore plus de documents";"Des comptes";"Encore plus de comptes";"Des décimaux";"Des entiers";"Des sous";"Des couleurs";"Des mots de passe";"Des textes";"Des textes multiligne";"Des textes formatés"
+//FAM;Test tout type(TST_DDUI_ALLTYPE);<specid>;<fldid>;Le titre;Un compte;Des comptes;Un document;Des documents;Une date;Une heure;Une date avec  une heure;Un entier;Un décimal;Un sous;Un mot de passe;Une couleur;Un texte formaté;Un texte multiligne;Un texte simple;Un énuméré liste;Un énuméré auto;Un énuméré vertical;Un énuméré horizontal;Un énuméré booléen;Un énuméré liste;Un énuméré auto;Un énuméré vertical;Un énuméré horizontal;Un énuméré booléen;Des énumérés liste;Des énumérés auto;Des énumérés verticaux;Des énumérés horizontaux;Des énumérés liste;Des énumérés auto;Des énumérés verticaux;Des énumérés horizontaux;Des dates;Des heures;Des dates avec l'heure;Des documents;Encore plus de documents;Des comptes;Encore plus de comptes;Des décimaux;Des entiers;Des sous;Des couleurs;Des mots de passe;Des textes;Des textes multiligne;Des textes formatés
 ORDER;TST_DDUI_ALLTYPE;;;test_ddui_all__title;test_ddui_all__account;test_ddui_all__account_multiple;test_ddui_all__docid;test_ddui_all__docid_multiple;test_ddui_all__date;test_ddui_all__time;test_ddui_all__timestamp;test_ddui_all__integer;test_ddui_all__double;test_ddui_all__money;test_ddui_all__password;test_ddui_all__color;test_ddui_all__htmltext;test_ddui_all__longtext;test_ddui_all__text;test_ddui_all__enumlist;test_ddui_all__enumauto;test_ddui_all__enumvertical;test_ddui_all__enumhorizontal;test_ddui_all__enumbool;test_ddui_all__enumserverlist;test_ddui_all__enumserverauto;test_ddui_all__enumserververtical;test_ddui_all__enumserverhorizontal;test_ddui_all__enumserverbool;test_ddui_all__enumslist;test_ddui_all__enumsauto;test_ddui_all__enumsvertical;test_ddui_all__enumshorizontal;test_ddui_all__enumsserverlist;test_ddui_all__enumsserverauto;test_ddui_all__enumsserververtical;test_ddui_all__enumsserverhorizontal;test_ddui_all__date_array;test_ddui_all__time_array;test_ddui_all__timestamp_array;test_ddui_all__docid_array;test_ddui_all__docid_multiple_array;test_ddui_all__account_array;test_ddui_all__account_multiple_array;test_ddui_all__double_array;test_ddui_all__integer_array;test_ddui_all__money_array;test_ddui_all__color_array;test_ddui_all__password_array;test_ddui_all__text_array;test_ddui_all__longtext_array;test_ddui_all__htmltext_array
-DOC;TST_DDUI_ALLTYPE;TST_ALL_COMPLET;;"Tout complet";TST_DDUI_USER1;"TST_DDUI_USER3
-TST_DDUI_USER2";;;2017-10-04;02:00:00;"2017-11-06 09:30:00";12;12.34;124;secret;#8FFFCB;"<p><a href=""https://commons.wikimedia.org/wiki/File:Solar_prominence_from_STEREO_spacecraft_September_29,_2008.jpg?uselang=fr""><img alt=""Image illustrative de l'article Soleil"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg/280px-Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg"" style=""float:right"" /></a><br />
-Une <a href=""https://fr.wikipedia.org/wiki/%C3%89ruption_solaire"">éruption solaire</a> vue en <a href=""https://fr.wikipedia.org/wiki/Ultraviolet"">ultraviolet</a> avec de Le <strong>Soleil</strong> est l’<a href=""https://fr.wikipedia.org/wiki/%C3%89toile"">étoile</a> du <a href=""https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire"">Système solaire</a>. Dans la classification <a href=""https://fr.wikipedia.org/wiki/Astronomie"">astronomique</a>, c’est une étoile de type <a href=""https://fr.wikipedia.org/wiki/Naine_jaune"">naine jaune</a> d'une masse d'environ 1,9891 × 1030 kg, composée d’<a href=""https://fr.wikipedia.org/wiki/Hydrog%C3%A8ne"">hydrogène</a>(75 % de la masse ou 92 % du volume) et d’<a href=""https://fr.wikipedia.org/wiki/H%C3%A9lium"">hélium</a> (25 % de la masse ou 8 % du volume)<a href=""https://fr.wikipedia.org/wiki/Soleil#cite_note-9"">9</a>. Le Soleil fait partie de la <a href=""https://fr.wikipedia.org/wiki/Galaxie"">galaxie</a> appelée la <a href=""https://fr.wikipedia.org/wiki/Voie_lact%C3%A9e"">Voie lactée</a> et se situe à environ 8 <a href=""https://fr.wikipedia.org/wiki/Kiloparsec"">kpc</a> (∼26 100 <a href=""https://fr.wikipedia.org/wiki/Ann%C3%A9e-lumi%C3%A8re"">a.l.</a>) du <a href=""https://fr.wikipedia.org/wiki/Centre_galactique"">centre galactique</a>. Autour de lui gravitent la <a href=""https://fr.wikipedia.org/wiki/Terre"">Terre</a> (à la vitesse de 30 km/s), sept autres <a href=""https://fr.wikipedia.org/wiki/Plan%C3%A8te"">planètes</a>, au moins cinq <a href=""https://fr.wikipedia.org/wiki/Plan%C3%A8te_naine"">planètes naines</a>, de très nombreux <a href=""https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde"">astéroïdes</a> et <a href=""https://fr.wikipedia.org/wiki/Com%C3%A8te"">comètes</a> et une bande de <a href=""https://fr.wikipedia.org/wiki/Lumi%C3%A8re_zodiacale"">poussière</a>. Le Soleil représente à lui seul 99,86 % de la masse du Système solaire ainsi constitué, <a href=""https://fr.wikipedia.org/wiki/Jupiter_(plan%C3%A8te)"">Jupiter</a> représentant plus des deux tiers du reste.</p>";"La Lune est l'unique satellite naturel de la Terre. Suivant la désignation systématique des satellites, la Lune est appelée Terre I2 ; cependant en pratique cette forme n'est pas utilisée. Elle est le cinquième plus grand satellite du Système solaire, avec un diamètre de 3 474 km. La distance moyenne séparant la Terre de la Lune est de 384 467 km3.
-
-La Lune est le premier et le seul objet non terrestre visité par l'Homme. Le premier à y avoir marché est l'astronaute américain Neil Armstrong le 21 juillet 1969. Après lui, onze autres hommes ont foulé le sol de la Lune, tous membres du programme Apollo.";"Mars est originellement le nom du dieu de la guerre dans la mythologie romaine";AD;AD;0;red;N;AD;AD;red;0;C;"DK
-DM";"AN
-BJ
-BR";"30
-70";"yellow
-lightblue";"BJ
-CV
-CX";"ZR
-BD";"30
-100";"yellow
-navyblue";"2017-10-12
-2017-11-17
-2017-07-05";"09:00
-02:00
-13:30";"2017-11-08T17:30:00
-2017-06-14T11:00:00
-2017-11-29T00:00:00";;;"TST_DDUI_USER3
-TST_DDUI_USER4";"TST_DDUI_USER2<BR>TST_DDUI_USER1
-TST_DDUI_USER4<BR>TST_DDUI_USER2<BR>TST_DDUI_USER1";"12.567
-31346.787632
-535.356756832";"244
-68732
--4563";"34.6
-36287
--43563.5";"#FFBDBD
-#CCA6FF";"sec
-vilet";"L'ours
-Le lion";"Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours.
-Le lion est le deuxième plus grand félidé, après le tigre, et ainsi le plus grand carnivore d'Afrique. Un mâle mesure de 172 à 250 centimètres de long2 du bout du museau à la base de la queue et possède une queue d’en moyenne 90 centimètres3. Les mâles atteignent une masse comprise entre 145 et 225 kilogrammes à l'âge adulte3. La lionne adulte mesure de 158 à 192 centimètres2 sans la queue et possède une queue mesurant environ 85 cm. Elles pèsent entre 83 et 168 kg3 et ont une corpulence en moyenne 20 à 50 % moins importante que celle d'un mâle4.";"<p><a href=""https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr""><img alt=""Description de cette image, également commentée ci-après"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg"" style=""float:right"" /></a></p><p>Les <strong>ours</strong> forment la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8res"">mammifères</a> des <strong>ursidés</strong> (<strong>Ursidae</strong>), de l'ordre des <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> (<a href=""https://fr.wikipedia.org/wiki/Carnivora"">Carnivora</a>). Le <a href=""https://fr.wikipedia.org/wiki/Grand_panda"">Grand panda</a>, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un ours <a href=""https://fr.wikipedia.org/wiki/Herbivore"">herbivore</a> au sein de cette famille<a href=""https://fr.wikipedia.org/wiki/Ursidae#cite_note-1"">1</a>,<a href=""https://fr.wikipedia.org/wiki/Ursidae#cite_note-2"">2</a>. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'<a href=""https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)"">habitats</a>, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'<a href=""https://fr.wikipedia.org/wiki/Europe"">Europe</a>, d'<a href=""https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord"">Amérique du Nord</a>, d'<a href=""https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud"">Amérique du Sud</a>, et en <a href=""https://fr.wikipedia.org/wiki/Asie"">Asie</a>.</p><p>Les ours modernes ont comme caractéristiques un corps grand, trapu et massif, un long museau, un pelage dense, des pattes plantigrades à cinq griffes non rétractiles et une queue courte. L'ours blanc est principalement carnassier. Le <a href=""https://fr.wikipedia.org/wiki/Panda_g%C3%A9ant"">panda géant</a> se nourrit presque exclusivement de <a href=""https://fr.wikipedia.org/wiki/Bambou"">bambou</a>. Les six autres espèces sont <a href=""https://fr.wikipedia.org/wiki/Omnivore"">omnivores</a>, leur alimentation variée comprend essentiellement des plantes et des animaux. Sauf en période de <a href=""https://fr.wikipedia.org/wiki/Reproduction_(biologie)"">reproduction</a> et d'éducation des jeunes, les ours sont solitaires. Généralement <a href=""https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)"">diurnes</a>, ils sont aussi éventuellement actifs la nuit ou au crépuscule, en particulier autour des zones d'habitation humaine. On les dit parfois « <a href=""https://fr.wikipedia.org/wiki/Nocturne_(comportement_animal)"">nocto</a>-<a href=""https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)"">diurnes</a> ». Aidé par un odorat développé, l'ours peut, malgré sa corpulence, courir rapidement, nager et escalader certaines parois ou des arbres. Cavernicole, il se réfugie volontiers dans des grottes, cavernes et tanières. La plupart des espèces y passent la saison froide à dormir (<a href=""https://fr.wikipedia.org/wiki/Hivernation"">hivernation</a>).</p><p><a href=""https://fr.wikipedia.org/wiki/Ours_brun"">Ours brun</a> (<em>Ursus arctos</em>)</p>
-<p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=""https://fr.wikipedia.org/wiki/Esp%C3%A8ce"">espèce</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8re"">mammifères</a> <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> de la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> des <a href=""https://fr.wikipedia.org/wiki/Felidae"">félidés</a>. La femelle du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=""https://fr.wikipedia.org/wiki/Crini%C3%A8re"">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=""https://fr.wikipedia.org/wiki/Femelle"">femelle</a>. Le lion est un animal <a href=""https://fr.wikipedia.org/wiki/Gr%C3%A9garisme"">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=""https://fr.wikipedia.org/wiki/F%C3%A9lin"">félins</a>. Son espérance de vie, à l'<a href=""https://fr.wikipedia.org/wiki/Animal_sauvage"">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p><p>Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire et les menaces contre la troupe. Le lion <a href=""https://fr.wikipedia.org/wiki/Rugissement"">rugit</a>. Il n'existe plus à l'état sauvage que 16 500 à 30 000 individus dans la <a href=""https://fr.wikipedia.org/wiki/Savane"">savane</a> <a href=""https://fr.wikipedia.org/wiki/Afrique"">africaine</a>, répartis en une dizaine de sous-espèces et environ 300 au <a href=""https://fr.wikipedia.org/wiki/Parc_national_de_Gir_Forest"">parc national de Gir Forest</a> dans le nord-ouest de l'<a href=""https://fr.wikipedia.org/wiki/Inde"">Inde</a>. Il est surnommé « le <a href=""https://fr.wikipedia.org/wiki/Roi_des_animaux"">roi des animaux</a> » car sa crinière lui donne un aspect semblable au <a href=""https://fr.wikipedia.org/wiki/Soleil"">Soleil</a>, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur population a baissé de 43 %<a href=""https://fr.wikipedia.org/wiki/Lion#cite_note-1"">1</a>.</p><p><a href=""https://commons.wikimedia.org/wiki/File:Lion_d%27Afrique.jpg?uselang=fr""><img alt=""Description de cette image, également commentée ci-après"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lion_d%27Afrique.jpg/290px-Lion_d%27Afrique.jpg"" style=""float:right"" /></a></p><p>Un mâle adulte.</p><table>	<caption><a href=""https://fr.wikipedia.org/wiki/Mammal_Species_of_the_World"">Classification selon MSW</a></caption>	<tbody>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/R%C3%A8gne_(biologie)"">Règne</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Animal"">Animalia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Embranchement_(biologie)"">Embranchement</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Chordata"">Chordata</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-embranchement"">Sous-embr.</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Vertebrata"">Vertebrata</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Classe_(biologie)"">Classe</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Mammalia"">Mammalia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Ordre_(biologie)"">Ordre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Carnivora"">Carnivora</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-ordre"">Sous-ordre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Feliformia"">Feliformia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">Famille</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Felidae"">Felidae</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-famille_(biologie)"">Sous-famille</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Pantherinae"">Pantherinae</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Genre_(biologie)"">Genre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Panthera"">Panthera</a></td>		</tr>	</tbody></table><p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=""https://fr.wikipedia.org/wiki/Esp%C3%A8ce"">espèce</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8re"">mammifères</a> <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> de la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> des <a href=""https://fr.wikipedia.org/wiki/Felidae"">félidés</a>. La femelle <img alt=""( VU )"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_VU-fr.svg/244px-Status_iucn3.1_VU-fr.svg.png"" style=""float:right"" />du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=""https://fr.wikipedia.org/wiki/Crini%C3%A8re"">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=""https://fr.wikipedia.org/wiki/Femelle"">femelle</a>. Le lion est un animal <a href=""https://fr.wikipedia.org/wiki/Gr%C3%A9garisme"">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=""https://fr.wikipedia.org/wiki/F%C3%A9lin"">félins</a>. Son espérance de vie, à l'<a href=""https://fr.wikipedia.org/wiki/Animal_sauvage"">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p>"
-DOC;TST_DDUI_ALLTYPE;TST_DATAI_ALLTYPE1;;"Test vide";;;;;;;;;;;;;;;;AD;AD;0;red;N;AD;AD;red;0;N;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_ALLTYPE;TST_DATAI_ALLTYPE1;;Test vide;;;;;;;;;;;;;;;;AD;AD;0;red;N;AD;AD;red;0;N;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_DDUI_ALLTYPE;TEST_SETLINK;;test_SetLink;TST_DDUI_USER4;"TST_DDUI_USER3
-TST_DDUI_USER2";;;2017-10-04;02:00:00;"2017-11-06 09:30:00";12;12.34;124;secret;#8FFFCB;"<p><a href=""https://commons.wikimedia.org/wiki/File:Solar_prominence_from_STEREO_spacecraft_September_29,_2008.jpg?uselang=fr""><img alt=""Image illustrative de l'article Soleil"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg/280px-Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg"" style=""float:right"" /></a><br />
+TST_DDUI_USER2";;;2017-10-04;02:00:00;2017-11-06 09:30:00;12;12.34;124;secret;#8FFFCB;"<p><a href=""https://commons.wikimedia.org/wiki/File:Solar_prominence_from_STEREO_spacecraft_September_29,_2008.jpg?uselang=fr""><img alt=""Image illustrative de l'article Soleil"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg/280px-Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg"" style=""float:right"" /></a><br />
 Une <a href=""https://fr.wikipedia.org/wiki/%C3%89ruption_solaire"">éruption solaire</a> vue en <a href=""https://fr.wikipedia.org/wiki/Ultraviolet"">ultraviolet</a> avec de Le <strong>Soleil</strong> est l’<a href=""https://fr.wikipedia.org/wiki/%C3%89toile"">étoile</a> du <a href=""https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire"">Système solaire</a>. Dans la classification <a href=""https://fr.wikipedia.org/wiki/Astronomie"">astronomique</a>, c’est une étoile de type <a href=""https://fr.wikipedia.org/wiki/Naine_jaune"">naine jaune</a> d'une masse d'environ 1,9891 × 1030 kg, composée d’<a href=""https://fr.wikipedia.org/wiki/Hydrog%C3%A8ne"">hydrogène</a>(75 % de la masse ou 92 % du volume) et d’<a href=""https://fr.wikipedia.org/wiki/H%C3%A9lium"">hélium</a> (25 % de la masse ou 8 % du volume)<a href=""https://fr.wikipedia.org/wiki/Soleil#cite_note-9"">9</a>. Le Soleil fait partie de la <a href=""https://fr.wikipedia.org/wiki/Galaxie"">galaxie</a> appelée la <a href=""https://fr.wikipedia.org/wiki/Voie_lact%C3%A9e"">Voie lactée</a> et se situe à environ 8 <a href=""https://fr.wikipedia.org/wiki/Kiloparsec"">kpc</a> (∼26 100 <a href=""https://fr.wikipedia.org/wiki/Ann%C3%A9e-lumi%C3%A8re"">a.l.</a>) du <a href=""https://fr.wikipedia.org/wiki/Centre_galactique"">centre galactique</a>. Autour de lui gravitent la <a href=""https://fr.wikipedia.org/wiki/Terre"">Terre</a> (à la vitesse de 30 km/s), sept autres <a href=""https://fr.wikipedia.org/wiki/Plan%C3%A8te"">planètes</a>, au moins cinq <a href=""https://fr.wikipedia.org/wiki/Plan%C3%A8te_naine"">planètes naines</a>, de très nombreux <a href=""https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde"">astéroïdes</a> et <a href=""https://fr.wikipedia.org/wiki/Com%C3%A8te"">comètes</a> et une bande de <a href=""https://fr.wikipedia.org/wiki/Lumi%C3%A8re_zodiacale"">poussière</a>. Le Soleil représente à lui seul 99,86 % de la masse du Système solaire ainsi constitué, <a href=""https://fr.wikipedia.org/wiki/Jupiter_(plan%C3%A8te)"">Jupiter</a> représentant plus des deux tiers du reste.</p>";"La Lune est l'unique satellite naturel de la Terre. Suivant la désignation systématique des satellites, la Lune est appelée Terre I2 ; cependant en pratique cette forme n'est pas utilisée. Elle est le cinquième plus grand satellite du Système solaire, avec un diamètre de 3 474 km. La distance moyenne séparant la Terre de la Lune est de 384 467 km3.
 
-La Lune est le premier et le seul objet non terrestre visité par l'Homme. Le premier à y avoir marché est l'astronaute américain Neil Armstrong le 21 juillet 1969. Après lui, onze autres hommes ont foulé le sol de la Lune, tous membres du programme Apollo.";"Mars est originellement le nom du dieu de la guerre dans la mythologie romaine";AD;AD;0;red;N;AD;AD;red;0;C;"DK
+La Lune est le premier et le seul objet non terrestre visité par l'Homme. Le premier à y avoir marché est l'astronaute américain Neil Armstrong le 21 juillet 1969. Après lui, onze autres hommes ont foulé le sol de la Lune, tous membres du programme Apollo.";Mars est originellement le nom du dieu de la guerre dans la mythologie romaine;AD;AD;0;red;N;AD;AD;red;0;C;"DK
 DM";"AN
 BJ
 BR";"30
@@ -69,9 +35,43 @@ TST_DDUI_USER4<BR>TST_DDUI_USER2<BR>TST_DDUI_USER1";"12.567
 Le lion";"Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours.
 Le lion est le deuxième plus grand félidé, après le tigre, et ainsi le plus grand carnivore d'Afrique. Un mâle mesure de 172 à 250 centimètres de long2 du bout du museau à la base de la queue et possède une queue d’en moyenne 90 centimètres3. Les mâles atteignent une masse comprise entre 145 et 225 kilogrammes à l'âge adulte3. La lionne adulte mesure de 158 à 192 centimètres2 sans la queue et possède une queue mesurant environ 85 cm. Elles pèsent entre 83 et 168 kg3 et ont une corpulence en moyenne 20 à 50 % moins importante que celle d'un mâle4.";"<p><a href=""https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr""><img alt=""Description de cette image, également commentée ci-après"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg"" style=""float:right"" /></a></p><p>Les <strong>ours</strong> forment la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8res"">mammifères</a> des <strong>ursidés</strong> (<strong>Ursidae</strong>), de l'ordre des <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> (<a href=""https://fr.wikipedia.org/wiki/Carnivora"">Carnivora</a>). Le <a href=""https://fr.wikipedia.org/wiki/Grand_panda"">Grand panda</a>, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un ours <a href=""https://fr.wikipedia.org/wiki/Herbivore"">herbivore</a> au sein de cette famille<a href=""https://fr.wikipedia.org/wiki/Ursidae#cite_note-1"">1</a>,<a href=""https://fr.wikipedia.org/wiki/Ursidae#cite_note-2"">2</a>. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'<a href=""https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)"">habitats</a>, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'<a href=""https://fr.wikipedia.org/wiki/Europe"">Europe</a>, d'<a href=""https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord"">Amérique du Nord</a>, d'<a href=""https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud"">Amérique du Sud</a>, et en <a href=""https://fr.wikipedia.org/wiki/Asie"">Asie</a>.</p><p>Les ours modernes ont comme caractéristiques un corps grand, trapu et massif, un long museau, un pelage dense, des pattes plantigrades à cinq griffes non rétractiles et une queue courte. L'ours blanc est principalement carnassier. Le <a href=""https://fr.wikipedia.org/wiki/Panda_g%C3%A9ant"">panda géant</a> se nourrit presque exclusivement de <a href=""https://fr.wikipedia.org/wiki/Bambou"">bambou</a>. Les six autres espèces sont <a href=""https://fr.wikipedia.org/wiki/Omnivore"">omnivores</a>, leur alimentation variée comprend essentiellement des plantes et des animaux. Sauf en période de <a href=""https://fr.wikipedia.org/wiki/Reproduction_(biologie)"">reproduction</a> et d'éducation des jeunes, les ours sont solitaires. Généralement <a href=""https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)"">diurnes</a>, ils sont aussi éventuellement actifs la nuit ou au crépuscule, en particulier autour des zones d'habitation humaine. On les dit parfois « <a href=""https://fr.wikipedia.org/wiki/Nocturne_(comportement_animal)"">nocto</a>-<a href=""https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)"">diurnes</a> ». Aidé par un odorat développé, l'ours peut, malgré sa corpulence, courir rapidement, nager et escalader certaines parois ou des arbres. Cavernicole, il se réfugie volontiers dans des grottes, cavernes et tanières. La plupart des espèces y passent la saison froide à dormir (<a href=""https://fr.wikipedia.org/wiki/Hivernation"">hivernation</a>).</p><p><a href=""https://fr.wikipedia.org/wiki/Ours_brun"">Ours brun</a> (<em>Ursus arctos</em>)</p>
 <p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=""https://fr.wikipedia.org/wiki/Esp%C3%A8ce"">espèce</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8re"">mammifères</a> <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> de la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> des <a href=""https://fr.wikipedia.org/wiki/Felidae"">félidés</a>. La femelle du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=""https://fr.wikipedia.org/wiki/Crini%C3%A8re"">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=""https://fr.wikipedia.org/wiki/Femelle"">femelle</a>. Le lion est un animal <a href=""https://fr.wikipedia.org/wiki/Gr%C3%A9garisme"">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=""https://fr.wikipedia.org/wiki/F%C3%A9lin"">félins</a>. Son espérance de vie, à l'<a href=""https://fr.wikipedia.org/wiki/Animal_sauvage"">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p><p>Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire et les menaces contre la troupe. Le lion <a href=""https://fr.wikipedia.org/wiki/Rugissement"">rugit</a>. Il n'existe plus à l'état sauvage que 16 500 à 30 000 individus dans la <a href=""https://fr.wikipedia.org/wiki/Savane"">savane</a> <a href=""https://fr.wikipedia.org/wiki/Afrique"">africaine</a>, répartis en une dizaine de sous-espèces et environ 300 au <a href=""https://fr.wikipedia.org/wiki/Parc_national_de_Gir_Forest"">parc national de Gir Forest</a> dans le nord-ouest de l'<a href=""https://fr.wikipedia.org/wiki/Inde"">Inde</a>. Il est surnommé « le <a href=""https://fr.wikipedia.org/wiki/Roi_des_animaux"">roi des animaux</a> » car sa crinière lui donne un aspect semblable au <a href=""https://fr.wikipedia.org/wiki/Soleil"">Soleil</a>, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur population a baissé de 43 %<a href=""https://fr.wikipedia.org/wiki/Lion#cite_note-1"">1</a>.</p><p><a href=""https://commons.wikimedia.org/wiki/File:Lion_d%27Afrique.jpg?uselang=fr""><img alt=""Description de cette image, également commentée ci-après"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lion_d%27Afrique.jpg/290px-Lion_d%27Afrique.jpg"" style=""float:right"" /></a></p><p>Un mâle adulte.</p><table>	<caption><a href=""https://fr.wikipedia.org/wiki/Mammal_Species_of_the_World"">Classification selon MSW</a></caption>	<tbody>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/R%C3%A8gne_(biologie)"">Règne</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Animal"">Animalia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Embranchement_(biologie)"">Embranchement</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Chordata"">Chordata</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-embranchement"">Sous-embr.</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Vertebrata"">Vertebrata</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Classe_(biologie)"">Classe</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Mammalia"">Mammalia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Ordre_(biologie)"">Ordre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Carnivora"">Carnivora</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-ordre"">Sous-ordre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Feliformia"">Feliformia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">Famille</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Felidae"">Felidae</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-famille_(biologie)"">Sous-famille</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Pantherinae"">Pantherinae</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Genre_(biologie)"">Genre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Panthera"">Panthera</a></td>		</tr>	</tbody></table><p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=""https://fr.wikipedia.org/wiki/Esp%C3%A8ce"">espèce</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8re"">mammifères</a> <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> de la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> des <a href=""https://fr.wikipedia.org/wiki/Felidae"">félidés</a>. La femelle <img alt=""( VU )"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_VU-fr.svg/244px-Status_iucn3.1_VU-fr.svg.png"" style=""float:right"" />du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=""https://fr.wikipedia.org/wiki/Crini%C3%A8re"">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=""https://fr.wikipedia.org/wiki/Femelle"">femelle</a>. Le lion est un animal <a href=""https://fr.wikipedia.org/wiki/Gr%C3%A9garisme"">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=""https://fr.wikipedia.org/wiki/F%C3%A9lin"">félins</a>. Son espérance de vie, à l'<a href=""https://fr.wikipedia.org/wiki/Animal_sauvage"">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p>"
-//FAM;"Test énumérés(TST_DDUI_ENUM)";<specid>;<fldid>;Référence;"Le titre";"Un pays";"Un chiffre";"Une couleur";"Un choix binaire";"Des pays";"Des chiffres";"Des couleurs";"Un pays";"Un chiffre";"Une couleur";"Un choix binaire";"Des pays";"Des chiffres";"Des couleurs";"Une ville";"Un chiffre";"Une note";"Un choix binaire";"Des villes";"Des chiffres";"Des notes"
-ORDER;TST_DDUI_ENUM;;;test_ddui_enum__titleref;test_ddui_enum__title;test_ddui_enum__enumcountry;test_ddui_enum__enumnumber;test_ddui_enum__enumtext;test_ddui_enum__enumbool;test_ddui_enum__enumscountry;test_ddui_enum__enumsnumber;test_ddui_enum__enumstext;test_ddui_enum__srvcountry;test_ddui_enum__srvnumber;test_ddui_enum__srvtext;test_ddui_enum__srvbool;test_ddui_enum__srvscountry;test_ddui_enum__srvsnumber;test_ddui_enum__srvstext;test_ddui_enum__enumtown_array;test_ddui_enum__enumnumber_array;test_ddui_enum__enumtext_array;test_ddui_enum__enumbool_array;test_ddui_enum__enumstown_array;test_ddui_enum__enumsnumber_array;test_ddui_enum__enumstext_array
-DOC;TST_DDUI_ENUM;TST_ENUM_COMPLET;;"Enum complet";yellow;AL;30;blue;C;"AN
+DOC;TST_DDUI_ALLTYPE;TST_ALL_COMPLET;;Tout complet;TST_DDUI_USER1;"TST_DDUI_USER3
+TST_DDUI_USER2";1156;;2017-10-04;02:00:00;2017-11-06 09:30:00;9;12.34;124;secret;#8FFFCB;"<p><a href=""https://commons.wikimedia.org/wiki/File:Solar_prominence_from_STEREO_spacecraft_September_29,_2008.jpg?uselang=fr""><img alt=""Image illustrative de l'article Soleil"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg/280px-Solar_prominence_from_STEREO_spacecraft_September_29%2C_2008.jpg"" style=""float:right"" /></a><br />
+Une <a href=""https://fr.wikipedia.org/wiki/%C3%89ruption_solaire"">éruption solaire</a> vue en <a href=""https://fr.wikipedia.org/wiki/Ultraviolet"">ultraviolet</a> avec de Le <strong>Soleil</strong> est l’<a href=""https://fr.wikipedia.org/wiki/%C3%89toile"">étoile</a> du <a href=""https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire"">Système solaire</a>. Dans la classification <a href=""https://fr.wikipedia.org/wiki/Astronomie"">astronomique</a>, c’est une étoile de type <a href=""https://fr.wikipedia.org/wiki/Naine_jaune"">naine jaune</a> d'une masse d'environ 1,9891 × 1030 kg, composée d’<a href=""https://fr.wikipedia.org/wiki/Hydrog%C3%A8ne"">hydrogène</a>(75 % de la masse ou 92 % du volume) et d’<a href=""https://fr.wikipedia.org/wiki/H%C3%A9lium"">hélium</a> (25 % de la masse ou 8 % du volume)<a href=""https://fr.wikipedia.org/wiki/Soleil#cite_note-9"">9</a>. Le Soleil fait partie de la <a href=""https://fr.wikipedia.org/wiki/Galaxie"">galaxie</a> appelée la <a href=""https://fr.wikipedia.org/wiki/Voie_lact%C3%A9e"">Voie lactée</a> et se situe à environ 8 <a href=""https://fr.wikipedia.org/wiki/Kiloparsec"">kpc</a> (∼26 100 <a href=""https://fr.wikipedia.org/wiki/Ann%C3%A9e-lumi%C3%A8re"">a.l.</a>) du <a href=""https://fr.wikipedia.org/wiki/Centre_galactique"">centre galactique</a>. Autour de lui gravitent la <a href=""https://fr.wikipedia.org/wiki/Terre"">Terre</a> (à la vitesse de 30 km/s), sept autres <a href=""https://fr.wikipedia.org/wiki/Plan%C3%A8te"">planètes</a>, au moins cinq <a href=""https://fr.wikipedia.org/wiki/Plan%C3%A8te_naine"">planètes naines</a>, de très nombreux <a href=""https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde"">astéroïdes</a> et <a href=""https://fr.wikipedia.org/wiki/Com%C3%A8te"">comètes</a> et une bande de <a href=""https://fr.wikipedia.org/wiki/Lumi%C3%A8re_zodiacale"">poussière</a>. Le Soleil représente à lui seul 99,86 % de la masse du Système solaire ainsi constitué, <a href=""https://fr.wikipedia.org/wiki/Jupiter_(plan%C3%A8te)"">Jupiter</a> représentant plus des deux tiers du reste.</p>";"La Lune est l'unique satellite naturel de la Terre. Suivant la désignation systématique des satellites, la Lune est appelée Terre I2 ; cependant en pratique cette forme n'est pas utilisée. Elle est le cinquième plus grand satellite du Système solaire, avec un diamètre de 3 474 km. La distance moyenne séparant la Terre de la Lune est de 384 467 km3.
+
+La Lune est le premier et le seul objet non terrestre visité par l'Homme. Le premier à y avoir marché est l'astronaute américain Neil Armstrong le 21 juillet 1969. Après lui, onze autres hommes ont foulé le sol de la Lune, tous membres du programme Apollo.";Mars est originellement le nom du dieu de la guerre dans la mythologie romaine;AD;AD;0;red;N;AD;AD;red;0;C;"DK
+DM";"AN
+BJ
+BR";"30
+70";"yellow
+lightblue";"BJ
+CV
+CX";"ZR
+BD";"30
+100";"yellow
+navyblue";"2017-10-12
+2017-11-17
+2017-07-05";"09:00
+02:00
+13:30";"2017-11-08T17:30:00
+2017-06-14T11:00:00
+2017-11-29T00:00:00";;;"TST_DDUI_USER3
+TST_DDUI_USER4";"TST_DDUI_USER2<BR>TST_DDUI_USER1
+TST_DDUI_USER4<BR>TST_DDUI_USER2<BR>TST_DDUI_USER1";"12.567
+31346.787632
+535.356756832";"244
+68732
+-4563";"34.6
+36287
+-43563.5";"#FFBDBD
+#CCA6FF";"sec
+vilet";"L'ours
+Le lion";"Les ours sont chassés depuis la préhistoire pour leur viande et leur fourrure. Ils ont joué un rôle de premier plan dans la culture (mythologie, légendes, etc.) et les arts. À l'époque moderne, les populations d'ours sont victimes de pressions (comme celles des éleveurs dans les Pyrénées), de l'empiètement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des forêts, ainsi que du commerce illicite, notamment le marché asiatique de la bile d'ours. L'UICN a classé six espèces d'ours comme vulnérables ou menacées d'extinction. L'ours brun pourrait disparaître dans certains pays européens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours.
+Le lion est le deuxième plus grand félidé, après le tigre, et ainsi le plus grand carnivore d'Afrique. Un mâle mesure de 172 à 250 centimètres de long2 du bout du museau à la base de la queue et possède une queue d’en moyenne 90 centimètres3. Les mâles atteignent une masse comprise entre 145 et 225 kilogrammes à l'âge adulte3. La lionne adulte mesure de 158 à 192 centimètres2 sans la queue et possède une queue mesurant environ 85 cm. Elles pèsent entre 83 et 168 kg3 et ont une corpulence en moyenne 20 à 50 % moins importante que celle d'un mâle4.";"<p><a href=""https://commons.wikimedia.org/wiki/File:Ursus_arctos_Dessin_ours_brun_grand.jpg?uselang=fr""><img alt=""Description de cette image, également commentée ci-après"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Ursus_arctos_Dessin_ours_brun_grand.jpg/290px-Ursus_arctos_Dessin_ours_brun_grand.jpg"" style=""float:right"" /></a></p><p>Les <strong>ours</strong> forment la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8res"">mammifères</a> des <strong>ursidés</strong> (<strong>Ursidae</strong>), de l'ordre des <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> (<a href=""https://fr.wikipedia.org/wiki/Carnivora"">Carnivora</a>). Le <a href=""https://fr.wikipedia.org/wiki/Grand_panda"">Grand panda</a>, dont la classification a longtemps prêté à débat, est aujourd'hui considéré comme un ours <a href=""https://fr.wikipedia.org/wiki/Herbivore"">herbivore</a> au sein de cette famille<a href=""https://fr.wikipedia.org/wiki/Ursidae#cite_note-1"">1</a>,<a href=""https://fr.wikipedia.org/wiki/Ursidae#cite_note-2"">2</a>. Il n'existe que huit espèces d'ours vivantes réparties dans une grande variété d'<a href=""https://fr.wikipedia.org/wiki/Habitat_(%C3%A9cologie)"">habitats</a>, à la fois dans l'hémisphère Nord et dans une partie de l'hémisphère Sud. Les ours vivent sur les continents d'<a href=""https://fr.wikipedia.org/wiki/Europe"">Europe</a>, d'<a href=""https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Nord"">Amérique du Nord</a>, d'<a href=""https://fr.wikipedia.org/wiki/Am%C3%A9rique_du_Sud"">Amérique du Sud</a>, et en <a href=""https://fr.wikipedia.org/wiki/Asie"">Asie</a>.</p><p>Les ours modernes ont comme caractéristiques un corps grand, trapu et massif, un long museau, un pelage dense, des pattes plantigrades à cinq griffes non rétractiles et une queue courte. L'ours blanc est principalement carnassier. Le <a href=""https://fr.wikipedia.org/wiki/Panda_g%C3%A9ant"">panda géant</a> se nourrit presque exclusivement de <a href=""https://fr.wikipedia.org/wiki/Bambou"">bambou</a>. Les six autres espèces sont <a href=""https://fr.wikipedia.org/wiki/Omnivore"">omnivores</a>, leur alimentation variée comprend essentiellement des plantes et des animaux. Sauf en période de <a href=""https://fr.wikipedia.org/wiki/Reproduction_(biologie)"">reproduction</a> et d'éducation des jeunes, les ours sont solitaires. Généralement <a href=""https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)"">diurnes</a>, ils sont aussi éventuellement actifs la nuit ou au crépuscule, en particulier autour des zones d'habitation humaine. On les dit parfois « <a href=""https://fr.wikipedia.org/wiki/Nocturne_(comportement_animal)"">nocto</a>-<a href=""https://fr.wikipedia.org/wiki/Diurne_(comportement_animal)"">diurnes</a> ». Aidé par un odorat développé, l'ours peut, malgré sa corpulence, courir rapidement, nager et escalader certaines parois ou des arbres. Cavernicole, il se réfugie volontiers dans des grottes, cavernes et tanières. La plupart des espèces y passent la saison froide à dormir (<a href=""https://fr.wikipedia.org/wiki/Hivernation"">hivernation</a>).</p><p><a href=""https://fr.wikipedia.org/wiki/Ours_brun"">Ours brun</a> (<em>Ursus arctos</em>)</p>
+<p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=""https://fr.wikipedia.org/wiki/Esp%C3%A8ce"">espèce</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8re"">mammifères</a> <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> de la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> des <a href=""https://fr.wikipedia.org/wiki/Felidae"">félidés</a>. La femelle du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=""https://fr.wikipedia.org/wiki/Crini%C3%A8re"">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=""https://fr.wikipedia.org/wiki/Femelle"">femelle</a>. Le lion est un animal <a href=""https://fr.wikipedia.org/wiki/Gr%C3%A9garisme"">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=""https://fr.wikipedia.org/wiki/F%C3%A9lin"">félins</a>. Son espérance de vie, à l'<a href=""https://fr.wikipedia.org/wiki/Animal_sauvage"">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p><p>Le lion mâle ne chasse qu'occasionnellement, il est chargé de combattre les intrusions sur le territoire et les menaces contre la troupe. Le lion <a href=""https://fr.wikipedia.org/wiki/Rugissement"">rugit</a>. Il n'existe plus à l'état sauvage que 16 500 à 30 000 individus dans la <a href=""https://fr.wikipedia.org/wiki/Savane"">savane</a> <a href=""https://fr.wikipedia.org/wiki/Afrique"">africaine</a>, répartis en une dizaine de sous-espèces et environ 300 au <a href=""https://fr.wikipedia.org/wiki/Parc_national_de_Gir_Forest"">parc national de Gir Forest</a> dans le nord-ouest de l'<a href=""https://fr.wikipedia.org/wiki/Inde"">Inde</a>. Il est surnommé « le <a href=""https://fr.wikipedia.org/wiki/Roi_des_animaux"">roi des animaux</a> » car sa crinière lui donne un aspect semblable au <a href=""https://fr.wikipedia.org/wiki/Soleil"">Soleil</a>, qui apparaît comme « le roi des astres ». Entre 1993 et 2017, leur population a baissé de 43 %<a href=""https://fr.wikipedia.org/wiki/Lion#cite_note-1"">1</a>.</p><p><a href=""https://commons.wikimedia.org/wiki/File:Lion_d%27Afrique.jpg?uselang=fr""><img alt=""Description de cette image, également commentée ci-après"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lion_d%27Afrique.jpg/290px-Lion_d%27Afrique.jpg"" style=""float:right"" /></a></p><p>Un mâle adulte.</p><table>	<caption><a href=""https://fr.wikipedia.org/wiki/Mammal_Species_of_the_World"">Classification selon MSW</a></caption>	<tbody>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/R%C3%A8gne_(biologie)"">Règne</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Animal"">Animalia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Embranchement_(biologie)"">Embranchement</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Chordata"">Chordata</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-embranchement"">Sous-embr.</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Vertebrata"">Vertebrata</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Classe_(biologie)"">Classe</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Mammalia"">Mammalia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Ordre_(biologie)"">Ordre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Carnivora"">Carnivora</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-ordre"">Sous-ordre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Feliformia"">Feliformia</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">Famille</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Felidae"">Felidae</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Sous-famille_(biologie)"">Sous-famille</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Pantherinae"">Pantherinae</a></td>		</tr>		<tr>			<th scope=""row""><a href=""https://fr.wikipedia.org/wiki/Genre_(biologie)"">Genre</a></th>			<td><a href=""https://fr.wikipedia.org/wiki/Panthera"">Panthera</a></td>		</tr>	</tbody></table><p>Le <strong>lion</strong> (<em><strong>Panthera leo</strong></em>) est une <a href=""https://fr.wikipedia.org/wiki/Esp%C3%A8ce"">espèce</a> de <a href=""https://fr.wikipedia.org/wiki/Mammif%C3%A8re"">mammifères</a> <a href=""https://fr.wikipedia.org/wiki/Carnivora"">carnivores</a> de la <a href=""https://fr.wikipedia.org/wiki/Famille_(biologie)"">famille</a> des <a href=""https://fr.wikipedia.org/wiki/Felidae"">félidés</a>. La femelle <img alt=""( VU )"" src=""https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_VU-fr.svg/244px-Status_iucn3.1_VU-fr.svg.png"" style=""float:right"" />du lion est la <strong>lionne</strong>, son petit est le <strong>lionceau</strong>. Le mâle adulte, aisément reconnaissable à son importante <a href=""https://fr.wikipedia.org/wiki/Crini%C3%A8re"">crinière</a>, accuse une masse moyenne qui peut être variable selon les zones géographiques où il se trouve, allant de 180 kg pour les lions de Kruger à 230 kg pour les lions de Transvaal. Certains spécimens très rares peuvent dépasser exceptionnellement 250 kg. Un mâle adulte se nourrit de 7 kg de viande chaque jour contre 5 kgchez la <a href=""https://fr.wikipedia.org/wiki/Femelle"">femelle</a>. Le lion est un animal <a href=""https://fr.wikipedia.org/wiki/Gr%C3%A9garisme"">grégaire</a>, c'est-à-dire qu'il vit en larges groupes familiaux, contrairement aux autres <a href=""https://fr.wikipedia.org/wiki/F%C3%A9lin"">félins</a>. Son espérance de vie, à l'<a href=""https://fr.wikipedia.org/wiki/Animal_sauvage"">état sauvage</a>, est comprise entre 7 et 12 ans pour le mâle et 14 à 20 ans pour la femelle, mais il dépasse fréquemment les 30 ans en captivité.</p>"
+//FAM;Test énumérés(TST_DDUI_ENUM);<specid>;<fldid>;Référence;Le titre;Un pays;Un chiffre;Une couleur;Un choix binaire;Des pays;Des chiffres;Des couleurs;Un pays;Un chiffre;Une couleur;Un choix binaire;Des pays;Des chiffres;Des couleurs;Une ville;Un chiffre;Une note;Un choix binaire;Des villes;Des chiffres;Des notes;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_DDUI_ENUM;;;test_ddui_enum__titleref;test_ddui_enum__title;test_ddui_enum__enumcountry;test_ddui_enum__enumnumber;test_ddui_enum__enumtext;test_ddui_enum__enumbool;test_ddui_enum__enumscountry;test_ddui_enum__enumsnumber;test_ddui_enum__enumstext;test_ddui_enum__srvcountry;test_ddui_enum__srvnumber;test_ddui_enum__srvtext;test_ddui_enum__srvbool;test_ddui_enum__srvscountry;test_ddui_enum__srvsnumber;test_ddui_enum__srvstext;test_ddui_enum__enumtown_array;test_ddui_enum__enumnumber_array;test_ddui_enum__enumtext_array;test_ddui_enum__enumbool_array;test_ddui_enum__enumstown_array;test_ddui_enum__enumsnumber_array;test_ddui_enum__enumstext_array;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_ENUM;TST_ENUM_COMPLET;;Enum complet;yellow;AL;30;blue;C;"AN
 ZW
 CH";"0
 70";"blue
@@ -87,8 +87,8 @@ Cd";"S
 S";"BERLIN<BR>RIGA<BR>LUXEMBOURG
 BUDAPEST<BR>STOCKHOLM";"33.3333<BR>100
 33.3333<BR>66.6667";"B<BR>Cd<BR>Eb
-A<BR>D<BR>G<BR>B<BR>E"
-DOC;TST_DDUI_ENUM;TST_ENUM_OTHER;;"Enum other";green;Corescant;45;Pourpre;C;"AN
+A<BR>D<BR>G<BR>B<BR>E";;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_ENUM;TST_ENUM_OTHER;;Enum other;green;Corescant;45;Pourpre;C;"AN
 CH
 ZW
 Tatouine";"0
@@ -96,7 +96,7 @@ Tatouine";"0
 73";"blue
 lightblue
 Verdâtre
-Marronasse";AF;3/8;"Rose saumon";C;"AI
+Marronasse";AF;3/8;Rose saumon;C;"AI
 ES";"0
 30
 70
@@ -111,73 +111,73 @@ Ut";"S
 S";"BERLIN<BR>RIGA<BR>LUXEMBOURG<BR>Centropolis
 BUDAPEST<BR>STOCKHOLM<BR>New Delhi";"33.3333<BR>100
 33.3333<BR>66.6667<BR>2/5";"B<BR>Eb<BR>UT1<BR>Fd<BR>UT3
-A<BR>D<BR>G<BR>B<BR>E<BR>U5"
-//FAM;"Test Docid(TST_DDUI_DOCID)";<specid>;<fldid>;Référence;"Le titre";"Une première relation";"Voir l'historique";"Une deuxième relation";"Une troisième relation";"Des premières relations";"Des secondes relations";"Des troisièmes relations";"Une autre relation";"D'autres relations";"Un lien particulier";"Voir l'historique";"D'autres liaisons spécifique"
-ORDER;TST_DDUI_DOCID;;;test_ddui_docid__titleref;test_ddui_docid__title;test_ddui_docid__single1;test_ddui_docid__histo1;test_ddui_docid__single2;test_ddui_docid__single3;test_ddui_docid__multiple1;test_ddui_docid__multiple2;test_ddui_docid__multiple3;test_ddui_docid__single_array;test_ddui_docid__multiple_array;test_ddui_docid__single_link;test_ddui_docid__link_histo;test_ddui_docid__multiple_link
-DOC;TST_DDUI_DOCID;TST_DDUI_DOCID1;;"Premier document de référence";;;;;;;;;;;;;
-DOC;TST_DDUI_DOCID;TST_DDUI_DOCID2;;"Deuxième document de référence";;;;;;;;;;;;;
-DOC;TST_DDUI_DOCID;TST_DDUI_DOCID3;;"Troisième document de référence";;;;;;;;;;;;;
-DOC;TST_DDUI_DOCID;TST_DDUI_DOCID4;;"Quatrième document de référence";;;;;;;;;;;;;
-//FAM;Employé(TST_DDUI_EMPLOYEE);<specid>;<fldid>;Civilité;Nom;"Nom de naissance";Prénom;"Courriel de correspondance principal";"Courriel de correspondance secondaire";"Date de naissance";Nationalité;Statut;"Depuis quand";"Pays d'exercice";"Secteur d'activité";"Votre situation professionnelle a évolué";"Date de fin du poste précédent";Corps/Grade;Titre;"Établissement de rattachement référencé";"Depuis (année)";"Laboratoire de rattachement";"Acronyme du laboratoire";"Adresse professionnelle (ligne 1)";"Adresse professionnelle (ligne 2)";"Adresse professionnelle (ligne 3)";"Code postal professionnel";"Ville professionnelle";"Pays professionnel";Type;Numéro;Langue;Lu;Écrit;Parlé;"Année de début";"Année de fin";Titre;Établissement;"Année de début";"Année de fin";Responsabilité;Structure;"Adresse (ligne 1)";"Adresse (ligne 2)";"Adresse (ligne 3)";"Code postal";Ville;Pays;Type;Numéro;"Numéro de sécurité sociale";"Situation famille";"Communication du bulletin";"Mois et année du bulletin déposé";"Domiciliation bancaire";"Code établissement/Banque";"Code Guichet";"Numéro de compte";"Clé numéro de compte";IBAN;"BIC (Swift Code)";Titulaire;"Adresse 1";"Adresse 2";"Adresse 3";"Code postal";Ville;Pays;"Libellé du compte";"Etablissement code";"Bank address";"Account number";"Rounting number / ABA / Primary account";"Bic (Swift Code)";"Type de carte";"N° Carte";"Date de validité";Type
-ORDER;TST_DDUI_EMPLOYEE;;;tst_civilite;tst_nom;tst_nom_naissance;tst_prenom;tst_mail_principal;tst_mail_secondaire;tst_nais_date;tst_nationalite;tst_statut;tst_statut_since;tst_stranger;tst_emp_pubpriv;tst_emp_evo;tst_emp_date_fin_pre;tst_emp_corps;tst_emp_titre;tst_emp_idetab;tst_exp_since;tst_exp_labo_rat;tst_exp_labo_acro;tst_adw_adresse1;tst_adw_adresse2;tst_adw_adresse3;tst_adw_codepostal;tst_adw_localite;tst_adw_pays;tst_emp_tel_type;tst_emp_tel_number;tst_lang;tst_lang_lu;tst_lang_ecrit;tst_lang_parle;tst_parc_pro_begin_date;tst_parc_pro_end_date;tst_parc_pro_title;tst_parc_pro_etab;tst_responsabilite_begin_date;tst_responsabilite_end_date;tst_responsabilite_responsable;tst_responsabilite_struct;tst_adp_adresse1;tst_adp_adresse2;tst_adp_adresse3;tst_adp_codepostal;tst_adp_localite;tst_adp_pays;tst_adp_phone_type;tst_adp_phone_num;tst_secusociale;tst_situation_fam;tst_use_bs;tst_finance_bs_date;tst_ban_agence;tst_ban_etablissement;tst_ban_guichet;tst_ban_numcompte;tst_ban_clecompte;tst_ban_iban;tst_ban_bic;tst_dest_nom;tst_dest_adresse1;tst_dest_adresse2;tst_dest_adresse3;tst_dest_codep;tst_dest_ville;tst_dest_pays;tst_ban_libcompte;tst_st_etablissment;tst_st_guichet;tst_st_numcompte;tst_st_clecompte;tst_st_bic;tst_red_type;tst_red_ref;tst_red_date_fin;tst_pj_label
-DOC;TST_DDUI_EMPLOYEE;TST_EMPLOYE_DOE;;M;Doe;Inconnu;John;john.doe@example.net;john.doe@example.org;1987-06-12;EUR;;2017-11-09;;;;;;;;;;;;;;;;;;;"Anglais
-Chinois";"
-P";"P
-";"
-Y";1;1;S;A;200;0;D;"	";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-//FAM;"Test de rendu de document(TST_RENDER)";<specid>;<fldid>;Référence;"Le titre";Description;"Nom logique";"Identifiant de vue"
-ORDER;TST_RENDER;;;tst_ref;tst_title;tst_desc;tst_docname;tst_docviewid
-DOC;TST_RENDER;TST_RENDER_0201;;201;Common::setLabelPosition(auto);;TST_ALL_COMPLET;LABELAUTO
-DOC;TST_RENDER;TST_RENDER_0392;;392;"Enum::setDisplay ::useSourceUri";"<p>Option setDisplay et useSourceUri (donnée dynamique)</p>";TST_DDUI_ENUM;!defaultCreation
+A<BR>D<BR>G<BR>B<BR>E<BR>U5";;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Test Docid(TST_DDUI_DOCID);<specid>;<fldid>;Référence;Le titre;Une première relation;Voir l'historique;Une deuxième relation;Une troisième relation;Des premières relations;Des secondes relations;Des troisièmes relations;Une autre relation;D'autres relations;Un lien particulier;Voir l'historique;D'autres liaisons spécifique;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_DDUI_DOCID;;;test_ddui_docid__titleref;test_ddui_docid__title;test_ddui_docid__single1;test_ddui_docid__histo1;test_ddui_docid__single2;test_ddui_docid__single3;test_ddui_docid__multiple1;test_ddui_docid__multiple2;test_ddui_docid__multiple3;test_ddui_docid__single_array;test_ddui_docid__multiple_array;test_ddui_docid__single_link;test_ddui_docid__link_histo;test_ddui_docid__multiple_link;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID1;;Premier document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID2;;Deuxième document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID3;;Troisième document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_DOCID;TST_DDUI_DOCID4;;Quatrième document de référence;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Test de rendu de document(TST_RENDER);<specid>;<fldid>;Référence;Le titre;Description;Nom logique;Identifiant de vue;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_RENDER;;;tst_ref;tst_title;tst_desc;tst_docname;tst_docviewid;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0392;;392;Enum::setDisplay ::useSourceUri;<p>Option setDisplay et useSourceUri (donnée dynamique)</p>;TST_DDUI_ENUM;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0365;;365;Docid::addCreateDocumentButton;"<p>Test des attributs ""docid"".</p>
 
-<p>Prise en compte de l'option de création de documents liés.</p>";TST_DDUI_DOCID;!defaultCreation
-DOC;TST_RENDER;TST_RENDER_0395;;395;Enum::addCssRef;"<p>Prise en compte de la css pour mettre du content personalisé (ville, note de musiques, couleur)</p>";TST_ENUM_COMPLET;
-DOC;TST_RENDER;TST_RENDER_0393;;393;Enum::useOtherChoice;"<p>Prise en compte du choix autre. Visible en marron.</p>";TST_ENUM_OTHER;
+<p>Prise en compte de l'option de création de documents liés.</p>";TST_DDUI_DOCID;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0395;;395;Enum::addCssRef;<p>Prise en compte de la css pour mettre du content personalisé (ville, note de musiques, couleur)</p>;TST_ENUM_COMPLET;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0393;;393;Enum::useOtherChoice;<p>Prise en compte du choix autre. Visible en marron.</p>;TST_ENUM_OTHER;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0390;;390;Enum::setDisplay(vertical);"<p>Prise en compte de la disposition verticale.</p>
 
-<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E2
+<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0391;;391;Enum::setDisplay(horizontal);"<p>Prise en compte de la disposition horizontale.</p>
 
-<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E1
-DOC;TST_RENDER;TST_RENDER_0212;;212;Common::setDescription;"<p>Prise en compte de l'option Description? Voir le cadre ""Information Administrative""</p>";TST_DDUI_EMPLOYEE;!defaultCreation
-DOC;TST_RENDER;TST_RENDER_0218;;218;"Common::setTemplate Imbriqué";"<p>Le nom,  prénom et le cadre identité ont un template spécifique.</p>
+<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0212;;212;Common::setDescription;"<p>Prise en compte de l'option Description? Voir le cadre ""Information Administrative""</p>";TST_DDUI_EMPLOYEE;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0218;;218;Common::setTemplate Imbriqué;"<p>Le nom,  prénom et le cadre identité ont un template spécifique.</p>
 
 <ol>
 	<li>Le prénom est entouré de vert (utilisation <em>htmlDefaultContent</em>)</li>
 	<li>cadre identité est entouré de rouge.</li>
 	<li>Le nom est entouré en bleu (utilisation htmlDefaultView)</li>
-</ol>";TST_EMPLOYE_DOE;CUSTOM2
+</ol>";TST_EMPLOYE_DOE;CUSTOM2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0301;;301;Frame::collapse(collapsed);"<p>Test du l'option collapse.</p>
 
-<p>Tous les cadres doivent être pliés.</p>";TST_ALL_COMPLET;COLLAPSE
+<p>Tous les cadres doivent être pliés.</p>";TST_ALL_COMPLET;COLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0302;;302;Frame::collapse(collapseNone);"<p>Test du l'option collapse.</p>
 
-<p>Aucun cadre ne peut être repliable</p>";TST_ALL_COMPLET;NOCOLLAPSE
+<p>Aucun cadre ne peut être repliable</p>";TST_ALL_COMPLET;NOCOLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0321;;321;Array::collapse(collapseNone);"<p>Test du l'option collapse.</p>
 
-<p>Tous les <strong>tableaux</strong> ne peuvent pas être repliés</p>";TST_ALL_COMPLET;NOARRAYCOLLAPSE
+<p>Tous les <strong>tableaux</strong> ne peuvent pas être repliés</p>";TST_ALL_COMPLET;NOARRAYCOLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0322;;322;Array::collapse(collapse);"<p>Test du l'option collapse.</p>
 
-<p>Tous les <strong>tableaux</strong> doivent être repliés</p>";TST_ALL_COMPLET;ARRAYCOLLAPSE
+<p>Tous les <strong>tableaux</strong> doivent être repliés</p>";TST_ALL_COMPLET;ARRAYCOLLAPSE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0101;;101;Document::setTabPlacement(top);"<p>Test du l'option collapse.tabTopScrollPlacement</p>
 
-<p>Les onglets ont des boutons droite gauche lorque la largeur de la fenêtre est trop petite</p>";TST_ALL_COMPLET;TABTOPSCROLL
+<p>Les onglets ont des boutons droite gauche lorque la largeur de la fenêtre est trop petite</p>";TST_ALL_COMPLET;TABTOPSCROLL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0100;;100;Document::setTabPlacement(left);"<p>Test du l'option setTabPlacement(tabLeftPlacement)</p>
 
-<p>Les onglets sont affichsé sur la gauche</p>";TST_ALL_COMPLET;TABLEFT
+<p>Les onglets sont affichsé sur la gauche</p>";TST_ALL_COMPLET;TABLEFT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0103;;103;Document::setTabPlacement(topFix);"<p>Test du l'option setTabPlacement(tabTopFixPlacement)</p>
 
-<p>Les onglets ce place dans un sélecteur à droit lorsque la fenêtre est trop petite</p>";TST_ALL_COMPLET;TABTOPFIX
+<p>Les onglets ce place dans un sélecteur à droit lorsque la fenêtre est trop petite</p>";TST_ALL_COMPLET;TABTOPFIX;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0102;;102;Document::setTabPlacement(topProportional);"<p>Test du l'option setTabPlacement(tabTopProportionalPlacement)</p>
 
-<p>La largeur des onglets diminue au fur et à mesure de la diminution de la largeur de la fenêtre.</p>";TST_ALL_COMPLET;TABPROPORTIONAL
-DOC;TST_RENDER;TST_RENDER_0002;;2;"Document édition par défaut";"<p>Formalaire en édition avec les options par défaut.</p>";TST_ALL_COMPLET;!defaultEdition
-DOC;TST_RENDER;TST_RENDER_0020;;20;Common::setNeeded;"<p>Tous les attributs sont obligatoires</p>";TST_ALL_COMPLET;ALLNEEDED
-DOC;TST_RENDER;TST_RENDER_0015;;15;Common::setVisibility(R);"<p>Formulaire avec tous les attributs qui sont cachés</p>";TST_ALL_COMPLET;ALLVISR
-DOC;TST_RENDER;TST_RENDER_0014;;14;Common::setVisibility(H);"<p>Consultation avec tous les attributs cachés.</p>";TST_ALL_COMPLET;ALLVISH
-DOC;TST_RENDER;TST_RENDER_0019;;19;Common::setVisibility(S);"<p>Formulaire avec tous les attributs en lecture</p>";TST_ALL_COMPLET;ALLVISS
-DOC;TST_RENDER;TST_RENDER_0209;;209;Common::setInputTooltip;"<p>Les champs ont un tooltip ""Veuillez saisir une valeur"" lors du focus</p>";TST_ALL_COMPLET;SETINPUT
+<p>La largeur des onglets diminue au fur et à mesure de la diminution de la largeur de la fenêtre.</p>";TST_ALL_COMPLET;TABPROPORTIONAL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0002;;2;Document édition par défaut;<p>Formalaire en édition avec les options par défaut.</p>;TST_ALL_COMPLET;!defaultEdition;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0210;;205;Common::setLinkTarget_self;"<p>Ajoute un hyperlien sur la valeur de l'attribut si celui-ci est affiché.</p>
+
+<p>Au click, celui-ci s'ouvre dans la fenetre courante.</p>
+
+<p>1) Hyperlien dynamique en fonction de la valeur du champ (ex: un compte)</p>
+
+<p>2) Hyperlien statique</p>";TEST_SETLINK;SETLINKTARGET_SELF;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0015;;15;Common::setVisibility(R);<p>Formulaire avec tous les attributs qui sont cachés</p>;TST_ALL_COMPLET;ALLVISR;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0014;;14;Common::setVisibility(H);<p>Consultation avec tous les attributs cachés.</p>;TST_ALL_COMPLET;ALLVISH;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0019;;19;Common::setVisibility(S);<p>Formulaire avec tous les attributs en lecture</p>;TST_ALL_COMPLET;ALLVISS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_1034;;1034;Common:Notification;"<p>Affichage des différents niveaux de notifications :</p>
 
 <ul>
@@ -186,15 +186,16 @@ DOC;TST_RENDER;TST_RENDER_1034;;1034;Common:Notification;"<p>Affichage des diff�
 	<li>notice</li>
 	<li>success</li>
 	<li>info</li>
-</ul>";TST_ALL_COMPLET;NOTIFS
-DOC;TST_RENDER;TST_RENDER_0213;;213;Common::addButton;;TST_ALL_COMPLET;BUTTONS
-DOC;TST_RENDER;TST_RENDER_0202;;202;Common::setLabelPosition(left);;TST_ALL_COMPLET;LABELLEFT
-DOC;TST_RENDER;TST_RENDER_0010;;10;Common::getCssRef;<p>Test</p>;TST_ALL_COMPLET;CSSCOLOR
-DOC;TST_RENDER;TST_RENDER_0001;;1;"Consultation par défaut";;TST_ALL_COMPLET;
-DOC;TST_RENDER;TST_RENDER_0203;;203;Common::setLabelPosition(up);"<p>Tous les labels doivent être au dessus des valeurs</p>";TST_ALL_COMPLET;LABELUP
+</ul>";TST_ALL_COMPLET;NOTIFS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0213;;213;Common::addButton;;TST_ALL_COMPLET;BUTTONS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0202;;202;Common::setLabelPosition(left);;TST_ALL_COMPLET;LABELLEFT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0201;;201;Common::setLabelPosition(auto);;TST_ALL_COMPLET;LABELAUTO;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0010;;10;Common::getCssRef;<p>Test</p>;TST_ALL_COMPLET;CSSCOLOR;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0001;;1;Consultation par défaut;;TST_ALL_COMPLET;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0203;;203;Common::setLabelPosition(up);<p>Tous les labels doivent être au dessus des valeurs</p>;TST_ALL_COMPLET;LABELUP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0204;;204;Common::setLabelPosition(none);"<p>Aucun label d'attribut doit apparaître. Les valeurs prennent toutes la largeur</p>
 
-<p>Les tabs conservent leur label.</p>";TST_ALL_COMPLET;LABELNONE
+<p>Les tabs conservent leur label.</p>";TST_ALL_COMPLET;LABELNONE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0200;;200;Common::showEmpty;"<p>Si aucune valeur on affiche ""Aucune information"".</p>
 
 <ul>
@@ -207,7 +208,8 @@ DOC;TST_RENDER;TST_RENDER_0200;;200;Common::showEmpty;"<p>Si aucune valeur on af
 	<li>Les tableaux doivent afficher ""Aucune valeur dans ce tableau"" (en h1)</li>
 	<li>L'onglet ""Divers"" doit afficher ""Aucune valeur dans ce cadre"" dans le cadre"" (en rouge) Énuméré, couleur et mot de passe""</li>
 	<li>L'onglet ""Fichier"" Doit afficher ""Aucune valeur dans cet onglet"" (en bleu).</li>
-</ul>";TST_DATAI_ALLTYPE1;SHOWEMPTY
+</ul>";TST_DATAI_ALLTYPE1;SHOWEMPTY;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0020;;20;Common::setNeeded;<p>Tous les attributs sont obligatoires</p>;TST_ALL_COMPLET;ALLNEEDED;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0330;;330;setKendoColorConfiguration;"<ul>
 	<li>La couleur RGB a  une palette 3 couleurs (RGB)</li>
 	<li>La couleur CMJ a  une palette 3 couleurs (CMJ)</li>
@@ -216,47 +218,136 @@ DOC;TST_RENDER;TST_RENDER_0330;;330;setKendoColorConfiguration;"<ul>
 	<li>La couleur à confirmer à une boite de dialogue avec 2 boutons </li>
 </ul>
 
-<p> </p>";TST_DATA_COLOR1;!defaultEdition
-DOC;TST_RENDER;TST_RENDER_0210;;205;Common::setLinkTarget_self;"<p>Ajoute un hyperlien sur la valeur de l'attribut si celui-ci est affiché.</p>
-
-<p>Au click, celui-ci s'ouvre dans la fenetre courante.</p>
-
-<p>1) Hyperlien dynamique en fonction de la valeur du champ (ex: un compte)</p>
-
-<p>2) Hyperlien statique</p>";TEST_SETLINK;SETLINKTARGET_SELF
+<p> </p>";TST_DATA_COLOR1;!defaultEdition;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0205;;206;Common::setLinkTarget_dialog;"<p>Ajoute un hyperlien sur la valeur de l'attribut si celui-ci est affiché.</p>
 
 <p>Au click, celui-ci s'ouvre dans une fenetre de dialogue.</p>
 
 <p>1) Hyperlien dynamique en fonction de la valeur du champ (ex: un compte)</p>
 
-<p>2) Hyperlien statique</p>";TEST_SETLINK;SETLINKTARGET_DIALOG
+<p>2) Hyperlien statique</p>";TEST_SETLINK;SETLINKTARGET_DIALOG;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0206;;207;Common::setLinkTarget_blank;"<p>Ajoute un hyperlien sur la valeur de l'attribut si celui-ci est affiché.</p>
 
 <p>Au click, celui-ci s'ouvre dans un nouvel onglet.</p>
 
 <p>1) Hyperlien dynamique en fonction de la valeur du champ (ex: un compte)</p>
 
-<p>2) Hyperlien statique</p>";TEST_SETLINK;SETLINKTARGET_BLANK
-DOC;TST_RENDER;TST_RENDER_0207;;211;Common::setAutoCompleteHtmlLabel;"<p>Afficher un tooltip lorsque la souris passe au dessus du bouton de déclenchement de l'aide à la saisie.</p>";TST_ALL_COMPLET;SET_AUTOCOMPLETE_HTML_LABEL
-DOC;TST_RENDER;TST_RENDER_0211;;213;Common::addButtonEditTarget_self;"<p>Cette option ajoute un bouton en vue d'édition.</p>";TST_ALL_COMPLET;ADDBUTTONEDITTARGET_SELF
-DOC;TST_RENDER;TST_RENDER_0214;;214;Common::addButtonEditTarget_dialog;"<p>Cette option ajoute un bouton en vue d'édition(une fenêtre de dialogue interne sera utilisée).</p>";TST_ALL_COMPLET;ADDBUTTONEDITTARGET_DIALOG
-DOC;TST_RENDER;TST_RENDER_0220;;220;Common::addButtonConsTarget_dialog;"<p>Cette option ajoute un bouton en vue de consultation(une fenêtre de dialogue interne sera utilisée).</p>";TST_ALL_COMPLET;ADDBUTTONCONSTARGET_DIALOG
-DOC;TST_RENDER;TST_RENDER_0219;;219;Common::addButtonConsTarget_self;"<p>Cette option ajoute un bouton en vue de consultation.</p>";TST_ALL_COMPLET;ADDBUTTONCONSTARGET_SELF
-DOC;TST_RENDER;TST_RENDER_0215;;215;Common::setAttributeLabel;"<p>Cette option permet de modifier le texte d'un libellé d'attribut.</p>";TST_ALL_COMPLET;SETATTRIBUTELABEL
-DOC;TST_RENDER;TST_RENDER_0003;;3;"Document création par défaut";"<p>Formalaire en création avec les options par défaut.</p>";TST_DDUI_ALLTYPE;!defaultCreation
-DOC;TST_RENDER;TST_RENDER_2010;;2010;Common::eventReady;"<p>Cette option permet daccèder à l'évènement document ready qui indique que le document est chargé.</p>";TST_ALL_COMPLET;EVENTREADY
-DOC;TST_RENDER;TST_RENDER_2020;;2020;Event::eventChange;"<p>Cette option permet d'accèder à l'évènement document change qui permet d'observer l'interaction de l'utilisateur avec les différents attributs.</p>";TST_ALL_COMPLET;EVENTCHANGE
-DOC;TST_RENDER;TST_RENDER_3000;;3000;AttributeModel::getValueEdition;"<p>Cette méthode retourne la valeur d'un attribut d'un document, en édition, en cours.</p>";TST_ALL_COMPLET;GETVALUEEDITION
-DOC;TST_RENDER;TST_RENDER_3011;;3011;AttributeModel::setValueConsultation;"<p>Cette méthode retourne la valeur d'un attribut d'un document, en consultation, en cours.</p>";TST_ALL_COMPLET;SETVALUECONSULTATION
-DOC;TST_RENDER;TST_RENDER_3001;;3001;AttributeModel::getValueConsultation;"<p>Cette méthode retourne la valeur d'un attribut d'un document, en consultation, en cours.</p>";TST_ALL_COMPLET;GETVALUECONSULTATION
-DOC;TST_RENDER;TST_RENDER_3010;;3010;AttributeModel::setValueEdition;"<p>Cette méthode retourne la valeur d'un attribut d'un document, en édition, en cours.</p>";TST_ALL_COMPLET;SETVALUEEDITION
-//FAM;Color(TST_DDUI_COLOR);<specid>;<fldid>;Identité;"Couleur par défaut";RGB;CMJ;"Couleur à confirmer";RGB/CMJ;"12 couleurs"
-ORDER;TST_DDUI_COLOR;;;tst_title;tst_color1;tst_color2;tst_color3;tst_colors1;tst_colors2;tst_colors3
-DOC;TST_DDUI_COLOR;TST_DATA_COLOR1;;"Test de couleurs";#d9e477;#00ff00;#ffff00;"#8f5959
+<p>2) Hyperlien statique</p>";TEST_SETLINK;SETLINKTARGET_BLANK;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0207;;211;Common::setAutoCompleteHtmlLabel;<p>Afficher un tooltip lorsque la souris passe au dessus du bouton de déclenchement de l'aide à la saisie.</p>;TST_ALL_COMPLET;SET_AUTOCOMPLETE_HTML_LABEL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0211;;213;Common::addButtonEditTarget_self;<p>Cette option ajoute un bouton en vue d'édition.</p>;TST_ALL_COMPLET;ADDBUTTONEDITTARGET_SELF;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0214;;214;Common::addButtonEditTarget_dialog;<p>Cette option ajoute un bouton en vue d'édition(une fenêtre de dialogue interne sera utilisée).</p>;TST_ALL_COMPLET;ADDBUTTONEDITTARGET_DIALOG;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0220;;220;Common::addButtonConsTarget_dialog;<p>Cette option ajoute un bouton en vue de consultation(une fenêtre de dialogue interne sera utilisée).</p>;TST_ALL_COMPLET;ADDBUTTONCONSTARGET_DIALOG;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0219;;219;Common::addButtonConsTarget_self;<p>Cette option ajoute un bouton en vue de consultation.</p>;TST_ALL_COMPLET;ADDBUTTONCONSTARGET_SELF;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0215;;215;Common::setAttributeLabel;<p>Cette option permet de modifier le texte d'un libellé d'attribut.</p>;TST_ALL_COMPLET;SETATTRIBUTELABEL;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0003;;3;Document création par défaut;<p>Formalaire en création avec les options par défaut.</p>;TST_DDUI_ALLTYPE;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_2010;;2010;Common::eventReady;<p>Cette option permet daccèder à l'évènement document ready qui indique que le document est chargé.</p>;TST_ALL_COMPLET;EVENTREADY;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_2020;;2020;Event::eventChange;<p>Cette option permet d'accèder à l'évènement document change qui permet d'observer l'interaction de l'utilisateur avec les différents attributs.</p>;TST_ALL_COMPLET;EVENTCHANGE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_3000;;3000;AttributeModel::getValueEdition;"<p>Cette méthode retourne la valeur d'un attribut d'un document, en édition, en cours.</p>
+
+<p>Test :</p>
+
+<p>Vérifier que les message de notification sont aux vert avec la valeur de l'attribut affichhée dans le champs value du message.</p>
+
+<p>Le cas contraire, vérifier que l' attribut n'a pas de valeur null, sinon la valeur n'as pas été récupérée.</p>";TST_ALL_COMPLET;ATTRIBUTEMODELGETVALUEEDITION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_3011;;3011;AttributeModel::setValueConsultation;"<p>Cette méthode permet de mofier la valeur d'un attribut d'un document, en consultation, en cours.</p>
+
+<p>Test :</p>
+
+<p>Vérifier que les champs des attributs sont aux vert avec la valeur de l'attribut affichhée.</p>
+
+<p>Le cas contraire, vérifier que l' attribut n'a pas de valeur null, sinon la valeur n'as pas été modifié.</p>";TST_ALL_COMPLET;ATTRIBUTEMODELSETVALUECONSULTATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_3001;;3001;AttributeModel::getValueConsultation;"<p>Cette méthode retourne la valeur d'un attribut d'un document, en consultation, en cours.</p>
+
+<p>Test :</p>
+
+<p>Vérifier que les message de notification sont aux vert avec la valeur de l'attribut affichhée dans le champs value du message.</p>
+
+<p>Le cas contraire, vérifier que l' attribut n'a pas de valeur null, sinon la valeur n'as pas été récupérée.</p>";TST_ALL_COMPLET;ATTRIBUTEMODELGETVALUECONSULTATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_3010;;3010;AttributeModel::setValueEdition;"<p>Cette méthode permet de mofier la valeur d'un attribut d'un document, en edition, en cours.</p>
+
+<p>Test :</p>
+
+<p>Vérifier que les champs des attributs sont aux vert avec la valeur de l'attribut affichhée.</p>
+
+<p>Le cas contraire, vérifier que l' attribut n'a pas de valeur null, sinon la valeur n'as pas été modifié.</p>";TST_ALL_COMPLET;ATTRIBUTEMODELSETVALUEEDITION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1140;;1140;DocumentController::getValueEdition;<p>Cette méthode retourne la valeur d'un attribut d'un document, en édition, en cours.</p>;TST_ALL_COMPLET;DOCUMENTCONTROLLERGETVALUEEDITION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1211;;1211;DocumentController::setValueConsultation;<p>Cette méthode retourne la valeur d'un attribut d'un document, en consultation, en cours.</p>;TST_ALL_COMPLET;DOCUMENTCONTROLLERSETVALUECONSULTATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1141;;1141;DocumentController::getValueConsultation;<p>Cette méthode retourne la valeur d'un attribut d'un document, en consultation, en cours.</p>;TST_ALL_COMPLET;DOCUMENTCONTROLLERGETVALUECONSULTATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1210;;1210;DocumentController::setValueEdition;<p>Cette méthode retourne la valeur d'un attribut d'un document, en édition, en cours.</p>;TST_ALL_COMPLET;DOCUMENTCONTROLLERSETVALUEEDITION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0216;;216;Common::setTranslations;"<p>Cette méthode permet de surcharger la traduction d’un label d’un attribut donné.</p>
+
+<p>Test:</p>
+
+<p>1) modifier la valeur de l'attribut ""un entier"" dans l'onglet basique en mettant une valeur supérieur à 11.</p>
+
+<p>Vérifier que le tooltip du bouton de fermeture de la fenetre d'erreur affiche bien ""doit etre inférieur a 11"".</p>
+
+<p>2) modifier la valeur de l'attribut ""un entier"" dans l'onglet basique en mettant une valeur de 10 puis sauvegarder le document.</p>
+
+<p>Vérifier que le tooltip du bouton de fermeture de la fenetre d'erreur de l'attribut ""un entier"" dans l'onglet basique affiche bien ""doit etre inférieur ou égale à 10"".</p>";TST_ALL_COMPLET;SETTRANSLATION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0217;;217;Common::setLinkHelp;"<p>Cette méthode permet d’afficher un bouton d'aide dans la barre de menu du document, en consultation, et un petit icone d'aide dans le label d'un attribut en édition.</p>
+
+<p>Test : </p>
+
+<p>1)Vérifier que le bouton d'aide dans la barre de menu du document apparait en consultation et en édition.</p>
+
+<p>2)Vérifier que le petit icone d'aide dans le label d'un attribut en édition apparait.</p>";TST_ALL_COMPLET;SETLINKHELP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0208;;208;Common::setTemplate;"<p>Permet de définir le template à utiliser pour afficher la valeur de l'attribut.</p>
+
+<p>Test :</p>
+
+<p>Vérifier qu'un template est appliqué au titre.</p>
+
+<p>Vérifier qu'un template est appliqué sur les compte(onglet Basique)</p>
+
+<p>Vérifier  qu'un template est appliqué sur les relation(onglet Relations)</p>";TST_ALL_COMPLET;SETTEMPLATE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0209;;209;Common::setTemplate2;"<p>Les champs ont un tooltip ""Veuillez saisir une valeur"" lors du focus</p>";TST_ALL_COMPLET;SETTEMPLATE2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1000;;1000;Common::DocumentController_reinitDocument;"<p>Cette méthode permet de recharger le document.</p>
+
+<p>Test : </p>
+
+<p>Dans l'onglet Basique, changer la valeur de l'entier à 100, cliquer en dehors du champs ""un entier"".</p>
+
+<p>Un message apparait alors vous indiquant si vous voulez quitter le document actuel, cliquez sur ""ok"".</p>
+
+<p>Le document se reinitialise, virifiez alors que le champs ""un entier"" à repris sa valeur initiale.</p>";TST_ALL_COMPLET;DOCUMENTCONTROLLER_REINITDOCUMENT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1010;;1010;Common::DocumentController_fetchDocument;"<p>Cette méthode permet de charger un autre document, en édition ou en consultation.</p>
+
+<p>Test : </p>
+
+<p>Dans l'onglet Basique, changer la valeur de l'entier à 100, cliquer en dehors du champs ""un entier"".</p>
+
+<p>Un message apparait alors vous indiquant si vous voulez quitter le document actuel, cliquez sur ""ok"".</p>
+
+<p>Le document 1156 est chargé, virifiez alors que le champs ""Un compte"" à la valeur <a href=""http://192.168.252.183:32/api/v1/documents/1073.html"" target=""_render""> Dujardin Isabelle</a>.</p>
+
+<p> </p>
+
+<p> </p>";TST_ALL_COMPLET;DOCUMENTCONTROLLER_FETCHDOCUMENT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1020;;1020;Common::DocumentController_saveDocument;"<p>Cette méthode permet de sauver le document en cours. La bannière de chargement est affichée et le document est ensuite re-présenté en édition avec ses nouvelles valeurs.</p>
+
+<p>Test : </p>
+
+<p>Dans l'onglet Basique, changer la valeur de l'entier à 1, cliquer en dehors du champs ""un entier"".</p>
+
+<p>Un message vert apparait alors vous indiquant que le document a été sauvegardé.</p>";TST_ALL_COMPLET;DOCUMENTCONTROLLER_SAVEDOCUMENT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1030;;1030;Common::DocumentController_changeStateDocumentclass;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_CHANGESTATEDOCUMENTCLASS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1040;;1040;Common::DocumentCon_roller_deleteDocument;;TST_ALL_COMPLET;DOCUMENTCON_ROLLER_DELETEDOCUMENT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1050;;1050;Common::DocumentController_restoreDocument;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_RESTOREDOCUMENT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1060;;1060;Common::DocumentController_getProperty;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_GETPROPERTY;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1070;;1070;Common::DocumentController_getProperties;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_GETPROPERTIES;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1080;;1080;Common::DocumentController_hasAttribute;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_HASATTRIBUTE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1090;;1090;Common::DocumentController_getAttribute;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_GETATTRIBUTE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1100;;1100;Common::DocumentController_getAttributes;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_GETATTRIBUTES;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1110;;1110;Common::DocumentController_hasMenu;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_HASMENU;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1120;;1120;Common::DocumentController_getMenu;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_GETMENU;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_1130;;1130;Common::DocumentController_getMenus;;TST_ALL_COMPLET;DOCUMENTCONTROLLER_GETMENUS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+//FAM;Color(TST_DDUI_COLOR);<specid>;<fldid>;Identité;Couleur par défaut;RGB;CMJ;Couleur à confirmer;RGB/CMJ;12 couleurs;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;TST_DDUI_COLOR;;;tst_title;tst_color1;tst_color2;tst_color3;tst_colors1;tst_colors2;tst_colors3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_DDUI_COLOR;TST_DATA_COLOR1;;Test de couleurs;#d9e477;#00ff00;#ffff00;"#8f5959
 #369089
 #4f53bc";"#00ff00
 #0000ff
 #ff0000";"#00ffff
 #ff00ff
-#773f70"
+#773f70";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

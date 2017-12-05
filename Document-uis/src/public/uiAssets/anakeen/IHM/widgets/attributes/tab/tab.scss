@@ -151,23 +151,28 @@ $tabFiwWidth:10em;
 
 }
 
-
 .dcpDocument__tabs.k-tabstrip {
+  padding:1.1666rem;
   .dcpTab__label.k-item.k-state-hover {
     background-color: lighten($nav-link-hover-bg, 10%);
   }
   .k-bare.k-tabstrip-next,
   .k-bare.k-tabstrip-prev {
     height: 3rem;
-    background: $body-bg! important;
+    background: $A4-ui-tab-active-bg! important;
+    width:3rem;
 
   }
   .k-bare.k-tabstrip-next {
-    right: 1rem;
+    right: 1.1666rem;
+    border-style: solid solid none solid;
+    border-color: $A4-ui-doc-edit-attribute-color-border ! important;
   }
 
   .k-bare.k-tabstrip-prev {
-    left: 1rem;
+    left: 1.1666rem;
+    border-style: solid solid none solid;
+    border-color: $A4-ui-doc-edit-attribute-color-border ! important;
   }
 }
 

@@ -254,6 +254,12 @@ define([
                             effects: "fadeIn"
                         }
                     },
+                    activate: function vDocument(event) {
+                        if (!this._dcpNotFirstactivate) {
+                            _.delay(_.bind(documentView.scrollTobVisibleTab, documentView), 500);
+                            this._dcpNotFirstactivate=true;
+                        }
+                    },
                     show: function vDocumentShowTab(event)
                     {
                         var tabId = $(event.item).data("attrid");
@@ -277,6 +283,7 @@ define([
                                     });
                                     _.defer(function () {
                                         $(window).scrollTop(scrollY);
+
                                     });
                                 }
                             }
@@ -328,6 +335,7 @@ define([
             $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
             {
                 documentView.model.redrawErrorMessages();
+                documentView.scrollTobVisibleTab();
             }, 100, false));
 
             $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
@@ -374,6 +382,17 @@ define([
                 }
             }
         },
+
+        /**
+         * Scroll to visible tab label
+         */
+        scrollTobVisibleTab: function vDocumentscrollTobVisibleTab() {
+            var kendoTabStrip = (this.kendoTabs) ? this.kendoTabs.data("kendoTabStrip") : null;
+            if (kendoTabStrip && kendoTabStrip._scrollableModeActive) {
+                kendoTabStrip._scrollTabsToItem(this.kendoTabs.find("li.k-state-active"));
+            }
+        },
+
         fixedTab: function vDocumentfixedTab(event)
         {
             // @TODO Need a decision to delete this option or not

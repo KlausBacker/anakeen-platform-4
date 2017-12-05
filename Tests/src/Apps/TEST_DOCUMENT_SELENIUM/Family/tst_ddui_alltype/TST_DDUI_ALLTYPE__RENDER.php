@@ -3,6 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Created by PhpStorm.
  * User: eric
@@ -20,7 +21,7 @@ class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
     {
         return "All Edit";
     }
-    
+
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
@@ -35,32 +36,31 @@ class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
         $options->enum(myAttributes::test_ddui_all__enumvertical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
         $options->enum(myAttributes::test_ddui_all__enumhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay);
         $options->enum(myAttributes::test_ddui_all__enumbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay);
-        
+
         $options->enum(myAttributes::test_ddui_all__enumserverlist)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay)->useSourceUri(true);
         $options->enum(myAttributes::test_ddui_all__enumserverauto)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(true);
         $options->enum(myAttributes::test_ddui_all__enumserververtical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
         $options->enum(myAttributes::test_ddui_all__enumserverhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(true);
         $options->enum(myAttributes::test_ddui_all__enumserverbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay)->useSourceUri(true);
-        
+
         $options->enum(myAttributes::test_ddui_all__enumslist)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
         $options->enum(myAttributes::test_ddui_all__enumsauto)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
         $options->enum(myAttributes::test_ddui_all__enumsvertical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
         $options->enum(myAttributes::test_ddui_all__enumshorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay);
-        
+
         $options->enum(myAttributes::test_ddui_all__enumsserverlist)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay)->useSourceUri(false);
         $options->enum(myAttributes::test_ddui_all__enumsserverauto)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(false);
         $options->enum(myAttributes::test_ddui_all__enumsserververtical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(false);
         $options->enum(myAttributes::test_ddui_all__enumsserverhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(false);
-        
 
-        
+
         return $options;
     }
 }
 
 class AllRenderConfigView extends \Dcp\Ui\DefaultView
 {
-    
+
     public function getLabel(\Doc $document = null)
     {
         return "All View";
@@ -73,6 +73,7 @@ class AllRenderConfigView extends \Dcp\Ui\DefaultView
         return $options;
     }
 }
+
 class AllRenderCollapseView extends \Dcp\Ui\DefaultView
 {
     public function getOptions(\Doc $document)
@@ -109,6 +110,7 @@ class AllRenderNoneArrayCollapseView extends \Dcp\Ui\DefaultView
         return $options;
     }
 }
+
 class AllRenderCollapeArrayView extends \Dcp\Ui\DefaultView
 {
     public function getOptions(\Doc $document)
@@ -119,6 +121,7 @@ class AllRenderCollapeArrayView extends \Dcp\Ui\DefaultView
         return $options;
     }
 }
+
 class AllRenderTabLeft extends \Dcp\Ui\DefaultEdit
 {
     public function getOptions(\Doc $document)
@@ -129,6 +132,7 @@ class AllRenderTabLeft extends \Dcp\Ui\DefaultEdit
         return $options;
     }
 }
+
 class AllRenderTabTopScroll extends \Dcp\Ui\DefaultEdit
 {
     public function getOptions(\Doc $document)
@@ -139,6 +143,7 @@ class AllRenderTabTopScroll extends \Dcp\Ui\DefaultEdit
         return $options;
     }
 }
+
 class AllRenderTabTopFix extends \Dcp\Ui\DefaultEdit
 {
     public function getOptions(\Doc $document)
@@ -149,6 +154,7 @@ class AllRenderTabTopFix extends \Dcp\Ui\DefaultEdit
         return $options;
     }
 }
+
 class AllRenderTabProportial extends \Dcp\Ui\DefaultEdit
 {
     public function getOptions(\Doc $document)
@@ -159,57 +165,61 @@ class AllRenderTabProportial extends \Dcp\Ui\DefaultEdit
         return $options;
     }
 }
+
 class AllRenderAllNeeded extends \Dcp\Ui\DefaultEdit
 {
     public function getNeeded(\Doc $document)
     {
-        $need=parent::getNeeded($document);
-        $attrs=$document->getNormalAttributes();
+        $need = parent::getNeeded($document);
+        $attrs = $document->getNormalAttributes();
         foreach ($attrs as $attrid => $attr) {
-        if ($attr->type !== "array") {
-            $need->setNeeded($attrid, true);
-        }
+            if ($attr->type !== "array") {
+                $need->setNeeded($attrid, true);
+            }
         }
         return $need;
     }
 }
+
 class AllRenderVisibilityRead extends \Dcp\Ui\DefaultEdit
 {
     public function getVisibilities(\Doc $document)
     {
-        $visibilities =parent::getVisibilities($document);
-        $attrs=$document->getFieldAttributes();
+        $visibilities = parent::getVisibilities($document);
+        $attrs = $document->getFieldAttributes();
         foreach ($attrs as $attrid => $attr) {
 
-                $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::ReadOnlyVisibility);
+            $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::ReadOnlyVisibility);
 
         }
         return $visibilities;
     }
 }
+
 class AllRenderVisibilityStatic extends \Dcp\Ui\DefaultEdit
 {
     public function getVisibilities(\Doc $document)
     {
-        $visibilities =parent::getVisibilities($document);
-        $attrs=$document->getFieldAttributes();
+        $visibilities = parent::getVisibilities($document);
+        $attrs = $document->getFieldAttributes();
         foreach ($attrs as $attrid => $attr) {
 
-                $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::StaticWriteVisibility);
+            $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::StaticWriteVisibility);
 
         }
         return $visibilities;
     }
 }
+
 class AllRenderVisibilityHidden extends \Dcp\Ui\DefaultView
 {
     public function getVisibilities(\Doc $document)
     {
-        $visibilities =parent::getVisibilities($document);
-        $attrs=$document->getFieldAttributes();
+        $visibilities = parent::getVisibilities($document);
+        $attrs = $document->getFieldAttributes();
         foreach ($attrs as $attrid => $attr) {
 
-                $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+            $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
 
         }
         return $visibilities;
@@ -227,14 +237,15 @@ class AllRenderSetInput extends \Dcp\Ui\DefaultEdit
         return $options;
     }
 }
+
 class AllRenderNotification extends \Dcp\Ui\DefaultView
 {
 
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $jsReferences = parent::getJsReferences($document);
-        $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=".$version;
+        $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=" . $version;
         return $jsReferences;
     }
 }
@@ -245,9 +256,9 @@ class AllRenderCssColor extends AllRenderConfigEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testColor.css?ws=".$version;
+        $cssReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testColor.css?ws=" . $version;
         return $cssReferences;
     }
 }
@@ -259,23 +270,22 @@ class AllRenderButtons extends \Dcp\Ui\DefaultEdit
     {
         $options = parent::getOptions($document);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent='<i class="fa fa-eye"></i>';
-        $viewDoc->url=sprintf("api/v1/documents/{{value}}.html" );
-        $viewDoc->target="_dialog";
-        $viewDoc->windowWidth="400px";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
+        $viewDoc->url = sprintf("api/v1/documents/{{value}}.html");
+        $viewDoc->target = "_dialog";
+        $viewDoc->windowWidth = "400px";
 
         $options->docid()->addButton($viewDoc);
 
 
-        $cogButton=new \Dcp\Ui\ButtonOptions();
-        $cogButton->htmlContent='<i class="fa fa-cog"></i>';
+        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton->htmlContent = '<i class="fa fa-cog"></i>';
         $options->text()->addButton($cogButton);
 
 
-
-        $superButton=new \Dcp\Ui\ButtonOptions();
-        $superButton->htmlContent='<i class="fa fa-superpowers"></i>';
+        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton->htmlContent = '<i class="fa fa-superpowers"></i>';
         $options->commonOption()->addButton($superButton);
 
 
@@ -390,12 +400,14 @@ class hideDeleteButton extends AllRenderConfigEdit
 
 class setLinkTarget_self extends AllRenderConfigView
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
+
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
@@ -413,7 +425,7 @@ class setLinkTarget_self extends AllRenderConfigView
         $linkOption = new \Dcp\ui\htmlLinkOptions();
         $linkOption->target = "_self";
         $linkOption->title = "Mon test {{value}} {{displayValue}}";
-        $linkOption->url="#action/my:myOptions";
+        $linkOption->url = "#action/my:myOptions";
 
         $options->account()->setLink($linkOptionAccount);
         $options->image()->setLink($linkOptionImage);
@@ -423,6 +435,7 @@ class setLinkTarget_self extends AllRenderConfigView
 
     }
 }
+
 class setLinkTarget_dialog extends AllRenderConfigView
 {
 
@@ -462,6 +475,7 @@ class setLinkTarget_dialog extends AllRenderConfigView
 
     }
 }
+
 class setLinkTarget_blank extends AllRenderConfigView
 {
 
@@ -509,36 +523,39 @@ class setAutoCompleteHtmlLabel extends AllRenderConfigEdit
 
 class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
+
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=".$version;
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
     }
+
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent='<i class="fa fa-eye"></i>';
-        $viewDoc->url="#action/my:myOptions";
-        $viewDoc->target="_self";
-        $viewDoc->windowWidth="400px";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
+        $viewDoc->url = "#action/my:myOptions";
+        $viewDoc->target = "_self";
+        $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
 
-        $cogButton=new \Dcp\Ui\ButtonOptions();
-        $cogButton->htmlContent='<i class="fa fa-cog"></i>';
+        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton->htmlContent = '<i class="fa fa-cog"></i>';
         $options->text()->addButton($cogButton);
 
-        $superButton=new \Dcp\Ui\ButtonOptions();
-        $superButton->htmlContent='<i class="fa fa-superpowers"></i>';
+        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton->htmlContent = '<i class="fa fa-superpowers"></i>';
         $options->commonOption()->addButton($superButton);
 
         return $options;
@@ -548,44 +565,47 @@ class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
 
 class addButtonEditTarget_dialog extends \Dcp\Ui\DefaultEdit
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
+
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=".$version;
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
     }
+
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent='<span>  un button autre </span><i class="fa fa-eye"></i>';
-        $viewDoc->url="#action/my:myOptions";
-        $viewDoc->target="_dialog";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<span>  un button autre </span><i class="fa fa-eye"></i>';
+        $viewDoc->url = "#action/my:myOptions";
+        $viewDoc->target = "_dialog";
         $viewDoc->class = "mybtn mybtn-1";
-        $viewDoc->windowWidth="400px";
+        $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent='<span>  un button autre2 </span><i class="fa fa-eye"></i>';
-        $viewDoc->url="https://fr.wikipedia.org/wiki/ {{value}} ";
-        $viewDoc->target="_dialog";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<span>  un button autre2 </span><i class="fa fa-eye"></i>';
+        $viewDoc->url = "https://fr.wikipedia.org/wiki/ {{value}} ";
+        $viewDoc->target = "_dialog";
         $viewDoc->class = "myClass";
         $options->docid()->addButton($viewDoc);
 
-        $cogButton=new \Dcp\Ui\ButtonOptions();
-        $cogButton->htmlContent='<span>  un button grands </span><i class="fa fa-eye"></i>';
+        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton->htmlContent = '<span>  un button grands </span><i class="fa fa-eye"></i>';
         $options->text()->addButton($cogButton);
 
-        $superButton=new \Dcp\Ui\ButtonOptions();
-        $superButton->htmlContent='<span>  un button grands </span><i class="fa fa-eye"></i>';
+        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton->htmlContent = '<span>  un button grands </span><i class="fa fa-eye"></i>';
         $superButton->class = "myClass";
         $options->commonOption()->addButton($superButton);
 
@@ -596,36 +616,39 @@ class addButtonEditTarget_dialog extends \Dcp\Ui\DefaultEdit
 
 class addButtonConsTarget_self extends \Dcp\Ui\DefaultView
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
+
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=".$version;
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
     }
+
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent='<i class="fa fa-eye"></i>';
-        $viewDoc->url=sprintf("api/v1/documents/{{value}}.html" );
-        $viewDoc->target="_self";
-        $viewDoc->windowWidth="400px";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
+        $viewDoc->url = sprintf("api/v1/documents/{{value}}.html");
+        $viewDoc->target = "_self";
+        $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
 
-        $cogButton=new \Dcp\Ui\ButtonOptions();
-        $cogButton->htmlContent='<i class="fa fa-cog"></i>';
+        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton->htmlContent = '<i class="fa fa-cog"></i>';
         $options->text()->addButton($cogButton);
 
-        $superButton=new \Dcp\Ui\ButtonOptions();
-        $superButton->htmlContent='<i class="fa fa-superpowers"></i>';
+        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton->htmlContent = '<i class="fa fa-superpowers"></i>';
         $options->commonOption()->addButton($superButton);
         $options->commonOption()->addButton($superButton);
 
@@ -637,18 +660,19 @@ class addButtonConsTarget_self extends \Dcp\Ui\DefaultView
 
 class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=".$version;
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
     }
 
@@ -656,27 +680,27 @@ class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
     {
         $options = parent::getOptions($document);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent=' <p> un bouton qui contient une balise p</p>';
-        $viewDoc->url="https://fr.wikipedia.org/wiki/ {{value}} ";
-        $viewDoc->target="_dialog";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = ' <p> un bouton qui contient une balise p</p>';
+        $viewDoc->url = "https://fr.wikipedia.org/wiki/ {{value}} ";
+        $viewDoc->target = "_dialog";
         $viewDoc->class = "mybtn mybtn-1";
-        $viewDoc->windowWidth="400px";
+        $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
 
-        $viewDoc=new \Dcp\Ui\ButtonOptions();
-        $viewDoc->htmlContent='<span>  un button autre2 </span><i class="fa fa-eye"></i>';
-        $viewDoc->url="https://fr.wikipedia.org/wiki/ {{value}} ";
-        $viewDoc->target="_dialog";
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<span>  un button autre2 </span><i class="fa fa-eye"></i>';
+        $viewDoc->url = "https://fr.wikipedia.org/wiki/ {{value}} ";
+        $viewDoc->target = "_dialog";
         $viewDoc->class = "myClass";
         $options->docid()->addButton($viewDoc);
 
-        $cogButton=new \Dcp\Ui\ButtonOptions();
-        $cogButton->htmlContent='<span>  un button grands </span><i class="fa fa-eye"></i>';
+        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton->htmlContent = '<span>  un button grands </span><i class="fa fa-eye"></i>';
         $options->text()->addButton($cogButton);
 
-        $superButton=new \Dcp\Ui\ButtonOptions();
-        $superButton->htmlContent='<p> un bouton qui contient une balise p</p>';
+        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton->htmlContent = '<p> un bouton qui contient une balise p</p>';
         $superButton->class = "myClass";
         $options->commonOption()->addButton($superButton);
 
@@ -702,67 +726,478 @@ class setAttributeLabel extends \Dcp\Ui\DefaultView
 
 class eventReady extends \Dcp\Ui\DefaultView
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventReadyJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventReadyJS.js?ws=" . $version;
         return $js;
     }
 
-};
+}
+
+;
 
 
 class eventChange extends \Dcp\Ui\DefaultEdit
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventChangeJS.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventChangeJS.js?ws=" . $version;
         return $js;
     }
 
-};
-class getValueEdition extends \Dcp\Ui\DefaultEdit
+}
+
+;
+
+class AttributeModel_getValueEdition extends \Dcp\Ui\DefaultEdit
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/getValueEdition.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_getValueEdition.js?ws=" . $version;
         return $js;
     }
 
-};
-class getValueConsultation extends \Dcp\Ui\DefaultView
+}
+
+;
+
+class AttributeModel_getValueConsultation extends \Dcp\Ui\DefaultView
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/getValueConsultation.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_getValueConsultation.js?ws=" . $version;
         return $js;
     }
 
-};
+}
 
-class setValueEdition extends \Dcp\Ui\DefaultEdit
+;
+
+class AttributeModel_setValueEdition extends \Dcp\Ui\DefaultEdit
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setValueEdition.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_setValueEdition.js?ws=" . $version;
         return $js;
     }
 
-};
+}
 
-class setValueConsultation extends \Dcp\Ui\DefaultView
+;
+
+class AttributeModel_setValueConsultation extends \Dcp\Ui\DefaultView
 {
-    public function getJsReferences(\Doc $document = null) {
-        $version = \ApplicationParameterManager::getScopedParameterValue( "WVERSION");
-        $js=parent::getJsReferences();
-        $js["tstAddbuttonJS"]="TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setValueConsultation.js?ws=".$version;
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_setValueConsultation.js?ws=" . $version;
         return $js;
     }
 
-};
+}
+
+;
+
+class DocumentController_getValueEdition extends \Dcp\Ui\DefaultEdit
+{
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_getValueEdition.js?ws=" . $version;
+        return $js;
+    }
+
+}
+
+;
+
+class DocumentController_getValueConsultation extends \Dcp\Ui\DefaultView
+{
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_getValueConsultation.js?ws=" . $version;
+        return $js;
+    }
+
+}
+
+;
+
+class DocumentController_setValueEdition extends \Dcp\Ui\DefaultEdit
+{
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_setValueEdition.js?ws=" . $version;
+        return $js;
+    }
+
+}
+
+;
+
+class DocumentController_setValueConsultation extends \Dcp\Ui\DefaultView
+{
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_setValueConsultation.js?ws=" . $version;
+        return $js;
+    }
+
+}
+
+;
+
+class setTranslation extends \Dcp\Ui\DefaultEdit
+{
+    //vérification lors de la modification de l'attribut
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTranslation.js?ws=" . $version;
+        return $js;
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+        $options->commonOption(test_ddui_all__integer)->setTranslations([
+            "decreaseLabel" => "5 kilos de moins",
+            "increaseLabel" => "50 kilos de plus"
+        ]);
+        $options->commonOption()->setTranslations(
+            array(
+                "closeErrorMessage" => ___("close me please", "my"),
+                "deleteLabel" => ___("kill it", "my")
+            ));
+
+        $options->arrayAttribute("test_ddui_all__file_array")->setTranslations([
+            "tooltipLabel" => "Choisissez un plan",
+        ]);
+        $options->file("test_ddui_all__file")->setTranslations([
+            "tooltipLabel" => "Choisissez un plan",
+        ]);
+
+        return $options;
+
+    }
+}
+
+class setLinkHelp extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+
+class setTemplate extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $cssReferences = parent::getCssReferences($document);
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.css?ws=" . $version;
+        return $cssReferences;
+    }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.js?ws=" . $version;
+        return $js;
+    }
+
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options->text("test_ddui_all__title")->setLabelPosition("none");
+        $options->text("test_ddui_all__title")->setTemplate(
+            '<div class="shadow gradient customGradient">
+        <p>Mon label est : {{attributes.test_ddui_all__title.label}} </p> 
+        <p>mon attributeId est : {{attributes.test_ddui_all__title.id}} </p> 
+        <p>Ma valeur est : {{attributes.test_ddui_all__title.attributeValue.value}} </p> 
+        <p> mon designer est toto</p>
+        </div>'
+        );
+        $options->arrayAttribute("test_ddui_all__array_account")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfoArray.mustache"));
+        $options->text("test_ddui_all__longtext")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfo.mustache"));
+        $options->account("test_ddui_all__account_multiple")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfoMultiple.mustache"));
+
+        return $options;
+
+    }
+}
+
+class DocumentController_reinitDocument             extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $cssReferences = parent::getCssReferences($document);
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
+        return $cssReferences;
+    }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_reinitDocument.js?ws=" . $version;
+        return $js;
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options = parent::getOptions($document);
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<span>  Reinitialiser le document </span><i class="fa fa-eye"></i>';
+        $viewDoc->class = "mybtn_DocumentController_reinitDocument userButton";
+        $viewDoc->windowWidth = "400px";
+        $options->commonOption( test_ddui_all__title)->addButton($viewDoc);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_fetchDocument              extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $cssReferences = parent::getCssReferences($document);
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
+        return $cssReferences;
+    }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_fetchDocument.js?ws=" . $version;
+        return $js;
+    }
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+        $options = parent::getOptions($document);
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<span>  Fetcher le document </span><i class="fa fa-eye"></i>';
+        $viewDoc->class = "mybtn_DocumentController_fetchDocument userButton";
+        $viewDoc->windowWidth = "400px";
+        $options->commonOption( test_ddui_all__title)->addButton($viewDoc);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_saveDocument               extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $cssReferences = parent::getCssReferences($document);
+        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
+        return $cssReferences;
+    }
+
+    public function getJsReferences(\Doc $document = null)
+    {
+        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_saveDocument.js?ws=" . $version;
+        return $js;
+    }
+
+
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc->htmlContent = '<span>  Sauvegarder le document </span><i class="fa fa-eye"></i>';
+        $viewDoc->class = "mybtn_DocumentController_saveDocument userButton";
+        $viewDoc->windowWidth = "400px";
+        $options->commonOption( test_ddui_all__title)->addButton($viewDoc);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_changeStateDocumentclass   extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentCon_roller_deleteDocument             extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_restoreDocument            extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_getProperty                extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_getProperties              extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_hasAttribute               extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_getAttribute               extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_getAttributes              extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_hasMenu                    extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_getMenu                    extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+class DocumentController_getMenus                   extends \Dcp\Ui\DefaultEdit
+{
+
+    public function getOptions(\Doc $document)
+    {
+        $options = parent::getOptions($document);
+
+
+        return $options;
+
+    }
+}
+
+
+
+
+
+
 
 

@@ -18,7 +18,7 @@ ATTR;TEST_DDUI_ALL__DATE;TEST_DDUI_ALL__FR_DATE;Une date;N;N;date ;160;W;;;;;;;;
 ATTR;TEST_DDUI_ALL__TIME;TEST_DDUI_ALL__FR_DATE;Une heure;N;N;time;170;W;;;;;;;;
 ATTR;TEST_DDUI_ALL__TIMESTAMP;TEST_DDUI_ALL__FR_DATE;Une date avec  une heure;N;N;timestamp;180;W;;;;;;;;
 ATTR;TEST_DDUI_ALL__FR_NUMBER;TEST_DDUI_ALL__T_TAB;Les nombres;N;N;frame;190;W;;;;;;;;
-ATTR;TEST_DDUI_ALL__INTEGER;TEST_DDUI_ALL__FR_NUMBER;Un entier;N;N;integer ;200;W;;;;;;;;
+ATTR;TEST_DDUI_ALL__INTEGER;TEST_DDUI_ALL__FR_NUMBER;Un entier;N;N;integer ;200;W;;;;;;::validConstraint(test_ddui_all__integer);;
 ATTR;TEST_DDUI_ALL__DOUBLE;TEST_DDUI_ALL__FR_NUMBER;Un décimal;N;N;double ;210;W;;;;;;;;
 ATTR;TEST_DDUI_ALL__MONEY;TEST_DDUI_ALL__FR_NUMBER;Un sous;N;N;money;220;W;;;;;;;;
 ATTR;TEST_DDUI_ALL__FR_MISC;TEST_DDUI_ALL__T_TAB;Divers;N;N;frame;230;W;;;;;;;;

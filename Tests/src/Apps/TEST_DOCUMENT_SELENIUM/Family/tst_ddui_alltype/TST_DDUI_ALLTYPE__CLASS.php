@@ -23,6 +23,13 @@ class AllType extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAcces
         return null;
     }
 
+    public function validConstraint($value)
+    {
+        if (!empty($value) && $value >= 10) {
+            return _("doit etre inférieur à 10");
+        }
+        return null;
 
+    }
 
 }
