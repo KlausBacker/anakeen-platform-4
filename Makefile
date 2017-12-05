@@ -37,6 +37,7 @@ webinst:
 
 webinst-business:
 	cd Document-uis && yarn install && yarn buildAsset
+	make -f pojs.make OUTPUT_DIR=Samples/BusinessApp/src/public/BUSINESS_APP/src/components compile
 	cd Samples/BusinessApp && yarn install && yarn build
 	-mkdir -p $(localpub)/Samples
 	rsync --delete -azvr --exclude 'node_modules' Samples $(localpub)
