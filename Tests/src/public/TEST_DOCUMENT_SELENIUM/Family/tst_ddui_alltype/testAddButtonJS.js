@@ -11,7 +11,6 @@ window.dcp.document.documentController(
         console.log("i am here")
         if (data.eventId === "my") {
             if (data.options.length > 0 && data.options[0] === "myOptions" ) {
-
                 alert("I catched my event");
             }
         }
