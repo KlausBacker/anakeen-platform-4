@@ -4,9 +4,9 @@ LOCALES=en fr
 OUTPUT_DIR=Document-uis/src/vendor/Anakeen/Components
 COMPONENTS_DIRS= $(shell find $(OUTPUT_DIR)/* -maxdepth 0 -type d)
 COMPONENTS_NAME= $(notdir $(COMPONENTS_DIRS))
-TEMPLATES= $(COMPONENTS_NAME:%=/tmp/%/template.pot)
-#GETTEXT_HTML_SOURCES = $(shell find $(OUTPUT_DIR) -name '*.vue' -o -name '*.html' 2> /dev/null)
-#GETTEXT_JS_SOURCES =   $(shell find $(OUTPUT_DIR) -name '*.vue' -o -name '*.js')
+TEMPLATES= $(COMPONENTS_NAME:%=./tmpot/%/template.pot)
+GETTEXT_HTML_SOURCES = $(shell find $(OUTPUT_DIR) -name '*.vue' -o -name '*.html' 2> /dev/null)
+GETTEXT_JS_SOURCES =   $(shell find $(OUTPUT_DIR) -name '*.vue' -o -name '*.js')
 
 # Name of the generated .po files for each available locale.
 LOCALE_FILES ?= $(foreach dir, $(COMPONENTS_DIRS), $(patsubst %,$(dir)/locale/%/LC_MESSAGES/app.po,$(LOCALES)))
@@ -23,12 +23,12 @@ endef
 
 pojs: $(TEMPLATES)
 
-/tmp/%/template.pot:
+./tmpot/%/template.pot: $(GETTEXT_HTML_SOURCES) $(GETTEXT_JS_SOURCES)
 	$(eval GETTEXT_HTML_SOURCES=$(shell find $(OUTPUT_DIR)/$* -name '*.vue' -o -name '*.html' 2> /dev/null))
 	$(eval GETTEXT_JS_SOURCES=$(shell find $(OUTPUT_DIR)/$* -name '*.vue' -o -name '*.js' 2> /dev/null))
 # `dir` is a Makefile built-in expansion function which extracts the directory-part of `$@`.
 # `$@` is a Makefile automatic variable: the file name of the target of the rule.
-# => `mkdir -p /tmp/`
+# => `mkdir -p /tmpot/`
 	mkdir -p $(dir $@)
 	which gettext-extract
 # Extract gettext strings from templates files and create a POT dictionary template.
@@ -50,7 +50,7 @@ pojs: $(TEMPLATES)
 
 
 clean: 
-	rm -f /tmp/template.pot $(OUTPUT_DIR)/translation.json
+	rm -fr ./tmpot/ $(OUTPUT_DIR)/translation.json
 
 
 compile: $(OUTPUT_DIR)/translation.json
