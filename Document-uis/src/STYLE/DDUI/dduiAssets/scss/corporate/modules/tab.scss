@@ -19,6 +19,7 @@
   .dcpDocument__tabs {
     .dcpDocument__tabs__list {
       border-bottom: none;
+      overflow: hidden;
     }
   }
 
@@ -51,16 +52,16 @@
   }
 
   .dcpDocument__tabs.k-tabstrip > .dcpTab__content {
-    border: none;
-    margin: 0 1.166rem 0 1.166rem;
+
+    margin: 0;
     background-color: $A4-ui-tab-active-bg;
-    box-shadow: $A4-ui-frame-shadow;
+    border-style: none solid solid solid;
+    border-color: $A4-ui-doc-edit-attribute-color-border;
     padding: 0;
   }
 
   .dcpDocument__tabs .dcpDocument__tabs__list.k-tabstrip-items {
-    margin-left: 1.166rem;
-    margin-right: 1.166rem;
+
     height: $A4-ui-tabs-height;
   }
 
