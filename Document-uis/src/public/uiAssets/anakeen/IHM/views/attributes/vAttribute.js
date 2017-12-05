@@ -34,7 +34,7 @@ define([
         // If you add an event here, you probably want to add it in vColumn.js and test it in an array
         //********************************************************************************************
         attributeEvents: {
-            "dcpattributechange .dcpAttribute__content": "updateValue",
+            "dcpattributechange .dcpAttribute__content,[data-dcpattribute_content]": "updateValue",
             "dcpattributedelete .dcpAttribute__content": "deleteValue",
             "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
             "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
