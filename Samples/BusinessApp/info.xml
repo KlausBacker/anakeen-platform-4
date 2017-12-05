@@ -12,7 +12,10 @@
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="programs/record_application BUSINESS_APP"/>
 
-
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ContratClient/contratclient.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ContratFournisseur/contratfournisseur.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/DossierRH/dossierrh.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/NoteFrais/notefrais.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Laboratory/laboratory.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Prospect/prospect.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Prospect/prospect.param.csv --csv-enclosure='&quot;'" />
@@ -34,8 +37,10 @@
         <process command="programs/record_application BUSINESS_APP"/>
         <process command="programs/post_migration BUSINESS_APP"/>
 
-
-
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ContratClient/contratclient.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ContratFournisseur/contratfournisseur.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/DossierRH/dossierrh.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/NoteFrais/notefrais.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Laboratory/laboratory.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Prospect/prospect.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Client/client.struct.csv --csv-enclosure='&quot;'" />
