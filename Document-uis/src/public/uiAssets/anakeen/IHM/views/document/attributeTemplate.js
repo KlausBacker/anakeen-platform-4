@@ -132,6 +132,7 @@ define(function attributeTemplate(require/*, exports, module*/)
 
             /**
              * Construct custom view based on template options
+             *
              * @param attrModel Attribute model
              * @param callBackView Callback to call after
              * @returns {*|HTMLElement}
@@ -155,6 +156,8 @@ define(function attributeTemplate(require/*, exports, module*/)
 
             /**
              *
+             * Render the custom element of the template
+             *
              * @param $el
              * @param documentModel
              * @param callBackView
@@ -171,6 +174,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                         attrContent = "NO VIEW FOR " + attrId,
                         view = '',
                         BackView = null,
+                        // guess if the template is the true version (without template, only the widget)
                         originalView = ($(this).data("originalview") === true);
 
                     if (currentAttributeModel) {
@@ -198,6 +202,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                                         BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
                                 }
 
+                                //If the attribute has no template, so it's the view with the widget, we annotate it to bind the events
                                 if (!currentAttributeModel.getOption("template")) {
                                     originalView = true;
                                 }

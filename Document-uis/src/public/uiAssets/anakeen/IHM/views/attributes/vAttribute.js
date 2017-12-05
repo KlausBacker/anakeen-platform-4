@@ -63,11 +63,17 @@ define([
             this.listenTo(this.model, 'closeWidget', this._closeWidget);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
 
+            options = options || {};
+
+            //Guess if the view is a template (originalView = false in this case)
+            options.originalView = options.originalView !== false;
+
             if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
                 this.displayLabel = false;
             }
 
-            if (options.originalView !== true) {
+            //Attribute without template so we bind event
+            if (options.originalView === true) {
                 events = this.attributeEvents;
                 //For vColumn events
                 if (_.isFunction(events)) {
