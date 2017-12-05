@@ -31,12 +31,23 @@
   }
 
   .dcpDocument--edit {
+    margin-top: 2.83rem;
     margin-bottom: 2.83rem;
-    nav.dcpDocument__menu:last-of-type {
-      position: fixed;
-      top: auto;
-      bottom: 0;
-      width: 100%;
+    nav.dcpDocument__menu {
+      &.menu--bottom, &.menu--top {
+        position: fixed;
+        z-index: 10;
+        width: 100%;
+      }
+
+      &.menu--bottom {
+        top: auto;
+        bottom: 0;
+      }
+      &.menu--top {
+        top: 0;
+        bottom: auto;
+      }
     }
   }
 }

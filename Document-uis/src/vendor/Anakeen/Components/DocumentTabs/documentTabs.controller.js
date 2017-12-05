@@ -461,6 +461,12 @@ export default {
                 const $document = this.$(readyEvent.target);
                 const iframeDocument = this.$(readyEvent.detail[0].target);
                 iframeDocument.find('.dcpDocument__header').hide();
+                const menus = iframeDocument.find('nav.dcpDocument__menu');
+                if (menus.length > 1) {
+                    menus[0].classList.add('menu--top');
+                    menus[1].classList.add('menu--bottom');
+                }
+
                 if (this.documentCss) {
                     $document.prop('publicMethods').injectCSS(this.documentCss);
                 }
