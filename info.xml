@@ -2,7 +2,7 @@
 <module name="@moduleName@" version="@version@" release="@release@" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
     <description lang="en">Transformation Engine Client Library</description>
   <requires>
-    <module name="anakeen-admin" />
+    <module name="admin-center" />
   </requires>
   <post-install>
     <process command="programs/record_application TENGINE_CLIENT I">
