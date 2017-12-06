@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
-<module name="@moduleName@" disabled="no" version="@version@" release="@release@"
+<module name="@moduleName@" disabled="no" version="@version@" release="@release@" vendor="Anakeen"
         basecomponent="no">
-    <description>Test case for Anakeen Legacy.</description>
-
+    <description>Test case for Anakeen Platform Workflow.</description>
     <requires>
-        <module name="anakeen-workflow"/>
-        <module name="anakeen-core-test"/>
+        <module name="smart-data-engine-test"/>
+        <module name="workflow"/>
     </requires>
 
+    <replaces>
+        <module name="anakeen-workflow-test"/>
+    </replaces>
     <pre-install>
         <check type="syscommand" command="xmllint">
             <label lang="en">Check "xmllint". To check xml files</label>
