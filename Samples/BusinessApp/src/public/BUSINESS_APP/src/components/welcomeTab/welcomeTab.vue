@@ -26,9 +26,6 @@
                         <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--remove" @click="onRemoveSearch">
                             close
                         </i>
-                        <i class="input-group-addon material-icons documentsList__documentsTabs__welcome__content__open--search">
-                            search
-                        </i>
                     </div>
                 </div>
             </div>
@@ -37,14 +34,14 @@
                     <i class="material-icons">edit</i> {{translations.creationLabel}}
                 </div>
                 <div class="documentsList__documentsTabs__welcome__content__inner--content">
-                    <i class="material-icons">keyboard_arrow_left</i>
                     <div class="btn-group" ref="buttonGroup">
                         <button v-for="c in collectionsArray" class="documentsList__documentsTabs__welcome__collection__button btn-default" :data-famid="c.initid">
-                            <img :src="c.image_url">
-                            <span>{{c.html_label}}</span>
+                            <div class="button-icon">
+                                <img class="button-icon-img" :src="c.image_url">
+                            </div>
+                            <span class="button-label">{{c.html_label}}</span>
                         </button>
                     </div>
-                    <i class="material-icons">keyboard_arrow_right</i>
                 </div>
             </div>
             <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__recommended">
@@ -63,7 +60,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="c in lastConsultations" @click.capture="onRecentDocumentClick(c.properties)">
-                                <td><img :src="c.utag.icon"/> {{c.properties.family.title}}</td>
+                                <td>{{c.properties.family.title}}</td>
                                 <td>{{c.properties.title}}</td>
                                 <td v-if="c.properties.state"><div :style="getStateTag(c.properties.state.color)"></div>{{c.properties.state.displayValue}}</td>
                                 <td v-else="true"></td>
