@@ -45,6 +45,7 @@
     color: $A4-ui-color-font-title;
     background-color: $A4-ui-tab-active-bg;
     border-bottom: none;
+    overflow:hidden;
     //
     &:before {
       @include A4ClientTabDecoration;
@@ -55,7 +56,8 @@
 
     margin: 0;
     background-color: $A4-ui-tab-active-bg;
-    border-style: none solid solid solid;
+    border-style: solid solid solid solid;
+    margin-top: -1px;
     border-color: $A4-ui-doc-edit-attribute-color-border;
     padding: 0;
   }
