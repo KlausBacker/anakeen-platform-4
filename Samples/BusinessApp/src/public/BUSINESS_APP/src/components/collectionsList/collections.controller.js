@@ -50,7 +50,7 @@ export default {
                 {
                     id: 'disconnect',
                     icon: 'fa fa-power-off',
-                    title: 'Déconnexion',
+                    title: this.$pgettext('CollectionsList', 'Logout'),
                     click: () => {
                         window.location.href = '?app=CORE&action=LOGOUT';
                     },

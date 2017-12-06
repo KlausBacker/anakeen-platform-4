@@ -129,6 +129,20 @@ export default {
                 return JSON.parse(this.collections);
             } else return [];
         },
+
+        translations() {
+            return {
+                searchPlaceholder: this.$pgettext('WelcomeTab', 'Search a Smart Element'),
+                creationLabel: this.$pgettext('WelcomeTab', 'Creation'),
+                consultLabel: this.$pgettext('WelcomeTab', 'Consultation'),
+                recentConsultLabel: this.$pgettext('WelcomeTab', 'Last Consultations'),
+                typeColumnLabel: this.$pgettext('WelcomeTab', 'Type'),
+                titleColumnLabel: this.$pgettext('WelcomeTab', 'Title'),
+                stepColumnLabel: this.$pgettext('WelcomeTab', 'Step'),
+                consultDateColumnLabel: this.$pgettext('WelcomeTab', 'Consultation date'),
+                noRecentConsult: this.$pgettext('WelcomeTab', 'No recent consultations'),
+            };
+        },
     },
 
     mounted() {
@@ -150,7 +164,7 @@ export default {
         },
 
         onRecentDocumentClick(document) {
-            this.$emit('document-selected', document)
+            this.$emit('document-selected', document);
         },
 
         onRemoveSearch() {
@@ -167,6 +181,7 @@ export default {
                 display: 'inline-block',
             };
         },
+
         getFormattedDate(isoDate) {
             const date = new Date(isoDate);
             return date.toLocaleDateString('fr-FR', {
@@ -177,6 +192,6 @@ export default {
                 minute: '2-digit',
                 second: '2-digit',
             });
-        }
+        },
     },
 };
