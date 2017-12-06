@@ -4,25 +4,24 @@ localpub=$(shell pwd)/localpub
 port=80
 
 stub:
-	./dynacase-devtool.phar generateStub -s Document-uis -o ./stubs/
-	./dynacase-devtool.phar generateStub -s Document-uis-selenium -o ./stubs/
+	./anakeen-devtool.phar generateStub -s Document-uis -o ./stubs/
+	./anakeen-devtool.phar generateStub -s Document-uis-selenium -o ./stubs/
 
 
-webinst-selenium:
+app-selenium:
 	-mkdir -p $(localpub)/selenium/
 	rsync --delete -azvr Tests $(localpub)/selenium/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/Tests/build.json $(localpub)/selenium/Tests/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/selenium/Tests/ -o .
+	./anakeen-devtool.phar generateWebinst -s $(localpub)/selenium/Tests/ -o .
 
 
 deploy-test:
-	rm -f *webinst
-	make webinst-selenium
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-ui-test*webinst -- --force
+	rm -f *app
+	make app-selenium
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w user-interfaces-test*app -- --force
 
-webinst-all: webinst webinst-selenium
 
-webinst:
+app:
 	cd Document-uis && yarn install
 	make -f pojs.make compile
 	cd Document-uis && yarn buildAsset && yarn build
@@ -33,19 +32,19 @@ webinst:
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
 	r.js -o $(localpub)/webinst/Document-uis/src/public/uiAssets/anakeen/IHM/build.js
 	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
+	./anakeen-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
-webinst-business:
+app-business:
 	cd Document-uis && yarn install && yarn buildAsset
 	make -f pojs.make OUTPUT_DIR=Samples/BusinessApp/src/public/BUSINESS_APP/src/components compile
 	cd Samples/BusinessApp && yarn install && yarn build
 	-mkdir -p $(localpub)/Samples
 	rsync --delete -azvr --exclude 'node_modules' Samples $(localpub)
-	./dynacase-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
+	./anakeen-devtool.phar generateWebinst -s $(localpub)/Samples/BusinessApp -o .
 
 
 po:
-	./dynacase-devtool.phar extractPo -s Document-uis -o Document-uis/src
+	./anakeen-devtool.phar extractPo -s Document-uis -o Document-uis/src
 
 
 pojs:
@@ -53,22 +52,22 @@ pojs:
 
 clean: 
 	rm -rf $(localpub)
-	rm -f *webinst
+	rm -f *app
 	make -f pojs.make clean
 
 mrproper: clean
 	rm -rf Document-uis/node_modules
 	rm -rf Samples/BusinessApp/node_modules
-	rm -f *.webinst
+	rm -f *.app
 
 deploy:
-	rm -f *webinst
-	make webinst
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w anakeen-ui-*webinst -- --force
+	rm -f *app
+	make app
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w user-interfaces-*app -- --force
 	make clean
 
 deploy-business:
-	rm -f sample*webinst
-	make webinst-business
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample-business-*webinst -- --force
+	rm -f sample*app
+	make app-business
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample-business-*app -- --force
 	make clean
