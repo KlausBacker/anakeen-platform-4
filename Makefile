@@ -1,28 +1,27 @@
 
 
-webinst:
-	php ./dynacase-devtool.phar generateWebinst -s .
+app:
+	php ./anakeen-devtool.phar generateWebinst -s .
 
 
-webinst-test:
-	php ./dynacase-devtool.phar generateWebinst -s Tests
-	mv Tests/*webinst .
+app-test:
+	php ./anakeen-devtool.phar generateWebinst -s Tests
+	mv Tests/*app .
 
 deploy:
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -a -s .
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -a -s .
 
 
 deploy-test:
-	php ./dynacase-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -a -s Tests
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -a -s Tests
 
 
 po:
-	php ./dynacase-devtool.phar extractPo -s src
+	php ./anakeen-devtool.phar extractPo -s src
 
 stub:
-	php ./dynacase-devtool.phar generateStub -s . -o stubs/
+	php ./anakeen-devtool.phar generateStub -s . -o stubs/
 
 
-webinst-all: webinst
 
 
