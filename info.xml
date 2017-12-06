@@ -1,15 +1,13 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
-    <description>Workflows</description>
-
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen">
+    <description>Workflow Package</description>
 
     <replaces>
-
+        <module name="anakeen-workflow"/>
     </replaces>
 
     <requires>
-        <module name="anakeen-core"/>
-        <module name="anakeen-security"/>
+        <module name="security"/>
     </requires>
 
     <pre-install>
