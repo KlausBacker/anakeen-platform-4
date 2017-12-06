@@ -1,3 +1,0 @@
-//FAM;Prospect(BA_PROSPECT);<specid>;<fldid>;Prénom;Nom;Courriel;Téléphone;"Code Postal";Ville;Société;Activité;Catégorie;"Dossier client";"Dossier certification";"Type de la demande";"Assigné à";"Compléments à fournir";Objet;Question;Description;Description
-ORDER;BA_PROSPECT;;;pr_firstname;pr_lastname;pr_mail;pr_phone;pr_postalcode;pr_town;pr_society;pr_activity;pr_catg;pr_client;pr_cert;pr_typeaudit;pr_assignedto;pr_complement;pr_subject;pr_question;pr_filedesc;pr_cmpdesc
-DOC;BA_PROSPECT;;;A;A;a@a.org;2;43566;A;A1;;;1098;1099;;;;A;A;;

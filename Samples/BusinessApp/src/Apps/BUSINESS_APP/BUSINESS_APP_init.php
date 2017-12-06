@@ -10,23 +10,29 @@ global $app_const;
 $initialConfig = [
     "collections" => [
         [
-            "ref"=>"BA_CLIENT",
-            "initid"=>"BA_CLIENT",
+            "ref"=>"BA_CLIENT_CONTRACT",
+            "initid"=>"BA_CLIENT_CONTRACT",
             "image_url"=>"api/v1/images/assets/original/BA_Client.png",
-            "html_label"=>"Dossier client"
+            "html_label"=>"Contrat Client"
         ],
         [
-            "ref"=>"BA_CERTIFICATION",
-            "initid"=>"BA_CERTIFICATION",
-            "image_url"=>"api/v1/images/assets/original/BA_Certification.png",
-            "html_label"=>"Dossier de certification"
+            "ref"=>"BA_PROVIDER_CONTRACT",
+            "initid"=>"BA_PROVIDER_CONTRACT",
+            "image_url"=>"api/v1/images/assets/original/BA_Provider.png",
+            "html_label"=>"Contrat Fournisseur"
         ],
         [
-            "ref"=>"BA_PROSPECT",
-            "initid"=>"BA_PROSPECT",
-            "image_url"=>"api/v1/images/assets/original/BA_Prospect.png",
-            "html_label"=>"Prospect"
-        ]
+            "ref"=>"BA_FEES",
+            "initid"=>"BA_FEES",
+            "image_url"=>"api/v1/images/assets/original/BA_Fees.png",
+            "html_label"=>"Note de frais"
+        ],
+        [
+            "ref"=>"BA_RH_DIR",
+            "initid"=>"BA_RH_DIR",
+            "image_url"=>"api/v1/images/assets/original/BA_RHDir.png",
+            "html_label"=>"Dossier RH"
+        ],
     ]
 ];
 

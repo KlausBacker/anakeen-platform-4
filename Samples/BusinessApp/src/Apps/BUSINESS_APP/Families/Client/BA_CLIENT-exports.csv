@@ -1,9 +1,0 @@
-//FAM;"Dossier client(BA_CLIENT)";<specid>;<fldid>;"Nom de la société";"Adresse du siège social";"Courriel principal";Téléphone;"Site web";"Assigné à";"Demande d'origine";"Message envoyé au demandeur";Date;Devis;Date;Facture;"Date de facturation";Certification;"Produits certifiés";Description;Étude;Évaluation;Résultat
-ORDER;BA_CLIENT;;;cli_name;cli_addr;cli_mail;cli_phone;cli_web;cli_assign;cli_prospect;cli_cmpmsg;cli_cmpmsgdate;cli_devis;cli_devis_date;cli_fact;cli_fact_date;cli_cert;cli_product;cli_product_date;cli_rd;cli_eval;cli_eval_date
-DOC;BA_CLIENT;;;A1;"43566 A";a@a.org;2;;;1097;;;;;;;1099;;;;;
-DOC;BA_CLIENT;;;C2R;;;;;;;;;;;;;;;;;;
-DOC;BA_CLIENT;;;SCHUCO;;;;;;;;;;;;;;;;;;
-DOC;BA_CLIENT;;;"SOTRAP ENTREVOUS";;;;;;;;;;;;;;;;;;
-DOC;BA_CLIENT;;;"SOTRAP INC";;;;;;;;;;;;;;;;;;
-DOC;BA_CLIENT;;;"VELUX FRANCE";;;;;;;;;;;;;;;;;;
-DOC;BA_CLIENT;;;WAVE;;;;;;;;;;;;;;;;;;
