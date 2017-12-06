@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
-    <description>Document Security</description>
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen">
+    <description>Security Package</description>
 
 
     <replaces>
-
+        <module name="anakeen-security"/>
     </replaces>
 
     <requires>
