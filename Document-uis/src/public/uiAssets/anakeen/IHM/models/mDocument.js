@@ -702,6 +702,12 @@ define([
                 "viewId": response.data.properties.requestIdentifier
             }, view.documentData.document.properties);
 
+            //Clean attributes
+            if (this.get("attributes") instanceof CollectionAttributes) {
+                this.get("attributes").destroy();
+            }
+
+
             values = {
                 initid: response.data.properties.creationView === true ? null : view.documentData.document.properties.initid,
                 properties: view.documentData.document.properties,
@@ -752,9 +758,6 @@ define([
                 keyOrValues.menus = new CollectionMenus(keyOrValues.menus);
             }
             if (keyOrValues === "attributes") {
-                if (currentModel.get("attributes") instanceof CollectionAttributes) {
-                    currentModel.get("attributes").destroy();
-                }
                 value = new CollectionAttributes(value, {
                     documentModel: currentModel,
                     renderOptions: currentModel.get("renderOptions"),
