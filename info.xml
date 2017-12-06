@@ -12,11 +12,12 @@
         <module name="dynacase-admin-authent-ui"/>
         <module name="dynacase-admin-uis"/>
         <module name="dynacase-admin"/>
+        <module name="anakeen-admin"/>
     </replaces>
 
     <requires>
         <!-- To remove after refactor -->
-        <module name="anakeen-legacy"/>
+        <module name="legacy"/>
         <module name="anakeen-ui"/>
     </requires>
 
