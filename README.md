@@ -1,3 +1,3 @@
 # Anakeen Admin Center
 
-Web interfaces to admin applications and configure family documents
+Web interfaces to admin applications and configure smart elements
