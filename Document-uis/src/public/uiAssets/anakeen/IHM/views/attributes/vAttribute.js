@@ -34,7 +34,7 @@ define([
         // If you add an event here, you probably want to add it in vColumn.js and test it in an array
         //********************************************************************************************
         attributeEvents: {
-            "dcpattributechange .dcpAttribute__content": "updateValue",
+            "dcpattributechange .dcpAttribute__content,[data-dcpattribute_content]": "updateValue",
             "dcpattributedelete .dcpAttribute__content": "deleteValue",
             "dcpattributechangeattrmenuvisibility .dcpAttribute__content": "changeMenuVisibility",
             "dcpattributechangeattrsvalue .dcpAttribute__content": "changeAttributesValue",
@@ -63,21 +63,17 @@ define([
             this.listenTo(this.model, 'closeWidget', this._closeWidget);
             this.templateWrapper = this.model.getTemplates().attribute.simpleWrapper;
 
+            options = options || {};
+
+            //Guess if the view is a template (originalView = false in this case)
+            options.originalView = options.originalView !== false;
+
             if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
                 this.displayLabel = false;
             }
 
-            if (options.originalView !== true) {
-                if (this.model.getOption("template")) {
-                    this.customView = attributeTemplate.customView(this.model);
-                }
-            } else {
-                this.customView = false;
-            }
-            if (options.secondView) {
-                this.noRenderEvent = false;
-            }
-            if (this.customView === false) {
+            //Attribute without template so we bind event
+            if (options.originalView === true) {
                 events = this.attributeEvents;
                 //For vColumn events
                 if (_.isFunction(events)) {
@@ -110,59 +106,77 @@ define([
 
         render: function vAttributeRender()
         {
-            var data = this.getData(), event = {prevent: false};
+            var currentView = this;
+            var renderPromise = new Promise(_.bind(function vAttributeRender_Promise(resolve, reject) {
+                var data,
+                    event = {prevent: false},
+                    customRender;
 
-            this.$el.addClass("dcpAttribute--type--" + this.model.get("type"));
-            this.$el.addClass("dcpAttribute--visibility--" + this.model.get("visibility"));
-            this.$el.attr("data-attrid", this.model.get("id"));
-            if (this.model.get("needed")) {
-                this.$el.addClass("dcpAttribute--needed");
-            }
-
-            this.$el.append($(Mustache.render(this.templateWrapper || "", data)));
-
-            attributeTemplate.insertDescription(this);
-
-            this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
-            if (event.prevent) {
-                return this;
-            }
-            //If some data are changed in the beforeRender
-            data = this.getData();
-            if (this.customView) {
-                this.$el.find(".dcpAttribute__content").append(this.customView);
-            } else {
-                this.currentDcpWidget = this.widgetInit(this.$el.find(".dcpAttribute__content"), data);
-            }
-
-            if (this.displayLabel === false) {
-                this.$el.find(".dcpAttribute__label").remove();
-                // set to 100% width
-                this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
-            } else {
-                if (this.model.getOption("labelPosition") === "left") {
-                    this.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
-                    this.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
+                currentView.model.trigger("beforeRender", event, {model: currentView.model, $el: currentView.$el});
+                if (event.prevent) {
+                    resolve();
+                    return currentView;
                 }
-                if (this.model.getOption("labelPosition") === "up") {
-                    this.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
-                    this.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
-                }
-                if (this.model.getOption("labelPosition") === "auto") {
-                    this.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
-                    this.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
-                }
-                this.$el.addClass("dcpAttribute__labelPosition--"+this.model.getOption("labelPosition"));
-                this.$el.find(".dcpAttribute__label").dcpLabel(data);
-            }
 
-            this.renderDone = true;
-            if (this.customView) {
-                this.widgetReady = true;
-            }
+                //We fetch data after beforeRender, if some data is modified by beforeRender we get it
+                data = currentView.getData();
 
-            this.triggerRenderDone();
-            return this;
+                currentView.$el.addClass("dcpAttribute--type--" + currentView.model.get("type"));
+                currentView.$el.addClass("dcpAttribute--visibility--" + currentView.model.get("visibility"));
+                currentView.$el.attr("data-attrid", currentView.model.get("id"));
+                if (currentView.model.get("needed")) {
+                    currentView.$el.addClass("dcpAttribute--needed");
+                }
+
+                currentView.$el.append($(Mustache.render(currentView.templateWrapper || "", data)));
+
+                attributeTemplate.insertDescription(currentView);
+
+                //analyze the display label and add display class
+                if (currentView.displayLabel === false) {
+                    currentView.$el.find(".dcpAttribute__label").remove();
+                    // set to 100% width
+                    currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
+                } else {
+                    if (currentView.model.getOption("labelPosition") === "left") {
+                        currentView.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
+                        currentView.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
+                    }
+                    if (currentView.model.getOption("labelPosition") === "up") {
+                        currentView.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
+                        currentView.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
+                    }
+                    if (currentView.model.getOption("labelPosition") === "auto") {
+                        currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
+                        currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
+                    }
+                    currentView.$el.find(".dcpAttribute__label").dcpLabel(data);
+                }
+
+                //If there is a template render it
+                if (currentView.options.originalView !== true && currentView.model.getOption("template")) {
+                    customRender = attributeTemplate.renderCustomView(currentView.model);
+                    currentView.customView = customRender.$el;
+                    currentView.$el.find(".dcpAttribute__content").append(currentView.customView);
+                    customRender.promise.then(resolve);
+                    customRender.promise["catch"](reject);
+                } else {
+                    //there is not template render (default)
+                    currentView.$el.one("dcpattributewidgetready .dcpAttribute__content", function vattributeRender_widgetready() {
+                        resolve();
+                    });
+                    currentView.currentDcpWidget = currentView.widgetInit(currentView.$el.find(".dcpAttribute__content"), data);
+                }
+
+                currentView.renderDone = true;
+                if (currentView.customView) {
+                    currentView.widgetReady = true;
+                }
+
+                currentView.triggerRenderDone();
+                return currentView;
+            }, this));
+            return renderPromise;
         },
 
         refreshLabel: function vAttributeRefreshLabel()
@@ -185,29 +199,27 @@ define([
             if (options.notUpdateArray) {
                 return this;
             }
-            if (this.model.isInArray()) {
-                // adjust line number to column length
-                arrayWrapper = this.$el;
-                arrayWrapper.dcpArray("setLines", values.length, options);
-            }
 
             allWrapper = this.getDOMElements();
 
             if (this.model.isInArray()) {
-                values = _.toArray(values);
-                _.each(values, function analyzeValues(currentValue, index)
-                {
-                    if (_.isUndefined(currentValue)) {
-                        return;
-                    }
-                    var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
-                    $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
-                        function vAttributeRefreshOneValue(index, element)
-                        {
-                            scope.widgetApply($(element), "setValue", currentValue);
-                        });
-                });
-
+                // adjust line number to column length
+                arrayWrapper = this.$el;
+                arrayWrapper.dcpArray("setLines", values.length, options).then(_.bind(function setValue() {
+                    values = _.toArray(values);
+                    _.each(values, function analyzeValues(currentValue, index)
+                    {
+                        if (_.isUndefined(currentValue)) {
+                            return;
+                        }
+                        var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
+                        $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
+                            function vAttributeRefreshOneValue(index, element)
+                            {
+                                scope.widgetApply($(element), "setValue", currentValue);
+                            });
+                    });
+                }, this));
             } else {
                 this.widgetApply(allWrapper.find('.dcpAttribute__content--widget[data-attrid="' + model.id + '"]'), "setValue", values);
             }

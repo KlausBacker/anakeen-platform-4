@@ -40,100 +40,114 @@ define([
             this.listenTo(this.model, 'hide', this.hide);
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
-            if (options.originalView !== true) {
-                if (this.model.getOption("template")) {
-                    this.customView = attributeTemplate.customView(this.model);
-                }
-            }
 
             this.options = options;
         },
 
-        render: function vFrame_render()
-        {
-            var $content, labelElement, contentElement = '', customView = null, event = {prevent: false};
-            var contentData, helpId, documentModel = this.model.getDocumentModel();
+        render: function vFrame_render() {
+            var currentView = this;
+            return (new Promise(_.bind(function vFrame_renderPromise(resolve, reject) {
+                var customRender,
+                    $content,
+                    labelElement,
+                    contentElement = '',
+                    customView = null,
+                    event = {prevent: false},
+                    contentData,
+                    promiseAttributes = [];
 
-            this.model.trigger("beforeRender", event, {model: this.model, $el: this.$el});
-            if (event.prevent) {
-                return this;
-            }
-            contentData = this.model.toData(null, true);
-            if (this.model.getOption("attributeLabel")) {
-                contentData.label = this.model.getOption("attributeLabel");
-            }
-            contentData.collapsable = (contentData.renderOptions.collapse !== "none");
-
-            this.templateLabel = this.model.getTemplates().attribute.frame.label;
-            labelElement = $(Mustache.render(this.templateLabel || "", contentData));
-
-            if (this.customView) {
-                contentElement = this.customView;
-                contentElement.addClass("dcpFrame__content dcpFrame__content--open");
-            } else {
-                this.templateContent = this.model.getTemplates().attribute.frame.content;
-                contentElement = $(Mustache.render(this.templateContent || "", contentData));
-            }
-            this.$el.empty();
-            if (this.displayLabel === true) {
-                this.$el.append(labelElement);
-            }
-
-            this.$el.append(contentElement);
-            this.$el.attr("data-attrid", this.model.id);
-
-            $content = this.$el.find(".dcpFrame__content");
-            var hasOneContent = this.model.get("content").some(function vFrame_getDisplayable(value)
-            {
-                return value.isDisplayable();
-            });
-
-            if (!this.customView) {
-                if (!hasOneContent) {
-                    $content.append(this.model.getOption('showEmptyContent'));
-                } else {
-                    this.model.get("content").each(function vFrame_AnalyzeContent(currentAttr)
-                    {
-                        if (!currentAttr.isDisplayable()) {
-                            return;
-                        }
-                        try {
-                            customView = null;
-                            if (currentAttr.get("isValueAttribute")) {
-
-                                $content.append((new ViewAttribute({
-                                    model: currentAttr,
-                                    customView: customView
-                                })).render().$el);
-                                return;
-                            }
-                            if (currentAttr.get("type") === "array") {
-                                $content.append((new ViewAttributeArray({
-                                    model: currentAttr
-                                })).render().$el);
-                            }
-                        } catch (e) {
-                            $content.append('<h1 class="bg-danger"><span class="fa fa-exclamation-triangle" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
-                            if (window.dcp.logger) {
-                                window.dcp.logger(e);
-                            } else {
-                                console.error(e);
-                            }
-                        }
-                    });
+                currentView.model.trigger("beforeRender", event, {model: currentView.model, $el: currentView.$el});
+                if (event.prevent) {
+                    resolve(currentView);
+                    return currentView;
                 }
 
-                attributeTemplate.insertDescription(this);
-            }
+                if (currentView.options.originalView !== true) {
+                    if (currentView.model.getOption("template")) {
+                        customRender = attributeTemplate.renderCustomView(currentView.model);
+                        currentView.customView = customRender.$el;
+                        promiseAttributes.push(customRender.promise);
+                    }
+                }
 
-            if (this.model.getOption("collapse") === "collapse") {
-                this.toggle(null, true);
-            }
-            this.model.trigger("renderDone", {model: this.model, $el: this.$el});
-            if (this.model.getOption("responsiveColumns")) {
-                this.responsiveColumns();
-            }
-            return this;
+                contentData = currentView.model.toData(null, true);
+                if (currentView.model.getOption("attributeLabel")) {
+                    contentData.label = currentView.model.getOption("attributeLabel");
+                }
+                contentData.collapsable = (contentData.renderOptions.collapse !== "none");
+
+                currentView.templateLabel = currentView.model.getTemplates().attribute.frame.label;
+                labelElement = $(Mustache.render(currentView.templateLabel || "", contentData));
+
+                if (currentView.customView) {
+                    contentElement = currentView.customView;
+                    contentElement.addClass("dcpFrame__content dcpFrame__content--open");
+                } else {
+                    currentView.templateContent = currentView.model.getTemplates().attribute.frame.content;
+                    contentElement = $(Mustache.render(currentView.templateContent || "", contentData));
+                }
+                currentView.$el.empty();
+                if (currentView.displayLabel === true) {
+                    currentView.$el.append(labelElement);
+                }
+                currentView.$el.append(contentElement);
+                currentView.$el.attr("data-attrid", currentView.model.id);
+
+                $content = currentView.$el.find(".dcpFrame__content");
+                var hasOneContent = currentView.model.get("content").some(function vFrame_getDisplayable(value) {
+                    return value.isDisplayable();
+                });
+
+                if (!currentView.customView) {
+                    if (!hasOneContent) {
+                        $content.append(currentView.model.getOption('showEmptyContent'));
+                    } else {
+                        currentView.model.get("content").each(function vFrame_AnalyzeContent(currentAttr) {
+                            var attributeView;
+                            if (!currentAttr.isDisplayable()) {
+                                return;
+                            }
+                            try {
+                                customView = null;
+                                if (currentAttr.get("isValueAttribute")) {
+                                    attributeView = new ViewAttribute({
+                                        model: currentAttr,
+                                        customView: customView
+                                    });
+                                    promiseAttributes.push(attributeView.render());
+                                    $content.append(attributeView.$el);
+                                    return;
+                                }
+                                if (currentAttr.get("type") === "array") {
+                                    attributeView = new ViewAttributeArray({
+                                        model: currentAttr
+                                    });
+                                    promiseAttributes.push(attributeView.render());
+                                    $content.append(attributeView.$el);
+                                }
+                            } catch (e) {
+                                $content.append('<h1 class="bg-danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Unable to render ' + currentAttr.id + '</h1>');
+                                if (window.dcp.logger) {
+                                    window.dcp.logger(e);
+                                } else {
+                                    console.error(e);
+                                }
+                            }
+                        });
+                    }
+
+                    attributeTemplate.insertDescription(currentView);
+                }
+
+                if (currentView.model.getOption("collapse") === "collapse") {
+                    currentView.toggle(null, true);
+                }
+                Promise.all(promiseAttributes).then(function allRenderDone() {
+                    currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
+                    resolve(currentView);
+                }).catch(reject);
+            }), this));
+
         },
 
         setResponsiveClasse: function vFrame_setResponsiveClasse() {

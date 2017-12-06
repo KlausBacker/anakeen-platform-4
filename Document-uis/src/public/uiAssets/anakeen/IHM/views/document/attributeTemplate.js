@@ -132,27 +132,31 @@ define(function attributeTemplate(require/*, exports, module*/)
 
             /**
              * Construct custom view based on template options
+             *
              * @param attrModel Attribute model
              * @param callBackView Callback to call after
              * @returns {*|HTMLElement}
              * @param config
              */
-            customView: function attributeTemplateCustomView(attrModel, callBackView, config)
+            renderCustomView: function attributeTemplateCustomView(attrModel, callBackView, config)
             {
                 var customTemplate = '<div class="dcpCustomTemplate" data-attrid="' + attrModel.id + '">' +
                     attrModel.getOption("template") + '</div>';
                 var templateInfo = this.getTemplateInfo(attrModel);
                 var $render;
+                var completePromise;
 
                 if (config && !_.isUndefined(config.index) && config.index >= 0) {
                     templateInfo.attribute.attributeValue = templateInfo.attribute.attributeValue[config.index];
                 }
                 $render = $(Mustache.render(customTemplate || "", templateInfo));
-                this.completeCustomContent($render, attrModel.getDocumentModel(), callBackView, config);
-                return $render;
+                completePromise = this.completeCustomContent($render, attrModel.getDocumentModel(), callBackView, config);
+                return {"$el" : $render, "promise": completePromise} ;
             },
 
             /**
+             *
+             * Render the custom element of the template
              *
              * @param $el
              * @param documentModel
@@ -161,6 +165,7 @@ define(function attributeTemplate(require/*, exports, module*/)
              */
             completeCustomContent: function attributeTemplateCompleteCustomContent($el, documentModel, callBackView, config)
             {
+                var renderElementPromises = [];
                 $el.find(".dcpCustomTemplate--content").each(function attributeTemplatecompleteCustomContentEach()
                 {
                     var attrId = $(this).data("attrid"),
@@ -169,6 +174,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                         attrContent = "NO VIEW FOR " + attrId,
                         view = '',
                         BackView = null,
+                        // guess if the template is the true version (without template, only the widget)
                         originalView = ($(this).data("originalview") === true);
 
                     if (currentAttributeModel) {
@@ -196,7 +202,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                                         BackView = require.apply(require, ['dcpDocument/views/attributes/vAttribute']);
                                 }
 
-
+                                //If the attribute has no template, so it's the view with the widget, we annotate it to bind the events
                                 if (!currentAttributeModel.getOption("template")) {
                                     originalView = true;
                                 }
@@ -214,7 +220,8 @@ define(function attributeTemplate(require/*, exports, module*/)
                                     initializeContent: (config && config.initializeContent) || false,
                                     displayLabel: displayLabel
                                 });
-                                attrContent = view.render().$el;
+                                renderElementPromises.push(view.render());
+                                attrContent = view.$el;
                             } catch (e) {
                                 attrContent= $("<div/>").addClass("bg-danger").text(e.message);
                             }
@@ -222,6 +229,7 @@ define(function attributeTemplate(require/*, exports, module*/)
                     }
                     $(this).append(attrContent);
                 });
+                return Promise.all(renderElementPromises);
             },
 
             /**
