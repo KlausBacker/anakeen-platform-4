@@ -5,7 +5,7 @@ const installCE = require('document-register-element/pony');
 
 installCE(window, {
     type: 'auto',
-    noBuiltIn: true
+    noBuiltIn: true,
 });
 
 // include vue-custom-element plugin to Vue
@@ -30,7 +30,6 @@ Vue.use(GetTextPlugin, {
     silent: true,
 });
 
-
 Vue.use(VueCustomElement);
 Vue.http = Vue.prototype.$http = axios.create({
     baseURL: '/api/v1',
@@ -44,10 +43,10 @@ Vue.kendo = Vue.prototype.$kendo = kendo;
 import Splitter from '@/splitter/splitter.vue';
 import WelcomeTab from '@/welcomeTab/welcomeTab.vue';
 import Collections from '@/collectionsList/collections.vue';
-import Button from '@/createButton/createButton.vue';
-import Store from '@/store/store.vue';
 
-Vue.customElement('a4-store', Store);
+// import Store from '@/store/store.vue';
+
+// Vue.customElement('a4-store', Store);
 Vue.customElement('a4-splitter', Splitter);
 Vue.customElement('a4-welcome-tab', WelcomeTab);
 Vue.customElement('a4-collections', Collections);
