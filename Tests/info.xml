@@ -1,10 +1,14 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description>Selenium Test for Document Uis</description>
 
     <requires>
-        <module name="anakeen-ui"/>
+        <module name="user-interfaces"/>
     </requires>
+
+    <replaces>
+        <module name="anakeen-ui-test"/>
+    </replaces>
 
     <post-install>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>

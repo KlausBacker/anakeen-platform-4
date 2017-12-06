@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@">
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@"  vendor="Anakeen" release="@release@" version="@version@">
     <description>Sample Business App</description>
 
     <requires>
-        <module name="anakeen-ui"/>
+        <module name="user-interfaces"/>
     </requires>
     <replaces>
         <module name="sample-BusinessApp"/>

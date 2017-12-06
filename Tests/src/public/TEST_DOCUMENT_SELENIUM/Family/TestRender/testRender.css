@@ -13,6 +13,8 @@
 }
 .dcpFrame[data-attrid="tst_fr_config"] {
     margin:0;
+    background: transparent;
+    box-shadow: none;
 }
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module  name="@moduleName@" release="@release@" version="@version@"  license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module  name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
 
     <description>A4 : Document interfaces</description>
     <replaces>
@@ -8,6 +8,7 @@
         <module name="dynacase-less-installer"/>
         <module name="dynacase-search-ui-html5"/>
         <module name="anakeen-document-uis"/>
+        <module name="anakeen-ui"/>
     </replaces>
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
