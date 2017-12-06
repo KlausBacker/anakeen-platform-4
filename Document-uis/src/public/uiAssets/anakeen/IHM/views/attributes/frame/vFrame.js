@@ -44,8 +44,7 @@ define([
             this.options = options;
         },
 
-        render: function vFrame_render()
-        {
+        render: function vFrame_render() {
             var currentView = this;
             return (new Promise(_.bind(function vFrame_renderPromise(resolve, reject) {
                 var customRender,
@@ -95,8 +94,7 @@ define([
                 currentView.$el.attr("data-attrid", currentView.model.id);
 
                 $content = currentView.$el.find(".dcpFrame__content");
-                var hasOneContent = currentView.model.get("content").some(function vFrame_getDisplayable(value)
-                {
+                var hasOneContent = currentView.model.get("content").some(function vFrame_getDisplayable(value) {
                     return value.isDisplayable();
                 });
 
@@ -104,8 +102,7 @@ define([
                     if (!hasOneContent) {
                         $content.append(currentView.model.getOption('showEmptyContent'));
                     } else {
-                        currentView.model.get("content").each(function vFrame_AnalyzeContent(currentAttr)
-                        {
+                        currentView.model.get("content").each(function vFrame_AnalyzeContent(currentAttr) {
                             var attributeView;
                             if (!currentAttr.isDisplayable()) {
                                 return;
@@ -150,6 +147,8 @@ define([
                     resolve(currentView);
                 }).catch(reject);
             }), this));
+
+        },
 
         setResponsiveClasse: function vFrame_setResponsiveClasse() {
             var _this=this;

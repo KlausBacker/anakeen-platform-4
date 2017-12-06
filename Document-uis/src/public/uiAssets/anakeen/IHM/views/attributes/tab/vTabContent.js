@@ -65,8 +65,7 @@ define([
 
         },
 
-        renderContent: function vTabContentRenderContent(options)
-        {
+        renderContent: function vTabContentRenderContent(options) {
             var currentView = this;
             return (new Promise(_.bind(function vTabContentRenderContent_Promise(resolve, reject) {
                 var customRender,
@@ -85,8 +84,7 @@ define([
                     if (currentView.customView) {
                         $content.append(currentView.customView);
                     } else {
-                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr)
-                        {
+                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr) {
                             var view;
                             try {
                                 if (!currentAttr.isDisplayable()) {
@@ -125,6 +123,7 @@ define([
                 $(window.document).trigger("redrawErrorMessages");
                 currentView.model.get("content").propageEvent('resize');
             }, this)));
+        },
 
 
         /**

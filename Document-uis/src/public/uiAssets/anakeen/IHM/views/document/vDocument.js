@@ -19,12 +19,10 @@ define([
     'dcpDocument/widgets/properties/wProperties'
 ], function vDocument(_, $, Backbone, Mustache, ModelDocumentTab, ViewDocumentMenu, ViewDocumentHeader,
                       ViewAttributeFrame, ViewAttributeTabLabel, ViewAttributeTabContent,
-                      attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, i18n)
-{
+                      attributeTemplate, ModelTransitionGraph, ViewTransitionGraph, i18n) {
     'use strict';
 
-    var checkTouchEvents = function checkTouchEvents()
-    {
+    var checkTouchEvents = function checkTouchEvents() {
         //From modernizer
         var bool = false;
         if (('ontouchstart' in window) || window.DocumentTouch && window.document instanceof window.DocumentTouch) {
@@ -38,16 +36,15 @@ define([
         className: "dcpDocument container-fluid",
 
         events:
-        {
-            'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]': 'propagateActionClick',
-            'click .dcpDocument__body a[href^="#"]' : 'handleHashClick'
-        },
+            {
+                'click .dcpDocument__body a[href^="#action/"], .dcpDocument__body a[data-action], .dcpDocument__body button[data-action]': 'propagateActionClick',
+                'click .dcpDocument__body a[href^="#"]': 'handleHashClick'
+            },
 
         /**
          * Init event
          */
-        initialize: function vDocumentInitialize()
-        {
+        initialize: function vDocumentInitialize() {
             this.listenTo(this.model, 'destroy', this.remove);
             this.listenTo(this.model, 'displayLoading', this.displayLoading);
             this.listenTo(this.model, 'invalid', this.showView);
@@ -61,8 +58,7 @@ define([
         /**
          * Clean the associated view and re-render it
          */
-        cleanAndRender: function vDocumentCleanAndRender()
-        {
+        cleanAndRender: function vDocumentCleanAndRender() {
             this.trigger("loaderShow", i18n.___("Rendering", "ddui"), 70);
             $(".dcpStaticErrorMessage").attr("hidden", true);
             this.$el.show();
@@ -92,8 +88,7 @@ define([
          * Render the document view
          * @returns {*}
          */
-        render: function vDocumentRender()
-        {
+        render: function vDocumentRender() {
             console.time("render document view");
             var renderPromises = [];
             var $content, model = this.model, $el = this.$el, currentView = this;
@@ -106,7 +101,7 @@ define([
             var $body;
             var tabPlacement = this.model.getOption("tabPlacement") || "top";
             var event = {prevent: false};
-            var viewMenus=[];
+            var viewMenus = [];
 
             this.$el.removeClass("dcpTouch");
             if (checkTouchEvents()) {
@@ -166,12 +161,12 @@ define([
             //add menu
             try {
                 this.$el.find(".dcpDocument__menu").each(function vDocumentAddMenu() {
-                   var viewMenu = new ViewDocumentMenu({
+                    var viewMenu = new ViewDocumentMenu({
                         model: currentView.model,
                         el: this
                     });
-                   renderPromises.push(viewMenu.render());
-                   viewMenus.push(viewMenu.$el);
+                    renderPromises.push(viewMenu.render());
+                    viewMenus.push(viewMenu);
                 });
             } catch (e) {
                 if (window.dcp.logger) {
@@ -182,10 +177,10 @@ define([
             }
             try {
                 this.$el.find(".dcpDocument__header").each(function vDocumentAddHeader() {
-                renderPromises.push((new ViewDocumentHeader({
-                    model: currentView.model,
-                    el: this
-                }).render());
+                    renderPromises.push((new ViewDocumentHeader({
+                        model: currentView.model,
+                        el: this
+                    }).render()));
                 });
             } catch (e) {
                 if (window.dcp.logger) {
@@ -199,8 +194,7 @@ define([
 
             $content = this.$el.find(".dcpDocument__frames");
             if ($body && $body.length > 0) {
-                this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr)
-                {
+                this.model.get("attributes").each(function vDocumentRenderAttribute(currentAttr) {
                     var view, viewTabLabel, viewTabContent;
                     if (!currentAttr.isDisplayable()) {
                         currentView.trigger("partRender");
@@ -262,21 +256,19 @@ define([
                     activate: function vDocument(event) {
                         if (!this._dcpNotFirstactivate) {
                             _.delay(_.bind(documentView.scrollTobVisibleTab, documentView), 500);
-                            this._dcpNotFirstactivate=true;
+                            this._dcpNotFirstactivate = true;
                         }
                     },
-                    show: function vDocumentShowTab(event)
-                    {
+                    show: function vDocumentShowTab(event) {
                         var tabId = $(event.item).data("attrid");
-                        var scrollY=$(window).scrollTop();
+                        var scrollY = $(window).scrollTop();
                         currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
                         currentView.$('.dcpLabel[data-attrid="' + tabId + '"]').addClass("dcpLabel--active").removeClass("dcpLabel--default");
                         if (documentView.selectedTab !== tabId) {
                             documentView.selectedTab = tabId;
                             documentView.recordSelectedTab(tabId);
                         }
-                        _.defer(function selectOneTab()
-                        {
+                        _.defer(function selectOneTab() {
                             if (currentView && currentView.model && currentView.model.get("attributes")) {
                                 var tab = currentView.model.get("attributes").get(tabId);
                                 if (tab) {
@@ -330,24 +322,19 @@ define([
                     }
                 }
             }
-            $(window.document).on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e)
-            {
+            $(window.document).on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
-            }).on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages()
-            {
+            }).on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
                 documentView.model.redrawErrorMessages();
             });
-            $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
-            {
+            $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce() {
                 documentView.model.redrawErrorMessages();
                 documentView.scrollTobVisibleTab();
             }, 100, false));
 
-            $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce()
-            {
+            $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce() {
                 if (documentView.model.get("attributes")) {
-                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel)
-                    {
+                    documentView.model.get("attributes").each(function vDocument_triggerClose(currentAttributeModel) {
                         currentAttributeModel.trigger("closeWidget");
                     });
                 }
@@ -368,8 +355,7 @@ define([
                 this.$(".dcpTab__content").css("width", "calc(100% - " + ($(".dcpDocument__tabs__list").width() + 30) + "px)");
             }
 
-            _.delay(function vDocumentEndLoading()
-            {
+            _.delay(function vDocumentEndLoading() {
                 $(".dcpLoading--init").removeClass("dcpLoading--init");
                 if (tabPlacement === "topFix" && documentView.kendoTabs) {
                     documentView.responsiveTabMenu(); // need to call here to have good dimensions
@@ -379,8 +365,7 @@ define([
             return this;
         },
 
-        resizeForFooter: function vDocumentresizeForFooter()
-        {
+        resizeForFooter: function vDocumentresizeForFooter() {
             var $footer = this.$el.find(".dcpDocument__footer");
             if ($footer.length > 0) {
                 var footerHeight = $footer.height();
@@ -400,8 +385,7 @@ define([
             }
         },
 
-        fixedTab: function vDocumentfixedTab(event)
-        {
+        fixedTab: function vDocumentfixedTab(event) {
             // @TODO Need a decision to delete this option or not
             return;
             var $tabs = this.$el.find(".dcpDocument__tabs");
@@ -410,10 +394,10 @@ define([
                 var tabPlacement = this.model.getOption("tabPlacement") || "top";
                 var menuHeight = this.$el.find(".menu__content").height();
                 var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
-                var isAlreadyFixed= $tabs.hasClass("tab--fixed");
-                var $liActive=$tabs.find("li.k-state-active");
+                var isAlreadyFixed = $tabs.hasClass("tab--fixed");
+                var $liActive = $tabs.find("li.k-state-active");
                 var scrollTop = $(window).scrollTop();
-                var $navButtons=$tabs.find(".k-bare");
+                var $navButtons = $tabs.find(".k-bare");
                 var resizeMode = (event.type === "resize");
                 if (scrollTop > ($tabs.offset().top - menuHeight)) {
                     $tabs.addClass("tab--fixed");
@@ -422,19 +406,19 @@ define([
                         // Special case for scrolling tabs
                         $ul = $tabs.find(".dcpDocument__tabs__list");
                         if (resizeMode) {
-                              kendoTabStrip.resize();
+                            kendoTabStrip.resize();
                         }
-                        var $navButtonsVisible=$tabs.find(".k-bare:visible");
+                        var $navButtonsVisible = $tabs.find(".k-bare:visible");
                         if ($navButtonsVisible.length > 0) {
 
                             if (!isAlreadyFixed || resizeMode) {
                                 $ul.css("width", "");
-                                if (!$ul.data("margins"))  {
+                                if (!$ul.data("margins")) {
                                     if (parseInt($navButtonsVisible.width()) > 0) {
                                         $ul.data("fixMargins",
                                             {left: $navButtonsVisible.width(), right: $navButtonsVisible.width()});
                                         $ul.data("originalMargins",
-                                            {left:  $ul.css("margin-left"), right:  $ul.css("margin-right")});
+                                            {left: $ul.css("margin-left"), right: $ul.css("margin-right")});
                                     }
                                 }
                                 if ($ul.data("fixMargins")) {
@@ -451,15 +435,15 @@ define([
                                 $ul.css("top", (menuHeight) + "px");
                                 $tabs.find(".k-bare").css("top", (menuHeight + 0) + "px");
 
-                                if ($liActive.length === 1 ) {
+                                if ($liActive.length === 1) {
                                     kendoTabStrip.activateTab($liActive);
                                 }
                             }
                         } else {
                             if (parseInt($ul.css("margin-left")) > 0) {
-                                $ul.data("margins", {left:$ul.css("margin-left"), right:$ul.css("margin-right")});
+                                $ul.data("margins", {left: $ul.css("margin-left"), right: $ul.css("margin-right")});
                             }
-                            $ul.css("width", "").css("margin-right","").css("margin-left","");
+                            $ul.css("width", "").css("margin-right", "").css("margin-left", "");
                         }
                     }
                 } else {
@@ -471,7 +455,7 @@ define([
                             $tabs.removeClass("tab--fixed");
                             $tabs.css("top", "");
                             if (tabPlacement === "top") {
-                                $navButtons.css("height","");
+                                $navButtons.css("height", "");
                                 $ul = $tabs.find(".dcpDocument__tabs__list");
                                 $ul.css("width", "").css("top", "");
                                 $tabs.find(".k-bare").css("top", "");
@@ -479,7 +463,7 @@ define([
                                     $ul.css("margin-left", $ul.data("originalMargins").left);
                                     $ul.css("margin-right", $ul.data("originalMargins").right);
                                 }
-                                if ($liActive.length === 1 ) {
+                                if ($liActive.length === 1) {
                                     kendoTabStrip.activateTab($liActive);
                                 }
                                 kendoTabStrip.resize();
@@ -490,8 +474,7 @@ define([
             }
         },
 
-        scrollTabList: function vDocumentScrollTabList(event)
-        {
+        scrollTabList: function vDocumentScrollTabList(event) {
             var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
             var $tabs = this.$el.find(".dcpDocument__tabs");
 
@@ -508,8 +491,7 @@ define([
         /**
          * Add menu if needed in topFix placement tab
          */
-        responsiveTabMenu: function vDocumentTabFixMenu()
-        {
+        responsiveTabMenu: function vDocumentTabFixMenu() {
             var $tabLabel = this.$(".dcpDocument__tabs__list li");
 
             var documentWidth = this.$(".dcpDocument__tabs").width() - 12;
@@ -530,8 +512,7 @@ define([
             // Restore initial tabs
             $tabLabel.show();
 
-            $tabLabel.each(function vDocumentHideTabWidth()
-            {
+            $tabLabel.each(function vDocumentHideTabWidth() {
                 currentWidth += $(this).outerWidth();
                 if (currentWidth > documentWidth) {
                     $(this).hide();
@@ -560,8 +541,7 @@ define([
             /**
              * Need to recompute container width
              */
-            $(".dcpLabel__select-hide:visible").each(function vDocumentSelectContainer()
-            {
+            $(".dcpLabel__select-hide:visible").each(function vDocumentSelectContainer() {
                 var $container = $(this).closest(".k-list-container");
                 var x = $container.offset().left;
                 var maxWidth = ($('body').width() - x - 20) + "px";
@@ -588,8 +568,7 @@ define([
             $tabLabel.find(".k-link").show(); // Restore original link (tab label)
 
             $dropTopSelect = $tabs.find(".dcpTab__label__select.k-combobox").hide();
-            $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function vDocumentSelectTabClose()
-            {
+            $tabs.find("input.dcpTab__label__select[data-role=combobox]").each(function vDocumentSelectTabClose() {
                 $(this).data("kendoComboBox") &&
                 $(this).data("kendoComboBox").close &&
                 $(this).data("kendoComboBox").close();
@@ -608,8 +587,7 @@ define([
                 // Hide original link
                 $(lastShow).find(".k-link").hide();
                 // Replace it to a dropdown selector
-                hiddenSelected = _.some(hiddens, function vDocumentSomeHiddens(item)
-                {
+                hiddenSelected = _.some(hiddens, function vDocumentSomeHiddens(item) {
                     return (item.id === $selectedTabId);
                 });
 
@@ -623,7 +601,7 @@ define([
 
                 $(lastShow).addClass("dcpLabel--select");
                 //$(lastShow).height(currentHeight - 5);
-                if ($dropTopSelect.length === 0 ) {
+                if ($dropTopSelect.length === 0) {
                     $dropSelect = $('<input class="dcpTab__label__select" />');
                     $(lastShow).append($dropSelect);
                     $dropSelect.kendoComboBox({
@@ -631,14 +609,12 @@ define([
                         dataSource: hiddens,
                         dataTextField: "label",
                         dataValueField: "id",
-                        dataBound: function vDocumentTabSelectDatabound()
-                        {
+                        dataBound: function vDocumentTabSelectDatabound() {
                             var myTab = $(this.element).closest("li");
                             var liItem = $tabs.find("li[data-attrid=" + this.value() + "]");
                             myTab.data("tooltipLabelSelect", liItem.data("tooltipLabel"));
                         },
-                        select: function vDocumentTabSelectSelect(event)
-                        {
+                        select: function vDocumentTabSelectSelect(event) {
                             var dataItem = this.dataSource.at(event.item.index());
                             var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
                             var myTab = $(this.element).closest("li");
@@ -652,8 +628,7 @@ define([
                             myTab.addClass("k-state-active");
                             myTab.find(".k-input").blur(); // Because input is read only
                         },
-                        open: function vDocumentTabSelectOpen()
-                        {
+                        open: function vDocumentTabSelectOpen() {
                             // Need to compute width of container to see elements
                             // Set max-width to not be out of body
                             var $ul = $(this.ul);
@@ -662,14 +637,12 @@ define([
                             var bodyWidth = $('body').width();
                             $ul.css("max-width", Math.max((bodyWidth - x - 20), $(lastShow).width()) + "px");
                             $ul.css("min-width", $li.width());
-                            _.defer(function vDocumentSelectTabOpen()
-                            {
+                            _.defer(function vDocumentSelectTabOpen() {
                                 $ul.closest(".k-animation-container").addClass("menu__select_container");
                             });
                         },
 
-                        template: function vDocumentTabSelectTemplate(event)
-                        {
+                        template: function vDocumentTabSelectTemplate(event) {
                             if (event.tooltipLabel) {
                                 return Mustache.render('<span class="dcpLabel__select--tooltip" data-tooltipLabel="{{tooltipLabel}}">{{label}}</span>', event);
                             }
@@ -689,8 +662,7 @@ define([
                         placement: "left",
                         container: ".dcpDocument",
                         html: true,
-                        title: function vDocumentTabSelectTitle()
-                        {
+                        title: function vDocumentTabSelectTitle() {
                             return $(this).find(".dcpLabel__select--tooltip").attr("data-tooltipLabel");
                         }
                     });
@@ -715,8 +687,7 @@ define([
 
                 if (!$tabs.data("selectFixOn")) {
                     // Add callback only one time
-                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick(event)
-                    {
+                    $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick(event) {
                         var selectedTab = $kendoTabs.select().data("attrid");
                         var selectedItem = $tabs.data("selectFixOn").data("kendoComboBox").value();
                         var liItem = $tabs.find("li[data-attrid=" + selectedItem + "]");
@@ -731,8 +702,7 @@ define([
                         }
                     });
 
-                    $tabs.on("focus", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabFocus()
-                    {
+                    $tabs.on("focus", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabFocus() {
                         $(this).blur();
                     });
                 }
@@ -741,8 +711,7 @@ define([
                 $tabs.data("selectFixOn", $dropSelect);
             }
             if ('ontouchstart' in document.documentElement && iOS) {
-                $("body").off('show.bs.tooltip').on('show.bs.tooltip', "[data-original-title]", function vDocumentWorkaroundIosTouch(e)
-                {
+                $("body").off('show.bs.tooltip').on('show.bs.tooltip', "[data-original-title]", function vDocumentWorkaroundIosTouch(e) {
                     // prevent ios double tap
                     var $tooltip = $(this);
                     var tooltipObject = $tooltip.data("bs.tooltip");
@@ -759,12 +728,10 @@ define([
                         if (!$tooltip.data("showios")) {
                             e.preventDefault();
                             $tooltip.data("showios", true);
-                            _.delay(function vDocumentWorkaroundIosDelay()
-                            {
+                            _.delay(function vDocumentWorkaroundIosDelay() {
                                 $tooltip.tooltip("show");
                                 $tooltip.data("showios", false);
-                                _.delay(function vDocumentWorkaroundIosSecondDelay()
-                                {
+                                _.delay(function vDocumentWorkaroundIosSecondDelay() {
                                     $tooltip.tooltip("hide");
                                 }, 2000);
                             }, 500);
@@ -783,8 +750,7 @@ define([
          *
          * @param tabId
          */
-        recordSelectedTab: function vDocumentRecordSelectedTab(tabId)
-        {
+        recordSelectedTab: function vDocumentRecordSelectedTab(tabId) {
             if (this.model.get("initid")) {
                 var tagTab = new ModelDocumentTab({"initid": this.model.get("initid"), "tabId": tabId});
                 tagTab.save();
@@ -794,11 +760,9 @@ define([
         /**
          * Publish associated model message
          */
-        publishMessages: function vDocumentPublishMessages()
-        {
+        publishMessages: function vDocumentPublishMessages() {
             var currentView = this;
-            _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage)
-            {
+            _.each(this.model.get("messages"), function vDocumentPublishAMessage(aMessage) {
                 currentView.trigger("showMessage", {
                     type: aMessage.type,
                     title: aMessage.contentText,
@@ -812,8 +776,7 @@ define([
          *
          * Inject new CSS, remove old CSS
          */
-        renderCss: function vDocumentRenderCss(noRemove)
-        {
+        renderCss: function vDocumentRenderCss(noRemove) {
             // add custom css style
             var $head = $("head"),
                 cssLinkTemplate = _.template('<link rel="stylesheet" type="text/css" ' +
@@ -823,10 +786,8 @@ define([
             if (noRemove !== true) {
                 //Remove old CSS
 
-                _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink)
-                {
-                    var findCss = function vDocumentFindCss(currentCss)
-                    {
+                _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(currentLink) {
+                    var findCss = function vDocumentFindCss(currentCss) {
                         return $(currentLink).data("id") === currentCss.key;
                     };
                     if (_.find(customCss, findCss) === undefined) {
@@ -835,8 +796,7 @@ define([
                 });
             }
             // Inject new CSS
-            _.each(customCss, function vDocumentInjectNewCSS(cssItem)
-            {
+            _.each(customCss, function vDocumentInjectNewCSS(cssItem) {
                 var $existsLink = $('link[rel=stylesheet][data-id=' + cssItem.key + ']');
 
                 if ($existsLink.length === 0) {
@@ -853,8 +813,7 @@ define([
          * Show the help document in dialog
          *
          */
-        showHelp: function vDocumentShowHelp(event, helpId, attrid)
-        {
+        showHelp: function vDocumentShowHelp(event, helpId, attrid) {
             var $document = $(this.el);
             var scope = this;
             var $dialogDiv = $document.data("dcpHelpDocument-" + helpId);
@@ -866,8 +825,7 @@ define([
                 windowTitle: '<span class="fa fa-question-circle"></span> ' + i18n.___("Info", "ddui")
             };
 
-            require(['dcpDocument/document'], function vDocumentHelp()
-            {
+            require(['dcpDocument/document'], function vDocumentHelp() {
                 var helpX, helpY, bodyH, dialogH, dialogW;
 
                 if (!$dialogDiv || $dialogDiv.is(":visible") === false) {
@@ -887,24 +845,20 @@ define([
                             "Maximize",
                             "Close"
                         ],
-                        close: function vDocumentSelectHelpClose()
-                        {
+                        close: function vDocumentSelectHelpClose() {
                             $(".dcpLabel__help__link--selected").removeClass("dcpLabel__help__link--selected");
                         }
                     });
 
-                    $dialogDiv.on("documentcreate", function vDocumentHelpCreate()
-                    {
+                    $dialogDiv.on("documentcreate", function vDocumentHelpCreate() {
                         $dialogDiv.find("> iframe").addClass("k-content-frame");
                     });
 
                     $dialogDiv.document({
                         "initid": helpId,
                         withoutResize: true
-                    }).on("documentloaded", function vDocumentSelectHelpChapter()
-                    {
-                        _.defer(function vDocumentHelpReady()
-                        {
+                    }).on("documentloaded", function vDocumentSelectHelpChapter() {
+                        _.defer(function vDocumentHelpReady() {
                             $dialogDiv.document(
                                 "triggerEvent",
                                 "custom:helppageSelect",
@@ -960,8 +914,7 @@ define([
          * Show the history widget
          *
          */
-        showHistory: function vDocumentShowHistory(docid)
-        {
+        showHistory: function vDocumentShowHistory(docid) {
             var scope = this;
             var $target = $('<div class="document-history"/>');
             this.historyWidget = $target.dcpDocumentHistory({
@@ -1007,8 +960,7 @@ define([
             }).data("dcpDocumentHistory");
 
             this.historyWidget.open();
-            this.historyWidget.element.on("viewRevision", function vDocumentViewRevision(event, data)
-            {
+            this.historyWidget.element.on("viewRevision", function vDocumentViewRevision(event, data) {
                 scope.model.fetchDocument({
                     initid: data.initid,
                     revision: data.revision
@@ -1020,24 +972,21 @@ define([
          * Lock document
          *
          */
-        lockDocument: function vDocumentLockDocument()
-        {
+        lockDocument: function vDocumentLockDocument() {
             this.model.lockDocument();
         },
         /**
          * Lock document
          *
          */
-        unlockDocument: function vDocumentUnLockDocument()
-        {
+        unlockDocument: function vDocumentUnLockDocument() {
             this.model.unlockDocument();
         },
         /**
          * Show the transition view
          *
          */
-        showtransition: function vDocumentShowtransition(transition, nextState)
-        {
+        showtransition: function vDocumentShowtransition(transition, nextState) {
             this.model.trigger("showTransition", nextState, transition);
         },
 
@@ -1045,8 +994,7 @@ define([
          * Show the transition view
          *
          */
-        showTransitionGraph: function vDocumentShowtransitionGraph()
-        {
+        showTransitionGraph: function vDocumentShowtransitionGraph() {
             var documentView = this;
             var transitionGraph = {};
             var $target = $('<div class="dcpTransitionGraph"/>');
@@ -1057,16 +1005,14 @@ define([
             });
 
             transitionGraph.model.fetch({
-                success: function vDocumentTransitionSuccess()
-                {
+                success: function vDocumentTransitionSuccess() {
                     //Init transition view
                     transitionGraph.view = new ViewTransitionGraph({
                         model: transitionGraph.model,
                         el: $target
                     });
                     transitionGraph.view.render();
-                    transitionGraph.view.$el.on("viewTransition", function vDocumentTransitionView(event, nextState)
-                    {
+                    transitionGraph.view.$el.on("viewTransition", function vDocumentTransitionView(event, nextState) {
                         transitionGraph.view.remove();
                         documentView.model.trigger("showTransition", nextState);
                     });
@@ -1079,8 +1025,7 @@ define([
          * Show the properties widget
          *
          */
-        showProperties: function vDocumentShowProperties(docid)
-        {
+        showProperties: function vDocumentShowProperties(docid) {
             var scope = this;
             var $target = $('<div class="document-properties"/>');
 
@@ -1118,8 +1063,7 @@ define([
             }).data("dcpDocumentProperties");
 
             this.propertiesWidget.open();
-            this.propertiesWidget.element.on("viewDocument", function vDocumentViewDocument(event, data)
-            {
+            this.propertiesWidget.element.on("viewDocument", function vDocumentViewDocument(event, data) {
                 scope.model.fetchDocument({initid: data});
             });
         },
@@ -1127,8 +1071,7 @@ define([
         /**
          * Update the title of the current page
          */
-        updateTitle: function vDocumentUpdateTitle()
-        {
+        updateTitle: function vDocumentUpdateTitle() {
             var title = this.model.get("properties").get("title");
 
             if (!_.isEmpty(title)) {
@@ -1139,8 +1082,7 @@ define([
         /**
          * Update the icon of the current page
          */
-        updateIcon: function vDocumentUpdateIcon()
-        {
+        updateIcon: function vDocumentUpdateIcon() {
             $("link[rel='shortcut icon']").attr("href", this.model.get("properties").get("icon"));
         },
 
@@ -1148,16 +1090,14 @@ define([
          * Delete the current document
          *
          */
-        deleteDocument: function dvDocumentDocumentDelete()
-        {
+        deleteDocument: function dvDocumentDocumentDelete() {
             this.model.deleteDocument();
         },
 
         /**
          * Display the loading widget
          */
-        displayLoading: function vDocumentDisplayLoading(options)
-        {
+        displayLoading: function vDocumentDisplayLoading(options) {
             var text = i18n.___("Loading", "ddui"), avance = 50;
             options = options || {};
             if (this.$el.find(".dcpDocument--disabled") === 0) {
@@ -1168,7 +1108,7 @@ define([
                 avance = 70;
             }
             if (options.text) {
-                text=options.text;
+                text = options.text;
             }
             this.trigger("cleanNotification");
             this.trigger("loaderShow", text, avance);
@@ -1179,8 +1119,7 @@ define([
          *
          * Hide the loader, show the view
          */
-        showView: function vDocumentShowView()
-        {
+        showView: function vDocumentShowView() {
             this.$el.hide();
             this.$el.find(".dcpDocument--disabled").remove();
             this.trigger("loaderHide");
@@ -1193,8 +1132,7 @@ define([
          *
          * @param viewId
          */
-        closeDocument: function vDocumentCloseDocument(viewId)
-        {
+        closeDocument: function vDocumentCloseDocument(viewId) {
             if (!viewId) {
                 if (this.model.get("renderMode") === "edit") {
                     viewId = "!defaultEdition";
@@ -1211,14 +1149,12 @@ define([
         /**
          * Save the current document
          */
-        saveDocument: function vDocumentSaveDocument()
-        {
+        saveDocument: function vDocumentSaveDocument() {
             this.trigger("cleanNotification");
             var currentView = this, saveDocument = this.model.saveDocument();
             //Use promise and display success when done
             if (saveDocument && saveDocument.then) {
-                saveDocument.then(function vDocumentSaveDisplaySuccess()
-                {
+                saveDocument.then(function vDocumentSaveDisplaySuccess() {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Recorded", "ddui")});
                 });
             }
@@ -1227,13 +1163,11 @@ define([
         /**
          * Save and close the current document
          */
-        saveAndCloseDocument: function vDocumentSaveAndCloseDocument(viewId)
-        {
+        saveAndCloseDocument: function vDocumentSaveAndCloseDocument(viewId) {
             this.trigger("cleanNotification");
             var currentView = this, saveDocument = this.model.saveDocument();
             if (saveDocument && saveDocument.then) {
-                saveDocument.then(function vDocumentSaveAndCloseSuccess()
-                {
+                saveDocument.then(function vDocumentSaveAndCloseSuccess() {
                     var initid = currentView.model.get("initid");
 
                     currentView.model.fetchDocument({
@@ -1248,12 +1182,10 @@ define([
         /**
          * Create the current document
          */
-        createDocument: function vDocumentCreateDocument()
-        {
+        createDocument: function vDocumentCreateDocument() {
             var currentView = this, saveDocument = this.model.saveDocument();
             if (saveDocument && saveDocument.then) {
-                saveDocument.then(function vDocumentCreateDisplaySuccess()
-                {
+                saveDocument.then(function vDocumentCreateDisplaySuccess() {
                     currentView.trigger("showSuccess", {title: i18n.___("Document Created", "ddui")});
                 });
             }
@@ -1262,12 +1194,10 @@ define([
         /**
          * Create the current document
          */
-        createAndCloseDocument: function vDocumentCreateDocument(viewId)
-        {
+        createAndCloseDocument: function vDocumentCreateDocument(viewId) {
             var currentView = this, saveDocument = this.model.saveDocument();
             if (saveDocument && saveDocument.then) {
-                saveDocument.then(function vDocumentCreateAndCloseSuccess()
-                {
+                saveDocument.then(function vDocumentCreateAndCloseSuccess() {
                     var initid = currentView.model.get("initid");
 
                     currentView.model.fetchDocument({
@@ -1284,8 +1214,7 @@ define([
          * options : {initid, viewId, revision}
          * callbacks : {success, error}
          */
-        loadDocument: function vDocumentLoadDocument(options, callbacks)
-        {
+        loadDocument: function vDocumentLoadDocument(options, callbacks) {
             var confirmWindow;
             var documentView = this;
 
@@ -1303,16 +1232,14 @@ define([
                         htmlMessage: i18n.___("The form has been modified without saving", "ddui"),
                         textMessage: ''
                     },
-                    confirm: function wMenuConfirm()
-                    {
+                    confirm: function wMenuConfirm() {
                         documentView.model.fetchDocument({
                             initid: options.initid,
                             viewId: options.viewId,
                             revision: options.revision
                         }).then(callbacks.success, callbacks.error);
                     },
-                    cancel: function wLoadCancel()
-                    {
+                    cancel: function wLoadCancel() {
                         if (callbacks && _.isFunction(callbacks.error)) {
                             callbacks.error({
                                 errorMessage: {
@@ -1339,13 +1266,11 @@ define([
          *
          * @returns {exports}
          */
-        restoreDocument: function vDocumentRestoreDocument()
-        {
+        restoreDocument: function vDocumentRestoreDocument() {
             this.model.restoreDocument();
         },
 
-        propagateActionClick: function vDocumentPropagateActionClick(event)
-        {
+        propagateActionClick: function vDocumentPropagateActionClick(event) {
             var $target = $(event.currentTarget),
                 action,
                 options,
@@ -1397,8 +1322,7 @@ define([
          * @param options
          * @returns {*}
          */
-        doStandardAction: function vDocumentdoStandardAction(event, options)
-        {
+        doStandardAction: function vDocumentdoStandardAction(event, options) {
             var eventArgs = options.options;
 
             if (options.eventId === "document.save") {
@@ -1453,8 +1377,7 @@ define([
             }
         },
 
-        displayNetworkError: function vDocument_displayNetworkError()
-        {
+        displayNetworkError: function vDocument_displayNetworkError() {
             this.$el.hide();
             $(".dcpStaticErrorMessage").removeAttr("hidden");
         },
@@ -1465,8 +1388,7 @@ define([
          * @param key
          * @returns {*}
          */
-        getTemplates: function vDocumentGetTemplates(key)
-        {
+        getTemplates: function vDocumentGetTemplates(key) {
             var templates = {};
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");
@@ -1486,8 +1408,7 @@ define([
          *
          * @returns {*}
          */
-        remove: function vDocumentRemove()
-        {
+        remove: function vDocumentRemove() {
             try {
                 if (this.kendoTabs && this.kendoTabs.data("kendoTabStrip")) {
                     this.kendoTabs.data("kendoTabStrip").destroy();
