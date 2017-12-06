@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<module name="@moduleName@" version="@version@" release="@release@"
+<module name="@moduleName@" version="@version@" release="@release@" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="yes">
 
-    <description lang="en">Anakeen Platform 4</description>
-    <description lang="fr">Anakeen Platform 4</description>
+    <description lang="en">Smart Data Engine</description>
 
     <replaces>
+        <module name="anakeen-core"/>
         <module name="dynacase-core"/>
         <module name="dynacase-httpapi-v1"/>
     </replaces>

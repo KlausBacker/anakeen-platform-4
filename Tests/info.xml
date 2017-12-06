@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
-<module name="@moduleName@" disabled="no" version="@version@" release="@release@"
+<module name="@moduleName@" disabled="no" version="@version@" release="@release@" vendor="Anakeen"
         basecomponent="no">
-    <description>Test case for Anakeen Core.</description>
+    <description>Test case for Smart Data Engine.</description>
 
     <requires>
-        <module name="anakeen-core"/>
+        <module name="smart-data-engine"/>
     </requires>
 
+    <replaces>
+        <module name="anakeen-core-test"/>
+    </replaces>
     <pre-install>
         <check type="syscommand" command="xmllint">
             <label lang="en">Check "xmllint". To check xml files</label>
