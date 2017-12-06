@@ -161,6 +161,7 @@ $tabFiwWidth:10em;
     height: 3rem;
     background: $A4-ui-tab-active-bg! important;
     width:3rem;
+    border-radius: $border-radius $border-radius 0 0;
 
   }
   .k-bare.k-tabstrip-next {
