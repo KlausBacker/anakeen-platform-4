@@ -5,6 +5,9 @@
   <requires>
     <module name="admin-center" />
   </requires>
+  <replaces>
+    <module name="anakeen-te" />
+  </replaces>
   <post-install>
     <process command="programs/record_application TENGINE_CLIENT I">
       <label lang="en">Record application TENGINE_CLIENT in database</label>
