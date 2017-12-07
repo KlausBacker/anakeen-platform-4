@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf8"?>
-<module name="@moduleName@" version="@version@" release="@release@" license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module name="@moduleName@" version="@version@" release="@release@"
+        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description lang="en">Transformation Engine Client Library</description>
   <requires>
     <module name="admin-center" />
