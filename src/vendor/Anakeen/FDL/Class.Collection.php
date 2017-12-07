@@ -16,7 +16,7 @@ include_once ("FDL/Class.Document.php");
 include_once ("FDL/Lib.FullSearch.php");
 /**
  * Document Class
- *
+ * @deprecated
  */
 class Fdl_Collection extends Fdl_Document
 {
