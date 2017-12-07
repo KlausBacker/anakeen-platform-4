@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<module  name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+<module  name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen"
+         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>A4 : Document interfaces</description>
     <replaces>

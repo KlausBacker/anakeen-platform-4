@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@"  vendor="Anakeen" release="@release@" version="@version@">
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@"
+        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
+        vendor="Anakeen" release="@release@" version="@version@">
     <description>Sample Business App</description>
 
     <requires>
