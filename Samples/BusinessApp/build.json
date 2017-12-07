@@ -1,5 +1,5 @@
 {
-  "moduleName": "sample-business-app",
+  "moduleName": "showcase",
   "version": "1.0.0",
   "release": "0",
   "includedPath": ["src/*"],
