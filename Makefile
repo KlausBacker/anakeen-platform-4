@@ -34,7 +34,7 @@ app:
 	r.js -o $(localpub)/webinst/Document-uis/src/public/DOCUMENT_GRID_HTML5/widgets/builder.js
 	./anakeen-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
 
-app-business:
+app-showcase:
 	cd Document-uis && yarn install && yarn buildAsset
 	make -f pojs.make OUTPUT_DIR=Samples/BusinessApp/src/public/BUSINESS_APP/src/components compile
 	cd Samples/BusinessApp && yarn install && yarn build
@@ -66,8 +66,8 @@ deploy:
 	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w user-interfaces-*app -- --force
 	make clean
 
-deploy-business:
-	rm -f sample*app
-	make app-business
-	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w sample-business-*app -- --force
+deploy-showcase:
+	rm -f showcase*app
+	make app-showcase
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w showcase-*app -- --force
 	make clean
