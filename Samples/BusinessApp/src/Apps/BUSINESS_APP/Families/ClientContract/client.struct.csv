@@ -1,0 +1,26 @@
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;;Dossier client;;;BA_CLIENT_CONTRACT;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ICON;BA_Client.png;;;;;;;;;;;;;;
+CLASS;Sample\BusinessApp\Client;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
+ATTR;CLI_FR_IDENT;;Identification;N;N;frame;::auto;W;;;;;;;
+ATTR;CLI_NAME;CLI_FR_IDENT;Société;Y;N;text;::auto;W;Y;;;;;;
+ATTR;CLI_ADDR;CLI_FR_IDENT;Adresse;N;N;longtext;::auto;W;;;;;;;
+ATTR;CLI_PHONE;CLI_FR_IDENT;Téléphone;N;N;text;::auto;W;;;;;;;
+ATTR;CLI_BEG_DATE;CLI_FR_IDENT;Date de début de contrat;N;N;date;::auto;W;;;;;;;
+ATTR;CLI_END_DATE;CLI_FR_IDENT;Date de fin de contrat;N;N;date;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CLI_TAB_EXPENSIVES;;Dépenses;N;N;tab;::auto;W;;;;;;;
+ATTR;CLI_F_EXPENSIVES;CLI_TAB_EXPENSIVES;Dépenses;N;N;frame;::auto;W;;;;;;;
+ATTR;CLI_T_EXPENSIVES;CLI_F_EXPENSIVES;Tableau des dépenses;N;N;array;::auto;W;;;;;;;
+ATTR;CLI_EXP_DATE;CLI_T_EXPENSIVES;Date;N;N;date;::auto;W;;;;;;;
+ATTR;CLI_EXP_PERSON;CLI_T_EXPENSIVES;Personne;N;N;"docid(""BA_RH_DIR"")";::auto;W;;;;;;;
+ATTR;CLI_EXP_HT;CLI_T_EXPENSIVES;Montant HT;N;N;money;::auto;W;;;;;;;
+ATTR;CLI_EXP_TTC;CLI_T_EXPENSIVES;Montant TTC;N;N;money;::auto;W;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;CLI_TAB_FILES;;Fichiers;N;N;tab;::auto;W;;;;;;;
+ATTR;CLI_F_FILES;CLI_TAB_FILES;Fichiers;N;N;frame;::auto;W;;;;;;;
+ATTR;CLI_T_FILES;CLI_F_FILES;Fichiers;N;N;array;::auto;W;;;;;;;
+ATTR;CLI_FILE_CONTRACT;CLI_T_FILES;Fichier;N;N;file;::auto;W;;;;;;;
+END;;;;;;;;;;;;;;;

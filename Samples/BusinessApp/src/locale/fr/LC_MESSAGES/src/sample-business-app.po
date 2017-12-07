@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sample-business-app\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-06 17:44+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain;  charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_draft"
+msgstr "Brouillon"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_filled"
+msgstr "Déposée"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_integrated"
+msgstr "Intégrée"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_integrating"
+msgstr "En intégration"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_validated"
+msgstr "Validée"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_validating"
+msgstr "En validation"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "e_ba_writing"
+msgstr "En rédaction"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "t_ba_integrate"
+msgstr "Intégrer"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "t_ba_send"
+msgstr "Envoyer en validation"
+
+#. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
+msgid "t_ba_valid"
+msgstr "Valider pour intégration"
