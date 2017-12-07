@@ -4,8 +4,8 @@ set -eo pipefail
 
 find . -type f -name "build.json" -exec autorelease {} \;
 
-make webinst webinst-test
+make app app-test
 
-mv -v *.webinst /var/www/html/repo
+mv -v *.app /var/www/html/repo
 
 mkwebinstrepo /var/www/html/repo

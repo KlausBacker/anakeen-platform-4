@@ -58,7 +58,7 @@ while( ($file = readdir($dir)) !== FALSE ) {
   if( ! is_file($repoPath.'/'.$file) ) {
     continue;
   }
-  if( ! preg_match('/\.webinst$/', $file) ) {
+  if( ! preg_match('/\.app/', $file) ) {
     continue;
   }
   $cmd = "tar -zxOf ".escapeshellcmd($repoPath.'/'.$file)." info.xml 2> /dev/null";
