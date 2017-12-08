@@ -1,2 +1,4 @@
 /Tests/autotest/autotest.override.sh
+*~
+*#
 /Tests/autotest/outputs/*

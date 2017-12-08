@@ -1,0 +1,76 @@
+// ;fromid;titre;id;class;name;;;;;;;;;;
+BEGIN;;utilisateur;128;;IUSER;;;;;;;;;;
+TYPE;C;;;;;;;;;;;;;;
+DFLDID;FLD_ACCOUNTS;;;;;;;;;;;;;;
+ICON;se-iuser.png;;;;;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+CLASS;Dcp\Core\UserAccount;;;;;;;;;;;;;;
+USEFOR;N;;;;;;;;;;;;;;
+//TAG;MAILRECIPIENT;;;;;;;;;;;;;;
+METHOD;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;US_FR_IDENT;;État civil;N;N;frame;;W;;;;;;;
+ATTR;US_LNAME;US_FR_IDENT;nom;Y;N;text;30;W;Y;;;;;;
+ATTR;US_FNAME;US_FR_IDENT;prénom;Y;N;text;35;W;Y;;;;;;
+ATTR;US_MAIL;US_FR_IDENT;mail;N;Y;text;40;R;;mailto:%US_MAIL%;;;;;
+ATTR;US_EXTMAIL;US_FR_IDENT;mail principal;N;N;text;45;O;;;;;;::parseMail(US_EXTMAIL);esize=30
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;US_TAB_SYSTEM;;Système;;;tab;100000;W;;;;;;;
+ATTR;US_FR_INTRANET;US_TAB_SYSTEM;Identification intranet;N;N;frame;100010;R;;;;;;;
+ATTR;US_MEID;US_FR_INTRANET;utilisateur id;N;N;account;100020;H;;;;;;;
+ATTR;US_LOGIN;US_FR_INTRANET;login;N;N;text;100030;R;Y;;;;;::ConstraintLogin(US_LOGIN);elabel=saisissez '-' pour indiquer qu'il n'y a pas de login|esize=20
+ATTR;US_WHATID;US_FR_INTRANET;identifiant;N;N;text;100040;R;;;;;;;esize=4
+ATTR;US_T_ROLES;US_FR_INTRANET;Rôles;N;N;array;100050;R;;;;;;;showempty=Aucun rôle
+ATTR;US_ROLES;US_T_ROLES;Rôle;N;N;account;100060;W;;;;;;;"creation={autoclose:""yes""}|match=role"
+ATTR;US_ROLESORIGIN;US_T_ROLES;Origine;N;N;enum;100070;R;;;;internal|Affectation directe,group|Obtenu par;;;eformat=bool|system=yes|bmenu=no
+ATTR;US_ROLEGORIGIN;US_T_ROLES;Groupe;N;N;account;100080;R;;;;;;;multiple=yes|match=group
+ATTR;US_GROUPS;US_FR_INTRANET;groupes d'appartenance;N;N;array;100090;R;;;;;;;showempty=Aucun groupe
+ATTR;US_GROUP;US_GROUPS;groupe (titre);N;N;text;100100;H;;;;::getTitle(US_IDGROUP);;;
+ATTR;US_IDGROUP;US_GROUPS;Groupe;N;N;account;100110;W;;;;;;;isuser=yes|doctitle=us_group|match=group
+ATTR;US_EXPIRES;US_FR_INTRANET;date d'expiration epoch;N;N;int;100120;H;;;;;;;
+ATTR;US_DAYDELAY;US_FR_INTRANET;délai d'expiration en jours;N;N;int;100130;H;;;;;;;elabel=mettre -1 pour annuler l'expiration|esize=3
+ATTR;US_EXPIRESD;US_FR_INTRANET;date d'expiration;N;N;date;100140;H;;;;;;::ConstraintExpires(US_EXPIRESD,US_EXPIREST,US_DAYDELAY);
+ATTR;US_EXPIREST;US_FR_INTRANET;heure d'expiration;N;N;time;100150;H;;;;;;;
+ATTR;US_PASSDELAY;US_FR_INTRANET;délai d'expiration epoch;N;N;int;100160;H;;;;;;;
+ATTR;US_LDAPDN;US_FR_INTRANET;login LDAP;N;N;text;100170;R;;;;;;;
+ATTR;US_FR_SUBSTITUTE;US_TAB_SYSTEM;Suppléants;N;N;frame;100180;R;;;;;;;
+ATTR;US_SUBSTITUTE;US_FR_SUBSTITUTE;Suppléant;N;N;account;100190;W;;;;;;;
+ATTR;US_INCUMBENTS;US_FR_SUBSTITUTE;Titulaires;N;N;account;100200;R;;;;;;;multiple=yes
+ATTR;US_FR_USERCHANGE;US_TAB_SYSTEM;Mot de passe;N;N;frame;100210;W;;;;;;;
+ATTR;US_PASSWD1;US_FR_USERCHANGE;nouveau mot de passe;N;N;password;100220;O;;;;;;::testForcePassword(US_PASSWD1);esize=10
+ATTR;US_PASSWD2;US_FR_USERCHANGE;confirmation mot de passe;N;N;password;100230;O;;;;;;::ConstraintPassword(US_PASSWD1,US_PASSWD2,US_LOGIN);esize=10
+PARAM;US_FR_DEFAULT;;Paramètre;N;N;frame;10;W;;;;;;;
+PARAM;US_DEFAULTGROUP;US_FR_DEFAULT;Groupe par défaut;N;N;account;20;W;;;;;;;match=group
+;;;;;;;;;;;;;;;
+ATTR;US_FR_SECURITY;US_TAB_SYSTEM;Sécurité;N;N;frame;100300;R;;;;;;;
+ATTR;US_STATUS;US_FR_SECURITY;état du compte;N;N;enum;100305;R;;;;A|activé,D|désactivé;;;system=yes
+DEFAULT;US_STATUS;A;;;;;;;;;;;;;
+ATTR;US_LOGINFAILURE;US_FR_SECURITY;échecs de connexion;N;N;int;100310;R;;;;;;;
+DEFAULT;US_LOGINFAILURE;0;;;;;;;;;;;;;
+ATTR;US_ACCEXPIREDATE;US_FR_SECURITY;Date d'expiration du compte;N;N;date;100320;R;;;;;;;
+ATTR;US_MENURESETLOGFAILS;;Réinitialiser échecs de connexion;N;N;menu;10;W;;%S%app=FDL&action=FDL_METHOD&method=resetLoginFailure&id=%I%;;::menuResetLoginFailure();;;ltarget=_self|submenu=Compte
+ATTR;US_ACTIVATEACCOUNT;;Activer le compte;N;N;menu;20;W;;%S%app=FDL&action=FDL_METHOD&method=activateAccount&id=%I%;;::menuActivateAccount();;;ltarget=_self|submenu=Compte
+ATTR;US_DESACTIVATEACCOUNT;;Désactiver le compte;N;N;menu;30;W;;%S%app=FDL&action=FDL_METHOD&method=deactivateAccount&id=%I%;;::menuDeactivateAccount();;;ltarget=_self|submenu=Compte
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+DEFAULT ;US_DEFAULTGROUP;GDEFAULT;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;US_FR_PRIVACY;;confidentialité;N;N;frame;10;H;;;;;;;
+ATTR;US_INITUSER;;Actualiser les utilisateurs;N;N;menu;40;W;;%S%&app=FUSERS&action=FUSERS_IUSER;;::canExecute(FUSERS,FUSERS_IUSER);;;global=yes|onlyglobal=yes|lconfirm=yes
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;0;;;;;;;;;;;;;;

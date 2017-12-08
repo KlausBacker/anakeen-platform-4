@@ -1,0 +1,4 @@
+// creation dossier personne;;;;
+//DOC;Famille;<special id>;<special dirid>;titre
+ORDER;DIR;;;ba_title
+DOC;DIR;FLD_ACCOUNTS;;Comptes

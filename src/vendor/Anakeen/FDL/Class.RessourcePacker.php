@@ -28,7 +28,10 @@ class RessourcePacker
         
         foreach ($static_js as $jsfile) {
             if (!is_file($jsfile)) {
-                $jsfile=DEFAULT_PUBDIR."/".$jsfile;
+                $absjsfile=DEFAULT_PUBDIR."/".$jsfile;
+                if (is_file($absjsfile)) {
+                    $jsfile=$absjsfile;
+                }
             }
             if (is_file($jsfile)) {
                 print sprintf("// --- <static file='%s'> ---\n", $jsfile);
@@ -36,19 +39,28 @@ class RessourcePacker
                 print sprintf("// -- </static file='%s'> ---\n", $jsfile);
                 print "\n";
             } else {
-                print ("\nalert(\"$jsfile not found\");\n");
+                print ("\nalert(\"$jsfile not found.\");\n");
             }
         }
         foreach ($dynamic_js as $jsfile) {
             if (!is_file($jsfile)) {
-                $jsfile=DEFAULT_PUBDIR."/".$jsfile;
+                $absjsfile=DEFAULT_PUBDIR."/".$jsfile;
+                if (is_file($absjsfile)) {
+                    $jsfile=$absjsfile;
+                }
+            }
+            if (!is_file($jsfile)) {
+                $absjsfile=DEFAULT_PUBDIR."/Apps/".$jsfile;
+                if (is_file($absjsfile)) {
+                    $jsfile=$absjsfile;
+                }
             }
             if (is_file($jsfile)) {
                 $action->lay->template.= sprintf("// --- <dynamic file='%s'> ---\n", $jsfile);
                 $action->lay->template.= str_replace("include_js(", "//include_js(", file_get_contents($jsfile)) . "\n";
                 $action->lay->template.= sprintf("// --- </dynamic file='%s'> ---\n", $jsfile);
             } else {
-                $action->lay->template.= ("\nalert(\"$jsfile not found\");\n");
+                $action->lay->template.= ("\nalert(\"$jsfile not found..\");\n");
             }
         }
         
