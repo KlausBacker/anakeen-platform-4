@@ -144,6 +144,9 @@ define([
                 }
                 Promise.all(promiseAttributes).then(function allRenderDone() {
                     currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
+                    if (currentView.model.getOption("responsiveColumns")) {
+                        currentView.responsiveColumns();
+                    }
                     resolve(currentView);
                 }).catch(reject);
             }), this));

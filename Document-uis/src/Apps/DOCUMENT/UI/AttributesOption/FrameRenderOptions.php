@@ -53,7 +53,7 @@ class FrameRenderOptions extends CommonRenderOptions
      * number : column number between 2 to 12
      * minWidth : min width of frame div to use (included)
      * maxWidth : max width of frame div to use (excluded)
-     * direction : leftRight  or topBottom
+     * direction : leftRight  or topBottom (default is leftRight)
      * grow : in leftRight : grow width in last row is missing attributes to complete row
      *     in topBottom : decrease column number if last columns are empty
      * @param array $responsives
@@ -63,17 +63,17 @@ class FrameRenderOptions extends CommonRenderOptions
         $columns = array();
         $previousMax="0";
         foreach ($responsives as $responsive) {
-            if (!$responsive["minWidth"]) {
+            if (empty($responsive["minWidth"])) {
                 $responsive["minWidth"]=$previousMax;
             }
             $columns[] = [
                 "number" => $responsive["number"],
-                "minWidth" => $responsive["minWidth"],
-                "maxWidth" => $responsive["maxWidth"],
-                "grow" => $responsive["grow"],
-                "direction" => $responsive["direction"],
+                "minWidth" => empty($responsive["minWidth"])?null:$responsive["minWidth"],
+                "maxWidth" => isset($responsive["maxWidth"])?$responsive["maxWidth"]:null,
+                "grow" => !empty($responsive["grow"]),
+                "direction" => empty($responsive["direction"])?self::leftRightDirection:$responsive["direction"],
             ];
-            $previousMax=$responsive["maxWidth"];
+            $previousMax=empty($responsive["maxWidth"])?null:$responsive["maxWidth"];
         }
         $this->setOption(self::responsiveColumnsOption, $columns);
     }

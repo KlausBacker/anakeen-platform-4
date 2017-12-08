@@ -29,9 +29,9 @@
 }
 
 .dcpAttribute {
-  @media (min-width: ($grid-float-breakpoint + 1)) {
+
     flex-direction: column;
-  }
+
 }
 
 .row.dcpAttribute {
@@ -80,6 +80,7 @@
 
   @media (max-width: ($grid-float-breakpoint + 1)) {
     flex-direction: column;
+    align-items: initial;
        .dcpAttribute__left {
          flex-basis: auto;
          flex-grow: 1;
@@ -105,36 +106,40 @@
 }
 
 
-.dcpAttribute__content.dcpAttribute__right,
-.dcpAttribute__description.dcpAttribute__right
-{
-  //.make-md-column(9);
-  //.make-sm-column(10);
-  @media (max-width: $grid-float-breakpoint) {
-    padding-left: 2em;
+.dcpDocument--view {
+  .dcpAttribute__content.dcpAttribute__right,
+  .dcpAttribute__description.dcpAttribute__right {
+
+    @media (max-width: $grid-float-breakpoint) {
+      padding-left: 2em;
+    }
   }
+}
+
+
+.dcpAttribute__content.dcpAttribute__right,
+.dcpAttribute__description.dcpAttribute__right {
   @media (min-width: ($grid-float-breakpoint + 1)) {
-    //width: percentage((8 / $grid-columns));
     flex-grow: 1;
   }
 }
 
 .dcpAttribute__right.dcpAttribute__right--full {
-  //.make-xs-column(12);
+
   @media (max-width: $grid-float-breakpoint) {
     padding-left: 2em;
   }
 }
 
 .dcpAttribute__right.dcpAttribute__labelPosition--up {
-  //.make-xs-column(12);
+
   @media (max-width: $grid-float-breakpoint) {
-    padding-left: 2em;
+
   }
 }
 
 .dcpAttribute__left.dcpAttribute__labelPosition--up {
-  //.make-xs-column(12);
+
   text-align: left;
 }
 
