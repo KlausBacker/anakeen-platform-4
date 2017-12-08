@@ -7,6 +7,7 @@
  * Detailled search
  */
 namespace Dcp\Core;
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 class DetailSearch extends \Dcp\Family\Search
 {
     /**
@@ -22,8 +23,22 @@ class DetailSearch extends \Dcp\Family\Search
      * @var \DocFam|null
      */
     protected $searchfam = null;
+
     /**
      * return sql query to search wanted document
+     *
+     * @param string $keyword
+     * @param int    $famid
+     * @param string $latest
+     * @param bool   $sensitive
+     * @param int    $dirid
+     * @param bool   $subfolder
+     * @param bool   $full
+     *
+     * @return array|bool|string
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     * @throws \Exception
      */
     function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
@@ -44,7 +59,7 @@ class DetailSearch extends \Dcp\Family\Search
         if ($latest == "lastfixed") $distinct = true;
         if ($cond != "") $filters[] = $cond;
         if ($this->getRawValue("se_famonly") == "yes") {
-            if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+            if (!is_numeric($famid)) $famid = DocManager::getFamilyIdFromName($famid);
             $only = "only";
         }
         $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
@@ -115,7 +130,7 @@ class DetailSearch extends \Dcp\Family\Search
                 if ($std->family) {
                     if (!is_numeric($std->family)) {
                         if (preg_match("/([\w:]*)\s?(strict)?/", trim($std->family) , $reg)) {
-                            if (!is_numeric($reg[1])) $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
+                            if (!is_numeric($reg[1])) $reg[1] = DocManager::getFamilyIdFromName($reg[1]);
                             if ($reg[2] == "strict") $famid = '-' . $reg[1];
                             else $famid = $reg[1];
                         }
@@ -141,7 +156,6 @@ class DetailSearch extends \Dcp\Family\Search
         $err = '';
         if (count($this->getMultipleRawValues("se_filter")) < 2) {
             // try to update se_famid
-            $filters = $this->getMultipleRawValues("se_filter");
             $typeFilters = $this->getMultipleRawValues("se_typefilter");
             if (count($this->getMultipleRawValues("se_filter")) == 1) {
                 if ($typeFilters[0] != "generated") return ''; // don't update specified filter created by data API
@@ -189,6 +203,7 @@ class DetailSearch extends \Dcp\Family\Search
     {
         $std = null;
         if ($xml->count() == 0) {
+            /** @var array $xml */
             return current($xml);
         } else {
             foreach ($xml as $k => $se) {
@@ -282,39 +297,46 @@ class DetailSearch extends \Dcp\Family\Search
         $this->last_sug = $this->getDate(0, '', '', true);
         return _("DetailSearch:malformed timestamp").": $str";
     }
+
     /**
      * Check the given string is a valid Postgresql's RE
      *
      * @param string $str
+     *
      * @return string empty string if valid or error message
+     * @throws Exception
      */
     private function isValidPgRegex($str)
     {
         $err = '';
         $this->last_sug = '';
         $point = "dcp:isValidPgRegex";
-        $this->savePoint($point);
+        DbManager::savePoint($point);
         $q = sprintf("SELECT regexp_matches('', E'%s')", pg_escape_string($str));
         try {
-            simpleQuery($this->dbaccess, $q, $res);
+            DbManager::query( $q, $res);
         }
         catch(\Exception $e) {
             $err = $e->getMessage();
         }
-        $this->rollbackPoint($point);
+        DbManager::rollbackPoint($point);
         if ($err != '') {
             $err = _("invalid regular expression");
             $this->last_sug = preg_quote($str, '');
         }
         return $err;
     }
+
     /**
      * Check validity of a condition tuple (attr, op, value)
      *
-     * @param string $attr The attribute for the condition
-     * @param string $op The operator for the condition
+     * @param string $attr  The attribute for the condition
+     * @param string $op    The operator for the condition
      * @param string $value The value for the condition
-     * @return string empty string if valid or error message
+     *
+     * @return array|string empty string if valid or error message
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
      */
     public function isValidCondition($attr, $op, $value)
     {
@@ -379,19 +401,26 @@ class DetailSearch extends \Dcp\Family\Search
             'sug' => ''
         );
     }
+
     /**
      * return sql part from operator
-     * @param string $col a column : property or attribute name
-     * @param string $op one of this ::top keys : =, !=, >, ....
-     * @param string $val value use for test
+     *
+     * @param string $col  a column : property or attribute name
+     * @param string $op   one of this ::top keys : =, !=, >, ....
+     * @param string $val  value use for test
      * @param string $val2 second value use for test with >< operator
+     * @param string $err
+     * @param bool   $validateCond
+     *
      * @return string the sql query part
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
      */
     function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
     {
         
         if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
-            $this->searchfam = \new_Doc($this->dbaccess, $this->getRawValue("se_famid"));
+            $this->searchfam = DocManager::getFamily( $this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -404,7 +433,10 @@ class DetailSearch extends \Dcp\Family\Search
             $col = "state";
         }
         $atype = '';
-        $oa = $this->searchfam->getAttribute($col);
+        $oa=null;
+        if ($this->searchfam) {
+            $oa = $this->searchfam->getAttribute($col);
+        }
         /**
          * @var \NormalAttribute $oa
          */
@@ -428,7 +460,7 @@ class DetailSearch extends \Dcp\Family\Search
                     }
                 }
                 
-                $cfgdate = getLocaleConfig();
+                $cfgdate = ContextManager::getLocaleConfig();
                 if ($val) {
                     $val = stringDateToIso($val, $cfgdate['dateFormat']);
                 }
@@ -549,8 +581,8 @@ class DetailSearch extends \Dcp\Family\Search
                                 return '';
                             }
                         }
-                        $err = simpleQuery(getDbAccessCore() , sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val) , pg_escape_string($val)) , $ids, true);
-                        if ($err == "") {
+                        DbManager::query(sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val) , pg_escape_string($val)) , $ids, true);
+
                             if (count($ids) == 0) {
                                 $cond = "false";
                             } elseif (count($ids) == 1) {
@@ -558,7 +590,7 @@ class DetailSearch extends \Dcp\Family\Search
                             } else {
                                 $cond = " " . $col . " in (" . implode(',', $ids) . ") ";
                             }
-                        }
+
                         break;
 
                     case "account":
@@ -579,10 +611,10 @@ class DetailSearch extends \Dcp\Family\Search
                                     $err = sprintf(_("no compatible type with operator %s") , $op);
                                 } else {
                                     if (!is_numeric($fid)) {
-                                        $fid = \Dcp\Core\DocManager::getFamilyIdFromName($fid);
+                                        $fid = DocManager::getFamilyIdFromName($fid);
                                     }
-                                    $err = simpleQuery($this->dbaccess, sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)) , $ids, true);
-                                    if ($err == "") {
+                                    DbManager::query( sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)) , $ids, true);
+
                                         if (count($ids) == 0) {
                                             $cond = "false";
                                         } elseif (count($ids) == 1) {
@@ -590,7 +622,7 @@ class DetailSearch extends \Dcp\Family\Search
                                         } else {
                                             $cond = " " . $col . " in ('" . implode("','", $ids) . "') ";
                                         }
-                                    }
+
                                 }
                             } else {
                                 if ($otitle == "auto") {
@@ -604,8 +636,8 @@ class DetailSearch extends \Dcp\Family\Search
                                 }
                             }
                         } elseif ($col == "fromid") {
-                            $err = simpleQuery($this->dbaccess, sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)) , $ids, true);
-                            if ($err == "") {
+                             DbManager::query(sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)) , $ids, true);
+
                                 if (count($ids) == 0) {
                                     $cond = "false";
                                 } elseif (count($ids) == 1) {
@@ -613,7 +645,7 @@ class DetailSearch extends \Dcp\Family\Search
                                 } else {
                                     $cond = " " . $col . " in (" . implode(",", $ids) . ") ";
                                 }
-                            }
+
                         }
                         break;
 
@@ -695,7 +727,7 @@ class DetailSearch extends \Dcp\Family\Search
 
                     default:
                         if ($atype == "docid") {
-                            if (!is_numeric($val)) $val = \Dcp\Core\DocManager::getIdFromName($val);
+                            if (!is_numeric($val)) $val = DocManager::getIdFromName($val);
                         }
                         $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {
@@ -726,8 +758,16 @@ class DetailSearch extends \Dcp\Family\Search
             return " " . trim(strtok(substr($s, 2) , " \t")) . " ";
         } else return " '" . pg_escape_string(trim($s)) . "' ";
     }
+
     /**
      * return array of sql filter needed to search wanted document
+     *
+     * @param bool $validateCond
+     *
+     * @return string
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     * @throws \Exception
      */
     function getSqlDetailFilter($validateCond = false)
     {
@@ -751,7 +791,7 @@ class DetailSearch extends \Dcp\Family\Search
         if ($ol == "") $ol = "and";
         $cond = "";
         if (!$this->searchfam) {
-            $this->searchfam = \new_Doc($this->dbaccess, $this->getRawValue("se_famid"));
+            $this->searchfam = DocManager::getFamily( $this->getRawValue("se_famid"));
         }
         if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
             // special loop for revdate
@@ -846,8 +886,13 @@ class DetailSearch extends \Dcp\Family\Search
         }
         return false;
     }
+
     /**
      * Add parameters
+     *
+     * @param $l
+     *
+     * @return string
      */
     function urlWhatEncodeSpec($l)
     {
@@ -902,11 +947,15 @@ class DetailSearch extends \Dcp\Family\Search
         }
         return $this->getRawValue("ba_title") . $l;
     }
+
     /**
      * @templateController default detailed search view
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
+     *
+     * @throws Exception
      */
     function viewdsearch($target = "_self", $ulink = true, $abstract = false)
     {
@@ -923,14 +972,14 @@ class DetailSearch extends \Dcp\Family\Search
         $se_rightp = $this->getMultipleRawValues(\Dcp\AttributeIdentifiers\Dsearch::se_rightp);
         if ((count($taid) > 1) || (!empty($taid[0]))) {
             
-            $fdoc = \new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+            $fdoc = DocManager::getFamily( $this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
             $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
             $zpi["fixstate"] = new \BasicAttribute("fixstate", $this->fromid, _("state"));
             $zpi["activity"] = new \BasicAttribute("activity", $this->fromid, _("activity"));
             $zpi["title"] = new \BasicAttribute("title", $this->fromid, _("doctitle"));
             $zpi["revdate"] = new \BasicAttribute("revdate", $this->fromid, _("revdate"));
-            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
+            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate") );
             $zpi["revision"] = new \BasicAttribute("cdate", $this->fromid, _("revision"));
             $zpi["owner"] = new \BasicAttribute("owner", $this->fromid, _("owner"));
             $zpi["locked"] = new \BasicAttribute("owner", $this->fromid, _("locked"));
@@ -1001,14 +1050,19 @@ class DetailSearch extends \Dcp\Family\Search
     private function getSearchFamilyDocument()
     {
         static $fam = null;
-        if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+        if (!$fam) $fam = DocManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
         return $fam;
     }
+
     /**
+     * @deprecated Legacy mode
      * @templateController
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
+     *
+     * @throws Exception
      */
     function paramdsearch($target = "_self", $ulink = true, $abstract = false)
     {
@@ -1023,14 +1077,14 @@ class DetailSearch extends \Dcp\Family\Search
         $zpi = $toperator = array();
         if ((count($taid) > 1) || ($taid[0] != "")) {
             
-            $fdoc = \new_Doc($this->dbaccess, $this->getRawValue("SE_FAMID", 1));
+            $fdoc = DocManager::getDocument($this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
             $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
             $zpi["fixstate"] = new \BasicAttribute("state", $this->fromid, _("fixstate"));
             $zpi["activity"] = new \BasicAttribute("state", $this->fromid, _("activity"));
             $zpi["title"] = new \BasicAttribute("title", $this->fromid, _("doctitle"));
             $zpi["revdate"] = new \BasicAttribute("revdate", $this->fromid, _("revdate"));
-            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate") , 'W', '', '', 'date');
+            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate"));
             $zpi["revision"] = new \BasicAttribute("cdate", $this->fromid, _("revision"));
             $zpi["owner"] = new \BasicAttribute("owner", $this->fromid, _("owner"));
             $zpi["locked"] = new \BasicAttribute("owner", $this->fromid, _("locked"));
@@ -1050,6 +1104,7 @@ class DetailSearch extends \Dcp\Family\Search
         if (count($tparm) > 0) {
             include_once ("FDL/editutil.php");
             global $action;
+            /** @noinspection PhpUndefinedFunctionInspection */
             editmode($action);
             
             $doc = $this->getSearchFamilyDocument();
@@ -1124,6 +1179,7 @@ class DetailSearch extends \Dcp\Family\Search
         $alsosub = getHttpVars("alsosub") == "Y";
         $this->lay->set("ACTION", urlencode($action->name));
         $tclassdoc = array();
+        $fdoc=null;
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
         
@@ -1131,7 +1187,7 @@ class DetailSearch extends \Dcp\Family\Search
             /**
              * @var \Dir $dir
              */
-            $dir = \new_Doc($this->dbaccess, $dirid);
+            $dir = DocManager::getDocument($dirid);
             if (method_exists($dir, "isAuthorized")) {
                 if ($dir->isAuthorized($classid)) {
                     // verify if classid is possible
@@ -1159,8 +1215,8 @@ class DetailSearch extends \Dcp\Family\Search
             }
         } else {
             if ($onlysubfam) {
-                if (!is_numeric($onlysubfam)) $onlysubfam = \Dcp\Core\DocManager::getFamilyIdFromName($onlysubfam);
-                $cdoc = \new_Doc($this->dbaccess, $onlysubfam);
+                if (!is_numeric($onlysubfam)) $onlysubfam = DocManager::getFamilyIdFromName($onlysubfam);
+                $cdoc = DocManager::getFamily($onlysubfam);
                 $tsub = $cdoc->GetChildFam($cdoc->id, false);
                 $tclassdoc[$classid] = array(
                     "id" => $cdoc->id,
@@ -1171,8 +1227,8 @@ class DetailSearch extends \Dcp\Family\Search
                     $tclassdoc = array_merge($tclassdoc, $tsub);
                 }
                 if (!$this->id) $this->setValue("se_famonly", $alsosub ? "no" : "yes");
-                $first = current($tclassdoc);
-                if ($classid == "") $classid = $first["id"];
+
+
             } else {
                 $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
                 $tclassdoc[] = array(
@@ -1269,39 +1325,43 @@ class DetailSearch extends \Dcp\Family\Search
                 "attrname" => $v
             );
         }
-        
-        $fdoc = \new_Doc($this->dbaccess, abs($famid));
-        $tmpDoc = \createTmpDoc($this->dbaccess, abs($famid));
-        $zpi = $fdoc->GetNormalAttributes();
-        
-        foreach ($zpi as $k => $v) {
-            if ($v->type == "array" || $v->type == "password") {
-                continue;
+
+        if ($famid) {
+            $fdoc = DocManager::getFamily( abs($famid));
+            $tmpDoc = DocManager::createTemporaryDocument( abs($famid));
+            $zpi = $fdoc->GetNormalAttributes();
+
+            foreach ($zpi as $k => $v) {
+                if ($v->type == "array" || $v->type == "password") {
+                    continue;
+                }
+                $opt_searchcriteria = $v->getOption("searchcriteria", "");
+                if ($opt_searchcriteria == "hidden" || $opt_searchcriteria == "restricted") {
+                    continue;
+                }
+
+                $type = $v->type;
+                if ($v->getOption("doctitle") && $v->isMultiple()) {
+                    $type = "docidtitle[]";
+                }
+                $tset = $this->editGetSetAttribute($v->fieldSet);
+                if (count($tset) > 0) {
+                    $tattr = array_merge($tattr, array_reverse($tset));
+                }
+
+                $tattr[$v->id] = array(
+                    "attrid" => $v->id,
+                    "ismultiple" => ($v->isMultiple()) ? 'yes' : 'no',
+                    "attrtype" => $type,
+                    "attrdisabled" => "",
+                    "attrname" => $v->getLabel()
+                );
             }
-            $opt_searchcriteria = $v->getOption("searchcriteria", "");
-            if ($opt_searchcriteria == "hidden" || $opt_searchcriteria == "restricted") {
-                continue;
-            }
-            
-            $type = $v->type;
-            if ($v->getOption("doctitle") && $v->isMultiple()) $type = "docidtitle[]";
-            $tset = $this->editGetSetAttribute($v->fieldSet);
-            if (count($tset) > 0) $tattr = array_merge($tattr, array_reverse($tset));
-            
-            $tattr[$v->id] = array(
-                "attrid" => $v->id,
-                "ismultiple" => ($v->isMultiple()) ? 'yes' : 'no',
-                "attrtype" => $type,
-                "attrdisabled" => "",
-                "attrname" => $v->getLabel()
-            );
+        } else {
+            $tmpDoc=null;
+            $zpi=[];
         }
-        if ($action->getParam("ISIE6")) {
-            // cannot disable select option with IE6
-            foreach ($tattr as $ka => $va) {
-                if (!empty($va["attrdisabled"])) unset($tattr[$ka]);
-            }
-        }
+
         $this->lay->SetBlockData("ATTR", $tattr);
         $tfunc = array();
         foreach ($this->top as $k => $v) {
@@ -1324,7 +1384,7 @@ class DetailSearch extends \Dcp\Family\Search
             if (($v["functype"] != "") && (strpos($v["functype"], "enum") === false)) unset($tfunc[$k]);
         }
         $this->lay->SetBlockData("FUNCSTATE", $tfunc);
-        $this->lay->Set("icon", $fdoc->getIcon());
+        $this->lay->Set("icon", isset($fdoc)?$fdoc->getIcon():$this->getIcon());
         
         if ($this->getRawValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
         else $this->lay->Set("select_all", "");
@@ -1332,8 +1392,8 @@ class DetailSearch extends \Dcp\Family\Search
         //-----------------------------------------------
         // display state
         $wdoc = null;
-        if ($fdoc->wid > 0) {
-            $wdoc = \new_Doc($this->dbaccess, $fdoc->wid);
+        if ($fdoc && $fdoc->wid > 0) {
+            $wdoc = DocManager::getDocument( $fdoc->wid);
             /**
              * @var \Wdoc $wdoc
              */
@@ -1368,7 +1428,7 @@ class DetailSearch extends \Dcp\Family\Search
         $tlp = $this->getMultipleRawValues("SE_LEFTP");
         $trp = $this->getMultipleRawValues("SE_RIGHTP");
         
-        $cond = "";
+
         $tcond = array();
         if ((count($taid) > 1) || ($taid && $taid[0] != "")) {
             foreach ($taid as $k => $keyId) {
@@ -1539,12 +1599,14 @@ class DetailSearch extends \Dcp\Family\Search
                             // Recompose full attr spec: <attrType>("<format>")
                             $attrType = sprintf('%s("%s")', $attrType, $oa->format);
                         }
-                        $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
-                        
-                        foreach ($methods as $method) {
-                            if ($method['method'] == $v) {
-                                $isSearchMethod = true;
-                                break;
+                        if ($tmpDoc) {
+                            $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
+
+                            foreach ($methods as $method) {
+                                if ($method['method'] == $v) {
+                                    $isSearchMethod = true;
+                                    break;
+                                }
                             }
                         }
                     }

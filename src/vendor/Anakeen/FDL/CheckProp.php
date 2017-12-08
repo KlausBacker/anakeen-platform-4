@@ -104,7 +104,7 @@ class CheckProp extends CheckData
      * Helper method to get the class name for a given parameter's name
      * @static
      * @param null $key
-     * @return array
+     * @return string|array
      */
     public static function getParameterClassMap($key = null) {
         if ($key === null) {

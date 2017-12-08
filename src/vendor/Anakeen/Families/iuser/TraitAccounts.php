@@ -1,35 +1,26 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
 /**
  * Intranet User & Group  manipulation
- *
- * @author Anakeen
- * @version $Id: Method.DocIntranet.php,v 1.23 2008/04/15 07:11:04 eric Exp $
- * @package FDL
- * @subpackage USERCARD
+ * Trait TAccountFamily
+ * @package Anakeen\Family\Iuser
+ * @mixin \Doc
  */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _IGROUPUSER extends Doc
+namespace Dcp\Core;
+trait TAccount
 {
-    /*
-     * @end-method-ignore
-    */
     /**
-     * @var Account
+     * @var \Account
      */
     public $wuser;
+
     /**
      * verify if the login syntax is correct and if the login not already exist
+     *
      * @param string $login login to test
+     *
      * @return array 2 items $err & $sug for view result of the constraint
+     * @throws \Dcp\Db\Exception
      */
     function ConstraintLogin($login)
     {
@@ -51,10 +42,14 @@ class _IGROUPUSER extends Doc
             "sug" => $sug
         );
     }
+
     /**
      * verify if the login not already exist
+     *
      * @param string $login login to test
+     *
      * @return array 2 items $err & $sug for view result of the constraint
+     * @throws \Dcp\Db\Exception
      */
     function ExistsLogin($login, $unused = 0)
     {
@@ -62,7 +57,7 @@ class _IGROUPUSER extends Doc
         
         $id = $this->getRawValue("US_WHATID");
         
-        $q = new QueryDb("", "Account");
+        $q = new \QueryDb("", "Account");
         $q->AddQuery(sprintf("login='%s'", pg_escape_string(mb_strtolower($login))));
         if ($id) $q->AddQuery(sprintf("id != %d", $id));
         $q->Query(0, 0, "TABLE");
@@ -113,7 +108,7 @@ class _IGROUPUSER extends Doc
         $sysIds = array();
         if (count($accountIds) > 0) {
             $sql = sprintf("select id from users where fid in (%s)", implode(',', $accountIds));
-            simpleQuery($this->dbaccess, $sql, $sysIds, true, false);
+            DbManager::query( $sql, $sysIds, true, false);
             $sysIds = array_unique($sysIds);
         }
         return $sysIds;
@@ -148,13 +143,13 @@ class _IGROUPUSER extends Doc
         }
         
         $tgroup = array();
-        
+
         $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
         
-        $q2 = new queryDb("", "Account");
+        $q2 = new \QueryDb("", "Account");
         $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser and users.accounttype='G'");
         
-        $q2 = new queryDb("", "Account");
+        $q2 = new \QueryDb("", "Account");
         $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where accounttype='G' and id not in (select iduser from groups, users u where groups.idgroup = u.id and u.accounttype='G')");
         
         if ($groups) {
@@ -186,7 +181,7 @@ class _IGROUPUSER extends Doc
                 $tgroup[$k]["SUBUL"] = $cgroup;
                 $fid = $v["fid"];
                 if ($fid) {
-                    $tdoc = getTDoc($this->dbaccess, $fid);
+                    $tdoc = DocManager::getRawDocument($fid);
                     $icon = $this->getIcon($tdoc["icon"], 14);
                     $tgroup[$k]["icon"] = $icon;
                 } else {
@@ -223,7 +218,7 @@ class _IGROUPUSER extends Doc
                 $tlay[$k]["SUBUL"] = $this->_getChildsGroup($v["id"], $groups);
                 $fid = $v["fid"];
                 if ($fid) {
-                    $tdoc = getTDoc($this->dbaccess, $fid);
+                    $tdoc = DocManager::getRawDocument($fid);
                     $icon = $this->getIcon($tdoc["icon"]);
                     $tlay[$k]["icon"] = $icon;
                 } else {
@@ -234,7 +229,7 @@ class _IGROUPUSER extends Doc
         
         if (count($tlay) == 0) return "";
         global $action;
-        $lay = new Layout("USERCARD/Layout/ligroup.xml", $action);
+        $lay = new \Layout("USERCARD/Layout/ligroup.xml", $action);
         uasort($tlay, array(
             get_class($this) ,
             "_cmpgroup"
@@ -251,8 +246,8 @@ class _IGROUPUSER extends Doc
     }
     /**
      * affect new groups to the user
-     * @global gidnew  string Http var : egual Y to say effectif change (to not suppress group if gid not set)
-     * @global gid string Http var : array of new groups id
+     * @global $gidnew  string Http var : egual Y to say effectif change (to not suppress group if gid not set)
+     * @global $gid string Http var : array of new groups id
      */
     function setGroups()
     {
@@ -275,7 +270,7 @@ class _IGROUPUSER extends Doc
                 $gdel = array_diff($rgid, $gids);
                 $gadd = array_diff($gids, $rgid);
                 // add group
-                $g = new Group("", $gAccount->id);
+                $g = new \Group("", $gAccount->id);
                 foreach ($gadd as $gid) {
                     $g->iduser = $gAccount->id;
                     $g->idgroup = $gid;
@@ -306,18 +301,25 @@ class _IGROUPUSER extends Doc
         //  refreshGroups($tgid,true);
         return $err;
     }
+
     /**
      * return document objet from what id (user or group)
+     *
      * @param int $wid what identifier
-     * @return \Dcp\Family\Iuser|\Dcp\Family\IGROUP the object document (false if not found)
+     *
+     * @return \Dcp\Family\Iuser|\Dcp\Family\IGROUP|false the object document (false if not found)
+     * @throws Exception
      */
     function getDocUser($wid)
     {
-        $u = new Account("", $wid);
+        $u = new \Account("", $wid);
         if ($u->isAffected()) {
             if ($u->fid > 0) {
-                $du = new_Doc($this->dbaccess, $u->fid);
-                if ($du->isAlive()) return $du;
+                $du = DocManager::getDocument($u->fid);
+                /**
+                 * @var \Dcp\Family\Iuser|\Dcp\Family\IGROUP $du
+                 */
+                if ($du && $du->isAlive()) return $du;
             }
         }
         return false;
@@ -325,7 +327,7 @@ class _IGROUPUSER extends Doc
     /**
      * return system account object conform to whatid
      * @param bool $nocache set to true if need to reload user object from database
-     * @return Account return false if not found
+     * @return \Account|false return false if not found
      */
     function getAccount($nocache = false)
     {
@@ -342,7 +344,7 @@ class _IGROUPUSER extends Doc
         if (!isset($this->wuser)) {
             $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
-                $this->wuser = new Account("", $wid);
+                $this->wuser = new \Account("", $wid);
             }
         }
         if (!isset($this->wuser)) return false;
@@ -351,7 +353,7 @@ class _IGROUPUSER extends Doc
     /**
      * return what user object conform to whatid
      * @deprecated use getAccount instead
-     * @return Account return false if not found
+     * @return \Account return false if not found
      */
     function getWuser($nocache = false)
     {
@@ -366,12 +368,5 @@ class _IGROUPUSER extends Doc
             $this->wuser=null;
         }
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
+
 }
-/*
- * @end-method-ignore
-*/
-?>

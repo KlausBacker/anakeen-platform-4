@@ -9,15 +9,15 @@
  */
 namespace Dcp\Core;
 use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
+
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
 /**
  * Class UserAccount
- * @method \Account getAccount($a=false)
- * @method array getSystemIds($a)
- * @method string setGroups
  */
 class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
 {
-    
+    use TAccount;
     public $wuser;
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
@@ -71,32 +71,38 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     {
         return _("user cannot be revived");
     }
+
     /**
      * get all direct group document identificators of the isuser
+     *
      * @return array of group document id, the index of array is the system identifier
+     * @throws \Dcp\Db\Exception
      */
     public function getUserGroups()
     {
-        $err = simpleQuery($this->dbaccess, sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")) , $groupIds, false, false);
-        if (!$err) {
+         DbManager::query( sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")) , $groupIds, false, false);
+
             $gids = array();
             foreach ($groupIds as $gid) {
                 $gids[$gid["id"]] = $gid["fid"];
             }
             return $gids;
-        }
-        return null;
+
     }
+
     /**
      * return all direct group and parent group document identificators of $gid
+     *
      * @param string $gid systeme identifier group or users
+     *
      * @return array
+     * @throws \Dcp\Db\Exception
      */
     protected function getAscendantGroup($gid)
     {
         $groupIds = array();
         if ($gid > 0) {
-            simpleQuery($this->dbaccess, sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $gid) , $groupIds, false, false);
+            DbManager::query( sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $gid) , $groupIds, false, false);
             $gids = array(); // current level
             $pgids = array(); // fathers
             foreach ($groupIds as $gid) {
@@ -110,9 +116,12 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         }
         return $groupIds;
     }
+
     /**
      * get all direct group and parent group document identificators of the isuser
+     *
      * @return int[] of group document id the index of array is the system identifier
+     * @throws \Dcp\Db\Exception
      */
     public function getAllUserGroups()
     {
@@ -128,8 +137,8 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             /**
              * @var \Dcp\Family\Igroup $gdoc
              */
-            $gdoc = new_Doc($this->dbaccess, $gid);
-            if ($gdoc->isAlive()) {
+            $gdoc = DocManager::getDocument($gid);
+            if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
         }
@@ -218,8 +227,8 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             /**
              * @var \Dcp\Family\Igroup $grp
              */
-            $grp = new_doc($this->dbaccess, $grpid);
-            if ($grp->isAlive()) {
+            $grp = DocManager::getDocument( $grpid);
+            if ($grp && $grp->isAlive()) {
                 $err = $grp->insertDocument($this->initid);
             }
         }
@@ -412,7 +421,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             $rid = $role["id"];
             $tgroup = array();
             foreach ($allGroup as $aGroup) {
-                simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
+                DbManager::query( sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
                 if ($gr) {
                     $tgroup[] = $aGroup["fid"];
                 }
@@ -483,11 +492,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     }
     public function testForcePassword($pwd)
     {
-        $minLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINLENGTH"));
-        $minDigitLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINDIGITLENGTH"));
-        $minUpperLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
-        $minLowerLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
-        $minSymbolLength = intval(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_PWDMINSYMBOLLENGTH"));
+        $minLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINLENGTH"));
+        $minDigitLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINDIGITLENGTH"));
+        $minUpperLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
+        $minLowerLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
+        $minSymbolLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINSYMBOLLENGTH"));
         
         if (preg_match('/[\p{C}]/u', $pwd)) {
             return _("Control characters are not allowed");
@@ -570,11 +579,16 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             "sug" => $sug
         );
     }
+
     /**
      * @templateController
+     *
      * @param string $target
-     * @param bool $ulink
+     * @param bool   $ulink
      * @param string $abstract
+     *
+     * @throws Exception
+     * @throws \Exception
      */
     function editlikeperson($target = "finfo", $ulink = true, $abstract = "Y")
     {

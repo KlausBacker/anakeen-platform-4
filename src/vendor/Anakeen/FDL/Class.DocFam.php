@@ -12,6 +12,9 @@
  */
 /**
  */
+
+use \Dcp\Core\DbManager;
+use \Dcp\Core\DocManager;
 /**
  * @class DocFam
  * @method  createProfileAttribute
@@ -199,17 +202,22 @@ create unique index idx_idfam on docfam(id);";
         }
         return $err;
     }
+
     /**
      * @templateController default values controller
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
+     *
+     * @throws \Dcp\Core\Exception
+     * @throws \Dcp\Db\Exception
      */
     function viewDefaultValues(
     /* @noinspection PhpUnusedParameterInspection */
     $target = "_self", $ulink = true, $abstract = false)
     {
-        $d = createDoc($this->dbaccess, $this->id, false, true, false);
+        $d= DocManager::createDocument( $this->id, false);
         $defValues = $this->getDefValues();
         $ownDefValues = $this->explodeX($this->defval);
         $ownParValues = $this->explodeX($this->param);
@@ -281,11 +289,16 @@ create unique index idx_idfam on docfam(id);";
         $this->lay->Set("NOPAR", count($tDefPar) == 0);
         $this->lay->Set("canEdit", $this->canEdit() == "");
     }
+
     /**
      * @templateController special default view for families
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
+     *
+     * @throws \Dcp\Core\Exception
+     * @throws \Dcp\Db\Exception
      */
     function viewfamcard(
     /* @noinspection PhpUnusedParameterInspection */
@@ -296,7 +309,7 @@ create unique index idx_idfam on docfam(id);";
         /** @var Action $action */
         global $action;
         //Checking if document has acls
-        simpleQuery($this->dbaccess, "SELECT count(*) FROM docperm WHERE docid=" . $this->id, $nb_acl, true, true);
+        DbManager::query("SELECT count(*) FROM docperm WHERE docid=" . $this->id, $nb_acl, true, true);
         $this->lay->set("hasAcl", ($nb_acl != "0"));
         
         $this->lay->set("modifyacl", ($this->control("modifyacl") == ""));
@@ -308,7 +321,7 @@ create unique index idx_idfam on docfam(id);";
             switch ($v) {
                 case 'cprofid':
                     if ($this->$v > 0) {
-                        $tdoc = new_Doc($this->dbaccess, $this->$v);
+                        $tdoc = DocManager::getDocument($this->$v);
                         
                         $this->lay->set("cmodifyacl", ($tdoc->control("modifyacl") == ""));
                         
@@ -323,7 +336,7 @@ create unique index idx_idfam on docfam(id);";
 
                 case 'cfldid':
                     if ($this->$v > 0) {
-                        $tdoc = new_Doc($this->dbaccess, $this->$v);
+                        $tdoc = DocManager::getDocument($this->$v);
                         $this->lay->set("cfldtitle", $tdoc->title);
                         $this->lay->set("cflddisplay", "");
                     } else {
@@ -333,7 +346,7 @@ create unique index idx_idfam on docfam(id);";
 
                 case 'dfldid':
                     if ($this->$v > 0) {
-                        $tdoc = new_Doc($this->dbaccess, $this->$v);
+                        $tdoc = DocManager::getDocument($this->$v);
                         $this->lay->set("dfldtitle", $tdoc->title);
                         $this->lay->set("dflddisplay", "");
                     } else {
@@ -346,7 +359,7 @@ create unique index idx_idfam on docfam(id);";
                         /**
                          * @var WDoc $tdoc
                          */
-                        $tdoc = new_Doc($this->dbaccess, $this->$v);
+                        $tdoc = DocManager::getDocument($this->$v);
                         $this->lay->set("wtitle", $tdoc->title);
                         $this->lay->set("wdisplay", true);
                         $this->lay->set("wactif", ($tdoc->profid > 0));
@@ -359,7 +372,7 @@ create unique index idx_idfam on docfam(id);";
                         foreach ($states as $st) {
                             $pid = $tdoc->getStateProfil($st);
                             if ($pid) {
-                                $pdoc = new_doc($this->dbaccess, $pid);
+                                $pdoc = DocManager::getDocument($pid);
                                 $tstates[$pid]["smodifyacl"] = ($pdoc->control("modifyacl") == "");
                                 $tstates[$pid]["sactif"] = $pdoc->profid;
                                 $tstates[$pid]["pstateid"] = $pid;
@@ -385,7 +398,7 @@ create unique index idx_idfam on docfam(id);";
 
                 case 'ccvid':
                     if ($this->$v > 0) {
-                        $tdoc = new_Doc($this->dbaccess, $this->$v);
+                        $tdoc = DocManager::getDocument($this->$v);
                         $this->lay->set("cvtitle", $tdoc->title);
                         $this->lay->set("cvdisplay", "");
                     } else {
@@ -409,27 +422,33 @@ create unique index idx_idfam on docfam(id);";
         }
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     /**
      * return family parameter
      *
      * @deprecated use {@link Doc::getParameterRawValue} instead
-     * @see Doc::getParameterRawValue
+     * @see        Doc::getParameterRawValue
+     *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     *
      * @return string parameter value
+     * @throws \Dcp\Db\Exception
      */
     final public function getParamValue($idp, $def = "")
     {
         deprecatedFunction();
         return $this->getParameterRawValue($idp, $def);
     }
+
     /**
      * return family parameter
      *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     *
      * @return string parameter value
+     * @throws \Dcp\Db\Exception
      */
     final public function getParameterRawValue($idp, $def = "")
     {
@@ -444,22 +463,28 @@ create unique index idx_idfam on docfam(id);";
         }
         return $pValue;
     }
+
     /**
      * use in Doc::getParameterFamilyValue
+     *
      * @param string $idp
      * @param string $def
+     *
      * @see Doc::getParameterFamilyValue_
      * @return bool|string
+     * @throws \Dcp\Db\Exception
      */
     protected function getParameterFamilyRawValue($idp, $def)
     {
         
         return $this->getParameterRawValue($idp, $def);
     }
+
     /**
      * return all family parameter - seach in parents if parameter value is null
      *
      * @return array string parameter value
+     * @throws \Dcp\Db\Exception
      */
     function getParams()
     {
@@ -473,14 +498,18 @@ create unique index idx_idfam on docfam(id);";
     {
         return $this->explodeX($this->param);
     }
+
     /**
      * return the value of an list parameter document
      *
      * the parameter must be in an array or of a type '*list' like enumlist or textlist
+     *
      * @param string $idAttr identifier of list parameter
-     * @param string $def default value returned if parameter not found or if is empty
-     * @param int $index rank in case of multiple value
-     * @return array the list of parameter values
+     * @param string $def    default value returned if parameter not found or if is empty
+     * @param int    $index  rank in case of multiple value
+     *
+     * @return array|string the list of parameter values
+     * @throws \Dcp\Db\Exception
      */
     public function getParamTValue($idAttr, $def = "", $index = - 1)
     {
@@ -530,7 +559,7 @@ create unique index idx_idfam on docfam(id);";
     
     private function convertDateToiso(BasicAttribute $oa, &$val)
     {
-        $localeconfig = getLocaleConfig();
+        $localeconfig = \Dcp\Core\ContextManager::getLocaleConfig();
         if ($localeconfig !== false) {
             if ($oa->type == "date" || $oa->type == "timestamp") {
                 if ($oa->type == "date") {
@@ -613,13 +642,15 @@ create unique index idx_idfam on docfam(id);";
         return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ DEFAULT VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     /**
      * return family default value
      *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     *
      * @return string default value
+     * @throws \Dcp\Db\Exception
      */
     public function getDefValue($idp, $def = "")
     {
@@ -627,11 +658,13 @@ create unique index idx_idfam on docfam(id);";
         
         return $x;
     }
+
     /**
      * return all family default values
      * search in parents families if value is null
      *
      * @return array string default value
+     * @throws \Dcp\Db\Exception
      */
     public function getDefValues()
     {
@@ -672,14 +705,16 @@ create unique index idx_idfam on docfam(id);";
         return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     /**
      * return family default value
      *
-     * @param string $X column name
+     * @param string $X   column name
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     *
      * @return string default value
+     * @throws \Dcp\Db\Exception
      */
     function getXValue($X, $idp, $def = "")
     {
@@ -709,11 +744,14 @@ create unique index idx_idfam on docfam(id);";
         }
         return $txval;
     }
+
     /**
      * return all family default values
      *
      * @param string $X column name
+     *
      * @return array string default value
+     * @throws \Dcp\Db\Exception
      */
     function getXValues($X)
     {
@@ -727,7 +765,7 @@ create unique index idx_idfam on docfam(id);";
         $inhIds = array();
         if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
             $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
-            simpleQuery($this->dbaccess, $sql, $rx, false, false);
+            DbManager::query($sql, $rx, false, false);
             foreach ($rx as $r) {
                 $XS[$r["id"]] = $r[$X];
             }
@@ -801,9 +839,9 @@ create unique index idx_idfam on docfam(id);";
         }
         
         $point = uniqid(__METHOD__);
-        if (($err = $this->savePoint($point)) !== '') {
-            return $err;
-        }
+        DbManager::savePoint($point);
+
+
         $dvi = new DocVaultIndex($this->dbaccess);
         $dvi->DeleteDoc($this->id);
         
@@ -814,9 +852,8 @@ create unique index idx_idfam on docfam(id);";
             $dvi->vaultid = $vid;
             $dvi->Add();
         }
-        if (($err = $this->commitPoint($point)) !== '') {
-            return $err;
-        }
+        DbManager::commitPoint($point);
+
         return '';
     }
     
@@ -924,9 +961,6 @@ create unique index idx_idfam on docfam(id);";
                 $tax[] = array(
                     "tax" => $v->getXmlSchema($la)
                 );
-            } else {
-                // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
-                
             }
         };
         
@@ -982,10 +1016,10 @@ create unique index idx_idfam on docfam(id);";
         }
         
         $class = CheckProp::getParameterClassMap($pName);
+        /**
+         * @var string $pValue
+         */
         $pValue = $confStore->get($class, $propName, $pName);
-        if ($pValue === false) {
-            return false;
-        }
         
         return $pValue;
     }

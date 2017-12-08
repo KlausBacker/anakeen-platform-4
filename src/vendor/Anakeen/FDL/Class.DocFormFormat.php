@@ -1331,8 +1331,8 @@ class DocFormFormat
                 $lay->setBlockData("TATTR", $talabel);
                 $lay->setBlockData("IATTR", $tilabel);
                 $lay->set("attrid", $attrid);
-                $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($attrid) : false);
-                $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
+                $lay->set("ehelp", ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($attrid) : false);
+                $lay->set("ehelpid", ($help && $help->isAlive()) ? $help->id : false);
                 if (($oattr->getOption("vlabel") == "") || ($oattr->getOption("vlabel") == "up")) $lay->set("caption", $oattr->getLabel());
                 else $lay->set("caption", "");
                 $lay->set("footspan", count($ta) * 2);

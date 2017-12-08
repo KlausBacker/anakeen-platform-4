@@ -15,7 +15,7 @@
 include_once ("FDL/Class.Doc.php");
 /**
  * Document Class
- *
+ * @deprecated
  */
 class Fdl_Document
 {

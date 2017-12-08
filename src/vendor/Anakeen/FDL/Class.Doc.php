@@ -646,7 +646,7 @@ class Doc extends DocCtrl
     public $acls = array();
     /**
      * document layout
-     * @var Layout|OooLayout
+     * @var \Layout|\OooLayout
      */
     public $lay = null;
     /**
@@ -6089,11 +6089,11 @@ create unique index i_docir on doc(initid, revision);";
                             // special link
                             switch ($link[$i]) {
                                 case "B": // baseurl
-                                    $urllink.= $action->GetParam("CORE_BASEURL");
+                                    $urllink.= $action->GetParam("CORE_BASEURL","?");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink.= $action->GetParam("CORE_STANDURL");
+                                    $urllink.= $action->GetParam("CORE_STANDURL","?");
                                     break;
 
                                 case "U": // extern url

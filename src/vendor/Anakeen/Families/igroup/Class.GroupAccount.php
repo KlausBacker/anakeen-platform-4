@@ -9,15 +9,16 @@
 namespace Dcp\Core;
 
 use Dcp\AttributeIdentifiers\Igroup as MyAttributes;
+
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
 /**
  * Class GroupAccount
  *
- * @method \Account getAccount($a=false)
- * @method array getSystemIds($a)
- * @method string setGroups
  */
 class GroupAccount extends \Dcp\Family\Group
 {
+    use TAccount;
     public $wuser;
     
     var $cviews = array(
@@ -78,7 +79,7 @@ class GroupAccount extends \Dcp\Family\Group
         $members = $g->getAllMembers();
         $tdn = array();
         foreach ($members as $k => $v) {
-            $du = getTDoc($this->dbaccess, $v["fid"]);
+            $du = DocManager::getRawDocument($v["fid"]);
             $tdnu = explode("\n", $du["ldapdn"]);
             if (count($tdnu) > 0) {
                 $dnu = $tdnu[0];
@@ -125,8 +126,8 @@ class GroupAccount extends \Dcp\Family\Group
             /**
              * @var \Dcp\Family\Igroup $gdoc
              */
-            $gdoc = new_Doc($this->dbaccess, $gid);
-            if ($gdoc->isAlive()) {
+            $gdoc = DocManager::getDocument( $gid);
+            if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
         }
@@ -185,8 +186,8 @@ class GroupAccount extends \Dcp\Family\Group
                 /**
                  * @var \Dir $dfld
                  */
-                $dfld = new_doc($this->dbaccess, $dfldid);
-                if ($dfld->isAlive()) {
+                $dfld = DocManager::getDocument($dfldid);
+                if ($dfld && $dfld->isAlive()) {
                     if (count($tgid) == 0) $dfld->insertDocument($this->initid);
                     else $dfld->removeDocument($this->initid);
                 }
@@ -203,7 +204,7 @@ class GroupAccount extends \Dcp\Family\Group
      * concatenation of each user mail and group member mail
      *
      * @param bool $nomail if true no mail will be computed
-     * @return string error message, if no error empty string
+     * @return void
      */
     public function setGroupMail($nomail = false)
     {
@@ -234,11 +235,15 @@ class GroupAccount extends \Dcp\Family\Group
     {
         return $this->RefreshLdapCard();
     }
+
     /**
      * update groups table in USER database
-     * @param int $docid
+     *
+     * @param int  $docid
      * @param bool $multiple
+     *
      * @return string error message
+     * @throws Exception
      */
     function postInsertDocument($docid, $multiple = false)
     {
@@ -249,29 +254,37 @@ class GroupAccount extends \Dcp\Family\Group
                 /**
                  * @var \Dcp\Family\Iuser $du
                  */
-                $du = new_Doc($this->dbaccess, $docid);
-                $uid = $du->getRawValue("us_whatid");
-                if ($uid > 0) {
-                    $g = new \Group("", $uid);
-                    $g->iduser = $uid;
-                    $g->idgroup = $gid;
-                    $err = $g->Add();
-                    if ($err == "OK") $err = "";
-                    if ($err == "") {
-                        $du->disableEditControl();
-                        $du->RefreshDocUser(); // to refresh group of user attributes
-                        $du->enableEditControl();
-                        $this->RefreshGroup();
+                $du = DocManager::getDocument($docid);
+                if ($du) {
+                    $uid = $du->getRawValue("us_whatid");
+                    if ($uid > 0) {
+                        $g = new \Group("", $uid);
+                        $g->iduser = $uid;
+                        $g->idgroup = $gid;
+                        $err = $g->Add();
+                        if ($err == "OK") {
+                            $err = "";
+                        }
+                        if ($err == "") {
+                            $du->disableEditControl();
+                            $du->RefreshDocUser(); // to refresh group of user attributes
+                            $du->enableEditControl();
+                            $this->RefreshGroup();
+                        }
                     }
                 }
             }
         }
         return $err;
     }
+
     /**
      * update groups table in USER database
+     *
      * @param array $tdocid
+     *
      * @return string error message
+     * @throws Exception
      */
     function postInsertMultipleDocuments($tdocid)
     {
@@ -286,16 +299,18 @@ class GroupAccount extends \Dcp\Family\Group
                 /**
                  * @var \Dcp\Family\Iuser $du
                  */
-                $du = new_Doc($this->dbaccess, $docid);
-                $uid = $du->getRawValue("us_whatid");
-                if ($uid > 0) {
-                    $g->iduser = $uid;
-                    $g->idgroup = $gid;
-                    $err = $g->Add();
-                    if ($err == "") {
-                        $du->disableEditControl();
-                        $du->RefreshDocUser();
-                        $du->enableEditControl();
+                $du = DocManager::getDocument($docid);
+                if ($du) {
+                    $uid = $du->getRawValue("us_whatid");
+                    if ($uid > 0) {
+                        $g->iduser = $uid;
+                        $g->idgroup = $gid;
+                        $err = $g->Add();
+                        if ($err == "") {
+                            $du->disableEditControl();
+                            $du->RefreshDocUser();
+                            $du->enableEditControl();
+                        }
                     }
                 }
             }
@@ -304,11 +319,15 @@ class GroupAccount extends \Dcp\Family\Group
         }
         return $err;
     }
+
     /**
      * update groups table in USER database before suppress
-     * @param int $docid
+     *
+     * @param int  $docid
      * @param bool $multiple
+     *
      * @return string error message
+     * @throws Exception
      */
     function postRemoveDocument($docid, $multiple = false)
     {
@@ -319,7 +338,8 @@ class GroupAccount extends \Dcp\Family\Group
             /**
              * @var \Dcp\Family\Iuser $du
              */
-            $du = new_Doc($this->dbaccess, $docid);
+            $du = DocManager::getDocument($docid);
+            if ($du) {
             $uid = $du->getRawValue("us_whatid");
             if ($uid > 0) {
                 $g = new \Group("", $gid);
@@ -331,6 +351,7 @@ class GroupAccount extends \Dcp\Family\Group
                     $du->enableEditControl();
                     $this->RefreshGroup();
                 }
+            }
             }
         }
         return $err;

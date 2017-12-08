@@ -27,22 +27,40 @@ class RessourcePacker
         print $extraCode . "\n";
         
         foreach ($static_js as $jsfile) {
+            if (!is_file($jsfile)) {
+                $absjsfile=DEFAULT_PUBDIR."/".$jsfile;
+                if (is_file($absjsfile)) {
+                    $jsfile=$absjsfile;
+                }
+            }
             if (is_file($jsfile)) {
                 print sprintf("// --- <static file='%s'> ---\n", $jsfile);
                 print str_replace("include_js(", "//include_js(", file_get_contents($jsfile)) . "\n";
                 print sprintf("// -- </static file='%s'> ---\n", $jsfile);
                 print "\n";
             } else {
-                print ("\nalert(\"$jsfile not found\");\n");
+                print ("\nalert(\"$jsfile not found.\");\n");
             }
         }
         foreach ($dynamic_js as $jsfile) {
+            if (!is_file($jsfile)) {
+                $absjsfile=DEFAULT_PUBDIR."/".$jsfile;
+                if (is_file($absjsfile)) {
+                    $jsfile=$absjsfile;
+                }
+            }
+            if (!is_file($jsfile)) {
+                $absjsfile=DEFAULT_PUBDIR."/Apps/".$jsfile;
+                if (is_file($absjsfile)) {
+                    $jsfile=$absjsfile;
+                }
+            }
             if (is_file($jsfile)) {
                 $action->lay->template.= sprintf("// --- <dynamic file='%s'> ---\n", $jsfile);
                 $action->lay->template.= str_replace("include_js(", "//include_js(", file_get_contents($jsfile)) . "\n";
                 $action->lay->template.= sprintf("// --- </dynamic file='%s'> ---\n", $jsfile);
             } else {
-                $action->lay->template.= ("\nalert(\"$jsfile not found\");\n");
+                $action->lay->template.= ("\nalert(\"$jsfile not found..\");\n");
             }
         }
         
@@ -59,6 +77,9 @@ class RessourcePacker
     static function pack_css(Action & $action, array $static_css = array() , array $dynamic_css = array())
     {
         foreach ($static_css as $cssfile) {
+            if (!is_file($cssfile)) {
+                $cssfile=DEFAULT_PUBDIR."/".$cssfile;
+            }
             if (is_file($cssfile)) {
                 print sprintf("/* <static file='%s'> */\n", $cssfile);
                 print file_get_contents($cssfile) . "\n";
@@ -70,6 +91,9 @@ class RessourcePacker
             }
         }
         foreach ($dynamic_css as $cssfile) {
+            if (!is_file($cssfile)) {
+                $cssfile=DEFAULT_PUBDIR."/".$cssfile;
+            }
             if (is_file($cssfile)) {
                 $action->lay->template.= sprintf("/* <dynamic file='%s'> */\n", $cssfile);
                 $action->lay->template.= file_get_contents($cssfile) . "\n";

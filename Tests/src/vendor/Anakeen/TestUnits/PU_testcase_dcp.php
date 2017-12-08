@@ -119,11 +119,11 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function &getAction()
     {
-        global $action;
+        $action=ContextManager::getCurrentAction();
         if (!$action) {
             self::connectUser();
         }
-        
+        $action=ContextManager::getCurrentAction();
         if (!$action->dbid) {
             if (!$action->dbid) $action->init_dbid();
             if (!$action->dbid) error_log(__METHOD__ . "lost action dbid");
