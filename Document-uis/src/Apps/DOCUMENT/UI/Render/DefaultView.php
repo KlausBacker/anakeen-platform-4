@@ -117,10 +117,7 @@ class DefaultView extends RenderDefault
         if (ContextManager::getCurrentUser()->id === \Account::ADMIN_ID) {
             self::appendSystemMenu($document, $menu);
         }
-        
 
-
-        
         $this->addCvMenu($document, $menu);
         $this->addFamilyMenu($document, $menu);
         $this->addHelpMenu($document, $menu);
@@ -376,12 +373,12 @@ class DefaultView extends RenderDefault
                         if (!$lmenu) {
                             // Create new list menu
                             $lmenu = new ListMenu($link["submenu"], $link["submenu"]);
-                            $menu->insertBefore("historic", $lmenu);
+                            $menu->insertAfter("delete", $lmenu);
                         }
                         $lmenu->appendElement($menuItem);
                     }
                 } elseif ($link["visibility"] === POPUP_ACTIVE) {
-                    $menu->insertBefore("historic", $menuItem);
+                    $menu->insertAfter("delete", $menuItem);
                 } elseif ($link["visibility"] === POPUP_CTRLACTIVE) {
                     if (!$advMenu) {
                         $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
