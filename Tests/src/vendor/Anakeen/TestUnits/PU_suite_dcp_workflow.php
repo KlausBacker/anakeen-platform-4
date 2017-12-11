@@ -24,6 +24,7 @@ class SuiteWorkflow
         $suite->addTestSuite('Dcp\Pu\TestImportAccess');
         $suite->addTestSuite('Dcp\Pu\TestImportFamilyProperty');
         $suite->addTestSuite('Dcp\Pu\TestImportWorkflow');
+        $suite->addTestSuite('Dcp\Pu\TestWorflowTransition');
         $suite->addTestSuite('Dcp\Pu\TestImportDocumentsExtra');
         $suite->addTestSuite('Dcp\Pu\TestDocControl');
 
