@@ -25,7 +25,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
         print "\n--Redirect $appname $actionname--\n";
         return;
     }
-    
+
     if ($appname == "") {
         $location = ".";
     } else {
@@ -40,11 +40,11 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
         } else $baseurl = $otherurl;
         $location = $baseurl . "app=" . $appname . "&action=" . $actionname;
         //    $location .= "&session=".$action->session->id;
-        
+
     }
-    
+
     $action->log->debug("Redirect : $location");
-    
+
     if ($httpparamredirect) {
         //add ZONE_ARGS
         global $ZONE_ARGS;
@@ -81,7 +81,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
 function RedirectSender(Action & $action)
 {
     global $_SERVER;
-    
+
     if ($_SERVER["HTTP_REFERER"] != "") {
         Header("Location: " . $_SERVER["HTTP_REFERER"]); // return to sender
         exit;
@@ -91,7 +91,7 @@ function RedirectSender(Action & $action)
         Header("Location: " . $referer); // return to sender
         exit;
     }
-    
+
     $action->exitError(_("no referer url found"));
     exit;
 }
@@ -124,7 +124,7 @@ function redirectAsGuest(Action & $action)
 function getHttpVars($name, $def = "", $scope = "all")
 {
     global $_GET, $_POST, $ZONE_ARGS;
-    
+
     if (($scope == "all" || $scope == "zone") && isset($ZONE_ARGS[$name])) {
         // try zone args first : it is set be Layout::execute for a zone
         return ($ZONE_ARGS[$name]);
@@ -135,13 +135,13 @@ function getHttpVars($name, $def = "", $scope = "all")
     if (($scope == "all" || $scope == "post") && isset($_POST[$name])) {
         return $_POST[$name];
     }
-    
+
     return ($def);
 }
 
 function GetHttpCookie($name, $def = "")
 {
-    
+
     global $_COOKIE;
     if (isset($_COOKIE[$name])) return $_COOKIE[$name];
     return ($def);
@@ -149,7 +149,7 @@ function GetHttpCookie($name, $def = "")
 
 function SetHttpVar($name, $def)
 {
-    
+
     global $ZONE_ARGS;
     if ($def == "") unset($ZONE_ARGS[$name]);
     else $ZONE_ARGS[$name] = $def;
@@ -206,6 +206,7 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
     header("Pragma: "); // HTTP 1.0
     header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
     header("Content-type: " . $mime_type);
+    header("X-Content-Type-Options: nosniff");
     echo $src;
 }
 /**
@@ -223,34 +224,42 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
  */
 function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $cache = true, $deleteafter = false)
 {
+    require_once 'FDL/Class.FileMimeConfig.php';
+
     if (!file_exists($filename)) {
         printf(_("file not found : %s") , $filename);
         return;
     }
-    
+
     if (php_sapi_name() !== 'cli') {
         // Double quote not supported by all browsers - replace by minus
         $name = str_replace('"', '-', $name);
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         $name = rawurlencode($name);
+        $fileMimeConfig = new \Dcp\FileMimeConfig();
+        if ($inline && !$fileMimeConfig->isInlineAllowed($mime_type)) {
+            /* Override requested inline mode as it is forbidden */
+            $inline = false;
+        }
         if (!$inline) {
             header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
         } else {
             header("Content-Disposition: inline;filename=\"$uName\";filename*=UTF-8''$name;");
         }
-        
+
         if ($cache) {
             $duration = 24 * 3600;
             header("Cache-Control: private, max-age=$duration"); // use cache client (one hour) for speed optimsation
             header("Expires: " . gmdate("D, d M Y H:i:s T\n", time() + $duration)); // for mozilla
-            
+
         } else {
             header("Cache-Control: private");
         }
         header("Pragma: "); // HTTP 1.0
         if ($inline && substr($mime_type, 0, 4) == "text" && substr($mime_type, 0, 9) != "text/html" && substr($mime_type, 0, 8) != "text/xml") $mime_type = preg_replace("_text/([^;]*)_", "text/plain", $mime_type);
-        
+
         header("Content-type: " . $mime_type);
+        header("X-Content-Type-Options: nosniff");
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: " . filesize($filename));
         $buflen = ob_get_length();
@@ -298,4 +307,5 @@ function setHeaderCache($mime = "text/css")
     header("Expires: " . gmdate("D, d M Y H:i:s T\n", time() + $duration)); // for mozilla
     header("Pragma: none"); // HTTP 1.0
     header("Content-type: $mime");
+    header("X-Content-Type-Options: nosniff");
 }
