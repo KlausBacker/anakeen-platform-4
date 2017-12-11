@@ -12,6 +12,9 @@
     <process command="programs/record_application TENGINE_CLIENT I">
       <label lang="en">Record application TENGINE_CLIENT in database</label>
     </process>
+    <process command="programs/record_application TENGINE_MONITOR I">
+      <label lang="en">Record application TENGINE monitoring</label>
+    </process>
     <process command="programs/update_catalog"/>
   </post-install>
   <post-upgrade>
@@ -20,6 +23,10 @@
       <label lang="en">Update application TENGINE_CLIENT in database</label>
     </process>
     <process command="programs/post_migration TENGINE_CLIENT"/>
+
+    <process command="programs/record_application TENGINE_MONITOR U">
+      <label lang="en">Update application TENGINE monitoring</label>
+    </process>
     <process command="programs/update_catalog"/>
   </post-upgrade>
 </module>
