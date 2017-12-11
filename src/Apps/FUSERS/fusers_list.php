@@ -69,21 +69,21 @@ function fusers_list(Action & $action)
         array(
             "id" => "Users",
             "login" => _("All users") ,
-            "icon" => $action->parent->getImageLink("dynacase-iuser.png", true, 14) ,
+            "icon" => $action->parent->getImageLink("se-iuser.png", true, 14) ,
             "onclick" => "refreshRightSide('user', 0, this)",
             "firstname" => _("All users")
         ) ,
         array(
             "id" => "Roles",
             "login" => _("All roles") ,
-            "icon" => $action->parent->getImageLink("role.png", true, 14) ,
+            "icon" => $action->parent->getImageLink("se-role.png", true, 14) ,
             "onclick" => "refreshRightSide('role', 0, this)",
             "firstname" => _("All roles")
         ) ,
         array(
             "id" => "Groups",
             "login" => _("All groups") ,
-            "icon" => $action->parent->getImageLink("igroup.png", true, 14) ,
+            "icon" => $action->parent->getImageLink("se-igroup.png", true, 14) ,
             "onclick" => "refreshRightSide('group', 0, this)",
             "firstname" => _("All groups")
         )
