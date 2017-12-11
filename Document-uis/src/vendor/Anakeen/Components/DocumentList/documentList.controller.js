@@ -191,11 +191,16 @@ export default {
 
     computed: {
         translations() {
+            const searchTranslated = this.$pgettext('DocumentList', 'Search in : %{collection}');
+            const noDataTranslated = this.$pgettext('DocumentList', 'No %{collection} to display');
             return {
-                searchPlaceholder: this.$pgettext('DocumentList', 'Search in')
-                + (this.collection ? ` : ${this.collection.html_label.toUpperCase()}` : ''),
+                searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
+                        collection: this.collection ? this.collection.html_label.toUpperCase() : '',
+                    }),
                 itemsPerPageLabel: this.$pgettext('DocumentList', 'Items per page'),
-                noDataPagerLabel: this.$pgettext('DocumentList', 'No Smart Element to display'),
+                noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
+                        collection: this.collection ? this.collection.html_label : '',
+                    }),
             };
         },
     },

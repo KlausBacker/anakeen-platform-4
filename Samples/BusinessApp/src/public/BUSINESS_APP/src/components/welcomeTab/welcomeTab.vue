@@ -14,7 +14,7 @@
             <h1 v-if="promptMessage" class="documentsList__documentsTabs__welcome__prompt__message">
                 {{promptMessage}}
             </h1>
-            <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__open">
+            <div class="documentsList__documentsTabs__welcome__content__open">
                 <div class="documentsList__documentsTabs__welcome__content__inner--label">
                     <i class="material-icons">remove_red_eye</i> {{translations.consultLabel}}
                 </div>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__creation">
+            <div class="documentsList__documentsTabs__welcome__content__creation">
                 <div class="documentsList__documentsTabs__welcome__content__inner--label">
                     <i class="material-icons">edit</i> {{translations.creationLabel}}
                 </div>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="documentsList__documentsTabs__welcome__content__inner documentsList__documentsTabs__welcome__content__recommended">
+            <div class="documentsList__documentsTabs__welcome__content__quickaccess">
                 <div class="documentsList__documentsTabs__welcome__content__inner--label">
                     <i class="material-icons">view_carousel</i> {{translations.recentConsultLabel}}
                 </div>
@@ -52,18 +52,20 @@
                     <table v-if="lastConsultations.length" class="documentsList__documentsTabs__welcome__content__inner--table-content table-bordered table-hover table-responsive" ref="recentConsult">
                         <thead>
                         <tr>
-                            <th>{{translations.typeColumnLabel}}</th>
                             <th>{{translations.titleColumnLabel}}</th>
-                            <th>{{translations.stepColumnLabel}}</th>
+                            <th>{{translations.typeColumnLabel}}</th>
                             <th>{{translations.consultDateColumnLabel}}</th>
                         </tr>
                         </thead>
                         <tbody>
                             <tr v-for="c in lastConsultations" @click.capture="onRecentDocumentClick(c.properties)">
+                                <td>
+                                    <div>{{c.properties.title}}</div>
+                                    <div class="recentDocuments__state__info" v-if="c.properties.state">
+                                        <div class="recentDocuments__state__info__color" :style="getStateTag(c.properties.state.color)"></div>{{c.properties.state.displayValue}}
+                                    </div>
+                                </td>
                                 <td>{{c.properties.family.title}}</td>
-                                <td>{{c.properties.title}}</td>
-                                <td v-if="c.properties.state"><div :style="getStateTag(c.properties.state.color)"></div>{{c.properties.state.displayValue}}</td>
-                                <td v-else="true"></td>
                                 <td>{{getFormattedDate(c.utag.date)}}</td>
                             </tr>
                         </tbody>

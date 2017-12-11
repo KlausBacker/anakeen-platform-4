@@ -135,7 +135,7 @@ export default {
                 searchPlaceholder: this.$pgettext('WelcomeTab', 'Search a Smart Element'),
                 creationLabel: this.$pgettext('WelcomeTab', 'Creation'),
                 consultLabel: this.$pgettext('WelcomeTab', 'Consultation'),
-                recentConsultLabel: this.$pgettext('WelcomeTab', 'Last Consultations'),
+                recentConsultLabel: this.$pgettext('WelcomeTab', 'Recent Consultations'),
                 typeColumnLabel: this.$pgettext('WelcomeTab', 'Type'),
                 titleColumnLabel: this.$pgettext('WelcomeTab', 'Title'),
                 stepColumnLabel: this.$pgettext('WelcomeTab', 'Step'),

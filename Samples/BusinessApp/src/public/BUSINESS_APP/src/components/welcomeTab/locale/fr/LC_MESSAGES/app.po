@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-06 11:51+0100\n"
+"POT-Creation-Date: 2017-12-11 11:17+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -28,9 +28,10 @@ msgid "Consultation"
 msgstr "Consultation"
 
 #: Samples/BusinessApp/src/public/BUSINESS_APP/src/components/welcomeTab/welcomeTab.controller.js:138
+#, fuzzy
 msgctxt "WelcomeTab"
-msgid "Last Consultations"
-msgstr "Dernières Consultations"
+msgid "Recent Consultations"
+msgstr "Consultations Récentes"
 
 #: Samples/BusinessApp/src/public/BUSINESS_APP/src/components/welcomeTab/welcomeTab.controller.js:139
 msgctxt "WelcomeTab"
