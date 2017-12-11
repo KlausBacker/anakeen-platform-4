@@ -1,7 +1,6 @@
 <?php
 namespace Sample\BusinessApp\Renders;
-//use Dcp\AttributeIdentifiers\BA_CLIENT_CONTRACT as MyAttr;
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\Ui\ItemMenu;
 
 
 class FeesView extends CommonView
@@ -13,7 +12,8 @@ class FeesView extends CommonView
         $options->frame()->showEmptyContent("<div>Aucunes informations</div>");
         $options->arrayAttribute()->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
-
+        $options->frame('fee_fr_viz')->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
+        $options->frame('fee_fr_viz')->setTemplate(file_get_contents(__DIR__."/feesVisualization.mustache"));
         /*$cert=null;
         if (!$document->getRawValue(MyAttr::cli_cert)) {
             $s=new \SearchDoc("", "BA_CERTIFICATION");
@@ -37,6 +37,17 @@ class FeesView extends CommonView
 
         return $options;
     }
+
+    public function getMenu(\Doc $document)
+    {
+        $menu = parent::getMenu($document);
+        $item = new ItemMenu('fee_preview', 'Prévisualiser la note de frais');
+        $item->setBeforeContent('<i class="fa fa-eye"></i>');
+        $item->setUrl("#action/preview");
+        $menu->insertBefore('modify', $item);
+        return $menu;
+    }
+
     public function getCssReferences(\Doc $document = null)
     {
 

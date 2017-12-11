@@ -36,3 +36,7 @@
     display:inline-block;
     border-radius: 50%;
 }
+
+.dcpFrame > .dcpFrame__content > .fees-expenses-visualization {
+    background-color: red;
+}

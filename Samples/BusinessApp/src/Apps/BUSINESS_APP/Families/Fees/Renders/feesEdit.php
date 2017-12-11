@@ -1,16 +1,16 @@
 <?php
 namespace Sample\BusinessApp\Renders;
-
+use Dcp\AttributeIdentifiers\BA_FEES as MyAttr;
 class FeesEdit extends CommonEdit
 {
 
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-
+        $options->commonOption('fee_exp_tva')->showEmptyContent("Non calculé");
         $options->htmltext()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
-        $options->arrayAttribute()->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
+        $options->arrayAttribute('fee_t_all_exp')->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $options->arrayAttribute()->setRowMinDefault(1);
 
 
