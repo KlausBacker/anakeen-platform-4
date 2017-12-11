@@ -1,0 +1,75 @@
+.clear {
+  clear: both;
+}
+.page {
+  margin: 0;
+  padding: 20px;
+  background-color: #FFF;
+  color: #222;
+}
+.page .h1 {
+  float: left;
+}
+.page .box {
+  margin-bottom: 10px;
+}
+select,
+input[type="text"] {
+  border: 1px solid;
+  border-color: #C5C5C5 #E6E6E6 #E6E6E6 #C5C5C5;
+  background-color: #F1F1F1;
+  color: #545454;
+  padding: 5px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+select:focus,
+input[type="text"]:focus {
+  background-color: #FFF;
+  border-color: #363636 #A3A3A3 #A3A3A3 #363636;
+  color: #545454;
+}
+select {
+  padding: 4px;
+  border-color: #E6E6E6 #C5C5C5 #C5C5C5 #E6E6E6;
+}
+option {
+  background-color: #F1F1F1;
+  color: #545454;
+}
+.template {
+  display: none;
+}
+#results {
+  margin-top: 20px;
+}
+.result {
+  border-radius: 3px;
+  border: 1px solid #DDD;
+  margin: 5px 5px 5px 20px;
+  padding: 5px 5px 5px 20px;
+}
+.result.in-progress {
+  background: url('[IMG:tengine_monitor-load.gif]');
+  background-position: 5px 50%;
+  background-repeat: no-repeat;
+}
+.result.statusOK {
+  background-color: rgba(174,233,121,0.36);
+}
+.result.statusKO {
+  background-color: rgba(224,114,114,0.25);
+}
+.result .title {
+  margin: 5px;
+  font-size: 100%;
+  font-weight: bold;
+}
+.result .log {
+  margin-left: 50px;
+  font-size: 85%;
+  color: #545454;
+}
+.result .clear {
+  clear: both;
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="[HTML_LANG]">
+<head>
+    <meta charset="utf-8">
+    <title>[TEXT:TE:Monitor:Tasks:tengine_monitor_tasks]</title>
+    [CSS:REF]
+    [JS:REF]
+</head>
+<body>
+<div class="page">
+    <div class="tasks">
+
+        <h1>[TEXT:TE:Monitor:Tasks:tengine_monitor_tasks]</h1>
+
+        <div class="box counters-box">
+            <button id="reset-filters" class="ui-button ui-corner-all ui-state-default" title="[TEXT:TE:Monitor:Tasks:reset filters and reload tasks]" >
+                [TEXT:TE:Monitor:Tasks:reset filters]&nbsp;
+            </button>
+            <div class="counters-states">
+                <div>
+                    <ul class="counters">
+                        <li title="[TEXT:TE:Monitor:Tasks:Interrupted task count]">
+                            <div data-counter="interrupted" class="count state">-</div>
+                            <div class="item state state_I"></div>
+                        </li>
+                        <li title="[TEXT:TE:Monitor:Tasks:Error task count]">
+                            <div data-counter="ko" class="count state state">-</div>
+                            <div class="item state state_K"></div>
+                        </li>
+                        <li title="[TEXT:TE:Monitor:Tasks:Success task count]">
+                            <div data-counter="done" class="count state state">-</div>
+                            <div class="item state state_D"></div>
+                        </li>
+                        <li title="[TEXT:TE:Monitor:Tasks:Processing task count]">
+                            <div data-counter="waiting" class="count state state">-</div>
+                            <div class="item state state_P"></div>
+                        </li>
+                        <li title="[TEXT:TE:Monitor:Tasks:Waiting task count]">
+                            <div data-counter="waiting" class="count state state">-</div>
+                            <div class="item state state_W"></div>
+                        </li>
+                        <li title="[TEXT:TE:Monitor:Tasks:Transferring task count]">
+                            <div data-counter="transferring" class="count state">-</div>
+                            <div class="item state state_T"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <ul class="counters-load">
+                <li class="separator">
+                    <div>&nbsp;</div>
+                </li>
+                <li title="[TEXT:TE::Monitor:Tasks:Client count]">
+                    <div class="sbox">
+                        <div class="stick-line">
+                            <div class="content title"> Clients</div>
+                        </div>
+                        <div class="stick-line">
+                            <div class="stick-cell cell50">
+                                <div class="content emphas" data-counter="client-cur">-</div>
+                            </div>
+                            <div class="stick-cell cell50">
+                                <div class="content emphas" data-counter="client-max">-</div>
+                            </div>
+                        </div>
+                        <div class="stick-line">
+                            <div class="stick-cell cell50">
+                                <div class="content comment">[TEXT:TE:Monitor:Tasks:cur.]</div>
+                            </div>
+                            <div class="stick-cell cell50">
+                                <div class="content comment">[TEXT:TE:Monitor:Tasks:max.]</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="separator">
+                    <div>&nbsp;</div>
+                </li>
+                <li title="[TEXT:TE:Monitor:Tasks:Server system load]">
+                    <div class="sbox">
+                        <div class="stick-line">
+                            <div class="content title">[TEXT:TE:Monitor:Tasks:Server system load] (Unix load)</div>
+                        </div>
+                        <div class="stick-line">
+                            <div class="stick-cell cell33">
+                                <div class="content emphas" data-counter="sys-load-1">-</div>
+                            </div>
+                            <div class="stick-cell cell33">
+                                <div class="content emphas" data-counter="sys-load-2">-</div>
+                            </div>
+                            <div class="stick-cell cell33">
+                                <div class="content emphas" data-counter="sys-load-3">-</div>
+                            </div>
+                        </div>
+                        <div class="stick-line">
+                            <div class="stick-cell cell33">
+                                <div class="content comment">/ 1 min.</div>
+                            </div>
+                            <div class="stick-cell cell33">
+                                <div class="content comment">/ 5 min.</div>
+                            </div>
+                            <div class="stick-cell cell33">
+                                <div class="content comment">/ 15 min.</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+
+        <table id="tasks-dt" class="logbook">
+            <thead>
+            <tr>
+                <th>
+                    <input type="text" name="search_date"
+                           placeholder="[TEXT:TE:Monitor:Tasks:Date]"
+                           title="[TEXT:TE:Monitor:Tasks:search date]"
+                           class="search-input"/>
+                </th>
+                <th>
+                    <select title="[TEXT:TE:Monitor:search status:]" name="search_status" class="search-input">
+                        <option value="">[TEXT:TE:Status:All]</option>
+                        <option value="B">[TEXT:TE:Status:Begin]</option>
+                        <option value="T">[TEXT:TE:Status:Transferring]</option>
+                        <option value="P">[TEXT:TE:Status:Processing]</option>
+                        <option value="D">[TEXT:TE:Status:Success]</option>
+                        <option value="K">[TEXT:TE:Status:Error]</option>
+                        <option value="I">[TEXT:TE:Status:Interrupted]</option>
+                    </select>
+                </th>
+                <th>
+                    <input type="text" name="search_owner"
+                           placeholder="[TEXT:TE:Monitor:Tasks:Owner]"
+                           title="[TEXT:TE:Monitor:Tasks:search owner]"
+                           class="search-input"/>
+                </th>
+                <th>
+                    <input type="text" name="search_document"
+                           placeholder="[TEXT:TE:Monitor:Tasks:Document]"
+                           title="[TEXT:TE:Monitor:Tasks:search document]"
+                           class="search-input"/>
+                </th>
+                <th>
+                    <input type="text" name="search_engine"
+                           placeholder="[TEXT:TE:Monitor:Tasks:Engine]"
+                           title="[TEXT:TE:Monitor:Tasks:search engines]"
+                           class="search-input"/>
+                </th>
+                <th>
+                    <input type="text" name="search_id"
+                           placeholder="[TEXT:TE:Monitor:Tasks:Task Id]"
+                           title="[TEXT:TE:Monitor:Tasks:search task id]"
+                           class="search-input"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            </tr>
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
