@@ -613,18 +613,18 @@ create sequence SEQ_ID_ACTION;
     public function exitError($texterr, $exit = true)
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
-            //      redirect($this,"CORE&sole=Y","ERROR");
             $this->lay = new Layout("CORE/Layout/error.xml", $this);
             $this->lay->set("TITLE", _("Error"));
-            $this->lay->set("error", cleanhtmljs(nl2br($texterr)));
-            $this->lay->set("serror", json_encode(cleanhtmljs($texterr) , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
+            header('Warning: ' . strtok($texterr, "\n"));
+            $texterr = cleanhtmljs(\Dcp\Utils\htmlclean::normalizeHTMLFragment(nl2br($texterr)));
+            $this->lay->set("error", str_replace("[", "&#x5b;", $texterr));
+            $this->lay->set("serror", str_replace("[", "\\u005b", json_encode($texterr, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP)));
             $this->lay->set("appname", (empty($this->parent)) ? '' : $this->parent->name);
             $this->lay->set("appact", $this->name);
             if ($this->parent && $this->parent->parent) { // reset js ans ccs
                 $this->parent->parent->cssref = array();
                 $this->parent->parent->jsref = array();
             }
-            header('Warning: ' . strtok($texterr, "\n"));
             print $this->lay->gen();
             if ($exit) {
                 exit;
