@@ -5,6 +5,9 @@
 */
 
 namespace Dcp\Mail;
+
+use Dcp\Core\ContextManager;
+
 /**
  * Compose a mail with body and attachments and send it using the SMTP
  * server referenced by Dynacase's parameters.
@@ -273,7 +276,7 @@ class Message
     private function _sendWithPHPMailer()
     {
         include_once ("WHAT/Lib.Common.php");
-        $lcConfig = getLocaleConfig();
+        $lcConfig = ContextManager::getLocaleConfig();
         $mail = new \PHPMailer();
         /*
          * SMTPAutoTLS was introduced in v5.2.10 and is set to bool(true) by
@@ -320,8 +323,18 @@ class Message
                     }
                     /* Set envelope sender */
                     $this->setSender($sender->address);
-                    /* Overwrite original "From:" with envelope sender address while keeping original display name */
-                    $this->setFrom(new Address($sender->address, $this->from->name));
+                    if ($sender->name === '') {
+                        /*
+                         * Overwrite original "From:" with envelope sender address while keeping original display name
+                        */
+                        $this->setFrom(new Address($sender->address, $this->from->name));
+                    } else {
+                        /*
+                         * Overwrite original "From:" with envelope sender address while keeping original display name
+                         * and showing sender's display name in "via" suffix
+                        */
+                        $this->setFrom(new Address($sender->address, sprintf("%s via %s", $this->from->name, $sender->name)));
+                    }
                 }
             }
         }
