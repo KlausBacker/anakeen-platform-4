@@ -126,6 +126,11 @@ class FileUtils
         $name = str_replace('"', '-', $fileName);
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         $name = rawurlencode($name);
+        $fileMimeConfig = new \Dcp\FileMimeConfig();
+        if ($inline && !$fileMimeConfig->isInlineAllowed($mime)) {
+            /* Override requested inline mode as it is forbidden */
+            $inline = false;
+        }
         if (!$inline) {
             header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
         } else {
