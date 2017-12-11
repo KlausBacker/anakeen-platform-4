@@ -48,7 +48,7 @@ if (count($argv) == 1) {
 }
 
 foreach ($argv as $k => $v) {
-    
+
     if (preg_match("/--([^=]+)=(.*)/", $v, $reg)) {
         if (substr($reg[1], -2) == "[]") {
             $_GET[substr($reg[1], 0, -2) ][] = $reg[2];
@@ -57,10 +57,18 @@ foreach ($argv as $k => $v) {
         }
     } else if (preg_match("/--(.+)/", $v, $reg)) {
         if ($reg[1] == "listapi") {
+            $apiList = array();
+            foreach (new DirectoryIterator(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . 'API') as $entry) {
+                if (preg_match('/^(?<basename>.+)\.php$/', $entry->getFilename() , $m)) {
+                    $apiList[] = $m['basename'];
+                }
+            }
+            sort($apiList, SORT_STRING | SORT_FLAG_CASE);
             print "application list :\n";
-            echo "\t- ";
-            echo str_replace("\n", "\n\t- ", shell_exec(sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'", escapeshellarg(DEFAULT_PUBDIR))));
-            echo "\n";
+            foreach ($apiList as $api) {
+                printf("\t- %s\n", $api);
+            }
+            print "\n";
             exit;
         }
         $_GET[$reg[1]] = true;
@@ -128,7 +136,7 @@ catch(Dcp\Exception $e) {
     _wsh_exception_handler($e);
 }
 // init for gettext
-setLanguage($action->Getparam("CORE_LANG"));
+\Dcp\Core\ContextManager::setLanguage($action->Getparam("CORE_LANG"));
 
 if (isset($_GET["api"])) {
     $apifile = trim($_GET["api"]);
