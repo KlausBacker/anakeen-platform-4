@@ -10,6 +10,8 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
+use Dcp\Core\ContextManager;
+
 require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestWorflowTransition extends TestCaseDcpCommonFamily
@@ -89,6 +91,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
     }
     public function dataTransitionCondition()
     {
+        ContextManager::setLanguage("fr_FR");
         return array(
             array(
                 'TST_WFFAMM0M3',
