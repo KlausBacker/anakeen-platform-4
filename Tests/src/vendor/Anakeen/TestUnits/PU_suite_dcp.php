@@ -46,7 +46,6 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestImportProfil');
         $suite->addTestSuite('Dcp\Pu\TestImportCsvDocuments');
         $suite->addTestSuite('Dcp\Pu\TestImportCVDOC');
-        $suite->addTestSuite('Dcp\Pu\TestWorflowTransition');
         $suite->addTestSuite('Dcp\Pu\TestExportXml');
         $suite->addTestSuite('Dcp\Pu\TestExportCollection');
         $suite->addTestSuite('Dcp\Pu\TestExportRevision');
