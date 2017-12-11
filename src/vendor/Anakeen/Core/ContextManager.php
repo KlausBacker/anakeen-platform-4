@@ -23,6 +23,7 @@ class ContextManager
      */
     protected static $loader;
     protected static $coreParams;
+    protected static $language;
 
     /**
      *
@@ -93,7 +94,7 @@ class ContextManager
         self::$coreAction->user=&$account;
 
 
-        self::setLanguage(self::getApplicationParam("CORE_LANG"));
+        self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
 
     }
 
@@ -157,6 +158,17 @@ class ContextManager
         bind_textdomain_codeset($td, 'utf-8');
         textdomain($td);
         mb_internal_encoding('UTF-8');
+        self::$language=$lang;
+    }
+
+    /**
+     * Get current locale used
+     *
+     * @return string like fr_FR, en_US
+     *
+     */
+    public static function getLanguage() {
+        return self::$language;
     }
 
     protected static function _initCoreVolatileParam(\Application &$core)

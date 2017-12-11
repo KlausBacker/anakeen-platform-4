@@ -10,7 +10,7 @@ namespace Dcp\HttpApi\V1\Logger;
 class ErrorLog extends Logger
 {
 
-    public function writeError($message, $context = null, $stack = null)
+    public function writeError($message, $context = null, $stack = null, $exception = null)
     {
         if ($context === null && \Doc::getUserId()) {
             $context = "User : " . $this->getUserInfo();

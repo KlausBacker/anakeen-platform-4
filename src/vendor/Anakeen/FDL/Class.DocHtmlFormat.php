@@ -34,12 +34,12 @@ class DocHtmlFormat
      * @var bool to send once vault error
      */
     private $vaultErrorSent = false;
-    
+
     public function __construct(Doc & $doc)
     {
         $this->setDoc($doc);
     }
-    
+
     public function setDoc(Doc & $doc)
     {
         $this->doc = $doc;
@@ -59,7 +59,7 @@ class DocHtmlFormat
     public function getHtmlValue($oattr, $value, $target = "_self", $htmlLink = true, $index = - 1, $useEntities = true, $abstractMode = false)
     {
         global $action;
-        
+
         $this->oattr = $oattr;
         $this->target = $target;
         $this->index = $index;
@@ -69,9 +69,9 @@ class DocHtmlFormat
         $this->htmlLink = $htmlLink;
         $this->useEntities = $useEntities;
         $this->abstractMode = $abstractMode;
-        
+
         $showEmpty = $this->oattr->getOption('showempty');
-        
+
         if (($this->oattr->repeat) && ($this->index < 0)) {
             $tvalues = explode("\n", $value);
         } else {
@@ -89,28 +89,28 @@ class DocHtmlFormat
                         break;
 
                     case "file":
-                        
+
                         $htmlval = $this->formatFile($kvalue, $avalue);
                         break;
 
                     case "longtext":
                     case "xml":
-                        
+
                         $htmlval = $this->formatLongtext($kvalue, $avalue);
                         break;
 
                     case "password":
-                        
+
                         $htmlval = $this->formatPassword($kvalue, $avalue);
                         break;
 
                     case "enum":
-                        
+
                         $htmlval = $this->formatEnum($kvalue, $avalue);
                         break;
 
                     case "array":
-                        
+
                         $htmlval = $this->formatArray($kvalue, $avalue);
                         break;
 
@@ -127,43 +127,43 @@ class DocHtmlFormat
                         break;
 
                     case "thesaurus":
-                        
+
                         $htmlval = $this->formatThesaurus($kvalue, $avalue);
                         break;
 
                     case "option":
-                        
+
                         $htmlval = $this->formatOption($kvalue, $avalue);
                         break;
 
                     case 'money':
-                        
+
                         $htmlval = $this->formatMoney($kvalue, $avalue);
                         break;
 
                     case 'htmltext':
-                        
+
                         $htmlval = $this->formatHtmltext($kvalue, $avalue);
                         break;
 
                     case 'date':
-                        
+
                         $htmlval = $this->formatDate($kvalue, $avalue);
                         break;
 
                     case 'time':
-                        
+
                         $htmlval = $this->formatTime($kvalue, $avalue);
                         break;
 
                     case 'timestamp':
-                        
+
                         $htmlval = $this->formatTimeStamp($kvalue, $avalue);
-                        
+
                         break;
 
                     case 'ifile':
-                        
+
                         $htmlval = $this->formatIfile($kvalue, $avalue);
                         break;
 
@@ -173,12 +173,12 @@ class DocHtmlFormat
 
                     default:
                         $htmlval = $this->formatDefault($kvalue, $avalue);
-                        
+
                         break;
                 }
-                
+
                 $abegin = $aend = '';
-                
+
                 if ($htmlval === '' && $showEmpty) {
                     if ($abstractMode) {
                         // if we are not in abstract mode, the same heuristic is at array level,
@@ -212,13 +212,13 @@ class DocHtmlFormat
                     if ($ulink = $this->doc->urlWhatEncode($hlink, $kvalue)) {
                         if ($this->target == "ext") {
                             if (preg_match("/FDL_CARD.*id=([0-9]+)/", $ulink, $reg)) {
-                                
+
                                 $abegin = $this->doc->getDocAnchor($reg[1], $this->target, true, html_entity_decode($htmlval, ENT_QUOTES, 'UTF-8'));
                                 $htmlval = '';
                                 $aend = "";
                             } else if (true || preg_match("/^http:/", $ulink, $reg)) {
                                 $ec = getSessionValue("ext:targetUrl");
-                                
+
                                 if ($ec) {
                                     $ec = str_replace("%V%", $ulink, $ec);
                                     $ec = str_replace("%L%", $this->oattr->getLabel() , $ec);
@@ -228,7 +228,7 @@ class DocHtmlFormat
                                     $ltarget = $this->oattr->getOption("ltarget");
                                     $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
                                 }
-                                
+
                                 $aend = "</a>";
                             }
                         } else if ($this->target == "mail") {
@@ -269,11 +269,11 @@ class DocHtmlFormat
                     $abegin = "";
                     $aend = "";
                 }
-                
+
                 $thtmlval[$kvalue] = $abegin . $htmlval . $aend;
             }
         }
-        
+
         return implode("<BR>", $thtmlval);
     }
     /**
@@ -303,7 +303,7 @@ class DocHtmlFormat
      */
     public function formatImage($kvalue, $avalue)
     {
-        
+
         global $action;
         if ($this->target == "mail") {
             $htmlval = "cid:" . $this->oattr->id;
@@ -353,7 +353,7 @@ class DocHtmlFormat
     public function formatFile($kvalue, $avalue)
     {
         static $vf = null;
-        
+
         if (!$vf) $vf = newFreeVaultFile($this->doc->dbaccess);
         $vid = "";
         $fileInfo = false;
@@ -365,7 +365,7 @@ class DocHtmlFormat
             $vid = $reg[2];
             $mime = $reg[1];
             include_once ("FDL/Lib.Dir.php");
-            
+
             $fileInfo = new VaultFileInfo();
             if ($vf->Show($reg[2], $fileInfo) == "") {
                 $fname = $fileInfo->name;
@@ -376,7 +376,7 @@ class DocHtmlFormat
                     } else {
                         addWarningMsg(sprintf(_("file %s not found") , $fileInfo->name));
                     }
-                    
+
                     $fname.= ' ' . _("(file not found)");
                 }
             } else $htmlval = _("vault file error");
@@ -388,12 +388,12 @@ class DocHtmlFormat
                 $htmlval = _("no filename");
             }
         }
-        
+
         if ($this->target == "mail") {
             $htmlval = "<a target=\"_blank\" href=\"";
             $htmlval.= "cid:" . $this->oattr->id;
             if ($this->index >= 0) $htmlval.= "+$this->index";
-            $htmlval.= "\">" . $fname . "</a>";
+            $htmlval.= "\">" . htmlspecialchars($fname, ENT_QUOTES) . "</a>";
         } else {
             if ($fileInfo) {
                 if ($fileInfo->teng_state < 0 || $fileInfo->teng_state > 1) {
@@ -439,7 +439,7 @@ class DocHtmlFormat
                         $htmlval = $textval;
                     }
                 } elseif ($this->htmlLink) {
-                    
+
                     $mimeicon = getIconMimeFile($fileInfo->mime_s == "" ? $mime : $fileInfo->mime_s);
                     if (($this->oattr->repeat) && ($this->index <= 0)) $idx = $kvalue;
                     else $idx = $this->index;
@@ -467,13 +467,13 @@ class DocHtmlFormat
                                     $imageview = true;
                                     if ($viewfiletype == 'image') $viewfiletype = 'png';
                                     else if ($viewfiletype == 'pdf') $viewfiletype = 'embed';
-                                    
+
                                     $pages = getPdfNumberOfPages($infopdf->path);
                                     if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) $waiting = true;
                                 }
                             }
                         }
-                        
+
                         if ($imageview && (!$this->abstractMode)) {
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/widgetFile.js");
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/detectPdfPlugin.js");
@@ -485,10 +485,10 @@ class DocHtmlFormat
                             $lay->set("viewtype", $viewfiletype);
                             $lay->set("mimeicon", $mimeicon);
                             $lay->set("vid", ($infopdf ? $infopdf->id_file : $vid));
-                            $lay->set("filetitle", $fname);
+                            $lay->set("filetitle", json_encode((string)$fname));
                             $lay->set("height", $this->oattr->getOption('viewfileheight', '300px'));
                             $lay->set("filelink", $this->doc->getFileLink($this->oattr->id, $idx, false, false));
-                            
+
                             $lay->set("pdflink", '');
                             if ($pdfattr = $this->oattr->getOption('pdffile')) {
                                 //$infopdf=$this->doc->vault_properties($this->doc->getAttribute($pdfattr));
@@ -511,7 +511,7 @@ class DocHtmlFormat
                         $inline = $this->oattr->getOption("inline");
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue, $fileInfo) . "\">";
                         if ($mimeicon) $htmlval.= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
-                        $htmlval.= $fname . "</a>";
+                        $htmlval.= htmlspecialchars($fname, ENT_QUOTES) . "</a>";
                     }
                 } else {
                     $htmlval = $fileInfo->name;
@@ -535,7 +535,7 @@ class DocHtmlFormat
         {
             return $this->doc->getDocAnchor($matches[2], $this->target, $shtmllink);
         }
-        , $bvalue);
+            , $bvalue);
         $htmlval = str_replace(array(
             "[",
             "$"
@@ -596,7 +596,7 @@ class DocHtmlFormat
      */
     public function formatArray($kvalue, $avalue)
     {
-        
+
         global $action;
         $htmlval = '';
         if (count($this->doc->getArrayRawValues($this->oattr->id)) == 0 && $this->oattr->getOption('showempty')) {
@@ -612,7 +612,7 @@ class DocHtmlFormat
         if (!is_numeric($displayRowCount)) {
             $displayRowCount = 10;
         }
-        
+
         $lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
         $lay->set("issort", ($sort == "yes"));
         if (!method_exists($this->doc->attributes, "getArrayElements")) {
@@ -622,7 +622,7 @@ class DocHtmlFormat
         $lay->set("tableheight", $height);
         $lay->set("caption", $this->oattr->getLabel());
         $lay->set("aid", $this->oattr->id);
-        
+
         if (($viewzone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $viewzone, $reg)) {
             // detect special row zone
             $dxml = new DomDocument();
@@ -663,10 +663,10 @@ class DocHtmlFormat
                 }
                 $lay->setBlockData("TATTR", $talabel);
             }
-            
+
             $tbodies = $dxml->getElementsByTagName('table-body');
             $tr = $tcellstyle = $tcellclass = array();
-            
+
             if ($tbodies->length > 0) {
                 /**
                  * @var DOMElement $tbody
@@ -699,14 +699,14 @@ class DocHtmlFormat
                 );
                 reset($ta);
                 $tivalue = array();
-                
+
                 foreach ($tr as $kd => $vd) {
-                    
+
                     $hval = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($k)
                     {
                         return $this->rowattrReplace($matches[1], $k);
                     }
-                    , $vd);
+                        , $vd);
                     $tivalue[] = array(
                         "evalue" => $hval,
                         "color" => "inherit",
@@ -723,7 +723,7 @@ class DocHtmlFormat
             if ($this->oattr->getOption("vlabel") == "up") {
                 $caption = $this->oattr->getLabel();
             }
-            
+
             if ($nbitem > 10) $caption.= " ($nbitem)";
             $lay->set("caption", $caption);
             $htmlval = $lay->gen();
@@ -731,10 +731,10 @@ class DocHtmlFormat
             $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
             $talabel = array();
             $tvattr = array();
-            
+
             $emptyarray = true;
             $nbitem = 0;
-            
+
             $tval = array();
             foreach ($ta as $k => $v) {
                 if (($v->mvisibility == "H") || ($v->mvisibility == "I") || ($v->mvisibility == "O")) continue;
@@ -759,7 +759,7 @@ class DocHtmlFormat
                         }
                     }
                 }
-                
+
                 $lay->setBlockData("TATTR", $talabel);
                 $lay->set("caption", $caption);
                 $tvattr = array();
@@ -800,7 +800,7 @@ class DocHtmlFormat
                     $lay->setBlockData("bevalue_$k", $tivalue);
                 }
                 $lay->setBlockData("EATTR", $tvattr);
-                
+
                 $htmlval = $lay->gen();
             } else {
                 $htmlval = "";
@@ -820,14 +820,14 @@ class DocHtmlFormat
         if ($avalue != "") {
             if ($kvalue > - 1) $idocid = $this->doc->getMultipleRawValues($this->cFormat, "", $kvalue);
             else $idocid = $this->doc->getRawValue($this->cFormat);
-            
+
             if ($idocid > 0) {
                 //$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
                 //$lay->set("id",$idocid);
                 $idoc = new_Doc($this->doc->dbaccess, $idocid);
                 $htmlval = $idoc->viewDoc("FDL:VIEWTHUMBCARD:T", "finfo");
                 //$htmlval =$lay->gen();
-                
+
             }
         }
         return $htmlval;
@@ -852,7 +852,7 @@ class DocHtmlFormat
     public function formatDocid($kvalue, $avalue)
     {
         if ($this->oattr->format != "") {
-            
+
             $this->cancelFormat = true;
             $multiple = ($this->oattr->getOption("multiple") == "yes");
             $dtarget = $this->target;
@@ -877,7 +877,7 @@ class DocHtmlFormat
                                 $thval[] = $this->doc->htmlEncode($title);
                             }
                         } else {
-                            
+
                             if ($title === false) $thval[] = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
                             else $thval[] = $this->doc->getDocAnchor(trim($vv) , $dtarget, $this->htmlLink, $title, true, $this->oattr->getOption("docrev") , true);
                         }
@@ -946,13 +946,13 @@ class DocHtmlFormat
         global $action;
         $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
         $htmlval = "";
-        
+
         if ($kvalue > - 1) $di = $this->doc->getMultipleRawValues($this->oattr->format, "", $kvalue);
         else $di = $this->doc->getRawValue($this->oattr->format);
         if ($di > 0) {
             $lay->set("said", $di);
             $lay->set("uuvalue", urlencode($avalue));
-            
+
             $htmlval = $lay->gen();
         }
         return $htmlval;
@@ -974,7 +974,7 @@ class DocHtmlFormat
             if ($avalue !== '') {
                 $htmlval = money_format('%!.2n', doubleval($avalue));
                 $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
-                
+
             } else {
                 $htmlval = '';
             }
@@ -1000,19 +1000,19 @@ class DocHtmlFormat
         {
             return $this->doc->getDocAnchor($matches[2], $this->target, $shtmllink);
         }
-        , $avalue);
+            , $avalue);
         if (stripos($avalue, "data-initid") !== false) {
             try {
                 $domDoc = new DOMDocument();
-                
+
                 $domDoc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
-                
+
                 $aElements = $domDoc->getElementsByTagName("a");
                 /**
                  * @var DOMElement $currentA
                  */
                 foreach ($aElements as $currentA) {
-                    
+
                     if ($currentA->hasAttribute("data-initid")) {
                         $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
                         $newAFragment = $domDoc->createDocumentFragment();
@@ -1020,7 +1020,7 @@ class DocHtmlFormat
                         $currentA->parentNode->replaceChild($newAFragment, $currentA);
                     }
                 }
-                
+
                 $avalue = $domDoc->saveHTML();
             }
             catch(Exception $e) {
@@ -1091,7 +1091,7 @@ class DocHtmlFormat
         } else {
             if ($avalue) {
                 $htmlval = (string)substr($avalue, 0, 5); // do not display second
-                
+
             } else {
                 $htmlval = '';
             }
@@ -1161,7 +1161,7 @@ class DocHtmlFormat
         if (substr($s, 0, 2) == "V_") {
             $sl = substr(strtolower($s) , 2);
             $vis = $this->doc->getAttribute($sl)->mvisibility;
-            
+
             if (($vis == "H") || ($vis == "I") || ($vis == "O")) $v = "";
             else $v = $this->doc->GetHtmlAttrValue($sl, "_self", 2, $index);
         } else {

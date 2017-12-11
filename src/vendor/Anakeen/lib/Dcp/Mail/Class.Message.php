@@ -5,6 +5,9 @@
 */
 
 namespace Dcp\Mail;
+
+use Dcp\Core\ContextManager;
+
 /**
  * Compose a mail with body and attachments and send it using the SMTP
  * server referenced by Dynacase's parameters.
@@ -135,6 +138,54 @@ class Message
                 $this->sender = $addr[0];
             }
         }
+    }
+
+    /**
+     * Get To email addresses
+     * @return string
+     */
+    public function getTo() {
+        return $this->addressesToString($this->to);
+    }
+
+    /**
+     * Get Cc email addresses
+     * @return string
+     */
+    public function getCC() {
+        return $this->addressesToString($this->cc);
+    }
+    /**
+     * Get Bcc email addresses
+     * @return string
+     */
+    public function getBCC() {
+        return $this->addressesToString($this->bcc);
+    }
+    /**
+     * Get From email address
+     * @return string
+     */
+    public function getFrom() {
+        return $this->addressesToString([$this->from]);
+    }
+    /**
+     * @param Address[] $tAddresses
+     *
+     * @return string
+     */
+    protected function addressesToString(array $tAddresses) {
+        $tos=[];
+        foreach ($tAddresses as $to) {
+            if ($to->address) {
+                if ($to->name) {
+                    $tos[] = sprintf('"%s" <%s>', str_replace('"', ' ', $to->name), $to->address);
+                } else {
+                    $tos[] =$to->address;
+                }
+            }
+        }
+        return implode(",", $tos);
     }
     /**
      * Add 'To:' recipients.
@@ -273,7 +324,7 @@ class Message
     private function _sendWithPHPMailer()
     {
         include_once ("WHAT/Lib.Common.php");
-        $lcConfig = getLocaleConfig();
+        $lcConfig = ContextManager::getLocaleConfig();
         $mail = new \PHPMailer();
         /*
          * SMTPAutoTLS was introduced in v5.2.10 and is set to bool(true) by
@@ -320,8 +371,18 @@ class Message
                     }
                     /* Set envelope sender */
                     $this->setSender($sender->address);
-                    /* Overwrite original "From:" with envelope sender address while keeping original display name */
-                    $this->setFrom(new Address($sender->address, $this->from->name));
+                    if ($sender->name === '') {
+                        /*
+                         * Overwrite original "From:" with envelope sender address while keeping original display name
+                        */
+                        $this->setFrom(new Address($sender->address, $this->from->name));
+                    } else {
+                        /*
+                         * Overwrite original "From:" with envelope sender address while keeping original display name
+                         * and showing sender's display name in "via" suffix
+                        */
+                        $this->setFrom(new Address($sender->address, sprintf("%s via %s", $this->from->name, $sender->name)));
+                    }
                 }
             }
         }

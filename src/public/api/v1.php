@@ -55,11 +55,11 @@ try {
     foreach ($loggerList as $currentLogger) {
         $loggers[] = new $currentLogger();
     }
-    $writeError = function ($message, $context = null, $stack = null) use (&$loggers)
+    $writeError = function ($message, $context = null, $stack = null, $exception = null) use (&$loggers)
     {
         foreach ($loggers as $currentLogger) {
             /* @var \Dcp\HttpApi\V1\Logger\Logger $currentLogger */
-            $currentLogger->writeError($message, $context, $stack);
+            $currentLogger->writeError($message, $context, $stack, $exception);
         }
     };
     $writeWarning = function ($message, $context = null, $stack = null) use (&$loggers)
@@ -161,7 +161,7 @@ catch(Dcp\HttpApi\V1\Crud\Exception $exception) {
     $message->uri = $exception->getURI();
     $return->setHeaders($exception->getHeaders());
     
-    $writeError("API Exception " . $message->contentText, null, $exception->getTraceAsString());
+    $writeError("API Exception " . $message->contentText, null, $exception->getTraceAsString(), $exception);
     $return->addMessage($message);
 }
 
@@ -183,7 +183,7 @@ catch(Dcp\HttpApi\V1\Api\Exception $exception) {
     $message->uri = $exception->getURI();
     
     $return->setHeaders($exception->getHeaders());
-    $writeError("API Exception " . $message->contentText, null, $exception->getTraceAsString());
+    $writeError("API Exception " . $message->contentText, null, $exception->getTraceAsString(), $exception);
     $return->addMessage($message);
     if ($exception->getHttpStatus() !== "403") {
         $return->addMessage($defaultPageMessage());
@@ -198,7 +198,7 @@ catch(\Dcp\Exception $exception) {
     $message->type = $message::ERROR;
     $message->code = $exception->getDcpCode();
     $return->addMessage($message);
-    $writeError("DCP Exception " . $message->contentText, null, $exception->getTraceAsString());
+    $writeError("DCP Exception " . $message->contentText, null, $exception->getTraceAsString(), $exception);
 }
 catch(\Exception $exception) {
     $return->setHttpStatusCode(400, "Exception");
@@ -209,7 +209,7 @@ catch(\Exception $exception) {
     $message->type = $message::ERROR;
     $message->code = "API0001";
     $return->addMessage($message);
-    $writeError("PHP Exception " . $message->contentText, null, $exception->getTraceAsString());
+    $writeError("PHP Exception " . $message->contentText, null, $exception->getTraceAsString(), $exception);
 }
 //endregion ErrorCatching
 //Send the HTTP return

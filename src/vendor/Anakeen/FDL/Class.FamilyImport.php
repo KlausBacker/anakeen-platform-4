@@ -15,6 +15,8 @@
 
 namespace Dcp;
 
+use Dcp\Core\DbManager;
+
 class FamilyImport
 {
     /**
@@ -735,18 +737,18 @@ class FamilyImport
     
     protected static function recreateFamilyView($dbaccess, $docname, $docid)
     {
-        simpleQuery($dbaccess, sprintf("CREATE OR REPLACE VIEW family.%s AS SELECT * FROM %s", pg_escape_identifier($docname) , pg_escape_identifier(sprintf("doc%s", $docid))) , $res, true, true, true);
+        DbManager::query(sprintf("SELECT refreshFamilySchemaViews(%s, %s)", pg_escape_literal($docname) , pg_escape_literal(intval($docid))) , $res, true, true);
     }
     
     protected static function getTableColumns($dbaccess, $schemaName, $tableName)
     {
-        simpleQuery($dbaccess, sprintf("SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($tableName)) , $res, true, false, true);
+        DbManager::query(sprintf("SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($tableName)) , $res, true, false);
         return $res;
     }
     
     protected static function alterTableAddColumn($dbaccess, $schemaName, $tableName, $columnName, $columnType)
     {
-        simpleQuery($dbaccess, sprintf("ALTER TABLE %s.%s ADD COLUMN %s %s", pg_escape_identifier($schemaName) , pg_escape_identifier($tableName) , pg_escape_identifier($columnName) , $columnType) , $res, true, true, true);
+        DbManager::query(sprintf("ALTER TABLE %s.%s ADD COLUMN %s %s", pg_escape_identifier($schemaName) , pg_escape_identifier($tableName) , pg_escape_identifier($columnName) , $columnType) , $res, true, true);
     }
     
     public static function createDocFile($dbaccess, $tdoc)
